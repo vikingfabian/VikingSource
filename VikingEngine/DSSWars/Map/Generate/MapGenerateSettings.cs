@@ -22,11 +22,52 @@ namespace VikingEngine.DSSWars.Map.Generate
         public int repeatBuildDigCount = 3;
         public MapStartAs StartAs = MapStartAs.Water;
 
+        public bool bCustomSize = false;
+        public IntVector2 customMapSize = new IntVector2(WorldData.CustomMapSize_Min);
+        public bool cleanUpSingleTiles = false;
+
         public MapGenerateSettings()
         {
             startRadiusRange = new IntervalF(LandChainMinRadius, LandChainMaxRadius * 0.5f);
         }
 
-        
+        public bool CustomSizeProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                bCustomSize = value;
+                (value ? SoundLib.click : SoundLib.back).Play();
+            }
+            return bCustomSize;
+        }
+
+        public bool CleanUpProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                cleanUpSingleTiles = value;
+                (value ? SoundLib.click : SoundLib.back).Play();
+            }
+            return cleanUpSingleTiles;
+        }
+
+        public int MapXProperty(bool set, int value)
+        {
+            if (set)
+            {
+                customMapSize.X = value;
+            }
+            return customMapSize.X;
+        }
+        public int MapYProperty(bool set, int value)
+        {
+            if (set)
+            {
+                customMapSize.Y = value;
+            }
+            return customMapSize.Y;
+        }
+
+
     }
 }

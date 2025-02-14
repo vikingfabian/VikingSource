@@ -69,13 +69,13 @@ namespace VikingEngine.DSSWars
         const float MoreArrowScale = 0.4f;
         SpriteName moreOptArrow = SpriteName.LfMenuMoreMenusArrow;
         SaveStateMeta loadGame = null;
-        public LobbyState()
+        public LobbyState(bool startLoadingMap = true)
             : base()
         {
             HudLib.Init();
             Ref.isPaused = false;
             Engine.Screen.SetupSplitScreen(1, true);
-            if (!StartupSettings.BlockBackgroundLoading)
+            if (startLoadingMap && !StartupSettings.BlockBackgroundLoading)
             {
                 mapBackgroundLoading = new MapBackgroundLoading(null);
             }
@@ -119,6 +119,12 @@ namespace VikingEngine.DSSWars
             Ref.lobby.startSearchLobbies(true);
 
             createMenuLayout();
+        }
+
+        public void playOnCustomMap(MapBackgroundLoading map)
+        {
+            mapBackgroundLoading = map;
+            openUnderMenu(UnderMenu_PlayerSetup, false);
         }
 
         void createMenuLayout()
@@ -377,6 +383,7 @@ namespace VikingEngine.DSSWars
 
         void openMapEditor()
         {
+            mapBackgroundLoading?.Abort();
             new MapEditor_Generator();
         }
 
@@ -1551,10 +1558,8 @@ namespace VikingEngine.DSSWars
 
             if (saveMeta.localPlayerCount == DssRef.storage.playerCount)
             {
-                if (mapBackgroundLoading != null)
-                {
-                    mapBackgroundLoading.Abort();
-                }
+                mapBackgroundLoading?.Abort();
+                
                 //mapBackgroundLoading = new MapBackgroundLoading(save);
 
                 var availableList = availableInput();

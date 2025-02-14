@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         MapGeneratorDisplay display;
         public MapEditorUserStorage storage;
         GeneratorMap map;
-        MapBackgroundLoading mapBackgroundLoading;
+        MapGenerator_BackgroundLoading mapBackgroundLoading;
         bool loadingState = false;
         public MapEditor_Generator()
             :base() 
@@ -37,6 +37,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                 {
                     loadingState = false;
                     map.generate();
+                    display.refreshMenu();
                 }
             }
             else
@@ -48,31 +49,40 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             }
         }
 
-        public void generate()
+        public bool canRunPass(GenerateMapPass pass)
+        {
+            switch (pass)
+            {
+                default:
+                    return mapBackgroundLoading != null && DssRef.world != null;
+
+                case GenerateMapPass.Clear:
+                    return true;
+
+                case GenerateMapPass.Build:
+                case GenerateMapPass.Dig:
+                case GenerateMapPass.CleanUp:
+                    return DssRef.world != null && DssRef.world.generatePassCompleted < GenerateMapPass.Cities;
+            }
+        }
+
+        public void generatePass(GenerateMapPass pass)
         {
             loadingState = true;
-            mapBackgroundLoading = new MapBackgroundLoading(null);
+
+            if (pass == GenerateMapPass.Clear || pass == GenerateMapPass.AllTerrain)
+            {
+                mapBackgroundLoading = new MapGenerator_BackgroundLoading();
+            }
+            mapBackgroundLoading.generateSettings = GenerateSettings;
+            mapBackgroundLoading.generate(pass);
         }
 
-        public void generate_clear()
-        {
-
-        }
-
-        public void generate_paintBuild()
-        {
-
-        }
-
-        public void generate_paintDig()
-        {
-
-        }
-
-
+        
         public void startNewGame()
         {
-
+            var state = new LobbyState(false);
+            state.playOnCustomMap(mapBackgroundLoading);
         }
     }
 }

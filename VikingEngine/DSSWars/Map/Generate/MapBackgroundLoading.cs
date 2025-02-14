@@ -7,13 +7,33 @@ using System.Threading;
 using System.Threading.Tasks;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.Map.Generate
 {
+    class MapGenerator_BackgroundLoading: MapBackgroundLoading
+    {
+        public MapGenerator_BackgroundLoading()
+            :base()
+        { }
+
+        public void generate(GenerateMapPass pass)
+        {
+            loadingState = LoadingState.StorageDone;
+            generateLoopUntilSuccess(null, pass);
+        }
+
+        protected override bool GenerateNewMap()
+        {
+            return true;
+        }
+    }
+
+
     class MapBackgroundLoading
     {
         WorldDataStorage storage;
-        LoadingState loadingState = 0;
+        protected LoadingState loadingState = 0;
         bool abort = false;
         GenerateMap dataGenerate = null;
         GenerateMap postGenerate;
@@ -21,7 +41,10 @@ namespace VikingEngine.DSSWars.Map.Generate
         bool generateSuccess =false;
         CancellationTokenSource tokenSource;
         SaveStateMeta loadMeta;
+        public MapGenerateSettings generateSettings = new MapGenerateSettings();
 
+        public MapBackgroundLoading()
+        { }
         public MapBackgroundLoading(SaveStateMeta loadMeta)
         {
             this.loadMeta = loadMeta;
@@ -34,7 +57,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             if (DssRef.storage.generateNewMaps)
             {
                 loadingState = LoadingState.StorageDone;
-                generateLoopUntilSuccess(loadMeta);
+                generateLoopUntilSuccess(loadMeta, GenerateMapPass.All);
             }
             else
             {
@@ -59,35 +82,49 @@ namespace VikingEngine.DSSWars.Map.Generate
                     DssRef.storage.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
                     loadingNumber = 1;
                 }
-                storage.loadMap(worldMeta);//DssRef.storage.mapSize, loadingNumber);
+                storage.loadMap(worldMeta);
             }
         }
 
-        void generateLoopUntilSuccess(SaveStateMeta loadMeta)
+        protected void generateLoopUntilSuccess(SaveStateMeta loadMeta, GenerateMapPass generatePass)
         {
+            generateSuccess = false;
             tokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = tokenSource.Token;
 
             Task task = Task.Factory.StartNew(() =>
             {
-                while (!abort)
+                while (!abort && failCount < 10)
                 {
-                    dataGenerate = new GenerateMap();
+                    if (dataGenerate == null ||
+                        generatePass == GenerateMapPass.All || 
+                        generatePass == GenerateMapPass.Clear || 
+                        generatePass == GenerateMapPass.AllTerrain)
+                    {
+                        dataGenerate = new GenerateMap();
+                    }
 
-                    WorldMetaData world;
+                    WorldMetaData worldmeta;
                     ushort seed;
                     if (loadMeta != null)
                     {
-                        world = loadMeta.worldmeta;
-                        //seed = loadMeta.world.seed;
+                        worldmeta = loadMeta.worldmeta;
                     }
                     else
                     {
-                        world = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.mapSize, -1);
+                        worldmeta = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.mapSize, -1);
                         seed = Ref.rnd.Ushort();
                     }
 
-                    bool success = dataGenerate.Generate(false, world, new MapGenerateSettings());
+                    bool success;
+                    if (generatePass == GenerateMapPass.All)
+                    {
+                        success = dataGenerate.Generate(false, worldmeta, generateSettings);
+                    }
+                    else
+                    {
+                        success = dataGenerate.GeneratePass(worldmeta, generateSettings, generatePass);
+                    }
 
                     if (success)
                     {
@@ -115,11 +152,18 @@ namespace VikingEngine.DSSWars.Map.Generate
                 return;
             }
 
-            if (DssRef.storage.generateNewMaps)
+            if (GenerateNewMap())
             {
                 if (generateSuccess)
                 {
-                    postGenerateUpdate();
+                    if (DssRef.world.generatePassCompleted >= GenerateMapPass.Countries)
+                    {
+                        postGenerateUpdate();
+                    }
+                    else
+                    {
+                        loadingState = LoadingState.Complete;
+                    }
                 }                
             }
             else
@@ -153,7 +197,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                         postGenerate = new Map.Generate.GenerateMap();
                         postGenerate.postLoadGenerate_Part2(DssRef.world, loadMeta);
                     }
-                    //loadingState = LoadingState.Complete;
                 }
                 else if (loadingState == LoadingState.Post2Started)
                 {
@@ -167,6 +210,11 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 System.Diagnostics.Debug.WriteLine(e.ToString());
             }
+        }
+
+        virtual protected bool GenerateNewMap()
+        {
+            return DssRef.storage.generateNewMaps;
         }
 
         public void Abort()
@@ -211,7 +259,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             if (loadingState == LoadingState.Complete)
             {
-                if (!DssRef.storage.generateNewMaps)
+                if (!GenerateNewMap())
                 {
                     DssRef.world = storage.worldData;
                 }
@@ -223,7 +271,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
          
 
-        enum LoadingState
+        protected enum LoadingState
         { 
             StorageQue,
             Storage,

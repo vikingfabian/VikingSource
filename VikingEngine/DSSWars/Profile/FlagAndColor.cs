@@ -8,6 +8,7 @@ using System.Threading;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.WeaponAttack.ItemThrow;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.PJ;
@@ -17,7 +18,7 @@ namespace VikingEngine.DSSWars
     class FlagAndColor
     {
         public static readonly int ColorCount = (int)ProfileColorType.NUM;
-        static readonly ColorRange AiColorRange = new ColorRange(new Color(new Vector3(0.1f)), new Color(new Vector3(0.9f)));
+        public static readonly ColorRange AiColorRange = new ColorRange(new Color(new Vector3(0.1f)), new Color(new Vector3(0.9f)));
 
         public static AppearanceMaterial
             SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2;

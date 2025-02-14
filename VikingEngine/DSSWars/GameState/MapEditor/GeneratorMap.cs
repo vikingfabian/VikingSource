@@ -35,15 +35,22 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
                 scale = Bound.Set(scale + lib.ToLeftRight(Input.Mouse.ScrollValue) * 0.1f, 0.25f, 4f);
 
-                image.size = textureSize * scale; 
+               
             }
-           
+            image.size = textureSize * scale;
         }
 
         public void generate()
         {
             texture.initTexture();
-            texture.RefreshWorld_TerrainCol();
+            if (DssRef.world.cities == null)
+            {
+                texture.RefreshWorld_TerrainCol();
+            }
+            else
+            {
+                texture.RefreshWorld_FactionCol();
+            }
             image.Texture = texture.texture;
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);

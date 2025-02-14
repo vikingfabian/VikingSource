@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.PJ;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
 {
@@ -19,6 +20,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
     {
         static readonly DragButtonSettings BuildDigLoopBounds = new DragButtonSettings(1, 10, 1);
         static readonly DragButtonSettings StrokeCountBounds = new DragButtonSettings(0f, 10, 0.01f);
+        static readonly List<float> MapSizeAdd = new List<float> { 8, 64, 1024 };
 
         RichMenu menu;
         MapEditor_Generator state;
@@ -30,6 +32,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
             var area = Screen.SafeArea;
             area.Width = Screen.IconSize * 8;
+            
+            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.mapSize);
 
             topRight = area.RightTop;
             topRight.X += Engine.Screen.BorderWidth;
@@ -40,7 +44,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             refreshMenu();
         }
 
-        void refreshMenu()
+        public void refreshMenu()
         {
             RichBoxContent content = new RichBoxContent();
             content.h1("Map editor - generate", HudLib.TitleColor_Head);
@@ -68,7 +72,36 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             {
                 case MapGeneratorTab.Ground:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
-                        new List<AbsRichBoxMember> { new RbText("Generate") }, new RbAction(state.generate)));
+                        new List<AbsRichBoxMember> { new RbText("Generate") }, new RbAction1Arg< GenerateMapPass>(state.generatePass, GenerateMapPass.AllTerrain)));
+
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Custom size") }, state.GenerateSettings.CustomSizeProperty));
+
+                    if (state.GenerateSettings.bCustomSize)
+                    {
+                        content.newLine();
+                        content.Add(new RbText("X:", HudLib.TitleColor_Label));
+                        content.space();
+                        RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapXProperty);
+
+                        content.newLine();
+                        content.Add(new RbText("Y:", HudLib.TitleColor_Label));
+                        content.space();
+                        RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapYProperty);
+                    }
+                    else
+                    {
+                        GameStorage defaultOptions = new GameStorage();
+                        DropDownBuilder mapSzOptions = new DropDownBuilder("mapSz");
+                        {
+                            for (MapSize sz = 0; sz < MapSize.NUM; ++sz)
+                            {
+                                mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.mapSize == sz, defaultOptions.mapSize == sz,
+                                    new RbAction1Arg<MapSize>(setMapSize, sz), null);
+                            }
+                            mapSzOptions.Build(content, DssRef.lang.Lobby_MapSizeTitle, menu);
+                        }
+                    }
 
                     DropDownBuilder startAs = new DropDownBuilder("start");
                     {
@@ -88,7 +121,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary,
-                            new List<AbsRichBoxMember> { new RbText("Run Clear") }, new RbAction(state.generate_clear)));
+                            new List<AbsRichBoxMember> { new RbText("Run Clear Pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Clear)));
                     }
 
                     content.newLine();
@@ -126,7 +159,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary,
-                            new List<AbsRichBoxMember> { new RbText("Run Build") }, new RbAction(state.generate_paintBuild)));
+                            new List<AbsRichBoxMember> { new RbText("Run Build Pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Build), null, state.canRunPass(GenerateMapPass.Build)));
                     }
                     content.newLine();
 
@@ -148,7 +181,17 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary,
-                            new List<AbsRichBoxMember> { new RbText("Run Dig") }, new RbAction(state.generate_paintDig)));
+                            new List<AbsRichBoxMember> { new RbText("Run Dig Pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Dig), null, state.canRunPass(GenerateMapPass.Dig)));
+                    }
+
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Cleanup of single tiles") }, state.GenerateSettings.CleanUpProperty));
+
+                    if (Adv)
+                    {
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                            new List<AbsRichBoxMember> { new RbText("Run cleanup Pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.CleanUp), null, state.canRunPass(GenerateMapPass.CleanUp)));
                     }
 
                     break;
@@ -156,11 +199,20 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
                 //    break;
                 case MapGeneratorTab.Populate:
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                        new List<AbsRichBoxMember> { new RbText("Generate") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.AllPopulation), null, state.canRunPass(GenerateMapPass.AllPopulation)));
 
+
+                    if (Adv)
+                    {
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                            new List<AbsRichBoxMember> { new RbText("Run Clear pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.ClearPopulation), null, state.canRunPass(GenerateMapPass.ClearPopulation)));
+                    }
                     break;
                 case MapGeneratorTab.Complete:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
-                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_NewGame) }, new RbAction(state.startNewGame)));
+                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_NewGame) }, new RbAction(state.startNewGame), null, DssRef.world != null && DssRef.world.generatePassCompleted >= GenerateMapPass.Countries));
                     break;
 
             }
@@ -176,6 +228,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             menu.Refresh(content);
         }
 
+        public void setMapSize(MapSize value)
+        {
+            DssRef.storage.mapSize = value;
+            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.mapSize);
+            menu.CloseDropDown();
+        }
+
         public void update(ref bool mouseOver)
         {
             menu.updateMouseInput(ref mouseOver);
@@ -187,9 +246,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         void exit()
         {
-            new ExitToLobbyState();
+            new ExitGamePlay();
         }
 
+        
         Map.Generate.MapGenerateSettings Sett => state.GenerateSettings;
 
         bool Adv => state.storage.viewAdvancedSettings;

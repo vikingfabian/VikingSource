@@ -93,7 +93,6 @@ namespace VikingEngine.DSSWars
 
             cities = new SpottedArray<GameObject.City>(8);
             armies = new SpottedArray<Army>(16);
-            
         }
 
        
@@ -1037,11 +1036,12 @@ namespace VikingEngine.DSSWars
         {
             return new RbTexture(flagTexture, 1f, 0, 0.2f);
         }
+        Color tempColor = FlagAndColor.AiColorRange.GetRandom();
 
         public Color Color()
         {
                 if (player == null)
-                    return ColorExt.Error;
+                    return tempColor;
                 return player.faction.profile.col0_Main;
             
         }

@@ -148,14 +148,15 @@ namespace VikingEngine.Input
 
         public static bool HasEdgePush()
         {
-            return !Engine.Screen.MousePushEdge.IntersectPoint(Position);
+            return Engine.Screen.PcTargetFullScreen && !Engine.Screen.MousePushEdge.IntersectPoint(Position);
         }
 
 
         public static void SetPosition(IntVector2 position)
         {
 #if PCGAME
-             Microsoft.Xna.Framework.Input.Mouse.SetPosition(position.X, position.Y);
+            Position = position.Vec;
+            Microsoft.Xna.Framework.Input.Mouse.SetPosition(position.X, position.Y);
 #endif
         }
 

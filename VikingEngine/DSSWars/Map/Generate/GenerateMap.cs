@@ -7,6 +7,8 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Data;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
 using VikingEngine.PJ.Joust;
 using VikingEngine.PJ.SmashBirds;
@@ -16,7 +18,19 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Map.Generate
 {
-    
+    enum GenerateMapPass
+    {         
+        Clear,
+        Build,
+        Dig,
+        AllTerrain,
+        CleanUp,
+        ClearPopulation,
+        Cities,
+        Countries,
+        AllPopulation,
+        All,
+    }
 
     class GenerateMap
     {
@@ -40,52 +54,96 @@ namespace VikingEngine.DSSWars.Map.Generate
             new IntervalF(3, 5),
             new IntervalF(5, 7),
         };
-        
-        public bool Generate(bool save, Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings)
+
+        public bool GeneratePass(Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings, GenerateMapPass pass)
         {
-            world = new WorldData(worldMeta);//new Data.WorldMetaData(seed, size, number));
-            world.availableGenericAiTypes = WorldData.AvailableGenericAiTypes();
-            biomsLayout = new BiomsLayout(world.rnd);
+            try
+            {
+                switch (pass)
+                {
+                    case GenerateMapPass.Clear:
+                        generate_clearpass(worldMeta, generateSettings);
+                        break;
+
+                    case GenerateMapPass.Build:
+                        generateLandChains(generateSettings);
+                        break;
+
+                    case GenerateMapPass.Dig:
+                        generateDigChains(generateSettings);
+                        break;
+
+                    case GenerateMapPass.AllTerrain:
+                        generate_clearpass(worldMeta, generateSettings);
+                        generate_allTerrain(generateSettings);
+                        if (generateSettings.cleanUpSingleTiles)
+                        {
+                            generate_cleanup();
+                        }
+                        break;
+
+                    case GenerateMapPass.CleanUp:
+                        generate_cleanup();
+                        break;
+
+                    case GenerateMapPass.ClearPopulation:
+                        clearCityData();
+                        break;
+
+                    case GenerateMapPass.Cities:
+                        {
+                            clearCityData();
+
+                            generateCities();
+                            bindTilesToCities();
+                            bool areasuccess = calculateCityAreaSize_success();
+                            if (!areasuccess)
+                            {
+                                return false;
+                            }
+                        }
+                        break;
+
+                    case GenerateMapPass.Countries:
+                        factionStartAreas(worldMeta.mapSize);
+                        break;
+
+                    case GenerateMapPass.AllPopulation:
+                        {
+                            setWaterHeightAndWaterHeatmap();
+                            world.rnd = new PcgRandom(Ref.rnd.Ushort());
+                            clearCityData();
+
+                            generateCities();
+                            bindTilesToCities();
+                            bool areasuccess = calculateCityAreaSize_success();
+                            if (!areasuccess)
+                            {
+                                return false;
+                            }
+
+                            factionStartAreas(worldMeta.mapSize);
+                        }
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+                return false;
+            }
+
+            world.generatePassCompleted = pass;
+            return true;
+        }
+
+        public bool Generate(bool save, Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings)
+        {           
 
             try
             {
-         
-                ForXYLoop loop = new ForXYLoop(new IntVector2(world.Size.X, world.Size.Y));
-                while (loop.Next())
-                {
-                    world.tileGrid.Set(loop.Position, new Tile());
-                }
-
-                const int ChainStartStatus = 20;
-                const int ChainEndStatus = 50;
-                LoadStatus = ChainStartStatus;
-
-                //generateLandChains(generateSettings);
-                //LoadStatus = 25;
-                //generateDigChains(generateSettings);
-                //LoadStatus = 30;
-                //generateLandChains(generateSettings);
-                //LoadStatus = 35;
-                //generateDigChains(generateSettings);
-                //LoadStatus = 40;
-                //generateLandChains(generateSettings);
-                //LoadStatus = 45;
-                //generateDigChains(generateSettings);
-
-                float loadStatusAdd = (float)(ChainEndStatus - ChainStartStatus) / (generateSettings.repeatBuildDigCount * 2);
-                float totalAdd = 0;
-                for (int i = 0; i < generateSettings.repeatBuildDigCount; i++)
-                {
-                    generateLandChains(generateSettings); //BUILD
-                    totalAdd += loadStatusAdd;
-                    LoadStatus = ChainStartStatus + (int)totalAdd;
-
-                    generateDigChains(generateSettings); //DIG
-                    totalAdd += loadStatusAdd;
-                    LoadStatus = ChainStartStatus + (int)totalAdd;
-                }
-                
-                LoadStatus = ChainEndStatus;
+                generate_clearpass(worldMeta, generateSettings);
+                generate_allTerrain(generateSettings);
                 setWaterHeightAndWaterHeatmap();
 
                 LoadStatus = 55;
@@ -101,7 +159,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 }
                 LoadStatus = 70;
                 factionStartAreas(worldMeta.mapSize);
-                                
+
                 if (save)
                 {
                     WorldDataStorage storage = new WorldDataStorage();
@@ -115,6 +173,134 @@ namespace VikingEngine.DSSWars.Map.Generate
                 return false;
             }
 
+        }
+
+        void generate_cleanup()
+        {
+            var water = new Tile();
+            Rectangle2 area = new Rectangle2(IntVector2.Zero, world.Size);
+            area.AddRadius(-1);
+            ForXYLoop loop = new ForXYLoop(area);
+            while (loop.Next())
+            {
+                var tile = world.tileGrid.array[loop.Position.X, loop.Position.Y];
+                if (tile.IsLand())
+                {
+                    for (int dirIx = 0; dirIx < IntVector2.Dir4Array.Length; ++dirIx)
+                    {
+                        IntVector2 dir = IntVector2.Dir4Array[dirIx];
+                        Tile neighbor = world.tileGrid.array[dir.X + loop.Position.X, dir.Y + loop.Position.Y];
+                        if (neighbor.IsLand())
+                        {
+                            goto approved_tile;
+                        }
+
+                    }
+
+                    world.tileGrid.array[loop.Position.X, loop.Position.Y] = water;
+                }
+                else
+                {
+                    for (int dirIx = 0; dirIx < IntVector2.Dir4Array.Length; ++dirIx)
+                    {
+                        IntVector2 dir = IntVector2.Dir4Array[dirIx];
+                        Tile neighbor = world.tileGrid.array[dir.X + loop.Position.X, dir.Y + loop.Position.Y];
+                        if (neighbor.IsWater())
+                        {
+                            goto approved_tile;
+                        }
+
+                    }
+
+                    world.tileGrid.array[loop.Position.X, loop.Position.Y] = world.tileGrid.array[loop.Position.X, loop.Position.Y -1];
+                }
+
+                approved_tile:;
+            }
+        }
+
+        private void generate_allTerrain(MapGenerateSettings generateSettings)
+        {
+            const int ChainStartStatus = 20;
+            const int ChainEndStatus = 50;
+            LoadStatus = ChainStartStatus;
+
+
+            float loadStatusAdd = (float)(ChainEndStatus - ChainStartStatus) / (generateSettings.repeatBuildDigCount * 2);
+            float totalAdd = 0;
+            for (int i = 0; i < generateSettings.repeatBuildDigCount; i++)
+            {
+                generateLandChains(generateSettings); //BUILD
+                totalAdd += loadStatusAdd;
+                LoadStatus = ChainStartStatus + (int)totalAdd;
+
+                generateDigChains(generateSettings); //DIG
+                totalAdd += loadStatusAdd;
+                LoadStatus = ChainStartStatus + (int)totalAdd;
+            }
+
+            LoadStatus = ChainEndStatus;
+        }
+
+        void generate_clearpass(Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings)
+        {
+            world = new WorldData(worldMeta, generateSettings);
+
+            world.availableGenericAiTypes = WorldData.AvailableGenericAiTypes();
+            biomsLayout = new BiomsLayout(world.rnd);
+
+            var water = new Tile();
+            var land = new Tile();
+            land.heightLevel = Height.MinLandHeight;
+            land.biom = BiomType.Green;
+
+            switch (generateSettings.StartAs)
+            {
+                case MapStartAs.Water:
+                    {
+                        ForXYLoop loop = new ForXYLoop(world.Size);
+                        while (loop.Next())
+                        {
+                            world.tileGrid.Set(loop.Position, water);
+                        }
+                    }
+                    break;
+
+                case MapStartAs.Land:
+                    {
+                        ForXYLoop loop = new ForXYLoop(world.Size);
+                        while (loop.Next())
+                        {
+                            world.tileGrid.Set(loop.Position, land);
+                        }
+                    }
+                    break;
+
+                case MapStartAs.Cirkle:
+                    {
+                        int centerX = world.Size.X / 2;
+                        int centerY = world.Size.Y / 2;
+                        //int radius = Math.Min(world.Size.X, world.Size.Y) / 3; // Adjust the landmass size
+
+                        ForXYLoop loop = new ForXYLoop(world.Size);
+                        while (loop.Next())
+                        {
+                            Vector2 percPos = loop.Position.Vec / world.Size.Vec - VectorExt.V2Half;
+                            //int dx = loop.Position.X - centerX;
+                            //int dy = loop.Position.Y - centerY;
+                            if (percPos.Length() <= 0.4f)
+                            {
+                                world.tileGrid.Set(loop.Position, land);
+                            }
+                            else
+                            {
+                                world.tileGrid.Set(loop.Position, water);
+                            }
+                        }
+                    }
+                    break;
+            }
+            LoadStatus = 10;
         }
 
         public void postLoadGenerate_Part1(WorldData world)
@@ -539,6 +725,23 @@ namespace VikingEngine.DSSWars.Map.Generate
         }
 
         public const int HeadCityNeededFreeRadius = 14;
+
+
+        void clearCityData()
+        {
+            if (world.cities != null)
+            {
+                world.cities = null;
+
+                ForXYLoop loop = new ForXYLoop(world.Size);
+                while (loop.Next())
+                {
+                    Tile tile = world.tileGrid.Get(loop.Position);
+                    tile.clearCityData();
+                    world.tileGrid.Set(loop.Position, tile);
+                }
+            }
+        }
 
         void generateCities()
         {

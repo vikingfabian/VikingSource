@@ -246,12 +246,12 @@ namespace VikingEngine.HUD.RichBox
                 mouseXRange = new IntervalF(menu.backgroundArea.X + Engine.Screen.IconSize, menu.backgroundArea.Right - Engine.Screen.IconSize);
                 if (Input.Mouse.Position.X < mouseXRange.Min)
                 {
-                    Input.Mouse.SetPosition(new IntVector2(mouseXRange.Max + (mouseXRange.Min - Input.Mouse.Position.X), Input.Mouse.Position.Y));
+                    Input.Mouse.SetPosition(new IntVector2(mouseXRange.Max, Input.Mouse.Position.Y));
                     prevMousePos.X = mouseXRange.Max;
                 }
                 else if (Input.Mouse.Position.X > mouseXRange.Max)
                 {
-                    Input.Mouse.SetPosition(new IntVector2(mouseXRange.Min + (Input.Mouse.Position.X - mouseXRange.Max), Input.Mouse.Position.Y));
+                    Input.Mouse.SetPosition(new IntVector2(mouseXRange.Min, Input.Mouse.Position.Y));
                     prevMousePos.X = mouseXRange.Min;
                 }
                 needRefresh = true;
