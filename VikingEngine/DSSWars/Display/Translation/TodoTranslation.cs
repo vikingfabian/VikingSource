@@ -8,6 +8,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
+        public string ArmyOption_NewArmy => "New army";
         public string ProfileEditor_AltMain => "Alternative main";
         public string Automation_CheckBoxTitle => "Automated";
 

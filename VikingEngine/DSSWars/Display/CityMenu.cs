@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Display
         public static readonly List<MenuTab> Tabs = new List<MenuTab>() { 
             MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket, 
             MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Progress,
-            MenuTab.Tag};
+            MenuTab.Tag,MenuTab.Help,};
 
         Players.LocalPlayer player;
         City city;
@@ -160,10 +160,73 @@ namespace VikingEngine.DSSWars.Display
                     case MenuTab.Mix:
                         mixTab(content);
                         break;
+
+                    case MenuTab.Help:
+                        helpTab(content);
+                        break;
                 }
             }
         }
+        void helpTab(RichBoxContent content)
+        {
+            content.h2("Work doesn't start", HudLib.TitleColor_Head);
 
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsBluePrint));
+            content.space();
+            content.Add(new RbText("Buildings need available resources"));
+            
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsUnitLevelProfessional));
+            content.space();
+            content.Add(new RbText("The worker need correct skill level (or higher)"));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsStockpileStop));
+            content.space();
+            content.Add(new RbText("Collecting resources will be blocked by a full stockpile"));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsHammer));
+            content.space();
+            content.Add(new RbText("The work may have low or zero priority"));
+
+            content.newParagraph();
+
+            content.h2("Produce soldiers", HudLib.TitleColor_Head);
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsBuild_Barracks));
+            content.space();
+            content.Add(new RbText(string.Format("Place building: {0}", DssRef.lang.BuildingType_Barracks)));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsWorker));
+            content.space();
+            content.Add(new RbText(string.Format("Available workers to recruit from", DssRef.lang.BuildingType_Barracks)));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsResource_Sword));
+            content.space();
+            content.Add(new RbText(string.Format("A weapon to each soldier", DssRef.lang.BuildingType_Barracks)));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsSoldierIcon));
+            content.space();
+            content.Add(new RbText(string.Format("Start the conscription queue", DssRef.lang.BuildingType_Barracks)));
+
+
+
+
+        }
         void progressTab(RichBoxContent content)
         {
             for (ProgressSubTab workSubTab = 0; workSubTab < ProgressSubTab.NUM; ++workSubTab)
@@ -2234,6 +2297,7 @@ namespace VikingEngine.DSSWars.Display
         Divide,
         Progress,
         Mix,
+        Help,
         NUM_NONE
     }
 
