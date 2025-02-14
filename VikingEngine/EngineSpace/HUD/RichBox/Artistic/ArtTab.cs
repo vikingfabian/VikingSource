@@ -82,7 +82,8 @@ namespace VikingEngine.HUD.RichBox.Artistic
 
         }
 
-        public override void onEnter()
+        //public override void onEnter(
+        public override void onEnter(RichMenu.RichMenu menu)
         {
             enter?.actionTrigger();
         }

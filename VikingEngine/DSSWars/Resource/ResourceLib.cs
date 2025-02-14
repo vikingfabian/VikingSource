@@ -468,7 +468,8 @@ namespace VikingEngine.DSSWars.Resource
 
                 case ItemResourceType.MithrilArmor:
                     return SpriteName.WarsResource_MithrilArmor;
-
+                case ItemResourceType.AutomatedItem:
+                    return SpriteName.AutomationGearIcon;
 
 
                 default:

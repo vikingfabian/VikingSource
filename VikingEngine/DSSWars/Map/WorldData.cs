@@ -37,6 +37,10 @@ namespace VikingEngine.DSSWars
         public const int EpicMapHeigth = 1024;
         public const double TileWidthInKm = 0.064;
 
+        public const int CustomMapSize_Min = 16;
+        public const int CustomMapSize_Max = 4096;
+
+
         public const int TileSubDivitions = 8;
         public const int HalfTileSubDivitions = TileSubDivitions / 2;
         public const int TileSubDivitions_MaxIndex = TileSubDivitions-1;
@@ -78,27 +82,30 @@ namespace VikingEngine.DSSWars
 
         public List<FactionType> availableGenericAiTypes = new List<FactionType>();// AvailableGenericAiTypes();
 
+        public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
+
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
             //factionsCounter = new SpottedArrayCounter<Faction>(factions);
         }
 
-        public WorldData(WorldMetaData metaData)//ushort seed, MapSize size)
-            :this ()
+        public WorldData(WorldMetaData metaData, MapGenerateSettings generateSettings)//ushort seed, MapSize size)
+            : this()
         {
             this.metaData = metaData;
             LoadingWorld = this;
-            //LoadStatus = 0;
-            //mapSize = size;
 
-            //size
-            Size = SizeDimentions(metaData.mapSize);
-            HalfSize = Size / 2;
             rnd = new PcgRandom(metaData.seed);
 
-            refreshSize();
-           
+            if (generateSettings.bCustomSize)
+            {
+                refreshSize(generateSettings.customMapSize);
+            }
+            else
+            {
+                refreshSize(SizeDimentions(metaData.mapSize));
+            }
         }
 
         public static IntVector2 SizeDimentions(MapSize mapSize)
@@ -153,8 +160,10 @@ namespace VikingEngine.DSSWars
             return name;
         }
 
-        void refreshSize()
+        public void refreshSize(IntVector2 sz)
         {
+            Size = sz;//SizeDimentions(metaData.mapSize);
+            HalfSize = Size / 2;
             areaTileCount = Size.X * Size.Y;
             tileBounds = new Rectangle2(IntVector2.Zero, Size - 1);
             unitBounds = new VectorRect(Vector2.Zero, Size.Vec);
@@ -328,7 +337,7 @@ namespace VikingEngine.DSSWars
         public void readNet(System.IO.BinaryReader r)
         {
             Size.read(r);
-            refreshSize();
+            refreshSize(Size);
 
             int cityCount = r.ReadInt32();
             cities = new List<City>(cityCount);
@@ -585,7 +594,7 @@ namespace VikingEngine.DSSWars
             //rnd = new PcgRandom(metaData.seed);
 
             Size.read(r);
-            refreshSize();
+            refreshSize(Size);
             ForXYLoop loop = new ForXYLoop(Size);
             Tile previous = new Tile();
             while (loop.Next())

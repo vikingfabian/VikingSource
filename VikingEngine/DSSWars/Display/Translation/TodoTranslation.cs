@@ -8,6 +8,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
+        public string ArmyOption_NewArmy => "New army";
         public string ProfileEditor_AltMain => "Alternative main";
         public string Automation_CheckBoxTitle => "Automated";
 
@@ -74,6 +75,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Work_SmeltX => "Smelt {0}";
 
+        public string Info_TotalFoodProduction => "Total food production";
+        public string Info_TotalFoodSpending => "Total food spending";
+
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 
@@ -120,6 +124,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ExperenceOrDistancePrio_Title => "Worker selection";
         public string ExperenceOrDistancePrio_Description => "Idle workers will be selected to work either by distance or experience";
 
+
+        public string Technology_Description = "Each city has a technology tree. Each technology will new unlock buildings and items.";
+        public string Experience_Description = "Wokers will gain experience and improve";
+        
 
         public string Technology_Title = "Technology";
         public string Technology_ShareField = "Sharing technology field";
@@ -225,6 +233,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string SchoolHud_TimeDescription => "Time assumes zero experience; it decreases with experience.";
         public string SchoolHud_SelectSchool => "Select school";
         public string Upgrade_Order => "Upgrade order";
+
+        public string Building_ListDescription => "A list of all buildings in this category";
+
         public string BuildingType_IsUpgraded => "{0} - upgraded";
         public string BuildingType_WoodCutter => "Lumber mill";
         public string BuildingType_Workshop_Description => "Improves work in the area";

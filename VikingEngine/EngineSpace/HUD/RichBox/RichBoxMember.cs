@@ -54,8 +54,8 @@ namespace VikingEngine.HUD.RichBox
         virtual public void finalizeArea(float width)
         { }
 
-        virtual public void onEnter() { }
-        virtual public void onClick() { }
+        virtual public void onEnter(RichMenu.RichMenu menu) { }
+        virtual public void onClick(RichMenu.RichMenu menu) { }
 
         virtual public void getButtons(List<AbsRbButton> buttons)
         { }
@@ -79,6 +79,21 @@ namespace VikingEngine.HUD.RichBox
         public override void Create(RichBoxGroup group)
         {
             group.newLine(newParagraph, lineheight);
+        }
+    }
+
+    class RbNewLine_AtHeight : AbsRichBoxMember
+    {
+        float setHeight;
+
+        public RbNewLine_AtHeight(float setHeight)
+        {
+            this.setHeight = setHeight;
+        }
+
+        public override void Create(RichBoxGroup group)
+        {
+            group.newLine_SetHeight(setHeight);
         }
     }
 
@@ -260,6 +275,8 @@ namespace VikingEngine.HUD.RichBox
         public override Vector2 Size => pointer.size;
     }
 
+    
+
     class RbOverlapImage : AbsRichBoxImage
     {
         SpriteName sprite;
@@ -400,11 +417,11 @@ namespace VikingEngine.HUD.RichBox
         public override Vector2 Size => pointer.size;
     }
 
-    class RichBoxSpace : AbsRichBoxMember
+    class RbSpace : AbsRichBoxMember
     {
         float spaces;
 
-        public RichBoxSpace(float spaces = 1f)
+        public RbSpace(float spaces = 1f)
         {
             this.spaces = spaces;
         }

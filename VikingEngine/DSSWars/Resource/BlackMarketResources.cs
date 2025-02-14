@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
 
@@ -71,19 +72,17 @@ namespace VikingEngine.DSSWars.Resource
             }
 
             content.h2(DssRef.lang.Hud_PurchaseTitle_Resources).overrideColor = HudLib.TitleColor_Label;
-
+            content.Add(new RbSeperationLine());
+            int lineCount = 0;
             foreach (var r in Resources)
             {
                 ResourceToHud(r, player, content, city);
+                if (++lineCount >= 2)
+                {
+                    lineCount = 0;
+                    content.Add(new RbSeperationLine());
+                }
             }
-            //Resource(CostMultiply(city, Cost_RawFood), ItemResourceType.RawFood_Group, DssRef.lang.Resource_TypeName_RawFood);
-            //Resource(CostMultiply(city, Cost_Food), ItemResourceType.Food_G, DssRef.lang.Resource_TypeName_Food);
-            //Resource(CostMultiply(city, Cost_Wood), ItemResourceType.Wood_Group, DssRef.lang.Resource_TypeName_Wood);
-            //Resource(CostMultiply(city, Cost_Stone), ItemResourceType.Stone_G, DssRef.lang.Resource_TypeName_Stone);
-            //Resource(CostMultiply(city, Cost_SkinAndLinnen), ItemResourceType.SkinLinen_Group, DssRef.lang.Resource_TypeName_Linen);
-            //Resource(CostMultiply(city, Cost_Iron), ItemResourceType.Iron_G, DssRef.lang.Resource_TypeName_Iron);
-
-
         }
 
         public static void ResourceToHud(ItemResourceType item, LocalPlayer player, RichBoxContent content, City city)
@@ -118,9 +117,9 @@ namespace VikingEngine.DSSWars.Resource
 
                 content.Add(new RbImage(SpriteName.rtsUpkeep));
                 content.Add(new RbText(cost.ToString()));
-                content.space();
+                content.Add(new RbTab(0.2f));
 
-                RbButton button = new RbButton(new List<AbsRichBoxMember>
+                ArtButton button = new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>
                     {
                         new RbImage(ResourceLib.Icon(resourceType)),
                         new RbText(name),
@@ -129,28 +128,28 @@ namespace VikingEngine.DSSWars.Resource
                 tooltip(count), player.faction.calcCost(cost, ref non, city));
 
                 content.Add(button);
-                content.space();
+                content.Add(new RbTab(0.5f));
+                //content.space();
 
                 foreach (var c in PurchaseCount)
                 {
                     count = c;
-                    RbButton xbutton = new RbButton(new List<AbsRichBoxMember>
+                    ArtButton xbutton = new ArtButton( RbButtonStyle.Secondary, new List<AbsRichBoxMember>
                         {
                             new RbText(string.Format(DssRef.lang.Hud_XTimes, count)),
                         },
                     new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
                     tooltip(count), player.faction.calcCost(cost * count, ref non, city));
                     content.Add(xbutton);
-                    content.space();
+                    //content.space();
                 }
-
 
 
                 AbsRbAction tooltip(int count)
                 {
-                    return new RbAction(() =>
+                    return new RbTooltip((RichBoxContent content, object tag) =>
                     {
-                        RichBoxContent content = new RichBoxContent();
+                        //RichBoxContent content = new RichBoxContent();
                         content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
                         HudLib.ResourceCost(content, ResourceType.Gold, cost * count, player.faction.gold);
@@ -161,15 +160,10 @@ namespace VikingEngine.DSSWars.Resource
                         bool reachedBuffer = false;
                         bool safeGuard = city.foodSafeGuardIsActive(resourceType);
                         city.GetGroupedResource(resourceType).toMenu(content, resourceType, safeGuard, ref reachedBuffer);
-                        //if (reachedBuffer)
-                        //{
-                        //    GroupedResource.BufferIconInfo(content);
-                        //}
-                        //content.text(name + " " + city.GetGroupedResource(resourceType).amount.ToString());
+                        
+                        //player.hud.tooltip.create(player, content, true);
 
-                        player.hud.tooltip.create(player, content, true);
-
-                    });
+                    }, count);
                 }
             }
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Display.Component
@@ -16,35 +17,35 @@ namespace VikingEngine.DSSWars.Display.Component
         {
             HudLib.Label(content, DssRef.lang.Hud_Queue);
             content.space();
-            HudLib.InfoButton(content, new RbAction(()=> {
-                {
-                    RichBoxContent content = new RichBoxContent();
+            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Automation_queue_description));
+                //{
+                //    RichBoxContent content = new RichBoxContent();
 
-                    content.text(DssRef.lang.Automation_queue_description);
+                //    content.text(DssRef.lang.Automation_queue_description);
 
-                    player.hud.tooltip.create(player, content, true);
-                }
-            }));
+                //    player.hud.tooltip.create(player, content, true);
+                //}
+            //}));
 
             content.newLine();
             content.Add(new RbImage(player.input.Stop.Icon));
             content.space();
             for (int length = 0; length <= maxQue; length++)
             {
-                var button = new RbButton(new List<AbsRichBoxMember>{
+                var button = new ArtToggle(length == currentQue,new List<AbsRichBoxMember>{
                        new RbText( length.ToString())
                     }, new RbAction1Arg<int>(queClick, length, length == 0? SoundLib.menuStop : SoundLib.menuStart));
-                button.setGroupSelectionColor(HudLib.RbSettings, length == currentQue);
+                //button.setGroupSelectionColor(HudLib.RbSettings, length == currentQue);
                 content.Add(button);
-                content.space();
+                //content.space();
             }
 
             if (noLimitOption)
             {
-                var button = new RbButton(new List<AbsRichBoxMember>{
+                var button = new ArtToggle(currentQue > maxQue, new List<AbsRichBoxMember>{
                        new RbText(DssRef.lang.Hud_NoLimit)
                     }, new RbAction1Arg<int>(queClick, 255, SoundLib.menuStart));
-                button.setGroupSelectionColor(HudLib.RbSettings, currentQue > maxQue);
+                //button.setGroupSelectionColor(HudLib.RbSettings, currentQue > maxQue);
                 content.Add(button);
             }
         }

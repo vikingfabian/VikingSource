@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Graphics;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.HUD
 {
@@ -23,17 +24,31 @@ namespace VikingEngine.HUD
         /// </summary>
         public int sideTexSize;
 
+        public ThreeSplitSettings(SpriteName baseTexture, int textureEdgeInsert, int sideTexSize)
+        { 
+            this.baseTexture = baseTexture;
+            disableTexture = baseTexture;
+            this.textureEdgeInsert = textureEdgeInsert;
+            this.sideTexSize = sideTexSize;
+        }
+
+        public float TotalSideLeght()
+        { 
+            return sideTexSize;
+        }
+
     }
 
     class ThreeSplitTexture_Hori
     {
         public List<Graphics.Image> images;
-        public VectorRect area;
+        VectorRect area;
         ImageLayers layer;
 
         public ThreeSplitTexture_Hori(ThreeSplitSettings settings, VectorRect area, ImageLayers layer, bool addToRender = true)
         {
             this.layer = layer;
+            area.Round();
             this.area = area;
 
             Sprite file = DataLib.SpriteCollection.Get(settings.baseTexture);
@@ -65,13 +80,13 @@ namespace VikingEngine.HUD
             Vector2 centerSize = area.Size;
             centerSize.X -= sideSize.X * 2;
             Graphics.ImageAdvanced centerImg = new ImageAdvanced(settings.baseTexture, area.Position, centerSize,
-                layer, false, addToRender);
+                layer -1, false, addToRender);
             centerImg.position.X += sideSize.X;
-            left_topImg.ImageSource = left_top;
+            centerImg.ImageSource = center;
 
             Graphics.ImageAdvanced right_bottomImg = new ImageAdvanced(settings.baseTexture, area.Position, sideSize,
                 layer, false, addToRender);
-            right_bottomImg.position.X += centerSize.X;
+            right_bottomImg.position.X += sideSize.X + centerSize.X;
             right_bottomImg.ImageSource = right_bottom;
 
             images = new List<Image>()
@@ -80,6 +95,11 @@ namespace VikingEngine.HUD
             };
         }
 
+        public VectorRect Area()
+        {
+            area.Position = images[0].position;
+            return area;
+        }
         //public void refresh()
         //{ 
             

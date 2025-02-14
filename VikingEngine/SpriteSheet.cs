@@ -36,6 +36,8 @@ namespace VikingEngine
 
         public static readonly IntVector2 PjModeSz = new IntVector2(112, 64);
 
+        public static readonly IntVector2 DSS2Logo = new IntVector2(12, 7);
+
         public const int GolfGrassTexWidth = 120;
         public const int CmdLetterSz = 18;
         const int NineSplitSz = 30;
@@ -2172,6 +2174,36 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_GoldDeliver, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_GoldDeliverLevel2, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_GoldDeliverLevel3, currentIndex, 3, 3);
+
+                add(SpriteName.WarsFlagType_LongBanner, 3, 3);
+                add(SpriteName.WarsFlagType_Banner, 3, 3);
+                add(SpriteName.WarsFlagType_SlimBanner, 3, 3);
+
+                add(SpriteName.WarsFlagType_Flag, 3, 3);
+                add(SpriteName.WarsFlagType_FlagRound, 3, 3);
+                add(SpriteName.WarsFlagType_FlagLarge, 3, 3);
+                add(SpriteName.WarsFlagType_Streamer, 3, 3);
+                add(SpriteName.WarsFlagType_Triangle, 3, 3);
+                add(SpriteName.WarsBuild_GardenFourBushes, 3, 3);
+                add(SpriteName.WarsBuild_GardenLongTree, 3, 3);
+                add(SpriteName.WarsBuild_GardenWalledBush, 3, 3);
+                add(SpriteName.WarsBuild_GardenMemoryStone, 3, 3);
+                add(SpriteName.WarsBuild_GardenBird, 3, 3);
+                add(SpriteName.WarsBuild_PavementLamp, 3, 3);
+                add(SpriteName.WarsBuild_PavemenFountain, 3, 3);
+                add(SpriteName.WarsBuild_PavementRectFlower, 3, 3);
+                add(SpriteName.WarsBuild_StoneWall, 3, 3);
+                add(SpriteName.WarsBuild_StoneWallGreen, 3, 3);
+                add(SpriteName.WarsBuild_StoneWallBlueRoof, 3, 3);
+                add(SpriteName.WarsBuild_StoneWallWoodHouse, 3, 3);
+                add(SpriteName.WarsBuild_StoneTower, 3, 3);
+                add(SpriteName.WarsBuild_StoneGate, 3, 3);
+                add(SpriteName.WarsBuild_StoneHouse, 3, 3);
+                add(SpriteName.WarsBuild_GardenGrass, 3, 3);
+                add(SpriteName.WarsBuild_Statue_Lion, 3, 3);
+                add(SpriteName.WarsBuild_Statue_Leader, 3, 3);
+                add(SpriteName.WarsBuild_Statue_Horse, 3, 3);
+                add(SpriteName.WarsBuild_Statue_Pillar, 3, 3);
             }
 
             if (PlatformSettings.RunProgram == StartProgram.ToGG ||
@@ -2476,6 +2508,19 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_WarmashineBarracks, 3, 3);
                     add(SpriteName.WarsBuild_GunBarracks, 3, 3);
                     add(SpriteName.WarsBuild_CannonBarracks, 3, 3);
+
+
+                    
+                    //add(SpriteName.WarsBuild_SmallCityHouse, 3, 3);
+                    //add(SpriteName.WarsBuild_BigCityHouse, 3, 3);
+                    //add(SpriteName.WarsBuild_CitySquare, 3, 3);
+                    //add(SpriteName.WarsBuild_CobbleStones, 3, 3);
+
+
+
+
+
+
                 }
 
                 currentIndex = numTilesWidth * 100;
@@ -2547,8 +2592,8 @@ namespace VikingEngine
                     add(SpriteName.WarsIncreaseArrowUp);
                     add(SpriteName.WarsDecreaseArrowDown);
 
-                    addWithSizeDef(SpriteName.WarsHudScrollerBg, currentIndex, TileHalfSize, TileSize);
-                    addWithSizeDef(SpriteName.WarsHudScrollerSlider, currentIndex, TileHalfSize, TileSize);
+                    add(SpriteName.WarsHudScrollerSlider);
+                    add(SpriteName.WarsHudScrollerBg);
                     add(SpriteName.WarsHudTabSelected);
                     add(SpriteName.WarsHudTabNotSelected);
                     add(SpriteName.WarsHudPrimaryButton);
@@ -2561,7 +2606,49 @@ namespace VikingEngine
                     addWithSizeDef(SpriteName.WarsHudCheckNo, currentIndex, WarsCheckSize, WarsCheckSize);
                     addWithSizeDef(SpriteName.WarsHudOptionYes, currentIndex, WarsCheckSize, WarsCheckSize);
                     addWithSizeDef(SpriteName.WarsHudOptionNo, currentIndex, WarsCheckSize, WarsCheckSize);
+                    add(SpriteName.WarsHudMenuBg);
 
+                    //addWithSizeDef(SpriteName.WarsHudDragButtonLeft, currentIndex, TileHalfSize, TileSize);
+                    add(SpriteName.WarsHudDragButton, 2, 1);
+                    //addWithSizeDef(SpriteName.WarsHudDragButtonRight, currentIndex, TileHalfSize, TileSize);
+                    
+                    add(SpriteName.WarsHudInfoIcon);
+                    add(SpriteName.WarsHudHoverArea);
+
+                    add(SpriteName.WarsHudHeadBarButton);
+                    add(SpriteName.WarsHudHeadBarPlayIcon);
+                    add(SpriteName.WarsHudHeadBarPauseIcon);
+                    add(SpriteName.WarsHudHeadBarMenuIcon);
+                    add(SpriteName.WarsHudHeadBarSecondaryBg);
+                    add(SpriteName.WarsHudToolDownButton);
+
+                    add(SpriteName.WarsHudOutlineButton);
+                    add(SpriteName.WarsHudSecondaryButton);
+                    add(SpriteName.WarsHudSecondaryButtonDisabled);
+                    add(SpriteName.WarsHudHeadBarTabSelected);
+                    add(SpriteName.WarsHudHeadBarTabNotSelected);
+
+                    add(SpriteName.WarsHudDropDownArrow);
+                    add(SpriteName.WarsHudYellowDot);
+                    add(SpriteName.WarsHudBrownDot);
+                    add(SpriteName.WarsHudRoundButtonNotSelected);
+                    add(SpriteName.WarsHudListArrowSelected);
+                    add(SpriteName.WarsHudListArrowDefault);
+                    add(SpriteName.WarsHudListArrowNotSelected);
+
+                    add(SpriteName.WarsHudIconExit);
+                    add(SpriteName.WarsHudIconSettings);
+                    add(SpriteName.WarsHudIconAdd);
+                    add(SpriteName.WarsHudIconOpen);
+                    add(SpriteName.WarsHudIconStart);
+
+                    add(SpriteName.WarsHudMessageBg);
+                    add(SpriteName.WarsHudIconEditor);
+
+                    add(SpriteName.WarsHudHeadBarOutlineButton);
+                    add(SpriteName.WarsHudSubTabSelected);
+                    add(SpriteName.WarsHudSubTabNotSelected);
+                    add(SpriteName.WarsHudToggleNotSelected);
                 }
 
                 currentIndex = numTilesWidth * 101;
@@ -2579,6 +2666,11 @@ namespace VikingEngine
                     add(SpriteName.WarsUnitIcon_IronSiegeCannon, 2, 2);
                     add(SpriteName.WarsUnitIcon_Slingshot, 2, 2);
                     add(SpriteName.WarsUnitIcon_MithrilArcher, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Spearman, 2, 2);
+                    add(SpriteName.WarsHudFlagBorder, 2, 2);
+                    add(SpriteName.WarsHudHeadBarBg, 2, 2);
+                    add(SpriteName.WarsHudToolUpButton, 1, 2);
+                    //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 
                 currentIndex = numTilesWidth * 106;
@@ -2667,6 +2759,8 @@ namespace VikingEngine
                 add(SpriteName.warsWorkerPromoBox, 6, 6);
 
                 add(SpriteName.warsWorkerPromoCannon, 9, 6);
+
+                add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y);
             }
 
             currentIndex = numTilesWidth * 118;

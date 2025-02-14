@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Data;
 using VikingEngine.Network;
 using VikingEngine.ToGG.MoonFall;
@@ -90,7 +93,6 @@ namespace VikingEngine.DSSWars
 
             cities = new SpottedArray<GameObject.City>(8);
             armies = new SpottedArray<Army>(16);
-            
         }
 
        
@@ -116,6 +118,9 @@ namespace VikingEngine.DSSWars
             this.profile = profile;
             flagTexture = profile.flagDesign.CreateTexture(profile);
         }
+
+        
+
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
             
@@ -1031,11 +1036,12 @@ namespace VikingEngine.DSSWars
         {
             return new RbTexture(flagTexture, 1f, 0, 0.2f);
         }
+        Color tempColor = FlagAndColor.AiColorRange.GetRandom();
 
         public Color Color()
         {
                 if (player == null)
-                    return ColorExt.Error;
+                    return tempColor;
                 return player.faction.profile.col0_Main;
             
         }

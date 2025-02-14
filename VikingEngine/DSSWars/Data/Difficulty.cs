@@ -4,7 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 
 namespace VikingEngine.DSSWars.Data
@@ -34,7 +38,8 @@ namespace VikingEngine.DSSWars.Data
 
         public bool setting_allowPauseCommand = true;
         public float setting_foodMulti = 1;
-        public GameMode setting_gameMode = GameMode.FullStory;
+        public const GameMode DefaultMode = GameMode.FullStory;
+        public GameMode setting_gameMode = DefaultMode;
         public bool runEvents = true;
         public bool peaceful = false;
         //public bool toPeacefulCheck = true;
@@ -59,23 +64,36 @@ namespace VikingEngine.DSSWars.Data
         {
             for (int i = 0; i < options.Length; i++)
             {
-                Difficulty difficulty = new Difficulty(i);
+                Difficulty difficultyLvl = new Difficulty(i);
 
                 new GuiTextButton(options[i].ToString() + "%",
-                    string.Format( DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficulty.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficulty.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficulty.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficulty.aiEconomyLevel].ToString()) + Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficulty.aiDelayTimeSec).ToString()) + Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficulty.diplomacyDifficulty, DiplomacyDifficultyCount)) + Environment.NewLine +
+                    string.Format( DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficultyLvl.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficultyLvl.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficultyLvl.aiEconomyLevel].ToString()) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficultyLvl.aiDelayTimeSec).ToString()) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficultyLvl.diplomacyDifficulty, DiplomacyDifficultyCount)) + Environment.NewLine +
                     //string.Format(DssRef.lang.DifficultyDescription_MercenaryCost, difficulty.MercenaryPurchaseCost_Start.ToString() )+ Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficulty.honorGuard? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No),
+                    string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficultyLvl.honorGuard? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No),
 
                     new GuiAction1Arg<int>(difficultyOptionsLink, i),
                     false, layout);
             }
         }
 
+        public static void OptionsRb(RichBoxContent content, RichMenu menu, Action<int> callback)
+        {
+            DropDownBuilder mapSzOptions = new DropDownBuilder("difficulty");
+            for (int i = 0; i < options.Length; i++)
+            {
+                Difficulty difficultyLvl = new Difficulty(i);
+                content.newLine();
+                mapSzOptions.AddOption(options[i].ToString() + "%", DssRef.difficulty.difficulty == i, DefaultOption == i,
+                    new RbAction1Arg<int>(callback, i), null);
+                //content.Add(new ArtOption(DssRef.difficulty.difficulty == i, new List<AbsRichBoxMember> { new RbText(options[i].ToString() + "%") }, null));
+            }
+            mapSzOptions.DropDown(content, string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), menu.OnDropDownClick, menu.activeDropDown);
+        }
         public void set(int difficulty)
         {
             this.difficulty = difficulty;

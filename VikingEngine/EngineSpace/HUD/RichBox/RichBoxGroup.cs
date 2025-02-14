@@ -32,6 +32,13 @@ namespace VikingEngine.HUD.RichBox
         bool lockNewLine = false;
         public float groupScale = 1f;
 
+        public override void SetOffset(Vector2 position)
+        {
+            Debug.Log($"Richbox set offset {position}");
+            base.SetOffset(position);
+
+        }
+
         public RichBoxGroup(Vector2 topleft, float boxWidth, ImageLayers layer, 
             RichBoxSettings settings, List<AbsRichBoxMember> content,
             bool bRemoveDeadHeightSpace = true, 
@@ -88,7 +95,7 @@ namespace VikingEngine.HUD.RichBox
             if (parentMember.TryPeek(out parent))
             {
                 var button = parent as AbsRbButton;
-                if (button != null)
+                if (button != null && button.UseButtonContentSettings())
                 {
                     return button.enabled ? settings.button : settings.buttonDisabled;
                 }
@@ -127,6 +134,15 @@ namespace VikingEngine.HUD.RichBox
                 position.Y += settings.breadIconHeight * 0.4f * lineheight;
             }
 
+            prepLine();
+        }
+
+        public void newLine_SetHeight(float height)
+        {
+            completeLine();
+
+            position.Y = height;
+           
             prepLine();
         }
 
@@ -221,8 +237,6 @@ namespace VikingEngine.HUD.RichBox
         {
             return (topleft.X + boxWidth) - position.X;
         }
-
-
         
         public void TryCreate_Start()
         { 
@@ -250,7 +264,22 @@ namespace VikingEngine.HUD.RichBox
             addToRender = true;
             lockNewLine = false;
         }
-        //float LineSpacing => imageHeight
+
+        public VectorRect AreaWithPosOffset()
+        {
+            VectorRect result = area;
+            result.Position += posOffset;
+
+            return result;
+        }
+
+        public VectorRect MaxAreaWithPosOffset()
+        {
+            VectorRect result = maxArea;
+            result.Position += posOffset;
+
+            return result;
+        }
     }
 
    

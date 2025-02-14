@@ -75,7 +75,17 @@ namespace VikingEngine.DSSWars.Map
                 {
                     foreach (var m in synchTiles)
                     {
-                        m.synchToRender();
+
+                        if (m.add)
+                        {
+                            m.synchToRender();
+                            
+                        }
+                        else
+                        {
+                            m.recycle();
+                            tilePool.Push(m);
+                        }
                     }
 
                     synchTiles.Clear();

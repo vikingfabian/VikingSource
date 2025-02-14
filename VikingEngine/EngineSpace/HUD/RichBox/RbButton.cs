@@ -15,17 +15,12 @@ namespace VikingEngine.HUD.RichBox
         protected List<AbsRichBoxMember> content;
         public bool fillWidth = false;
         
-        public bool enabled;
+        public bool enabled = true;
 
-        public Input.IButtonMap buttonMap = null;
-                
-        public void addShortCutButton(Input.IButtonMap buttonMap, bool enableInput= true)
+        virtual protected float ButtonEdgeToContentSpace(RichBoxGroup group, bool left)
         {
-            if (enableInput)
-            {
-                this.buttonMap = buttonMap;
-            }
-            content.Insert(0, new RbImage(buttonMap.Icon, 1, 0, 1f));
+            const float HoriSpace = 8;
+            return HoriSpace;
         }
 
         public override void Create(RichBoxGroup group)
@@ -34,8 +29,6 @@ namespace VikingEngine.HUD.RichBox
             {
                 lib.DoNothing();
             }
-
-            const float HoriSpace = 12;
             
             float heigh = group.lineSpacingHalf;
 
@@ -91,7 +84,7 @@ namespace VikingEngine.HUD.RichBox
                 bool newLine = false;
                 topLeft = group.position;
 
-                group.position.X += HoriSpace;
+                group.position.X += ButtonEdgeToContentSpace(group, true);
 
                 createPreContent(group);
 
@@ -108,11 +101,11 @@ namespace VikingEngine.HUD.RichBox
                     {
                         //multiline button
                         //area.Width = group.boxWidth;
-                        group.position.X += HoriSpace;
+                        group.position.X += ButtonEdgeToContentSpace(group, false);
                         newLine = true;
                     }
                 }
-                group.position.X += HoriSpace;
+                group.position.X += ButtonEdgeToContentSpace(group, false);
 
                 bottomRight = group.position;
                 if (bottomRight.Y != topLeft.Y)
@@ -129,7 +122,7 @@ namespace VikingEngine.HUD.RichBox
 
         abstract public VectorRect area();
 
-        public override void onClick()
+        public override void onClick(RichMenu.RichMenu menu)
         {
             click?.actionTrigger();
         }
@@ -137,9 +130,21 @@ namespace VikingEngine.HUD.RichBox
         virtual public void clickAnimation(bool keyDown)
         { }
 
-        public override void onEnter()
+        public override void onEnter(RichMenu.RichMenu menu)
         {
-            enter?.actionTrigger();
+            if (enter != null)
+            {
+                if (menu != null)
+                {
+                    var tooltip = enter.tooltip();
+                    if (tooltip != null)
+                    {
+                        menu.addToolTip(tooltip, this.area());
+                        return;
+                    }
+                }
+                enter.actionTrigger();
+            }
         }
 
         public override void getButtons(List<AbsRbButton> buttons)
@@ -148,6 +153,11 @@ namespace VikingEngine.HUD.RichBox
         }
 
         abstract public void setGroupSelectionColor(RichBoxSettings settings, bool selected);
+
+        virtual public bool UseButtonContentSettings()
+        {
+            return true;
+        }
     }
 
     class RbButton : AbsRbButton

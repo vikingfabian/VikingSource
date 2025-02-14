@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.Work
 {
@@ -1172,11 +1173,12 @@ namespace VikingEngine.DSSWars.Work
                 case ResourcesSubTab.Work_Metals:
                     bogiron.toHud(player, content, DssRef.lang.Resource_TypeName_BogIron, SpriteName.WarsWorkCollect, SpriteName.WarsResource_IronOre, WorkPriorityType.bogiron, faction, city);
                     content.space();
-                    HudLib.InfoButton(content, new RbAction(() => {
-                        RichBoxContent content = new RichBoxContent();
-                        content.text(DssRef.lang.Resource_BogIronDescription);
-                        player.hud.tooltip.create(player, content, true);
-                    }));
+                    HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Resource_BogIronDescription));
+                        //() => {
+                        //RichBoxContent content = new RichBoxContent();
+                        //content.text(DssRef.lang.Resource_BogIronDescription);
+                        //player.hud.tooltip.create(player, content, true);
+                    //}));
 
                     mining_iron.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.lang.Resource_TypeName_Iron), SpriteName.WarsWorkMine, SpriteName.WarsResource_Iron, WorkPriorityType.miningIron, faction, city);
                     mining_tin.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Tin), SpriteName.WarsWorkMine, SpriteName.WarsResource_Tin, WorkPriorityType.miningTin, faction, city);
@@ -1297,13 +1299,14 @@ namespace VikingEngine.DSSWars.Work
             {
                 infoContent.Add(new RbImage(sprite2));
             }
-            var infoButton = new RbButton(infoContent, null, new RbAction(() =>
-            {
-                RichBoxContent content = new RichBoxContent();
-                content.Add(new RbText(name));
-                player.hud.tooltip.create(player, content, true);
-            }));
-            infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+            var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null, new RbTooltip_Text(name));
+                //new RbTooltip((RichBoxContent content, object tag) =>
+                //{
+                //    //RichBoxContent content = new RichBoxContent();
+                //    content.Add(new RbText(name));
+                //    player.hud.tooltip.create(player, content, true);
+                //}));
+            //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
 
             content.Add(infoButton);
             content.Add(new RbTab(0.2f));
@@ -1320,7 +1323,7 @@ namespace VikingEngine.DSSWars.Work
 
                 for (int prio = 0; prio <= WorkTemplate.MaxPrio; prio++)
                 {
-                    content.space();
+                    //content.space();
 
                     string prioText = null;
                     switch (prio)
@@ -1338,26 +1341,29 @@ namespace VikingEngine.DSSWars.Work
                             break;
                     }
 
-                    AbsRbAction hover = null;
-                    if (prioText != null)
+                    //AbsRbAction hover = null;
+                    //if (prioText != null)
+                    //{
+                    //    hover = new RbAction(() =>
+                    //    {
+                    //        RichBoxContent content = new RichBoxContent();
+                    //        content.text(prioText);
+
+                    //        player.hud.tooltip.create(player, content, true);
+                    //    });
+                    //}
+
+                    var button = new ArtToggle(prio == value, new List<AbsRichBoxMember> {
+                            new RbText(prio.ToString())
+                        },
+                        new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city, SoundLib.menu),
+                        prioText == null? null : new RbTooltip_Text(prioText));
+                        //button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
+                        content.Add(button);
+                    if (prio == 0)
                     {
-                        hover = new RbAction(() =>
-                        {
-                            RichBoxContent content = new RichBoxContent();
-                            content.text(prioText);
-
-                            player.hud.tooltip.create(player, content, true);
-                        });
+                        content.space();
                     }
-
-                    var button = new RbButton(new List<AbsRichBoxMember> {
-                    new RbText(prio.ToString())
-                },
-                    new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city, SoundLib.menu),
-                    hover);
-                    button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
-                    content.Add(button);
-
                 }
             }
             else

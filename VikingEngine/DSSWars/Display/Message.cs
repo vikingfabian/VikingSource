@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.Network;
 using VikingEngine.ToGG;
 
@@ -31,6 +32,7 @@ namespace VikingEngine.DSSWars.Display
         {
             this.player = player;   
             this.settings = settings;
+            position = player.hud.headOptions.MessageStart;
         }
 
         public void blockFoodWarning(bool block)
@@ -77,7 +79,7 @@ namespace VikingEngine.DSSWars.Display
             if (player.input.inputSource.IsController)
             {
                 RichBoxContent.ButtonMap(player.input.ControllerMessageClick, button);
-                button.Add(new RichBoxSpace());
+                button.Add(new RbSpace());
             }
         }
 
@@ -153,19 +155,19 @@ namespace VikingEngine.DSSWars.Display
             return messages.Count < 3;
         }
 
-        public void Update(Vector2 position)
+        public void Update(/*Vector2 position, */ref bool mouseOver)
         {
-            if (this.position != position)
-            { 
-                this.position = position;
-                UpdatePositions();
-            }
+            //if (this.position != position)
+            //{ 
+            //    this.position = position;
+            //    UpdatePositions();
+            //}
 
             if (messages.Count > 0)
             {
                 foreach (var message in messages)
                 {
-                    message.update();
+                    message.update(ref mouseOver);
                 }
 
                 if (messages.Last().time.secPassed(20))
@@ -180,107 +182,121 @@ namespace VikingEngine.DSSWars.Display
             
 
             Vector2 currentPos = position;
-            if (messages.Count > 0)
-            {                
-                foreach (var message in messages)
-                {
-                    currentPos.Y += settings.edgeWidth * 2f;
-                    currentPos = message.UpdatePoisitions(currentPos, screenAreaBottom);                    
-                }
-            }
-        }
-
-        public bool mouseOver()
-        {
-            foreach (var p in messages)
+            //if (messages.Count > 0)
+            //{                
+            foreach (var message in messages)
             {
-                if (p.mouseOver())
-                {
-                    return true;
-                }
-            }
+                   
+                currentPos = message.UpdatePoisitions(currentPos, screenAreaBottom);
 
-            return false;
+                currentPos.Y += settings.edgeWidth * 2f;
+            }
+            //}
         }
+
+        //public bool mouseOver()
+        //{
+        //    foreach (var p in messages)
+        //    {
+        //        if (p.mouseOver())
+        //        {
+        //            return true;
+        //        }
+        //    }
+
+        //    return false;
+        //}
     }
 
     class Message
     {
-        public RichBoxGroup richBox;
+        public RichMenu menu;
+        //public RichBoxGroup richBox;
         protected RichBoxContent content = new RichBoxContent();
-        protected Graphics.Image bg;
-        public VectorRect area;
+        //protected Graphics.Image bg;
+        //NineSplitAreaTexture bg;
+        //public VectorRect area;
         public TimeStamp time;
-        Vector2 contentOffset;
-        RbInteraction interaction;
+        //Vector2 contentOffset;
+        //RbInteraction interaction;
 
         public Message(LocalPlayer player, RichBoxContent content, RichboxGuiSettings settings)
         {
-            richBox = new RichBoxGroup(Vector2.Zero,
-            settings.width, settings.contentLayer, settings.RbSettings, content, true, true, false);
-            area = richBox.area;
+            menu = new RichMenu(HudLib.RbSettings, new VectorRect(VectorExt.V2FromX( player.hud.headOptions.MessageStart.X), new Vector2(HudLib.MessageDisplayWidth, 500)),
+                new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
 
-            bg = new Graphics.Image(SpriteName.WhiteArea, Vector2.Zero, Vector2.Zero, settings.bglayer);
-            bg.ColorAndAlpha(settings.bgCol, settings.bgAlpha);
+            menu.Refresh(content);
+            menu.updateHeightFromContent();
+            menu.addBackground(HudLib.MessageBackground, HudLib.GUILayer + 2);
+            //richBox = new RichBoxGroup(Vector2.Zero, HudLib.MessageDisplayWidth, settings.contentLayer, 
+            //    settings.RbSettings, content, true, true, false);
+            //area = richBox.area;
 
-            contentOffset = new Vector2(settings.edgeWidth);
+            //bg = new Graphics.Image(SpriteName.WhiteArea, Vector2.Zero, Vector2.Zero, settings.bglayer);
+            //bg.ColorAndAlpha(settings.bgCol, settings.bgAlpha);
 
-            area.AddRadius(settings.edgeWidth);
+            //contentOffset = new Vector2(settings.edgeWidth);
+
+            //area.AddRadius(settings.edgeWidth);
             time = TimeStamp.Now();
-            interaction = new RbInteraction(content, settings.contentLayer,
-                    player.input.RichboxGuiSelect);
+            //interaction = new RbInteraction(content, settings.contentLayer,
+            //        player.input.RichboxGuiSelect);
         }
 
         public bool onControllerClick()
         {
-            if (richBox.buttonGrid_Y_X.Count > 0 && richBox.buttonGrid_Y_X[0].Count > 0)
-            {
-                if (time.msPassed(200))
-                {
-                    richBox.buttonGrid_Y_X[0][0].onClick();
-                }
-                return true;
-            }
+            //if (richBox.buttonGrid_Y_X.Count > 0 && richBox.buttonGrid_Y_X[0].Count > 0)
+            //{
+            //    if (time.msPassed(200))
+            //    {
+            //        richBox.buttonGrid_Y_X[0][0].onClick(null);
+            //    }
+            //    return true;
+            //}
             return false;
         }
 
 
-            public Vector2 UpdatePoisitions(Vector2 position, float screenAreaBottom)
+        public Vector2 UpdatePoisitions(Vector2 position, float screenAreaBottom)
         {
-            area.Position = position;
-            bg.Area = area;
-            richBox.SetOffset(area.Position + contentOffset);
-            
-            bool visible = bg.Bottom <= screenAreaBottom;
+            //area.Position = position;
+            //bg.Area = area;
+            //richBox.SetOffset(area.Position + contentOffset);
 
-            bg.Visible = visible;
-            richBox.SetVisible(visible);
+            //bool visible = bg.Bottom <= screenAreaBottom;
 
-            return area.LeftBottom;
+            //bg.Visible = visible;
+            //richBox.SetVisible(visible);
+            menu.moveToY(position.Y);
+
+            return menu.backgroundArea.LeftBottom;
         }
 
-        public void update()
+        public void update(ref bool mouseOver)
         {
-            if (bg.Visible)
-            {
-                interaction.update(Vector2.Zero);
-            }
+            menu.updateMouseInput(ref mouseOver);
+            //if (bg.Visible)
+            //{
+            //    interaction.update(Vector2.Zero, null, out _);
+            //}
         }
 
-        public bool mouseOver()
-        {
-            if (bg.Visible)
-            {
-                return bg.Area.IntersectPoint(Input.Mouse.Position);
-            }
-            return false;
-        }
+        //public bool mouseOver()
+        //{
+        //    //if (bg.Visible)
+        //    //{
+        //    //    return bg.Area.IntersectPoint(Input.Mouse.Position);
+        //    //}
+        //    return false;
+        //}
 
         public void DeleteMe()
         {
-            interaction.DeleteMe();
-            bg.DeleteMe();
-            richBox.DeleteAll();
+            menu.DeleteMe();
+            //interaction.DeleteMe();
+            //bg.DeleteMe();
+            //richBox.DeleteAll();
+
         }
     }
 }

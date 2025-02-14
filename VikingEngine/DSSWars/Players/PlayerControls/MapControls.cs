@@ -180,8 +180,8 @@ namespace VikingEngine.DSSWars.Players
 
                     if (focusedObjectMenuState() || player.hud.menuFocus)
                     {
-                        player.hud.displays.updateMove(out bool bRefresh);
-                        player.hud.needRefresh |= bRefresh;
+                        //player.hud.displays.updateMove(out bool bRefresh);
+                        //player.hud.needRefresh |= bRefresh;
 
                         if (player.input.ControllerFocus.DownEvent)
                         {
@@ -241,7 +241,7 @@ namespace VikingEngine.DSSWars.Players
 
                 if (controllerInput && player.input.ControllerCancel.DownEvent)
                 {
-                    player.hud.displays.clearMoveSelection();
+                    //player.hud.displays.clearMoveSelection();
                     player.clearSelection();
                 }
 
@@ -798,16 +798,16 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 selection.menuFocus = set;
-                player.hud.displays.objectDisplay.viewOutLine(set);
+                //player.hud.displays.objectDisplay.viewOutLine(set);
 
                 if (set)
                 {
-                    //playerPointerPos = selection.obj.WorldPos();
-                    player.hud.displays.beginMove(1);
+                    
+                    //player.hud.displays.beginMove(1);
                 }
                 else
                 {
-                    player.hud.displays.clearMoveSelection();
+                    //player.hud.displays.clearMoveSelection();
                 }
 
 
@@ -821,7 +821,7 @@ namespace VikingEngine.DSSWars.Players
         {
             bool bClear = selection.clear();
             
-            player.hud.displays.clearState();
+            player.hud.objMenu.menu?.clearState();
             if (controllerInput)
             {
                 controllerPointer.Visible = true;

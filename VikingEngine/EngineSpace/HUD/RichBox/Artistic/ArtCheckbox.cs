@@ -11,14 +11,14 @@ namespace VikingEngine.HUD.RichBox.Artistic
         BoolGetSet property;
         RbImage checkImage = null;
         SpriteName checkOn, checkOff;
-        public ArtCheckbox(List<AbsRichBoxMember> content, BoolGetSet property)
-            :base(RbButtonStyle.CheckBox, content, null)
+        public ArtCheckbox(List<AbsRichBoxMember> content, BoolGetSet property, AbsRbAction enter=null)
+            :base(RbButtonStyle.CheckBox, content, null, enter)
         {
             this.property = property;
             this.enabled = true;
         }
 
-        public override void onClick()
+        public override void onClick(RichMenu.RichMenu menu)
         {
             bool value = !property.Invoke(0, false, false);
             property.Invoke(0, true, value);

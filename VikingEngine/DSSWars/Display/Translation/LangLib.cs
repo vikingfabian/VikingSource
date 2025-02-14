@@ -690,6 +690,10 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MenuTab.Mix:
                     description = "All info compressed to one place";
                     return "Mix";
+
+                case MenuTab.Help:
+                    description = null;
+                    return "Help";
                 default:
                     throw new NotImplementedException();
             }

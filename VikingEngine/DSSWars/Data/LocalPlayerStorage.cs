@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Data
         public InputSource inputSource;
         public int controllerIndex = 0;
         public int screenIndex = 0;
-        public int profile;
+        public int flagDesignIndex;
         public int index;
         public LocalPlayerStorage(int index)
         {
@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Data
             inputSource = index == 0 ? InputSource.DefaultPC : InputSource.Empty;
             //controllerIndex = index - 1;
             screenIndex = index;
-            profile = index;
+            flagDesignIndex = index;
         }
 
         public void checkDoublette(int myIndex, LocalPlayerStorage[] localPlayers)
@@ -32,10 +32,10 @@ namespace VikingEngine.DSSWars.Data
 
             if (checkDoublette_profile(myIndex, localPlayers))
             {
-                profile = 0;
+                flagDesignIndex = 0;
                 while (checkDoublette_profile(myIndex, localPlayers))
                 {
-                    profile++;
+                    flagDesignIndex++;
                 }
             }
 
@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 if (i != myIndex)
                 {
-                    if (localPlayers[i].profile == profile)
+                    if (localPlayers[i].flagDesignIndex == flagDesignIndex)
                     {
                         return true;
                     }
@@ -97,12 +97,12 @@ namespace VikingEngine.DSSWars.Data
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(screenIndex);
-            w.Write(profile);
+            w.Write(flagDesignIndex);
         }
         public void read(System.IO.BinaryReader r, int version)
         {
             screenIndex = r.ReadInt32();
-            profile = r.ReadInt32();
+            flagDesignIndex = r.ReadInt32();
         }
     }
 }

@@ -12,8 +12,6 @@ namespace VikingEngine.HUD.RichMenu
 {
     class RichScrollbar
     {
-        //RenderTargetDrawContainer scrollerRenderer = null;
-
         NineSplitAreaTexture slider;
         NineSplitAreaTexture background;
         IntervalF valuerange;
@@ -34,7 +32,7 @@ namespace VikingEngine.HUD.RichMenu
             VectorRect displayArea, float scrollerWidth, ImageLayers layer)
         {
             this.layer = layer;
-            area = new VectorRect(new Vector2(displayArea.Right - 2, displayArea.Y), new Vector2(scrollerWidth, displayArea.Height));
+            area = new VectorRect(new Vector2(displayArea.Right - 6, displayArea.Y), new Vector2(scrollerWidth, displayArea.Height));
             background = new NineSplitAreaTexture(backgroundTex, area, layer +1);
             slider = null;
             this.sliderTex = sliderTex;
@@ -57,14 +55,15 @@ namespace VikingEngine.HUD.RichMenu
                 float sliderH = Math.Max(area.Height * displayHeightPerc, Engine.Screen.MinClickSize); 
                 slideRange = area.Height - sliderH;
                 valuerange = new IntervalF(0, contentHeight - displayHeight);
-                scrollResult = 0;
-
+                //scrollResult = 0;
+                updateScrollBound();
                 sliderHeight = sliderH;
 
                 setVisible(true);
             }
             else
             {
+                scrollResult = 0;
                 setVisible(false);
             }   
         }
@@ -75,21 +74,38 @@ namespace VikingEngine.HUD.RichMenu
 
             if (visible)
             {
-                //VectorRect size = area;
-                //size.Height = sliderHeight;
-                slider = new NineSplitAreaTexture(sliderTex, SliderArea(false), layer);
-                if (sliderGroup == null)
+                if (slider == null)
                 {
-                    sliderGroup = new ImageGroupParent2D();
+                    slider = new NineSplitAreaTexture(sliderTex, SliderArea(false), layer);
+                    if (sliderGroup == null)
+                    {
+                        sliderGroup = new ImageGroupParent2D();
+                    }
+                    sliderGroup.Add(slider.images);
                 }
-                sliderGroup.Add(slider.images);
             }
             else
-            { 
-                slider.DeleteMe();
-                sliderGroup.Clear();
+            {
+                if (slider != null)
+                {
+                    slider = null;
+                    sliderGroup.DeleteMe();
+                }
+
+                selectionOutline?.DeleteMe();
+                selectionOutline = null;
             }
 
+        }
+
+        public void DeleteMe()
+        {
+            setVisible(false);
+        }
+
+        public bool IsVisible()
+        {
+            return slider != null;
         }
 
         VectorRect SliderArea(bool includeMoveY)
@@ -108,56 +124,59 @@ namespace VikingEngine.HUD.RichMenu
             bool viewOutline = false;
             bool result = false;
 
-            if (mouseDown)
+            if (IsVisible())
             {
-                viewOutline = true;
-                if (Input.Mouse.IsButtonDown(MouseButton.Left))
-                {                    
-                    float diff = Input.Mouse.Position.Y - mouseDownY;
-                    sliderGroup.ParentY = Bound.Set(diff + mouseDown_SliderY, 0, slideRange);
-                    scrollResult = -valuerange.GetFromPercent(sliderGroup.ParentY / slideRange);
 
-                    result = true;
-                }
-                else
-                {
-                    slider.SetColor(Color.White);
-                    mouseDown = false;
-                }
-            }
-            else
-            {
-                if (SliderArea(true).IntersectPoint(Input.Mouse.Position))
+                if (mouseDown)
                 {
                     viewOutline = true;
-
-                    if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                    if (Input.Mouse.IsButtonDown(MouseButton.Left))
                     {
-                        mouseDown = true;
-                        mouseDownY = Input.Mouse.Position.Y;
-                        mouseDown_SliderY = sliderGroup.ParentY;
-                        slider.SetColor(RichBox.Artistic.ArtButton.MouseDownCol);
-                    }
-                }
-            }
+                        float diff = Input.Mouse.Position.Y - mouseDownY;
+                        sliderGroup.ParentY = Bound.Set(diff + mouseDown_SliderY, 0, slideRange);
+                        scrollResult = -valuerange.GetFromPercent(sliderGroup.ParentY / slideRange);
 
-            if (viewOutline)
-            {
-                if (selectionOutline == null)
-                {
-                    selectionOutline = new RectangleLines(SliderArea(true), 2, 1, layer - 1);
+                        result = true;
+                    }
+                    else
+                    {
+                        slider.SetColor(Color.White);
+                        mouseDown = false;
+                    }
                 }
                 else
                 {
-                    selectionOutline.Refresh(SliderArea(true));
+                    if (SliderArea(true).IntersectPoint(Input.Mouse.Position))
+                    {
+                        viewOutline = true;
+
+                        if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                        {
+                            mouseDown = true;
+                            mouseDownY = Input.Mouse.Position.Y;
+                            mouseDown_SliderY = sliderGroup.ParentY;
+                            slider.SetColor(RichBox.Artistic.ArtButton.MouseDownCol);
+                        }
+                    }
+                }
+
+                if (viewOutline)
+                {
+                    if (selectionOutline == null)
+                    {
+                        selectionOutline = new RectangleLines(SliderArea(true), 2, 1, layer - 1);
+                    }
+                    else
+                    {
+                        selectionOutline.Refresh(SliderArea(true));
+                    }
+                }
+                else
+                {
+                    selectionOutline?.DeleteMe();
+                    selectionOutline = null;
                 }
             }
-            else
-            {
-                selectionOutline?.DeleteMe();
-                selectionOutline = null;
-            }
-
             return result;
         }
 
@@ -172,6 +191,11 @@ namespace VikingEngine.HUD.RichMenu
             }
 
             return false;
+        }
+
+        void updateScrollBound()
+        {
+            scrollResult = -valuerange.SetBounds(-scrollResult);
         }
 
     }

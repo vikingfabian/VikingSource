@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -117,6 +118,11 @@ namespace VikingEngine.DSSWars
 
         public void resourceTab(LocalPlayer player, RichBoxContent content)
         {
+            if (player.resourcesSubTab > ResourcesSubTab.Overview_Armor)
+            {
+                player.resourcesSubTab = 0;
+            }
+
             content.newLine();
             for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
             {
@@ -125,8 +131,8 @@ namespace VikingEngine.DSSWars
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Overview_Resources:
-                        tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
-                        tabContent.space();
+                        //tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
+                        //tabContent.space();
                         tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
 
@@ -151,14 +157,14 @@ namespace VikingEngine.DSSWars
                         tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
                 }
-                var subTab = new RbButton(tabContent,
+                var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
                     new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                     {
                         player.resourcesSubTab = resourcesSubTab;
                     }, resourcesSubTab, SoundLib.menutab));
-                subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
+                //subTab.setGroupSelectionColor(HudLib.RbSettings, );
                 content.Add(subTab);
-                content.space();
+                //content.space();
             }
 
             switch (player.resourcesSubTab)
@@ -292,15 +298,21 @@ namespace VikingEngine.DSSWars
         {
             var p = player.GetLocalPlayer();
 
+            if (p.resourcesSubTab < ResourcesSubTab.Work_Resources || p.resourcesSubTab > ResourcesSubTab.Work_Armor)
+            {
+                p.resourcesSubTab = ResourcesSubTab.Work_Resources;
+            }
+
+            content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
             content.newLine();
-            for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Work_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+            for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Work_Resources; resourcesSubTab <= ResourcesSubTab.Work_Armor; ++resourcesSubTab)
             {
                 var tabContent = new RichBoxContent();
                 //string text = null;
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Work_Resources:
-                        tabContent.Add(new RbText(DssRef.lang.Work_OrderPrioTitle));
+                        //tabContent.Add(new RbText(DssRef.lang.Work_OrderPrioTitle));
                         tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
 
@@ -317,16 +329,18 @@ namespace VikingEngine.DSSWars
                         tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
                         break;
                 }
-                var subTab = new RbButton(tabContent,
-                        new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
-                        {
-                            p.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, SoundLib.menutab));
-                subTab.setGroupSelectionColor(HudLib.RbSettings, p.resourcesSubTab == resourcesSubTab);
+                var subTab = new ArtButton(p.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
+                    tabContent,
+                    new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                    {
+                        p.resourcesSubTab = resourcesSubTab;
+                    }, resourcesSubTab, SoundLib.menutab));
+                //subTab.setGroupSelectionColor(HudLib.RbSettings, p.resourcesSubTab == resourcesSubTab);
                 content.Add(subTab);
-                content.space(resourcesSubTab == ResourcesSubTab.Work_Armor ? 2 : 1);
+                //content.space(resourcesSubTab == ResourcesSubTab.Work_Armor ? 2 : 1);
             }
-            content.newParagraph();
+            
+            content.Add(new RbSeperationLine());
            
             workTemplate.toHud(p, content, p.resourcesSubTab, this, null);
         }

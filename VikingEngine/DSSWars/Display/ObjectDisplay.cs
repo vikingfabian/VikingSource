@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Display
                     content.newLine();
                 }
 
-                obj.toHud(new ObjectHudArgs(gui, content, player, selected));
+                obj.toHud(new ObjectHudArgs(content, player, selected));
                 if (gui.menuState.Count > 0) 
                 {
                     content.newLine();
@@ -45,10 +45,10 @@ namespace VikingEngine.DSSWars.Display
         public HUD.RichBox.RichBoxContent content;
         public Players.LocalPlayer player;
         public bool selected;
-        public HUD.RichBox.RichboxGui gui;
-        public ObjectHudArgs(HUD.RichBox.RichboxGui gui, HUD.RichBox.RichBoxContent content, Players.LocalPlayer player, bool selected)
+        //public HUD.RichBox.RichboxGui gui;
+        public ObjectHudArgs(/*HUD.RichBox.RichboxGui gui,*/ HUD.RichBox.RichBoxContent content, Players.LocalPlayer player, bool selected)
         {
-            this.gui = gui; 
+            //this.gui = gui; 
             this.content = content;
             this.player = player;
             this.selected = selected;

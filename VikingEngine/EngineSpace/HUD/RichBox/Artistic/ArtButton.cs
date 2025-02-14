@@ -13,18 +13,26 @@ namespace VikingEngine.HUD.RichBox.Artistic
     { 
         Primary,
         Secondary,
+        Outline,
         CheckBox,
         OptionSelected,
         OptionNotSelected,
+        ToggleSelected,
+        ToggleNotSelected,
+        DropDownSelected,
+        DropDownNotSelected,
         TabSelected,
         TabNotSelected,
+        SubTabSelected,
+        SubTabNotSelected,
+        HoverArea,
     }
 
     class ArtButton : AbsRbButton
     {
         public static readonly Color MouseDownCol = Color.LightGray;
         protected RbButtonStyle buttonStyle;
-        HUD.NineSplitAreaTexture texture;
+        protected HUD.NineSplitAreaTexture texture;
         public ArtButton()
         { }
 
@@ -47,13 +55,16 @@ namespace VikingEngine.HUD.RichBox.Artistic
             switch (buttonStyle)
             { 
                 default:
-                    textureSett = group.settings.artButtonTex;
+                    textureSett = group.settings.artPrimaryButtonTex.Enabled(enabled);
                     break;
                 case RbButtonStyle.CheckBox:
                     textureSett = group.settings.artCheckButtonTex;
                     break;
                 case RbButtonStyle.Secondary:
-                    textureSett = group.settings.artButtonTex.Selected(false);
+                    textureSett = group.settings.artSecondaryButtonTex.Enabled(enabled);
+                    break;
+                case RbButtonStyle.Outline:
+                    textureSett = group.settings.artOutlineButtonTex;
                     break;
                 case RbButtonStyle.OptionSelected:
                     textureSett = group.settings.artOptionButtonTex;
@@ -61,14 +72,35 @@ namespace VikingEngine.HUD.RichBox.Artistic
                 case RbButtonStyle.OptionNotSelected:
                     textureSett = group.settings.artOptionButtonTex.Selected(false);
                     break;
+                case RbButtonStyle.ToggleSelected:
+                    textureSett = group.settings.artToggleButtonTex;
+                    break;
+                case RbButtonStyle.ToggleNotSelected:
+                    textureSett = group.settings.artToggleButtonTex.Selected(false);
+                    break;
+                case RbButtonStyle.DropDownSelected:
+                    textureSett = group.settings.artDropDownButtonTex;
+                    break;
+                case RbButtonStyle.DropDownNotSelected:
+                    textureSett = group.settings.artDropDownButtonTex.Selected(false);
+                    break;
                 case RbButtonStyle.TabSelected:
                     textureSett = group.settings.artTabTex;
                     break;
                 case RbButtonStyle.TabNotSelected:
                     textureSett = group.settings.artTabTex.Selected(false);
                     break;
+                case RbButtonStyle.SubTabSelected:
+                    textureSett = group.settings.artSubTabTex;
+                    break;
+                case RbButtonStyle.SubTabNotSelected:
+                    textureSett = group.settings.artSubTabTex.Selected(false);
+                    break;
+                case RbButtonStyle.HoverArea:
+                    textureSett = group.settings.artHoverAreaTex;
+                    break;
             }
-            texture = new HUD.NineSplitAreaTexture(textureSett, area, layer);
+            texture = new HUD.NineSplitAreaTexture(textureSett, area, layer + 1);
 
             group.images.AddRange(texture.images);
         }
@@ -94,6 +126,11 @@ namespace VikingEngine.HUD.RichBox.Artistic
             { 
                 img.Color = toCol;
             }
+        }
+
+        override public bool UseButtonContentSettings()
+        {
+            return buttonStyle != RbButtonStyle.HoverArea && buttonStyle != RbButtonStyle.Outline;
         }
     }
 }

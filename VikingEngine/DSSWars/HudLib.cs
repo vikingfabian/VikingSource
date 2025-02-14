@@ -11,14 +11,17 @@ using VikingEngine.LootFest.Players;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars
 {
     static class HudLib
     {
+        public const float MenuEdgeSize = 8;
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
+        public static readonly Color TitleColor_Head = new Color(104, 149, 219);
         public static readonly Color TitleColor_Action = Color.LightBlue;
         public static readonly Color TitleColor_Attack = Color.Red;
         public static readonly Color TitleColor_Name = Color.LightYellow;
@@ -49,21 +52,31 @@ namespace VikingEngine.DSSWars
 
         public static NineSplitSettings HudMenuBackground;
         public static NineSplitSettings HudMenuScollBackground;
+        public static NineSplitSettings MessageBackground;
+        public static float MessageDisplayWidth;
+
         public static NineSplitSettings HudMenuScollButton;
         public static RichBoxSettings RbSettings;
+        public static RichBoxSettings RbSettings_Head;
+        public static RichBoxSettings RbSettings_HeadOptions;
         public static RichBoxSettings RbOnGuiSettings;
+        public static RichBoxSettings TooltipSettings;
 
         public static RichboxGuiSettings richboxGui;
         public static RichboxGuiSettings cutsceneGui;
+
+        public static readonly Color MenuMoreOptionsArrowCol = new Color(131, 63, 17);
 
         public static void Init()
         {
             const float TextToIconSz = 1.2f;
 
-            HudMenuBackground = new HUD.NineSplitSettings(SpriteName.cmdHudBorderButton, 1, 8, 2f, true, true);
+            HudMenuBackground = new HUD.NineSplitSettings(SpriteName.WarsHudMenuBg, 1, 8, 1f, true, true);
 
-            HudMenuScollBackground = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerBg, 0, 6, 2f, true, true); ;
-            HudMenuScollButton = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerSlider, 0, 6, 2f, true, true);
+            HudMenuScollBackground = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 8, 1f, true, true);
+            HudMenuScollButton = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerSlider, 1, 8, 1f, true, true);
+
+            MessageBackground = new HUD.NineSplitSettings(SpriteName.WarsHudMessageBg, 1, 8, 1f, true, true);
 
             RbSettings = new HUD.RichBox.RichBoxSettings(
                 new TextFormat(LoadedFont.Regular, Engine.Screen.TextBreadHeight, Color.White, ColorExt.Empty),
@@ -76,32 +89,69 @@ namespace VikingEngine.DSSWars
             RbSettings.optionOn = SpriteName.WarsHudOptionYes;
             RbSettings.optionOff = SpriteName.WarsHudOptionNo;
 
-            RbSettings.tabSelected.BgColor = new Color(53, 158, 209);//new Color(121,110,233);
+            RbSettings.tabSelected.BgColor = new Color(104, 149, 219);//new Color(121,110,233);
             RbSettings.tabSelected.Color = new Color(3, 0, 46);
             RbSettings.tabNotSelected.BgColor = new Color(36, 107, 142); //new Color(99,96,146);
             RbSettings.tabNotSelected.Color = RbSettings.tabSelected.Color;
 
-            RbSettings.artButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudPrimaryButton, 1, 8, 2f, true, true)
+            RbSettings.artPrimaryButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudPrimaryButton, 1, 8, 1f, true, true)
             {
                 disableTexture = SpriteName.WarsHudPrimaryButtonDisabled
             };
+            RbSettings.artSecondaryButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudSecondaryButton, 1, 8, 1f, true, true)
+            {
+                disableTexture = SpriteName.WarsHudSecondaryButtonDisabled
+            };
+            RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudHeadBarOutlineButton, 1, 8, 1f, true, true);
+            RbSettings.artHoverAreaTex = new HUD.NineSplitSettings(SpriteName.WarsHudHoverArea, 1, 8, 1f, true, true);
 
-            RbSettings.artCheckButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 2f, true, true);
-            RbSettings.artOptionButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 2f, true, true)
+            RbSettings.dragButtonTex = new ThreeSplitSettings(SpriteName.WarsHudDragButton, 1, 15);
+
+            RbSettings.artCheckButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true);
+            RbSettings.artOptionButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true)
             {
                 notSelectedTexture = SpriteName.WarsHudOptionNotSelected,
             };
 
-            RbSettings.artTabTex = new NineSplitSettings(SpriteName.WarsHudTabSelected, 1, 8, 2f, true, true)
+            RbSettings.artToggleButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true)
+            {
+                notSelectedTexture = SpriteName.WarsHudToggleNotSelected,
+            };
+
+            RbSettings.artDropDownButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 1f, true, true)
+            {
+                notSelectedTexture = SpriteName.WarsHudRoundButtonNotSelected,
+            };
+
+            RbSettings.artTabTex = new NineSplitSettings(SpriteName.WarsHudTabSelected, 1, 8, 1f, true, true)
             {
                 notSelectedTexture = SpriteName.WarsHudTabNotSelected,
+            };
+
+            RbSettings.artSubTabTex = new NineSplitSettings(SpriteName.WarsHudSubTabSelected, 1, 8, 1f, true, true)
+            {
+                notSelectedTexture = SpriteName.WarsHudSubTabNotSelected,
             };
 
             RbOnGuiSettings = RbSettings;
             RbOnGuiSettings.scaleUp(1.4f);
 
-            HeadDisplayWidth = Engine.Screen.IconSize * 7;
+            TooltipSettings = RbSettings;
+            TooltipSettings.windowBackground = new NineSplitSettings(SpriteName.cmdHudBorderTooltip, 1, 8, 1f, true, true);
+
+            RbSettings_Head = RbSettings;
+            RbSettings_Head.artOptionButtonTex = new NineSplitSettings(SpriteName.WarsHudHeadBarTabSelected, 1, 8, 1f, true, true)
+            {
+                notSelectedTexture = SpriteName.WarsHudHeadBarTabNotSelected,
+            };
+            RbSettings_Head.artPrimaryButtonTex = new NineSplitSettings(SpriteName.WarsHudHeadBarButton, 1, 8, 1f, true, true);
+
+            RbSettings_HeadOptions = RbSettings_Head;
+            RbSettings_HeadOptions.artOptionButtonTex = RbSettings.artOptionButtonTex;
+
+            HeadDisplayWidth = (int)( Engine.Screen.IconSize * 7);
             HeadDisplayEdge = Engine.Screen.BorderWidth;
+            MessageDisplayWidth = (int)(Engine.Screen.IconSize * 6);
 
             richboxGui = new RichboxGuiSettings()
             {
@@ -246,35 +296,88 @@ namespace VikingEngine.DSSWars
         }
         public static void FollowFactionButton(bool followFaction, double currentFactionValue, AbsRbAction action, Players.LocalPlayer player, RichBoxContent content)
         {
-            var followFactionButton = new RbButton(new List<AbsRichBoxMember> { new RbImage(followFaction ? SpriteName.WarsFollowFactionYes : SpriteName.WarsFollowFactionNo) },
-                        action, new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));//new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city));
-            if (!followFaction)
+            SpriteName sprite;
+            //RbButtonStyle buttonStyle;
+
+            if (followFaction)
             {
-                followFactionButton.overrideBgColor = OffStandardOrange;
+                sprite = SpriteName.WarsFollowFactionYes;
+                //buttonStyle = RbButtonStyle.OptionSelected;
             }
+            else
+            {
+                sprite = SpriteName.WarsFollowFactionNo;
+                //buttonStyle = RbButtonStyle.OptionNotSelected;
+            }
+
+
+            var followFactionButton = new ArtToggle(followFaction, new List<AbsRichBoxMember> { new RbImage(sprite) },
+                        action, //new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));
+                        new RbTooltip(followFactionTooltip, new FollowFactionTooltipArgs() { follows = followFaction , currentFactionValue = currentFactionValue}));
+            //if (!followFaction)
+            //{
+            //    followFactionButton.overrideBgColor = OffStandardOrange;
+            //}
             content.Add(followFactionButton);
             content.space();
+
+
+            
+            void followFactionTooltip(RichBoxContent content, object tag)//bool follows, double currentFactionValue)
+            {
+                FollowFactionTooltipArgs args = (FollowFactionTooltipArgs)tag;
+
+                content.h2(DssRef.lang.Hud_ToggleFollowFaction).overrideColor = HudLib.TitleColor_Action;
+                content.newParagraph();
+
+                string current;
+                if (args.follows)
+                {
+                    current = DssRef.lang.Hud_FollowFaction_Yes;
+                }
+                else
+                {
+                    current = string.Format(DssRef.lang.Hud_FollowFaction_No, currentFactionValue);
+                }
+                content.text(current).overrideColor = HudLib.InfoYellow_Light;
+
+                //hud.tooltip.create(this, content, true);
+            }
+
+            
+        }
+        struct FollowFactionTooltipArgs
+        {
+            public bool follows; public double currentFactionValue;
         }
 
-        public static void InfoButton(RichBoxContent content, AbsRbAction enterAction)
+        public static void InfoButton(List<AbsRichBoxMember> content, AbsRbAction enterAction)
         {
             var text = new RbText(DssRef.lang.Info_ButtonIcon);
             text.overrideColor = InfoYellow_Light;
 
-            var button = new RbButton(new List<AbsRichBoxMember> { 
-                new RichBoxSpace(0.5f),
-                text,
-                new RichBoxSpace(0.5f),
+            var button = new ArtImageButton(new List<AbsRichBoxMember> { 
+                new RbImage(SpriteName.WarsHudInfoIcon)
             },
-            null, enterAction, true, InfoYellow_Dark);
+            null, enterAction, true);
             content.Add(button);
         }
 
         public static void PerSecondInfo(Players.LocalPlayer player, RichBoxContent content, bool minuteAverage)
         {
-            InfoButton(content, new RbAction1Arg<bool>(player.perSecondTooltip, minuteAverage));
+            InfoButton(content, new RbTooltip(perSecondTooltip, minuteAverage));
         }
+        static void perSecondTooltip(RichBoxContent content, object tag)//bool minuteAverage)
+        {
+            bool minuteAverage = (bool)tag;
+            //RichBoxContent content = new RichBoxContent();
+            content.text(DssRef.lang.Info_PerSecond);
+            if (minuteAverage)
+            {
+                content.text(DssRef.lang.Info_MinuteAverage);
+            }
 
+        }
         public static void Description(RichBoxContent content, string description)
         {
             content.text("\"" + description + "\"").overrideColor = InfoYellow_Light;
@@ -291,7 +394,7 @@ namespace VikingEngine.DSSWars
             x.overrideColor = Color.White;
 
            var button = new RbButton(new List<AbsRichBoxMember>
-                    { new RichBoxSpace(), x,new RichBoxSpace(), },
+                    { new RbSpace(), x,new RbSpace(), },
                     click);
             button.overrideBgColor = Color.DarkRed;
 

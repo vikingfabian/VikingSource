@@ -264,6 +264,14 @@ namespace VikingEngine.DSSWars
         
     }
 
+    enum MapStartAs
+    { 
+        Water,
+        Land,
+        Cirkle,
+        NUM
+    }
+
     enum MapSize { Tiny, Small, Medium, Large, Huge, Epic, NUM }
 
     enum SoldierTransformType

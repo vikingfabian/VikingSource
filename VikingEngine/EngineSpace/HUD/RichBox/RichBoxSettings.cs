@@ -23,11 +23,18 @@ namespace VikingEngine.HUD.RichBox
 
         public float breadIconHeight, titleIconHeight;
 
-        public NineSplitSettings artButtonTex;
+        public NineSplitSettings artPrimaryButtonTex;
+        public NineSplitSettings artSecondaryButtonTex;
+        public NineSplitSettings artOutlineButtonTex;
         public NineSplitSettings artCheckButtonTex;
         public NineSplitSettings artOptionButtonTex;
+        public NineSplitSettings artToggleButtonTex;
+        public NineSplitSettings artDropDownButtonTex;
         public NineSplitSettings artTabTex;
-
+        public NineSplitSettings artSubTabTex;
+        public NineSplitSettings artHoverAreaTex;
+        public ThreeSplitSettings dragButtonTex;
+        public NineSplitSettings windowBackground;
 
         public RichBoxSettings(TextFormat breadText, TextFormat button, float iconHeight, float TitleSizeUp = 1.2f)
         {

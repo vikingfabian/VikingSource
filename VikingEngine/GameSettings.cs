@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 
 
 namespace VikingEngine
@@ -250,6 +254,183 @@ namespace VikingEngine
             return ModelLightShaderEffect;
         }
 
+        
+
+        public void optionsMenu(GuiLayout layout)
+        {
+            soundOptions(layout);
+            new GuiSectionSeparator(layout);
+            graphicsOptions(layout);
+        }
+        public void optionsMenu(RichBoxContent content, RichMenu menu)
+        {
+            content.h2("Sound", HudLib.TitleColor_Head);
+            volumeOptions(content);
+
+            content.newParagraph();
+            content.h2("Monitor settings", HudLib.TitleColor_Head);
+            graphicsOptions(content, menu);
+
+            content.newParagraph();
+            content.h2("Graphics options", HudLib.TitleColor_Head);
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Model light effect") },
+                modelLightProperty));
+        }
+        public void quickOptionsMenu(GuiLayout layout)
+        {
+            volumeOptions(layout);
+            fullScreenBox(layout);
+        }
+
+
+        public void soundOptions(GuiLayout layout)
+        {
+            volumeOptions(layout);
+        }
+
+        void volumeOptions(GuiLayout layout)
+        {
+            if (Ref.music != null)
+            {
+                new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, Ref.langOpt.SoundOption_MusicVolume, musicVolProperty, new IntervalF(0, 4), false, layout);
+            }
+            new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, Ref.langOpt.SoundOption_SoundVolume, soundVolProperty, new IntervalF(0, 4), false, layout);
+        }
+
+        void volumeOptions(RichBoxContent content)
+        {
+            if (Ref.music != null)
+            {
+                content.newLine();
+                content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
+                content.space();
+                content.Add(new RbText(Ref.langOpt.SoundOption_MusicVolume));
+                content.space();
+                content.Add(new RbDragButton(new DragButtonSettings(0,4,0.1f), musicVolProperty, true));
+            }
+
+            content.newLine();
+            content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
+            content.space();
+            content.Add(new RbText(Ref.langOpt.SoundOption_SoundVolume));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), soundVolProperty, true));
+        }
+
+        public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        {
+            var resoutionPercOptions = Engine.Screen.ResoutionPercOptions();
+            DropDownBuilder dropdown = new DropDownBuilder("resolution%");
+            {
+                foreach (var m in resoutionPercOptions)
+                {
+                    dropdown.AddOption(string.Format(Ref.langOpt.GraphicsOption_Resolution_PercentageOption, m),
+                        Engine.Screen.UseRecordingPreset == RecordingPresets.NumNon &&
+                        m == Engine.Screen.RenderScalePerc,
+                        m == 100,
+                        new RbAction1Arg<int>(setResolutionPercProperty, m), null);
+                }
+
+                dropdown.Build(content, Ref.langOpt.GraphicsOption_Resolution, menu);
+            }
+
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GraphicsOption_Fullscreen) }, Ref.gamesett.fullscreenProperty));
+
+            if (!Screen.PcTargetFullScreen)
+            {
+                DropDownBuilder OversizeWidth = new DropDownBuilder("OversizeWidth");
+                DropDownBuilder OversizeHeight = new DropDownBuilder("OversizeHeight");                
+
+                OversizeWidth.AddOption(Ref.langOpt.GraphicsOption_Oversize_None, Engine.Screen.oversizeWidthPerc == 0, false,
+                        new RbAction1Arg<int>(setOversizeWidthProperty, 0), null);
+                OversizeHeight.AddOption(Ref.langOpt.GraphicsOption_Oversize_None, Engine.Screen.oversizeHeightPerc == 0, false,
+                    new RbAction1Arg<int>(setOversizeHeightProperty, 0), null);
+
+                int[] oversizes = new int[] { 150, 175, 200, 250, 300 };
+
+                foreach (var ov in oversizes)
+                {
+                    OversizeWidth.AddOption(string.Format(Ref.langOpt.GraphicsOption_PercentageOversizeWidth, ov), ov == Engine.Screen.oversizeWidthPerc, false,
+                        new RbAction1Arg<int>(setOversizeWidthProperty, ov), null);
+                    OversizeHeight.AddOption(string.Format(Ref.langOpt.GraphicsOption_PercentageOversizeHeight, ov), ov == Engine.Screen.oversizeHeightPerc, false,
+                        new RbAction1Arg<int>(setOversizeHeightProperty, ov), null);
+                }
+
+                OversizeWidth.Build(content, Ref.langOpt.GraphicsOption_OversizeWidth, menu);
+                OversizeHeight.Build(content, Ref.langOpt.GraphicsOption_OversizeHeight, menu);
+            }
+
+            //new GuiTextButton(Ref.langOpt.GraphicsOption_RecordingPresets, null, new GuiAction1Arg<Gui>(recordingResolutionOptions, layout.gui), true, layout);
+
+            DropDownBuilder RecordPreset = new DropDownBuilder("RecordPreset");
+            {
+                var monitor = Microsoft.Xna.Framework.Graphics.GraphicsAdapter.DefaultAdapter;
+                for (RecordingPresets rp = 0; rp < RecordingPresets.NumNon; ++rp)
+                {
+                    IntVector2 sz = Engine.Screen.RecordingPresetsResolution(rp);
+                    if (sz.Y > monitor.CurrentDisplayMode.Height)
+                    {
+                        //Too large for the screen
+                        break;
+                    }
+                    else
+                    {
+                        string name = string.Format(Ref.langOpt.GraphicsOption_YoutubePreset, sz.Y);
+                        RecordPreset.AddOption(name, rp == Engine.Screen.UseRecordingPreset, rp == RecordingPresets.YouTube1080p,
+                            new RbAction1Arg<RecordingPresets>(Ref.gamesett.setRecordingPreset, rp), null);
+                    }
+                }
+            }
+
+            content.newLine();
+            //content.Add(new RbImage(SpriteName.LFIconLetter));
+            content.Add(new RbText( Ref.langOpt.GraphicsOption_UiScale));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.5f, 2f, 0.1f), uiScaleProperty, true));
+            content.space();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Apply") },
+                new RbAction(Ref.gamestate.OnResolutionChange)));
+            //new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
+        }
+
+        void setOversizeWidthProperty(int value)
+        {
+            oversizeWidthProperty(true, value);
+        }
+        int oversizeWidthProperty(bool set, int value)
+        {
+            if (set)
+            {
+                Engine.Screen.oversizeWidthPerc = value;
+                Screen.ApplyScreenSettings();
+
+                graphicsHasChanged = true;
+            }
+            return Engine.Screen.oversizeWidthPerc;
+        }
+        void setOversizeHeightProperty(int value)
+        {
+            oversizeHeightProperty(true, value);
+        }
+        int oversizeHeightProperty(bool set, int value)
+        {
+            if (set)
+            {
+                Engine.Screen.oversizeHeightPerc = value;
+                Screen.ApplyScreenSettings();
+
+                graphicsHasChanged = true;
+            }
+            return Engine.Screen.oversizeHeightPerc;
+        }
+
+        public void setResolutionPercProperty(int res)
+        {
+            resolutionPercProperty(true, res);  
+        }
+
         public int resolutionPercProperty(bool set, int res)
         {
             if (set)
@@ -262,47 +443,9 @@ namespace VikingEngine
             return Engine.Screen.RenderScalePerc;
         }
 
-        public void optionsMenu(GuiLayout layout)
-        {
-            soundOptions(layout);
-            new GuiSectionSeparator(layout);
-            graphicsOptions(layout);
-        }
-        public void quickOptionsMenu(GuiLayout layout)
-        {
-            volumeOptions(layout);
-            fullScreenBox(layout);
-        }
-
-
-        public void soundOptions(GuiLayout layout)
-        {
-            volumeOptions(layout);
-            //if (Ref.music != null)
-            //{
-            //    if (Ref.music.hasMusicQue())
-            //    {
-            //        new GuiTextButton("Next song", null, Ref.music.nextRandomSong, false, layout);
-            //    }
-            //    //if (Ref.music.IsPlaying())
-            //    //{
-            //    //    new GuiDelegateLabel(SongTitleProperty, layout);
-            //    //}
-            //}
-        }
-
-        void volumeOptions(GuiLayout layout)
-        {
-            if (Ref.music != null)
-            {
-                new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, Ref.langOpt.SoundOption_MusicVolume, musicVolProperty, new IntervalF(0, 4), false, layout);
-            }
-            new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, Ref.langOpt.SoundOption_SoundVolume, soundVolProperty, new IntervalF(0, 4), false, layout);
-        }
-
         public void graphicsOptions(GuiLayout layout)
         {
-            listMonitors(layout);
+            //listMonitors(layout);
 
             var resoutionPercOptions = Engine.Screen.ResoutionPercOptions();
 
@@ -352,6 +495,7 @@ namespace VikingEngine
                     IntVector2 sz = Engine.Screen.RecordingPresetsResolution(rp);
                     if (sz.Y > monitor.CurrentDisplayMode.Height)
                     {
+                        //Too large for the screen
                         break;
                     }
                     else
@@ -392,29 +536,7 @@ namespace VikingEngine
 #endif
         }
 
-        int oversizeWidthProperty(bool set, int value)
-        {
-            if (set)
-            {
-                Engine.Screen.oversizeWidthPerc = value;
-                Screen.ApplyScreenSettings();
-
-                graphicsHasChanged = true;
-            }
-            return Engine.Screen.oversizeWidthPerc;
-        }
-
-        int oversizeHeightProperty(bool set, int value)
-        {
-            if (set)
-            {
-                Engine.Screen.oversizeHeightPerc = value;
-                Screen.ApplyScreenSettings();
-
-                graphicsHasChanged = true;
-            }
-            return Engine.Screen.oversizeHeightPerc;
-        }
+        
 
         public float musicVolProperty(bool set, float value)
         {

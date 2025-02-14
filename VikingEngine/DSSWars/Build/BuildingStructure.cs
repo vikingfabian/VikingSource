@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.Build
 {
@@ -163,9 +164,10 @@ namespace VikingEngine.DSSWars.Build
                     countText.overrideColor = Color.White;
                     infoContent.Add(countText); 
 
-                    var infoButton = new RbButton(infoContent, null, new RbAction(() =>
+                    var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, null, 
+                        new RbTooltip((RichBoxContent content, object tag) =>
                     {
-                        RichBoxContent content = new RichBoxContent();
+                        //RichBoxContent content = new RichBoxContent();
 
                         content.Add(new RbImage(icon));
                         content.space();
@@ -173,12 +175,12 @@ namespace VikingEngine.DSSWars.Build
                         content.Add(new RbText(TextLib.LargeFirstLetter( string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
 
 
-                        player.hud.tooltip.create(player, content, true);
+                        //player.hud.tooltip.create(player, content, true);
                     }));
 
-                    infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+                    //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
                     content.Add(infoButton);
-                    content.space();
+                    //content.space();
                 }
             }
         }

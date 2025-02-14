@@ -137,6 +137,11 @@ namespace VikingEngine.Engine
             return DrawArea;
         }
 
+        public void FullScreenSetup()
+        {
+            SetDrawArea(1, 0, false, null);
+        }
+
         public void SetDrawArea(int numplayers, int myScreenIx, bool updateCam, Player player)
         {
             float zoom;

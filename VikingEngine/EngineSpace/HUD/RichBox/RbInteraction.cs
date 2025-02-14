@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.PJ.Match3;
 
 namespace VikingEngine.HUD.RichBox
 {
-    class RbInteraction
+    abstract class AbsRbInteraction
+    {   
+        abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
+    }
+    class RbInteraction: AbsRbInteraction
     {
-        //public Vector2 outlineOffset = Vector2.Zero;
         public AbsRbButton hover = null;
         public List<AbsRbButton> buttons = new List<AbsRbButton>(4);
         public ImageLayers layer;
@@ -18,62 +22,125 @@ namespace VikingEngine.HUD.RichBox
         Graphics.RectangleLines selectionOutline = null;
         Input.IButtonMap clickInput;
         public RenderTargetDrawContainer drawContainer = null;
+        public AbsRbInteraction interactionStack = null;
 
         public RbInteraction(List<AbsRichBoxMember> content, ImageLayers layer,  Input.IButtonMap clickInput)
         {
             this.layer = layer;
             this.clickInput = clickInput;
-           
+
+            //foreach (var m in content)
+            //{
+            //    m.getButtons(buttons);
+            //}
+            refresh(content);
+        }
+
+        public void refresh(List<AbsRichBoxMember> content)
+        {
+            buttons.Clear();
             foreach (var m in content)
             {
                 m.getButtons(buttons);
             }
         }
 
-        public bool update(Vector2 mousePosOffSet)
+       
+
+        //public void inherit(RbInteraction prev)
+        //{
+        //    hover = prev.hover;
+        //    selectionOutline = prev.selectionOutline;
+        //}
+
+        /// <returns>Any interaction happened (to avoid multiple)</returns>
+        override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool unused1)
         {
+            //Debug.Log("Interaction UPDATE");
+            //Debug.Log($"Mouse offset: {mousePosOffSet}");
+            //Debug.Log($"Menu bg pos: {menu.backgroundArea.Position}");
+            //Debug.Log($"Menu content offset: {menu.richBox.GetOffset()}");
+            unused1 = false;
+            needRefresh = false;
+            if (interactionStack != null)
+            {
+                var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out needRefresh, out bool endInteraction);
+                if (endInteraction)
+                {
+                    interactionStack = null;
+                }
+                return result;
+            }
+
+            AbsRbButton prev = hover;
+            int buttonIndex = 0;
+            VectorRect area = VectorRect.Zero;
+            //VectorRect area2 = VectorRect.Zero;
+            //int hoverIx = 0;
             if (clickInput.IsMouse)
             {
                 Vector2 pos = Input.Mouse.Position + mousePosOffSet;
-                //if (drawContainer != null)
-                //{
-                //    pos -= drawContainer.Position;
-                //}
-                AbsRbButton prev = hover;
+                //Debug.Log($"mouse pos: {pos}");
                 hover = null;
-                VectorRect area = VectorRect.Zero;
+                
 
                 foreach (var m in buttons)
                 {
-                    if (m.buttonMap != null && m.buttonMap.DownEvent)
-                    {
-                        m.onClick();
-                    }
-
                     area = m.area();
                     if (area.IntersectPoint(pos))
                     {
+                        //if (Input.Keyboard.Ctrl && m != prev)
+                        //{
+                        //    lib.DoNothing();
+                        //}
                         hover = m;
+                        //area2 = hover.area();
                         break;
                     }
-                }
-
-                if (hover != prev)
-                {
-                    prev?.clickAnimation(false);
-                    refreshSelectOutline();
+                    ++buttonIndex;
                 }
             }
+
+            if (hover != prev)
+            {
+                
+                //Debug.Log("hover != prev");
+
+                //Debug.Log($"Mouse offset: {mousePosOffSet}");
+                //Debug.Log($"Mouse pos: {Input.Mouse.Position}");
+                //Debug.Log($"First button: {buttons[0].area()}");
+                //Debug.Log($"Menu render pos: {menu.renderList.position}");
+
+                //if (hover == null)
+                //{
+                //    Debug.Log($"Hover: null");
+                //}
+                //else
+                //{
+                //    Debug.Log($"Hover, ix{buttonIndex}: {hover.area()}");
+                //}
+
+                if (prev != null)
+                {
+                    prev.clickAnimation(false);
+                    //Debug.Log("deleteTooltip: new hover");
+                    menu?.deleteTooltip();
+                }
+                refreshSelectOutline();
+                
+                hover?.onEnter(menu);
+            }
+
             if (hover != null)
             {
-                if (clickInput.DownEvent)
+                if (clickInput.DownEvent && useClickInput)
                 {
-                    hover.onClick();
+                    hover.onClick(menu);
                     hover.clickAnimation(true);
                     return true;
                 }
                 else if (clickInput.UpEvent)
-                { 
+                {
                     hover.clickAnimation(false);
                 }
             }
@@ -89,9 +156,7 @@ namespace VikingEngine.HUD.RichBox
             if (hover != null)
             {
                 var ar = hover.area();
-                //ar.Position += outlineOffset;
-                selectionOutline = new RectangleLines(ar, 2, 1, layer);
-                hover.onEnter();
+                selectionOutline = new RectangleLines(ar, 2, 1, layer);                
             }
 
             Ref.draw.AddToContainer = null;
@@ -99,11 +164,19 @@ namespace VikingEngine.HUD.RichBox
 
         public void clearSelection()
         {
-            Ref.draw.AddToContainer = drawContainer;
-            hover = null;
-            selectionOutline?.DeleteMe();
-            selectionOutline = null;
-            Ref.draw.AddToContainer = null;
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+
+            if (selectionOutline != null)
+            {
+                Ref.draw.AddToContainer = drawContainer;
+                hover = null;
+                selectionOutline?.DeleteMe();
+                selectionOutline = null;
+                Ref.draw.AddToContainer = null;
+            }
         }
 
         public void DeleteMe()

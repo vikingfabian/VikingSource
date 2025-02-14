@@ -4,9 +4,11 @@ using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
 
@@ -53,7 +55,7 @@ namespace VikingEngine.HUD.RichBox
 
         public void space(float spaces = 1f)
         { 
-            Add(new RichBoxSpace(spaces));
+            Add(new RbSpace(spaces));
         }
 
         public RbText h1(string textline)
@@ -66,11 +68,33 @@ namespace VikingEngine.HUD.RichBox
             return text;
         }
 
+        public RbText h1(string textline, Color color)
+        {
+            newLine();
+            Add(new RbBeginTitle(1));
+            var text = new RbText(textline);
+            text.overrideColor = color;
+            Add(text);
+
+            return text;
+        }
+
         public RbText h2(string textline)
         {
             newLine();
             Add(new RbBeginTitle(2));
             var text = new RbText(textline);
+            Add(text);
+
+            return text;
+        }
+
+        public RbText h2(string textline, Color color)
+        {
+            newLine();
+            Add(new RbBeginTitle(2));
+            var text = new RbText(textline);
+            text.overrideColor = color;
             Add(text);
 
             return text;
@@ -107,7 +131,7 @@ namespace VikingEngine.HUD.RichBox
             if (icon != SpriteName.NO_IMAGE)
             {
                 buttonContent.Add(new RbImage(icon));
-                buttonContent.Add(new RichBoxSpace());
+                buttonContent.Add(new RbSpace());
             }
             buttonContent.Add(new RbText(caption));
             //{
@@ -138,7 +162,7 @@ namespace VikingEngine.HUD.RichBox
             if (icon != SpriteName.NO_IMAGE)
             {
                 Add(new RbImage(icon));
-                Add(new RichBoxSpace(0.6f));
+                Add(new RbSpace(0.6f));
             }
             Add(new RbText(label));
 
@@ -212,5 +236,42 @@ namespace VikingEngine.HUD.RichBox
                 }
             }
         }
+
+        //public void DropDown(string label, List<AbsRichBoxMember> menuCaption, List<List<AbsRichBoxMember>> options, 
+        //    int selectedIx, int defaultIx, AbsRbAction openClose, RbAction1Arg<int> onSelect, List<AbsRbAction> optionsTooltip, bool isDown)
+        //{ 
+        //    text(label).overrideColor = HudLib.TitleColor_Label;
+        //    newLine();
+        //    menuCaption.Add(new RbImage(SpriteName.WarsHudDropDownArrow));
+
+        //    Add(new ArtButton(RbButtonStyle.DropDownSelected, menuCaption, openClose));
+
+        //    if (isDown)
+        //    {
+        //        for (int i = 0; i < menuCaption.Count;i++)
+        //        {
+        //            newLine();
+        //            SpriteName dot = SpriteName.WarsHudListArrowDefault;
+        //            RbButtonStyle style = RbButtonStyle.DropDownNotSelected;
+        //            if (i == selectedIx) 
+        //            {
+        //                dot = SpriteName.WarsHudListArrowSelected;
+        //                style = RbButtonStyle.DropDownSelected;
+        //            }
+        //            else if (i == defaultIx)
+        //            {
+        //                dot = SpriteName.WarsHudListArrowDefault;
+        //            }
+
+        //            Add(new RbTab(0.1f));
+        //            Add(new RbImage(dot));
+        //            Add(new RbSpace());
+        //            AbsRbAction tooltip = optionsTooltip != null ? optionsTooltip[i] : null;
+        //            Add(new ArtButton(style, options[i], onSelect, optionsTooltip[i]));
+        //        }
+        //        newLine();
+        //        Add(new RbSeperationLine());
+        //    }
+        //}
     }
 }

@@ -85,10 +85,10 @@ namespace VikingEngine.DSSWars.Display
                     {
                         if (menuToolTip)
                         {
-                            images.SetOffset(new Vector2(
-                                player.hud.displays.headDisplay.area.Right + 10,
-                                player.hud.displays.controllerSelectionPos().Y)
-                                );
+                            //images.SetOffset(new Vector2(
+                            //    player.hud.displays.headDisplay.area.Right + 10,
+                            //    player.hud.displays.controllerSelectionPos().Y)
+                            //    );
                         }
                         else
                         {

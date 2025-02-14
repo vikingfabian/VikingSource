@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.WeaponAttack.ItemThrow;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.PJ;
@@ -16,7 +18,7 @@ namespace VikingEngine.DSSWars
     class FlagAndColor
     {
         public static readonly int ColorCount = (int)ProfileColorType.NUM;
-        static readonly ColorRange AiColorRange = new ColorRange(new Color(new Vector3(0.1f)), new Color(new Vector3(0.9f)));
+        public static readonly ColorRange AiColorRange = new ColorRange(new Color(new Vector3(0.1f)), new Color(new Vector3(0.9f)));
 
         public static AppearanceMaterial
             SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2;
@@ -2879,6 +2881,15 @@ namespace VikingEngine.DSSWars
 
             button.icon.Texture = flagDesign.CreateTexture(this);
             button.icon.SetFullTextureSource();
+        }
+
+        public List<AbsRichBoxMember> RbButton()
+        {
+            List<AbsRichBoxMember> result = new List<AbsRichBoxMember>(2);
+            result.Add(new RbTexture(flagDesign.CreateTexture(this)));
+            result.Add(new RbSpace());
+            result.Add(new RbText(string.Format(DssRef.lang.Lobby_FlagNumbered, index + 1)));
+            return result;
         }
 
         //public void write(System.IO.BinaryWriter w)

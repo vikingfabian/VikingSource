@@ -155,6 +155,7 @@ namespace VikingEngine.Engine
     
     class PlayerData : AbsPlayerData
     {
+        public const int AllPlayers = -1;
         public VikingEngine.Input.PlayerInputMap inputMap = null;
         
         public bool IsActive = false; 
@@ -163,6 +164,10 @@ namespace VikingEngine.Engine
         public PlayerData(int localPlayerIndex, int globalIndex = -1)
         {
             view = new PlayerView();
+            if (localPlayerIndex == AllPlayers)
+            {
+                view.FullScreenSetup();
+            }
             this.localPlayerIndex = localPlayerIndex;
             this.globalPlayerIndex = globalIndex;
             inputMap = null;

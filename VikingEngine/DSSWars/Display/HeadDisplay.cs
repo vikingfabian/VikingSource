@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Display
     {        
         public bool fullDisplay = true;
         public const string AutomationMenuState = "auto";
-        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Economy, MenuTab.Resources, MenuTab.Work, MenuTab.Automation, MenuTab.Progress };
+        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, MenuTab.Automation, MenuTab.Progress };
 
         public HeadDisplay(RichboxGui gui)
             :base(gui)
@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Display
 
         public void refreshUpdate(Players.LocalPlayer player, bool fullDisplay, bool refresh, Faction faction)
         {
+            
             if (bg.Visible && refresh)
             {
                 beginRefresh();
@@ -46,7 +47,7 @@ namespace VikingEngine.DSSWars.Display
                         content.newLine();
                         int tabSel = 0;
 
-                        var tabs = new List<RbTabMember>((int)MenuTab.NUM);
+                        var tabs = new List<RbTabMember>((int)MenuTab.NUM_NONE);
                         for (int i = 0; i < Tabs.Length; ++i)
                         {
                             var text = new RbText(LangLib.Tab(Tabs[i], out string description));
@@ -132,7 +133,7 @@ namespace VikingEngine.DSSWars.Display
             void input(Input.IButtonMap button, string text)
             {
                 content.Add(new RbImage(button.Icon));
-                content.Add(new RichBoxSpace());
+                content.Add(new RbSpace());
                 content.Add(new RbText(text));
 
                 content.Add(new RbNewLine());
@@ -163,20 +164,20 @@ namespace VikingEngine.DSSWars.Display
 
             void pauseButton()
             {
-                if (DssRef.difficulty.setting_allowPauseCommand)
-                {
-                    var button = new RbButton(new List<AbsRichBoxMember>
-                    {
-                        new RbImage(player.input.PauseGame.Icon),
-                        new RbText(Ref.isPaused? DssRef.lang.Input_ResumePaused : DssRef.lang.Input_Pause),
-                    },
-                    new RbAction(DssRef.state.pauseAction),
-                    null);
-                    button.setGroupSelectionColor(HudLib.RbSettings, Ref.isPaused);
-                    content.Add(button);
+                //if (DssRef.difficulty.setting_allowPauseCommand)
+                //{
+                //    var button = new RbButton(new List<AbsRichBoxMember>
+                //    {
+                //        new RbImage(player.input.PauseGame.Icon),
+                //        new RbText(Ref.isPaused? DssRef.lang.Input_ResumePaused : DssRef.lang.Input_Pause),
+                //    },
+                //    new RbAction(DssRef.state.pauseAction),
+                //    null);
+                //    button.setGroupSelectionColor(HudLib.RbSettings, Ref.isPaused);
+                //    content.Add(button);
 
-                    content.Add(new RbNewLine());
-                }
+                //    content.Add(new RbNewLine());
+                //}
             }
 
             void gameMenuButton()
@@ -253,7 +254,6 @@ namespace VikingEngine.DSSWars.Display
                                 content.space(); 
                                 
                             }
-                            //content.newLine();
                         }
                     }
                     else
