@@ -12,14 +12,15 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
     {
         public Map.Generate.MapGenerateSettings GenerateSettings;
         MapGeneratorDisplay display;
-        public MapEditorUserStorage storage;
+        public MapEditorUserStorage userStorage;
         GeneratorMap map;
         MapGenerator_BackgroundLoading mapBackgroundLoading;
         bool loadingState = false;
+        public CustomMapStorage mapStorage = new CustomMapStorage();
         public MapEditor_Generator()
             :base() 
         {
-            storage = new MapEditorUserStorage();
+            userStorage = new MapEditorUserStorage();
             GenerateSettings = new Map.Generate.MapGenerateSettings();
             display = new MapGeneratorDisplay(this);
             new Display.EditorBackground();
@@ -73,6 +74,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             if (pass == GenerateMapPass.Clear || pass == GenerateMapPass.AllTerrain)
             {
                 mapBackgroundLoading = new MapGenerator_BackgroundLoading();
+                mapStorage.autoName = $"CustomMap W{GenerateSettings.customMapSize.X} H{GenerateSettings.customMapSize.Y} id{Ref.rnd.Int(9999)}";
             }
             mapBackgroundLoading.generateSettings = GenerateSettings;
             mapBackgroundLoading.generate(pass);
@@ -83,6 +85,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         {
             var state = new LobbyState(false);
             state.playOnCustomMap(mapBackgroundLoading);
+        }
+
+        public void saveMap()
+        { 
+            
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Generate;
@@ -12,6 +14,7 @@ using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
@@ -213,6 +216,21 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                 case MapGeneratorTab.Complete:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                         new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_NewGame) }, new RbAction(state.startNewGame), null, DssRef.world != null && DssRef.world.generatePassCompleted >= GenerateMapPass.Countries));
+
+                    content.newParagraph();
+                    var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
+                       new RbAction(beginEditName), null);
+                    content.Add(editButton);
+                    content.space();
+            
+                    var nameText = new RbText(state.mapStorage.Name);
+                    nameText.overrideColor = Color.LightYellow;
+                    content.Add(nameText);
+
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_SaveState) }, new RbAction(state.saveMap), null, DssRef.world != null));
+
                     break;
 
             }
@@ -220,7 +238,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             
             content.newParagraph();
             content.Add(new RbSeperationLine());
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Advanced settings") }, state.storage.ViewAdvancedProperty));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Advanced settings") }, state.userStorage.ViewAdvancedProperty));
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exit)));
@@ -228,6 +246,18 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             menu.Refresh(content);
         }
 
+        public void beginEditName()
+        {
+            new TextInput(state.mapStorage.Name, NameEditEvent, null);
+        }
+
+        virtual protected void NameEditEvent(string result, object tag)
+        {
+            if (result != null)
+            {
+                state.mapStorage.customName = TextLib.checkFileName(result);
+            }
+        }
         public void setMapSize(MapSize value)
         {
             DssRef.storage.mapSize = value;
@@ -252,7 +282,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         
         Map.Generate.MapGenerateSettings Sett => state.GenerateSettings;
 
-        bool Adv => state.storage.viewAdvancedSettings;
+        bool Adv => state.userStorage.viewAdvancedSettings;
 
         
     }
