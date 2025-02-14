@@ -6,6 +6,7 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.ToGG.MoonFall;
@@ -13,38 +14,37 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.Display
 {
-    class DiplomacyDisplay : RichboxGuiPart
+    class DiplomacyDisplay
     {
         Players.LocalPlayer player;
         DiplomaticRelation selectedRelation;
         Faction otherfaction;
         bool againstDark;
 
-        public DiplomacyDisplay(RichboxGui gui, Players.LocalPlayer player)
-           : base(gui)
+        public DiplomacyDisplay(Players.LocalPlayer player)
         { 
             this.player = player;
         }
 
-        public void refresh(Vector2 pos)
-        {
-            interaction?.DeleteMe();
-            interaction = null;
+        //public void refresh(Vector2 pos)
+        //{
+        //    interaction?.DeleteMe();
+        //    interaction = null;
 
-            bool selection;
-            var faction = player.diplomacyMap.mainSelection(out selection);
+        //    bool selection;
+        //    var faction = player.diplomacyMap.mainSelection(out selection);
 
-            setVisible(faction != null);
+        //    setVisible(faction != null);
 
-            if (faction != null)
-            {
-                beginRefresh();
-                toHud(faction, selection);
-                endRefresh(pos, true);
-            }
-        }
+        //    if (faction != null)
+        //    {
+        //        beginRefresh();
+        //        toHud(faction, selection);
+        //        endRefresh(pos, true);
+        //    }
+        //}
 
-        void toHud(Faction faction, bool selection)
+        public void toHud(RichBoxContent content, Faction faction, bool selection)
         {
             otherfaction = faction;
             selectedRelation = player.faction.diplomaticRelations[faction.parentArrayIndex];
@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Display
                 }
                 else
                 {
-                    playerToPlayer();
+                    playerToPlayer(content);
                 }
             }
 
@@ -86,13 +86,13 @@ namespace VikingEngine.DSSWars.Display
                     content.newParagraph();
                     if (selectedRelation.Relation <= RelationType.RelationTypeN3_War)
                     {
-                        content.Add(new RbButton(new List<AbsRichBoxMember>()
+                        content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
                             new RbImage(SpriteName.WarsRelationTruce),
                             new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Truce)),//"Forge truce"),
                         },
                         new RbAction1Arg<bool>(peaceAction, false, SoundLib.menuBuy),
-                        new RbAction1Arg<bool>(peaceTooltip, false),
+                        new RbTooltip(peaceTooltip, false),
                         canForgePeace(false)));
 
                     }
@@ -100,14 +100,14 @@ namespace VikingEngine.DSSWars.Display
                     {
                         content.newLine();
 
-                        content.Add(new RbButton(new List<AbsRichBoxMember>()
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
                         {
 
                             new RbImage(SpriteName.WarsRelationTruce),
                             new RbText(DssRef.lang.Diplomacy_ExtendTruceAction),//"Extend truce"),
                         },
                             new RbAction(extendTruceAction, SoundLib.menuBuy),
-                            new RbAction(extendTruceTooltip),
+                            new RbTooltip(extendTruceTooltip),
                             canExtendTruce()));
                     }
 
@@ -115,13 +115,13 @@ namespace VikingEngine.DSSWars.Display
                     {
                         content.newLine();
 
-                        content.Add(new RbButton(new List<AbsRichBoxMember>()
+                        content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
                             new RbImage(SpriteName.WarsRelationPeace),
                             new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Peace)),//"Forge peace"),
                         },
                             new RbAction1Arg<bool>(peaceAction, true, SoundLib.menuBuy),
-                            new RbAction1Arg<bool>(peaceTooltip, true),
+                            new RbTooltip(peaceTooltip, true),
                             canForgePeace(true)));
                     }
 
@@ -130,13 +130,13 @@ namespace VikingEngine.DSSWars.Display
                     {
                         content.newLine();
 
-                        content.Add(new RbButton(new List<AbsRichBoxMember>()
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
                         {
                             new RbImage(SpriteName.WarsRelationGood),
                             new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Good)),//"Forge good relations"),
                         },
                             new RbAction1Arg<bool>(allianceAction, false, SoundLib.menuBuy),
-                            new RbAction1Arg<bool>(allianceTooltip, false),
+                            new RbTooltip(allianceTooltip, false),
                             canForgeAlliance(false)));
                     }
 
@@ -144,13 +144,13 @@ namespace VikingEngine.DSSWars.Display
                     {
                         content.newLine();
 
-                        content.Add(new RbButton(new List<AbsRichBoxMember>()
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
                             {
                                 new RbImage(SpriteName.WarsRelationAlly),
                                 new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Ally)),//"Forge alliance"),
                             },
                             new RbAction1Arg<bool>(allianceAction, true, SoundLib.menuBuy),
-                            new RbAction1Arg<bool>(allianceTooltip, true),
+                            new RbTooltip(allianceTooltip, true),
                             canForgeAlliance(true)));
                     }
 
@@ -158,12 +158,12 @@ namespace VikingEngine.DSSWars.Display
                     {
                         content.newLine();
 
-                        content.Add(new RbButton(new List<AbsRichBoxMember>()
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
                             {
                                 new RbText(DssRef.lang.Diplomacy_AbsorbServant),//"Absorb as servant"),
                             },
                             new RbAction(servantAction, SoundLib.menuBuy),
-                            new RbAction(servantTooltip),
+                            new RbTooltip(servantTooltip),
                             canMakeServant()));
                     }
                 }
@@ -216,7 +216,7 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RbText(Diplomacy.RelationString(relation)));
         }
 
-        void playerToPlayer()
+        void playerToPlayer(RichBoxContent content)
         {
             var otherPlayer = otherfaction.player.GetLocalPlayer();
 
@@ -231,7 +231,7 @@ namespace VikingEngine.DSSWars.Display
 
                 if (PtoP.suggestedBy == player.playerData.localPlayerIndex)
                 {
-                    content.Add(new RbButton(new List<AbsRichBoxMember>()
+                    content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
                             //new RichBoxImage(SpriteName.WarsRelationPeace),
                             new RbText(Ref.langOpt.Hud_Cancel),
@@ -240,7 +240,7 @@ namespace VikingEngine.DSSWars.Display
                 }
                 else
                 {
-                    content.Add(new RbButton(new List<AbsRichBoxMember>()
+                    content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
                             //new RichBoxImage(SpriteName.WarsRelationPeace),
                             new RbText(DssRef.lang.Diplomacy_AcceptRelationOffer),
@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars.Display
                 {
                     content.newLine();
 
-                    content.Add(new RbButton(new List<AbsRichBoxMember>()
+                    content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
                             new RbImage(SpriteName.WarsRelationPeace),
                             new RbText(DssRef.lang.Diplomacy_OfferPeace),
@@ -265,7 +265,7 @@ namespace VikingEngine.DSSWars.Display
                 {
                     content.newLine();
 
-                    content.Add(new RbButton(new List<AbsRichBoxMember>()
+                    content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
                             new RbImage(SpriteName.WarsRelationAlly),
                             new RbText(DssRef.lang.Diplomacy_OfferAlliance),
@@ -304,7 +304,7 @@ namespace VikingEngine.DSSWars.Display
             var acceptButtonContent = new List<AbsRichBoxMember>(7);
             otherPlayer.hud.messages.ControllerInputIcons(acceptButtonContent);
             acceptButtonContent.Add(new RbText(DssRef.lang.Diplomacy_AcceptRelationOffer));
-            message.Add(new RbButton(
+            message.Add(new ArtButton(RbButtonStyle.Primary,
                 acceptButtonContent,
                 new RbAction(acceptToPlayerRelation)));
             otherPlayer.hud.messages.Add(message);
@@ -340,17 +340,17 @@ namespace VikingEngine.DSSWars.Display
                 player.hud.needRefresh = true;
             }
         }
-        void extendTruceTooltip() 
+        void extendTruceTooltip(RichBoxContent content, object tag)
         {
             int cost = Diplomacy.ExtendTruceCost();
 
-            RichBoxContent content = new RichBoxContent();
+            //RichBoxContent content = new RichBoxContent();
 
             diplomacyCostToHud(cost, content);
             //string truceDesc = "Extends truce by {0} seconds";
             content.text(string.Format(DssRef.lang.Diplomacy_TruceExtendTimeLength, DssLib.TruceTimeSec));
 
-            player.hud.tooltip.create(player, content, true);
+            //player.hud.tooltip.create(player, content, true);
         }
 
         bool canExtendTruce()
@@ -385,11 +385,12 @@ namespace VikingEngine.DSSWars.Display
             return player.diplomaticPoints.Int() >= Diplomacy.EndWarCost(selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, peace_notTruce);
         }
 
-        void peaceTooltip(bool peace_notTruce)
+        void peaceTooltip(RichBoxContent content, object tag)
         {
+            bool peace_notTruce = (bool)tag;
             int cost = Diplomacy.EndWarCost(selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, peace_notTruce);
             RelationType toRelation = peace_notTruce ? RelationType.RelationType1_Peace : RelationType.RelationTypeN2_Truce;
-            RichBoxContent content = new RichBoxContent();
+            //RichBoxContent content = new RichBoxContent();
 
             diplomacyCostToHud(cost, content);
 
@@ -408,7 +409,7 @@ namespace VikingEngine.DSSWars.Display
                 content.text(string.Format(DssRef.lang.Diplomacy_TruceTimeLength, DssLib.TruceTimeSec));
             }
 
-            player.hud.tooltip.create(player, content, true);
+            //player.hud.tooltip.create(player, content, true);
         }
 
         void allianceAction(bool ally_notFriend)
@@ -437,12 +438,13 @@ namespace VikingEngine.DSSWars.Display
             return player.diplomaticPoints.Int() >= Diplomacy.AllianceCost(selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend);
         }
 
-        void allianceTooltip(bool ally_notFriend)
+        void allianceTooltip(RichBoxContent content, object tag)//bool ally_notFriend)
         {
+            bool ally_notFriend = (bool)tag;
             int cost = Diplomacy.AllianceCost(selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend);
             RelationType toRelation = ally_notFriend ? RelationType.RelationType3_Ally : RelationType.RelationType2_Good;
 
-            RichBoxContent content = new RichBoxContent();
+            //RichBoxContent content = new RichBoxContent();
 
             diplomacyCostToHud(cost, content);
 
@@ -480,7 +482,7 @@ namespace VikingEngine.DSSWars.Display
             HudLib.BulletPoint(content);
             content.Add(new RbText( string.Format(DssRef.lang.Diplomacy_BreakingRelationCost, Diplomacy.DeclareWarCost(toRelation))));
 
-            player.hud.tooltip.create(player, content, true);
+            //player.hud.tooltip.create(player, content, true);
         }
 
         void servantAction()
@@ -521,11 +523,11 @@ namespace VikingEngine.DSSWars.Display
             return false;
         }
 
-        void servantTooltip()
+        void servantTooltip(RichBoxContent content, object tag)
         {
             int cost = Diplomacy.MakeServantCost(player, againstDark);
             
-            RichBoxContent content = new RichBoxContent();
+            //RichBoxContent content = new RichBoxContent();
 
             content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
@@ -567,7 +569,7 @@ namespace VikingEngine.DSSWars.Display
             
             content.text(DssRef.lang.Diplomacy_ServantGainAbsorbFaction);
 
-            player.hud.tooltip.create(player, content, true);
+            //player.hud.tooltip.create(player, content, true);
         }
 
         void diplomacyCostToHud(int cost, RichBoxContent content)

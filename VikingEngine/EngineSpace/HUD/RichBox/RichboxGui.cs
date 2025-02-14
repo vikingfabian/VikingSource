@@ -36,7 +36,7 @@ namespace VikingEngine.HUD.RichBox
         public List<string> menuState = new List<string>();
         public bool menuStateHasChange = false;
 
-        public string CurrentMenuState => menuState.LastOrDefault();
+        
         public int movePos_part = -1;
         public IntVector2 movePos_grid = IntVector2.Zero;
         public int lockInput = 0;
@@ -58,11 +58,7 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
-        public void clearState()
-        {
-            menuState.Clear();
-            menuStateHasChange = true;
-        }
+       
 
         virtual public bool update()
         {
@@ -222,6 +218,12 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
+
+        public void clearState()
+        {
+            menuState.Clear();
+            menuStateHasChange = true;
+        }
         public void SetMenuState(string state)
         {
             menuState.Add(state);
@@ -245,6 +247,8 @@ namespace VikingEngine.HUD.RichBox
                 beginMove(movePos_part);
             }
         }
+
+        public string CurrentMenuState => menuState.LastOrDefault();
 
         public bool mouseOver()
         {

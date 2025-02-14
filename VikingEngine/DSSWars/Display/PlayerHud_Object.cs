@@ -4,21 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Display
 {
     class PlayerHud_Object
     {
-        RichMenu menu;
+        DiplomacyDisplay diplomacy;
+        public RichMenu menu;
+        public Army otherArmy;
         public PlayerHud_Object(LocalPlayer player)
         {
             //
-
-
-
+            diplomacy = new DiplomacyDisplay(player);
         }
 
         void createMenu(LocalPlayer player)
@@ -43,16 +45,32 @@ namespace VikingEngine.DSSWars.Display
             menu = null;
         }
 
+        public void refreshDiplomacy(Players.LocalPlayer player, Faction faction, bool selected)
+        {
+            if (menu != null && menu.BlockRefresh())
+            {
+                return;
+            }
+            if (faction == null)
+            {
+                deleteMenu();
+            }
+            else
+            {
+                createMenu(player);
+
+                var content = new RichBoxContent();
+                diplomacy.toHud(content, faction, selected);
+                menu.Refresh(content);
+            }
+        }
+
         public void refreshObject(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected)
         {
             if (menu != null && menu.BlockRefresh())
             {
                 return;
             }
-            //interaction?.DeleteMe();
-            //interaction = null;
-
-            //setVisible(obj != null);
 
             if (obj == null)
             {
@@ -63,24 +81,9 @@ namespace VikingEngine.DSSWars.Display
 
                 createMenu(player);
 
-                //beginRefresh();
-                //if (obj.CanMenuFocus() && player.input.inputSource.IsController)
-                //{
-                //    content.Add(new HUD.RichBox.RbImage(player.input.ControllerFocus.Icon));
-                //    content.Add(new HUD.RichBox.RbText(":"));
-                //    content.newLine();
-                //}
                 var content = new RichBoxContent();
                 obj.toHud(new ObjectHudArgs(content, player, selected));
                 menu.Refresh(content);
-                //if (gui.menuState.Count > 0)
-                //{
-                //    content.newLine();
-                //    content.Button(Ref.langOpt.Hud_Back, new RbAction(gui.menuBack, SoundLib.menuBack),
-                //        null, true);
-                //}
-                //endRefresh(pos, selected);
-                //viewOutLine(player.mapControls.focusedObjectMenuState());
             }
         }
 

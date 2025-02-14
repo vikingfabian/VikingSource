@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Display
             }
 
             content.newLine();
-            switch (player.hud.displays.CurrentMenuState)
+            switch (player.hud.objMenu.menu.CurrentMenuState)
             {
 
                 default:
@@ -332,9 +332,9 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
 
-            if (!tradeAbleArmies.Contains(player.hud.displays.otherArmy))
+            if (!tradeAbleArmies.Contains(player.hud.objMenu.otherArmy))
             {
-                player.hud.displays.otherArmy = null;
+                player.hud.objMenu.otherArmy = null;
             }
 
             var status = army.Status().getTypeCounts(army.faction);
@@ -404,7 +404,7 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
             var newArmyButton = new RbButton(new List<AbsRichBoxMember> { new RbText("New army")},
                 new RbAction1Arg<Army>(selectArmyTrade, null, SoundLib.menutab));
-            newArmyButton.setGroupSelectionColor(HudLib.RbSettings, player.hud.displays.otherArmy == null);
+            newArmyButton.setGroupSelectionColor(HudLib.RbSettings, player.hud.objMenu.otherArmy == null);
             content.Add(newArmyButton);
             
 
@@ -422,7 +422,7 @@ namespace VikingEngine.DSSWars.Display
 
                 var button = new RbButton(buttonContent,
                 new RbAction1Arg<Army>(selectArmyTrade, otherArmy, SoundLib.menutab));
-                button.setGroupSelectionColor(HudLib.RbSettings, player.hud.displays.otherArmy == otherArmy);
+                button.setGroupSelectionColor(HudLib.RbSettings, player.hud.objMenu.otherArmy == otherArmy);
                 content.Add(button);
             }
 
@@ -480,7 +480,7 @@ namespace VikingEngine.DSSWars.Display
 
         void tradeArmyMenu(RichBoxContent content)
         {
-            if (player.hud.displays.otherArmy == null)
+            if (player.hud.objMenu.otherArmy == null)
             {
                 
             }
@@ -491,7 +491,7 @@ namespace VikingEngine.DSSWars.Display
 
             
 
-            if (player.hud.displays.otherArmy == null)
+            if (player.hud.objMenu.otherArmy == null)
             {
                 
             }
@@ -539,7 +539,7 @@ namespace VikingEngine.DSSWars.Display
                 {
                         new HUD.RichBox.RbText(DssRef.lang.ArmyOption_DisbandAll),
                 },
-                new RbAction1Arg<string>(player.hud.displays.SetMenuState, DisbandAllMenuState, SoundLib.menu),
+                new RbAction2Arg<string, bool>(player.hud.objMenu.menu.OpenMenu, DisbandAllMenuState, true, SoundLib.menu),
                 null);
             content.Add(allbutton);
         }
@@ -583,7 +583,7 @@ namespace VikingEngine.DSSWars.Display
         }
         void splitArmyInHalf()
         {
-            player.hud.displays.otherArmy = null;
+            player.hud.objMenu.otherArmy = null;
 
             var status = army.Status().getTypeCounts(army.faction);
             foreach (var kv in status)
@@ -594,12 +594,12 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
 
-            player.hud.displays.menuBack();
+            player.hud.objMenu.menu.menuBack();
         }
 
         void mergeArmies()
         {
-            army.mergeArmies(player.hud.displays.otherArmy);
+            army.mergeArmies(player.hud.objMenu.otherArmy);
         }
 
         void mergeAllArmies(List<GameObject.Army> tradeAbleArmies)
@@ -634,18 +634,18 @@ namespace VikingEngine.DSSWars.Display
 
         void tradeSoldiersAction(UnitFilterType type, int count)
         {
-            army.tradeSoldiersAction(ref player.hud.displays.otherArmy, type, count);            
+            army.tradeSoldiersAction(ref player.hud.objMenu.otherArmy, type, count);            
         }
 
         void startArmyTrade(Army toarmy)
         {
-            player.hud.displays.otherArmy = toarmy;
-            player.hud.displays.SetMenuState(TradeMenuState);
+            player.hud.objMenu.otherArmy = toarmy;
+            player.hud.objMenu.menu.OpenMenu(TradeMenuState, true);
         }
 
         void selectArmyTrade(Army toarmy)
         {
-            player.hud.displays.otherArmy = toarmy;
+            player.hud.objMenu.otherArmy = toarmy;
         }
 
         void halt()

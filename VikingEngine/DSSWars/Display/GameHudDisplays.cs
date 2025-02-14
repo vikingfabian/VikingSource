@@ -10,38 +10,38 @@ using VikingEngine.Input;
 
 namespace VikingEngine.DSSWars.Display
 {
-    class GameHudDisplays:HUD.RichBox.RichboxGui
-    {
-        public HeadDisplay headDisplay;
-        public ObjectDisplay objectDisplay;
-        public DiplomacyDisplay diplomacyDisplay;
-        public Army otherArmy;
-        public GameHudDisplays(LocalPlayer player)
-            :base(HudLib.richboxGui, player.input)
-        {
-            headDisplay = new HeadDisplay(this);
-            objectDisplay = new ObjectDisplay(this);
-            diplomacyDisplay = new DiplomacyDisplay(this, player);
+    //class GameHudDisplays:HUD.RichBox.RichboxGui
+    //{
+    //    public HeadDisplay headDisplay;
+    //    public ObjectDisplay objectDisplay;
+    //    public DiplomacyDisplay diplomacyDisplay;
+    //    public Army otherArmy;
+    //    public GameHudDisplays(LocalPlayer player)
+    //        :base(HudLib.richboxGui, player.input)
+    //    {
+    //        headDisplay = new HeadDisplay(this);
+    //        objectDisplay = new ObjectDisplay(this);
+    //        diplomacyDisplay = new DiplomacyDisplay(this, player);
 
-            parts = new List<HUD.RichBox.RichboxGuiPart>()
-            {
-                headDisplay, objectDisplay, diplomacyDisplay,
-            };
-        }
+    //        parts = new List<HUD.RichBox.RichboxGuiPart>()
+    //        {
+    //            headDisplay, objectDisplay, diplomacyDisplay,
+    //        };
+    //    }
 
-        public Vector2 BottomLeft()
-        {
-            Vector2 pos = headDisplay.area.LeftBottom;
+    //    public Vector2 BottomLeft()
+    //    {
+    //        Vector2 pos = headDisplay.area.LeftBottom;
 
-            for (int i = 1; i < parts.Count; i++)
-            {
-                if (parts[i].GetVisible()&& parts[i].area.Bottom>pos.Y)
-                { 
-                    pos.Y = parts[i].area.Bottom;
-                }
-            }
+    //        for (int i = 1; i < parts.Count; i++)
+    //        {
+    //            if (parts[i].GetVisible()&& parts[i].area.Bottom>pos.Y)
+    //            { 
+    //                pos.Y = parts[i].area.Bottom;
+    //            }
+    //        }
 
-            return pos;
-        }
-    }
+    //        return pos;
+    //    }
+    //}
 }

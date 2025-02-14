@@ -229,7 +229,7 @@ namespace VikingEngine.DSSWars
                         selected = currentHover;
                         player.hud.needRefresh = true;
 
-                        player.hud.displays.beginMove(2);
+                        //player.hud.displays.beginMove(2);
 
                         var faction = DssRef.world.factions.Array[selected.faction];
 
@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars
 
             if (selected != null)
             {               
-                player.hud.displays.updateMove(out _);
+                //player.hud.displays.updateMove(out _);
 
                 if (player.input.ControllerCancel.DownEvent)
                 {

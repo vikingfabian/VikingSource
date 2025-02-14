@@ -12,6 +12,7 @@ using VikingEngine.DSSWars;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.Input;
 
 namespace VikingEngine.HUD.RichMenu
 {
@@ -177,6 +178,37 @@ namespace VikingEngine.HUD.RichMenu
             menuStack.Add(menuName);
             Refresh(content);
         }
+
+        public void clearState()
+        {
+            menuStack.Clear();
+            needRefresh = true;
+        }
+        //public void SetMenuState(string state)
+        //{
+        //    menuState.Add(state);
+        //    menuStateHasChange = true;
+        //}
+
+        //public bool HasMenuState(string state)
+        //{
+        //    return menuState.Contains(state);
+        //}
+        public void menuBack()
+        {
+            arraylib.RemoveLast(menuStack);
+            needRefresh = true;
+        }
+
+        //void menuMoveRefreshOnStateChange()
+        //{
+        //    if (input.RichboxGuiUseMove && movePos_part >= 0)
+        //    {
+        //        beginMove(movePos_part);
+        //    }
+        //}
+
+        public string CurrentMenuState => menuStack.LastOrDefault();
 
         public void Refresh(RichBoxContent content)
         {
