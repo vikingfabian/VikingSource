@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.EngineSpace.HUD.RichBox;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
 using VikingEngine.Sound;
 using VikingEngine.ToGG;
@@ -83,35 +85,8 @@ namespace VikingEngine.DSSWars
 
 
 
-            string MusicFolder = DssLib.ContentDir + "Music\\";
-            Ref.music.SetPlaylist(new List<Sound.SongData>
-            {
-                new Sound.SongData(MusicFolder + "BBaaB_loop", true, 0.22f),
-                new Sound.SongData(MusicFolder + "Gargoyle_loop", true, 0.3f),
-
-                new Sound.SongData(MusicFolder + "RM 10 - Incubation", false, 0.3f),
-                new Sound.SongData(MusicFolder + "RM 2 - Arcane Benevolence", false, 0.22f),
-                new Sound.SongData(MusicFolder + "RM 3 - Left in Autumn", false, 0.11f),
-                new Sound.SongData(MusicFolder + "RM 4 - Warhogs", false, 0.2f),
-                new Sound.SongData(MusicFolder + "RM 5 - Suddenly Empty", false, 0.15f),
-                new Sound.SongData(MusicFolder + "RM 6 - Auderesne", false, 0.2f),
-                new Sound.SongData(MusicFolder + "RM 7 - For Eternity", false, 0.18f),
-                new Sound.SongData(MusicFolder + "RM 8 - Asynchronous Flanking", false, 0.13f),
-                new Sound.SongData(MusicFolder + "RM 9 - Weeping Bedlam", false, 0.18f),
-
-
-
-                new Sound.SongData(MusicFolder + "digital battleground", false, 0.2f),
-                new Sound.SongData(MusicFolder + "echoes of valor", false, 0.18f),
-                new Sound.SongData(MusicFolder + "Pixelated Battlefields", false, 0.15f),
-
-                new Sound.SongData(MusicFolder + "ancient space", false, 0.22f),
-                new Sound.SongData(MusicFolder + "Dreamscape Adventures", false, 0.2f),
-                new Sound.SongData(MusicFolder + "Shadows of Conflict", false, 0.2f),
-                new Sound.SongData(MusicFolder + "Veil of Time", false, 0.3f),
-
-            },
-            PlatformSettings.PlayMusic);
+            
+            Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
         }
     }
 }

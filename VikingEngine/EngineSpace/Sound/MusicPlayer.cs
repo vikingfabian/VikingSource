@@ -124,7 +124,10 @@ namespace VikingEngine.Sound
                 shuffleSongsLeftToPlay = playList.Count;
             }
         }
-
+        public void PlaySong(SongData songdata)
+        {
+            PlaySong(songdata, false);
+        }
         public void PlaySong(SongData songdata, bool isAsynch, bool autoplay = true)
         {
             currentDelay = 0; // TimeExt.MinutesToMS(DelayBetweenSongs_minutes.GetRandom());

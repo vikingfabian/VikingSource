@@ -63,6 +63,7 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_NewGame = "newgame";
         const string UnderMenu_ListEditors = "editors";
         const string UnderMenu_ListExtra = "extra";
+        const string UnderMenu_ListMusic= "music list";
         const string UnderMenu_PlayerSetup = "playersett";
         const string UnderMenu_ListSaves = "saves";
         const string UnderMenu_Options = "options";
@@ -787,6 +788,12 @@ namespace VikingEngine.DSSWars
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText("Play Commander") },
                             new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text("A small tactical board game")));
 
+                        content.newLine();
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText("Music playlist") },
+                            new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListMusic, false)));
+
+
                         underMenu.Refresh(content);
                     }
                     break;
@@ -885,6 +892,39 @@ namespace VikingEngine.DSSWars
                         //         new GuiCheckbox(Ref.langOpt.VerticalSplitScreen, null, verticalSplitProperty, layout);
                         //         menuSystem.multiplayerGameSpeedToMenu(layout);
                         //     }
+                    }
+                    break;
+
+                case UnderMenu_ListMusic:
+                    {
+                        
+                        RichBoxContent content = new RichBoxContent();
+
+                        List<Sound.SongData> list = Music.PlayList();
+                        foreach (var m in list)
+                        {
+                            content.newLine();
+                            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { 
+                                new RbImage(SpriteName.MenuPixelIconMusicVol), 
+                                new RbSpace(),
+                                new RbText(m.name) },
+                                new RbAction1Arg<Sound.SongData>(Ref.music.PlaySong, m)));
+                        }
+
+                        content.newParagraph();
+
+                        List<Sound.SongData> other = Music.OtherSongs();
+                        foreach (var m in other)
+                        {
+                            content.newLine();
+                            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                                new RbImage(SpriteName.MenuPixelIconMusicVol),
+                                new RbSpace(),
+                                new RbText(m.name) },
+                                new RbAction1Arg<Sound.SongData>(Ref.music.PlaySong, m)));
+                        }
+
+                        underMenu.Refresh(content);
                     }
                     break;
             }

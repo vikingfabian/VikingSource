@@ -343,6 +343,12 @@
 /processorParam:Quality=Best
 /build:DSS/Music/ancient space.ogg
 
+#begin DSS/Music/Arcadia.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Arcadia.ogg
+
 #begin DSS/Music/BBaaB_loop.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -379,6 +385,18 @@
 /processorParam:Quality=Best
 /build:DSS/Music/echoes of valor.ogg
 
+#begin DSS/Music/Elysian_Dreamscape.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Elysian_Dreamscape.ogg
+
+#begin DSS/Music/Epic Shadows of the Fallen.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Epic Shadows of the Fallen.ogg
+
 #begin DSS/Music/epic-warfare-nonloop.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -391,11 +409,23 @@
 /processorParam:Quality=Best
 /build:DSS/Music/Gargoyle_loop.ogg
 
+#begin DSS/Music/Guitar Shadows of the Fallen.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Guitar Shadows of the Fallen.ogg
+
 #begin DSS/Music/i am your doom.ogg
 /importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/i am your doom.ogg
+
+#begin DSS/Music/Legends of Valor.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Legends of Valor.ogg
 
 #begin DSS/Music/Pixelated Battlefields.ogg
 /importer:OggImporter
@@ -492,6 +522,12 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/we-are-heroes.ogg
+
+#begin DSS/Music/What Lurks Below.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/What Lurks Below.ogg
 
 #begin DSS/Sound/anvil.wav
 /importer:WavImporter
