@@ -1378,7 +1378,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Build_ClearOrders => "Clear build orders";
         public override string Build_Order => "Build order";
-        public override string Build_OrderQue => "Build order que: {0}";
+        public override string Build_OrderQue => "Build order queue: {0}";
         public override string Build_AutoPlace => "Auto place";
 
         public override string Work_OrderPrioTitle => "Work priority";

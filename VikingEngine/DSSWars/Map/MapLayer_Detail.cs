@@ -11,10 +11,12 @@ namespace VikingEngine.DSSWars.Map
     {
         ConcurrentStack<DetailMapTile> tilePool = new ConcurrentStack<DetailMapTile>();
         List<DetailMapTile> tiles;
-       
 
-        List<DetailMapTile> processingTiles = new List<DetailMapTile>(800);
-        List<DetailMapTile> synchTiles = new List<DetailMapTile>(800);
+
+        List<DetailMapTile> processingTiles_Add = new List<DetailMapTile>(400);
+        List<DetailMapTile> processingTiles_Remove = new List<DetailMapTile>(400);
+        List<DetailMapTile> synchToRender = new List<DetailMapTile>(400);
+        List<DetailMapTile> synchDelete = new List<DetailMapTile>(400);
         public List<Graphics.PolygonColor> polygons = new List<Graphics.PolygonColor>(256);
 
         Graphics.Mesh waterSurface;
@@ -69,26 +71,27 @@ namespace VikingEngine.DSSWars.Map
             //        tilePool.Push(tile);
             //    }
             //}
-            if (synchTiles.Count > 0)
+            if (synchToRender.Count > 0)
             {
-                lock (synchTiles)
+                lock (synchToRender)
                 {
-                    foreach (var m in synchTiles)
+                    foreach (var m in synchToRender)
                     {
-
-                        if (m.add)
-                        {
-                            m.synchToRender();
-                            
-                        }
-                        else
-                        {
-                            m.recycle();
-                            tilePool.Push(m);
-                        }
+                        m.synchToRender();
                     }
 
-                    synchTiles.Clear();
+                    synchToRender.Clear();
+                }
+
+                lock (synchDelete)
+                {
+                    foreach (var m in synchDelete)
+                    {
+                        m.recycle();
+                        tilePool.Push(m);                        
+                    }
+
+                    synchDelete.Clear();
                 }
             }
         }
@@ -99,22 +102,18 @@ namespace VikingEngine.DSSWars.Map
             {
                 var tilePos = tiles[i].pos;
                 var tile = DssRef.world.tileGrid.Get(tilePos);
-                //Debug.Log("Tile Get(C) " + tilePos.ToString() + ", " + tile.ToString());
                 byte render = DssRef.state.culling.cullingStateA ? tile.bits_renderStateA : tile.bits_renderStateB;
                 if (render == Culling.NoRender || oneSecondUpdate)
                 {
                     tile.hasTileInRender = false;
                     tile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec; 
                     DssRef.world.tileGrid.Set(tilePos, tile);
-                    //Debug.Log("Tile Set(C) " + tilePos.ToString() + ", " + tile.ToString());
-                    tiles[i].add = false;
-                    processingTiles.Add(tiles[i]);
-                    //synchTiles.Push(tiles[i]);
-                    tiles.RemoveAt(i);
-
-                    
+                    //tiles[i].add = false;
+                    processingTiles_Remove.Add(tiles[i]);
+                    tiles.RemoveAt(i);                    
                 }
-            }            
+            }
+                       
 
             for (int pIx = 0; pIx < DssRef.state.culling.players.Length; ++pIx)
             {
@@ -135,7 +134,7 @@ namespace VikingEngine.DSSWars.Map
                         while (loop.Next())
                         {
                             var tile = DssRef.world.tileGrid.Get(loop.Position);
-                            //Debug.Log("Tile Get(B) " + loop.Position.ToString() + ", " + tile.ToString());
+
                             if (!tile.hasTileInRender)
                             {
                                 tile.hasTileInRender = true;
@@ -144,16 +143,12 @@ namespace VikingEngine.DSSWars.Map
                                 DetailMapTile maptile;
                                 if (!tilePool.TryPop(out maptile))
                                 {
-                                    maptile = new DetailMapTile();// loop.Position, tile);
+                                    maptile = new DetailMapTile();
                                 }
-                                maptile.add = true;
-                                maptile.polygonBlock(loop.Position, tile);
-                                processingTiles.Add(maptile);
-                               // synchTiles.Push(maptile);
-                               tiles.Add(maptile);
-
-                                
-                                //Debug.Log("Tile Set(B) " + loop.Position.ToString() + ", " + tile.ToString());
+                                //maptile.add = true;
+                                maptile.generateModel_async(loop.Position, tile);
+                                processingTiles_Add.Add(maptile);
+                                tiles.Add(maptile);
                             }
                         }
                     }
@@ -162,11 +157,17 @@ namespace VikingEngine.DSSWars.Map
 
             oneSecondUpdate = false;
 
-            lock (synchTiles)
+            lock (synchToRender)
             {
-                synchTiles.AddRange(processingTiles);
+                synchToRender.AddRange(processingTiles_Add);
             }
-            processingTiles.Clear();
+            processingTiles_Add.Clear();
+
+            lock (synchDelete)
+            {
+                synchDelete.AddRange(processingTiles_Remove);
+            }
+            processingTiles_Remove.Clear();
         }
     }
 }

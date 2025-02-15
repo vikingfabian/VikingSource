@@ -61,20 +61,17 @@ namespace VikingEngine.DSSWars.Map
         List<AnimalData> animalData;
         bool hasPolygons;
 
-        public bool add = true;
+        //public bool add = true;
         static PcgRandom rnd = new PcgRandom();
         //public bool isDeleted = false;
 
         public DetailMapTile()//IntVector2 pos, Tile tile)
-        {
-            
+        {            
             model.Effect = MapLayer_Detail.ModelEffect;
-            model.Visible = false;
-            
+            model.Visible = false;            
         }
-
         
-        public void polygonBlock(IntVector2 pos, Tile tile)
+        public void generateModel_async(IntVector2 pos, Tile tile)
         {
             this.pos = pos;
             hasPolygons = tile.heightLevel != Height.DeepWaterHeight;
@@ -229,8 +226,6 @@ namespace VikingEngine.DSSWars.Map
         void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft, Color tileColor, SurfaceTextureType textureType)
         {
             
-            
-
             Vector3 center = new Vector3(
                 subTopLeft.X,
                 subTile.groundY,
@@ -920,9 +915,7 @@ namespace VikingEngine.DSSWars.Map
 
                 default:
                     throw new NotImplementedException();
-            }
-            
-
+            }    
         }
 
         void createResoursePile(TerrainResourcesType resourceType, Vector3 wp)
@@ -952,72 +945,47 @@ namespace VikingEngine.DSSWars.Map
 
         }
 
-        //void addFoliage(Foliage f)
-        //{
-        //    //if (foliage == null)
-        //    //{
-        //    //    foliage = new List<Foliage>(8);
-        //    //}
-        //    foliage.Add(f);
-        //}
-
-        public bool synchToRender()
+        public void synchToRender()
         {
-            //if (add)
-            //{
-                //var tile = DssRef.world.tileGrid.Get(pos);
-
-                if (verticeData != null)//model != null)
+            if (verticeData != null)
+            {
+                model.BuildFromVerticeData(verticeData,
+                    new List<int> { verticeData.DrawData.numTriangles / 2 },
+                    Texture);
+                
+                if (!model.InRenderList)
                 {
-                    //if (!model.InRenderList)
-                    //{
-                    //    model.AddToRender(DrawGame.UnitDetailLayer);
-                    //}
-
-                    model.BuildFromVerticeData(verticeData,
-                        new List<int> { verticeData.DrawData.numTriangles / 2 },
-                        Texture);
-                    model.Visible = true;
-                    if (!model.InRenderList)
-                    {
-                        model.AddToRender(DrawGame.UnitDetailLayer);
-                    }
-                    PolygonLib.VerticeDataPool.Push(verticeData);
-                    verticeData = null;
+                    model.AddToRender(DrawGame.UnitDetailLayer);
                 }
+                PolygonLib.VerticeDataPool.Push(verticeData);
+                verticeData = null;
+            }
 
-                //foliage?.addToRender();
-                //if (foliage != null)
-                //{
-                    foreach (var m in foliageModels)
-                    {
-                        //m.AddToRender(DrawGame.UnitDetailLayer);
-                        m.addToRender();
-                    }
-                //}
-                foreach (var m in flagModels)
+            foreach (var m in foliageModels)
+            {
+                m.addToRender();
+            }
+
+            foreach (var m in flagModels)
+            {
+                m.addToRender();
+            }
+
+            if (animalData != null)
+            {
+                foreach (var m in animalData)
                 {
-                    m.addToRender();
+                    m.create(pos);
                 }
+            }
 
-                if (animalData != null)
-                {
-                    foreach (var m in animalData)
-                    {
-                        m.create(pos);
-                    }
-                }
-            //}
-            //else
-            //{
-            //    DeleteMe();
-            //}
+            model.Visible = true;
 
-            return add;
+            //return add;
         }
         public void recycle()
         {
-            add = true;
+            //add = false;
             DeleteMe();
         }
 

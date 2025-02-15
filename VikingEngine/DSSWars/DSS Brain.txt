@@ -1,12 +1,7 @@
 ﻿BETA UPDATE
 -Change Log-
+Improved map flickering
 
-! soldier ai is very passive in battles
-! the menues can look a bit funny
-! there are half-finished buildings in build options 
-
-
-! skicka bara data om spelaren passerar 15min
 
 
 #OPT#

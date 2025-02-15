@@ -278,7 +278,7 @@ namespace VikingEngine.Engine
             {
                 case RecordingPresets.YouTube720p:
                     return new IntVector2(1280, 720);
-                case RecordingPresets.YouTube1080p:
+                default://case RecordingPresets.YouTube1080p:
                     return new IntVector2(1920,1080);
                 case RecordingPresets.YouTube1440p:
                     return new IntVector2(2560,1440);
@@ -286,8 +286,6 @@ namespace VikingEngine.Engine
                     return new IntVector2(3840,2160);
                 case RecordingPresets.YouTube4320p:
                     return new IntVector2(7680, 4320);
-                default:
-                    throw new NotImplementedException();
             }
         }
 
