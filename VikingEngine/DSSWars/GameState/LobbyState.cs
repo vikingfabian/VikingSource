@@ -62,6 +62,7 @@ namespace VikingEngine.DSSWars
 
         const string UnderMenu_NewGame = "newgame";
         const string UnderMenu_ListEditors = "editors";
+        const string UnderMenu_ListExtra = "extra";
         const string UnderMenu_PlayerSetup = "playersett";
         const string UnderMenu_ListSaves = "saves";
         const string UnderMenu_Options = "options";
@@ -367,6 +368,11 @@ namespace VikingEngine.DSSWars
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconEditor) }, 
                     new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListEditors, false), new RbTooltip_Text("Editor"));
+                content.Add(btn);
+            }
+            {
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsBattleIcon) },
+                    new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListExtra , false), new RbTooltip_Text("Extra modes"));
                 content.Add(btn);
             }
 
@@ -764,6 +770,22 @@ namespace VikingEngine.DSSWars
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText("Map editor") },
                             new RbAction(openMapEditor)));
+
+                        underMenu.Refresh(content);
+                    }
+                    break;
+
+                case UnderMenu_ListExtra:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText("Battle lab") },
+                            new RbAction(startBattleLab)));
+
+                        content.newLine();
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText("Play Commander") },
+                            new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text("A small tactical board game")));
 
                         underMenu.Refresh(content);
                     }
