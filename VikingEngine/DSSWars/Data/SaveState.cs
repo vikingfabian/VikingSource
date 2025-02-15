@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Data
             Debug.WriteCheck(w);
             DssRef.world.writeGameState(w);
             Debug.WriteCheck(w);
-            DssRef.state.writeGameState(w);
+            DssRef.state.Game().writeGameState(w);
         }        
 
         public void readGameState(System.IO.BinaryReader r)
@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.world = worldData;
             
 
-            DssRef.state.initGameState(false, pointers);
+            DssRef.state.Game().initGameState(false, pointers);
 
             //STATE
             DssRef.storage.read(r, true);
@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.Data
             Debug.ReadCheck(r);
             DssRef.world.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
-            DssRef.state.readGameState(r, version.sub, pointers);
+            DssRef.state.Game().readGameState(r, version.sub, pointers);
             DssRef.time.setTotalTime(meta.playTime);
         }
 

@@ -64,6 +64,19 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.ManCannonIron,
         };
 
+        public static List<ItemResourceType[]> AllConstriptWeapons()
+        {
+            return new List<ItemResourceType[]>
+            {
+                SoldierWeapons,
+                ArcherWeapons,
+                WarmashineWeapons,
+                NobelWeapons,
+                GunWeapons,
+                CannonWeapons,
+            };
+        }
+
         City city;
         LocalPlayer player;
         ProgressQue que = new ProgressQue();

@@ -31,7 +31,14 @@ namespace VikingEngine.DSSWars.Map
             Ref.draw.AddToRenderList(this);
             Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
 
-            RefreshWorld_FactionCol();
+            if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+            {
+                RefreshWorld_FactionCol();
+            }
+            else
+            {
+                RefreshWorld_TerrainCol();
+            }
         }
 
         public FactionColorsTexture()

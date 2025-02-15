@@ -88,8 +88,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         }
 
         public void saveMap()
-        { 
-            
+        {
+            mapStorage.saveMap(DssRef.world);
         }
     }
 }

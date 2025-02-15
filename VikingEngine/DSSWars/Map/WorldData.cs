@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars
        
         public UnitCollAreaGrid unitCollAreaGrid;
 
-        public List<City> cities; 
+        public List<City> cities = new List<City>(0); 
         public SpottedArray<Faction> factions;
         //public SpottedArrayCounter<Faction> factionsCounter;
 
@@ -551,37 +551,35 @@ namespace VikingEngine.DSSWars
 
             Debug.WriteCheck(w);
 
-            //citiesSz.begin(w);
-            w.Write(cities.Count);
-            foreach (var m in cities)
+            if (arraylib.HasMembers(cities))
             {
-                m.writeMapFile(w);
+                w.Write(cities.Count);
+                foreach (var m in cities)
+                {
+                    m.writeMapFile(w);
+                }
+
+
+                if (abortLoad) return;
+
+                Debug.WriteCheck(w);
+
+
+                var factionsCount = factions.counter();
+                w.Write(factions.Count);
+                while (factionsCount.Next())
+                {
+                    w.Write((byte)factionsCount.sel.factiontype);
+                    factionsCount.sel.writeMapFile(w);
+                }
+
+
+                Debug.WriteCheck(w);
             }
-            //citiesSz.end(w);
-
-            if (abortLoad) return;
-
-            Debug.WriteCheck(w);
-
-            //factionsSz.begin(w);
-            var factionsCount = factions.counter();
-            w.Write(factions.Count);
-            while (factionsCount.Next())
+            else
             {
-                w.Write((byte)factionsCount.sel.factiontype);
-                factionsCount.sel.writeMapFile(w);
+                w.Write(0);
             }
-            //factionsSz.end(w);
-
-            Debug.WriteCheck(w);
-
-            //subtileSz.begin(w);
-            //subTileGrid.LoopBegin();
-            //while (subTileGrid.LoopNext())
-            //{
-            //    subTileGrid.LoopValueGet().write(w);
-            //}
-            //subtileSz.end(w);  
             
             lib.DoNothing();
         }
@@ -607,37 +605,31 @@ namespace VikingEngine.DSSWars
             Debug.ReadCheck(r);
 
             int cityCount = r.ReadInt32();
-            cities = new List<City>(cityCount);
-            for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
+
+            if (cityCount > 0)
             {
-                City c = new City(cityIndex, r, version);
-                cities.Add(c);
-                unitCollAreaGrid.add(c);
-                
+                cities = new List<City>(cityCount);
+                for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
+                {
+                    City c = new City(cityIndex, r, version);
+                    cities.Add(c);
+                    unitCollAreaGrid.add(c);
+
+                }
+
+                Debug.ReadCheck(r);
+
+                int factionCount = r.ReadInt32();
+                for (int factionIx = 0; factionIx < factionCount; ++factionIx)
+                {
+                    FactionType factionType = (FactionType)r.ReadByte();
+                    var faction = new Faction(this, factionType);
+                    faction.readMapFile(r, version, this);
+
+                }
+
+                Debug.ReadCheck(r);
             }
-
-            Debug.ReadCheck(r);
-
-            int factionCount = r.ReadInt32();
-            for (int factionIx = 0; factionIx < factionCount; ++factionIx)
-            {
-                FactionType factionType = (FactionType)r.ReadByte();
-                var faction = new Faction(this, factionType);
-                faction.readMapFile(r, version, this);
-               
-            }
-
-            Debug.ReadCheck(r);
-
-            //subTileGrid.LoopBegin();
-            //while (subTileGrid.LoopNext())
-            //{
-            //    SubTile st = new SubTile();
-            //    st.read(r, version);
-            //    subTileGrid.LoopValueSet(st);
-            //    //subTileGrid.LoopValueSet(new SubTile(r, version));
-            //}
-
         }
 
 

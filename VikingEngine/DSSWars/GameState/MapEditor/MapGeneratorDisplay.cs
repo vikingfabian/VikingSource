@@ -257,6 +257,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             {
                 state.mapStorage.customName = TextLib.checkFileName(result);
             }
+            refreshMenu();
         }
         public void setMapSize(MapSize value)
         {

@@ -31,8 +31,10 @@ namespace VikingEngine.DSSWars.Map
             waterBottom.AddToRender(DrawGame.TerrainLayer);
             waterBottom.Y = waterSurface.Y - 0.1f;
 
-            
-            borders = new Map.Borders();
+            if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+            {
+                borders = new Map.Borders();
+            }
             Ref.draw.CurrentRenderLayer = 0;
 
             unitMiniModels = new UnitMiniModels();
@@ -226,9 +228,11 @@ namespace VikingEngine.DSSWars.Map
             {
                 state_Processing_Sych_Complete = 0;
 
-                borders.quedEvent();
-                factionsMap.asyncTask();
-
+                borders?.quedEvent();
+                if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+                {
+                    factionsMap.asyncTask();
+                }
                 state_Processing_Sych_Complete = 1;
             }
         }
@@ -238,7 +242,7 @@ namespace VikingEngine.DSSWars.Map
                 state_Processing_Sych_Complete == 1)
             {
                 DssRef.world.BordersUpdated = false;
-                borders.SetNewModel();
+                borders?.SetNewModel();
                 factionsMap.syncTask();
 
                 state_Processing_Sych_Complete = 2;

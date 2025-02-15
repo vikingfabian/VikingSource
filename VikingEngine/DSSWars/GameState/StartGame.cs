@@ -11,32 +11,75 @@ using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.Network;
 using VikingEngine.ToGG.HeroQuest;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars
 {
-    class StartGame : Engine.GameState
+    abstract class AbsStartPlayState : Engine.GameState
     {
         Graphics.TextG loadingStatusText;
+        protected MapBackgroundLoading loading;
+
+        public AbsStartPlayState()
+            :base(false)
+        {
+
+            loadingStatusText = new Graphics.TextG(LoadedFont.Regular,
+               new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
+               new Vector2(Engine.Screen.TextSize * 2f),
+               Graphics.Align.Zero, "...", Color.White, ImageLayers.Lay1);
+            Ref.music.stop(true);
+
+            new PlaySettings();
+        }
+
+
+        public override void Time_Update(float time)
+        {
+
+            base.Time_Update(time);
+
+            if (loading != null)
+            {
+                loading.Update();
+                loadingStatusText.TextString = loading.ProgressString();
+
+                if (loading.Complete())
+                {
+                    onLoadComplete();
+                }
+
+                if (Ref.music != null)
+                {
+                    Ref.music.Update();
+                }
+            }
+        }
+
+        abstract protected void onLoadComplete();
+
+    }
+
+    class StartGame : AbsStartPlayState
+    {
+       
         NetworkLobby netLobby;
         WorldDataStorage storage;
         int map_start_process_done = 0;
-        MapBackgroundLoading loading;
+        
         PlayState state = null;
         SaveStateMeta loadMeta;
         bool host;
         
         public StartGame(bool host, NetworkLobby netLobby, SaveStateMeta loadMeta, MapBackgroundLoading loading)
-            :base(false)
+            :base()
         {
             this.host = host;
-            loadingStatusText = new Graphics.TextG(LoadedFont.Regular,
-                new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
-                new Vector2(Engine.Screen.TextSize * 2f),
-                Graphics.Align.Zero, "...", Color.White, ImageLayers.Lay1);
+           
 
             this.loadMeta = loadMeta;
-            Ref.music.stop(true);
-            new PlaySettings();
+            
+            
 
             if (loadMeta == null)
             {
@@ -140,26 +183,11 @@ namespace VikingEngine.DSSWars
                     Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
             }
         }
-
-        public override void Time_Update(float time)
+        protected override void onLoadComplete()
         {
-
-            base.Time_Update(time);
-
-            if (loading != null)
+            if (state == null)
             {
-                loading.Update();
-                loadingStatusText.TextString = loading.ProgressString();
-
-                if (loading.Complete() && state == null)
-                {
-                    state = new PlayState(host, loadMeta, null);
-                }
-
-                if (Ref.music != null)
-                {
-                    Ref.music.Update();
-                }
+                state = new PlayState(host, loadMeta, null);
             }
         }
 

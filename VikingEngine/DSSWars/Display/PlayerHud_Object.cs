@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Display
 {
@@ -29,7 +30,11 @@ namespace VikingEngine.DSSWars.Display
             {
                 var objectMenuArea = player.playerData.view.safeScreenArea;
                 objectMenuArea.Width = HudLib.HeadDisplayWidth;
-                objectMenuArea.Position.Y = player.hud.head.Bottom + Engine.Screen.IconSize * 0.5f;
+
+                if (player.hud.head != null)
+                {
+                    objectMenuArea.Position.Y = player.hud.head.Bottom + Engine.Screen.IconSize * 0.5f;
+                }
                 objectMenuArea.SetBottom(player.playerData.view.safeScreenArea.Bottom, true);
                 menu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
                 var bgTex = menu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
@@ -43,6 +48,12 @@ namespace VikingEngine.DSSWars.Display
         {
             menu?.DeleteMe();
             menu = null;
+        }
+
+        public void refresh(Players.LocalPlayer player, RichBoxContent content)
+        {
+            createMenu(player);
+            menu.Refresh(content);
         }
 
         public void refreshDiplomacy(Players.LocalPlayer player, Faction faction, bool selected)

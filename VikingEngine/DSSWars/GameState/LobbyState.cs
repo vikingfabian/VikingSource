@@ -32,6 +32,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using System.Reflection.Metadata;
 using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.DSSWars.GameState.BattleLab;
 
 namespace VikingEngine.DSSWars
 {
@@ -322,6 +323,7 @@ namespace VikingEngine.DSSWars
 #if DEBUG
             content.Button("start", new RbAction(startGame), null, true);
             content.Button("map editor", new RbAction(openMapEditor), null, true);
+            content.Button("battle lab", new RbAction(startBattleLab), null, true);
 #endif
             {
                 content.newLine();
@@ -385,6 +387,13 @@ namespace VikingEngine.DSSWars
         {
             mapBackgroundLoading?.Abort();
             new MapEditor_Generator();
+        }
+
+        void startBattleLab()
+        {
+            //mapBackgroundLoading?.Abort();
+            //new BattleLabPlayState();
+            new StartBattleLab(mapBackgroundLoading);
         }
 
         void mainMenu()

@@ -282,16 +282,16 @@ namespace VikingEngine.DSSWars
 
         public Army NewArmy(IntVector2 startPos)
         {
-            if (DssRef.state.PartyMode)
-            {
-                var army = new GameObject.Party.PartyArmy(this, startPos);
-                return army;
-            }
-            else
-            {
+            //if (DssRef.state.PartyMode)
+            //{
+            //    var army = new GameObject.Party.PartyArmy(this, startPos);
+            //    return army;
+            //}
+            //else
+            //{
                 var army = new Army(this, startPos);
                 return army;
-            }
+            //}
         }
 
         public void AddArmy(Army army)

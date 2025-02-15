@@ -642,8 +642,9 @@ namespace VikingEngine.DSSWars.Players
         //        tutorial.update();
         //    }
         //}
+       
 
-        public void userUpdate()
+        public void userUpdate(bool cityUpdate)
         {
 
             if (tutorial != null)
@@ -652,19 +653,19 @@ namespace VikingEngine.DSSWars.Players
             }
 
             bool menuFocusState = mapControls.focusedObjectMenuState();
-           
-                
+
+
             hud.update();
 
-                
             mapControls.update(hud.mouseOver);
 
-            if (input.AutomationSetting.DownEvent)
+
+            if (cityUpdate && input.AutomationSetting.DownEvent)
             {
                 hud.OpenAutomationMenu();
-            }                
+            }
 
-            
+
 
             if (armyControls != null)
             {
@@ -686,7 +687,7 @@ namespace VikingEngine.DSSWars.Players
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     var tile = DssRef.world.tileGrid.Get(mapControls.tilePosition);
-                    Debug.Log(tile.ToString() );
+                    Debug.Log(tile.ToString());
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.N) && !Input.Keyboard.Ctrl)
@@ -700,66 +701,70 @@ namespace VikingEngine.DSSWars.Players
             {
 
                 bool friendlyHoverObj = mapControls.hover.obj != null && mapControls.hover.obj.GetFaction() == faction;
-                    if (!menuFocusState && 
-                        !hud.menuFocus &&
-                        (input.Select.DownEvent || (friendlyHoverObj && input.ControllerFocus.DownEvent)))    
-                    {
-                        if (armyControls != null && 
-                            (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
-                        {
-                            mapExecute();
-                        }
-                        else
-                        {
-                            mapSelect();
-                        }
-                    }
-
-                    if (input.ControllerMessageClick.DownEvent)
-                    {
-                        hud.messages.onControllerClick();
-                    }
-
-                    if (inputConnected && !input.Connected)
-                    {
-                        DssRef.state.menuSystem.controllerLost();
-                    }
-                    inputConnected = input.Connected;
-                }
-                else
+                if (!menuFocusState &&
+                    !hud.menuFocus &&
+                    (input.Select.DownEvent || (friendlyHoverObj && input.ControllerFocus.DownEvent)))
                 {
-                    if (!hud.mouseOver)
+                    if (armyControls != null &&
+                        (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
                     {
-                        if (input.Select.DownEvent)
-                        {
-                            mapSelect();
-                        }
-                        if (input.Execute.DownEvent)
-                        {
-                            mapExecute();
-                        }
+                        mapExecute();
+                    }
+                    else
+                    {
+                        mapSelect();
                     }
                 }
 
-                if (input.ControllerCancel.DownEvent && InBuildOrdersMode())
+                if (input.ControllerMessageClick.DownEvent)
                 {
-                    buildControls.buildMode = SelectTileResult.None;
+                    hud.messages.onControllerClick();
                 }
-            
 
-                updateGameSpeed();
-            
+                if (inputConnected && !input.Connected)
+                {
+                    DssRef.state.menuSystem.controllerLost();
+                }
+                inputConnected = input.Connected;
+            }
+            else
+            {
+                if (!hud.mouseOver)
+                {
+                    if (input.Select.DownEvent)
+                    {
+                        mapSelect();
+                    }
+                    if (input.Execute.DownEvent)
+                    {
+                        mapExecute();
+                    }
+                }
+            }
+
+            if (cityUpdate && input.ControllerCancel.DownEvent && InBuildOrdersMode())
+            {
+                buildControls.buildMode = SelectTileResult.None;
+            }
+
+
+            updateGameSpeed();
+
 
             updateObjectTabbing();
 
-            
+
 
             //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
             playerData.view.Camera.RecalculateMatrices();
-            updateMapOverlays();
+            
 
-            cityBorders.update(this);
+            if (cityUpdate)
+            {
+                updateMapOverlays();
+                cityBorders.update(this);
+            }
         }
 
         void setBuildMode(City city, BuildAndExpandType type)
@@ -1198,6 +1203,7 @@ namespace VikingEngine.DSSWars.Players
 
         void updateMapOverlays()
         {
+            
             if (drawUnitsView.current.DrawOverview)
             {
                 if (diplomacyMap == null)
@@ -1704,6 +1710,11 @@ namespace VikingEngine.DSSWars.Players
         public bool IsLocalHost()
         { 
             return playerData.localPlayerIndex == 0;
+        }
+
+        virtual public bool updateObjectDisplay()
+        {
+            return false;
         }
 
         public override bool IsLocal => true;

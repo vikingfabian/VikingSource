@@ -5,6 +5,7 @@ using System.Text;
 using System.Transactions;
 using VikingEngine.DataLib;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Settings;
 
@@ -20,7 +21,7 @@ namespace VikingEngine.DSSWars
         public static GameStorage storage;
         public static Achievements achieve = null;
         public static GameStats stats = null;
-        public static PlayState state;
+        public static AbsPlayState state;
         
         public static GameObject.AllUnits profile;
         public static GameTime time = new GameTime();
