@@ -8,6 +8,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
+        //Ref.langOpt
+        public string ReversedSterio = "Reversed stereo";
+
         //public string Hud_Advanced => "Advanced";
         //public string Hud_Loading => "Loading...";
 

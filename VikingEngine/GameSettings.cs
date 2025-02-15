@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Delivery;
 
 
 namespace VikingEngine
@@ -16,7 +17,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 12 ;
+        const int Version = 13 ;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -28,13 +29,14 @@ namespace VikingEngine
         public bool AutoJoinToCoopLevel = true;
         public int VibrationLevel = 100;
         public float UiScale = 1f;
+        public float reversedStereoValue = 1f;
         public bool dyslexiaFont = false;
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
         public bool graphicsHasChanged = false;
         public LanguageType language = LanguageType.NONE;
         public InputMap controllerMap;
         public InputMap keyboardMap;
-
+        
         public GameSettings()
         {
             controllerMap = new InputMap(false);
@@ -271,6 +273,15 @@ namespace VikingEngine
             //}
         }
 
+        bool ReversedStereoProperty(int index, bool _set, bool value)
+        {
+            if (_set)
+            {
+                reversedStereoValue = value ? -1 : 1;
+            }
+            return reversedStereoValue < 0;
+        }
+
         void volumeOptions(GuiLayout layout)
         {
             if (Ref.music != null)
@@ -278,6 +289,8 @@ namespace VikingEngine
                 new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, Ref.langOpt.SoundOption_MusicVolume, musicVolProperty, new IntervalF(0, 4), false, layout);
             }
             new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, Ref.langOpt.SoundOption_SoundVolume, soundVolProperty, new IntervalF(0, 4), false, layout);
+
+            new GuiCheckbox(DssRef.todoLang.ReversedSterio, null, ReversedStereoProperty, layout);
         }
 
         public void graphicsOptions(GuiLayout layout)
