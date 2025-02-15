@@ -79,7 +79,8 @@ namespace VikingEngine.Sound
                     dir.Add(cam.TiltX - MathHelper.PiOver2);
                     Vector2 direction = dir.Direction(diff.Length());
 
-                    float pan = Bound.Set(direction.X / MaxSoundDist, -1, 1);
+                    //float pan = direction.X / MaxSoundDist * Ref.gamesett.reversedStereoValue;
+                    float pan = Bound.Set(direction.X / MaxSoundDist, -1, 1) * Ref.gamesett.reversedStereoValue;
 
                     float pitch = pitchAdd;
                     if (randomPitch != 0)

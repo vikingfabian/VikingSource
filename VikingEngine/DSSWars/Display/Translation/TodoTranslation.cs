@@ -8,6 +8,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
+        //Ref.langOpt
+        public string ReversedSterio = "Reversed stereo";
+
         public string ArmyOption_NewArmy => "New army";
         public string ProfileEditor_AltMain => "Alternative main";
         public string Automation_CheckBoxTitle => "Automated";

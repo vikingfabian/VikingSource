@@ -32,6 +32,7 @@ namespace VikingEngine
         public bool AutoJoinToCoopLevel = true;
         public int VibrationLevel = 100;
         public float UiScale = 1f;
+        public float reversedStereoValue = 1f;
         public bool dyslexiaFont = false;
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
         public bool graphicsHasChanged = false;
@@ -289,6 +290,15 @@ namespace VikingEngine
             volumeOptions(layout);
         }
 
+        bool ReversedStereoProperty(int index, bool _set, bool value)
+        {
+            if (_set)
+            {
+                reversedStereoValue = value ? -1 : 1;
+            }
+            return reversedStereoValue < 0;
+        }
+
         void volumeOptions(GuiLayout layout)
         {
             if (Ref.music != null)
@@ -296,6 +306,8 @@ namespace VikingEngine
                 new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, Ref.langOpt.SoundOption_MusicVolume, musicVolProperty, new IntervalF(0, 4), false, layout);
             }
             new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, Ref.langOpt.SoundOption_SoundVolume, soundVolProperty, new IntervalF(0, 4), false, layout);
+
+            new GuiCheckbox(DssRef.todoLang.ReversedSterio, null, ReversedStereoProperty, layout);
         }
 
         void volumeOptions(RichBoxContent content)
