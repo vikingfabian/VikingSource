@@ -14,6 +14,8 @@ namespace VikingEngine.DSSWars.Battle
 {
     class SoldierBattleData
     {
+        static readonly float MaxPushLength = DssConst.Men_StandardWalkingSpeed * 5;
+
         static Physics.CircleBound ParentBound = new CircleBound(), OtherBound = new CircleBound();
         static List<AbsSoldierUnit> SoldierBuffer = new List<AbsSoldierUnit>(16);
         static List<AbsGroup> GroupBuffer = new List<AbsGroup>(16);
@@ -55,7 +57,7 @@ namespace VikingEngine.DSSWars.Battle
                 {
                     collPush = 0.25f;
                 }
-                parent.position += VectorExt.V2toV3XZ(collPush * collisionForce);
+                parent.position += VectorExt.V2toV3XZ(VectorExt.SetMaxSideLength(collPush * collisionForce, MaxPushLength));
 
                 //collisionForce = Vector2.Zero;
             }

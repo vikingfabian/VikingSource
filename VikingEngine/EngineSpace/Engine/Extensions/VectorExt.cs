@@ -377,10 +377,24 @@ namespace VikingEngine
             float length = value.Length();
             if (length > maxLength)
             {
-                //value.Normalize();
-                //value *= maxLength;
                 value *= 1f / length * maxLength;
             }
+
+            return value;
+        }
+
+        public static Vector2 SetMaxSideLength(Vector2 value, float maxLength)
+        {
+
+            if (Math.Abs(value.X) > maxLength)
+            {
+                value.X = value.X > 0 ? maxLength : -maxLength;
+            }
+            if (Math.Abs(value.Y) > maxLength)
+            {
+                value.Y = value.Y > 0 ? maxLength : -maxLength;
+            }
+
 
             return value;
         }
@@ -441,6 +455,14 @@ namespace VikingEngine
             vector.X /= length;
             vector.Y /= length;
             return vector;
+        }
+
+        public static Vector2 Normalize(float x, float y, out float length)
+        {
+            length = (float)Math.Sqrt(x * x + y * y);
+            x /= length;
+            y /= length;
+            return new Vector2(x, y);
         }
 
         public static Vector3 Normalize(Vector3 vector, out float length)

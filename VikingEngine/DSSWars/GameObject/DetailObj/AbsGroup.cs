@@ -8,6 +8,8 @@ namespace VikingEngine.DSSWars.GameObject
     abstract class AbsGroup : AbsWorldObject
     {           
         public float groupRadius, attackRadius;
+
+        public float highTargetValueToOpponent = float.MaxValue;
         //public IntVector2 battleGridPos, prevBattleGridPos;
 
         virtual public Vector2 WorldPositionXZ()

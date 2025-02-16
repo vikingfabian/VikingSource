@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 }
             };
 
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 if (selectedPlayer != 1)
                 {
@@ -104,6 +104,15 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 {
                     new SoldierGroup(enemyArmy, SoldierProfile, enemyArmy.position);
                 }
+            }
+
+            if (selectedPlayer != 1)
+            {
+                friendlyArmy.setAsStartArmy();
+            }
+            if (selectedPlayer != 0)
+            {
+                enemyArmy.setAsStartArmy();
             }
         }
 
@@ -139,8 +148,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             Ref.SetPause(false);
             StartState = true;
 
-            friendlyArmy.setAsStartArmy();
-            enemyArmy.setAsStartArmy();
+          
 
             friendlyArmy.Order_Attack(enemyArmy);
         }

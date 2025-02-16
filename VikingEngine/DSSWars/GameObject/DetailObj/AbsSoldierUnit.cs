@@ -427,20 +427,17 @@ namespace VikingEngine.DSSWars.GameObject
                 lib.DoNothing();
             }
 
+            if (player().IsLocalPlayer() && parentArrayIndex == 1)
+            {
+                 lib.DoNothing();
+            }
 
-            //if (state2 == SoldierState2.Turn)
-            //{
-            //    upda
-            //}
-            //else
-            //{
-                updateMoveAttackPrio(time, fullUpate, freeToMove(time));
-            //}
+            updateMoveAttackPrio(time, fullUpate, freeToMove(time));
             
             battleData?.update(this);
 
             updateGroudY(false);
-            //bound.Center = VectorExt.V3XZtoV2(position);
+            
             model?.update(this);
 
         }
@@ -451,6 +448,11 @@ namespace VikingEngine.DSSWars.GameObject
                 state2 = SoldierState2.wakeup;
                 stateTime = reactionTime;                
             }
+        }
+
+        public void teleport()
+        {
+            firstUpdate();
         }
 
         public void enterBattleState(bool enter)
@@ -618,16 +620,16 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var inReach = checkTargetInReach();
 
-                if (inReach != HasTargetInReach.InReach)
-                { //Try to find a nearby target
-                    attackTarget = closestTarget(true, SoldierProfile().maxAttackAngle * 4f);
-                    inReach = checkTargetInReach();
+                //if (inReach != HasTargetInReach.InReach)
+                //{ //Try to find a nearby target
+                //    attackTarget = closestTarget(true, SoldierProfile().maxAttackAngle * 4f);
+                //    inReach = checkTargetInReach();
 
-                    //if (inReach == HasTargetInReach.MustRotate)
-                    //{
-                    //    inReach = HasTargetInReach.InReach;
-                    //}
-                }
+                //    //if (inReach == HasTargetInReach.MustRotate)
+                //    //{
+                //    //    inReach = HasTargetInReach.InReach;
+                //    //}
+                //}
 
                 if (inReach != HasTargetInReach.NoTarget)
                 {
@@ -1248,11 +1250,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Vector3 scale = new Vector3(radius * 2f);
 
-            var soldier_sp = group.soldiers;
+            var soldiers_sp = group.soldiers;
 
-            if (soldier_sp != null)
+            if (soldiers_sp != null)
             {
-                var soldiersC = soldier_sp.counter();
+                var soldiersC = soldiers_sp.counter();
                 int i = 0;
 
                 selection.BeginGroupModel(true);
@@ -1260,6 +1262,13 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     selection.setGroupModel(i, soldiersC.sel.position, scale, hover, soldiersC.sel == this, false);
                     ++i;
+                }
+
+                var target_sp = group.attacking_soldierGroupOrCity;
+                if (target_sp != null)
+                {
+                    selection.TargetLine(ref group.position, ref target_sp.position);
+                   
                 }
             }
         }

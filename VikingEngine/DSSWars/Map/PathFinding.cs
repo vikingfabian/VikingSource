@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Map
             }
 
             //List<PathNodeResult> result = new List<PathNodeResult>();
-            var path = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetRes();
+            var path = DssRef.state.pathUpdates[DssRef.state.pathUpdates.Length -1].pathFindingPool.GetRes();
 
             while (currentNode.Position != startNode.Position)
             {
