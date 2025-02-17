@@ -10,6 +10,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float groupRadius, attackRadius;
 
         public float highTargetValueToOpponent = float.MaxValue;
+        public int highTargetValueToOpponent_tagId = -1;
         //public IntVector2 battleGridPos, prevBattleGridPos;
 
         virtual public Vector2 WorldPositionXZ()

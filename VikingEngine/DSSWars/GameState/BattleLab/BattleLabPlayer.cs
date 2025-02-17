@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
     class BattleLabPlayer : Players.LocalPlayer
     {
         public bool StartState = true;
-        int selectedPlayer = 0;
+        int selectedPlayer = 2;
         ItemResourceType selectedWeapon = ItemResourceType.Sword;
         Army friendlyArmy, enemyArmy;
         public BattleLabPlayer(Faction faction)
@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         {
             Ref.SetPause(true);
             StartState = false;
-            selectedPlayer = 0;
+            //selectedPlayer = 0;
 
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
             Rotation1D playerRot = enemyRot.getInvert();
@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
             DssRef.diplomacy.declareWar(faction, enemyFac);
 
-            IntVector2 position = mapControls.tilePosition;
+            IntVector2 position = WP.ToTilePos( DssRef.state.culling.players[playerData.localPlayerIndex].MapCenter);//mapConttilePosition;
 
             {
                 var army = faction.NewArmy(VectorExt.AddX(position, -2));

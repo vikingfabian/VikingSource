@@ -49,6 +49,7 @@ namespace VikingEngine.DSSWars
         public const ImageLayers HeadDisplayLayer = ImageLayers.Lay7;
 
         public const ImageLayers DiplomacyDisplayLayer = ImageLayers.Lay8;
+        public const ImageLayers IngameUiLayer = ImageLayers.Lay9;
 
         public static NineSplitSettings HudMenuBackground;
         public static NineSplitSettings HudMenuScollBackground;

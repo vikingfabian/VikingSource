@@ -168,6 +168,7 @@ namespace VikingEngine.DSSWars
     }
     class PlayerCulling
     {
+        public Vector3 MapCenter;
         PlayerData playerData;
 
         Plane mapPlane = new Plane(Vector3.UnitY, 0);
@@ -213,8 +214,11 @@ namespace VikingEngine.DSSWars
             Vector3 bottomleft = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.LeftBottom, playerData.view.Viewport, mapPlane, out hasValue3);
             Vector3 bottomright = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.RightBottom, playerData.view.Viewport, mapPlane, out hasValue4);
 
+
             if (hasValue1 && hasValue2 && hasValue3 && hasValue4)
             {
+                MapCenter = (topleft + topright + bottomleft + bottomright)/4;
+
                 float left = lib.SmallestValue(topleft.X, bottomleft.X);
                 float right = lib.LargestValue(topright.X, bottomright.X);
                 float top = lib.SmallestValue(topleft.Z, topright.Z);
@@ -227,10 +231,7 @@ namespace VikingEngine.DSSWars
                 {
                     screenArea.SetMaxRadius(120, 100);
                 }
-                //if (StartupSettings.TestOffscreenUpdate)
-                //{
-                //    screenArea.SetMaxRadius(4, 4);
-                //}
+               
                 PlayerCullingState state = bStateA ? stateA : stateB;
                 state.detailLayer = detailLayer.current.DrawDetailLayer;
                 state.overviewLayer = detailLayer.current.DrawNormal;

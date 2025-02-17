@@ -23,7 +23,8 @@ namespace VikingEngine.DSSWars.Players
         public List<Mesh> groupModels;
         public Graphics.ImageGroup guiModels = new Graphics.ImageGroup(32);
         bool currentUnitDetailLayer = false;
-        Mesh targetLine;
+        Line targetLine;
+        PathVisuals groupPath;
         /// <summary>
         /// Only for controller input
         /// </summary>
@@ -86,38 +87,43 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public void 
+
         public void TargetLine(ref Vector3 from, ref Vector3 to)
         {
-            Vector3 dir =to - from;
+            //Vector3 dir =to - from;
            
 
             if (targetLine == null)
             {
-                targetLine = new Mesh(LoadedMesh.cube_repeating,
-                    Vector3.Zero, new Vector3(0.05f), TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
-                targetLine.AddToRender(DrawGame.UnitDetailLayer);
+                //targetLine = new Mesh(LoadedMesh.cube_repeating,
+                //    Vector3.Zero, new Vector3(0.05f), TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
+                //targetLine.AddToRender(DrawGame.UnitDetailLayer);
+                targetLine = new Line(2, HudLib.IngameUiLayer, Color.Pink);
             }
 
-            dir = VectorExt.Normalize(dir, out float l);
-            Vector3 defaultForward = Vector3.Forward;
+            targetLine.UpdateLine(Ref.draw.ActivePlayerScreens[playerCam].view.From3DToScreenPos(from), Ref.draw.ActivePlayerScreens[playerCam].view.From3DToScreenPos(to));
 
-            // If dir is not already aligned with defaultForward
-            //if (dir != defaultForward && dir != -defaultForward)
-            //{
-            //    Vector3 axis = Vector3.Cross(defaultForward, dir);
-            //    float angle = (float)Math.Acos(Vector3.Dot(defaultForward, dir));
+            //dir = VectorExt.Normalize(dir, out float l);
+            //Vector3 defaultForward = Vector3.Forward;
 
-            //    if (axis.LengthSquared() > 0.0001f) // Ensure valid axis
-            //    {
-            //        axis = Vector3.Normalize(axis);
-                    targetLine.Rotation.QuadRotation = Quaternion.CreateFromAxisAngle(dir, 0);
-            //    }
-            //}
-            //targetLine.Rotation.QuadRotation = Quaternion.(Vector3.Forward, dir); //is this correct?
-            targetLine.scale = new Vector3(0.05f);
-            targetLine.ScaleY = l;
-            targetLine.position = from + l * 0.5f * dir;
-            targetLine.position.Y += 0.05f;
+            //// If dir is not already aligned with defaultForward
+            ////if (dir != defaultForward && dir != -defaultForward)
+            ////{
+            ////    Vector3 axis = Vector3.Cross(defaultForward, dir);
+            ////    float angle = (float)Math.Acos(Vector3.Dot(defaultForward, dir));
+
+            ////    if (axis.LengthSquared() > 0.0001f) // Ensure valid axis
+            ////    {
+            ////        axis = Vector3.Normalize(axis);
+            //        targetLine.Rotation.QuadRotation = Quaternion.CreateFromAxisAngle(dir, 0);
+            ////    }
+            ////}
+            ////targetLine.Rotation.QuadRotation = Quaternion.(Vector3.Forward, dir); //is this correct?
+            //targetLine.scale = new Vector3(0.05f);
+            //targetLine.ScaleY = l;
+            //targetLine.position = from + l * 0.5f * dir;
+            //targetLine.position.Y += 0.05f;
         }
 
         public void setGroupModel(int index, Vector3 pos, Vector3 scale, bool hover, bool main, bool squareSelection)

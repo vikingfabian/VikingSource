@@ -1470,10 +1470,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchNearObjectsUpdate()
         {
-            //if (debugTagged)
-            //{
-            //    lib.DoNothing();
-            //}
             if (Ref.rnd.Chance(0.05))
             {
                 highTargetValueToOpponent = float.MaxValue;
@@ -1483,8 +1479,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             refreshAttacking();
 
-            //if (attacking_soldierGroupOrCity == null)
-            //{
                 AbsGroup nearest = null;
                 float distanceValue = float.MaxValue;
 
@@ -1536,7 +1530,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     return 3;
                 }
-            //}
+
         }
 
         float distanceValueTo(AbsGroup toGroup, float maxRange)
@@ -1549,7 +1543,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return float.MaxValue;
             }
 
-            const float AngleWeight = 5000f;
+            const float AngleWeight = 30f;
 
             float dir = lib.V2ToAngle(diff);
             float aDiff = Rotation1D.AngleDifference_Absolute(rotation.radians, dir);
@@ -1561,8 +1555,9 @@ namespace VikingEngine.DSSWars.GameObject
             if (rawValue <= toGroup.highTargetValueToOpponent)
             {
                 toGroup.highTargetValueToOpponent = rawValue;
+                toGroup.highTargetValueToOpponent_tagId = this.parentArrayIndex;
             }
-            else
+            else if (toGroup.highTargetValueToOpponent_tagId != this.parentArrayIndex)
             {
                 value *= 2;
             }
