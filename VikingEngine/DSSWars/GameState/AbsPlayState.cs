@@ -39,11 +39,30 @@ namespace VikingEngine.DSSWars.GameState
         public GameEvents events;
         public Progress progress = new Progress();
         public int NextArmyId = 0;
+        protected int stepFramesCount = 0;
 
         public AbsPlayState() 
             :base() 
         {
             DssRef.state = this;
+        }
+
+        public void stepFrames(int frameCount)
+        {
+            stepFramesCount = frameCount;
+            Ref.SetGameSpeed(1f);
+            Ref.SetPause(false);
+        }
+
+        protected void updateStepFrames()
+        {
+            if (stepFramesCount > 0)
+            {
+                if (--stepFramesCount <= 0)
+                {
+                    Ref.SetPause(true);
+                }
+            }
         }
 
         protected void startMapThreads()

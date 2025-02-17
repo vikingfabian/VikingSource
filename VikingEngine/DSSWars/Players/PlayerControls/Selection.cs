@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Players;
@@ -31,12 +32,14 @@ namespace VikingEngine.DSSWars.Players
         public bool menuFocus = false;
 
         int playerCam;
+        bool isHover;
         //public List<string> menuState = new List<string>();
         //public Army sendUnitsToArmy;
         //public bool menuStateChange = false;
 
         public Selection(LocalPlayer player, bool isHover)
         {
+            this.isHover = isHover;
             playerCam = player.playerData.localPlayerIndex;
             //frameModel = new Mesh(LoadedMesh.SelectSquareDotted, Vector3.Zero, Vector3.One,
             //   TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
@@ -46,6 +49,7 @@ namespace VikingEngine.DSSWars.Players
             //frameModel.Visible = false;
 
             subTile = new SelectedSubTile(player, isHover);
+            groupPath = new PathVisuals(player.playerData.localPlayerIndex);
         }
 
         public void ClearSelectionModels()
@@ -53,6 +57,7 @@ namespace VikingEngine.DSSWars.Players
             targetLine?.DeleteMe();
             targetLine = null;
             guiModels.DeleteAll();
+            groupPath.DeleteMe();
             //frameModel.Visible = false;
 
             if (groupModels != null)
@@ -87,7 +92,13 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void 
+        public void viewGroupPath(DetailWalkingPath path)
+        {
+            if (path != null)
+            {
+                groupPath.refresh(path, isHover);
+            }
+        }
 
         public void TargetLine(ref Vector3 from, ref Vector3 to)
         {

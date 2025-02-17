@@ -69,7 +69,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
                 content.newParagraph();
                 content.Add(new RbSeperationLine());
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Start battle") }, new RbAction(startBattle)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Start battle") }, new RbAction1Arg<bool>(startBattle, false)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPauseIcon) }, new RbAction1Arg<bool>(startBattle, true)));
             }
 
             hud.objMenu.refresh(this, content);
@@ -143,9 +144,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             }
         }
 
-        public void startBattle()
+        public void startBattle(bool paused)
         {
-            Ref.SetPause(false);
+            
+            Ref.SetPause(paused);
             StartState = true;
 
           

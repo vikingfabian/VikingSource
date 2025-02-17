@@ -635,7 +635,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     applyTargetReach(inReach);
                 }
-                else if (group.attacking_soldierGroupOrCity != null)
+                else if (group.attackTarget_soldierGroupOrCity != null)
                 {//Walk straight while searching opponent
                     if (mayMove)
                     {
@@ -714,7 +714,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             FindMinValuePointer<AbsDetailUnit> closest = new FindMinValuePointer<AbsDetailUnit>();
 
-            var attack_sp = group.attacking_soldierGroupOrCity;
+            var attack_sp = group.attackTarget_soldierGroupOrCity;
             if (attack_sp != null)
             {
                 if (attack_sp.gameobjectType() == GameObjectType.SoldierGroup)
@@ -1190,7 +1190,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
-            var attacking_sp = group.attacking_soldierGroupOrCity;
+            var attacking_sp = group.attackTarget_soldierGroupOrCity;
 
             if (attacking_sp != null)
             {
@@ -1264,12 +1264,13 @@ namespace VikingEngine.DSSWars.GameObject
                     ++i;
                 }
 
-                var target_sp = group.attacking_soldierGroupOrCity;
+                var target_sp = group.attackTarget_soldierGroupOrCity;
                 if (target_sp != null)
                 {
-                    selection.TargetLine(ref group.position, ref target_sp.position);
-                   
+                    selection.TargetLine(ref group.position, ref target_sp.position);                   
                 }
+
+                selection.viewGroupPath(group.detailPath);
             }
         }
 

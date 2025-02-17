@@ -117,6 +117,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
+            updateStepFrames();
             Sound.SoundStackManager.Update();
 
             if (Ref.music != null)

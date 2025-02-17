@@ -16,6 +16,7 @@ using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.CarBall;
+using VikingEngine.ToGG.HeroQuest;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.MoonFall.GO;
 using VikingEngine.ToGG.ToggEngine.Map;
@@ -85,7 +86,8 @@ namespace VikingEngine.DSSWars.GameObject
         public float walkSpeed = DssConst.Men_StandardWalkingSpeed;
         float rotateSpeed;
 
-        public AbsGroup attacking_soldierGroupOrCity = null;
+        public AbsGroup attackTarget_soldierGroupOrCity = null;
+        float attackTargetTimeLock = 0;
         //public AggressionCommand aggression = AggressionCommand.Normal;
 
 
@@ -115,7 +117,7 @@ namespace VikingEngine.DSSWars.GameObject
         Graphics.Mesh collisionModel;
 #endif
         WalkingPath path = null;
-        DetailWalkingPath detailPath = null;
+        public DetailWalkingPath detailPath = null;
         float waitTime = 0;
 
         
@@ -695,7 +697,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return;
             }
 
-            var attack_sp = attacking_soldierGroupOrCity;
+            var attack_sp = attackTarget_soldierGroupOrCity;
 
             if (attack_sp != null)
             {
@@ -1127,7 +1129,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void EnterPeaceEvent()
         {
-            attacking_soldierGroupOrCity = null;
+            attackTarget_soldierGroupOrCity = null;
             //groupObjective = GroupObjective_IsSplit;
         }
 
@@ -1416,23 +1418,23 @@ namespace VikingEngine.DSSWars.GameObject
             return VectorExt.Length(group.position.X - position.X, group.position.Z - position.Z);
         }
 
-        public void addAttackTarget(AbsGroup newTarget)
-        {
-            refreshAttacking();
+        //public void addAttackTarget(AbsGroup newTarget)
+        //{
+        //    refreshAttackTarget();
 
-            if (!newTarget.defeatedBy(army.faction) && newTarget != attacking_soldierGroupOrCity)
-            {
-                if (attacking_soldierGroupOrCity != null)
-                {
-                    //Compare distance
-                    if (distanceValueTo(attacking_soldierGroupOrCity, float.MaxValue) <= distanceValueTo(newTarget, float.MaxValue))
-                    {
-                        return;
-                    }
-                }
-                attacking_soldierGroupOrCity = newTarget;
-            }
-        }
+        //    if (!newTarget.defeatedBy(army.faction) && newTarget != attackTarget_soldierGroupOrCity)
+        //    {
+        //        if (attackTarget_soldierGroupOrCity != null)
+        //        {
+        //            //Compare distance
+        //            if (distanceValueTo(attackTarget_soldierGroupOrCity, float.MaxValue) <= distanceValueTo(newTarget, float.MaxValue))
+        //            {
+        //                return;
+        //            }
+        //        }
+        //        attackTarget_soldierGroupOrCity = newTarget;
+        //    }
+        //}
 
         void recyclePath(bool large, bool detail, int pathThreadIndex)
         {
@@ -1455,15 +1457,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void refreshAttacking()
+        void refreshAttackTarget()
         {
-            if (attacking_soldierGroupOrCity != null && 
-                    (attacking_soldierGroupOrCity.defeated() || 
-                    !DssRef.diplomacy.InWar(army.faction, attacking_soldierGroupOrCity.GetFaction()) ||
-                    distance(attacking_soldierGroupOrCity) > 4)
+            if (attackTarget_soldierGroupOrCity != null && 
+                    (attackTarget_soldierGroupOrCity.defeated() || 
+                    !DssRef.diplomacy.InWar(army.faction, attackTarget_soldierGroupOrCity.GetFaction()) ||
+                    distance(attackTarget_soldierGroupOrCity) > 4)
                )
             {
-                attacking_soldierGroupOrCity = null;
+                attackTargetTimeLock = 0;
+                attackTarget_soldierGroupOrCity = null;
             }
         }
 
@@ -1474,62 +1477,81 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 highTargetValueToOpponent = float.MaxValue;
             }
+                        
+            refreshAttackTarget();
+
+            if (attackTarget_soldierGroupOrCity != null && attackTargetTimeLock > Ref.TotalGameTimeSec)
+            {
+                return;
+            }
 
             DssRef.world.unitCollAreaGrid.collectOpponentGroups(army.faction, tilePos, out  List<GameObject.SoldierGroup> groups, out List<City> cities);
 
-            refreshAttacking();
+            AbsGroup nearest = null;
+            float distanceValue = float.MaxValue;
 
-                AbsGroup nearest = null;
-                float distanceValue = float.MaxValue;
+            foreach (var opponent in groups)
+            {
 
-                foreach (var opponent in groups)
+                var group = opponent.GetGroup();
+                if (group.soldierCount > 0)
                 {
+                    var dist = distanceValueTo(group, aggroRange(opponent.army));
 
-                    var group = opponent.GetGroup();
-                    if (group.soldierCount > 0)
+                    if (dist < distanceValue)
                     {
-                        var dist = distanceValueTo(group, aggroRange(opponent.army));
-
-                        if (dist < distanceValue)
-                        {
-                            distanceValue = dist;
-                            nearest = group;
-                        }
+                        distanceValue = dist;
+                        nearest = group;
                     }
-
                 }
 
-                if (nearest == null)
-                {
-                    foreach (var opponent in cities)
-                    {
-                        if (opponent.guardCount > 0)
-                        {
-                            var score = distanceValueTo(opponent, aggroRange(opponent));
+            }
 
-                            if (score < distanceValue)
-                            {
-                                distanceValue = score;
-                                nearest = opponent;
-                            }
+            if (nearest == null)
+            {
+                foreach (var opponent in cities)
+                {
+                    if (opponent.guardCount > 0)
+                    {
+                        var score = distanceValueTo(opponent, aggroRange(opponent));
+
+                        if (score < distanceValue)
+                        {
+                            distanceValue = score;
+                            nearest = opponent;
                         }
                     }
                 }
+            }
 
-                if (nearest != null)
+            if (nearest != null)
+            {
+                //addAttackTarget(nearest);
+                if (!nearest.defeatedBy(army.faction) && nearest != attackTarget_soldierGroupOrCity)
                 {
-                    addAttackTarget(nearest);
-                }
-
-
-                float aggroRange(AbsMapObject target)
-                {
-                    if (target == army.attackTarget)
+                    if (attackTarget_soldierGroupOrCity != null)
                     {
-                        return 4;
+                        //Compare distance
+                        if (distanceValueTo(attackTarget_soldierGroupOrCity, float.MaxValue) * 2f <= distanceValueTo(nearest, float.MaxValue))
+                        {
+                            return;
+                        }
                     }
-                    return 3;
+
+                    attackTargetTimeLock = Ref.TotalGameTimeSec + 2f + distanceValue;
+                    attackTarget_soldierGroupOrCity = nearest;
                 }
+            }
+
+
+            float aggroRange(AbsMapObject target)
+            {
+                if (target == army.attackTarget)
+                {
+                    return 4;
+                }
+                return 3;
+            }
 
         }
 
@@ -1562,7 +1584,7 @@ namespace VikingEngine.DSSWars.GameObject
                 value *= 2;
             }
 
-            if (toGroup == attacking_soldierGroupOrCity)
+            if (toGroup == attackTarget_soldierGroupOrCity)
             {
                 value *= 0.5f;
             }
@@ -1627,7 +1649,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asyncBattleUpdate()
         {
-            var attack_sp = attacking_soldierGroupOrCity;
+            var attack_sp = attackTarget_soldierGroupOrCity;
                         
             if (soldiers != null)
             {
@@ -1651,7 +1673,7 @@ namespace VikingEngine.DSSWars.GameObject
 #endif
             //asynchNearObjectsUpdate();
 
-            var attack_sp = attacking_soldierGroupOrCity;
+            var attack_sp = attackTarget_soldierGroupOrCity;
 
             if (attack_sp != null)
             {
@@ -2105,12 +2127,12 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
             //content.text("Objective: " + groupObjective.ToString());
 
-            if (attacking_soldierGroupOrCity!=null)
+            if (attackTarget_soldierGroupOrCity!=null)
             {
                 //var c = attacking.counter();
                 //while (c.Next())
                 //{
-                    content.text("attacking: " + attacking_soldierGroupOrCity.TypeName());
+                    content.text("attacking: " + attackTarget_soldierGroupOrCity.TypeName());
                 //}
             }
             else

@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Map
                 for (int i = path.currentNodeIx; i >= 0; --i)
                 {
                     Graphics.Mesh dot = new Graphics.Mesh(LoadedMesh.SelectCircleThick,
-                        WP.ToMapPos(path.nodes[i].position),
+                        WP.SubtileToWorldPosXZgroundY_Centered(path.nodes[i].position),
                         new Vector3(0.02f), Graphics.TextureEffectType.Flat,
                         SpriteName.WhiteArea, color, false);
                     dot.Opacity = opacity;

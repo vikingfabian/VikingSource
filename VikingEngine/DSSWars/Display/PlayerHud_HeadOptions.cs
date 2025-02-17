@@ -60,13 +60,7 @@ namespace VikingEngine.DSSWars.Display
                     new List<AbsRichBoxMember> { new RbText(speed.ToString()) },
                     new RbAction1Arg<int>(gameSpeedClick, speed),
                     new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, speed)))));
-                //var button = new RbButton(
-                //        new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, player.GameSpeedOptions[i])) },
-                //        new RbAction1Arg<int>(gameSpeedClick, player.GameSpeedOptions[i]), null, true);
-                //button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == player.GameSpeedOptions[i]);
-                //content.Add(button);
-                //content.space();
-
+               
             }
 
             content.space();
@@ -74,6 +68,20 @@ namespace VikingEngine.DSSWars.Display
                 new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarMenuIcon) },
                 new RbAction(DssRef.state.menuSystem.pauseMenu), new RbTooltip_Text(DssRef.lang.GameMenu_Title)));
 
+            if (DssRef.state.PlayType() == GameState.PlayStateType.BattleLab)
+            {
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember>
+                    { new RbText("Step 1 frame", Color.White) }, new RbAction1Arg<int>(DssRef.state.stepFrames, 1)));
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember>
+                    { new RbText("4", Color.White) }, new RbAction1Arg<int>(DssRef.state.stepFrames, 4)));
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember>
+                    { new RbText("10", Color.White) }, new RbAction1Arg<int>(DssRef.state.stepFrames, 10)));
+
+            }
         }
 
         public void pauseAction()
