@@ -448,6 +448,7 @@ namespace VikingEngine.DSSWars.GameObject
                 state2 = SoldierState2.wakeup;
                 stateTime = reactionTime;                
             }
+           
         }
 
         public void teleport()
@@ -1348,6 +1349,21 @@ namespace VikingEngine.DSSWars.GameObject
         public override GameObjectType gameobjectType()
         {
             return GameObject.GameObjectType.Soldier;
+        }
+
+        public override AbsSoldierUnit GetSoldier()
+        {
+            return this;
+        }
+
+        public override SoldierGroup GetSoldierGroup()
+        {
+            return group;
+        }
+
+        public override Army GetArmy()
+        {
+            return group.army;
         }
         public override UnitType DetailUnitType()
         {

@@ -115,7 +115,6 @@ namespace VikingEngine.DSSWars.Players
                     {
                         if (m.isAlive)
                         {
-
                             m.army.Order_Attack(target);
                         }
                     }

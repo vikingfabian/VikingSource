@@ -10,6 +10,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG.MoonFall.GO;
 //
 
 namespace VikingEngine.DSSWars.GameObject
@@ -26,6 +27,8 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public City GetCity() { return null; }
 
         virtual public Army GetArmy() { return null; }
+        virtual public AbsSoldierUnit GetSoldier() { return null; }
+        virtual public SoldierGroup GetSoldierGroup() { return null; }
 
         virtual public MapObjectCollection GetCollection() { return null; }
 

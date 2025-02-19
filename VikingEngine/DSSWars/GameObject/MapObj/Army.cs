@@ -724,7 +724,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var groupsC = groups.counter();
                 while (groupsC.Next())
                 {
-                    groupsC.sel.setArmyPlacement2(position, true);
+                    groupsC.sel.setArmyPlacement2(position, false, true);
                 }
             });
             
