@@ -1579,7 +1579,7 @@ namespace VikingEngine.DSSWars.GameObject
             return distance.HasValue;
         }
 
-        public override void selectionFrame(bool hover, Selection selection)
+        public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
         {
             Vector3 pos = position;
             pos.Y += 0.1f;

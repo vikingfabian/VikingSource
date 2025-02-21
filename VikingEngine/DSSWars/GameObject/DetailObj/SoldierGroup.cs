@@ -992,7 +992,16 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
+        public bool HasIdleState()
+        {
+            var command_sp = command;
+            if (command_sp != null)
+            {
+                return command_sp.haltCommand;
+            }
 
+            return state == GroupState.Idle || state == GroupState.GoingIdle;
+        }
 
         public override void toHud(ObjectHudArgs args)
         {
@@ -1634,6 +1643,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (command_sp != null && command_sp.hasPathCommand(out bool towardsUnit))
             {
+                if (command_sp.clearOldPath)
+                {
+                    command_sp.clearOldPath = false;
+                    recyclePath(true, true, pathThreadIndex);
+                }
+
                 if (command_sp.haltCommand)
                 {
                     return;
@@ -1650,18 +1665,6 @@ namespace VikingEngine.DSSWars.GameObject
             else if (attack_sp != null)
             {
                 pathTowardsTarget(attack_sp);
-                //if (soldiers != null)
-                //{
-                //    tilePos = WP.ToTilePos(position);
-                //    setGroundY();
-
-                //    IntVector2 goalSubTile = WP.ToSubTilePos(attack_sp.position);
-                //    var detailPath_sp = detailPath;
-                //    if (detailPath_sp == null || detailPath_sp.goal != goalSubTile)
-                //    {
-                //        pathCalulate_detail(goalSubTile, true, pathThreadIndex);
-                //    }
-                //}
             }
             else
             {
@@ -1715,7 +1718,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (path == null)
                     {
-                        pathCalulate(pathThreadIndex);
+                        pathCalulate(pathThreadIndex, goalWp);
                     }
 
                     //pick three tiles ahead
@@ -1743,7 +1746,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void pathCalulate(int pathThreadIndex)
+        void pathCalulate(int pathThreadIndex, Vector3 goalWp)
         {
             recyclePath(true, false, pathThreadIndex);
 
@@ -2117,6 +2120,18 @@ namespace VikingEngine.DSSWars.GameObject
                 state = GroupState.FindArmyPlacement;
             }
             
+        }
+
+        public AbsGroup GetAttackTarget()
+        {
+            if (command != null)
+            {
+                return command.AttackTarget();
+            }
+            else
+            {
+                return attackTarget_soldierGroupOrCity;
+            }
         }
 
         public void wakeupSoldiers()

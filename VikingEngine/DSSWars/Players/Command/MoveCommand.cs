@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Players.Command
     abstract class AbsCommand
     {
         public bool haltCommand = false;
-
+        public bool clearOldPath = true;
         public AbsCommand(SoldierGroup group)
         { 
             group.command = this;
@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Players.Command
 
         virtual public Vector3 GoalPosition() { throw new NotImplementedException(); }
 
-        virtual public AbsGroup AttackTarget() { throw new NotImplementedException(); }
+        virtual public AbsGroup AttackTarget() { return null;  }
 
         virtual public void OnMovePathComplete()
         { 

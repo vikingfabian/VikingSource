@@ -540,7 +540,7 @@ namespace VikingEngine.DSSWars.GameObject
             return distance.HasValue;
         }
 
-        public override void selectionFrame(bool hover, Selection selection)
+        public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
         {
             selectionFramePlacement(out var pos, out var scale);
 
@@ -714,7 +714,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshPositions(bool onPurchase)
         {
-            refreshGroupPlacements2(tilePos, false, false);
+            refreshGroupPlacements2(tilePos, false, false, false);
         }
 
         public void startInOnePoint()
@@ -1115,7 +1115,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             nextNodePos = nextNodeTilePos;
 
-            refreshGroupPlacements2(nextNodeTilePos, false, false);
+            refreshGroupPlacements2(nextNodeTilePos, false, false, false);
 
             
             //var groupsC = groups.counter();

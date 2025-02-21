@@ -382,7 +382,7 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        Vector3 screenPosToWorldPos(Vector2 screenPos)
+       public  Vector3 screenPosToWorldPos(Vector2 screenPos)
         {
             
             ray = camera.CastRay(screenPos, player.playerData.view.Viewport);
@@ -393,15 +393,8 @@ namespace VikingEngine.DSSWars.Players
             subTilePosition = WP.ToSubTilePos(mousePosition);
 
             IntVector2 subTilePositionInLoop= IntVector2.Zero;
-            //IntVector2 closest = IntVector2.NegativeOne;
-            //float closestDist = float.MaxValue;
-
-            //foreach (Graphics.Mesh mesh in debugmeshes)
-            //{
-            //    mesh.position = Vector3.Zero;
-            //}
-            //int currentMesh = 0;
             
+
             SubTile subTile;
             for (int y = 6; y >= -1; --y)
             {
@@ -844,7 +837,7 @@ namespace VikingEngine.DSSWars.Players
             if (!viewTile && hover.obj != null && hover.obj != selection.obj)
             {
                 //hover.frameModel.Visible = true;
-                hover.obj.selectionFrame(true, hover);
+                hover.obj.selectionFrame(player, true, hover);
 
                 //hover.frameModel.Color = hover.obj.GetFaction() == player.faction? Color.White : Color.LightGray;
 
@@ -858,7 +851,7 @@ namespace VikingEngine.DSSWars.Players
             if (selection.obj != null)
             {
                 //selection.frameModel.Visible = true;
-                selection.obj.selectionFrame(false, selection);
+                selection.obj.selectionFrame(player, false, selection);
 
                 updateSelectionGui(selection);
             }

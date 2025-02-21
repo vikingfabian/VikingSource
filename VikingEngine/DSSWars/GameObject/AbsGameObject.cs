@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void selectionGui(Players.LocalPlayer player, Graphics.ImageGroup guiModels)
         { }
-        virtual public void selectionFrame(bool hover, Selection selection)
+        virtual public void selectionFrame(LocalPlayer player, bool hover, Selection selection)
         { }
 
         public void beginEditName()

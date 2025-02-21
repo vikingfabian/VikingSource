@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         List<SoldierGroup> groups;
         public SoldierControls(List<SoldierGroup> groups)
         { 
-        this.groups = groups;
+            this.groups = groups;
         }
 
         public void mapExecute(LocalPlayer player)
@@ -26,13 +26,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     new AttackCommand(group, target);
                 }
+                new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
             }
             else
             {
+                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.mapControls.subTilePosition);//WP.WorldPosToClosestSubtile_Centered(player.mapControls.mousePosition); //player.mapControls.screenPosToWorldPos(Input.Mouse.Position);
                 foreach (SoldierGroup group in groups)
                 {
-                    new MoveCommand(group, player.mapControls.mousePosition);
+                    new MoveCommand(group, pos);
                 }
+                new MoveHereAnimation(pos);
             }
         }
     }

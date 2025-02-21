@@ -472,7 +472,7 @@ namespace VikingEngine.DSSWars.Work
             status.xpToHud(content);
         }
 
-        public override void selectionFrame(bool hover, Selection selection)
+        public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
         {
             Vector3 scale = new Vector3(DssVar.StandardBoundRadius * 2f);
             selection.BeginGroupModel(true);

@@ -120,6 +120,7 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 -New end boss
 -Lots of named factions
 https://discord.com/verification
+"adding your game category to youtube & twitch"
 
 -steam stats
 -Min 7K wishlists

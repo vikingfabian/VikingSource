@@ -98,43 +98,27 @@ namespace VikingEngine.DSSWars.Players
             {
                 groupPath.refresh(path, isHover);
             }
+            else
+            {
+                groupPath.DeleteMe();
+            }
         }
 
         public void TargetLine(ref Vector3 from, ref Vector3 to)
         {
-            //Vector3 dir =to - from;
-           
-
             if (targetLine == null)
             {
-                //targetLine = new Mesh(LoadedMesh.cube_repeating,
-                //    Vector3.Zero, new Vector3(0.05f), TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
-                //targetLine.AddToRender(DrawGame.UnitDetailLayer);
                 targetLine = new Line(2, HudLib.IngameUiLayer, Color.Pink);
             }
 
             targetLine.UpdateLine(Ref.draw.ActivePlayerScreens[playerCam].view.From3DToScreenPos(from), Ref.draw.ActivePlayerScreens[playerCam].view.From3DToScreenPos(to));
 
-            //dir = VectorExt.Normalize(dir, out float l);
-            //Vector3 defaultForward = Vector3.Forward;
+        }
 
-            //// If dir is not already aligned with defaultForward
-            ////if (dir != defaultForward && dir != -defaultForward)
-            ////{
-            ////    Vector3 axis = Vector3.Cross(defaultForward, dir);
-            ////    float angle = (float)Math.Acos(Vector3.Dot(defaultForward, dir));
-
-            ////    if (axis.LengthSquared() > 0.0001f) // Ensure valid axis
-            ////    {
-            ////        axis = Vector3.Normalize(axis);
-            //        targetLine.Rotation.QuadRotation = Quaternion.CreateFromAxisAngle(dir, 0);
-            ////    }
-            ////}
-            ////targetLine.Rotation.QuadRotation = Quaternion.(Vector3.Forward, dir); //is this correct?
-            //targetLine.scale = new Vector3(0.05f);
-            //targetLine.ScaleY = l;
-            //targetLine.position = from + l * 0.5f * dir;
-            //targetLine.position.Y += 0.05f;
+        public void hideTargetLine()
+        {
+            targetLine?.DeleteMe();
+            targetLine = null;
         }
 
         public void setGroupModel(int index, Vector3 pos, Vector3 scale, bool hover, bool main, bool squareSelection)
@@ -169,6 +153,11 @@ namespace VikingEngine.DSSWars.Players
 
             soldierModel.Color = main? Color.White : Color.LightGray;
         }
+
+        //public static void createGroupModel(LoadedMesh mesh)
+        //{
+            
+        //}
 
         public void OneFrameModel(bool unitDetail, Vector3 pos, Vector3 scale, bool hover, bool squareSelection)
         {

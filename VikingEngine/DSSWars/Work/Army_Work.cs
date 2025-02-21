@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.GameObject
             ////Order_MoveTo(start);
             //position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
             //refreshPositions(true);
-            refreshGroupPlacements2(tilePos, true, false);
+            refreshGroupPlacements2(tilePos, false, true, false);
             //var groupsC = groups.counter();
             //while (groupsC.Next())
             //{
