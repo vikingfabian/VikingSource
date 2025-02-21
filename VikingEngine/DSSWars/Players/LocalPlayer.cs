@@ -29,6 +29,7 @@ using VikingEngine.DSSWars.Work;
 using System.Net.Http.Headers;
 using System.Drawing;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.DSSWars.Players.PlayerControls;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -43,6 +44,7 @@ namespace VikingEngine.DSSWars.Players
         
         public MapControls mapControls;
         public ArmyControls armyControls = null;
+        public SoldierControls soldierControls = null;
 
         public MapDetailLayerManager drawUnitsView;
         public bool bUnitDetailLayer_buffer;
@@ -1520,6 +1522,11 @@ namespace VikingEngine.DSSWars.Players
                 armyControls = null;                
             }
 
+            if (soldierControls != null)
+            { 
+                soldierControls = null;
+            }
+
             bClear = mapControls.clearSelection();
             hud.clearState();
 
@@ -1537,6 +1544,11 @@ namespace VikingEngine.DSSWars.Players
                 {
                     clearSelection();
                 }
+            }
+
+            if (soldierControls != null)
+            {
+                soldierControls.mapExecute(this);
             }
         }
 
@@ -1577,6 +1589,12 @@ namespace VikingEngine.DSSWars.Players
                         SoundLib.select_city.Play();
                         break;
 
+                    case GameObjectType.Soldier:
+                        SoundLib.select_army.Play();
+                        {
+                            soldierControls = new SoldierControls(new List<SoldierGroup> { mapControls.selection.obj.GetSoldierGroup() });
+                        }
+                        break;
                     //case GameObjectType.Faction:
                     //    SoundLib.select_faction.Play();
                     //    break;

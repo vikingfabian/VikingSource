@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.faction = faction;
         }
 
-        public override void selectionFrame(bool hover, Selection selection)
+        public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
         {
             selection.BeginGroupModel(false);
 

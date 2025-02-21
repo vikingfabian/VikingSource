@@ -462,10 +462,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Order_Attack(AbsMapObject attackTarget)
         {
-            //DssRef.diplomacy.declareWar(faction, attackTarget.faction);
-            //clearObjective();
-            //this.attackTarget = attackTarget;
-            //this.attackTargetFaction = attackTarget.faction.parentArrayIndex;
             if (attackTarget != null)
             {
                 Order_Attack_Setup(attackTarget);
@@ -542,7 +538,7 @@ namespace VikingEngine.DSSWars.GameObject
             walkGoal = goal;
 
             walkGoalAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
-            refreshGroupPlacements2(goal, teleport);
+            refreshGroupPlacements2(goal, true, teleport);
 
             //path = null;
             goalId++;

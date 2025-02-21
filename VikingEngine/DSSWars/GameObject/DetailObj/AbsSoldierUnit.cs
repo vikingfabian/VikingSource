@@ -448,6 +448,7 @@ namespace VikingEngine.DSSWars.GameObject
                 state2 = SoldierState2.wakeup;
                 stateTime = reactionTime;                
             }
+           
         }
 
         public void teleport()
@@ -1246,9 +1247,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override void selectionFrame(bool hover, Selection selection)
+        public void selectionFramePlacement(out Vector3 pos, out Vector3 scale)
         {
-            Vector3 scale = new Vector3(radius * 2f);
+            pos = position;
+            scale = new Vector3(radius * 2f);
+        }
+        public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
+        {
+            //Vector3 scale = new Vector3(radius * 2f);
 
             var soldiers_sp = group.soldiers;
 
@@ -1260,17 +1266,29 @@ namespace VikingEngine.DSSWars.GameObject
                 selection.BeginGroupModel(true);
                 while (soldiersC.Next())
                 {
-                    selection.setGroupModel(i, soldiersC.sel.position, scale, hover, soldiersC.sel == this, false);
+                    soldiersC.sel.selectionFramePlacement(out var pos, out var scale);
+                    selection.setGroupModel(i, pos, scale, hover, soldiersC.sel == this, false);
                     ++i;
                 }
 
-                var target_sp = group.attackTarget_soldierGroupOrCity;
-                if (target_sp != null)
+                var target_sp = group.GetAttackTarget();
+                if (player.faction == GetFaction() && target_sp != null)
                 {
-                    selection.TargetLine(ref group.position, ref target_sp.position);                   
+                    selection.TargetLine(ref group.position, ref target_sp.position);
+                }
+                else
+                {
+                    selection.hideTargetLine();
                 }
 
-                selection.viewGroupPath(group.detailPath);
+                if (group.HasIdleState())
+                {
+                    selection.viewGroupPath(null);
+                }
+                else
+                {
+                    selection.viewGroupPath(group.detailPath);
+                }
             }
         }
 
@@ -1348,6 +1366,21 @@ namespace VikingEngine.DSSWars.GameObject
         public override GameObjectType gameobjectType()
         {
             return GameObject.GameObjectType.Soldier;
+        }
+
+        public override AbsSoldierUnit GetSoldier()
+        {
+            return this;
+        }
+
+        public override SoldierGroup GetSoldierGroup()
+        {
+            return group;
+        }
+
+        public override Army GetArmy()
+        {
+            return group.army;
         }
         public override UnitType DetailUnitType()
         {
