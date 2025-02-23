@@ -1,5 +1,7 @@
 ﻿-Change Log-
-* Added steam stats, to collect user data; like how many play on easy difficulty
+* German translation
+* Reverse audio option
+* Changed some wording/spelling
 
 
 
