@@ -13,28 +13,176 @@ namespace VikingEngine.DSSWars
     class Ambience
     {
         static readonly string AmbienceDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "ambience" + DataStream.FilePath.Dir;
+
+        static readonly string BattleDir = AmbienceDir + "battle" + DataStream.FilePath.Dir;
+
+        static readonly string MelodyDir = AmbienceDir + "melody" + DataStream.FilePath.Dir;
+
+        static readonly string MelodyNorthDir = MelodyDir + "north" + DataStream.FilePath.Dir;
+        static readonly string MelodySouthDir = MelodyDir + "south" + DataStream.FilePath.Dir;
+        static readonly string MelodyWarsDir = MelodyDir + "wars" + DataStream.FilePath.Dir;
+
         static readonly string WindDir = AmbienceDir + "wind" + DataStream.FilePath.Dir;
+        static readonly string WindColdDir = WindDir + "cold" + DataStream.FilePath.Dir;
+        static readonly string WindHotDir = WindDir + "hot" + DataStream.FilePath.Dir;
         static readonly string WindMidDir = WindDir + "mid" + DataStream.FilePath.Dir;
+        static readonly string WindSeaDir = WindDir + "sea" + DataStream.FilePath.Dir;
         static readonly string WindFarDir = WindDir + "far out" + DataStream.FilePath.Dir;
 
-        static readonly LoopingSoundData[] Wind_mid = new LoopingSoundData[]
+        static readonly LoopingSoundData[] MelodyNorth = new LoopingSoundData[]
             {
-                new LoopingSoundData(WindMidDir + "wind_hot_desert_low_loop", 0.08f),
+                new LoopingSoundData(MelodyNorthDir + "drkfnt_amb_v2_winter_loop", 0.08f),
+                new LoopingSoundData(MelodyNorthDir + "drkfnt_amb_v5_way_loop", 0.08f),
+                new LoopingSoundData(MelodyNorthDir + "scifi_amb_v1_cold_loop", 0.08f),
+                new LoopingSoundData(MelodyNorthDir + "space_amb_v1_theme4_loop", 0.08f),
+                new LoopingSoundData(MelodyNorthDir + "surreal_amb_forest_loop", 0.08f),
+                new LoopingSoundData(MelodyNorthDir + "surreal_amb_frozen_loop", 0.08f),
+                new LoopingSoundData(MelodyNorthDir + "surreal_amb_infinity2_loop", 0.08f),
+                new LoopingSoundData(MelodyNorthDir + "surreal_amb_ruins_loop", 0.08f),
+                new LoopingSoundData(MelodyNorthDir + "surreal_amb_winds_loop", 0.08f),
             };
+
+        static readonly LoopingSoundData[] MelodySouth = new LoopingSoundData[]
+            {
+                new LoopingSoundData(MelodySouthDir + "drkfnt_amb_v1_theme1_loop", 0.08f),
+                new LoopingSoundData(MelodySouthDir + "drkfnt_amb_v4_flute_loop", 0.08f),
+                new LoopingSoundData(MelodySouthDir + "surreal_amb_disturbing1_loop", 0.08f),
+                new LoopingSoundData(MelodySouthDir + "surreal_amb_disturbing2_loop", 0.08f),
+            };
+
+        static readonly LoopingSoundData[] MelodyWars = new LoopingSoundData[]
+            {
+                new LoopingSoundData(MelodyWarsDir + "drkfnt_amb_v2_flute1_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "drkfnt_amb_v2_horn2_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "drkfnt_amb_v3_cursed_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "drkfnt_amb_v3_underworld_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "drkfnt_amb_v5_horn_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "drkfnt_amb_v6_valhalla_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "horror_amb_v1_melodic3_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "horror_amb_v1_theme7_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "horror_amb_v1_theme8_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "scifi_amb_v1_theme5_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "scifi_amb_v1_theme6_loop", 0.08f),
+                new LoopingSoundData(MelodyWarsDir + "space_amb_v1_interstellar3_loop", 0.08f),
+            };
+
+        static readonly LoopingSoundData[] MelodyGeneral = new LoopingSoundData[]
+            {
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_flute_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_melodic1_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_melodic2_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_melodic3_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_melodic4_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_theme2_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_theme3_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_theme4_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_theme5_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_theme7_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_theme8_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_theme9_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_wind1_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v1_wind2_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v2_darkness1_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v2_darkness2_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v2_destiny_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v2_forest2_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v3_calm_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v3_flute_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v3_silence_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v4_horn_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v4_strings_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v5_darkness2_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v5_darkness2_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v6_fort_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "drkfnt_amb_v6_mystic_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "scifi_amb_v1_infinity_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "space_amb_v1_interstellar1_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "space_amb_v1_interstellar2_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "space_amb_v1_low1_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "space_amb_v1_low2_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "space_amb_v1_moon2_loop", 0.08f),
+                new LoopingSoundData(MelodyDir + "space_amb_v1_theme5_loop", 0.08f),
+            };
+
+
+        static readonly LoopingSoundData[] Battle = new LoopingSoundData[]
+           {
+                new LoopingSoundData(BattleDir + "music_guitar_120bpm_loop_theme_02", 0.08f),
+                new LoopingSoundData(BattleDir + "music_percussion_120bpm_loop_theme_01", 0.08f),
+                new LoopingSoundData(BattleDir + "music_percussion_120bpm_loop_theme_03", 0.08f),
+                new LoopingSoundData(BattleDir + "music_strings_120bpm_loop_theme_02", 0.08f),
+                new LoopingSoundData(BattleDir + "music_strings_120bpm_loop_theme_03", 0.08f),
+                new LoopingSoundData(BattleDir + "music_strings_120bpm_loop_theme_05", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_02", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_03", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_04", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_08", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_09", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_12", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_13", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_15", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_17", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_18", 0.08f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_20", 0.08f),
+           };
+
+        static readonly LoopingSoundData[] WindCold = new LoopingSoundData[]
+            {
+                new LoopingSoundData(WindColdDir + "wind_cold_arctic_01_loop", 0.08f),
+                new LoopingSoundData(WindColdDir + "wind_cold_frost_med_loop", 0.08f),
+                new LoopingSoundData(WindColdDir + "wind_cold_winter_01_loop", 0.08f),
+                new LoopingSoundData(WindColdDir + "wind_outside_plaine_med_loop", 0.08f),
+            };
+
+        static readonly LoopingSoundData[] WindHot = new LoopingSoundData[]
+            {
+                new LoopingSoundData(WindHotDir + "wind_hot_dry_low_loop", 0.08f),
+                new LoopingSoundData(WindHotDir + "wind_hot_dune_med_loop", 0.08f),
+                new LoopingSoundData(WindHotDir + "wind_hot_summer_loop", 0.08f),
+
+            };
+
+        static readonly LoopingSoundData[] WindSea = new LoopingSoundData[]
+           {
+                new LoopingSoundData(WindSeaDir + "wind_outside_lake_01_loop", 0.08f),
+                new LoopingSoundData(WindSeaDir + "wind_outside_lake_02_loop", 0.08f),
+                new LoopingSoundData(WindSeaDir + "wind_outside_mountain_low_loop", 0.08f),
+                new LoopingSoundData(WindSeaDir + "wind_outside_seaside_low_loop", 0.08f),
+
+           };
+
+        static readonly LoopingSoundData[] WindMid = new LoopingSoundData[]
+           {
+                new LoopingSoundData(WindMidDir + "wind_hot_desert_low_loop", 0.08f),
+                new LoopingSoundData(WindMidDir + "wind_hot_dune_low_loop", 0.08f),
+                new LoopingSoundData(WindMidDir + "wind_outside_forest_low_loop", 0.08f),
+                new LoopingSoundData(WindMidDir + "wind_outside_forest_med_loop", 0.08f),
+                new LoopingSoundData(WindMidDir + "wind_outside_meadow_low_loop", 0.08f),
+                new LoopingSoundData(WindMidDir + "wind_outside_plaine_low_loop", 0.08f),
+           };        
 
         static readonly LoopingSoundData[] Wind_farout = new LoopingSoundData[]
             {
                 new LoopingSoundData(WindFarDir + "wind_cold_blizzard_low_loop", 0.1f),
+                new LoopingSoundData(WindFarDir + "wind_cold_blizzard_med_loop", 0.1f),
+                new LoopingSoundData(WindFarDir + "wind_hot_dune_high_loop", 0.1f),
+                new LoopingSoundData(WindFarDir + "wind_outside_field_med_loop", 0.1f),
+                new LoopingSoundData(WindFarDir + "wind_outside_mountain_high_loop", 0.1f),
+                new LoopingSoundData(WindFarDir + "wind_outside_valley_low_loop", 0.1f),
             };
 
-        LoopingSound currentWindMid;
-        LoopingSound currentWindFarOut;
+        bool currentPlayingMelody = false;
+        LoopingSound currentNearSound, nextNearSound, loadingNearSound;
+        LoopingSound currentFarSound, nextFarSound, loadingFarSound;
 
         double volumeCurveTime = 0;
         const float FarNearFadeSpeed_PerSec = 1f;
         float farOutFade = 1f;
-        //float volumeCurve = 1;
 
+        Time nextNearSoundLoad = new Time(2f, TimeUnit.Seconds);
+        Time nextFarSoundLoad = new Time(5, TimeUnit.Minutes);
+
+        SoundLoadingState nearLoadingState = SoundLoadingState.None;
         public Ambience()
         { }
 
@@ -44,42 +192,73 @@ namespace VikingEngine.DSSWars
             float volumeCurve = 1f + (float)(Math.Sin(volumeCurveTime) * 0.3);
 
             float goalFade;
-            switch (Map.MapDetailLayerManager.CameraIndexToView[0].current.type)
+            var detailLayer = Map.MapDetailLayerManager.CameraIndexToView[0];
+            switch (detailLayer.current.type)
             {
                 case Map.MapDetailLayerType.UnitDetail1:
                     goalFade = 0;
                     break;
                 case Map.MapDetailLayerType.TerrainOverview2:
-                    goalFade = 0.5f;
+                    goalFade = 0.4f;
                     break;
                 default:
-                    goalFade = 1f;
+                    goalFade = 0.8f;
                     break;
             }
-            farOutFade = Bound.Set(farOutFade - FarNearFadeSpeed_PerSec * lib.ToLeftRight(farOutFade-goalFade) * Ref.DeltaGameTimeSec, 0f, 1f);
+            farOutFade = Bound.Set(farOutFade - FarNearFadeSpeed_PerSec * lib.ToLeftRight(farOutFade - goalFade) * Ref.DeltaGameTimeSec, 0f, 1f);
 
-            currentWindMid.setVolume(volumeCurve * (1f - farOutFade));
-            currentWindFarOut.setVolume(volumeCurve * farOutFade);
+            float farVolRaise = 1f + detailLayer.PercZoom() * 0.3f;
+            volumeCurve *= farVolRaise;
 
+            currentNearSound.setVolume(volumeCurve * (1f - farOutFade));
+            currentFarSound.setVolume(volumeCurve * farOutFade);
+
+            if (nearLoadingState == SoundLoadingState.None)
+            {
+                if (nextNearSoundLoad.CountDown())
+                {
+                    
+                }
+            }
+            else if (nearLoadingState== SoundLoadingState.Complete)
+            {
+                currentPlayingMelody = !currentPlayingMelody;
+                if (currentPlayingMelody)
+                {
+                    //Melody is shorter
+                    nextNearSoundLoad = new Time(Ref.rnd.Float(5, 30), TimeUnit.Seconds);
+                }
+                else
+                {
+                    nextNearSoundLoad = new Time(Ref.rnd.Float(0.5f, 2f), TimeUnit.Minutes);
+                }
+            } 
         }
 
         public void contentLoad()
         {
-            currentWindMid = new LoopingSound();
-            currentWindMid.Load(arraylib.RandomListMember(Wind_mid));
+            currentNearSound = new LoopingSound();
+            currentNearSound.Load(arraylib.RandomListMember(WindMid));
 
-            currentWindFarOut = new LoopingSound();
-            currentWindFarOut.Load(arraylib.RandomListMember(Wind_farout));
+            currentFarSound = new LoopingSound();
+            currentFarSound.Load(arraylib.RandomListMember(Wind_farout));
         }
 
         public void gameStart()
         {
-            currentWindMid.Play();
-            currentWindFarOut.Play();
+            currentNearSound.Play();
+            currentFarSound.Play();
         }
         public void gameEnd()
         {
 
+        }
+
+        enum SoundLoadingState
+        { 
+            None,
+            Loading,
+            Complete,
         }
     }
 }

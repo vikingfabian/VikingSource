@@ -167,6 +167,11 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
         }
+
+        public float PercZoom()
+        {
+            return FullZoomRange.GetValuePercentPos(player.view.Camera.targetZoom);
+        }
     }
 
     class DetailLayer
