@@ -346,6 +346,7 @@ namespace VikingEngine.DSSWars
             {
                 Ref.music.Update();
             }
+            DssRef.ambience.update();
 
             if (Ref.steam.inOverlay)
             {

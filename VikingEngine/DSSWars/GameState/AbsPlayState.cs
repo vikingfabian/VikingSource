@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars.GameState
 {
     abstract class AbsPlayState : AbsDssState
     {
+       
         public WorldResources resources = new WorldResources();
         protected Map.MapLayer_Factions factionsMap;
         protected Map.MapLayer_Overview overviewMap;
@@ -40,11 +41,13 @@ namespace VikingEngine.DSSWars.GameState
         public Progress progress = new Progress();
         public int NextArmyId = 0;
         protected int stepFramesCount = 0;
+        public Ambience ambience;
 
         public AbsPlayState() 
             :base() 
         {
             DssRef.state = this;
+           
         }
 
         public void stepFrames(int frameCount)
@@ -73,6 +76,7 @@ namespace VikingEngine.DSSWars.GameState
 
         protected void baseInit()
         {
+            DssRef.ambience.gameStart();
             culling = new Culling();
 
             factionsMap = new MapLayer_Factions();
@@ -238,7 +242,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             Ref.music.stop(true);
             exitThreads = true;
-
+            DssRef.ambience.gameEnd();
             new ExitGamePlay();
         }
 

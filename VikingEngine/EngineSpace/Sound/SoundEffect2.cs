@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DataStream;
 using VikingEngine.Engine;
 using VikingEngine.PJ;
 
@@ -147,6 +148,12 @@ namespace VikingEngine.Sound
     { 
         public string filePath;
         public float basevolume;
+
+        public LoopingSoundData(string filePath, float basevolume = 1f)
+        {
+            this.filePath = filePath;
+            this.basevolume = basevolume;
+        }
     }
 
     class LoopingSound
@@ -159,8 +166,14 @@ namespace VikingEngine.Sound
         {
             ins = file.CreateInstance();
             ins.IsLooped = true;
-            ins.Volume = basevolume * volume;
+            ins.Volume = Ref.gamesett.AmbientVol() * basevolume * volume;
             ins.Play();
+        }
+
+        public void Load(LoopingSoundData data)
+        {
+            basevolume = data.basevolume;
+            file = LoadContent.Content.Load<SoundEffect>(data.filePath);
         }
 
         public void setVolume(float volume)
@@ -168,7 +181,7 @@ namespace VikingEngine.Sound
             this.volume = volume;
             if (ins != null)
             {
-                ins.Volume = basevolume * volume;
+                ins.Volume = Ref.gamesett.AmbientVol() * basevolume * volume;
             }
         }
     }

@@ -94,7 +94,8 @@ namespace VikingEngine.DSSWars
             FlagAndColor.Init();
             ItemPropertyColl.Init();
             WorkLib.Init();
-
+            DssRef.ambience = new Ambience();
+            DssRef.ambience.contentLoad();
 
             new Models().loadContent();
 

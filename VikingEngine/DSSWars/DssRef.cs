@@ -22,7 +22,8 @@ namespace VikingEngine.DSSWars
         public static Achievements achieve = null;
         public static GameStats stats = null;
         public static AbsPlayState state;
-        
+        public static Ambience ambience;
+
         public static GameObject.AllUnits profile;
         public static GameTime time = new GameTime();
         public static Display.Translation.AbsLanguage lang;
