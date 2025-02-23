@@ -39,9 +39,6 @@ namespace VikingEngine.Sound
 
     abstract class SoundContainerBase
     {
-        
-        
-        
         protected float volume = 1;
         protected float randomPitch = 0;
         protected float pitchAdd = 0;
@@ -88,7 +85,7 @@ namespace VikingEngine.Sound
                         pitch = Bound.Set(pitch + Ref.rnd.Plus_MinusF(randomPitch), -1, 1);
                     }
 
-                    File().Play(Bound.Max(outvolume * Engine.Sound.SoundVolume, 1), pitch, pan);
+                    File().Play(Bound.Max(outvolume * Ref.gamesett.SoundVol(), 1), pitch, pan);
                 }
             }
         }
@@ -101,7 +98,8 @@ namespace VikingEngine.Sound
                 pitch = Bound.Set(pitch + Ref.rnd.Plus_MinusF(randomPitch), -1, 1);
             }
 
-            File().Play(Bound.Max(volume * Engine.Sound.SoundVolume, 1), pitch, pan.Value);
+            File().Play(Bound.Max(volume * Ref.gamesett.SoundVol(), 1), pitch, pan.Value);
+            
         }
     }
 
@@ -142,6 +140,36 @@ namespace VikingEngine.Sound
         protected override SoundEffect File()
         {
             return files[Ref.rnd.Int(files.Length)];
+        }
+    }
+
+    struct LoopingSoundData
+    { 
+        public string filePath;
+        public float basevolume;
+    }
+
+    class LoopingSound
+    {
+        SoundEffect file;
+        SoundEffectInstance ins;
+        float basevolume = 1f;
+        float volume = 1f;
+        public void Play()
+        {
+            ins = file.CreateInstance();
+            ins.IsLooped = true;
+            ins.Volume = basevolume * volume;
+            ins.Play();
+        }
+
+        public void setVolume(float volume)
+        {
+            this.volume = volume;
+            if (ins != null)
+            {
+                ins.Volume = basevolume * volume;
+            }
         }
     }
 }

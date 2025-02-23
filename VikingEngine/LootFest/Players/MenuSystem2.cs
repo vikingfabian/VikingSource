@@ -1144,15 +1144,15 @@ namespace VikingEngine.LootFest
             }
             return Ref.gamesett.ChunkLoadRadius;
         }
-        float musicVolProperty(bool set, float value)
-        {
-            if (set) Ref.music.SetVolume(value);
-            return Sound.MusicPlayer.MasterVolume;
-        }
-        float soundVolProperty(bool set, float value)
-        {
-            return GetSet.Do<float>(set, ref Engine.Sound.SoundVolume, value);
-        }
+        //float musicVolProperty(bool set, float value)
+        //{
+        //    if (set) Ref.music.SetVolume(value);
+        //    return Sound.MusicPlayer.MusicMasterVolume;
+        //}
+        //float soundVolProperty(bool set, float value)
+        //{
+        //    return GetSet.Do<float>(set, ref Engine.Sound.SoundVolume, value);
+        //}
         bool horiSplitProperty(int index, bool set, bool value)
         {
             if (set)

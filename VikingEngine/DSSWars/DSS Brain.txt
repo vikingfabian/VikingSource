@@ -1,5 +1,7 @@
 ﻿BETA UPDATE
 -Change Log-
+Updated volume settings
+
 
 !save av settings
 

@@ -12,7 +12,7 @@ namespace VikingEngine.Sound
         public IntervalF DelayBetweenSongs_minutes = new IntervalF(5, 8);
         public float currentDelay = 0;
         PcgRandom random = new PcgRandom();
-        public static float MasterVolume = 1f;
+        
         public static float SongVolumeAdjust = 1f;
         List<SongData> playList;
         int shuffleSongsLeftToPlay = 0;
@@ -220,7 +220,7 @@ namespace VikingEngine.Sound
         {
             if (keepPlaying)
             {
-                if (MasterVolume <= 0)
+                if (Ref.gamesett.MusicVol() <= 0)
                 {
                     playSongState = PlaySongState.Delay;
                     currentDelay = TimeExt.MinutesToMS(DelayBetweenSongs_minutes.GetRandom());
@@ -259,7 +259,7 @@ namespace VikingEngine.Sound
             {
                 if (currentSong == null)
                     return 0f;
-                return currentSong.volume * MasterVolume;
+                return currentSong.volume * Ref.gamesett.MusicVol();
             }
         }
 
@@ -280,16 +280,15 @@ namespace VikingEngine.Sound
             beginNextSong();
         }
 
-        public void SetVolume(float masterVolume)
+        public void RefreshVolume()
         {
-            MasterVolume = masterVolume;
             if (currentSong != null)
             {
                  MediaPlayer.Volume = currentVolume;
             }
             else
             {
-                MediaPlayer.Volume = MasterVolume * SongVolumeAdjust;
+                MediaPlayer.Volume = Ref.gamesett.MusicVol() * SongVolumeAdjust;
             }
         }
 
@@ -391,7 +390,7 @@ namespace VikingEngine.Sound
             if (PlatformSettings.PlayMusic)
             {
                 MusicPlayer.SongVolumeAdjust = volume;
-                MediaPlayer.Volume = MusicPlayer.SongVolumeAdjust * MusicPlayer.MasterVolume;
+                MediaPlayer.Volume = MusicPlayer.SongVolumeAdjust * Ref.gamesett.MusicVol();
                 Engine.Sound.PlayMusic(storedSong, seamlessLoop);
             }
         }

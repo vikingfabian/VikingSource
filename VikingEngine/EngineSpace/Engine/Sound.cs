@@ -27,7 +27,7 @@ namespace VikingEngine.Engine
         public const float SoundStandardVolume = 1f;
 
         static float musicVol = MusicStandardVol;
-        public static float SoundVolume = SoundStandardVolume;
+        
         public static float MusicVolume
         {
             get { return musicVol; }
@@ -42,25 +42,25 @@ namespace VikingEngine.Engine
         public static SoundEffect PlaySound(LoadedSound whichSound, float volume, Pan pan, float pitch)
         {
             SoundEffect fx = LoadContent.Sound(whichSound);
-            fx.Play(Bound.Max(volume * SoundVolume, 1), Bound.Set(pitch, -1, 1), pan.Value);
+            fx.Play(Bound.Max(volume * Ref.gamesett.SoundVol(), 1), Bound.Set(pitch, -1, 1), pan.Value);
             return fx;
         }
         public static SoundEffect PlaySound(LoadedSound whichSound, float volume)
         {
             SoundEffect fx = LoadContent.Sound(whichSound);
-            fx.Play(volume * SoundVolume, 0, 0);
+            fx.Play(volume * Ref.gamesett.SoundVol(), 0, 0);
             return fx;
             //return null;
         }
 
         public static SoundEffect PlaySound(SoundEffect fx, float volume, Pan pan, float pitch)
         {
-            fx.Play(Bound.Max(volume * SoundVolume, 1), Bound.Set(pitch, -1, 1), pan.Value);
+            fx.Play(Bound.Max(volume * Ref.gamesett.SoundVol(), 1), Bound.Set(pitch, -1, 1), pan.Value);
             return fx;
         }
         public static SoundEffect PlaySound(SoundEffect fx, float volume)
         {
-            fx.Play(volume * SoundVolume, 0, 0);
+            fx.Play(volume * Ref.gamesett.SoundVol(), 0, 0);
             return fx;
             //return null;
         }
@@ -73,7 +73,7 @@ namespace VikingEngine.Engine
         public static void PlayInstance(SoundEffectInstance fx, float volume, Pan pan, bool looped = false, float pitch = 0)
         {
             fx.IsLooped = looped;
-            fx.Volume = SoundVolume * volume;
+            fx.Volume = Ref.gamesett.SoundVol() * volume;
             fx.Pitch = pitch;
             fx.Pan = pan.Value;
 
@@ -160,7 +160,7 @@ namespace VikingEngine.Engine
 
         public static void Update()
         {
-            stackVolume = SoundVolume;
+            stackVolume = Ref.gamesett.SoundVol();
         }
        
         public static void PlayPauseCustomMusic()

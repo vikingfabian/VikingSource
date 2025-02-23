@@ -20,7 +20,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 13;
+        const int Version = 15;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -40,6 +40,16 @@ namespace VikingEngine
         public InputMap controllerMap;
         public InputMap keyboardMap;
         public bool ModelLightShaderEffect = false;
+
+        float MasterVolume = 0.5f;
+        float MusicMasterVolume = 1f;
+        float SoundVolume = Engine.Sound.SoundStandardVolume;
+        float AmbientVolume = Engine.Sound.SoundStandardVolume;
+
+        public float SoundVol() { return SoundVolume * MasterVolume; }
+        public float AmbientVol() { return AmbientVolume * MasterVolume; }
+        public float MusicVol() { return MusicMasterVolume * MasterVolume; }
+
 
         public GameSettings()
         {
@@ -71,8 +81,8 @@ namespace VikingEngine
             Engine.Screen.PcTargetResolution.write(w);
             w.Write(Engine.Screen.PcTargetFullScreen);
             w.Write((byte)Engine.Screen.UseRecordingPreset);
-            w.Write(Sound.MusicPlayer.MasterVolume);
-            w.Write(Engine.Sound.SoundVolume);
+            w.Write(MusicMasterVolume);
+            w.Write(SoundVolume);
             w.Write((byte)VibrationLevel);
             w.Write(UiScale);
             w.Write((byte)language);
@@ -82,6 +92,9 @@ namespace VikingEngine
 
             bannedPeers.write(w);
             w.Write(ModelLightShaderEffect);
+
+            w.Write(MasterVolume);
+            w.Write(AmbientVolume);
         }
 
         public void readEmbeddedSettingsAndVersion(System.IO.BinaryReader r)
@@ -97,8 +110,8 @@ namespace VikingEngine
             Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
             Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
 
-            Sound.MusicPlayer.MasterVolume = r.ReadSingle();
-            Engine.Sound.SoundVolume = r.ReadSingle();
+            MusicMasterVolume = r.ReadSingle();
+            SoundVolume = r.ReadSingle();
             VibrationLevel = r.ReadByte();            
             
             UiScale = r.ReadSingle();
@@ -122,6 +135,12 @@ namespace VikingEngine
             if (version >= 13)
             { 
                 ModelLightShaderEffect = r.ReadBoolean();
+            }
+            if (version >= 15)
+            {
+                MasterVolume = r.ReadSingle();
+                AmbientVolume = r.ReadSingle();
+
             }
         }
 
@@ -172,8 +191,8 @@ namespace VikingEngine
 
             DetailLevel = r.ReadInt32();
 
-            Sound.MusicPlayer.MasterVolume = r.ReadSingle();
-            Engine.Sound.SoundVolume = r.ReadSingle();
+            MusicMasterVolume = r.ReadSingle();
+            SoundVolume = r.ReadSingle();
 
             if (version >= 1)
             {
@@ -312,6 +331,13 @@ namespace VikingEngine
 
         void volumeOptions(RichBoxContent content)
         {
+            content.newLine();
+            content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
+            content.space();
+            content.Add(new RbText("Master Volume"));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), masterVolProperty, true));
+
             if (Ref.music != null)
             {
                 content.newLine();
@@ -319,8 +345,15 @@ namespace VikingEngine
                 content.space();
                 content.Add(new RbText(Ref.langOpt.SoundOption_MusicVolume));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(0,4,0.1f), musicVolProperty, true));
+                content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), musicVolProperty, true));
             }
+
+            content.newLine();
+            content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
+            content.space();
+            content.Add(new RbText("Ambience Volume"));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), ambientVolProperty, true));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
@@ -553,12 +586,25 @@ namespace VikingEngine
 
         public float musicVolProperty(bool set, float value)
         {
-            if (set && Ref.music !=null) Ref.music.SetVolume(value);
-            return Sound.MusicPlayer.MasterVolume;
+            if (set)
+            {
+                MusicMasterVolume = value;
+                Ref.music?.RefreshVolume();
+
+            }
+            return MusicMasterVolume;
         }
         public float soundVolProperty(bool set, float value)
         {
-            return GetSet.Do<float>(set, ref Engine.Sound.SoundVolume, value);
+            return GetSet.Do<float>(set, ref SoundVolume, value);
+        }
+        public float masterVolProperty(bool set, float value)
+        {
+            return GetSet.Do<float>(set, ref MasterVolume, value);
+        }
+        public float ambientVolProperty(bool set, float value)
+        {
+            return GetSet.Do<float>(set, ref AmbientVolume, value);
         }
 
         public float uiScaleProperty(bool set, float value)

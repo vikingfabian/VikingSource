@@ -529,6 +529,600 @@
 /processorParam:Quality=Best
 /build:DSS/Music/What Lurks Below.ogg
 
+#begin DSS/Sound/ambience/battle/music_guitar_120bpm_loop_theme_02.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/music_guitar_120bpm_loop_theme_02.wav
+
+#begin DSS/Sound/ambience/battle/music_percussion_120bpm_loop_theme_01.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/music_percussion_120bpm_loop_theme_01.wav
+
+#begin DSS/Sound/ambience/battle/music_percussion_120bpm_loop_theme_03.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/music_percussion_120bpm_loop_theme_03.wav
+
+#begin DSS/Sound/ambience/battle/music_strings_120bpm_loop_theme_02.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/music_strings_120bpm_loop_theme_02.wav
+
+#begin DSS/Sound/ambience/battle/music_strings_120bpm_loop_theme_03.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/music_strings_120bpm_loop_theme_03.wav
+
+#begin DSS/Sound/ambience/battle/music_strings_120bpm_loop_theme_05.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/music_strings_120bpm_loop_theme_05.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_02.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_02.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_03.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_03.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_04.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_04.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_08.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_08.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_09.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_09.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_12.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_12.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_13.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_13.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_15.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_15.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_17.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_17.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_18.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_18.wav
+
+#begin DSS/Sound/ambience/battle/strings_120bpm_loop_theme_20.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_20.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_flute_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_flute_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_melodic1_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_melodic1_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_melodic2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_melodic2_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_melodic3_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_melodic3_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_melodic4_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_melodic4_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_theme2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_theme2_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_theme3_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_theme3_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_theme4_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_theme4_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_theme5_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_theme5_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_theme7_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_theme7_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_theme8_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_theme8_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_theme9_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_theme9_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_wind1_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_wind1_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v1_wind2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v1_wind2_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v2_darkness1_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v2_darkness1_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v2_darkness2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v2_darkness2_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v2_destiny_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v2_destiny_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v2_forest2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v2_forest2_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v3_calm_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v3_calm_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v3_flute_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v3_flute_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v3_silence_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v3_silence_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v4_horn_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v4_horn_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v4_strings_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v4_strings_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v5_darkness2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v5_darkness2_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v5_silence_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v5_silence_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v6_fort_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v6_fort_loop.wav
+
+#begin DSS/Sound/ambience/melody/drkfnt_amb_v6_mystic_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/drkfnt_amb_v6_mystic_loop.wav
+
+#begin DSS/Sound/ambience/melody/north/drkfnt_amb_v2_winter_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/north/drkfnt_amb_v2_winter_loop.wav
+
+#begin DSS/Sound/ambience/melody/north/drkfnt_amb_v5_way_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/north/drkfnt_amb_v5_way_loop.wav
+
+#begin DSS/Sound/ambience/melody/north/scifi_amb_v1_cold_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/north/scifi_amb_v1_cold_loop.wav
+
+#begin DSS/Sound/ambience/melody/north/space_amb_v1_theme4_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/north/space_amb_v1_theme4_loop.wav
+
+#begin DSS/Sound/ambience/melody/north/surreal_amb_forest_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/north/surreal_amb_forest_loop.wav
+
+#begin DSS/Sound/ambience/melody/north/surreal_amb_frozen_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/north/surreal_amb_frozen_loop.wav
+
+#begin DSS/Sound/ambience/melody/north/surreal_amb_infinity2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/north/surreal_amb_infinity2_loop.wav
+
+#begin DSS/Sound/ambience/melody/north/surreal_amb_ruins_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/north/surreal_amb_ruins_loop.wav
+
+#begin DSS/Sound/ambience/melody/north/surreal_amb_winds_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/north/surreal_amb_winds_loop.wav
+
+#begin DSS/Sound/ambience/melody/scifi_amb_v1_infinity_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/scifi_amb_v1_infinity_loop.wav
+
+#begin DSS/Sound/ambience/melody/south/drkfnt_amb_v1_theme1_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/south/drkfnt_amb_v1_theme1_loop.wav
+
+#begin DSS/Sound/ambience/melody/south/drkfnt_amb_v4_flute_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/south/drkfnt_amb_v4_flute_loop.wav
+
+#begin DSS/Sound/ambience/melody/south/surreal_amb_disturbing1_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/south/surreal_amb_disturbing1_loop.wav
+
+#begin DSS/Sound/ambience/melody/south/surreal_amb_disturbing2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/south/surreal_amb_disturbing2_loop.wav
+
+#begin DSS/Sound/ambience/melody/space_amb_v1_interstellar1_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/space_amb_v1_interstellar1_loop.wav
+
+#begin DSS/Sound/ambience/melody/space_amb_v1_interstellar2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/space_amb_v1_interstellar2_loop.wav
+
+#begin DSS/Sound/ambience/melody/space_amb_v1_low1_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/space_amb_v1_low1_loop.wav
+
+#begin DSS/Sound/ambience/melody/space_amb_v1_low2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/space_amb_v1_low2_loop.wav
+
+#begin DSS/Sound/ambience/melody/space_amb_v1_moon2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/space_amb_v1_moon2_loop.wav
+
+#begin DSS/Sound/ambience/melody/space_amb_v1_theme5_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/space_amb_v1_theme5_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/drkfnt_amb_v2_flute1_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/drkfnt_amb_v2_flute1_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/drkfnt_amb_v2_horn2_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/drkfnt_amb_v2_horn2_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/drkfnt_amb_v3_cursed_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/drkfnt_amb_v3_cursed_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/drkfnt_amb_v3_underworld_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/drkfnt_amb_v3_underworld_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/drkfnt_amb_v5_horn_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/drkfnt_amb_v5_horn_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/drkfnt_amb_v6_valhalla_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/drkfnt_amb_v6_valhalla_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/horror_amb_v1_melodic3_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/horror_amb_v1_melodic3_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/horror_amb_v1_theme7_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/horror_amb_v1_theme7_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/horror_amb_v1_theme8_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/horror_amb_v1_theme8_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/scifi_amb_v1_theme5_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/scifi_amb_v1_theme5_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/scifi_amb_v1_theme6_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/scifi_amb_v1_theme6_loop.wav
+
+#begin DSS/Sound/ambience/melody/wars/space_amb_v1_interstellar3_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/melody/wars/space_amb_v1_interstellar3_loop.wav
+
+#begin DSS/Sound/ambience/wind/cold/wind_cold_arctic_01_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/cold/wind_cold_arctic_01_loop.wav
+
+#begin DSS/Sound/ambience/wind/cold/wind_cold_frost_med_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/cold/wind_cold_frost_med_loop.wav
+
+#begin DSS/Sound/ambience/wind/cold/wind_cold_winter_01_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/cold/wind_cold_winter_01_loop.wav
+
+#begin DSS/Sound/ambience/wind/cold/wind_outside_plaine_med_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/cold/wind_outside_plaine_med_loop.wav
+
+#begin DSS/Sound/ambience/wind/far out/wind_cold_blizzard_low_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/far out/wind_cold_blizzard_low_loop.wav
+
+#begin DSS/Sound/ambience/wind/far out/wind_cold_blizzard_med_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/far out/wind_cold_blizzard_med_loop.wav
+
+#begin DSS/Sound/ambience/wind/far out/wind_hot_dune_high_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/far out/wind_hot_dune_high_loop.wav
+
+#begin DSS/Sound/ambience/wind/far out/wind_outside_field_med_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/far out/wind_outside_field_med_loop.wav
+
+#begin DSS/Sound/ambience/wind/far out/wind_outside_mountain_high_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/far out/wind_outside_mountain_high_loop.wav
+
+#begin DSS/Sound/ambience/wind/far out/wind_outside_valley_low_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/far out/wind_outside_valley_low_loop.wav
+
+#begin DSS/Sound/ambience/wind/hot/wind_hot_dry_low_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/hot/wind_hot_dry_low_loop.wav
+
+#begin DSS/Sound/ambience/wind/hot/wind_hot_dune_med_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/hot/wind_hot_dune_med_loop.wav
+
+#begin DSS/Sound/ambience/wind/hot/wind_hot_summer_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/hot/wind_hot_summer_loop.wav
+
+#begin DSS/Sound/ambience/wind/mid/wind_hot_desert_low_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/mid/wind_hot_desert_low_loop.wav
+
+#begin DSS/Sound/ambience/wind/mid/wind_hot_dune_low_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/mid/wind_hot_dune_low_loop.wav
+
+#begin DSS/Sound/ambience/wind/mid/wind_outside_forest_low_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/mid/wind_outside_forest_low_loop.wav
+
+#begin DSS/Sound/ambience/wind/mid/wind_outside_forest_med_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/mid/wind_outside_forest_med_loop.wav
+
+#begin DSS/Sound/ambience/wind/mid/wind_outside_meadow_low_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/mid/wind_outside_meadow_low_loop.wav
+
+#begin DSS/Sound/ambience/wind/mid/wind_outside_plaine_low_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/mid/wind_outside_plaine_low_loop.wav
+
+#begin DSS/Sound/ambience/wind/sea/wind_outside_lake_01_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/sea/wind_outside_lake_01_loop.wav
+
+#begin DSS/Sound/ambience/wind/sea/wind_outside_lake_02_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/sea/wind_outside_lake_02_loop.wav
+
+#begin DSS/Sound/ambience/wind/sea/wind_outside_mountain_low_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/sea/wind_outside_mountain_low_loop.wav
+
+#begin DSS/Sound/ambience/wind/sea/wind_outside_seaside_low_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/wind/sea/wind_outside_seaside_low_loop.wav
+
 #begin DSS/Sound/anvil.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
