@@ -57,7 +57,7 @@ Polish
 /cast iron
 /-lvl2 gun powder (beer chemist) Black powder/ gunpowder
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish
+English, Simplified Chinese, Japanese, Russian, Spanish, German
 
 
 #Todo (DSS 2)#

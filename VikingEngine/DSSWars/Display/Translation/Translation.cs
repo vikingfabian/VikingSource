@@ -14,7 +14,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public List<LanguageType> available()
         { 
             return new List<LanguageType> { 
-                LanguageType.English, 
+                LanguageType.English,
+                LanguageType.German,
                 LanguageType.Chinese,
                 LanguageType.Japanese,
                 LanguageType.Russian,
@@ -28,6 +29,9 @@ namespace VikingEngine.DSSWars.Display.Translation
             {
                 case LanguageType.English:
                     return SpriteName.LangButton_English;
+
+                case LanguageType.German:
+                    return SpriteName.LangButton_German;
 
                 case LanguageType.Chinese:
                     return SpriteName.LangButton_Chinese;
@@ -100,6 +104,12 @@ namespace VikingEngine.DSSWars.Display.Translation
                     {
                         Ref.gamesett.UiScale = Math.Max(Ref.gamesett.UiScale, 1.2f);
                     }
+                    break;
+
+                case LanguageType.German:
+                    DssRef.lang = new German();
+                    Ref.langOpt = new HUD.OptionsLanguage_German();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
 
                 case LanguageType.Russian:

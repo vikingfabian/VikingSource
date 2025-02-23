@@ -1407,7 +1407,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_NoLimit => "制限なし";
 
         public override string Hud_None => "なし";
-        public override string Hud_Queue => "キュー";
+        public override string Hud_ProductionQueue => "生産キュー";
 
         public override string Hud_EmptyList => "- 空のリスト -";
 

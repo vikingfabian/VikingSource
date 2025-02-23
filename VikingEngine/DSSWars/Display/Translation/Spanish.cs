@@ -1403,7 +1403,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_NoLimit => "Sin límite";
 
         public override string Hud_None => "Ninguno";
-        public override string Hud_Queue => "Cola";
+        public override string Hud_ProductionQueue => "Cola de producción";
 
         public override string Hud_EmptyList => "- Lista vacía -";
 
