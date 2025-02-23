@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Display
                         var bp = player.buildControls.placeBuildingOption().blueprint;
                         bp.toMenu(content, subTile.city);
 
-                        var mayBuild = player.mapControls.hover.subTile.MayBuild(player, out bool upgrade);
+                        var mayBuild = player.mapControls.hover.subTile.mayBuild(player, out bool upgrade);
                         
                         switch (mayBuild)
                         { 

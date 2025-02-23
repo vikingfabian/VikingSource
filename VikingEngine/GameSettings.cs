@@ -394,6 +394,7 @@ namespace VikingEngine
                             new RbAction1Arg<RecordingPresets>(Ref.gamesett.setRecordingPreset, rp), null);
                     }
                 }
+                RecordPreset.Build(content, Ref.langOpt.GraphicsOption_RecordingPresets, menu);
             }
 
             content.newLine();

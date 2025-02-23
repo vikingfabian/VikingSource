@@ -655,19 +655,14 @@ namespace VikingEngine.DSSWars.Players
             }
 
             bool menuFocusState = mapControls.focusedObjectMenuState();
-
-
             hud.update();
 
             mapControls.update(hud.mouseOver);
-
 
             if (cityUpdate && input.AutomationSetting.DownEvent)
             {
                 hud.OpenAutomationMenu();
             }
-
-
 
             if (armyControls != null)
             {
@@ -733,13 +728,21 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (!hud.mouseOver)
                 {
-                    if (input.Select.DownEvent)
+                    if ((mapControls.hover.subTile.hasSelection && InBuildOrdersMode()) || buildControls.buildKeyDown)
                     {
-                        mapSelect();
+                        buildControls.updateBuildMode();
                     }
-                    if (input.Execute.DownEvent)
+                    else
                     {
-                        mapExecute();
+                        if (input.Select.DownEvent)
+                        {
+                            mapSelect();
+                        }
+
+                        if (input.Execute.DownEvent)
+                        {
+                            mapExecute();
+                        }
                     }
                 }
             }
@@ -752,12 +755,8 @@ namespace VikingEngine.DSSWars.Players
 
             updateGameSpeed();
 
-
             updateObjectTabbing();
 
-
-
-            //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
             playerData.view.Camera.RecalculateMatrices();
             
@@ -858,45 +857,6 @@ namespace VikingEngine.DSSWars.Players
                             break;
                     }
                 }
-                //            //    case TerrainBuildingType.Recruitment:
-                //            //        build = BuildAndExpandType.Recruitment;
-                //            //        break;
-                //            //    case TerrainBuildingType.PigPen:
-                //            //        build = BuildAndExpandType.PigPen;
-                //            //        break;
-                //            //    case TerrainBuildingType.HenPen:
-                //            //        build = BuildAndExpandType.HenPen;
-                //            //        break;
-                //            //    case TerrainBuildingType.Barracks:
-                //            //        build = BuildAndExpandType.Barracks;
-                //            //        break;
-                //            //    case TerrainBuildingType.Brewery:
-                //            //        build = BuildAndExpandType.Brewery;
-                //            //        break;
-                //            //    case TerrainBuildingType.Carpenter:
-                //            //        build = BuildAndExpandType.Carpenter;
-                //            //        break;
-                //            //    case TerrainBuildingType.Nobelhouse:
-                //            //        build = BuildAndExpandType.Nobelhouse;
-                //            //        break;
-                //            //    case TerrainBuildingType.Storehouse:
-                //            //        build = BuildAndExpandType.Storehouse;
-                //            //        break;
-                //            //    case TerrainBuildingType.Tavern:
-                //            //        build = BuildAndExpandType.Tavern;
-                //            //        break;
-                //            //    case TerrainBuildingType.WorkerHut:
-                //            //        build = BuildAndExpandType.WorkerHuts;
-                //            //        break;
-                //            //    case TerrainBuildingType.Work_Bench:
-                //            //        build = BuildAndExpandType.WorkBench;
-                //            //        break;
-
-                //            //}
-
-                //            setBuildMode(mapControls.hover.subTile.city, build);
-                //        }
-                //}
 
 #if DEBUG
                 if (VikingEngine.Input.Keyboard.KeyDownEvent(Keys.P))
@@ -1465,13 +1425,15 @@ namespace VikingEngine.DSSWars.Players
 
         }
 
+        
         void mapSelect()
         {
-            if (mapControls.hover.subTile.hasSelection && InBuildOrdersMode())
-            {
-                buildControls.onTileSelect(mapControls.hover.subTile);
-            }
-            else
+
+            //if (mapControls.hover.subTile.hasSelection && InBuildOrdersMode())
+            //{
+            //    buildControls.onTileSelect(mapControls.hover.subTile);
+            //}
+            //else if (downEvent)
             {
                 bool sameMapObject = mapControls.selection.obj != null;
                 if (mapControls.hover.subTile.hasSelection)

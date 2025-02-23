@@ -23,7 +23,8 @@ namespace VikingEngine.DSSWars.Build
         public SpriteName sprite;
         public bool uniqueBuilding = false;
         public bool canAutoBuild;
-        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, bool canAutoBuild)
+        public MapPaintToolCategory paintToolCategory;
+        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, bool canAutoBuild, MapPaintToolCategory paintToolCategory)
         {
             this.canAutoBuild = canAutoBuild;
             this.sprite = sprite;
@@ -34,6 +35,7 @@ namespace VikingEngine.DSSWars.Build
             //this.experienceType = experienceType;
 
             BuildLib.BuildOptions[(int)buildType] = this;
+            this.paintToolCategory = paintToolCategory;
         }
         public WorkExperienceType experienceType() 
         {

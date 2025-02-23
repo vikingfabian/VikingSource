@@ -1,10 +1,5 @@
 ﻿BETA UPDATE
 -Change Log-
-Battle lab mode
-Improved map flickering
-Music can be listed
-6 new songs
-Repaired commander link
 
 !save av settings
 

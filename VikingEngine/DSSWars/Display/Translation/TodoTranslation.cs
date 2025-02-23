@@ -284,7 +284,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_GoldDelivery => "Gold courier";
         public string BuildingType_Bank_Description => "Gold management";
 
+
+
         public string BuildingType_DirtRoad => "Dirt road";
+
+
+        public string BuildingToolShape_Free => "Pen";
+        public string BuildingToolShape_Area => "Rectangle";
+        public string BuildingToolShape_Line => "Line";
+        public string BuildingToolShape_LShape => "L Shape";
 
 
         public string Work_MiningResource = "Mining {0}";

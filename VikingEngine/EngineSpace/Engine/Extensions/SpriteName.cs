@@ -2477,6 +2477,12 @@ namespace VikingEngine
         WarsHudIconEditor,
         DSS2MainMenu,
 
+        ToolPaintShape_Free,
+        ToolPaintShape_Line,
+        ToolPaintShape_Area,
+        ToolPaintShape_LShape,
+        ToolPaintShape_Path,
+
 
         WarsNightmareEyeGlow,
         WarsGroundTex,

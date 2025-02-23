@@ -25,12 +25,39 @@ namespace VikingEngine.DSSWars.Players
         public City city;
         public SelectedSubTile(LocalPlayer player, bool isHover)
         {
-            model = new Mesh(isHover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid, Vector3.Zero, new Vector3(WorldData.SubTileWidth * 1.1f),
+            model = CreateOutlineModel(player, isHover);
+            //model = new Mesh(isHover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid, Vector3.Zero, new Vector3(WorldData.SubTileWidth * 1.1f),
+            //    TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
+
+            //model.setVisibleCamera(player.playerData.localPlayerIndex);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.Visible = false;
+        }
+
+        public static Mesh CreateOutlineModel(LocalPlayer player, bool isHover)
+        {
+            LoadedMesh loadedMesh;
+            float scale;
+
+            if (isHover)
+            {
+                loadedMesh = LoadedMesh.SelectSquareDotted;
+                scale = WorldData.SubTileWidth * 1.1f;
+            }
+            else
+            {
+                loadedMesh = LoadedMesh.SelectSquareSolid;
+                scale = WorldData.SubTileWidth * 1.0f;
+            }
+
+            var model = new Mesh(loadedMesh, Vector3.Zero, new Vector3(scale),
                 TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
 
             model.setVisibleCamera(player.playerData.localPlayerIndex);
             model.AddToRender(DrawGame.UnitDetailLayer);
             model.Visible = false;
+
+            return model;
         }
 
         public void update(IntVector2 subTilePos, LocalPlayer player)
@@ -50,14 +77,11 @@ namespace VikingEngine.DSSWars.Players
                     }
 
                     if (player.InBuildOrdersMode())
-                        //player.mapControls.selection.obj != null &&
-                        //player.mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
-                        //player.cityTab == Display.MenuTab.Build)
                     {
                         selectTileResult = player.buildControls.buildMode;
                         hasSelection = true;
-                        model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
-                        model.position.Y = subTile.groundY;
+                        model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+                        //model.position.Y = subTile.groundY;
 
                         
                         return;
@@ -136,7 +160,29 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public MayBuildResult MayBuild(LocalPlayer player, out bool upgrade)
+        public MayBuildResult mayBuild(LocalPlayer player, out bool upgrade)
+        {
+            return MayBuild(subTilePos, player, out upgrade, out _);
+        }
+
+        public static MayBuildResult MayBuild(IntVector2 subTilePos, LocalPlayer player, out bool upgrade, out City city)
+        {
+            if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
+            { 
+                    if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                    {
+                        city = tile.City();
+
+                        return MayBuild(city, subTile, player, out upgrade);
+                    }
+            }
+
+            city = null;
+            upgrade = false;
+            return MayBuildResult.ERR;
+        }
+
+        public static MayBuildResult MayBuild(City city, SubTile subTile, LocalPlayer player, out bool upgrade)
         {
             upgrade = false;
             if (city != null)
@@ -165,23 +211,59 @@ namespace VikingEngine.DSSWars.Players
             return MayBuildResult.No_OutsideRegion;
         }
 
-        public bool MayDemolish(LocalPlayer player)
+        //public MayBuildResult MayBuild(LocalPlayer player, out bool upgrade)
+        //{
+        //    upgrade = false;
+        //    if (city != null)
+        //    {
+        //        if (city.faction.player == player)
+        //        {
+        //            //var current = subTile.GeBuildingType();
+        //            if (subTile.MayBuild(player.buildControls.placeBuildingType, out upgrade))
+        //            {
+        //                if (player.mapControls.selection.obj == city)
+        //                {
+        //                    return MayBuildResult.Yes;
+        //                }
+        //                else
+        //                {
+        //                    return MayBuildResult.Yes_ChangeCity;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                return MayBuildResult.No_Occupied;
+        //            }
+        //        }
+        //    }
+
+        //    return MayBuildResult.No_OutsideRegion;
+        //}
+
+        public static bool MayDemolish(IntVector2 subTilePos, LocalPlayer player, out City city)
         {
-            if (city != null)
+            if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             {
-                if (city.faction.player == player)
+                IntVector2 tilePos = WP.SubtileToTilePos(subTilePos);
+                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                 {
-                    if (WP.SubtileToTilePos(subTilePos) != city.tilePos) //center tile is protected
-                    {
-                        var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
-                        if (buildingType != BuildAndExpandType.NUM_NONE)
+                    city = tile.City();
+                    
+                        if (city.faction.player == player)
                         {
-                            return true;
+                            if (tilePos != city.tilePos) //center tile is protected
+                            {
+                                var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
+                                if (buildingType != BuildAndExpandType.NUM_NONE)
+                                {
+                                    return true;
+                                }
+                            }
                         }
-                    }
+                    
                 }
             }
-
+            city = null;
             return false;
         }
 

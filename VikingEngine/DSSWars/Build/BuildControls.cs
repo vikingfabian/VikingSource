@@ -2,8 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display.Translation;
@@ -13,8 +15,10 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.ToGG;
 using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.ToGG.MoonFall;
 
@@ -32,10 +36,12 @@ namespace VikingEngine.DSSWars.Build
                 Build.BuildAndExpandType.PigPen,
                 Build.BuildAndExpandType.HenPen,
             };
-        public SelectTileResult buildMode = SelectTileResult.None;
-        //public BuildOption placeBuildingType = BuildLib.BuildOptions[0];
-        public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHuts;
 
+        public static readonly MapPaintToolShape[] AvailableToolShapes = { MapPaintToolShape.Free, MapPaintToolShape.Line, MapPaintToolShape.LShape, MapPaintToolShape.Area };
+
+        public SelectTileResult buildMode = SelectTileResult.None;
+        public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHuts;
+        public MapPaintToolShape toolShape = MapPaintToolShape.Free;
         LocalPlayer player;
 
         public BuildControls(LocalPlayer player) 
@@ -48,46 +54,316 @@ namespace VikingEngine.DSSWars.Build
             return BuildLib.BuildOptions[(int)placeBuildingType];
         }
 
-        public void onTileSelect(SelectedSubTile selectedSubTile)
+        bool actOnTile(IntVector2 subTilePos, bool commit, out int usesBuildQue, out City city)
         {
             if (buildMode == SelectTileResult.Build)
             {
-                //todo check toggle
-                var mayBuild = selectedSubTile.MayBuild(player, out bool upgrade);
+                usesBuildQue = 1;
+                var mayBuild = SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city);
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
-                    if (mayBuild == MayBuildResult.Yes_ChangeCity)
+                    if (commit)
                     {
-                        player.mapSelect(selectedSubTile.city);
-                    }
-
-
-                    if (selectedSubTile.city.availableBuildQueue(player) && placeBuildingOption().blueprint.meetsRequirements(selectedSubTile.city))
-                    {
-                        player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
+                        if (city.availableBuildQueue(player) && placeBuildingOption().blueprint.meetsRequirements(city))
+                        {
+                            player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
+                        }
+                        else
+                        {
+                            //Remove current orders
+                            player.orders.orderConflictingSubTile(subTilePos, true);
+                        }
                     }
                     else
                     {
-                        //Remove current orders
-                        player.orders.orderConflictingSubTile(selectedSubTile.subTilePos, true);
+                        if (player.orders.orderConflictingSubTile(subTilePos, false))
+                        {
+                            usesBuildQue = -1;
+                        }
                     }
+
+                    return true;
                 }
             }
             else if (buildMode == SelectTileResult.Demolish)
             {
-                if (selectedSubTile.MayDemolish(player))
+                usesBuildQue = 0;
+                if (SelectedSubTile.MayDemolish(subTilePos, player, out city))
                 {
-                    player.orders.addOrder(new DemolishOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos), ActionOnConflict.Toggle);
+                    if (commit)
+                    {
+                        player.orders.addOrder(new DemolishOrder(WorkTemplate.MaxPrio, true, city, subTilePos), ActionOnConflict.Toggle);
+                    }
+
+                    return true;
+                }
+            }
+            else
+            {
+                usesBuildQue = 0;
+            }
+
+            city = null;
+            return false;
+        }
+
+        public bool buildKeyDown = false;
+        Vector3 keyDownPos;
+        IntVector2 startTile, currentTile;
+        List<BuildSelection> selection = new List<BuildSelection>();
+        LShapeDir lShape;
+        class BuildSelection
+        {
+            public IntVector2 position;
+            public bool mayBuild;
+            public Mesh model;
+            public int usesBuildQue;
+            public City City;
+        }
+
+        public void updateBuildMode()
+        {           
+
+            if (player.input.Select.DownEvent)
+            {
+                deleteSelection();
+                buildKeyDown = true;
+                startTile = player.mapControls.hover.subTile.subTilePos;
+                keyDownPos = player.mapControls.mousePosition;
+                lShape = LShapeDir.NoSet;
+                //actOnTile(player.mapControls.hover.subTile);
+            }
+
+            if (buildKeyDown)
+            {
+                if (player.mapControls.hover.subTile.subTilePos != currentTile)
+                {
+                    //Update paint selection
+                    switch (toolShape)
+                    {
+                        case MapPaintToolShape.Free:
+                            if (addToSelection(player.mapControls.hover.subTile.subTilePos, true))
+                            {
+                                refreshSelection();
+                            }
+                            break;
+                        case MapPaintToolShape.Area:
+                            {
+                                deleteSelection();
+                                var area = Rectangle2.FromTwoTilePoints(startTile, player.mapControls.hover.subTile.subTilePos);
+                                ForXYLoop loop = new ForXYLoop(area);
+                                while (loop.Next())
+                                {
+                                    addToSelection(loop.Position, false);
+                                }
+                                refreshSelection();
+                            }
+                            break;
+                        case MapPaintToolShape.LShape:
+                            {
+                                deleteSelection();
+
+                                if (startTile.SideLength(player.mapControls.hover.subTile.subTilePos) > 1)
+                                {
+                                    if (lShape == LShapeDir.NoSet)
+                                    {
+                                        if (Math.Abs(player.mapControls.mousePosition.X - keyDownPos.X) > Math.Abs(player.mapControls.mousePosition.Z - keyDownPos.Z))
+                                        {
+                                            lShape = LShapeDir.StartX;
+                                        }
+                                        else
+                                        {
+                                            lShape = LShapeDir.StartY;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    lShape = LShapeDir.NoSet;
+                                }
+
+                                IntVector2 diff = player.mapControls.hover.subTile.subTilePos - startTile;
+                                IntVector2 dir = new IntVector2(lib.ToLeftRight(diff.X), lib.ToLeftRight(diff.Y));
+                                IntVector2 length = new IntVector2(Math.Abs(diff.X), Math.Abs(diff.Y));
+
+                                IntVector2 pos = startTile;
+
+                                //var area = Rectangle2.FromTwoTilePoints(startTile, player.mapControls.hover.subTile.subTilePos);
+                                switch (lShape)
+                                {
+                                    case LShapeDir.NoSet:
+                                        {
+                                            addToSelection(startTile, false);
+                                            addToSelection(player.mapControls.hover.subTile.subTilePos, true);
+                                        }
+                                        break;
+                                    case LShapeDir.StartX:
+                                        {                                            
+                                            for (int xstep = 0; xstep < length.X; xstep++)
+                                            {
+                                                addToSelection(pos, false);
+                                                pos.X += dir.X;
+                                            }
+
+                                            for (int ystep = 0; ystep < length.Y; ystep++)
+                                            {
+                                                addToSelection(pos, true);
+                                                pos.Y += dir.Y;
+                                            }
+                                        }
+                                        break;
+
+                                    case LShapeDir.StartY:
+                                        {
+                                            for (int ystep = 0; ystep < length.Y; ystep++)
+                                            {
+                                                addToSelection(pos, true);
+                                                pos.Y += dir.Y;
+                                            }
+
+                                            for (int xstep = 0; xstep < length.X; xstep++)
+                                            {
+                                                addToSelection(pos, false);
+                                                pos.X += dir.X;
+                                            }
+                                        }
+                                        break;
+                                }
+
+                                refreshSelection();
+                            }
+                            break;
+                        case MapPaintToolShape.Line:
+                            {
+                                //How do I make a line that is one tile thick?
+                                deleteSelection(); // Clear previous selection
+
+                                IntVector2 start = startTile;
+                                IntVector2 end = player.mapControls.hover.subTile.subTilePos;
+
+                                int x0 = start.X, y0 = start.Y;
+                                int x1 = end.X, y1 = end.Y;
+
+                                int dx = Math.Abs(x1 - x0);
+                                int dy = Math.Abs(y1 - y0);
+                                int sx = (x0 < x1) ? 1 : -1;
+                                int sy = (y0 < y1) ? 1 : -1;
+                                int err = dx - dy;
+
+                                IntVector2 pos = start;
+
+                                while (true)
+                                {
+                                    addToSelection(pos, false); // Add the current position to selection
+
+                                    if (pos.X == x1 && pos.Y == y1) break; // Stop when reaching the endpoint
+
+                                    int e2 = 2 * err;
+                                    if (e2 > -dy)
+                                    {
+                                        err -= dy;
+                                        pos.X += sx;
+                                    }
+                                    if (e2 < dx)
+                                    {
+                                        err += dx;
+                                        pos.Y += sy;
+                                    }
+                                }
+
+                                refreshSelection();
+                            }
+                            break;
+                    }
                 }
             }
 
+            if (player.input.Select.UpEvent)
+            {
+                foreach (var sel in selection)
+                {
+                    actOnTile(sel.position, true, out _, out _);
+                }
+                deleteSelection();
+                buildKeyDown = false;
+            }
+
+            currentTile = player.mapControls.hover.subTile.subTilePos;
+
+
+            bool addToSelection(IntVector2 subTilePos, bool checkDoublette) 
+            {
+                if (checkDoublette)
+                {
+                    foreach (var sel in selection)
+                    {
+                        if (sel.position == subTilePos)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                bool canAct = actOnTile(subTilePos, false, out int usesBuildQue, out City city);
+
+                var model = SelectedSubTile.CreateOutlineModel(player, false);
+                model.Visible = true;
+                model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+                
+                if (!canAct)
+                {
+                    model.Color = HudLib.NotAvailableColor;
+                }
+
+                selection.Add(new BuildSelection() { 
+                    position = subTilePos, 
+                    mayBuild = canAct,
+                    model = model,
+                    usesBuildQue = usesBuildQue,
+                    City = city,
+                });
+                return true;
+            }
+
+            void refreshSelection()
+            {
+                Dictionary<int, int> city_queLength = new Dictionary<int, int>();
+
+                foreach (var sel in selection)
+                {
+                    if (sel.mayBuild && sel.usesBuildQue != 0)
+                    {
+                        int availabeQueueLength;
+                        if (!city_queLength.TryGetValue(sel.City.parentArrayIndex, out availabeQueueLength))
+                        {
+                            availabeQueueLength = sel.City.availableBuildQueueLength(player);
+                            city_queLength.Add(sel.City.parentArrayIndex, availabeQueueLength);                           
+                        }
+
+                        sel.model.Color = (availabeQueueLength > 0 || sel.usesBuildQue <= 0)  ? Color.White : Color.Gray;
+
+                        availabeQueueLength -= sel.usesBuildQue;
+                        city_queLength[sel.City.parentArrayIndex] = Bound.Min(availabeQueueLength, 0);
+                    }
+                }
+            }
+
+            void deleteSelection()
+            {
+                foreach (var sel in selection)
+                {
+                    sel.model.DeleteMe();
+                }
+                currentTile = IntVector2.NegativeOne;
+                
+                selection.Clear();
+            }
         }
+
 
         public void autoPlaceBuilding(City city, int count)
         {
             BuildAndExpandType buildType = placeBuildingType;
-
-
 
             Task.Factory.StartNew(() =>
             {
@@ -180,14 +456,42 @@ namespace VikingEngine.DSSWars.Build
                     }
                 }
 
-            });
-           
+            });           
         }
 
         public void toHud(LocalPlayer player, RichBoxContent content, City city)
         {
-            content.newParagraph();
 
+            foreach (MapPaintToolShape shape in AvailableToolShapes)
+            {
+                string caption;
+                SpriteName icon;
+                switch (shape)
+                {
+                    default:
+                        caption = DssRef.todoLang.BuildingToolShape_Free;
+                        icon = SpriteName.ToolPaintShape_Free;
+                        break;
+                    case MapPaintToolShape.Line:
+                        caption = DssRef.todoLang.BuildingToolShape_Line;
+                        icon = SpriteName.ToolPaintShape_Line;
+                        break;
+                    case MapPaintToolShape.Area:
+                        caption = DssRef.todoLang.BuildingToolShape_Area;
+                        icon = SpriteName.ToolPaintShape_Area;
+                        break;
+                    case MapPaintToolShape.LShape:
+                        caption = DssRef.todoLang.BuildingToolShape_LShape;
+                        icon = SpriteName.ToolPaintShape_LShape;
+                        break;
+                }
+
+                content.Add(new ArtOption(shape == toolShape, new List<AbsRichBoxMember> { new RbImage(icon) },
+                    new RbAction1Arg<MapPaintToolShape>((MapPaintToolShape shape) => { toolShape = shape; }, shape),
+                    new RbTooltip_Text(caption)));
+            }
+
+            content.newParagraph();
             content.Add(new RichBoxScale(2.1f));
             
             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);

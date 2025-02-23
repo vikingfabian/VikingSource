@@ -187,7 +187,10 @@ namespace VikingEngine.DSSWars.GameObject
             return MaxBuildQueue() > 1000 || player.orders.buildQueue(this) < MaxBuildQueue();
         }
 
-       
+        public int availableBuildQueueLength(LocalPlayer player)
+        {
+            return MaxBuildQueue() - player.orders.buildQueue(this);
+        }
 
         public void haltConscriptAndDelivery()
         {

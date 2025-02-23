@@ -2649,6 +2649,12 @@ namespace VikingEngine
                     add(SpriteName.WarsHudSubTabSelected);
                     add(SpriteName.WarsHudSubTabNotSelected);
                     add(SpriteName.WarsHudToggleNotSelected);
+
+                    add(SpriteName.ToolPaintShape_Free);
+                    add(SpriteName.ToolPaintShape_Line);
+                    add(SpriteName.ToolPaintShape_Area);
+                    add(SpriteName.ToolPaintShape_LShape);
+                    add(SpriteName.ToolPaintShape_Path);
                 }
 
                 currentIndex = numTilesWidth * 101;
