@@ -170,6 +170,11 @@ namespace VikingEngine.Sound
             ins.Play();
         }
 
+        public void Stop()
+        {
+            ins.Stop();
+        }
+
         public void Load(LoopingSoundData data)
         {
             basevolume = data.basevolume;

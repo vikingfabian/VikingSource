@@ -177,8 +177,9 @@ namespace VikingEngine.DSSWars
 
         double volumeCurveTime = 0;
         const float FarNearFadeSpeed_PerSec = 1f;
+        const float NewSoundFadeSpeed_PerSec = 0.25f;
         float farOutFade = 1f;
-
+        float newNearFade = 0;
         Time nextNearSoundLoad = new Time(2f, TimeUnit.Seconds);
         Time nextFarSoundLoad = new Time(5, TimeUnit.Minutes);
 
@@ -210,28 +211,58 @@ namespace VikingEngine.DSSWars
             float farVolRaise = 1f + detailLayer.PercZoom() * 0.3f;
             volumeCurve *= farVolRaise;
 
-            currentNearSound.setVolume(volumeCurve * (1f - farOutFade));
-            currentFarSound.setVolume(volumeCurve * farOutFade);
-
-            if (nearLoadingState == SoundLoadingState.None)
+            float nearSoundLevel = volumeCurve * (1f - farOutFade);
+            float farSoundLevel = volumeCurve * farOutFade;
+            currentNearSound.setVolume(nearSoundLevel * (1f - newNearFade));
+            if (newNearFade > 0)
             {
-                if (nextNearSoundLoad.CountDown())
-                {
-                    
-                }
+                nextNearSound.setVolume(nearSoundLevel * newNearFade);
             }
-            else if (nearLoadingState== SoundLoadingState.Complete)
+            currentFarSound.setVolume(farSoundLevel);
+
+            switch (nearLoadingState)
             {
-                currentPlayingMelody = !currentPlayingMelody;
-                if (currentPlayingMelody)
-                {
-                    //Melody is shorter
-                    nextNearSoundLoad = new Time(Ref.rnd.Float(5, 30), TimeUnit.Seconds);
-                }
-                else
-                {
-                    nextNearSoundLoad = new Time(Ref.rnd.Float(0.5f, 2f), TimeUnit.Minutes);
-                }
+                case SoundLoadingState.None:
+                    {
+                        if (nextNearSoundLoad.CountDown())
+                        {
+                            nearLoadingState = SoundLoadingState.Loading;
+                            new Timer.AsynchActionTrigger(loadNextNearSound_async, true);
+                        }
+                    }
+                    break;
+                case SoundLoadingState.Complete:
+                    {
+                        nextNearSound = loadingNearSound;
+                        nextNearSound.setVolume(0f);
+                        nextNearSound.Play();
+
+                        loadingNearSound = null;
+
+                        currentPlayingMelody = !currentPlayingMelody;
+                        if (currentPlayingMelody)
+                        {
+                            //Melody is shorter
+                            nextNearSoundLoad = new Time(Ref.rnd.Float(5, 30), TimeUnit.Seconds);
+                        }
+                        else
+                        {
+                            nextNearSoundLoad = new Time(Ref.rnd.Float(5, 20)/*Ref.rnd.Float(0.5f, 2f)*/, TimeUnit.Seconds);
+                        }
+                        newNearFade = 0;
+                        nearLoadingState = SoundLoadingState.FadeIn;
+                    }
+                    break;
+                case SoundLoadingState.FadeIn:
+                    newNearFade += Ref.DeltaTimeSec * NewSoundFadeSpeed_PerSec;
+                    if (newNearFade >= 1)
+                    {
+                        newNearFade = 0;
+                        currentNearSound.Stop();
+                        currentNearSound = nextNearSound;
+                        nearLoadingState = SoundLoadingState.None;
+                    }
+                    break;
             } 
         }
 
@@ -242,6 +273,24 @@ namespace VikingEngine.DSSWars
 
             currentFarSound = new LoopingSound();
             currentFarSound.Load(arraylib.RandomListMember(Wind_farout));
+        }
+
+        void loadNextNearSound_async()
+        { 
+            bool melody = !currentPlayingMelody;
+            LoopingSoundData[] list;
+            if (melody)
+            {
+                list = MelodyGeneral;
+            }
+            else
+            {
+                list = WindMid;
+            }
+
+            loadingNearSound = new LoopingSound();
+            loadingNearSound.Load(arraylib.RandomListMember(list));
+            nearLoadingState = SoundLoadingState.Complete;
         }
 
         public void gameStart()
@@ -259,6 +308,7 @@ namespace VikingEngine.DSSWars
             None,
             Loading,
             Complete,
+            FadeIn,
         }
     }
 }
