@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
@@ -454,7 +455,14 @@ namespace VikingEngine
         {
             return array != null && index >= 0 && index < array.Length;
         }
-       
+
+        public static bool InBound<T>(T[] array, int index1, int index2)
+        {
+            return array != null && 
+                index1 >= 0 && index1 < array.Length &&
+                index2 >= 0 && index2 < array.Length;
+        }
+
 
         public static TKey DictionaryKeyFromValue<TKey, TValue>(Dictionary<TKey, TValue> dictionary, TValue value)
         {

@@ -521,9 +521,12 @@ namespace VikingEngine.DSSWars
         }
 
         public void addToFactions()
-        { 
-            DssRef.world.factions.Array[faction1].diplomaticRelations[faction2] = this;
-            DssRef.world.factions.Array[faction2].diplomaticRelations[faction1] = this;
+        {
+            if (arraylib.InBound(DssRef.world.factions.Array, faction1, faction2))
+            {
+                DssRef.world.factions.Array[faction1].diplomaticRelations[faction2] = this;
+                DssRef.world.factions.Array[faction2].diplomaticRelations[faction1] = this;
+            }
         }
 
         public void write(System.IO.BinaryWriter w)
