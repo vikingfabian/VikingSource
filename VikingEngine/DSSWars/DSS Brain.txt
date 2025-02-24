@@ -121,7 +121,7 @@ https://discord.com/verification
 
 -steam stats
 -Min 7K wishlists
--oktober next fest, demo måste vara redo senast september
+-oktober next fest, demo måste vara redo senast september, 30min lång, direkt action (giant battle)
 -stor grön knapp (special settings)
 https://piratepr.com/treasure-trove/how-to-get-your-download-demo-button-visible-in-green-on-your-steam-page/
 -hör av till 300 streamers om demo, lägg screens i mailet
@@ -133,3 +133,4 @@ https://piratepr.com/treasure-trove/how-to-get-your-download-demo-button-visible
 VertexPositionColorNormal
 VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);
 
+admin(at)alphabetagamer(dot)com
