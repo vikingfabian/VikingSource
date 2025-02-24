@@ -10,6 +10,10 @@ namespace VikingEngine.DSSWars.Display.Translation
     {
         //Ref.langOpt
         public string ReversedSterio = "Reversed stereo";
+        public string Option_Low = "Low";
+        public string Option_Medium = "Medium";
+        public string Option_High = "High";
+
 
         public string ArmyOption_NewArmy => "New army";
         public string ProfileEditor_AltMain => "Alternative main";

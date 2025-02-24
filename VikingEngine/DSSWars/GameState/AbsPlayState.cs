@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.GameState
 
         protected bool pauseMenuUpdate()
         {
-            if (menuSystem.Open)
+            if (menuSystem.IsOpen())
             {
                 menuSystem.menuUpdate();
 

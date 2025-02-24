@@ -198,6 +198,10 @@ namespace VikingEngine.DSSWars
                 underMenu = new RichMenu(HudLib.RbSettings, underMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, ImageLayers.Lay4, new PlayerData(PlayerData.AllPlayers));
                 underMenu.addBackground(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), ImageLayers.Lay9).SetOpacity(MenuBgOpacity);
             }
+            else
+            {
+                closingOptionsMenuEvent();
+            }
 
             underMenu.OpenMenu(menuName, stack);
         }
@@ -398,8 +402,6 @@ namespace VikingEngine.DSSWars
 
         void startBattleLab()
         {
-            //mapBackgroundLoading?.Abort();
-            //new BattleLabPlayState();
             new StartBattleLab(mapBackgroundLoading);
         }
 
@@ -457,7 +459,7 @@ namespace VikingEngine.DSSWars
                 if (DssRef.storage.playerCount > 1)
                 {
                     new GuiCheckbox(Ref.langOpt.VerticalSplitScreen, null, verticalSplitProperty, layout);
-                    menuSystem.multiplayerGameSpeedToMenu(layout);
+                    //menuSystem.multiplayerGameSpeedToMenu(layout);
                 }
 
 
@@ -1432,8 +1434,9 @@ namespace VikingEngine.DSSWars
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, LocalPlayer.MaxSpeedOption)) }, speed5Property));
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
+            content.newLine();
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
 
-            
 
             underMenu.Refresh(content);
         }
@@ -1465,7 +1468,11 @@ namespace VikingEngine.DSSWars
 
         void closingOptionsMenuEvent()
         {
-            Ref.gamesett.Save();
+            if (Ref.gamesett.settingsHasChanged)
+            {
+                Ref.gamesett.settingsHasChanged = false;
+                Ref.gamesett.Save();
+            }
             if (Ref.gamesett.graphicsHasChanged)
             {
                 Ref.gamesett.graphicsHasChanged = false;
@@ -1475,7 +1482,6 @@ namespace VikingEngine.DSSWars
 
         void selectProfileLink(int playerNumber, int profile)
         {
-
             int ix = playerNumber - 1;
             LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
             playerData.inputSource = InputSource.DefaultPC;

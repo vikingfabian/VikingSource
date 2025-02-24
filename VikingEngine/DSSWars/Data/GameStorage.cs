@@ -8,6 +8,10 @@ using System.Xml.Schema;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Profile;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
 using VikingEngine.Network;
@@ -58,6 +62,42 @@ namespace VikingEngine.DSSWars.Data
             centralGold = true;
         }
 
+        public void multiplayerGameSpeedToMenu(RichBoxContent content, RichMenu menu)
+        {
+            var options = new List<float>
+            {
+                1.0f,
+                1.5f,
+                2f,
+                3f,
+                4f,
+            };
+
+
+            DropDownBuilder dropDown = new DropDownBuilder("mp speed");
+            foreach (var item in options)
+            {
+                dropDown.AddOption(TextLib.OneDecimal(item), item == DssRef.storage.multiplayerGameSpeed, item == 1f, new RbAction1Arg<float>((float value) =>
+                {
+                    DssRef.storage.multiplayerGameSpeed = value;
+                    Ref.SetGameSpeed(value);
+                    DssRef.storage.Save(null);
+                }, item), null);
+            }
+            dropDown.Build(content, DssRef.lang.Input_GameSpeed, menu);
+            //new GuiOptionsList<float>(SpriteName.NO_IMAGE, DssRef.lang.Input_GameSpeed, options, multiplayerGameSpeedProperty, layout);
+        }
+
+        //float multiplayerGameSpeedProperty(bool set, float value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.multiplayerGameSpeed = value;
+        //        Ref.SetGameSpeed(value);
+        //        DssRef.storage.Save(null);
+        //    }
+        //    return DssRef.storage.multiplayerGameSpeed;
+        //}
 
         public void Load()
         {

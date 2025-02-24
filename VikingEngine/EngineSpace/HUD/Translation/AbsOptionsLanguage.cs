@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars;
 
 namespace VikingEngine.HUD
 {
@@ -39,5 +40,20 @@ namespace VikingEngine.HUD
         public abstract string GraphicsOption_YoutubePreset { get; }
 
         public abstract string GraphicsOption_UiScale { get; }
+
+        public string ThreeOption(ThreeOptions option)
+        {
+            switch (option)
+            {
+                case ThreeOptions.Low:
+                    return DssRef.todoLang.Option_Low;
+                case ThreeOptions.Medium:
+                    return DssRef.todoLang.Option_Medium;
+                case ThreeOptions.High:
+                    return DssRef.todoLang.Option_High;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
     }
 }

@@ -447,7 +447,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape) && !menuSystem.Open)
+            if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape) && !menuSystem.IsOpen())
             {
                 menuSystem.pauseMenu();
             }

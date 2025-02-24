@@ -20,26 +20,30 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 15;
+        const int Version = 16;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
         DataStream.FilePath path = new DataStream.FilePath(null, FileName, FileEnd, true, true);
 
         public int ChunkLoadRadius = LootFest.Map.World.StandardOpenRadius;
+        public ThreeOptions MapLoadingSpeed = ThreeOptions.Medium;
         public int FrameRate = 60;
         public int DetailLevel = 1;
         public bool AutoJoinToCoopLevel = true;
         public int VibrationLevel = 100;
+        public const int MaxBlood = 400;
+        public int Blood = 100;
         public float UiScale = 1f;
         public float reversedStereoValue = 1f;
         public bool dyslexiaFont = false;
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
         public bool graphicsHasChanged = false;
+        public bool settingsHasChanged = false;
         public LanguageType language = LanguageType.NONE;
         public InputMap controllerMap;
         public InputMap keyboardMap;
-        public bool ModelLightShaderEffect = false;
+        public bool ModelLightShaderEffect = true;
 
         float MasterVolume = 0.5f;
         float MusicMasterVolume = 1f;
@@ -95,6 +99,8 @@ namespace VikingEngine
 
             w.Write(MasterVolume);
             w.Write(AmbientVolume);
+            w.Write((byte)MapLoadingSpeed);
+            w.Write(Blood);
         }
 
         public void readEmbeddedSettingsAndVersion(System.IO.BinaryReader r)
@@ -141,6 +147,11 @@ namespace VikingEngine
                 MasterVolume = r.ReadSingle();
                 AmbientVolume = r.ReadSingle();
 
+            }
+            if (version >= 16)
+            {
+                MapLoadingSpeed = (ThreeOptions)r.ReadByte();
+                Blood = r.ReadInt32();
             }
         }
 
@@ -231,6 +242,7 @@ namespace VikingEngine
                 Engine.Screen.PcTargetFullScreen = value;
                 Engine.Screen.ApplyScreenSettings();
                 graphicsHasChanged = true;
+                settingsHasChanged = true;
             }
             return Engine.Screen.PcTargetFullScreen;
         }
@@ -244,7 +256,12 @@ namespace VikingEngine
 
         public IntVector2 resolutionProperty(bool set, IntVector2 res)
         {
-            return GetSet.Do<IntVector2>(set, ref Engine.Screen.PcTargetResolution, res);
+            if (set)
+            {
+                Engine.Screen.PcTargetResolution = res;
+                settingsHasChanged = true;
+            }
+            return Engine.Screen.PcTargetResolution;
         }
 
         public GraphicsAdapter monitorProperty(bool set, GraphicsAdapter val)
@@ -255,6 +272,7 @@ namespace VikingEngine
                 Screen.Monitor = val;
                 Screen.ApplyScreenSettings();
                 graphicsHasChanged = true;
+                settingsHasChanged= true;
             }
 
             return Screen.Monitor;
@@ -269,6 +287,7 @@ namespace VikingEngine
                 //Graphics.EffectBasicVertexColor.Singleton = null;
                 Graphics.EffectBasicVertexColor.Singleton.ObjectShader();
 #endif
+                settingsHasChanged = true;
             }
 
             return ModelLightShaderEffect;
@@ -296,6 +315,19 @@ namespace VikingEngine
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Model light effect") },
                 modelLightProperty));
+            DropDownBuilder mapLoadingDropDown = new DropDownBuilder("mapload");
+            {
+                for (ThreeOptions opt = 0; opt < ThreeOptions.NUM; opt++)
+                {
+                    mapLoadingDropDown.AddSubOption(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.ThreeOption(opt)) },
+                        opt == MapLoadingSpeed, opt == ThreeOptions.Medium, new RbAction1Arg<ThreeOptions>((ThreeOptions value) =>
+                        {
+                            MapLoadingSpeed = value;
+                            settingsHasChanged = true;
+                        }, opt), null);
+                }
+                mapLoadingDropDown.Build(content, "Map loading speed", menu);
+            }
         }
         public void quickOptionsMenu(GuiLayout layout)
         {
@@ -314,6 +346,7 @@ namespace VikingEngine
             if (_set)
             {
                 reversedStereoValue = value ? -1 : 1;
+                settingsHasChanged = true;
             }
             return reversedStereoValue < 0;
         }
@@ -329,7 +362,7 @@ namespace VikingEngine
             new GuiCheckbox(DssRef.todoLang.ReversedSterio, null, ReversedStereoProperty, layout);
         }
 
-        void volumeOptions(RichBoxContent content)
+        public void volumeOptions(RichBoxContent content)
         {
             content.newLine();
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
@@ -424,7 +457,7 @@ namespace VikingEngine
                     {
                         string name = string.Format(Ref.langOpt.GraphicsOption_YoutubePreset, sz.Y);
                         RecordPreset.AddOption(name, rp == Engine.Screen.UseRecordingPreset, rp == RecordingPresets.YouTube1080p,
-                            new RbAction1Arg<RecordingPresets>(Ref.gamesett.setRecordingPreset, rp), null);
+                            new RbAction1Arg<RecordingPresets>(setRecordingPreset, rp), null);
                     }
                 }
                 RecordPreset.Build(content, Ref.langOpt.GraphicsOption_RecordingPresets, menu);
@@ -453,6 +486,7 @@ namespace VikingEngine
                 Screen.ApplyScreenSettings();
 
                 graphicsHasChanged = true;
+                settingsHasChanged = true;
             }
             return Engine.Screen.oversizeWidthPerc;
         }
@@ -468,6 +502,7 @@ namespace VikingEngine
                 Screen.ApplyScreenSettings();
 
                 graphicsHasChanged = true;
+                settingsHasChanged= true;
             }
             return Engine.Screen.oversizeHeightPerc;
         }
@@ -475,6 +510,16 @@ namespace VikingEngine
         public void setResolutionPercProperty(int res)
         {
             resolutionPercProperty(true, res);  
+        }
+
+        public int bloodProperty(bool set, int value)
+        {
+            if (set)
+            {
+                Blood = value;
+                settingsHasChanged = true;
+            }
+            return Blood;
         }
 
         public int resolutionPercProperty(bool set, int res)
@@ -485,6 +530,7 @@ namespace VikingEngine
                 Engine.Screen.RenderScalePerc = res;
                 Engine.Screen.ApplyScreenSettings();
                 graphicsHasChanged = true;
+                settingsHasChanged = true;
             }
             return Engine.Screen.RenderScalePerc;
         }
@@ -590,21 +636,36 @@ namespace VikingEngine
             {
                 MusicMasterVolume = value;
                 Ref.music?.RefreshVolume();
-
+                settingsHasChanged = true;
             }
             return MusicMasterVolume;
         }
         public float soundVolProperty(bool set, float value)
         {
-            return GetSet.Do<float>(set, ref SoundVolume, value);
+            if (set)
+            {
+                SoundVolume = value;
+                settingsHasChanged = true;
+            }
+            return SoundVolume;
         }
         public float masterVolProperty(bool set, float value)
         {
-            return GetSet.Do<float>(set, ref MasterVolume, value);
+            if (set)
+            {
+                MasterVolume = value;
+                settingsHasChanged = true;
+            }
+            return MasterVolume;
         }
         public float ambientVolProperty(bool set, float value)
         {
-            return GetSet.Do<float>(set, ref AmbientVolume, value);
+            if (set)
+            {
+                AmbientVolume = value;
+                settingsHasChanged = true;
+            }
+            return AmbientVolume;
         }
 
         public float uiScaleProperty(bool set, float value)
@@ -621,13 +682,18 @@ namespace VikingEngine
 
         public int vibrationProperty(bool set, int value)
         {
-            return GetSet.Do<int>(set, ref VibrationLevel, value);
+            if (set)
+            {
+                VibrationLevel = value;
+                settingsHasChanged = true;
+            }
+            return VibrationLevel;
         }
 
-        string SongTitleProperty(bool set, string value)
-        {
-            return "Playing: \n" + Ref.music.GetSongName();
-        }
+        //string SongTitleProperty(bool set, string value)
+        //{
+        //    return "Playing: \n" + Ref.music.GetSongName();
+        //}
 
 #if PCGAME
         //public System.Windows.Forms.Screen monitorProperty2(bool set, System.Windows.Forms.Screen val)
@@ -663,5 +729,13 @@ namespace VikingEngine
         German,
         Japanese,
         French,
+    }
+
+    enum ThreeOptions
+    { 
+        Low,
+        Medium,
+        High,
+        NUM
     }
 }
