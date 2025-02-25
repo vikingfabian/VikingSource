@@ -171,22 +171,36 @@ namespace VikingEngine.DSSWars
                 new LoopingSoundData(WindFarDir + "wind_outside_valley_low_loop", 0.1f),
             };
 
-        bool currentPlayingMelody = false;
-        LoopingSound currentNearSound, nextNearSound, loadingNearSound;
-        LoopingSound currentFarSound, nextFarSound, loadingFarSound;
+
+        AmbientSoundLoop nearLoop, farLoop;
+        //LoopingSound currentFarSound, nextFarSound, loadingFarSound;
 
         double volumeCurveTime = 0;
         const float FarNearFadeSpeed_PerSec = 1f;
-        const float NewSoundFadeSpeed_PerSec = 0.25f;
+       
         float farOutFade = 1f;
-        float newNearFade = 0;
-        Time nextNearSoundLoad = new Time(2f, TimeUnit.Seconds);
+        
         Time nextFarSoundLoad = new Time(5, TimeUnit.Minutes);
 
-        SoundLoadingState nearLoadingState = SoundLoadingState.None;
+       
         public Ambience()
-        { }
+        {
+            nearLoop = new AmbientSoundLoop();
+            farLoop = new AmbientSoundLoop();
+        }
+        public void contentLoad()
+        {
+            nearLoop.contentLoad(WindMid, new IntervalF(5, 20),
+                MelodyGeneral, new IntervalF(5, 20));
 
+            farLoop.contentLoad(Wind_farout, new IntervalF(5, 10) * TimeExt.MinuteInSeconds,
+                null, IntervalF.Zero);
+            //currentNearSound = new LoopingSound();
+            //currentNearSound.Load(arraylib.RandomListMember(WindMid));
+
+            //currentFarSound = new LoopingSound();
+            //currentFarSound.Load(arraylib.RandomListMember(Wind_farout));
+        }
         public void update()
         {
             volumeCurveTime += Ref.DeltaTimeSec * Ref.rnd.Double() * 0.2;
@@ -213,12 +227,74 @@ namespace VikingEngine.DSSWars
 
             float nearSoundLevel = volumeCurve * (1f - farOutFade);
             float farSoundLevel = volumeCurve * farOutFade;
-            currentNearSound.setVolume(nearSoundLevel * (1f - newNearFade));
+            //currentNearSound.setVolume(nearSoundLevel * (1f - newNearFade));
+            //if (newNearFade > 0)
+            //{
+            //    nextNearSound.setVolume(nearSoundLevel * newNearFade);
+            //}
+
+            nearLoop.update(nearSoundLevel);
+            farLoop.update(farSoundLevel);
+            //currentFarSound.setVolume(farSoundLevel);
+
+           
+        }
+
+        
+        public void gameStart()
+        {
+            nearLoop.Play();
+            farLoop.Play();
+        }
+        public void gameEnd()
+        {
+            nearLoop.stop();
+            farLoop.stop();
+        }        
+    }
+
+    class AmbientSoundLoop
+    {
+        const float NewSoundFadeSpeed_PerSec = 0.25f;
+        LoopingSoundData[] soundList, melodyList;
+
+
+        bool currentPlayingMelody = false;
+        LoopingSound currentNearSound, nextNearSound, loadingNearSound;
+
+        float newNearFade = 0;
+        IntervalF playTime_sound_sec, playTime_melody_sec;
+        Time nextNearSoundLoad = new Time(2f, TimeUnit.Seconds);
+        SoundLoadingState nearLoadingState = SoundLoadingState.None;
+         //new Time(Ref.rnd.Float(5, 30), TimeUnit.Seconds);
+
+        public void contentLoad(LoopingSoundData[] soundList, IntervalF playTime_sound, 
+            LoopingSoundData[] melodyList, IntervalF playTime_melody)
+        {
+            this.soundList = soundList;
+            this.melodyList = melodyList;
+
+            this.playTime_sound_sec = playTime_sound;
+            this.playTime_melody_sec = playTime_melody;
+
+            nextNearSoundLoad = new Time(playTime_sound_sec.GetRandom());
+
+            currentNearSound.Load(arraylib.RandomListMember(soundList));
+        }
+
+        public void Play()
+        {
+            currentNearSound.setVolume(0);
+            currentNearSound.Play();
+        }
+
+        public void update(float volume)
+        {
+            currentNearSound.setVolume(volume * (1f - newNearFade));
             if (newNearFade > 0)
             {
-                nextNearSound.setVolume(nearSoundLevel * newNearFade);
+                nextNearSound.setVolume(volume * newNearFade);
             }
-            currentFarSound.setVolume(farSoundLevel);
 
             switch (nearLoadingState)
             {
@@ -240,7 +316,7 @@ namespace VikingEngine.DSSWars
                         loadingNearSound = null;
 
                         currentPlayingMelody = !currentPlayingMelody;
-                        if (currentPlayingMelody)
+                        if (currentPlayingMelody && melodyList != null)
                         {
                             //Melody is shorter
                             nextNearSoundLoad = new Time(Ref.rnd.Float(5, 30), TimeUnit.Seconds);
@@ -263,29 +339,21 @@ namespace VikingEngine.DSSWars
                         nearLoadingState = SoundLoadingState.None;
                     }
                     break;
-            } 
-        }
-
-        public void contentLoad()
-        {
-            currentNearSound = new LoopingSound();
-            currentNearSound.Load(arraylib.RandomListMember(WindMid));
-
-            currentFarSound = new LoopingSound();
-            currentFarSound.Load(arraylib.RandomListMember(Wind_farout));
+            }
         }
 
         void loadNextNearSound_async()
-        { 
+        {
             bool melody = !currentPlayingMelody;
             LoopingSoundData[] list;
-            if (melody)
+            if (melody && melodyList != null)
             {
-                list = MelodyGeneral;
+                list = melodyList;
             }
             else
             {
-                list = WindMid;
+                list = soundList;
+                melody = false;
             }
 
             loadingNearSound = new LoopingSound();
@@ -293,22 +361,17 @@ namespace VikingEngine.DSSWars
             nearLoadingState = SoundLoadingState.Complete;
         }
 
-        public void gameStart()
+        public void stop()
         {
-            currentNearSound.Play();
-            currentFarSound.Play();
+            currentNearSound.Stop();
         }
-        public void gameEnd()
-        {
+    }
 
-        }
-
-        enum SoundLoadingState
-        { 
-            None,
-            Loading,
-            Complete,
-            FadeIn,
-        }
+    enum SoundLoadingState
+    {
+        None,
+        Loading,
+        Complete,
+        FadeIn,
     }
 }

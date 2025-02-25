@@ -5,7 +5,23 @@ using System;
 
 namespace VikingEngine
 {
-    public class PcgRandom
+    abstract class AbsRandom
+    {
+        public abstract float Float();
+        public abstract int Int();
+        public abstract int Int(int exMax);
+        public abstract int Int(int min, int exMax);
+        public abstract double Double();
+        public abstract double Double(double exMax);
+        public abstract double Double(double min, double exMax);
+        public abstract bool Bool();
+        public abstract uint Uint();
+        public abstract uint Uint(uint exMax);
+        public abstract byte Byte();
+        public abstract ushort Ushort();
+    }
+
+    class PcgRandom: AbsRandom
     {
         const double UintDiv = 1.0 / uint.MaxValue;
 
@@ -71,19 +87,19 @@ namespace VikingEngine
             Int();
         }
 
-        public int Int()
+        override public int Int()
         {
             int result = (int)Uint();
             if (result < 0) result = -result;
             return result;
         }
 
-        public ushort Ushort()
+        override public ushort Ushort()
         {
             return (ushort)Uint();
         }
 
-        public int Int(int exMax)
+        override public int Int(int exMax)
         {
             int result = (int)Uint((uint)exMax);
             if (result < 0) result = -result;
@@ -126,7 +142,7 @@ namespace VikingEngine
             }
         }
 
-        public int Int(int min, int exMax)
+        override public int Int(int min, int exMax)
         {
             return Int(exMax - min) + min;
         }
@@ -136,12 +152,12 @@ namespace VikingEngine
             return Int(incMax + 1 - min) + min;
         }
 
-        public byte Byte()
+        override public byte Byte()
         {
             return (byte)Uint(byte.MaxValue);
         }
 
-        public uint Uint()
+        override public uint Uint()
         {
             ulong oldState = state;
             state = oldState * 6364136223846793005UL + inc;
@@ -151,7 +167,7 @@ namespace VikingEngine
             return result;
         }
 
-        public uint Uint(uint exMax)
+        override public uint Uint(uint exMax)
         {
             if (exMax == 0) exMax = 1;
             uint threshold = (uint)((0x100000000UL - exMax) % exMax);
@@ -172,24 +188,24 @@ namespace VikingEngine
 
         
 
-        public double Double()
+        override public double Double()
         {
             return Uint() * UintDiv;/// (double)uint.MaxValue;
         }
 
-        public double Double(double exMax)
+        override public double Double(double exMax)
         {
             return Uint() * UintDiv * exMax;/// (double)uint.MaxValue) * exMax;
         }
 
-        public double Double(double min, double exMax)
+        override public double Double(double min, double exMax)
         {
             double diff = exMax - min;
             var result = Uint();
             return (result * UintDiv * diff) + min;/// (double)uint.MaxValue) * diff + min;
         }
 
-        public float Float()
+        override public float Float()
         {
             return (float)(Uint() * UintDiv);/// (double)uint.MaxValue);
         }
@@ -308,7 +324,7 @@ namespace VikingEngine
         }
 
         const uint UnitMidValue = uint.MaxValue / 2;
-        public bool Bool()
+        override public bool Bool()
         {
             return Uint() > UnitMidValue;
         }
