@@ -5,23 +5,35 @@ using System;
 
 namespace VikingEngine
 {
-    abstract class AbsRandom
+    abstract public class AbsRandom
     {
         public abstract float Float();
+        public abstract float Float(float exMax);
+        public abstract float Float(float min, float exMax);
+        public abstract float Plus_MinusF(float range);
         public abstract int Int();
         public abstract int Int(int exMax);
         public abstract int Int(int min, int exMax);
         public abstract double Double();
         public abstract double Double(double exMax);
         public abstract double Double(double min, double exMax);
+
+        /// <summary>
+        /// Square shaped random 3D position
+        /// </summary>
+        public abstract Vector3 Vector3_Sq(Vector3 center, float range);
         public abstract bool Bool();
-        public abstract uint Uint();
-        public abstract uint Uint(uint exMax);
+        //public abstract uint Uint();
+        //public abstract uint Uint(uint exMax);
         public abstract byte Byte();
         public abstract ushort Ushort();
+
+        abstract public float Rotation();
+        abstract public bool Chance(double chance);
+        abstract public bool Chance(int percent);
     }
 
-    class PcgRandom: AbsRandom
+    public class PcgRandom: AbsRandom
     {
         const double UintDiv = 1.0 / uint.MaxValue;
 
@@ -157,7 +169,7 @@ namespace VikingEngine
             return (byte)Uint(byte.MaxValue);
         }
 
-        override public uint Uint()
+        public uint Uint()
         {
             ulong oldState = state;
             state = oldState * 6364136223846793005UL + inc;
@@ -167,7 +179,7 @@ namespace VikingEngine
             return result;
         }
 
-        override public uint Uint(uint exMax)
+        public uint Uint(uint exMax)
         {
             if (exMax == 0) exMax = 1;
             uint threshold = (uint)((0x100000000UL - exMax) % exMax);
@@ -210,23 +222,23 @@ namespace VikingEngine
             return (float)(Uint() * UintDiv);/// (double)uint.MaxValue);
         }
 
-        public float Float(float exMax)
+        override public float Float(float exMax)
         {
             return (float)(Uint() * UintDiv * exMax);/// (double)uint.MaxValue) * exMax;
         }
 
-        public float Float(float min, float exMax)
+        override public float Float(float min, float exMax)
         {
             float diff = exMax - min;
             var result = Uint();
             return (float)(result * UintDiv * diff) + min;/// (double)uint.MaxValue) * diff + min;
         }
 
-        public bool Chance(double chance)
+        override public bool Chance(double chance)
         {
             return Double() <= chance;
         }
-        public bool Chance(int percent)
+        override public bool Chance(int percent)
         {
             return Double() <= percent * 0.01;
         }
@@ -241,7 +253,7 @@ namespace VikingEngine
             return (int)Uint((uint)(range * 2 +1)) - range;
         }
 
-        public float Plus_MinusF(float range)
+        override public float Plus_MinusF(float range)
         {
             return (float)(-range + 2.0 * range * Double());
         }
@@ -259,7 +271,7 @@ namespace VikingEngine
         /// <summary>
         /// Square shaped random 3D position
         /// </summary>
-        public Vector3 Vector3_Sq(Vector3 center, float range)
+        override public Vector3 Vector3_Sq(Vector3 center, float range)
         {
             center.X += (float)(-range + Double() * 2.0 * range);
             center.Y += (float)(-range + Double() * 2.0 * range);
@@ -334,9 +346,9 @@ namespace VikingEngine
             return Uint() > UnitMidValue ? 1 : -1;
         }
 
-        public float Rotation()
+        override public float Rotation()
         {
-            return (float)(Math.PI * 2.0 * Double());
+            return (float)(MathHelper.TwoPi * Double());
         }
 
         public override string ToString()

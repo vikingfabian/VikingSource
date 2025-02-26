@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.GameObject
                 attackCount += 1;
                 for (int i = 0; i < attackCount; i++)
                 {
-                    var groupTarget = target.group.soldiers.GetRandomUnsafe(Ref.rnd);
+                    var groupTarget = target.group.soldiers.GetRandomUnsafe(Ref.peRnd);
                     if (groupTarget != null)
                     {
                         startAttack(fullUpdate, groupTarget, mainAttack, local);

@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.ship = ship;
 
-            int frame = Ref.rnd.Int(2);
+            int frame = Ref.peRnd.Int(2);
             Vector3 offset = new Vector3(-0.076f, 0.14f, 0.07f);
             offset.Y -= 0.03f;
             offset.X -= 0.08f;

@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void randomStartFrame()
         {
-            currentFrame = Ref.rnd.Int(startframe, endFrame + 1);
+            currentFrame = Ref.peRnd.Int(startframe, endFrame + 1);
         }
     }
 }

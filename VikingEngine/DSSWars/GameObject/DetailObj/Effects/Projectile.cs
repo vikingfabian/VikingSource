@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.GameObject
                     scale = DssConst.Men_StandardModelScale * 0.45f;
                     linear = true;
                     speed *= 1.7f;
-                    frame = Ref.rnd.Int(3);
+                    frame = Ref.peRnd.Int(3);
                     break;
 
                 case AttackType.MassiveCannonball:
@@ -235,7 +235,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (fireParticles)
                 {
-                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, Ref.rnd.Vector3_Sq(model.position, DssConst.Men_StandardModelScale * 1f));
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, Ref.peRnd.Vector3_Sq(model.position, DssConst.Men_StandardModelScale * 1f));
                     Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, model.position);
 
                 }

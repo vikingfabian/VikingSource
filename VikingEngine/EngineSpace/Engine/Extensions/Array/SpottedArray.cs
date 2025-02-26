@@ -512,7 +512,7 @@ namespace VikingEngine
             return default(T);
         }
 
-        public T GetRandomUnsafe(PcgRandom rnd)
+        public T GetRandomUnsafe(AbsRandom rnd)
         {
             if (Count <= 0)
             {
@@ -564,7 +564,7 @@ namespace VikingEngine
            
         }
 
-        public T GetRandomSafe(PcgRandom rnd)
+        public T GetRandomSafe(AbsRandom rnd)
         {
             int ix = rnd.Int(Count);
             for (int i = 0; i < SpottedLength; ++i)
@@ -578,7 +578,7 @@ namespace VikingEngine
             return default(T);
         }
 
-        public T PullRandom_Safe(PcgRandom rnd)
+        public T PullRandom_Safe(AbsRandom rnd)
         {
             int ix = rnd.Int(Count);
             for (int i = 0; i < SpottedLength; ++i)

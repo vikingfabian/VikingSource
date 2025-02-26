@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.Text;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.Engine;
 using VikingEngine.Sound;
 
 namespace VikingEngine.DSSWars
@@ -52,6 +56,7 @@ namespace VikingEngine.DSSWars
 
         static readonly LoopingSoundData[] MelodyWars = new LoopingSoundData[]
             {
+                
                 new LoopingSoundData(MelodyWarsDir + "drkfnt_amb_v2_flute1_loop", 0.08f),
                 new LoopingSoundData(MelodyWarsDir + "drkfnt_amb_v2_horn2_loop", 0.08f),
                 new LoopingSoundData(MelodyWarsDir + "drkfnt_amb_v3_cursed_loop", 0.08f),
@@ -104,26 +109,26 @@ namespace VikingEngine.DSSWars
                 new LoopingSoundData(MelodyDir + "space_amb_v1_theme5_loop", 0.08f),
             };
 
-
+        
         static readonly LoopingSoundData[] Battle = new LoopingSoundData[]
            {
-                new LoopingSoundData(BattleDir + "music_guitar_120bpm_loop_theme_02", 0.08f),
-                new LoopingSoundData(BattleDir + "music_percussion_120bpm_loop_theme_01", 0.08f),
-                new LoopingSoundData(BattleDir + "music_percussion_120bpm_loop_theme_03", 0.08f),
-                new LoopingSoundData(BattleDir + "music_strings_120bpm_loop_theme_02", 0.08f),
-                new LoopingSoundData(BattleDir + "music_strings_120bpm_loop_theme_03", 0.08f),
-                new LoopingSoundData(BattleDir + "music_strings_120bpm_loop_theme_05", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_02", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_03", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_04", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_08", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_09", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_12", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_13", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_15", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_17", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_18", 0.08f),
-                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_20", 0.08f),
+                new LoopingSoundData(BattleDir + "music_guitar_120bpm_loop_theme_02", 0.3f),
+                new LoopingSoundData(BattleDir + "music_percussion_120bpm_loop_theme_01", 0.3f),
+                new LoopingSoundData(BattleDir + "music_percussion_120bpm_loop_theme_03", 0.3f),
+                new LoopingSoundData(BattleDir + "music_strings_120bpm_loop_theme_02", 0.3f),
+                new LoopingSoundData(BattleDir + "music_strings_120bpm_loop_theme_03", 0.3f),
+                new LoopingSoundData(BattleDir + "music_strings_120bpm_loop_theme_05", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_02", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_03", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_04", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_08", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_09", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_12", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_13", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_15", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_17", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_18", 0.3f),
+                new LoopingSoundData(BattleDir + "strings_120bpm_loop_theme_20", 0.3f),
            };
 
         static readonly LoopingSoundData[] WindCold = new LoopingSoundData[]
@@ -172,21 +177,21 @@ namespace VikingEngine.DSSWars
             };
 
 
-        AmbientSoundLoop nearLoop, farLoop;
-        //LoopingSound currentFarSound, nextFarSound, loadingFarSound;
+        AmbientSoundLoop nearLoop, farLoop, seaLoop, battleLoop;
 
         double volumeCurveTime = 0;
         const float FarNearFadeSpeed_PerSec = 1f;
-       
+        const float MaxSeaLevel = 1.5f;
         float farOutFade = 1f;
-        
-        Time nextFarSoundLoad = new Time(5, TimeUnit.Minutes);
-
-       
+        float deepSeaFade = 0f;
+        float battleFade = 0f;
+        float musicReduceFade = 1f;
         public Ambience()
         {
             nearLoop = new AmbientSoundLoop();
             farLoop = new AmbientSoundLoop();
+            seaLoop = new AmbientSoundLoop();
+            battleLoop = new AmbientSoundLoop();
         }
         public void contentLoad()
         {
@@ -195,15 +200,19 @@ namespace VikingEngine.DSSWars
 
             farLoop.contentLoad(Wind_farout, new IntervalF(5, 10) * TimeExt.MinuteInSeconds,
                 null, IntervalF.Zero);
-            //currentNearSound = new LoopingSound();
-            //currentNearSound.Load(arraylib.RandomListMember(WindMid));
 
-            //currentFarSound = new LoopingSound();
-            //currentFarSound.Load(arraylib.RandomListMember(Wind_farout));
+            seaLoop.contentLoad(WindSea, new IntervalF(10, 20) * TimeExt.MinuteInSeconds,
+                null, IntervalF.Zero);
+
+            battleLoop.contentLoad(Battle, new IntervalF(40, 80) * TimeExt.MinuteInSeconds,
+                null, IntervalF.Zero);
         }
         public void update()
         {
-            volumeCurveTime += Ref.DeltaTimeSec * Ref.rnd.Double() * 0.2;
+            IntVector2 tileCenter = WP.ToTilePos( DssRef.state.culling.players[0].MapCenter);
+            Tile onTile = DssRef.world.tileGrid.Get(tileCenter);                      
+
+            volumeCurveTime += Ref.DeltaTimeSec * Ref.peRnd.Float() * 0.2;
             float volumeCurve = 1f + (float)(Math.Sin(volumeCurveTime) * 0.3);
 
             float goalFade;
@@ -220,36 +229,112 @@ namespace VikingEngine.DSSWars
                     goalFade = 0.8f;
                     break;
             }
+
             farOutFade = Bound.Set(farOutFade - FarNearFadeSpeed_PerSec * lib.ToLeftRight(farOutFade - goalFade) * Ref.DeltaGameTimeSec, 0f, 1f);
+
+            if (Ref.music != null)
+            {
+                musicReduceFade = Bound.Set(musicReduceFade - FarNearFadeSpeed_PerSec * lib.BoolToLeftRight(Ref.music.IsPlaying()) * Ref.DeltaGameTimeSec, 0f, 1f);
+            }
+
+            bool playerLookingAtBattle = detailLayer.current.type == MapDetailLayerType.UnitDetail1 &&
+                DssRef.world.unitCollAreaGrid.PlayerInBattle(tileCenter, DssRef.state.localPlayers[0].faction);
+            bool hadBattleSound = battleFade > 0;
+            battleFade = Bound.Set(battleFade + FarNearFadeSpeed_PerSec * lib.BoolToLeftRight(playerLookingAtBattle) * Ref.DeltaGameTimeSec, 0f, 1f);
+            battleFade *= musicReduceFade;
+            if (hadBattleSound && battleFade <= 0)
+            {
+                //Change battle melody after a battle
+                battleLoop.reduceChangeSoundTimer();
+            }
+            float battleReduce = 1f - battleFade;
+
+            int deepSeaSoundLevelDir = lib.BoolToLeftRight(onTile.heightLevel <= Height.DeepWaterHeight);
+            deepSeaFade = Bound.Set(deepSeaFade + FarNearFadeSpeed_PerSec * deepSeaSoundLevelDir * Ref.DeltaGameTimeSec, 0f, MaxSeaLevel);
+            float seaSoundReduce = 1f - deepSeaFade * 0.5f;
+
 
             float farVolRaise = 1f + detailLayer.PercZoom() * 0.3f;
             volumeCurve *= farVolRaise;
 
-            float nearSoundLevel = volumeCurve * (1f - farOutFade);
-            float farSoundLevel = volumeCurve * farOutFade;
-            //currentNearSound.setVolume(nearSoundLevel * (1f - newNearFade));
-            //if (newNearFade > 0)
-            //{
-            //    nextNearSound.setVolume(nearSoundLevel * newNearFade);
-            //}
+            float nearSoundLevel = volumeCurve * (1f - farOutFade) * seaSoundReduce * battleReduce * musicReduceFade;
+            float farSoundLevel = volumeCurve * farOutFade * seaSoundReduce;
 
-            nearLoop.update(nearSoundLevel);
-            farLoop.update(farSoundLevel);
-            //currentFarSound.setVolume(farSoundLevel);
+            nearLoop.update(nearSoundLevel, out bool nearNeedSoundBiom);
+            if (nearNeedSoundBiom)
+            {
+                LoopingSoundData[] wind, melody;
+                switch (onTile.biom)
+                { 
+                    case BiomType.YellowDry:
+                    case BiomType.RedDry:
+                        wind = WindHot;
+                        melody = MelodySouth;
+                        break;
+                    case BiomType.Frozen:
+                        wind = WindCold;
+                        melody = MelodyNorth;
+                        break;
+                    default:
+                        wind = WindMid;
+                        melody = MelodyGeneral;
+                        break;
+                }
 
-           
+                float dangerLevel = 0f;
+                float warLevel = DssRef.state.localPlayers[0].opposingSizePerc;
+
+                if (warLevel >= 2)
+                {
+                    dangerLevel = 1f;
+                    melody = MelodyWars;
+                }
+                else if (warLevel >= 1)
+                {
+                    dangerLevel = 0.5f;
+                }
+                else if (warLevel >= 0.5f)
+                {
+                    dangerLevel = 0.2f;
+                }
+
+                var windTime = new IntervalF(5, 20) + 10 * (1 - dangerLevel);
+                var melodyTime = new IntervalF(5, 20) + 20 * dangerLevel;
+
+                nearLoop.SetBiom(wind, windTime, melody, melodyTime);
+                nearLoop.SoundBiomReady();
+            }
+            farLoop.update(farSoundLevel,out bool farNeedSoundBiom);
+            if (farNeedSoundBiom)
+            {
+                farLoop.SoundBiomReady();
+            }
+            seaLoop.update(deepSeaFade, out bool seaNeedSoundBiom);
+            if (seaNeedSoundBiom)
+            {
+                seaLoop.SoundBiomReady();
+            }
+            battleLoop.update(battleFade * 3f, out bool battleNeedSoundBiom);
+            if (battleNeedSoundBiom)
+            {
+                battleLoop.SoundBiomReady();
+            }
         }
 
-        
+
         public void gameStart()
         {
             nearLoop.Play();
             farLoop.Play();
+            seaLoop.Play();
+            battleLoop.Play();
         }
         public void gameEnd()
         {
             nearLoop.stop();
             farLoop.stop();
+            seaLoop.stop();
+            battleLoop.stop();
         }        
     }
 
@@ -260,13 +345,12 @@ namespace VikingEngine.DSSWars
 
 
         bool currentPlayingMelody = false;
-        LoopingSound currentNearSound, nextNearSound, loadingNearSound;
+        LoopingSound currentSound, nextSound, loadingSound;
 
-        float newNearFade = 0;
+        float newSoundFade = 0;
         IntervalF playTime_sound_sec, playTime_melody_sec;
         Time nextNearSoundLoad = new Time(2f, TimeUnit.Seconds);
-        SoundLoadingState nearLoadingState = SoundLoadingState.None;
-         //new Time(Ref.rnd.Float(5, 30), TimeUnit.Seconds);
+        SoundLoadingState loadingState = SoundLoadingState.None;
 
         public void contentLoad(LoopingSoundData[] soundList, IntervalF playTime_sound, 
             LoopingSoundData[] melodyList, IntervalF playTime_melody)
@@ -277,69 +361,96 @@ namespace VikingEngine.DSSWars
             this.playTime_sound_sec = playTime_sound;
             this.playTime_melody_sec = playTime_melody;
 
-            nextNearSoundLoad = new Time(playTime_sound_sec.GetRandom());
+            nextNearSoundLoad = new Time(playTime_sound_sec.PeRandom(), TimeUnit.Seconds);
 
-            currentNearSound.Load(arraylib.RandomListMember(soundList));
+            currentSound = new LoopingSound();
+            currentSound.Load(arraylib.RandomListMember(soundList));
         }
 
         public void Play()
         {
-            currentNearSound.setVolume(0);
-            currentNearSound.Play();
+            currentSound.setVolume(0);
+            currentSound.Play();
         }
 
-        public void update(float volume)
+        public void update(float volume, out bool needSoundBiom)
         {
-            currentNearSound.setVolume(volume * (1f - newNearFade));
-            if (newNearFade > 0)
+            currentSound.setVolume(volume * (1f - newSoundFade));
+            if (newSoundFade > 0)
             {
-                nextNearSound.setVolume(volume * newNearFade);
+                nextSound.setVolume(volume * newSoundFade);
             }
 
-            switch (nearLoadingState)
+            switch (loadingState)
             {
                 case SoundLoadingState.None:
                     {
                         if (nextNearSoundLoad.CountDown())
                         {
-                            nearLoadingState = SoundLoadingState.Loading;
-                            new Timer.AsynchActionTrigger(loadNextNearSound_async, true);
+                            loadingState = SoundLoadingState.UpdateSoundBiom;
                         }
                     }
                     break;
+                
                 case SoundLoadingState.Complete:
                     {
-                        nextNearSound = loadingNearSound;
-                        nextNearSound.setVolume(0f);
-                        nextNearSound.Play();
+                        nextSound = loadingSound;
+                        nextSound.setVolume(0f);
+                        nextSound.Play();
 
-                        loadingNearSound = null;
+                        loadingSound = null;
 
                         currentPlayingMelody = !currentPlayingMelody;
                         if (currentPlayingMelody && melodyList != null)
                         {
                             //Melody is shorter
-                            nextNearSoundLoad = new Time(Ref.rnd.Float(5, 30), TimeUnit.Seconds);
+                            nextNearSoundLoad = new Time(playTime_melody_sec.PeRandom(), TimeUnit.Seconds);
                         }
                         else
                         {
-                            nextNearSoundLoad = new Time(Ref.rnd.Float(5, 20)/*Ref.rnd.Float(0.5f, 2f)*/, TimeUnit.Seconds);
+                            nextNearSoundLoad = new Time(playTime_sound_sec.PeRandom(), TimeUnit.Seconds);
                         }
-                        newNearFade = 0;
-                        nearLoadingState = SoundLoadingState.FadeIn;
+
+                        //Longer melodies when there is more danger
+                        
+                        newSoundFade = 0;
+                        loadingState = SoundLoadingState.FadeIn;
                     }
                     break;
                 case SoundLoadingState.FadeIn:
-                    newNearFade += Ref.DeltaTimeSec * NewSoundFadeSpeed_PerSec;
-                    if (newNearFade >= 1)
+                    newSoundFade += Ref.DeltaTimeSec * NewSoundFadeSpeed_PerSec;
+                    if (newSoundFade >= 1)
                     {
-                        newNearFade = 0;
-                        currentNearSound.Stop();
-                        currentNearSound = nextNearSound;
-                        nearLoadingState = SoundLoadingState.None;
+                        newSoundFade = 0;
+                        currentSound.Stop();
+                        currentSound = nextSound;
+                        loadingState = SoundLoadingState.None;
                     }
                     break;
             }
+
+            needSoundBiom = loadingState == SoundLoadingState.UpdateSoundBiom;
+        }
+
+        public void reduceChangeSoundTimer()
+        {
+            nextNearSoundLoad.MilliSeconds *= 0.1f;
+        }
+
+        public void SetBiom(LoopingSoundData[] soundList, IntervalF playTime_sound,
+            LoopingSoundData[] melodyList, IntervalF playTime_melody)
+        {
+            this.soundList = soundList;
+            this.melodyList = melodyList;
+
+            this.playTime_sound_sec = playTime_sound;
+            this.playTime_melody_sec = playTime_melody;
+        }
+
+        public void SoundBiomReady()
+        {
+            loadingState = SoundLoadingState.Loading;
+            new Timer.AsynchActionTrigger(loadNextNearSound_async, true);
         }
 
         void loadNextNearSound_async()
@@ -356,20 +467,21 @@ namespace VikingEngine.DSSWars
                 melody = false;
             }
 
-            loadingNearSound = new LoopingSound();
-            loadingNearSound.Load(arraylib.RandomListMember(list));
-            nearLoadingState = SoundLoadingState.Complete;
+            loadingSound = new LoopingSound();
+            loadingSound.Load(arraylib.RandomListMember(list));
+            loadingState = SoundLoadingState.Complete;
         }
 
         public void stop()
         {
-            currentNearSound.Stop();
+            currentSound.Stop();
         }
     }
 
     enum SoundLoadingState
     {
         None,
+        UpdateSoundBiom,
         Loading,
         Complete,
         FadeIn,

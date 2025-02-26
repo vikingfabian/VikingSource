@@ -28,17 +28,17 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             //model.AddToRender(DrawGame.UnitDetailLayer);
             
 
-            stateTime = new Time(Ref.rnd.Float(10, 2000));
+            stateTime = new Time(Ref.peRnd.Float(10, 2000));
             area = VectorRect.FromCenterSize(VectorExt.PlaneXZVec(topCenterWp), WorldData.SubTileWidthV2 * 0.8f);
             model.position = VectorExt.V3FromXZ( area.RandomPos(), topCenterWp.Y);
-            WP.Rotation1DToQuaterion(model, Ref.rnd.Rotation());
+            WP.Rotation1DToQuaterion(model, Ref.peRnd.Rotation());
         }
 
         abstract protected Graphics.VoxelModelInstance createModel();
 
         void randomWalkDir()
         {
-            float dir = Ref.rnd.Rotation();
+            float dir = Ref.peRnd.Rotation();
             WP.Rotation1DToQuaterion(model, dir);
             walkDir = VectorExt.V2toV3XZ(lib.AngleToV2(dir, 1f), 0);
         }
@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             if (stateTime.CountDownGameTime())
             {
                 walkState = !walkState;
-                stateTime = new Time(Ref.rnd.Float(500, 5000));
+                stateTime = new Time(Ref.peRnd.Float(500, 5000));
 
                 sound();
 
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
 
         protected override void sound()
         {
-            if (Ref.rnd.Chance(0.03))
+            if (Ref.peRnd.Chance(0.03))
             {
                 SoundLib.pig.Play(model.position);
             }
@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
 
         protected override void sound()
         {
-            if (Ref.rnd.Chance(0.02))
+            if (Ref.peRnd.Chance(0.02))
             {
                 SoundLib.hen.Play(model.position);
             }

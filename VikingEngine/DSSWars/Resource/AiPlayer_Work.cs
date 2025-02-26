@@ -70,14 +70,14 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (resource.amount < ResourceLowBuffer)
                 {
-                    if (Ref.rnd.Chance(0.5))
+                    if (Ref.peRnd.Chance(0.5))
                     {
                         workPriority.addPrio_belowMax(1);
                     }
                 }
                 else if (resource.amount >= resource.goalBuffer / 2)
                 {
-                    if (Ref.rnd.Chance(0.3))
+                    if (Ref.peRnd.Chance(0.3))
                     {
                         workPriority.addPrio(-1);
                     }
@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.Players
                 int count = blueprint.canCraftCount(city);
                 if (!lowPrio && count >= ResourceLowBuffer)
                 {
-                    if (Ref.rnd.Chance(0.8))
+                    if (Ref.peRnd.Chance(0.8))
                     {
                         workPriority.addPrio_belowMax(1);
                         return true;
@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else
                 {
-                    if (Ref.rnd.Chance(0.4))
+                    if (Ref.peRnd.Chance(0.4))
                     {
                         workPriority.addPrio(-1);
                     }
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Players
             intelligent = false;
             work = false;
 
-            if (city.res_rawFood.needMore() && Ref.rnd.Chance(0.6))
+            if (city.res_rawFood.needMore() && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.WheatFarm;
             }
@@ -121,17 +121,17 @@ namespace VikingEngine.DSSWars.Players
             {
                 building = BuildAndExpandType.CoalPit;
             }
-            else if (city.res_skinLinnen.needMore() && Ref.rnd.Chance(0.6))
+            else if (city.res_skinLinnen.needMore() && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.LinenFarm;
             }
-            else if (city.conscriptBuildings.Count < 2 && Ref.rnd.Chance(0.6))
+            else if (city.conscriptBuildings.Count < 2 && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.SoldierBarracks;
             }
             else if (((city.buildingStructure.Smith_count == 0 && city.res_ironore.amount > ResourceLowBuffer) ||
                 (city.res_ironore.amount >= city.res_ironore.goalBuffer)
-                    && Ref.rnd.Chance(0.02))
+                    && Ref.peRnd.Chance(0.02))
                 )
             {
                 if (city.res_iron.amount < CraftBuildingLib.CraftSmith_IronUse)
@@ -147,7 +147,7 @@ namespace VikingEngine.DSSWars.Players
                 }
                 building = BuildAndExpandType.Smith;
             }
-            else if (city.deliveryServices.Count < 2 && Ref.rnd.Chance(0.2))
+            else if (city.deliveryServices.Count < 2 && Ref.peRnd.Chance(0.2))
             {
                 building = BuildAndExpandType.Postal;
             }

@@ -1,6 +1,9 @@
 ﻿BETA UPDATE
 -Change Log-
 Updated volume settings
+New pause menu
+Ambient sounds
+Built a high performance randomizer
 
 
 !save av settings

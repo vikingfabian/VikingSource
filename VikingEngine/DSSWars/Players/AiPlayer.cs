@@ -1122,9 +1122,9 @@ namespace VikingEngine.DSSWars.Players
                     lib.DoNothing();
                 }
 
-                nextDecisionTimer.MilliSeconds = Ref.rnd.Float(2000, 5000);
+                nextDecisionTimer.MilliSeconds = Ref.peRnd.Float(2000, 5000);
                 
-                bool protect = Ref.rnd.Chance(0.6);
+                bool protect = Ref.peRnd.Chance(0.6);
 
                 var wars = DssRef.diplomacy.aiPlayerAsynchUpdate_collectWars(faction);
                 bool inWar = aggressionLevel >= AggressionLevel2_RandomAttacks ||
@@ -1230,7 +1230,7 @@ namespace VikingEngine.DSSWars.Players
 
         private void createPurchaseOrder(City city, int maxPurchaseCount)
         {
-            purchaseCount = Ref.rnd.Int(5, maxPurchaseCount);
+            purchaseCount = Ref.peRnd.Int(5, maxPurchaseCount);
             purchaseOrder = PurchaseOrderType_Army;
             purchaseOrderIndex1 = city.parentArrayIndex;
 
@@ -1295,7 +1295,7 @@ namespace VikingEngine.DSSWars.Players
                     //Start fresh
                     mainArmy = null;
                     
-                    nextDecisionTimer.MilliSeconds += Ref.rnd.Int(4000, 15000);
+                    nextDecisionTimer.MilliSeconds += Ref.peRnd.Int(4000, 15000);
                     mainArmyBuyAtCity(city);
                     
                 }
@@ -1830,7 +1830,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (otherFaction.player.protectedPlayer)
             {
-                if (faction.Size() >= FactionSize.Big && Ref.rnd.Chance(0.25))
+                if (faction.Size() >= FactionSize.Big && Ref.peRnd.Chance(0.25))
                 { 
                     return true;
                 }
@@ -1850,7 +1850,7 @@ namespace VikingEngine.DSSWars.Players
             else if (rel == RelationType.RelationType1_Peace ||
                 rel == RelationType.RelationType2_Good) 
             {
-                return Ref.rnd.Chance(0.05);
+                return Ref.peRnd.Chance(0.05);
             }
             return false;
         }

@@ -1074,7 +1074,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
             }
 
-            if (Ref.rnd.Chance(DssRef.difficulty.resourceMultiplyChance) &&
+            if (Ref.peRnd.Chance(DssRef.difficulty.resourceMultiplyChance) &&
                 faction.player.IsAi())
             {
                 if (DssRef.difficulty.resourceMultiplyDecrease)

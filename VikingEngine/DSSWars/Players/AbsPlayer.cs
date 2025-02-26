@@ -106,18 +106,18 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (DssRef.difficulty.aiAggressivity == AiAggressivity.Medium)
                     {
-                        if (Ref.rnd.Chance(0.35))
+                        if (Ref.peRnd.Chance(0.35))
                         {
                             aggressionLevel = AggressionLevel2_RandomAttacks;
                         }
-                        else if (Ref.rnd.Chance(0.06))
+                        else if (Ref.peRnd.Chance(0.06))
                         {
                             aggressionLevel = AggressionLevel3_FocusedAttacks;
                         }
                     }
                     else if (DssRef.difficulty.aiAggressivity == AiAggressivity.High)
                     {
-                        if (Ref.rnd.Chance(0.6))
+                        if (Ref.peRnd.Chance(0.6))
                         {
                             aggressionLevel = AggressionLevel2_RandomAttacks;
                         }
@@ -131,14 +131,14 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (DssRef.difficulty.aiAggressivity == AiAggressivity.Medium)
                     {
-                        if (Ref.rnd.Chance(0.05))
+                        if (Ref.peRnd.Chance(0.05))
                         {
                             aggressionLevel = AggressionLevel3_FocusedAttacks;
                         }
                     }
                     else if (DssRef.difficulty.aiAggressivity == AiAggressivity.High)
                     {
-                        if (Ref.rnd.Chance(0.7))
+                        if (Ref.peRnd.Chance(0.7))
                         {
                             aggressionLevel = AggressionLevel3_FocusedAttacks;
                         }

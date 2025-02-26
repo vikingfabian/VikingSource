@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.GameObject
         public DeserterAnimation(AbsSoldierUnit soldier, Vector3 movedir, RotationQuarterion rotation)
             :base(true)
         {
-            lifeTime = Ref.rnd.Float(3000f, 5000f);
+            lifeTime = Ref.peRnd.Float(3000f, 5000f);
             walkingAnimation = WalkingAnimation.Standard;
             walkingAnimation.randomStartFrame();
             this.movedir = movedir;

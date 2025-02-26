@@ -83,7 +83,7 @@ namespace VikingEngine.Sound
                     float pitch = pitchAdd;
                     if (randomPitch != 0)
                     {
-                        pitch = Bound.Set(pitch + Ref.rnd.Plus_MinusF(randomPitch), -1, 1);
+                        pitch = Bound.Set(pitch + Ref.peRnd.Plus_MinusF(randomPitch), -1, 1);
                     }
 
                     File().Play(Bound.Max(outvolume * Ref.gamesett.SoundVol(), 1), pitch, pan);
@@ -96,7 +96,7 @@ namespace VikingEngine.Sound
             float pitch = pitchAdd;
             if (randomPitch != 0)
             {
-                pitch = Bound.Set(pitch + Ref.rnd.Plus_MinusF(randomPitch), -1, 1);
+                pitch = Bound.Set(pitch + Ref.peRnd.Plus_MinusF(randomPitch), -1, 1);
             }
 
             File().Play(Bound.Max(volume * Ref.gamesett.SoundVol(), 1), pitch, pan.Value);
@@ -140,7 +140,7 @@ namespace VikingEngine.Sound
 
         protected override SoundEffect File()
         {
-            return files[Ref.rnd.Int(files.Length)];
+            return files[Ref.peRnd.Int(files.Length)];
         }
     }
 
@@ -186,7 +186,21 @@ namespace VikingEngine.Sound
             this.volume = volume;
             if (ins != null)
             {
-                ins.Volume = Ref.gamesett.AmbientVol() * basevolume * volume;
+                if (volume <= 0)
+                {
+                    if (ins.State == SoundState.Playing)
+                    {
+                        ins.Pause();
+                    }
+                }
+                else
+                {
+                    ins.Volume = Ref.gamesett.AmbientVol() * basevolume * volume;
+                    if (ins.State == SoundState.Paused)
+                    {
+                        ins.Resume();
+                    }
+                }
             }
         }
     }

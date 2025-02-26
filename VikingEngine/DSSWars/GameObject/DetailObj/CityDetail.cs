@@ -157,8 +157,8 @@ namespace VikingEngine.DSSWars.GameObject
                                 for (int trialIx = 0; trialIx < SubStartTrialCount; ++trialIx)
                                 {
                                     IntVector2 subPos = topLeft;
-                                    subPos.X += Ref.rnd.Int(1, WorldData.TileSubDivitions -1);
-                                    subPos.Y += Ref.rnd.Int(1, WorldData.TileSubDivitions -1);
+                                    subPos.X += Ref.peRnd.Int(1, WorldData.TileSubDivitions -1);
+                                    subPos.Y += Ref.peRnd.Int(1, WorldData.TileSubDivitions -1);
 
 
                                     if (Build.BuildLib.TryAutoBuild(subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                 TerrainMainType terrain;
                                                 int sub;
                                                 int maxAmount;
-                                                if (Ref.rnd.Chance(0.75))
+                                                if (Ref.peRnd.Chance(0.75))
                                                 {
                                                     terrain = TerrainMainType.Foil;
                                                     sub = (int)TerrainSubFoilType.WheatFarm;
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                 else
                                                 {
                                                     terrain = TerrainMainType.Building;
-                                                    if (Ref.rnd.Chance(0.4))
+                                                    if (Ref.peRnd.Chance(0.4))
                                                     {
                                                         sub = (int)TerrainBuildingType.PigPen;
                                                         maxAmount = TerrainContent.PigMaxSize;
@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                     }
                                                 }
                                                 
-                                                if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.rnd.Int(1, maxAmount)))
+                                                if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
                                                 {
                                                     ++cultureCount;
                                                     if (cultureCount >= CulturesPerFarm)
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (shortDist)
                         {
-                            int attacks = Ref.rnd.Int(5, 10) + Bound.Max(storedAttacks, 5);
+                            int attacks = Ref.peRnd.Int(5, 10) + Bound.Max(storedAttacks, 5);
 
                             int hits = startMultiAttack(fullUpdate, attackTarget_sp, shortDist, attacks, true);
                             storedAttacks = attacks - hits;
@@ -353,8 +353,8 @@ namespace VikingEngine.DSSWars.GameObject
         public override Vector3 projectileStartPos()
         {
             Vector3 pos = position;
-            pos.X += Ref.rnd.Plus_MinusF(0.3f);
-            pos.Z += Ref.rnd.Plus_MinusF(0.3f);
+            pos.X += Ref.peRnd.Plus_MinusF(0.3f);
+            pos.Z += Ref.peRnd.Plus_MinusF(0.3f);
 
             return pos;
 

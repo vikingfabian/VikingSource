@@ -104,6 +104,7 @@ namespace VikingEngine.DSSWars.Players
         static readonly Vector3 ThemeSouth_Red = new Vector3(0.2f, 0.05f, 0f);
 
         public Vector3 ShaderThemeColor = ThemeMid_Yellow;
+        public float opposingSizePerc = 0;
 
         public LocalPlayer(Faction faction)
            : base(faction)
@@ -498,11 +499,15 @@ namespace VikingEngine.DSSWars.Players
 
                 if (opposingSize > 0)
                 {
-                    float opposingSizePerc;
-                    
+                    //float opposingSizePerc;
+
                     opposingSizePerc = opposingSize / faction.citiesEconomy.tax(null);
-                    
+
                     toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage;
+                }
+                else
+                {
+                    opposingSizePerc = 0;
                 }
 
                 if (toPeaceful)

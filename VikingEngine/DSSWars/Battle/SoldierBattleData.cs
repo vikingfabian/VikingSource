@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.Battle
 
             if (collision(parent.rotation, Regular_QueTime))
             {
-                switch (Ref.rnd.Int(4))
+                switch (Ref.peRnd.Int(4))
                 { 
                     case 0:
                         {

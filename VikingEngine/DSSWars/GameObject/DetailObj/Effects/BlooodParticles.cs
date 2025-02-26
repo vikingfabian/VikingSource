@@ -16,32 +16,36 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void ViewDamage(AbsDetailUnit reciever, int damageAmount, Rotation1D attackDir)
         {
-            Vector3 startPos = reciever.position;
-            startPos.Y += DssConst.Men_StandardModelScale * 0.01f;
-            int particleCount = reciever.Alive() ? damageAmount / 4 : damageAmount;
-            // Graphics.TextureEffect col = reciever.faction == Faction.Human ? HumanBloodCol : OrcBloodCol;
-            Vector3 pos = reciever.position;
-            pos.Y += DssConst.Men_StandardModelScale;
-            Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.DssDamage, pos, BloodRadius, particleCount);
-            //if (reciever.Alive())
-            //{
-            //    Rotation1D attackAngle = attackDir;
+            if (Ref.gamesett.Blood > 0)
+            {
 
-            //    //for (int i = 0; i < Bound.Min(damageAmount / 2, 1); ++i)
-            //    //{
-            //    //    //Rotation1D dir = attackAngle;
-            //    //    //dir.Add(Ref.rnd.Plus_MinusF(1f));
-            //    //    //new BloodBlock(startPos, reciever.position.Y, dir, false);
+                Vector3 startPos = reciever.position;
+                startPos.Y += DssConst.Men_StandardModelScale * 0.01f;
+                int particleCount = Bound.Min( (reciever.Alive() ? damageAmount / 4 : damageAmount) * Ref.gamesett.Blood / 100, 2);
+                // Graphics.TextureEffect col = reciever.faction == Faction.Human ? HumanBloodCol : OrcBloodCol;
+                Vector3 pos = reciever.position;
+                pos.Y += DssConst.Men_StandardModelScale;
+                Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.DssDamage, pos, BloodRadius, particleCount);
+                //if (reciever.Alive())
+                //{
+                //    Rotation1D attackAngle = attackDir;
 
-            //    //}
-            //}
-            //else
-            //{
-            //    //for (int i = 0; i < damageAmount; ++i)
-            //    //{
-            //    //    //new BloodBlock(startPos, reciever.position.Y, Rotation1D.Random(), true);
-            //    //}
-            //}
+                //    //for (int i = 0; i < Bound.Min(damageAmount / 2, 1); ++i)
+                //    //{
+                //    //    //Rotation1D dir = attackAngle;
+                //    //    //dir.Add(Ref.rnd.Plus_MinusF(1f));
+                //    //    //new BloodBlock(startPos, reciever.position.Y, dir, false);
+
+                //    //}
+                //}
+                //else
+                //{
+                //    //for (int i = 0; i < damageAmount; ++i)
+                //    //{
+                //    //    //new BloodBlock(startPos, reciever.position.Y, Rotation1D.Random(), true);
+                //    //}
+                //}
+            }
         }
     }
 
@@ -66,7 +70,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.groundY = groundY;
             model = new Graphics.Mesh(LoadedMesh.cube_repeating, pos, new Vector3(Blood_BlockScale), 
                 Graphics.TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.Red);
-            float speed = Ref.rnd.Float(0.001f, 0.003f) * DssConst.Men_StandardModelScale;
+            float speed = Ref.peRnd.Float(0.001f, 0.003f) * DssConst.Men_StandardModelScale;
             if (onDeath)
             {
                 speed *= 1.6f;

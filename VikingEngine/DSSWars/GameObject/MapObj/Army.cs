@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected Graphics.AbsVoxelObj overviewBanner;
 
-        public Rotation1D rotation = Rotation1D.D180.Add(Ref.rnd.Plus_MinusF(0.8f));
+        public Rotation1D rotation = Rotation1D.D180.Add(Ref.peRnd.Plus_MinusF(0.8f));
         public float soldierRadius = 0.5f;
         BoundingSphere bound;
         
@@ -467,12 +467,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int desertSoldiers()
         {
-            int count = MathExt.MultiplyInt(Ref.rnd.Double(0.2, 0.4), groups.Count);
+            int count = MathExt.MultiplyInt(Ref.peRnd.Double(0.2, 0.4), groups.Count);
             int soldiersDeserted = 0;
 
             for (int i = 0; i < count; i++)
             {
-                var group = groups.PullRandom_Safe(Ref.rnd);
+                var group = groups.PullRandom_Safe(Ref.peRnd);
                 if (group != null)
                 {
                     soldiersDeserted += group.soldierCount;

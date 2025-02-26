@@ -119,7 +119,7 @@ namespace VikingEngine.Engine
             ParticleSystemData sys = particleSystems[(int)type];
             for (int i = 0; i < numParticles; i++)
             {
-                sys.AddParticles(new Graphics.ParticleInitData(Ref.rnd.Vector3_Sq(center, radius)));
+                sys.AddParticles(new Graphics.ParticleInitData(Ref.peRnd.Vector3_Sq(center, radius)));
             }
             #endif
         }

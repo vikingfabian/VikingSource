@@ -53,15 +53,15 @@ namespace VikingEngine.Sound
 
         public SoundEffect PlayFlat(float volumeMultiplier = 1f)
         {
-            return Engine.Sound.PlaySound(sound + Ref.rnd.Int(variations), volume * volumeMultiplier, Pan.Center, 
-                Ref.rnd.Plus_MinusF(randomPitch) + pitchAdd);
+            return Engine.Sound.PlaySound(sound + Ref.peRnd.Int(variations), volume * volumeMultiplier, Pan.Center, 
+                Ref.peRnd.Plus_MinusF(randomPitch) + pitchAdd);
         }
         public SoundEffect Play(Vector2 screenPosition, float volumeMultiplier = 1f)
         {
-            return Engine.Sound.PlaySound(sound + Ref.rnd.Int(variations), 
+            return Engine.Sound.PlaySound(sound + Ref.peRnd.Int(variations), 
                 volume * volumeMultiplier, 
                 Pan.PositionToPan(screenPosition.X, 0, Engine.Screen.Width),
-                Ref.rnd.Plus_MinusF(randomPitch) + pitchAdd);
+                Ref.peRnd.Plus_MinusF(randomPitch) + pitchAdd);
         }
 
         //public SoundEffectInstance GetLoopedPlayingInstance()
@@ -94,8 +94,8 @@ namespace VikingEngine.Sound
                 dir.Add(cam.TiltX - MathHelper.PiOver2);
                 Vector2 direction = dir.Direction(diff.Length());
 
-                return Engine.Sound.PlaySound(sound + Ref.rnd.Int(variations), outvolume, new Pan(direction.X / Ref.sound.Sound3DMaxLength),
-                    Ref.rnd.Plus_MinusF(randomPitch) + pitchAdd);
+                return Engine.Sound.PlaySound(sound + Ref.peRnd.Int(variations), outvolume, new Pan(direction.X / Ref.sound.Sound3DMaxLength),
+                    Ref.peRnd.Plus_MinusF(randomPitch) + pitchAdd);
             }
 
             return null;

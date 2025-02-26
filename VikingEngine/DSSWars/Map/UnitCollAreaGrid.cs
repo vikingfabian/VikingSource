@@ -232,7 +232,7 @@ namespace VikingEngine.DSSWars.Map
         //    //                    break;
         //    //                }
         //    //            }
-                       
+
         //    //        }
         //    //    }
         //    //}
@@ -247,6 +247,48 @@ namespace VikingEngine.DSSWars.Map
         //        }
         //    }
         //}
+
+        public bool PlayerInBattle(IntVector2 tilePos, Faction player)
+        {
+            //Debug.CrashIfThreaded();
+            //playerNearMapObjects.Clear();
+
+            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            UnitCollArea area;
+
+            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+            {
+                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+                {
+                    if (grid.TryGet(x, y, out area))
+                    {
+                        foreach (var cityIx in area.cities)
+                        {
+                            var city = DssRef.world.cities[cityIx];
+                            if (city.detailObj.inBattle != null && city.faction == player)
+                            {
+                                return true;
+                            }
+                        }
+
+                        lock (area.groups)
+                        {
+                            foreach (var group in area.groups)
+                            { 
+                                if (group.attackTarget_soldierGroupOrCity != null && group.army.faction == player)
+                                {
+                                    return true;
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            return false;
+        }
 
         public List<AbsMapObject> MapControlsNearMapObjects(IntVector2 tilePos, bool controller)
         {

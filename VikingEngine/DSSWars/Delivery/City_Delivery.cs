@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         case DeliveryActiveStatus.Delivering:
 
-                            bool resetDeliverRecieveValue = Ref.rnd.Chance(0.05); //Just to adjust any drifting values
+                            bool resetDeliverRecieveValue = Ref.peRnd.Chance(0.05); //Just to adjust any drifting values
 
                             if (status.countdown.TimeOut())
                             {

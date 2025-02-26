@@ -170,6 +170,10 @@ namespace VikingEngine
         {
             return Ref.rnd.Float(Min, Max);
         }
+        public float PeRandom()
+        {
+            return Ref.peRnd.Float(Min, Max);
+        }
 
         public float GetRandom(PcgRandom rnd)
         {

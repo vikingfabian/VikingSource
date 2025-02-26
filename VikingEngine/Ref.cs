@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Maths;
 
 namespace VikingEngine
 {
@@ -26,12 +27,14 @@ namespace VikingEngine
         public static HUD.AbsOptionsLanguage langOpt;                                                                                                                                                               
         public static System.Globalization.CultureInfo culture;
 
-        
+
 #if XBOX
         public static VikingEngine.XboxWrapping.XboxManager xbox;
 #endif
         public static PcgRandom rnd = new PcgRandom();
-        
+        public static PerformanceRandom peRnd = new PerformanceRandom();
+
+
         public static Network.INetworkUpdateReviever NetUpdateReciever()
         {
             if (lobby == null) return gamestate;

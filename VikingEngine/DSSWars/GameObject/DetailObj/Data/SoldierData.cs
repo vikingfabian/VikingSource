@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
                 return modelName;
             }
 
-            double rnd = Ref.rnd.Double();
+            double rnd = Ref.peRnd.Double();
             if (modelVariationCount >= 3 && rnd < 0.1)
             {
                 return modelName + 2;

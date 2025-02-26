@@ -1441,7 +1441,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchNearObjectsUpdate()
         {
-            if (Ref.rnd.Chance(0.05))
+            if (Ref.peRnd.Chance(0.05))
             {
                 highTargetValueToOpponent = float.MaxValue;
             }

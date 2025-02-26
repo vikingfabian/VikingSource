@@ -276,7 +276,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (currentCount < maxCount)
                         {
-                            repeat = Ref.rnd.Int(repeat) + 1;
+                            repeat = Ref.peRnd.Int(repeat) + 1;
                             for (int i = 0; i < repeat; ++i)
                             {
                                 AutoBuild_RandomBuild.AddItem((int)buildType, chance);

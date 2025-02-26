@@ -58,8 +58,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         {
             Vector3 pos = position;
             pos.Y += DssConst.Men_StandardModelScale * 0.7f;
-            pos.X += Ref.rnd.Plus_MinusF(0.1f);
-            pos.Z += Ref.rnd.Plus_MinusF(0.1f);
+            pos.X += Ref.peRnd.Plus_MinusF(0.1f);
+            pos.Z += Ref.peRnd.Plus_MinusF(0.1f);
 
             return pos;
         }

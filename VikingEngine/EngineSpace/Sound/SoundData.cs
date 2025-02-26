@@ -38,14 +38,14 @@ namespace VikingEngine.Sound
         public SoundEffect PlayFlat(float volumeMultiplier = 1f)
         {
             return Engine.Sound.PlaySound(soundeffect, volume * volumeMultiplier, Pan.Center,
-                Ref.rnd.Plus_MinusF(randomPitch) + pitchAdd);
+                Ref.peRnd.Plus_MinusF(randomPitch) + pitchAdd);
         }
         public SoundEffect Play(Vector2 screenPosition, float volumeMultiplier = 1f)
         {
             return Engine.Sound.PlaySound(soundeffect,
                 volume * volumeMultiplier,
                 Pan.PositionToPan(screenPosition.X, 0, Engine.Screen.Width),
-                Ref.rnd.Plus_MinusF(randomPitch) + pitchAdd);
+                Ref.peRnd.Plus_MinusF(randomPitch) + pitchAdd);
         }
 
         public SoundEffectInstance PlayInstance(Vector2 screenPosition, bool looped = false, float volume = 1f, float pitch = 0)
@@ -82,7 +82,7 @@ namespace VikingEngine.Sound
                 Vector2 direction = dir.Direction(diff.Length());
 
                 return Engine.Sound.PlaySound(soundeffect, outvolume, new Pan(direction.X / Ref.sound.Sound3DMaxLength),
-                    Ref.rnd.Plus_MinusF(randomPitch) + pitchAdd);
+                    Ref.peRnd.Plus_MinusF(randomPitch) + pitchAdd);
             }
 
             return null;

@@ -134,16 +134,16 @@ namespace VikingEngine.DSSWars.GameObject
             switch (group.soldierConscript.conscript.training)
             {
                 case Conscript.TrainingLevel.Minimal:
-                    reactionTime = 300 + Ref.rnd.Float(300);
+                    reactionTime = 300 + Ref.peRnd.Float(300);
                     break;
                 case Conscript.TrainingLevel.Basic:
-                    reactionTime = 200 + Ref.rnd.Float(200);
+                    reactionTime = 200 + Ref.peRnd.Float(200);
                     break;
                 case Conscript.TrainingLevel.Skillful:
-                    reactionTime = 100 + Ref.rnd.Float(100);
+                    reactionTime = 100 + Ref.peRnd.Float(100);
                     break;
                 case Conscript.TrainingLevel.Professional:
-                    reactionTime = 50 + Ref.rnd.Float(50);
+                    reactionTime = 50 + Ref.peRnd.Float(50);
                     break;
             }
         }
@@ -251,10 +251,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             
             groupOffset.X = gridPlacement.X * soldierData.groupSpacing +
-                Ref.rnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
+                Ref.peRnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
 
             groupOffset.Y = (gridPlacement.Y + group.halfColDepth) * soldierData.groupSpacing +
-                Ref.rnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
+                Ref.peRnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
         }
 
         void updateGroupPosition()

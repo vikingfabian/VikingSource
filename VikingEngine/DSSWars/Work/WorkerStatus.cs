@@ -735,14 +735,14 @@ namespace VikingEngine.DSSWars.Work
                         break;
                     case ExperienceLevel.Expert_3:
                         expert = true;
-                        if (Ref.rnd.Chance(0.5))
+                        if (Ref.peRnd.Chance(0.5))
                         {
                             add = WorkLib.WorkToXPTable[(int)type];
                         }
                         break;
                     case ExperienceLevel.Master_4:
                         master = true;
-                        if (Ref.rnd.Chance(0.1))
+                        if (Ref.peRnd.Chance(0.1))
                         {
                             add = WorkLib.WorkToXPTable[(int)type];
                         }

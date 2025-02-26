@@ -1,52 +1,70 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.ToGG.HeroQuest.Display;
 
 namespace VikingEngine.EngineSpace.Maths
 {
     
-        class PerformanceRandom : AbsRandom
+        public class PerformanceRandom : AbsRandom
         {
-            private const int ARRAY_SIZE = 100; // Replaces hardcoded 100
+            private const int VALUE_SIZE = 224; // Replaces hardcoded 100
             private int index = 0;
-            private readonly float[] values;
-            private readonly int[] intValues;
-            private readonly uint[] uintValues;
-            private readonly bool[] boolValues;
-            private readonly byte[] byteValues;
-            private readonly ushort[] ushortValues;
+            private readonly float[] percValuesF;
+            //private readonly int[] intValues;
+            //private readonly uint[] uintValues;
+            //private readonly bool[] boolValues;
+            //private readonly byte[] byteValues;
+            //private readonly ushort[] ushortValues;
 
             public PerformanceRandom()
             {
-                // Generate shuffled float values (1f to 0.01f)
-                values = Enumerable.Range(0, ARRAY_SIZE)
-                                   .Select(i => 1f - (i * 0.01f))
-                                   .ToArray();
-                Shuffle(values);
+            Random rng = new Random();
+            // Generate shuffled float values (1f to 0.01f)
+            const float Step = 1f / VALUE_SIZE;
+
+                //Larger than VALUE_SIZE for thread safety
+                percValuesF = new float[256];
+
+                for (int i = 0; i < VALUE_SIZE; ++i)
+                {
+                    percValuesF[i] = 1f - Step - (i * Step);
+                }
+
+                for (int i = VALUE_SIZE; i < percValuesF.Length; ++i)
+                {
+                    percValuesF[i] = 0.5f;
+                }
+
+                //percValuesF = Enumerable.Range(0, VALUE_SIZE)
+                //                       .Select(i => 1f - Step - (i * Step))
+                //                       .ToArray();
+                Shuffle(percValuesF, rng);
 
                 // Generate other precomputed random values
-                intValues = Enumerable.Range(0, ARRAY_SIZE).ToArray();
-                Shuffle(intValues);
+                //intValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => new Random().Next(int.MaxValue)).ToArray();
+                //Shuffle(intValues);
 
-                uintValues = intValues.Select(i => (uint)i).ToArray();
-                Shuffle(uintValues);
+                ////uintValues = intValues.Select(i => (uint)i).ToArray();
+                ////Shuffle(uintValues);
 
-                boolValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => new Random().Next(2) == 1).ToArray();
-                Shuffle(boolValues);
+                ////boolValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => new Random().Next(2) == 1).ToArray();
+                ////Shuffle(boolValues);
 
-                byteValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => (byte)new Random().Next(256)).ToArray();
-                Shuffle(byteValues);
+                //byteValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => (byte)new Random().Next(256)).ToArray();
+                //Shuffle(byteValues);
 
-                ushortValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => (ushort)new Random().Next(ushort.MaxValue)).ToArray();
-                Shuffle(ushortValues);
+                //ushortValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => (ushort)new Random().Next(ushort.MaxValue)).ToArray();
+                //Shuffle(ushortValues);
             }
 
-            private void Shuffle<T>(T[] array)
+            private void Shuffle<T>(T[] array, Random rng)
             {
-                Random rng = new Random();
-                for (int i = array.Length - 1; i > 0; i--)
+                
+                for (int i = VALUE_SIZE - 1; i > 0; i--)
                 {
                     int j = rng.Next(i + 1);
                     (array[i], array[j]) = (array[j], array[i]); // Swap
@@ -54,60 +72,131 @@ namespace VikingEngine.EngineSpace.Maths
             }
 
             // Explicit methods to avoid boxing
-            public override float Float()
-            {
-                if (++index >= ARRAY_SIZE) index = 0;
-                return values[index];
-            }
-
-            public override int Int()
-            {
-                if (++index >= ARRAY_SIZE) index = 0;
-                return intValues[index];
-            }
-
-            public override int Int(int exMax)
-            {
-                if (++index >= ARRAY_SIZE) index = 0;
-                return intValues[index] % exMax;
-            }
-
-            public override int Int(int min, int exMax)
-            {
-                if (++index >= ARRAY_SIZE) index = 0;
-                return min + (intValues[index] % (exMax - min));
-            }
-
-            public override uint Uint()
-            {
-                if (++index >= ARRAY_SIZE) index = 0;
-                return uintValues[index];
-            }
-
-            public override uint Uint(uint exMax)
-            {
-                if (++index >= ARRAY_SIZE) index = 0;
-                return uintValues[index] % exMax;
-            }
-
-            public override bool Bool()
-            {
-                if (++index >= ARRAY_SIZE) index = 0;
-                return boolValues[index];
-            }
-
-            public override byte Byte()
-            {
-                if (++index >= ARRAY_SIZE) index = 0;
-                return byteValues[index];
-            }
-
-            public override ushort Ushort()
-            {
-                if (++index >= ARRAY_SIZE) index = 0;
-                return ushortValues[index];
-            }
+        public float Percent()
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return percValuesF[index];
         }
+
+        public override float Rotation()
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return MathHelper.TwoPi * percValuesF[index];
+        }
+
+        public override bool Chance(double chance)
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return percValuesF[index] < chance;
+        }
+
+        public override bool Chance(int percent)
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return percValuesF[index] < percent * MathExt.OnePercentage;
+        }
+
+        public override float Float()
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return percValuesF[index] * float.MaxValue;
+        }
+        public override float Float(float exMax)
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return percValuesF[index] * exMax;
+        }
+
+        public override float Float(float min, float exMax)
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return min + percValuesF[index] * (exMax - min);
+        }
+        public override float Plus_MinusF(float range)
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return range - percValuesF[index] * range * 2f;
+        }
+
+        /// <summary>
+        /// Square shaped random 3D position
+        /// </summary>
+        override public Vector3 Vector3_Sq(Vector3 center, float range)
+        {
+            if (index+3 >= VALUE_SIZE) index = 0;
+            
+            center.X += range - percValuesF[index] * range * 2f;
+            center.Y += range - percValuesF[index + 1] * range * 2f;
+            center.Z += range - percValuesF[index + 2] * range * 2f;
+
+            index += 3;
+            return center;
+        }
+
+        public override double Double()
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return percValuesF[index] * double.MaxValue;
+        }
+
+        public override double Double(double exMax)
+        {
+            return Percent() * exMax;
+        }
+
+        public override double Double(double min, double exMax)
+        {
+            return min + Percent() * (exMax - min);
+        }
+
+        public override int Int()
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return (int)(percValuesF[index] * int.MaxValue);
+        }
+
+        public override int Int(int exMax)
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return (int)(percValuesF[index] * exMax);
+        }
+
+        public override int Int(int min, int exMax)
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return min + (int)(percValuesF[index] * (exMax - min));
+        }
+
+        //public override uint Uint()
+        //{
+        //    if (++index >= ARRAY_SIZE) index = 0;
+        //    return uintValues[index];
+        //}
+
+        //public override uint Uint(uint exMax)
+        //{
+        //    if (++index >= ARRAY_SIZE) index = 0;
+        //    return uintValues[index] % exMax;
+        //}
+
+        public override bool Bool()
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return percValuesF[index] > 0.5f;
+        }
+
+        public override byte Byte()
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return (byte)(percValuesF[index] * byte.MaxValue);
+        }
+
+        public override ushort Ushort()
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return (ushort)(percValuesF[index] * ushort.MaxValue);
+        }
+    }
 
     
 }

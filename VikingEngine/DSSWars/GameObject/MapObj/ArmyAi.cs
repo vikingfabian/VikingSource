@@ -431,7 +431,7 @@ namespace VikingEngine.DSSWars.GameObject
         bool orderOutsidePlayerAttension(IntVector2 to)
         {
 
-            return Ref.rnd.Chance(0.8) &&
+            return Ref.peRnd.Chance(0.8) &&
                 !inRender_overviewLayer &&
                 DssRef.state.culling.outsidePlayerAttension(tilePos) &&
                 DssRef.state.culling.outsidePlayerAttension(to);
