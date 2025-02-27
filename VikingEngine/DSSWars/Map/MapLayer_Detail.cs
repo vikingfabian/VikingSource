@@ -16,6 +16,8 @@ namespace VikingEngine.DSSWars.Map
         List<DetailMapTile> processingTiles_Add = new List<DetailMapTile>(400);
         List<DetailMapTile> processingTiles_Remove = new List<DetailMapTile>(400);
         List<DetailMapTile> synchToRender = new List<DetailMapTile>(400);
+        int sychToRenderCurrentIndex = 0;
+        int MaxSychToRenderCount;
         List<DetailMapTile> synchDelete = new List<DetailMapTile>(400);
         public List<Graphics.PolygonColor> polygons = new List<Graphics.PolygonColor>(256);
 
@@ -31,9 +33,8 @@ namespace VikingEngine.DSSWars.Map
         /// <summary>
         /// Trigger a reload of the map
         /// </summary>
-
         public bool oneSecondUpdate = false;
-        //public bool needReload = false;
+
         public MapLayer_Detail()
         {
             DssRef.state.detailMap = this;
@@ -44,8 +45,20 @@ namespace VikingEngine.DSSWars.Map
             waterSurface.AddToRender(DrawGame.UnitDetailLayer);
             waterBottom.AddToRender(DrawGame.UnitDetailLayer);
 
-            //ModelEffect.SetColor(Color.Gray.ToVector4());   
-            //ModelEffect.TerrainShader();
+            switch (Ref.gamesett.MapLoadingSpeed)
+            {
+                case ThreeOptions.Low:
+                    MaxSychToRenderCount = 40;
+                    break;
+                default:
+                    MaxSychToRenderCount = 200;
+                    break;
+                case ThreeOptions.High:
+                    MaxSychToRenderCount = 600;
+                    break;
+
+            }
+
         }
 
         public void update()
@@ -64,40 +77,54 @@ namespace VikingEngine.DSSWars.Map
             waterSurface.TextureSource.SourceF.X += Ref.DeltaGameTimeSec * -0.05f;
             waterSurface.TextureSource.SourceF.Y = (float)(Math.Sin(waterMoveCurve) * 0.1);
 
-            //while (synchTiles.TryPop(out var tile))
-            //{
-            //    if (!tile.synchToRender())
-            //    {
-            //        tilePool.Push(tile);
-            //    }
-            //}
             if (synchToRender.Count > 0)
             {
+                bool addingComplete;
                 lock (synchToRender)
                 {
-                    foreach (var m in synchToRender)
+                    int end_ex = sychToRenderCurrentIndex + MaxSychToRenderCount;
+                    addingComplete = end_ex >= synchToRender.Count;
+
+                    if (addingComplete)
                     {
-                        m.synchToRender();
+                        end_ex = synchToRender.Count;
                     }
 
-                    synchToRender.Clear();
+                    for (; sychToRenderCurrentIndex < end_ex; sychToRenderCurrentIndex++)
+                    {
+                        synchToRender[sychToRenderCurrentIndex].synchToRender();
+                    }
+
+                    if (addingComplete)
+                    {
+                        sychToRenderCurrentIndex = 0;
+                        synchToRender.Clear();
+                    }
                 }
 
-                lock (synchDelete)
+                if (addingComplete)
                 {
-                    foreach (var m in synchDelete)
+                    lock (synchDelete)
                     {
-                        m.recycle();
-                        tilePool.Push(m);                        
-                    }
+                        foreach (var m in synchDelete)
+                        {
+                            m.recycle();
+                            tilePool.Push(m);
+                        }
 
-                    synchDelete.Clear();
+                        synchDelete.Clear();
+                    }
                 }
             }
         }
 
         public void asynchUpdate()
-        {           
+        {
+            if (sychToRenderCurrentIndex > 0)
+            {
+                return;
+            }
+
             for (int i = tiles.Count - 1; i >= 0; --i)
             {
                 var tilePos = tiles[i].pos;

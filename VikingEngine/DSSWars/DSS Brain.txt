@@ -2,9 +2,10 @@
 -Change Log-
 Updated volume settings
 New pause menu
-Ambient sounds
+Fixed options save
+Ambient sounds + war melody
 Built a high performance randomizer
-
+Spread the map loading over more than one frame + options
 
 !save av settings
 
@@ -23,6 +24,7 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-show all resources option
 -toggle cam angle
 -build prio
 
