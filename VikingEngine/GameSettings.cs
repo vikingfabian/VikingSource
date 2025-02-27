@@ -319,11 +319,12 @@ namespace VikingEngine
             {
                 for (ThreeOptions opt = 0; opt < ThreeOptions.NUM; opt++)
                 {
-                    mapLoadingDropDown.AddSubOption(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.ThreeOption(opt)) },
+                    mapLoadingDropDown.AddOption(Ref.langOpt.ThreeOption(opt),
                         opt == MapLoadingSpeed, opt == ThreeOptions.Medium, new RbAction1Arg<ThreeOptions>((ThreeOptions value) =>
                         {
                             MapLoadingSpeed = value;
                             settingsHasChanged = true;
+                            menu.CloseDropDown();
                         }, opt), null);
                 }
                 mapLoadingDropDown.Build(content, "Map loading speed", menu);
