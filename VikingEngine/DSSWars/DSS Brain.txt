@@ -5,9 +5,23 @@ New pause menu
 Fixed options save
 Ambient sounds + war melody
 Built a high performance randomizer
-Spread the map loading over more than one frame + options
+Spread the map loading over more than one frame (for performance) + options
 
 !save av settings
+
+#Free build defences
+Guard tab på barracks, rock thrower, specialize city guard (5 men)
+-representeras av en gubbe tills de strider
+Assign men to wall (ballista, har warmashine crew)
+(skapa en army för varje stad, assign av soldatgrupper)
+-worker housing
+-guard housing
+-servicemen housing (kräver fri yta)
+-nobel housing (kräver park?)
+(priest housing)
+
+-kunna attackera walls
+-stads centrum, uppgradering, kräver fler servicemen, tillåter bygge av hus
 
 #OPT#
 culling av worker

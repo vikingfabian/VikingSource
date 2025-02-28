@@ -80,6 +80,10 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             return Convert.ToInt32(attackDamageStructure / (attackTimePlusCoolDown / 1000.0));
         }
 
+        public int UnitCount()
+        {
+            return rowWidth * columnsDepth;
+        }
         public int workForceCount()
         {
             return rowWidth * columnsDepth * workForcePerUnit;

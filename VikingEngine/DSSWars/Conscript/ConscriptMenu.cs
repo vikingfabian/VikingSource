@@ -35,6 +35,14 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.Crossbow,
         };
 
+        static readonly ItemResourceType[] ArcherGuardWeapons = {
+            ItemResourceType.Stone_G,
+            ItemResourceType.ThrowingSpear,
+            ItemResourceType.Bow,
+            ItemResourceType.LongBow,
+            ItemResourceType.Crossbow,
+        };
+
         static readonly ItemResourceType[] WarmashineWeapons = {
            
             ItemResourceType.Ballista,
@@ -88,12 +96,13 @@ namespace VikingEngine.DSSWars.Conscript
             this.city = city;
             this.player = player;
 
+           
 
             if (arraylib.InBound(city.conscriptBuildings, city.selectedConscript))
             {
                 BarracksStatus currentStatus = get();
 
-                content.Add(new RbImage(
+               content.Add(new RbImage(
                             new SoldierConscriptProfile() { conscript = currentStatus.profile }.Icon()
                             ));
                 content.space();
@@ -101,7 +110,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 string typeName = null; //= currentStatus.nobelmen ? DssRef.lang.Building_NobleHouse : DssRef.lang.BuildingType_Barracks;
                 ItemResourceType[] weapons = null; //= currentStatus.nobelmen ? NobelWeapons : SoldierWeapons;
-
+                bool hasGuardOption = true;
                 switch (currentStatus.type)
                 {
                     case Build.BuildAndExpandType.SoldierBarracks:
@@ -117,6 +126,7 @@ namespace VikingEngine.DSSWars.Conscript
                         weapons = WarmashineWeapons;
                         break;
                     case Build.BuildAndExpandType.KnightsBarracks:
+                        hasGuardOption = false;
                         typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
                         weapons = NobelWeapons;
                         break;
@@ -138,8 +148,22 @@ namespace VikingEngine.DSSWars.Conscript
                 content.space();
                 HudLib.CloseButton(content, new RbAction(() => { city.selectedConscript = -1; }, SoundLib.menuBack));
 
+
                 content.newParagraph();
 
+                bool guardTab = currentStatus.profile.specialization == SpecializationType.CityGuard;
+
+                if (hasGuardOption)
+                {
+                    content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabNotSelected : RbButtonStyle.SubTabSelected,
+                        new List<AbsRichBoxMember> { new RbText("Army men") },
+                        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text("Recruit soldiers to an adjacent army")));
+                    content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                        new List<AbsRichBoxMember> { new RbText("City guard") },
+                        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text("Guards are used to fortify walls")));
+                }
+
+                content.newParagraph();
                 HudLib.Label(content, DssRef.lang.Conscript_WeaponTitle);
                 content.newLine();
                 
@@ -382,6 +406,11 @@ namespace VikingEngine.DSSWars.Conscript
                     }
                 }
             }
+        }
+
+        void guardTabClick(bool guard)
+        { 
+            
         }
 
         void specializationClick(SpecializationType specialization)

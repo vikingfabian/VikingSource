@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             initPart2(typeCurrentData);
 
-            soldierCount = soldierData.rowWidth * soldierData.columnsDepth;
+            soldierCount = soldierData.UnitCount();
             soldierData = soldierConscript.init(typeCurrentData);
 
             initPart3(typeCurrentData);

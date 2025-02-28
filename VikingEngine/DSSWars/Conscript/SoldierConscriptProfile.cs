@@ -155,6 +155,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
 
             SoldierData soldierData = profile.data;
+            //unitCount = soldierData.rowWidth* soldierData.columnsDepth;
 
             soldierData.basehealth = ConscriptProfile.ArmorHealth(conscript.armorLevel);
             soldierData.attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(conscript.weapon, out soldierData.attackSplashCount) * skillBonus);
@@ -557,6 +558,12 @@ namespace VikingEngine.DSSWars.Conscript
 
             switch (conscript.specialization)
             {
+                case SpecializationType.CityGuard:
+                    
+                    soldierData.rowWidth = 5;
+                    soldierData.columnsDepth = 1;
+                    break;
+
                 case SpecializationType.Field:
                     soldierData.attackDamage = MathExt.AddPercentage(soldierData.attackDamage, DssConst.Conscript_SpecializePercentage);
                     soldierData.attackDamageSea = MathExt.SubtractPercentage(soldierData.attackDamageSea, DssConst.Conscript_SpecializePercentage);
@@ -624,8 +631,10 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(conscript.training);
             soldierData.attackTimePlusCoolDown /= 1f + skillBonus;
 
-
+           
             return soldierData;
+
+            
         }
 
         public SoldierData bannermanSetup(SoldierData soldierData)
