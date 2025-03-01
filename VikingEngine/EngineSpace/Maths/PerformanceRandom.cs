@@ -9,67 +9,44 @@ using VikingEngine.ToGG.HeroQuest.Display;
 namespace VikingEngine.EngineSpace.Maths
 {
     
-        public class PerformanceRandom : AbsRandom
-        {
-            private const int VALUE_SIZE = 224; // Replaces hardcoded 100
-            private int index = 0;
-            private readonly float[] percValuesF;
-            //private readonly int[] intValues;
-            //private readonly uint[] uintValues;
-            //private readonly bool[] boolValues;
-            //private readonly byte[] byteValues;
-            //private readonly ushort[] ushortValues;
+    public class PerformanceRandom : AbsRandom
+    {
+        private const int VALUE_SIZE = 224; // Replaces hardcoded 100
+        private int index = 0;
+        private readonly float[] percValuesF;
 
-            public PerformanceRandom()
-            {
+        public PerformanceRandom()
+        {
             Random rng = new Random();
             // Generate shuffled float values (1f to 0.01f)
             const float Step = 1f / VALUE_SIZE;
 
-                //Larger than VALUE_SIZE for thread safety
-                percValuesF = new float[256];
+            //Larger than VALUE_SIZE for thread safety
+            percValuesF = new float[256];
 
-                for (int i = 0; i < VALUE_SIZE; ++i)
-                {
-                    percValuesF[i] = 1f - Step - (i * Step);
-                }
-
-                for (int i = VALUE_SIZE; i < percValuesF.Length; ++i)
-                {
-                    percValuesF[i] = 0.5f;
-                }
-
-                //percValuesF = Enumerable.Range(0, VALUE_SIZE)
-                //                       .Select(i => 1f - Step - (i * Step))
-                //                       .ToArray();
-                Shuffle(percValuesF, rng);
-
-                // Generate other precomputed random values
-                //intValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => new Random().Next(int.MaxValue)).ToArray();
-                //Shuffle(intValues);
-
-                ////uintValues = intValues.Select(i => (uint)i).ToArray();
-                ////Shuffle(uintValues);
-
-                ////boolValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => new Random().Next(2) == 1).ToArray();
-                ////Shuffle(boolValues);
-
-                //byteValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => (byte)new Random().Next(256)).ToArray();
-                //Shuffle(byteValues);
-
-                //ushortValues = Enumerable.Range(0, ARRAY_SIZE).Select(_ => (ushort)new Random().Next(ushort.MaxValue)).ToArray();
-                //Shuffle(ushortValues);
-            }
-
-            private void Shuffle<T>(T[] array, Random rng)
+            for (int i = 0; i < VALUE_SIZE; ++i)
             {
-                
-                for (int i = VALUE_SIZE - 1; i > 0; i--)
-                {
-                    int j = rng.Next(i + 1);
-                    (array[i], array[j]) = (array[j], array[i]); // Swap
-                }
+                percValuesF[i] = 1f - Step - (i * Step);
             }
+
+            for (int i = VALUE_SIZE; i < percValuesF.Length; ++i)
+            {
+                percValuesF[i] = 0.5f;
+            }
+
+            Shuffle(percValuesF, rng);
+
+        }
+
+        private void Shuffle<T>(T[] array, Random rng)
+        {
+                
+            for (int i = VALUE_SIZE - 1; i > 0; i--)
+            {
+                int j = rng.Next(i + 1);
+                (array[i], array[j]) = (array[j], array[i]); // Swap
+            }
+        }
 
             // Explicit methods to avoid boxing
         public float Percent()
