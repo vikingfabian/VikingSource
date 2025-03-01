@@ -2,7 +2,7 @@
 * German translation
 * Reverse audio option
 * Changed some wording/spelling
-
+* Fixed no language select crash
 
 
 --Efter release polish--
