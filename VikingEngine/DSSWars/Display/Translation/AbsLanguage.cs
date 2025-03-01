@@ -566,7 +566,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Hud_NoLimit { get; }
 
         public abstract string Hud_None { get; }
-        public abstract string Hud_Queue { get; }
+        public abstract string Hud_ProductionQueue { get; }
 
         public abstract string Hud_EmptyList { get; }
 

@@ -632,9 +632,10 @@ namespace VikingEngine.DSSWars
 
         }
 
-        //}
         void selectLanguageMenu()
         {
+            menuSystem.menu.blockMenuReturn = Ref.gamesett.language == LanguageType.NONE;
+
             RichBoxContent content = new RichBoxContent();
 
             
@@ -662,10 +663,16 @@ namespace VikingEngine.DSSWars
 
         void selectLanguegeLink(LanguageType language)
         {
+            menuSystem.menu.blockMenuReturn = false;
+
             if (language != Ref.gamesett.language)
             {
                 Ref.gamesett.language = language;
                 new ChangeLanguageState();
+            }
+            else
+            {
+                menuSystem.menu.PopLayout();
             }
         }
 

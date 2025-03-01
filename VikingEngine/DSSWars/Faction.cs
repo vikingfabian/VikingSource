@@ -103,7 +103,6 @@ namespace VikingEngine.DSSWars
 
         public void initDiplomacy(WorldData world)
         {
-
             diplomaticRelations = new DiplomaticRelation[world.factions.Array.Length];
         }
 

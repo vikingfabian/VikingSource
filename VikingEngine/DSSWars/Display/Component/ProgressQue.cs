@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Display.Component
     {
         public void toHud(LocalPlayer player, RichBoxContent content, Action<int> queClick, int currentQue, int maxQue, bool noLimitOption)
         {
-            HudLib.Label(content, DssRef.lang.Hud_Queue);
+            HudLib.Label(content, DssRef.lang.Hud_ProductionQueue);
             content.space();
             HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Automation_queue_description));
                 //{
