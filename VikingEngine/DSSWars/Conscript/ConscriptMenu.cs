@@ -151,19 +151,19 @@ namespace VikingEngine.DSSWars.Conscript
 
                 content.newParagraph();
 
-                bool guardTab = currentStatus.profile.specialization == SpecializationType.CityGuard;
+                //bool guardTab = currentStatus.profile.specialization == SpecializationType.CityGuard;
 
-                if (hasGuardOption)
-                {
-                    content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabNotSelected : RbButtonStyle.SubTabSelected,
-                        new List<AbsRichBoxMember> { new RbText("Army men") },
-                        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text("Recruit soldiers to an adjacent army")));
-                    content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                        new List<AbsRichBoxMember> { new RbText("City guard") },
-                        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text("Guards are used to fortify walls")));
-                }
+                //if (hasGuardOption)
+                //{
+                //    content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabNotSelected : RbButtonStyle.SubTabSelected,
+                //        new List<AbsRichBoxMember> { new RbText("Army men") },
+                //        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text("Recruit soldiers to an adjacent army")));
+                //    content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                //        new List<AbsRichBoxMember> { new RbText("City guard") },
+                //        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text("Guards are used to fortify walls")));
+                //}
 
-                content.newParagraph();
+                //content.newParagraph();
                 HudLib.Label(content, DssRef.lang.Conscript_WeaponTitle);
                 content.newLine();
                 

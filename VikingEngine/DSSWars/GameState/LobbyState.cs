@@ -99,10 +99,7 @@ namespace VikingEngine.DSSWars
             new Timer.AsynchActionTrigger(load_asynch, true);
             new Timer.TimedAction0ArgTrigger(playMusic, 1000);
 
-            if (Ref.gamesett.language == LanguageType.NONE)
-            {
-                selectLanguageMenu();
-            }
+            
 
             availableKeyboardKeys = VikingEngine.Input.Keyboard.AllKeys.ToList();
 
@@ -391,6 +388,12 @@ namespace VikingEngine.DSSWars
             }
 
             topMenu.Refresh(content);
+
+            if (Ref.gamesett.language == LanguageType.NONE)
+            {
+                openUnderMenu(, false);
+                selectLanguageMenu2();
+            }
         }
 
 
