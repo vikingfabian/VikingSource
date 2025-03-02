@@ -195,7 +195,7 @@ namespace VikingEngine.Sound
                 }
                 else
                 {
-                    ins.Volume = Ref.gamesett.AmbientVol() * basevolume * volume;
+                    ins.Volume = Bound.Max( Ref.gamesett.AmbientVol() * basevolume * volume, 1f);
                     if (ins.State == SoundState.Paused)
                     {
                         ins.Resume();

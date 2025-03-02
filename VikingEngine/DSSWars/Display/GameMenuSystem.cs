@@ -46,9 +46,11 @@ namespace VikingEngine.DSSWars.Display
                 }
 
                 VectorRect menuArea = Engine.Screen.SafeArea;
-                menuArea.Y = DssRef.state.localPlayers[0].hud.head.Bottom + Engine.Screen.IconSize;
-                menuArea.SetBottom(Engine.Screen.SafeArea.Bottom, true);
-
+                if (DssRef.state.localPlayers[0].hud.head != null)
+                {
+                    menuArea.Y = DssRef.state.localPlayers[0].hud.head.Bottom + Engine.Screen.IconSize;
+                    menuArea.SetBottom(Engine.Screen.SafeArea.Bottom, true);
+                }
                 menuArea.Width = HudLib.HeadDisplayWidth;
                 menuArea.X = Engine.Screen.CenterScreen.X - menuArea.Width / 2;
 
@@ -153,21 +155,21 @@ namespace VikingEngine.DSSWars.Display
             if (DssRef.storage.runTutorial)
             { //TODO yes no dialogue
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
                 {
                     fillWidth = true
                 });
             }
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_SaveState) }, new RbAction(saveGameState),
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_SaveState) }, new RbAction(saveGameState),
                 new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
             {
                 fillWidth = true
             });
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_WatchPrologue) }, new RbAction(watchEpilogue))
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_WatchPrologue) }, new RbAction(watchEpilogue))
             {
                 fillWidth = true
             });
@@ -179,14 +181,15 @@ namespace VikingEngine.DSSWars.Display
             }
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
             {
                 fillWidth = true
             });
 
             content.newLine();
-            Ref.gamesett.volumeOptions(content);
-
+            SettingsToMenu(content, menu, false);
+            //Ref.gamesett.volumeOptions(content);
+            content.newParagraph();
             content.Add(new RbSeperationLine());
 
             content.newLine();
@@ -230,6 +233,92 @@ namespace VikingEngine.DSSWars.Display
 
             //}
             //layout.End();
+        }
+
+        public static void SettingsToMenu(RichBoxContent content, RichMenu menu, bool lobby)
+        {
+            Ref.gamesett.volumeOptions(content);
+
+            content.newParagraph();
+            content.h2("Input", HudLib.TitleColor_Head);
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Pan on zoom") }, Ref.gamesett.panOnZoomProperty));
+
+            content.newLine();
+            content.Add(new RbImage(SpriteName.MouseScroll));
+            content.space();
+            content.Add(new RbText("Scroll sensitivity: game"));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollGameProperty, true));
+
+            content.newLine();
+            content.Add(new RbImage(SpriteName.MouseScroll));
+            content.space();
+            content.Add(new RbText("Scroll sensitivity: menu"));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollMenuProperty, true));
+
+            content.newParagraph();
+            content.h2("Gameplay options", HudLib.TitleColor_Head);
+            if (lobby)
+            {
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, Players.LocalPlayer.MaxSpeedOption)) }, speed5Property));
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
+            }
+            content.newLine();
+            content.Add(new RbText("Blood:", HudLib.TitleColor_Label));
+            content.space();
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
+
+            bool autoSaveProperty(int index, bool set, bool value)
+            {
+                if (set)
+                {
+                    DssRef.storage.autoSave = value;
+
+                    DssRef.storage.Save(null);
+                }
+                return DssRef.storage.autoSave;
+            }
+
+            bool speed5Property(int index, bool set, bool value)
+            {
+                if (set)
+                {
+                    DssRef.storage.speed5x = value;
+
+                    DssRef.storage.Save(null);
+                }
+                return DssRef.storage.speed5x;
+            }
+
+            bool tutorialProperty(int index, bool set, bool value)
+            {
+                if (set)
+                {
+                    DssRef.storage.runTutorial = value;
+
+                    DssRef.storage.Save(null);
+                }
+                return DssRef.storage.runTutorial;
+            }
+
+            bool longerBuildQueueProperty(int index, bool set, bool value)
+            {
+                if (set)
+                {
+                    DssRef.storage.longerBuildQueue = value;
+
+                    DssRef.storage.Save(null);
+                }
+                return DssRef.storage.longerBuildQueue;
+            }
         }
 
         void endTutorial()

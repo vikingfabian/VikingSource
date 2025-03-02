@@ -446,10 +446,10 @@ namespace VikingEngine.DSSWars
         {
             get
             {
-                float result = cameraTiltZoom.directionAndTime.Y;
+                float result = cameraTiltZoom.directionAndTime.Y * Ref.gamesett.scrollWheelSensitivity_game;
                 if (inputSource.HasMouse)
                 {
-                    result += lib.ToLeftRight(Input.Mouse.ScrollValue) * -10f;
+                    result += lib.ToLeftRight(Input.Mouse.ScrollValue) * -10f * Ref.gamesett.scrollWheelSensitivity_game;
                 }
 
                 return result;

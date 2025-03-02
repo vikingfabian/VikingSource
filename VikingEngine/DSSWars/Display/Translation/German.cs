@@ -1483,7 +1483,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string GameMenu_NextSong => "Nächstes Lied";
 
         public override string BuildingType_Bank => "Bank";
-        public override string BuildingType_Bank_Description => "Gold an andere Städte senden";
+        public override string BuildingType_GoldDelivery_Description => "Gold an andere Städte senden";
 
         public override string BuildingType_Logistics => "Logistik";
         public override string BuildingType_Logistics_Description => "Verbessert die Fähigkeit, Gebäude zu beauftragen";

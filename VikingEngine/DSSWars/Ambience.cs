@@ -133,37 +133,37 @@ namespace VikingEngine.DSSWars
 
         static readonly LoopingSoundData[] WindCold = new LoopingSoundData[]
             {
-                new LoopingSoundData(WindColdDir + "wind_cold_arctic_01_loop", 0.08f),
-                new LoopingSoundData(WindColdDir + "wind_cold_frost_med_loop", 0.08f),
-                new LoopingSoundData(WindColdDir + "wind_cold_winter_01_loop", 0.08f),
-                new LoopingSoundData(WindColdDir + "wind_outside_plaine_med_loop", 0.08f),
+                new LoopingSoundData(WindColdDir + "wind_cold_arctic_01_loop", 0.12f),
+                new LoopingSoundData(WindColdDir + "wind_cold_frost_med_loop", 0.12f),
+                new LoopingSoundData(WindColdDir + "wind_cold_winter_01_loop", 0.12f),
+                new LoopingSoundData(WindColdDir + "wind_outside_plaine_med_loop", 0.12f),
             };
 
         static readonly LoopingSoundData[] WindHot = new LoopingSoundData[]
             {
-                new LoopingSoundData(WindHotDir + "wind_hot_dry_low_loop", 0.08f),
-                new LoopingSoundData(WindHotDir + "wind_hot_dune_med_loop", 0.08f),
-                new LoopingSoundData(WindHotDir + "wind_hot_summer_loop", 0.08f),
+                new LoopingSoundData(WindHotDir + "wind_hot_dry_low_loop", 0.12f),
+                new LoopingSoundData(WindHotDir + "wind_hot_dune_med_loop", 0.12f),
+                new LoopingSoundData(WindHotDir + "wind_hot_summer_loop", 0.12f),
 
             };
 
         static readonly LoopingSoundData[] WindSea = new LoopingSoundData[]
            {
-                new LoopingSoundData(WindSeaDir + "wind_outside_lake_01_loop", 0.08f),
-                new LoopingSoundData(WindSeaDir + "wind_outside_lake_02_loop", 0.08f),
-                new LoopingSoundData(WindSeaDir + "wind_outside_mountain_low_loop", 0.08f),
-                new LoopingSoundData(WindSeaDir + "wind_outside_seaside_low_loop", 0.08f),
+                new LoopingSoundData(WindSeaDir + "wind_outside_lake_01_loop", 0.12f),
+                new LoopingSoundData(WindSeaDir + "wind_outside_lake_02_loop", 0.12f),
+                new LoopingSoundData(WindSeaDir + "wind_outside_mountain_low_loop", 0.12f),
+                new LoopingSoundData(WindSeaDir + "wind_outside_seaside_low_loop", 0.12f),
 
            };
 
         static readonly LoopingSoundData[] WindMid = new LoopingSoundData[]
            {
-                new LoopingSoundData(WindMidDir + "wind_hot_desert_low_loop", 0.08f),
-                new LoopingSoundData(WindMidDir + "wind_hot_dune_low_loop", 0.08f),
-                new LoopingSoundData(WindMidDir + "wind_outside_forest_low_loop", 0.08f),
-                new LoopingSoundData(WindMidDir + "wind_outside_forest_med_loop", 0.08f),
-                new LoopingSoundData(WindMidDir + "wind_outside_meadow_low_loop", 0.08f),
-                new LoopingSoundData(WindMidDir + "wind_outside_plaine_low_loop", 0.08f),
+                new LoopingSoundData(WindMidDir + "wind_hot_desert_low_loop", 0.12f),
+                new LoopingSoundData(WindMidDir + "wind_hot_dune_low_loop", 0.12f),
+                new LoopingSoundData(WindMidDir + "wind_outside_forest_low_loop", 0.12f),
+                new LoopingSoundData(WindMidDir + "wind_outside_forest_med_loop", 0.12f),
+                new LoopingSoundData(WindMidDir + "wind_outside_meadow_low_loop", 0.12f),
+                new LoopingSoundData(WindMidDir + "wind_outside_plaine_low_loop", 0.12f),
            };        
 
         static readonly LoopingSoundData[] Wind_farout = new LoopingSoundData[]

@@ -184,7 +184,7 @@ namespace VikingEngine.HUD.RichMenu
         {
             if (Input.Mouse.Scroll)
             {
-                scrollResult = -valuerange.SetBounds(-scrollResult - Input.Mouse.ScrollValue * rowHeight * 2 / 15f);
+                scrollResult = -valuerange.SetBounds(-scrollResult - Input.Mouse.ScrollValue * rowHeight * 0.1f * Ref.gamesett.scrollWheelSensitivity_menu);
                 sliderGroup.ParentY = slideRange * valuerange.GetValuePercentPos(-scrollResult);
                 selectionOutline?.Refresh(SliderArea(true));
                 return true;

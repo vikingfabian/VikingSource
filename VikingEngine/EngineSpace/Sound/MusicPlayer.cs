@@ -299,7 +299,7 @@ namespace VikingEngine.Sound
 
         public bool IsPlaying()
         {
-            return playSongState != PlaySongState.Stopped;
+            return playSongState == PlaySongState.Playing && MediaPlayer.Volume > 0;
         }
 
         public PlaySongState PlaySongState { get { return playSongState; } }

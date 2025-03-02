@@ -260,7 +260,10 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            zoomInput();
+            if (!mouseOverHud)
+            {
+                zoomInput();
+            }
             cameraFocusUpdate();
             updateCamera();
         }
@@ -874,16 +877,8 @@ namespace VikingEngine.DSSWars.Players
 
         private void zoomInput()
         {
-            //if (StartupSettings.Trailer)
-            //{
-            //    if (Input.Keyboard.Ctrl)
-            //    {
-            //        camera.targetZoom += 0.005f*camera.targetZoom;
-            //    }
-            //}
-
             var newZoom = VikingEngine.Bound.Set(
-                camera.CurrentZoom + player.input.ZoomValue * 0.005f * camera.CurrentZoom, ZoomRange);//10 12
+                camera.CurrentZoom + player.input.ZoomValue * 0.005f * camera.CurrentZoom, ZoomRange);
             if (newZoom != camera.CurrentZoom)
             {
                 camera.CurrentZoom = newZoom;
@@ -891,9 +886,12 @@ namespace VikingEngine.DSSWars.Players
                 {
                     camera.positionFromRotation();
                     camera.RecalculateMatrices();
-                    var mousePosition2 = screenPosToWorldPos(Input.Mouse.Position);
-                    Vector3 diff = mousePosition2 - mousePosition;
-                    panCamera(diff);
+                    if (Ref.gamesett.panOnZoom)
+                    {
+                        var mousePosition2 = screenPosToWorldPos(Input.Mouse.Position);
+                        Vector3 diff = mousePosition2 - mousePosition;
+                        panCamera(diff);
+                    }
                 }
             }
 

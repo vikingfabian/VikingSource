@@ -33,6 +33,7 @@ using System.Reflection.Metadata;
 using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.DSSWars.GameState.BattleLab;
+using VikingEngine.DSSWars.Display;
 
 namespace VikingEngine.DSSWars
 {
@@ -67,6 +68,8 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_PlayerSetup = "playersett";
         const string UnderMenu_ListSaves = "saves";
         const string UnderMenu_Options = "options";
+        const string UnderMenu_Options_Language = "lang";
+
 
         const float MoreArrowTabbing = 0.9f;
         const float MoreArrowScale = 0.4f;
@@ -389,11 +392,11 @@ namespace VikingEngine.DSSWars
 
             topMenu.Refresh(content);
 
-            if (Ref.gamesett.language == LanguageType.NONE)
-            {
-                openUnderMenu(, false);
-                selectLanguageMenu2();
-            }
+            //if (Ref.gamesett.language == LanguageType.NONE)
+            //{
+            //    openUnderMenu(, false);
+            //    selectLanguageMenu2();
+            //}
         }
 
 
@@ -467,7 +470,7 @@ namespace VikingEngine.DSSWars
 
 
                 new GuiSectionSeparator(layout);
-                new GuiIconTextButton(SpriteName.AutomationGearIcon, Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
+                //new GuiIconTextButton(SpriteName.AutomationGearIcon, Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
                 //new GuiTextButton("*Crash game*", null, crashTest, false, layout); 
 
                 new GuiTextButton("Play Commander", "A small tactical board game", new GuiAction(extra_PlayCommanderVersus), false, layout);
@@ -634,13 +637,9 @@ namespace VikingEngine.DSSWars
 
         void selectLanguageMenu()
         {
-            menuSystem.menu.blockMenuReturn = Ref.gamesett.language == LanguageType.NONE;
+            //menuSystem.menu.blockMenuReturn = Ref.gamesett.language == LanguageType.NONE;
 
             RichBoxContent content = new RichBoxContent();
-
-            
-
-            
 
             Translation translate = new Translation();
             var options = translate.available();
@@ -663,16 +662,17 @@ namespace VikingEngine.DSSWars
 
         void selectLanguegeLink(LanguageType language)
         {
-            menuSystem.menu.blockMenuReturn = false;
+            //menuSystem.menu.blockMenuReturn = false;
 
             if (language != Ref.gamesett.language)
             {
                 Ref.gamesett.language = language;
-                new ChangeLanguageState();
+                new ChangeLanguageRefresh();
             }
             else
             {
-                menuSystem.menu.PopLayout();
+                underMenu.menuBack();
+                //menuSystem.menu.PopLayout();
             }
         }
 
@@ -771,6 +771,10 @@ namespace VikingEngine.DSSWars
 
                 case UnderMenu_Options:
                     optionsMenu2();
+                    break;
+
+                case UnderMenu_Options_Language:
+                    selectLanguageMenu();
                     break;
 
                 case UnderMenu_ListSaves:
@@ -1264,48 +1268,28 @@ namespace VikingEngine.DSSWars
             return DssRef.storage.verticalScreenSplit;
         }
 
-        public bool autoSaveProperty(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                DssRef.storage.autoSave = value;
+       
+        //public bool longerBuildQueueProperty(int index, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.longerBuildQueue = value;
 
-                DssRef.storage.Save(null);
-            }
-            return DssRef.storage.autoSave;
-        }
+        //        DssRef.storage.Save(null);
+        //    }
+        //    return DssRef.storage.longerBuildQueue;
+        //}
 
-        public bool speed5Property(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                DssRef.storage.speed5x = value;
+        //public bool tutorialProperty(int index, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.runTutorial = value;
 
-                DssRef.storage.Save(null);
-            }
-            return DssRef.storage.speed5x;
-        }
-        public bool longerBuildQueueProperty(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                DssRef.storage.longerBuildQueue = value;
-
-                DssRef.storage.Save(null);
-            }
-            return DssRef.storage.longerBuildQueue;
-        }
-
-        public bool tutorialProperty(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                DssRef.storage.runTutorial = value;
-
-                DssRef.storage.Save(null);
-            }
-            return DssRef.storage.runTutorial;
-        }
+        //        DssRef.storage.Save(null);
+        //    }
+        //    return DssRef.storage.runTutorial;
+        //}
 
         public bool generateNewMapsProperty(int index, bool set, bool value)
         {
@@ -1425,27 +1409,44 @@ namespace VikingEngine.DSSWars
             RichBoxContent content = new RichBoxContent();
 
             var btn = new RbButton(new List<AbsRichBoxMember> { new RbImage(new Translation().sprite(Ref.gamesett.language)) },
-                new RbAction(selectLanguageMenu));
+                new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_Options_Language, true));
             btn.overrideBgColor = ColorExt.VeryDarkGray;
             content.Add(btn);
+
+            GameMenuSystem.SettingsToMenu(content, underMenu, true);
+            //Ref.gamesett.optionsMenu(content, underMenu);
+
+            //content.newParagraph();
+            //content.h2("Input", HudLib.TitleColor_Head);
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Pan on zoom") }, Ref.gamesett.panOnZoomProperty));
+
+            //content.newLine();
+            //content.Add(new RbImage(SpriteName.MouseScroll));
+            //content.space();
+            //content.Add(new RbText("Scroll sensitivity: game"));
+            //content.space();
+            //content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollGameProperty, true));
             
-           
-            Ref.gamesett.optionsMenu(content, underMenu);
+            //content.newLine();
+            //content.Add(new RbImage(SpriteName.MouseScroll));
+            //content.space();
+            //content.Add(new RbText("Scroll sensitivity: menu"));
+            //content.space();
+            //content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollMenuProperty, true));
 
-
-            content.newParagraph();
-            content.h2("Gameplay options", HudLib.TitleColor_Head);
-
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, LocalPlayer.MaxSpeedOption)) }, speed5Property));
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
-            content.newLine();
-            RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
+            //content.newParagraph();
+            //content.h2("Gameplay options", HudLib.TitleColor_Head);
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, LocalPlayer.MaxSpeedOption)) }, speed5Property));
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
+            //content.newLine();
+            //RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
 
 
             underMenu.Refresh(content);
@@ -1458,23 +1459,23 @@ namespace VikingEngine.DSSWars
             new LobbyState().openUnderMenu(UnderMenu_Options, false);
         }
 
-        void optionsMenu()
-        {            
-            GuiLayout layout = new GuiLayout(Ref.langOpt.Options_title, menuSystem.menu);
-            {
-                new GuiImageButton(new Translation().sprite(Ref.gamesett.language), null, new GuiAction(selectLanguageMenu), true, layout);
+        //void optionsMenu()
+        //{            
+        //    GuiLayout layout = new GuiLayout(Ref.langOpt.Options_title, menuSystem.menu);
+        //    {
+        //        new GuiImageButton(new Translation().sprite(Ref.gamesett.language), null, new GuiAction(selectLanguageMenu), true, layout);
 
-                new GuiIconTextButton(SpriteName.Keyboard, DssRef.lang.Settings_ButtonMapping, null, new GuiAction(keyMappingMenu), true, layout);
-                Ref.gamesett.optionsMenu(layout);
-                new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
-                new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);
-                new GuiCheckbox(string.Format(DssRef.lang.GameMenu_UseSpeedX, LocalPlayer.MaxSpeedOption), null, speed5Property, layout);
-                new GuiCheckbox(DssRef.lang.GameMenu_LongerBuildQueue, null, longerBuildQueueProperty, layout);
-            }
-            layout.End();
+        //        new GuiIconTextButton(SpriteName.Keyboard, DssRef.lang.Settings_ButtonMapping, null, new GuiAction(keyMappingMenu), true, layout);
+        //        Ref.gamesett.optionsMenu(layout);
+        //        new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
+        //        new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);
+        //        new GuiCheckbox(string.Format(DssRef.lang.GameMenu_UseSpeedX, LocalPlayer.MaxSpeedOption), null, speed5Property, layout);
+        //        new GuiCheckbox(DssRef.lang.GameMenu_LongerBuildQueue, null, longerBuildQueueProperty, layout);
+        //    }
+        //    layout.End();
 
-            layout.OnDelete += closingOptionsMenuEvent;
-        }
+        //    layout.OnDelete += closingOptionsMenuEvent;
+        //}
 
         void closingOptionsMenuEvent()
         {

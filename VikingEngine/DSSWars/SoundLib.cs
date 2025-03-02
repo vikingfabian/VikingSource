@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars
             woodcut = new SoundContainerSingle(SoundDir + "woodcut", 0.4f, 0.2f);
             tree_falling = new SoundContainerSingle(SoundDir + "tree_falling", 0.4f, 0.2f);
             breaking = new SoundContainerSingle(SoundDir + "break", 0.4f, 0.2f);
-            scythe = new SoundContainerSingle(SoundDir + "scythe", 0.7f, 0.4f);
+            scythe = new SoundContainerSingle(SoundDir + "scythe", 0.2f, 0.4f);
             drop_item = new SoundContainerSingle(SoundDir + "drop_item", 1f, 0.4f);
             pickaxe = new SoundContainerSingle(SoundDir + "pickaxe", 0.6f, 0.2f);
             hen = new SoundContainerMultiple(new string[] { SoundDir + "hen1", SoundDir + "hen2" }, 0.4f, 0.4f);
@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars
             pickup = new SoundContainerSingle(SoundDir + "pickup", 0.6f, 0.4f);
             anvil = new SoundContainerSingle(SoundDir + "anvil", 0.45f, 0.4f);
             dig = new SoundContainerSingle(SoundDir + "dig", 0.3f, 0.4f);
-            genericWork = new SoundContainerMultiple(new string[] { SoundDir + "generic_work1", SoundDir + "generic_work2", }, 0.3f, 0.4f);
+            genericWork = new SoundContainerMultiple(new string[] { SoundDir + "generic_work1", SoundDir + "generic_work2", }, 0.1f, 0.4f);
             hammer = new SoundContainerSingle(SoundDir + "hammer", 0.6f, 0.4f);
 
             menu = new RbSoundProfile(click, wrong);

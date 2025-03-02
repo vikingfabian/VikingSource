@@ -136,11 +136,13 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 var army = faction.NewArmy(VectorExt.AddX(position, -2));
                 friendlyArmy = army;
                 army.rotation = playerRot;
+                army.food = float.MaxValue;
             }
             {
                 var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
                 enemyArmy = army;
                 army.rotation = enemyRot;
+                army.food = float.MaxValue;
             }
         }
 

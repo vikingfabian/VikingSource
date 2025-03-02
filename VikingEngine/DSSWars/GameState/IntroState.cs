@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameState;
 
 namespace VikingEngine.DSSWars
 {
@@ -157,7 +158,14 @@ namespace VikingEngine.DSSWars
                     new Achievements();
                     new GameStats();
 
-                    new GameState.ExitGamePlay();
+                    if (Ref.gamesett.language == LanguageType.NONE)
+                    {
+                        new SelectLanguageMenu();
+                    }
+                    else
+                    {
+                        new GameState.ExitGamePlay();
+                    }
                 }
             }
         }

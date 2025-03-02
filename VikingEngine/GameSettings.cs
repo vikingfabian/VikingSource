@@ -20,7 +20,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 16;
+        const int Version = 17;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -44,6 +44,12 @@ namespace VikingEngine
         public InputMap controllerMap;
         public InputMap keyboardMap;
         public bool ModelLightShaderEffect = true;
+        public bool panOnZoom = true;
+        public int controlLayout = 0;
+
+        public float scrollWheelSensitivity_menu = 1;
+        public float scrollWheelSensitivity_game = 1;
+
 
         float MasterVolume = 0.5f;
         float MusicMasterVolume = 1f;
@@ -101,6 +107,12 @@ namespace VikingEngine
             w.Write(AmbientVolume);
             w.Write((byte)MapLoadingSpeed);
             w.Write(Blood);
+
+            w.Write(panOnZoom);
+            w.Write(controlLayout);
+            w.Write(scrollWheelSensitivity_menu);
+            w.Write(scrollWheelSensitivity_game);
+
         }
 
         public void readEmbeddedSettingsAndVersion(System.IO.BinaryReader r)
@@ -152,6 +164,14 @@ namespace VikingEngine
             {
                 MapLoadingSpeed = (ThreeOptions)r.ReadByte();
                 Blood = r.ReadInt32();
+            }
+            if (version >= 17)
+            {
+                panOnZoom = r.ReadBoolean();
+                controlLayout = r.ReadInt32();
+                scrollWheelSensitivity_menu = r.ReadSingle();
+                scrollWheelSensitivity_game = r.ReadSingle();
+
             }
         }
 
@@ -629,7 +649,24 @@ namespace VikingEngine
 #endif
         }
 
-        
+        public float scrollMenuProperty(bool set, float value)
+        {
+            if (set)
+            {
+                scrollWheelSensitivity_menu = value;
+                settingsHasChanged = true;
+            }
+            return scrollWheelSensitivity_menu;
+        }
+        public float scrollGameProperty(bool set, float value)
+        {
+            if (set)
+            {
+                scrollWheelSensitivity_game = value;
+                settingsHasChanged = true;
+            }
+            return scrollWheelSensitivity_game;
+        }
 
         public float musicVolProperty(bool set, float value)
         {
@@ -691,6 +728,16 @@ namespace VikingEngine
             return VibrationLevel;
         }
 
+        public bool panOnZoomProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                panOnZoom = value;
+                settingsHasChanged = true;
+            }
+            return panOnZoom;
+        }
+
         //string SongTitleProperty(bool set, string value)
         //{
         //    return "Playing: \n" + Ref.music.GetSongName();
@@ -710,13 +757,13 @@ namespace VikingEngine
 
 
 #endif
-//        public void setMonitorIndex(int ix)
-//        {
-//#if PCGAME
-//            Screen.FormScreen = System.Windows.Forms.Screen.AllScreens[ix];
-//            Screen.ApplyScreenSettings();
-//#endif
-//        }
+        //        public void setMonitorIndex(int ix)
+        //        {
+        //#if PCGAME
+        //            Screen.FormScreen = System.Windows.Forms.Screen.AllScreens[ix];
+        //            Screen.ApplyScreenSettings();
+        //#endif
+        //        }
     }
 
     enum LanguageType

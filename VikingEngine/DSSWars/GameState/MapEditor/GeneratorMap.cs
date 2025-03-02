@@ -43,13 +43,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         public void generate()
         {
             texture.initTexture();
-            if (DssRef.world.cities == null)
+            if (arraylib.HasMembers( DssRef.world.cities))
             {
-                texture.RefreshWorld_TerrainCol();
+                texture.RefreshWorld_FactionCol();
             }
             else
             {
-                texture.RefreshWorld_FactionCol();
+                texture.RefreshWorld_TerrainCol();
             }
             image.Texture = texture.texture;
             image.SetFullTextureSource();

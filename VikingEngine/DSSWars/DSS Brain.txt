@@ -1,11 +1,11 @@
 ﻿BETA UPDATE
 -Change Log-
-Updated volume settings
-New pause menu
-Fixed options save
-Ambient sounds + war melody
-Built a high performance randomizer
-Spread the map loading over more than one frame (for performance) + options
+Map editor crash fixes
+More game settings
+Fixed battle lab starvation
+Improved scrolling
+Settings mirrored on pause menu
+
 
 !save av settings
 
@@ -23,6 +23,12 @@ Assign men to wall (ballista, har warmashine crew)
 -kunna attackera walls
 -stads centrum, uppgradering, kräver fler servicemen, tillåter bygge av hus
 
+#controls#
+pan on zoom option
+control layout: DSS recommended, classic rts, classic dss
+scroll wheel sensitivity: Zoom speed in terms of distance per scroll wheel tick
+wasd remap
+
 #OPT#
 culling av worker
 //stanna musik spelaren
@@ -38,6 +44,7 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-battle lab svält fix
 -show all resources option
 -toggle cam angle
 -build prio

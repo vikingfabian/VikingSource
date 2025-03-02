@@ -118,8 +118,6 @@ namespace VikingEngine.DSSWars.Conscript
             w.Write(idAndPosition);
             w.Write((byte)que);
             w.Write((byte)maxTrainingLevel);
-
-
         }
 
         public void readGameState(System.IO.BinaryReader r, int subVersion)
@@ -176,7 +174,6 @@ namespace VikingEngine.DSSWars.Conscript
             return false;
         }
 
-
         public TimeLength TimeLength()
         {
             return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, type));
@@ -220,7 +217,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
             else
             {
-                result = activeStringOf(active) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Queue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
+                result = activeStringOf(active) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 
             return result;

@@ -58,6 +58,7 @@ namespace VikingEngine.DSSWars
 
         public static NineSplitSettings HudMenuScollButton;
         public static RichBoxSettings RbSettings;
+        public static RichBoxSettings RbSettingsLarge;
         public static RichBoxSettings RbSettings_Head;
         public static RichBoxSettings RbSettings_HeadOptions;
         public static RichBoxSettings RbOnGuiSettings;
@@ -133,6 +134,9 @@ namespace VikingEngine.DSSWars
             {
                 notSelectedTexture = SpriteName.WarsHudSubTabNotSelected,
             };
+
+            //RbSettingsLarge = RbSettings;
+            //RbSettingsLarge.scaleUp(2f);
 
             RbOnGuiSettings = RbSettings;
             RbOnGuiSettings.scaleUp(1.4f);

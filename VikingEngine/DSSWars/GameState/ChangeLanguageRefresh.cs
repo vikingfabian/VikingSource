@@ -7,9 +7,9 @@ using VikingEngine.DSSWars.Display.Translation;
 
 namespace VikingEngine.DSSWars.GameState
 {
-    class ChangeLanguageState : Engine.GameState
+    class ChangeLanguageRefresh : Engine.GameState
     {
-        public ChangeLanguageState() 
+        public ChangeLanguageRefresh() 
             :base()
         { }
 
