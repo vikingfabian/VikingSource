@@ -1,11 +1,5 @@
 ﻿BETA UPDATE
 -Change Log-
-Map editor crash fixes
-More game settings
-Fixed battle lab starvation
-Improved scrolling
-Settings mirrored on pause menu
-
 
 !save av settings
 
