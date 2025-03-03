@@ -149,10 +149,9 @@ namespace VikingEngine.DSSWars
 
         static readonly LoopingSoundData[] WindSea = new LoopingSoundData[]
            {
-                new LoopingSoundData(WindSeaDir + "wind_outside_lake_01_loop", 0.12f),
-                new LoopingSoundData(WindSeaDir + "wind_outside_lake_02_loop", 0.12f),
-                new LoopingSoundData(WindSeaDir + "wind_outside_mountain_low_loop", 0.12f),
-                new LoopingSoundData(WindSeaDir + "wind_outside_seaside_low_loop", 0.12f),
+                new LoopingSoundData(WindSeaDir + "sea sound1", 0.12f),
+                new LoopingSoundData(WindSeaDir + "sea sound2", 0.12f),
+                new LoopingSoundData(WindSeaDir + "sea sound3", 0.12f),
 
            };
 

@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     status.active++;
                                     status.inProgress = status.profile;
                                     status.menCollected = 0;
+                                    status.menNeeded = status.inProgress.menCost();
                                     status.equipmentCollected = 0;
                                 }
                                 break;
@@ -59,7 +60,7 @@ namespace VikingEngine.DSSWars.GameObject
                             case ConscriptActiveStatus.CollectingEquipment:
                                 ItemResourceType weaponItem = status.inProgress.weapon;
                                 ItemResourceType armorItem = status.inProgress.armorLevel;
-                                int needEquipment = DssConst.SoldierGroup_DefaultCount - status.equipmentCollected;
+                                int needEquipment = status.menNeeded - status.equipmentCollected;
                                 int availableWeapons = GetGroupedResource(weaponItem).amount;
                                 int availableArmor;
                                 if (status.inProgress.armorLevel == ItemResourceType.NONE)
@@ -81,19 +82,19 @@ namespace VikingEngine.DSSWars.GameObject
                                     AddGroupedResource(armorItem, -collectEquipment);
                                 }
 
-                                if (status.equipmentCollected == DssConst.SoldierGroup_DefaultCount)
+                                if (status.equipmentCollected == status.menNeeded)
                                 {
                                     status.active++;
                                 }
                                 break;
 
                             case ConscriptActiveStatus.CollectingMen:
-                                int needMen = DssConst.SoldierGroup_DefaultCount - status.menCollected;
+                                int needMen = status.menNeeded - status.menCollected;
                                 int collectMen = lib.SmallestValue(workForce.amount, needMen);
                                 workForce.amount -= collectMen;
                                 status.menCollected += collectMen;
 
-                                if (status.menCollected == DssConst.SoldierGroup_DefaultCount)
+                                if (status.menCollected == status.menNeeded)
                                 {
                                     status.active++;
                                     status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.type)));

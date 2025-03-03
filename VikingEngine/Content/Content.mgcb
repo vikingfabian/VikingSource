@@ -1099,29 +1099,23 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/ambience/wind/mid/wind_outside_plaine_low_loop.wav
 
-#begin DSS/Sound/ambience/wind/sea/wind_outside_lake_01_loop.wav
+#begin DSS/Sound/ambience/wind/sea/sea sound1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:DSS/Sound/ambience/wind/sea/wind_outside_lake_01_loop.wav
+/build:DSS/Sound/ambience/wind/sea/sea sound1.wav
 
-#begin DSS/Sound/ambience/wind/sea/wind_outside_lake_02_loop.wav
+#begin DSS/Sound/ambience/wind/sea/sea sound2.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:DSS/Sound/ambience/wind/sea/wind_outside_lake_02_loop.wav
+/build:DSS/Sound/ambience/wind/sea/sea sound2.wav
 
-#begin DSS/Sound/ambience/wind/sea/wind_outside_mountain_low_loop.wav
+#begin DSS/Sound/ambience/wind/sea/sea sound3.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:DSS/Sound/ambience/wind/sea/wind_outside_mountain_low_loop.wav
-
-#begin DSS/Sound/ambience/wind/sea/wind_outside_seaside_low_loop.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/ambience/wind/sea/wind_outside_seaside_low_loop.wav
+/build:DSS/Sound/ambience/wind/sea/sea sound3.wav
 
 #begin DSS/Sound/anvil.wav
 /importer:WavImporter

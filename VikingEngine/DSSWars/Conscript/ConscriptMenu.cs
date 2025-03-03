@@ -101,8 +101,9 @@ namespace VikingEngine.DSSWars.Conscript
             if (arraylib.InBound(city.conscriptBuildings, city.selectedConscript))
             {
                 BarracksStatus currentStatus = get();
+                int men = currentStatus.profile.menCost();
 
-               content.Add(new RbImage(
+                content.Add(new RbImage(
                             new SoldierConscriptProfile() { conscript = currentStatus.profile }.Icon()
                             ));
                 content.space();
@@ -151,19 +152,19 @@ namespace VikingEngine.DSSWars.Conscript
 
                 content.newParagraph();
 
-                //bool guardTab = currentStatus.profile.specialization == SpecializationType.CityGuard;
+                bool guardTab = currentStatus.profile.specialization == SpecializationType.CityGuard;
 
-                //if (hasGuardOption)
-                //{
-                //    content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabNotSelected : RbButtonStyle.SubTabSelected,
-                //        new List<AbsRichBoxMember> { new RbText("Army men") },
-                //        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text("Recruit soldiers to an adjacent army")));
-                //    content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                //        new List<AbsRichBoxMember> { new RbText("City guard") },
-                //        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text("Guards are used to fortify walls")));
-                //}
+                if (hasGuardOption)
+                {
+                    content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabNotSelected : RbButtonStyle.SubTabSelected,
+                        new List<AbsRichBoxMember> { new RbText("Army men") },
+                        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text("Recruit soldiers to an adjacent army")));
+                    content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                        new List<AbsRichBoxMember> { new RbText("City guard") },
+                        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text("Guards are used to fortify walls")));
+                }
 
-                //content.newParagraph();
+                content.newParagraph();
                 HudLib.Label(content, DssRef.lang.Conscript_WeaponTitle);
                 content.newLine();
                 
@@ -176,7 +177,7 @@ namespace VikingEngine.DSSWars.Conscript
                        new RbText( LangLib.Item(weapon))
                     };
 
-                    if (city.GetGroupedResource(weapon).amount >= DssConst.SoldierGroup_DefaultCount)
+                    if (city.GetGroupedResource(weapon).amount >= men)
                     {
                         buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
                     }
@@ -216,7 +217,7 @@ namespace VikingEngine.DSSWars.Conscript
                     var buttonContent = new List<AbsRichBoxMember>(3);
                     //ItemResourceType item = ConscriptProfile.ArmorItem(armorLvl);
 
-                    if (city.GetGroupedResource(armorLvl).amount >= DssConst.SoldierGroup_DefaultCount)
+                    if (city.GetGroupedResource(armorLvl).amount >= men)
                     {
                         buttonContent.Add(new RbImage(SpriteName.warsResourceChunkAvailable));
                     }
@@ -287,13 +288,13 @@ namespace VikingEngine.DSSWars.Conscript
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                HudLib.ResourceCost(content, ResourceType.Worker, DssConst.SoldierGroup_DefaultCount, city.workForce.amount);
+                HudLib.ResourceCost(content, ResourceType.Worker, men, city.workForce.amount);
 
                 content.newLine();
                 HudLib.BulletPoint(content);
                 //var weaponItem = ConscriptProfile.WeaponItem(currentStatus.profile.weapon);
                 var weaponRes = city.GetGroupedResource(currentStatus.profile.weapon);
-                HudLib.ResourceCost(content, currentStatus.profile.weapon, DssConst.SoldierGroup_DefaultCount, weaponRes.amount);
+                HudLib.ResourceCost(content, currentStatus.profile.weapon, men, weaponRes.amount);
 
                 if (currentStatus.profile.armorLevel != ItemResourceType.NONE)
                 {
@@ -301,7 +302,7 @@ namespace VikingEngine.DSSWars.Conscript
                     HudLib.BulletPoint(content);
                     //var armorItem = ConscriptProfile.ArmorItem(currentStatus.profile.armorLevel);
                     var armorRes = city.GetGroupedResource(currentStatus.profile.armorLevel);
-                    HudLib.ResourceCost(content, currentStatus.profile.armorLevel, DssConst.SoldierGroup_DefaultCount, armorRes.amount);
+                    HudLib.ResourceCost(content, currentStatus.profile.armorLevel, men, armorRes.amount);
                 }
 
                 content.newParagraph();

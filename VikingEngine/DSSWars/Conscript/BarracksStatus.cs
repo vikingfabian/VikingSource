@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars.Conscript
         public TimeInGameCountdown countdown;
         public BuildAndExpandType type;
         public int menCollected;
+        public int menNeeded;
         public int equipmentCollected;
 
         public int idAndPosition;
@@ -59,6 +60,8 @@ namespace VikingEngine.DSSWars.Conscript
 
             maxTrainingLevel = TrainingLevel.Skillful;
         }
+
+       
 
         public void halt(City city)
         {
@@ -127,6 +130,7 @@ namespace VikingEngine.DSSWars.Conscript
             if (active != ConscriptActiveStatus.Idle)
             {
                 inProgress.readGameState(r);
+                menNeeded = inProgress.menCost();
             }
             switch (active)
             {
@@ -158,6 +162,8 @@ namespace VikingEngine.DSSWars.Conscript
                 maxTrainingLevel = (TrainingLevel)r.ReadByte();
                 //maxTrainingLevel = TrainingLevel.Skillful;
             }
+
+            
         }
         public bool CountDownQue()
         {

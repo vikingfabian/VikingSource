@@ -154,8 +154,15 @@ namespace VikingEngine.DSSWars.Conscript
                 skillBonus = 1;
             }
 
-            SoldierData soldierData = profile.data;
-            //unitCount = soldierData.rowWidth* soldierData.columnsDepth;
+            SoldierData soldierData;
+            if (profile != null)
+            {
+                soldierData = profile.data;
+            }
+            else
+            {
+                soldierData = new SoldierData();
+            }
 
             soldierData.basehealth = ConscriptProfile.ArmorHealth(conscript.armorLevel);
             soldierData.attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(conscript.weapon, out soldierData.attackSplashCount) * skillBonus);

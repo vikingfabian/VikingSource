@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Conscript
 {
@@ -27,6 +28,16 @@ namespace VikingEngine.DSSWars.Conscript
 
             training = 0;
             specialization = SpecializationType.None;
+        }
+
+        public int menCost()
+        {
+            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+            {
+                conscript = this,
+            };
+            var data = SoldierProfile.init(null);
+            return data.workForceCount();
         }
 
         public void classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine)
