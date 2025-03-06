@@ -18,29 +18,22 @@ using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    partial class Army : AbsMapObject
+    partial class Army : AbsArmy
     {
         public const float MaxTradeDistance = 3;
 
-        const int GroupsWidth_Size1 = 2;
-        const int GroupsWidth_Size2 = 4;
-        const int GroupsWidth_Size3 = 6;
-        const int GroupsWidth_Size4 = 8;
-
-        static readonly int Size1Capacity = MathExt.Square(GroupsWidth_Size1 * 3);
-        static readonly int Size2Capacity = MathExt.Square(GroupsWidth_Size2 * 3);
-        static readonly int Size3Capacity = MathExt.Square(GroupsWidth_Size3 * 3);
+       
 
 
         const LootFest.VoxelModelName OverviewBannerModelName = LootFest.VoxelModelName.armystand;
 
         //public ArmyAi ai;
-        public SpottedArray<SoldierGroup> groups = new SpottedArray<SoldierGroup>(32);
+        //public SpottedArray<SoldierGroup> groups = new SpottedArray<SoldierGroup>(32);
         //public SpottedArrayCounter<SoldierGroup> groupsCounter;
 
         protected Graphics.AbsVoxelObj overviewBanner;
 
-        public Rotation1D rotation = Rotation1D.D180.Add(Ref.peRnd.Plus_MinusF(0.8f));
+       
         public float soldierRadius = 0.5f;
         BoundingSphere bound;
         
@@ -59,8 +52,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
-        bool isIdle = true;
-
+        
         public float food = 0;
         public float foodUpkeep = 0;
 
@@ -351,13 +343,7 @@ namespace VikingEngine.DSSWars.GameObject
             return status;
         }
 
-        public void AddSoldierGroup(SoldierGroup group) 
-        {
-            //Hitta en plats bland alla grupper
-            //group.armyPosition = nextPlacement();
-            group.parentArrayIndex = groups.Add(group);
-            group.army = this;
-        }
+        
 
         public void mergeArmies(Army otherArmy)
         {
@@ -510,14 +496,10 @@ namespace VikingEngine.DSSWars.GameObject
             DeleteMe( DeleteReason.Disband, true);
         }
 
-        public void remove(SoldierGroup group)
+        public override void remove(SoldierGroup group)
         {
-            Debug.CrashIfThreaded();
-            groups.RemoveAt_EqualSafeCheck(group, group.parentArrayIndex);
-            //if (!InBattle())
-            {
-                refreshPositions(false);
-            }
+            base.remove(group);
+            refreshPositions(false);
         }
 
         public void OnSoldierPurchaseCompleted()
@@ -572,7 +554,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (inRender_detailLayer)
             {
-                updateMembers(Ref.DeltaGameTimeMs, true);               
+                updateArmyMembers(Ref.DeltaGameTimeMs, true);               
             }
             if (inRender_overviewLayer)
             {
@@ -643,21 +625,15 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void updateMembers(float time, bool fullUpdate)
+        void updateArmyMembers(float time, bool fullUpdate)
         {
-            //if (id == 1)
-            //{
-            //    lib.DoNothing();
-            //}
             if (groups.Count > 0)
             {
-                if (fullUpdate || !isIdle)
+                if (fullUpdate || !army_isIdle)
                 {
                     Vector3 armyCenter = Vector3.Zero;
                     int armyCenterCount = 0;
                     var groupsC = groups.counter();
-                    //SoldierGroup centerGuy = null;
-                    //SoldierGroup mostCenterGuy 
 
                     while (groupsC.Next())
                     {
@@ -665,41 +641,20 @@ namespace VikingEngine.DSSWars.GameObject
                         Vector3 goalOffset = groupsC.sel.goalWp - armyGoalCenterWp;
                         armyCenter += groupsC.sel.position - goalOffset;
                         ++armyCenterCount;
-
-                        //if (groupsC.sel.armyGridPlacement2.Y == 0)
-                        //{                            
-                        //    if (groupsC.sel.armyGridPlacement2.X == 0)
-                        //    {
-                        //        centerGuy = groupsC.sel;
-                        //    }
-                        //}
                     }
-                    if (IdleObjetive())
-                    {
-                        //position.X = armyGoalCenterWp.X;
-                        //position.Z = armyGoalCenterWp.Z;
 
-                    }
-                    else if (armyCenterCount > 0)
+                    if (!IdleObjetive() && armyCenterCount > 0)
                     {
                         var newPosition = armyCenter / armyCenterCount;
 
                         DssRef.world.unitBounds.KeepPointInsideBound_TilePositionXZref(ref newPosition);
                         position = newPosition;
 
-                        //if (newPosition.X > 1 && newPosition.Z > 1)
-                        //{
-                        //    position.X = newPosition.X;
-                        //    position.Z = newPosition.Z;
-                        //}
-
                         tilePos = new IntVector2(position.X, position.Z);
                         var tile = DssRef.world.tileGrid.Get(tilePos);
                         position.Y = tile.GroundY_aboveWater();
 
                     }
-
-
                 }
 
                 aiUpdate(fullUpdate);
@@ -730,29 +685,7 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public void autoColumnWidth()
-        {
-            int width;
-
-            if (groups.Count > Size3Capacity)
-            {
-                width = GroupsWidth_Size4;
-            }
-            else if (groups.Count > Size2Capacity)
-            {
-                width = GroupsWidth_Size3;
-            }
-            else if (groups.Count > Size1Capacity)
-            {
-                width = GroupsWidth_Size2;
-            }
-            else
-            {
-                width = GroupsWidth_Size1;
-            }
-
-            armyColumnWidth = width;
-        }
+       
 
         //static readonly int[] PlacementX = new int[] { 0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5 };
 
@@ -831,14 +764,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void asynchGameObjectsUpdate(float time, bool oneMinute)
+        protected void async_SoldiersUpdate(float time, bool oneMinute)
         {
-            if (debugTagged)
-            {
-                lib.DoNothing();
-            }
-
-
             if (groups.Count > 0)
             {
                 int count = 0;
@@ -852,10 +779,10 @@ namespace VikingEngine.DSSWars.GameObject
                 Vector2 maxpos = VectorExt.V2Min;
 
                 if (DssRef.world.tileGrid.TryGet(tilePos, out Map.Tile tile))
-                { 
+                {
                     terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(isShip);
                 }
-                
+
                 //var battleGroup_sp = battleGroup;
                 //bool inBattle = battleGroup_sp != null && battleGroup_sp.battleState == Battle.BattleState.Battle;
                 //bool notBattle = !inBattle;
@@ -864,73 +791,65 @@ namespace VikingEngine.DSSWars.GameObject
 
                 while (groupsC.Next())
                 {
-                   
 
-                        count += groupsC.sel.soldierCount;
-                        groupsC.sel.setBattleWalkingSpeed();
 
-                        allGropsAreIdle &= groupsC.sel.state == GroupState.Idle; //.allInduvidualsAreIdle;
-                        int health;
+                    count += groupsC.sel.soldierCount;
+                    groupsC.sel.setBattleWalkingSpeed();
 
-                        if (groupsC.sel.isShip)
+                    allGropsAreIdle &= groupsC.sel.state == GroupState.Idle; //.allInduvidualsAreIdle;
+                    int health;
+
+                    if (groupsC.sel.isShip)
+                    {
+                        ++shipCount;
+                        dps = groupsC.sel.soldierData.DPS_sea();
+
                         {
-                            ++shipCount;
-                            dps = groupsC.sel.soldierData.DPS_sea();
-
-                            //if (notBattle)                       
-                            {
-                                speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);//unitProfile.ArmySpeedBonusSea;
-                                groupsC.sel.walkSpeed = transportSpeedSea;
-                            }
-
-                            //var first = groupsC.sel.FirstSoldier();
-                            //if (first != null)
-                            //{
-                            //TODO ship health
-                            health = groupsC.sel.soldierData.basehealth;
-                            //}
-                        }
-                        else
-                        {
-                            dps = groupsC.sel.soldierData.DPS_land();
-
-                            //if (notBattle)
-                            //{
-                            speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(true);//unitProfile.ArmySpeedBonusLand;
-                            groupsC.sel.walkSpeed = transportSpeedLand;
-                            //}
-
-                            health = groupsC.sel.soldierData.basehealth;
+                            speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);
+                            groupsC.sel.walkSpeed = transportSpeedSea;
                         }
 
-                        if (groupsC.sel.position.X < minpos.X)
-                        {
-                            minpos.X = groupsC.sel.position.X;
-                        }
-                        if (groupsC.sel.position.X > maxpos.X)
-                        {
-                            maxpos.X = groupsC.sel.position.X;
-                        }
+                        //TODO ship health
+                        health = groupsC.sel.soldierData.basehealth;
+                        //}
+                    }
+                    else
+                    {
+                        dps = groupsC.sel.soldierData.DPS_land();
+                        speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(true);
+                        groupsC.sel.walkSpeed = transportSpeedLand;
 
-                        if (groupsC.sel.position.Z < minpos.Y)
-                        {
-                            minpos.Y = groupsC.sel.position.Z;
-                        }
-                        if (groupsC.sel.position.Z > maxpos.Y)
-                        {
-                            maxpos.Y = groupsC.sel.position.Z;
-                        }
+                        health = groupsC.sel.soldierData.basehealth;
+                    }
 
-                        totalStrength += (dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
-                    
+                    if (groupsC.sel.position.X < minpos.X)
+                    {
+                        minpos.X = groupsC.sel.position.X;
+                    }
+                    if (groupsC.sel.position.X > maxpos.X)
+                    {
+                        maxpos.X = groupsC.sel.position.X;
+                    }
+
+                    if (groupsC.sel.position.Z < minpos.Y)
+                    {
+                        minpos.Y = groupsC.sel.position.Z;
+                    }
+                    if (groupsC.sel.position.Z > maxpos.Y)
+                    {
+                        maxpos.Y = groupsC.sel.position.Z;
+                    }
+
+                    totalStrength += (dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
+
                 }
-                
-                isIdle = allGropsAreIdle && IdleObjetive();
+
+                army_isIdle = allGropsAreIdle && IdleObjetive();
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
                 this.strengthValue = count;
                 soldiersCount = count;
-                
+
                 //Endbart ändra när arme är i rörelse, måste följa center person
                 //tilePos = WP.ToTilePos(position);
                 speedbonus /= groups.Count;
@@ -949,6 +868,17 @@ namespace VikingEngine.DSSWars.GameObject
                 cullingBottomRight = maxpos + CamCullingRadius;
             }
 
+        }
+
+        public void asynchGameObjectsUpdate(float time, bool oneMinute)
+        {
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
+
+            async_SoldiersUpdate(time, oneMinute);
+            
             if (oneMinute)
             {
                 foodCosts_import.minuteUpdate();
@@ -1019,7 +949,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-                    updateMembers(time * Ref.GameTimeSpeed, false);
+                    updateArmyMembers(time * Ref.GameTimeSpeed, false);
                 }
             }
         }
@@ -1242,6 +1172,16 @@ namespace VikingEngine.DSSWars.GameObject
         public override bool CanMenuFocus()
         {
             return true;
+        }
+
+
+        public override bool IsArmy()
+        {
+            return true;
+        }
+        public override bool IsCity()
+        {
+            return false;
         }
     }
     enum ArmyPlacement

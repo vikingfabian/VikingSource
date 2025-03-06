@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.GameObject
         int shipHealth;
         public SpottedArray<AbsSoldierUnit> soldiers = null;
 
-        public Army army;
+        public AbsArmy army;
 
         public Vector3 goalWp;
 
@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.GameObject
         public AbsCommand command = null;
         
 
-        public SoldierGroup(Army army, SoldierConscriptProfile conscript, Vector3 startPos)
+        public SoldierGroup(AbsArmy army, SoldierConscriptProfile conscript, Vector3 startPos)
         {
             this.army = army;
             soldierConscript = conscript;
@@ -1087,7 +1087,7 @@ namespace VikingEngine.DSSWars.GameObject
             armyGridPlacement2.X = colX;
             armyGridPlacement2.Y = rowY;
 
-            army.refreshPositions(false);
+            army.GetArmy().refreshPositions(false);
         }
 
         //public bool soldiersShouldFollowWalkingOrder()
@@ -1494,7 +1494,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (nearest != null)
             {
-                //addAttackTarget(nearest);
                 if (!nearest.defeatedBy(army.faction) && nearest != attackTarget_soldierGroupOrCity)
                 {
                     if (attackTarget_soldierGroupOrCity != null)
@@ -1514,7 +1513,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             float aggroRange(AbsMapObject target)
             {
-                if (target == army.attackTarget)
+                if (army.IsArmy() &&
+                    target == army.GetArmy().attackTarget)
                 {
                     return 4;
                 }
@@ -1559,8 +1559,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             return value;
         }
-
-        //static List<GameObject.Army> ArmiesColl_asyncupdate = new List<Army>();
 
         void groupToGroupCollsionUpate_async(int pathThreadIndex)
         {

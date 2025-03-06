@@ -40,11 +40,9 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 walkGoal, adjustedWalkGoal;
         float teleportTime;
 
-        public bool walkGoalAsShip;
         public IntVector2 nextNodePos;
         public AbsMapObject attackTarget = null;
         public int attackTargetFaction;
-        public int goalId = 0;
         //bool nextPathNode = false;
             
         //public ArmyAi(Army army)
@@ -674,8 +672,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
         }
-
-        public bool IdleObjetive()
+       
+        override public bool IdleObjetive()
         {
             if (objective == ArmyObjective.Attack) 
             {

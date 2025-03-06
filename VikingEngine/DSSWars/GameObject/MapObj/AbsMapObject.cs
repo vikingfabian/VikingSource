@@ -160,10 +160,6 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         
-        //public override bool Alive()
-        //{
-        //    return !isDeleted;
-        //}
     }
 
     

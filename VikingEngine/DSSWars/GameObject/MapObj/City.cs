@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
-using System.Reflection.Metadata;
-using System.Text.RegularExpressions;
+
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Valve.Steamworks;
-using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
@@ -22,18 +17,15 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
-using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest;
-using VikingEngine.LootFest.Map;
-using VikingEngine.LootFest.Players;
-using VikingEngine.PJ;
-using VikingEngine.PJ.Moba.GO;
+using VikingEngine.ToGG.ToggEngine.Map;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    partial class City : GameObject.AbsMapObject
+    partial class City : AbsArmy
     {
         public int areaSize = 0;
         public CityType CityType;
@@ -52,20 +44,14 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource workForce = new GroupedResource();
         
         public int workForceMax = 0;
-
-        //public int maxEpandWorkSize;
         public FloatingInt damages = new FloatingInt();
         public FloatingInt immigrants = new FloatingInt();
         const double ImmigrantsRemovePerSec = 0.1;
-        //double workForceAddPerSec;
         public int workHutStyle = 0;
         public int mercenaries = 0;
 
         public CityDetail detailObj;
-        //public List<CityPurchaseOption> cityPurchaseOptions;
-
         public float ai_armyDefenceValue = 0;
-        //public bool nobelHouse = false;
 
         public BuildingStructure buildingStructure = new BuildingStructure();
         public TerrainStructure terrainStructure = new TerrainStructure();
@@ -84,7 +70,6 @@ namespace VikingEngine.DSSWars.GameObject
         public CityTagBack tagBack = CityTagBack.NONE;
         public CityTagArt tagArt = CityTagArt.None;
 
-        
 
         public bool CanBuildLogistics(int toLevel)
         {
@@ -141,9 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
                     buildingStructure.buildingLevel_logistics = 2;
                 }
             });
-            
         }
-
 
         public bool autoUpgradeLogistics(IntVector2 freeSubTile, bool commit)
         {
@@ -410,8 +393,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             writeResources(w);
 
-            //Debug.WriteCheck(w);
-
             writeWorkerStatuses(w);
 
             w.Write((ushort)conscriptBuildings.Count);
@@ -447,8 +428,6 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(automateCity);
             w.Write((byte)automationFocus);
 
-            
-            //SaveLib.WriteString(w, customName? name : null);
             name.write(w);
             
             Debug.WriteCheck(w);
@@ -536,15 +515,6 @@ namespace VikingEngine.DSSWars.GameObject
                 automationFocus = (AutomationFocus)r.ReadByte();
             }
 
-            //if (subversion >= 48)
-            //{ 
-            //    string readname = SaveLib.ReadString(r);
-            //    if (readname != null)
-            //    {
-            //        name = readname;
-            //        customName = true;
-            //    }
-            //}
             name.read(r, subversion);
 
             Debug.ReadCheck(r);
@@ -1217,6 +1187,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             detailObj.update(Ref.DeltaGameTimeMs, true);
 
+            if (inRender_detailLayer)
+            {
+                updateArmyMembers(Ref.DeltaGameTimeMs, true);
+            }
+
             updateWorkerUnits();
         }
 
@@ -1396,6 +1371,9 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         static Dictionary<int, float> CityDominationStrength = new Dictionary<int, float>(4);
+
+
+       
 
         public void asynchNearObjectsUpdate()
         {
@@ -2215,6 +2193,15 @@ namespace VikingEngine.DSSWars.GameObject
         public override GameObjectType gameobjectType()
         {
             return GameObject.GameObjectType.City;
+        }
+
+        public override bool IsArmy()
+        {
+            return false;
+        }
+        public override bool IsCity()
+        {
+            return true;
         }
     }
 

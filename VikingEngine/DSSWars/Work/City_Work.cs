@@ -14,7 +14,7 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    partial class City : GameObject.AbsMapObject
+    partial class City
     {
         static byte[] MaxSkill = new byte[(int)WorkExperienceType.NUM];
 

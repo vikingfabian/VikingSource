@@ -12,8 +12,17 @@ using VikingEngine.PJ.CarBall;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    partial class Army
+    partial class AbsArmy
     {
+        const int GroupsWidth_Size1 = 2;
+        const int GroupsWidth_Size2 = 4;
+        const int GroupsWidth_Size3 = 6;
+        const int GroupsWidth_Size4 = 8;
+
+        static readonly int Size1Capacity = MathExt.Square(GroupsWidth_Size1 * 3);
+        static readonly int Size2Capacity = MathExt.Square(GroupsWidth_Size2 * 3);
+        static readonly int Size3Capacity = MathExt.Square(GroupsWidth_Size3 * 3);
+
         //*center, left, right body, left/right flank / scout, front, body, second, behind
         public const int MinColumnWidth = 2;
         public const int MaxColumnWidth = 8;
@@ -57,13 +66,37 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void autoColumnWidth()
+        {
+            int width;
+
+            if (groups.Count > Size3Capacity)
+            {
+                width = GroupsWidth_Size4;
+            }
+            else if (groups.Count > Size2Capacity)
+            {
+                width = GroupsWidth_Size3;
+            }
+            else if (groups.Count > Size1Capacity)
+            {
+                width = GroupsWidth_Size2;
+            }
+            else
+            {
+                width = GroupsWidth_Size1;
+            }
+
+            armyColumnWidth = width;
+        }
+
         public void armyColumnWidthClick(int w)
         {
             armyColumnWidth = w;
             refreshGroupPlacements2(tilePos, false, false);
         }
 
-        void refreshGroupPlacements2(IntVector2 walkToTilePos, bool resetCommand, bool teleport, bool async = true)
+        protected void refreshGroupPlacements2(IntVector2 walkToTilePos, bool resetCommand, bool teleport, bool async = true)
         {
             if (async)
             {
@@ -79,7 +112,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             void execute()
             {
-                if (faction.player.IsAi())
+                if ( faction.player.IsAi())
                 {
                     autoColumnWidth();
                 }
@@ -168,7 +201,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public void calcPositions(Army army, IntVector2 walkToPos, bool endAsShip, bool resetCommand, bool teleport)
+        public void calcPositions(AbsArmy army, IntVector2 walkToPos, bool endAsShip, bool resetCommand, bool teleport)
         {
             List<SoldierGroup> failedPlacements = new List<SoldierGroup>();
 

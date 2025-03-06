@@ -180,12 +180,16 @@ namespace VikingEngine.DSSWars.GameState
                     var factions = DssRef.world.factions.counter();
                     while (factions.Next())
                     {
-                        if (factions.sel.factiontype == FactionType.SouthHara)
-                        {
-                            lib.DoNothing();
-                        }
+                        
                         factions.sel.asynchSleepObjectsUpdate(time);
                     }
+
+
+                    foreach (var m in DssRef.world.cities)
+                    {
+                        m.async_sleepUpate(time);
+                    }
+
                 }
             }
             return exitThreads;

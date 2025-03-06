@@ -733,20 +733,16 @@ namespace VikingEngine.DSSWars.Map
                     {
                         lock (area.armies)
                         {
-                            //var armies_sp = area.armies;
-                            //var groups_sp = area.groups;
                             if (area.armies != null)
                             {
-                                foreach (var m in area.armies)//crash (ändras i realtid)
+                                foreach (var m in area.armies)
                                 {
                                     if (m.faction == factionFilter)
                                     {
-                                        //prevArmy = m.army;
                                         if (!armies.Contains(m))
                                         {
                                             armies.Add(m);
                                         }
-                                        //armies.Add(m);
                                     }
                                 }
                             }
@@ -774,18 +770,17 @@ namespace VikingEngine.DSSWars.Map
                     {
                         lock (area.groups)
                         {
-                            //var groups_sp = area.groups;
                             if (area.groups != null)
                             {
-                                foreach (var m in area.groups)//crash (ändras i realtid)
+                                foreach (var m in area.groups)
                                 {
                                     if (m.army.faction != faction &&
                                         m.army != prevArmy)
                                     {
-                                        prevArmy = m.army;
-                                        if (!armies.Contains(m.army))
+                                        prevArmy = m.GetArmy();
+                                        if (!armies.Contains(prevArmy))
                                         {
-                                            armies.Add(m.army);
+                                            armies.Add(prevArmy);
                                         }
                                     }
                                 }
@@ -838,16 +833,9 @@ namespace VikingEngine.DSSWars.Map
             grid.Get(areaPos).cities.Add(city.parentArrayIndex);
         }
 
-        //public void remove(GameObject.City city)
-        //{
-        //    IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
-
-        //    grid.Get(areaPos).cities.Remove(city);
-        //}
 
         public GameObject.City closestCity(IntVector2 tilePos)
         {
-            //cities_aiUpdate.Clear();
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
 
             FindMinValuePointer<GameObject.City> closest = new FindMinValuePointer<GameObject.City>();

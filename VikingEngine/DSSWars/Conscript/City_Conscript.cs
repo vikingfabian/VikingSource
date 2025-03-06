@@ -391,6 +391,31 @@ namespace VikingEngine.DSSWars.GameObject
             army.setAsStartArmy();
         }
 
+        public void debugGuardConscript(ItemResourceType weapon)
+        {
+            
+
+            SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
+            {
+                conscript = new ConscriptProfile()
+                {
+                    weapon = weapon,
+                    armorLevel = ItemResourceType.IronArmor,
+                    training = TrainingLevel.Basic,
+                    specialization = SpecializationType.CityGuard,
+                },
+                skillBonus = 1,
+            };
+
+            Vector3 startPos = WP.ToWorldPos(VectorExt.AddY( tilePos, 1));
+            for (int i = 0; i < 5; i++)
+            {
+                new SoldierGroup(this, soldierProfile, startPos);
+            }
+            //army?.OnSoldierPurchaseCompleted();
+            //this.setAsStartArmy();
+        }
+
         public void CalcRecruitToTile()
         {
             foreach (IntVector2 dir in IntVector2.Dir4Array)

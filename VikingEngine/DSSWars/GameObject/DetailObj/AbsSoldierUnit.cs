@@ -1380,7 +1380,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override Army GetArmy()
         {
-            return group.army;
+            return group.army.GetArmy();
         }
         public override UnitType DetailUnitType()
         {
