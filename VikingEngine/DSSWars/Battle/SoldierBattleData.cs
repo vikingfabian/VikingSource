@@ -224,8 +224,8 @@ namespace VikingEngine.DSSWars.Battle
                         case GameObjectType.City:
                             if (opponent)
                             {
-                                parent.closestTargetCheck(group.GetCity().detailObj,
-                                ref closestOpponent, ref closestOpponentDistance);
+                                //parent.closestTargetCheck(group.GetCity().detailObj,
+                                //ref closestOpponent, ref closestOpponentDistance);
                             }
                             break;
                     }

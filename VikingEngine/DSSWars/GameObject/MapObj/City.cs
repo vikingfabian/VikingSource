@@ -22,6 +22,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest;
 using VikingEngine.ToGG.ToggEngine.Map;
 using VikingEngine.ToGG;
+using VikingEngine.DSSWars.Defence;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -50,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int workHutStyle = 0;
         public int mercenaries = 0;
 
-        public CityDetail detailObj;
+        //public CityDetail detailObj;
         public float ai_armyDefenceValue = 0;
 
         public BuildingStructure buildingStructure = new BuildingStructure();
@@ -809,7 +810,135 @@ namespace VikingEngine.DSSWars.GameObject
         {
             workForceMax += totalAmount;
             refreshCitySize();
-            detailObj.refreshWorkerSubtiles();
+            refreshWorkerSubtiles();
+        }
+
+        public const int WorkersPerHut = 30;
+        const int WorkerHutsPerTile = 4;
+        const int WorkerHutsPerTile_MaxLevel = WorkerHutsPerTile * HutMaxLevel;
+        public const int WorkersPerTile = WorkersPerHut * WorkerHutsPerTile * HutMaxLevel;
+        public const int HutMaxLevel = 2;
+        int totalWorkerHutAndLevelCount = 0;
+        public void refreshWorkerSubtiles()
+        {
+            int goalDisplayCount = WorkersToModelsCount(workForceMax);
+            if (goalDisplayCount > totalWorkerHutAndLevelCount)
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, 1));
+                    edgeLoop.RandomPosition(true);
+
+                    int maxLoops = 10000;
+
+                    while (goalDisplayCount > totalWorkerHutAndLevelCount)
+                    {
+                        if (edgeLoop.Next())
+                        {
+
+                            if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out Tile t) &&
+                                    t.IsLand() && t.CityIndex == parentArrayIndex)
+                            {
+                                const int SubStartTrialCount = 4;
+                                IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
+
+                                for (int trialIx = 0; trialIx < SubStartTrialCount; ++trialIx)
+                                {
+                                    IntVector2 subPos = topLeft;
+                                    subPos.X += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
+                                    subPos.Y += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
+
+
+                                    if (Build.BuildLib.TryAutoBuild(subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
+                                    {
+                                        ++totalWorkerHutAndLevelCount;
+
+                                        //Place farm curlutures
+                                        const int CulturesPerFarm = 8;
+                                        int cultureCount = 0;
+
+                                        ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
+                                        farmLoop.RandomPosition(true);
+
+
+                                        while (cultureCount < CulturesPerFarm)
+                                        {
+                                            while (farmLoop.Next())
+                                            {
+                                                TerrainMainType terrain;
+                                                int sub;
+                                                int maxAmount;
+                                                if (Ref.peRnd.Chance(0.75))
+                                                {
+                                                    terrain = TerrainMainType.Foil;
+                                                    sub = (int)TerrainSubFoilType.WheatFarm;
+                                                    maxAmount = TerrainContent.FarmCulture_MaxSize;
+                                                }
+                                                else
+                                                {
+                                                    terrain = TerrainMainType.Building;
+                                                    if (Ref.peRnd.Chance(0.4))
+                                                    {
+                                                        sub = (int)TerrainBuildingType.PigPen;
+                                                        maxAmount = TerrainContent.PigMaxSize;
+                                                    }
+                                                    else
+                                                    {
+                                                        sub = (int)TerrainBuildingType.HenPen;
+                                                        maxAmount = TerrainContent.HenMaxSize;
+                                                    }
+                                                }
+
+                                                if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
+                                                {
+                                                    ++cultureCount;
+                                                    if (cultureCount >= CulturesPerFarm)
+                                                    {
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            farmLoop.ExpandRadius();
+                                            farmLoop.RandomPosition(true);
+
+                                            if (--maxLoops < 0)
+                                            {
+                                                return;
+                                            }
+                                        }
+
+                                        if (goalDisplayCount <= totalWorkerHutAndLevelCount)
+                                        {
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            edgeLoop.ExpandRadius();
+                            edgeLoop.RandomPosition(true);
+                        }
+
+
+                        if (--maxLoops < 0)
+                        {
+                            return;
+                        }
+                    }
+                });
+
+
+
+            }
+        }
+
+        static int WorkersToModelsCount(int workers)
+        {
+            return (int)Math.Floor(workers / (double)WorkersPerHut);
         }
 
         public void onWorkHutBuild(bool build_notDestroy)
@@ -979,8 +1108,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
 
-            detailObj = new CityDetail(this, newGame);
-
+            //detailObj = new CityDetail(this, newGame);
+            if (newGame)
+            {
+                refreshWorkerSubtiles();
+            }
             float iconScale = IconScale();
 
             VectorVolumeC volume = new VectorVolumeC(position,
@@ -1069,7 +1201,7 @@ namespace VikingEngine.DSSWars.GameObject
                     CityType = CityType.Factory;
 
                     workForceMax += DssConst.HeadCityStartMaxWorkForce;
-                    detailObj.refreshModel();
+                    //detailObj.refreshModel();
 
                     if (overviewModel != null)
                     {
@@ -1086,7 +1218,7 @@ namespace VikingEngine.DSSWars.GameObject
                     CityType = CityType.Large;
 
                     workForceMax -= DssConst.HeadCityStartMaxWorkForce;
-                    detailObj.refreshModel();
+                    //detailObj.refreshModel();
 
                     if (overviewModel != null)
                     {
@@ -1139,7 +1271,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool hasNeededAreaSize()
         {
-            int maxFit = CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize;
+            int maxFit = WorkersPerTile * HutMaxLevel * areaSize;
             return workForceMax + 2 <= maxFit;
         }
 
@@ -1177,7 +1309,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void onNewModel(LootFest.VoxelModelName name, Graphics.VoxelModel master)
         {
-            detailObj.model?.onNewModel(name, master, detailObj);
+            //detailObj.model?.onNewModel(name, master, detailObj);
             DSSWars.Faction.SetNewMaster(name, VoxelModelName.cityicon, overviewModel, master);
         }
 
@@ -1185,7 +1317,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             updateDetailLevel();
 
-            detailObj.update(Ref.DeltaGameTimeMs, true);
+            //detailObj.update(Ref.DeltaGameTimeMs, true);
 
             if (inRender_detailLayer)
             {
@@ -1307,7 +1439,7 @@ namespace VikingEngine.DSSWars.GameObject
                     immigrants.reduceTowardsZero(ImmigrantsRemovePerSec);
                 }
 
-                detailObj.oneSecondUpdate();
+                //detailObj.oneSecondUpdate();
             }
 
             workForce.amount = Bound.Max(workForce.amount + addWorkers, homesTotal());
@@ -1357,7 +1489,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void asynchGameObjectsUpdate(bool minute)
         {
             collectBattles_asynch();
-            detailObj.asynchUpdate();
+            //detailObj.asynchUpdate();
             //strength
             strengthValue = 2.5f * guardCount / DssConst.SoldierGroup_DefaultCount;
 
@@ -1373,10 +1505,13 @@ namespace VikingEngine.DSSWars.GameObject
         static Dictionary<int, float> CityDominationStrength = new Dictionary<int, float>(4);
 
 
-       
-
-        public void asynchNearObjectsUpdate()
+        public override void asyncNearObjectsUpdate()
         {
+            base.asyncNearObjectsUpdate();
+        //} 
+
+        ////public void asynchNearObjectsUpdate()
+        //{
             float armyDefence = 0;
             const int DominanceTileRadius = 4;
 
@@ -1394,7 +1529,7 @@ namespace VikingEngine.DSSWars.GameObject
             ai_armyDefenceValue = armyDefence;
 
             DssRef.world.unitCollAreaGrid.collectOpponentGroups(faction, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
-            detailObj.asynchFindBattleTarget(groups);
+            //detailObj.asynchFindBattleTarget(groups);
 
             if (guardCount <= 0 && armyDefence == 0)
             {
@@ -1546,7 +1681,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             setWorkersInRenderState();
-            detailObj.setDetailLevel(inRender_detailLayer);
+            //detailObj.setDetailLevel(inRender_detailLayer);
         }
 
         //protected override bool mayAttack(AbsMapObject otherObj)
@@ -1952,7 +2087,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 DssRef.world.BordersUpdated = true;
 
-                detailObj?.onNewOwner();
+                //detailObj?.onNewOwner();
 
                 if (CityType == CityType.Factory && faction.factiontype != FactionType.DarkLord)
                 {
@@ -2109,6 +2244,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 for (int x = 0; x < WorldData.TileSubDivitions; ++x)
                 {
+                    IntVector2 pos = topleft;
+                    pos.X += x;
+                    pos.Y += y;
+                    var subTile = world.subTileGrid.Get(pos);
+
                     TerrainMainType main = TerrainMainType.Building;
                     int sub;
                     //TerrainWallType wallType = TerrainWallType.NUM_NONE;
@@ -2128,6 +2268,11 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             sub = wall;
                         }
+
+                        DefenceStatus defence = new DefenceStatus();
+                        defence.init(pos);
+                        defenceBuildings.Add(defence);
+                       
                     }
                     else if (x == 4 && y == 3)
                     {
@@ -2148,12 +2293,8 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         sub = world.rnd.Chance(percBuilding) ? house : road;
-                    }
-
-                    IntVector2 pos = topleft;
-                    pos.X += x;
-                    pos.Y += y;
-                    var subTile = world.subTileGrid.Get(pos);
+                    }                    
+                    
                     subTile.SetType(main, sub, 1);
                     world.subTileGrid.Set(pos, subTile);
                 }

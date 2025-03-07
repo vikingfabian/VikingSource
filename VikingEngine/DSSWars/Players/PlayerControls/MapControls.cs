@@ -717,6 +717,13 @@ namespace VikingEngine.DSSWars.Players
 
                     }
                     break;
+                case SelectTileResult.Wall:
+                    {
+                        player.cityTab = Display.MenuTab.Defence;
+                        selectedSubTile.city.selectedDefenceBuilding = selectedSubTile.city.defenceIxFromSubTile(selectedSubTile.subTilePos);
+
+                    }
+                    break;
                 case SelectTileResult.Recruitment:
                 case SelectTileResult.Postal:
                     {

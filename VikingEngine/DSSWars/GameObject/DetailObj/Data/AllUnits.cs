@@ -36,6 +36,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             add(new DarkLordProfile());
             add(new DarkLordWarshipData());
+
+            add(new CityGuardSoldierProfile());
             //add(new FolkWarshipData(UnitType.FolkWarship, 
             //    add(new FolkManData())));
 
@@ -422,6 +424,9 @@ namespace VikingEngine.DSSWars.GameObject
         ConscriptWarmashine = 4,
         DarkLordWarship = 5,
         DarkLord = 6,
+
+        CityGuard = 7,
+        CityGuardWarship = 8,
         //Soldier =1,
         //Sailor =2,
         //Folkman =3,

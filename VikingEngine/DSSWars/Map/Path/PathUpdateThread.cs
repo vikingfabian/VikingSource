@@ -36,6 +36,7 @@ namespace VikingEngine.DSSWars.Map.Path
             //{
             //    factions.sel.asyncPathUpdate();
             //}
+
             for (int i = startFaction; i <= endFaction; ++i)
             {
                 DssRef.world.factions.Array[i]?.asyncPathUpdate(index);

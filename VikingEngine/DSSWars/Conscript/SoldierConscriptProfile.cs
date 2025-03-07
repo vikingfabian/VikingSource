@@ -37,27 +37,35 @@ namespace VikingEngine.DSSWars.Conscript
 
         public UnitType unitType()
         {
-            if (conscript.specialization == SpecializationType.DarkLord)
+            switch (conscript.specialization)
             {
-                return UnitType.DarkLord;
-            }
-            switch (conscript.weapon)
-            {
-                case ItemResourceType.Ballista:
-                case ItemResourceType.Manuballista:
-                case ItemResourceType.Catapult:
-                case ItemResourceType.UN_BatteringRam:
-                case ItemResourceType.SiegeCannonBronze:
-                case ItemResourceType.ManCannonBronze:
-                case ItemResourceType.SiegeCannonIron:
-                case ItemResourceType.ManCannonIron:
-                    return UnitType.ConscriptWarmashine;
-                case ItemResourceType.KnightsLance:
-                    return UnitType.ConscriptCavalry;
-
                 default:
-                    return UnitType.Conscript;
+                    
+                    switch (conscript.weapon)
+                    {
+                        case ItemResourceType.Ballista:
+                        case ItemResourceType.Manuballista:
+                        case ItemResourceType.Catapult:
+                        case ItemResourceType.UN_BatteringRam:
+                        case ItemResourceType.SiegeCannonBronze:
+                        case ItemResourceType.ManCannonBronze:
+                        case ItemResourceType.SiegeCannonIron:
+                        case ItemResourceType.ManCannonIron:
+                            return UnitType.ConscriptWarmashine;
+                        case ItemResourceType.KnightsLance:
+                            return UnitType.ConscriptCavalry;
+
+                        default:
+                            return UnitType.Conscript;
+                    }
+                    
+                case SpecializationType.CityGuard:
+                    return UnitType.CityGuard;
+                case SpecializationType.DarkLord:
+                    return UnitType.DarkLord;
+
             }
+            
         }
 
         public UnitFilterType filterType()
@@ -569,6 +577,7 @@ namespace VikingEngine.DSSWars.Conscript
                     
                     soldierData.rowWidth = 5;
                     soldierData.columnsDepth = 1;
+                    soldierData.groupSpacing *= 0.5f; 
                     break;
 
                 case SpecializationType.Field:

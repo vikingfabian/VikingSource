@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
 
 namespace VikingEngine.DSSWars.Display
@@ -198,6 +199,11 @@ namespace VikingEngine.DSSWars.Display
 
                     case Players.SelectTileResult.CityHall:
                         title = new RbText(DssRef.lang.Hud_SelectCity);
+                        content.Add(title);
+                        break;
+
+                    case Players.SelectTileResult.Wall:
+                        title = new RbText("Guard post");
                         content.Add(title);
                         break;
 

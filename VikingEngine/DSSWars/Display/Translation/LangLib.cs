@@ -657,6 +657,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MenuTab.Conscript:
                     description = DssRef.lang.BuildingType_Barracks_Description;
                     return DssRef.lang.Conscription_Title;
+                case MenuTab.Defence:
+                    description = null;
+                    return ".Defence";
                 case MenuTab.Trade:
                     description = null;
                     return DssRef.lang.MenuTab_Trade;
@@ -689,11 +692,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.MenuTab_Progress;
                 case MenuTab.Mix:
                     description = "All info compressed to one place";
-                    return "Mix";
+                    return ".Mix";
 
                 case MenuTab.Help:
                     description = null;
-                    return "Help";
+                    return ".Help";
                 default:
                     throw new NotImplementedException();
             }
@@ -1012,7 +1015,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.HenPen:
                     return DssRef.lang.BuildingType_HenPen_Description;
                 case TerrainBuildingType.WorkerHut:
-                    return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, GameObject.CityDetail.WorkersPerHut);
+                    return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, GameObject.City.WorkersPerHut);
                 
                 case TerrainBuildingType.Postal:
                 case TerrainBuildingType.PostalLevel2:

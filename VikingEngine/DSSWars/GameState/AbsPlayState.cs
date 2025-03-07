@@ -218,6 +218,15 @@ namespace VikingEngine.DSSWars.GameState
                         }
                     }
                 }
+
+                foreach (var m in DssRef.world.cities)
+                {
+                    var groupsC = m.groups.counter();
+                    while (groupsC.Next())
+                    {
+                        groupsC.sel.asyncBattleUpdate();
+                    }
+                }
             }
             return exitThreads;
         }

@@ -391,30 +391,7 @@ namespace VikingEngine.DSSWars.GameObject
             army.setAsStartArmy();
         }
 
-        public void debugGuardConscript(ItemResourceType weapon)
-        {
-            
-
-            SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
-            {
-                conscript = new ConscriptProfile()
-                {
-                    weapon = weapon,
-                    armorLevel = ItemResourceType.IronArmor,
-                    training = TrainingLevel.Basic,
-                    specialization = SpecializationType.CityGuard,
-                },
-                skillBonus = 1,
-            };
-
-            Vector3 startPos = WP.ToWorldPos(VectorExt.AddY( tilePos, 1));
-            for (int i = 0; i < 5; i++)
-            {
-                new SoldierGroup(this, soldierProfile, startPos);
-            }
-            //army?.OnSoldierPurchaseCompleted();
-            //this.setAsStartArmy();
-        }
+       
 
         public void CalcRecruitToTile()
         {
@@ -465,8 +442,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var subTile = DssRef.world.subTileGrid.Get(pos);
                 subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, 1);
                 DssRef.world.subTileGrid.Set(pos, subTile);
-                //EditSubTile edit = new EditSubTile(pos, subTile, true, false, false);
-                //edit.Submit();
+               
 
                 BarracksStatus newBarrack = new BarracksStatus()
                 {

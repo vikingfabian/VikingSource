@@ -1651,12 +1651,12 @@ namespace VikingEngine.DSSWars
                 //mapBackgroundLoading = new MapBackgroundLoading(save);
 
                 var availableList = availableInput();
-                if (availableList.Count > 1)
-                {
-                    controllerStartGameUpdate = true;
-                    selectInputMenu(1, true, saveMeta);
-                }
-                else
+                //if (availableList.Count > 1)
+                //{
+                //    controllerStartGameUpdate = true;
+                //    selectInputMenu(1, true, saveMeta);
+                //}
+                //else
                 {
                     selectController_startGame(availableList[0], saveMeta);
                 }
@@ -1686,12 +1686,12 @@ namespace VikingEngine.DSSWars
                 if (DssRef.storage.playerCount == 1)
                 {
                     var availableList = availableInput();
-                    if (availableList.Count > 1)
-                    {
-                        controllerStartGameUpdate = true;
-                        selectInputMenu(1, true, null);
-                    }
-                    else
+                    //if (availableList.Count > 1)
+                    //{
+                    //    controllerStartGameUpdate = true;
+                    //    selectInputMenu(1, true, null);
+                    //}
+                    //else
                     {
                         selectController_startGame(availableList[0], null);
                     }

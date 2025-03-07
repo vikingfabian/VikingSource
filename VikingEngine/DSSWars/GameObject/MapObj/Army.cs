@@ -955,14 +955,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        public void asyncNearObjectsUpdate()
-        {
-            var groupsC = groups.counter();
-            while (groupsC.Next())
-            {
-                groupsC.sel.asynchNearObjectsUpdate();
-            }
-        }
+       
 
         public bool targetsFaction(AbsMapObject otherObj)
         {

@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
         protected static float GoalReachDist_WhenColliding = GoalReachDist_GROUP * 3f;
 
         public Vector3 walkingGoal;
-        Vector2 groupOffset;
+        public Vector2 groupOffset;
         //float goalDistans = 0;
         //public WalkingPathInstance walkPath;
         public bool lockMovement = true;
@@ -249,6 +249,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshGroupOffset()
         {
+         
             
             groupOffset.X = gridPlacement.X * soldierData.groupSpacing +
                 Ref.peRnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
@@ -441,6 +442,20 @@ namespace VikingEngine.DSSWars.GameObject
             model?.update(this);
 
         }
+
+        public void update2_battle_attack_static(float time, bool fullUpate)
+        {
+            
+            updateMoveAttackPrio(time, fullUpate, false);
+
+            battleData?.update(this);
+
+            //updateGroudY(false);
+
+            model?.update(this);
+
+        }
+
         public void wakeUp2()
         {
             if (state2 == SoldierState2.idle)
@@ -512,6 +527,17 @@ namespace VikingEngine.DSSWars.GameObject
         const float ModelGroundYAdj = 0.02f;
         protected void updateGroudY(bool set)
         {
+            if (UnitType == UnitType.CityGuard)
+            {
+
+                var guards = group.GetGuardGroup();
+                if (guards.assignedToPost_IdAndPosition > 0)
+                {
+                    position.Y = guards.postYPos;
+                    return;
+                }
+            } 
+            
             if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))//position.X > 0 && position.Z>0)
             {
                 float y = DssRef.world.SubTileHeight(position) + ModelGroundYAdj;
@@ -739,8 +765,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else if (attack_sp.gameobjectType() == GameObjectType.City)
                 {
-                    var city = attack_sp.GetCity().detailObj;
-                    closest.Next(distanceToUnit(city), city);
+                    //var city = attack_sp.GetCity().detailObj;
+                    //closest.Next(distanceToUnit(city), city);
                 }
             }
 
@@ -1214,8 +1240,8 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
 
                     case GameObjectType.City:
-                        closestTargetCheck(attacking_sp.GetCity().detailObj,
-                            ref closestOpponent, ref closestOpponentDistance);
+                        //closestTargetCheck(attacking_sp.GetCity().detailObj,
+                        //    ref closestOpponent, ref closestOpponentDistance);
                         break;
                 }
             }

@@ -262,14 +262,14 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        foreach (var cityIx in area.cities)
-                        {
-                            var city = DssRef.world.cities[cityIx];
-                            if (city.detailObj.inBattle != null && city.faction == player)
-                            {
-                                return true;
-                            }
-                        }
+                        //foreach (var cityIx in area.cities)
+                        //{
+                        //    var city = DssRef.world.cities[cityIx];
+                        //    if (city.detailObj.inBattle != null && city.faction == player)
+                        //    {
+                        //        return true;
+                        //    }
+                        //}
 
                         lock (area.groups)
                         {
@@ -491,7 +491,13 @@ namespace VikingEngine.DSSWars.Map
                             var city = DssRef.world.cities[cityIx];
                             if (DssRef.diplomacy.InWar(faction, city.faction))
                             {
-                                cities_nearUpdate.Add(city);
+                                //cities_nearUpdate.Add(city);
+                                //foreach (var m in citie)
+                                var groupsC = city.groups.counter();
+                                while (groupsC.Next())
+                                {
+                                    groups_nearUpdate.Add(groupsC.sel);
+                                }
                             }
                         }
                     }
@@ -672,12 +678,13 @@ namespace VikingEngine.DSSWars.Map
                             }
                         }
 
-                        if (cities)
+                        foreach (var cityIx in area.cities)
                         {
-                            foreach (var cityIx in area.cities)
+                            var city = DssRef.world.cities[cityIx];
+                            var groupsC = city.groups.counter();
+                            while (groupsC.Next())
                             {
-                                var city = DssRef.world.cities[cityIx];
-                                groups.Add(city);
+                                groups.Add(groupsC.sel);
                             }
                         }
                     }

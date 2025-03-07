@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         bool isWalkingIntoOtherGroup = false;
-
+        public bool restingGuardMode = false;
         public float halfColDepth;
 
         public int soldierCount = 0;
@@ -85,6 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
 #if VISUAL_NODES
         Graphics.Mesh collisionModel;
 #endif
+
         WalkingPath path = null;
         public DetailWalkingPath detailPath = null;
         float waitTime = 0;
@@ -125,12 +126,12 @@ namespace VikingEngine.DSSWars.GameObject
             collisionModel.AddToRender(DrawGame.UnitDetailLayer);
 #endif
             var type = soldierConscript.unitType();
-            typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
+            typeSoldierData = DssRef.profile.Get(type);
             typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
             soldierData = soldierConscript.init(typeSoldierData);
             typeCurrentData = typeSoldierData;
 
-            armyGridPlacement2 = army.nextArmyPlacement(soldierData.defaultArmyPlacement);//soldierConscript.conscript.DefaultArmyRow());
+            armyGridPlacement2 = army.nextArmyPlacement(soldierData.defaultArmyPlacement);
 
         }
 
@@ -333,11 +334,11 @@ namespace VikingEngine.DSSWars.GameObject
             //}
         }
 
-        private void createAllSoldiers(AbsSoldierProfile typeProfile, int count, bool createModels)
+        virtual protected void createAllSoldiers(AbsSoldierProfile typeProfile, int count, bool createModels)
         {
             soldiers = new SpottedArray<AbsSoldierUnit>(count);
             soldierData = soldierConscript.init(typeProfile);
-            //energyPerSoldier = soldierData.energyPerSoldier;
+
             if (typeProfile.IsShip())
             {
                 soldierConscript.shipSetup(ref soldierData);
@@ -349,8 +350,7 @@ namespace VikingEngine.DSSWars.GameObject
             int columnDepth = MathExt.Div_Ceiling(count, soldierData.rowWidth);
 
             for (int x = 0; x < soldierData.rowWidth; ++x)
-            {
-                //int leadUnit = -1;
+            {               
                 for (int y = 0; y < columnDepth; ++y)
                 {
                     AbsSoldierUnit unit;
@@ -364,14 +364,10 @@ namespace VikingEngine.DSSWars.GameObject
                         unit = createUnit(typeProfile, new IntVector2(x + xStart, y), tilePos, ref soldierData, createModels);
                     }
 
-
-                    //unit.following = leadUnit;
                     unit.firstUpdate();
-                    //leadUnit = unit.parentArrayIndex;
 
                     if (--count <= 0)
                     {
-
                         return;
                     }
                 }
@@ -647,6 +643,26 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        void updateStaticAttack(float time, bool fullUpdate, AbsGroup attack_sp)
+        {
+            Vector2 diff = new Vector2(
+                    attack_sp.position.X - position.X,
+                    attack_sp.position.Z - position.Z);
+
+            if (diff.Length() - attack_sp.groupRadius < attackRadius)
+            {
+                //Attack
+                if (soldiers != null)
+                {
+                    var soldiersC = soldiers.counter();
+                    while (soldiersC.Next())
+                    {
+                        soldiersC.sel.update2_battle_attack_static(time, fullUpdate);
+                    }
+                }
+            }
+        }
+
         void cancelCommand()
         {
             command = null;
@@ -657,7 +673,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
         
 
-        public void update(float time, bool fullUpdate)
+        virtual public void update(float time, bool fullUpdate)
         {
             if (debugTagged)
             {
@@ -689,7 +705,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         cancelCommand();
                     }
-                    
+
                     if (command_sp.hasPathCommand(out bool towardsUnit))
                     {
                         //Battle update
@@ -710,7 +726,14 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-                    updateMoveAndAttackTarget(time, fullUpdate, attack_sp);
+                    if (InGuardPost())
+                    {
+                        updateStaticAttack(time, fullUpdate, attack_sp);
+                    }
+                    else
+                    {
+                        updateMoveAndAttackTarget(time, fullUpdate, attack_sp);
+                    }
                 }
             }
             else
@@ -1839,15 +1862,9 @@ namespace VikingEngine.DSSWars.GameObject
         //    goalWp = armyPlacement(areaCenter);
         //}
 
-        public void setGroundY()
+        virtual public void setGroundY()
         {
             position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
-            //var counter = soldiers.counter();
-            //while (counter.Next())
-            //{
-            //    counter.sel.firstUpdate();
-            //}
-            //++lifeState;
         }
 
         //public void OrderHalt()
@@ -2225,6 +2242,9 @@ namespace VikingEngine.DSSWars.GameObject
         //    return AllUnits.UnitFilterIcon( soldierConscript.filterType());
         //}
 
+        virtual public Defence.GuardGroup GetGuardGroup()
+        { throw new NotImplementedException(); }
+
         public override void TypeIcon(RichBoxContent content)
         {
             content.Add(new RbImage(AllUnits.UnitFilterIcon(soldierConscript.filterType())));
@@ -2234,6 +2254,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             var type = soldierConscript.unitType();
             return "Group " + type.ToString() + " x" + soldiers.Count.ToString() + ", id" + parentArrayIndex.ToString();
+        }
+
+        virtual public bool InGuardPost()
+        {
+            return false;
         }
     }    
 

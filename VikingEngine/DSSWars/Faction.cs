@@ -550,6 +550,12 @@ namespace VikingEngine.DSSWars
             {
                 armiesC.sel.asyncPathUpdate(pathThreadIndex);
             }
+
+            var citiesC = cities.counter();
+            while (citiesC.Next())
+            {
+                citiesC.sel.asyncPathUpdate(pathThreadIndex);
+            }
         }
 
         public void asynchCullingUpdate(float time, bool bStateA)

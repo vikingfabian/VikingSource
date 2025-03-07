@@ -50,17 +50,6 @@ namespace VikingEngine.DSSWars.GameObject
         //public Vector3 leftCrewPosDiff;
         public int factionUniqueType = -1;
 
-        
-
-        
-
-        //public void setupJavelinCommand()
-        //{
-        //    Command_Javelin = true;
-        //    secondaryAttack = AttackType.Javelin;
-        //    secondaryAttackDamage = 100;
-        //    secondaryAttackRange = 1f;
-        //}
 
         public override AbsSoldierUnit CreateUnit()
         {            

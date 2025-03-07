@@ -682,8 +682,8 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
-                    hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
-                    //battleLineUpTest(true);
+                    //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
+                    battleLineUpTest(true);
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
@@ -1269,83 +1269,83 @@ namespace VikingEngine.DSSWars.Players
             Army friendlyArmy, enemyArmy;
 
 
-            //if (friendly)
-            {
-                var army = faction.NewArmy(position);
-                friendlyArmy = army;
-                army.rotation = playerRot;
+            ////if (friendly)
+            //{
+            //    var army = faction.NewArmy(position);
+            //    friendlyArmy = army;
+            //    army.rotation = playerRot;
 
-                {
-                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                    {
-                        conscript = new ConscriptProfile()
-                        {
-                            weapon = Resource.ItemResourceType.Sword,
-                            armorLevel = Resource.ItemResourceType.IronArmor,
-                            training = TrainingLevel.Basic,
-                            specialization = SpecializationType.Traditional,
-                        }
-                    };
+            //    {
+            //        SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+            //        {
+            //            conscript = new ConscriptProfile()
+            //            {
+            //                weapon = Resource.ItemResourceType.Sword,
+            //                armorLevel = Resource.ItemResourceType.IronArmor,
+            //                training = TrainingLevel.Basic,
+            //                specialization = SpecializationType.Traditional,
+            //            }
+            //        };
 
-                    for (int i = 0; i < 8; ++i)
-                    {
-                        new SoldierGroup(army, SoldierProfile, army.position);
-                    }
-                }
-                {
-                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                    {
-                        conscript = new ConscriptProfile()
-                        {
-                            weapon = Resource.ItemResourceType.Bow,
-                            armorLevel = Resource.ItemResourceType.IronArmor,
-                            training = TrainingLevel.Basic,
-                            specialization = SpecializationType.Traditional,
-                        }
-                    };
+            //        for (int i = 0; i < 8; ++i)
+            //        {
+            //            new SoldierGroup(army, SoldierProfile, army.position);
+            //        }
+            //    }
+            //    {
+            //        SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+            //        {
+            //            conscript = new ConscriptProfile()
+            //            {
+            //                weapon = Resource.ItemResourceType.Bow,
+            //                armorLevel = Resource.ItemResourceType.IronArmor,
+            //                training = TrainingLevel.Basic,
+            //                specialization = SpecializationType.Traditional,
+            //            }
+            //        };
 
-                    for (int i = 0; i < 4; ++i)
-                    {
-                        new SoldierGroup(army, SoldierProfile, army.position);
-                    }
-                }
-                //{
-                //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                //    {
-                //        conscript = new ConscriptProfile()
-                //        {
-                //            weapon = Resource.ItemResourceType.HandCulverin,
-                //            armorLevel = Resource.ItemResourceType.IronArmor,
-                //            training = TrainingLevel.Basic,
-                //            specialization = SpecializationType.Traditional,
-                //        }
-                //    };
+            //        for (int i = 0; i < 4; ++i)
+            //        {
+            //            new SoldierGroup(army, SoldierProfile, army.position);
+            //        }
+            //    }
+            //    //{
+            //    //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+            //    //    {
+            //    //        conscript = new ConscriptProfile()
+            //    //        {
+            //    //            weapon = Resource.ItemResourceType.HandCulverin,
+            //    //            armorLevel = Resource.ItemResourceType.IronArmor,
+            //    //            training = TrainingLevel.Basic,
+            //    //            specialization = SpecializationType.Traditional,
+            //    //        }
+            //    //    };
 
-                //    for (int i = 0; i < 4; ++i)
-                //    {
-                //        new SoldierGroup(army, SoldierProfile, army.position);
-                //    }
-                //}
-                //{
-                //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                //    {
-                //        conscript = new ConscriptProfile()
-                //        {
-                //            weapon = Resource.ItemResourceType.ManCannonBronze,
-                //            armorLevel = Resource.ItemResourceType.IronArmor,
-                //            training = TrainingLevel.Basic,
-                //            specialization = SpecializationType.Traditional,
-                //        }
-                //    };
+            //    //    for (int i = 0; i < 4; ++i)
+            //    //    {
+            //    //        new SoldierGroup(army, SoldierProfile, army.position);
+            //    //    }
+            //    //}
+            //    //{
+            //    //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+            //    //    {
+            //    //        conscript = new ConscriptProfile()
+            //    //        {
+            //    //            weapon = Resource.ItemResourceType.ManCannonBronze,
+            //    //            armorLevel = Resource.ItemResourceType.IronArmor,
+            //    //            training = TrainingLevel.Basic,
+            //    //            specialization = SpecializationType.Traditional,
+            //    //        }
+            //    //    };
 
-                //    for (int i = 0; i < 2; ++i)
-                //    {
-                //        new SoldierGroup(army, SoldierProfile, army.position);
-                //    }
-                //}
-                army.setAsStartArmy();
-                //army.(true);
-            }
+            //    //    for (int i = 0; i < 2; ++i)
+            //    //    {
+            //    //        new SoldierGroup(army, SoldierProfile, army.position);
+            //    //    }
+            //    //}
+            //    army.setAsStartArmy();
+            //    //army.(true);
+            //}
             //else
             {
 
@@ -1353,23 +1353,23 @@ namespace VikingEngine.DSSWars.Players
                 enemyArmy = army;
                 army.rotation = enemyRot;
 
-                {
-                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                    {
-                        conscript = new ConscriptProfile()
-                        {
-                            weapon = Resource.ItemResourceType.Sword,
-                            armorLevel = Resource.ItemResourceType.IronArmor,
-                            training = TrainingLevel.Basic,
-                            specialization = SpecializationType.Traditional,
-                        }
-                    };
+                //{
+                //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                //    {
+                //        conscript = new ConscriptProfile()
+                //        {
+                //            weapon = Resource.ItemResourceType.Sword,
+                //            armorLevel = Resource.ItemResourceType.IronArmor,
+                //            training = TrainingLevel.Basic,
+                //            specialization = SpecializationType.Traditional,
+                //        }
+                //    };
 
-                    for (int i = 0; i < 6; ++i)
-                    {
-                        new SoldierGroup(army, SoldierProfile, army.position);
-                    }
-                }
+                //    for (int i = 0; i < 6; ++i)
+                //    {
+                //        new SoldierGroup(army, SoldierProfile, army.position);
+                //    }
+                //}
                 {
                     SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                     {
@@ -1382,7 +1382,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 4; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -1426,7 +1426,7 @@ namespace VikingEngine.DSSWars.Players
                 army.setAsStartArmy();
             }
 
-            friendlyArmy.Order_Attack(enemyArmy);
+            //friendlyArmy.Order_Attack(enemyArmy);
 
         }
 

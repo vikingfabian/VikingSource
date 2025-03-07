@@ -129,8 +129,7 @@ namespace VikingEngine.DSSWars.Players
                                         }
 
                                         hasSelection = selectTileResult != SelectTileResult.None;
-                                        model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
-                                        model.position.Y = subTile.groundY;
+                                        model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
                                         return;
 
                                     case TerrainMainType.Mine:
@@ -144,6 +143,11 @@ namespace VikingEngine.DSSWars.Players
                                                 tileOfInterest = true;
                                                 break;
                                         }
+                                        break;
+                                    case TerrainMainType.Wall:
+                                        selectTileResult = SelectTileResult.Wall;
+                                        hasSelection = true;
+                                        model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
                                         break;
                                 }
                             }
@@ -312,7 +316,7 @@ namespace VikingEngine.DSSWars.Players
         Recruitment,
         Conscript,
         School,
-
+        Wall,
         //Resources,
         
         Build,

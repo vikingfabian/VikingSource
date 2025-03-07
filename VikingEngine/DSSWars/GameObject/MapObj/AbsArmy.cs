@@ -32,6 +32,15 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
+        virtual public void asyncNearObjectsUpdate()
+        {
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {
+                groupsC.sel.asynchNearObjectsUpdate();
+            }
+        }
+
         abstract public bool IdleObjetive();
 
         abstract public bool IsCity();

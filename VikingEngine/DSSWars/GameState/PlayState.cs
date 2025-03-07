@@ -577,7 +577,7 @@ namespace VikingEngine.DSSWars
 
                 foreach (var m in DssRef.world.cities)
                 {
-                    m.asynchNearObjectsUpdate();
+                    m.asyncNearObjectsUpdate();
                 }
 
                 var factions = DssRef.world.factions.counter();

@@ -8,6 +8,7 @@ using Valve.Steamworks;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
@@ -33,7 +34,7 @@ namespace VikingEngine.DSSWars.Display
     {
         public static readonly List<MenuTab> Tabs = new List<MenuTab>() { 
             MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket, 
-            MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Progress,
+            MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Defence, MenuTab.Progress,
             MenuTab.Tag,MenuTab.Help,};
 
         Players.LocalPlayer player;
@@ -131,6 +132,10 @@ namespace VikingEngine.DSSWars.Display
 
                     case MenuTab.Conscript:
                         conscriptTab(content);
+                        break;
+
+                    case MenuTab.Defence:
+                        defenceTab(content);
                         break;
 
                     case MenuTab.BlackMarket:
@@ -1828,6 +1833,11 @@ namespace VikingEngine.DSSWars.Display
             new ConscriptMenu().ToHud(city, player, content);
         }
 
+        void defenceTab(RichBoxContent content)
+        {
+            new DefenceMenu().ToHud(city, player, content);
+        }
+
         void deliveryTab(RichBoxContent content)
         {
             new DeliveryMenu().ToHud(city, player, content);
@@ -2298,6 +2308,7 @@ namespace VikingEngine.DSSWars.Display
         Progress,
         Mix,
         Help,
+        Defence,
         NUM_NONE
     }
 
