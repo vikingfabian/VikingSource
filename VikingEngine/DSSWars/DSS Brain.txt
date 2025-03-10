@@ -1,6 +1,7 @@
 ﻿BETA UPDATE
 -Change Log-
 Sounds of waves
+Fixed food eating statitics
 
 
 !save av settings
@@ -40,6 +41,8 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-flag editor behöver scroll
+-open editor state (för att minska risken fär  
 -palisade item, quick setup/teardown (palisade tower)
 -show all resources option
 -toggle cam angle

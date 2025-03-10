@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.GameObject
             data.attackDamageStructure = data.attackDamage;
             data.attackDamageSea = data.attackDamage;
             data.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.5f;
-            hasBannerMan = false;
+            //hasBannerMan = false;
 
             
             goldCost = 0;

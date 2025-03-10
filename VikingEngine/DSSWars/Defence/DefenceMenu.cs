@@ -21,7 +21,8 @@ namespace VikingEngine.DSSWars.Defence
                 DefenceStatus currentStatus = get();
                 content.Add(new RbText(".Guard post " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_TypeName));
 
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Archer") },
+                content.newLine();
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Add guard") },
                     new RbAction1Arg<int>(city.debugGuardConscript, currentStatus.idAndPosition)));
             }
         }

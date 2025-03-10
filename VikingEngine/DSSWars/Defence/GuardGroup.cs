@@ -15,17 +15,35 @@ namespace VikingEngine.DSSWars.Defence
         public int assignedToPost_IdAndPosition = -1;
         public float postYPos;
        
-
         public GuardGroup(City city, SoldierConscriptProfile conscript, Vector3 startPos)
             :base(city, conscript, startPos) 
         {
 
         }
 
+        public override void completeTransform(SoldierTransformType transformType, int positionId)
+        {
+            if (transformType == SoldierTransformType.EnterGuard)
+            {
+                assignedToPost_IdAndPosition = positionId;
+                var city = this.army.GetCity();
+                TeleportToDefencePost(city, assignedToPost_IdAndPosition, city.defenceIxFromPosId(assignedToPost_IdAndPosition));
+            }
+            else if (transformType == SoldierTransformType.ExitGuard)
+            {
+                assignedToPost_IdAndPosition = -1;
+                setGroundY();
+            }
+            else
+            {
+                base.completeTransform(transformType, positionId);
+            }
+
+            inShipOrGuardTransform = false;
+        }
+
         public void TeleportToDefencePost(City city, int IdAndPosition, int defenceIndex)
         {
-            //setRestingMode(true);
-
             city.defence_assignGuard_toIndex(this, defenceIndex);
             var subPos = conv.IntToIntVector2(IdAndPosition);
 
@@ -143,6 +161,4 @@ namespace VikingEngine.DSSWars.Defence
             return assignedToPost_IdAndPosition >= 0;
         }
     }
-
-
 }

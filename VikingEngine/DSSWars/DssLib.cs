@@ -241,8 +241,7 @@ namespace VikingEngine.DSSWars
 
         public static readonly int NobelHouseWorkForceReqiurement = DssConst.HeadCityStartMaxWorkForce;
 
-        public const float ShipBuildTimeSec = 5f;
-        public const float ShipExitTimeSec = 3f;
+        
         public const float BattleMaxQueTimeMs = 2000;
 
         #region OVERVIEW_LAYERS
@@ -276,9 +275,11 @@ namespace VikingEngine.DSSWars
 
     enum SoldierTransformType
     { 
-        TraningComplete,
         ToShip,
         FromShip,
+
+        EnterGuard,
+        ExitGuard,
     }
     enum AiAggressivity
     { 

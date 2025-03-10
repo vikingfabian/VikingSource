@@ -239,6 +239,13 @@ namespace VikingEngine.DSSWars.Display
         {
             Ref.gamesett.volumeOptions(content);
 
+            if (lobby)
+            {
+                content.newParagraph();
+                content.h2("Graphics options", HudLib.TitleColor_Head);
+                Ref.gamesett.graphicsOptions(content, menu);
+            }
+
             content.newParagraph();
             content.h2("Input", HudLib.TitleColor_Head);
             content.newLine();

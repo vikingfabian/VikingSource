@@ -549,6 +549,10 @@ namespace VikingEngine.LootFest
         wars_loading_anim,
         wars_shipbuild,
 
+        wars_rosewarrior,
+        wars_rosetank,
+        wars_rosedog,
+
         little_ballistaorc,
         little_bombcatapultman,
         little_bombcatapultorc,

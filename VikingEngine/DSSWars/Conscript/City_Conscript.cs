@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.Map;
@@ -128,14 +129,6 @@ namespace VikingEngine.DSSWars.GameObject
                                             DssRef.state.progress.onCultureBuild(false);
                                             break;
                                     }
-                                    //if (Culture == CityCulture.Archers && status.inProgress.RangedManUnit())
-                                    //{
-                                    //    DssRef.state.progress.onCultureBuild(true);
-                                    //}
-                                    //else if (Culture == CityCulture.Warriors && status.inProgress.MeleeSoldier())
-                                    //{
-                                    //    DssRef.state.progress.onCultureBuild(false);
-                                    //}
                                 }
                                 break;
                         }
@@ -273,41 +266,24 @@ namespace VikingEngine.DSSWars.GameObject
 
                 BarracksStatus status = conscriptBuildings[selectedConscript];
                 status.returnItems(this);
-                //if (status.active == ConscriptActiveStatus.CollectingEquipment ||
-                //    status.active == ConscriptActiveStatus.CollectingMen)
-                //{
-                //    //return items
-                //    ItemResourceType weaponItem = ConscriptProfile.WeaponItem(status.inProgress.weapon);
-                //    ItemResourceType armorItem = ConscriptProfile.ArmorItem(status.inProgress.armorLevel);
-
-                //    AddGroupedResource(weaponItem, status.equipmentCollected);
-
-                //    if (status.inProgress.armorLevel != ArmorLevel.None)
-                //    {
-                //        AddGroupedResource(armorItem, status.equipmentCollected);
-                //    }
-
-                //    workForce += status.menCollected;
-
-                //    status.active = ConscriptActiveStatus.Idle;
-
-                   
-                //}
+                
                 conscriptBuildings[selectedConscript] = status;
             }
         }
 
         public void conscriptArmy(ConscriptProfile profile, Vector3 startPos, int count)
         {
-            Army army = recruitToClosestArmy();
+            AbsArmy army = null;
 
-            if (army == null)
-            {
-                //IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
+            if (profile.specialization != SpecializationType.CityGuard)
+            {   
+                army = recruitToClosestArmy();
 
-                army = faction.NewArmy(recruitToTile);
+                if (army == null)
+                {
+                    army = faction.NewArmy(recruitToTile);
+                }
             }
-
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
             {
                 conscript = profile,
@@ -350,15 +326,25 @@ namespace VikingEngine.DSSWars.GameObject
                         soldierProfile.skillBonus = 1.2f;
                     }
                     break;
+            }
 
-            }
-            
-            
-            for (int i = 0; i < count; i++)
+            if (profile.specialization == SpecializationType.CityGuard)
             {
-                new SoldierGroup(army, soldierProfile, startPos);
+                for (int i = 0; i < count; i++)
+                {
+                    var group = new GuardGroup(this, soldierProfile, startPos);
+                    assignNewGuardGroup(group);
+                }
             }
-            army?.OnSoldierPurchaseCompleted();
+            else
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    new SoldierGroup(army, soldierProfile, startPos);
+                }
+                army?.GetArmy().OnSoldierPurchaseCompleted();
+            }
+            
         }
 
         public void debugConscript(ItemResourceType weapon)
@@ -442,14 +428,10 @@ namespace VikingEngine.DSSWars.GameObject
                 var subTile = DssRef.world.subTileGrid.Get(pos);
                 subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, 1);
                 DssRef.world.subTileGrid.Set(pos, subTile);
-               
 
-                BarracksStatus newBarrack = new BarracksStatus()
-                {
-                    profile = new ConscriptProfile() { weapon = ItemResourceType.SharpStick },
-                    type = Build.BuildAndExpandType.SoldierBarracks,
-                    idAndPosition = conv.IntVector2ToInt(pos),
-                };
+
+                BarracksStatus newBarrack = new BarracksStatus(Build.BuildAndExpandType.SoldierBarracks);
+                newBarrack.idAndPosition = conv.IntVector2ToInt(pos);
                 newBarrack.profile.armorLevel = ItemResourceType.PaddedArmor;
 
                 conscriptBuildings.Add(newBarrack);

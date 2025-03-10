@@ -402,6 +402,16 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.ManCannonIron:
                     splashCount = 6; return DssConst.WeaponDamage_ManCannonIron;
 
+                case ItemResourceType.RoseWarrior_soldier:
+                    return DssConst.WeaponDamage_LongSword;
+
+                case ItemResourceType.RoseWarrior_tank:
+                    return DssConst.WeaponDamage_MithrilSword;
+
+                case ItemResourceType.RoseWarrior_dog:
+                    return DssConst.WeaponDamage_Sword;
+
+
                 default: throw new NotImplementedException();
             }
         }

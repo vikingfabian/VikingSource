@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ExperenceOrDistancePrio_Description => "Idle workers will be selected to work either by distance or experience";
 
 
-        public string Technology_Description = "Each city has a technology tree. Each technology will new unlock buildings and items.";
+        public string Technology_Description = "Each city has a technology tree. Each technology will unlock buildings and items.";
         public string Experience_Description = "Wokers will gain experience and improve";
         
 

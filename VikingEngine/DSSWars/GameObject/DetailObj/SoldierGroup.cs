@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.GameObject
         
         public GroupState state = GroupState.Idle;
         
-        public bool inShipTransform = false;
+        public bool inShipOrGuardTransform = false;
 
         public AbsSoldierProfile typeCurrentData;
         public AbsSoldierProfile typeSoldierData;
@@ -396,7 +396,7 @@ namespace VikingEngine.DSSWars.GameObject
         IntVector2 bannerManPos()
         {
             IntVector2 bannerPos;
-            if (typeCurrentData.hasBannerMan)
+            if (soldierData.hasBannerMan)//typeCurrentData.hasBannerMan)
             {
                 bannerPos = new IntVector2(soldierData.rowWidth / 2, soldierData.columnsDepth - 1);
             }
@@ -408,7 +408,7 @@ namespace VikingEngine.DSSWars.GameObject
             return bannerPos;
         }
 
-        public void completeTransform(SoldierTransformType transformType)
+        virtual public void completeTransform(SoldierTransformType transformType, int positionId)
         {
             if (isDeleted) return;
 
@@ -465,7 +465,7 @@ namespace VikingEngine.DSSWars.GameObject
                 state = GroupState.FindArmyPlacement;
             }
 
-            inShipTransform = false;
+            inShipOrGuardTransform = false;
         }
 
 
@@ -531,9 +531,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (waterNode != isShip)
                     {
-                        if (!inShipTransform)
+                        if (!inShipOrGuardTransform)
                         {
-                            inShipTransform = true;
+                            //inShipOrGuardTransform = true;
                             new ShipTransform(this, true);
                         }
                     }
@@ -663,12 +663,20 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void cancelCommand()
+        public void cancelCommand()
         {
-            command = null;
-            if (state == GroupState.FollowCommand)
+            if (command.nextCommand != null)
             {
-                state = GroupState.GoingIdle;
+                command = command.nextCommand;
+                command.begin(this);
+            }
+            else
+            {
+                command = null;
+                if (state == GroupState.FollowCommand)
+                {
+                    state = GroupState.GoingIdle;
+                }
             }
         }
         
@@ -680,7 +688,7 @@ namespace VikingEngine.DSSWars.GameObject
                 lib.DoNothing();
             }
 
-            if (inShipTransform)
+            if (inShipOrGuardTransform)
             {
                 return;
             }
@@ -750,7 +758,7 @@ namespace VikingEngine.DSSWars.GameObject
                         walking_Peace(time, towardsUnit? command_sp.AttackTarget().position : command_sp.GoalPosition(), out bool complete);
                         if (complete)
                         {
-                            command_sp.OnMovePathComplete();
+                            command_sp.OnMovePathComplete(this);
                         }
                         state = GroupState.FollowCommand;
                     }
@@ -2118,7 +2126,7 @@ namespace VikingEngine.DSSWars.GameObject
                 bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
                 if (waterNode != isShip)
                 {
-                    completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip);
+                    completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
                 }
 
                 teleportSoldiers();

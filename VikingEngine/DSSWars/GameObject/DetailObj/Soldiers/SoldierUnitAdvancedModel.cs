@@ -63,9 +63,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         public AbsDetailUnitAdvancedModel(AbsSoldierUnit soldier)
         {
-            model = soldier.group.army.faction.AutoLoadModelInstance(
-                soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale, true);
-
+            if (soldier.soldierData.factionColoredModel)
+            {
+                model = soldier.group.army.faction.AutoLoadModelInstance(
+                    soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale, true);
+            }
+            else
+            {
+                model = DssRef.models.ModelInstance(soldier.soldierData.modelName, true, soldier.soldierData.modelScale);
+            }
             model.position = soldier.position;
 
             shadowPlane = new Graphics.Mesh(LoadedMesh.plane, soldier.position,

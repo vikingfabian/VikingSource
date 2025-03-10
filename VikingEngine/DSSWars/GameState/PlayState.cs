@@ -346,7 +346,7 @@ namespace VikingEngine.DSSWars
             {
                 Ref.music.Update();
             }
-            DssRef.ambience.update();
+            
 
             if (Ref.steam.inOverlay)
             {
@@ -371,6 +371,8 @@ namespace VikingEngine.DSSWars
                 
                 if (isReady)
                 {
+                    DssRef.ambience.update();
+
                     if (host)
                     {
                         foreach (var m in DssRef.world.cities)
@@ -800,7 +802,8 @@ namespace VikingEngine.DSSWars
             var remotePlayerC = remotePlayers.counter();
             while (remotePlayerC.Next())
             {
-                if (remotePlayerC.sel.networkPeer.peer == peer)
+                if (remotePlayerC.sel.networkPeer != null && 
+                    remotePlayerC.sel.networkPeer.peer == peer)
                 {
                     //TODO return region to AI
                     remotePlayerC.RemoveAtCurrent();

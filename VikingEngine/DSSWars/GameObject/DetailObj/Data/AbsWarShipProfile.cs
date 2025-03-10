@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.GameObject
             boundRadius = DssVar.StandardBoundRadius * 6f;
             
 
-            hasBannerMan = false;
+            //hasBannerMan = false;
 
            
             

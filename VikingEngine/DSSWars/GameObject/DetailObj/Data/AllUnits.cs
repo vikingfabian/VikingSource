@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject
             AverageGroupStrength = DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
         }
 
-        public void AddModelsToLoad(List<VoxelModelName> modelNames)
+        public void AddRawModelsToLoad(List<VoxelModelName> modelNames)
         {
             modelNames.AddRange(
               new List<VoxelModelName>() {
@@ -145,19 +145,20 @@ namespace VikingEngine.DSSWars.GameObject
                 LootFest.VoxelModelName.wars_ballista_ship,
                 LootFest.VoxelModelName.wars_knight_ship,
 
-                 LootFest.VoxelModelName.wars_darklord,
+                 //LootFest.VoxelModelName.wars_darklord,
             });
+        }
 
-            //foreach (var s in soldiers)
-            //{
-            //    if (s != null)
-            //    {
-            //        for (int i = 0; i < s.modelVariationCount; ++i)
-            //        {
-            //            arraylib.ListAddIfNotExist(modelNames, s.modelName + i);
-            //        }
-            //    }
-            //}
+        public List<VoxelModelName> AddUniqueModelsToLoad()
+        {
+            return new List<VoxelModelName>() {
+
+                 LootFest.VoxelModelName.wars_darklord,
+                LootFest.VoxelModelName.wars_rosewarrior,
+                LootFest.VoxelModelName.wars_rosetank,
+                LootFest.VoxelModelName.wars_rosedog,
+
+            };
         }
 
         AbsSoldierProfile add(AbsSoldierProfile soldier)
@@ -408,6 +409,7 @@ namespace VikingEngine.DSSWars.GameObject
         Viking,
         GreenSoldier,
         DarkLord,
+        RoseWarrior,
         NUM
     }
 

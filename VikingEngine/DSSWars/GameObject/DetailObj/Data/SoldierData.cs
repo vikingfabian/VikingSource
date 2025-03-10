@@ -23,9 +23,11 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public float attackRange = 0;
         public float secondaryAttackRange = 0;
 
+        public bool factionColoredModel = true;
         public LootFest.VoxelModelName modelName = 0;
         public int modelVariationCount = 1;
         public SpriteName icon = SpriteName.MissingImage;
+        public bool hasBannerMan = true;
 
         public int defaultArmyPlacement =0;
         public float energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep;

@@ -197,6 +197,7 @@ namespace VikingEngine.DSSWars.Work
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
                     city.res_food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
+                    city.faction.res_food.onChange(-eatAmount);
                     energy += eatAmount * DssRef.difficulty.FoodEnergySett;
                     break;
 

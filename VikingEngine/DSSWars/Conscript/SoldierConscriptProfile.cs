@@ -134,6 +134,14 @@ namespace VikingEngine.DSSWars.Conscript
                         case ItemResourceType.ManCannonIron:
                             return UnitFilterType.ManCannonIron;
 
+                        case ItemResourceType.RoseWarrior_dog:
+                            return UnitFilterType.RoseWarrior;
+                        case ItemResourceType.RoseWarrior_soldier:
+                            return UnitFilterType.RoseWarrior;
+                        case ItemResourceType.RoseWarrior_tank:
+                            return UnitFilterType.RoseWarrior;
+
+
                         default:
                             throw new NotImplementedException();
 
@@ -271,6 +279,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
                     soldierData.workForcePerUnit = 2;
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                    soldierData.hasBannerMan = false;
                     //soldierData.ArmySpeedBonusLand = 0.8;
                     break;
 
@@ -413,6 +422,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+                    soldierData.hasBannerMan = false;
                     break;
 
                 case ItemResourceType.Manuballista:
@@ -438,6 +448,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+                    soldierData.hasBannerMan = false;
                     break;
 
                 case ItemResourceType.Catapult:
@@ -465,6 +476,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
+                    soldierData.hasBannerMan = false;
                     break;
 
                 case ItemResourceType.SiegeCannonBronze:
@@ -492,6 +504,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
+                    soldierData.hasBannerMan = false;
                     break;
 
                 case ItemResourceType.ManCannonBronze:
@@ -517,6 +530,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
+                    soldierData.hasBannerMan = false;
                     break;
 
                 case ItemResourceType.SiegeCannonIron:
@@ -543,6 +557,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+                    soldierData.hasBannerMan = false;
                     break;
 
                 case ItemResourceType.ManCannonIron:
@@ -568,7 +583,53 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+                    soldierData.hasBannerMan = false;
                     break;
+
+                case ItemResourceType.RoseWarrior_soldier:
+                    soldierData.mainAttack = AttackType.Melee;
+                    soldierData.attackRange = 0.05f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_rosewarrior;
+                    soldierData.factionColoredModel = false;
+                    soldierData.icon = SpriteName.MissingImage;
+                    soldierData.modelScale = DssConst.Men_StandardModelScale * 1.4f;
+                    soldierData.hasBannerMan = false;
+                    soldierData.rowWidth = 5;
+                    soldierData.columnsDepth = 4;
+                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 1.2f;
+                    soldierData.groupSpacingRndOffset= DssVar.StandardBoundRadius * 1f;
+                    break;
+
+                case ItemResourceType.RoseWarrior_dog:
+                    soldierData.mainAttack = AttackType.Melee;
+                    soldierData.attackRange = 0.05f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_rosedog;
+                    soldierData.factionColoredModel = false;
+                    soldierData.icon = SpriteName.MissingImage;
+                    soldierData.modelScale = DssConst.Men_StandardModelScale * 1f;
+                    soldierData.hasBannerMan = false;
+                    soldierData.rowWidth = 5;
+                    soldierData.columnsDepth = 4;
+                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 1.2f;
+                    soldierData.groupSpacingRndOffset = DssVar.StandardBoundRadius * 1f;
+                    break;
+
+                case ItemResourceType.RoseWarrior_tank:
+                    soldierData.mainAttack = AttackType.Melee;
+                    soldierData.attackRange = 0.05f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_rosetank;
+                    soldierData.factionColoredModel = false;
+                    soldierData.icon = SpriteName.MissingImage;
+                    soldierData.modelScale = DssConst.Men_StandardModelScale * 2f;
+                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+                    soldierData.hasBannerMan = false;
+
+                    soldierData.rowWidth =3;
+                    soldierData.columnsDepth = 2;
+                    soldierData.groupSpacingRndOffset = DssVar.StandardBoundRadius * 1f;
+                    break;
+
+
             }
 
             switch (conscript.specialization)
@@ -577,7 +638,8 @@ namespace VikingEngine.DSSWars.Conscript
                     
                     soldierData.rowWidth = 5;
                     soldierData.columnsDepth = 1;
-                    soldierData.groupSpacing *= 0.5f; 
+                    soldierData.groupSpacing *= 0.5f;
+                    soldierData.hasBannerMan = false;
                     break;
 
                 case SpecializationType.Field:
@@ -636,6 +698,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
                     soldierData.basehealth = DssConst.Soldier_DefaultHealth * 4;
                     soldierData.modelName = LootFest.VoxelModelName.wars_darklord;
+                    soldierData.factionColoredModel = false;
 
                     soldierData.workForcePerUnit = 0;
                     soldierData.rowWidth = 1;
@@ -659,6 +722,7 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.canAttackCharacters = false;
             soldierData.canAttackStructure = false;
 
+            soldierData.factionColoredModel = true;
             soldierData.modelName = LootFest.VoxelModelName.war_bannerman;
             soldierData.modelVariationCount = 1;
 
@@ -667,6 +731,7 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void shipSetup(ref SoldierData soldierData)
         {
+            soldierData.hasBannerMan = false;
             soldierData.modelName = LootFest.VoxelModelName.NUM_NON;
 
             soldierData.walkingSpeed = DssConst.Men_StandardShipSpeed;

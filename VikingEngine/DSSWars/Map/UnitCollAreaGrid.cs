@@ -89,6 +89,20 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
+            foreach (var city in DssRef.world.cities)
+            {
+                var groups = city.groups.counter();
+                while (groups.Next())
+                {
+                    IntVector2 area = groups.sel.tilePos / UnitGridSquareWidth;
+                    UnitCollArea collArea;
+                    if (grid.TryGet(area, out collArea))
+                    {
+                        collArea.processAdd(groups.sel);
+                    }
+                }
+            }
+
             //MOVE POINTERS
             for (int y = 0; y < grid.Size.Y; ++y)
             {
@@ -194,59 +208,6 @@ namespace VikingEngine.DSSWars.Map
             return playerNearMapObjects;
         }
 
-
-        //public List<AbsMapObject> MapControlsWorkerCities(IntVector2 tilePos)
-        //{
-        //    const int MinCityCount = 6;
-        //    UnitCollArea area;
-        //    IntVector2 areaPos = tilePos / UnitGridSquareWidth;
-        //    playerNearMapObjects.Clear();
-        //    checkArea(areaPos); //adding center tile
-
-        //    int radius = 1;
-
-        //    while (playerNearMapObjects.Count < MinCityCount)
-        //    {
-        //        ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(areaPos, radius));
-        //        while (loop.Next())
-        //        {
-        //            checkArea(loop.Position);
-        //        }
-
-        //        ++radius;
-        //    }
-
-        //    //if (false)
-        //    //{
-        //    //    int find = 138;
-        //    //    //find specific city
-        //    //    for (int y = 0; y < grid.Size.Y; ++y)
-        //    //    {
-        //    //        for (int x = 0; x < grid.Size.X; ++x)
-        //    //        {
-        //    //            foreach (var c in grid.array[x, y].cities)
-        //    //            {
-        //    //                if (c.parentArrayIndex == find)
-        //    //                { 
-        //    //                    lib.DoNothing();
-        //    //                    break;
-        //    //                }
-        //    //            }
-
-        //    //        }
-        //    //    }
-        //    //}
-
-        //    return playerNearMapObjects;
-
-        //    void checkArea(IntVector2 pos)
-        //    {
-        //        if (grid.TryGet(pos, out area))
-        //        {
-        //            playerNearMapObjects.AddRange(area.cities);
-        //        }
-        //    }
-        //}
 
         public bool PlayerInBattle(IntVector2 tilePos, Faction player)
         {
@@ -356,24 +317,6 @@ namespace VikingEngine.DSSWars.Map
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
 
-            //if (grid.TryGet(areaPos.X, areaPos.Y, out area))
-            //{
-            //    if (area.cities != null)
-            //    {
-            //        playerNearMapObjects.AddRange(area.cities);
-            //    }
-            //    var armies_sp = area.armies;
-            //    if (armies_sp != null)
-            //    {
-            //        playerNearMapObjects.AddRange(armies_sp);
-            //    }
-            //}
-
-            //if (!controller && playerNearMapObjects.Count > 0)
-            //{
-            //    return playerNearMapObjects;
-            //}
-
             const int Radius = 3;
 
             for (int y = areaPos.Y - Radius; y <= areaPos.Y + Radius; ++y)
@@ -411,23 +354,6 @@ namespace VikingEngine.DSSWars.Map
 
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
-
-            //if (grid.TryGet(areaPos.X, areaPos.Y, out area))
-            //{
-            //    var groups_sp = area.groups;
-            //    if (groups_sp != null)
-            //    {
-            //        for (int i = 0; i < groups_sp.Count; ++i)
-            //        {
-            //            groups_sp[i].soldiers.toList(ref playerNearDetailUnits);
-            //        }
-            //    }
-            //}
-
-            //if (playerNearDetailUnits.Count > 0)
-            //{
-            //    return playerNearDetailUnits;
-            //}
 
             for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
             {
@@ -632,9 +558,7 @@ namespace VikingEngine.DSSWars.Map
                                 }
                             }
                         }
-
-                        //var city = this.cityGrid.Get(x, y);
-                        //if (collArea.city != null)// && city.faction != faction)
+                                               
                         foreach (var cityIx in area.cities)
                         {
                             var city = DssRef.world.cities[cityIx];
@@ -978,7 +902,6 @@ namespace VikingEngine.DSSWars.Map
                     }
                     lock (area.armies)
                     {
-                        //var armies_sp = area.armies;
                         if (area.armies != null)
                         {
                             foreach (var army in area.armies)
@@ -1022,11 +945,6 @@ namespace VikingEngine.DSSWars.Map
 
         public void processAdd(GameObject.SoldierGroup group)
         {
-            //if (processingGroups == null)
-            //{
-            //    processingGroups = new List<GameObject.SoldierGroup>(16);
-            //}
-
             processingGroups.Add(group);
         }
 
@@ -1052,32 +970,16 @@ namespace VikingEngine.DSSWars.Map
 
             lock (groups)
             {
-                //if (processingGroups == null || processingGroups.Count == 0)
-                //{
-                //    processingGroups = null;
-                //    groups = null;
-                //}
-                //else
-                //{
                     var pointer = groups;
                     groups = processingGroups;
                     processingGroups = pointer;
-                //}
             }
 
             lock (armies)
             {
-                //if (processingArmies == null || processingArmies.Count == 0)
-                //{
-                //    processingArmies = null;
-                //    armies = null;
-                //}
-                //else
-                //{
                     var pointer = armies;
                     armies = processingArmies;
                     processingArmies = pointer;
-                //}
             }
         }
     }
@@ -1100,37 +1002,4 @@ namespace VikingEngine.DSSWars.Map
         }
 
     }
-    //class UnitAreaCityCollector
-    //{
-    //    UnitCollAreaGrid grid;
-
-
-    //    public UnitAreaCityCollector(UnitCollAreaGrid grid)
-    //    {
-    //        this.grid = grid;
-
-    //    }
-
-
-
-
-
-    //    //public void end()
-    //    //{
-    //    //    var loop = grid.grid.LoopInstance();
-
-    //    //    while (loop.Next())
-    //    //    {
-    //    //        var clist = cities[loop.Position.X, loop.Position.Y];
-    //    //        if (clist != null)
-    //    //        {
-    //    //            if (clist.Count > 1)
-    //    //            {
-    //    //                throw new Exception();
-    //    //            }
-    //    //            grid.grid.Get(loop.Position).city = clist.ToArray()[0];
-    //    //        }
-    //    //    }
-    //    //}
-    //}
 }

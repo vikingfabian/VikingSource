@@ -24,16 +24,26 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 var target = player.mapControls.hover.obj.GetSoldierGroup();
                 foreach (SoldierGroup group in groups)
                 {
-                    new AttackCommand(group, target);
+                    new AttackCommand(group, target, false);
                 }
                 new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
             }
             else
             {
-                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.mapControls.subTilePosition);//WP.WorldPosToClosestSubtile_Centered(player.mapControls.mousePosition); //player.mapControls.screenPosToWorldPos(Input.Mouse.Position);
+                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.mapControls.subTilePosition);
                 foreach (SoldierGroup group in groups)
                 {
-                    new MoveCommand(group, pos);
+                    new MoveCommand(group, pos, false);
+
+                    if (group.InGuardPost())
+                    {
+                        new GuardPostTransform(group, -1, false);
+                    }
+
+                    if (player.mapControls.hover.subTile.selectTileResult == SelectTileResult.Wall)
+                    {
+                        new EnterPostCommand(group, player.mapControls.hover.subTile.subTilePos, true);
+                    }
                 }
                 new MoveHereAnimation(pos);
             }

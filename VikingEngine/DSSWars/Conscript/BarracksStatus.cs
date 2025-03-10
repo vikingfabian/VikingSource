@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
@@ -185,7 +186,7 @@ namespace VikingEngine.DSSWars.Conscript
             return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, type));
         }
 
-        public string activeStringOf(ConscriptActiveStatus status)
+        public string activeStringOf(ConscriptActiveStatus status, int menCount)
         {
             string result = null;
 
@@ -198,14 +199,14 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case ConscriptActiveStatus.CollectingEquipment:
                     {
-                        var progress = string.Format(DssRef.lang.Language_CollectProgress, equipmentCollected, DssConst.SoldierGroup_DefaultCount);
+                        var progress = string.Format(DssRef.lang.Language_CollectProgress, equipmentCollected, menCount);
                         result = string.Format(DssRef.lang.Conscription_Status_CollectingEquipment, progress);
                     }
                     break;
 
                 case ConscriptActiveStatus.CollectingMen:
                     {
-                        var progress = string.Format(DssRef.lang.Language_CollectProgress, menCollected, DssConst.SoldierGroup_DefaultCount);
+                        var progress = string.Format(DssRef.lang.Language_CollectProgress, menCollected, menCount);
                         result = string.Format(DssRef.lang.Conscription_Status_CollectingMen, progress);
                     }
                     break;
@@ -223,7 +224,8 @@ namespace VikingEngine.DSSWars.Conscript
             }
             else
             {
-                result = activeStringOf(active) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
+                int menCostProgress = menNeeded;
+                result = activeStringOf(active, menCostProgress) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 
             return result;

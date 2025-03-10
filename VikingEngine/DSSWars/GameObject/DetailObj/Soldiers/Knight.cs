@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
            
             
             modelAdjY = 0.1f;
-            hasBannerMan = false;
+            //hasBannerMan = false;
 
             description = DssRef.lang.UnitType_Description_Knight;
         }

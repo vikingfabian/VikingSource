@@ -10,11 +10,20 @@ namespace VikingEngine.DSSWars.Players.Command
 {
     abstract class AbsCommand
     {
+        public AbsCommand nextCommand = null;
+
         public bool haltCommand = false;
         public bool clearOldPath = true;
-        public AbsCommand(SoldierGroup group)
-        { 
-            group.command = this;
+        public AbsCommand(SoldierGroup group, bool queueCommand)
+        {
+            if (queueCommand && group.command != null)
+            {
+                group.command.placeLastInQueue(this);
+            }
+            else
+            {
+                group.command = this;
+            }
         }
 
         abstract public bool hasPathCommand(out bool pathTowardsUnit);
@@ -23,9 +32,54 @@ namespace VikingEngine.DSSWars.Players.Command
 
         virtual public AbsGroup AttackTarget() { return null;  }
 
-        virtual public void OnMovePathComplete()
-        { 
-            haltCommand = true;
+        virtual public void OnMovePathComplete(SoldierGroup group)
+        {
+            if (nextCommand != null)
+            {
+                group.cancelCommand();
+            }
+            else
+            {
+                haltCommand = true;
+            }
+        }
+
+        virtual public void begin(SoldierGroup group) { }
+
+        public void placeLastInQueue(AbsCommand next)
+        {
+            if (nextCommand == null)
+            {
+                nextCommand = next;
+            }
+            else
+            {
+                nextCommand.placeLastInQueue(next);
+            }
+        }
+    }
+
+    class EnterPostCommand : AbsCommand
+    {
+        IntVector2 subTile;
+
+        public EnterPostCommand(SoldierGroup group, IntVector2 subTile, bool queueCommand)
+            : base(group, queueCommand)
+        {
+            this.subTile = subTile;
+            group.wakeupSoldiers();
+        }
+
+        public override void begin(SoldierGroup group)
+        {
+            base.begin(group);
+            new GuardPostTransform(group, conv.IntVector2ToInt(subTile), false);
+        }
+
+        public override bool hasPathCommand(out bool pathTowardsUnit)
+        {
+            pathTowardsUnit = false;
+            return false;
         }
     }
 
@@ -33,8 +87,8 @@ namespace VikingEngine.DSSWars.Players.Command
     {
         Vector3 goalWp;
 
-        public MoveCommand(SoldierGroup group, Vector3 goalWp)
-            :base(group)
+        public MoveCommand(SoldierGroup group, Vector3 goalWp, bool queueCommand)
+            :base(group, queueCommand)
         { 
             this.goalWp = goalWp;
             group.wakeupSoldiers();
@@ -56,8 +110,8 @@ namespace VikingEngine.DSSWars.Players.Command
     {
         AbsGroup target;
 
-        public AttackCommand(SoldierGroup group, AbsGroup target)
-            : base(group)
+        public AttackCommand(SoldierGroup group, AbsGroup target, bool queueCommand)
+            : base(group, queueCommand)
         {
             this.target = target;
             group.wakeupSoldiers();

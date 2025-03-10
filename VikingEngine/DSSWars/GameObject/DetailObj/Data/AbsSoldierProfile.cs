@@ -9,19 +9,10 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsSoldierProfile : AbsDetailUnitProfile
     {        
-        //public UnitType /*convertSoldierShipType*/;
-       
-
         
         public int goldCost = DssLib.GroupDefaultCost;
 
-        
-        
-        //public int recruitTrainingTimeSec = DssLib.DefalutRecruitTrainingTimeSec;
-
         protected const float StandardRotatingSpeed = 6.5f;
-
-        
 
         public float rotationSpeed;
         public float walkingWaggleAngle = 0.16f;
@@ -29,13 +20,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float maxAttackAngle = 0.15f;
         
-        
-
-        
-        public bool hasBannerMan = true;
         public string description;
-
-        //public SoldierProfile profile;
         public UnitType unitType;
 
         public bool Command_Javelin=false;

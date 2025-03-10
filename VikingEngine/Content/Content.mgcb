@@ -2269,6 +2269,15 @@
 #begin VoxelModel/LfWars/wars_piker.vox
 /copy:VoxelModel/LfWars/wars_piker.vox
 
+#begin VoxelModel/LfWars/wars_rosedog.vox
+/copy:VoxelModel/LfWars/wars_rosedog.vox
+
+#begin VoxelModel/LfWars/wars_rosetank.vox
+/copy:VoxelModel/LfWars/wars_rosetank.vox
+
+#begin VoxelModel/LfWars/wars_rosewarrior.vox
+/copy:VoxelModel/LfWars/wars_rosewarrior.vox
+
 #begin VoxelModel/LfWars/wars_shipbuild.vox
 /copy:VoxelModel/LfWars/wars_shipbuild.vox
 

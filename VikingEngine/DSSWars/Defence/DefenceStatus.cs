@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Defence
         {
             soldierGroupId = NoSoldiers;
             idAndPosition = conv.IntVector2ToInt(subtilepos);
+            autoAssign = true;
         }        
     }
 }

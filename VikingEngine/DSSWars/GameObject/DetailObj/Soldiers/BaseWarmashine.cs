@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
             goldCost = MathExt.MultiplyInt(0.9, DssLib.GroupDefaultCost);
             
 
-            hasBannerMan = false;
+            //hasBannerMan = false;
             
             description = DssRef.lang.UnitType_Description_Ballista;
 

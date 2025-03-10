@@ -55,7 +55,13 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.citybanner,
             };
 
-            new AllUnits().AddModelsToLoad(loadRawModels);
+            var units = new AllUnits();
+            units.AddRawModelsToLoad(loadRawModels);
+
+            foreach (var model in units.AddUniqueModelsToLoad())
+            {
+                loadVoxelModel(model, false);
+            }
 
             foreach (var modelName in loadRawModels)
             {

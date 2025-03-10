@@ -18,11 +18,34 @@ namespace VikingEngine.DSSWars.GameObject
         public int defenceIxFromSubTile(IntVector2 subTilePos)
         {
             int id = conv.IntVector2ToInt(subTilePos);
-            for (int i = 0; i < defenceBuildings.Count; ++i)
+            return defenceIxFromPosId(id);
+        }
+
+        void assignNewGuardGroup(GuardGroup group)
+        {
+            //Find a free guard post or move to a guard house (or city center)
+            Task.Factory.StartNew(() =>
             {
-                if (defenceBuildings[i].idAndPosition == id)
+                lock (defenceBuildings)
                 {
-                    return i;
+                    for (int i = 0; i < defenceBuildings.Count; ++i)
+                    {
+
+                    }
+                }
+            });
+        }
+
+        public int defenceIxFromPosId(int idAndPosition)
+        {
+            lock (defenceBuildings)
+            {
+                for (int i = 0; i < defenceBuildings.Count; ++i)
+                {
+                    if (defenceBuildings[i].idAndPosition == idAndPosition)
+                    {
+                        return i;
+                    }
                 }
             }
 
@@ -65,7 +88,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 conscript = new ConscriptProfile()
                 {
-                    weapon =  ItemResourceType.Bow,
+                    weapon =  ItemResourceType.Sword,
                     armorLevel = ItemResourceType.IronArmor,
                     training = TrainingLevel.Basic,
                     specialization = SpecializationType.CityGuard,

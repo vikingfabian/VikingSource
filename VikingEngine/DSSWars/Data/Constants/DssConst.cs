@@ -15,6 +15,12 @@ namespace VikingEngine.DSSWars
         public static int SoldierGroup_ColumnsDepth = 5;
         public static int SoldierGroup_DefaultCount = SoldierGroup_RowWidth * SoldierGroup_ColumnsDepth;
 
+        public static float ShipBuildTimeSec = 5f;
+        public static float ShipExitTimeSec = 3f;
+
+        public static float GuardPostEnter_TimeSec = 3f;
+        public static float GuardPostExit_TimeSec = 2f;
+
         //MEN
         public static float Men_StandardModelScale = 0.06f;
         public static float Men_StandardWalkingSpeed = 0.00018f;

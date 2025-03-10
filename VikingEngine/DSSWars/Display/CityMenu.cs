@@ -1077,14 +1077,14 @@ namespace VikingEngine.DSSWars.Display
                         break;
 
                 }
-                var option = new RbButton(new List<AbsRichBoxMember> { new RbText(text) },
+                var option = new ArtOption(city.experenceOrDistance == prio, new List<AbsRichBoxMember> { new RbText(text) },
                     new RbAction1Arg<ExperienceOrDistancePrio>((ExperienceOrDistancePrio val) =>
                     {
                         city.experenceOrDistance = val;
                     }, prio, SoundLib.menu));
-                option.setGroupSelectionColor(HudLib.RbSettings, city.experenceOrDistance == prio);
+                //option.setGroupSelectionColor(HudLib.RbSettings, );
                 content.Add(option);
-                content.space();
+                //content.space();
             }
             
         

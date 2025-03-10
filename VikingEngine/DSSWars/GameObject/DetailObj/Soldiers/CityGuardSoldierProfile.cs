@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             boundRadius = DssVar.StandardBoundRadius;
             rotationSpeed = StandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
-            hasBannerMan = false;
+            //hasBannerMan = false;
         }
     }
 }

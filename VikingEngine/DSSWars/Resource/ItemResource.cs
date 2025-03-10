@@ -207,6 +207,11 @@ namespace VikingEngine.DSSWars.Resource
 
         AutomatedItem,
 
+        RoseWarrior_soldier,
+        RoseWarrior_tank,
+        RoseWarrior_dog,
+
+
         NUM,
 
         
