@@ -34,6 +34,7 @@ using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Display;
+using VikingEngine.LootFest.GO.WeaponAttack;
 
 namespace VikingEngine.DSSWars
 {
@@ -1748,6 +1749,16 @@ namespace VikingEngine.DSSWars
                 content.Add(btn);
             }
 
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExportSave) },
+                new RbAction(exportSave_listsaves2), new RbTooltip_Text(string.Format(DssRef.lang.Lobby_ExportSave_Description, SaveMeta.ImportSaveFolder))));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ImportSave) },
+                new RbAction(importSaves2)));
+
+            //new GuiSectionSeparator(layout);
+            //new GuiTextButton(DssRef.lang.Lobby_ExportSave, string.Format(DssRef.lang.Lobby_ExportSave_Description, SaveMeta.ImportSaveFolder), exportSave_listsaves, true, layout);
+            //new GuiTextButton(DssRef.lang.Lobby_ImportSave, null, importSaves, true, layout);
+
             underMenu.Refresh(content);
         }
         void listSaves()
@@ -1771,6 +1782,7 @@ namespace VikingEngine.DSSWars
 
         void exportSave_listsaves()
         {
+
             var saves = DssRef.storage.meta.listSaves();
 
             GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ExportSave, menuSystem.menu);
@@ -1783,6 +1795,35 @@ namespace VikingEngine.DSSWars
             }
             layout.End();
         }
+        void exportSave_listsaves2()
+        {
+            RichBoxContent content = new RichBoxContent();
+            var saves = DssRef.storage.meta.listSaves();
+
+
+            //GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ExportSave, menuSystem.menu);
+            //{
+            for (int i = 0; i < saves.Count; ++i)
+            {
+                var save = saves[i];
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                                    new RbImage(SpriteName.MissingImage),
+                                    new RbSpace(),
+                                    new RbText(save.TitleString()),
+  
+                                },
+                    new RbAction1Arg<SaveStateMeta>(exportSaveSelected, save),
+                    new RbTooltip_Text(save.InfoString()));
+
+                btn.fillWidth = true;
+                content.Add(btn);
+            }
+                //        new GuiTextButton(save.TitleString(), save.InfoString(), new GuiAction1Arg<SaveStateMeta>(exportSaveSelected, save), false, layout);
+                //    }
+                //}
+                //layout.End();
+                underMenu.Refresh(content);
+        }
 
         void exportSaveSelected(SaveStateMeta saveMeta)
         {
@@ -1793,7 +1834,7 @@ namespace VikingEngine.DSSWars
             var fileName = DataStreamHandler.SearchFilesInStorageDir(saveMeta.Path, false)[0];
             File.Copy(fileName, exportPath.Path.CompletePath(true), overwrite: true);
 
-            mainMenu();
+            mainMenu2();
         }
 
         bool importSavesMenu = false;
@@ -1809,9 +1850,29 @@ namespace VikingEngine.DSSWars
             layout.OnDelete += new Action(() => { importSavesMenu = false; });
             layout.End();
 
-            new Timer.AsynchActionTrigger(loadSaveImportsList_async, true);
+            //new Timer.AsynchActionTrigger(loadSaveImportsList_async, true);
         }
-        void loadSaveImportsList_async()
+
+        void importSaves2()
+        {
+            RichBoxContent content = new RichBoxContent();
+            var saves = DssRef.storage.meta.listSaves();
+            importSavesMenu = true;
+
+            content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
+            //GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ImportSave, menuSystem.menu);
+            //{
+            //    new GuiLabel(DssRef.lang.Hud_Loading, layout);
+            //}
+            //layout.OnDelete += new Action(() => { importSavesMenu = false; });
+            //layout.End();
+            underMenu.Refresh(content);
+            new Timer.AsynchActionTrigger(loadSaveImportsList_async2, true);
+
+            
+        }
+
+        void loadSaveImportsList_async2()
         {
             var list = DssRef.storage.meta.ListSaveImports();
 
@@ -1821,7 +1882,7 @@ namespace VikingEngine.DSSWars
                 list[i] = list[i].Split(Path.DirectorySeparatorChar).Last();
             }
 
-            new Timer.Action1ArgTrigger<List<string>>(listImports, list);
+            new Timer.Action1ArgTrigger<List<string>>(listImports2, list);
         }
 
         void listImports(List<string> names)
@@ -1847,6 +1908,41 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        void listImports2(List<string> names)
+        {
+            RichBoxContent content = new RichBoxContent();
+            if (importSavesMenu)
+            {
+                //menuSystem.menu.PopLayout();
+
+                //GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_LoadState, menuSystem.menu);
+                //{
+                    for (int i = 0; i < names.Count; ++i)
+                    {
+                        var save = names[i];
+                            var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                                    new RbImage(SpriteName.MissingImage),
+                                    new RbSpace(),
+                                    new RbText(LoadContent.CheckCharsSafety(save, LoadedFont.Regular)),
+
+                                },
+                        new RbAction1Arg<string>(importSave, save));
+
+                        btn.fillWidth = true;
+                        content.Add(btn);
+                    //new GuiTextButton(LoadContent.CheckCharsSafety(save, LoadedFont.Regular), null, new GuiAction1Arg<string>(importSave, save), false, layout);
+                    }
+
+                    if (names.Count == 0)
+                    {
+                        content.Add(new RbText(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light));
+                    }
+                //}
+                //layout.End();
+            }
+            underMenu.Refresh(content);
+        }
+
         void importSave(string name)
         {
             SaveStateMeta meta = new SaveStateMeta();            
@@ -1863,11 +1959,6 @@ namespace VikingEngine.DSSWars
             playerData.inputSource = inputSource;
             DssRef.storage.checkPlayerDoublettes(0);
 
-            //SaveStateMeta save = null;
-            //if (saveIndex >= 0)
-            //{
-            //    save =DssRef.storage.meta.listSaves()[saveIndex];
-            //}
             new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
         }
         
