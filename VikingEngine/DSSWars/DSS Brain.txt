@@ -1,11 +1,12 @@
 ﻿BETA UPDATE
 -Change Log-
 Sounds of waves
+Amience sound crash fix
 Fixed food eating statitics
 Fixed overlapping tooltip
 Repaired file import/export
 Main menu improvements
-
+Battle melody level settings
 
 !save av settings
 

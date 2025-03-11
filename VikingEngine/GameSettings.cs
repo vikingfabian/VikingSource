@@ -20,7 +20,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 17;
+        const int Version = 18;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -32,7 +32,7 @@ namespace VikingEngine
         public int DetailLevel = 1;
         public bool AutoJoinToCoopLevel = true;
         public int VibrationLevel = 100;
-        public const int MaxBlood = 400;
+        public const int MaxBlood = 100;//400;
         public int Blood = 100;
         public float UiScale = 1f;
         public float reversedStereoValue = 1f;
@@ -55,9 +55,10 @@ namespace VikingEngine
         float MusicMasterVolume = 1f;
         float SoundVolume = Engine.Sound.SoundStandardVolume;
         float AmbientVolume = Engine.Sound.SoundStandardVolume;
-
+        float BattleMelodyVolume = 1f;
         public float SoundVol() { return SoundVolume * MasterVolume; }
         public float AmbientVol() { return AmbientVolume * MasterVolume; }
+        public float BattleMelodyVol() { return BattleMelodyVolume; }
         public float MusicVol() { return MusicMasterVolume * MasterVolume; }
 
 
@@ -112,7 +113,7 @@ namespace VikingEngine
             w.Write(controlLayout);
             w.Write(scrollWheelSensitivity_menu);
             w.Write(scrollWheelSensitivity_game);
-
+            w.Write(BattleMelodyVolume);
         }
 
         public void readEmbeddedSettingsAndVersion(System.IO.BinaryReader r)
@@ -172,6 +173,10 @@ namespace VikingEngine
                 scrollWheelSensitivity_menu = r.ReadSingle();
                 scrollWheelSensitivity_game = r.ReadSingle();
 
+            }
+            if (version >= 18)
+            {
+                BattleMelodyVolume = r.ReadSingle();
             }
         }
 
@@ -321,35 +326,35 @@ namespace VikingEngine
             new GuiSectionSeparator(layout);
             graphicsOptions(layout);
         }
-        public void optionsMenu(RichBoxContent content, RichMenu menu)
-        {
-            content.h2("Sound", HudLib.TitleColor_Head);
-            volumeOptions(content);
+        //public void optionsMenu(RichBoxContent content, RichMenu menu)
+        //{
+        //    content.h2("Sound", HudLib.TitleColor_Head);
+        //    volumeOptions(content);
 
-            content.newParagraph();
-            content.h2("Monitor settings", HudLib.TitleColor_Head);
-            graphicsOptions(content, menu);
+        //    content.newParagraph();
+        //    content.h2("Monitor settings", HudLib.TitleColor_Head);
+        //    graphicsOptions(content, menu);
 
-            content.newParagraph();
-            content.h2("Graphics options", HudLib.TitleColor_Head);
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Model light effect") },
-                modelLightProperty));
-            DropDownBuilder mapLoadingDropDown = new DropDownBuilder("mapload");
-            {
-                for (ThreeOptions opt = 0; opt < ThreeOptions.NUM; opt++)
-                {
-                    mapLoadingDropDown.AddOption(Ref.langOpt.ThreeOption(opt),
-                        opt == MapLoadingSpeed, opt == ThreeOptions.Medium, new RbAction1Arg<ThreeOptions>((ThreeOptions value) =>
-                        {
-                            MapLoadingSpeed = value;
-                            settingsHasChanged = true;
-                            menu.CloseDropDown();
-                        }, opt), null);
-                }
-                mapLoadingDropDown.Build(content, "Map loading speed", menu);
-            }
-        }
+        //    content.newParagraph();
+        //    content.h2("Graphics options", HudLib.TitleColor_Head);
+        //    content.newLine();
+        //    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Model light effect") },
+        //        modelLightProperty));
+        //    DropDownBuilder mapLoadingDropDown = new DropDownBuilder("mapload");
+        //    {
+        //        for (ThreeOptions opt = 0; opt < ThreeOptions.NUM; opt++)
+        //        {
+        //            mapLoadingDropDown.AddOption(Ref.langOpt.ThreeOption(opt),
+        //                opt == MapLoadingSpeed, opt == ThreeOptions.Medium, new RbAction1Arg<ThreeOptions>((ThreeOptions value) =>
+        //                {
+        //                    MapLoadingSpeed = value;
+        //                    settingsHasChanged = true;
+        //                    menu.CloseDropDown();
+        //                }, opt), null);
+        //        }
+        //        mapLoadingDropDown.Build(content, "Map loading speed", menu);
+        //    }
+        //}
         public void quickOptionsMenu(GuiLayout layout)
         {
             volumeOptions(layout);
@@ -388,7 +393,7 @@ namespace VikingEngine
             content.newLine();
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
             content.space();
-            content.Add(new RbText("Master Volume"));
+            content.Add(new RbText(".Master Volume"));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), masterVolProperty, true));
 
@@ -403,13 +408,24 @@ namespace VikingEngine
             }
 
             content.newLine();
+            content.Add(new RbImage(SpriteName.MissingImage));
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
             content.space();
-            content.Add(new RbText("Ambience Volume"));
+            content.Add(new RbText(".Ambience Volume"));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), ambientVolProperty, true));
 
             content.newLine();
+            content.Add(new RbImage(SpriteName.MissingImage));
+            content.Add(new RbImage(SpriteName.MissingImage));
+            content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
+            content.space();
+            content.Add(new RbText(".Battle Melody"));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0, 2, 0.1f), BattleMelodyVolProperty, true));
+
+            content.newLine();
+            content.Add(new RbImage(SpriteName.MissingImage));
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
             content.space();
             content.Add(new RbText(Ref.langOpt.SoundOption_SoundVolume));
@@ -704,6 +720,16 @@ namespace VikingEngine
                 settingsHasChanged = true;
             }
             return AmbientVolume;
+        }
+
+        public float BattleMelodyVolProperty(bool set, float value)
+        {
+            if (set)
+            {
+                BattleMelodyVolume = value;
+                settingsHasChanged = true;
+            }
+            return BattleMelodyVolume;
         }
 
         public float uiScaleProperty(bool set, float value)

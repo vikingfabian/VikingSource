@@ -371,7 +371,6 @@ namespace VikingEngine.DSSWars
                 
                 if (isReady)
                 {
-                    DssRef.ambience.update();
 
                     if (host)
                     {
@@ -640,12 +639,14 @@ namespace VikingEngine.DSSWars
 
         bool asyncUserUpdate(int id, float time)
         {
-            doubleTaskTest++;
+            //doubleTaskTest++;
 
-            if (doubleTaskTest > 1)
-            {
-                throw new Exception("Double task error");
-            }
+            //if (doubleTaskTest > 1)
+            //{
+            //    throw new Exception("Double task error");
+            //}
+
+            DssRef.ambience.update_async();
 
             if (cutScene == null)
             {
@@ -655,7 +656,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            doubleTaskTest--;
+            //doubleTaskTest--;
 
             return exitThreads;
 
@@ -776,8 +777,6 @@ namespace VikingEngine.DSSWars
             return (Players.RemotePlayer)packet.sender.instancePeers[packet.senderLocalIndex].Tag;
         }
 
-        
-
         public override void NetUpdate()
         {
             foreach (var player in localPlayers)
@@ -790,11 +789,6 @@ namespace VikingEngine.DSSWars
         {
             base.NetEvent_PeerJoined(peer);
             GetOrCreateRemotePlayer(peer, 0);
-            //peer.initInstancePeers();
-            //foreach (var ins in peer.instancePeers)
-            //{
-            //    remotePlayers.Add(new Players.RemotePlayer(ins));
-            //}
         }
 
         public override void NetEvent_PeerLost(AbsNetworkPeer peer)

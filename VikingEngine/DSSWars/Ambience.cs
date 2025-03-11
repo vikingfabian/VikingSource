@@ -206,7 +206,7 @@ namespace VikingEngine.DSSWars
             battleLoop.contentLoad(Battle, new IntervalF(40, 80) * TimeExt.MinuteInSeconds,
                 null, IntervalF.Zero);
         }
-        public void update()
+        public void update_async()
         {
             IntVector2 tileCenter = WP.ToTilePos( DssRef.state.culling.players[0].MapCenter);
             Tile onTile = DssRef.world.tileGrid.Get(tileCenter);                      
@@ -240,13 +240,13 @@ namespace VikingEngine.DSSWars
                 DssRef.world.unitCollAreaGrid.PlayerInBattle(tileCenter, DssRef.state.localPlayers[0].faction);
             bool hadBattleSound = battleFade > 0;
             battleFade = Bound.Set(battleFade + FarNearFadeSpeed_PerSec * lib.BoolToLeftRight(playerLookingAtBattle) * Ref.DeltaGameTimeSec, 0f, 1f);
-            battleFade *= musicReduceFade;
+            var battleFadeTotal = battleFade * musicReduceFade * Ref.gamesett.BattleMelodyVol();
             if (hadBattleSound && battleFade <= 0)
             {
                 //Change battle melody after a battle
                 battleLoop.reduceChangeSoundTimer();
             }
-            float battleReduce = 1f - battleFade;
+            float battleReduce = 1f - battleFadeTotal;
 
             int deepSeaSoundLevelDir = lib.BoolToLeftRight(onTile.heightLevel <= Height.DeepWaterHeight);
             deepSeaFade = Bound.Set(deepSeaFade + FarNearFadeSpeed_PerSec * deepSeaSoundLevelDir * Ref.DeltaGameTimeSec, 0f, MaxSeaLevel);
@@ -313,13 +313,12 @@ namespace VikingEngine.DSSWars
             {
                 seaLoop.SoundBiomReady();
             }
-            battleLoop.update(battleFade * 3f, out bool battleNeedSoundBiom);
+            battleLoop.update(battleFadeTotal, out bool battleNeedSoundBiom);
             if (battleNeedSoundBiom)
             {
                 battleLoop.SoundBiomReady();
             }
         }
-
 
         public void gameStart()
         {
@@ -449,7 +448,10 @@ namespace VikingEngine.DSSWars
         public void SoundBiomReady()
         {
             loadingState = SoundLoadingState.Loading;
-            new Timer.AsynchActionTrigger(loadNextNearSound_async, true);
+            Ref.update.AddSyncAction(new SyncAction(() =>
+            {
+                new Timer.AsynchActionTrigger(loadNextNearSound_async, true);
+            }));
         }
 
         void loadNextNearSound_async()

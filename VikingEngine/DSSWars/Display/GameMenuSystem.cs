@@ -242,31 +242,31 @@ namespace VikingEngine.DSSWars.Display
             if (lobby)
             {
                 content.newParagraph();
-                content.h2("Graphics options", HudLib.TitleColor_Head);
+                content.h2(".Graphics options", HudLib.TitleColor_Head);
                 Ref.gamesett.graphicsOptions(content, menu);
             }
 
             content.newParagraph();
-            content.h2("Input", HudLib.TitleColor_Head);
+            content.h2(".Input", HudLib.TitleColor_Head);
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Pan on zoom") }, Ref.gamesett.panOnZoomProperty));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Pan on zoom") }, Ref.gamesett.panOnZoomProperty));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.MouseScroll));
             content.space();
-            content.Add(new RbText("Scroll sensitivity: game"));
+            content.Add(new RbText(".Scroll sensitivity: game"));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollGameProperty, true));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.MouseScroll));
             content.space();
-            content.Add(new RbText("Scroll sensitivity: menu"));
+            content.Add(new RbText(".Scroll sensitivity: menu"));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollMenuProperty, true));
 
             content.newParagraph();
-            content.h2("Gameplay options", HudLib.TitleColor_Head);
+            content.h2(".Gameplay options", HudLib.TitleColor_Head);
             if (lobby)
             {
                 content.newLine();
@@ -279,7 +279,7 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
             }
             content.newLine();
-            content.Add(new RbText("Blood:", HudLib.TitleColor_Label));
+            content.Add(new RbText(".Blood:", HudLib.TitleColor_Label));
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
 
