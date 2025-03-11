@@ -33,12 +33,10 @@ namespace VikingEngine.PJ.GameState
                 //hostName = session.hostName;
             }
 
-            draw.ClrColor = Color.Black;
-            
+            draw.ClrColor = Color.Black;            
 
             Graphics.Image joinIcon = new Graphics.Image(SpriteName.birdJoinNetwork, Engine.Screen.CenterScreen,
                 new Vector2(3, 2) * Engine.Screen.IconSize * 0.7f, ImageLayers.Lay2, true);
-
 
             searchingBar = new Graphics.Image[SearchingBarDotCount];
             Rotation1D dir = Rotation1D.D0;

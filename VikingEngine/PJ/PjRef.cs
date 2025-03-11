@@ -9,9 +9,9 @@ namespace VikingEngine.PJ
         public static Input.InputSource HostingPlayerSource;
         public static bool HasSetHost = false;
 
-        public static bool Dlc1Characters = false;
+        //public static bool Dlc1Characters = false;
         public static bool Dlc2BETA = false;
-        public static bool DlcZombie = false;
+        //public static bool DlcZombie = false;
 
         public static void Init()
         {
@@ -51,14 +51,14 @@ namespace VikingEngine.PJ
                 var dlc = Ref.steam.DLC;
                 if (dlc != null)
                 {
-                    Dlc1Characters = dlc.JoustingCharacterPack;
+                    //Dlc1Characters = dlc.JoustingCharacterPack;
                     Dlc2BETA = dlc.JoustingBlingPack;
-                    DlcZombie = dlc.JoustingZombiePack;
+                    //DlcZombie = dlc.JoustingZombiePack;
 
-                    if (PlatformSettings.DevBuild)
-                    {
-                        Debug.Log("===DLC UNLOCKED (" + dlc.DlcCount_FromApi.ToString() + "): " + Dlc1Characters.ToString() + ", " + Dlc2BETA.ToString() + " ===");
-                    }
+                    //if (PlatformSettings.DevBuild)
+                    //{
+                    //    Debug.Log("===DLC UNLOCKED (" + dlc.DlcCount_FromApi.ToString() + "): " + Dlc1Characters.ToString() + ", " + Dlc2BETA.ToString() + " ===");
+                    //}
                 }
             }
             //else
@@ -69,10 +69,10 @@ namespace VikingEngine.PJ
 #endif
         }
 
-        public static bool hasAllContentDLC
-        {
-            get { return Dlc1Characters || Dlc2BETA; }
-        }
+        //public static bool hasAllContentDLC
+        //{
+        //    get { return Dlc1Characters || Dlc2BETA; }
+        //}
 
         public static bool HostingSession
         {

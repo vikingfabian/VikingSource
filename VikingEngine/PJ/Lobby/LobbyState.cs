@@ -262,14 +262,14 @@ namespace VikingEngine.PJ
         }
 
 
-        void refreshNetworkDisplays()
-        {
-            bool hasNetwork = Ref.netSession.ableToConnect &&
-                PjRef.storage.modeSettings.hasNetwork &&
-                PjRef.hasAllContentDLC;
+        //void refreshNetworkDisplays()
+        //{
+        //    bool hasNetwork = Ref.netSession.ableToConnect &&
+        //        PjRef.storage.modeSettings.hasNetwork &&
+        //        PjRef.hasAllContentDLC;
 
-            createlobbyPublicityOptions(hasNetwork && PjRef.host);
-        }
+        //    createlobbyPublicityOptions(hasNetwork && PjRef.host);
+        //}
 
         void createlobbyPublicityOptions(bool add)
         {
@@ -360,14 +360,14 @@ namespace VikingEngine.PJ
             avatarSetup.onModeChanged();
             refreshLocalGamersDisplay();
             refreshRemoteGamersDisplay();
-            refreshNetworkDisplays();
+            //refreshNetworkDisplays();
 
-            bool canPlay;
-            canViewMode(PjRef.storage.Mode, out canPlay);
+            //bool canPlay;
+            canViewMode(PjRef.storage.Mode);
 
             if (startButtonLock != null)
             {
-                startButtonLock.Visible = !canPlay;
+                startButtonLock.Visible = false;
             }
         }
 
@@ -449,24 +449,24 @@ namespace VikingEngine.PJ
 
             int ix = 0;
 
-            if (PjRef.Dlc1Characters)
-            {
-                VectorRect area = Table.CellPlacement(start, false, ix++, int.MaxValue, dlcSz, new Vector2(dlcSpacing));
-                DlcButton2 button = new DlcButton2(SpriteName.DlcBoxPrime, area, "DLC1 - Full Game Unlock");
-                dlcButtons.Add(button);
-            }
+            //if (PjRef.Dlc1Characters)
+            //{
+            //    VectorRect area = Table.CellPlacement(start, false, ix++, int.MaxValue, dlcSz, new Vector2(dlcSpacing));
+            //    DlcButton2 button = new DlcButton2(SpriteName.DlcBoxPrime, area, "DLC1 - Full Game Unlock");
+            //    dlcButtons.Add(button);
+            //}
             if (PjRef.Dlc2BETA)
             {
                 VectorRect area = Table.CellPlacement(start, false, ix++, int.MaxValue, dlcSz, new Vector2(dlcSpacing));
                 DlcButton2 button = new DlcButton2(SpriteName.DlcBoxBling, area, "DLC2 - Bling pack");
                 dlcButtons.Add(button);
             }
-            if (PjRef.DlcZombie)
-            {
-                VectorRect area = Table.CellPlacement(start, false, ix++, int.MaxValue, dlcSz, new Vector2(dlcSpacing));
-                DlcButton2 button = new DlcButton2(SpriteName.DlcBoxZombie, area, "DLC3 - Zombie");
-                dlcButtons.Add(button);
-            }
+            //if (PjRef.DlcZombie)
+            //{
+            //    VectorRect area = Table.CellPlacement(start, false, ix++, int.MaxValue, dlcSz, new Vector2(dlcSpacing));
+            //    DlcButton2 button = new DlcButton2(SpriteName.DlcBoxZombie, area, "DLC3 - Zombie");
+            //    dlcButtons.Add(button);
+            //}
         }
 
         void refreshLocalGamersDisplay()
@@ -733,27 +733,27 @@ namespace VikingEngine.PJ
             }
 
 
-            bool viewAvailableRemoteJoin =
-                (
-                PjRef.hasAllContentDLC &&
-                PjRef.storage.lobbyPublicity != LobbyPublicity.Private &&
-                PjRef.storage.modeSettings.hasNetwork
-                ) ||
-                joinedRemotes.Count > 0;
+            //bool viewAvailableRemoteJoin =
+            //    (
+            //    PjRef.hasAllContentDLC &&
+            //    PjRef.storage.lobbyPublicity != LobbyPublicity.Private &&
+            //    PjRef.storage.modeSettings.hasNetwork
+            //    ) ||
+            //    joinedRemotes.Count > 0;
 
             arraylib.DeleteAndClearArray(availableRemoteJoinSpots);
 
-            if (viewAvailableRemoteJoin)
-            {
-                for (int i = joinedRemotes.Count; i < PjLib.MaxRemotePlayers; ++i)
-                {
-                    var area = JoinedRemoteGamerIcon.GamerIconPlacement(i);
+            //if (viewAvailableRemoteJoin)
+            //{
+            //    for (int i = joinedRemotes.Count; i < PjLib.MaxRemotePlayers; ++i)
+            //    {
+            //        var area = JoinedRemoteGamerIcon.GamerIconPlacement(i);
 
-                    Graphics.Image shadowSquare = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, ImageLayers.Background4);
-                    shadowSquare.Opacity = 0.2f;
-                    availableRemoteJoinSpots.Add(shadowSquare);
-                }
-            }
+            //        Graphics.Image shadowSquare = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, ImageLayers.Background4);
+            //        shadowSquare.Opacity = 0.2f;
+            //        availableRemoteJoinSpots.Add(shadowSquare);
+            //    }
+            //}
             checkIfModeConflictsWithMultiplayer();
         }
 
@@ -853,7 +853,7 @@ namespace VikingEngine.PJ
                 }
             }
 
-            updateNetLobbySearch();
+            //updateNetLobbySearch();
 
             updatePublicNetSession();
 
@@ -925,39 +925,39 @@ namespace VikingEngine.PJ
             }
         }
 
-        void updateNetLobbySearch()
-        {
-            if (PjRef.host)
-            {
-                if (searchLobbiesTimer.Update())
-                {
-                    if (Ref.netSession.ableToConnect)
-                    {
-#if PCGAME
-                        if (Ref.steam.P2PManager.remoteGamers.Count == 0)
-                        {
-                            if (PjRef.hasAllContentDLC)
-                            {
-                                Ref.steam.LobbyMatchmaker.CreateLobbyIfNotInOne();
-                            }
+//        void updateNetLobbySearch()
+//        {
+//            if (PjRef.host)
+//            {
+//                if (searchLobbiesTimer.Update())
+//                {
+//                    if (Ref.netSession.ableToConnect)
+//                    {
+//#if PCGAME
+//                        if (Ref.steam.P2PManager.remoteGamers.Count == 0)
+//                        {
+//                            if (PjRef.hasAllContentDLC)
+//                            {
+//                                Ref.steam.LobbyMatchmaker.CreateLobbyIfNotInOne();
+//                            }
 
-                            new Timer.TimedAction0ArgTrigger(searchLobbies, TimeExt.SecondsToMS(2f));
-                            availableSessionsDisplay.startedSearch();
-                        }
-                        else
-                        {
-                            availableSessionsDisplay.removeSearch();
-                        }
-#endif
-                    }
-                }
+//                            new Timer.TimedAction0ArgTrigger(searchLobbies, TimeExt.SecondsToMS(2f));
+//                            availableSessionsDisplay.startedSearch();
+//                        }
+//                        else
+//                        {
+//                            availableSessionsDisplay.removeSearch();
+//                        }
+//#endif
+//                    }
+//                }
 
-                if (availableSessionsDisplay != null)
-                {
-                    availableSessionsDisplay.update();
-                }
-            }
-        }
+//                if (availableSessionsDisplay != null)
+//                {
+//                    availableSessionsDisplay.update();
+//                }
+//            }
+//        }
 
 
         void updateLostDisplay()
@@ -1064,8 +1064,8 @@ namespace VikingEngine.PJ
 
         void checkModeAvailable()
         {
-            bool canPlay;
-            if (canViewMode(PjRef.storage.Mode, out canPlay))
+            //bool canPlay;
+            if (canViewMode(PjRef.storage.Mode))
             {
                 onModeChanged();
             }
@@ -1079,7 +1079,7 @@ namespace VikingEngine.PJ
         {
             if (isMeatPie) return;
 
-            bool canPlay;
+            //bool canPlay;
 
             do
             {
@@ -1088,14 +1088,14 @@ namespace VikingEngine.PJ
 
                 PjRef.storage.Mode = PjLib.ModeViewOrder[index];
 
-            } while (canViewMode(PjRef.storage.Mode, out canPlay) == false);
+            } while (canViewMode(PjRef.storage.Mode) == false);
 
             onModeChanged();
         }
 
-        public bool canViewMode(PartyGameMode mode, out bool canPlay)
+        public bool canViewMode(PartyGameMode mode)
         {
-            canPlay = true;
+            //canPlay = true;
 
             if (mode == PartyGameMode.MeatPie)
             {
@@ -1131,7 +1131,7 @@ namespace VikingEngine.PJ
 
                 case GameModeAccessibility.Paid_4:
                     PjRef.RefreshDlcStatus();
-                    canPlay = PjRef.Dlc1Characters || PjRef.Dlc2BETA;
+                    //canPlay = PjRef.Dlc1Characters || PjRef.Dlc2BETA;
                     return true;
 
                 default:
@@ -1256,10 +1256,10 @@ namespace VikingEngine.PJ
         {           
             base.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
 
-            if (PjRef.hasAllContentDLC == false)
-            {
-                Ref.netSession.sortFriendsOnlyLobbies(availableSessions);
-            }
+            //if (PjRef.hasAllContentDLC == false)
+            //{
+            //    Ref.netSession.sortFriendsOnlyLobbies(availableSessions);
+            //}
 
             availableSessionsDisplay.listSessions(availableSessions);
         }
