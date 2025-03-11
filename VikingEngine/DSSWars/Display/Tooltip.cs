@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -13,6 +14,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
@@ -430,26 +432,33 @@ namespace VikingEngine.DSSWars.Display
             create(player, content, false);
         }
 
+        public void clear()
+        { 
+            images.DeleteAll();
+        }
+
         public void create(Players.LocalPlayer player, List<AbsRichBoxMember> content, bool menuToolTip, int tooltip_id = -1)
         {
             images.DeleteAll();
             current_menuToolTip = menuToolTip;
 
-            float edge = Engine.Screen.BorderWidth;
+            float edge = 8;
             float width = Engine.Screen.IconSize * 8;
 
             RichBoxGroup richBox = new RichBoxGroup(new Vector2(edge),
-                width, ImageLayers.Lay3, HudLib.RbSettings, content);
+                width, HudLib.MapToolTipLayer, HudLib.RbSettings, content);
 
             var area = richBox.maxArea;
             area.AddRadius(edge);
+            var backgroundTextures = new NineSplitAreaTexture(HudLib.TooltipSettings.windowBackground, area, HudLib.MapToolTipLayer + 2);
+            images.Add(backgroundTextures.images);
+            //Graphics.Image bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size,
+            //    ImageLayers.Lay4);
+            //bg.ColorAndAlpha(Color.Black, 0.95f);
+            //size = area.Size;
 
-            Graphics.Image bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size,
-                ImageLayers.Lay4);
-            bg.ColorAndAlpha(Color.Black, 0.95f);
-            size = area.Size;
+            //images.Add(bg);
 
-            images.Add(bg);
             images.Add(richBox);
 
             baseUpdate(player, menuToolTip);

@@ -682,23 +682,6 @@ namespace VikingEngine.DSSWars.Players
 
         public void onTileSelect(SelectedSubTile selectedSubTile, bool sameMapObject)//City city, SelectTileResult tileResult)
         {
-            //if (selection.obj != null && selection.obj.gameobjectType() == GameObjectType.City)
-            //{
-            //    if (player.cityTab == Display.MenuTab.Build)
-            //    { 
-            //        player.BuildControls.onTileSelect(selectedSubTile);
-            //    }
-            //    //    && 
-            //    //    player.BuildControls.buildMode == SelectTileResult.Build)
-            //    //{ 
-            //    //    var mayBuild = selectedSubTile.MayBuild(player);
-            //    //    if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
-            //    //    { 
-            //    //        //create build order
-            //    //        player.addOrder(new BuildOrder(10, selectedSubTile.city, selectedSubTile.subTilePos, player.BuildControls.placeBuildingType)
-            //    //    }
-            //    //}
-            //}
             if (selection.obj != selectedSubTile.city)
             {
                 selection.obj = selectedSubTile.city;
@@ -741,20 +724,7 @@ namespace VikingEngine.DSSWars.Players
 
                     }
                     break;
-                    //case SelectTileResult.:
-                    //    player.cityTab = Display.MenuTab.Delivery;
-                    //    break;
             }
-            
-            //switch (tileResult)
-            //{
-            //    case SelectTileResult.CityHall:
-            //        player.cityTab = Display.MenuTab.Recruit;
-            //        break;
-            //    case SelectTileResult.Resources:
-            //        player.cityTab = Display.MenuTab.Resources;
-            //        break;
-            //}
         }
 
         public bool focusedObjectMenuState()

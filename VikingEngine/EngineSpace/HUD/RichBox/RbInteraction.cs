@@ -136,7 +136,7 @@ namespace VikingEngine.HUD.RichBox
                 if (clickInput.DownEvent && useClickInput)
                 {
                     hover.onClick(menu);
-                    hover.clickAnimation(true);
+                    hover?.clickAnimation(true);
                     return true;
                 }
                 else if (clickInput.UpEvent)

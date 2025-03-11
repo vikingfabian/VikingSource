@@ -2,6 +2,9 @@
 -Change Log-
 Sounds of waves
 Fixed food eating statitics
+Fixed overlapping tooltip
+Repaired file import/export
+Main menu improvements
 
 
 !save av settings
