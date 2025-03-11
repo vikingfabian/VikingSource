@@ -662,7 +662,7 @@ namespace VikingEngine.DSSWars.Players
             bool menuFocusState = mapControls.focusedObjectMenuState();
             hud.update();
 
-            mapControls.update(hud.mouseOver);
+            mapControls.update(hud.mouseOverHud);
 
             if (cityUpdate && input.AutomationSetting.DownEvent)
             {
@@ -731,7 +731,7 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                if (!hud.mouseOver)
+                if (!hud.mouseOverHud)
                 {
                     if ((mapControls.hover.subTile.hasSelection && InBuildOrdersMode()) || buildControls.buildKeyDown)
                     {

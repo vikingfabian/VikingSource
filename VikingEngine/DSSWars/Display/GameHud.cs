@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Display
                 
         public Tooltip tooltip;
         Timer.Basic refreshTimer = new Timer.Basic(500, false);
-        public bool mouseOver = false;
+        public bool mouseOverHud = false;
         public bool needRefresh = false;
         public HudDetailLevel detailLevel = HudDetailLevel.Normal;
 
@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.Display
         {
             //Debug.Log("game hud update");
 
-            mouseOver = false;
+            mouseOverHud = false;
             bool refresh = refreshTimer.Update();
 
             refresh |= player.mapControls.selection.isNew ||
@@ -137,14 +137,14 @@ namespace VikingEngine.DSSWars.Display
 
                 if (head != null)
                 {
-                    needRefresh |= head.updateMouseInput(ref mouseOver);
+                    needRefresh |= head.updateMouseInput(ref mouseOverHud);
                 }
-                needRefresh |= headOptions.updateMouseInput(ref mouseOver);
-                needRefresh |= objMenu.updateMouseInput(ref mouseOver);
-                needRefresh |= factionMenu.updateMouseInput(ref mouseOver);
+                needRefresh |= headOptions.updateMouseInput(ref mouseOverHud);
+                needRefresh |= objMenu.updateMouseInput(ref mouseOverHud);
+                needRefresh |= factionMenu.updateMouseInput(ref mouseOverHud);
                 //mouseOver = false;
 
-                messages.Update(ref mouseOver);
+                messages.Update(ref mouseOverHud);
             }
 
 
@@ -154,8 +154,9 @@ namespace VikingEngine.DSSWars.Display
             //    displays.menuStateHasChange = false;
             //}
 
-            if (mouseOver)
+            if (mouseOverHud)
             {
+                tooltip.clear();
                 //tooltip.updateDiplayTip(player, displays.hasInteractButtonHover());
             }
             else
@@ -226,7 +227,7 @@ namespace VikingEngine.DSSWars.Display
 
         public bool hudMouseOver()
         {
-            return mouseOver;
+            return mouseOverHud;
             //return displays.mouseOver() || messages.mouseOver();
         }
     }

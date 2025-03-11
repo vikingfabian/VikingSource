@@ -68,6 +68,7 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_ListMusic= "music list";
         const string UnderMenu_PlayerSetup = "playersett";
         const string UnderMenu_ListSaves = "saves";
+        const string UnderMenu_ListSavesForExport = "exportsaves";
         const string UnderMenu_Options = "options";
         const string UnderMenu_Options_Language = "lang";
 
@@ -368,17 +369,17 @@ namespace VikingEngine.DSSWars
             content.newParagraph();
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
-                     new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_Options, false), new RbTooltip_Text("Options"));
+                     new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_Options, false), new RbTooltip_Text(".Options"));
                 content.Add(btn);
             }
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconEditor) }, 
-                    new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListEditors, false), new RbTooltip_Text("Editor"));
+                    new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListEditors, false), new RbTooltip_Text(".Editor"));
                 content.Add(btn);
             }
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsBattleIcon) },
-                    new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListExtra , false), new RbTooltip_Text("Extra modes"));
+                    new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListExtra , false), new RbTooltip_Text(".Extra modes"));
                 content.Add(btn);
             }
 
@@ -702,7 +703,7 @@ namespace VikingEngine.DSSWars
                                     new RbBeginTitle(),
                                     new RbImage(SpriteName.WarsHudIconAdd),
                                     new RbSpace(),
-                                    new RbText("Next"),
+                                    new RbText(".Next"),
                                     new RbTab(MoreArrowTabbing),
                                     moreArrow,
                                 },
@@ -713,7 +714,7 @@ namespace VikingEngine.DSSWars
             }                      
 
             content.newParagraph();
-            content.h1("Game setup", HudLib.TitleColor_Head);
+            content.h1(".Game setup", HudLib.TitleColor_Head);
             
             GameStorage defaultOptions = new GameStorage();
             
@@ -781,13 +782,25 @@ namespace VikingEngine.DSSWars
                 case UnderMenu_ListSaves:
                     listSaves2();
                     break;
+                case UnderMenu_ListSavesForExport:
+                    exportSave_listsaves2();
+                    break;
+
 
                 case UnderMenu_ListEditors:
                     {
                         RichBoxContent content = new RichBoxContent();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText("Map editor") },
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText(".Map editor") },
                             new RbAction(openMapEditor)));
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText(".Voxel editor") },
+                            new RbAction(voxeleditor), new RbTooltip_Text(".Require Xbox controller")));
+
+                        content.newParagraph();
+                        var playerData = DssRef.storage.localPlayers.First();
+                        listAndEditFlag(content, 1, playerData, true);
 
                         underMenu.Refresh(content);
                     }
@@ -797,17 +810,17 @@ namespace VikingEngine.DSSWars
                     {
                         RichBoxContent content = new RichBoxContent();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText("Battle lab") },
-                            new RbAction(startBattleLab)));
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText(".Battle lab") },
+                            new RbAction(startBattleLab), new RbTooltip_Text(".Pit any soldiers against eachother")));
 
                         content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText("Play Commander") },
-                            new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text("A small tactical board game")));
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText(".Play Commander") },
+                            new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text(".A small tactical board game")));
 
                         content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText("Music playlist") },
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText(".Music playlist") },
                             new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListMusic, false)));
 
 
@@ -829,44 +842,14 @@ namespace VikingEngine.DSSWars
 
                         content.h1("Player setup", HudLib.TitleColor_Head);
 
-                        //new GuiLabel(DssRef.lang.Lobby_LocalMultiplayerControllerRequired, layout);
-                        //for (int i = 1; i <= GameStorage.MaxLocalPlayerCount; ++i)
-                        //{
-                        //    new GuiTextButton(i.ToString(), null, new GuiAction2Arg<int, bool>(setPlayerCount, i, true), false, layout);
-                        //}
-                       
-
                         for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
                         {
                             var playerData = DssRef.storage.localPlayers[playerNum - 1];
                             if (DssRef.storage.playerCount > 1)
                             {
-                                content.h2(string.Format(DssRef.lang.Player_DefaultName, playerNum), HudLib.TitleColor_Name);                                
+                                content.h2(string.Format(DssRef.lang.Player_DefaultName, playerNum), HudLib.TitleColor_Name);
                             }
-                            //void listProfiles(int playerNumber)
-                            //{
-                            //    GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_FlagSelectTitle, menuSystem.menu);
-                            //    {
-                            //        for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
-                            //        {
-                            //            DssRef.storage.flagStorage.flagDesigns[i].Button(layout, new GuiAction2Arg<int, int>(selectProfileLink, playerNumber, i), false);
-                            //        }
-                            //    }
-                            //    layout.End();
-                            //}
-                            DropDownBuilder flagOptions = new DropDownBuilder("listflags");
-                            {
-                                for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
-                                {
-                                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == playerData.flagDesignIndex, false, new RbAction2Arg<int, int>(selectProfileLink, playerNum, i), null);
-                                }
-                                flagOptions.menuCaption = DssRef.storage.flagStorage.flagDesigns[playerData.flagDesignIndex].RbButton();
-                                flagOptions.injectAfter = new List<AbsRichBoxMember>() {
-                                    new ArtButton( RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, playerData.flagDesignIndex), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
-                                };
-                                flagOptions.Build(content, null, underMenu); 
-                            }                           
+                            listAndEditFlag(content, playerNum, playerData, false);
                         }
 
                         content.newParagraph();
@@ -944,6 +927,23 @@ namespace VikingEngine.DSSWars
                         underMenu.Refresh(content);
                     }
                     break;
+            }
+        }
+
+        void listAndEditFlag(RichBoxContent content, int playerNum, LocalPlayerStorage playerData, bool editor)
+        {
+            DropDownBuilder flagOptions = new DropDownBuilder("listflags");
+            {
+                for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
+                {
+                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == playerData.flagDesignIndex, false, new RbAction2Arg<int, int>(selectProfileLink, playerNum, i), null);
+                }
+                flagOptions.menuCaption = DssRef.storage.flagStorage.flagDesigns[playerData.flagDesignIndex].RbButton();
+                flagOptions.injectAfter = new List<AbsRichBoxMember>() {
+                                    new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, playerData.flagDesignIndex), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
+                                };
+                flagOptions.Build(content, null, underMenu);
             }
         }
 
@@ -1751,7 +1751,7 @@ namespace VikingEngine.DSSWars
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExportSave) },
-                new RbAction(exportSave_listsaves2), new RbTooltip_Text(string.Format(DssRef.lang.Lobby_ExportSave_Description, SaveMeta.ImportSaveFolder))));
+                new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListSavesForExport, true), new RbTooltip_Text(string.Format(DssRef.lang.Lobby_ExportSave_Description, SaveMeta.ImportSaveFolder))));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ImportSave) },
                 new RbAction(importSaves2)));
 
@@ -1800,29 +1800,22 @@ namespace VikingEngine.DSSWars
             RichBoxContent content = new RichBoxContent();
             var saves = DssRef.storage.meta.listSaves();
 
-
-            //GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ExportSave, menuSystem.menu);
-            //{
             for (int i = 0; i < saves.Count; ++i)
             {
                 var save = saves[i];
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                                    new RbImage(SpriteName.MissingImage),
-                                    new RbSpace(),
-                                    new RbText(save.TitleString()),
-  
-                                },
+                    new RbImage(SpriteName.MissingImage),
+                    new RbSpace(),
+                    new RbText(save.TitleString()),
+                    },
                     new RbAction1Arg<SaveStateMeta>(exportSaveSelected, save),
                     new RbTooltip_Text(save.InfoString()));
 
                 btn.fillWidth = true;
                 content.Add(btn);
             }
-                //        new GuiTextButton(save.TitleString(), save.InfoString(), new GuiAction1Arg<SaveStateMeta>(exportSaveSelected, save), false, layout);
-                //    }
-                //}
-                //layout.End();
-                underMenu.Refresh(content);
+            
+            underMenu.Refresh(content);
         }
 
         void exportSaveSelected(SaveStateMeta saveMeta)
@@ -1849,8 +1842,6 @@ namespace VikingEngine.DSSWars
             }
             layout.OnDelete += new Action(() => { importSavesMenu = false; });
             layout.End();
-
-            //new Timer.AsynchActionTrigger(loadSaveImportsList_async, true);
         }
 
         void importSaves2()
@@ -1860,12 +1851,7 @@ namespace VikingEngine.DSSWars
             importSavesMenu = true;
 
             content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
-            //GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ImportSave, menuSystem.menu);
-            //{
-            //    new GuiLabel(DssRef.lang.Hud_Loading, layout);
-            //}
-            //layout.OnDelete += new Action(() => { importSavesMenu = false; });
-            //layout.End();
+           
             underMenu.Refresh(content);
             new Timer.AsynchActionTrigger(loadSaveImportsList_async2, true);
 

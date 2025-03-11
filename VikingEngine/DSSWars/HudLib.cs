@@ -45,6 +45,8 @@ namespace VikingEngine.DSSWars
 
         public const ImageLayers GUILayer = ImageLayers.Lay4;
 
+        public const ImageLayers MapToolTipLayer = ImageLayers.Lay5;
+
         public const ImageLayers HeadDisplayContentLayer = ImageLayers.Lay6;
         public const ImageLayers HeadDisplayLayer = ImageLayers.Lay7;
 

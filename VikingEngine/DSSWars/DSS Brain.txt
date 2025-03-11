@@ -1,5 +1,8 @@
 ﻿BETA UPDATE
 -Change Log-
+Fixed overlapping tooltip
+Repaired file import/export
+Main menu improvements
 
 !save av settings
 
