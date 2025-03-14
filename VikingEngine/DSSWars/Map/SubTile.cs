@@ -269,6 +269,27 @@ namespace VikingEngine.DSSWars.Map
         {
             return mainTerrain == TerrainMainType.DefaultSea;
         }
+
+        public float BuildingHeight()
+        {
+            switch (mainTerrain)
+            {
+                default:
+                    return 0;
+
+                case TerrainMainType.Building:
+                    return WorldData.SubTileWidth * 0.4f;
+                case TerrainMainType.Wall:
+                    switch ((TerrainWallType)subTerrain)
+                    {
+                        default:
+                           return WorldData.SubTileWidth * 0.8f;
+                        case TerrainWallType.StoneTower:
+                            return WorldData.SubTileWidth * 1.4f;
+
+                    }
+            }
+        }
     }
 
 }

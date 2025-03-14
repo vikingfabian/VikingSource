@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Valve.Steamworks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
@@ -47,6 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         bool isWalkingIntoOtherGroup = false;
         public bool restingGuardMode = false;
+        public float soldierAttackRangeBonus = 0;
         public float halfColDepth;
 
         public int soldierCount = 0;
@@ -331,6 +333,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 attackRadius = groupRadius + soldierData.attackRange;
             }
+
+            attackRadius += 1f;
             //}
         }
 
@@ -679,8 +683,11 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-        
 
+        const double CaptureCheckChance = 0.1;
+        const float CaptureCheckMulti = (float)(1 / CaptureCheckChance);
+        const float CaptureAddPerMs = 0.1f * CaptureCheckMulti;
+        const float CaptureDistance = 0.4f;
         virtual public void update(float time, bool fullUpdate)
         {
             if (debugTagged)
@@ -746,9 +753,55 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                if (state == GroupState.Battle)
+                switch (state)
                 {
-                    enterBattleState(false);
+                    case GroupState.Battle:
+                        {
+                            //Capture city here
+                            if (army.IsArmy())
+                            {
+                                var city = DssRef.world.tileGrid.Get(tilePos).City();
+                                if (DssRef.diplomacy.InWar(army.faction, city.faction))
+                                {
+                                    if (city.tilePos.SideLength(tilePos) <= 1 || army.GetArmy().attackTarget == city)
+                                    {
+                                        goalWp = WP.ToWorldPos(city.tilePos);
+                                        state = GroupState.CityCapture;
+                                        return;
+                                    }
+                                }
+                            }
+                            enterBattleState(false);
+                        }
+                        break;
+
+                    case GroupState.CityCapture:
+                        if (command == null)
+                        {
+                            walking_Peace(time, goalWp, out bool complete);
+
+                            if (Ref.peRnd.Chance(0.1))
+                            {
+                                var city = DssRef.world.tileGrid.Get(tilePos).City();
+                                if (DssRef.diplomacy.InWar(army.faction, city.faction))
+                                {
+                                    goalWp = WP.ToWorldPos(city.tilePos);
+
+                                    if (VectorExt.PlaneXZLength(goalWp - position) < CaptureDistance)
+                                    {
+                                        city.capturePoints += CaptureAddPerMs * time;
+                                    }
+                                    
+                                }
+                                else
+                                { 
+                                    state = GroupState.Battle;
+                                }
+                            }
+
+                            goto UpdateInduviduals;
+                        }
+                        break;
                 }
 
                 if (command != null)
@@ -805,8 +858,10 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
+            UpdateInduviduals:
                 bool allIdle = true;
 
+            
                 if (state == GroupState.Idle)
                 {
                     //Passive check of souroundings
@@ -2283,6 +2338,7 @@ namespace VikingEngine.DSSWars.GameObject
         FindArmyPlacement,
         Battle,
         FollowCommand,
+        CityCapture,
         //GameStart,
         //Rotate,
     }

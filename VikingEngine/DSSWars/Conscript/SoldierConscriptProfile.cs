@@ -778,9 +778,13 @@ namespace VikingEngine.DSSWars.Conscript
                 {
                     case ItemResourceType.SharpStick:
                     case ItemResourceType.UN_BatteringRam:
-                        soldierData.modelName = LootFest.VoxelModelName.wars_folk_ship;
 
+                    case ItemResourceType.RoseWarrior_soldier:
+                    case ItemResourceType.RoseWarrior_tank:
+                    case ItemResourceType.RoseWarrior_dog:
+                        soldierData.modelName = LootFest.VoxelModelName.wars_folk_ship;
                         break;
+
                     case ItemResourceType.Pike:
                     case ItemResourceType.HandSpear:
                     case ItemResourceType.BronzeSword:

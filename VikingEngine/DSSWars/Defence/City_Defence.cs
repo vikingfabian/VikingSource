@@ -55,8 +55,8 @@ namespace VikingEngine.DSSWars.GameObject
         public void defence_assignGuard_toIndex(GuardGroup guard, int index)
         {
             var defence = defenceBuildings[index];
-            guard.assignedToPost_IdAndPosition = defence.idAndPosition;
-
+            //guard.assignedToPost_IdAndPosition = defence.idAndPosition;
+            guard.onEnterGuard(this, defence.idAndPosition);
             defence.soldierGroupId = guard.parentArrayIndex;
             defenceBuildings[index] = defence;
         }
@@ -82,13 +82,13 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void debugGuardConscript(int idAndPosition)
+        public void debugGuardConscript(int idAndPosition, bool ranged)
         {
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
             {
                 conscript = new ConscriptProfile()
                 {
-                    weapon =  ItemResourceType.Sword,
+                    weapon = ranged? ItemResourceType.Bow : ItemResourceType.Sword,
                     armorLevel = ItemResourceType.IronArmor,
                     training = TrainingLevel.Basic,
                     specialization = SpecializationType.CityGuard,
