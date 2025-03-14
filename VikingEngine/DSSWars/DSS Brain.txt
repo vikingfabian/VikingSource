@@ -163,3 +163,11 @@ VertexPositionColorNormal
 VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);
 
 admin(at)alphabetagamer(dot)com
+
+
+#Shaders
+Dimma
+https://www.shadertoy.com/view/4ltcRB
+
+Most of what I use can be found here: 
+https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping 
