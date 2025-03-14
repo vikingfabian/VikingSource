@@ -806,9 +806,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (bonusProjectiles > 0)
             {
-                return soldierData.secondaryAttackRange;
+                return soldierData.secondaryAttackRange + group.soldierAttackRangeBonus;
             }
-            return soldierData.attackRange;
+            return soldierData.attackRange + group.soldierAttackRangeBonus;
         }
 
         public bool hasWalkingOrder { get { return state.walkingOrderComplete == false; } } //(group != null && group.hasWalkingOrder) && 

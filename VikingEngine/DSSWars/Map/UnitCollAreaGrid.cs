@@ -383,6 +383,57 @@ namespace VikingEngine.DSSWars.Map
         }
 
 
+        public Faction cityCaptureCheck(City city)
+        {
+            IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
+            UnitCollArea area;
+
+            Dictionary<int, float> faction_power = new Dictionary<int, float>();
+            //faction_power.Add(city.faction.parentArrayIndex, 0);
+
+            if (grid.TryGet(areaPos, out area))
+            {
+                lock (area.groups)
+                {
+                    if (area.groups != null)
+                    {
+                        foreach (var m in area.groups)
+                        {
+                            if (m.tilePos == city.tilePos)
+                            {
+                                if (city.faction == m.army.faction ||
+                                    DssRef.diplomacy.InWar(city.faction, m.army.faction))
+                                {
+                                    if (faction_power.TryGetValue(m.army.faction.parentArrayIndex, out float strength))
+                                    {
+                                        faction_power[m.army.faction.parentArrayIndex] = strength + m.strengthValue();
+                                    }
+                                    else
+                                    {
+                                        faction_power.Add(m.army.faction.parentArrayIndex, m.strengthValue());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            int strongest = city.faction.parentArrayIndex;
+            float strongestValue = 0;
+
+            foreach (var kv in faction_power)
+            {
+                if (kv.Value > strongest)
+                {
+                    strongest = kv.Key;
+                    strongestValue = kv.Value;
+                }
+            }
+
+            return DssRef.world.factions.Array[strongest];
+        }
+
         public void collectOpponentGroups(Faction faction, IntVector2 tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities)
         {
             groups_nearUpdate.Clear();

@@ -22,8 +22,10 @@ namespace VikingEngine.DSSWars.Defence
                 content.Add(new RbText(".Guard post " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_TypeName));
 
                 content.newLine();
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Add guard") },
-                    new RbAction1Arg<int>(city.debugGuardConscript, currentStatus.idAndPosition)));
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Add guard (archer)") },
+                    new RbAction2Arg<int, bool>(city.debugGuardConscript, currentStatus.idAndPosition, true)));
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Add guard (sword)") },
+                   new RbAction2Arg<int, bool>(city.debugGuardConscript, currentStatus.idAndPosition, false)));
             }
         }
 

@@ -25,13 +25,14 @@ namespace VikingEngine.DSSWars.Defence
         {
             if (transformType == SoldierTransformType.EnterGuard)
             {
-                assignedToPost_IdAndPosition = positionId;
+                //assignedToPost_IdAndPosition = positionId;
                 var city = this.army.GetCity();
                 TeleportToDefencePost(city, assignedToPost_IdAndPosition, city.defenceIxFromPosId(assignedToPost_IdAndPosition));
             }
             else if (transformType == SoldierTransformType.ExitGuard)
             {
-                assignedToPost_IdAndPosition = -1;
+                onExitGuard();
+                //assignedToPost_IdAndPosition = -1;
                 setGroundY();
             }
             else
@@ -42,6 +43,8 @@ namespace VikingEngine.DSSWars.Defence
             inShipOrGuardTransform = false;
         }
 
+
+
         public void TeleportToDefencePost(City city, int IdAndPosition, int defenceIndex)
         {
             city.defence_assignGuard_toIndex(this, defenceIndex);
@@ -49,22 +52,33 @@ namespace VikingEngine.DSSWars.Defence
 
             Vector3 center = WP.SubtileToWorldPosXZgroundY_Centered(subPos);
 
-            float wallHeight;
             var tile = DssRef.world.subTileGrid.Get(subPos);
-            switch ((TerrainWallType)tile.subTerrain)
-            {
-                default:
-                    wallHeight = WorldData.SubTileWidth * 0.8f;
-                    break;
-                case TerrainWallType.StoneTower:
-                    wallHeight = WorldData.SubTileWidth * 1.4f;
-                    break;
 
-            }
-
-            postYPos = center.Y + wallHeight;
+            postYPos = center.Y + tile.BuildingHeight();
 
             setArmyPlacement2(center, false, true);
+        }
+
+        public void onEnterGuard(City city, int IdAndPosition)
+        {
+           assignedToPost_IdAndPosition = IdAndPosition;
+           soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
+
+            if (ranged)
+            {
+                var tile = DssRef.world.subTileGrid.Get(conv.IntToIntVector2(IdAndPosition));
+                soldierAttackRangeBonus = tile.BuildingHeight() * 2f;
+            }
+            else
+            {
+                soldierAttackRangeBonus = 0.03f;
+            }
+        }
+
+        void onExitGuard()
+        { 
+            assignedToPost_IdAndPosition = -1;
+            soldierAttackRangeBonus = 0;
         }
 
         void setRestingMode(bool set)

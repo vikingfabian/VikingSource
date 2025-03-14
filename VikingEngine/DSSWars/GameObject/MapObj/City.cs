@@ -23,6 +23,7 @@ using VikingEngine.LootFest;
 using VikingEngine.ToGG.ToggEngine.Map;
 using VikingEngine.ToGG;
 using VikingEngine.DSSWars.Defence;
+using VikingEngine.PJ.MiniGolf;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -70,6 +71,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public CityTagBack tagBack = CityTagBack.NONE;
         public CityTagArt tagArt = CityTagArt.None;
+
+        public float capturePoints = 0;
 
 
         public bool CanBuildLogistics(int toLevel)
@@ -1452,11 +1455,7 @@ namespace VikingEngine.DSSWars.GameObject
                 DssRef.achieve.UnlockAchievement(AchievementIndex.large_population);
             }
 
-            //int waterAddPerSec = 1;
-            //if (Culture == CityCulture.DeepWell)
-            //{
-            //    waterAddPerSec = 2;
-            //}
+            
             nextWater.value += waterAddPerSec;
             maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
             res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
@@ -1469,6 +1468,123 @@ namespace VikingEngine.DSSWars.GameObject
                     faction.player.GetLocalPlayer().hud.messages.cityLowFoodMessage(this);
                 }
             }
+
+            if (capturePoints >= 100)
+            { 
+                //Power check
+                cityCaptureCehck();
+                capturePoints = 0;
+            }
+
+            capturePoints = Bound.Min(capturePoints - 10, 0);
+        }
+
+        void cityCaptureCehck()
+        {
+            Task.Run(() =>
+            {
+                Faction newOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this);
+                if (newOwner != faction)
+                {
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        if (faction.player.IsLocalPlayer())
+                        {
+                            ++faction.player.GetLocalPlayer().statistics.CitiesLost;
+                        }
+                        if (newOwner.player.IsLocalPlayer())
+                        {
+                            ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
+                        }
+
+                        setFaction(newOwner);
+                    }));
+                }
+            });
+
+            //        void ExitBattle()
+            //        {
+            //            if (members.Count == 0)
+            //            { return; }
+
+            //            List<City> cities = new List<City>(2);
+            //            Dictionary<int, float> cityDominationStrength = new Dictionary<int, float>(4);
+
+            //            var membersC = MembersCounter();
+            //            while (membersC.Next())
+            //            {
+            //                if (membersC.sel.gameobjectType() == GameObjectType.City)
+            //                {
+            //                    cities.Add(membersC.sel.GetCity());
+            //                }
+
+            //                if (cityDominationStrength.ContainsKey(membersC.sel.faction.parentArrayIndex))
+            //                {
+            //                    cityDominationStrength[membersC.sel.faction.parentArrayIndex] += membersC.sel.strengthValue;
+            //                }
+            //                else
+            //                {
+            //                    cityDominationStrength.Add(membersC.sel.faction.parentArrayIndex, membersC.sel.strengthValue);
+            //                }
+
+            //                membersC.sel.ExitBattleGroup();
+            //            }
+
+            //            int strongestFaction = -1;
+            //            float strongest = float.MinValue;
+
+            //            foreach (var kv in cityDominationStrength)
+            //            {
+            //                if (kv.Value > strongest)
+            //                {
+            //                    strongestFaction = kv.Key;
+            //                    strongest = kv.Value;
+            //                }
+            //            }
+
+            //            var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
+
+            //            if (cities.Count > 0)
+            //            {
+            //                foreach (var c in cities)
+            //                {
+            //                    if (DssRef.diplomacy.InWar(c.faction, dominatingFaction))
+            //                    {
+            //                        if (c.faction.player.IsPlayer())
+            //                        {
+            //                            ++c.faction.player.GetLocalPlayer().statistics.CitiesLost;
+            //                        }
+            //                        if (dominatingFaction.player.IsPlayer())
+            //                        {
+            //                            ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
+            //                        }
+
+            //                        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
+            //                    }
+            //                }
+            //            }
+
+            //            for (int i = 0; i < factions.Count; ++i)
+            //            {
+            //                var f = factions[i];
+
+            //                bool winner = f == dominatingFaction || !DssRef.diplomacy.InWar(f, dominatingFaction);
+
+            //                if (f.player.IsPlayer())
+            //                {
+            //                    var p = f.player.GetLocalPlayer();
+            //                    p.battles.Remove(this);
+            //                    if (winner)
+            //                    {
+            //                        p.statistics.BattlesWon++;
+            //                    }
+            //                    else
+            //                    {
+            //                        p.statistics.BattlesLost++;
+            //                    }
+            //                }
+            //            }
+            //        }
         }
 
         public void addWorkers(int add)
