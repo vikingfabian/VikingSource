@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
         
         public int id;
        
-        public int soldiersCount = 0;
+        
         //public int upkeep;
         public float transportSpeedLand = DssConst.Men_StandardWalkingSpeed;
         public float transportSpeedSea = DssConst.Men_StandardShipSpeed;
@@ -783,20 +783,14 @@ namespace VikingEngine.DSSWars.GameObject
                     terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(isShip);
                 }
 
-                //var battleGroup_sp = battleGroup;
-                //bool inBattle = battleGroup_sp != null && battleGroup_sp.battleState == Battle.BattleState.Battle;
-                //bool notBattle = !inBattle;
-
                 var groupsC = groups.counter();
 
                 while (groupsC.Next())
                 {
-
-
                     count += groupsC.sel.soldierCount;
                     groupsC.sel.setBattleWalkingSpeed();
 
-                    allGropsAreIdle &= groupsC.sel.state == GroupState.Idle; //.allInduvidualsAreIdle;
+                    allGropsAreIdle &= groupsC.sel.state == GroupState.Idle;
                     int health;
 
                     if (groupsC.sel.isShip)
@@ -804,14 +798,12 @@ namespace VikingEngine.DSSWars.GameObject
                         ++shipCount;
                         dps = groupsC.sel.soldierData.DPS_sea();
 
-                        {
-                            speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);
-                            groupsC.sel.walkSpeed = transportSpeedSea;
-                        }
-
+                        
+                        speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);
+                        groupsC.sel.walkSpeed = transportSpeedSea;
+                        
                         //TODO ship health
                         health = groupsC.sel.soldierData.basehealth;
-                        //}
                     }
                     else
                     {
@@ -860,8 +852,7 @@ namespace VikingEngine.DSSWars.GameObject
                 speedbonus += 1;
                 transportSpeedLand = Convert.ToSingle(DssConst.Men_StandardWalkingSpeed * speedbonus);
                 transportSpeedSea = Convert.ToSingle(DssConst.Men_StandardShipSpeed * speedbonus);
-                collectBattles_asynch();
-
+                
                 strengthValue = totalStrength / AllUnits.AverageGroupStrength;
 
                 cullingTopLeft = minpos - CamCullingRadius;

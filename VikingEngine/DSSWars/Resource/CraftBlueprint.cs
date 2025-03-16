@@ -401,5 +401,6 @@ namespace VikingEngine.DSSWars.Resource
     {
         Resource,
         Building,
+        NoSet,
     }
 }

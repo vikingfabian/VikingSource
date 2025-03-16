@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Players
 
         virtual protected bool buySoldiers(City city, bool aggresive, bool commit)
         {
-            if (!aggresive && city.workForce.amount < city.workForceMax - DssConst.SoldierGroup_DefaultCount)
+            if (!aggresive && city.workForce.amount < city.HousingCount_Workers - DssConst.SoldierGroup_DefaultCount)
             {
                 return false;
             }

@@ -251,22 +251,22 @@ namespace VikingEngine.DSSWars.Players
                 {
                     var citiesC = player.faction.cities.counter();
 
-                    for (CityType type = CityType.Factory; type >= CityType.Small; type--)
+                    for (CityType type = CityType.Factory; type >= CityType.Village; type--)
                     {
                         citiesC.Reset();
                         while (citiesC.Next())
                         {
-                            if (citiesC.sel.CityType == type &&
+                            if (citiesC.sel.cityType == type &&
                                 citiesC.sel.isMaxHomeUsers() )
                                 //&&
                                 //citiesC.sel.battleGroup == null)
                             {
-                                if (autoRepair && citiesC.sel.damages.HasValue())
-                                {
-                                    cityAction = citiesC.sel;
-                                    automationAction = AutomationAction.Repair;
-                                    return;
-                                }
+                                //if (autoRepair && citiesC.sel.damages.HasValue())
+                                //{
+                                //    cityAction = citiesC.sel;
+                                //    automationAction = AutomationAction.Repair;
+                                //    return;
+                                //}
 
                                 if (autoUpgradeLogistics && citiesC.sel.autoUpgradeLogistics(IntVector2.Zero, false))
                                 {   
@@ -277,12 +277,12 @@ namespace VikingEngine.DSSWars.Players
                                     return;
                                 }
 
-                                if (autoExpandGuard && citiesC.sel.canIncreaseGuardSize(1, true))
-                                {
-                                    cityAction = citiesC.sel;
-                                    automationAction = AutomationAction.GuardSize;
-                                    return;
-                                }
+                                //if (autoExpandGuard && citiesC.sel.canIncreaseGuardSize(1, true))
+                                //{
+                                //    cityAction = citiesC.sel;
+                                //    automationAction = AutomationAction.GuardSize;
+                                //    return;
+                                //}
 
                             }
                         }
@@ -304,13 +304,13 @@ namespace VikingEngine.DSSWars.Players
                     cityAction.autoUpgradeLogistics(subtilePos, true);
                     break;
 
-                case AutomationAction.Repair:
-                    cityAction.buyRepair(true, true);
-                    break;
+                //case AutomationAction.Repair:
+                //    cityAction.buyRepair(true, true);
+                //    break;
 
-                case AutomationAction.GuardSize:
-                    cityAction.buyCityGuards(true, 1);
-                    break;
+                //case AutomationAction.GuardSize:
+                //    cityAction.buyCityGuards(true, 1);
+                //    break;
             }
 
             cityAction = null;

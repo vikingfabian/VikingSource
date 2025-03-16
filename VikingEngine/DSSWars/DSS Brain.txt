@@ -1,5 +1,9 @@
 ﻿BETA UPDATE
 -Change Log-
+New system of city halls, workforce, guards and serviemen.
+New Guard sytem.
+The city damage system is removed.
+
 Sounds of waves
 Amience sound crash fix
 Fixed food eating statitics
@@ -7,6 +11,7 @@ Fixed overlapping tooltip
 Repaired file import/export
 Main menu improvements
 Battle melody level settings
+
 
 !save av settings
 
@@ -114,14 +119,18 @@ Polish
 -attack ally yes/no warning
 
 #Art
-main menu icons:
-exit
-new game
-continue
-load
-start
 
-placement bonus icon
+sound options
+sound level
+line dot seperator
+servicemen, free/occupied
+guard house
+guard post
+
+main menu icons:
+import, export
+
+(placement bonus icon
 work skill icons (carpenting)
 
 #Voxel

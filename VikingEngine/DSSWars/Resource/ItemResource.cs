@@ -71,36 +71,20 @@ namespace VikingEngine.DSSWars.Resource
 
         Hen,
         Pig,
-        UN_Goat,
         Ox,
         Egg,
-        UN_Milk,
-        UN_Cheese,
         Meat,
-
-        UN_RawLeather,
         Leather,
-
-        UN_WoodShoe,
-        UN_LeatherShoe,
 
         SoftWood,
         HardWood,
         DryWood,
-        UN_Planks,
-        UN_Barrel,
-        UN_Box,
         Wagon2Wheel,
         Wagon4Wheel,
         Coal,
         BogIron,
 
         Linen,
-        UN_Wool,
-        UN_Rope,
-        UN_Cloth,
-        UN_Clothes,
-        UN_Bag,
 
         IronOre_G,
         TinOre,
@@ -133,19 +117,13 @@ namespace VikingEngine.DSSWars.Resource
         Stone_G,
         UN_Clay,
         UN_Brick,
-        UN_Pot,
 
         Wheat,
-        UN_Bread,
         Beer,
         Food_G,
 
         Water_G,
-        UN_SaltWater,
-
         Fuel_G,
-        UN_Poop,
-
         Ballista,
         KnightsLance,
         TwoHandSword,
@@ -154,6 +132,7 @@ namespace VikingEngine.DSSWars.Resource
         RawFood_Group,
         SkinLinen_Group,
         Men,
+        ServiceMen,
         Rapeseed,
         Hemp,
 

@@ -232,6 +232,8 @@ namespace VikingEngine.DSSWars
                     addFlagTexture(faction, copy, WavingFlagStart, true, 3);
                     addFlagTexture(faction, copy, WavingFlagStart, true, 4);
                     addFlagTexture(faction, copy, WavingFlagStart_LargeFlag, true, 5);
+
+                    addFlagTexture(faction, copy, WavingFlagStart, true, 8);
                     break;
                 case VoxelModelName.horsebanner:
                     addFlagTexture(faction, copy, HorseBannerStart, true);

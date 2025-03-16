@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         buildType = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
                         
-                        if (work && workForce.amount >= workForceMax)
+                        if (work && workForce.amount >= HousingCount_Workers)
                         {
                             buildType = BuildAndExpandType.WorkerHuts;
                         }

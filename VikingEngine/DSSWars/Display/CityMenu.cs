@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.Display
             if (city.automateCity)
             {
                 city.CityDetailsHud(false, player, content);
-                purchaseOptions(content);
+                //purchaseOptions(content);
             }
             else
             {
@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Display
                 {
                     case MenuTab.Info:
                         city.CityDetailsHud(false, player, content);
-                        purchaseOptions(content);
+                        //purchaseOptions(content);
                         break;
 
                     case MenuTab.Tag:
@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.Display
         }
         void helpTab(RichBoxContent content)
         {
-            content.h2("Work doesn't start", HudLib.TitleColor_Head);
+            content.h2(".Work doesn't start", HudLib.TitleColor_Head);
 
             content.newLine();
             HudLib.BulletPoint(content);
@@ -1702,78 +1702,78 @@ namespace VikingEngine.DSSWars.Display
             //}
         }
 
-        void purchaseOptions(RichBoxContent content)
-        {
-            //if (city.battleGroup == null)
-            {
-                if (city.damages.HasValue())
-                {
-                    content.newLine();
-                    content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>{
-                                    new RbImage(SpriteName.unitEmoteLove),
-                                    new RbText(DssRef.lang.CityOption_Repair),
-                                },
-                        new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
-                        new RbTooltip(buyRepairToolTip, true),
-                        city.buyRepair(false, true)));
-                }
+        //void purchaseOptions(RichBoxContent content)
+        //{
+        //    //if (city.battleGroup == null)
+        //    {
+        //        if (city.damages.HasValue())
+        //        {
+        //            content.newLine();
+        //            content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>{
+        //                            new RbImage(SpriteName.unitEmoteLove),
+        //                            new RbText(DssRef.lang.CityOption_Repair),
+        //                        },
+        //                new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
+        //                new RbTooltip(buyRepairToolTip, true),
+        //                city.buyRepair(false, true)));
+        //        }
 
-                content.newLine();
+        //        content.newLine();
 
-                //if (city.battleGroup == null)
-                //{
-                //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                //            new RichBoxImage(SpriteName.birdFireball),
-                //            new RichBoxText(DssRef.lang.CityOption_BurnItDown),
-                //        },
-                //        new RbAction(city.burnItDown, SoundLib.menu),
-                //        new RbAction(burnToolTip),
-                //         city.damages.value < city.MaxDamages()));
+        //        //if (city.battleGroup == null)
+        //        //{
+        //        //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+        //        //            new RichBoxImage(SpriteName.birdFireball),
+        //        //            new RichBoxText(DssRef.lang.CityOption_BurnItDown),
+        //        //        },
+        //        //        new RbAction(city.burnItDown, SoundLib.menu),
+        //        //        new RbAction(burnToolTip),
+        //        //         city.damages.value < city.MaxDamages()));
 
-                //    content.newLine();
-                //}
+        //        //    content.newLine();
+        //        //}
 
-                {
-                    int count = 1;
-                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
-                                    new RbImage(SpriteName.WarsGuardAdd),
-                                    new RbText( DssRef.lang.CityOption_ExpandGuardSize),
-                                },
-                        new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
-                        new RbTooltip(buyGuardSizeToolTip, count),
-                        city.buyCityGuards(false, count)));
-                }
-                //content.Add(new RichBoxSpace());
-                {
-                    int count = 5;
-                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { 
-                            new RbText(string.Format(DssRef.lang.Hud_XTimes, count)) 
-                        },
-                        new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
-                        new RbTooltip(buyGuardSizeToolTip, count),
-                        city.buyCityGuards(false, count)));
-                }
+        //        {
+        //            int count = 1;
+        //            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
+        //                            new RbImage(SpriteName.WarsGuardAdd),
+        //                            new RbText( DssRef.lang.CityOption_ExpandGuardSize),
+        //                        },
+        //                new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+        //                new RbTooltip(buyGuardSizeToolTip, count),
+        //                city.buyCityGuards(false, count)));
+        //        }
+        //        //content.Add(new RichBoxSpace());
+        //        {
+        //            int count = 5;
+        //            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { 
+        //                    new RbText(string.Format(DssRef.lang.Hud_XTimes, count)) 
+        //                },
+        //                new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+        //                new RbTooltip(buyGuardSizeToolTip, count),
+        //                city.buyCityGuards(false, count)));
+        //        }
 
-                content.newLine();
-                {
-                    int count = 1;
-                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
-                                    new RbImage(SpriteName.WarsGuard),
-                                    new RbText( DssRef.lang.CityOption_LowerGuardSize),
-                                },
-                        new RbAction1Arg<int>(city.releaseGuardSize, count * DssConst.ExpandGuardSize, SoundLib.menuBuy),
-                        new RbTooltip(releaseGuardSizeToolTip, count),
-                        city.canReleaseGuardSize(count)));
-                }
-                //if (!city.nobelHouse && city.canEverGetNobelHouse())
-                //{
-                //    content.Button(DssRef.lang.Building_NobleHouse,
-                //            new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
-                //            new RbAction(buyNobelhouseTooltip),
-                //            city.canBuyNobelHouse());
-                //}
-            }
-        }
+        //        content.newLine();
+        //        {
+        //            int count = 1;
+        //            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
+        //                            new RbImage(SpriteName.WarsGuard),
+        //                            new RbText( DssRef.lang.CityOption_LowerGuardSize),
+        //                        },
+        //                new RbAction1Arg<int>(city.releaseGuardSize, count * DssConst.ExpandGuardSize, SoundLib.menuBuy),
+        //                new RbTooltip(releaseGuardSizeToolTip, count),
+        //                city.canReleaseGuardSize(count)));
+        //        }
+        //        //if (!city.nobelHouse && city.canEverGetNobelHouse())
+        //        //{
+        //        //    content.Button(DssRef.lang.Building_NobleHouse,
+        //        //            new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
+        //        //            new RbAction(buyNobelhouseTooltip),
+        //        //            city.canBuyNobelHouse());
+        //        //}
+        //    }
+        //}
 
         void blueprintButton(LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null, bool roomForAnotherButton = false)
         {
@@ -2115,10 +2115,10 @@ namespace VikingEngine.DSSWars.Display
         //    city.buyWorkforce(true, count);
         //}
 
-        void buyRepairAction(bool all)
-        {
-            city.buyRepair(true, all);
-        }
+        //void buyRepairAction(bool all)
+        //{
+        //    city.buyRepair(true, all);
+        //}
 
         //public void buyWorkforceToolTip(int count)
         //{
@@ -2151,82 +2151,82 @@ namespace VikingEngine.DSSWars.Display
             //player.hud.tooltip.create(player, content, true);
         }
 
-        public void buyRepairToolTip(RichBoxContent content, object tag)
-        {
-            bool all = (bool)tag;
-            //RichBoxContent content = new RichBoxContent();
-            int count, cost;
-            city.repairCountAndCost( all, out count, out cost);
+        //public void buyRepairToolTip(RichBoxContent content, object tag)
+        //{
+        //    bool all = (bool)tag;
+        //    //RichBoxContent content = new RichBoxContent();
+        //    int count, cost;
+        //    city.repairCountAndCost( all, out count, out cost);
 
-            content.text(TextLib.Quote(DssRef.lang.CityOption_Repair_Description));
-            content.newLine();
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-            content.newLine();
-            HudLib.ResourceCost(content, ResourceType.Gold, cost, player.faction.gold);
-            content.newLine();
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
-            content.newLine();
-            content.icontext(SpriteName.unitEmoteLove, string.Format(DssRef.lang.CityOption_RepairGain, city.damages.Int()));
+        //    content.text(TextLib.Quote(DssRef.lang.CityOption_Repair_Description));
+        //    content.newLine();
+        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+        //    content.newLine();
+        //    HudLib.ResourceCost(content, ResourceType.Gold, cost, player.faction.gold);
+        //    content.newLine();
+        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
+        //    content.newLine();
+        //    content.icontext(SpriteName.unitEmoteLove, string.Format(DssRef.lang.CityOption_RepairGain, city.damages.Int()));
             
-            //player.hud.tooltip.create(player, content, true);
-        }
+        //    //player.hud.tooltip.create(player, content, true);
+        //}
 
-        void buyCityGuardsAction(int count)
-        {
-            city.buyCityGuards(true, count);
-        }
+        //void buyCityGuardsAction(int count)
+        //{
+        //    city.buyCityGuards(true, count);
+        //}
 
-        public void releaseGuardSizeToolTip(RichBoxContent content, object tag)//int count)
-        {
-            int count = (int)tag;
-            //RichBoxContent content = new RichBoxContent();
+        //public void releaseGuardSizeToolTip(RichBoxContent content, object tag)//int count)
+        //{
+        //    int count = (int)tag;
+        //    //RichBoxContent content = new RichBoxContent();
 
-            if (city.canReleaseGuardSize(count))
-            {
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
-                content.newLine();
-                content.icontext(SpriteName.WarsGuard, string.Format(DssRef.lang.Hud_IncreaseMaxGuardCount, -DssConst.ExpandGuardSize * count));
+        //    if (city.canReleaseGuardSize(count))
+        //    {
+        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
+        //        content.newLine();
+        //        content.icontext(SpriteName.WarsGuard, string.Format(DssRef.lang.Hud_IncreaseMaxGuardCount, -DssConst.ExpandGuardSize * count));
                 
                 
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
-                HudLib.ItemCount(content, SpriteName.rtsIncome, DssRef.lang.ResourceType_Gold, (DssConst.ReleaseGuardSizeGain * count).ToString());
+        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
+        //        HudLib.ItemCount(content, SpriteName.rtsIncome, DssRef.lang.ResourceType_Gold, (DssConst.ReleaseGuardSizeGain * count).ToString());
 
-            }
-            else
-            {
-                content.Add(new RbText(DssRef.lang.Hud_Purchase_MinCapacity, Color.Red));
-            }
+        //    }
+        //    else
+        //    {
+        //        content.Add(new RbText(DssRef.lang.Hud_Purchase_MinCapacity, Color.Red));
+        //    }
 
-            //player.hud.tooltip.create(player, content, true);
-        }
+        //    //player.hud.tooltip.create(player, content, true);
+        //}
 
-        public void buyGuardSizeToolTip(RichBoxContent content, object tag)//int count)
-        {
-            int count = (int)tag;
-            //RichBoxContent content = new RichBoxContent();
+        //public void buyGuardSizeToolTip(RichBoxContent content, object tag)//int count)
+        //{
+        //    int count = (int)tag;
+        //    //RichBoxContent content = new RichBoxContent();
 
-            if (city.canIncreaseGuardSize(count, false))
-            {
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
-                content.newLine();
-                HudLib.ResourceCost(content, ResourceType.Gold, DssConst.ExpandGuardSizeCost * count, player.faction.gold);
-                content.newLine();
-                //content.icontext(SpriteName.rtsUpkeepTime, "Upkeep +" + city.GuardUpkeep(City.ExpandGuardSize * count).ToString());
-                HudLib.Upkeep(content, city.GuardUpkeep(DssConst.ExpandGuardSize * count));
+        //    if (city.canIncreaseGuardSize(count, false))
+        //    {
+        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
+        //        content.newLine();
+        //        HudLib.ResourceCost(content, ResourceType.Gold, DssConst.ExpandGuardSizeCost * count, player.faction.gold);
+        //        content.newLine();
+        //        //content.icontext(SpriteName.rtsUpkeepTime, "Upkeep +" + city.GuardUpkeep(City.ExpandGuardSize * count).ToString());
+        //        HudLib.Upkeep(content, city.GuardUpkeep(DssConst.ExpandGuardSize * count));
 
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
+        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
 
-                content.icontext(SpriteName.WarsGuardAdd, string.Format(DssRef.lang.Hud_IncreaseMaxGuardCount, TextLib.PlusMinus( DssConst.ExpandGuardSize * count)));
-            }
-            else 
-            {
-                content.Add(new RbText(DssRef.lang.Hud_Purchase_MaxCapacity, Color.Red));
-                content.newLine();
-                content.Add(new RbText(DssRef.lang.Hud_GuardCount_MustExpandCityMessage, Color.Red));
-            }
+        //        content.icontext(SpriteName.WarsGuardAdd, string.Format(DssRef.lang.Hud_IncreaseMaxGuardCount, TextLib.PlusMinus( DssConst.ExpandGuardSize * count)));
+        //    }
+        //    else 
+        //    {
+        //        content.Add(new RbText(DssRef.lang.Hud_Purchase_MaxCapacity, Color.Red));
+        //        content.newLine();
+        //        content.Add(new RbText(DssRef.lang.Hud_GuardCount_MustExpandCityMessage, Color.Red));
+        //    }
 
-            //player.hud.tooltip.create(player, content, true);
-        }
+        //    //player.hud.tooltip.create(player, content, true);
+        //}
 
         //public void buySoldiersTip(CityPurchaseOption opt, int count)
         //{

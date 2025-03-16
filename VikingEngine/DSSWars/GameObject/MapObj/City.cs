@@ -24,29 +24,37 @@ using VikingEngine.ToGG.ToggEngine.Map;
 using VikingEngine.ToGG;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.PJ.MiniGolf;
+using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : AbsArmy
     {
         public int areaSize = 0;
-        public CityType CityType;
+        public CityType cityType;
         public List<int> neighborCities = new List<int>();
 
         Graphics.AbsVoxelObj overviewModel;
 
         BoundingBox bound;
 
-        public int maxGuardSize;
-        public int guardCount;
+        //public int maxGuardSize;
+        //public int guardCount;
 
         public FloatingInt childrenAge0 = new FloatingInt();
         public int childrenAge1 = 0;
 
+        IntVector2 cityHallSubtilePos;
         public GroupedResource workForce = new GroupedResource();
-        
-        public int workForceMax = 0;
-        public FloatingInt damages = new FloatingInt();
+        public GroupedResource serviceMen = new GroupedResource();
+
+        public int HousingCount_Workers = 0;
+        public int WorkersMaxLimit;
+
+        public int HousingCount_Guard = 0;
+        public int HousingCount_ServiceMen = 0;
+
+        //public FloatingInt damages = new FloatingInt();
         public FloatingInt immigrants = new FloatingInt();
         const double ImmigrantsRemovePerSec = 0.1;
         public int workHutStyle = 0;
@@ -220,7 +228,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.parentArrayIndex = index;
 
             this.tilePos = pos;
-            this.CityType = type;
+            this.cityType = type;
         }
 
         public City(int index)
@@ -286,7 +294,7 @@ namespace VikingEngine.DSSWars.GameObject
             double percX = tilePos.X / (double)world.Size.X;
             double percY = tilePos.Y / (double)world.Size.Y;
 
-            if (percForest >= 0.7 && CityType == CityType.Head)
+            if (percForest >= 0.7 && cityType == CityType.Capital)
             {
                 cityCultureCollection.LargeGreen.Add(this);
             }
@@ -342,7 +350,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             tilePos.writeUshort(w);
 
-            w.Write(Debug.Byte_OrCrash((int)CityType));
+            w.Write(Debug.Byte_OrCrash((int)cityType));
             w.Write(Debug.Ushort_OrCrash(areaSize));
             w.Write(Debug.Byte_OrCrash(cityTileRadius));
             w.Write(Debug.Byte_OrCrash(workHutStyle));
@@ -361,7 +369,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             tilePos.readUshort(r);
 
-            CityType = (CityType)r.ReadByte();
+            cityType = (CityType)r.ReadByte();
             areaSize = r.ReadUInt16();
             cityTileRadius = r.ReadByte();
             
@@ -382,14 +390,14 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write(Convert.ToUInt16(workForce.amount));
-            w.Write(Convert.ToUInt16(workForceMax));
+            w.Write(Convert.ToUInt16(HousingCount_Workers));
+            w.Write(Convert.ToUInt16(HousingCount_Guard));
+            w.Write(Convert.ToUInt16(HousingCount_ServiceMen));
+
             childrenAge0.write16bit(w);
             w.Write((ushort)childrenAge1);
 
-            damages.write16bit(w);
             immigrants.write16bit(w);
-            w.Write((ushort)guardCount);
-            w.Write((ushort)maxGuardSize);
 
             w.Write((byte)maxWaterBase);
             w.Write(waterAddPerSec);
@@ -443,15 +451,18 @@ namespace VikingEngine.DSSWars.GameObject
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             workForce.amount = r.ReadUInt16();
-            workForceMax = r.ReadUInt16();
+            HousingCount_Workers = r.ReadUInt16();
+            HousingCount_Guard = r.ReadUInt16();
+            HousingCount_ServiceMen = r.ReadUInt16();
+
             childrenAge0.read16bit(r);
             childrenAge1 = r.ReadUInt16();
 
-            damages.read16bit(r);
+            //damages.read16bit(r);
             immigrants.read16bit(r);
 
-            guardCount = r.ReadUInt16();
-            maxGuardSize = r.ReadUInt16();
+            //guardCount = r.ReadUInt16();
+            //maxGuardSize = r.ReadUInt16();
 
             maxWaterBase = r.ReadByte();
             maxWaterTotal = maxWaterBase;
@@ -513,11 +524,10 @@ namespace VikingEngine.DSSWars.GameObject
 
             gold = r.ReadInt32();
 
-            if (subversion >= 45)
-            {
-                automateCity = r.ReadBoolean();
-                automationFocus = (AutomationFocus)r.ReadByte();
-            }
+            
+            automateCity = r.ReadBoolean();
+            automationFocus = (AutomationFocus)r.ReadByte();
+            
 
             name.read(r, subversion);
 
@@ -732,8 +742,8 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeNet_map(System.IO.BinaryWriter w)
         {
             writeMapFile(w);
-            w.Write((ushort)guardCount);
-            w.Write((ushort)maxGuardSize);
+            //w.Write((ushort)guardCount);
+            //w.Write((ushort)maxGuardSize);
 
             w.Write((ushort)faction.parentArrayIndex);
 
@@ -742,8 +752,8 @@ namespace VikingEngine.DSSWars.GameObject
         public void readNet_map(System.IO.BinaryReader r)
         {
             readMapFile(r, int.MaxValue);
-            guardCount = r.ReadUInt16();
-            maxGuardSize = r.ReadUInt16();
+            //guardCount = r.ReadUInt16();
+            //maxGuardSize = r.ReadUInt16();
 
             int factionIx = r.ReadUInt16();
             faction = DssRef.world.factions[factionIx];
@@ -785,7 +795,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int expandWorkForceCost()
         {
-            return 40000 + workForceMax * 10;
+            return 40000 + HousingCount_Workers * 10;
         }
 
         //public int releaseWorkForceGain()
@@ -794,27 +804,27 @@ namespace VikingEngine.DSSWars.GameObject
         //}
 
 
-        public bool canIncreaseGuardSize(int count, bool checkIfCapped)
-        {
-            if (checkIfCapped && guardCount + 2 < maxGuardSize)
-            {
-                return false;
-            }
+        //public bool canIncreaseGuardSize(int count, bool checkIfCapped)
+        //{
+        //    if (checkIfCapped && guardCount + 2 < maxGuardSize)
+        //    {
+        //        return false;
+        //    }
 
-            return (maxGuardSize + DssConst.ExpandGuardSize * count) <= workForceMax;            
-        }
+        //    return (maxGuardSize + DssConst.ExpandGuardSize * count) <= HousingCount_Workers;            
+        //}
 
-        public bool canReleaseGuardSize(int count)
-        {
-            return (maxGuardSize - DssConst.ExpandGuardSize * count) >= DssConst.ExpandGuardSize;
-        }
+        //public bool canReleaseGuardSize(int count)
+        //{
+        //    return (maxGuardSize - DssConst.ExpandGuardSize * count) >= DssConst.ExpandGuardSize;
+        //}
 
-        public void expandWorkForce(int totalAmount)
-        {
-            workForceMax += totalAmount;
-            refreshCitySize();
-            refreshWorkerSubtiles();
-        }
+        //public void expandWorkForce(int totalAmount)
+        //{
+        //    HousingCount_Workers += totalAmount;
+        //    //refreshCitySize();
+        //    refreshWorkerSubtiles();
+        //}
 
         public const int WorkersPerHut = 30;
         const int WorkerHutsPerTile = 4;
@@ -824,7 +834,7 @@ namespace VikingEngine.DSSWars.GameObject
         int totalWorkerHutAndLevelCount = 0;
         public void refreshWorkerSubtiles()
         {
-            int goalDisplayCount = WorkersToModelsCount(workForceMax);
+            int goalDisplayCount = WorkersToModelsCount(HousingCount_Workers);
             if (goalDisplayCount > totalWorkerHutAndLevelCount)
             {
                 Task.Factory.StartNew(() =>
@@ -948,52 +958,52 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (build_notDestroy)
             {
-                workForceMax += DssConst.SoldierGroup_DefaultCount;
+                HousingCount_Workers += DssConst.HousingCount_WorkerHut;
             }
             else
             {
-                workForceMax -= DssConst.SoldierGroup_DefaultCount;
+                HousingCount_Workers -= DssConst.HousingCount_WorkerHut;
             }
-            refreshCitySize();
+            //refreshCitySize();
         }
 
-        public void expandGuardSize(int amount)
-        {
-            maxGuardSize += amount;
-            refreshCitySize();
-        }
+        //public void expandGuardSize(int amount)
+        //{
+        //    maxGuardSize += amount;
+        //    refreshCitySize();
+        //}
 
-        public void releaseGuardSize(int totalAmount)
-        {
-            maxGuardSize -= totalAmount;
-            if (guardCount > maxGuardSize)
-            {
-                int releasedWorkers = guardCount - maxGuardSize;
-                guardCount = maxGuardSize;
-                addWorkers(releasedWorkers);
+        //public void releaseGuardSize(int totalAmount)
+        //{
+        //    maxGuardSize -= totalAmount;
+        //    if (guardCount > maxGuardSize)
+        //    {
+        //        int releasedWorkers = guardCount - maxGuardSize;
+        //        guardCount = maxGuardSize;
+        //        addWorkers(releasedWorkers);
 
-                faction.gainMoney(DssConst.ReleaseGuardSizeGain, this);
-            }
-        }
+        //        faction.gainMoney(DssConst.ReleaseGuardSizeGain, this);
+        //    }
+        //}
 
-        public bool buyCityGuards(bool commit, int count)
-        {
-            if (canIncreaseGuardSize(count, false))
-            {
-                int totalCost = 0;
+        //public bool buyCityGuards(bool commit, int count)
+        //{
+        //    if (canIncreaseGuardSize(count, false))
+        //    {
+        //        int totalCost = 0;
 
-                if (faction.calcCost(DssConst.ExpandGuardSizeCost * count, ref totalCost, this))
-                {
-                    if (commit)
-                    {
-                        expandGuardSize(DssConst.ExpandGuardSize * count);
-                        faction.payMoney(totalCost, true, this);
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
+        //        if (faction.calcCost(DssConst.ExpandGuardSizeCost * count, ref totalCost, this))
+        //        {
+        //            if (commit)
+        //            {
+        //                expandGuardSize(DssConst.ExpandGuardSize * count);
+        //                faction.payMoney(totalCost, true, this);
+        //            }
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
         //public bool releaseCityGuards(bool commit, int count)
         //{
@@ -1010,56 +1020,56 @@ namespace VikingEngine.DSSWars.GameObject
         //    return false;
         //}
 
-        public bool buyRepair(bool commit, bool all)
-        {
-            if (damages.HasValue())
-            {
-                int cost;
-                int count;
+        //public bool buyRepair(bool commit, bool all)
+        //{
+        //    if (damages.HasValue())
+        //    {
+        //        int cost;
+        //        int count;
 
-                repairCountAndCost(all, out count, out cost);
+        //        repairCountAndCost(all, out count, out cost);
 
-                int totalCost = 0;
-                if (faction.hasMoney(cost, this))
-                {
-                    if (commit)
-                    {
-                        damages.value -= count;
-                        faction.payMoney(cost, true, this);
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
+        //        int totalCost = 0;
+        //        if (faction.hasMoney(cost, this))
+        //        {
+        //            if (commit)
+        //            {
+        //                damages.value -= count;
+        //                faction.payMoney(cost, true, this);
+        //            }
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
-        public void burnItDown()
-        {
-            damages.value = MaxDamages();
-            workForce.amount = 0;
-        }
+        //public void burnItDown()
+        //{
+        //    damages.value = MaxDamages();
+        //    workForce.amount = 0;
+        //}
 
         public double MaxDamages()
         {
-            return workForceMax * 0.75;
+            return HousingCount_Workers * 0.75;
         }
 
-        public void repairCountAndCost(bool all, out int count, out int cost)
-        {
-            const double BuyToRepair = 0.75;
-            count = damages.Int();
-            cost = 0;
+        //public void repairCountAndCost(bool all, out int count, out int cost)
+        //{
+        //    const double BuyToRepair = 0.75;
+        //    count = damages.Int();
+        //    cost = 0;
 
-            if (count > 0)
-            {
-                if (!all && count > DssConst.ExpandWorkForce)
-                {
-                    count = DssConst.ExpandWorkForce;
-                }
+        //    if (count > 0)
+        //    {
+        //        if (!all && count > DssConst.ExpandWorkForce)
+        //        {
+        //            count = DssConst.ExpandWorkForce;
+        //        }
 
-                cost = Convert.ToInt32(((double)expandWorkForceCost() / DssConst.ExpandWorkForce * count) * BuyToRepair);
-            }
-        }
+        //        cost = Convert.ToInt32(((double)expandWorkForceCost() / DssConst.ExpandWorkForce * count) * BuyToRepair);
+        //    }
+        //}
 
         public bool buyMercenary(bool commit, int count)
         {
@@ -1103,9 +1113,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (newGame)
             {
-                maxGuardSize = workForce.amount / 4;
+                //maxGuardSize = workForce.amount / 4;
 
-                guardCount = maxGuardSize;
+                //guardCount = maxGuardSize;
             }
             refreshCitySize();
 
@@ -1132,22 +1142,22 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (newGame)
             {
-                switch (CityType)
+                switch (cityType)
                 {
-                    case CityType.Small:
-                        workForceMax = DssConst.SmallCityStartMaxWorkForce;
+                    case CityType.Village:
+                        HousingCount_Workers = DssConst.SmallCityStartMaxWorkForce;
                         waterAddPerSec = DssConst.WaterAdd_SmallCity;
                         break;
-                    case CityType.Large:
-                        workForceMax = DssConst.LargeCityStartMaxWorkForce;
+                    case CityType.Town:
+                        HousingCount_Workers = DssConst.LargeCityStartMaxWorkForce;
                         waterAddPerSec = DssConst.WaterAdd_LargeCity;
                         break;
                     default:
-                        workForceMax = DssConst.HeadCityStartMaxWorkForce;
+                        HousingCount_Workers = DssConst.HeadCityStartMaxWorkForce;
                         waterAddPerSec = DssConst.WaterAdd_HeadCity;
                         break;
                 }
-                workForce.amount = (int)(workForceMax * 0.75);
+                workForce.amount = (int)(HousingCount_Workers * 0.75);
                 waterAddPerSec += Ref.rnd.Float(DssConst.WaterAdd_RandomAdd);
 
                 if (Culture == CityCulture.DeepWell)
@@ -1161,37 +1171,47 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshCitySize()
         {
+            switch (cityType)
+            {
+                case CityType.Village:
+                    WorkersMaxLimit = DssConst.VillageHall_MaxWorkForce;
+                    break;
+                case CityType.Town:
+                    WorkersMaxLimit = DssConst.TownHall_MaxWorkForce;
+                    break;
+                default:
+                    WorkersMaxLimit = int.MaxValue;
+                    break;
+            }
             refreshVisualSize();
         }
 
         void refreshVisualSize()
         {
-            if (CityType != CityType.Factory)
+            if (cityType != CityType.Factory)
             {
-                CityType newType;
+                //CityType newType;
 
-                if (workForceMax >= DssConst.HeadCityStartMaxWorkForce)
-                {
-                    newType = CityType.Head;
-                }
-                else if (workForceMax >= DssConst.LargeCityStartMaxWorkForce)
-                {
-                    newType = CityType.Large;
-                }
-                else
-                {
-                    newType = CityType.Small;
-                }
+                //if (HousingCount_Workers >= DssConst.HeadCityStartMaxWorkForce)
+                //{
+                //    newType = CityType.Capital;
+                //}
+                //else if (HousingCount_Workers >= DssConst.LargeCityStartMaxWorkForce)
+                //{
+                //    newType = CityType.Town;
+                //}
+                //else
+                //{
+                //    newType = CityType.Village;
+                //}
 
-                if (newType != CityType)
-                {
-                    CityType = newType;
+                
 
-                    if (overviewModel != null)
-                    {
-                        overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
-                    }
+                if (overviewModel != null)
+                {
+                    overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
                 }
+                
             }
         }
 
@@ -1199,11 +1219,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (set)
             {
-                if (CityType != CityType.Factory)
+                if (cityType != CityType.Factory)
                 {
-                    CityType = CityType.Factory;
+                    cityType = CityType.Factory;
 
-                    workForceMax += DssConst.HeadCityStartMaxWorkForce;
+                    HousingCount_Workers += DssConst.HeadCityStartMaxWorkForce;
                     //detailObj.refreshModel();
 
                     if (overviewModel != null)
@@ -1216,11 +1236,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                if (CityType == CityType.Factory)
+                if (cityType == CityType.Factory)
                 {
-                    CityType = CityType.Large;
+                    cityType = CityType.Town;
 
-                    workForceMax -= DssConst.HeadCityStartMaxWorkForce;
+                    HousingCount_Workers -= DssConst.HeadCityStartMaxWorkForce;
                     //detailObj.refreshModel();
 
                     if (overviewModel != null)
@@ -1275,7 +1295,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool hasNeededAreaSize()
         {
             int maxFit = WorkersPerTile * HutMaxLevel * areaSize;
-            return workForceMax + 2 <= maxFit;
+            return HousingCount_Workers + 2 <= maxFit;
         }
 
         void createOverViewModel()
@@ -1290,11 +1310,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         float IconScale()
         {
-            switch (CityType)
+            switch (cityType)
             {
-                case CityType.Small:
+                case CityType.Village:
                     return 0.7f;
-                case CityType.Large:
+                case CityType.Town:
                     return 1f;
                 default:
                     return 1.3f;
@@ -1340,7 +1360,7 @@ namespace VikingEngine.DSSWars.GameObject
             CityEconomyData cityEconomy = new CityEconomyData();
             double income = cityEconomy.tax(this) * incomeMultiplier;
 
-            income -= GuardUpkeep(maxGuardSize);
+            //income -= GuardUpkeep(maxGuardSize);
             income -= DssLib.NobleHouseUpkeep * buildingStructure.Nobelhouse_count;
 
             gold += Convert.ToInt32(income);
@@ -1353,7 +1373,7 @@ namespace VikingEngine.DSSWars.GameObject
             return new CityEconomyData()
             {
                 workerCount = workForce.amount,//tax = workForce.value * TaxPerWorker,
-                cityGuardUpkeep = GuardUpkeep(maxGuardSize),
+                //cityGuardUpkeep = GuardUpkeep(maxGuardSize),
                 blackMarketCosts_Food = blackMarketCosts_food.displayValue_sec,
             };
         }
@@ -1371,7 +1391,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (/*battleGroup == null &&*/
                 res_food.amount > 0 &&
-                homeUsers() < homesTotal())
+                homeUsers() < workersMax())
             {
                 var result = workForce.amount / 200.0 * faction.growthMultiplier;
                 if (Culture == CityCulture.LargeFamilies)
@@ -1385,17 +1405,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool isMaxHomeUsers()
         {
-            return homeUsers() >= homesTotal();
+            return homeUsers() >= HousingCount_Workers;
         }
 
         public int homesUnused()
         {
-            return homesTotal() - homeUsers();
+            return HousingCount_Workers - homeUsers();
         }
 
-        public int homesTotal()
+        public int workersMax()
         {
-            return workForceMax - damages.Int();
+            return Bound.Max( HousingCount_Workers, WorkersMaxLimit);
         }
 
         public int homeUsers()
@@ -1445,7 +1465,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //detailObj.oneSecondUpdate();
             }
 
-            workForce.amount = Bound.Max(workForce.amount + addWorkers, homesTotal());
+            workForce.amount = Bound.Max(workForce.amount + addWorkers, HousingCount_Workers);
 
             if (workForce.amount > Achievements.LargePopulationCount &&
                  !DssRef.achieve.largePopulation &&
@@ -1589,11 +1609,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void addWorkers(int add)
         {
-            if (workForce.amount + add > workForceMax)
+            if (workForce.amount + add > HousingCount_Workers)
             {
                 //Add rest to immigration
-                int rest = workForce.amount + add - workForceMax;
-                workForce.amount = workForceMax;
+                int rest = workForce.amount + add - HousingCount_Workers;
+                workForce.amount = HousingCount_Workers;
                 immigrants.value += rest;
             }
             else
@@ -1604,10 +1624,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchGameObjectsUpdate(bool minute)
         {
-            collectBattles_asynch();
+            //collectBattles_asynch();
             //detailObj.asynchUpdate();
             //strength
-            strengthValue = 2.5f * guardCount / DssConst.SoldierGroup_DefaultCount;
+            //strengthValue = 2.5f * guardCount / DssConst.SoldierGroup_DefaultCount;
+            async_SoldiersUpdate(minute);
 
             if (minute)
             {
@@ -1647,57 +1668,57 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.world.unitCollAreaGrid.collectOpponentGroups(faction, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
             //detailObj.asynchFindBattleTarget(groups);
 
-            if (guardCount <= 0 && armyDefence == 0)
-            {
-                //Destroyed in battle, domination check
+            //if (guardCount <= 0 && armyDefence == 0)
+            //{
+            //    //Destroyed in battle, domination check
 
-                CityDominationStrength.Clear();
+            //    CityDominationStrength.Clear();
 
-                foreach (var group in groups)
-                {
-                    int key = group.GetFaction().parentArrayIndex;
-                    float value = group.strengthValue();
+            //    foreach (var group in groups)
+            //    {
+            //        int key = group.GetFaction().parentArrayIndex;
+            //        float value = group.strengthValue();
 
-                    if (CityDominationStrength.TryGetValue(key, out float current))
-                    {
-                        CityDominationStrength[key] = current + value;
-                    }
-                    else
-                    {
-                        CityDominationStrength.Add(key, value);
-                    }
-                }
+            //        if (CityDominationStrength.TryGetValue(key, out float current))
+            //        {
+            //            CityDominationStrength[key] = current + value;
+            //        }
+            //        else
+            //        {
+            //            CityDominationStrength.Add(key, value);
+            //        }
+            //    }
 
-                if (CityDominationStrength.Count >= 1)
-                {
-                    int strongestFaction = -1;
-                    float strongest = float.MinValue;
+            //    if (CityDominationStrength.Count >= 1)
+            //    {
+            //        int strongestFaction = -1;
+            //        float strongest = float.MinValue;
 
-                    foreach (var kv in CityDominationStrength)
-                    {
-                        if (kv.Value > strongest)
-                        {
-                            strongestFaction = kv.Key;
-                            strongest = kv.Value;
-                        }
-                    }
+            //        foreach (var kv in CityDominationStrength)
+            //        {
+            //            if (kv.Value > strongest)
+            //            {
+            //                strongestFaction = kv.Key;
+            //                strongest = kv.Value;
+            //            }
+            //        }
 
 
 
-                    var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
+            //        var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
 
-                    if (faction.player.IsLocalPlayer())
-                    {
-                        ++faction.player.GetLocalPlayer().statistics.CitiesLost;
-                    }
-                    if (dominatingFaction.player.IsLocalPlayer())
-                    {
-                        ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
-                    }
+            //        if (faction.player.IsLocalPlayer())
+            //        {
+            //            ++faction.player.GetLocalPlayer().statistics.CitiesLost;
+            //        }
+            //        if (dominatingFaction.player.IsLocalPlayer())
+            //        {
+            //            ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
+            //        }
 
-                    Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(setFaction, dominatingFaction));
-                }
-            }
+            //        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(setFaction, dominatingFaction));
+            //    }
+            //}
             //            var membersC = MembersCounter();
             //            while (membersC.Next())
             //            {
@@ -1819,12 +1840,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             //selection.frameModel.Position = position;
             //selection.frameModel.position.Y += 0.1f;
-            switch (CityType)
+            switch (cityType)
             {
-                case CityType.Small:
+                case CityType.Village:
                     scale = new Vector3(0.7f);
                     break;
-                case CityType.Large:
+                case CityType.Town:
                     scale = new Vector3(0.96f);
                     break;
                 default:
@@ -1838,16 +1859,16 @@ namespace VikingEngine.DSSWars.GameObject
             //selection.frameModel.LoadedMeshType = hover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid;
         }
 
-        public void respawnGuard()
-        {
-            if (guardCount < maxGuardSize && 
-                guardCount > 0 && //Zero when waiting for domination
-                //!InBattle() &&
-                spendWorker(1))
-            {
-                guardCount += 1;
-            }
-        }
+        //public void respawnGuard()
+        //{
+        //    if (guardCount < maxGuardSize && 
+        //        guardCount > 0 && //Zero when waiting for domination
+        //        //!InBattle() &&
+        //        spendWorker(1))
+        //    {
+        //        guardCount += 1;
+        //    }
+        //}
 
         bool spendWorker(int count)
         {
@@ -1928,8 +1949,8 @@ namespace VikingEngine.DSSWars.GameObject
                 content.Add(new RbImage(SpriteName.WarsWorker));
                 content.Add(new RbText(TextLib.LargeNumber(workForce.amount)));
                 content.space();
-                content.Add(new RbImage(SpriteName.WarsGuard));
-                content.Add(new RbText(TextLib.Divition_Large(guardCount, maxGuardSize)));
+                //content.Add(new RbImage(SpriteName.WarsGuard));
+                //content.Add(new RbText(TextLib.Divition_Large(guardCount, maxGuardSize)));
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsStrengthIcon));
                 content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
@@ -1998,10 +2019,11 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (damages.HasValue())
-                {
-                    content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
-                }
+                //if (damages.HasValue())
+                //{
+                //    content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
+                //}
+
                 HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
                 content.space();
                 if (interactive)
@@ -2009,11 +2031,45 @@ namespace VikingEngine.DSSWars.GameObject
                     HudLib.InfoButton(content, new RbTooltip(childrenTooltip, this));
                 }
 
-                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
-                HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsWorker));
+                content.space();
+                content.Add(new RbText( string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce.amount)));
+                content.Add(new RbTab(0.4f));
+                content.Add(new RbText("-"));
+                content.space();
+                content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
+                content.space();
+                content.Add(new RbText(HousingCount_Workers.ToString()));
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsGuard));
+                content.space();
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_GuardCount, soldiersCount)));
+                content.Add(new RbTab(0.4f));
+                content.Add(new RbText("-"));
+                content.space();
+                content.Add(new RbImage(SpriteName.MissingImage));
+                content.space();
+                content.Add(new RbText(HousingCount_Guard.ToString()));
+
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.MissingImage));
+                content.space();
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, "Servicemen", serviceMen.amount)));
+                content.Add(new RbTab(0.4f));
+                content.Add(new RbText("-"));
+                content.space();
+                content.Add(new RbImage(SpriteName.MissingImage));
+                content.space();
+                content.Add(new RbText(HousingCount_ServiceMen.ToString()));
+
+                //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
+                //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
                 content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total(this)));
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
+                //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
                 cultureToHud(player, content, interactive);
 
@@ -2038,7 +2094,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
                     //}
 
-                    if (CityType == CityType.Factory)
+                    if (cityType == CityType.Factory)
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
@@ -2058,9 +2114,14 @@ namespace VikingEngine.DSSWars.GameObject
             content.newParagraph();
             content.h2(DssRef.lang.WorkForce_ChildBirthRequirements);
             content.text(string.Format(DssRef.lang.WorkForce_AvailableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
-            //content.text(DssRef.lang.WorkForce_Peace).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
             HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
 
+            if (cityType < CityType.Capital)
+            {
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsCityHall));
+                content.Add(new RbText(string.Format(DssRef.todoLang.CityHall_MaxSupportedWorkers, WorkersMaxLimit), HudLib.ResourceCostColor(homeUsers() < WorkersMaxLimit)));
+            }
             //hud.tooltip.create(this, content, true);
         }
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
@@ -2193,7 +2254,7 @@ namespace VikingEngine.DSSWars.GameObject
                     prevOwner.remove(this);
                 }
                 OnNewOwner();
-                guardCount = Bound.Min(guardCount, 1);
+                //guardCount = Bound.Min(guardCount, 1);
             }
         }
 
@@ -2205,7 +2266,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 //detailObj?.onNewOwner();
 
-                if (CityType == CityType.Factory && faction.factiontype != FactionType.DarkLord)
+                if (cityType == CityType.Factory && faction.factiontype != FactionType.DarkLord)
                 {
                     setFactoryType(false);
                 }
@@ -2328,29 +2389,33 @@ namespace VikingEngine.DSSWars.GameObject
             int wall;
             int house;
             int road;
+            int centerHall;
             double percBuilding;
 
-            switch (this.CityType)
+            switch (this.cityType)
             {
-                case CityType.Small:
+                case CityType.Village:
                     tower = (int)TerrainWallType.DirtTower;
                     wall = (int)TerrainWallType.DirtWall;
-                    house = (int)TerrainBuildingType.SmallHouse;
+                    house = (int)TerrainBuildingType.ServiceMenHouse_small;
                     road = (int)TerrainBuildingType.CobbleStones;
+                    centerHall = (int)TerrainBuildingType.CityHall_Village;
                     percBuilding = 0.3;
                     break;
-                case CityType.Large:
+                case CityType.Town:
                     tower = (int)TerrainWallType.WoodTower;
                     wall= (int)TerrainWallType.WoodWall;
-                    house = (int)TerrainBuildingType.SmallHouse;
+                    house = (int)TerrainBuildingType.ServiceMenHouse_small;
                     road = (int)TerrainBuildingType.Square;
+                    centerHall = (int)TerrainBuildingType.CityHall_Town;
                     percBuilding = 0.5;
                     break;
                 default:
                     tower = (int)TerrainWallType.StoneTower;
                     wall = (int)TerrainWallType.StoneWall;
-                    house = (int)TerrainBuildingType.BigHouse;
+                    house = (int)TerrainBuildingType.ServiceMenHouse_Large;
                     road = (int)TerrainBuildingType.Square;
+                    centerHall = (int)TerrainBuildingType.CityHall_Capital;
                     percBuilding = 0.6;
                     break;
 
@@ -2367,8 +2432,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                     TerrainMainType main = TerrainMainType.Building;
                     int sub;
-                    //TerrainWallType wallType = TerrainWallType.NUM_NONE;
-                    //TerrainBuildingType buildingType = TerrainBuildingType.NUM_NONE;
 
                     bool edgeX = x == 0 || x == WorldData.TileSubDivitions_MaxIndex;
                     bool edgeY = y == 0 || y == WorldData.TileSubDivitions_MaxIndex;
@@ -2392,7 +2455,8 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     else if (x == 4 && y == 3)
                     {
-                        sub = (int)TerrainBuildingType.StoneHall;
+                        sub = centerHall;
+                        cityHallSubtilePos = pos;
                     }
                     else if (x == 4 && y == 4)
                     {
@@ -2416,7 +2480,95 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-        
+
+        public void upgradeCityHallTooltip(RichBoxContent content, object tag)
+        {
+            bool available = canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available);
+
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Label);
+            blueprint.toMenu(content, this);
+
+            //content.newLine();
+            //HudLib.ResourceCost(content, ItemResourceType
+            //content.Add(new RbText(string.Format( DssRef.todoLang.ServicemenCount, HudLib.
+
+            content.newParagraph();
+
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain, HudLib.TitleColor_Label);
+
+            content.newLine();
+            string supportedWorkersString;
+            int addGuardHousing;
+            CityType toSize = cityType + 1;
+            if (toSize == CityType.Town)
+            {
+                supportedWorkersString = DssConst.TownHall_MaxWorkForce.ToString();
+                addGuardHousing = DssConst.TownHall_GuardHousing - DssConst.VillageHall_GuardHousing;
+            }
+            else
+            {
+                supportedWorkersString = DssRef.lang.Hud_NoLimit;
+                addGuardHousing = DssConst.CapitalHall_GuardHousing - DssConst.TownHall_GuardHousing;
+            }
+            HudLib.BulletPoint(content);
+            content.Add(new RbText(string.Format(DssRef.todoLang.CityHall_MaxSupportedWorkers, supportedWorkersString)));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbText(string.Format(DssRef.todoLang.GuardHousingCount, TextLib.PlusMinus(addGuardHousing))));
+        }
+
+        public bool CanUpgradeCityHall()
+        {
+            return canUpgradeCityHall(out _, out _, out _, out _);
+        }
+
+        bool canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available)
+        {
+            CityType toSize = cityType + 1;
+            
+            if (toSize == CityType.Town)
+            {
+                blueprint = CraftBuildingLib.CityHall_Town;
+                serviceHouses_required = DssConst.TownHall_RequiredStaff;
+                currentStaff = DssConst.VillageHall_RequiredStaff;
+                
+            }
+            else
+            {
+                blueprint = CraftBuildingLib.CityHall_Capital;
+                serviceHouses_required = DssConst.CapitalHall_RequiredStaff;
+                currentStaff = DssConst.TownHall_RequiredStaff;
+            }
+
+            serviceHouses_available = serviceMen.amount + currentStaff;
+
+            return serviceHouses_available >= serviceHouses_required &&
+                blueprint.available(this);
+        }
+        public void upgradeCityHall()
+        {
+            bool available = canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available);
+
+            blueprint.payResources(this);
+            serviceMen.amount -= serviceHouses_required - currentStaff;
+            cityType++;
+            TerrainBuildingType hall;
+            if (cityType == CityType.Town)
+            {
+                hall = TerrainBuildingType.CityHall_Town;
+            }
+            else
+            {
+                hall = TerrainBuildingType.CityHall_Capital;
+            }
+            SubTile subTile = new SubTile();
+            subTile.SetType(TerrainMainType.Building, (int)hall, 1);
+            new EditSubTile(cityHallSubtilePos, subTile, true, false, false);
+
+            refreshCitySize();
+        }
+
         public Army recruitToClosestArmy()
         {
             return faction.ClosestFriendlyArmy(position, 2.6f);
@@ -2432,10 +2584,10 @@ namespace VikingEngine.DSSWars.GameObject
             return faction == attacker;
         }
 
-        public override bool defeated()
-        {
-            return guardCount <= 0;
-        }
+        //public override bool defeated()
+        //{
+        //    return guardCount <= 0;
+        //}
 
         public override bool CanMenuFocus()
         {
@@ -2498,9 +2650,9 @@ namespace VikingEngine.DSSWars.GameObject
 
     enum CityType
     {
-        Small,
-        Large,
-        Head,
+        Village,
+        Town,
+        Capital,
         Factory,
         NUM
     }

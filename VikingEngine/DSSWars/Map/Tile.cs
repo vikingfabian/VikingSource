@@ -494,11 +494,11 @@ namespace VikingEngine.DSSWars.Map
         {
             get
             {
-                switch (City().CityType)
+                switch (City().cityType)
                 {
                     default: return HeadCity;
-                    case CityType.Large: return LargeCity;
-                    case CityType.Small: return SmallCity;
+                    case CityType.Town: return LargeCity;
+                    case CityType.Village: return SmallCity;
                 }
             }
         }

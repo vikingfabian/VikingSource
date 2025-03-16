@@ -15,11 +15,11 @@ namespace VikingEngine.DSSWars.GameObject
         public Rotation1D rotation = Rotation1D.D180.Add(Ref.peRnd.Plus_MinusF(0.8f));
         public int goalId = 0;
         public bool walkGoalAsShip = false;
-        //abstract public bool IdleObjetive();
+        public int soldiersCount = 0;
+
         public void AddSoldierGroup(SoldierGroup group)
         {
             //Hitta en plats bland alla grupper
-            //group.armyPosition = nextPlacement();
             group.parentArrayIndex = groups.Add(group);
             group.army = this;
         }

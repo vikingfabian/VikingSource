@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 //city.faction = faction;
                 faction.AddCity(city, true);
                 cities.Add(city);
-                currentWorkforce += city.workForceMax;
+                currentWorkforce += city.HousingCount_Workers;
             }
         }
 

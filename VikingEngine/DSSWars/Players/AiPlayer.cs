@@ -16,8 +16,8 @@ namespace VikingEngine.DSSWars.Players
 
         const int PurchaseOrderType_None = 0;
         const int PurchaseOrderType_Army = 1;
-        const int PurchaseOrderType_CityWorkers = 2;
-        const int PurchaseOrderType_CityGuard = 3;
+        //const int PurchaseOrderType_CityWorkers = 2;
+        //const int PurchaseOrderType_CityGuard = 3;
         const int PurchaseOrderType_MergeArmies = 4;
 
         const int PurchaseOrderFocus_None = 0;
@@ -896,7 +896,7 @@ namespace VikingEngine.DSSWars.Players
                             var citiesC = faction.cities.counter();
                             while (citiesC.Next())
                             {
-                                int count = citiesC.sel.CityType == CityType.Large ? 5 : 2;
+                                int count = citiesC.sel.cityType == CityType.Town ? 5 : 2;
                                 //if (citiesC.sel.CityType == CityType.Large)
                                 //{
                                 IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
@@ -923,7 +923,7 @@ namespace VikingEngine.DSSWars.Players
                             var citiesC = faction.cities.counter();
                             while (citiesC.Next())
                             {
-                                if (citiesC.sel.CityType == CityType.Large)
+                                if (citiesC.sel.cityType == CityType.Town)
                                 {
                                     IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
                                     var army = faction.NewArmy(pos);
@@ -966,7 +966,7 @@ namespace VikingEngine.DSSWars.Players
                             var citiesC = faction.cities.counter();
                             while (citiesC.Next())
                             {
-                                if (citiesC.sel.CityType == CityType.Large)
+                                if (citiesC.sel.cityType == CityType.Town)
                                 {
                                     IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
                                     var army = faction.NewArmy(pos);
@@ -1064,15 +1064,15 @@ namespace VikingEngine.DSSWars.Players
                                 case PurchaseOrderType_Army:
                                     buySoldiers(city, true, true);
                                     break;
-                                case PurchaseOrderType_CityWorkers:
-                                    if (city.damages.HasValue())
-                                    {
-                                        city.buyRepair(true, true);
-                                    }
-                                    break;
-                                case PurchaseOrderType_CityGuard:
-                                    city.buyCityGuards(true, 1);
-                                    break;
+                                //case PurchaseOrderType_CityWorkers:
+                                //    if (city.damages.HasValue())
+                                //    {
+                                //        city.buyRepair(true, true);
+                                //    }
+                                //    break;
+                                //case PurchaseOrderType_CityGuard:
+                                //    city.buyCityGuards(true, 1);
+                                //    break;
                             }
 
                         }
@@ -1214,14 +1214,14 @@ namespace VikingEngine.DSSWars.Players
                         }
                     }
 
-                    if (friendCount > enemyCount)
-                    {
-                        //purchaseOrder = PurchaseOrderType_CityWorkers;
-                    }
-                    else
-                    {
-                        purchaseOrder = PurchaseOrderType_CityGuard;
-                    }
+                    //if (friendCount > enemyCount)
+                    //{
+                    //    //purchaseOrder = PurchaseOrderType_CityWorkers;
+                    //}
+                    //else
+                    //{
+                    //    purchaseOrder = PurchaseOrderType_CityGuard;
+                    //}
 
                     purchaseOrderIndex1 = city.parentArrayIndex;
                 }

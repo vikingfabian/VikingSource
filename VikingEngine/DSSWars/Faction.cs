@@ -307,7 +307,7 @@ namespace VikingEngine.DSSWars
                 {
                     mainCity = city;
                 }
-                else if (city.workForceMax > mainCity.workForceMax)
+                else if (city.HousingCount_Workers > mainCity.HousingCount_Workers)
                 {//larger city
                     mainCity = city;
                 }
@@ -604,7 +604,7 @@ namespace VikingEngine.DSSWars
                 mainCity = null;
             }
 
-            if (mainCity == null || mainCity.CityType < CityType.Head)
+            if (mainCity == null || mainCity.cityType < CityType.Capital)
             {
                 City largest = null;
 
@@ -612,7 +612,7 @@ namespace VikingEngine.DSSWars
 
                 while (citiesC.Next())
                 {
-                    if (largest == null || citiesC.sel.workForceMax > largest.workForceMax)
+                    if (largest == null || citiesC.sel.HousingCount_Workers > largest.HousingCount_Workers)
                     {
                         largest = citiesC.sel;
                     }

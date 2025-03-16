@@ -1109,5 +1109,61 @@ namespace VikingEngine.DSSWars.Build
         },
          XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
       );
+
+
+        public static readonly CraftBlueprint CityHall_Town = new CraftBlueprint(
+            CraftResultType.NoSet,
+            0,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.ServiceMen, DssConst.TownHall_RequiredStaff - DssConst.VillageHall_RequiredStaff),
+                new UseResource(ItemResourceType.Gold, 1000),
+                new UseResource(ItemResourceType.Wood_Group, 30),
+                new UseResource(ItemResourceType.Stone_G, 100)
+            },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+            );
+
+        public static readonly CraftBlueprint CityHall_Capital = new CraftBlueprint(
+           CraftResultType.NoSet,
+           0,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.ServiceMen, DssConst.CapitalHall_RequiredStaff - DssConst.TownHall_RequiredStaff),
+                new UseResource(ItemResourceType.Gold, 1500),
+                new UseResource(ItemResourceType.Wood_Group, 10),
+                new UseResource(ItemResourceType.Stone_G, 150)
+           },
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+           );
+
+
+        public static readonly CraftBlueprint ServiceHouse_Small = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.ServiceHouse_Small,
+            1,
+            new UseResource[]
+                {
+                    new UseResource(ItemResourceType.Men, DssConst.HousingCount_ServiceHouse_Small),
+                    new UseResource(ItemResourceType.Wood_Group, 200),
+                    new UseResource(ItemResourceType.Stone_G, 40)
+                },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+            );
+
+        public static readonly CraftBlueprint ServiceHouse_Large = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.ServiceHouse_Large,
+            1,
+            new UseResource[]
+                {
+                    new UseResource(ItemResourceType.Men, DssConst.HousingCount_ServiceHouse_Large),
+                    new UseResource(ItemResourceType.Wood_Group, 100),
+                    new UseResource(ItemResourceType.Stone_G, 200)
+                },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+            );
     }
 }

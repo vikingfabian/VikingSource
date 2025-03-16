@@ -650,6 +650,8 @@ namespace VikingEngine.DSSWars.GameObject
                     return new GroupedResource() { amount = 1 };
                 case ItemResourceType.Men:
                     return workForce;
+                case ItemResourceType.ServiceMen:
+                    return serviceMen;
 
                 case ItemResourceType.Water_G: return res_water;
 

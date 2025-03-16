@@ -169,9 +169,9 @@ namespace VikingEngine.DSSWars.Delivery
                 City city = DssRef.world.cities[cityIx];
                 if (profile.type == DeliveryType_Men)
                 {
-                    recieverHasAmountPlusDeliveries = city.homesTotal() + city.workForce.deliverCount;
+                    recieverHasAmountPlusDeliveries = city.HousingCount_Workers + city.workForce.deliverCount;
 
-                    if (recieverHasAmountPlusDeliveries + DssConst.CityDeliveryChunkSize_Level1 > city.homesTotal())
+                    if (recieverHasAmountPlusDeliveries + DssConst.CityDeliveryChunkSize_Level1 > city.HousingCount_Workers)
                     {
                         return false;
                     }

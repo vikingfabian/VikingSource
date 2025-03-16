@@ -382,7 +382,7 @@ namespace VikingEngine.DSSWars
                     var citiesC = p.faction.cities.counter();
                     while (citiesC.Next())
                     {
-                        totalWorkForce += citiesC.sel.workForceMax;
+                        totalWorkForce += citiesC.sel.HousingCount_Workers;
                     }
                 }
 

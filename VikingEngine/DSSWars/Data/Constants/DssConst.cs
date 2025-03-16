@@ -135,6 +135,22 @@ namespace VikingEngine.DSSWars
         public const int ExpandGuardSizeCost = 12000;
         public const int ReleaseGuardSizeGain = ExpandGuardSizeCost / 2;
 
+        public const int HousingCount_WorkerHut = 30;
+        public const int HousingCount_GuardsOffice = 30;
+        public const int HousingCount_ServiceHouse_Large = 10;
+        public const int HousingCount_ServiceHouse_Small = 5;
+
+        public static int VillageHall_MaxWorkForce = 250;
+        public static int TownHall_MaxWorkForce = 500;
+
+        public static int VillageHall_GuardHousing = 10;
+        public static int TownHall_GuardHousing = 20;
+        public static int CapitalHall_GuardHousing = 40;
+
+        public static int VillageHall_RequiredStaff = 5;
+        public static int TownHall_RequiredStaff = 20;
+        public static int CapitalHall_RequiredStaff = 80;
+
 
         //BUILDING
         public static int WoodCutter_BonusRadius = 8;

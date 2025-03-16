@@ -748,9 +748,9 @@ namespace VikingEngine.DSSWars.Map.Generate
             int numHeadCities = world.areaTileCount / 2000;
             world.cities = new List<City>(numHeadCities);
 
-            generateCityType(CityType.Head, numHeadCities, HeadCityNeededFreeRadius);
-            generateCityType(CityType.Large, numHeadCities * 2, 9);
-            generateCityType(CityType.Small, numHeadCities * 4, 8);
+            generateCityType(CityType.Capital, numHeadCities, HeadCityNeededFreeRadius);
+            generateCityType(CityType.Town, numHeadCities * 2, 9);
+            generateCityType(CityType.Village, numHeadCities * 4, 8);
         }
         void generateCityType(CityType type, int amount, float neededSpace)
         {
@@ -1159,7 +1159,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     var city = world.cities[tile.CityIndex];
                     var cityPos = city.tilePos;
                     float distanceToCity = VectorExt.Length(cityPos.X - loopx, cityPos.Y - loopy);
-                    IntervalF mudRadius = citySizeToMudRadius[(int)city.CityType];
+                    IntervalF mudRadius = citySizeToMudRadius[(int)city.cityType];
 
                     Height heightSett = DssRef.map.heigts[tile.heightLevel];
                     Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];

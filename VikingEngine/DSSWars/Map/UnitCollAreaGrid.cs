@@ -564,7 +564,7 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 var city = DssRef.world.cities[cityIx];
                                 if (city.faction != faction &&
-                                    city.guardCount > 0 &&
+                                    //city.guardCount > 0 &&
                                     DssRef.diplomacy.InWar(faction, city.faction))
                                 {
                                     units.Add(city);

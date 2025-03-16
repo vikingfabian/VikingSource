@@ -1,429 +1,429 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Map;
-using VikingEngine.EngineSpace;
-using VikingEngine.Graphics;
-using VikingEngine.HUD.RichBox;
-using VikingEngine.LootFest;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.HeroQuest.Data.Condition;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Threading.Tasks;
+//using Microsoft.Xna.Framework;
+//using Microsoft.Xna.Framework.Graphics;
+//using VikingEngine.DSSWars.Data;
+//using VikingEngine.DSSWars.Map;
+//using VikingEngine.EngineSpace;
+//using VikingEngine.Graphics;
+//using VikingEngine.HUD.RichBox;
+//using VikingEngine.LootFest;
+//using VikingEngine.ToGG;
+//using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
-namespace VikingEngine.DSSWars.GameObject
-{
-    //class CityDetailProfile : AbsDetailUnitProfile
-    //{
-    //    public const float ShortRangeAttack = 1.5f;
-    //    public const float LongRangeAttack = 3.01f;
-    //    public CityDetailProfile()
-    //    {
-    //        mainAttack = AttackType.Arrow;
-    //        secondaryAttack = AttackType.Ballista;
-    //        attackDamage = DssConst.Soldier_DefaultHealth;
-    //        attackDamageSea = attackDamage;
-    //        secondaryAttackDamage = attackDamage / 2;
-    //        attackRange = LongRangeAttack;
-    //        targetSpotRange = StandardTargetSpotRange;
-    //    }
+//namespace VikingEngine.DSSWars.GameObject
+//{
+//    //class CityDetailProfile : AbsDetailUnitProfile
+//    //{
+//    //    public const float ShortRangeAttack = 1.5f;
+//    //    public const float LongRangeAttack = 3.01f;
+//    //    public CityDetailProfile()
+//    //    {
+//    //        mainAttack = AttackType.Arrow;
+//    //        secondaryAttack = AttackType.Ballista;
+//    //        attackDamage = DssConst.Soldier_DefaultHealth;
+//    //        attackDamageSea = attackDamage;
+//    //        secondaryAttackDamage = attackDamage / 2;
+//    //        attackRange = LongRangeAttack;
+//    //        targetSpotRange = StandardTargetSpotRange;
+//    //    }
 
-    //    public override AbsDetailUnit CreateUnit()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+//    //    public override AbsDetailUnit CreateUnit()
+//    //    {
+//    //        throw new NotImplementedException();
+//    //    }
+//    //}
 
-    class CityDetail : AbsDetailUnit
-    {
-        public const float ShortRangeAttack = 1.5f;
-        public const float LongRangeAttack = 3.01f;
+//    class CityDetail : AbsDetailUnit
+//    {
+//        public const float ShortRangeAttack = 1.5f;
+//        public const float LongRangeAttack = 3.01f;
         
-        City city;
-        const int GuardMaxHealth = 160;
-        int guardHealth = GuardMaxHealth;
-        float nextRespawn = 0;
-        //CityDetailData data;
-        public SoldierGroup inBattle = null;
+//        City city;
+//        const int GuardMaxHealth = 160;
+//        int guardHealth = GuardMaxHealth;
+//        float nextRespawn = 0;
+//        //CityDetailData data;
+//        public SoldierGroup inBattle = null;
 
-        //int workerModelsActiveCount = 0;
-        //List<WorkerData> workers= new List<WorkerData>();
+//        //int workerModelsActiveCount = 0;
+//        //List<WorkerData> workers= new List<WorkerData>();
         
-        //public WorkersModels workersModels = null;
-        int storedAttacks = 0;
-        public CityDetail(City city, bool newGame)
-        {
-            //data = new CityDetailProfile();
-            this.city = city;
-            position = city.position;
+//        //public WorkersModels workersModels = null;
+//        int storedAttacks = 0;
+//        public CityDetail(City city, bool newGame)
+//        {
+//            //data = new CityDetailProfile();
+//            this.city = city;
+//            position = city.position;
             
-            tilePos = city.tilePos;
-            //this.bound = new Physics.RectangleBound(city.WorldPositionXZ(), new Vector2(0.5f));
+//            tilePos = city.tilePos;
+//            //this.bound = new Physics.RectangleBound(city.WorldPositionXZ(), new Vector2(0.5f));
 
-            health = 10000;
-            radius = 0.7f;
+//            health = 10000;
+//            radius = 0.7f;
 
-            soldierData.mainAttack = AttackType.Arrow;
-            soldierData.secondaryAttack = AttackType.Ballista;
-            soldierData.attackDamage = DssConst.Soldier_DefaultHealth;
-            soldierData.attackDamageSea = soldierData.attackDamage;
-            soldierData.secondaryAttackDamage = soldierData.attackDamage / 2;
-            soldierData.attackRange = LongRangeAttack;
-            //targetSpotRange = StandardTargetSpotRange;
+//            soldierData.mainAttack = AttackType.Arrow;
+//            soldierData.secondaryAttack = AttackType.Ballista;
+//            soldierData.attackDamage = DssConst.Soldier_DefaultHealth;
+//            soldierData.attackDamageSea = soldierData.attackDamage;
+//            soldierData.secondaryAttackDamage = soldierData.attackDamage / 2;
+//            soldierData.attackRange = LongRangeAttack;
+//            //targetSpotRange = StandardTargetSpotRange;
 
-            if (newGame)
-            {
-                //refreshWorkerSubtiles();
-            }
-        }
+//            if (newGame)
+//            {
+//                //refreshWorkerSubtiles();
+//            }
+//        }
 
-        public void writeGameState(System.IO.BinaryWriter w)
-        {
+//        public void writeGameState(System.IO.BinaryWriter w)
+//        {
             
-        }
-        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
-        {
+//        }
+//        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+//        {
             
-        }
+//        }
 
-        protected override DetailUnitModel initModel()
-        {
-            return new CityModel(city);
-        }
+//        protected override DetailUnitModel initModel()
+//        {
+//            return new CityModel(city);
+//        }
 
-        public void refreshModel()
-        {
-            if (model != null)
-            {
-                model.DeleteMe();
-                model = initModel();
-            }
-        }
+//        public void refreshModel()
+//        {
+//            if (model != null)
+//            {
+//                model.DeleteMe();
+//                model = initModel();
+//            }
+//        }
 
-        public void setDetailLevel(bool inRender)
-        {
-            if (inRender)
-            {
-                if (model == null)
-                {
-                    model = initModel();
+//        public void setDetailLevel(bool inRender)
+//        {
+//            if (inRender)
+//            {
+//                if (model == null)
+//                {
+//                    model = initModel();
 
-                    //updateWorkerModels();
-                }
-            }  
-            else
-            {
-                if (model != null)
-                {
-                    model.DeleteMe();
-                    model = null;
+//                    //updateWorkerModels();
+//                }
+//            }  
+//            else
+//            {
+//                if (model != null)
+//                {
+//                    model.DeleteMe();
+//                    model = null;
 
-                    //workersModels.DeleteMe();
-                    //workersModels = null;
-                }
-            }
+//                    //workersModels.DeleteMe();
+//                    //workersModels = null;
+//                }
+//            }
 
            
-        }
+//        }
 
         
 
-        public void onNewOwner()
-        {
-            if (model != null)
-            {
-                model.DeleteMe();
-                model = initModel();
-            }
-        }
+//        public void onNewOwner()
+//        {
+//            if (model != null)
+//            {
+//                model.DeleteMe();
+//                model = initModel();
+//            }
+//        }
 
-        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate)
-        {
-            //base.takeDamage(damage);
-            int totalDamage = Bound.Min(damageAmount / 2, 1);
-            guardHealth -= totalDamage;
+//        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate)
+//        {
+//            //base.takeDamage(damage);
+//            int totalDamage = Bound.Min(damageAmount / 2, 1);
+//            guardHealth -= totalDamage;
 
-            if (guardHealth <= 0)
-            {
-                guardHealth = GuardMaxHealth;
-                city.guardCount--;
-                city.damages.add(1.75, city.MaxDamages());
+//            if (guardHealth <= 0)
+//            {
+//                guardHealth = GuardMaxHealth;
+//                city.guardCount--;
+//                city.damages.add(1.75, city.MaxDamages());
 
-                if (city.guardCount <= 0)
-                {
-                    city.guardCount = 0;
-                }
-            }
-        }
+//                if (city.guardCount <= 0)
+//                {
+//                    city.guardCount = 0;
+//                }
+//            }
+//        }
 
-        public void oneSecondUpdate()
-        {
-            nextRespawn += 1f;
+//        public void oneSecondUpdate()
+//        {
+//            nextRespawn += 1f;
 
-            const int respawnTime = 5;
-            //float respawnTime = 10f / (city.maxGuardSize / DssConst.SoldierGroup_DefaultCount);
-            if (nextRespawn >= respawnTime)
-            {
-                nextRespawn = 0;
-                city.respawnGuard();
-            }
-        }
+//            const int respawnTime = 5;
+//            //float respawnTime = 10f / (city.maxGuardSize / DssConst.SoldierGroup_DefaultCount);
+//            if (nextRespawn >= respawnTime)
+//            {
+//                nextRespawn = 0;
+//                city.respawnGuard();
+//            }
+//        }
 
-        float nextArrowCooldown;
+//        float nextArrowCooldown;
 
-        public override void update(float time, bool fullUpdate)
-        {
-            if (city.debugTagged)
-            {
-                lib.DoNothing();
-            }
+//        public override void update(float time, bool fullUpdate)
+//        {
+//            if (city.debugTagged)
+//            {
+//                lib.DoNothing();
+//            }
 
-            if (nextArrowCooldown > 0)//IsAttacking)
-            {
-                //updateAttack(time);
-                nextArrowCooldown -= time;
-            }
-            else
-            {
-                if (city.debugTagged)
-                {
-                    lib.DoNothing();
-                }
+//            if (nextArrowCooldown > 0)//IsAttacking)
+//            {
+//                //updateAttack(time);
+//                nextArrowCooldown -= time;
+//            }
+//            else
+//            {
+//                if (city.debugTagged)
+//                {
+//                    lib.DoNothing();
+//                }
 
-                SoldierGroup attackingGroup = null;
+//                SoldierGroup attackingGroup = null;
                 
-                refreshAttackTarget();
+//                refreshAttackTarget();
 
-                int guards = city.guardCount;
-                var attackTarget_sp = attackTarget;
-                if (attackTarget_sp != null && guards > 0)
-                {
-                    float dist = spaceBetweenUnits(attackTarget_sp);
-                    if (dist <= DssRef.profile.city.data.attackRange)
-                    {
-                        bool shortDist = dist < CityDetailProfile.ShortRangeAttack;
-                        nextArrowCooldown = 50000f / guards;
+//                int guards = city.guardCount;
+//                var attackTarget_sp = attackTarget;
+//                if (attackTarget_sp != null && guards > 0)
+//                {
+//                    float dist = spaceBetweenUnits(attackTarget_sp);
+//                    if (dist <= DssRef.profile.city.data.attackRange)
+//                    {
+//                        bool shortDist = dist < CityDetailProfile.ShortRangeAttack;
+//                        nextArrowCooldown = 50000f / guards;
 
-                        if (shortDist)
-                        {
-                            int attacks = Ref.peRnd.Int(5, 10) + Bound.Max(storedAttacks, 5);
+//                        if (shortDist)
+//                        {
+//                            int attacks = Ref.peRnd.Int(5, 10) + Bound.Max(storedAttacks, 5);
 
-                            int hits = startMultiAttack(fullUpdate, attackTarget_sp, shortDist, attacks, true);
-                            storedAttacks = attacks - hits;
-                        }
-                        else
-                        {
-                            startAttack(fullUpdate, attackTarget_sp, shortDist, true);
-                        }
-                        attackingGroup = attackTarget_sp.group;
+//                            int hits = startMultiAttack(fullUpdate, attackTarget_sp, shortDist, attacks, true);
+//                            storedAttacks = attacks - hits;
+//                        }
+//                        else
+//                        {
+//                            startAttack(fullUpdate, attackTarget_sp, shortDist, true);
+//                        }
+//                        attackingGroup = attackTarget_sp.group;
 
-                        attackTarget = null;
-                    }
+//                        attackTarget = null;
+//                    }
                     
-                }
-                inBattle = attackingGroup;
-            }
-        }
+//                }
+//                inBattle = attackingGroup;
+//            }
+//        }
 
-        public override Vector3 projectileStartPos()
-        {
-            Vector3 pos = position;
-            pos.X += Ref.peRnd.Plus_MinusF(0.3f);
-            pos.Z += Ref.peRnd.Plus_MinusF(0.3f);
+//        public override Vector3 projectileStartPos()
+//        {
+//            Vector3 pos = position;
+//            pos.X += Ref.peRnd.Plus_MinusF(0.3f);
+//            pos.Z += Ref.peRnd.Plus_MinusF(0.3f);
 
-            return pos;
+//            return pos;
 
-        }
-        public void asynchFindBattleTarget(List<GameObject.SoldierGroup> groups)
-        {
-            //if (city.debugTagged)
-            //{
-            //    lib.DoNothing();
-            //}
-            AbsDetailUnit closestOpponent = null;
-            float closestOpponentDistance = float.MaxValue;
+//        }
+//        public void asynchFindBattleTarget(List<GameObject.SoldierGroup> groups)
+//        {
+//            //if (city.debugTagged)
+//            //{
+//            //    lib.DoNothing();
+//            //}
+//            AbsDetailUnit closestOpponent = null;
+//            float closestOpponentDistance = float.MaxValue;
 
-            //DssRef.world.unitCollAreaGrid.collectOpponentGroups(GetFaction(), tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
+//            //DssRef.world.unitCollAreaGrid.collectOpponentGroups(GetFaction(), tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
 
-            foreach (var m in groups)
-            {
-                var soldiers_SP = m.soldiers;
-                if (soldiers_SP != null)
-                {
-                    var soldiersC = soldiers_SP.counter();
-                    while (soldiersC.Next())
-                    {
-                        if (soldiersC.sel.Alive_IncomingDamageIncluded())
-                        {
-                            //float distance = spaceBetweenUnits(soldiers.sel);
+//            foreach (var m in groups)
+//            {
+//                var soldiers_SP = m.soldiers;
+//                if (soldiers_SP != null)
+//                {
+//                    var soldiersC = soldiers_SP.counter();
+//                    while (soldiersC.Next())
+//                    {
+//                        if (soldiersC.sel.Alive_IncomingDamageIncluded())
+//                        {
+//                            //float distance = spaceBetweenUnits(soldiers.sel);
 
-                            closestTargetCheck(soldiersC.sel, //distance,
-                                ref closestOpponent, ref closestOpponentDistance);
-                        }
-                    }
-                }
-            }
+//                            closestTargetCheck(soldiersC.sel, //distance,
+//                                ref closestOpponent, ref closestOpponentDistance);
+//                        }
+//                    }
+//                }
+//            }
 
-            this.nextAttackTarget = closestOpponent;
-            refreshAttackTarget();
-        }
+//            this.nextAttackTarget = closestOpponent;
+//            refreshAttackTarget();
+//        }
 
-        public override void asynchUpdate()
-        {
-            //asynchUpdate_closestTarget();
-        }
+//        public override void asynchUpdate()
+//        {
+//            //asynchUpdate_closestTarget();
+//        }
 
-        public override bool defeatedBy(Faction attacker)
-        {
-            return this.GetFaction() == attacker;
-        }
+//        public override bool defeatedBy(Faction attacker)
+//        {
+//            return this.GetFaction() == attacker;
+//        }
 
-        public override bool aliveAndBelongTo(int faction)
-        {
-            return this.GetFaction().parentArrayIndex == faction;
-        }
+//        public override bool aliveAndBelongTo(int faction)
+//        {
+//            return this.GetFaction().parentArrayIndex == faction;
+//        }
 
-        public override bool IsShipType()
-        {
-            return false;
-        }
+//        public override bool IsShipType()
+//        {
+//            return false;
+//        }
 
-        public override bool IsStructure() 
-        { return true; }
+//        public override bool IsStructure() 
+//        { return true; }
 
-        public override bool IsSingleTarget()
-        {
-            return true;
-        }
+//        public override bool IsSingleTarget()
+//        {
+//            return true;
+//        }
 
-        public override bool IsSoldierUnit()
-        {
-            return false;
-        }
+//        public override bool IsSoldierUnit()
+//        {
+//            return false;
+//        }
 
-        override public Faction GetFaction()
-        {
-            return city.faction;
-        }
+//        override public Faction GetFaction()
+//        {
+//            return city.faction;
+//        }
 
-        public override AbsMapObject RelatedMapObject()
-        {
-            return city;
-        }
+//        public override AbsMapObject RelatedMapObject()
+//        {
+//            return city;
+//        }
 
-        protected override AbsMapObject ParentMapObject()
-        {
-            return city;
-        }
+//        protected override AbsMapObject ParentMapObject()
+//        {
+//            return city;
+//        }
 
-        public override string ToString()
-        {
-            return city.TypeName() + " -detail obj";
-        }
+//        public override string ToString()
+//        {
+//            return city.TypeName() + " -detail obj";
+//        }
 
-        public override AbsDetailUnitProfile Profile()
-        {
-            return DssRef.profile.city;
-        }
+//        public override AbsDetailUnitProfile Profile()
+//        {
+//            return DssRef.profile.city;
+//        }
 
-        public override GameObjectType gameobjectType()
-        {
-            return GameObjectType.City;
-        }
+//        public override GameObjectType gameobjectType()
+//        {
+//            return GameObjectType.City;
+//        }
 
-        public override UnitType DetailUnitType() { return UnitType.City; }
-    }
+//        public override UnitType DetailUnitType() { return UnitType.City; }
+//    }
 
-    class CityModel : DetailUnitModel
-    {
-        const VoxelModelName BannerModelName = VoxelModelName.citybanner;
-        Graphics.AbsVoxelObj bannerModel;
+//    class CityModel : DetailUnitModel
+//    {
+//        const VoxelModelName BannerModelName = VoxelModelName.citybanner;
+//        Graphics.AbsVoxelObj bannerModel;
 
-        public CityModel(City city)
-            : base()
-        {
+//        public CityModel(City city)
+//            : base()
+//        {
           
            
 
-            bannerModel = city.faction.AutoLoadModelInstance(
-               BannerModelName, 0.6f);
-            bannerModel.AddToRender(DrawGame.UnitDetailLayer);
-            bannerModel.position = city.position;
-        }
+//            bannerModel = city.faction.AutoLoadModelInstance(
+//               BannerModelName, 0.6f);
+//            bannerModel.AddToRender(DrawGame.UnitDetailLayer);
+//            bannerModel.position = city.position;
+//        }
 
-        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
-        {
-            DSSWars.Faction.SetNewMaster(name, BannerModelName, bannerModel, master);
-        }
+//        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
+//        {
+//            DSSWars.Faction.SetNewMaster(name, BannerModelName, bannerModel, master);
+//        }
 
-        //protected override void updateAnimation(AbsSoldier soldier)
-        //{
-        //}
+//        //protected override void updateAnimation(AbsSoldier soldier)
+//        //{
+//        //}
 
-        public override void DeleteMe()
-        {
-            //base.DeleteMe();
-            bannerModel.DeleteMe();
-        }
-    }
+//        public override void DeleteMe()
+//        {
+//            //base.DeleteMe();
+//            bannerModel.DeleteMe();
+//        }
+//    }
 
-    //class WorkerData
-    //{
-    //    public IntVector2 tile;
-    //    public int tilePlacementIndex;
-    //    public int level = 1;
-    //    //public bool inUse;
-    //}
+//    //class WorkerData
+//    //{
+//    //    public IntVector2 tile;
+//    //    public int tilePlacementIndex;
+//    //    public int level = 1;
+//    //    //public bool inUse;
+//    //}
 
-    //class WorkersModels
-    //{
-    //    const float Scale = 0.14f;
-    //    const float RndOffset = Scale;
+//    //class WorkersModels
+//    //{
+//    //    const float Scale = 0.14f;
+//    //    const float RndOffset = Scale;
 
 
-    //    static readonly Vector2[] tilePlacements = {
-    //        new Vector2(-0.25f,-0.25f),
-    //        new Vector2( 0.25f,-0.25f),
-    //        new Vector2(-0.25f,0.25f),
-    //        new Vector2(0.25f,0.25f),
-    //    };
-    //    List< Graphics.AbsVoxelObj> modelList = new List<AbsVoxelObj>(64);
+//    //    static readonly Vector2[] tilePlacements = {
+//    //        new Vector2(-0.25f,-0.25f),
+//    //        new Vector2( 0.25f,-0.25f),
+//    //        new Vector2(-0.25f,0.25f),
+//    //        new Vector2(0.25f,0.25f),
+//    //    };
+//    //    List< Graphics.AbsVoxelObj> modelList = new List<AbsVoxelObj>(64);
 
-    //    public void Refresh(City city, List<WorkerData> workers, PcgRandom rnd) 
-    //    {
-    //        while (modelList.Count < workers.Count) 
-    //        {
-    //            var model = DssRef.models.ModelInstance(VoxelModelName.war_workerhut, Scale, false);
-    //            model.AddToRender(DrawGame.UnitDetailLayer);
-    //            model.position = VectorExt.AddXZ(WP.ToMapPos(workers[modelList.Count].tile), tilePlacements[workers[modelList.Count].tilePlacementIndex]);
-    //            model.position.X += rnd.Plus_MinusF(RndOffset);
-    //            model.position.Z += rnd.Plus_MinusF(RndOffset);
+//    //    public void Refresh(City city, List<WorkerData> workers, PcgRandom rnd) 
+//    //    {
+//    //        while (modelList.Count < workers.Count) 
+//    //        {
+//    //            var model = DssRef.models.ModelInstance(VoxelModelName.war_workerhut, Scale, false);
+//    //            model.AddToRender(DrawGame.UnitDetailLayer);
+//    //            model.position = VectorExt.AddXZ(WP.ToMapPos(workers[modelList.Count].tile), tilePlacements[workers[modelList.Count].tilePlacementIndex]);
+//    //            model.position.X += rnd.Plus_MinusF(RndOffset);
+//    //            model.position.Z += rnd.Plus_MinusF(RndOffset);
 
-    //            model.position.Y = DssRef.world.SubTileHeight(model.position);
+//    //            model.position.Y = DssRef.world.SubTileHeight(model.position);
 
-    //            WP.Rotation1DToQuaterion(model, rnd.Float(0.17f));
+//    //            WP.Rotation1DToQuaterion(model, rnd.Float(0.17f));
 
-    //            modelList.Add(model);
-    //        }
+//    //            modelList.Add(model);
+//    //        }
 
-    //        for (int i = 0; i < workers.Count; i++)
-    //        {
-    //            int frame = city.workHutStyle;
-    //            if (workers[i].level > 1)
-    //            {
-    //                frame += 2;
-    //            }
-    //            modelList[i].Frame = frame;
-    //        }
-    //    }
+//    //        for (int i = 0; i < workers.Count; i++)
+//    //        {
+//    //            int frame = city.workHutStyle;
+//    //            if (workers[i].level > 1)
+//    //            {
+//    //                frame += 2;
+//    //            }
+//    //            modelList[i].Frame = frame;
+//    //        }
+//    //    }
 
-    //    public void DeleteMe()
-    //    {
-    //        foreach (var m in modelList)
-    //        {
-    //            m.DeleteMe();
-    //        }
-    //    }
-    //}
-}
+//    //    public void DeleteMe()
+//    //    {
+//    //        foreach (var m in modelList)
+//    //        {
+//    //            m.DeleteMe();
+//    //        }
+//    //    }
+//    //}
+//}

@@ -16,6 +16,8 @@ namespace VikingEngine.DSSWars.Build
     enum BuildAndExpandType
     {
         WorkerHuts,
+        ServiceHouse_Small,
+        ServiceHouse_Large,
         Postal,
         Recruitment,
         SoldierBarracks,
@@ -416,8 +418,8 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.GardenFourBushes, TerrainMainType.Decor, (int)TerrainDecorType.GardenFourBushes, SpriteName.WarsBuild_GardenFourBushes, CraftBuildingLib.GardenFourBushes, false, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.GardenLongTree,TerrainMainType.Decor, (int)TerrainDecorType.GardenLongTree, SpriteName.WarsBuild_GardenLongTree, CraftBuildingLib.GardenLongTree, false, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.GardenWalledBush,TerrainMainType.Decor, (int)TerrainDecorType.GardenWalledBush, SpriteName.WarsBuild_GardenWalledBush, CraftBuildingLib.GardenWalledBush, false, MapPaintToolCategory.Default);
-            new BuildOption(BuildAndExpandType.SmallCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.SmallHouse, SpriteName.MissingImage, CraftBuildingLib.SmallCityHouse, false, MapPaintToolCategory.Default);
-            new BuildOption(BuildAndExpandType.BigCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.BigHouse, SpriteName.MissingImage, CraftBuildingLib.BigCityHouse, false, MapPaintToolCategory.Default);
+            new BuildOption(BuildAndExpandType.SmallCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_small, SpriteName.MissingImage, CraftBuildingLib.SmallCityHouse, false, MapPaintToolCategory.Default);
+            new BuildOption(BuildAndExpandType.BigCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_Large, SpriteName.MissingImage, CraftBuildingLib.BigCityHouse, false, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.CitySquare,TerrainMainType.Building, (int)TerrainBuildingType.Square, SpriteName.MissingImage, CraftBuildingLib.CitySquare, false, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.CobbleStones,TerrainMainType.Building, (int)TerrainBuildingType.CobbleStones, SpriteName.MissingImage, CraftBuildingLib.CobbleStones, false, MapPaintToolCategory.Default);
 

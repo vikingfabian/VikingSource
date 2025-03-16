@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public AbsArmy army;
 
-        public Vector3 goalWp;
+        public Vector3 goalWp, armyPlacementWp;
 
         int followsGoalId = int.MinValue;
 
@@ -669,17 +669,20 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void cancelCommand()
         {
-            if (command.nextCommand != null)
+            if (command != null)
             {
-                command = command.nextCommand;
-                command.begin(this);
-            }
-            else
-            {
-                command = null;
-                if (state == GroupState.FollowCommand)
+                if (command.nextCommand != null)
                 {
-                    state = GroupState.GoingIdle;
+                    command = command.nextCommand;
+                    command.begin(this);
+                }
+                else
+                {
+                    command = null;
+                    if (state == GroupState.FollowCommand)
+                    {
+                        state = GroupState.GoingIdle;
+                    }
                 }
             }
         }
@@ -723,8 +726,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (command_sp.hasPathCommand(out bool towardsUnit))
                     {
-                        //Battle update
-                        //Vector3 targetPos = towardsUnit? command_sp.AttackTarget().position : command_sp.GoalPosition();
                         Vector3 nodePos = towardsUnit ? walkingGoalAttackTarget(command_sp.AttackTarget(), out _) : walkingGoalWp(command_sp.GoalPosition(), out _, out _);
                         updateWalking(nodePos, true, false, 0, time);
 
@@ -763,7 +764,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 var city = DssRef.world.tileGrid.Get(tilePos).City();
                                 if (DssRef.diplomacy.InWar(army.faction, city.faction))
                                 {
-                                    if (city.tilePos.SideLength(tilePos) <= 1 || army.GetArmy().attackTarget == city)
+                                    if (city.tilePos.SideLength(tilePos) <= 2 || army.GetArmy().attackTarget == city)
                                     {
                                         goalWp = WP.ToWorldPos(city.tilePos);
                                         state = GroupState.CityCapture;
@@ -794,7 +795,8 @@ namespace VikingEngine.DSSWars.GameObject
                                     
                                 }
                                 else
-                                { 
+                                {
+                                    goalWp = armyPlacementWp;
                                     state = GroupState.Battle;
                                 }
                             }
@@ -1565,7 +1567,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 foreach (var opponent in cities)
                 {
-                    if (opponent.guardCount > 0)
+                    //if (opponent.guardCount > 0)
                     {
                         var score = distanceValueTo(opponent, aggroRange(opponent));
 
@@ -2169,6 +2171,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void setArmyPlacement2(Vector3 wp, bool resetCommand, bool telePort)
         {
             goalWp = wp;
+            armyPlacementWp = goalWp;
 
             if (telePort)
             {

@@ -844,9 +844,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                         case TerrainBuildingType.CobbleStones:
                             return "Cobble stones";
-                        case TerrainBuildingType.SmallHouse:
+                        case TerrainBuildingType.ServiceMenHouse_small:
                             return "Small house";
-                        case TerrainBuildingType.BigHouse:
+                        case TerrainBuildingType.ServiceMenHouse_Large:
                             return "Big house";
                         case TerrainBuildingType.Square:
                             return "City square";

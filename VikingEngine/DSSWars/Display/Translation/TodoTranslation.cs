@@ -299,6 +299,21 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingToolShape_LShape => "L Shape";
 
 
+        public string CityHall_Upgrade => "Upgrade city hall";
+
+        /// <summary>
+        /// A cap on how many workers the city can have
+        /// </summary>
+        public string CityHall_MaxSupportedWorkers = "Max supported workers: {0}";
+
+        public string CityHall_Size_Small = "Village";
+        public string CityHall_Size_Medium = "Town";
+        public string CityHall_Size_Large = "Capital";
+
+        public string GuardHousingCount = "Guard housing: {0}";
+        public string ServicemenCount = "Servicemen: {0}";
+
+
         public string Work_MiningResource = "Mining {0}";
 
         public string MenuTab_Progress => "Progress";

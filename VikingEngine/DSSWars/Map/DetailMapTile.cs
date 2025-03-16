@@ -539,13 +539,49 @@ namespace VikingEngine.DSSWars.Map
                     newFoliage().init(LootFest.VoxelModelName.city_barracks, 6, wp, WorldData.SubTileWidth * 1f);
                     break;
 
-                case TerrainBuildingType.StoneHall:
-                    newFoliage().init(LootFest.VoxelModelName.city_stonehall, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                case TerrainBuildingType.CityHall_Village:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_stonehall, 0, wp, WorldData.SubTileWidth * 1.4f);
+                    
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 8, wp + new Vector3(0.013f, -0.020f, 0.07f), WorldData.SubTileWidth * 1.1f);
+                            flagModels.Add(flag);
+                        }
+                    }
                     break;
-                case TerrainBuildingType.SmallHouse:
+                case TerrainBuildingType.CityHall_Town:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_stonehall, 1, wp, WorldData.SubTileWidth * 1.4f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 8, wp + new Vector3(0.013f, -0.025f, 0.07f), WorldData.SubTileWidth * 1.2f);
+                            flagModels.Add(flag);
+                        }
+                    }
+                    break;
+                case TerrainBuildingType.CityHall_Capital:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_stonehall, 2, wp, WorldData.SubTileWidth * 1.4f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 8, wp + new Vector3(0.012f, 0.002f, 0.07f), WorldData.SubTileWidth * 1.2f);
+                            flagModels.Add(flag);
+                        }
+                    }
+                    break;
+                case TerrainBuildingType.ServiceMenHouse_small:
                     newFoliage().init(LootFest.VoxelModelName.city_smallhouse, rnd, wp, WorldData.SubTileWidth * 1f);
                     break;
-                case TerrainBuildingType.BigHouse:
+                case TerrainBuildingType.ServiceMenHouse_Large:
                     newFoliage().init(LootFest.VoxelModelName.city_bighouse, rnd, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.CobbleStones:

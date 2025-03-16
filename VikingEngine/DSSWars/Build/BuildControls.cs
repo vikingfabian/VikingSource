@@ -1160,8 +1160,15 @@ namespace VikingEngine.DSSWars.Build
                 }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
             }
 
-            content.newParagraph();
+            content.newLine();
             content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
+
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsCityHall),
+                new RbText(DssRef.todoLang.CityHall_Upgrade)
+            }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
+            city.CanUpgradeCityHall()));
 
             if (city.buildingStructure.buildingLevel_logistics > 0)
             {
@@ -1266,6 +1273,8 @@ namespace VikingEngine.DSSWars.Build
             placeBuildingType = type;
             player.mapControls.setObjectMenuFocus(false);
         }
+
+       
 
         //void buildingTooltip(BuildAndExpandType type)
         //{
