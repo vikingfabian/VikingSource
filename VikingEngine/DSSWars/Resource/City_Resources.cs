@@ -580,6 +580,13 @@ namespace VikingEngine.DSSWars.GameObject
                     faction.res_FullPlateArmor.onChange(add);
                     break;
 
+                case ItemResourceType.ServiceMen:
+                    freeServiceMen.amount += add;
+                    break;
+                case ItemResourceType.Men:
+                    workForce.amount += add;
+                    break;
+
                 case ItemResourceType.NONE:
                     return;
 
@@ -651,7 +658,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Men:
                     return workForce;
                 case ItemResourceType.ServiceMen:
-                    return serviceMen;
+                    return freeServiceMen;
 
                 case ItemResourceType.Water_G: return res_water;
 

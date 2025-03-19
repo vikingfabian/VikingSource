@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.Defence
 {
@@ -18,27 +20,40 @@ namespace VikingEngine.DSSWars.Defence
             this.city = city;
             if (arraylib.InBound(city.defenceBuildings, city.selectedDefenceBuilding))
             {
-                DefenceStatus currentStatus = get();
+                DefenceStatus currentStatus = getSelected();
                 content.Add(new RbText(".Guard post " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_TypeName));
 
                 content.newLine();
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Add guard (archer)") },
-                    new RbAction2Arg<int, bool>(city.debugGuardConscript, currentStatus.idAndPosition, true)));
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Add guard (sword)") },
-                   new RbAction2Arg<int, bool>(city.debugGuardConscript, currentStatus.idAndPosition, false)));
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Auto assign") }, autoAssignProperty, new RbTooltip_Text(".New guards will move to this post")));
+
+
+                //content.newLine();
+                //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Add guard (archer)") },
+                //    new RbAction2Arg<int, bool>(city.debugGuardConscript, currentStatus.idAndPosition, true)));
+                //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Add guard (sword)") },
+                //   new RbAction2Arg<int, bool>(city.debugGuardConscript, currentStatus.idAndPosition, false)));
             }
         }
 
-        DefenceStatus get()
+        DefenceStatus getSelected()
         {
             return city.defenceBuildings[city.selectedDefenceBuilding];
         }
 
-        void set(DefenceStatus profile)
+        void setSelected(DefenceStatus profile)
         {           
             city.defenceBuildings[city.selectedDefenceBuilding] = profile;
+        }
 
-            //city.onConscriptChange();
+        public bool autoAssignProperty(int index, bool bSet, bool value)
+        {
+            var defence = getSelected();
+            if (bSet)
+            {
+               defence.autoAssign = value;
+               setSelected(defence);
+            }
+            return defence.autoAssign;
         }
     }
 }

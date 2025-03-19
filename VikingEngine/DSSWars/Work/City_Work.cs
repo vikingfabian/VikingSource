@@ -601,7 +601,7 @@ namespace VikingEngine.DSSWars.GameObject
                         bool needMore = true;
 
                         var subTile = DssRef.world.subTileGrid.Get(pos);
-                        switch (subTile.GeBuildingType())
+                        switch (subTile.GetBuildingType())
                         {
                             case TerrainBuildingType.HenPen:
                                 needMore = res_rawFood.needMore();
@@ -624,7 +624,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     int distanceValue = -center.SideLength(pos);
                     var subTile = DssRef.world.subTileGrid.Get(pos);
-                    var building = subTile.GeBuildingType();
+                    var building = subTile.GetBuildingType();
                     switch (building)
                     {
                         case TerrainBuildingType.Work_Cook:

@@ -87,7 +87,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (health > 0)
             {
-                
+                if (Ref.peRnd.Chance_CheckForZero(group.damageBlockChance))
+                {
+                    return;
+                }
+
                 lockedIncomingDamage -= damageAmount;
                
                 if (damageAmount>0)

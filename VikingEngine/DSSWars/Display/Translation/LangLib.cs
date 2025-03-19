@@ -702,55 +702,6 @@ namespace VikingEngine.DSSWars.Display.Translation
             }
         }
 
-        //public static string BuildingName(BuildAndExpandType buildingType)
-        //{
-        //    switch (buildingType)
-        //    {
-        //        case BuildAndExpandType.Barracks:
-        //             return DssRef.lang.BuildingType_Barracks;
-
-        //        case BuildAndExpandType.Brewery:
-        //            return DssRef.lang.BuildingType_Brewery;
-        //        case BuildAndExpandType.Carpenter:
-        //            return DssRef.lang.BuildingType_Carpenter;
-        //        case BuildAndExpandType.CoalPit:
-        //            return DssRef.lang.BuildingType_CoalPit;
-        //        case BuildAndExpandType.Cook:
-        //            return DssRef.lang.BuildingType_Cook;
-        //        case BuildAndExpandType.HenPen:
-        //            return DssRef.lang.BuildingType_HenPen;
-        //        case BuildAndExpandType.LinenFarm:
-        //            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen);
-        //        case BuildAndExpandType.Nobelhouse:
-        //            return DssRef.lang.Building_NobleHouse;
-        //        case BuildAndExpandType.Pavement:
-        //            return DssRef.lang.DecorType_Pavement + " A";
-        //        case BuildAndExpandType.PavementFlower:
-        //            return DssRef.lang.DecorType_Pavement + " B";
-        //        case BuildAndExpandType.PigPen:
-        //            return DssRef.lang.BuildingType_PigPen;
-        //        case BuildAndExpandType.Postal:
-        //            return DssRef.lang.BuildingType_Postal;
-        //        case BuildAndExpandType.Recruitment:
-        //            return DssRef.lang.BuildingType_Recruitment;
-        //        case BuildAndExpandType.Smith:
-        //            return DssRef.lang.BuildingType_Smith;
-        //        case BuildAndExpandType.Statue_ThePlayer:
-        //            return DssRef.lang.DecorType_Statue;
-        //        case BuildAndExpandType.Tavern:
-        //            return DssRef.lang.BuildingType_Tavern;
-        //        case BuildAndExpandType.WheatFarm:
-        //            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
-        //        case BuildAndExpandType.WorkBench:
-        //            return DssRef.lang.BuildingType_WorkBench;
-        //        case BuildAndExpandType.WorkerHuts:
-        //            return DssRef.lang.BuildingType_WorkerHut;
-
-        //        default:
-        //            return TextLib.Error;
-        //    }
-        //}
-
         public static string TerrainName(TerrainMainType mainType, int subType)
         {
             switch (mainType)
@@ -820,6 +771,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.todoLang.BuildingType_Embassy;
                         case TerrainBuildingType.WaterResovoir:
                             return DssRef.todoLang.BuildingType_WaterResovoir;
+
+                        case TerrainBuildingType.GuardHouse_Small:
+                        case TerrainBuildingType.GuardHouse_Large:
+                            return ".Guards office";
+                        
                         case TerrainBuildingType.ArcherBarracks:
                             return DssRef.todoLang.BuildingType_ArcherBarracks;
                         case TerrainBuildingType.WarmashineBarracks:
@@ -840,18 +796,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.todoLang.BuildingType_Gunmaker;
                         case TerrainBuildingType.School:
                             return DssRef.todoLang.BuildingType_School;
-
-
-                        case TerrainBuildingType.CobbleStones:
-                            return "Cobble stones";
+                                                    
                         case TerrainBuildingType.ServiceMenHouse_small:
-                            return "Small house";
                         case TerrainBuildingType.ServiceMenHouse_Large:
-                            return "Big house";
-                        case TerrainBuildingType.Square:
-                            return "City square";
-
-
+                            return DssRef.todoLang.BuildingType_ServiceHouse;
+                        
                         default:
                             return DssRef.lang.BuildingType_DefaultName;
                     }
@@ -935,32 +884,50 @@ namespace VikingEngine.DSSWars.Display.Translation
                     switch ((TerrainDecorType)subType)
                     {
                         case TerrainDecorType.Pavement:
-                            return DssRef.lang.DecorType_Pavement + " A";
+                            return string.Format(DssRef.todoLang.VariantType_A, DssRef.lang.DecorType_Pavement);
                         case TerrainDecorType.PavementFlower:
-                            return DssRef.lang.DecorType_Pavement + " B";
+                            return string.Format(DssRef.todoLang.VariantType_B, DssRef.lang.DecorType_Pavement);
                         case TerrainDecorType.Statue_ThePlayer:
-                            return DssRef.lang.DecorType_Statue;
+                            return string.Format(DssRef.todoLang.VariantType_A, DssRef.lang.DecorType_Statue);
 
-                        case TerrainDecorType.PavementLamp: return "pavement lamp";
-                        case TerrainDecorType.PavemenFountain: return "pavement fountain";
-                        case TerrainDecorType.PavementRectFlower: return DssRef.lang.DecorType_Pavement + " C";
-                        case TerrainDecorType.GardenFourBushes: return "Garden bushes";
-                        case TerrainDecorType.GardenLongTree: return "Garden long tree";
-                        case TerrainDecorType.GardenWalledBush: return "Garden bush";
-                        case TerrainDecorType.GardenGrass: return "Garden grass";
-                        case TerrainDecorType.GardenBird: return "Garden bird";
+                        case TerrainDecorType.PavementLamp: return string.Format(DssRef.todoLang.VariantType_D, DssRef.lang.DecorType_Pavement); 
+                        case TerrainDecorType.PavemenFountain: return string.Format(DssRef.todoLang.VariantType_E, DssRef.lang.DecorType_Pavement); 
+                        case TerrainDecorType.PavementRectFlower: return string.Format(DssRef.todoLang.VariantType_C, DssRef.lang.DecorType_Pavement);
+                        case TerrainDecorType.GardenFourBushes: return string.Format(DssRef.todoLang.VariantType_D, DssRef.todoLang.DecorType_Garden); 
+                        case TerrainDecorType.GardenLongTree: return string.Format(DssRef.todoLang.VariantType_E, DssRef.todoLang.DecorType_Garden);
+                        case TerrainDecorType.GardenWalledBush: return string.Format(DssRef.todoLang.VariantType_C, DssRef.todoLang.DecorType_Garden); 
+                        case TerrainDecorType.GardenGrass: return string.Format(DssRef.todoLang.VariantType_A, DssRef.todoLang.DecorType_Garden);
+                        case TerrainDecorType.GardenBird: return string.Format(DssRef.todoLang.VariantType_B, DssRef.todoLang.DecorType_Garden);
 
 
-                        case TerrainDecorType.GardenMemoryStone: return "Garden memory stone";
-                        case TerrainDecorType.Statue_Leader: return "Statue: leader";
-                        case TerrainDecorType.Statue_Lion: return "Statue: lion";
-                        case TerrainDecorType.Statue_Horse: return "Statue: horse";
-                        case TerrainDecorType.Statue_Pillar: return "Statue: pillar";
+                        case TerrainDecorType.GardenMemoryStone: return string.Format(DssRef.todoLang.VariantType_F, DssRef.todoLang.DecorType_Garden);
+                        case TerrainDecorType.Statue_Leader: return string.Format(DssRef.todoLang.VariantType_B, DssRef.lang.DecorType_Statue);
+                        case TerrainDecorType.Statue_Lion: return string.Format(DssRef.todoLang.VariantType_C, DssRef.lang.DecorType_Statue);
+                        case TerrainDecorType.Statue_Horse: return string.Format(DssRef.todoLang.VariantType_D, DssRef.lang.DecorType_Statue);
+                        case TerrainDecorType.Statue_Pillar: return string.Format(DssRef.todoLang.VariantType_E, DssRef.lang.DecorType_Statue);
 
                         case TerrainDecorType.FlagPole_LongBanner:
-                            return "Flag pole: Long banner";
+                            return string.Format(DssRef.todoLang.VariantType_A, DssRef.todoLang.DecorType_Banner);
+                        case TerrainDecorType.FlagPole_Banner:
+                            return string.Format(DssRef.todoLang.VariantType_B, DssRef.todoLang.DecorType_Banner);
+                        case TerrainDecorType.FlagPole_SlimBanner:
+                            return string.Format(DssRef.todoLang.VariantType_C, DssRef.todoLang.DecorType_Banner);
+
                         case TerrainDecorType.FlagPole_Flag:
-                            return "Flag pole: Flag";
+                            return string.Format(DssRef.todoLang.VariantType_A, DssRef.todoLang.DecorType_Flag);
+                        case TerrainDecorType.FlagPole_FlagRound:
+                            return string.Format(DssRef.todoLang.VariantType_B, DssRef.todoLang.DecorType_Flag);
+                        case TerrainDecorType.FlagPole_FlagLarge:
+                            return string.Format(DssRef.todoLang.VariantType_C, DssRef.todoLang.DecorType_Flag);
+                        case TerrainDecorType.FlagPole_Streamer:
+                            return string.Format(DssRef.todoLang.VariantType_D, DssRef.todoLang.DecorType_Flag);
+                        case TerrainDecorType.FlagPole_Triangle:
+                            return string.Format(DssRef.todoLang.VariantType_E, DssRef.todoLang.DecorType_Flag);
+
+                        case TerrainDecorType.CobbleStones:
+                            return ".Cobble stones";
+                        case TerrainDecorType.Square:
+                            return ".City square";
                     }
                     break;
 
@@ -978,18 +945,18 @@ namespace VikingEngine.DSSWars.Display.Translation
                     switch ((TerrainWallType)subType)
                     { 
                         case TerrainWallType.DirtWall:
-                            return "dirt wall";
+                            return ".dirt wall";
                         case TerrainWallType.DirtTower:
-                            return "dirt tower";
-                        case TerrainWallType.WoodWall: return "wood wall";
-                        case TerrainWallType.WoodTower: return "wood tower";
-                        case TerrainWallType.StoneWall: return "stonewall";
-                        case TerrainWallType.StoneTower: return "stone tower";
-                        case TerrainWallType.StoneWallGreen: return "stonewall green";
-                        case TerrainWallType.StoneWallBlueRoof: return "stonewall with roof";
-                        case TerrainWallType.StoneWallWoodHouse: return "stonewall with house";
-                        case TerrainWallType.StoneGate: return "stonewall gate";
-                        case TerrainWallType.StoneHouse: return "castle stone house";
+                            return ".dirt tower";
+                        case TerrainWallType.WoodWall: return ".wood wall";
+                        case TerrainWallType.WoodTower: return ".wood tower";
+                        case TerrainWallType.StoneWall: return ".stonewall";
+                        case TerrainWallType.StoneTower: return ".stone tower";
+                        case TerrainWallType.StoneWallGreen: return ".stonewall green";
+                        case TerrainWallType.StoneWallBlueRoof: return ".stonewall with roof";
+                        case TerrainWallType.StoneWallWoodHouse: return ".stonewall with house";
+                        case TerrainWallType.StoneGate: return ".stonewall gate";
+                        case TerrainWallType.StoneHouse: return ".castle stone house";
 
                     }
 
@@ -1015,8 +982,15 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.HenPen:
                     return DssRef.lang.BuildingType_HenPen_Description;
                 case TerrainBuildingType.WorkerHut:
-                    return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, GameObject.City.WorkersPerHut);
-                
+                    return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, DssConst.HousingCount_WorkerHut);
+                case TerrainBuildingType.WorkerHutLarge:
+                    return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, DssConst.HousingCount_WorkerHutLarge);
+
+                case TerrainBuildingType.ServiceMenHouse_small:
+                    return string.Format(DssRef.todoLang.BuildingType_ServiceHouse_DescriptionAddX, DssConst.HousingCount_ServiceHouse_Small);
+                case TerrainBuildingType.ServiceMenHouse_Large:
+                    return string.Format(DssRef.todoLang.BuildingType_ServiceHouse_DescriptionAddX, DssConst.HousingCount_ServiceHouse_Large);
+
                 case TerrainBuildingType.Postal:
                 case TerrainBuildingType.PostalLevel2:
                 case TerrainBuildingType.PostalLevel3:
@@ -1261,6 +1235,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case ItemResourceType.Men:
                     return DssRef.lang.ResourceType_Workers;
+                case ItemResourceType.ServiceMen:
+                    return DssRef.todoLang.ResourceType_ServiceMen;
 
                 case ItemResourceType.CupperCoin:
                 case ItemResourceType.BronzeCoin:

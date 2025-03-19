@@ -333,7 +333,10 @@ namespace VikingEngine.DSSWars.GameObject
                 for (int i = 0; i < count; i++)
                 {
                     var group = new GuardGroup(this, soldierProfile, startPos);
+                    soldiersCount += group.soldierCount;
+
                     assignNewGuardGroup(group);
+                    
                 }
             }
             else

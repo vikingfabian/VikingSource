@@ -23,8 +23,10 @@ namespace VikingEngine.DSSWars.Build
         public SpriteName sprite;
         public bool uniqueBuilding = false;
         public bool canAutoBuild;
+        public BuildCategoryTab buildCategory;
         public MapPaintToolCategory paintToolCategory;
-        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, bool canAutoBuild, MapPaintToolCategory paintToolCategory)
+        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, 
+            bool canAutoBuild, BuildCategoryTab buildCategory, MapPaintToolCategory paintToolCategory)
         {
             this.canAutoBuild = canAutoBuild;
             this.sprite = sprite;
@@ -33,7 +35,7 @@ namespace VikingEngine.DSSWars.Build
             this.mainType = mainType;
             this.subType = subType;
             //this.experienceType = experienceType;
-
+            this.buildCategory = buildCategory;
             BuildLib.BuildOptions[(int)buildType] = this;
             this.paintToolCategory = paintToolCategory;
         }
@@ -70,7 +72,7 @@ namespace VikingEngine.DSSWars.Build
                         {
                             
                             case TerrainBuildingType.WorkerHut:
-                                city.onWorkHutBuild(false);
+                                city.onWorkHutBuild(false, false);
                                 break;
 
                             case TerrainBuildingType.SoldierBarracks:
@@ -122,7 +124,7 @@ namespace VikingEngine.DSSWars.Build
                                 break;
 
                             case TerrainBuildingType.WorkerHut:
-                                city.onWorkHutBuild(true);
+                                city.onWorkHutBuild(true, false);
                                 break;
 
                             case TerrainBuildingType.SoldierBarracks:

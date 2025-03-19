@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -40,7 +41,7 @@ namespace VikingEngine.DSSWars.Build
         public static readonly MapPaintToolShape[] AvailableToolShapes = { MapPaintToolShape.Free, MapPaintToolShape.Line, MapPaintToolShape.LShape, MapPaintToolShape.Area };
 
         public SelectTileResult buildMode = SelectTileResult.None;
-        public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHuts;
+        public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHut;
         public MapPaintToolShape toolShape = MapPaintToolShape.Free;
         LocalPlayer player;
 
@@ -462,743 +463,62 @@ namespace VikingEngine.DSSWars.Build
         public void toHud(LocalPlayer player, RichBoxContent content, City city)
         {
 
-            foreach (MapPaintToolShape shape in AvailableToolShapes)
-            {
-                string caption;
-                SpriteName icon;
-                switch (shape)
-                {
-                    default:
-                        caption = DssRef.todoLang.BuildingToolShape_Free;
-                        icon = SpriteName.ToolPaintShape_Free;
-                        break;
-                    case MapPaintToolShape.Line:
-                        caption = DssRef.todoLang.BuildingToolShape_Line;
-                        icon = SpriteName.ToolPaintShape_Line;
-                        break;
-                    case MapPaintToolShape.Area:
-                        caption = DssRef.todoLang.BuildingToolShape_Area;
-                        icon = SpriteName.ToolPaintShape_Area;
-                        break;
-                    case MapPaintToolShape.LShape:
-                        caption = DssRef.todoLang.BuildingToolShape_LShape;
-                        icon = SpriteName.ToolPaintShape_LShape;
-                        break;
-                }
-
-                content.Add(new ArtOption(shape == toolShape, new List<AbsRichBoxMember> { new RbImage(icon) },
-                    new RbAction1Arg<MapPaintToolShape>((MapPaintToolShape shape) => { toolShape = shape; }, shape),
-                    new RbTooltip_Text(caption)));
-            }
-
-            content.newParagraph();
-            content.Add(new RichBoxScale(2.1f));
             
-            List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
-            if (player.tutorial == null)
-            { BuildLib.AvailableBuildTypes(available, city); }
-            else
-            { available = player.tutorial.AvailableBuildTypes(); }
-
-            foreach (var opt in available)
+            List<BuildCategoryTab> buildCategories = new List<BuildCategoryTab>
             {
-                var build = BuildLib.BuildOptions[(int)opt];
-                var buildCount = city.buildingStructure.getCount(opt);
-
-                var buttonIcon = new RbImage(build.sprite);
-                var buttonContent = new List<AbsRichBoxMember> {
-                    buttonIcon,                    
-                };
-                if (buildCount > 0)
-                {
-                    buttonContent.Add(new RbOverlapText(buttonIcon,buildCount.ToString(), new Vector2(1.1f, 1.1f), 1.0f, new Vector2(1,1f), Color.White));
-                }
-
-                //if (availableBuild)
-                //{
-                //    button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.Build && placeBuildingType == opt);
-                //}
-                //else
-                //{
-                //    button.enabled = false;
-                //}
-
-                var button = new ArtToggle(buildMode == SelectTileResult.Build && placeBuildingType == opt, buttonContent,
-                new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, SoundLib.menu),
-                new RbTooltip((RichBoxContent content, object tag) =>
-                {
-                    BuildAndExpandType type = (BuildAndExpandType)tag;
-                    //RichBoxContent content = new RichBoxContent();
-
-                    var build = BuildLib.BuildOptions[(int)type];
-                    content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
-                    build.blueprint.toMenu(content, city);
-
-                    content.Add(new RbSeperationLine());
-                    HudLib.Description(content, build.Description());
-
-                    content.newLine();
-                    switch (type)
-                    {
-                        case BuildAndExpandType.WaterResovoir:
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
-                            content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, TextLib.PlusMinus(DssConst.WaterResovoirWaterAdd))));
-
-                            content.newParagraph();
-                            HudLib.Label(content, DssRef.lang.Hud_ThisCity);
-                            content.newLine();
-                            content.Add(new RbImage(SpriteName.WarsResource_Water));
-                            content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
-                            content.newLine();
-                            content.Add(new RbImage(SpriteName.WarsResource_Water));
-                            content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal)));
-                            content.newLine();
-                            content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
-                            content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal( city.waterAddPerSec))));
-                            break;
-
-                        case BuildAndExpandType.WoodCutter:
-                            HudLib.Label(content, DssRef.todoLang.BuildHud_AreaAffectTitle);
-
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_WoodCutter_AreaAffect, DssConst.WoodCutter_WoodBonus)));
-
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.WoodCutter_BonusRadius)));
-                            break;
-
-                        case BuildAndExpandType.StoneCutter:
-                            HudLib.Label(content, DssRef.todoLang.BuildHud_AreaAffectTitle);
-
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_StoneCutter_AreaAffect, DssConst.StoneCutter_StoneBonus)));
-
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.StoneCutter_BonusRadius)));
-                            break;
-
-                        case BuildAndExpandType.Storehouse:
-                        case BuildAndExpandType.Tavern:
-                            HudLib.Description(content, DssRef.lang.Info_FoodAndDeliveryLocation);
-                            break;
-
-                        case BuildAndExpandType.Logistics:
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbImage(SpriteName.birdUnLock));
-                            if (city.CanBuildLogistics(2))
-                            {
-                                content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildQueue, DssRef.lang.Hud_NoLimit)));
-                            }
-                            else
-                            {
-                                content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildQueue, City.LevelToMaxBuildQueue(1))));
-                            }
-
-                            foreach (var building in BuildLib.LogisticsUnlockBuildings)
-                            {
-                                var opt = BuildLib.BuildOptions[(int)building];
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
-                                content.Add(new RbImage(opt.sprite));
-                                content.Add(new RbText(opt.Label()));
-                            }
-                            content.newParagraph();
-
-                            HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbImage(SpriteName.WarsResource_Food));
-                            content.space();
-                            var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage));
-                            reqText.overrideColor = city.CanBuildLogistics(1) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                            content.Add(reqText);
-                            break;
-
-                        case BuildAndExpandType.Nobelhouse:
-                            int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
-
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
-                            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
-                            content.newLine();
-
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-                            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
-                            content.newLine();
-
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
-                            content.newLine();
-
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                            content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, DssLib.NobleHouseUpkeep)));
-
-                            break;
-
-                        case BuildAndExpandType.WheatFarm:
-                            farmHud(false, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
-                            break;
-                        case BuildAndExpandType.WheatFarmUpgraded:
-                            farmHud(true, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
-                            //float plantTime = type == BuildAndExpandType.WheatFarm? DssConst.WorkTime_Plant : DssConst.WorkTime_Plant_Upgraded;
-
-                            //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, plantTime + DssConst.WorkTime_GatherFoil_FarmCulture))));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
-                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
-                            //content.space();
-                            //content.Add(new RichBoxText(DssConst.WheatFoodAmount.ToString()));
-                            //content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
-                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
-
-                            //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
-                            break;
-
-                        case BuildAndExpandType.LinenFarm:
-                            farmHud(false, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
-                            //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
-                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
-                            //content.space();
-                            //content.Add(new RichBoxText(TerrainContent.FarmCulture_ReadySize.ToString()));
-                            //content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
-                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
-
-                            //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
-                            break;
-
-                        case BuildAndExpandType.LinenFarmUpgraded:
-                            farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
-                            break;
-
-                        case BuildAndExpandType.RapeSeedFarm:
-                            farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.RapeSeedFuelAmount), ItemResource.Empty);
-                            //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
-                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
-                            //content.space();
-                            //content.Add(new RichBoxText(DssConst.RapeSeedFuelAmount.ToString()));
-                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Fuel));
-                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Fuel));
-
-                            //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
-                            break;
-                        case BuildAndExpandType.RapeSeedFarmUpgraded:
-                            farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.RapeSeedFuelAmount), ItemResource.Empty);
-                            break;
-
-                        case BuildAndExpandType.HempFarm:
-                            farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount));
-                            //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
-                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
-
-                            //content.newLine();
-                            //HudLib.BulletPoint(content);
-                            //content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
-                            //content.space();
-                            //content.Add(new RichBoxText(DssConst.HempLinenAndFuelAmount.ToString()));
-                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Fuel));
-                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Fuel));
-                            //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
-                            //content.Add(new RichBoxText(DssConst.HempLinenAndFuelAmount.ToString()));
-                            //content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
-                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
-                            break;
-
-                        case BuildAndExpandType.HempFarmUpgraded:
-                            farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
-                            break;
-
-                        case BuildAndExpandType.HenPen:
-                            content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.HenReady - 1))));
-
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
-
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(DssRef.lang.BuildHud_Produce));
-                            content.space();
-                            content.Add(new RbText((DssConst.HenRawFoodAmout + DssConst.EggRawFoodAmout).ToString()));
-                            content.Add(new RbImage(SpriteName.WarsResource_RawFood));
-                            content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
-
-                            //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
-                            break;
-
-                        case BuildAndExpandType.PigPen:
-                            content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.PigReady - 1))));
-
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
-
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(DssRef.lang.BuildHud_Produce));
-                            content.space();
-                            content.Add(new RbText(DssConst.PigRawFoodAmout.ToString()));
-                            content.Add(new RbImage(SpriteName.WarsResource_RawFood));
-                            content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
-                            content.Add(new RbImage(SpriteName.pjNumPlus));
-                            content.Add(new RbText(DssConst.PigSkinAmount.ToString()));
-                            content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
-                            content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
-                            break;
-
-                        case BuildAndExpandType.Brewery:
-                            mayCraftList(content, CraftResourceLib.Beer);
-                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
-                            //content.newLine();
-                            //content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            //content.space();
-                            //CraftResourceLib.Beer.toMenu(content, city, false);
-                            break;
-
-                        case BuildAndExpandType.Cook:
-                            mayCraftList(content, CraftResourceLib.Food1);
-                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
-
-                            //content.newLine();
-                            //content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            //content.space();
-                            //CraftResourceLib.Food1.toMenu(content, city, false);
-
-                            //content.newLine();
-                            //content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            //content.space();
-                            //CraftResourceLib.Food2.toMenu(content, city, false);
-
-                            break;
-
-                        case BuildAndExpandType.Carpenter:
-                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
-
-                            //foreach (var m in CraftBuildingLib.CarpenterCraftTypes)
-                            //{
-                            //    content.newLine();
-                            //    content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            //    content.space();
-                            //    ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
-                            //    bp1.toMenu(content, city, false);
-                            //}
-                            mayCraftList(content, city, CraftBuildingLib.CarpenterCraftTypes);
-
-                            break;
-
-                        case BuildAndExpandType.WorkBench:
-                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
-
-                            //foreach (var m in CraftBuildingLib.BenchCraftTypes)
-                            //{
-                            //    content.newLine();
-                            //    content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            //    content.space();
-                            //    ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
-                            //    bp1.toMenu(content, city, false);
-                            //}
-                            mayCraftList(content, city, CraftBuildingLib.BenchCraftTypes);
-                            break;
-
-                        case BuildAndExpandType.Smelter:
-                            mayCraftList(content, city, CraftBuildingLib.SmelterCraftTypes);
-                            break;
-
-                        case BuildAndExpandType.Foundry:
-                            mayCraftList(content, city, CraftBuildingLib.FoundryCraftTypes);
-                            break;
-
-                        case BuildAndExpandType.Armory:
-                            mayCraftList(content, city, CraftBuildingLib.ArmoryCraftTypes);
-                            break;
-
-                        case BuildAndExpandType.Smith:
-                            mayCraftList(content, city, CraftBuildingLib.SmithCraftTypes);
-                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
-
-                            //foreach (var m in CraftBuildingLib.SmithCraftTypes)
-                            //{
-                            //    content.newLine();
-                            //    content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            //    content.space();
-                            //    ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
-                            //    bp1.toMenu(content, city, false);
-                            //}
-                            break;
-
-                        case BuildAndExpandType.CoalPit:
-                            mayCraftList(content, CraftResourceLib.Charcoal);
-                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
-                            //content.newLine();
-                            //content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            //content.space();
-                            //CraftResourceLib.Charcoal.toMenu(content, city, false);
-                            break;
-
-                        case BuildAndExpandType.Postal:
-                        case BuildAndExpandType.Recruitment:
-                            deliveryHud(1);
-                            break;
-
-                        case BuildAndExpandType.PostalLevel2:
-                        case BuildAndExpandType.RecruitmentLevel2:
-                            deliveryHud(2);
-                            break;
-
-                        case BuildAndExpandType.PostalLevel3:
-                        case BuildAndExpandType.RecruitmentLevel3:
-                            deliveryHud(3);
-                            break;
-
-                        case BuildAndExpandType.Bank:
-                            content.h2(DssRef.lang.XP_UnlockBuilding).overrideColor = HudLib.TitleColor_Label;
-                            List<BuildAndExpandType> unlocks = new List<BuildAndExpandType>()
-                            {
-                                BuildAndExpandType.CoinMinter,
-                            };
-
-                            if (!DssRef.storage.centralGold)
-                            {
-                                unlocks.Add(BuildAndExpandType.GoldDeliveryLvl1);
-                            }
-                            
-                            foreach (var building in unlocks)
-                            {
-                                var opt = BuildLib.BuildOptions[(int)building];
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
-                                content.Add(new RbImage(opt.sprite));
-                                content.space();
-                                content.Add(new RbText(opt.Label()));
-                            }
-                            content.newParagraph();
-
-                            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
-                            content.newLine();
-                            HudLib.BulletPoint(content);                            
-                            content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(MathExt.PercentageInteger(DssConst.BankTaxIncreasePercUnits)))));
-                            content.text(DssRef.todoLang.Hud_EffectDoesNotStack).overrideColor = HudLib.InfoYellow_Light;
-                            break;
-
-                    }
-
-
-                    content.Add(new RbSeperationLine());
-                    content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
-                    build.blueprint.listResources(content, city);
-                    if (type == BuildAndExpandType.Logistics)
-                    {
-                        bool reachedBuffer = false;
-                        city.res_food.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
-                    }
-
-                    if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)
-                    {
-                        content.newLine();
-
-                        HudLib.Experience(content, build.blueprint.experienceType, city.GetTopSkill(build.blueprint.experienceType));
-                    }
-
-                    //player.hud.tooltip.create(player, content, true);
-
-
-                    void deliveryHud(int level)
-                    {
-                        int maxAmount;
-                        float speedBonus;
-
-                        switch (level)
-                        {
-                            default:
-                                maxAmount = DssConst.CityDeliveryChunkSize_Level1;
-                                speedBonus = 0;
-                                break;
-                            case 2:
-                                maxAmount = DssConst.CityDeliveryChunkSize_Level2;
-                                speedBonus = DssConst.DeliveryLevel2TimeReducePerc;
-                                break;
-                            case 3:
-                                maxAmount = DssConst.CityDeliveryChunkSize_Level3;
-                                speedBonus = DssConst.DeliveryLevel3TimeReducePerc;
-                                break;
-                        }
-
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Delivery_SendChunk, maxAmount)));
-                        if (speedBonus > 0)
-                        {
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RbText(string.Format(DssRef.todoLang.Delivery_SpeedBonus, speedBonus)));
-                        }
-                    }
-                    void farmHud(bool upgrade, ItemResource produce1, ItemResource produce2)
-                    {
-                        float plantTime = upgrade ? DssConst.WorkTime_Plant_Upgraded : DssConst.WorkTime_Plant;
-
-                        content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
-
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        var workTimeText = new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, plantTime + DssConst.WorkTime_GatherFoil_FarmCulture)));
-                        if (upgrade)
-                        {
-                            workTimeText.overrideColor = HudLib.AvailableColor;
-                        }
-                        content.Add(workTimeText);
-
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
-                        content.Add(new RbImage(SpriteName.WarsResource_Water));
-                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Water));
-
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.lang.BuildHud_Produce));
-                        content.space();
-                        content.Add(new RbText(produce1.amount.ToString()));
-                        content.Add(new RbImage(ResourceLib.Icon(produce1.type)));//SpriteName.WarsResource_RawFood));
-                        content.Add(new RbText(LangLib.Item(produce1.type)));//DssRef.lang.Resource_TypeName_RawFood));
-                        if (produce2.amount > 0)
-                        {
-                            content.Add(new RbImage(SpriteName.pjNumPlus));
-                            content.Add(new RbText(DssConst.HempLinenAndFuelAmount.ToString()));
-                            content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
-                            content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
-                        }
-                    }
-                }, opt) );
-
-
-                bool availableBuild = true;
-                if (opt == BuildAndExpandType.Logistics)
-                {
-                    availableBuild = city.CanBuildLogistics(1);
-                }
-
-                button.enabled = availableBuild;
-
-                
-
-                //if (availableBuild)
-                //{
-                //    button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.Build && placeBuildingType == opt);
-                //}
-                //else
-                //{
-                //    button.enabled = false;
-                //}
-                content.Add(button);
-                //content.space();
-
-               
-            }
-            content.Add(new RichBoxScale(1));
-
-            content.newParagraph();
-
-            BuildOption buildOpt = null;
-
-            content.Add(new ArtToggle(buildMode == SelectTileResult.Demolish, new List<AbsRichBoxMember>
-            {
-                new RbText(DssRef.lang.Build_DestroyBuilding)
-            }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, SoundLib.menu)));
-
-            content.space();
-
-            if (buildMode != SelectTileResult.None)
-            {
-                var button = new ArtButton( RbButtonStyle.Secondary,new List<AbsRichBoxMember> { 
-                    new RbSpace(),
-                    new RbText(DssRef.lang.Hud_EndSessionIcon),
-                    new RbSpace(),
-                    },
-                    new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None, SoundLib.menuBack));
-                button.setGroupSelectionColor(HudLib.RbSettings, false);
-                content.Add(button);
-                content.space();
-
-                if (buildMode == SelectTileResult.Build)
-                {
-                    buildOpt = BuildLib.BuildOptions[(int)placeBuildingType];
-                }
-            }
-
-            int orderLength = 0;
-            foreach (var m in player.orders.orders)
-            {
-                if (m.GetWorkType(city) != OrderType.NONE)
-                {
-                    orderLength++;
-                }
-            }
-            content.newParagraph();
-            autoBuildButton(DssRef.lang.Build_AutoPlace, 1);
-            if (buildOpt != null && !buildOpt.uniqueBuilding)
-            {
-                //content.space();
-                autoBuildButton(string.Format(DssRef.lang.Hud_XTimes, 4), 4);
-            }
-            //content.Button(DssRef.lang.Build_AutoPlace, new RbAction(() =>
-            //{
-            //    autoPlaceBuilding(city, 1);
-            //}, SoundLib.menuBuy), null, buildMode == SelectTileResult.Build);
-            //content.space();
-            //content.Button(string.Format(DssRef.lang.Hud_XTimes, 4), new RbAction(() =>
-            //{
-            //    autoPlaceBuilding(city, 4);
-            //}, SoundLib.menuBuy), null, buildMode == SelectTileResult.Build);
-
-            content.newLine();
-            content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Build_ClearOrders) }, 
-                new RbAction(() =>
-                {
-                    player.orders.clearAll(city);
-                }, SoundLib.menuBack), null, orderLength > 0));
-
-            if (city.buildingStructure.buildingLevel_logistics == 1)
-            {
-                content.space();
-                var upgradeText = new RbText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics));
-                
-                content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember>() { upgradeText }, new RbAction(city.upgradeLogistics, SoundLib.menuBuy), new RbAction(()=>
-                {
-                    RichBoxContent content = new RichBoxContent();
-                    HudLib.Label(content, DssRef.lang.XP_Upgrade);
-                    content.newLine();
-                    CraftBuildingLib.CraftLogistics.toMenu(content, city);
-
-                    content.newParagraph();
-                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
-                    content.newLine();
-                    content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor = city.faction.totalWorkForce>= DssConst.Logistics2_PopulationRequirement? HudLib.AvailableColor : HudLib.NotAvailableColor;
-
-                    content.newParagraph();
-                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
-                    content.newLine();
-                    content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(city.faction.totalWorkForce));
-
-                    player.hud.tooltip.create(player, content, true);
-                }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
-            }
-
-            content.newLine();
-            content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
-
-            content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.WarsCityHall),
-                new RbText(DssRef.todoLang.CityHall_Upgrade)
-            }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
-            city.CanUpgradeCityHall()));
+                 BuildCategoryTab.ExpandAndCraft,
+                  BuildCategoryTab.Military,
+                   BuildCategoryTab.Decor,
+            };
 
             if (city.buildingStructure.buildingLevel_logistics > 0)
             {
-                content.Add(new RbSeperationLine());
+                buildCategories.Add(BuildCategoryTab.Automation);
+            }
 
-                //--Automation
-                content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Label;
+            foreach(var tab in buildCategories)
+            {
+                var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                    new List<AbsRichBoxMember> { new RbText("." + tab.ToString()) },
+                    new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, SoundLib.menutab));
+                content.Add(tabButton);
+            }
 
-                content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember>
+            content.Add(new RichBoxScale(2.1f));
+            content.newLine();
+
+            if (player.buildCategoryTab == BuildCategoryTab.Automation)
+            {
+                if (city.buildingStructure.buildingLevel_logistics > 0)
+                {
+                    content.Add(new RbSeperationLine());
+
+                    //--Automation
+                    content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Label;
+
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember>
                 {
                     new RbText( DssRef.lang.CityOption_AutoBuild_Work),
                 }, city.AutoBuildWorkProperty));
-                content.newLine();
+                    content.newLine();
 
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember>
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember>
                 {
                     new RbText( DssRef.lang.CityOption_AutoBuild_Farm),
                 }, city.AutoBuildFarmProperty));
 
 
-                if (city.AutoBuildFarmProperty(0, false, false))
-                {
-                    content.newLine();
-
-                    foreach (var opt in AutoBuildOptions)
+                    if (city.AutoBuildFarmProperty(0, false, false))
                     {
-                        var build = BuildLib.BuildOptions[(int)opt];
+                        content.newLine();
 
-                        var optButton = new ArtOption(opt == city.autoExpandFarmType, new List<AbsRichBoxMember> {
+                        foreach (var opt in AutoBuildOptions)
+                        {
+                            var build = BuildLib.BuildOptions[(int)opt];
+
+                            var optButton = new ArtOption(opt == city.autoExpandFarmType, new List<AbsRichBoxMember> {
                         new RbImage(build.sprite),
                         new RbSpace(),
                         new RbText(build.Label())
@@ -1206,33 +526,577 @@ namespace VikingEngine.DSSWars.Build
                         {
                             city.autoExpandFarmType = opt;
                         }, SoundLib.menu));
-                        //optButton.setGroupSelectionColor(HudLib.RbSettings, opt == city.autoExpandFarmType);
-                        content.Add(optButton);
-                        content.space();
+                            //optButton.setGroupSelectionColor(HudLib.RbSettings, opt == city.autoExpandFarmType);
+                            content.Add(optButton);
+                            content.space();
+                        }
                     }
+
+                    content.newParagraph();
+
+                    city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city);
                 }
+            }
+            else
+            {
+                List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+
+
+
+                if (player.tutorial == null)
+                { BuildLib.AvailableBuildTypes(available, city); }
+                else
+                { available = player.tutorial.AvailableBuildTypes(); }
+
+                foreach (var opt in available)
+                {
+                    var build = BuildLib.BuildOptions[(int)opt];
+
+                    //if (opt == BuildAndExpandType.ArcherBarracks)
+                    //{
+                    //    lib.DoNothing();
+                    //}
+
+                    if (build.buildCategory == player.buildCategoryTab)
+                    {
+
+                        var buildCount = city.buildingStructure.getCount(opt);
+
+                        var buttonIcon = new RbImage(build.sprite);
+                        var buttonContent = new List<AbsRichBoxMember> {
+                    buttonIcon,
+                };
+                        if (buildCount > 0)
+                        {
+                            buttonContent.Add(new RbOverlapText(buttonIcon, buildCount.ToString(), new Vector2(1.1f, 1.1f), 1.0f, new Vector2(1, 1f), Color.White));
+                        }
+
+                        var button = new ArtToggle(buildMode == SelectTileResult.Build && placeBuildingType == opt, buttonContent,
+                        new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, SoundLib.menu),
+                        new RbTooltip((RichBoxContent content, object tag) =>
+                        {
+                            BuildAndExpandType type = (BuildAndExpandType)tag;
+                            //RichBoxContent content = new RichBoxContent();
+
+                            var build = BuildLib.BuildOptions[(int)type];
+                            content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
+                            build.blueprint.toMenu(content, city);
+
+                            content.Add(new RbSeperationLine());
+                            HudLib.Description(content, build.Description());
+
+                            content.newLine();
+                            switch (type)
+                            {
+                                case BuildAndExpandType.WaterResovoir:
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
+                                    content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, TextLib.PlusMinus(DssConst.WaterResovoirWaterAdd))));
+
+                                    content.newParagraph();
+                                    HudLib.Label(content, DssRef.lang.Hud_ThisCity);
+                                    content.newLine();
+                                    content.Add(new RbImage(SpriteName.WarsResource_Water));
+                                    content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
+                                    content.newLine();
+                                    content.Add(new RbImage(SpriteName.WarsResource_Water));
+                                    content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal)));
+                                    content.newLine();
+                                    content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
+                                    content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal(city.waterAddPerSec))));
+                                    break;
+
+                                case BuildAndExpandType.WoodCutter:
+                                    HudLib.Label(content, DssRef.todoLang.BuildHud_AreaAffectTitle);
+
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_WoodCutter_AreaAffect, DssConst.WoodCutter_WoodBonus)));
+
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.WoodCutter_BonusRadius)));
+                                    break;
+
+                                case BuildAndExpandType.StoneCutter:
+                                    HudLib.Label(content, DssRef.todoLang.BuildHud_AreaAffectTitle);
+
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_StoneCutter_AreaAffect, DssConst.StoneCutter_StoneBonus)));
+
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.StoneCutter_BonusRadius)));
+                                    break;
+
+                                case BuildAndExpandType.Storehouse:
+                                case BuildAndExpandType.Tavern:
+                                    HudLib.Description(content, DssRef.lang.Info_FoodAndDeliveryLocation);
+                                    break;
+
+                                case BuildAndExpandType.Logistics:
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbImage(SpriteName.birdUnLock));
+                                    if (city.CanBuildLogistics(2))
+                                    {
+                                        content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildQueue, DssRef.lang.Hud_NoLimit)));
+                                    }
+                                    else
+                                    {
+                                        content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildQueue, City.LevelToMaxBuildQueue(1))));
+                                    }
+
+                                    foreach (var building in BuildLib.LogisticsUnlockBuildings)
+                                    {
+                                        var opt = BuildLib.BuildOptions[(int)building];
+                                        content.newLine();
+                                        HudLib.BulletPoint(content);
+                                        content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
+                                        content.Add(new RbImage(opt.sprite));
+                                        content.Add(new RbText(opt.Label()));
+                                    }
+                                    content.newParagraph();
+
+                                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbImage(SpriteName.WarsResource_Food));
+                                    content.space();
+                                    var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage));
+                                    reqText.overrideColor = city.CanBuildLogistics(1) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                                    content.Add(reqText);
+                                    break;
+
+                                case BuildAndExpandType.Nobelhouse:
+                                    int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
+
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
+                                    content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
+                                    content.newLine();
+
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
+                                    content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
+                                    content.newLine();
+
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
+                                    content.newLine();
+
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                                    content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, DssLib.NobleHouseUpkeep)));
+
+                                    break;
+
+                                case BuildAndExpandType.WheatFarm:
+                                    farmHud(false, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
+                                    break;
+                                case BuildAndExpandType.WheatFarmUpgraded:
+                                    farmHud(true, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
+
+                                    break;
+
+                                case BuildAndExpandType.LinenFarm:
+                                    farmHud(false, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
+
+                                    break;
+
+                                case BuildAndExpandType.LinenFarmUpgraded:
+                                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
+                                    break;
+
+                                case BuildAndExpandType.RapeSeedFarm:
+                                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.RapeSeedFuelAmount), ItemResource.Empty);
+
+                                    break;
+                                case BuildAndExpandType.RapeSeedFarmUpgraded:
+                                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.RapeSeedFuelAmount), ItemResource.Empty);
+                                    break;
+
+                                case BuildAndExpandType.HempFarm:
+                                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount));
+
+                                    break;
+
+                                case BuildAndExpandType.HempFarmUpgraded:
+                                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
+                                    break;
+
+                                case BuildAndExpandType.HenPen:
+                                    content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.HenReady - 1))));
+
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
+
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(DssRef.lang.BuildHud_Produce));
+                                    content.space();
+                                    content.Add(new RbText((DssConst.HenRawFoodAmout + DssConst.EggRawFoodAmout).ToString()));
+                                    content.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                                    content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
+                                    break;
+
+                                case BuildAndExpandType.PigPen:
+                                    content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.PigReady - 1))));
+
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
+
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(DssRef.lang.BuildHud_Produce));
+                                    content.space();
+                                    content.Add(new RbText(DssConst.PigRawFoodAmout.ToString()));
+                                    content.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                                    content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
+                                    content.Add(new RbImage(SpriteName.pjNumPlus));
+                                    content.Add(new RbText(DssConst.PigSkinAmount.ToString()));
+                                    content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
+                                    content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
+                                    break;
+
+                                case BuildAndExpandType.Brewery:
+                                    mayCraftList(content, CraftResourceLib.Beer);
+                                    break;
+
+                                case BuildAndExpandType.Cook:
+                                    mayCraftList(content, CraftResourceLib.Food1);
+
+                                    break;
+
+                                case BuildAndExpandType.Carpenter:
+                                    mayCraftList(content, city, CraftBuildingLib.CarpenterCraftTypes);
+
+                                    break;
+
+                                case BuildAndExpandType.WorkBench:
+                                    mayCraftList(content, city, CraftBuildingLib.BenchCraftTypes);
+                                    break;
+
+                                case BuildAndExpandType.Smelter:
+                                    mayCraftList(content, city, CraftBuildingLib.SmelterCraftTypes);
+                                    break;
+
+                                case BuildAndExpandType.Foundry:
+                                    mayCraftList(content, city, CraftBuildingLib.FoundryCraftTypes);
+                                    break;
+
+                                case BuildAndExpandType.Armory:
+                                    mayCraftList(content, city, CraftBuildingLib.ArmoryCraftTypes);
+                                    break;
+
+                                case BuildAndExpandType.Smith:
+                                    mayCraftList(content, city, CraftBuildingLib.SmithCraftTypes);
+                                    break;
+
+                                case BuildAndExpandType.CoalPit:
+                                    mayCraftList(content, CraftResourceLib.Charcoal);
+                                    break;
+
+                                case BuildAndExpandType.Postal:
+                                case BuildAndExpandType.Recruitment:
+                                    deliveryHud(1);
+                                    break;
+
+                                case BuildAndExpandType.PostalLevel2:
+                                case BuildAndExpandType.RecruitmentLevel2:
+                                    deliveryHud(2);
+                                    break;
+
+                                case BuildAndExpandType.PostalLevel3:
+                                case BuildAndExpandType.RecruitmentLevel3:
+                                    deliveryHud(3);
+                                    break;
+
+                                case BuildAndExpandType.Bank:
+                                    content.h2(DssRef.lang.XP_UnlockBuilding).overrideColor = HudLib.TitleColor_Label;
+                                    List<BuildAndExpandType> unlocks = new List<BuildAndExpandType>()
+                                    {
+                                BuildAndExpandType.CoinMinter,
+                                    };
+
+                                    if (!DssRef.storage.centralGold)
+                                    {
+                                        unlocks.Add(BuildAndExpandType.GoldDeliveryLvl1);
+                                    }
+
+                                    foreach (var building in unlocks)
+                                    {
+                                        var opt = BuildLib.BuildOptions[(int)building];
+                                        content.newLine();
+                                        HudLib.BulletPoint(content);
+                                        content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
+                                        content.Add(new RbImage(opt.sprite));
+                                        content.space();
+                                        content.Add(new RbText(opt.Label()));
+                                    }
+                                    content.newParagraph();
+
+                                    content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(MathExt.PercentageInteger(DssConst.BankTaxIncreasePercUnits)))));
+                                    content.text(DssRef.todoLang.Hud_EffectDoesNotStack).overrideColor = HudLib.InfoYellow_Light;
+                                    break;
+
+                            }
+
+
+                            content.Add(new RbSeperationLine());
+                            content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
+                            build.blueprint.listResources(content, city);
+                            if (type == BuildAndExpandType.Logistics)
+                            {
+                                bool reachedBuffer = false;
+                                city.res_food.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
+                            }
+
+                            if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)
+                            {
+                                content.newLine();
+
+                                HudLib.Experience(content, build.blueprint.experienceType, city.GetTopSkill(build.blueprint.experienceType));
+                            }
+
+
+                            void deliveryHud(int level)
+                            {
+                                int maxAmount;
+                                float speedBonus;
+
+                                switch (level)
+                                {
+                                    default:
+                                        maxAmount = DssConst.CityDeliveryChunkSize_Level1;
+                                        speedBonus = 0;
+                                        break;
+                                    case 2:
+                                        maxAmount = DssConst.CityDeliveryChunkSize_Level2;
+                                        speedBonus = DssConst.DeliveryLevel2TimeReducePerc;
+                                        break;
+                                    case 3:
+                                        maxAmount = DssConst.CityDeliveryChunkSize_Level3;
+                                        speedBonus = DssConst.DeliveryLevel3TimeReducePerc;
+                                        break;
+                                }
+
+                                content.newLine();
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Delivery_SendChunk, maxAmount)));
+                                if (speedBonus > 0)
+                                {
+                                    content.newLine();
+                                    HudLib.BulletPoint(content);
+                                    content.Add(new RbText(string.Format(DssRef.todoLang.Delivery_SpeedBonus, speedBonus)));
+                                }
+                            }
+                            void farmHud(bool upgrade, ItemResource produce1, ItemResource produce2)
+                            {
+                                float plantTime = upgrade ? DssConst.WorkTime_Plant_Upgraded : DssConst.WorkTime_Plant;
+
+                                content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                                content.newLine();
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+
+                                content.newLine();
+                                HudLib.BulletPoint(content);
+                                var workTimeText = new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, plantTime + DssConst.WorkTime_GatherFoil_FarmCulture)));
+                                if (upgrade)
+                                {
+                                    workTimeText.overrideColor = HudLib.AvailableColor;
+                                }
+                                content.Add(workTimeText);
+
+                                content.newLine();
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                                content.Add(new RbImage(SpriteName.WarsResource_Water));
+                                content.Add(new RbText(DssRef.lang.Resource_TypeName_Water));
+
+                                content.newLine();
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbText(DssRef.lang.BuildHud_Produce));
+                                content.space();
+                                content.Add(new RbText(produce1.amount.ToString()));
+                                content.Add(new RbImage(ResourceLib.Icon(produce1.type)));//SpriteName.WarsResource_RawFood));
+                                content.Add(new RbText(LangLib.Item(produce1.type)));//DssRef.lang.Resource_TypeName_RawFood));
+                                if (produce2.amount > 0)
+                                {
+                                    content.Add(new RbImage(SpriteName.pjNumPlus));
+                                    content.Add(new RbText(DssConst.HempLinenAndFuelAmount.ToString()));
+                                    content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
+                                    content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
+                                }
+                            }
+                        }, opt));
+
+
+                        bool availableBuild = true;
+                        if (opt == BuildAndExpandType.Logistics)
+                        {
+                            availableBuild = city.CanBuildLogistics(1);
+                        }
+
+                        button.enabled = availableBuild;
+
+
+                        content.Add(button);
+
+
+
+                    }
+            }
+                content.Add(new RichBoxScale(1));
 
                 content.newParagraph();
 
-                city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city);
-            }
-        
-            void autoBuildButton(string caption, int count)
+                BuildOption buildOpt = null;
+
+                content.Add(new ArtToggle(buildMode == SelectTileResult.Demolish, new List<AbsRichBoxMember>
             {
-                int max = city.MaxBuildQueue();
+                new RbText(DssRef.lang.Build_DestroyBuilding)
+            }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, SoundLib.menu)));
 
-                if (max >= count)
+                content.space();
+
+                if (buildMode != SelectTileResult.None)
                 {
-                    int current = player.orders.buildQueue(city);
+                    var button = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                    new RbSpace(),
+                    new RbText(DssRef.lang.Hud_EndSessionIcon),
+                    new RbSpace(),
+                    },
+                        new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None, SoundLib.menuBack));
+                    button.setGroupSelectionColor(HudLib.RbSettings, false);
+                    content.Add(button);
+                    content.space();
 
-                    content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(caption) }, 
-                        new RbAction(() =>
-                        {
-                            autoPlaceBuilding(city, count);
-                        }, SoundLib.menuBuy), null, buildOpt != null && (count <= max - current) ));
+                    if (buildMode == SelectTileResult.Build)
+                    {
+                        buildOpt = BuildLib.BuildOptions[(int)placeBuildingType];
+                    }
+                }
+
+                int orderLength = 0;
+                foreach (var m in player.orders.orders)
+                {
+                    if (m.GetWorkType(city) != OrderType.NONE)
+                    {
+                        orderLength++;
+                    }
+                }
+                content.newParagraph();
+                foreach (MapPaintToolShape shape in AvailableToolShapes)
+                {
+                    string caption;
+                    SpriteName icon;
+                    switch (shape)
+                    {
+                        default:
+                            caption = DssRef.todoLang.BuildingToolShape_Free;
+                            icon = SpriteName.ToolPaintShape_Free;
+                            break;
+                        case MapPaintToolShape.Line:
+                            caption = DssRef.todoLang.BuildingToolShape_Line;
+                            icon = SpriteName.ToolPaintShape_Line;
+                            break;
+                        case MapPaintToolShape.Area:
+                            caption = DssRef.todoLang.BuildingToolShape_Area;
+                            icon = SpriteName.ToolPaintShape_Area;
+                            break;
+                        case MapPaintToolShape.LShape:
+                            caption = DssRef.todoLang.BuildingToolShape_LShape;
+                            icon = SpriteName.ToolPaintShape_LShape;
+                            break;
+                    }
+
+                    content.Add(new ArtOption(shape == toolShape, new List<AbsRichBoxMember> { new RbImage(icon) },
+                        new RbAction1Arg<MapPaintToolShape>((MapPaintToolShape shape) => { toolShape = shape; }, shape),
+                        new RbTooltip_Text(caption)));
+                }
+
+
+                content.newParagraph();
+                autoBuildButton(DssRef.lang.Build_AutoPlace, 1);
+                if (buildOpt != null && !buildOpt.uniqueBuilding)
+                {
+                    autoBuildButton(string.Format(DssRef.lang.Hud_XTimes, 4), 4);
+                }
+               
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Build_ClearOrders) },
+                    new RbAction(() =>
+                    {
+                        player.orders.clearAll(city);
+                    }, SoundLib.menuBack), null, orderLength > 0));
+
+                if (city.buildingStructure.buildingLevel_logistics == 1)
+                {
+                    content.space();
+                    var upgradeText = new RbText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics));
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { upgradeText }, new RbAction(city.upgradeLogistics, SoundLib.menuBuy), new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.Label(content, DssRef.lang.XP_Upgrade);
+                        content.newLine();
+                        CraftBuildingLib.CraftLogistics.toMenu(content, city);
+
+                        content.newParagraph();
+                        HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
+                        content.newLine();
+                        content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor = city.faction.totalWorkForce >= DssConst.Logistics2_PopulationRequirement ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+
+                        content.newParagraph();
+                        HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
+                        content.newLine();
+                        content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(city.faction.totalWorkForce));
+
+                        player.hud.tooltip.create(player, content, true);
+                    }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
+                }
+
+                content.newLine();
+                content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
+
+                content.newParagraph();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsCityHall),
+                new RbText(DssRef.todoLang.CityHall_Upgrade)
+            }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
+                city.CanUpgradeCityHall()));
+
+                
+
+                void autoBuildButton(string caption, int count)
+                {
+                    int max = city.MaxBuildQueue();
+
+                    if (max >= count)
+                    {
+                        int current = player.orders.buildQueue(city);
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(caption) },
+                            new RbAction(() =>
+                            {
+                                autoPlaceBuilding(city, count);
+                            }, SoundLib.menuBuy), null, buildOpt != null && (count <= max - current)));
+                    }
                 }
             }
-
             
         }
 

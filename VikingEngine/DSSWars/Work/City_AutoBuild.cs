@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.GameObject
                         
                         if (work && workForce.amount >= HousingCount_Workers)
                         {
-                            buildType = BuildAndExpandType.WorkerHuts;
+                            buildType = BuildAndExpandType.WorkerHut;
                         }
                         
                         if (buildType != BuildAndExpandType.NUM_NONE)
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (automationFocus)
             {
                 case AutomationFocus.Grow:
-                    auto_addBuildingType(BuildAndExpandType.WorkerHuts);
+                    auto_addBuildingType(BuildAndExpandType.WorkerHut);
                     auto_addBuildingType(BuildAndExpandType.WheatFarm);
                     break;
                 case AutomationFocus.Export:
@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 switch (buildType)
                 {
-                    case BuildAndExpandType.WorkerHuts:
+                    case BuildAndExpandType.WorkerHut:
                         maxCount = 100;
                         chance = 200;
                         repeat = 4;

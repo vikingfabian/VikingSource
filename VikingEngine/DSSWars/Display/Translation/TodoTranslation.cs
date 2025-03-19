@@ -288,10 +288,28 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_GoldDelivery => "Gold courier";
         public string BuildingType_Bank_Description => "Gold management";
 
-
+        public string DecorType_Garden =>"Garden";
+        //public string DecorType_Statue => "Statue";
+        public string DecorType_Flag => "Flag";
+        public string DecorType_Banner => "Banner";
 
         public string BuildingType_DirtRoad => "Dirt road";
 
+        public string ResourceType_ServiceMen => "Servicemen";
+        public string BuildingType_ServiceHouse => "Service house";
+        public string BuildingType_ServiceHouse_DescriptionAddX => "Add {0} servicemen";
+
+        /// <summary>
+        /// When listing slight variations, like "Lamp A" and "Lamp B"
+        /// </summary>
+        public string VariantType_A => "{0} A";
+        public string VariantType_B => "{0} B";
+        public string VariantType_C => "{0} C";
+        public string VariantType_D => "{0} D";
+        public string VariantType_E => "{0} E";
+        public string VariantType_F => "{0} F";
+        public string VariantType_G => "{0} G";
+        public string VariantType_H => "{0} H";
 
         public string BuildingToolShape_Free => "Pen";
         public string BuildingToolShape_Area => "Rectangle";
@@ -310,7 +328,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityHall_Size_Medium = "Town";
         public string CityHall_Size_Large = "Capital";
 
-        public string GuardHousingCount = "Guard housing: {0}";
+        public string GuardHousingCount = "Guard office housing";
         public string ServicemenCount = "Servicemen: {0}";
 
 

@@ -232,10 +232,7 @@ namespace VikingEngine.DSSWars.Map
                 subTopLeft.Y);
 
             
-            //if (subTile.mainTerrain != TerrainMainType.Foil &&
-            //    subTile.mainTerrain != TerrainMainType.Building &&
-            //    subTile.mainTerrain != TerrainMainType.Decor)
-            //{
+          
                 switch (textureType)
                 {
                     case SurfaceTextureType.Grass:
@@ -311,7 +308,7 @@ namespace VikingEngine.DSSWars.Map
                         }
                         break;
                 }
-            //}
+            
         }
 
 
@@ -452,8 +449,6 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainWallType.StoneTower:
                     newFoliage().init(LootFest.VoxelModelName.city_stonetower, rnd, wp, WorldData.SubTileWidth * WallSize);
                     break;
-
-
                 case TerrainWallType.StoneWallGreen:
                     newFoliage().init(LootFest.VoxelModelName.city_stonewall, 1, wp, WorldData.SubTileWidth * WallSize);
                     break;
@@ -495,6 +490,16 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainBuildingType.WorkerHut:
                     newFoliage().init(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.0f);
+                    break;
+                case TerrainBuildingType.WorkerHutLarge:
+                    newFoliage().init(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    break;
+               
+                case TerrainBuildingType.GuardHouse_Small:
+                    newFoliage().init(LootFest.VoxelModelName.Pig, rnd, wp, WorldData.SubTileWidth * 1.0f);
+                    break;
+                case TerrainBuildingType.GuardHouse_Large:
+                    newFoliage().init(LootFest.VoxelModelName.Pig, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.Tavern:
                     newFoliage().init(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 0.9f);
@@ -584,14 +589,7 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.ServiceMenHouse_Large:
                     newFoliage().init(LootFest.VoxelModelName.city_bighouse, rnd, wp, WorldData.SubTileWidth * 1f);
                     break;
-                case TerrainBuildingType.CobbleStones:
-                    surfaceColor = ColorExt.ChangeBrighness(surfaceColor, -8);
-                    newFoliage().init(LootFest.VoxelModelName.city_cobblestone, rnd, wp, WorldData.SubTileWidth * 1.4f);
-                    break;
-                case TerrainBuildingType.Square:
-                    surfaceColor = SquareGroundCol;
-                    newFoliage().init(LootFest.VoxelModelName.city_square, rnd, wp, WorldData.SubTileWidth * 1.4f);
-                    break;
+                
                 case TerrainBuildingType.Work_Cook:
                     newFoliage().init(LootFest.VoxelModelName.city_workstation, 1, wp, WorldData.SubTileWidth * 1f);
                     break;
@@ -669,15 +667,6 @@ namespace VikingEngine.DSSWars.Map
                     newFoliage().init(LootFest.VoxelModelName.city_postal, 8, wp, WorldData.SubTileWidth * 0.9f);
                     break;
 
-                case TerrainBuildingType._RESERVE1:
-                case TerrainBuildingType._RESERVE2:
-                case TerrainBuildingType._RESERVE3:
-                case TerrainBuildingType._RESERVE4:
-                case TerrainBuildingType._RESERVE5:
-                case TerrainBuildingType._RESERVE6:
-                    createWall(tile, ref subTile, (TerrainWallType)buildingType, wp, ref surfaceColor);
-                    break;
-                
                 default:
                     throw new NotImplementedException();
             }
@@ -693,6 +682,15 @@ namespace VikingEngine.DSSWars.Map
             wp.Z += WorldData.SubTileHalfWidth;
 
             switch (decorType) {
+                case TerrainDecorType.CobbleStones:
+                    surfaceColor = ColorExt.ChangeBrighness(surfaceColor, -8);
+                    newFoliage().init(LootFest.VoxelModelName.city_cobblestone, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    break;
+                case TerrainDecorType.Square:
+                    surfaceColor = SquareGroundCol;
+                    newFoliage().init(LootFest.VoxelModelName.city_square, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    break;
+
                 case TerrainDecorType.Pavement:
                     surfaceColor = PavementGroundCol;
                     newFoliage().init(LootFest.VoxelModelName.city_pavement, 0, wp, WorldData.SubTileWidth * 1.3f);

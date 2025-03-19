@@ -67,6 +67,15 @@ namespace VikingEngine.EngineSpace.Maths
             return percValuesF[index] < chance;
         }
 
+        public bool Chance_CheckForZero(float chance)
+        {
+            if (chance<= 0)
+                return false;
+
+            if (++index >= VALUE_SIZE) index = 0;
+            return percValuesF[index] < chance;
+        }
+
         public override bool Chance(int percent)
         {
             if (++index >= VALUE_SIZE) index = 0;

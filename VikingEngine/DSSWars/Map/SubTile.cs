@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Map
             return TerrainSubFoilType.NUM_NONE;
         }
 
-        public TerrainBuildingType GeBuildingType()
+        public TerrainBuildingType GetBuildingType()
         {
             if (mainTerrain == TerrainMainType.Building &&
                 subTerrain >= 0)
@@ -258,6 +258,17 @@ namespace VikingEngine.DSSWars.Map
             }
 
             return TerrainBuildingType.NUM_NONE;
+        }
+
+        public TerrainWallType GetWallType()
+        {
+            if (mainTerrain == TerrainMainType.Wall &&
+                subTerrain >= 0)
+            {
+                return (TerrainWallType)subTerrain;
+            }
+
+            return TerrainWallType.NUM_NONE;
         }
 
         public string TypeToString()

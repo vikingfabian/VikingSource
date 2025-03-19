@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Build
         {
             switch (type)
             {
-                case BuildAndExpandType.WorkerHuts: return WorkerHuts_pos;
+                case BuildAndExpandType.WorkerHut: return WorkerHuts_pos;
                 case BuildAndExpandType.Postal: return Postal_pos;
                 case BuildAndExpandType.Recruitment: return Recruitment_pos;
                 case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_pos;
@@ -235,7 +235,7 @@ namespace VikingEngine.DSSWars.Build
         {
             switch (type)
             {
-                case BuildAndExpandType.WorkerHuts: return WorkerHuts_count;
+                case BuildAndExpandType.WorkerHut: return WorkerHuts_count;
                 case BuildAndExpandType.Postal: return Postal_count;
                 case BuildAndExpandType.Recruitment: return Recruitment_count;
                 case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_count;

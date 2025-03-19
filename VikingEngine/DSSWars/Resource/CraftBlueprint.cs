@@ -206,14 +206,16 @@ namespace VikingEngine.DSSWars.Resource
                 first = false;
             }
 
-            var arrow = new RbImage(SpriteName.pjNumArrowR);
-            arrow.color = Color.CornflowerBlue;
-            content.Add(arrow);
-            content.Add(new RbText(resultAmount.ToString()));
-            content.Add(new RbImage(icon()));
-            content.space();
-            content.Add(new RbText(name()));
-
+            if (resultType != CraftResultType.NoSet)
+            {
+                var arrow = new RbImage(SpriteName.pjNumArrowR);
+                arrow.color = Color.CornflowerBlue;
+                content.Add(arrow);
+                content.Add(new RbText(resultAmount.ToString()));
+                content.Add(new RbImage(icon()));
+                content.space();
+                content.Add(new RbText(name()));
+            }
             content.newLine();
             //if (levelRequirement > ExperienceLevel.Beginner_1)
             {

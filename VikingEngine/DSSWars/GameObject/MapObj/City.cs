@@ -46,13 +46,18 @@ namespace VikingEngine.DSSWars.GameObject
 
         IntVector2 cityHallSubtilePos;
         public GroupedResource workForce = new GroupedResource();
-        public GroupedResource serviceMen = new GroupedResource();
+        public GroupedResource freeServiceMen = new GroupedResource();
+        int workingServiceMen = 0;
 
         public int HousingCount_Workers = 0;
         public int WorkersMaxLimit;
 
         public int HousingCount_Guard = 0;
-        public int HousingCount_ServiceMen = 0;
+        public int AvailableGuardHousing()
+        {
+            return HousingCount_Guard - soldiersCount;
+        }
+        //public int HousingCount_ServiceMen = 0;
 
         //public FloatingInt damages = new FloatingInt();
         public FloatingInt immigrants = new FloatingInt();
@@ -392,7 +397,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Convert.ToUInt16(workForce.amount));
             w.Write(Convert.ToUInt16(HousingCount_Workers));
             w.Write(Convert.ToUInt16(HousingCount_Guard));
-            w.Write(Convert.ToUInt16(HousingCount_ServiceMen));
+            w.Write(Convert.ToUInt16(freeServiceMen.amount));
 
             childrenAge0.write16bit(w);
             w.Write((ushort)childrenAge1);
@@ -453,7 +458,7 @@ namespace VikingEngine.DSSWars.GameObject
             workForce.amount = r.ReadUInt16();
             HousingCount_Workers = r.ReadUInt16();
             HousingCount_Guard = r.ReadUInt16();
-            HousingCount_ServiceMen = r.ReadUInt16();
+            freeServiceMen.amount = r.ReadUInt16();
 
             childrenAge0.read16bit(r);
             childrenAge1 = r.ReadUInt16();
@@ -826,10 +831,10 @@ namespace VikingEngine.DSSWars.GameObject
         //    refreshWorkerSubtiles();
         //}
 
-        public const int WorkersPerHut = 30;
+        //public const int WorkersPerHut = 30;
         const int WorkerHutsPerTile = 4;
         const int WorkerHutsPerTile_MaxLevel = WorkerHutsPerTile * HutMaxLevel;
-        public const int WorkersPerTile = WorkersPerHut * WorkerHutsPerTile * HutMaxLevel;
+        public const int WorkersPerTile = DssConst.HousingCount_WorkerHut * WorkerHutsPerTile * HutMaxLevel;
         public const int HutMaxLevel = 2;
         int totalWorkerHutAndLevelCount = 0;
         public void refreshWorkerSubtiles()
@@ -951,21 +956,53 @@ namespace VikingEngine.DSSWars.GameObject
 
         static int WorkersToModelsCount(int workers)
         {
-            return (int)Math.Floor(workers / (double)WorkersPerHut);
+            return (int)Math.Floor(workers / (double)DssConst.HousingCount_WorkerHut);
         }
 
-        public void onWorkHutBuild(bool build_notDestroy)
+        public void onWorkHutBuild(bool build_notDestroy, bool large)
         {
+            int count = large ? DssConst.HousingCount_WorkerHutLarge : DssConst.HousingCount_WorkerHut;
             if (build_notDestroy)
             {
-                HousingCount_Workers += DssConst.HousingCount_WorkerHut;
+                HousingCount_Workers += count;
             }
             else
             {
-                HousingCount_Workers -= DssConst.HousingCount_WorkerHut;
+                HousingCount_Workers -= count;
             }
             //refreshCitySize();
         }
+
+        public void onServiceHouseBuild(bool build_notDestroy, bool large)
+        {
+            int count = large ? DssConst.HousingCount_ServiceHouse_Large : DssConst.HousingCount_ServiceHouse_Small;
+            if (build_notDestroy)
+            {
+               freeServiceMen.amount += count;
+            }
+            else
+            {
+                freeServiceMen.amount -= count;
+            }
+        }
+
+        public void onGuardHouseBuild(bool build_notDestroy, bool large)        
+        {
+            int count = large ? DssConst.HousingCount_GuardsOffice_Small : DssConst.HousingCount_GuardsOffice_Large;
+            if (build_notDestroy)
+            {
+                HousingCount_Guard += count;
+            }
+            else
+            {
+                HousingCount_Guard -= count;
+            }
+        }
+        //public void useServiceMen(int useInServiceCount)
+        //{ 
+        //    freeServiceMen.amount -= useInServiceCount;
+        //    workingServiceMen += useInServiceCount;
+        //}
 
         //public void expandGuardSize(int amount)
         //{
@@ -1111,12 +1148,12 @@ namespace VikingEngine.DSSWars.GameObject
             initEconomy(newGame);
             CalcRecruitToTile();
 
-            if (newGame)
-            {
-                //maxGuardSize = workForce.amount / 4;
+            //if (newGame)
+            //{
+            //    //maxGuardSize = workForce.amount / 4;
 
-                //guardCount = maxGuardSize;
-            }
+            //    //guardCount = maxGuardSize;
+            //}
             refreshCitySize();
 
             position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
@@ -1125,6 +1162,21 @@ namespace VikingEngine.DSSWars.GameObject
             if (newGame)
             {
                 refreshWorkerSubtiles();
+
+                //Place guards
+                //foreach (var post in defenceBuildings)
+                for (int i = 0;i <defenceBuildings.Count;i++) 
+                {
+                    var post = defenceBuildings[i];
+                    if (post.autoAssign)
+                    {
+                        newGamePlaceGuard(post.idAndPosition, i);
+                        if (soldiersCount >= HousingCount_Guard)
+                        {
+                            break;
+                        }
+                    }
+                }
             }
             float iconScale = IconScale();
 
@@ -1147,14 +1199,20 @@ namespace VikingEngine.DSSWars.GameObject
                     case CityType.Village:
                         HousingCount_Workers = DssConst.SmallCityStartMaxWorkForce;
                         waterAddPerSec = DssConst.WaterAdd_SmallCity;
+                        freeServiceMen.amount -= DssConst.VillageHall_RequiredStaff;
+                        HousingCount_Guard += DssConst.VillageHall_GuardHousing;
                         break;
                     case CityType.Town:
                         HousingCount_Workers = DssConst.LargeCityStartMaxWorkForce;
                         waterAddPerSec = DssConst.WaterAdd_LargeCity;
+                        freeServiceMen.amount -= DssConst.TownHall_RequiredStaff;
+                        HousingCount_Guard += DssConst.TownHall_GuardHousing;
                         break;
                     default:
                         HousingCount_Workers = DssConst.HeadCityStartMaxWorkForce;
                         waterAddPerSec = DssConst.WaterAdd_HeadCity;
+                        freeServiceMen.amount -= DssConst.CapitalHall_RequiredStaff;
+                        HousingCount_Guard += DssConst.CapitalHall_GuardHousing;
                         break;
                 }
                 workForce.amount = (int)(HousingCount_Workers * 0.75);
@@ -1818,6 +1876,13 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             setWorkersInRenderState();
+
+
+            var groupsCounter = groups.counter();
+            while (groupsCounter.Next())
+            {
+                groupsCounter.sel.setDetailLevel(inRender_detailLayer);
+            }
             //detailObj.setDetailLevel(inRender_detailLayer);
         }
 
@@ -2057,13 +2122,13 @@ namespace VikingEngine.DSSWars.GameObject
                 content.newLine();
                 content.Add(new RbImage(SpriteName.MissingImage));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, "Servicemen", serviceMen.amount)));
-                content.Add(new RbTab(0.4f));
-                content.Add(new RbText("-"));
-                content.space();
-                content.Add(new RbImage(SpriteName.MissingImage));
-                content.space();
-                content.Add(new RbText(HousingCount_ServiceMen.ToString()));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.ResourceType_ServiceMen, freeServiceMen.amount)));
+                //content.Add(new RbTab(0.4f));
+                //content.Add(new RbText("-"));
+                //content.space();
+                //content.Add(new RbImage(SpriteName.MissingImage));
+                //content.space();
+                //content.Add(new RbText(HousingCount_ServiceMen.ToString()));
 
                 //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
                 //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
@@ -2381,106 +2446,7 @@ namespace VikingEngine.DSSWars.GameObject
             return success;
         }
 
-        public void createBuildingSubtiles(WorldData world)
-        {
-            IntVector2 topleft = WP.ToSubTilePos_TopLeft(tilePos);
-
-            int tower;
-            int wall;
-            int house;
-            int road;
-            int centerHall;
-            double percBuilding;
-
-            switch (this.cityType)
-            {
-                case CityType.Village:
-                    tower = (int)TerrainWallType.DirtTower;
-                    wall = (int)TerrainWallType.DirtWall;
-                    house = (int)TerrainBuildingType.ServiceMenHouse_small;
-                    road = (int)TerrainBuildingType.CobbleStones;
-                    centerHall = (int)TerrainBuildingType.CityHall_Village;
-                    percBuilding = 0.3;
-                    break;
-                case CityType.Town:
-                    tower = (int)TerrainWallType.WoodTower;
-                    wall= (int)TerrainWallType.WoodWall;
-                    house = (int)TerrainBuildingType.ServiceMenHouse_small;
-                    road = (int)TerrainBuildingType.Square;
-                    centerHall = (int)TerrainBuildingType.CityHall_Town;
-                    percBuilding = 0.5;
-                    break;
-                default:
-                    tower = (int)TerrainWallType.StoneTower;
-                    wall = (int)TerrainWallType.StoneWall;
-                    house = (int)TerrainBuildingType.ServiceMenHouse_Large;
-                    road = (int)TerrainBuildingType.Square;
-                    centerHall = (int)TerrainBuildingType.CityHall_Capital;
-                    percBuilding = 0.6;
-                    break;
-
-            }
-
-            for (int y = 0; y < WorldData.TileSubDivitions; ++y)
-            {
-                for (int x = 0; x < WorldData.TileSubDivitions; ++x)
-                {
-                    IntVector2 pos = topleft;
-                    pos.X += x;
-                    pos.Y += y;
-                    var subTile = world.subTileGrid.Get(pos);
-
-                    TerrainMainType main = TerrainMainType.Building;
-                    int sub;
-
-                    bool edgeX = x == 0 || x == WorldData.TileSubDivitions_MaxIndex;
-                    bool edgeY = y == 0 || y == WorldData.TileSubDivitions_MaxIndex;
-
-                    if (edgeX || edgeY)
-                    {
-                        main = TerrainMainType.Wall;
-                        if (edgeX && edgeY)
-                        {
-                           sub  = tower;
-                        }
-                        else
-                        {
-                            sub = wall;
-                        }
-
-                        DefenceStatus defence = new DefenceStatus();
-                        defence.init(pos);
-                        defenceBuildings.Add(defence);
-                       
-                    }
-                    else if (x == 4 && y == 3)
-                    {
-                        sub = centerHall;
-                        cityHallSubtilePos = pos;
-                    }
-                    else if (x == 4 && y == 4)
-                    {
-                        sub = (int)TerrainBuildingType.Square;
-                    }
-                    else if (x == 3 && y == 4)
-                    {
-                        sub = (int)TerrainBuildingType.Work_Cook;
-                    }
-                    else if (x == 5 && y == 4)
-                    {
-                        sub = (int)TerrainBuildingType.Work_Bench;
-                    }
-                    else
-                    {
-                        sub = world.rnd.Chance(percBuilding) ? house : road;
-                    }                    
-                    
-                    subTile.SetType(main, sub, 1);
-                    world.subTileGrid.Set(pos, subTile);
-                }
-            }
-        }
-
+        
         public void upgradeCityHallTooltip(RichBoxContent content, object tag)
         {
             bool available = canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available);
@@ -2515,7 +2481,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbText(string.Format(DssRef.todoLang.GuardHousingCount, TextLib.PlusMinus(addGuardHousing))));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.GuardHousingCount, TextLib.PlusMinus(addGuardHousing))));
         }
 
         public bool CanUpgradeCityHall()
@@ -2541,7 +2507,7 @@ namespace VikingEngine.DSSWars.GameObject
                 currentStaff = DssConst.TownHall_RequiredStaff;
             }
 
-            serviceHouses_available = serviceMen.amount + currentStaff;
+            serviceHouses_available = freeServiceMen.amount + currentStaff;
 
             return serviceHouses_available >= serviceHouses_required &&
                 blueprint.available(this);
@@ -2551,7 +2517,7 @@ namespace VikingEngine.DSSWars.GameObject
             bool available = canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available);
 
             blueprint.payResources(this);
-            serviceMen.amount -= serviceHouses_required - currentStaff;
+            freeServiceMen.amount -= serviceHouses_required - currentStaff;
             cityType++;
             TerrainBuildingType hall;
             if (cityType == CityType.Town)
@@ -2564,7 +2530,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             SubTile subTile = new SubTile();
             subTile.SetType(TerrainMainType.Building, (int)hall, 1);
-            new EditSubTile(cityHallSubtilePos, subTile, true, false, false);
+            new EditSubTile(cityHallSubtilePos, subTile, true, false, false).Submit();
 
             refreshCitySize();
         }

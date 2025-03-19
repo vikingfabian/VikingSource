@@ -96,8 +96,6 @@ namespace VikingEngine.DSSWars.Conscript
             this.city = city;
             this.player = player;
 
-           
-
             if (arraylib.InBound(city.conscriptBuildings, city.selectedConscript))
             {
                 BarracksStatus currentStatus = get();
@@ -280,7 +278,7 @@ namespace VikingEngine.DSSWars.Conscript
                     }
                 }
                 content.newParagraph();
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Label);
 
                 content.newLine();
                 HudLib.BulletPoint(content);
@@ -299,6 +297,16 @@ namespace VikingEngine.DSSWars.Conscript
                     //var armorItem = ConscriptProfile.ArmorItem(currentStatus.profile.armorLevel);
                     var armorRes = city.GetGroupedResource(currentStatus.profile.armorLevel);
                     HudLib.ResourceCost(content, currentStatus.profile.armorLevel, menCostNext, armorRes.amount);
+                }
+
+                if (guardTab)
+                {
+                    //content.newParagraph();
+                    //content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement, HudLib.TitleColor_Label);
+                    
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    HudLib.ResourceCost(content, SpriteName.MissingImage, DssRef.todoLang.GuardHousingCount, menCostNext, city.AvailableGuardHousing());
                 }
 
                 content.newParagraph();
@@ -386,7 +394,7 @@ namespace VikingEngine.DSSWars.Conscript
                             );
                         info.overrideColor = HudLib.InfoYellow_Dark;
 
-                        content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>(){
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>(){
                         new RbImage(
                             new SoldierConscriptProfile(){ conscript = currentProfile.profile }.Icon()
                             ),
@@ -396,7 +404,6 @@ namespace VikingEngine.DSSWars.Conscript
                         info,
                     }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 
-                        //content.text(currentProfile.shortActiveString()).overrideColor = HudLib.InfoYellow_Light;
 
                     }
                 }

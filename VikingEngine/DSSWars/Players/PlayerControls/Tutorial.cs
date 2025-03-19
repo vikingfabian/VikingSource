@@ -101,7 +101,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public List<BuildAndExpandType> AvailableBuildTypes()
         {
             var list = new List<BuildAndExpandType>(){
-                BuildAndExpandType.WorkerHuts,
+                BuildAndExpandType.WorkerHut,
                 BuildAndExpandType.SoldierBarracks,
       
                 //BuildAndExpandType.Brewery,

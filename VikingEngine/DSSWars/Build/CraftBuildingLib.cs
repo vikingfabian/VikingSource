@@ -55,6 +55,7 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[]
             {
+                new UseResource(ItemResourceType.ServiceMen, 2),
                 new UseResource(ItemResourceType.Wood_Group, 20),
                 new UseResource(ItemResourceType.Stone_G, 30)
             },
@@ -68,7 +69,7 @@ namespace VikingEngine.DSSWars.Build
             2,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Wood_Group, 10),
+                new UseResource(ItemResourceType.ServiceMen, 4),
                 new UseResource(ItemResourceType.Stone_G, 10)
             }, XP.WorkExperienceType.HouseBuilding,
              XP.ExperienceLevel.Beginner_1,
@@ -77,7 +78,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static readonly CraftBlueprint WorkerHut = new CraftBlueprint(
             CraftResultType.Building,
-            (int)Build.BuildAndExpandType.WorkerHuts,
+            (int)Build.BuildAndExpandType.WorkerHut,
             1,
             new UseResource[]
             {
@@ -87,12 +88,25 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.HouseBuilding
         );
 
+        public static readonly CraftBlueprint WorkerHutLarge = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.WorkerHutLarge,
+           1,
+           new UseResource[]
+           {
+        new UseResource(ItemResourceType.Wood_Group, 300),
+        new UseResource(ItemResourceType.Stone_G, 60)
+           },
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+       );
+
         public static readonly CraftBlueprint Tavern = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Tavern,
             1,
             new UseResource[]
             {
+                new UseResource(ItemResourceType.ServiceMen, 2),
                 new UseResource(ItemResourceType.Wood_Group, 100),
                 new UseResource(ItemResourceType.Stone_G, 20)
             },
@@ -105,6 +119,7 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
+               new UseResource(ItemResourceType.ServiceMen, 1),
                 new UseResource(ItemResourceType.Wood_Group, 60),
                 new UseResource(ItemResourceType.Stone_G, 40)
            },
@@ -129,6 +144,7 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
+               new UseResource(ItemResourceType.ServiceMen, 1),
                 new UseResource(ItemResourceType.Wood_Group, 60),
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
@@ -164,6 +180,7 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[]
             {
+               new UseResource(ItemResourceType.ServiceMen, 1),
         new UseResource(ItemResourceType.Wood_Group, 50),
         new UseResource(ItemResourceType.SkinLinen_Group, 10)
             },
@@ -189,6 +206,7 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
+               new UseResource(ItemResourceType.ServiceMen, 1),
             new UseResource(ItemResourceType.Iron_G, 10),
             new UseResource(ItemResourceType.Wood_Group, 20),
             new UseResource(ItemResourceType.Stone_G, 40),
@@ -241,6 +259,7 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[]
             {
+               new UseResource(ItemResourceType.ServiceMen, 1),
         new UseResource(ItemResourceType.Wood_Group, 80),
         new UseResource(ItemResourceType.Stone_G, 20)
             },
@@ -253,6 +272,7 @@ namespace VikingEngine.DSSWars.Build
                     1,
                     new UseResource[]
                     {
+               new UseResource(ItemResourceType.ServiceMen, 1),
         new UseResource(ItemResourceType.Wood_Group, 80),
         new UseResource(ItemResourceType.Stone_G, 20)
                     },
@@ -265,6 +285,7 @@ namespace VikingEngine.DSSWars.Build
                     1,
                     new UseResource[]
                     {
+               new UseResource(ItemResourceType.ServiceMen, 1),
         new UseResource(ItemResourceType.Wood_Group, 80),
         new UseResource(ItemResourceType.Stone_G, 20)
                     },
@@ -277,6 +298,7 @@ namespace VikingEngine.DSSWars.Build
                     1,
                     new UseResource[]
                     {
+               new UseResource(ItemResourceType.ServiceMen, 1),
         new UseResource(ItemResourceType.Wood_Group, 40),
         new UseResource(ItemResourceType.Stone_G, 40)
                     },
@@ -288,6 +310,7 @@ namespace VikingEngine.DSSWars.Build
                             1,
                             new UseResource[]
                             {
+               new UseResource(ItemResourceType.ServiceMen, 1),
         new UseResource(ItemResourceType.Wood_Group, 30),
         new UseResource(ItemResourceType.Stone_G, 60)
                             },
@@ -300,75 +323,14 @@ namespace VikingEngine.DSSWars.Build
                  1,
                  new UseResource[]
                  {
+               new UseResource(ItemResourceType.ServiceMen, 1),
                     new UseResource(ItemResourceType.Wood_Group, 20),
                     new UseResource(ItemResourceType.Stone_G, 100)
                  },
                   XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
             );
 
-        //public static readonly CraftBlueprint PigPen = new CraftBlueprint(
-        //    CraftResultType.Building,
-        //    (int)Build.BuildAndExpandType.PigPen,
-        //    1,
-        //    new UseResource[]
-        //    {
-        //new UseResource(ItemResourceType.Water_G, 4),
-        //new UseResource(ItemResourceType.Wood_Group, 20),
-        //new UseResource(ItemResourceType.RawFood_Group, DssConst.PigRawFoodAmout)
-        //    },
-        //    XP.WorkExperienceType.AnimalCare
-        //);
-
-        //public static readonly CraftBlueprint HenPen = new CraftBlueprint(
-        //    CraftResultType.Building,
-        //    (int)Build.BuildAndExpandType.HenPen,
-        //    1,
-        //    new UseResource[]
-        //    {
-        //new UseResource(ItemResourceType.Water_G, 2),
-        //new UseResource(ItemResourceType.Wood_Group, 20),
-        //new UseResource(ItemResourceType.RawFood_Group, DssConst.DefaultItemRawFoodAmount)
-        //    },
-        //    XP.WorkExperienceType.AnimalCare
-        //);
-
-        //static readonly UseResource[] FarmResources = new UseResource[]
-        //    {
-        //        new UseResource(ItemResourceType.RawFood_Group, 4),
-        //        new UseResource(ItemResourceType.Water_G, 2),
-        //    };
-
-        //public static readonly CraftBlueprint WheatFarm = new CraftBlueprint(
-        //    CraftResultType.Building,
-        //    (int)Build.BuildAndExpandType.WheatFarm,
-        //    1,
-        //    FarmResources,
-        //    XP.WorkExperienceType.Farm
-        //);
-
-        //public static readonly CraftBlueprint LinenFarm = new CraftBlueprint(
-        //    CraftResultType.Building,
-        //    (int)Build.BuildAndExpandType.LinenFarm,
-        //    1,
-        //    FarmResources,
-        //    XP.WorkExperienceType.Farm
-        //);
-
-        //public static readonly CraftBlueprint HempFarm = new CraftBlueprint(
-        //    CraftResultType.Building,
-        //    (int)Build.BuildAndExpandType.HempFarm,
-        //    1,
-        //    FarmResources,
-        //    XP.WorkExperienceType.Farm
-        //);
-
-        //public static readonly CraftBlueprint RapeseedFarm = new CraftBlueprint(
-        //    CraftResultType.Building,
-        //    (int)Build.BuildAndExpandType.RapeSeedFarm,
-        //    1,
-        //    FarmResources,
-        //    XP.WorkExperienceType.Farm
-        //);
+     
         public static readonly CraftBlueprint PigPen = new CraftBlueprint(
            CraftResultType.Building,
            (int)Build.BuildAndExpandType.PigPen,
@@ -553,6 +515,7 @@ namespace VikingEngine.DSSWars.Build
                    1,
                    new UseResource[]
                    {
+               new UseResource(ItemResourceType.ServiceMen, 1),
                new UseResource(ItemResourceType.Wood_Group, 30),
                new UseResource(ItemResourceType.Stone_G, 5),
                    },
@@ -565,6 +528,7 @@ namespace VikingEngine.DSSWars.Build
                    1,
                    new UseResource[]
                    {
+               new UseResource(ItemResourceType.ServiceMen, 1),
                new UseResource(ItemResourceType.Wood_Group, 10),
                new UseResource(ItemResourceType.Stone_G, 20),
                    },
@@ -577,6 +541,7 @@ namespace VikingEngine.DSSWars.Build
                    1,
                    new UseResource[]
                    {
+               new UseResource(ItemResourceType.ServiceMen, 4),
                         new UseResource(ItemResourceType.Gold, 1000),
                         new UseResource(ItemResourceType.Wood_Group, 50),
                         new UseResource(ItemResourceType.Stone_G, 100)
@@ -603,6 +568,7 @@ namespace VikingEngine.DSSWars.Build
                    1,
                    new UseResource[]
                    {
+               new UseResource(ItemResourceType.ServiceMen, 4),
                         new UseResource(ItemResourceType.Gold, 1000),
                         new UseResource(ItemResourceType.Wood_Group, 50),
                         new UseResource(ItemResourceType.Stone_G, 100)
@@ -666,6 +632,7 @@ namespace VikingEngine.DSSWars.Build
                    1,
                    new UseResource[]
                    {
+               new UseResource(ItemResourceType.ServiceMen, 1),
                     new UseResource(ItemResourceType.Wood_Group, 100),
                     new UseResource(ItemResourceType.Stone_G, 20),
                     new UseResource(ItemResourceType.Iron_G, 5),
@@ -680,6 +647,7 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[]
             {
+               new UseResource(ItemResourceType.ServiceMen, 8),
                 new UseResource(ItemResourceType.Gold, 5000),
                 new UseResource(ItemResourceType.Wood_Group, 100),
                 new UseResource(ItemResourceType.Stone_G, 200)
@@ -832,6 +800,7 @@ namespace VikingEngine.DSSWars.Build
           1,
           new UseResource[]
           {
+               new UseResource(ItemResourceType.ServiceMen, 1),
                new UseResource(ItemResourceType.Gold, 1),
           },
            XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
@@ -1165,5 +1134,29 @@ namespace VikingEngine.DSSWars.Build
                 },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
             );
+
+        public static readonly CraftBlueprint GuardHouse_Small = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.GuardHouse_Small,
+            1,
+            new UseResource[]
+                {
+                    new UseResource(ItemResourceType.Wood_Group, 140),
+                    new UseResource(ItemResourceType.Stone_G, 60)
+                },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+            );
+
+        public static readonly CraftBlueprint GuardHouse_Large = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.GuardHouse_Large,
+           1,
+           new UseResource[]
+               {
+                    new UseResource(ItemResourceType.Wood_Group, 60),
+                    new UseResource(ItemResourceType.Stone_G, 120)
+               },
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+           );
     }
 }

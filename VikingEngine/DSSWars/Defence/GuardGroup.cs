@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Command;
 
 namespace VikingEngine.DSSWars.Defence
 {
@@ -25,14 +26,12 @@ namespace VikingEngine.DSSWars.Defence
         {
             if (transformType == SoldierTransformType.EnterGuard)
             {
-                //assignedToPost_IdAndPosition = positionId;
                 var city = this.army.GetCity();
-                TeleportToDefencePost(city, assignedToPost_IdAndPosition, city.defenceIxFromPosId(assignedToPost_IdAndPosition));
+                TeleportToDefencePost(city, positionId, city.defenceIxFromPosId(positionId));
             }
             else if (transformType == SoldierTransformType.ExitGuard)
             {
                 onExitGuard();
-                //assignedToPost_IdAndPosition = -1;
                 setGroundY();
             }
             else
@@ -79,6 +78,7 @@ namespace VikingEngine.DSSWars.Defence
         { 
             assignedToPost_IdAndPosition = -1;
             soldierAttackRangeBonus = 0;
+            damageBlockChance = 0;
         }
 
         void setRestingMode(bool set)
@@ -168,6 +168,26 @@ namespace VikingEngine.DSSWars.Defence
         public override GuardGroup GetGuardGroup()
         {
             return this;
+        }
+
+        public bool IsAssignedTo(int postIdAndPosition)
+        { 
+            if (assignedToPost_IdAndPosition == postIdAndPosition)
+                return true;
+
+            if (hasCommand(command))
+                return true;
+
+            return false;
+
+            bool hasCommand(AbsCommand command)
+            { 
+                if (command == null) return false;
+
+                if (command.isEnterPost(postIdAndPosition)) return true;
+
+                return hasCommand(command.nextCommand);
+            }
         }
 
         public override bool InGuardPost()

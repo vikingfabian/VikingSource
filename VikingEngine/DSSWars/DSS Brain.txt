@@ -19,15 +19,10 @@ Battle melody level settings
 Guard tab på barracks, rock thrower, specialize city guard (5 men)
 -representeras av en gubbe tills de strider
 Assign men to wall (ballista, har warmashine crew)
-(skapa en army för varje stad, assign av soldatgrupper)
--worker housing
--guard housing
--servicemen housing (kräver fri yta)
+
 -nobel housing (kräver park?)
 (priest housing)
 
--kunna attackera walls
--stads centrum, uppgradering, kräver fler servicemen, tillåter bygge av hus
 
 #controls#
 pan on zoom option
@@ -119,7 +114,7 @@ Polish
 -attack ally yes/no warning
 
 #Art
-
+build categories
 sound options
 sound level
 line dot seperator

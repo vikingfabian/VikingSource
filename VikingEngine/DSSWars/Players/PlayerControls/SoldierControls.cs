@@ -42,7 +42,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (player.mapControls.hover.subTile.selectTileResult == SelectTileResult.Wall)
                     {
-                        new EnterPostCommand(group, player.mapControls.hover.subTile.subTilePos, true);
+                        var enterCommand = new EnterPostCommand(group, player.mapControls.hover.subTile.subTilePos, true);
+                        enterCommand.claimPost(group, player.mapControls.hover.subTile.city, player.mapControls.hover.subTile.city.defenceIxFromPosId(enterCommand.id));
                     }
                 }
                 new MoveHereAnimation(pos);

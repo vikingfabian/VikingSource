@@ -13,6 +13,11 @@ namespace VikingEngine.DSSWars.GameObject
     {
         void updateArmyMembers(float time, bool fullUpdate)
         {
+            if (parentArrayIndex == 0)
+            {
+                lib.DoNothing();
+            }
+
             if (groups.Count > 0)
             {
                 if (fullUpdate || !army_isIdle)

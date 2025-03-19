@@ -71,21 +71,42 @@ namespace VikingEngine.DSSWars.Resource
 
         Hen,
         Pig,
-        Ox,
+        UN_Ox,
         Egg,
         Meat,
+
+        Wheat,
+        Beer,
+        Food_G,
+
+        Water_G,
+        Fuel_G,
+
         Leather,
+
+        UN_StoneBlock,
+        Stone_G,
+        UN_Clay,
+        UN_Brick,
 
         SoftWood,
         HardWood,
         DryWood,
         Wagon2Wheel,
         Wagon4Wheel,
-        Coal,
-        BogIron,
+        Toolkit,
+        CoolingFluid,
 
+        Wood_Group,
+        RawFood_Group,
+        SkinLinen_Group,
+        
+        Rapeseed,
+        Hemp,
         Linen,
 
+        Coal,
+        BogIron,
         IronOre_G,
         TinOre,
         CopperOre,
@@ -109,32 +130,18 @@ namespace VikingEngine.DSSWars.Resource
         Sword,
         Pike,
 
+        BronzeArmor,
         PaddedArmor,
+        HeavyPaddedArmor,
         IronArmor,
         HeavyIronArmor,
+        LightPlateArmor,
+        FullPlateArmor,
+        MithrilArmor,
 
-        UN_StoneBlock,
-        Stone_G,
-        UN_Clay,
-        UN_Brick,
-
-        Wheat,
-        Beer,
-        Food_G,
-
-        Water_G,
-        Fuel_G,
         Ballista,
         KnightsLance,
         TwoHandSword,
-
-        Wood_Group,
-        RawFood_Group,
-        SkinLinen_Group,
-        Men,
-        ServiceMen,
-        Rapeseed,
-        Hemp,
 
         BronzeSword,
         ShortSword,
@@ -146,9 +153,6 @@ namespace VikingEngine.DSSWars.Resource
         ThrowingSpear,
         Crossbow,
         MithrilBow,
-
-        Toolkit,
-        CoolingFluid,
 
         Sulfur,
         LeadOre,
@@ -172,13 +176,7 @@ namespace VikingEngine.DSSWars.Resource
         ManCannonBronze,
         SiegeCannonIron,
         ManCannonIron,
-
-        BronzeArmor,
-        HeavyPaddedArmor,
-        LightPlateArmor,
-        FullPlateArmor,
-        MithrilArmor,
-
+        
         CupperCoin,
         BronzeCoin,
         SilverCoin,
@@ -190,6 +188,8 @@ namespace VikingEngine.DSSWars.Resource
         RoseWarrior_tank,
         RoseWarrior_dog,
 
+        Men,
+        ServiceMen,
 
         NUM,
 

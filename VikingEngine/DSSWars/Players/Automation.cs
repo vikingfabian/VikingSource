@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Players
         int recruitCount = 0;
         IntVector2 subtilePos;
 
-        Build.BuildAndExpandType autoBuildType = Build.BuildAndExpandType.WorkerHuts;
+        Build.BuildAndExpandType autoBuildType = Build.BuildAndExpandType.WorkerHut;
 
         public Automation(Players.LocalPlayer player)
         {

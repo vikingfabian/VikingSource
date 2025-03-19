@@ -756,11 +756,6 @@ namespace VikingEngine.DSSWars.GameObject
             while (groupsCounter.Next())
             {
                 groupsCounter.sel.setDetailLevel(inRender_detailLayer);
-                //var soldiers = groupsCounter.sel.soldiers.counter();
-                //while (soldiers.Next())
-                //{
-                //    soldiers.sel.setDetailLevel(inRender_detailLayer);
-                //}
             }
         }
 

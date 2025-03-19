@@ -136,7 +136,10 @@ namespace VikingEngine.DSSWars
         public const int ReleaseGuardSizeGain = ExpandGuardSizeCost / 2;
 
         public const int HousingCount_WorkerHut = 30;
-        public const int HousingCount_GuardsOffice = 30;
+        public const int HousingCount_WorkerHutLarge = 50;
+        public const int HousingCount_GuardsOffice_Small = 30;
+        public const int HousingCount_GuardsOffice_Large = 50;
+
         public const int HousingCount_ServiceHouse_Large = 10;
         public const int HousingCount_ServiceHouse_Small = 5;
 
@@ -150,6 +153,11 @@ namespace VikingEngine.DSSWars
         public static int VillageHall_RequiredStaff = 5;
         public static int TownHall_RequiredStaff = 20;
         public static int CapitalHall_RequiredStaff = 80;
+
+        //DEFENCE
+        public static float GuardPostDefenceChance_Dirt = 0.5f;
+        public static float GuardPostDefenceChance_Wood = 0.7f;
+        public static float GuardPostDefenceChance_Stone = 0.85f;
 
 
         //BUILDING
