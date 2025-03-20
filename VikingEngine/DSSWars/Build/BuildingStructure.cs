@@ -190,7 +190,14 @@ namespace VikingEngine.DSSWars.Build
     {
         public int buildingLevel_logistics;
         public int WorkerHuts_count;
-        
+        public int WorkerHuts_Large_count;
+        public int ServiceMenHouse_count;
+        public int ServiceMenHouse_Large_count;
+        public int GuardOffice_count;
+        public int GuardOffice_Large_count;
+
+
+
         public int Postal_count;
         public int Recruitment_count;
         public int SoldierBarracks_count;

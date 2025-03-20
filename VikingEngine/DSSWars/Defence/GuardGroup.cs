@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Command;
@@ -21,6 +23,35 @@ namespace VikingEngine.DSSWars.Defence
         {
 
         }
+        public GuardGroup(AbsArmy army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+            :base (army, r, version, pointers)  
+        {
+        }
+        public override void writeGameState(BinaryWriter w)
+        {
+            base.writeGameState(w);
+            w.Write(assignedToPost_IdAndPosition);
+        }
+
+        public override void readGameState(BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        {
+            base.readGameState(r, subVersion, pointers);
+
+            assignedToPost_IdAndPosition = r.ReadInt32();
+            if (assignedToPost_IdAndPosition >= 0)
+            {
+                //refreshSoldierDefence();
+                onEnterGuard(GetCity(), assignedToPost_IdAndPosition);
+                refreshGuardPosition();
+            }
+
+            goalWp = position;
+        }
+
+        //public void refreshSoldierDefence()
+        //{
+            
+        //}
 
         public override void completeTransform(SoldierTransformType transformType, int positionId)
         {
@@ -47,14 +78,18 @@ namespace VikingEngine.DSSWars.Defence
         public void TeleportToDefencePost(City city, int IdAndPosition, int defenceIndex)
         {
             city.defence_assignGuard_toIndex(this, defenceIndex);
-            var subPos = conv.IntToIntVector2(IdAndPosition);
 
+            refreshGuardPosition();
+
+
+        }
+
+        void refreshGuardPosition()
+        {
+            IntVector2 subPos = conv.IntToIntVector2(assignedToPost_IdAndPosition);
             Vector3 center = WP.SubtileToWorldPosXZgroundY_Centered(subPos);
-
             var tile = DssRef.world.subTileGrid.Get(subPos);
-
             postYPos = center.Y + tile.BuildingHeight();
-
             setArmyPlacement2(center, false, true);
         }
 
@@ -63,14 +98,36 @@ namespace VikingEngine.DSSWars.Defence
            assignedToPost_IdAndPosition = IdAndPosition;
            soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
 
-            if (ranged)
+            if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out SubTile subTile))
             {
-                var tile = DssRef.world.subTileGrid.Get(conv.IntToIntVector2(IdAndPosition));
-                soldierAttackRangeBonus = tile.BuildingHeight() * 2f;
-            }
-            else
-            {
-                soldierAttackRangeBonus = 0.03f;
+                if (ranged)
+                {
+                    //var tile = DssRef.world.subTileGrid.Get(conv.IntToIntVector2(IdAndPosition));
+                    soldierAttackRangeBonus = subTile.BuildingHeight() * 2f;
+                }
+                else
+                {
+                    soldierAttackRangeBonus = 0.03f;
+                }
+
+            
+                switch (subTile.GetWallType())
+                {
+                    case Map.TerrainWallType.NUM_NONE:
+                        damageBlockChance = 0;
+                        break;
+                    case Map.TerrainWallType.DirtWall:
+                    case Map.TerrainWallType.DirtTower:
+                        damageBlockChance = DssConst.GuardPostDefenceChance_Dirt;
+                        break;
+                    case Map.TerrainWallType.WoodWall:
+                    case Map.TerrainWallType.WoodTower:
+                        damageBlockChance = DssConst.GuardPostDefenceChance_Wood;
+                        break;
+                    default:
+                        damageBlockChance = DssConst.GuardPostDefenceChance_Stone;
+                        break;
+                }
             }
         }
 

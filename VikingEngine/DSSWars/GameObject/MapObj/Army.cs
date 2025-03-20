@@ -111,12 +111,7 @@ namespace VikingEngine.DSSWars.GameObject
             name.write(w);
             WP.writePosXZ(w, position);
 
-            w.Write((ushort)groups.Count);
-            var groupsC = groups.counter();
-            while (groupsC.Next())
-            { 
-                groupsC.sel.writeGameState(w);
-            }
+            writeGroups(w);
 
             writeAiState(w);
 
@@ -129,6 +124,8 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write((ushort)tagArt);
             }
         }
+
+        
         public void readGameState(Faction faction, System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             this.faction = faction;
@@ -142,11 +139,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             WP.readPosXZ(r, out position, out tilePos);
 
-            int groupsCount = r.ReadUInt16();
-            for (int i = 0; i < groupsCount; i++)
-            {
-                SoldierGroup group = new SoldierGroup(this, r, subVersion, pointers);               
-            }
+            readGroups(r, subVersion, pointers);
 
             init(faction);
 
@@ -163,6 +156,8 @@ namespace VikingEngine.DSSWars.GameObject
                 tagArt = (ArmyTagArt)r.ReadUInt16();
             }
         }
+
+        
 
         public void writeNet(System.IO.BinaryWriter w)
         {
@@ -181,7 +176,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DssRef.lang.UnitType_Army + " (" + parentArrayIndex.ToString() +   ")";//return "Army" + parentArrayIndex.ToString();
+            return DssRef.lang.UnitType_Army + " (" + parentArrayIndex.ToString() + ")";
         }
 
         public override void TypeIcon(RichBoxContent content)
@@ -189,10 +184,6 @@ namespace VikingEngine.DSSWars.GameObject
             content.Add(new RbImage(SpriteName.WarsUnitIcon_Soldier));
             tagToHud(content);
         }
-        //public override SpriteName TypeIcon()
-        //{
-        //    return SpriteName.WarsUnitIcon_Soldier;
-        //}
 
         public override string Name(out bool mayEdit)
         {

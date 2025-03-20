@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Defence;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -31,7 +33,37 @@ namespace VikingEngine.DSSWars.GameObject
                
             
         }
+        protected void writeGroups(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)groups.Count);
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {
+                groupsC.sel.writeGameState(w);
+               
+            }
+        }
+        public void readGroups(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        {
+            int groupsCount = r.ReadUInt16();
 
+            if (IsCity())
+            {
+                for (int i = 0; i < groupsCount; i++)
+                {
+                    GuardGroup group = new GuardGroup(this, r, subVersion, pointers);
+                    
+                }
+            }
+            else
+            {
+                for (int i = 0; i < groupsCount; i++)
+                {
+                    SoldierGroup group = new SoldierGroup(this, r, subVersion, pointers);
+                    
+                }
+            }
+        }
         virtual public void asyncNearObjectsUpdate()
         {
             var groupsC = groups.counter();

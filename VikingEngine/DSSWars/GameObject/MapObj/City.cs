@@ -47,6 +47,7 @@ namespace VikingEngine.DSSWars.GameObject
         IntVector2 cityHallSubtilePos;
         public GroupedResource workForce = new GroupedResource();
         public GroupedResource freeServiceMen = new GroupedResource();
+        public int totalServiceMen = 0;
         int workingServiceMen = 0;
 
         public int HousingCount_Workers = 0;
@@ -428,6 +429,16 @@ namespace VikingEngine.DSSWars.GameObject
             foreach (var school in schoolBuildings)
             { school.writeGameState(w); }
 
+      
+            writeGroups(w);
+  
+            w.Write((ushort)defenceBuildings.Count);
+            foreach (var defence in defenceBuildings)
+            { 
+                defence.writeGameState(w);
+            }
+ 
+
             w.Write(autoBuild_Work);
             w.Write(autoBuild_Farm);
             w.Write((byte)autoExpandFarmType);
@@ -512,6 +523,19 @@ namespace VikingEngine.DSSWars.GameObject
                 schoolBuildings.Add(status);
             }
 
+            readGroups(r, subversion, pointers);
+     
+            defenceBuildings.Clear();
+            int defenceBuildingsCount = r.ReadUInt16();
+            for (int i = 0; i < defenceBuildingsCount; i++)
+            {
+                DefenceStatus defence = new DefenceStatus();
+                defence.readGameState(r, subversion);
+                if (defence.active)
+                {
+                    defenceBuildings.Add(defence);
+                }
+            }          
 
             autoBuild_Work = r.ReadBoolean();
             autoBuild_Farm = r.ReadBoolean();
@@ -978,11 +1002,13 @@ namespace VikingEngine.DSSWars.GameObject
             int count = large ? DssConst.HousingCount_ServiceHouse_Large : DssConst.HousingCount_ServiceHouse_Small;
             if (build_notDestroy)
             {
-               freeServiceMen.amount += count;
+                freeServiceMen.amount += count;
+                totalServiceMen += count;
             }
             else
             {
                 freeServiceMen.amount -= count;
+                totalServiceMen -= count;
             }
         }
 
@@ -2118,17 +2144,16 @@ namespace VikingEngine.DSSWars.GameObject
                 content.space();
                 content.Add(new RbText(HousingCount_Guard.ToString()));
 
-
                 content.newLine();
                 content.Add(new RbImage(SpriteName.MissingImage));
                 content.space();
                 content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.ResourceType_ServiceMen, freeServiceMen.amount)));
-                //content.Add(new RbTab(0.4f));
-                //content.Add(new RbText("-"));
-                //content.space();
-                //content.Add(new RbImage(SpriteName.MissingImage));
-                //content.space();
-                //content.Add(new RbText(HousingCount_ServiceMen.ToString()));
+                content.Add(new RbTab(0.4f));
+                content.Add(new RbText("-"));
+                content.space();
+                content.Add(new RbImage(SpriteName.MissingImage));
+                content.space();
+                content.Add(new RbText(totalServiceMen.ToString()));
 
                 //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
                 //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));

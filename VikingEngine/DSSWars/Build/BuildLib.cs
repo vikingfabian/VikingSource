@@ -101,8 +101,8 @@ namespace VikingEngine.DSSWars.Build
         GardenFourBushes,
         GardenLongTree,
         GardenWalledBush,
-        SmallCityHouse,
-        BigCityHouse,
+        //ServiceHouse_Small,
+        //BigCityHouse,
         CitySquare,
         CobbleStones,
         GardenBird,
@@ -177,6 +177,11 @@ namespace VikingEngine.DSSWars.Build
             }
 
             list.Add(BuildAndExpandType.GuardHouse_Small);
+            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
+               StartupSettings.UnlockAllProgress)
+            {
+                list.Add(BuildAndExpandType.GuardHouse_Large);
+            }
 
             list.Add(BuildAndExpandType.WheatFarm);
             if (unlocks.building_upgradedFarm)
@@ -330,8 +335,8 @@ namespace VikingEngine.DSSWars.Build
             list.Add(BuildAndExpandType.GardenFourBushes);
             list.Add(BuildAndExpandType.GardenLongTree);
             list.Add(BuildAndExpandType.GardenWalledBush);
-            list.Add(BuildAndExpandType.SmallCityHouse);
-            list.Add(BuildAndExpandType.BigCityHouse);
+            list.Add(BuildAndExpandType.ServiceHouse_Small);
+            //list.Add(BuildAndExpandType.BigCityHouse);
             list.Add(BuildAndExpandType.CitySquare);
             list.Add(BuildAndExpandType.CobbleStones);
 
@@ -445,8 +450,8 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.GardenFourBushes, TerrainMainType.Decor, (int)TerrainDecorType.GardenFourBushes, SpriteName.WarsBuild_GardenFourBushes, CraftBuildingLib.GardenFourBushes, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.GardenLongTree,TerrainMainType.Decor, (int)TerrainDecorType.GardenLongTree, SpriteName.WarsBuild_GardenLongTree, CraftBuildingLib.GardenLongTree, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.GardenWalledBush,TerrainMainType.Decor, (int)TerrainDecorType.GardenWalledBush, SpriteName.WarsBuild_GardenWalledBush, CraftBuildingLib.GardenWalledBush, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default);
-            new BuildOption(BuildAndExpandType.SmallCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_small, SpriteName.MissingImage, CraftBuildingLib.SmallCityHouse, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
-            new BuildOption(BuildAndExpandType.BigCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_Large, SpriteName.MissingImage, CraftBuildingLib.BigCityHouse, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
+            //new BuildOption(BuildAndExpandType.ServiceHouse_Small,TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_small, SpriteName.MissingImage, CraftBuildingLib.SmallCityHouse, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
+            //new BuildOption(BuildAndExpandType.BigCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_Large, SpriteName.MissingImage, CraftBuildingLib.BigCityHouse, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.CitySquare,TerrainMainType.Decor, (int)TerrainDecorType.Square, SpriteName.MissingImage, CraftBuildingLib.CitySquare, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.CobbleStones,TerrainMainType.Decor, (int)TerrainDecorType.CobbleStones, SpriteName.MissingImage, CraftBuildingLib.CobbleStones, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default);
 

@@ -25,6 +25,52 @@ namespace VikingEngine.DSSWars.GameObject
             return defenceIxFromPosId(id);
         }
 
+        public void addDefenceBuilding_async(IntVector2 subPos)
+        {
+            //Task.Factory.StartNew(() =>
+            //{
+                lock (defenceBuildings)
+                {
+                    DefenceStatus newDefence = new DefenceStatus();
+                    newDefence.init(subPos);
+                    newDefence.autoAssign = true;
+
+                    for (int i = 0; i < defenceBuildings.Count; ++i)
+                    {
+                        if (!defenceBuildings[i].active)
+                        {
+                            defenceBuildings[i] = newDefence;
+                            return;
+                        }
+                    }
+
+                    defenceBuildings.Add(newDefence);
+                }
+            //});
+        }
+
+        public void destroyDefenceBuilding_async(IntVector2 subPos)
+        {
+            int id = conv.IntVector2ToInt(subPos);
+            lock (defenceBuildings)
+            {
+                for (int i = 0; i < defenceBuildings.Count; ++i)
+                {
+                    if (defenceBuildings[i].idAndPosition == id)
+                    {
+                        var soldiers = defenceBuildings[i].soldierGroupId;
+                        if (soldiers != DefenceStatus.NoSoldiers)
+                        {
+                            var group = groups.GetIndex_Safe(soldiers);
+                            group.completeTransform(SoldierTransformType.ExitGuard, 0);
+                        }
+                        defenceBuildings[i] = DefenceStatus.Empty;
+                        return;
+                    }
+                }
+            }
+        }
+
         void assignNewGuardGroup(GuardGroup group)
         {
             //Find a free guard post or move to a guard house (or city center)
@@ -97,23 +143,24 @@ namespace VikingEngine.DSSWars.GameObject
             defence.soldierGroupId = guard.parentArrayIndex;
             defenceBuildings[index] = defence;
 
-            switch (DssRef.world.subTileGrid.Get(conv.IntToIntVector2(defence.idAndPosition)).GetWallType())
-            {
-                case Map.TerrainWallType.NUM_NONE:
-                    guard.damageBlockChance = 0;
-                    break;
-                case Map.TerrainWallType.DirtWall:
-                case Map.TerrainWallType.DirtTower:
-                    guard.damageBlockChance = DssConst.GuardPostDefenceChance_Dirt;
-                    break;
-                case Map.TerrainWallType.WoodWall:
-                case Map.TerrainWallType.WoodTower:
-                    guard.damageBlockChance = DssConst.GuardPostDefenceChance_Wood;
-                    break;
-                default:
-                    guard.damageBlockChance = DssConst.GuardPostDefenceChance_Stone;
-                    break;
-            }
+            //guard.refreshSoldierDefence();
+            //switch (DssRef.world.subTileGrid.Get(conv.IntToIntVector2(defence.idAndPosition)).GetWallType())
+            //{
+            //    case Map.TerrainWallType.NUM_NONE:
+            //        guard.damageBlockChance = 0;
+            //        break;
+            //    case Map.TerrainWallType.DirtWall:
+            //    case Map.TerrainWallType.DirtTower:
+            //        guard.damageBlockChance = DssConst.GuardPostDefenceChance_Dirt;
+            //        break;
+            //    case Map.TerrainWallType.WoodWall:
+            //    case Map.TerrainWallType.WoodTower:
+            //        guard.damageBlockChance = DssConst.GuardPostDefenceChance_Wood;
+            //        break;
+            //    default:
+            //        guard.damageBlockChance = DssConst.GuardPostDefenceChance_Stone;
+            //        break;
+            //}
         }
 
         public void debugGuardConscript(ItemResourceType weapon)

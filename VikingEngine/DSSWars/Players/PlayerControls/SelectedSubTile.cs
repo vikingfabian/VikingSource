@@ -175,12 +175,12 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             { 
-                    if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
-                    {
-                        city = tile.City();
+                if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                {
+                    city = tile.City();
 
-                        return MayBuild(city, subTile, player, out upgrade);
-                    }
+                    return MayBuild(city, subTile, player, out upgrade);
+                }
             }
 
             city = null;
@@ -195,7 +195,6 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (city.faction.player == player)
                 {
-                    //var current = subTile.GeBuildingType();
                     if (subTile.MayBuild(player.buildControls.placeBuildingType, out upgrade))
                     {
                         if (player.mapControls.selection.obj == city)

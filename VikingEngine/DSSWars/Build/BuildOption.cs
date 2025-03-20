@@ -101,6 +101,9 @@ namespace VikingEngine.DSSWars.Build
                         }
                     }
                     break;
+                case TerrainMainType.Wall:
+                    city.destroyDefenceBuilding_async(subPos);
+                    break;
             }
         }
 
@@ -182,6 +185,10 @@ namespace VikingEngine.DSSWars.Build
                                 break;
                         }
                     }
+                    break;
+
+                case TerrainMainType.Wall:
+                    city.addDefenceBuilding_async(subPos);
                     break;
 
                 case TerrainMainType.Decor:

@@ -1,9 +1,8 @@
 ﻿BETA UPDATE
 -Change Log-
 New system of city halls, workforce, guards and serviemen.
-New Guard sytem.
 The city damage system is removed.
-
+Tabs in build menu.
 Sounds of waves
 Amience sound crash fix
 Fixed food eating statitics
@@ -11,10 +10,9 @@ Fixed overlapping tooltip
 Repaired file import/export
 Main menu improvements
 Battle melody level settings
-
+Added costs to decorative buildings
 
 !save av settings
-
 #Free build defences
 Guard tab på barracks, rock thrower, specialize city guard (5 men)
 -representeras av en gubbe tills de strider
@@ -80,6 +78,7 @@ förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 
 --Efter release polish--
 -war icon
+
 pilar med resurser från delivery
 Factories modeller
 city economy
@@ -114,6 +113,7 @@ Polish
 -attack ally yes/no warning
 
 #Art
+sum
 build categories
 sound options
 sound level

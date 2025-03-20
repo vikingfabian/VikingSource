@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.GameObject
             rotation = army.rotation;
         }
 
-        public SoldierGroup(Army army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public SoldierGroup(AbsArmy army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
             this.army = army;
             readGameState(r, version, pointers);
@@ -232,7 +232,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void writeGameState(System.IO.BinaryWriter w)
+        virtual public void writeGameState(System.IO.BinaryWriter w)
         {
             soldierConscript.writeGameState(w);
             w.Write(isShip);
@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(shipHealth);
         }
 
-        public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             soldierConscript.readGameState(r);
 

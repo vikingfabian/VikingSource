@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine.DSSWars.Defence
 {
     struct DefenceStatus
     {
+        public static readonly DefenceStatus Empty = new DefenceStatus();
+
         public const int NoSoldiers = ushort.MaxValue;
         public int soldierGroupId;
         public int idAndPosition;
@@ -50,6 +53,25 @@ namespace VikingEngine.DSSWars.Defence
         {
             var subPos = conv.IntToIntVector2(idAndPosition);
             return WP.SubtileToWorldPosXZ_Centered(subPos);
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)soldierGroupId);
+            w.Write(idAndPosition);
+
+            EightBit bools = new EightBit(active, autoAssign);
+            bools.write(w);
+        }
+
+        public void readGameState(System.IO.BinaryReader r, int subversion)
+        {
+            soldierGroupId = r.ReadUInt16();
+            idAndPosition = r.ReadInt32();
+
+            EightBit bools =EightBit.FromStream(r);
+            active = bools.Get(0);
+            autoAssign = bools.Get(1);
         }
     }
 }

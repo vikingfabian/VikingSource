@@ -171,8 +171,8 @@ namespace VikingEngine.DSSWars.Map
             //int coalPitCount = 0;
             fuelSpots = 0;
             foodspots = 0;
-            //int logisticsLevel = 0;
-            //int waterReservoirs = 0;
+            
+            int serviceMenHousing = 0;
             
 
             Rectangle2 emptyArea= Rectangle2.Zero;
@@ -323,8 +323,28 @@ namespace VikingEngine.DSSWars.Map
                                         {
                                             case TerrainBuildingType.WorkerHut:
                                                 ++buildingStructure.WorkerHuts_count;
-
                                                 buildingPosition.WorkerHuts_pos = subTileLoop.Position;
+                                                break;
+                                            case TerrainBuildingType.WorkerHutLarge:
+                                                ++buildingStructure.WorkerHuts_Large_count;
+                                                buildingPosition.WorkerHuts_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.ServiceMenHouse_small:
+                                                ++buildingStructure.ServiceMenHouse_count;
+                                                serviceMenHousing += DssConst.HousingCount_ServiceHouse_Small;
+                                                break;
+
+                                            case TerrainBuildingType.ServiceMenHouse_Large:
+                                                ++buildingStructure.ServiceMenHouse_Large_count;
+                                                serviceMenHousing += DssConst.HousingCount_ServiceHouse_Large;
+                                                break;
+
+                                            case TerrainBuildingType.GuardHouse_Small:
+                                                ++buildingStructure.GuardOffice_count;
+                                                break;
+                                            case TerrainBuildingType.GuardHouse_Large:
+                                                ++buildingStructure.GuardOffice_Large_count;
                                                 break;
 
                                             case TerrainBuildingType.HenPen:
@@ -530,6 +550,7 @@ namespace VikingEngine.DSSWars.Map
             //Complete
             city.buildingStructure = buildingStructure;
             city.terrainStructure = terrainStructure;
+            city.totalServiceMen = serviceMenHousing;
 
             void farming(ref SubTile subTile)
             {
