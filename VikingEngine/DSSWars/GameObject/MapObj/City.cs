@@ -2127,7 +2127,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.space();
                 content.Add(new RbText( string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce.amount)));
                 content.Add(new RbTab(0.4f));
-                content.Add(new RbText("-"));
+                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
                 content.space();
@@ -2138,7 +2138,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.space();
                 content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_GuardCount, soldiersCount)));
                 content.Add(new RbTab(0.4f));
-                content.Add(new RbText("-"));
+                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsBuild_GuardOffice));
                 content.space();
@@ -2149,7 +2149,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.space();
                 content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.ResourceType_ServiceMen, freeServiceMen.amount)));
                 content.Add(new RbTab(0.4f));
-                content.Add(new RbText("-"));
+                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
                 content.space();

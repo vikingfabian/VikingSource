@@ -425,16 +425,16 @@ namespace VikingEngine.DSSWars.GameObject
             if (conscriptBuildings.Count == 0 &&
                 !DssRef.storage.runTutorial)
             {
-                IntVector2 pos = WP.ToSubTilePos_TopLeft(tilePos);
-                pos.X += 4;
-                pos.Y += 5;
-                var subTile = DssRef.world.subTileGrid.Get(pos);
+                //IntVector2 pos = WP.ToSubTilePos_TopLeft(tilePos);
+                //pos.X += 4;
+                //pos.Y += 5;
+                var subTile = DssRef.world.subTileGrid.Get(barracksReservedSpot);
                 subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, 1);
-                DssRef.world.subTileGrid.Set(pos, subTile);
+                DssRef.world.subTileGrid.Set(barracksReservedSpot, subTile);
 
 
                 BarracksStatus newBarrack = new BarracksStatus(Build.BuildAndExpandType.SoldierBarracks);
-                newBarrack.idAndPosition = conv.IntVector2ToInt(pos);
+                newBarrack.idAndPosition = conv.IntVector2ToInt(barracksReservedSpot);
                 newBarrack.profile.armorLevel = ItemResourceType.PaddedArmor;
 
                 conscriptBuildings.Add(newBarrack);

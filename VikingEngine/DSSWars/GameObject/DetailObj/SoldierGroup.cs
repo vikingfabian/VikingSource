@@ -1101,68 +1101,70 @@ namespace VikingEngine.DSSWars.GameObject
 
 #if DEBUG
             debugTagButton(args.content);
-
-            HudLib.Label(args.content, DssRef.todoLang.ArmyStructure_ColumnWidth);
-            args.content.newLine();
-            for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
+#endif
+            if (army.IsArmy())
             {
-                var button = new RbButton(new List<AbsRichBoxMember> { new RbText(w.ToString()) },
-                    new RbAction1Arg<int>(army.armyColumnWidthClick, w, SoundLib.menu));
-                button.setGroupSelectionColor(HudLib.RbSettings, w == army.armyColumnWidth);
-                args.content.Add(button);
-                args.content.space();
-            }
-
-            args.content.newLine();
-            //args.content.text($"column {armyGridPlacement2.X}");
-            //args.content.text($"row {armyGridPlacement2.Y}");
-            args.content.Add(new RbSeperationLine());
-
-            for (int y = 0; y < ArmyPlacementGrid.RowsCount; y++)
-            {
-                int rowY = y - ArmyPlacementGrid.PosYAdd;
-
-                string name;
-                switch (rowY)
+                HudLib.Label(args.content, DssRef.todoLang.ArmyStructure_ColumnWidth);
+                args.content.newLine();
+                for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
                 {
-                    case ArmyPlacementGrid.Row_Front:
-                        name = DssRef.todoLang.ArmyStructure_Row_Front;
-                        break;
-                    default:
-                        name = DssRef.todoLang.ArmyStructure_Row_Body;
-                        break;
-                    case ArmyPlacementGrid.Row_Second:
-                        name = DssRef.todoLang.ArmyStructure_Row_Second;
-                        break;
-                    case ArmyPlacementGrid.Row_Behind:
-                        name = DssRef.todoLang.ArmyStructure_Row_Behind;
-                        break;
-
+                    var button = new RbButton(new List<AbsRichBoxMember> { new RbText(w.ToString()) },
+                        new RbAction1Arg<int>(army.armyColumnWidthClick, w, SoundLib.menu));
+                    button.setGroupSelectionColor(HudLib.RbSettings, w == army.armyColumnWidth);
+                    args.content.Add(button);
+                    args.content.space();
                 }
 
                 args.content.newLine();
-                args.content.Add(new RbText(name));
-                args.content.Add(new RbTab(0.3f));
-                for (int x = 0; x < ArmyPlacementGrid.ColsCount; x++)
+
+                args.content.Add(new RbSeperationLine());
+
+                for (int y = 0; y < ArmyPlacementGrid.RowsCount; y++)
                 {
-                    args.content.space();
+                    int rowY = y - ArmyPlacementGrid.PosYAdd;
 
-                    int colX = x - ArmyPlacementGrid.PosXAdd;
+                    string name;
+                    switch (rowY)
+                    {
+                        case ArmyPlacementGrid.Row_Front:
+                            name = DssRef.todoLang.ArmyStructure_Row_Front;
+                            break;
+                        default:
+                            name = DssRef.todoLang.ArmyStructure_Row_Body;
+                            break;
+                        case ArmyPlacementGrid.Row_Second:
+                            name = DssRef.todoLang.ArmyStructure_Row_Second;
+                            break;
+                        case ArmyPlacementGrid.Row_Behind:
+                            name = DssRef.todoLang.ArmyStructure_Row_Behind;
+                            break;
 
-                    string caption = colX == 0 ? " C " : TextLib.PlusMinus(colX);
-                    var button = new RbButton(new List<AbsRichBoxMember> {
+                    }
+
+                    args.content.newLine();
+                    args.content.Add(new RbText(name));
+                    args.content.Add(new RbTab(0.3f));
+                    for (int x = 0; x < ArmyPlacementGrid.ColsCount; x++)
+                    {
+                        args.content.space();
+
+                        int colX = x - ArmyPlacementGrid.PosXAdd;
+
+                        string caption = colX == 0 ? " C " : TextLib.PlusMinus(colX);
+                        var button = new RbButton(new List<AbsRichBoxMember> {
                         new RbText(caption)
                     },
-                    new RbAction2Arg<int, int>(setNewArmyPlacement, colX, rowY), null);
+                        new RbAction2Arg<int, int>(setNewArmyPlacement, colX, rowY), null);
 
-                    button.setGroupSelectionColor(HudLib.RbSettings, armyGridPlacement2.X == colX && armyGridPlacement2.Y == rowY);
-                    args.content.Add(button);
+                        button.setGroupSelectionColor(HudLib.RbSettings, armyGridPlacement2.X == colX && armyGridPlacement2.Y == rowY);
+                        args.content.Add(button);
+                    }
+
                 }
-
+                args.content.Add(new RbSeperationLine());
             }
-            args.content.Add(new RbSeperationLine());
             //args.content.Button("debug tag", new HUD.RichBox.RbAction(AddDebugTag), null, true);
-#endif
+
             soldierConscript.conscript.toHud(args.content);
             args.content.newLine();
             //if (args.selected && GetFaction() == args.player.faction)
