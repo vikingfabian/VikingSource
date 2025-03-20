@@ -299,6 +299,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_ServiceHouse => "Service house";
         public string BuildingType_ServiceHouse_DescriptionAddX => "Add {0} servicemen";
 
+        public string BuildingType_GuardOffice_DescriptionAddX => "Increase guard limit by {0}";
+
         /// <summary>
         /// When listing slight variations, like "Lamp A" and "Lamp B"
         /// </summary>

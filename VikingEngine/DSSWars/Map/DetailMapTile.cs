@@ -492,14 +492,34 @@ namespace VikingEngine.DSSWars.Map
                     newFoliage().init(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.0f);
                     break;
                 case TerrainBuildingType.WorkerHutLarge:
-                    newFoliage().init(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    newFoliage().init(LootFest.VoxelModelName.city_workerhut_long, rnd, wp, WorldData.SubTileWidth * 1f);
                     break;
                
                 case TerrainBuildingType.GuardHouse_Small:
-                    newFoliage().init(LootFest.VoxelModelName.Pig, rnd, wp, WorldData.SubTileWidth * 1.0f);
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_guard_house, 0, wp, WorldData.SubTileWidth * 1.0f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 7, wp + new Vector3(WorldData.SubTileWidth * 0.22f, 0.002f, -0.004f), WorldData.SubTileWidth * 0.8f);
+                            flagModels.Add(flag);
+                        }
+                    }
                     break;
                 case TerrainBuildingType.GuardHouse_Large:
-                    newFoliage().init(LootFest.VoxelModelName.Pig, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_guard_house, 1, wp, WorldData.SubTileWidth * 1.0f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 7, wp + new Vector3(WorldData.SubTileWidth * 0.22f, 0.002f, -0.004f), WorldData.SubTileWidth * 0.8f);
+                            flagModels.Add(flag);
+                        }
+                    }
                     break;
                 case TerrainBuildingType.Tavern:
                     newFoliage().init(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 0.9f);

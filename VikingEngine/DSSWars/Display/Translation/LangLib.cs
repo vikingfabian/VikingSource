@@ -991,6 +991,12 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.ServiceMenHouse_Large:
                     return string.Format(DssRef.todoLang.BuildingType_ServiceHouse_DescriptionAddX, DssConst.HousingCount_ServiceHouse_Large);
 
+                case TerrainBuildingType.GuardHouse_Small:
+                    return string.Format(DssRef.todoLang.BuildingType_GuardOffice_DescriptionAddX, DssConst.HousingCount_GuardsOffice_Small);
+                case TerrainBuildingType.GuardHouse_Large:
+                    return string.Format(DssRef.todoLang.BuildingType_GuardOffice_DescriptionAddX, DssConst.HousingCount_GuardsOffice_Large);
+
+
                 case TerrainBuildingType.Postal:
                 case TerrainBuildingType.PostalLevel2:
                 case TerrainBuildingType.PostalLevel3:

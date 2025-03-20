@@ -295,6 +295,19 @@ namespace VikingEngine.DSSWars.Map
                     {
                         default:
                            return WorldData.SubTileWidth * 0.8f;
+
+                        case TerrainWallType.DirtWall:
+                            return WorldData.SubTileWidth * 0.4f;
+                        case TerrainWallType.DirtTower:
+                            return WorldData.SubTileWidth * 0.5f;
+
+
+                        case TerrainWallType.WoodWall:
+                            return WorldData.SubTileWidth * 0.5f;
+                        case TerrainWallType.WoodTower:
+                            return WorldData.SubTileWidth * 0.6f;
+
+
                         case TerrainWallType.StoneTower:
                             return WorldData.SubTileWidth * 1.4f;
 

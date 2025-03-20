@@ -594,6 +594,8 @@ namespace VikingEngine.LootFest
         city_flagpole,
         city_pen,
         city_workerhut,
+        city_workerhut_long,
+        city_guard_house,
         city_cobblestone,
         city_square,
         city_stonehall,

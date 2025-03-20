@@ -1960,6 +1960,9 @@
 #begin VoxelModel/LfWars/city_garden.vox
 /copy:VoxelModel/LfWars/city_garden.vox
 
+#begin VoxelModel/LfWars/city_guard_house.vox
+/copy:VoxelModel/LfWars/city_guard_house.vox
+
 #begin VoxelModel/LfWars/city_logistic.vox
 /copy:VoxelModel/LfWars/city_logistic.vox
 
@@ -2016,6 +2019,9 @@
 
 #begin VoxelModel/LfWars/city_woodwall.vox
 /copy:VoxelModel/LfWars/city_woodwall.vox
+
+#begin VoxelModel/LfWars/city_workerhut_long.vox
+/copy:VoxelModel/LfWars/city_workerhut_long.vox
 
 #begin VoxelModel/LfWars/city_workerhut.vox
 /copy:VoxelModel/LfWars/city_workerhut.vox

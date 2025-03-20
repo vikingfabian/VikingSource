@@ -2163,7 +2163,15 @@ namespace VikingEngine
                 //    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
                 //}
             }
+            currentIndex = numTilesWidth * 87;
+            {
+                add(SpriteName.WarsBuild_WoodWall, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_WoodTower, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_CitySquare, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_SmallServiceHouse, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_BigServiceHouse, currentIndex, 3, 3);
 
+            }
             currentIndex = numTilesWidth * 90;
             {
                 add(SpriteName.WarsBuild_School, currentIndex, 3, 3);
@@ -2204,6 +2212,15 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_Statue_Leader, 3, 3);
                 add(SpriteName.WarsBuild_Statue_Horse, 3, 3);
                 add(SpriteName.WarsBuild_Statue_Pillar, 3, 3);
+
+
+                add(SpriteName.WarsBuild_CobbleStones, 3, 3);
+                add(SpriteName.WarsBuild_WorkerHutLarge, 3, 3);
+                add(SpriteName.WarsBuild_GuardOffice, 3, 3);
+                add(SpriteName.WarsBuild_GuardOfficeLarge, 3, 3);
+                add(SpriteName.WarsBuild_DirtTower, 3, 3);
+                add(SpriteName.WarsBuild_DirtWall, 3, 3);
+
             }
 
             if (PlatformSettings.RunProgram == StartProgram.ToGG ||
@@ -2655,6 +2672,16 @@ namespace VikingEngine
                     add(SpriteName.ToolPaintShape_Area);
                     add(SpriteName.ToolPaintShape_LShape);
                     add(SpriteName.ToolPaintShape_Path);
+
+                    add(SpriteName.WarsHudIconExport);
+                    add(SpriteName.WarsHudIconImport);
+                    add(SpriteName.warsBulletSeperationPoint);
+                    add(SpriteName.WarsGuardPostIcon);
+                    add(SpriteName.WarsServiceMen);
+                    add(SpriteName.WarsHudIconChildArrow);
+                    add(SpriteName.WarsServiceMenTotal);
+                    add(SpriteName.WarsHudIconExtraModes);
+
                 }
 
                 currentIndex = numTilesWidth * 101;

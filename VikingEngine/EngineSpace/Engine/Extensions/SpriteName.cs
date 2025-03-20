@@ -2426,7 +2426,6 @@ namespace VikingEngine
         WarsHudTabNotSelected,
         WarsHudSubTabSelected,
         WarsHudSubTabNotSelected,
-        WarsHud,
         WarsHudPrimaryButton,
         WarsHudPrimaryButtonDisabled,
         WarsHudSecondaryButton,
@@ -2475,6 +2474,10 @@ namespace VikingEngine
         WarsHudIconOpen,
         WarsHudIconStart,
         WarsHudIconEditor,
+        WarsHudIconExport,
+        WarsHudIconImport,
+        WarsHudIconChildArrow,
+        WarsHudIconExtraModes,
         DSS2MainMenu,
 
         ToolPaintShape_Free,
@@ -2496,6 +2499,7 @@ namespace VikingEngine
         warsCheckYes,
         warsCheckNo,
         warsBulletPoint,
+        warsBulletSeperationPoint,
         warsResourceChunkAvailable,
         warsResourceChunkNotAvailable,
 
@@ -2575,6 +2579,9 @@ namespace VikingEngine
         WarsWorker,
         WarsWorkerAdd,
         WarsWorkerSub,
+        WarsServiceMen,
+        WarsServiceMenTotal,
+        WarsGuardPostIcon,
         WarsHammer,
         WarsHammerAdd,
         WarsHammerSub,
@@ -2621,6 +2628,7 @@ namespace VikingEngine
 
         WarsCityHall,
         WarsBuild_WorkerHuts,
+        WarsBuild_WorkerHutLarge,
         WarsBuild_Postal,
         WarsBuild_PostalLevel2,
         WarsBuild_PostalLevel3,
@@ -2689,9 +2697,9 @@ namespace VikingEngine
          WarsBuild_GardenFourBushes,
          WarsBuild_GardenLongTree,
          WarsBuild_GardenWalledBush,
-         WarsBuild_SmallCityHouse,
-         WarsBuild_BigCityHouse,
-         WarsBuild_CitySquare,
+         WarsBuild_SmallServiceHouse,
+         WarsBuild_BigServiceHouse,
+         
          WarsBuild_CobbleStones,
          WarsBuild_GardenBird,
          WarsBuild_GardenMemoryStone,
@@ -2699,6 +2707,11 @@ namespace VikingEngine
          WarsBuild_Statue_Lion,
          WarsBuild_Statue_Horse,
          WarsBuild_Statue_Pillar,
+
+        WarsBuild_CitySquare,
+        //WarsBuild_CobbleStoneRoad,
+        WarsBuild_GuardOffice,
+        WarsBuild_GuardOfficeLarge,
 
 
         WarsFlagType_LongBanner,

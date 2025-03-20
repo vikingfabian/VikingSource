@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars
             waterTextures = new Texture2D[4];
             for (int i = 1; i <= 4; ++i)
             {
-                waterTextures[i-1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "watertex_i" + i);
+                waterTextures[i - 1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "watertex_i" + i);
             }
             //RAW
             List<VoxelModelName> loadRawModels = new List<VoxelModelName>
@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars
                 byte[] data = DataStream.DataStreamHandler.Read(path);
                 System.IO.MemoryStream s = new System.IO.MemoryStream(data);
                 System.IO.BinaryReader r = new System.IO.BinaryReader(s);
-                
+
                 var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
                 var result = new VoxelObjGridDataAnimHD(grids);
 
@@ -95,6 +95,8 @@ namespace VikingEngine.DSSWars
 
             loadVoxelModel(VoxelModelName.city_stonehall, false);
             loadVoxelModel(VoxelModelName.city_workerhut, false);
+            loadVoxelModel(VoxelModelName.city_workerhut_long, false);
+            loadVoxelModel(VoxelModelName.city_guard_house, false);
             loadVoxelModel(VoxelModelName.city_pen, false);
 
             loadVoxelModel(VoxelModelName.city_cobblestone, false);

@@ -378,7 +378,7 @@ namespace VikingEngine.DSSWars
                 content.Add(btn);
             }
             {
-                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsBattleIcon) },
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconExtraModes) },
                     new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListExtra , false), new RbTooltip_Text(".Extra modes"));
                 content.Add(btn);
             }
@@ -1750,9 +1750,9 @@ namespace VikingEngine.DSSWars
             }
 
             content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExportSave) },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconExport), new RbSpace() ,new RbText(DssRef.lang.Lobby_ExportSave) },
                 new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_ListSavesForExport, true), new RbTooltip_Text(string.Format(DssRef.lang.Lobby_ExportSave_Description, SaveMeta.ImportSaveFolder))));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ImportSave) },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconImport), new RbSpace(), new RbText(DssRef.lang.Lobby_ImportSave) },
                 new RbAction(importSaves2)));
 
             //new GuiSectionSeparator(layout);
@@ -1804,7 +1804,7 @@ namespace VikingEngine.DSSWars
             {
                 var save = saves[i];
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.MissingImage),
+                    new RbImage(SpriteName.WarsHudIconExport),
                     new RbSpace(),
                     new RbText(save.TitleString()),
                     },
@@ -1907,7 +1907,7 @@ namespace VikingEngine.DSSWars
                     {
                         var save = names[i];
                             var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                                    new RbImage(SpriteName.MissingImage),
+                                    new RbImage(SpriteName.WarsHudIconImport),
                                     new RbSpace(),
                                     new RbText(LoadContent.CheckCharsSafety(save, LoadedFont.Regular)),
 

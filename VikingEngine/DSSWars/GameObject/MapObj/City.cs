@@ -2140,18 +2140,18 @@ namespace VikingEngine.DSSWars.GameObject
                 content.Add(new RbTab(0.4f));
                 content.Add(new RbText("-"));
                 content.space();
-                content.Add(new RbImage(SpriteName.MissingImage));
+                content.Add(new RbImage(SpriteName.WarsBuild_GuardOffice));
                 content.space();
                 content.Add(new RbText(HousingCount_Guard.ToString()));
 
                 content.newLine();
-                content.Add(new RbImage(SpriteName.MissingImage));
+                content.Add(new RbImage(SpriteName.WarsServiceMen));
                 content.space();
                 content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.ResourceType_ServiceMen, freeServiceMen.amount)));
                 content.Add(new RbTab(0.4f));
                 content.Add(new RbText("-"));
                 content.space();
-                content.Add(new RbImage(SpriteName.MissingImage));
+                content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
                 content.space();
                 content.Add(new RbText(totalServiceMen.ToString()));
 

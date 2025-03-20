@@ -400,6 +400,7 @@ namespace VikingEngine
             if (Ref.music != null)
             {
                 content.newLine();
+                content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
                 content.space();
                 content.Add(new RbText(Ref.langOpt.SoundOption_MusicVolume));
@@ -408,7 +409,7 @@ namespace VikingEngine
             }
 
             content.newLine();
-            content.Add(new RbImage(SpriteName.MissingImage));
+            content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
             content.space();
             content.Add(new RbText(".Ambience Volume"));
@@ -416,16 +417,16 @@ namespace VikingEngine
             content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), ambientVolProperty, true));
 
             content.newLine();
-            content.Add(new RbImage(SpriteName.MissingImage));
-            content.Add(new RbImage(SpriteName.MissingImage));
-            content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
+            content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+            content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+            content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
             content.space();
             content.Add(new RbText(".Battle Melody"));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0, 2, 0.1f), BattleMelodyVolProperty, true));
 
             content.newLine();
-            content.Add(new RbImage(SpriteName.MissingImage));
+            content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
             content.space();
             content.Add(new RbText(Ref.langOpt.SoundOption_SoundVolume));
