@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Display
         public PlayerHud_Faction factionMenu;
         public PlayerHud_Object objMenu;
 
-        
+        Map.MiniMap miniMap;
 
         public GameHud(LocalPlayer player, int numPlayers)
         {
@@ -45,9 +45,15 @@ namespace VikingEngine.DSSWars.Display
             headOptions = new PlayerHud_HeadOptions(player);
             objMenu = new PlayerHud_Object(player);
             factionMenu = new PlayerHud_Faction();
+           
             //hudmenu = new GameHudMenu(player);
             messages = new MessageGroup(player, numPlayers, HudLib.richboxGui);
             tooltip = new Tooltip();
+        }
+
+        public void initMap()
+        {
+            //miniMap = new Map.MiniMap(player.playerData);
         }
 
         public void OpenAutomationMenu()

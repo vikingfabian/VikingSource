@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.Map
 {
     class MapLayer_Factions
     {
-        Map.FactionColorsTexture factionColorsTex;
+        public Map.FactionColorsTexture factionColorsTex;
 
         public MapLayer_Factions()
         {

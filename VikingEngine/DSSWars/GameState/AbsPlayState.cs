@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.GameState
     {
        
         public WorldResources resources = new WorldResources();
-        protected Map.MapLayer_Factions factionsMap;
+        public Map.MapLayer_Factions factionsMap;
         protected Map.MapLayer_Overview overviewMap;
         public Map.MapLayer_Detail detailMap;
         public Culling culling;
@@ -82,6 +82,11 @@ namespace VikingEngine.DSSWars.GameState
             factionsMap = new MapLayer_Factions();
             overviewMap = new Map.MapLayer_Overview(factionsMap);
             detailMap = new Map.MapLayer_Detail();
+
+            foreach (var p in localPlayers)
+            {
+                p.hud.initMap();
+            }
         }
 
         public ConcurrentStack<Graphics.VoxelModelInstance> modelPool(bool detail)

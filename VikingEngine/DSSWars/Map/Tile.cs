@@ -371,10 +371,29 @@ namespace VikingEngine.DSSWars.Map
             if (tileContent == TileContent.City)
                 return cityColor;
 
-            if (heightLevel <= Height.LowWaterHeight)
+            if (heightLevel == Height.DeepWaterHeight)
             {
-                return lib.IsEven(pos.X + pos.Y) ? 
-                    WorldData.WaterDarkCol : WorldData.WaterDarkCol2;
+                foreach (var dir in IntVector2.Dir4Array)
+                {
+                    if (DssRef.world.tileGrid.TryGet(pos + dir, out var nTile))
+                    {
+                        if (nTile.heightLevel > Height.DeepWaterHeight)
+                        {
+                            return lib.IsEven(pos.X + pos.Y) ?
+                                WorldData.WaterDarkCol1 : WorldData.WaterDarkCol2;
+                        }
+                    }
+                }
+
+                return lib.IsEven(pos.X + pos.Y) ?
+                    WorldData.WaterVeryDarkCol1 : WorldData.WaterVeryDarkCol2;
+            }
+            else if (heightLevel == Height.LowWaterHeight)
+            {
+
+                return lib.IsEven(pos.X + pos.Y) ? WorldData.WaterEdgeColorBright : WorldData.WaterEdgeColor;
+                    //lib.IsEven(pos.X + pos.Y) ? 
+                    //WorldData.WaterDarkCol : WorldData.WaterDarkCol2;
             }
             else
             {

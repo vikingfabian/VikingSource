@@ -111,11 +111,6 @@ namespace VikingEngine.DSSWars
             localPlayers.Add(local);
             local.assignPlayer(0, 1, false);
 
-            //culling = new Culling();
-
-            //factionsMap = new MapLayer_Factions();
-            //overviewMap = new Map.MapLayer_Overview(factionsMap);
-            //detailMap = new Map.MapLayer_Detail();
             baseInit();
             technologyManager.initGame(false);
 

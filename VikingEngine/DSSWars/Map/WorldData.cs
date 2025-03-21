@@ -47,8 +47,15 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color WaterCol = new Color(14, 155, 246);
         public static readonly Color WaterCol2 = ColorExt.Multiply(WaterCol, 0.9f);
-        public static readonly Color WaterDarkCol = new Color(0.043f, 0.486f,0.773f);
-        public static readonly Color WaterDarkCol2 = ColorExt.Multiply(WaterDarkCol, 1.1f);
+        public static readonly Color WaterEdgeColor = new Color(62, 175, 233);
+        public static readonly Color WaterEdgeColorBright = ColorExt.Multiply(WaterEdgeColor, 1.1f);
+        public static readonly Color WaterDarkCol = new Color(0.043f, 0.486f, 0.773f);
+
+        public static readonly Color WaterDarkCol1 = ColorExt.Mix(WaterDarkCol, WaterEdgeColor, 0.6f);
+        public static readonly Color WaterDarkCol2 = ColorExt.Multiply(WaterDarkCol1, 1.05f);
+        
+        public static readonly Color WaterVeryDarkCol1 = WaterDarkCol;
+        public static readonly Color WaterVeryDarkCol2 = ColorExt.Multiply(WaterVeryDarkCol1, 1.05f);
 
         public static readonly float TileHalfWidth = 0.5f;
         public static readonly float SubTileWidth = 1f / TileSubDivitions;
