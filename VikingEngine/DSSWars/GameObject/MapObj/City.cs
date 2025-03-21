@@ -399,7 +399,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Convert.ToUInt16(workForce.amount));
             w.Write(Convert.ToUInt16(HousingCount_Workers));
             w.Write(Convert.ToUInt16(HousingCount_Guard));
-            w.Write(Convert.ToUInt16(freeServiceMen.amount));
+            w.Write(Convert.ToInt16(freeServiceMen.amount));
 
             childrenAge0.write16bit(w);
             w.Write((ushort)childrenAge1);
@@ -462,24 +462,17 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.WriteCheck(w);
         }
 
-        
-
-
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             workForce.amount = r.ReadUInt16();
             HousingCount_Workers = r.ReadUInt16();
             HousingCount_Guard = r.ReadUInt16();
-            freeServiceMen.amount = r.ReadUInt16();
+            freeServiceMen.amount = r.ReadInt16();
 
             childrenAge0.read16bit(r);
             childrenAge1 = r.ReadUInt16();
 
-            //damages.read16bit(r);
             immigrants.read16bit(r);
-
-            //guardCount = r.ReadUInt16();
-            //maxGuardSize = r.ReadUInt16();
 
             maxWaterBase = r.ReadByte();
             maxWaterTotal = maxWaterBase;

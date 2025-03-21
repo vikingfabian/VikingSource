@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.MoonFall;
@@ -15,16 +16,21 @@ namespace VikingEngine.DSSWars.Display
 {
     class PlayerHud_Object
     {
+        List<GameObject.AbsGameObject> selectHistory = new List<AbsGameObject>();
+        
         DiplomacyDisplay diplomacy;
         public RichMenu menu;
         public Army otherArmy;
+
+
+
         public PlayerHud_Object(LocalPlayer player)
         {
             //
             diplomacy = new DiplomacyDisplay(player);
         }
 
-        void createMenu(LocalPlayer player)
+        void createMenu(LocalPlayer player, bool highOpacity = true)
         {
             if (menu == null)
             {
@@ -40,14 +46,36 @@ namespace VikingEngine.DSSWars.Display
                 var bgTex = menu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
 
                 bgTex.SetColor(ColorExt.GrayScale(0.9f));
-                bgTex.SetOpacity(0.95f);
+               
             }
+
+            menu.backgroundTextures.SetOpacity(highOpacity ? 0.95f : 0.92f);
         }
 
-        void deleteMenu()
+        void deleteMenu(Players.LocalPlayer player)
         {
-            menu?.DeleteMe();
-            menu = null;
+            //menu?.DeleteMe();
+            //menu = null;
+            createMenu(player, false);
+
+            var content = new RichBoxContent();
+            content.h2("Select history");
+
+            //foreach (var obj in selectHistory)
+            for (int i = selectHistory.Count -1; i >=0; --i)
+            {
+                var obj = selectHistory[i];
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { 
+                    new RbText(obj.Name(out _), HudLib.TitleColor_Name), 
+                    new RbImage(SpriteName.warsBulletSeperationPoint), 
+                    new RbText(obj.TypeName(), HudLib.TitleColor_TypeName) },
+                    new RbAction1Arg<AbsGameObject>((AbsGameObject obj) => {
+                        player.selectObject(obj);
+                        }, obj)));
+            }
+
+            menu.Refresh(content);
         }
 
         public void refresh(Players.LocalPlayer player, RichBoxContent content)
@@ -64,7 +92,7 @@ namespace VikingEngine.DSSWars.Display
             }
             if (faction == null)
             {
-                deleteMenu();
+                deleteMenu(player);
             }
             else
             {
@@ -85,7 +113,7 @@ namespace VikingEngine.DSSWars.Display
 
             if (obj == null)
             {
-                deleteMenu();
+                deleteMenu(player);
             }
             else
             {
@@ -95,6 +123,25 @@ namespace VikingEngine.DSSWars.Display
                 var content = new RichBoxContent();
                 obj.toHud(new ObjectHudArgs(content, player, selected));
                 menu.Refresh(content);
+            }
+
+            if (selected)
+            {
+                for (int i = 0; i < selectHistory.Count; ++i)
+                {
+                    if (selectHistory[i] == obj)
+                    {
+                        selectHistory.RemoveAt(i);
+                        break;
+                    }
+                }
+
+                if (selectHistory.Count >= 8)
+                {
+                    selectHistory.RemoveAt(0);
+                }
+
+                selectHistory.Add(obj);                
             }
         }
 

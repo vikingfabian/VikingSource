@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Display
 
         Players.LocalPlayer player;
         City city;
-        static readonly List<float> StockPileControls = new List<float> { 100/*, 1000*/ };
+        static readonly List<float> StockPileControls = new List<float> { 100 };
 
         public static readonly AutomationFocus[] AvailableAutomationFocuses =
         {
@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Display
             {
 
 #if DEBUG
-                content.Button("*soldier", new RbAction(()=> { city.debugGuardConscript( ItemResourceType.Sword); }) , null, true);
+                //content.Button("*soldier", new RbAction(()=> { city.debugGuardConscript( ItemResourceType.Sword); }) , null, true);
                 //content.Button("*archer", new RbAction(() => { city.debugConscript(ItemResourceType.Bow); }), null, true);
                 //content.Button("*ballista", new RbAction(() => { city.debugConscript(ItemResourceType.Ballista); }), null, true);
 #endif

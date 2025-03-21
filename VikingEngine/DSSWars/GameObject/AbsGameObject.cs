@@ -21,7 +21,12 @@ namespace VikingEngine.DSSWars.GameObject
         public int parentArrayIndex = -1;
 
         abstract public GameObjectType gameobjectType();
-        
+
+        virtual public AbsWorldObject GetWorldObject() 
+        {
+            return null;
+        }
+
         abstract public Faction GetFaction();
 
         virtual public City GetCity() { return null; }

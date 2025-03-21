@@ -26,7 +26,7 @@ namespace VikingEngine.HUD.RichMenu
         public RichBoxGroup richBox;
         protected RichBoxContent content = new RichBoxContent();
         
-        NineSplitAreaTexture backgroundTextures;
+        public NineSplitAreaTexture backgroundTextures;
         public VectorRect backgroundArea, edgeArea, renderArea, richboxArea, mouseScrollArea;
         Vector2 renderEdge;
         public RbInteraction interaction = null;

@@ -1110,6 +1110,12 @@ namespace VikingEngine.DSSWars.Players
 
         }
 
+        public void selectObject(GameObject.AbsGameObject obj)
+        {
+            mapControls.cameraFocus = obj;
+            mapSelect(obj.GetWorldObject());
+        }
+
         public void nextCity(bool forward)
         {
             if (forward)

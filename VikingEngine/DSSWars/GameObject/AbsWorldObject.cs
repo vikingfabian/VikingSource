@@ -58,7 +58,10 @@ namespace VikingEngine.DSSWars.GameObject
         //    args.content.Add(new RichBoxSeperationLine());
         //}
 
-        
+        public override AbsWorldObject GetWorldObject()
+        {
+            return this;
+        }
         virtual public void stateDebugText(HUD.RichBox.RichBoxContent content)
         { }
 
