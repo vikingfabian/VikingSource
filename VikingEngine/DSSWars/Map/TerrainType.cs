@@ -137,6 +137,7 @@ namespace VikingEngine.DSSWars.Map
         StoneWallWoodHouse,
         StoneGate,
         StoneHouse,
+        Palisade,
         NUM_NONE
     }
 

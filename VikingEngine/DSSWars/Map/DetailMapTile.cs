@@ -431,23 +431,26 @@ namespace VikingEngine.DSSWars.Map
 
             switch (buildingType)
             {
+                case TerrainWallType.Palisade:
+                    newFoliage().init(LootFest.VoxelModelName.city_palisade, 0, wp, WorldData.SubTileWidth * WallSize);
+                    break;
                 case TerrainWallType.DirtWall:
-                    newFoliage().init(LootFest.VoxelModelName.city_dirtwall, rnd, wp, WorldData.SubTileWidth * WallSize);
+                    newFoliage().init(LootFest.VoxelModelName.city_dirtwall, 0, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.DirtTower:
-                    newFoliage().init(LootFest.VoxelModelName.city_dirttower, rnd, wp, WorldData.SubTileWidth * WallSize);
+                    newFoliage().init(LootFest.VoxelModelName.city_dirttower, 0, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.WoodWall:
-                    newFoliage().init(LootFest.VoxelModelName.city_woodwall, rnd, wp, WorldData.SubTileWidth * WallSize);
+                    newFoliage().init(LootFest.VoxelModelName.city_woodwall, 0, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.WoodTower:
-                    newFoliage().init(LootFest.VoxelModelName.city_woodtower, rnd, wp, WorldData.SubTileWidth * WallSize);
+                    newFoliage().init(LootFest.VoxelModelName.city_woodtower, 0, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.StoneWall:
                     newFoliage().init(LootFest.VoxelModelName.city_stonewall, 0, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.StoneTower:
-                    newFoliage().init(LootFest.VoxelModelName.city_stonetower, rnd, wp, WorldData.SubTileWidth * WallSize);
+                    newFoliage().init(LootFest.VoxelModelName.city_stonetower, 0, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.StoneWallGreen:
                     newFoliage().init(LootFest.VoxelModelName.city_stonewall, 1, wp, WorldData.SubTileWidth * WallSize);

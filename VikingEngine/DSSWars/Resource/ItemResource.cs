@@ -191,6 +191,8 @@ namespace VikingEngine.DSSWars.Resource
         Men,
         ServiceMen,
 
+        Palisade,
+
         NUM,
 
         

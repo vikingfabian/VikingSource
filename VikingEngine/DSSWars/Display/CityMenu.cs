@@ -1305,7 +1305,10 @@ namespace VikingEngine.DSSWars.Display
                     blueprintButton(player, content, CraftResourceLib.Fuel1, null, true);
                     content.space();
                     blueprintButton(player, content, CraftResourceLib.Charcoal);
-                    
+
+
+                    city.res_Palisade.toMenu(content, ItemResourceType.Palisade, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    blueprintButton(player, content, CraftResourceLib.Palisade);
 
                     city.res_Toolkit.toMenu(content, ItemResourceType.Toolkit, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
                     blueprintButton(player, content, CraftResourceLib.Toolkit);

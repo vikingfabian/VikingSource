@@ -123,6 +123,7 @@ namespace VikingEngine.DSSWars.Build
         FlagPole_Streamer,
         FlagPole_Triangle,
 
+        Palisade,
 
         NUM_NONE,
     }
@@ -430,7 +431,8 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Chemist, TerrainMainType.Building, (int)TerrainBuildingType.Chemist, SpriteName.WarsBuild_Chemist, CraftBuildingLib.Chemist, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.Gunmaker, TerrainMainType.Building, (int)TerrainBuildingType.Gunmaker, SpriteName.WarsBuild_Gunmaker, CraftBuildingLib.Gunmaker, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.School, TerrainMainType.Building, (int)TerrainBuildingType.School, SpriteName.WarsBuild_School, CraftBuildingLib.School, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
-            
+
+            new BuildOption(BuildAndExpandType.Palisade, TerrainMainType.Wall, (int)TerrainWallType.Palisade, SpriteName.WarsBuild_Palisade, CraftBuildingLib.Palisade, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall);
             new BuildOption(BuildAndExpandType.DirtWall, TerrainMainType.Wall, (int)TerrainWallType.DirtWall, SpriteName.WarsBuild_DirtWall, CraftBuildingLib.DirtWall, false, BuildCategoryTab.Military, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.DirtTower,TerrainMainType.Wall, (int)TerrainWallType.DirtTower, SpriteName.WarsBuild_DirtTower, CraftBuildingLib.DirtTower, false, BuildCategoryTab.Military, MapPaintToolCategory.Default);
             new BuildOption(BuildAndExpandType.WoodWall,TerrainMainType.Wall, (int)TerrainWallType.WoodWall, SpriteName.WarsBuild_WoodWall, CraftBuildingLib.WoodWall, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall);

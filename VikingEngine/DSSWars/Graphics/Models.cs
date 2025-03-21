@@ -88,6 +88,7 @@ namespace VikingEngine.DSSWars
 
             loadVoxelModel(VoxelModelName.city_dirtwall, false);
             loadVoxelModel(VoxelModelName.city_dirttower, false);
+            loadVoxelModel(VoxelModelName.city_palisade, false);
             loadVoxelModel(VoxelModelName.city_woodwall, false);
             loadVoxelModel(VoxelModelName.city_woodtower, false);
             loadVoxelModel(VoxelModelName.city_stonewall, false);

@@ -159,6 +159,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_BloomeryIron = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_Mithril = new GroupedResource() { goalBuffer = 100 };
 
+        public GroupedResource res_Palisade = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_Toolkit = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_Wagon2Wheel = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_Wagon4Wheel = new GroupedResource() { goalBuffer = 100 };
@@ -366,6 +367,10 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.SkinLinen_Group:
                     res_skinLinnen.amount += add;
                     faction.res_skinLinnen.onChange(add);
+                    break;
+                case ItemResourceType.Palisade:
+                    res_Palisade.amount += add;
+                    faction.res_Palisade.onChange(add);
                     break;
                 case ItemResourceType.Toolkit:
                     res_Toolkit.amount += add;
@@ -671,6 +676,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.RawFood_Group: return res_rawFood;
                 case ItemResourceType.SkinLinen_Group: return res_skinLinnen;
 
+                case ItemResourceType.Palisade: return res_Palisade;
                 case ItemResourceType.Toolkit: return res_Toolkit;
                 case ItemResourceType.Wagon2Wheel: return res_Wagon2Wheel;
                 case ItemResourceType.Wagon4Wheel: return res_Wagon4Wheel;
@@ -779,6 +785,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.SkinLinen_Group:
                     res_skinLinnen = resource;
+                    break;
+                case ItemResourceType.Palisade:
+                    res_Palisade = resource;
                     break;
                 case ItemResourceType.Toolkit:
                     res_Toolkit = resource;

@@ -63,6 +63,7 @@ namespace VikingEngine.DSSWars
         public ResourceOverview res_BloomeryIron = new ResourceOverview();
         public ResourceOverview res_Mithril = new ResourceOverview();
 
+        public ResourceOverview res_Palisade = new ResourceOverview();
         public ResourceOverview res_Toolkit = new ResourceOverview();
         public ResourceOverview res_Wagon2Wheel = new ResourceOverview();
         public ResourceOverview res_Wagon4Wheel = new ResourceOverview();
@@ -184,6 +185,7 @@ namespace VikingEngine.DSSWars
                     res_skinLinnen.toMenu(content, ItemResourceType.SkinLinen_Group);
                     content.Add(new RbSeperationLine());
 
+                    res_Palisade.toMenu(content, ItemResourceType.Palisade);
                     res_Toolkit.toMenu(content, ItemResourceType.Toolkit);
                     res_Wagon2Wheel.toMenu(content, ItemResourceType.Wagon2Wheel);
                     content.Add(new RbSeperationLine());
@@ -617,6 +619,7 @@ namespace VikingEngine.DSSWars
             res_BloomeryIron.oneSecondUpdate();
             res_Mithril.oneSecondUpdate();
 
+            res_Palisade.oneSecondUpdate();
             res_Toolkit.oneSecondUpdate();
             res_Wagon2Wheel.oneSecondUpdate();
             res_Wagon4Wheel.oneSecondUpdate();
@@ -697,6 +700,7 @@ namespace VikingEngine.DSSWars
             res_BloomeryIron.clearCurrent();
             res_Mithril.clearCurrent();
 
+            res_Palisade.clearCurrent();
             res_Toolkit.clearCurrent();
             res_Wagon2Wheel.clearCurrent();
             res_Wagon4Wheel.clearCurrent();
@@ -777,6 +781,7 @@ namespace VikingEngine.DSSWars
                 res_BloomeryIron.current += citiesC.sel.res_BloomeryIron.amount;
                 res_Mithril.current += citiesC.sel.res_Mithril.amount;
 
+                res_Palisade.current += citiesC.sel.res_Palisade.amount;
                 res_Toolkit.current += citiesC.sel.res_Toolkit.amount;
                 res_Wagon2Wheel.current += citiesC.sel.res_Wagon2Wheel.amount;
                 res_Wagon4Wheel.current += citiesC.sel.res_Wagon4Wheel.amount;

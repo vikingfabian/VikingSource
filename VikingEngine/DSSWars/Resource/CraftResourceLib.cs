@@ -352,6 +352,20 @@ namespace VikingEngine.DSSWars.Resource
                 CraftRequirement.Chemist
            );
 
+        public static readonly CraftBlueprint Palisade = new CraftBlueprint(
+               CraftResultType.Resource,
+               (int)ItemResourceType.Palisade,
+              1,
+              new UseResource[]
+              {
+                    new UseResource(ItemResourceType.Iron_G, 1),
+                    new UseResource(ItemResourceType.Wood_Group, 40),
+              },
+              XP.WorkExperienceType.WoodWork,
+              XP.ExperienceLevel.Beginner_1,
+               CraftRequirement.Carpenter
+          );
+
         public static readonly CraftBlueprint Toolkit = new CraftBlueprint(
                 CraftResultType.Resource,
                 (int)ItemResourceType.Toolkit,

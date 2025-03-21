@@ -2679,7 +2679,8 @@ namespace VikingEngine
         WarsBuild_Coinminter,
         WarsBuild_School,
 
-         WarsBuild_DirtWall,
+        WarsBuild_Palisade,
+        WarsBuild_DirtWall,
          WarsBuild_DirtTower,
          WarsBuild_WoodWall,
          WarsBuild_WoodTower,
@@ -2765,6 +2766,7 @@ namespace VikingEngine
         WarsResource_LinenCloth,
         WarsResource_Rapeseed,
         WarsResource_Hemp,
+        WarsResource_Palisade,
 
         WarsResource_Crossbow,
         WarsResource_Sulfur,

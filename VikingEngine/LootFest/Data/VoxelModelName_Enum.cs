@@ -603,6 +603,7 @@ namespace VikingEngine.LootFest
         city_bighouse,
         city_dirtwall,
         city_dirttower,
+        city_palisade,
         city_woodwall,
         city_woodtower,
         city_stonewall,

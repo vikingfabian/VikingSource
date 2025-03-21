@@ -2170,7 +2170,8 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_CitySquare, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_SmallServiceHouse, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_BigServiceHouse, currentIndex, 3, 3);
-
+                add(SpriteName.WarsBuild_Palisade, currentIndex, 3, 3);
+               
             }
             currentIndex = numTilesWidth * 90;
             {
@@ -2681,7 +2682,7 @@ namespace VikingEngine
                     add(SpriteName.WarsHudIconChildArrow);
                     add(SpriteName.WarsServiceMenTotal);
                     add(SpriteName.WarsHudIconExtraModes);
-
+                    add(SpriteName.WarsResource_Palisade);
                 }
 
                 currentIndex = numTilesWidth * 101;

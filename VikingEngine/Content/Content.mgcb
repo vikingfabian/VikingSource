@@ -1972,6 +1972,9 @@
 #begin VoxelModel/LfWars/city_nobelhouse.vox
 /copy:VoxelModel/LfWars/city_nobelhouse.vox
 
+#begin VoxelModel/LfWars/city_palisade.vox
+/copy:VoxelModel/LfWars/city_palisade.vox
+
 #begin VoxelModel/LfWars/city_pavement.vox
 /copy:VoxelModel/LfWars/city_pavement.vox
 
