@@ -411,6 +411,8 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.MithrilBow:
                     return SpriteName.WarsResource_Mithrilbow;
 
+                case ItemResourceType.Palisade:
+                    return SpriteName.WarsResource_Palisade;
                 case ItemResourceType.Toolkit:
                     return SpriteName.WarsResource_Toolkit;
 

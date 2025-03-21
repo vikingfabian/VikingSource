@@ -116,6 +116,9 @@ namespace VikingEngine.DSSWars.Defence
                     case Map.TerrainWallType.NUM_NONE:
                         damageBlockChance = 0;
                         break;
+                    case Map.TerrainWallType.Palisade:
+                        damageBlockChance = DssConst.GuardPostDefenceChance_Palisade;
+                        break;
                     case Map.TerrainWallType.DirtWall:
                     case Map.TerrainWallType.DirtTower:
                         damageBlockChance = DssConst.GuardPostDefenceChance_Dirt;

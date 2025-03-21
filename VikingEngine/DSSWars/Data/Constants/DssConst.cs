@@ -155,6 +155,7 @@ namespace VikingEngine.DSSWars
         public static int CapitalHall_RequiredStaff = 80;
 
         //DEFENCE
+        public static float GuardPostDefenceChance_Palisade = 0.4f;
         public static float GuardPostDefenceChance_Dirt = 0.5f;
         public static float GuardPostDefenceChance_Wood = 0.7f;
         public static float GuardPostDefenceChance_Stone = 0.85f;
@@ -188,7 +189,13 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_Mine = 35;
         public static float WorkTime_BogIron = WorkTime_Mine * 2;
         public static float WorkTime_Craft = 10;
-        public static float WorkTime_Building = 50;
+
+        public static float WorkTime_Building_Palisade = 10;
+        public static float WorkTime_Building_Small = 30;
+        public static float WorkTime_Building_Default = 50;
+        public static float WorkTime_Building_Large = 100;
+        public static float WorkTime_Building_Epic = 150;
+
         public static float WorkTime_UpgradeBuilding = 5;
         public static float WorkTime_Demolish = 10;
 

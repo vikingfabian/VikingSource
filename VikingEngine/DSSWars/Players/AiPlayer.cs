@@ -1555,6 +1555,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 DssRef.world.unitCollAreaGrid.collectOpponentArmies(faction, city.tilePos, 1, DssRef.world.unitCollAreaGrid.armies_aiUpdate);
 
+
                 foreach (var army in DssRef.world.unitCollAreaGrid.armies_aiUpdate)
                 { 
                     float dist = city.distanceTo(army);

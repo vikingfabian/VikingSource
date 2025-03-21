@@ -760,7 +760,7 @@ namespace VikingEngine.DSSWars.Map
                                         m.army != prevArmy)
                                     {
                                         prevArmy = m.GetArmy();
-                                        if (!armies.Contains(prevArmy))
+                                        if (prevArmy != null && !armies.Contains(prevArmy))
                                         {
                                             armies.Add(prevArmy);
                                         }

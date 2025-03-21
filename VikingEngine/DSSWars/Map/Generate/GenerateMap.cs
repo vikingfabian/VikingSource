@@ -345,9 +345,11 @@ namespace VikingEngine.DSSWars.Map.Generate
                 //generateSubTileFoliage();
                 if (loadMeta == null)
                 {
+                    CityTemplateCollection templateCollection = new CityTemplateCollection();
+
                     foreach (var c in world.cities)
                     {
-                        c.createBuildingSubtiles(world);
+                        c.createBuildingSubtiles(world, templateCollection);
                     }
                 }
 

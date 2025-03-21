@@ -1527,6 +1527,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.CoolingFluid);
                     content.newParagraph();
 
+                    stockpile(ItemResourceType.Palisade);
                     stockpile(ItemResourceType.Toolkit);
                     stockpile(ItemResourceType.Wagon2Wheel);
                     stockpile(ItemResourceType.Wagon4Wheel);

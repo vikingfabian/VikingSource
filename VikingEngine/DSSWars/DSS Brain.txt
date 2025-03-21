@@ -1,16 +1,10 @@
 ﻿BETA UPDATE
 -Change Log-
-New system of city halls, workforce, guards and serviemen.
-The city damage system is removed.
-Tabs in build menu.
-Sounds of waves
-Amience sound crash fix
-Fixed food eating statitics
-Fixed overlapping tooltip
-Repaired file import/export
-Main menu improvements
-Battle melody level settings
-Added costs to decorative buildings
+Fixed the instant crash
+Palisades - quick walls
+Fixed resources save error
+Build time varies depending on building size
+
 
 !save av settings
 #Free build defences

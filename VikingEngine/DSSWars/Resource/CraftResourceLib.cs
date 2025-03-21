@@ -355,7 +355,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint Palisade = new CraftBlueprint(
                CraftResultType.Resource,
                (int)ItemResourceType.Palisade,
-              1,
+              4,
               new UseResource[]
               {
                     new UseResource(ItemResourceType.Iron_G, 1),

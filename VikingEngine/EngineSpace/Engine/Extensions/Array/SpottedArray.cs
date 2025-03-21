@@ -445,7 +445,7 @@ namespace VikingEngine
 
         public T GetIndex_Safe(int index)
         {
-            if (index > 0 && index < Array.Length)
+            if (index >= 0 && index < Array.Length)
             {
                 return Array[index];
             }

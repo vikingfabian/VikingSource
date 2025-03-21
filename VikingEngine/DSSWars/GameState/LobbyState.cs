@@ -329,6 +329,10 @@ namespace VikingEngine.DSSWars
             
             RichBoxContent content = new RichBoxContent();
 #if DEBUG
+            if (StartupSettings.CheatActive)
+            {
+                content.text("! debug cheats !");
+            }
             content.Button("start", new RbAction(startGame), null, true);
             content.Button("map editor", new RbAction(openMapEditor), null, true);
             content.Button("battle lab", new RbAction(startBattleLab), null, true);

@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
 
         public static readonly ItemResourceType[] CarpenterCraftTypes = {
+            ItemResourceType.Palisade,
             ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
             ItemResourceType.MithrilBow,
             ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult };
@@ -732,7 +733,7 @@ namespace VikingEngine.DSSWars.Build
           1,
           new UseResource[]
           {
-               new UseResource(ItemResourceType.Palisade, 1),
+               new UseResource(ItemResourceType.Palisade, 4),
 
           },
            XP.WorkExperienceType.Transport, XP.ExperienceLevel.Beginner_1

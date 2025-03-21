@@ -5,58 +5,62 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-        static readonly string[] SquareCity = new string[]
-            {
-                "TWWWWWWT",
-                "W______W",
-                "W______W",
-                "WrrrHrrW",
-                "W__cXc_W",
-                "W__crc_W",
-                "W___r__W",
-                "TWWWWWWT",
+        //static readonly string[] SquareCity = new string[]
+        //    {
+        //        "TWWWWWWT",
+        //        "W______W",
+        //        "W______W",
+        //        "WrrrHrrW",
+        //        "W__cXc_W",
+        //        "W__crc_W",
+        //        "W___r__W",
+        //        "TWWWWWWT",
 
-            };
+        //    };
 
-        static readonly string[] RoundSquareCity = new string[]
-            {
-                "  WWWW",
-                " TW__WT ",
-                "WW____WW",
-                "WrrrHrrW",
-                "W__cXc_W",
-                "WW_crcWW",
-                " TW_rWT ",
-                "  WWWW  ",
+        //static readonly string[] RoundSquareCity = new string[]
+        //    {
+        //        "  WWWW",
+        //        " TW__WT ",
+        //        "WW____WW",
+        //        "WrrrHrrW",
+        //        "W__cXc_W",
+        //        "WW_crcWW",
+        //        " TW_rWT ",
+        //        "  WWWW  ",
 
-            };
+        //    };
 
-        static readonly string[] SquareCity_Segmented = new string[]
-           {
-                "TWWWWWWT",
-                "W___H__W",
-                "W___X__W",
-                "TWWWrWWT",
-                "w__crc_w",
-                "w__crc_w",
-                "w___r__w",
-                "wwwwrwww",
+        //static readonly string[] SquareCity_Segmented = new string[]
+        //   {
+        //        "TWWWWWWT",
+        //        "W___H__W",
+        //        "W___X__W",
+        //        "TWWWrWWT",
+        //        "w__crc_w",
+        //        "w__crc_w",
+        //        "w___r__w",
+        //        "wwwwrwww",
 
-           };
+        //   };
 
         IntVector2 barracksReservedSpot;
         public IntVector2 cityStorageCenter;
-        public void createBuildingSubtiles(WorldData world)
+        public void createBuildingSubtiles(WorldData world, CityTemplateCollection templateCollection)
         {
-            IntVector2 topleft = WP.ToSubTilePos_TopLeft(tilePos);
+            Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, out IntVector2 startSubTilePos);
+
+            IntVector2 topleft = WP.ToSubTilePos_TopLeft(tilePos) + startSubTilePos;
 
             int tower;
+            int gate = (int)TerrainWallType.StoneGate;
             int wall;
             int lowWall;
             int servicehouse;
@@ -106,7 +110,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             }
 
-            string[] template = SquareCity;
+            //string[] template = SquareCity;
             List<TerrainBuildingType> craftStations = new List<TerrainBuildingType>
             {
                 (large? TerrainBuildingType.GuardHouse_Large: TerrainBuildingType.GuardHouse_Small),
@@ -114,20 +118,23 @@ namespace VikingEngine.DSSWars.GameObject
                 TerrainBuildingType.Work_Cook,
             };
 
-            IntVector2 templatePos = IntVector2.Zero;
-            for (templatePos.Y = 0; templatePos.Y < template.Length; templatePos.Y++)
-            { 
-                string row = template[templatePos.Y];
-                for (templatePos.X = 0; templatePos.X < row.Length; templatePos.X++)
-                {
+            //IntVector2 templatePos = IntVector2.Zero;
+            template.LoopBegin();
+            while (template.LoopNext())
+            {
+            //for (templatePos.Y = 0; templatePos.Y < template.Length; templatePos.Y++)
+            //{ 
+            //    string row = template[templatePos.Y];
+            //    for (templatePos.X = 0; templatePos.X < row.Length; templatePos.X++)
+            //    {
                     TerrainMainType main = TerrainMainType.Building;
                     int sub = -1;
-                    IntVector2 pos = topleft + templatePos;
+                    IntVector2 pos = topleft + template.LoopPosition;
                     var subTile = world.subTileGrid.Get(pos);
 
-                    switch (row[templatePos.X])
+                    switch (template.LoopValueGet())
                     {
-                        case '_':
+                        case CityTemplateCellType.General:
                             if (world.rnd.Chance(percBuilding))
                             {
                                 sub = servicehouse;
@@ -139,7 +146,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 sub = road;
                             }
                             break;
-                        case 'W':
+                        case  CityTemplateCellType.Wall:
                             {
                                 DefenceStatus defence = new DefenceStatus();
                                 main = TerrainMainType.Wall;
@@ -150,7 +157,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 defenceBuildings.Add(defence);
                             }
                             break;
-                        case 'w':
+                        case  CityTemplateCellType.OuterWall:
                             {
                                 DefenceStatus defence = new DefenceStatus();
                                 main = TerrainMainType.Wall;
@@ -161,7 +168,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 defenceBuildings.Add(defence);
                             }
                             break;
-                        case 'T':
+                        case  CityTemplateCellType.Tower:
                             {
                                 DefenceStatus defence = new DefenceStatus();
                                 main = TerrainMainType.Wall;
@@ -172,12 +179,25 @@ namespace VikingEngine.DSSWars.GameObject
                                 defenceBuildings.Add(defence);
                             }
                             break;
-                        case 'r':
+                        case CityTemplateCellType.Gate:
+                            {
+                                //DefenceStatus defence = new DefenceStatus();
+                                //main = TerrainMainType.Wall;
+                                //sub = gate;
+                                //defence.autoAssign = false;
+
+                                //defence.init(pos);
+                                //defenceBuildings.Add(defence);
+                                main = TerrainMainType.Decor;
+                                sub = road;
+                            }
+                            break;
+                    case CityTemplateCellType.Road:
                             main = TerrainMainType.Decor;
                             sub = road;
                             break;
 
-                        case 'c':
+                        case CityTemplateCellType.CraftArea:
                             if (craftStations.Count > 0)
                             {
                                 sub = (int)arraylib.RandomListMemberPop(craftStations, DssRef.world.rnd);
@@ -189,11 +209,11 @@ namespace VikingEngine.DSSWars.GameObject
                                 barracksReservedSpot = pos;
                             }                            
                             break;
-                        case 'H':
+                        case  CityTemplateCellType.CityHall:
                             sub = centerHall;
                             cityHallSubtilePos = pos;
                             break;
-                        case 'X':
+                        case  CityTemplateCellType.CityCenterSquare:
                             main = TerrainMainType.Decor;
                             sub = (int)TerrainDecorType.Square;
                             cityStorageCenter = pos;
@@ -205,7 +225,7 @@ namespace VikingEngine.DSSWars.GameObject
                         subTile.SetType(main, sub, 1);
                         world.subTileGrid.Set(pos, subTile);
                     }
-                }
+                
             }
 
 

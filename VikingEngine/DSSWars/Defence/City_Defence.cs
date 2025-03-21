@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (soldiers != DefenceStatus.NoSoldiers)
                         {
                             var group = groups.GetIndex_Safe(soldiers);
-                            group.completeTransform(SoldierTransformType.ExitGuard, 0);
+                            group?.completeTransform(SoldierTransformType.ExitGuard, 0);
                         }
                         defenceBuildings[i] = DefenceStatus.Empty;
                         return;

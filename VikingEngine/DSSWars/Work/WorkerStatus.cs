@@ -963,38 +963,40 @@ namespace VikingEngine.DSSWars.Work
         {
             return finalizeWorkTime(WorkLib.WorkToExperienceType(work, workSubType, workBonus, subTileEnd, city, out _, out _), city);
         }
+
+
         public float finalizeWorkTime(XP.WorkExperienceType experienceType, City city)
         {
-            float time;
+            float timeSec;
 
             switch (work)
             {
                 case WorkType.Eat:
                     return DssConst.WorkTime_Eat;
                 case WorkType.PickUpResource:
-                    time = DssConst.WorkTime_PickUpResource;
+                    timeSec = DssConst.WorkTime_PickUpResource;
                     break;
                 case WorkType.PickUpProduce:
-                    time = DssConst.WorkTime_PickUpProduce;
+                    timeSec = DssConst.WorkTime_PickUpProduce;
                     break;
                 case WorkType.TrossCityTrade:
-                    time = DssConst.WorkTime_TrossCityTrade;
+                    timeSec = DssConst.WorkTime_TrossCityTrade;
                     break;
                 case WorkType.LocalTrade:
-                    time = DssConst.WorkTime_LocalTrade;
+                    timeSec = DssConst.WorkTime_LocalTrade;
                     break;
                 case WorkType.GatherFoil:
                     SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
                     switch ((TerrainSubFoilType)subTile.subTerrain)
                     {
                         case TerrainSubFoilType.TreeSoft:
-                            time = DssConst.WorkTime_GatherFoil_TreeSoft;
+                            timeSec = DssConst.WorkTime_GatherFoil_TreeSoft;
                             break;
                         case TerrainSubFoilType.TreeHard:
-                            time = DssConst.WorkTime_GatherFoil_TreeHard;
+                            timeSec = DssConst.WorkTime_GatherFoil_TreeHard;
                             break;
                         case TerrainSubFoilType.DryWood:
-                            time = DssConst.WorkTime_GatherFoil_DryWood;
+                            timeSec = DssConst.WorkTime_GatherFoil_DryWood;
                             break;
                         case TerrainSubFoilType.WheatFarm:
                         case TerrainSubFoilType.WheatFarmUpgraded:
@@ -1004,15 +1006,15 @@ namespace VikingEngine.DSSWars.Work
                         case TerrainSubFoilType.RapeSeedFarmUpgraded:
                         case TerrainSubFoilType.HempFarm:
                         case TerrainSubFoilType.HempFarmUpgraded:
-                            time = DssConst.WorkTime_GatherFoil_FarmCulture;
+                            timeSec = DssConst.WorkTime_GatherFoil_FarmCulture;
                             break;
                         case TerrainSubFoilType.Stones:
                         case TerrainSubFoilType.StoneBlock:
-                            time = DssConst.WorkTime_GatherFoil_Stones;
+                            timeSec = DssConst.WorkTime_GatherFoil_Stones;
                             break;
 
                         case TerrainSubFoilType.BogIron:
-                            time = DssConst.WorkTime_BogIron;
+                            timeSec = DssConst.WorkTime_BogIron;
                             break;
                         default:
                             return -1;//throw new NotImplementedException();
@@ -1021,36 +1023,35 @@ namespace VikingEngine.DSSWars.Work
                     break;
                 //case WorkType.Till:
                 //    time = DssConst.WorkTime_Till;
-                    break;
+                    //break;
                 case WorkType.Plant:
                     if (workBonus == 0)
                     {
-                        time = DssConst.WorkTime_Plant;
+                        timeSec = DssConst.WorkTime_Plant;
                     }
                     else
                     { 
-                        time = DssConst.WorkTime_Plant_Upgraded;
+                        timeSec = DssConst.WorkTime_Plant_Upgraded;
                     }
                     break;
                 case WorkType.Mine:
-                    time = DssConst.WorkTime_Mine;
+                    timeSec = DssConst.WorkTime_Mine;
                     break;
                 case WorkType.Craft:
-                    time = DssConst.WorkTime_Craft;
+                    timeSec = DssConst.WorkTime_Craft;
                     break;
 
                 case WorkType.Build:
+                    timeSec = BuildLib.BuildOptions[workSubType].buildTimeSec;
+                    //timeSec = DssConst.WorkTime_Building;
+
                     if (city.Culture == CityCulture.Builders)
                     {
-                        time = DssConst.WorkTime_Building * 0.5f;
-                    }
-                    else
-                    {
-                        time = DssConst.WorkTime_Building;
+                        timeSec *= 0.5f;
                     }
                     break;
                 case WorkType.Upgrade:
-                    time = DssConst.WorkTime_UpgradeBuilding;
+                    timeSec = DssConst.WorkTime_UpgradeBuilding;
                     break;
                 case WorkType.Demolish:
                     return DssConst.WorkTime_Demolish;
@@ -1078,8 +1079,8 @@ namespace VikingEngine.DSSWars.Work
                     throw new NotImplementedException();
             }
 
-            time *= WorkLib.WorkTimePerc(getXpFor(experienceType), workBonus);
-            return time;
+            timeSec *= WorkLib.WorkTimePerc(getXpFor(experienceType), workBonus);
+            return timeSec;
         }
     }
 }

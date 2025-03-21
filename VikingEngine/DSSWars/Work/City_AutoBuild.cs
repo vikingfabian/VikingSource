@@ -324,6 +324,7 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.craft_steel.set(1);
             workTemplate.craft_mithril.set(1);
 
+            workTemplate.craft_palisade.set(1);
             workTemplate.craft_toolkit.set(1);
             workTemplate.craft_wagonlight.set(1);
             workTemplate.craft_wagonheavy.set(1);

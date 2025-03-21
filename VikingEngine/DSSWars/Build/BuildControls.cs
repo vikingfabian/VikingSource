@@ -582,6 +582,11 @@ namespace VikingEngine.DSSWars.Build
                             content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
                             build.blueprint.toMenu(content, city);
 
+                            content.newLine();
+                            content.Add(new RbText(".Build time:", HudLib.TitleColor_Label));
+                            content.space();
+                            content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_Seconds, build.buildTimeSec)));
+
                             content.Add(new RbSeperationLine());
                             HudLib.Description(content, build.Description());
 

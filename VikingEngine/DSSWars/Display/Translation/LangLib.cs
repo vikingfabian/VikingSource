@@ -1130,6 +1130,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                 //    return DssRef.lang.Resource_TypeName_HeavyArmor;
 
 
+                case ItemResourceType.Palisade:
+                    return DssRef.todoLang.Resource_TypeName_Palisade;
                 case ItemResourceType.Wagon2Wheel:
                     return DssRef.todoLang.Resource_TypeName_Wagon2Wheel;
                 case ItemResourceType.Wagon4Wheel:

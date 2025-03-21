@@ -184,7 +184,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_MithrilBow=> "Mithril bow";
 
         public string Resource_TypeName_CoolingFluid=> "Cooling fluid";
-        public string Resource_TypeName_Toolkit=> "Tool kit";
+        public string Resource_TypeName_Palisade => "Palisade";
+        public string Resource_TypeName_Toolkit => "Tool kit";
 
         public string Resource_TypeName_Sulfur=> "Sulfur";
         public string Resource_TypeName_LeadOre=> "Lead ore";

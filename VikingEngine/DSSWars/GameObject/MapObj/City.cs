@@ -25,6 +25,7 @@ using VikingEngine.ToGG;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.PJ.MiniGolf;
 using VikingEngine.LootFest.GO.Gadgets;
+using System.ComponentModel;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -632,7 +633,8 @@ namespace VikingEngine.DSSWars.GameObject
             res_BloomeryIron.writeGameState(w); // ItemResourceType.BloomeryIron
             res_Mithril.writeGameState(w); // ItemResourceType.Mithril
 
-            res_Toolkit.writeGameState(w); // ItemResourceType.Toolkit
+            res_Palisade.writeGameState(w);
+            res_Toolkit.writeGameState(w);
             res_Wagon2Wheel.writeGameState(w); // ItemResourceType.Wagon2Wheel
             res_Wagon4Wheel.writeGameState(w); // ItemResourceType.Wagon4Wheel
             res_BlackPowder.writeGameState(w); // ItemResourceType.BlackPowder
@@ -714,17 +716,16 @@ namespace VikingEngine.DSSWars.GameObject
             res_BloomeryIron.readGameState(r, subversion); // ItemResourceType.BloomeryIron
             res_Mithril.readGameState(r, subversion); // ItemResourceType.Mithril
 
-            res_Toolkit.readGameState(r, subversion); // ItemResourceType.Toolkit
+            if (subversion >= 49)
+            {
+                res_Palisade.readGameState(r, subversion);
+            }
+            res_Toolkit.readGameState(r, subversion);
             res_Wagon2Wheel.readGameState(r, subversion); // ItemResourceType.Wagon2Wheel
             res_Wagon4Wheel.readGameState(r, subversion); // ItemResourceType.Wagon4Wheel
             res_BlackPowder.readGameState(r, subversion); // ItemResourceType.BlackPowder
             res_GunPowder.readGameState(r, subversion); // ItemResourceType.GunPowder
             res_LedBullet.readGameState(r, subversion); // ItemResourceType.LedBullet
-
-            res_Toolkit.amount = 0;
-            res_Wagon2Wheel.amount = 0;
-            res_Wagon4Wheel.amount = 0;
-
 
             res_sharpstick.readGameState(r, subversion); // ItemResourceType.SharpStick
             res_BronzeSword.readGameState(r, subversion); // ItemResourceType.BronzeSword

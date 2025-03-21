@@ -60,6 +60,7 @@ namespace VikingEngine.DSSWars.Resource
             items[(int)ItemResourceType.FullPlateArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.FullPlateArmor, null);
             items[(int)ItemResourceType.MithrilArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.MithrilArmor, null);
 
+            items[(int)ItemResourceType.Palisade] = new ItemProperties(DefaultWeight, CraftResourceLib.Palisade, null);
             items[(int)ItemResourceType.Toolkit] = new ItemProperties(DefaultWeight, CraftResourceLib.Beer, null);
             items[(int)ItemResourceType.Wagon2Wheel] = new ItemProperties(DefaultWeight, CraftResourceLib.WagonLight, null);
             items[(int)ItemResourceType.Wagon4Wheel] = new ItemProperties(DefaultWeight, CraftResourceLib.WagonHeavy, null);

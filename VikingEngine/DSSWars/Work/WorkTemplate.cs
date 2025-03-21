@@ -43,6 +43,7 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority craft_steel = new WorkPriority(0);
         public WorkPriority craft_mithril = new WorkPriority(0);
 
+        public WorkPriority craft_palisade = new WorkPriority(0);
         public WorkPriority craft_toolkit = new WorkPriority(0);
         public WorkPriority craft_wagonlight = new WorkPriority(0);
         public WorkPriority craft_wagonheavy = new WorkPriority(0);
@@ -185,6 +186,7 @@ namespace VikingEngine.DSSWars.Work
             craft_steel.writeGameState(w, isCity);
             craft_mithril.writeGameState(w, isCity);
 
+            craft_palisade.writeGameState(w, isCity);
             craft_toolkit.writeGameState(w, isCity);
             craft_wagonlight.writeGameState(w, isCity);
             craft_wagonheavy.writeGameState(w, isCity);
@@ -278,6 +280,10 @@ namespace VikingEngine.DSSWars.Work
             craft_steel.readGameState(r, subversion, isCity);
             craft_mithril.readGameState(r, subversion, isCity);
 
+            if (subversion >= 49)
+            {
+                craft_palisade.readGameState(r, subversion, isCity);
+            }
             craft_toolkit.readGameState(r, subversion, isCity);
             craft_wagonlight.readGameState(r, subversion, isCity);
             craft_wagonheavy.readGameState(r, subversion, isCity);
@@ -374,6 +380,7 @@ namespace VikingEngine.DSSWars.Work
             craft_steel.onFactionValueChange(factionTemplate.craft_steel);
             craft_mithril.onFactionValueChange(factionTemplate.craft_mithril);
 
+            craft_palisade.onFactionValueChange(factionTemplate.craft_palisade);
             craft_toolkit.onFactionValueChange(factionTemplate.craft_toolkit);
             craft_wagonlight.onFactionValueChange(factionTemplate.craft_wagonlight);
             craft_wagonheavy.onFactionValueChange(factionTemplate.craft_wagonheavy);
@@ -469,6 +476,7 @@ namespace VikingEngine.DSSWars.Work
             craft_steel.followFaction = true;
             craft_mithril.followFaction = true;
 
+            craft_palisade.followFaction = true;
             craft_toolkit.followFaction = true;
             craft_wagonlight.followFaction = true;
             craft_wagonheavy.followFaction = true;
@@ -597,6 +605,8 @@ namespace VikingEngine.DSSWars.Work
                 case ItemResourceType.Mithril:
                     return craft_mithril;
 
+                case ItemResourceType.Palisade:
+                    return craft_palisade;
                 case ItemResourceType.Toolkit:
                     return craft_toolkit;
                 case ItemResourceType.Wagon2Wheel:
@@ -733,6 +743,8 @@ namespace VikingEngine.DSSWars.Work
                 case WorkPriorityType.craftMithril:
                     return craft_mithril;
 
+                case WorkPriorityType.craftPalisade:
+                    return craft_palisade;
                 case WorkPriorityType.craftToolkit:
                     return craft_toolkit;
                 case WorkPriorityType.craftWagonLight:
@@ -934,6 +946,9 @@ namespace VikingEngine.DSSWars.Work
                     craft_mithril = value;
                     break;
 
+                case WorkPriorityType.craftPalisade:
+                    craft_palisade = value;
+                    break;
                 case WorkPriorityType.craftToolkit:
                     craft_toolkit = value;
                     break;
@@ -1153,6 +1168,7 @@ namespace VikingEngine.DSSWars.Work
                     craft_beer.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Beer), SpriteName.WarsHammer, SpriteName.WarsResource_Beer, WorkPriorityType.craftBeer, faction, city);
                     craft_coolingfluid.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_CoolingFluid), SpriteName.WarsHammer, SpriteName.WarsResource_CoolingFluid, WorkPriorityType.craftCoolingFluid, faction, city);
 
+                    craft_palisade.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Palisade), SpriteName.WarsHammer, SpriteName.WarsResource_Palisade, WorkPriorityType.craftPalisade, faction, city);
                     craft_toolkit.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Toolkit), SpriteName.WarsHammer, SpriteName.WarsResource_Toolkit, WorkPriorityType.craftToolkit, faction, city);
                     craft_wagonlight.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Wagon2Wheel), SpriteName.WarsHammer, SpriteName.WarsResource_Wagon2Wheel, WorkPriorityType.craftWagonLight, faction, city);
                     craft_wagonheavy.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Wagon4Wheel), SpriteName.WarsHammer, SpriteName.WarsResource_Wagon4Wheel, WorkPriorityType.craftWagonHeavy, faction, city);
@@ -1447,6 +1463,7 @@ namespace VikingEngine.DSSWars.Work
         craftBloomeryIron,
         craftSteel,
         craftMithril,
+        craftPalisade,
         craftToolkit,
         craftWagonLight,
         craftWagonHeavy,
