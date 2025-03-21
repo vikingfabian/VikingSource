@@ -1,7 +1,7 @@
 ﻿BETA UPDATE
 -Change Log-
 Fixed the instant crash
-Palisades - quick walls
+Palisades - quick walls (icon is missing)
 Fixed resources save error
 Build time varies depending on building size
 
