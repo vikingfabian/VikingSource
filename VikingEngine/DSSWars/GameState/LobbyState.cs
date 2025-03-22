@@ -337,13 +337,29 @@ namespace VikingEngine.DSSWars
             content.Button("map editor", new RbAction(openMapEditor), null, true);
             content.Button("battle lab", new RbAction(startBattleLab), null, true);
 #endif
+            var saves = DssRef.storage.meta.listSaves();
+            if (arraylib.HasMembers(saves))
+            {
+                content.newLine();
+
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbBeginTitle(),
+                    new RbImage(SpriteName.WarsHudIconOpen),
+                    new RbTab(ButtonTextTabbing),
+                    new RbText(DssRef.lang.GameMenu_ContinueFromSave),
+                    new RbTab(MoreArrowTabbing),
+                },
+                new RbAction1Arg<SaveStateMeta>(continueFromSave, saves[0]), new RbTooltip_Text(saves[0].InfoString()));
+                btn.fillWidth = true;
+                content.Add(btn);
+            }
             {
                 content.newLine();
 
                 var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
                 moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                var btn = new ArtButton(arraylib.HasMembers(saves)  ? RbButtonStyle.Secondary: RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
                     new RbBeginTitle(), 
                     new RbImage(SpriteName.WarsHudIconAdd), 
                     new RbTab(ButtonTextTabbing), 

@@ -15,7 +15,7 @@ namespace VikingEngine.Graphics
         {
             //settings.TextureName = "fire";
             //settings.Texture = LoadedTexture.pfire;
-            settings.Texture = LoadedTexture.square_particle;
+            settings.Texture = LoadedTexture.particle3;
             settings.MaxParticles = 2400;
 
             settings.Duration = TimeSpan.FromSeconds(2f);

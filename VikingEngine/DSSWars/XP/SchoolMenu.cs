@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.ToggEngine.QueAction;
 
@@ -56,12 +57,12 @@ namespace VikingEngine.DSSWars.XP
                         new RbText(text),
                     };
 
-                    var button = new RbButton(buttonContent,
+                    var button = new ArtOption(exp == currentStatus.learnExperience,buttonContent,
                        new RbAction1Arg<WorkExperienceType>(experienceClick, exp, SoundLib.menu),
-                   new RbAction1Arg<WorkExperienceType>(expTooltip, exp));
-                    button.setGroupSelectionColor(HudLib.RbSettings, exp == currentStatus.learnExperience);
+                   new RbTooltip(expTooltip, exp));
+                    //button.setGroupSelectionColor(HudLib.RbSettings, );
                     content.Add(button);
-                    content.space();
+                    //content.space();
                 }
                 content.newParagraph();
 
@@ -81,12 +82,12 @@ namespace VikingEngine.DSSWars.XP
                         new RbText(text),
                     };
 
-                        var button = new RbButton(buttonContent,
+                        var button = new ArtOption(level == currentStatus.toLevel,buttonContent,
                            new RbAction1Arg<ExperienceLevel>(toLevelClick, level, SoundLib.menu),
-                       new RbAction1Arg<ExperienceLevel>(lvlToolTip, level));
-                        button.setGroupSelectionColor(HudLib.RbSettings, level == currentStatus.toLevel);
+                       new RbTooltip(lvlToolTip, level));
+                        //button.setGroupSelectionColor(HudLib.RbSettings, );
                         content.Add(button);
-                        content.space();
+                        //content.space();
                     }
 
                     content.newParagraph();
@@ -157,11 +158,11 @@ namespace VikingEngine.DSSWars.XP
             city.schoolBuildings[city.selectedSchool] = currentStatus;
         }
 
-        void expTooltip(WorkExperienceType exp)
+        void expTooltip(RichBoxContent content, object tag)//WorkExperienceType exp)
         {
-            
 
-            RichBoxContent content = new RichBoxContent();
+            WorkExperienceType exp = (WorkExperienceType)tag;
+           // RichBoxContent content = new RichBoxContent();
             content.h2(DssRef.todoLang.Experience_TopExperience).overrideColor = HudLib.TitleColor_Label;
             
             content.newLine();
@@ -180,13 +181,14 @@ namespace VikingEngine.DSSWars.XP
             //content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
             
 
-            player.hud.tooltip.create(player, content, true);
+            //player.hud.tooltip.create(player, content, true);
         }
 
-        void lvlToolTip(ExperienceLevel lvl)
+        void lvlToolTip(RichBoxContent content, object tag)//ExperienceLevel lvl)
         {
-            RichBoxContent content = new RichBoxContent();
-            
+            //RichBoxContent content = new RichBoxContent();
+            ExperienceLevel lvl = (ExperienceLevel)tag;
+
             float time = (int)lvl * DssConst.WorkXpToLevel * DssConst.Time_SchoolOneXP;
             TimeSpan timespan = TimeSpan.FromSeconds(time);
             var timeLabel = new RbText(string.Format( DssRef.lang.Conscript_TrainingTime, string.Empty));
@@ -198,7 +200,7 @@ namespace VikingEngine.DSSWars.XP
             content.newLine();
             content.text(DssRef.todoLang.SchoolHud_TimeDescription).overrideColor = HudLib.InfoYellow_Light;
 
-            player.hud.tooltip.create(player, content, true);
+            //player.hud.tooltip.create(player, content, true);
         }
     }
 }

@@ -33,6 +33,7 @@ namespace VikingEngine.DSSWars.Work
         bool isShip = false;
         int prevX, prevZ;
         float walkDist_beforeRefresh = 0f;
+        AbsWorkEffect workEffect = null;
 
         public WorkerUnit(AbsMapObject mapObject, WorkerStatus status, int statusIndex)
         {
@@ -73,16 +74,21 @@ namespace VikingEngine.DSSWars.Work
                         model.position.X = goalPos.X;
                         model.position.Z = goalPos.Z;
                         WP.Rotation1DToQuaterion(model, 2.8f);
-                        state = WorkerUnitState.FinalizeWork;
+                        //state = WorkerUnitState.FinalizeWork;
+                       
                         model.Frame = 0;
                         updateGroudY(true);
 
-                        if ((status.work == WorkType.Build || status.work == WorkType.Upgrade || status.work == WorkType.Demolish) && 
+                        if ((status.work == WorkType.Build || status.work == WorkType.Upgrade || status.work == WorkType.Demolish) &&
                             !status.orderIsActive(city))
                         {
                             state = WorkerUnitState.None;
                             status.cancelWork();
                             parentMapObject.setWorkerStatus(parentArrayIndex, ref status);
+                        }
+                        else
+                        {
+                            beginWork();
                         }
                     }
                     else
@@ -115,12 +121,13 @@ namespace VikingEngine.DSSWars.Work
                     break;
 
                 case WorkerUnitState.FinalizeWork:
-
+                    workEffect?.update();
                     switch (status.work)
                     {
                         case WorkType.GatherFoil:
                             if (workAnimation_soundframe())
                             {
+                                workEffect?.onSoundAnimation();
                                 SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
 
                                 switch ((TerrainSubFoilType)subTile.subTerrain)
@@ -162,12 +169,7 @@ namespace VikingEngine.DSSWars.Work
                                 SoundLib.dig.Play(model.position);
                             }
                             break;
-                        //case WorkType.Till:
-                        //    if (workAnimation_soundframe())
-                        //    {
-                        //        SoundLib.dig.Play(model.position);
-                        //    }
-                        //    break;
+                        
                         case WorkType.Craft:
                             if (workAnimation_soundframe())
                             {
@@ -211,6 +213,8 @@ namespace VikingEngine.DSSWars.Work
                     finalizeWorkTime -= Ref.DeltaGameTimeSec;
                     if (finalizeWorkTime <= 0)
                     {
+                        workEffect = null;
+
                         switch (status.work)
                         {
                             case WorkType.GatherFoil:
@@ -280,6 +284,41 @@ namespace VikingEngine.DSSWars.Work
             return false;
         }
 
+        void beginWork()
+        {
+            state = WorkerUnitState.FinalizeWork;
+
+            switch (status.work)
+            {
+                case WorkType.Craft:
+                    SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
+                    var building = (TerrainBuildingType)subTile.subTerrain;
+
+                    switch (building)
+                    {
+                        case TerrainBuildingType.Work_Cook:
+                            workEffect = new CookingWorkEffect(status.subTileEnd);
+                            break;
+                        case TerrainBuildingType.Work_CoalPit:
+                            workEffect = new CoalPitWorkEffect(status.subTileEnd);
+                            break;
+                        case TerrainBuildingType.Work_Smith:
+                            workEffect = new SmithWorkEffect(status.subTileEnd);
+                            break;
+                        case TerrainBuildingType.Smelter:
+                            workEffect = new SmelterWorkEffect(status.subTileEnd);
+                            break;
+                        case TerrainBuildingType.Foundry:
+                            workEffect = new FoundryWorkEffect(status.subTileEnd);
+                            break;
+                        case TerrainBuildingType.Brewery:
+                            workEffect = new BreweryWorkEffect(status.subTileEnd);
+                            break;
+                    }
+                    break;
+            }
+        }
+
         protected void checkForGoal(bool onInit, City city)
         {
             if (status.work > WorkType.Idle)
@@ -294,7 +333,7 @@ namespace VikingEngine.DSSWars.Work
                 if (status.subTileEnd == status.subTileStart)
                 {
                     finalizeWorkTime = status.finalizeWorkTime(city);
-                    state = WorkerUnitState.FinalizeWork;
+                    beginWork();
                 }
                 else
                 {
@@ -351,7 +390,7 @@ namespace VikingEngine.DSSWars.Work
             walkDist_beforeRefresh = 0;
             goalPos = WP.SubtileToWorldPosXZ(status.subTileEnd);
             goalPos.X += WorldData.SubTileWidth * 0.25f;
-            goalPos.Z += WorldData.SubTileWidth * 0.5f;
+            goalPos.Z += WorldData.SubTileWidth * 0.1f;
 
             walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
             WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
@@ -396,12 +435,12 @@ namespace VikingEngine.DSSWars.Work
             }
         }
 
-        const float ModelGroundYAdj = 0.06f;
+        const float ModelGroundYAdj = 0.01f;
         protected void updateGroudY(bool set)
         {
             if (DssRef.world.unitBounds.IntersectPoint(model.position.X, model.position.Z))
             {
-                float y = DssRef.world.SubTileHeight(model.position) + ModelGroundYAdj;
+                float y = DssRef.world.SubTileHeight(model.position) + 0.01f;//ModelGroundYAdj;
 
                 if (y < Tile.UnitMinY)
                 {

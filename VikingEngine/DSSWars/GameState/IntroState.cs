@@ -90,6 +90,9 @@ namespace VikingEngine.DSSWars
         void asynchContentLoading()
         {
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
+            Engine.LoadContent.LoadTextures(new List<LoadedTexture> {
+                    LoadedTexture.particle3,
+                    });
             new SpriteSheet();
             LootFest.Data.Block.Init();
             FlagAndColor.Init();

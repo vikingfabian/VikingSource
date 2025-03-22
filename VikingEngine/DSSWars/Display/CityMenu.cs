@@ -998,7 +998,7 @@ namespace VikingEngine.DSSWars.Display
         //                    tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Iron));
         //                    break;
         //                case WorkSubTab.Priority_Weapons:
-        //                    tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Sword));
+        //                    tabContent.Add(new RichBoxImage(SpriteName.WarsResource_ d));
         //                    break;
         //                case WorkSubTab.Priority_Armor:
         //                    tabContent.Add(new RichBoxImage(SpriteName.WarsResource_IronArmor));

@@ -275,7 +275,7 @@ namespace VikingEngine
         TargetColor0,
         ptrace,
         WhiteArea,
-        square_particle,
+        particle3,
         ccg_piece_particle,
         realistic_particle,
 

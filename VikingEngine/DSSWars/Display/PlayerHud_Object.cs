@@ -52,27 +52,31 @@ namespace VikingEngine.DSSWars.Display
             menu.backgroundTextures.SetOpacity(highOpacity ? 0.95f : 0.92f);
         }
 
-        void deleteMenu(Players.LocalPlayer player)
+        public void deleteMenu()
         {
-            //menu?.DeleteMe();
-            //menu = null;
+            menu?.DeleteMe();
+            menu = null;
+        }
+
+        void historyDisplay(Players.LocalPlayer player)
+        {
             createMenu(player, false);
 
             var content = new RichBoxContent();
-            content.h2("Select history");
+            content.h2(".Select history");
 
             //foreach (var obj in selectHistory)
-            for (int i = selectHistory.Count -1; i >=0; --i)
+            for (int i = selectHistory.Count - 1; i >= 0; --i)
             {
                 var obj = selectHistory[i];
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { 
-                    new RbText(obj.Name(out _), HudLib.TitleColor_Name), 
-                    new RbImage(SpriteName.warsBulletSeperationPoint), 
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                    new RbText(obj.Name(out _), HudLib.TitleColor_Name),
+                    new RbImage(SpriteName.warsBulletSeperationPoint),
                     new RbText(obj.TypeName(), HudLib.TitleColor_TypeName) },
                     new RbAction1Arg<AbsGameObject>((AbsGameObject obj) => {
                         player.selectObject(obj);
-                        }, obj)));
+                    }, obj)));
             }
 
             menu.Refresh(content);
@@ -92,7 +96,7 @@ namespace VikingEngine.DSSWars.Display
             }
             if (faction == null)
             {
-                deleteMenu(player);
+                historyDisplay(player);
             }
             else
             {
@@ -113,7 +117,7 @@ namespace VikingEngine.DSSWars.Display
 
             if (obj == null)
             {
-                deleteMenu(player);
+                historyDisplay(player);
             }
             else
             {

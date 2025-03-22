@@ -2147,7 +2147,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return GameObject.GameObjectType.SoldierGroup;
         }
-
+        public override Vector3 WorldPos()
+        {
+            return position;
+        }
         public override void stateDebugText(RichBoxContent content)
         {
             content.newLine();

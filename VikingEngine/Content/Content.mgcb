@@ -1846,7 +1846,7 @@
 /processorParam:TextureFormat=Color
 /build:Texture/noimage.tga
 
-#begin Texture/square_particle.tga
+#begin Texture/particle3.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1856,7 +1856,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Texture/square_particle.tga
+/build:Texture/particle3.tga
 
 #begin Texture/whitearea256.tga
 /importer:TextureImporter

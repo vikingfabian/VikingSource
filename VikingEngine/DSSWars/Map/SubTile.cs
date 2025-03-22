@@ -294,25 +294,25 @@ namespace VikingEngine.DSSWars.Map
                     switch ((TerrainWallType)subTerrain)
                     {
                         default:
-                           return WorldData.SubTileWidth * 0.8f;
+                           return WorldData.SubTileWidth * 0.5f;
 
                         case TerrainWallType.Palisade:
                             return 0;
 
                         case TerrainWallType.DirtWall:
-                            return WorldData.SubTileWidth * 0.4f;
+                            return WorldData.SubTileWidth * 0.3f;
                         case TerrainWallType.DirtTower:
-                            return WorldData.SubTileWidth * 0.5f;
+                            return WorldData.SubTileWidth * 0.4f;
 
 
                         case TerrainWallType.WoodWall:
-                            return WorldData.SubTileWidth * 0.5f;
+                            return WorldData.SubTileWidth * 0.4f;
                         case TerrainWallType.WoodTower:
-                            return WorldData.SubTileWidth * 0.6f;
+                            return WorldData.SubTileWidth * 0.4f;
 
 
                         case TerrainWallType.StoneTower:
-                            return WorldData.SubTileWidth * 1.4f;
+                            return WorldData.SubTileWidth * 1.2f;
 
                     }
             }

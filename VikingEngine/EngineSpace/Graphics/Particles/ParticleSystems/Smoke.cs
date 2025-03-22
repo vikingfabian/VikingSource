@@ -28,7 +28,7 @@ namespace VikingEngine.Graphics
         protected override void InitializeSettings(ParticleSettings settings)
         {
             //settings.Texture = LoadedTexture.psmoke;
-            settings.Texture = LoadedTexture.square_particle;
+            settings.Texture = LoadedTexture.particle3;
 
             settings.MaxParticles = 2000;
 
@@ -44,20 +44,20 @@ namespace VikingEngine.Graphics
                 settings.MaxHorizontalVelocity = XZSpeed;
 
                 settings.MinVerticalVelocity = 0f;
-                settings.MaxVerticalVelocity = XZSpeed * 2f;
+                settings.MaxVerticalVelocity =  XZSpeed * 2f;
 
                 settings.EndVelocity = 0.075f;
 
                 settings.DurationRandomness = 1;
-                settings.Duration = TimeSpan.FromSeconds(3);
+                settings.Duration = TimeSpan.FromSeconds(5);
 
-                settings.Gravity = new Vector3(0.001f, 0.003f, -0.001f);
+                settings.Gravity = new Vector3(0.001f, 0.008f, -0.001f);
 
-                settings.MinStartSize = 0.004f;//0.2f;
-                settings.MaxStartSize = 0.006f;//0.3f;
+                settings.MinStartSize = 0.005f;//0.2f;
+                settings.MaxStartSize = 0.007f;//0.3f;
 
-                settings.MinEndSize = 0.008f;//0.4f;
-                settings.MaxEndSize = 0.012f;//0.6f;
+                settings.MinEndSize = 0.010f;//0.4f;
+                settings.MaxEndSize = 0.022f;//0.6f;
             }
             else
             {
@@ -84,10 +84,11 @@ namespace VikingEngine.Graphics
             }
             //Color Transparency = Color.White;
             //Transparency.A = 200;
-            const byte BlackSmoke = 20;
-            const byte WhiteSmoke = 100;
-            settings.MinColor = new Color(BlackSmoke, BlackSmoke, BlackSmoke, (byte)120);
-            settings.MaxColor = new Color(WhiteSmoke, WhiteSmoke, WhiteSmoke, (byte)180);
+            //settings.BlendState = BlendState.AlphaBlend;
+            const byte BlackSmoke = 100;
+            const byte WhiteSmoke = 160;
+            settings.MinColor = new Color(BlackSmoke, BlackSmoke, BlackSmoke, (byte)180);
+            settings.MaxColor = new Color(WhiteSmoke, WhiteSmoke, WhiteSmoke, (byte)210);
         }
     }
 }

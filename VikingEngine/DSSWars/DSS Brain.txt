@@ -1,14 +1,14 @@
 ﻿BETA UPDATE
 -Change Log-
-Fixed the instant crash
-Palisades - quick walls (icon is missing)
-Fixed resources save error
-Build time varies depending on building size
-
+Fixed save bug
+Fixed service housing/guard buildings
+Smoke effect
+Lowered all walls
+Continue button
 
 !save av settings
 #Free build defences
-Guard tab på barracks, rock thrower, specialize city guard (5 men)
+ Rock thrower
 -representeras av en gubbe tills de strider
 Assign men to wall (ballista, har warmashine crew)
 

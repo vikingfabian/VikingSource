@@ -100,6 +100,11 @@ namespace VikingEngine.DSSWars.GameObject
             throw new NotImplementedException();
         }
 
+        public override bool defeated()
+        {
+            return objects.Count == 0;
+        }
+
         public void set(List<AbsMapObject> newObjects)
         { 
             this.objects.Clear();
@@ -120,6 +125,48 @@ namespace VikingEngine.DSSWars.GameObject
             return result / objects.Count;
         }
 
-        
+
+        public override string Name(out bool mayEdit)
+        {
+            mayEdit = false;
+
+
+            int armyCount = 0;
+            for (int i = objects.Count -1; i >=0; i--)
+            {
+                if (objects[i].defeated())
+                {
+                    objects.RemoveAt(i);
+                }
+                else
+                {
+                    switch (objects[i].gameobjectType())
+                    {
+                        case GameObjectType.Army:
+                            armyCount++;
+                            break;
+                    }
+                }
+            }
+
+            if (objects.Count == 0)
+            {
+                return DssRef.lang.Hud_EmptyList;
+            }
+            else if (objects.Count == 1)
+            {
+                return objects[0].Name(out _);
+            }
+            else
+            {
+                return objects[0].Name(out _) + " +" + (armyCount-1).ToString();
+            }
+        }
+
+        public override string TypeName()
+        {
+            return ".Object Group";
+        }
+
     }
 }

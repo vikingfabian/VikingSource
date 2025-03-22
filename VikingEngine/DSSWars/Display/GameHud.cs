@@ -208,7 +208,11 @@ namespace VikingEngine.DSSWars.Display
                 }
                 else if (player.factionTab != MenuTab.NUM_NONE)
                 {
-                    updateObjectDisplay(null, false, refresh);
+                    //updateObjectDisplay(null, false, refresh);
+                    if (refresh)
+                    {
+                        objMenu.deleteMenu();
+                    }
                 }
                 else if (!player.updateObjectDisplay())
                 {

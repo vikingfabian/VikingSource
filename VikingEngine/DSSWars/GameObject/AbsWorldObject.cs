@@ -62,6 +62,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return this;
         }
+
+        public override Vector3 WorldPos()
+        {
+            return position;
+        }
         virtual public void stateDebugText(HUD.RichBox.RichBoxContent content)
         { }
 

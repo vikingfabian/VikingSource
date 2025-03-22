@@ -198,6 +198,8 @@ float4 ParticlePixelShader(VertexShaderOutput input) : COLOR0
  	//	clip(outCol.a - 0.3);
 	//}
 	//return outCol;
+    
+    //return input.Color;
     return tex2D(Sampler, input.TextureCoordinate) * input.Color;
 }
 

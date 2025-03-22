@@ -349,10 +349,10 @@ namespace VikingEngine.DSSWars.Players
         {
             if (newGame && DssRef.storage.runTutorial)
             {
-                tutorial = new PlayerControls.Tutorial(this);
+                //tutorial = new PlayerControls.Tutorial(this);
+                DssRef.storage.runTutorial = false;
             }
-            //inTutorialMode = false;
-            //mapControls.setZoomRange(inTutorialMode);
+            
         }
 
         public void tutorial_writeGameState(BinaryWriter w)
@@ -1394,23 +1394,23 @@ namespace VikingEngine.DSSWars.Players
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
                 }
-                //{
-                //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                //    {
-                //        conscript = new ConscriptProfile()
-                //        {
-                //            weapon = Resource.ItemResourceType.RoseWarrior_dog,
-                //            armorLevel = Resource.ItemResourceType.IronArmor,
-                //            training = TrainingLevel.Basic,
-                //            specialization = SpecializationType.Traditional,
-                //        }
-                //    };
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.RoseWarrior_dog,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
 
-                //    for (int i = 0; i < 2; ++i)
-                //    {
-                //        new SoldierGroup(army, SoldierProfile, army.position);
-                //    }
-                //}
+                    for (int i = 0; i < 5; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
                 //{
                 //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                 //    {

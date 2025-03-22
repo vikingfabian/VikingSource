@@ -303,16 +303,21 @@ namespace VikingEngine.Graphics
             // particle system. By cloning the effect, we prevent one particle system
             // from stomping over the parameter settings of another.
 
-            particleEffect = particleEffect.Clone();
+            particleEffect = Engine.LoadContent.LoadShader("ParticleEffect").Clone(); //particleEffect.Clone();
+            updateParameters();
+        }
 
-             EffectParameterCollection parameters = particleEffect.Parameters;
+        public void updateParameters()
+        {
+
+            EffectParameterCollection parameters = particleEffect.Parameters;
 
             // Look up shortcuts for parameters that change every frame.
             effectViewParameter = parameters["View"];
             effectProjectionParameter = parameters["Projection"];
             effectViewportScaleParameter = parameters["ViewportScale"];
             effectTimeParameter = parameters["CurrentTime"];
-            
+
             // Set the values of parameters that do not change.
             parameters["Duration"].SetValue((float)settings.Duration.TotalSeconds);
             parameters["DurationRandomness"].SetValue(settings.DurationRandomness);
@@ -323,10 +328,10 @@ namespace VikingEngine.Graphics
 
             parameters["RotateSpeed"].SetValue(
                 new Vector2(settings.MinRotateSpeed, settings.MaxRotateSpeed));
-            
+
             parameters["StartSize"].SetValue(
                 new Vector2(settings.MinStartSize, settings.MaxStartSize));
-            
+
             parameters["EndSize"].SetValue(
                 new Vector2(settings.MinEndSize, settings.MaxEndSize));
 
@@ -347,7 +352,7 @@ namespace VikingEngine.Graphics
         /// </summary>
         virtual public void Time_Update(float time)
         {
-            currentTime += time / 1000;
+            currentTime += Ref.DeltaGameTimeSec;//time / 1000;
 
             RetireActiveParticles();
             FreeRetiredParticles();
@@ -509,7 +514,10 @@ namespace VikingEngine.Graphics
             // If there are any active particles, draw them now!
             if (start != end)
             {
+                updateParameters();
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = settings.BlendState;
+
+
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
 
                 // Set an effect parameter describing the viewport size. This is

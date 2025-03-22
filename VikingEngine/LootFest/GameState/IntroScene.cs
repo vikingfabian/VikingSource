@@ -105,7 +105,7 @@ namespace VikingEngine.LootFest.GameState
             SoundLib.LoadMusic();
 
             Engine.LoadContent.LoadTextures(new List<LoadedTexture> {
-                    LoadedTexture.square_particle,
+                    LoadedTexture.particle3,
                     });
             Engine.LoadContent.LoadTexture(LoadedTexture.BlockTextures, LfLib.ContentFolder + "lf3blockTex");
 

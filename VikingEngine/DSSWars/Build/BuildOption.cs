@@ -72,10 +72,29 @@ namespace VikingEngine.DSSWars.Build
                     {
                         switch ((TerrainBuildingType)subType)
                         {
-                            
+
                             case TerrainBuildingType.WorkerHut:
                                 city.onWorkHutBuild(false, false);
                                 break;
+                            case TerrainBuildingType.WorkerHutLarge:
+                                city.onWorkHutBuild(false, true);
+                                break;
+
+                            case TerrainBuildingType.ServiceMenHouse_small:
+                                city.onServiceHouseBuild(false, false);
+                                break;
+                            case TerrainBuildingType.ServiceMenHouse_Large:
+                                city.onServiceHouseBuild(false, true);
+                                break;
+
+                            case TerrainBuildingType.GuardHouse_Small:
+                                city.onGuardHouseBuild(false, false);
+                                break;
+                            case TerrainBuildingType.GuardHouse_Large:
+                                city.onGuardHouseBuild(false, true);
+                                break;
+
+
 
                             case TerrainBuildingType.SoldierBarracks:
                             case TerrainBuildingType.ArcherBarracks:
@@ -128,9 +147,29 @@ namespace VikingEngine.DSSWars.Build
                                 city.buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                 break;
 
+
                             case TerrainBuildingType.WorkerHut:
                                 city.onWorkHutBuild(true, false);
                                 break;
+                            case TerrainBuildingType.WorkerHutLarge:
+                                city.onWorkHutBuild(true, true);
+                                break;
+
+                            case TerrainBuildingType.ServiceMenHouse_small:
+                                city.onServiceHouseBuild(true, false);
+                                break;
+                            case TerrainBuildingType.ServiceMenHouse_Large:
+                                city.onServiceHouseBuild(true, true);
+                                break;
+
+                            case TerrainBuildingType.GuardHouse_Small:
+                                city.onGuardHouseBuild(true, false);
+                                break;
+                            case TerrainBuildingType.GuardHouse_Large:
+                                city.onGuardHouseBuild(true, true);
+                                break;
+
+
 
                             case TerrainBuildingType.SoldierBarracks:
                                 Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.SoldierBarracks));

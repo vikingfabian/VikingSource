@@ -464,7 +464,7 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-               new UseResource(ItemResourceType.Stone_G, 30),
+               new UseResource(ItemResourceType.Stone_G, 15),
            },
             XP.WorkExperienceType.CraftFuel
         );

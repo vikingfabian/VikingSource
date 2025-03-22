@@ -400,6 +400,8 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Convert.ToUInt16(HousingCount_Workers));
             w.Write(Convert.ToUInt16(HousingCount_Guard));
             w.Write(Convert.ToInt16(freeServiceMen.amount));
+            cityHallSubtilePos.writeUshort(w);
+            cityStorageCenter.writeUshort(w);
 
             childrenAge0.write16bit(w);
             w.Write((ushort)childrenAge1);
@@ -468,7 +470,16 @@ namespace VikingEngine.DSSWars.GameObject
             HousingCount_Workers = r.ReadUInt16();
             HousingCount_Guard = r.ReadUInt16();
             freeServiceMen.amount = r.ReadInt16();
-
+            if (subversion >= 50)
+            {
+                cityHallSubtilePos.readUshort(r);
+                cityStorageCenter.readUshort(r);
+            }
+            else
+            {
+                cityHallSubtilePos = WP.ToSubTilePos_Centered(tilePos);
+                cityStorageCenter = VectorExt.AddY(cityHallSubtilePos, 1);
+            }
             childrenAge0.read16bit(r);
             childrenAge1 = r.ReadUInt16();
 

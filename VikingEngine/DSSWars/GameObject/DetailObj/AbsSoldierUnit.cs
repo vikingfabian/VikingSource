@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
@@ -180,7 +181,16 @@ namespace VikingEngine.DSSWars.GameObject
                 model = null;
             }
         }
-
+        public override string Name(out bool mayEdit)
+        {
+            mayEdit = false;
+            string name = LangLib.Item(group.soldierConscript.conscript.weapon);
+            if (group.soldierConscript.conscript.armorLevel != Resource.ItemResourceType.NONE)
+            { 
+              name  += " " + LangLib.Item(group.soldierConscript.conscript.armorLevel);
+            }
+            return name;
+        }
         public override string TypeName()
         {
             return group.soldierConscript.conscript.TypeName() + " (" + parentArrayIndex.ToString() + ")";
