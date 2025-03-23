@@ -1,10 +1,7 @@
 ﻿BETA UPDATE
 -Change Log-
-Fixed save bug
-Fixed service housing/guard buildings
-Smoke effect
-Lowered all walls
-Continue button
+Added smoothness to zooming
+
 
 !save av settings
 #Free build defences

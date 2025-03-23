@@ -22,6 +22,8 @@ namespace VikingEngine.DSSWars
         IDirectionalMap dpadMove;
         public IDirectionalMap cameraTiltZoom;
 
+        public IButtonMap zoomInButton, zoomOutButton;
+
         public IButtonMap Select;
         public IButtonMap ControllerCancel;
         public IButtonMap ControllerFocus;
@@ -112,6 +114,10 @@ namespace VikingEngine.DSSWars
             GameSpeed = new KeyboardButtonMap(Keys.Tab);
             PauseGame = new KeyboardButtonMap(Keys.Space);
 
+            zoomInButton = new KeyboardButtonMap(Keys.PageUp);
+            zoomOutButton = new KeyboardButtonMap(Keys.PageDown);
+
+
             NextCity = new KeyboardButtonMap(Keys.D1);
             NextArmy = new KeyboardButtonMap(Keys.D2);
             NextBattle = new KeyboardButtonMap(Keys.D3);
@@ -177,6 +183,8 @@ namespace VikingEngine.DSSWars
             NextArmy.write(w);
             NextBattle.write(w);
             ControllerMessageClick.write(w);
+
+
 
             if (inputSource.HasKeyBoard)
             {
@@ -442,18 +450,25 @@ namespace VikingEngine.DSSWars
             xboxSetup();
         }
 
-        public float ZoomValue
-        {
-            get
-            {
-                float result = cameraTiltZoom.directionAndTime.Y * Ref.gamesett.scrollWheelSensitivity_game;
-                if (inputSource.HasMouse)
-                {
-                    result += lib.ToLeftRight(Input.Mouse.ScrollValue) * -10f * Ref.gamesett.scrollWheelSensitivity_game;
-                }
 
-                return result;
+        const float KeyZoomSpeed = 10;
+        public float ZoomValue()
+        {
+            float result = cameraTiltZoom.directionAndTime.Y * Ref.gamesett.scrollWheelSensitivity_game;
+            if (inputSource.HasMouse)
+            {
+                result += lib.ToLeftRight(Input.Mouse.ScrollValue) * -10f * Ref.gamesett.scrollWheelSensitivity_game;
             }
+
+            if (zoomInButton.IsDown)
+            {
+                result -= KeyZoomSpeed * Ref.gamesett.scrollWheelSensitivity_game;
+            }
+            if (zoomOutButton.IsDown)
+            {
+                result += KeyZoomSpeed * Ref.gamesett.scrollWheelSensitivity_game;
+            }
+            return result;            
         }
 
         public IButtonMap RichboxGuiSelect => Select;

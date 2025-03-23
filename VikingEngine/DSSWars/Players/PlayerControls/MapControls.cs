@@ -48,11 +48,13 @@ namespace VikingEngine.DSSWars.Players
 
         public AbsGameObject cameraFocus = null;
         Graphics.RectangleLines selectRectangle = null;
+        float targetZoom;
 
         public MapControls(LocalPlayer player)
         {
             this.player = player;
 
+            targetZoom = MapDetailLayerManager.StartZoom;
             camera = new TopViewCamera(MapDetailLayerManager.StartZoom, 
                 new Vector2(MathHelper.PiOver2, Map.MapDetailLayerManager.NormalCamAngle),
                 player.playerData.view.DrawAreaF.Width, player.playerData.view.DrawAreaF.Height);
@@ -852,13 +854,26 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        
+
         private void zoomInput()
         {
-            var newZoom = VikingEngine.Bound.Set(
-                camera.CurrentZoom + player.input.ZoomValue * 0.005f * camera.CurrentZoom, ZoomRange);
-            if (newZoom != camera.CurrentZoom)
+            float zoominput = player.input.ZoomValue();
+
+            targetZoom = VikingEngine.Bound.Set(
+                targetZoom + zoominput * 0.005f * targetZoom, ZoomRange);
+
+            if (targetZoom != camera.CurrentZoom)
             {
-                camera.CurrentZoom = newZoom;
+                float zdiff = targetZoom - camera.CurrentZoom;
+                if (Math.Abs(zdiff) > 2)
+                {
+                    camera.CurrentZoom += zdiff * 0.4f;
+                }
+                else
+                {
+                    camera.CurrentZoom = targetZoom;
+                }
                 if (!controllerInput)
                 {
                     camera.positionFromRotation();

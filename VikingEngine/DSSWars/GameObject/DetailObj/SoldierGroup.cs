@@ -1707,10 +1707,10 @@ namespace VikingEngine.DSSWars.GameObject
         public void asyncBattleUpdate()
         {
             var attack_sp = attackTarget_soldierGroupOrCity;
-                        
-            if (soldiers != null)
+            var soldiers_sp = soldiers;        
+            if (soldiers_sp != null)
             {
-                var counter = soldiers.counter();
+                var counter = soldiers_sp.counter();
                 while (counter.Next())
                 {
                     counter.sel.asyncBattleUpdate();
