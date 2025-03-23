@@ -1693,7 +1693,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string CityCulture_Weavers_Description => "Enhanced light armor production";
 
         public override string CityCulture_SiegeEngineer => "Siege engineer";
-        public override string CityCulture_SiegeEngineer_Description => "More powerful warmashines";
+        public override string CityCulture_SiegeEngineer_Description => "More powerful warmachines";
 
         public override string CityCulture_Armorsmith => "Armorsmith";
         public override string CityCulture_Armorsmith_Description => "Improved iron armor production";

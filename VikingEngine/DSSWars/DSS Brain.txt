@@ -1,7 +1,10 @@
 ﻿BETA UPDATE
 -Change Log-
 Added smoothness to zooming
-
+page up down zoom
+dust and fire particles during battle
+performance improvements on the particles
+increased aggresion range on soldiers (should fix the idle in battle bug)
 
 !save av settings
 #Free build defences

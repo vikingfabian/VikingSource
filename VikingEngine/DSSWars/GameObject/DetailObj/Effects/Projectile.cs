@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
         
         public static float Projectile_PeekHeight;
-        float speed = DssConst.Men_StandardModelScale * 8f;
+        float speed = DssConst.Men_StandardModelScale * 12f;
         //const float MinDistance = AbsSoldierData.StandardModelScale * 0.2f;
 
         Graphics.VoxelModelInstance model;
@@ -79,7 +79,8 @@ namespace VikingEngine.DSSWars.GameObject
                     modelName = LootFest.VoxelModelName.war_cannonball;
                     scale = DssConst.Men_StandardModelScale * 0.4f;
                     linear = false;
-                    fireParticles = true;
+                    //fireParticles = true;
+                    explosion(0.8f);
                     break;
                 case AttackType.Cannonball:
                     //warsRef.sound.rocket.Play(start);
@@ -87,7 +88,8 @@ namespace VikingEngine.DSSWars.GameObject
                     scale = DssConst.Men_StandardModelScale * 0.4f;
                     linear = true;
                     speed *= 1.5f;
-                    fireParticles = true;
+                    //fireParticles = true;
+                    explosion(0.8f);
                     break;
 
                 case AttackType.GunShot:
@@ -96,6 +98,7 @@ namespace VikingEngine.DSSWars.GameObject
                     scale = DssConst.Men_StandardModelScale * 0.16f;
                     linear = true;
                     speed *= 1.5f;
+                    explosion(0.5f);
                     break;
 
                 case AttackType.GunBlast:
@@ -105,6 +108,7 @@ namespace VikingEngine.DSSWars.GameObject
                     linear = true;
                     speed *= 1.7f;
                     frame = Ref.peRnd.Int(3);
+                    explosion(0.5f);
                     break;
 
                 case AttackType.MassiveCannonball:
@@ -113,7 +117,8 @@ namespace VikingEngine.DSSWars.GameObject
                     scale = DssConst.Men_StandardModelScale * 0.8f;
                     linear = true;
                     speed *= 1.5f;
-                    fireParticles = true;
+                    //fireParticles = true;
+                    explosion(1.5f);
                     break;
 
                 case AttackType.SlingShot:
@@ -175,6 +180,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                 target.lockInAttackDamage(damage);
             }
+
+            void explosion(float scale)
+            {
+                Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.ExplosionFire, start, 0.04f * scale, (int)(50 * scale));
+                Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.Smoke, start, 0.04f * scale, (int)(50 * scale));
+            }
         }
 
         public void createBlankTarget(float range)
@@ -229,9 +240,10 @@ namespace VikingEngine.DSSWars.GameObject
 
             
 
-            if (Ref.TimePassed16ms)
+            if (Ref.GameTimePassed16ms > 0)
             {
                 Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.BulletTrace, model.position);
+                //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.DssDamage, model.position);
 
                 if (fireParticles)
                 {

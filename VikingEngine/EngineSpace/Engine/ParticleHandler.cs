@@ -57,7 +57,9 @@ namespace VikingEngine.Engine
                     Graphics.ParticleSystemType.BulletTrace,
                     Graphics.ParticleSystemType.GoldenSparkle,
                     Graphics.ParticleSystemType.Fire,
+                    Graphics.ParticleSystemType.ExplosionFire,
                     Graphics.ParticleSystemType.Smoke,
+                    Graphics.ParticleSystemType.Dust,
                     Graphics.ParticleSystemType.DssDamage,
                     Graphics.ParticleSystemType.CommanderDamage,
                 };

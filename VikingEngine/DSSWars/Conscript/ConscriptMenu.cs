@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.Conscript
                     
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    HudLib.ResourceCost(content, SpriteName.MissingImage, DssRef.todoLang.GuardHousingCount, menCostNext, city.AvailableGuardHousing());
+                    HudLib.ResourceCost(content, SpriteName.WarsBuild_GuardOffice, DssRef.todoLang.GuardHousingCount, menCostNext, city.AvailableGuardHousing());
                 }
 
                 content.newParagraph();

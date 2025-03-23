@@ -10,41 +10,16 @@ namespace VikingEngine.DSSWars.GameObject
 {
     static class GoreManager
     {
-        //static readonly Graphics.TextureEffect HumanBloodCol = new Graphics.TextureEffect(Graphics.TextureEffectType.Flat, SpriteName.WhiteArea, Color.DarkRed);
-        //static readonly Graphics.TextureEffect OrcBloodCol = new Graphics.TextureEffect(Graphics.TextureEffectType.Flat, SpriteName.WhiteArea, new Color(0, 50, 0));
         static float BloodRadius = DssConst.Men_StandardModelScale * 0.1f;
 
         public static void ViewDamage(AbsDetailUnit reciever, int damageAmount, Rotation1D attackDir)
         {
             if (Ref.gamesett.Blood > 0)
-            {
-
-                Vector3 startPos = reciever.position;
-                startPos.Y += DssConst.Men_StandardModelScale * 0.01f;
+            {               
                 int particleCount = Bound.Min( (reciever.Alive() ? damageAmount / 4 : damageAmount) * Ref.gamesett.Blood / 100, 2);
-                // Graphics.TextureEffect col = reciever.faction == Faction.Human ? HumanBloodCol : OrcBloodCol;
                 Vector3 pos = reciever.position;
-                pos.Y += DssConst.Men_StandardModelScale;
+                pos.Y += DssConst.Men_StandardModelScale * 0.1f;
                 Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.DssDamage, pos, BloodRadius, particleCount);
-                //if (reciever.Alive())
-                //{
-                //    Rotation1D attackAngle = attackDir;
-
-                //    //for (int i = 0; i < Bound.Min(damageAmount / 2, 1); ++i)
-                //    //{
-                //    //    //Rotation1D dir = attackAngle;
-                //    //    //dir.Add(Ref.rnd.Plus_MinusF(1f));
-                //    //    //new BloodBlock(startPos, reciever.position.Y, dir, false);
-
-                //    //}
-                //}
-                //else
-                //{
-                //    //for (int i = 0; i < damageAmount; ++i)
-                //    //{
-                //    //    //new BloodBlock(startPos, reciever.position.Y, Rotation1D.Random(), true);
-                //    //}
-                //}
             }
         }
     }

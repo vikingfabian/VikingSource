@@ -183,7 +183,7 @@ namespace VikingEngine.DSSWars.Battle
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
 
-            const float SoldierToGroupMaxDistance = 1.0f;
+            //const float SoldierToGroupMaxDistance = 1.0f;
 
             SoldierBuffer.Clear();
             //Collect nearby collision bounds
@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars.Battle
             {
                 bool opponent = DssRef.diplomacy.InWar(parent.GetFaction(), group.GetFaction());
 
-                if (VectorExt.Length(group.position.X - parent.position.X, group.position.Z - parent.position.Z) < 3)
+                if (VectorExt.Length(group.position.X - parent.position.X, group.position.Z - parent.position.Z) < 5)
                 {
                     switch( group.gameobjectType())
                     {

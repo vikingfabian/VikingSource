@@ -1607,9 +1607,9 @@ namespace VikingEngine.DSSWars.GameObject
                 if (army.IsArmy() &&
                     target == army.GetArmy().attackTarget)
                 {
-                    return 4;
+                    return 4.5f;
                 }
-                return 3;
+                return 3.5f;
             }
 
         }

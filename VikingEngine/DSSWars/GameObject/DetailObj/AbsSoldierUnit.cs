@@ -429,7 +429,10 @@ namespace VikingEngine.DSSWars.GameObject
 
             updateGroudY(false);
             //bound.Center = VectorExt.V3XZtoV2(position);
-            model?.update(this);
+            if (fullUpate)
+            {
+                model?.update(this);
+            }
         }
         public void update2_battle_attack(float time, bool fullUpate)
         {
@@ -438,19 +441,21 @@ namespace VikingEngine.DSSWars.GameObject
                 lib.DoNothing();
             }
 
-            if (player().IsLocalPlayer() && parentArrayIndex == 1)
-            {
-                 lib.DoNothing();
-            }
+            //if (player().IsLocalPlayer() && parentArrayIndex == 1)
+            //{
+            //     lib.DoNothing();
+            //}
 
             updateMoveAttackPrio(time, fullUpate, freeToMove(time));
             
             battleData?.update(this);
 
             updateGroudY(false);
-            
-            model?.update(this);
 
+            if (fullUpate)
+            {
+                model?.update(this);
+            }
         }
 
         public void update2_battle_attack_static(float time, bool fullUpate)
@@ -461,9 +466,10 @@ namespace VikingEngine.DSSWars.GameObject
             battleData?.update(this);
 
             //updateGroudY(false);
-
-            model?.update(this);
-
+            if (fullUpate)
+            {
+                model?.update(this);
+            }
         }
 
         public void wakeUp2()

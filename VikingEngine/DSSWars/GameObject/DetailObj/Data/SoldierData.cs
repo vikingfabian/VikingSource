@@ -39,6 +39,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
         public int workForcePerUnit = 1;
         public float groupSpacing = DssVar.DefaultGroupSpacing;
+        public Vector3 attackStart = new Vector3(DssConst.Men_StandardModelScale * 0.5f, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 0.5f);
         public float groupSpacingRndOffset = DssVar.StandardBoundRadius * 0.3f;
         public int rowWidth = DssConst.SoldierGroup_RowWidth;
         public int columnsDepth = DssConst.SoldierGroup_ColumnsDepth;

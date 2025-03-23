@@ -426,7 +426,7 @@ namespace VikingEngine.DSSWars.Map
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
 
-            const float WallSize = 1.5f;
+            const float WallSize = 1.6f;
             surfaceColor = ColorExt.ChangeBrighness(surfaceColor, -30);
 
             switch (buildingType)

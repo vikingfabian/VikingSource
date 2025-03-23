@@ -524,7 +524,8 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public Vector3 projectileStartPos()
         {
             Vector3 pos = position;
-            pos.Y += DssConst.Men_StandardModelScale * 0.6f;
+            //pos.Y += DssConst.Men_StandardModelScale * 0.6f;
+            model?.RotateVector(soldierData.attackStart, ref pos);
             return pos;
         }
 

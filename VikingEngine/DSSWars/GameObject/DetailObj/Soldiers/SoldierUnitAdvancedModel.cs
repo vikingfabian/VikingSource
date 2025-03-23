@@ -27,6 +27,11 @@ namespace VikingEngine.DSSWars.GameObject
         
         }
 
+        virtual public void RotateVector(Vector3 forward, ref Vector3 pos)
+        {
+            pos = model.Rotation.TranslateAlongAxis(forward, model.position);
+        }
+
         virtual public void displayHealth(float percHealth)
         { }
 
@@ -132,6 +137,12 @@ namespace VikingEngine.DSSWars.GameObject
                     jiggleAdd = moveJiggle.Direction(soldier.SoldierProfile().walkingWaggleAngle).X;
                 }
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians + jiggleAdd);
+
+                if (Ref.TimePassed16ms && Ref.peRnd.Chance(0.5))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ( soldier.position, 0.02f));
+                    //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, soldier.position);
+                }
             }
             else
             {

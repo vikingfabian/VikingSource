@@ -43,26 +43,36 @@ namespace VikingEngine.Graphics
             velocity *= settings.EmitterVelocitySensitivity;
 
             // Add in some random amount of horizontal velocity.
-            float horizontalVelocity = MathHelper.Lerp(settings.MinHorizontalVelocity,
+
+
+           // float horizontalVelocity = 0;
+            if (settings.MinHorizontalVelocity != 0 || settings.MaxHorizontalVelocity != 0)
+            {
+                //var rnd = Ref.peRnd.Float();
+                float horizontalVelocity = MathHelper.Lerp(settings.MinHorizontalVelocity,
                                                        settings.MaxHorizontalVelocity,
-                                                       (float)random.NextDouble());
+                                                         Ref.peRnd.PercentF());
 
-            double horizontalAngle = random.NextDouble() * MathHelper.TwoPi;
+                double horizontalAngle = Ref.peRnd.PercentF() * MathHelper.TwoPi;
 
-            velocity.X += horizontalVelocity * (float)Math.Cos(horizontalAngle);
-            velocity.Z += horizontalVelocity * (float)Math.Sin(horizontalAngle);
+                velocity.X += horizontalVelocity * (float)Math.Cos(horizontalAngle);
+                velocity.Z += horizontalVelocity * (float)Math.Sin(horizontalAngle);
+            }
 
-            // Add in some random amount of vertical velocity.
-            velocity.Y += MathHelper.Lerp(settings.MinVerticalVelocity,
+
+            if (settings.MinVerticalVelocity != 0 || settings.MaxVerticalVelocity != 0)
+            {
+                // Add in some random amount of vertical velocity.
+                velocity.Y += MathHelper.Lerp(settings.MinVerticalVelocity,
                                           settings.MaxVerticalVelocity,
-                                          (float)random.NextDouble());
-
+                                          Ref.peRnd.PercentF());
+            }
             // Choose four random control values. These will be used by the vertex
             // shader to give each particle a different size, rotation, and color.
-            Color randomValues = new Color((byte)random.Next(255),
-                                           (byte)random.Next(255),
-                                           (byte)random.Next(255),
-                                           (byte)random.Next(255));
+            Color randomValues = new Color(Ref.peRnd.Byte(),
+                                           Ref.peRnd.Byte(),
+                                           Ref.peRnd.Byte(),
+                                           Ref.peRnd.Byte());
 
             // Fill in the particle vertex structure.
             for (int i = 0; i < GraphicsLib.PolygonIndicesCount; i++)
@@ -212,7 +222,7 @@ namespace VikingEngine.Graphics
 
 
         // Shared random number generator.
-        protected static Random random = new Random();
+        //protected static Random random = new Random();
 
 
         #endregion
@@ -303,7 +313,12 @@ namespace VikingEngine.Graphics
             // particle system. By cloning the effect, we prevent one particle system
             // from stomping over the parameter settings of another.
 
-            particleEffect = Engine.LoadContent.LoadShader("ParticleEffect").Clone(); //particleEffect.Clone();
+            particleEffect = Engine.LoadContent.LoadShader("ParticleEffect"); //particleEffect.Clone();
+            EffectParameterCollection parameters = particleEffect.Parameters;
+            effectViewParameter = parameters["View"];
+            effectProjectionParameter = parameters["Projection"];
+            effectViewportScaleParameter = parameters["ViewportScale"];
+            effectTimeParameter = parameters["CurrentTime"];
             updateParameters();
         }
 
@@ -313,10 +328,8 @@ namespace VikingEngine.Graphics
             EffectParameterCollection parameters = particleEffect.Parameters;
 
             // Look up shortcuts for parameters that change every frame.
-            effectViewParameter = parameters["View"];
-            effectProjectionParameter = parameters["Projection"];
-            effectViewportScaleParameter = parameters["ViewportScale"];
-            effectTimeParameter = parameters["CurrentTime"];
+            
+            //effectTimeParameter = parameters["CurrentTime"];
 
             // Set the values of parameters that do not change.
             parameters["Duration"].SetValue((float)settings.Duration.TotalSeconds);

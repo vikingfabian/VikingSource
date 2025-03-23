@@ -49,7 +49,7 @@ namespace VikingEngine.EngineSpace.Maths
         }
 
             // Explicit methods to avoid boxing
-        public float Percent()
+        public float PercentF()
         {
             if (++index >= VALUE_SIZE) index = 0;
             return percValuesF[index];
@@ -119,6 +119,17 @@ namespace VikingEngine.EngineSpace.Maths
             return center;
         }
 
+        public Vector3 Vector3_SqXZ(Vector3 center, float range)
+        {
+            if (index + 2 >= VALUE_SIZE) index = 0;
+
+            center.X += range - percValuesF[index] * range * 2f;
+            center.Z += range - percValuesF[index + 1] * range * 2f;
+
+            index += 2;
+            return center;
+        }
+
         public override double Double()
         {
             if (++index >= VALUE_SIZE) index = 0;
@@ -127,12 +138,12 @@ namespace VikingEngine.EngineSpace.Maths
 
         public override double Double(double exMax)
         {
-            return Percent() * exMax;
+            return PercentF() * exMax;
         }
 
         public override double Double(double min, double exMax)
         {
-            return min + Percent() * (exMax - min);
+            return min + PercentF() * (exMax - min);
         }
 
         public override int Int()

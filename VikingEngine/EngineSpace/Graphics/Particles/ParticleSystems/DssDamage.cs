@@ -17,7 +17,7 @@ namespace VikingEngine.Graphics
         protected override void InitializeSettings(ParticleSettings settings)
         {
             //settings.Texture = LoadedTexture.pwater;
-            settings.Texture = LoadedTexture.WhiteArea;
+            settings.Texture = LoadedTexture.particle3;
             settings.MaxParticles = 3000;
 
             settings.Duration = TimeSpan.FromSeconds(0.8f);
