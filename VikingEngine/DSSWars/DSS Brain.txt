@@ -1,4 +1,4 @@
-﻿BETA UPDATE
+﻿UPDATE
 -Change Log-
 Added smoothness to zooming
 page up down zoom
