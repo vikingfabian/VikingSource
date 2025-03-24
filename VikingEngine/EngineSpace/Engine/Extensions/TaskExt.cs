@@ -19,7 +19,7 @@ namespace VikingEngine
         {   
             if (ActiveStorageTask != null)
             {
-                if (ActiveStorageTask.asynchActionComplete())
+               if (ActiveStorageTask.asynchActionComplete())
                 {
                     var prevTask = ActiveStorageTask;
                     ActiveStorageTask = null;

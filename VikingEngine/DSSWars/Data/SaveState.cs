@@ -45,12 +45,27 @@ namespace VikingEngine.DSSWars.Data
 
             AddToUpdateList();
 
-            Task.Factory.StartNew(()=>
+            Task.Factory.StartNew(() =>
             {
-                var w = memoryStream.GetWriter();
-                writeGameState(w);
-                dataReady = true;   
+                try
+                {
+                    var w = memoryStream.GetWriter();
+                    writeGameState(w);
+                    dataReady = true;
+                }
+                catch (Exception e)
+                {
+                    DebugExtensions.BlueScreen.ThreadException = e;
+                }
             });
+            //.ContinueWith(t =>
+            //{
+            //    if (t.Exception != null)
+            //    {
+            //        // Handle the exception
+            //        Console.WriteLine($"Task error: {t.Exception.Flatten().InnerException.Message}");
+            //    }
+            //}, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         public void load()
