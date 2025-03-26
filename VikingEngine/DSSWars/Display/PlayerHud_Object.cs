@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Display
                     new RbImage(SpriteName.warsBulletSeperationPoint),
                     new RbText(obj.TypeName(), HudLib.TitleColor_TypeName) },
                     new RbAction1Arg<AbsGameObject>((AbsGameObject obj) => {
-                        player.selectObject(obj);
+                        player.gameControls.selectObject(obj);
                     }, obj)));
             }
 

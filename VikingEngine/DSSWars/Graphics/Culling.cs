@@ -217,7 +217,9 @@ namespace VikingEngine.DSSWars
 
             if (hasValue1 && hasValue2 && hasValue3 && hasValue4)
             {
-                MapCenter = (topleft + topright + bottomleft + bottomright)/4;
+                var  center = (topleft + topright + bottomleft + bottomright)/4;
+                DssRef.world.WorldBound(ref center.X, ref center.Z);
+                MapCenter = center;
 
                 float left = lib.SmallestValue(topleft.X, bottomleft.X);
                 float right = lib.LargestValue(topright.X, bottomright.X);

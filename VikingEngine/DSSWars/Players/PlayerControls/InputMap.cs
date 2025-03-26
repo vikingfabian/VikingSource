@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars
         public IButtonMap GameSpeed;
         public IButtonMap PauseGame;
 
-        public IButtonMap AutomationSetting;
+        //public IButtonMap AutomationSetting;
         public IButtonMap FlagDesign_ToggleColor_Prev;
         public IButtonMap FlagDesign_ToggleColor_Next;
         public IButtonMap FlagDesign_PaintBucket;
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars
             Copy = new KeyboardButtonMap(Keys.C);
             Paste = new KeyboardButtonMap(Keys.V);
             Build = new KeyboardButtonMap(Keys.B);
-            AutomationSetting = new KeyboardButtonMap(Keys.I);
+            //AutomationSetting = new KeyboardButtonMap(Keys.I);
 
             Menu = new KeyboardButtonMap(Keys.Escape);
             ToggleHudDetail = new KeyboardButtonMap(Keys.U);
@@ -141,7 +141,7 @@ namespace VikingEngine.DSSWars
             ControllerCancel = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
 
             Stop = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);
-            AutomationSetting = new XboxButtonMap(Buttons.Back, inputSource.controllerIndex);
+            //AutomationSetting = new XboxButtonMap(Buttons.Back, inputSource.controllerIndex);
 
             DragPan = new NoButtonMap();//new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
             //Home = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);
@@ -167,14 +167,14 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 1;
+            const int InputVersion = 2;
             w.Write(InputVersion);
             //inputSource.write(w);
 
             ControllerFocus.write(w);
             ControllerCancel.write(w);
             Stop.write(w);
-            AutomationSetting.write(w);
+            //AutomationSetting.write(w);
             //Home.write(w);
             ToggleHudDetail.write(w);
             GameSpeed.write(w);
@@ -199,7 +199,10 @@ namespace VikingEngine.DSSWars
             ControllerFocus = MapRead.Button(r, inputSource.controllerIndex);
             ControllerCancel = MapRead.Button(r, inputSource.controllerIndex);
             Stop = MapRead.Button(r, inputSource.controllerIndex);
-            AutomationSetting = MapRead.Button(r, inputSource.controllerIndex);
+            if (inputVersion < 2)
+            {
+                var AutomationSetting = MapRead.Button(r, inputSource.controllerIndex);
+            }
             //Home = MapRead.Button(r, inputSource.controllerIndex);
             ToggleHudDetail = MapRead.Button(r, inputSource.controllerIndex);
             GameSpeed = MapRead.Button(r, inputSource.controllerIndex);
@@ -222,7 +225,7 @@ namespace VikingEngine.DSSWars
                 InputButtonType.Stop,
                 InputButtonType.GameSpeed,
                 InputButtonType.PauseGame,
-                InputButtonType.AutomationSetting,
+                //InputButtonType.AutomationSetting,
                 //InputButtonType.Home,
                 InputButtonType.NextCity,
                 InputButtonType.NextArmy,
@@ -273,16 +276,16 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case InputButtonType.AutomationSetting:
-                    if (set)
-                    {
-                        AutomationSetting = buttonMap;
-                    }
-                    else
-                    {
-                        buttonMap = AutomationSetting;
-                    }
-                    break;
+                //case InputButtonType.AutomationSetting:
+                //    if (set)
+                //    {
+                //        AutomationSetting = buttonMap;
+                //    }
+                //    else
+                //    {
+                //        buttonMap = AutomationSetting;
+                //    }
+                //    break;
 
                 //case InputButtonType.Home:
                 //    if (set)
@@ -406,8 +409,8 @@ namespace VikingEngine.DSSWars
 
             case InputButtonType.Stop:
                 return DssRef.lang.ArmyOption_Halt;
-            case InputButtonType.AutomationSetting:
-                return DssRef.lang.Automation_Title;
+            //case InputButtonType.AutomationSetting:
+            //    return DssRef.lang.Automation_Title;
             //case InputButtonType.Home:
             //    return;
             case InputButtonType.ToggleHudDetail:
@@ -479,7 +482,7 @@ namespace VikingEngine.DSSWars
     enum InputButtonType
     {
         Stop,
-        AutomationSetting,
+        //AutomationSetting,
         //Home,
         ToggleHudDetail,
         GameSpeed,

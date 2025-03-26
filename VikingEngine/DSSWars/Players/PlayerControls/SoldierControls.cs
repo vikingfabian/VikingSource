@@ -19,9 +19,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void mapExecute(LocalPlayer player)
         {
-            if (player.mapControls.armyMayAttackHoverObj())
+            if (player.gameControls.mapControls.armyMayAttackHoverObj())
             {
-                var target = player.mapControls.hover.obj.GetSoldierGroup();
+                var target = player.gameControls.mapControls.hover.obj.GetSoldierGroup();
                 foreach (SoldierGroup group in groups)
                 {
                     new AttackCommand(group, target, false);
@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             else
             {
-                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.mapControls.subTilePosition);
+                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.mapControls.subTilePosition);
                 foreach (SoldierGroup group in groups)
                 {
                     new MoveCommand(group, pos, false);
@@ -40,10 +40,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         new GuardPostTransform(group, -1, false);
                     }
 
-                    if (player.mapControls.hover.subTile.selectTileResult == SelectTileResult.Wall)
+                    if (player.gameControls.mapControls.hover.subTile.selectTileResult == SelectTileResult.Wall)
                     {
-                        var enterCommand = new EnterPostCommand(group, player.mapControls.hover.subTile.subTilePos, true);
-                        enterCommand.claimPost(group, player.mapControls.hover.subTile.city, player.mapControls.hover.subTile.city.defenceIxFromPosId(enterCommand.id));
+                        var enterCommand = new EnterPostCommand(group, player.gameControls.mapControls.hover.subTile.subTilePos, true);
+                        enterCommand.claimPost(group, player.gameControls.mapControls.hover.subTile.city, player.gameControls.mapControls.hover.subTile.city.defenceIxFromPosId(enterCommand.id));
                     }
                 }
                 new MoveHereAnimation(pos);

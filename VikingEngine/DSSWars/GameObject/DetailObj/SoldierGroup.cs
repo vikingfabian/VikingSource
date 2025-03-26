@@ -876,7 +876,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var soldiersC = soldiers.counter();
                         while (soldiersC.Next())
                         {
-                            soldiersC.sel.update2(time);
+                            soldiersC.sel.update2(time, fullUpdate);
                             allIdle &= soldiersC.sel.state2 == SoldierState2.idle;
                         }
                     }

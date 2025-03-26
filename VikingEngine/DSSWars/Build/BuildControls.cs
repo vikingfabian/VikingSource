@@ -125,25 +125,25 @@ namespace VikingEngine.DSSWars.Build
         public void updateBuildMode()
         {           
 
-            if (player.input.Select.DownEvent)
+            if (player.gameControls.input.Select.DownEvent)
             {
                 deleteSelection();
                 buildKeyDown = true;
-                startTile = player.mapControls.hover.subTile.subTilePos;
-                keyDownPos = player.mapControls.mousePosition;
+                startTile = player.gameControls.mapControls.hover.subTile.subTilePos;
+                keyDownPos = player.gameControls.mapControls.mousePosition;
                 lShape = LShapeDir.NoSet;
                 //actOnTile(player.mapControls.hover.subTile);
             }
 
             if (buildKeyDown)
             {
-                if (player.mapControls.hover.subTile.subTilePos != currentTile)
+                if (player.gameControls.mapControls.hover.subTile.subTilePos != currentTile)
                 {
                     //Update paint selection
                     switch (toolShape)
                     {
                         case MapPaintToolShape.Free:
-                            if (addToSelection(player.mapControls.hover.subTile.subTilePos, true))
+                            if (addToSelection(player.gameControls.mapControls.hover.subTile.subTilePos, true))
                             {
                                 refreshSelection();
                             }
@@ -151,7 +151,7 @@ namespace VikingEngine.DSSWars.Build
                         case MapPaintToolShape.Area:
                             {
                                 deleteSelection();
-                                var area = Rectangle2.FromTwoTilePoints(startTile, player.mapControls.hover.subTile.subTilePos);
+                                var area = Rectangle2.FromTwoTilePoints(startTile, player.gameControls.mapControls.hover.subTile.subTilePos);
                                 ForXYLoop loop = new ForXYLoop(area);
                                 while (loop.Next())
                                 {
@@ -164,11 +164,11 @@ namespace VikingEngine.DSSWars.Build
                             {
                                 deleteSelection();
 
-                                if (startTile.SideLength(player.mapControls.hover.subTile.subTilePos) > 1)
+                                if (startTile.SideLength(player.gameControls.mapControls.hover.subTile.subTilePos) > 1)
                                 {
                                     if (lShape == LShapeDir.NoSet)
                                     {
-                                        if (Math.Abs(player.mapControls.mousePosition.X - keyDownPos.X) > Math.Abs(player.mapControls.mousePosition.Z - keyDownPos.Z))
+                                        if (Math.Abs(player.gameControls.mapControls.mousePosition.X - keyDownPos.X) > Math.Abs(player.gameControls.mapControls.mousePosition.Z - keyDownPos.Z))
                                         {
                                             lShape = LShapeDir.StartX;
                                         }
@@ -183,7 +183,7 @@ namespace VikingEngine.DSSWars.Build
                                     lShape = LShapeDir.NoSet;
                                 }
 
-                                IntVector2 diff = player.mapControls.hover.subTile.subTilePos - startTile;
+                                IntVector2 diff = player.gameControls.mapControls.hover.subTile.subTilePos - startTile;
                                 IntVector2 dir = new IntVector2(lib.ToLeftRight(diff.X), lib.ToLeftRight(diff.Y));
                                 IntVector2 length = new IntVector2(Math.Abs(diff.X), Math.Abs(diff.Y));
 
@@ -195,7 +195,7 @@ namespace VikingEngine.DSSWars.Build
                                     case LShapeDir.NoSet:
                                         {
                                             addToSelection(startTile, false);
-                                            addToSelection(player.mapControls.hover.subTile.subTilePos, true);
+                                            addToSelection(player.gameControls.mapControls.hover.subTile.subTilePos, true);
                                         }
                                         break;
                                     case LShapeDir.StartX:
@@ -240,7 +240,7 @@ namespace VikingEngine.DSSWars.Build
                                 deleteSelection(); // Clear previous selection
 
                                 IntVector2 start = startTile;
-                                IntVector2 end = player.mapControls.hover.subTile.subTilePos;
+                                IntVector2 end = player.gameControls.mapControls.hover.subTile.subTilePos;
 
                                 int x0 = start.X, y0 = start.Y;
                                 int x1 = end.X, y1 = end.Y;
@@ -279,7 +279,7 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
 
-            if (player.input.Select.UpEvent)
+            if (player.gameControls.input.Select.UpEvent)
             {
                 foreach (var sel in selection)
                 {
@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.Build
                 buildKeyDown = false;
             }
 
-            currentTile = player.mapControls.hover.subTile.subTilePos;
+            currentTile = player.gameControls.mapControls.hover.subTile.subTilePos;
 
 
             bool addToSelection(IntVector2 subTilePos, bool checkDoublette) 
@@ -1140,7 +1140,7 @@ namespace VikingEngine.DSSWars.Build
         {
             buildMode = SelectTileResult.Build;
             placeBuildingType = type;
-            player.mapControls.setObjectMenuFocus(false);
+            player.gameControls.mapControls.setObjectMenuFocus(false);
         }
 
        

@@ -20,7 +20,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 18;
+        const int Version = 19;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -44,6 +44,7 @@ namespace VikingEngine
         public InputMap controllerMap;
         public InputMap keyboardMap;
         public bool ModelLightShaderEffect = true;
+        public bool ParticlesEffect = true;
         public bool panOnZoom = true;
         public int controlLayout = 0;
 
@@ -114,6 +115,7 @@ namespace VikingEngine
             w.Write(scrollWheelSensitivity_menu);
             w.Write(scrollWheelSensitivity_game);
             w.Write(BattleMelodyVolume);
+            w.Write(ParticlesEffect);
         }
 
         public void readEmbeddedSettingsAndVersion(System.IO.BinaryReader r)
@@ -177,6 +179,10 @@ namespace VikingEngine
             if (version >= 18)
             {
                 BattleMelodyVolume = r.ReadSingle();
+            }
+            if (version >= 19)
+            {
+                ParticlesEffect = r.ReadBoolean();
             }
         }
 
@@ -309,7 +315,6 @@ namespace VikingEngine
             {
                 ModelLightShaderEffect = val;
 #if DSS
-                //Graphics.EffectBasicVertexColor.Singleton = null;
                 Graphics.EffectBasicVertexColor.Singleton.ObjectShader();
 #endif
                 settingsHasChanged = true;
@@ -318,7 +323,18 @@ namespace VikingEngine
             return ModelLightShaderEffect;
         }
 
-        
+        public bool particlesProperty(int index, bool set, bool val)
+        {
+            if (set)
+            {
+                ParticlesEffect = val;
+                settingsHasChanged = true;
+            }
+
+            return ParticlesEffect;
+        }
+
+
 
         public void optionsMenu(GuiLayout layout)
         {
@@ -434,7 +450,7 @@ namespace VikingEngine
             content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), soundVolProperty, true));
         }
 
-        public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        public void monitorOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             var resoutionPercOptions = Engine.Screen.ResoutionPercOptions();
             DropDownBuilder dropdown = new DropDownBuilder("resolution%");
@@ -506,10 +522,36 @@ namespace VikingEngine
             content.Add(new RbText( Ref.langOpt.GraphicsOption_UiScale));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.5f, 2f, 0.1f), uiScaleProperty, true));
-            content.space();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Apply") },
+            
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Apply") },
                 new RbAction(Ref.gamestate.OnResolutionChange)));
             //new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
+        }
+
+        public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        {
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Model light effect") },
+                modelLightProperty));
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Particle effects") },
+                particlesProperty));
+
+            DropDownBuilder mapLoadingDropDown = new DropDownBuilder("mapload");
+            {
+                for (ThreeOptions opt = 0; opt < ThreeOptions.NUM; opt++)
+                {
+                    mapLoadingDropDown.AddOption(Ref.langOpt.ThreeOption(opt),
+                        opt == MapLoadingSpeed, opt == ThreeOptions.Medium, new RbAction1Arg<ThreeOptions>((ThreeOptions value) =>
+                        {
+                            MapLoadingSpeed = value;
+                            settingsHasChanged = true;
+                            menu.CloseDropDown();
+                        }, opt), null);
+                }
+                mapLoadingDropDown.Build(content, ".Map loading speed", menu);
+            }
         }
 
         void setOversizeWidthProperty(int value)

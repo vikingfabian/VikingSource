@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
         EndSceneLeftDisplayPart part;
 
         public EndSceneLeftDisplayMain()
-            : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].input)
+            : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].gameControls.input)
         {
             part = new EndSceneLeftDisplayPart(this);
 
@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
         EndSceneCenterDisplayPart part;
 
         public EndSceneCenterDisplayMain(bool victory, bool bossVictory, Action watchEpilogue)
-            : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].input)
+            : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].gameControls.input)
         {
             part = new EndSceneCenterDisplayPart(victory, bossVictory, this, watchEpilogue);
 
@@ -147,7 +147,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
         EndSceneRightDisplayPart part;
 
         public EndSceneRightDisplayMain()
-            : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].input)
+            : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].gameControls.input)
         {
             part = new EndSceneRightDisplayPart(this);
 

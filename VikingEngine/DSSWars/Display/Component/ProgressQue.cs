@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Display.Component
             //}));
 
             content.newLine();
-            content.Add(new RbImage(player.input.Stop.Icon));
+            content.Add(new RbImage(player.gameControls.input.Stop.Icon));
             content.space();
             for (int length = 0; length <= maxQue; length++)
             {

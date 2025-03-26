@@ -37,9 +37,9 @@ namespace VikingEngine.DSSWars.Display
                 {
                     if (fullDisplay && player.tutorial == null)
                     {
-                        if (player.input.inputSource.IsController)
+                        if (player.gameControls.input.inputSource.IsController)
                         {
-                            content.Add(new HUD.RichBox.RbImage(player.input.ControllerFocus.Icon));
+                            content.Add(new HUD.RichBox.RbImage(player.gameControls.input.ControllerFocus.Icon));
                             content.Add(new HUD.RichBox.RbText(":"));
                             content.newLine();
                         }
@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Display
 
             void toggleMenu()
             {
-                content.Add(new RbImage(player.input.ToggleHudDetail.Icon));
+                content.Add(new RbImage(player.gameControls.input.ToggleHudDetail.Icon));
                 content.Add(new RbImage(SpriteName.pjMenuIcon));
             }
 
@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 content.Add(new RbButton(new List<AbsRichBoxMember>
                     {
-                        new RbImage(player.input.Menu.Icon),
+                        new RbImage(player.gameControls.input.Menu.Icon),
                         new RbText(DssRef.lang.GameMenu_Title),
                     },
                     new RbAction(DssRef.state.menuSystem.pauseMenu),
@@ -241,15 +241,15 @@ namespace VikingEngine.DSSWars.Display
 
                     if (DssRef.state.IsSinglePlayer())
                     {
-                        input(player.input.GameSpeed, gameSpeed);
+                        input(player.gameControls.input.GameSpeed, gameSpeed);
                         if (fullDisplay)
                         {
-                            for (int i = 0; i < player.GameSpeedOptions.Length; i++)
+                            for (int i = 0; i < player.gameControls.GameSpeedOptions.Length; i++)
                             {
                                 var button = new RbButton(
-                                     new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, player.GameSpeedOptions[i])) },
-                                     new RbAction1Arg<int>(gameSpeedClick, player.GameSpeedOptions[i]), null, true);
-                                button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == player.GameSpeedOptions[i]);
+                                     new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, player.gameControls.GameSpeedOptions[i])) },
+                                     new RbAction1Arg<int>(gameSpeedClick, player.gameControls.GameSpeedOptions[i]), null, true);
+                                button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == player.gameControls.GameSpeedOptions[i]);
                                 content.Add(button);
                                 content.space(); 
                                 
@@ -342,13 +342,13 @@ namespace VikingEngine.DSSWars.Display
                         content.text(string.Format(DssRef.lang.Hud_CityCount, TextLib.LargeNumber(faction.cities.Count)));
                         content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(faction.armies.Count)));
 
-                        content.ButtonDescription(player.input.NextCity, DssRef.lang.Input_NextCity);
-                        content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
-                        content.ButtonDescription(player.input.NextBattle, DssRef.lang.Input_NextBattle);
+                        content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.Input_NextCity);
+                        content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.lang.Input_NextArmy);
+                        content.ButtonDescription(player.gameControls.input.NextBattle, DssRef.lang.Input_NextBattle);
 
-                        content.ButtonDescription(player.input.Build, DssRef.lang.Input_Build);
-                        content.ButtonDescription(player.input.Copy, DssRef.lang.Hud_CopySetup);
-                        content.ButtonDescription(player.input.Paste, DssRef.lang.Hud_Paste);
+                        content.ButtonDescription(player.gameControls.input.Build, DssRef.lang.Input_Build);
+                        content.ButtonDescription(player.gameControls.input.Copy, DssRef.lang.Hud_CopySetup);
+                        content.ButtonDescription(player.gameControls.input.Paste, DssRef.lang.Hud_Paste);
 
                         content.newParagraph();
                     //}

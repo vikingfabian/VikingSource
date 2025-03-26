@@ -81,13 +81,13 @@ namespace VikingEngine.Engine
 
         public static void Draw()
         {
-            //lock (active)
-            //{
+            if (Ref.gamesett.ParticlesEffect)
+            {
                 foreach (ParticleSystemData system in active)
                 {
                     system.Draw();
                 }
-            //}
+            }
 
         }
 

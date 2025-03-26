@@ -432,7 +432,7 @@ namespace VikingEngine.DSSWars
                 foreach (var local in localPlayers)
                 {
                     local.userUpdate(true);
-                    if (local.input.Menu.DownEvent)
+                    if (local.gameControls.input.Menu.DownEvent)
                     {
                         menuSystem.pauseMenu();
                     }

@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Display
                         break;
 
                     case MenuTab.Build:
-                        player.buildControls.toHud(player, content, city);
+                        player.gameControls.buildControls.toHud(player, content, city);
                         break;
 
                     case MenuTab.Progress:

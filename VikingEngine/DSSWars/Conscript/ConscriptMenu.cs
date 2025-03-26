@@ -316,13 +316,13 @@ namespace VikingEngine.DSSWars.Conscript
 
 
                 content.newParagraph();
-                content.Add(new RbImage(player.input.Copy.Icon));
+                content.Add(new RbImage(player.gameControls.input.Copy.Icon));
                 content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember> {                    
                     new RbText(DssRef.lang.Hud_CopySetup) },
                     new RbAction1Arg<LocalPlayer>(city.copyConscript, player, SoundLib.menuCopy)));
 
                 content.space();
-                content.Add(new RbImage(player.input.Paste.Icon));
+                content.Add(new RbImage(player.gameControls.input.Paste.Icon));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {                   
                     new RbText(DssRef.lang.Hud_Paste) },
                     new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, SoundLib.menuPaste)));

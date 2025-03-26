@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 foreach (var local in localPlayers)
                 {
                     local.userUpdate(false);
-                    if (local.input.Menu.DownEvent)
+                    if (local.gameControls.input.Menu.DownEvent)
                     {
                         menuSystem.pauseMenu();
                     }

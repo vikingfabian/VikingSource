@@ -76,9 +76,9 @@ namespace VikingEngine.DSSWars.Display
 
         public void ControllerInputIcons(List<AbsRichBoxMember> button)
         {
-            if (player.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.IsController)
             {
-                RichBoxContent.ButtonMap(player.input.ControllerMessageClick, button);
+                RichBoxContent.ButtonMap(player.gameControls.input.ControllerMessageClick, button);
                 button.Add(new RbSpace());
             }
         }
@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.Display
 
         void goToMapObject(AbsGameObject city)
         {
-            player.mapControls.cameraFocus = city;
+            player.gameControls.mapControls.cameraFocus = city;
         }
 
         public void Add(string title, string text)

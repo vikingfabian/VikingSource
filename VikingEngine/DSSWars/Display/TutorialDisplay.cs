@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Display
         public Graphics.Image whiteBar;
 
         public TutorialDisplay(LocalPlayer player)
-            : base(HudLib.richboxGui, player.input)
+            : base(HudLib.richboxGui, player.gameControls.input)
         {
             this.player = player;
             displayPart = new TutorialDisplayPart(player, this);

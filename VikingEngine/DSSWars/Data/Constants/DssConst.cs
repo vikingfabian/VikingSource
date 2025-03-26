@@ -8,6 +8,8 @@ namespace VikingEngine.DSSWars
 {
     static class DssConst
     {
+        public const int MaxSpeedOption = 5;
+
         //SOLDIER
         public static int Soldier_DefaultHealth = 400;
         public static float Soldier_StandardAttackAndCoolDownTime = 1600;

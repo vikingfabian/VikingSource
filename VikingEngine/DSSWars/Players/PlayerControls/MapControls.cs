@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Players
             //lightcamera.TiltX = MathHelper.PiOver2;
             player.playerData.view.LightCamera= lightcamera;
 
-            controllerInput = player.input.inputSource.IsController;
+            controllerInput = player.gameControls.input.inputSource.IsController;
 
             if (controllerInput)
             {
@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.Players
             camera.LookTarget = playerPointerPos;
         }
 
-        public void update(bool mouseOverHud)
+        public void focusedUpdate()
         {
             //if (controllerInput)
             //{
@@ -161,54 +161,54 @@ namespace VikingEngine.DSSWars.Players
             //    updateSeletionGui();
             //}
             //else
-            {
-                if (mouseOverHud)
-                {
-                    hover.clear();
-                }
-                else
-                {
-                    if (controllerInput)
-                    {
-                        mousePosition = screenPosToWorldPos(controllerPointer.position);
-                    }
-                    else
-                    {
-                        mousePosition = screenPosToWorldPos(Input.Mouse.Position);
-                    }
+            //{
+            //    if (mouseOverHud)
+            //    {
+            //        hover.clear();
+            //    }
+            //    else
+            //    {
+                    //if (controllerInput)
+                    //{
+                    //    mousePosition = screenPosToWorldPos(controllerPointer.position);
+                    //}
+                    //else
+                    //{
+                    mousePosition = screenPosToWorldPos(Input.Mouse.Position);
+                    //}
                     IntVector2 prevTile = tilePosition;
                     tilePosition = WP.ToTilePos(mousePosition);
                     onNewTile = prevTile != tilePosition;
 
-                    if (focusedObjectMenuState() || player.hud.menuFocus)
-                    {
-                        //player.hud.displays.updateMove(out bool bRefresh);
-                        //player.hud.needRefresh |= bRefresh;
+                    //if (focusedObjectMenuState() || player.hud.menuFocus)
+                    //{
+                    //    //player.hud.displays.updateMove(out bool bRefresh);
+                    //    //player.hud.needRefresh |= bRefresh;
 
-                        if (player.input.ControllerFocus.DownEvent)
-                        {
-                            if (player.hud.menuFocus)
-                            {
-                                setHeadMenuFocus(false);
-                            }
-                            else
-                            {
-                                setObjectMenuFocus(false);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (controllerInput)
-                        {
-                            panInput();
-                        }
+                    //    if (player.gameControls.input.ControllerFocus.DownEvent)
+                    //    {
+                    //        if (player.hud.menuFocus)
+                    //        {
+                    //            setHeadMenuFocus(false);
+                    //        }
+                    //        else
+                    //        {
+                    //            setObjectMenuFocus(false);
+                    //        }
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (controllerInput)
+                    //    {
+                    //        keypPanInput();
+                    //    }
 
                         if (selectRectangle == null)
                         {
                             if (controllerInput)
                             {
-                                if (player.input.ControllerFocus.DownEvent)
+                                if (player.gameControls.input.ControllerFocus.DownEvent)
                                 {
                                     if (selection.obj != null)
                                     {
@@ -238,14 +238,14 @@ namespace VikingEngine.DSSWars.Players
                             //mouseHoverUpdate();
                         }
                         hover.end();
-                    }
-                }
+                    //}
+                //}
 
-                if (controllerInput && player.input.ControllerCancel.DownEvent)
-                {
-                    //player.hud.displays.clearMoveSelection();
-                    player.clearSelection();
-                }
+                //if (controllerInput && player.gameControls.input.ControllerCancel.DownEvent)
+                //{
+                //    //player.hud.displays.clearMoveSelection();
+                //    player.gameControls.clearSelection();
+                //}
 
                 checkSelectionAlive();
                 selection.end();
@@ -256,16 +256,21 @@ namespace VikingEngine.DSSWars.Players
 
                 updateSeletionGui();
 
-                if (!controllerInput)
-                {
-                    panInput();
-                }
-            }
+            mousePanInput();
 
-            if (!mouseOverHud)
-            {
-                zoomInput();
-            }
+            zoomInput();
+            
+            
+        }
+
+        public void leftFocusUpdate()
+        {
+            hover.clear();
+        }
+
+        public void passiveUpdate()
+        {
+            keypPanInput();
             cameraFocusUpdate();
             updateCamera();
         }
@@ -291,7 +296,7 @@ namespace VikingEngine.DSSWars.Players
                 bool select;
                 if (controllerInput)
                 {
-                    select = player.input.Select.DownEvent && hover.obj == null;
+                    select = player.gameControls.input.Select.DownEvent && hover.obj == null;
                 }
                 else
                 {
@@ -349,7 +354,7 @@ namespace VikingEngine.DSSWars.Players
                 bool keyUp;
                 if (controllerInput)
                 {
-                    keyUp = !player.input.Select.IsDown;
+                    keyUp = !player.gameControls.input.Select.IsDown;
                 }
                 else
                 {
@@ -374,12 +379,12 @@ namespace VikingEngine.DSSWars.Players
                             if (coll.objects.Count == 1)
                             {
                                 selection.obj = coll.objects[0];
-                                player.armyControls = new ArmyControls(player, coll.objects);
+                                player.gameControls.armyControls = new ArmyControls(player, coll.objects);
                             }
                             else
                             {
                                 selection.obj = coll;
-                                player.armyControls = new ArmyControls(player, coll.objects);
+                                player.gameControls.armyControls = new ArmyControls(player, coll.objects);
                             }
                         }
                     }
@@ -552,8 +557,8 @@ namespace VikingEngine.DSSWars.Players
 
         public bool armyMayAttackHoverObj()
         {
-            return player.mapControls.hover.obj != null &&
-                 player.mapControls.hover.obj.GetFaction() != player.faction;
+            return hover.obj != null &&
+                 hover.obj.GetFaction() != player.faction;
         }
 
         void controllerHoverUpdate()
@@ -563,7 +568,7 @@ namespace VikingEngine.DSSWars.Players
                 const float FriendlyPriorityDistAdd = 0.25f;
                 float maxDistance_enemy;
                 float maxDistance_friend;
-                if (player.armyControls != null)
+                if (player.gameControls.armyControls != null)
                 {
                     maxDistance_enemy = 1.5f;
                     maxDistance_friend = 0.5f;
@@ -808,7 +813,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (selection.obj != null && selection.obj.aliveAndBelongTo(player.faction) == false)
             { 
-                player.clearSelection();
+                player.gameControls.clearSelection();
             }
         }
 
@@ -858,7 +863,7 @@ namespace VikingEngine.DSSWars.Players
 
         private void zoomInput()
         {
-            float zoominput = player.input.ZoomValue();
+            float zoominput = player.gameControls.input.ZoomValue();
 
             targetZoom = VikingEngine.Bound.Set(
                 targetZoom + zoominput * 0.005f * targetZoom, ZoomRange);
@@ -889,9 +894,9 @@ namespace VikingEngine.DSSWars.Players
 
             const float XBuffer = 0.6f;
             const float RotationSpeed = 0.004f;
-            if (Math.Abs(player.input.cameraTiltZoom.direction.X) > XBuffer)
+            if (Math.Abs(player.gameControls.input.cameraTiltZoom.direction.X) > XBuffer)
             {
-                camRotation.Value += RotationSpeed * player.input.cameraTiltZoom.directionAndTime.X;
+                camRotation.Value += RotationSpeed * player.gameControls.input.cameraTiltZoom.directionAndTime.X;
             }
             else
             {
@@ -907,37 +912,39 @@ namespace VikingEngine.DSSWars.Players
 
             camera.TiltX = camRotation.Value;
         }
-        private void panInput()
+
+
+        float PanSpeed()
+        {
+            if (controllerInput)
+            {
+                return 0.0003f * camera.targetZoom;
+            }
+            else
+            {
+                return 0.0006f * camera.targetZoom;
+            }
+        }
+
+        private void keypPanInput()
         {
             if (player.diplomacyMap!= null && player.diplomacyMap.hasSelection())
             {
                 return;
             }
+            
+            panCamera(VectorExt.V2toV3XZ(-player.gameControls.input.move.directionAndTime * PanSpeed()));
+        }
 
-            float panSpeed;
-
-            if (controllerInput)
-            {
-                panSpeed = 0.0003f * camera.targetZoom;
-            }
-            else
-            {
-                panSpeed = 0.0006f * camera.targetZoom;
-            }
-            //if (StartupSettings.Trailer)
-            //{
-            //    panSpeed *= 0.2f;
-            //}
-
-            //playerPointerPos += VectorExt.V2toV3XZ(player.input.move.directionAndTime * panSpeed);
-            panCamera(VectorExt.V2toV3XZ(-player.input.move.directionAndTime * panSpeed));
+        void mousePanInput()
+        {
             if (!player.hud.hudMouseOver() && !controllerInput)
             {
                 if (hasMouseMapPanInput())
                 {
                     //bool hasValue;
                     Vector3 prevMousePosition = screenPosToWorldPos(Input.Mouse.Position - Input.Mouse.MoveDistance);
-                   
+
                     Vector3 diff = mousePosition - prevMousePosition;
 
                     panCamera(diff);
@@ -949,21 +956,20 @@ namespace VikingEngine.DSSWars.Players
 
                 if (DssRef.state.localPlayers.Count == 1)
                 {
-                    if (!player.input.DragPan.IsDown &&
-                        !player.input.Select.IsDown &&
+                    if (!player.gameControls.input.DragPan.IsDown &&
+                        !player.gameControls.input.Select.IsDown &&
                         Input.Mouse.HasEdgePush())
                     {
-                        panCamera(VectorExt.V2toV3XZ(-Input.Mouse.EdgePush() * Ref.DeltaTimeMs * panSpeed));
+                        panCamera(VectorExt.V2toV3XZ(-Input.Mouse.EdgePush() * Ref.DeltaTimeMs * PanSpeed()));
 
                     }
                 }
             }
-
-
-            DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
-            playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
         }
 
+        /// <summary>
+        /// Chase selected object
+        /// </summary>
         void cameraFocusUpdate()
         {
             if (cameraFocus != null)
@@ -1009,14 +1015,17 @@ namespace VikingEngine.DSSWars.Players
                 camera.setLookTargetZBound(panBounds.Position.Y, panBounds.Bottom);
 
                 playerPointerPos = camera.LookTarget;
+
+                DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
+                playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
             }
         }
 
         bool hasMouseMapPanInput()
         {
-            return player.input.inputSource.HasMouse &&
+            return player.gameControls.input.inputSource.HasMouse &&
                 selectRectangle == null &&
-                ((player.input.Select.IsDown && NoSelection()) || player.input.DragPan.IsDown) &&
+                ((player.gameControls.input.Select.IsDown && NoSelection()) || player.gameControls.input.DragPan.IsDown) &&
                 Input.Mouse.bMoveInput;
         }
 

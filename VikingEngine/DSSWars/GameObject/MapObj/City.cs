@@ -1139,33 +1139,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        public bool buyMercenary(bool commit, int count)
-        {
-            int totalCost = 0;
-            int mercenariesCount = DssLib.MercenaryPurchaseCount * count;
 
-            if (faction.calcCost(buyMercenaryCost(count), ref totalCost, this) &&
-                faction.player.GetLocalPlayer().mercenaryMarket.Int() >= mercenariesCount)
-            {
-                if (commit)
-                {
-                    faction.payMoney(totalCost, true, this);
-                    faction.player.GetLocalPlayer().mercenaryMarket.pay(mercenariesCount, true);
-                    faction.player.GetLocalPlayer().mercenaryCost += DssRef.difficulty.MercenaryPurchaseCost_Add * count;
-
-                    mercenaries += mercenariesCount;
-                }
-                return true;
-            }
-
-            return false;
-        }
-
-        public int buyMercenaryCost(int count)
-        {
-            double result = MathExt.SumOfLinearIncreases(faction.player.GetLocalPlayer().mercenaryCost, DssRef.difficulty.MercenaryPurchaseCost_Add, count);
-            return Convert.ToInt32(result);
-        }
 
         public int GuardUpkeep(int maxGuardSize)
         {

@@ -340,7 +340,7 @@ namespace VikingEngine.DSSWars.Delivery
                 }
 
                 content.newParagraph();
-                content.Add(new RbImage(player.input.Copy.Icon));
+                content.Add(new RbImage(player.gameControls.input.Copy.Icon));
                 content.Add(new ArtButton(  RbButtonStyle.Primary,new List<AbsRichBoxMember> {
                     //new RbImage(player.input.Copy.Icon),
                     //new RbSpace(0.5f),
@@ -348,7 +348,7 @@ namespace VikingEngine.DSSWars.Delivery
                     new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, SoundLib.menuCopy)));
 
                 content.space();
-                content.Add(new RbImage(player.input.Paste.Icon));
+                content.Add(new RbImage(player.gameControls.input.Paste.Icon));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     //new RbImage(player.input.Paste.Icon),
                     //new RbSpace(0.5f),

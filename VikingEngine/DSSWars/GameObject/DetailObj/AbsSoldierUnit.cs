@@ -368,7 +368,7 @@ namespace VikingEngine.DSSWars.GameObject
             model?.update(this);
         }
 
-        public void update2(float time)
+        public void update2(float time, bool fullUpdate)
         {
             if (state2 == SoldierState2.wakeup)
             {
@@ -388,7 +388,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                 updateGroudY(false);
                 //bound.Center = VectorExt.V3XZtoV2(position);
-                model?.update(this);
+                if (fullUpdate)
+                {
+                    model?.update(this);
+                }
             }
         }
 

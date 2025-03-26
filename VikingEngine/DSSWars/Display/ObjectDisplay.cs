@@ -19,9 +19,9 @@ namespace VikingEngine.DSSWars.Display
             if (obj != null)
             {
                 beginRefresh();
-                if (obj.CanMenuFocus() && player.input.inputSource.IsController)
+                if (obj.CanMenuFocus() && player.gameControls.input.inputSource.IsController)
                 {
-                    content.Add(new HUD.RichBox.RbImage(player.input.ControllerFocus.Icon));
+                    content.Add(new HUD.RichBox.RbImage(player.gameControls.input.ControllerFocus.Icon));
                     content.Add(new HUD.RichBox.RbText(":"));
                     content.newLine();
                 }
@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Display
                         null, true);
                 }
                 endRefresh(pos, selected);
-                viewOutLine(player.mapControls.focusedObjectMenuState());
+                viewOutLine(player.gameControls.mapControls.focusedObjectMenuState());
             }
         }
 

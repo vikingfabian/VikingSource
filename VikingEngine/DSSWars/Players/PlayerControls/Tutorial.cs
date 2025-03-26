@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void refreshLimits()
         {
-            player.mapControls.setCameraBounds(tutorialMission < TutorialMission.Diplomatics, cityarea);
+            player.gameControls.mapControls.setCameraBounds(tutorialMission < TutorialMission.Diplomatics, cityarea);
 
             cityTabs = new List<MenuTab>{ MenuTab.Info, MenuTab.Resources };
 
@@ -280,11 +280,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
 
             content.newParagraph();
-            content.icontext(player.input.Select.Icon, DssRef.lang.Tutorial_SelectInput);            
-            content.icontext(player.input.inputSource.IsController? player.input.cameraTiltZoom.Icon : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
+            content.icontext(player.gameControls.input.Select.Icon, DssRef.lang.Tutorial_SelectInput);            
+            content.icontext(player.gameControls.input.inputSource.IsController? player.gameControls.input.cameraTiltZoom.Icon : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
             if (tutorialMission == TutorialMission.MoveArmy)
             {
-                content.icontext(player.input.Execute.Icon, DssRef.lang.Tutorial_MoveInput);
+                content.icontext(player.gameControls.input.Execute.Icon, DssRef.lang.Tutorial_MoveInput);
             }
         }
 
@@ -294,7 +294,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 case TutorialMission.CollectResources:
 
-                    if (player.mapControls.selection.obj is City)
+                    if (player.gameControls.mapControls.selection.obj is City)
                     {
                         if (!collectResources_selectCity)
                         {
@@ -352,9 +352,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     
                     if (!collectResources_collectwood)
                     {
-                        if (player.mapControls.selection.obj is City)
+                        if (player.gameControls.mapControls.selection.obj is City)
                         {
-                            if (player.mapControls.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Wood_Group).amount >= CollectWoodStoneAmount)
+                            if (player.gameControls.mapControls.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Wood_Group).amount >= CollectWoodStoneAmount)
                             {
                                 player.faction.workTemplate.move.value = 2;
                                 player.faction.workTemplate.wood.value = 2;
@@ -370,9 +370,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     if (!collectResources_collectstone)
                     {
-                        if (player.mapControls.selection.obj is City)
+                        if (player.gameControls.mapControls.selection.obj is City)
                         {
-                            if (player.mapControls.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Stone_G).amount >= CollectWoodStoneAmount)
+                            if (player.gameControls.mapControls.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Stone_G).amount >= CollectWoodStoneAmount)
                             {
                                 collectResources_collectstone = true;
                                 onPartSuccess();
@@ -415,9 +415,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //}
                     if (!linen_collect)
                     {
-                        if (player.mapControls.selection.obj is City)
+                        if (player.gameControls.mapControls.selection.obj is City)
                         {
-                            if (player.mapControls.selection.obj.GetCity().GetGroupedResource(ItemResourceType.SkinLinen_Group).amount >= CollectLinenAmount)
+                            if (player.gameControls.mapControls.selection.obj.GetCity().GetGroupedResource(ItemResourceType.SkinLinen_Group).amount >= CollectLinenAmount)
                             {
                                 linen_collect = true;
                                 onPartSuccess();
@@ -439,8 +439,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     if (!weaponsArmor_setWeaponPrio)
                     {
-                        if (player.mapControls.selection.obj is City &&
-                            player.mapControls.selection.obj.GetCity().workTemplate.craft_sharpstick.value > 0)
+                        if (player.gameControls.mapControls.selection.obj is City &&
+                            player.gameControls.mapControls.selection.obj.GetCity().workTemplate.craft_sharpstick.value > 0)
                         {
                             weaponsArmor_setWeaponPrio = true;
                             onPartSuccess();
@@ -449,8 +449,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!weaponsArmor_setArmorPrio)
                     {
-                        if (player.mapControls.selection.obj is City &&
-                            player.mapControls.selection.obj.GetCity().workTemplate.craft_paddedarmor.value > 0)
+                        if (player.gameControls.mapControls.selection.obj is City &&
+                            player.gameControls.mapControls.selection.obj.GetCity().workTemplate.craft_paddedarmor.value > 0)
                         {
                             weaponsArmor_setArmorPrio = true;
                             onPartSuccess();
@@ -459,8 +459,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!weaponsArmor_produceWeapons)
                     {
-                        if (player.mapControls.selection.obj is City &&
-                            player.mapControls.selection.obj.GetCity().res_sharpstick.amount >= CollectWeaponArmorAmount)
+                        if (player.gameControls.mapControls.selection.obj is City &&
+                            player.gameControls.mapControls.selection.obj.GetCity().res_sharpstick.amount >= CollectWeaponArmorAmount)
                         {
                             weaponsArmor_produceWeapons = true;
 
@@ -470,8 +470,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!weaponsArmor_produceArmor)
                     {
-                        if (player.mapControls.selection.obj is City &&
-                            player.mapControls.selection.obj.GetCity().res_paddedArmor.amount >= CollectWeaponArmorAmount)
+                        if (player.gameControls.mapControls.selection.obj is City &&
+                            player.gameControls.mapControls.selection.obj.GetCity().res_paddedArmor.amount >= CollectWeaponArmorAmount)
                         {
                             weaponsArmor_produceArmor = true;
 
@@ -600,7 +600,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!CollectFood_selectStockPile)
                     {
-                        if (player.mapControls.selection.obj is City &&
+                        if (player.gameControls.mapControls.selection.obj is City &&
                             player.cityTab == Display.MenuTab.Resources &&
                             player.resourcesSubTab == ResourcesSubTab.Stockpile_Resources)
                         {
@@ -612,8 +612,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!CollectFood_increasefoodbuffer)
                     {
-                        if (player.mapControls.selection.obj is City &&
-                            player.mapControls.selection.obj.GetCity().res_food.goalBuffer > City.DefaultFoodBuffer)
+                        if (player.gameControls.mapControls.selection.obj is City &&
+                            player.gameControls.mapControls.selection.obj.GetCity().res_food.goalBuffer > City.DefaultFoodBuffer)
                         {
                             CollectFood_increasefoodbuffer = true;
 
@@ -623,8 +623,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!CollectFood_reachfoodamount)
                     {
-                        if (player.mapControls.selection.obj is City &&
-                            player.mapControls.selection.obj.GetCity().res_food.amount >= ReachFoodBuffer)
+                        if (player.gameControls.mapControls.selection.obj is City &&
+                            player.gameControls.mapControls.selection.obj.GetCity().res_food.amount >= ReachFoodBuffer)
                         {
                             CollectFood_reachfoodamount = true;
 
@@ -821,7 +821,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void EndTutorial()
         {
-            player.mapControls.setCameraBounds(false, cityarea);
+            player.gameControls.mapControls.setCameraBounds(false, cityarea);
             
 
             DssRef.storage.runTutorial = false;

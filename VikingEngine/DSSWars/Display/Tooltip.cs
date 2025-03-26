@@ -40,30 +40,30 @@ namespace VikingEngine.DSSWars.Display
             }
             if (player.diplomacyMap == null)
             {
-                if (player.mapControls.hover.isNew 
-                    || player.mapControls.hover.subTile.isNew 
+                if (player.gameControls.mapControls.hover.isNew 
+                    || player.gameControls.mapControls.hover.subTile.isNew 
                     || refreshTime)
                 {
                     images.DeleteAll();
 
-                    var order = player.orders.orderOnSubTile(player.mapControls.hover.subTile.subTilePos);
+                    var order = player.orders.orderOnSubTile(player.gameControls.mapControls.hover.subTile.subTilePos);
                     if (order != null)
                     {
                         hoverTip(player, order);
                     }
-                    else if (player.mapControls.hover.subTile.hasSelection)
+                    else if (player.gameControls.mapControls.hover.subTile.hasSelection)
                     {
                         //SUBTILE tooltip
-                        hoverTip(player, player.mapControls.hover.subTile);
+                        hoverTip(player, player.gameControls.mapControls.hover.subTile);
                     }
-                    else if (player.mapControls.hover.obj != null)
+                    else if (player.gameControls.mapControls.hover.obj != null)
                     {
-                        hoverTip(player, player.mapControls.hover.obj);
+                        hoverTip(player, player.gameControls.mapControls.hover.obj);
                     }
-                    else if (player.mapControls.hover.subTile.tileOfInterest)
+                    else if (player.gameControls.mapControls.hover.subTile.tileOfInterest)
                     {
                         //SUBTILE tooltip
-                        hoverTip(player, player.mapControls.hover.subTile);
+                        hoverTip(player, player.gameControls.mapControls.hover.subTile);
                     }
 
                 }
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Display
         {
             if (images.HasMembers)
             {
-                if (player.input.inputSource.IsController)
+                if (player.gameControls.input.inputSource.IsController)
                 {
                     if (!images.HasOffset())
                     {
@@ -143,22 +143,22 @@ namespace VikingEngine.DSSWars.Display
             if (subTile.selectTileResult != Players.SelectTileResult.None)
             {
                 content.Add(new RbBeginTitle(2));
-                content.Add(new RbImage(player.input.Select.Icon));
+                content.Add(new RbImage(player.gameControls.input.Select.Icon));
 
                 RbText title = null;
                 bool avaialableAction = true;
                 switch (subTile.selectTileResult)
                 {
                     case Players.SelectTileResult.Build:
-                        var buildOpt = BuildLib.BuildOptions[(int)player.buildControls.placeBuildingType];
+                        var buildOpt = BuildLib.BuildOptions[(int)player.gameControls.buildControls.placeBuildingType];
                         title = new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
-                        var bp = player.buildControls.placeBuildingOption().blueprint;
+                        var bp = player.gameControls.buildControls.placeBuildingOption().blueprint;
                         bp.toMenu(content, subTile.city);
 
-                        var mayBuild = player.mapControls.hover.subTile.mayBuild(player, out bool upgrade);
+                        var mayBuild = player.gameControls.mapControls.hover.subTile.mayBuild(player, out bool upgrade);
                         
                         switch (mayBuild)
                         { 
@@ -274,7 +274,7 @@ namespace VikingEngine.DSSWars.Display
         {
             RichBoxContent content = new RichBoxContent();
 
-            bool attackTarget = player.armyControls != null &&
+            bool attackTarget = player.gameControls.armyControls != null &&
                 obj.GetFaction() != player.faction;
 
             if (attackTarget)
@@ -321,7 +321,7 @@ namespace VikingEngine.DSSWars.Display
                     content.newParagraph();
                 }
 
-                var attacker = player.mapControls.selection.obj as Army;
+                var attacker = player.gameControls.mapControls.selection.obj as Army;
                 var defender = obj as AbsMapObject;
                 if (attacker != null && defender!= null)
                 {

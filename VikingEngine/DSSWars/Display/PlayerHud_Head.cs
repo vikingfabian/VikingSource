@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Display
                 buttonContent.Add(new RbImage(SpriteName.WarsCityHall));
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(cityCount.ToString()));
-                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.nextCity, true),
+                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.gameControls.nextCity, true),
                     new RbTooltip(nextCityTip)));
             }
             {
@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.Display
                 buttonContent.Add(new RbImage(SpriteName.WarsFlagType_Banner));
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(armyCount.ToString()));
-                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.nextArmy, true),
+                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.gameControls.nextArmy, true),
                     new RbTooltip(nextArmyTip)));
             }
         }
@@ -226,7 +226,7 @@ namespace VikingEngine.DSSWars.Display
         void TabClick(MenuTab tab)
         {
             var player = this.player.GetLocalPlayer();
-            player.mapControls.clearSelection();
+            player.gameControls.mapControls.clearSelection();
             if (player.factionTab == tab)
             {
                 player.factionTab = MenuTab.NUM_NONE;
@@ -252,14 +252,14 @@ namespace VikingEngine.DSSWars.Display
             //var player = this.player.GetLocalPlayer();
             content.Add(new RbText(string.Format(DssRef.lang.Hud_CityCount, player.faction.cities.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
-            content.ButtonDescription(player.input.NextCity, DssRef.lang.Input_NextCity);
+            content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.Input_NextCity);
         }
         void nextArmyTip(RichBoxContent content, object tag)
         {
             //var player = this.player.GetLocalPlayer();
             content.Add(new RbText(string.Format(DssRef.lang.Hud_ArmyCount, player.faction.armies.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
-            content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
+            content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.lang.Input_NextArmy);
         }
 
         void factionGoldTip(RichBoxContent content, object tag)

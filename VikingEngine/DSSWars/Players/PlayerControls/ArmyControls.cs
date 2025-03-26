@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Players
         public void update()
         {
             
-            if (player.mapControls.onNewTile)
+            if (player.gameControls.mapControls.onNewTile)
             {
                 newSquare = true;
             }
@@ -49,11 +49,11 @@ namespace VikingEngine.DSSWars.Players
 
             if (!alive)
             {
-                player.clearSelection();
+                player.gameControls.clearSelection();
                 return;
             }
 
-            if (player.input.Stop.DownEvent)
+            if (player.gameControls.input.Stop.DownEvent)
             {
                 SoundLib.orderstop.Play();
                 foreach (var m in armies)
@@ -105,9 +105,9 @@ namespace VikingEngine.DSSWars.Players
 
         public void mapExecute()
         {
-            if (player.mapControls.armyMayAttackHoverObj())
+            if (player.gameControls.mapControls.armyMayAttackHoverObj())
             {
-                var target = player.mapControls.hover.obj.RelatedMapObject();
+                var target = player.gameControls.mapControls.hover.obj.RelatedMapObject();
                 if (target != null)
                 {
                     SoundLib.ordermove.Play();
@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (m.isAlive)
                     {
-                        m.army.Ai_Order_MoveTo(player.mapControls.tilePosition);
+                        m.army.Ai_Order_MoveTo(player.gameControls.mapControls.tilePosition);
                     }
                 }
             }
@@ -186,12 +186,12 @@ namespace VikingEngine.DSSWars.Players
         {
             if (pathState == PathFindState.None && isAlive)
             {
-                if (army.tilePos != player.mapControls.tilePosition &&
-                    DssRef.world.tileGrid.InBounds(player.mapControls.tilePosition))
+                if (army.tilePos != player.gameControls.mapControls.tilePosition &&
+                    DssRef.world.tileGrid.InBounds(player.gameControls.mapControls.tilePosition))
                 {
                     PathFinding pf = DssRef.state.pathUpdates[DssRef.state.pathUpdates.Length -1].pathFindingPool.GetPf();
                     {
-                        newPath = pf.FindPath(PlayState.PathThreadCount, army.tilePos, army.rotation, player.mapControls.tilePosition,
+                        newPath = pf.FindPath(PlayState.PathThreadCount, army.tilePos, army.rotation, player.gameControls.mapControls.tilePosition,
                             false);
                     }
                     DssRef.state.pathUpdates[DssRef.state.pathUpdates.Length -1].pathFindingPool.Return(pf);

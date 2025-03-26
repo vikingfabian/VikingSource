@@ -242,9 +242,13 @@ namespace VikingEngine.DSSWars.Display
             if (lobby)
             {
                 content.newParagraph();
-                content.h2(".Graphics options", HudLib.TitleColor_Head);
-                Ref.gamesett.graphicsOptions(content, menu);
+                content.h2(".Monitor options", HudLib.TitleColor_Head);
+                Ref.gamesett.monitorOptions(content, menu);
             }
+
+            content.newParagraph();
+            content.h2(".Graphics options", HudLib.TitleColor_Head);
+            Ref.gamesett.graphicsOptions(content, menu);
 
             content.newParagraph();
             content.h2(".Input", HudLib.TitleColor_Head);
@@ -274,7 +278,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, Players.LocalPlayer.MaxSpeedOption)) }, speed5Property));
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
             }

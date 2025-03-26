@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars
         public void update()
         {
             bool overHud = false;
-            if (player.input.inputSource.HasMouse)
+            if (player.gameControls.input.inputSource.HasMouse)
             {
                 overHud = player.hud.hudMouseOver();
             }
@@ -147,9 +147,9 @@ namespace VikingEngine.DSSWars
                     {
                         if (visible && !overHud)
                         {
-                            if (player.input.inputSource.IsController)
+                            if (player.gameControls.input.inputSource.IsController)
                             {
-                                float dist = (player.mapControls.XPointerPos() - rel.bg.RealCenter).Length();
+                                float dist = (player.gameControls.mapControls.XPointerPos() - rel.bg.RealCenter).Length();
                                 if (dist < controller_closestDist)
                                 {
                                     controller_closestDist = dist;
@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars
                     //hoverArea.AddRadius(4);
                     //hoverbox.Area = hoverArea;
 
-                    if (player.input.Select.DownEvent)
+                    if (player.gameControls.input.Select.DownEvent)
                     {
                         SoundLib.select_faction.Play();
                         selected = currentHover;
@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars
                 {
                     //hoverbox.Visible = false;
 
-                    if (player.input.Select.DownEvent)
+                    if (player.gameControls.input.Select.DownEvent)
                     {
                         cancel();
                     }
@@ -256,7 +256,7 @@ namespace VikingEngine.DSSWars
             {               
                 //player.hud.displays.updateMove(out _);
 
-                if (player.input.ControllerCancel.DownEvent)
+                if (player.gameControls.input.ControllerCancel.DownEvent)
                 {
                     cancel();
                 }

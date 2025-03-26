@@ -53,9 +53,9 @@ namespace VikingEngine.DSSWars.Display
                 new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
                 new RbAction(pauseAction), new RbTooltip_Text(DssRef.lang.Input_Pause)));
 
-            for (int i = 0; i < player.GameSpeedOptions.Length; i++)
+            for (int i = 0; i < player.gameControls.GameSpeedOptions.Length; i++)
             {
-                int speed = player.GameSpeedOptions[i];
+                int speed = player.gameControls.GameSpeedOptions[i];
                 content.Add(new ArtOption(Ref.TargetGameTimeSpeed == speed,
                     new List<AbsRichBoxMember> { new RbText(speed.ToString()) },
                     new RbAction1Arg<int>(gameSpeedClick, speed),

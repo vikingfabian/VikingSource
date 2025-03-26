@@ -279,16 +279,16 @@ namespace VikingEngine.DSSWars.Conscript
             content.Add(new RbImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)profile.training)));
 
             content.newLine();
-            content.Add(new RbImage(player.input.Stop.Icon));
+            content.Add(new RbImage(player.gameControls.input.Stop.Icon));
             content.space(0.5f);
             content.Add(new RbText(shortActiveString()));
 
             content.newLine();
-            content.Add(new RbImage(player.input.Copy.Icon));
+            content.Add(new RbImage(player.gameControls.input.Copy.Icon));
             content.space(0.5f);
             content.Add(new RbText(DssRef.lang.Hud_CopySetup));
             content.space(2);
-            content.Add(new RbImage(player.input.Paste.Icon));
+            content.Add(new RbImage(player.gameControls.input.Paste.Icon));
             content.space(0.5f);
             content.Add(new RbText(DssRef.lang.Hud_Paste));
         }

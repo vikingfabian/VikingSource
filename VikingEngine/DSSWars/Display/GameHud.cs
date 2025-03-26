@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.Display
                 //    displays.clearMoveSelection();
                 //}
 
-                player.mapControls.focusMap(!set);
+                player.gameControls.mapControls.focusMap(!set);
                 menuFocus = set;
             }
         }
@@ -103,10 +103,10 @@ namespace VikingEngine.DSSWars.Display
             //displays.updateMove(out bool bRefresh);
             //needRefresh |= bRefresh;
 
-            if (player.input.AutomationSetting.DownEvent ||
-                player.input.ControllerCancel.DownEvent)
+            if (//player.gameControls.input.AutomationSetting.DownEvent ||
+                player.gameControls.input.ControllerCancel.DownEvent)
             {
-                player.clearSelection();
+                player.gameControls.clearSelection();
             }
         }
 
@@ -117,11 +117,11 @@ namespace VikingEngine.DSSWars.Display
             mouseOverHud = false;
             bool refresh = refreshTimer.Update();
 
-            refresh |= player.mapControls.selection.isNew ||
-                player.mapControls.hover.isNew ||
+            refresh |= player.gameControls.mapControls.selection.isNew ||
+                player.gameControls.mapControls.hover.isNew ||
                 needRefresh;
 
-            if (player.input.ToggleHudDetail.DownEvent)
+            if (player.gameControls.input.ToggleHudDetail.DownEvent)
             {
                 detailLevel++;
                 if (detailLevel >= HudDetailLevel.NUM)
@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.Display
             
             
 
-            if (player.input.inputSource.HasMouse)
+            if (player.gameControls.input.inputSource.HasMouse)
             {
                 //needRefresh |= displays.update();
                 //mouseOver = hudMouseOver();
@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars.Display
             }
             else
             {
-                if (!player.mapControls.focusedObjectMenuState())
+                if (!player.gameControls.mapControls.focusedObjectMenuState())
                 {
                     tooltip.updateMapTip(player, refresh);
                 }
@@ -196,14 +196,14 @@ namespace VikingEngine.DSSWars.Display
 
                     player.factionTab = MenuTab.NUM_NONE;
                 }
-                else if (player.mapControls.selection.obj != null)
+                else if (player.gameControls.mapControls.selection.obj != null)
                 {
-                    updateObjectDisplay(player.mapControls.selection.obj, true, refresh);
+                    updateObjectDisplay(player.gameControls.mapControls.selection.obj, true, refresh);
                     player.factionTab = MenuTab.NUM_NONE;
                 }
-                else if (player.mapControls.hover.obj != null)
+                else if (player.gameControls.mapControls.hover.obj != null)
                 {
-                    updateObjectDisplay(player.mapControls.hover.obj, false, refresh);
+                    updateObjectDisplay(player.gameControls.mapControls.hover.obj, false, refresh);
                     player.factionTab = MenuTab.NUM_NONE;
                 }
                 else if (player.factionTab != MenuTab.NUM_NONE)
