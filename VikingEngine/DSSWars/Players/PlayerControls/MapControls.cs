@@ -14,11 +14,17 @@ namespace VikingEngine.DSSWars.Players
 {
     class MapControls
     {
-        const float CamMaxRotation = 0.5f;
+        int currentTiltYAngleOption = 0;
+        const float TiltYUpAngle = -0.2f;
+
+
+        const float CamMaxRotation = 0.7f;
         const float CamStartRotation = MathHelper.PiOver2;
         IntervalF ZoomRange = MapDetailLayerManager.FullZoomRange;
         VectorRect panBounds;
         FloatInBound camRotation = new FloatInBound(CamStartRotation, new IntervalF(CamStartRotation - CamMaxRotation, CamStartRotation + CamMaxRotation), false);
+        float camRotationKeyDownTime = 0;
+        float lastRotationDir;
 
         LocalPlayer player;
 
@@ -259,8 +265,7 @@ namespace VikingEngine.DSSWars.Players
             mousePanInput();
 
             zoomInput();
-            
-            
+            rotateCameraInput();
         }
 
         public void leftFocusUpdate()
@@ -887,30 +892,110 @@ namespace VikingEngine.DSSWars.Players
                     {
                         var mousePosition2 = screenPosToWorldPos(Input.Mouse.Position);
                         Vector3 diff = mousePosition2 - mousePosition;
-                        panCamera(diff);
+                        panCamera(VectorExt.V3XZtoV2( diff), true);
                     }
                 }
             }
 
+            
+        }
+
+        float? targetRotation = null;
+        void rotateCameraInput()
+        {
             const float XBuffer = 0.6f;
-            const float RotationSpeed = 0.004f;
+            const float RotationSpeed = 0.0001f;
+            const float TargetRotationSpeed = 0.005f;
+
             if (Math.Abs(player.gameControls.input.cameraTiltZoom.direction.X) > XBuffer)
             {
-                camRotation.Value += RotationSpeed * player.gameControls.input.cameraTiltZoom.directionAndTime.X;
+                lastRotationDir = player.gameControls.input.cameraTiltZoom.directionAndTime.X;
+                camRotationKeyDownTime += Ref.DeltaTimeMs;
+                camRotation.Value += RotationSpeed * Ref.DeltaTimeMs * lastRotationDir;
             }
             else
             {
-                //Rotate back
-                float diff = CamStartRotation - camRotation.Value;
-                if (Math.Abs(diff) > 0.01f)
+                ////Rotate back
+                //float diff = CamStartRotation - camRotation.Value;
+                //if (Math.Abs(diff) > 0.01f)
+                //{
+                //    float dir = lib.ToLeftRight(diff);
+                //    float rotAdd = VikingEngine.Bound.MaxAbs(RotationSpeed * dir * Ref.DeltaTimeMs, diff);
+                //    camRotation.Value += rotAdd;
+                //}
+                if (camRotationKeyDownTime > 0)
                 {
-                    float dir = lib.ToLeftRight(diff);
-                    float rotAdd = VikingEngine.Bound.MaxAbs(RotationSpeed * dir * Ref.DeltaTimeMs, diff);
-                    camRotation.Value += rotAdd;
+                    bool bTap = camRotationKeyDownTime < VikingEngine.Input.InputLib.ButtonHoldTimeMs;
+                    if (bTap)
+                    {//Target next rotation point
+                        if (lastRotationDir > 0)
+                        { //Right
+                            if (camRotation.Value < CamStartRotation)
+                            {
+                                targetRotation = CamStartRotation;
+                            }
+                            else
+                            {
+                                targetRotation = camRotation.Bounds.Max;
+                            }
+                        }
+                        else
+                        {
+                            if (camRotation.Value > CamStartRotation)
+                            {
+                                targetRotation = CamStartRotation;
+                            }
+                            else
+                            {
+                                targetRotation = camRotation.Bounds.Min;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        targetRotation = null;
+                    }
+                    camRotationKeyDownTime = 0;
                 }
+
+               
+
+                if (targetRotation != null)
+                {
+                    float diff = targetRotation.Value - camRotation.Value;
+                    //if (diff != 0)
+                    //{
+                    float dir = lib.ToLeftRight(diff);
+
+                    float speed = TargetRotationSpeed * Ref.DeltaTimeMs;
+
+                    if (speed > Math.Abs(diff))
+                    {
+                        camRotation.Value = targetRotation.Value;
+                        targetRotation = null;
+                    }
+                    else
+                    {
+                        float rotAdd =speed * dir;
+                        camRotation.Value += rotAdd;
+                    }
+                }
+                //}
             }
 
             camera.TiltX = camRotation.Value;
+
+
+            if (player.gameControls.input.cameraUpwardsTilt.DownEvent)
+            {
+                currentTiltYAngleOption++;
+                if (currentTiltYAngleOption >= 3)
+                { 
+                    currentTiltYAngleOption = -1;
+                }
+
+                player.drawUnitsView.TiltYAdd = currentTiltYAngleOption * TiltYUpAngle;
+            }
         }
 
 
@@ -933,7 +1018,7 @@ namespace VikingEngine.DSSWars.Players
                 return;
             }
             
-            panCamera(VectorExt.V2toV3XZ(-player.gameControls.input.move.directionAndTime * PanSpeed()));
+            panCamera(-player.gameControls.input.move.directionAndTime * PanSpeed(), true);
         }
 
         void mousePanInput()
@@ -947,12 +1032,10 @@ namespace VikingEngine.DSSWars.Players
 
                     Vector3 diff = mousePosition - prevMousePosition;
 
-                    panCamera(diff);
+                    panCamera(VectorExt.V3XZtoV2(diff), false);
 
                     return;
                 }
-
-
 
                 if (DssRef.state.localPlayers.Count == 1)
                 {
@@ -960,7 +1043,7 @@ namespace VikingEngine.DSSWars.Players
                         !player.gameControls.input.Select.IsDown &&
                         Input.Mouse.HasEdgePush())
                     {
-                        panCamera(VectorExt.V2toV3XZ(-Input.Mouse.EdgePush() * Ref.DeltaTimeMs * PanSpeed()));
+                        panCamera(-Input.Mouse.EdgePush() * Ref.DeltaTimeMs * PanSpeed(), true);
 
                     }
                 }
@@ -1003,14 +1086,18 @@ namespace VikingEngine.DSSWars.Players
             controllerPointer.Visible = focus;
         }
 
-        void panCamera(Vector3 pan)
+        void panCamera(Vector2 pan, bool followCamRotation)
         {
-            pan.Y = 0;
+            //pan.Y = 0;
             if (VectorExt.HasValue(pan))
             {
+                if (followCamRotation)
+                {
+                    pan = VectorExt.RotateVector(pan, camera.Tilt.X - CamStartRotation);
+                }
                 cameraFocus = null;
 
-                camera.LookTarget -= pan;
+                camera.MoveLookTargetXZ( - pan);
                 camera.setLookTargetXBound(panBounds.Position.X, panBounds.Right);
                 camera.setLookTargetZBound(panBounds.Position.Y, panBounds.Bottom);
 

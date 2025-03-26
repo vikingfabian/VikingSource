@@ -170,11 +170,10 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.WorkerHutLarge);
             }
 
-            
+            list.Add(BuildAndExpandType.ServiceHouse_Small);
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
-            {
-                list.Add(BuildAndExpandType.ServiceHouse_Small);
+            {                
                 list.Add(BuildAndExpandType.ServiceHouse_Large);
             }
 

@@ -10,6 +10,7 @@ namespace VikingEngine.Input
 {
     static class InputLib
     {
+        public const float ButtonHoldTimeMs = 250;
         public static void Init(MainGame main)
         {
             if (PlatformSettings.RunningWindows)

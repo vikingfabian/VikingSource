@@ -43,6 +43,8 @@ namespace VikingEngine.DSSWars.Map
         public float OverviewAndFactionsTransparentsy;
         public float OverviewScale = 1f;
 
+        public float TiltYAdd = 0;
+
         public MapDetailLayerManager(Engine.PlayerData player)
         {
             this.player = player;
@@ -153,13 +155,19 @@ namespace VikingEngine.DSSWars.Map
                 setNewLayer();
             }
 
-            if (player.view.Camera.TiltY != current.goalCamAngle)
+            float goalTiltY = current.goalCamAngle;
+            if (current.DrawDetailLayer)
+            { 
+                goalTiltY += TiltYAdd;
+            }
+
+            if (player.view.Camera.TiltY != goalTiltY)
             {
-                float tiltSpeed = Ref.DeltaTimeMs * 0.001f;
-                float diff = current.goalCamAngle - player.view.Camera.TiltY;
+                float tiltSpeed = Ref.DeltaTimeMs * 0.0016f;
+                float diff = goalTiltY - player.view.Camera.TiltY;
                 if (tiltSpeed > Math.Abs(diff))
                 {
-                    player.view.Camera.TiltY = current.goalCamAngle;
+                    player.view.Camera.TiltY = goalTiltY;
                 }
                 else
                 {

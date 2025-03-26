@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars
         public static bool RunAI = PlatformSettings.DevBuild ? true :
            true;//DO NOT CHANGE
 
-        public static bool EndlessResources = PlatformSettings.DevBuild ? true : 
+        public static bool EndlessResources = PlatformSettings.DevBuild ? false : 
             false;//DO NOT CHANGE    
 
         public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? false :
@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars
         public static bool SkipRecruitTime = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
         
-        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? true :
+        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
         public static bool TestOffscreenUpdate = PlatformSettings.DevBuild ? false :

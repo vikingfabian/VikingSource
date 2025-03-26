@@ -575,6 +575,11 @@ namespace VikingEngine
 
         public static Vector2 RotateVector(Vector2 vector, float rotation)
         {
+            if (rotation == 0)
+            { 
+                return vector;
+            }
+
             Vector2 result = new Vector2(
                 (float)(Math.Cos(rotation) * vector.X - Math.Sin(rotation) * vector.Y),
                 (float)(Math.Sin(rotation) * vector.X + Math.Cos(rotation) * vector.Y));

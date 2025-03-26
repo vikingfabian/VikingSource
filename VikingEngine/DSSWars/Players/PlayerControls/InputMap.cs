@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars
         public IDirectionalMap move;
         IDirectionalMap dpadMove;
         public IDirectionalMap cameraTiltZoom;
+        public IButtonMap cameraUpwardsTilt;
 
         public IButtonMap zoomInButton, zoomOutButton;
 
@@ -96,6 +97,8 @@ namespace VikingEngine.DSSWars
             camAlts.add(new DirectionalButtonsMap(null, null, new KeyboardButtonMap(Keys.Q), new KeyboardButtonMap(Keys.E)));
             camAlts.add(new DirectionalMouseScrollMap());
             cameraTiltZoom = camAlts;
+
+            cameraUpwardsTilt = new KeyboardButtonMap(Keys.R);
 
             Select = new MouseButtonMap(MouseButton.Left);
             Execute = new MouseButtonMap(MouseButton.Right);
