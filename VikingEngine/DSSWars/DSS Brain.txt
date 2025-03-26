@@ -1,7 +1,7 @@
 ﻿UPDATE
 -Change Log-
 graphical settings
-
+toggle camera angle with Q, E and R
 
 
 !save av settings
