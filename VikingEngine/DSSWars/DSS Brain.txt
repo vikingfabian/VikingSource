@@ -1,7 +1,7 @@
-﻿BETA UPDATE
+﻿UPDATE
 -Change Log-
 graphical settings
-adjust camera angles with Q, E and R
+toggle camera angle with Q, E and R
 
 
 !save av settings
