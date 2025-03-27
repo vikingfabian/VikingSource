@@ -915,14 +915,7 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                ////Rotate back
-                //float diff = CamStartRotation - camRotation.Value;
-                //if (Math.Abs(diff) > 0.01f)
-                //{
-                //    float dir = lib.ToLeftRight(diff);
-                //    float rotAdd = VikingEngine.Bound.MaxAbs(RotationSpeed * dir * Ref.DeltaTimeMs, diff);
-                //    camRotation.Value += rotAdd;
-                //}
+                
                 if (camRotationKeyDownTime > 0)
                 {
                     bool bTap = camRotationKeyDownTime < VikingEngine.Input.InputLib.ButtonHoldTimeMs;
@@ -963,8 +956,7 @@ namespace VikingEngine.DSSWars.Players
                 if (targetRotation != null)
                 {
                     float diff = targetRotation.Value - camRotation.Value;
-                    //if (diff != 0)
-                    //{
+                    
                     float dir = lib.ToLeftRight(diff);
 
                     float speed = TargetRotationSpeed * Ref.DeltaTimeMs;
@@ -980,7 +972,6 @@ namespace VikingEngine.DSSWars.Players
                         camRotation.Value += rotAdd;
                     }
                 }
-                //}
             }
 
             camera.TiltX = camRotation.Value;
