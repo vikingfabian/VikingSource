@@ -61,6 +61,7 @@ namespace VikingEngine.DSSWars.Players
         public AbsGameObject cameraFocus = null;
         
         float targetZoom;
+        bool panDownInput = false;
 
         public MapControls(LocalPlayer player)
         {
@@ -120,6 +121,11 @@ namespace VikingEngine.DSSWars.Players
         {
             playerPointerPos = WP.ToWorldPos(tile);
             camera.LookTarget = playerPointerPos;
+        }
+
+        public bool overridingDrag()
+        { 
+            return rectangleLines != null || panDownInput;
         }
 
         public void focusedUpdate()
@@ -289,6 +295,10 @@ namespace VikingEngine.DSSWars.Players
             keypPanInput();
             cameraFocusUpdate();
             updateCamera();
+            if (!player.gameControls.input.mousePan.IsDown)
+            {
+                panDownInput = false;
+            }
         }
 
 
@@ -337,39 +347,50 @@ namespace VikingEngine.DSSWars.Players
                 {
                     rectangleBound.update(pointerPos());
 
-                    rectangleLines.Refresh(rectangleBound.vectorRect);                   
+                    rectangleLines.Refresh(rectangleBound.vectorRect);
+                    rectangleBound.outerBound(out Vector3 topLeft, out Vector3 bottomRight);
 
                     switch (player.drawUnitsView.current.type)
                     {
                         case MapDetailLayerType.TerrainOverview2:
-
-                            rectangleBound.outerBound(out Vector3 topLeft, out Vector3 bottomRight);
-                            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction);
-
-                            if (Input.Keyboard.Ctrl)
                             {
-                                lib.DoNothing();
-                            }
+                                
+                                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction);
 
-                            for (int i = nearMapObjects.Count - 1; i >= 0; i--)
-                            {
-                                if (!nearMapObjects[i].rectangleCollision(rectangleBound))
+                                if (Input.Keyboard.Ctrl)
                                 {
-                                    nearMapObjects.RemoveAt(i);
+                                    lib.DoNothing();
                                 }
-                            }
 
-                            if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.ObjectCollection)
+                                for (int i = nearMapObjects.Count - 1; i >= 0; i--)
+                                {
+                                    if (!nearMapObjects[i].rectangleCollision(rectangleBound))
+                                    {
+                                        nearMapObjects.RemoveAt(i);
+                                    }
+                                }
+
+                                if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.ObjectCollection)
+                                {
+                                    hover.obj = new MapObjectCollection(player.faction);
+                                }
+
+                                hover.obj.GetCollection().set(nearMapObjects);
+                            }
+                            break;
+
+                        case MapDetailLayerType.UnitDetail1:
                             {
-                                hover.obj = new MapObjectCollection(player.faction);
-                            }
+                                var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearGroups_Rectangle(
+                                    WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction, rectangleBound);
 
-                            if (nearMapObjects.Count > 0)
-                            {
-                                lib.DoNothing();
-                            }
+                                if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.DetailCollection)
+                                {
+                                    hover.obj = new DetailObjectCollection(player.faction);
+                                }
 
-                            hover.obj.GetCollection().set(nearMapObjects);
+                                hover.obj.GetDetailCollection().set(nearDetailUnits);
+                            }
                             break;
                     }
                 }
@@ -1031,9 +1052,14 @@ namespace VikingEngine.DSSWars.Players
 
         void mousePanInput()
         {
-            if (!player.hud.hudMouseOver() && !controllerInput)
+            //if (!player.hud.hudMouseOver() && !controllerInput)
+            //{
+            if (player.gameControls.input.mousePan.DownEvent)
             {
-                if (hasMouseMapPanInput())
+                panDownInput = true;
+            }
+
+                if (panDownInput && hasMouseMapPanInput())
                 {
                     //bool hasValue;
                     Vector3 prevMousePosition = screenPosToWorldPos(Input.Mouse.Position - Input.Mouse.MoveDistance);
@@ -1055,7 +1081,7 @@ namespace VikingEngine.DSSWars.Players
 
                     }
                 }
-            }
+            //}
         }
 
         /// <summary>

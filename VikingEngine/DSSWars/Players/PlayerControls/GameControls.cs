@@ -61,12 +61,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public void update()
         {            
 
-            //bool menuFocusState = mapControls.focusedObjectMenuState();
-            
-            
-            player.hud.update();
+            bool hudState = false;
 
-            bool hudState = player.hud.mouseOverHud;
+            if (!mapControls.overridingDrag())
+            {
+                player.hud.update();
+                hudState = player.hud.mouseOverHud;
+            }
 
             if (hudState)
             {

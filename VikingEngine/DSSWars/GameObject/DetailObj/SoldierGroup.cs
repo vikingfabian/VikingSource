@@ -15,6 +15,7 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players.Command;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.CarBall;
@@ -2335,6 +2336,42 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public bool InGuardPost()
         {
             return false;
+        }
+
+        public override bool rectangleCollision(ScreenToSpaceRectangleBound rectangle)
+        {
+            var soldiers_sp = soldiers;
+            if (soldiers_sp != null)
+            {
+                var soldiersC = soldiers_sp.counter();
+                while (soldiersC.Next())
+                {
+                    if (soldiersC.sel.rectangleCollision(rectangle))
+                    { 
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public void toGroupHud(RichBoxContent content)
+        {
+            string name = Name(out _);
+
+            if (name != null)
+            {
+                content.text(name).overrideColor = Color.LightYellow;
+                content.newLine();
+            }
+
+            content.Add(new RbBeginTitle());
+            content.Add(GetFaction().FlagTextureToHud());
+            content.Add(new RbText(TypeName()));
+
+            content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            content.Add(new RbText(TextLib.OneDecimal(strengthValue())));
         }
     }    
 

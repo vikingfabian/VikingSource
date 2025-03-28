@@ -8,6 +8,7 @@ Keyboard key mapping
 Mouse 5 button support
 fixed rotation and rectangle select
 fixed missing selection rings
+Can mouse drag/pan over hud
 
 Bronze
 Increased bog iron mining time 1min > 2min
@@ -43,7 +44,7 @@ Gold delivery: removed the requirement of a bank to move gold
 !! Known issues, that I am working on !!
 -The guards are hard to select
 -The soldier micro kinda sucks
--Mutliselect doesnt work properly on soldiers
+-Mutliselect is not completed
 -Soldiers can be stuck on idle in battle
 -Cant move units between armies and garrisons
 -Text with "." in the beginning are temporary, will go through spell check and translation.

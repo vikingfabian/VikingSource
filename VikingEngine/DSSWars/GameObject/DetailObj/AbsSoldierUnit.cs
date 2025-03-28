@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.Strategy;
 using VikingEngine.ToGG.MoonFall;
@@ -255,6 +256,11 @@ namespace VikingEngine.DSSWars.GameObject
                 refreshGroupOffset();
                 updateGroupPosition();
             }
+        }
+
+        public override bool rectangleCollision(ScreenToSpaceRectangleBound rectangle)
+        {
+            return rectangle.Intersects(position, boundRadius);
         }
 
         public void refreshGroupOffset()
