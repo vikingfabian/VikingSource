@@ -79,8 +79,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 if ((mapControls.hover.subTile.hasSelection && InBuildOrdersMode()) || buildControls.buildKeyDown)
                 {
                     buildControls.updateBuildMode();
-                    if (input.ControllerCancel.DownEvent)
+                    if (input.CancelKey.DownEvent)
                     {
+                        player.hud.needRefresh = true;
                         buildControls.buildMode = SelectTileResult.None;
                     }
                 }
@@ -91,7 +92,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         mapSelect();
                     }
 
-                    if (input.Execute.DownEvent)
+                    if (input.mouseOrder.DownEvent)
                     {
                         mapExecute();
                     }

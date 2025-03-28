@@ -324,20 +324,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_Battle => "Битва";
 
-        /// <summary>
-        /// Описывает ввод кнопки. Перейти к следующему городу.
-        /// </summary>
-        public override string Input_NextCity => "Следующий город";
-
-        /// <summary>
-        /// Описывает ввод кнопки. Перейти к следующей армии.
-        /// </summary>
-        public override string Input_NextArmy => "Следующая армия";
-
-        /// <summary>
-        /// Описывает ввод кнопки. Перейти к следующему сражению.
-        /// </summary>
-        public override string Input_NextBattle => "Следующее сражение";
+        
 
         /// <summary>
         /// Описывает ввод кнопки. Пауза.
@@ -1210,40 +1197,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Settings_ButtonMapping => "Назначение кнопок";
 
-        /// <summary>
-        /// Описывает ввод кнопки. Расширяет или уменьшает количество информации на HUD
-        /// </summary>
-        public override string Input_ToggleHudDetail => "Переключить детализацию HUD";
-
-        /// <summary>
-        /// Описывает ввод кнопки. Переключает выбор между картой и HUD
-        /// </summary>
-        public override string Input_ToggleHudFocus => "Фокус меню";
-
-        /// <summary>
-        /// Описывает ввод кнопки. Ярлык для нажатия на последнее всплывающее окно
-        /// </summary>
-        public override string Input_ClickMessage => "Нажать сообщение";
-
-        /// <summary>
-        /// Описывает ввод кнопки. Общее направление движения
-        /// </summary>
-        public override string Input_Up => "Вверх";
-
-        /// <summary>
-        /// Описывает ввод кнопки. Общее направление движения
-        /// </summary>
-        public override string Input_Down => "Вниз";
-
-        /// <summary>
-        /// Описывает ввод кнопки. Общее направление движения
-        /// </summary>
-        public override string Input_Left => "Влево";
-
-        /// <summary>
-        /// Описывает ввод кнопки. Общее направление движения
-        /// </summary>
-        public override string Input_Right => "Вправо";
+       
 
         /// <summary>
         /// Тип ввода, стандартный ПК ввод

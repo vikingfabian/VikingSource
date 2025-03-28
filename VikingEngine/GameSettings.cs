@@ -20,7 +20,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 19;
+        const int Version = 20;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -116,6 +116,8 @@ namespace VikingEngine
             w.Write(scrollWheelSensitivity_game);
             w.Write(BattleMelodyVolume);
             w.Write(ParticlesEffect);
+
+            Debug.WriteCheck(w);
         }
 
         public void readEmbeddedSettingsAndVersion(System.IO.BinaryReader r)
@@ -140,50 +142,35 @@ namespace VikingEngine
             {
                 UiScale = 1f;
             }
-            if (version >= 11)
-            { 
-                language = (LanguageType)r.ReadByte(); 
-            }
+            language = (LanguageType)r.ReadByte(); 
+            
             dyslexiaFont = r.ReadBoolean();
-            if (version >= 12)
-            {
-                controllerMap.read(r);
-                keyboardMap.read(r);
-            }
+
+            controllerMap.read(r);
+            keyboardMap.read(r);
+            
 
             bannedPeers.read(r, version);
 
-            if (version >= 13)
-            { 
-                ModelLightShaderEffect = r.ReadBoolean();
-            }
-            if (version >= 15)
-            {
-                MasterVolume = r.ReadSingle();
-                AmbientVolume = r.ReadSingle();
+            ModelLightShaderEffect = r.ReadBoolean();
+            
+            MasterVolume = r.ReadSingle();
+            AmbientVolume = r.ReadSingle();
 
-            }
-            if (version >= 16)
-            {
-                MapLoadingSpeed = (ThreeOptions)r.ReadByte();
-                Blood = r.ReadInt32();
-            }
-            if (version >= 17)
-            {
-                panOnZoom = r.ReadBoolean();
-                controlLayout = r.ReadInt32();
-                scrollWheelSensitivity_menu = r.ReadSingle();
-                scrollWheelSensitivity_game = r.ReadSingle();
+            MapLoadingSpeed = (ThreeOptions)r.ReadByte();
+            Blood = r.ReadInt32();
+            
+            panOnZoom = r.ReadBoolean();
+            controlLayout = r.ReadInt32();
+            scrollWheelSensitivity_menu = r.ReadSingle();
+            scrollWheelSensitivity_game = r.ReadSingle();
 
-            }
-            if (version >= 18)
-            {
-                BattleMelodyVolume = r.ReadSingle();
-            }
-            if (version >= 19)
-            {
-                ParticlesEffect = r.ReadBoolean();
-            }
+            
+            BattleMelodyVolume = r.ReadSingle();
+            
+            ParticlesEffect = r.ReadBoolean();
+            
+            Debug.ReadCheck(r);
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -198,13 +185,9 @@ namespace VikingEngine
             {
                 int version = r.ReadInt32();
 
-                if (version >= 8)
+                if (version >= 20)
                 {
                     readSettings(r, version);
-                }
-                else
-                {
-                    oldread(r, version);
                 }
             }
             catch (Exception e)

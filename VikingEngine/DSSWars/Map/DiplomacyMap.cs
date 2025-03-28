@@ -256,7 +256,7 @@ namespace VikingEngine.DSSWars
             {               
                 //player.hud.displays.updateMove(out _);
 
-                if (player.gameControls.input.ControllerCancel.DownEvent)
+                if (player.gameControls.input.CancelKey.DownEvent)
                 {
                     cancel();
                 }

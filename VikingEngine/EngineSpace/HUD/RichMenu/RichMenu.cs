@@ -45,6 +45,8 @@ namespace VikingEngine.HUD.RichMenu
         public bool needRefresh = false;
         public List<string> menuStack = new List<string>();
 
+        public Action OnPageDelete = null;
+
         public RichMenu(RichBoxSettings settings, VectorRect edgeArea, Vector2 edgeThickness, Vector2 renderEdge, ImageLayers layer, PlayerData playerData)
         { 
             this.playerData = playerData;
@@ -262,6 +264,8 @@ namespace VikingEngine.HUD.RichMenu
 
         void deleteContent()
         {
+            OnPageDelete?.Invoke();
+            OnPageDelete = null;
             renderList.renderList.Clear();
         }
 

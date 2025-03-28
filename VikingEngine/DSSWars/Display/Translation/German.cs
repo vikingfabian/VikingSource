@@ -196,20 +196,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_Battle => "Schlacht";
 
-        /// <summary>
-        /// Tastenbeschreibung: Zur nächsten Stadt wechseln
-        /// </summary>
-        public override string Input_NextCity => "Nächste Stadt";
-
-        /// <summary>
-        /// Tastenbeschreibung: Zur nächsten Armee wechseln
-        /// </summary>
-        public override string Input_NextArmy => "Nächste Armee";
-
-        /// <summary>
-        /// Tastenbeschreibung: Zur nächsten Schlacht wechseln
-        /// </summary>
-        public override string Input_NextBattle => "Nächste Schlacht";
+        
 
         /// <summary>
         /// Tastenbeschreibung: Pause
@@ -1091,28 +1078,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Settings_ButtonMapping => "Tastenbelegung";
 
-        /// <summary>
-        /// Beschreibung der Eingabe: Vergrößert oder verringert die Menge an Informationen auf dem HUD.
-        /// </summary>
-        public override string Input_ToggleHudDetail => "HUD-Details umschalten";
-
-        /// <summary>
-        /// Beschreibung der Eingabe: Umschalten zwischen Kartenansicht und HUD.
-        /// </summary>
-        public override string Input_ToggleHudFocus => "Menü-Fokus";
-
-        /// <summary>
-        /// Beschreibung der Eingabe: Schnelltaste zum Klicken auf das letzte Popup.
-        /// </summary>
-        public override string Input_ClickMessage => "Nachricht klicken";
-
-        /// <summary>
-        /// Beschreibung der Eingabe: Allgemeine Bewegungsrichtung.
-        /// </summary>
-        public override string Input_Up => "Hoch";
-        public override string Input_Down => "Runter";
-        public override string Input_Left => "Links";
-        public override string Input_Right => "Rechts";
+       
 
         /// <summary>
         /// Eingabetyp, Standard-PC-Eingabe.

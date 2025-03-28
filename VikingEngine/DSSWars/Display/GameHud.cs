@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Display
             //needRefresh |= bRefresh;
 
             if (//player.gameControls.input.AutomationSetting.DownEvent ||
-                player.gameControls.input.ControllerCancel.DownEvent)
+                player.gameControls.input.CancelKey.DownEvent)
             {
                 player.gameControls.clearSelection();
             }

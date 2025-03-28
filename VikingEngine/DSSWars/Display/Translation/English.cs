@@ -331,20 +331,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_Battle => "Battle";
 
 
-        /// <summary>
-        /// Describes button input. Move to the next city.
-        /// </summary>
-        public override string Input_NextCity => "Next city";
-
-        /// <summary>
-        /// Describes button input. Move to the next army.
-        /// </summary>
-        public override string Input_NextArmy => "Next army";
-
-        /// <summary>
-        /// Describes button input. Move to the next battle.
-        /// </summary>
-        public override string Input_NextBattle => "Next battle";
 
         /// <summary>
         /// Describes button input. Pause.
@@ -1229,40 +1215,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Settings_ButtonMapping => "Key bindings";
 
-        /// <summary>
-        /// Describes button input. Expands or shrinks the amount of information on the HUD
-        /// </summary>
-        public override string Input_ToggleHudDetail => "Toggle HUD detail";
-
-        /// <summary>
-        /// Describes button input. Toggles selection between map and HUD
-        /// </summary>
-        public override string Input_ToggleHudFocus => "Menu focus";
-
-        /// <summary>
-        /// Describes button input. Shortcut to click on the latest popup
-        /// </summary>
-        public override string Input_ClickMessage => "Click message";
-
-        /// <summary>
-        /// Describes button input. General move direction
-        /// </summary>
-        public override string Input_Up => "Up";
-
-        /// <summary>
-        /// Describes button input. General move direction
-        /// </summary>
-        public override string Input_Down => "Down";
-
-        /// <summary>
-        /// Describes button input. General move direction
-        /// </summary>
-        public override string Input_Left => "Left";
-
-        /// <summary>
-        /// Describes button input. General move direction
-        /// </summary>
-        public override string Input_Right => "Right";
+       
 
         /// <summary>
         /// Input type, standard PC input

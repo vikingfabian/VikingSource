@@ -327,20 +327,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_Battle => "戦闘";
 
-        /// <summary>
-        /// ボタン入力の説明。次の都市に移動。
-        /// </summary>
-        public override string Input_NextCity => "次の都市";
-
-        /// <summary>
-        /// ボタン入力の説明。次の軍隊に移動。
-        /// </summary>
-        public override string Input_NextArmy => "次の軍隊";
-
-        /// <summary>
-        /// ボタン入力の説明。次の戦闘に移動。
-        /// </summary>
-        public override string Input_NextBattle => "次の戦闘";
+        
 
         /// <summary>
         /// ボタン入力の説明。一時停止。
@@ -1219,37 +1206,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// ボタン入力を説明します。HUDの情報量を拡大または縮小します
         /// </summary>
-        public override string Input_ToggleHudDetail => "HUD詳細の切り替え";
-
-        /// <summary>
-        /// ボタン入力を説明します。マップとHUDの選択を切り替えます
-        /// </summary>
-        public override string Input_ToggleHudFocus => "メニューフォーカス";
-
-        /// <summary>
-        /// ボタン入力を説明します。最新のポップアップをクリックするショートカット
-        /// </summary>
-        public override string Input_ClickMessage => "メッセージをクリック";
-
-        /// <summary>
-        /// ボタン入力を説明します。一般的な移動方向
-        /// </summary>
-        public override string Input_Up => "上";
-
-        /// <summary>
-        /// ボタン入力を説明します。一般的な移動方向
-        /// </summary>
-        public override string Input_Down => "下";
-
-        /// <summary>
-        /// ボタン入力を説明します。一般的な移動方向
-        /// </summary>
-        public override string Input_Left => "左";
-
-        /// <summary>
-        /// ボタン入力を説明します。一般的な移動方向
-        /// </summary>
-        public override string Input_Right => "右";
+        
 
         /// <summary>
         /// 入力タイプ、標準のPC入力

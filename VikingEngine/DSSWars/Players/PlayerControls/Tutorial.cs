@@ -284,7 +284,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             content.icontext(player.gameControls.input.inputSource.IsController? player.gameControls.input.cameraTiltZoom.Icon : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
             if (tutorialMission == TutorialMission.MoveArmy)
             {
-                content.icontext(player.gameControls.input.Execute.Icon, DssRef.lang.Tutorial_MoveInput);
+                content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
             }
         }
 

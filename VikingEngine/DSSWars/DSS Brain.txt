@@ -3,6 +3,8 @@
 Fixed ALL reported crashes
 Changed the mouse control layout to support rectangle select
 Mouse button mapping
+Keyboard key mapping
+! I had to reset the game settings, the save file data had drift issues
 Mouse 5 button support
 fixed rotation and rectangle select
 fixed missing selection rings
@@ -35,11 +37,18 @@ Gold delivery: removed the requirement of a bank to move gold
 1. It was too much work to balance event timers for all difficult levels; so they are all the same now.
 2. I have slowed down the pacing in general since there is more manage work to deal with.
 3. Being aggressive at the start should drasticly shorten the first 30min of event-free peace.
-4. Working on an early event that is chasing down some barbarians.
+4. I am working on an early event that is chasing down some barbarians.
 
 
+!! Known issues, that I am working on !!
+-The guards are hard to select
+-The soldier micro kinda sucks
+-Mutliselect doesnt work properly on soldiers
+-Soldiers can be stuck on idle in battle
+-Cant move units between armies and garrisons
+-Text with "." in the beginning are temporary, will go through spell check and translation.
+-There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
 
-!save av settings
 #Free build defences
  Rock thrower
 -representeras av en gubbe tills de strider

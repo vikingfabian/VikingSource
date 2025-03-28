@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars
                 }
 
                 if (XInput.KeyDownEvent(Buttons.Back) ||
-                    controllerInput.ControllerCancel.DownEvent_AnyInstance ||
+                    controllerInput.CancelKey.DownEvent_AnyInstance ||
                     controllerInput.ControllerSelect.DownEvent_AnyInstance ||
                     controllerInput.Controller_FlagDesign_Colorpicker.DownEvent_AnyInstance)
                 {

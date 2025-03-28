@@ -75,12 +75,41 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Settings_CentralGold_Description => "On: all your gold is in a shared pool for instant use. Off: gold is physical and needs to be transported.";
 
         public string MouseSettings_Title => "Mouse input";
+        public string KeyboardSettings_Title => "Key mapping";
         public string MouseButtonAction_None => "No action";
         public string MouseButtonAction_Select => "Select";
         public string MouseButtonAction_Pan => "Pan";
         public string MouseButtonAction_PanAndOrder => "Pan and Order";
         public string MouseButtonAction_Order => "Order";
         public string MouseButtonAction_Cancel => "Cancel";
+
+
+        public string InputActionName_StopStart => "Stop/Start";
+        public string InputActionName_ToggleHudDetail => "Toggle HUD Detail";
+        public string InputActionName_NextCity => "Next City";
+        public string InputActionName_NextArmy => "Next Army";
+        public string InputActionName_NextBattle => "Next Battle";
+        public string InputActionName_Build => "Build";
+        public string InputActionName_Copy => "Copy";
+        public string InputActionName_Paste => "Paste";
+        public string InputActionName_Menu => "Menu";
+        public string InputActionName_FlagDesign_ToggleColor_Prev => "Previous Color";
+        public string InputActionName_FlagDesign_ToggleColor_Next => "Next Color";
+        public string InputActionName_FlagDesign_PaintBucket => "Paint Bucket";
+        public string InputActionName_Controller_FlagDesign_Colorpicker => "Color Picker";
+        public string InputActionName_ControllerFocus => "Focus";
+        public string InputActionName_ControllerCancel => "Cancel";
+        public string InputActionName_ControllerMessageClick => "Message Click";
+        public string InputActionName_ControllerSelect => "Select";
+        public string InputActionName_WASD_UP => "Up";
+        public string InputActionName_WASD_DOWN => "Down";
+        public string InputActionName_WASD_LEFT => "Left";
+        public string InputActionName_WASD_RIGHT => "Right";
+        public string InputActionName_CameraTiltLeft => "Camera Tilt Left";
+        public string InputActionName_CameraTiltRight => "Camera Tilt Right";
+        public string InputActionName_CameraTiltUp => "Camera Tilt Up";
+        public string InputActionName_ZoomInKey => "Zoom In";
+        public string InputActionName_ZoomOutKey => "Zoom Out";
 
 
         public string Hud_None => "None";

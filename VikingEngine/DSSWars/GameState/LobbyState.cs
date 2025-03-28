@@ -53,9 +53,9 @@ namespace VikingEngine.DSSWars
         Graphics.TextG maploading;
         GuiLabel difficultyLevelText = null;
 
-        InputButtonType mappingFor;
-        bool inKeyMapsMenu = false;
-        List<Keys> availableKeyboardKeys;
+        InputActionType mappingFor;
+        //bool inKeyMapsMenu = false;
+        //List<Keys> availableKeyboardKeys;
 
         VectorRect underMenuArea;
         RichMenu richmenu;
@@ -107,15 +107,15 @@ namespace VikingEngine.DSSWars
 
             
 
-            availableKeyboardKeys = VikingEngine.Input.Keyboard.AllKeys.ToList();
+            //availableKeyboardKeys = VikingEngine.Input.Keyboard.AllKeys.ToList();
 
-            //reserved keys
-            availableKeyboardKeys.Remove(Keys.Escape);
-            availableKeyboardKeys.Remove(Keys.Enter);
-            availableKeyboardKeys.Remove(Keys.Up);
-            availableKeyboardKeys.Remove(Keys.Down);
-            availableKeyboardKeys.Remove(Keys.Left);
-            availableKeyboardKeys.Remove(Keys.Right);
+            ////reserved keys
+            //availableKeyboardKeys.Remove(Keys.Escape);
+            //availableKeyboardKeys.Remove(Keys.Enter);
+            //availableKeyboardKeys.Remove(Keys.Up);
+            //availableKeyboardKeys.Remove(Keys.Down);
+            //availableKeyboardKeys.Remove(Keys.Left);
+            //availableKeyboardKeys.Remove(Keys.Right);
 
             if (Ref.lobby == null)
             {
@@ -209,86 +209,20 @@ namespace VikingEngine.DSSWars
             underMenu.OpenMenu(menuName, stack);
         }
 
-        void testMenu2()
+        void closingOptionsMenuEvent()
         {
-            var area = Screen.SafeArea;
-            area.Width = Screen.IconSize * 8;
-            area.X = Screen.CenterScreen.X;
-
-            
-            richmenu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top1, new PlayerData(PlayerData.AllPlayers));
-            richmenu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top1_Back);
-
-            RichBoxContent content = new RichBoxContent();
-            content.h1("New menu", HudLib.TitleColor_Head);
-            content.text("Text text text");
-            content.newLine();
-            content.Add(new RbDragButton(new DragButtonSettings(1, 100, 1), IntGetSet));
-            content.newLine();
-            RbDragButton.RbDragButtonGroup(content, new List<float> { 1,10 }, new DragButtonSettings(1, 100, 1), IntGetSet);
-
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("check") }, BoolGetSet));
-
-            content.newLine();
-
-            content.Add(new ArtOption(true, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsResource_Food), new RbText("opt1") }, null));
-            content.Add(new ArtOption(false, new List<AbsRichBoxMember> { new RbText("opt2") }, null));
-            content.Add(new ArtOption(false, new List<AbsRichBoxMember> { new RbText("opt3") }, null));
-
-            content.newLine();
-            content.Add(new ArtTabgroup(new List<ArtTabMember>
+            if (Ref.gamesett.settingsHasChanged)
             {
-                new ArtTabMember(new List<AbsRichBoxMember> { new RbText("tab1") }),
-                new ArtTabMember(new List<AbsRichBoxMember> { new RbText("tab2") }),
-                new ArtTabMember(new List<AbsRichBoxMember> { new RbText("tab3") }),
-            }, 0, null));
-
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Start new game") }, null, null));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Load") }, null, null));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Options") }, null, null));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Map editor") }, null, null));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Voxel editor") }, null, null));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Flag painter") }, null, null));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Exit") }, null, null));
-
-            for (int i = 0; i < 100; i++)
-            {
-                content.newLine();
-                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("test" + i.ToString()) }, null, new RbTooltip(TooltipTest, i));
-                btn.fillWidth = true;
-                content.Add(btn);
-                content.Button("test" + i.ToString(), null, null, true);
+                Ref.gamesett.settingsHasChanged = false;
+                Ref.gamesett.Save();
             }
-
-            richmenu.Refresh(content);
-        }
-
-        void TooltipTest(RichBoxContent content, object tag)
-        {
-            content.h2("Tooltip");
-            content.text("Button no: " + tag.ToString());
-        }
-
-        bool testBool = false;
-        bool BoolGetSet(int index, bool set, bool value)
-        {
-            if (set)
+            if (Ref.gamesett.graphicsHasChanged)
             {
-                testBool = value;
+                Ref.gamesett.graphicsHasChanged = false;
+                new LobbyState();
             }
-            return testBool;
         }
 
-        int testInt = 1;
-        int IntGetSet(bool set, int value)
-        {
-            if (set)
-            {
-                testInt = value;
-            }
-            return testInt;
-        }
 
         void load_asynch()
         {
@@ -590,58 +524,58 @@ namespace VikingEngine.DSSWars
 
         void keyMappingMenu_InputSource(bool keyboard)
         {
-            GuiLayout layout = new GuiLayout(HudLib.InputName(keyboard ? InputSourceType.Keyboard : InputSourceType.XController), menuSystem.menu);
-            {
-                var map = keyboard ? Ref.gamesett.keyboardMap : Ref.gamesett.controllerMap;
-                var list = map.listInputs(keyboard);
-                foreach (var input in list)
-                {
-                    IButtonMap button = null;
-                    map.getset(input, ref button, false);
-                    List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(6)
-                    {
-                        new RbText(map.Name(input) + ": "),
-                    };
-                    RichBoxContent.ButtonMap(button, buttonContent);
-                    new GuiRichButton(HudLib.RbOnGuiSettings, buttonContent, null,
-                        new GuiAction2Arg<bool, InputButtonType>(listMapOptions, keyboard, input),
-                        true, layout);
-                }
-            }
-            layout.End();
+            //GuiLayout layout = new GuiLayout(HudLib.InputName(keyboard ? InputSourceType.Keyboard : InputSourceType.XController), menuSystem.menu);
+            //{
+            //    var map = keyboard ? Ref.gamesett.keyboardMap : Ref.gamesett.controllerMap;
+            //    var list = map.listInputs(keyboard);
+            //    foreach (var input in list)
+            //    {
+            //        IButtonMap button = null;
+            //        map.getset(input, ref button, false);
+            //        List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(6)
+            //        {
+            //            new RbText(map.Name(input) + ": "),
+            //        };
+            //        RichBoxContent.ButtonMap(button, buttonContent);
+            //        new GuiRichButton(HudLib.RbOnGuiSettings, buttonContent, null,
+            //            new GuiAction2Arg<bool, InputActionType>(listMapOptions, keyboard, input),
+            //            true, layout);
+            //    }
+            //}
+            //layout.End();
         }
 
-        void listMapOptions(bool keyboard, InputButtonType input)
-        {
-            var map = keyboard ? Ref.gamesett.keyboardMap : Ref.gamesett.controllerMap;
-            GuiLayout layout = new GuiLayout(map.Name(input), menuSystem.menu);
-            {
-                if (keyboard)
-                {
-                    foreach (var key in availableKeyboardKeys)
-                    {
-                        var icon = Input.KeyboardButtonMap.GetKeyTile(key);
-                        if (icon != SpriteName.KeyUnknown)
-                        {
-                            new GuiImageButton(icon, null,
-                                new GuiAction1Arg<Keys>(listMapOptions_keyboardlink, key),
-                                false, layout);
-                        }
-                    }
-                }
-            }
-            layout.End();
+        //void listMapOptions(bool keyboard, InputActionType input)
+        //{
+        //    var map = keyboard ? Ref.gamesett.keyboardMap : Ref.gamesett.controllerMap;
+        //    GuiLayout layout = new GuiLayout(map.Name(input), menuSystem.menu);
+        //    {
+        //        if (keyboard)
+        //        {
+        //            foreach (var key in availableKeyboardKeys)
+        //            {
+        //                var icon = Input.KeyboardButtonMap.GetKeyTile(key);
+        //                if (icon != SpriteName.KeyUnknown)
+        //                {
+        //                    new GuiImageButton(icon, null,
+        //                        new GuiAction1Arg<Keys>(listMapOptions_keyboardlink, key),
+        //                        false, layout);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    layout.End();
 
-            inKeyMapsMenu = true;
-            mappingFor = input;
-            layout.OnDelete += closingOptionsMenuEvent;
+        //    inKeyMapsMenu = true;
+        //    mappingFor = input;
+        //    layout.OnDelete += closingOptionsMenuEvent;
 
-        }
+        //}
 
-        void closedKeymapsMenu()
-        {
-            inKeyMapsMenu = false;
-        }
+        //void closedKeymapsMenu()
+        //{
+        //    inKeyMapsMenu = false;
+        //}
 
         void listMapOptions_keyboardlink(Keys key)
         {
@@ -653,7 +587,7 @@ namespace VikingEngine.DSSWars
             keyMappingMenu_InputSource(true);
 
         }
-        void listMapOptions_controllerlink(InputButtonType input, IButtonMap buttonmap)
+        void listMapOptions_controllerlink(InputActionType input, IButtonMap buttonmap)
         {
 
         }
@@ -797,8 +731,15 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case GameMenuSystem.UnderMenu_Options_Mouse:
-                    //mouseOptions();
                     GameMenuSystem.mouseOptions(underMenu);
+                    break;
+
+                case GameMenuSystem.UnderMenu_Options_Keyboard:
+                    GameMenuSystem.keyboardOptions(underMenu);
+                    break;
+
+                case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
+                    GameMenuSystem.listMapOptions(underMenu);
                     break;
 
                 case UnderMenu_Options_Language:
@@ -1473,19 +1414,7 @@ namespace VikingEngine.DSSWars
         //    layout.OnDelete += closingOptionsMenuEvent;
         //}
 
-        void closingOptionsMenuEvent()
-        {
-            if (Ref.gamesett.settingsHasChanged)
-            {
-                Ref.gamesett.settingsHasChanged = false;
-                Ref.gamesett.Save();
-            }
-            if (Ref.gamesett.graphicsHasChanged)
-            {
-                Ref.gamesett.graphicsHasChanged = false;
-                new LobbyState();
-            }
-        }
+       
 
         void selectProfileLink(int playerNumber, int profile)
         {
@@ -1591,16 +1520,16 @@ namespace VikingEngine.DSSWars
                 Ref.music.Update();
             }
 
-            if (inKeyMapsMenu)
-            {
-                foreach (var key in availableKeyboardKeys)
-                {
-                    if (Input.Keyboard.KeyDownEvent(key))
-                    {
-                        listMapOptions_keyboardlink(key);
-                    }
-                }
-            }
+            //if (inKeyMapsMenu)
+            //{
+            //    foreach (var key in availableKeyboardKeys)
+            //    {
+            //        if (Input.Keyboard.KeyDownEvent(key))
+            //        {
+            //            listMapOptions_keyboardlink(key);
+            //        }
+            //    }
+            //}
 
         }
 

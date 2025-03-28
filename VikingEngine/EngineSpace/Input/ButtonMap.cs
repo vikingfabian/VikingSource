@@ -69,6 +69,7 @@ namespace VikingEngine.Input
                 case ButtonMapType.XController_TriggerAlts:
                     result = new XboxButtonMap_TriggerAlts();
                     break;
+                
                 //case ButtonMapType.GenericController:
                 //    result = new GenericControllerButtonMap();
                 //    break;
@@ -492,7 +493,7 @@ namespace VikingEngine.Input
     struct KeyboardButtonMap : IButtonMap
     {        
         /* Static */
-        public static SpriteName GetKeyTile(Keys key)
+        public static SpriteName GetKeySprite(Keys key)
         {
             switch (key)
             {
@@ -626,10 +627,10 @@ namespace VikingEngine.Input
         }
 
         /* Methods */
-        public SpriteName Icon { get { return GetKeyTile(key); } }
+        public SpriteName Icon { get { return GetKeySprite(key); } }
         public void ListIcons(List<SpriteName> list)
         {
-            list.Add(GetKeyTile(key));
+            list.Add(GetKeySprite(key));
         }
         
         public bool IsDown { get { return Keyboard.IsKeyDown(key); } }
@@ -743,6 +744,11 @@ namespace VikingEngine.Input
         public void read(System.IO.BinaryReader r)
         {
             button = (MouseButton)r.ReadByte();
+        }
+
+        public override string ToString()
+        {
+            return "Mouse button: " + button.ToString();
         }
     }
     

@@ -148,9 +148,9 @@ namespace VikingEngine.DSSWars.Display
             content.text(string.Format(DssRef.lang.Hud_CityCount, TextLib.LargeNumber(player.faction.cities.Count)));
             content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(player.faction.armies.Count)));
 
-            content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.Input_NextCity);
-            content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.lang.Input_NextArmy);
-            content.ButtonDescription(player.gameControls.input.NextBattle, DssRef.lang.Input_NextBattle);
+            //content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.Input_NextCity);
+            //content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.lang.Input_NextArmy);
+            //content.ButtonDescription(player.gameControls.input.NextBattle, DssRef.lang.Input_NextBattle);
 
             content.ButtonDescription(player.gameControls.input.Build, DssRef.lang.Input_Build);
             content.ButtonDescription(player.gameControls.input.Copy, DssRef.lang.Hud_CopySetup);

@@ -14,12 +14,19 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using Microsoft.Xna.Framework.Input;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.ToGG.HeroQuest.Display;
+using VikingEngine.LootFest.GO.PickUp;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Display
 {
     class GameMenuSystem //: MenuSystem
     {
         public const string UnderMenu_Options_Mouse = "options_mouse";
+        public const string UnderMenu_Options_Keyboard = "options_keyboard";
+        public const string UnderMenu_Options_Keyboard_Key = "options_keyboard_key";
         bool gameWasPaused;
         Graphics.Image blackFade;
         protected ImageLayers layer = ImageLayers.Foreground7;
@@ -271,8 +278,11 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollMenuProperty, true));
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Mouse, 0.8f), new RbText(DssRef.todoLang.MouseSettings_Title) },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Mouse, 0.8f), new RbSpace(), new RbText(DssRef.todoLang.MouseSettings_Title) },
                 new RbAction2Arg<string, bool>(menu.OpenMenu, UnderMenu_Options_Mouse, true)));
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Keyboard, 0.8f), new RbSpace(), new RbText(DssRef.todoLang.KeyboardSettings_Title) },
+                new RbAction2Arg<string, bool>(menu.OpenMenu, UnderMenu_Options_Keyboard, true)));
 
             content.newParagraph();
             content.h2(".Gameplay options", HudLib.TitleColor_Head);
@@ -337,6 +347,92 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
+        static InputActionType CurrentEditInput;
+
+        public static void keyboardOptions(RichMenu menu)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            content.h1(DssRef.todoLang.KeyboardSettings_Title, HudLib.TitleColor_Head);
+
+            var map = Ref.gamesett.keyboardMap;
+            var list = map.listInputs(true);
+            foreach (InputActionType input in list)
+            {
+                IButtonMap button = null;
+                map.getset(input, ref button, false);
+
+                content.newLine();
+                content.Add(new RbText(LangLib.InputActionName(input), HudLib.TitleColor_Label));
+                content.space();
+                //List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>();
+                content.Add(new ArtButton(RbButtonStyle.Primary, KeyTypeButtonContent(button.ButtonName, button.Icon), 
+                    new RbAction1Arg<InputActionType>(
+                    (InputActionType action) => {
+                        CurrentEditInput = action;
+                        menu.OpenMenu(UnderMenu_Options_Keyboard_Key, true);
+                    }, input)));
+
+                //RichBoxContent.ButtonMap(button, buttonContent);
+                //new GuiRichButton(HudLib.RbOnGuiSettings, buttonContent, null,
+                //    new GuiAction2Arg<bool, InputActionType>(listMapOptions, keyboard, input),
+                //    true, layout);
+            }
+
+            menu.Refresh(content);
+        }
+
+        public static void listMapOptions(RichMenu menu)
+        {
+
+            RichBoxContent content = new RichBoxContent();
+
+            content.h1(LangLib.InputActionName(CurrentEditInput), HudLib.TitleColor_Head);
+
+            var map =Ref.gamesett.keyboardMap;
+
+            var availableKeyboardKeys = VikingEngine.Input.Keyboard.AllMappableKeys();
+
+            foreach (Keys key in availableKeyboardKeys)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, KeyTypeButtonContent(key.ToString(), Input.KeyboardButtonMap.GetKeySprite(key)),
+                    new RbAction2Arg<RichMenu, Keys>(onKeyBoardKeySelect, menu, key)));
+            }
+
+
+            //layout.End();
+
+            //inKeyMapsMenu = true;
+            //mappingFor = input;
+            //layout.OnDelete += closingOptionsMenuEvent;
+
+            menu.Refresh(content);
+            new VikingEngine.DSSWars.Players.PlayerControls.KeyMapListener(menu);
+        }
+
+        public static void onKeyBoardKeySelect(RichMenu menu, Keys key)
+        {
+            IButtonMap map = new KeyboardButtonMap(key);
+            Ref.gamesett.keyboardMap.getset(CurrentEditInput, ref map, true);
+            menu.OpenMenu(UnderMenu_Options_Keyboard, false);
+        }
+
+        static List<AbsRichBoxMember> KeyTypeButtonContent(string name, SpriteName icon)
+        {
+            List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>();
+            if (icon != SpriteName.KeyUnknown &&
+                icon != SpriteName.NO_IMAGE)
+            {
+                buttonContent.Add(new RbImage(icon));
+            }
+            else
+            {
+                buttonContent.Add(new RbText(name));
+            }
+
+            return buttonContent;
+        }
+
         public static void mouseOptions(RichMenu menu)
         {
             RichBoxContent content = new RichBoxContent();
@@ -370,7 +466,7 @@ namespace VikingEngine.DSSWars.Display
                         new RbAction1Arg<MouseButtonAction>((MouseButtonAction action) =>
                         {
                             Ref.gamesett.keyboardMap.SetMouseAction(button, action);
-                            Ref.gamesett.Save();
+                            Ref.gamesett.settingsHasChanged = true;
                             menu.CloseDropDown();
                         }, kv.Key),
                         null

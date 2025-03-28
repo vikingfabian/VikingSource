@@ -600,6 +600,117 @@ namespace VikingEngine.DSSWars.Display.Translation
         //    }
         //}
 
+        public static string InputActionName(InputActionType action)
+        {
+            switch (action)
+            {
+                case InputActionType.StopStart:
+                    return DssRef.todoLang.InputActionName_StopStart;
+                case InputActionType.ToggleHudDetail:
+                    return DssRef.todoLang.InputActionName_ToggleHudDetail;
+                case InputActionType.GameSpeed:
+                    return DssRef.lang.Input_GameSpeed;
+                case InputActionType.PauseGame:
+                    return DssRef.lang.Input_Pause;
+                case InputActionType.NextCity:
+                    return DssRef.todoLang.InputActionName_NextCity;
+                case InputActionType.NextArmy:
+                    return DssRef.todoLang.InputActionName_NextArmy;
+                case InputActionType.NextBattle:
+                    return DssRef.todoLang.InputActionName_NextBattle;
+                case InputActionType.Build:
+                    return DssRef.todoLang.InputActionName_Build;
+                case InputActionType.Copy:
+                    return DssRef.todoLang.InputActionName_Copy;
+                case InputActionType.Paste:
+                    return DssRef.todoLang.InputActionName_Paste;
+                case InputActionType.Menu:
+                    return DssRef.todoLang.InputActionName_Menu;
+                case InputActionType.FlagDesign_ToggleColor_Prev:
+                    return DssRef.todoLang.InputActionName_FlagDesign_ToggleColor_Prev;
+                case InputActionType.FlagDesign_ToggleColor_Next:
+                    return DssRef.todoLang.InputActionName_FlagDesign_ToggleColor_Next;
+                case InputActionType.FlagDesign_PaintBucket:
+                    return DssRef.todoLang.InputActionName_FlagDesign_PaintBucket;
+                case InputActionType.Controller_FlagDesign_Colorpicker:
+                    return DssRef.todoLang.InputActionName_Controller_FlagDesign_Colorpicker;
+                case InputActionType.ControllerFocus:
+                    return DssRef.todoLang.InputActionName_ControllerFocus;
+                case InputActionType.ControllerCancel:
+                    return DssRef.todoLang.InputActionName_ControllerCancel;
+                case InputActionType.ControllerMessageClick:
+                    return DssRef.todoLang.InputActionName_ControllerMessageClick;
+                case InputActionType.ControllerSelect:
+                    return DssRef.todoLang.InputActionName_ControllerSelect;
+                case InputActionType.WASD_UP:
+                    return DssRef.todoLang.InputActionName_WASD_UP;
+                case InputActionType.WASD_DOWN:
+                    return DssRef.todoLang.InputActionName_WASD_DOWN;
+                case InputActionType.WASD_LEFT:
+                    return DssRef.todoLang.InputActionName_WASD_LEFT;
+                case InputActionType.WASD_RIGHT:
+                    return DssRef.todoLang.InputActionName_WASD_RIGHT;
+                case InputActionType.CameraTiltLeft:
+                    return DssRef.todoLang.InputActionName_CameraTiltLeft;
+                case InputActionType.CameraTiltRight:
+                    return DssRef.todoLang.InputActionName_CameraTiltRight;
+                case InputActionType.CameraTiltUp:
+                    return DssRef.todoLang.InputActionName_CameraTiltUp;
+                case InputActionType.ZoomInKey:
+                    return DssRef.todoLang.InputActionName_ZoomInKey;
+                case InputActionType.ZoomOutKey:
+                    return DssRef.todoLang.InputActionName_ZoomOutKey;
+
+                default:
+                    throw new NotImplementedException($"InputActionName not implemented for {action}");
+            }
+        }
+        //public string Name(InputActionType type)
+        //{
+        //    switch (type)
+        //    {
+
+        //        case InputActionType.StopStart:
+        //            return DssRef.lang.ArmyOption_Halt;
+        //        //case InputButtonType.AutomationSetting:
+        //        //    return DssRef.lang.Automation_Title;
+        //        //case InputButtonType.Home:
+        //        //    return;
+        //        case InputActionType.ToggleHudDetail:
+        //            return DssRef.lang.Input_ToggleHudDetail;
+        //        case InputActionType.GameSpeed:
+        //            return DssRef.lang.Input_GameSpeed;
+        //        case InputActionType.PauseGame:
+        //            return DssRef.lang.Input_Pause;
+        //        case InputActionType.NextCity:
+        //            return DssRef.lang.Input_NextCity;
+        //        case InputActionType.NextArmy:
+        //            return DssRef.lang.Input_NextArmy;
+        //        case InputActionType.NextBattle:
+        //            return DssRef.lang.Input_NextBattle;
+
+        //        case InputActionType.ControllerFocus:
+        //            return DssRef.lang.Input_ToggleHudFocus;
+        //        case InputActionType.ControllerCancel:
+        //            return Ref.langOpt.Hud_Cancel;
+        //        case InputActionType.ControllerMessageClick:
+        //            return DssRef.lang.Input_ClickMessage;
+
+        //        case InputActionType.WASD_UP:
+        //            return DssRef.lang.Input_Up;
+        //        case InputActionType.WASD_DOWN:
+        //            return DssRef.lang.Input_Down;
+        //        case InputActionType.WASD_LEFT:
+        //            return DssRef.lang.Input_Left;
+        //        case InputActionType.WASD_RIGHT:
+        //            return DssRef.lang.Input_Right;
+
+        //        default:
+        //            return "ERR";
+
+        //    }
+        //}
+
         public static string Training(TrainingLevel training)
         {
             switch (training)

@@ -145,6 +145,21 @@ namespace VikingEngine.Input
             }
         }
 
+        public static List<Keys> AllMappableKeys()
+        {
+            var availableKeyboardKeys = VikingEngine.Input.Keyboard.AllKeys.ToList();
+
+            //reserved keys
+            availableKeyboardKeys.Remove(Keys.Escape);
+            availableKeyboardKeys.Remove(Keys.Enter);
+            availableKeyboardKeys.Remove(Keys.Up);
+            availableKeyboardKeys.Remove(Keys.Down);
+            availableKeyboardKeys.Remove(Keys.Left);
+            availableKeyboardKeys.Remove(Keys.Right);
+
+            return availableKeyboardKeys;
+        }
+
         public static readonly Keys[] AllKeys = new Keys[]
         {
             Keys.Back,

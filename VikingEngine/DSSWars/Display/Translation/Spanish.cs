@@ -325,20 +325,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_Battle => "Batalla";
 
-        /// <summary>
-        /// Describe la entrada del botón. Mover a la siguiente ciudad.
-        /// </summary>
-        public override string Input_NextCity => "Siguiente ciudad";
-
-        /// <summary>
-        /// Describe la entrada del botón. Mover al siguiente ejército.
-        /// </summary>
-        public override string Input_NextArmy => "Siguiente ejército";
-
-        /// <summary>
-        /// Describe la entrada del botón. Mover a la siguiente batalla.
-        /// </summary>
-        public override string Input_NextBattle => "Siguiente batalla";
+        
 
         /// <summary>
         /// Describe la entrada del botón. Pausar.
@@ -1212,40 +1199,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Settings_ButtonMapping => "Asignación de botones";
 
-        /// <summary>
-        /// Describe la entrada del botón. Expande o reduce la cantidad de información en el HUD
-        /// </summary>
-        public override string Input_ToggleHudDetail => "Alternar detalle del HUD";
-
-        /// <summary>
-        /// Describe la entrada del botón. Alterna la selección entre el mapa y el HUD
-        /// </summary>
-        public override string Input_ToggleHudFocus => "Enfoque del menú";
-
-        /// <summary>
-        /// Describe la entrada del botón. Atajo para hacer clic en la última ventana emergente
-        /// </summary>
-        public override string Input_ClickMessage => "Mensaje de clic";
-
-        /// <summary>
-        /// Describe la entrada del botón. Dirección general de movimiento
-        /// </summary>
-        public override string Input_Up => "Arriba";
-
-        /// <summary>
-        /// Describe la entrada del botón. Dirección general de movimiento
-        /// </summary>
-        public override string Input_Down => "Abajo";
-
-        /// <summary>
-        /// Describe la entrada del botón. Dirección general de movimiento
-        /// </summary>
-        public override string Input_Left => "Izquierda";
-
-        /// <summary>
-        /// Describe la entrada del botón. Dirección general de movimiento
-        /// </summary>
-        public override string Input_Right => "Derecha";
+        
 
         /// <summary>
         /// Tipo de entrada, entrada estándar de PC

@@ -17,29 +17,30 @@ namespace VikingEngine.DSSWars
 {
     class InputMap : PlayerInputMap, IRichboxGuiInputMap
     {
-        IDirectionalMap wasd;
-        public IDirectionalMap move;
-        IDirectionalMap dpadMove;
-        public IDirectionalMap cameraTiltZoom;
-        public IButtonMap cameraUpwardsTilt;
+        IButtonMap wasd_up, wasd_down, wasd_left, wasd_right;
+        IButtonMap cameraTiltLeft, cameraTiltRight;
+        public IButtonMap cameraTiltUp;
+        public IDirectionalMap move; //Do not save
+        IDirectionalMap dpadMove; //Do not save
+        public IDirectionalMap cameraTiltZoom; //Do not save
 
-        public IButtonMap zoomInButton, zoomOutButton;
+        public IButtonMap zoomInKey, zoomOutKey;
 
         public IButtonMap ControllerSelect;
-        public IButtonMap ControllerCancel;
+        public IButtonMap CancelKey;
         public IButtonMap ControllerFocus;
         public IButtonMap ControllerMessageClick;
-        public IButtonMap Execute;
+        //public IButtonMap Execute;
         public IButtonMap StopStart;
         public IButtonMap Copy;
         public IButtonMap Paste;
         public IButtonMap Build;
         
-        public IButtonMap mousePan;
-        public IButtonMap mouseSelect;
-        public IButtonMap mouseOrder;
-        public IButtonMap mouseCancel;
-        public bool hasPanOrderMix;
+        public IButtonMap mousePan; //Do not save
+        public IButtonMap mouseSelect; //Do not save
+        public IButtonMap mouseOrder; //Do not save
+        public IButtonMap mouseCancel; //Do not save
+        public bool hasPanOrderMix; //Do not save
 
         MouseButtonAction leftMouseAction = MouseButtonAction.Select;
         MouseButtonAction rightMouseAction = MouseButtonAction.PanAndOrder;
@@ -52,16 +53,13 @@ namespace VikingEngine.DSSWars
         public IButtonMap NextArmy;
         public IButtonMap NextCity;
         public IButtonMap NextBattle;
-        //public IButtonMap CardMenu;
         public IButtonMap Options;
-        //public IButtonMap Home;
         public IButtonMap Menu;
 
         public IButtonMap ToggleHudDetail;
         public IButtonMap GameSpeed;
         public IButtonMap PauseGame;
 
-        //public IButtonMap AutomationSetting;
         public IButtonMap FlagDesign_ToggleColor_Prev;
         public IButtonMap FlagDesign_ToggleColor_Next;
         public IButtonMap FlagDesign_PaintBucket;
@@ -145,22 +143,21 @@ namespace VikingEngine.DSSWars
             ControllerFocus = new NoButtonMap();
             ControllerMessageClick = new NoButtonMap();
 
-            wasd = WASD;
-            move = new AlternativeDirectionalMap(arrowKeys, wasd);
+            wasd_up = new KeyboardButtonMap(Keys.W);
+            wasd_down = new KeyboardButtonMap(Keys.S);
+            wasd_left = new KeyboardButtonMap(Keys.A);
+            wasd_right = new KeyboardButtonMap(Keys.D);
 
-            var camAlts = new Alternative5DirectionalMap();
-            camAlts.add(new KeyPlusDirectionalMap(new KeyboardButtonMap(Keys.LeftShift), arrowKeys));
-            camAlts.add(new DirectionalButtonsMap(null, null, new KeyboardButtonMap(Keys.Q), new KeyboardButtonMap(Keys.E)));
-            camAlts.add(new DirectionalMouseScrollMap());
-            cameraTiltZoom = camAlts;
+            cameraTiltLeft = new KeyboardButtonMap(Keys.Q);
+            cameraTiltRight = new KeyboardButtonMap(Keys.E);
+            cameraTiltUp = new KeyboardButtonMap(Keys.R);
 
-            cameraUpwardsTilt = new KeyboardButtonMap(Keys.R);
 
             ControllerSelect = new MouseButtonMap(MouseButton.Left);
-            Execute = new MouseButtonMap(MouseButton.Right);
-            ControllerCancel = new MouseButtonMap(MouseButton.Right);
+            //Execute = new MouseButtonMap(MouseButton.Right);
+            CancelKey = new KeyboardButtonMap(Keys.Back);
             //DragPan = new MouseButtonMap(MouseButton.Middle);
-            
+
             //Home = new KeyboardButtonMap(Keys.Home);
             StopStart = new KeyboardButtonMap(Keys.H);
             Copy = new KeyboardButtonMap(Keys.C);
@@ -173,8 +170,8 @@ namespace VikingEngine.DSSWars
             GameSpeed = new KeyboardButtonMap(Keys.Tab);
             PauseGame = new KeyboardButtonMap(Keys.Space);
 
-            zoomInButton = new KeyboardButtonMap(Keys.PageUp);
-            zoomOutButton = new KeyboardButtonMap(Keys.PageDown);
+            zoomInKey = new KeyboardButtonMap(Keys.PageUp);
+            zoomOutKey = new KeyboardButtonMap(Keys.PageDown);
 
 
             NextCity = new KeyboardButtonMap(Keys.D1);
@@ -188,8 +185,23 @@ namespace VikingEngine.DSSWars
 
             menuInput?.keyboardSetup();
             refreshMouseInput();
+            refreshKeyBoardInput();
         }
+        void refreshKeyBoardInput()
+        {
+            var wasd = new DirectionalButtonsMap(
+                wasd_up,
+                wasd_down,
+                wasd_left,
+                wasd_right
+            );;
+            move = new AlternativeDirectionalMap(arrowKeys, wasd);
 
+            var camAlts = new Alternative5DirectionalMap();
+            camAlts.add(new DirectionalButtonsMap(null, null, cameraTiltLeft, cameraTiltRight));
+            camAlts.add(new DirectionalMouseScrollMap());
+            cameraTiltZoom = camAlts;
+        }
         void refreshMouseInput()
         {
 
@@ -243,7 +255,7 @@ namespace VikingEngine.DSSWars
 
             ControllerSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
             ControllerFocus = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
-            ControllerCancel = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
+            CancelKey = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
 
             StopStart = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);
             //AutomationSetting = new XboxButtonMap(Buttons.Back, inputSource.controllerIndex);
@@ -273,12 +285,12 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 3;
+            const int InputVersion = 4;
             w.Write(InputVersion);
             //inputSource.write(w);
 
             ControllerFocus.write(w);
-            ControllerCancel.write(w);
+            CancelKey.write(w);
             StopStart.write(w);
             //AutomationSetting.write(w);
             //Home.write(w);
@@ -290,31 +302,57 @@ namespace VikingEngine.DSSWars
             NextBattle.write(w);
             ControllerMessageClick.write(w);
 
+            
+            //Menu.write(w);          
+           
+
             if (inputSource.HasKeyBoard)
             {
-                wasd.write(w);
+                wasd_up.write(w);
+                wasd_down.write(w);
+                wasd_left.write(w);
+                wasd_right.write(w);
+
+                cameraTiltLeft.write(w);
+                cameraTiltRight.write(w);
+                cameraTiltUp.write(w);
+
+                zoomInKey.write(w);
+                zoomOutKey.write(w);
+
+                Copy.write(w);
+                Paste.write(w);
+                Build.write(w);
             }
 
-            w.Write((byte)leftMouseAction);
-            w.Write((byte)rightMouseAction);
-            w.Write((byte)middleMouseAction);
-            w.Write((byte)X1MouseAction);
-            w.Write((byte)X2MouseAction);
+            if (inputSource.HasMouse)
+            {
+                w.Write((byte)leftMouseAction);
+                w.Write((byte)rightMouseAction);
+                w.Write((byte)middleMouseAction);
+                w.Write((byte)X1MouseAction);
+                w.Write((byte)X2MouseAction);
+            }
+
+            if (inputSource.IsController)
+            {
+                Controller_FlagDesign_Colorpicker.write(w);
+                ControllerSelect.write(w);
+            }
 
             refreshMouseInput();
+
+            Debug.WriteCheck(w);
         }
         public void read(System.IO.BinaryReader r)
         {
             int inputVersion = r.ReadInt32();
-             //inputSource.read(r);
+            //inputSource.read(r);
 
             ControllerFocus = MapRead.Button(r, inputSource.controllerIndex);
-            ControllerCancel = MapRead.Button(r, inputSource.controllerIndex);
+            CancelKey = MapRead.Button(r, inputSource.controllerIndex);
             StopStart = MapRead.Button(r, inputSource.controllerIndex);
-            if (inputVersion < 2)
-            {
-                var AutomationSetting = MapRead.Button(r, inputSource.controllerIndex);
-            }
+                        
             //Home = MapRead.Button(r, inputSource.controllerIndex);
             ToggleHudDetail = MapRead.Button(r, inputSource.controllerIndex);
             GameSpeed = MapRead.Button(r, inputSource.controllerIndex);
@@ -324,69 +362,135 @@ namespace VikingEngine.DSSWars
             NextBattle = MapRead.Button(r, inputSource.controllerIndex);
             ControllerMessageClick = MapRead.Button(r, inputSource.controllerIndex);
 
+            //Menu = MapRead.Button(r, inputSource.controllerIndex);
+
             if (inputSource.HasKeyBoard)
             {
-                wasd = MapRead.Directional(r);
+                wasd_up = MapRead.Button(r, inputSource.controllerIndex);
+                wasd_down = MapRead.Button(r, inputSource.controllerIndex);
+                wasd_left = MapRead.Button(r, inputSource.controllerIndex);
+                wasd_right = MapRead.Button(r, inputSource.controllerIndex);
+
+                cameraTiltLeft = MapRead.Button(r, inputSource.controllerIndex);
+                cameraTiltRight = MapRead.Button(r, inputSource.controllerIndex);
+                cameraTiltUp = MapRead.Button(r, inputSource.controllerIndex);
+
+                zoomInKey = MapRead.Button(r, inputSource.controllerIndex);
+                zoomOutKey = MapRead.Button(r, inputSource.controllerIndex);
+
+                Copy = MapRead.Button(r, inputSource.controllerIndex);
+                Paste = MapRead.Button(r, inputSource.controllerIndex);
+                Build = MapRead.Button(r, inputSource.controllerIndex);
+               
+
+                refreshKeyBoardInput();
             }
 
-            if (inputVersion >= 3)
-            {
+            if (inputSource.HasMouse)
+            {                
                 leftMouseAction = (MouseButtonAction)r.ReadByte();
                 rightMouseAction = (MouseButtonAction)r.ReadByte();
                 middleMouseAction = (MouseButtonAction)r.ReadByte();
                 X1MouseAction = (MouseButtonAction)r.ReadByte();
-                X2MouseAction = (MouseButtonAction)r.ReadByte();
+                X2MouseAction = (MouseButtonAction)r.ReadByte();                
             }
+
+            if (inputSource.IsController)
+            {
+                Controller_FlagDesign_Colorpicker = MapRead.Button(r, inputSource.controllerIndex);
+                ControllerSelect = MapRead.Button(r, inputSource.controllerIndex);
+            }
+
+            Debug.ReadCheck(r);
         }
 
-        public List<InputButtonType> listInputs(bool keyboard)
+        public List<InputActionType> listInputs(bool keyboard)
         {
-            List<InputButtonType> result = new List<InputButtonType>
-            {
-                InputButtonType.Stop,
-                InputButtonType.GameSpeed,
-                InputButtonType.PauseGame,
-                //InputButtonType.AutomationSetting,
-                //InputButtonType.Home,
-                InputButtonType.NextCity,
-                InputButtonType.NextArmy,
-                InputButtonType.NextBattle,
-                InputButtonType.ToggleHudDetail,
-            };
+            List<InputActionType> result = new List<InputActionType>();
+                       
 
             if (keyboard)
             {
-                //result.AddRange(new List<InputButtonType>
-                //{
-                //    InputButtonType.Stop,
-                //    InputButtonType.GameSpeed,
-                //    InputButtonType.PauseGame,
-                //    InputButtonType.AutomationSetting,
-                //    InputButtonType.Home,
-                //    InputButtonType.NextCity,
-                //    InputButtonType.NextArmy,
-                //    InputButtonType.NextBattle,
-                //    InputButtonType.ToggleHudDetail,
-                //});
+                result.AddRange(new List<InputActionType>
+                {
+                    InputActionType.WASD_UP,
+                    InputActionType.WASD_DOWN,
+                    InputActionType.WASD_LEFT,
+                    InputActionType.WASD_RIGHT,
+
+                    InputActionType.CameraTiltLeft, InputActionType.CameraTiltRight, InputActionType.CameraTiltUp,
+
+                    InputActionType.ZoomInKey,
+                    InputActionType.ZoomOutKey,
+                    InputActionType.Build,
+
+                    InputActionType.Copy,
+                    InputActionType.Paste,
+                    InputActionType.Build,
+                });
             }
             else
             {
-                result.AddRange(new List<InputButtonType>
+                result.AddRange(new List<InputActionType>
                 {
-                    InputButtonType.ControllerFocus,
-                    InputButtonType.ControllerCancel,
-                    InputButtonType.ControllerMessageClick,
+                    InputActionType.ControllerFocus,
+                    InputActionType.ControllerCancel,
+                    InputActionType.ControllerMessageClick,
+
+                    InputActionType.ControllerSelect,
                 });
             }
+
+            result.AddRange(new List<InputActionType>()
+            {
+                InputActionType.StopStart,
+                InputActionType.GameSpeed,
+                InputActionType.PauseGame,
+                InputActionType.NextCity,
+                InputActionType.NextArmy,
+                InputActionType.NextBattle,
+                InputActionType.ToggleHudDetail,
+            });
 
             return result;
         }
 
-        public void getset(InputButtonType type, ref IButtonMap buttonMap, bool set)
+        public List<InputActionType> listEditorInputs(bool keyboard)
         {
+            List<InputActionType> result = new List<InputActionType>();
+            result.AddRange(new List<InputActionType>
+                {
+
+                    InputActionType.FlagDesign_ToggleColor_Prev,
+                    InputActionType.FlagDesign_ToggleColor_Next,
+                    InputActionType.FlagDesign_PaintBucket,
+                });
+
+            if (keyboard)
+            {
+            }
+            else
+            {
+                result.AddRange(new List<InputActionType>
+                {
+                    InputActionType.Controller_FlagDesign_Colorpicker,
+                });
+            }
+
+
+            return result;
+        }
+
+        public void getset(InputActionType type, ref IButtonMap buttonMap, bool set)
+        {
+            if (set)
+            {
+                Ref.gamesett.settingsHasChanged = true;
+            }
+
             switch (type)
             {
-                case InputButtonType.Stop:
+                case InputActionType.StopStart:
                     if (set)
                     {
                         StopStart = buttonMap;
@@ -397,29 +501,7 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                //case InputButtonType.AutomationSetting:
-                //    if (set)
-                //    {
-                //        AutomationSetting = buttonMap;
-                //    }
-                //    else
-                //    {
-                //        buttonMap = AutomationSetting;
-                //    }
-                //    break;
-
-                //case InputButtonType.Home:
-                //    if (set)
-                //    {
-                //        Home = buttonMap;
-                //    }
-                //    else
-                //    {
-                //        buttonMap = Home;
-                //    }
-                //    break;
-
-                case InputButtonType.ToggleHudDetail:
+                case InputActionType.ToggleHudDetail:
                     if (set)
                     {
                         ToggleHudDetail = buttonMap;
@@ -430,7 +512,7 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case InputButtonType.GameSpeed:
+                case InputActionType.GameSpeed:
                     if (set)
                     {
                         GameSpeed = buttonMap;
@@ -441,7 +523,7 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case InputButtonType.PauseGame:
+                case InputActionType.PauseGame:
                     if (set)
                     {
                         PauseGame = buttonMap;
@@ -452,7 +534,7 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case InputButtonType.NextCity:
+                case InputActionType.NextCity:
                     if (set)
                     {
                         NextCity = buttonMap;
@@ -463,7 +545,7 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case InputButtonType.NextArmy:
+                case InputActionType.NextArmy:
                     if (set)
                     {
                         NextArmy = buttonMap;
@@ -474,7 +556,7 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case InputButtonType.NextBattle:
+                case InputActionType.NextBattle:
                     if (set)
                     {
                         NextBattle = buttonMap;
@@ -485,7 +567,7 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case InputButtonType.ControllerFocus:
+                case InputActionType.ControllerFocus:
                     if (set)
                     {
                         ControllerFocus = buttonMap;
@@ -496,18 +578,18 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case InputButtonType.ControllerCancel:
+                case InputActionType.ControllerCancel:
                     if (set)
                     {
-                        ControllerCancel = buttonMap;
+                        CancelKey = buttonMap;
                     }
                     else
                     {
-                        buttonMap = ControllerCancel;
+                        buttonMap = CancelKey;
                     }
                     break;
 
-                case InputButtonType.ControllerMessageClick:
+                case InputActionType.ControllerMessageClick:
                     if (set)
                     {
                         ControllerMessageClick = buttonMap;
@@ -518,56 +600,85 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
+                case InputActionType.Build:
+                    if (set) Build = buttonMap;
+                    else buttonMap = Build;
+                    break;
+                case InputActionType.Copy:
+                    if (set) Copy = buttonMap;
+                    else buttonMap = Copy;
+                    break;
+                case InputActionType.Paste:
+                    if (set) Paste = buttonMap;
+                    else buttonMap = Paste;
+                    break;
+                case InputActionType.Menu:
+                    if (set) Menu = buttonMap;
+                    else buttonMap = Menu;
+                    break;
+                case InputActionType.FlagDesign_ToggleColor_Prev:
+                    if (set) FlagDesign_ToggleColor_Prev = buttonMap;
+                    else buttonMap = FlagDesign_ToggleColor_Prev;
+                    break;
+                case InputActionType.FlagDesign_ToggleColor_Next:
+                    if (set) FlagDesign_ToggleColor_Next = buttonMap;
+                    else buttonMap = FlagDesign_ToggleColor_Next;
+                    break;
+                case InputActionType.FlagDesign_PaintBucket:
+                    if (set) FlagDesign_PaintBucket = buttonMap;
+                    else buttonMap = FlagDesign_PaintBucket;
+                    break;
+                case InputActionType.Controller_FlagDesign_Colorpicker:
+                    if (set) Controller_FlagDesign_Colorpicker = buttonMap;
+                    else buttonMap = Controller_FlagDesign_Colorpicker;
+                    break;
+                case InputActionType.ControllerSelect:
+                    if (set) ControllerSelect = buttonMap;
+                    else buttonMap = ControllerSelect;
+                    break;
+                case InputActionType.WASD_UP:
+                    if (set) wasd_up = buttonMap;
+                    else buttonMap = wasd_up;
+                    break;
+                case InputActionType.WASD_DOWN:
+                    if (set) wasd_down = buttonMap;
+                    else buttonMap = wasd_down;
+                    break;
+                case InputActionType.WASD_LEFT:
+                    if (set) wasd_left = buttonMap;
+                    else buttonMap = wasd_left;
+                    break;
+                case InputActionType.WASD_RIGHT:
+                    if (set) wasd_right = buttonMap;
+                    else buttonMap = wasd_right;
+                    break;
+                case InputActionType.CameraTiltLeft:
+                    if (set) cameraTiltLeft = buttonMap;
+                    else buttonMap = cameraTiltLeft;
+                    break;
+                case InputActionType.CameraTiltRight:
+                    if (set) cameraTiltRight = buttonMap;
+                    else buttonMap = cameraTiltRight;
+                    break;
+                case InputActionType.CameraTiltUp:
+                    if (set) cameraTiltUp = buttonMap;
+                    else buttonMap = cameraTiltUp;
+                    break;
+                case InputActionType.ZoomInKey:
+                    if (set) zoomInKey = buttonMap;
+                    else buttonMap = zoomInKey;
+                    break;
+                case InputActionType.ZoomOutKey:
+                    if (set) zoomOutKey = buttonMap;
+                    else buttonMap = zoomOutKey;
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
 
-        public string Name(InputButtonType type)
-        {
-            switch (type)
-            {
-
-            case InputButtonType.Stop:
-                return DssRef.lang.ArmyOption_Halt;
-            //case InputButtonType.AutomationSetting:
-            //    return DssRef.lang.Automation_Title;
-            //case InputButtonType.Home:
-            //    return;
-            case InputButtonType.ToggleHudDetail:
-                return DssRef.lang.Input_ToggleHudDetail;
-            case InputButtonType.GameSpeed:
-                return  DssRef.lang.Input_GameSpeed;
-            case InputButtonType.PauseGame:
-                return DssRef.lang.Input_Pause;
-            case InputButtonType.NextCity:
-                return DssRef.lang.Input_NextCity;
-            case InputButtonType.NextArmy:
-                return DssRef.lang.Input_NextArmy;
-            case InputButtonType.NextBattle:
-                return DssRef.lang.Input_NextBattle;
-
-            case InputButtonType.ControllerFocus:
-                return DssRef.lang.Input_ToggleHudFocus;
-            case InputButtonType.ControllerCancel:
-                return Ref.langOpt.Hud_Cancel;
-            case InputButtonType.ControllerMessageClick:
-                return DssRef.lang.Input_ClickMessage;
-
-                case InputButtonType.WASD_UP:
-                    return DssRef.lang.Input_Up;
-                case InputButtonType.WASD_DOWN:
-                    return DssRef.lang.Input_Down;
-                case InputButtonType.WASD_LEFT:
-                    return DssRef.lang.Input_Left;
-                case InputButtonType.WASD_RIGHT:
-                    return DssRef.lang.Input_Right;
-
-                default:
-                    return "ERR";
-
-            }
-        }
+        
 
         public override void genericControllerSetup()
         {
@@ -584,11 +695,11 @@ namespace VikingEngine.DSSWars
                 result += lib.ToLeftRight(Input.Mouse.ScrollValue) * -10f * Ref.gamesett.scrollWheelSensitivity_game;
             }
 
-            if (zoomInButton.IsDown)
+            if (zoomInKey.IsDown)
             {
                 result -= KeyZoomSpeed * Ref.gamesett.scrollWheelSensitivity_game;
             }
-            if (zoomOutButton.IsDown)
+            if (zoomOutKey.IsDown)
             {
                 result += KeyZoomSpeed * Ref.gamesett.scrollWheelSensitivity_game;
             }
@@ -600,26 +711,40 @@ namespace VikingEngine.DSSWars
         public bool RichboxGuiUseMove => inputSource.IsController;
     }
 
-    enum InputButtonType
+    enum InputActionType
     {
-        Stop,
-        //AutomationSetting,
-        //Home,
+        StopStart,
         ToggleHudDetail,
         GameSpeed,
         PauseGame,
         NextCity,
         NextArmy,
         NextBattle,
+        Build,
+        Copy,
+        Paste,
+        Menu,
+        FlagDesign_ToggleColor_Prev,//"Previous color"
+        FlagDesign_ToggleColor_Next,
+        FlagDesign_PaintBucket,
+        Controller_FlagDesign_Colorpicker,
 
-        ControllerFocus,
+        ControllerFocus, //"Focus"
         ControllerCancel,
         ControllerMessageClick,
+        ControllerSelect,
 
-        WASD_UP,
+        WASD_UP,//"Up"
         WASD_DOWN,
         WASD_LEFT,
         WASD_RIGHT,
+
+        CameraTiltLeft,
+        CameraTiltRight,
+        CameraTiltUp,
+
+        ZoomInKey,
+        ZoomOutKey,
 
         NUM,
     }

@@ -261,14 +261,17 @@ namespace VikingEngine.DSSWars.Players
                 //    player.gameControls.clearSelection();
                 //}
 
+            
                 checkSelectionAlive();
+
+            if (!player.gameControls.InBuildOrdersMode())
+            {
                 selection.end();
-
                 rectangleSelectUpdate();
-
                 selection.begin(false);
+            }
 
-                updateSeletionGui();
+            updateSeletionGui();
 
             mousePanInput();
 
@@ -303,8 +306,7 @@ namespace VikingEngine.DSSWars.Players
 
 
         void rectangleSelectUpdate()
-        {
-           
+        {          
 
             if (rectangleLines == null)
             {
@@ -321,39 +323,21 @@ namespace VikingEngine.DSSWars.Players
                 {
                     multiSelectMoveLenght = 0;
                     multiSelectHoldTime = 0;
-                    //selectWpRectangle.Position = VectorExt.V3XZtoV2(mousePosition);
-                    //selectWpRectangle.Size =Vector2.Zero;
                     rectangleBound.begin(pointerPos());
                     rectangleLines = new RectangleLines(rectangleBound.vectorRect, 2, 0, HudLib.GUILayer);
                 }
             }
             else
             {
-                //float mouseMove =  Input.Mouse.MoveDistance.Length();
                 multiSelectMoveLenght += Input.Mouse.MoveDistance.Length();
                 multiSelectHoldTime += Ref.DeltaTimeMs;
 
                 //Must start dragging to start multiselect
                 if (multiSelectMoveLenght > 10 || multiSelectHoldTime >= Input.InputLib.ButtonHoldTimeMs)
                 {
-                    //if (Input.Keyboard.Ctrl)
-                    //{
-                    //    lib.DoNothing();
-                    //}
-
                     rectangleBound.update(pointerPos());
-                    //rectangleEnd = mousePosition;
-                    //selectWpRectangle.SetRightBottom(VectorExt.V3XZtoV2(mousePosition), true);
-                    //rectangleLines.rectangle.Position = player.playerData.view.From3DToScreenPos(VectorExt.V3FromXZ(selectWpRectangle.Position, 0));
-                    //rectangleLines.rectangle.SetRightBottom(pointerPos(), true);
-                    //rectangleLines.rectangle.RemoveNegativeSize();
 
-                    rectangleLines.Refresh(rectangleBound.vectorRect);
-
-                    //var wpRectangle_normalized = selectWpRectangle;
-                    //wpRectangle_normalized.RemoveNegativeSize();
-
-                   
+                    rectangleLines.Refresh(rectangleBound.vectorRect);                   
 
                     switch (player.drawUnitsView.current.type)
                     {
@@ -1010,7 +994,7 @@ namespace VikingEngine.DSSWars.Players
             camera.TiltX = camRotation.Value;
 
 
-            if (player.gameControls.input.cameraUpwardsTilt.DownEvent)
+            if (player.gameControls.input.cameraTiltUp.DownEvent)
             {
                 currentTiltYAngleOption++;
                 if (currentTiltYAngleOption >= 3)

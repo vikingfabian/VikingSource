@@ -325,20 +325,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_Battle => "战斗";
 
-        /// <summary>
-        /// 描述按钮输入。移动到下一个城市。
-        /// </summary>
-        public override string Input_NextCity => "下一个城市";
-
-        /// <summary>
-        /// 描述按钮输入。移动到下一个军队。
-        /// </summary>
-        public override string Input_NextArmy => "下一个军队";
-
-        /// <summary>
-        /// 描述按钮输入。移动到下一个战斗。
-        /// </summary>
-        public override string Input_NextBattle => "下一个战斗";
 
         /// <summary>
         /// 描述按钮输入。暂停。
@@ -1212,40 +1198,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Settings_ButtonMapping => "按钮映射";
 
-        /// <summary>
-        /// 描述按钮输入。扩展或缩小HUD上的信息量
-        /// </summary>
-        public override string Input_ToggleHudDetail => "切换HUD详情";
-
-        /// <summary>
-        /// 描述按钮输入。切换地图和HUD之间的选择
-        /// </summary>
-        public override string Input_ToggleHudFocus => "菜单焦点";
-
-        /// <summary>
-        /// 描述按钮输入。点击最新弹出窗口的快捷方式
-        /// </summary>
-        public override string Input_ClickMessage => "点击消息";
-
-        /// <summary>
-        /// 描述按钮输入。一般移动方向
-        /// </summary>
-        public override string Input_Up => "上";
-
-        /// <summary>
-        /// 描述按钮输入。一般移动方向
-        /// </summary>
-        public override string Input_Down => "下";
-
-        /// <summary>
-        /// 描述按钮输入。一般移动方向
-        /// </summary>
-        public override string Input_Left => "左";
-
-        /// <summary>
-        /// 描述按钮输入。一般移动方向
-        /// </summary>
-        public override string Input_Right => "右";
+        
 
         /// <summary>
         /// 输入类型，标准PC输入

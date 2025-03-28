@@ -252,14 +252,14 @@ namespace VikingEngine.DSSWars.Display
             //var player = this.player.GetLocalPlayer();
             content.Add(new RbText(string.Format(DssRef.lang.Hud_CityCount, player.faction.cities.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
-            content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.Input_NextCity);
+            content.ButtonDescription(player.gameControls.input.NextCity, DssRef.todoLang.InputActionName_NextCity);
         }
         void nextArmyTip(RichBoxContent content, object tag)
         {
             //var player = this.player.GetLocalPlayer();
             content.Add(new RbText(string.Format(DssRef.lang.Hud_ArmyCount, player.faction.armies.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
-            content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.lang.Input_NextArmy);
+            content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.todoLang.InputActionName_NextArmy);
         }
 
         void factionGoldTip(RichBoxContent content, object tag)

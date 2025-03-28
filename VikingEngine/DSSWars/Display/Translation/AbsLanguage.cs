@@ -120,9 +120,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Hud_Battle { get; }
 
-        public abstract string Input_NextCity { get; }
-        public abstract string Input_NextArmy { get; }
-        public abstract string Input_NextBattle { get; }
+        //public abstract string Input_NextCity { get; }
+        //public abstract string Input_NextArmy { get; }
+        //public abstract string Input_NextBattle { get; }
 
         public abstract string Input_Pause { get; }
         public abstract string Input_ResumePaused { get; }
@@ -409,13 +409,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ArmyOption_Attack { get; }
 
         public abstract string Settings_ButtonMapping { get; }
-        public abstract string Input_ToggleHudDetail { get; }
-        public abstract string Input_ToggleHudFocus { get; }
-        public abstract string Input_ClickMessage { get; }
-        public abstract string Input_Up { get; }
-        public abstract string Input_Down { get; }
-        public abstract string Input_Left { get; }
-        public abstract string Input_Right { get; }
+        //public abstract string Input_ToggleHudDetail { get; }
+        //public abstract string Input_ToggleHudFocus { get; }
+        //public abstract string Input_ClickMessage { get; }
+        //public abstract string Input_Up { get; }
+        //public abstract string Input_Down { get; }
+        //public abstract string Input_Left { get; }
+        //public abstract string Input_Right { get; }
         public abstract string Input_Source_Keyboard { get; }
         public abstract string Input_Source_Controller { get; }
 
