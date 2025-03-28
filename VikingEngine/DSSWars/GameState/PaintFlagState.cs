@@ -192,7 +192,7 @@ namespace VikingEngine.DSSWars
 
                 if (XInput.KeyDownEvent(Buttons.Back) ||
                     controllerInput.ControllerCancel.DownEvent_AnyInstance ||
-                    controllerInput.Select.DownEvent_AnyInstance ||
+                    controllerInput.ControllerSelect.DownEvent_AnyInstance ||
                     controllerInput.Controller_FlagDesign_Colorpicker.DownEvent_AnyInstance)
                 {
                     controllerPickColorState = false;
@@ -252,7 +252,7 @@ namespace VikingEngine.DSSWars
 
 
                 paintInput(Input.Mouse.Position,
-                    keyboardInput.Select.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left),
+                    keyboardInput.ControllerSelect.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left),
                     keyboardInput.FlagDesign_PaintBucket.IsDown);
 
                 if (XInput.KeyDownEvent(Buttons.Back))

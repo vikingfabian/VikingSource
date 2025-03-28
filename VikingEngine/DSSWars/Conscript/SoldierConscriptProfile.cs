@@ -404,7 +404,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.mainAttack = AttackType.Ballista;
                     //soldierData.attackSplashCount = 1;
                     soldierData.attackDamageStructure = Convert.ToInt32(1500 * skillBonus);
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 32f;
 
                     soldierData.modelName = LootFest.VoxelModelName.war_ballista;
                     soldierData.modelVariationCount = 2;
@@ -432,7 +432,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Ballista;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 32f;
 
                     soldierData.modelName = LootFest.VoxelModelName.wars_manuballista;
 
@@ -459,7 +459,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Catapult;
                     soldierData.attackDamageStructure = Convert.ToInt32(2000 * skillBonus);
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 32f;
 
                     soldierData.modelName = LootFest.VoxelModelName.wars_catapult;
 
@@ -487,7 +487,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.MassiveCannonball;
                     soldierData.attackDamageStructure = Convert.ToInt32(2000 * skillBonus);
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 50f;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 100f;
 
                     soldierData.modelName = LootFest.VoxelModelName.wars_bronzesiegecannon;
 
@@ -515,7 +515,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Cannonball;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 20f;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 40f;
 
                     soldierData.modelName = LootFest.VoxelModelName.wars_bronzemancannon;
 
@@ -543,7 +543,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Haubitz;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 20f;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 40f;
 
                     soldierData.modelName = LootFest.VoxelModelName.wars_ironsiegecannon;
 
@@ -571,7 +571,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Cannonball;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 18;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 40;
 
                     soldierData.modelName = LootFest.VoxelModelName.wars_ironmancannon;
 

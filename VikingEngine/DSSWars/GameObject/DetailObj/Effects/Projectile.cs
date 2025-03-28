@@ -281,7 +281,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 for (int i = 0; i < splashCount; i++)
                 {
-                    var target2 = target.group.soldiers.GetRandomUnsafe(Ref.rnd);
+                    var target2 = target.group.soldiers?.GetRandomUnsafe(Ref.rnd);
                     if (target2 != null)
                     {
                         target2.takeDamage(splashDamage, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);

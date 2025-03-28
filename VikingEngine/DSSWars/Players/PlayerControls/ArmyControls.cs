@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Players
                 return;
             }
 
-            if (player.gameControls.input.Stop.DownEvent)
+            if (player.gameControls.input.StopStart.DownEvent)
             {
                 SoundLib.orderstop.Play();
                 foreach (var m in armies)

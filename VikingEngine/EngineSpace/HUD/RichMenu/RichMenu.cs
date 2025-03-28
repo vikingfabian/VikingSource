@@ -255,6 +255,11 @@ namespace VikingEngine.HUD.RichMenu
             }
         }
 
+        public void Queue_Refresh(RichBoxContent content)
+        {
+            Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(Refresh, content));
+        }
+
         void deleteContent()
         {
             renderList.renderList.Clear();

@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars
         public static int WeaponDamage_Handspear = 10;
         public static int WeaponHealthAdd_Handspear = 200;
         public static int WeaponDamage_SharpStick = 20;
-        public static int WeaponDamage_BronzeSword = 40;
+        public static int WeaponDamage_BronzeSword = 45;
         public static int WeaponDamage_ShortSword = 50;
         public static int WeaponDamage_Sword = 80;
         public static int WeaponDamage_LongSword = 120;
@@ -70,9 +70,9 @@ namespace VikingEngine.DSSWars
         public static float AntiCavalryBonusMultiply = 2;
         public static float ArrowWeaknessBonusMultiply = 1.5f;
 
-        public static int ArmorHealth_None = (int)(Soldier_DefaultHealth * 0.5);
-        public static int ArmorHealth_Padded = Soldier_DefaultHealth;
-        public static int ArmorHealth_HeavyPadded = (int)(Soldier_DefaultHealth * 1.25);
+        public static int ArmorHealth_None = (int)(Soldier_DefaultHealth * 0.25);
+        public static int ArmorHealth_Padded = (int)(Soldier_DefaultHealth * 0.7f);
+        public static int ArmorHealth_HeavyPadded = (int)(Soldier_DefaultHealth * 1.1f);
         public static int ArmorHealth_Bronze = (int)(Soldier_DefaultHealth * 1.4);
         public static int ArmorHealth_Mail = (int)(Soldier_DefaultHealth * 1.5);
         public static int ArmorHealth_HeavyMail = (int)(Soldier_DefaultHealth * 2);
@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
 
-        public static float WaterAdd_Average = 6f;
+        public static float WaterAdd_Average = 1f;
         public static float WaterAdd_SmallCity = 0.7f * WaterAdd_Average;
         public static float WaterAdd_LargeCity = 0.9f * WaterAdd_Average;
         public static float WaterAdd_HeadCity = 1.1f * WaterAdd_Average;
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_Plant = 25;
         public static float WorkTime_Plant_Upgraded = 20;
         public static float WorkTime_Mine = 35;
-        public static float WorkTime_BogIron = WorkTime_Mine * 2;
+        public static float WorkTime_BogIron = WorkTime_Mine * 4;
         public static float WorkTime_Craft = 10;
 
         public static float WorkTime_Building_Palisade = 10;
@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars
         public static int TechnologyGain_Expert = 2;
         public static int TechnologyGain_Master = 10;
 
-        public static float Time_SchoolOneXP = 2;
+        public static float Time_SchoolOneXPSec = 4;//50 per level
 
         public static float DeliveryLevel2TimeReducePerc = 5;
         public static float DeliveryLevel3TimeReducePerc = 10;

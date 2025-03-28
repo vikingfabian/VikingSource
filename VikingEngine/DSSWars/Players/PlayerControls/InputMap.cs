@@ -25,18 +25,30 @@ namespace VikingEngine.DSSWars
 
         public IButtonMap zoomInButton, zoomOutButton;
 
-        public IButtonMap Select;
+        public IButtonMap ControllerSelect;
         public IButtonMap ControllerCancel;
         public IButtonMap ControllerFocus;
         public IButtonMap ControllerMessageClick;
         public IButtonMap Execute;
-        public IButtonMap Stop;
+        public IButtonMap StopStart;
         public IButtonMap Copy;
         public IButtonMap Paste;
         public IButtonMap Build;
+        
+        public IButtonMap mousePan;
+        public IButtonMap mouseSelect;
+        public IButtonMap mouseOrder;
+        public IButtonMap mouseCancel;
+        public bool hasPanOrderMix;
+
+        MouseButtonAction leftMouseAction = MouseButtonAction.Select;
+        MouseButtonAction rightMouseAction = MouseButtonAction.PanAndOrder;
+        MouseButtonAction middleMouseAction = MouseButtonAction.Pan;
+
+        MouseButtonAction X1MouseAction = MouseButtonAction.None;
+        MouseButtonAction X2MouseAction = MouseButtonAction.None;
 
 
-        public IButtonMap DragPan;
         public IButtonMap NextArmy;
         public IButtonMap NextCity;
         public IButtonMap NextBattle;
@@ -54,6 +66,50 @@ namespace VikingEngine.DSSWars
         public IButtonMap FlagDesign_ToggleColor_Next;
         public IButtonMap FlagDesign_PaintBucket;
         public IButtonMap Controller_FlagDesign_Colorpicker;
+
+        public MouseButtonAction GetMouseAction(MouseButton MouseButton)
+        {
+            switch (MouseButton)
+            {
+                case MouseButton.Left:
+                    return leftMouseAction;
+                case MouseButton.Right:
+                    return rightMouseAction;
+                case MouseButton.Middle:
+                    return middleMouseAction;
+                case MouseButton.X1:
+                    return X1MouseAction;
+                case MouseButton.X2:
+                    return X2MouseAction;
+            }
+
+            throw new ArgumentOutOfRangeException();
+        }
+
+        public void SetMouseAction(MouseButton MouseButton, MouseButtonAction action)
+        {
+            switch (MouseButton)
+            {
+                case MouseButton.Left:
+                    leftMouseAction = action;
+                    break;
+                case MouseButton.Right:
+                    rightMouseAction = action;
+                    break;
+                case MouseButton.Middle:
+                    middleMouseAction = action;
+                    break;
+                case MouseButton.X1:
+                    X1MouseAction = action;
+                    break;
+                case MouseButton.X2:
+                    X2MouseAction = action;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(MouseButton), MouseButton, null);
+            }
+        }
+
 
         public InputMap(bool keyboard)
         {
@@ -100,13 +156,13 @@ namespace VikingEngine.DSSWars
 
             cameraUpwardsTilt = new KeyboardButtonMap(Keys.R);
 
-            Select = new MouseButtonMap(MouseButton.Left);
+            ControllerSelect = new MouseButtonMap(MouseButton.Left);
             Execute = new MouseButtonMap(MouseButton.Right);
             ControllerCancel = new MouseButtonMap(MouseButton.Right);
-            DragPan = new MouseButtonMap(MouseButton.Middle);
+            //DragPan = new MouseButtonMap(MouseButton.Middle);
             
             //Home = new KeyboardButtonMap(Keys.Home);
-            Stop = new KeyboardButtonMap(Keys.H);
+            StopStart = new KeyboardButtonMap(Keys.H);
             Copy = new KeyboardButtonMap(Keys.C);
             Paste = new KeyboardButtonMap(Keys.V);
             Build = new KeyboardButtonMap(Keys.B);
@@ -131,7 +187,53 @@ namespace VikingEngine.DSSWars
             FlagDesign_PaintBucket = new KeyboardButtonMap(Keys.LeftAlt);
 
             menuInput?.keyboardSetup();
+            refreshMouseInput();
         }
+
+        void refreshMouseInput()
+        {
+
+            mousePan = new NoButtonMap();
+            mouseSelect = new NoButtonMap();
+            mouseCancel = new NoButtonMap();
+            hasPanOrderMix = false;
+
+            if (inputSource.HasMouse)
+            {
+                checkButton(new MouseButtonMap(MouseButton.Left), leftMouseAction);
+                checkButton(new MouseButtonMap(MouseButton.Right), rightMouseAction);
+                checkButton(new MouseButtonMap(MouseButton.Middle), middleMouseAction);
+                checkButton(new MouseButtonMap(MouseButton.X1), X1MouseAction);
+                checkButton(new MouseButtonMap(MouseButton.X2), X2MouseAction);
+
+
+                void checkButton(IButtonMap button, MouseButtonAction action)
+                {
+                    switch (action)
+                    {
+                        case MouseButtonAction.Select:
+                            mouseSelect = InputLib.CombineButtons(mouseSelect, button);
+                            break;
+                        case MouseButtonAction.Pan:
+                            mousePan = InputLib.CombineButtons(mousePan, button);
+                            break;
+                        case MouseButtonAction.PanAndOrder:
+                            mousePan = InputLib.CombineButtons(mousePan, button);
+                            mouseOrder = InputLib.CombineButtons(mousePan, button);
+                            hasPanOrderMix = true;
+                            break;
+                        case MouseButtonAction.Order:
+                            mouseOrder = InputLib.CombineButtons(mousePan, button);
+                            break;
+                        case MouseButtonAction.Cancel:
+                            mouseCancel = InputLib.CombineButtons(mouseCancel, button);
+                            break;
+
+                    }
+                }
+            }
+        }
+
         public override void xboxSetup()
         {
             //wasd = new DirectionalButtonsMap(null, null, null, null);
@@ -139,14 +241,14 @@ namespace VikingEngine.DSSWars
             dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);  
             cameraTiltZoom =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
 
-            Select = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
+            ControllerSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
             ControllerFocus = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
             ControllerCancel = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
 
-            Stop = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);
+            StopStart = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);
             //AutomationSetting = new XboxButtonMap(Buttons.Back, inputSource.controllerIndex);
 
-            DragPan = new NoButtonMap();//new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
+            //DragPan = new NoButtonMap();//new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
             //Home = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);
             Menu = new XboxButtonMap(Buttons.Start, inputSource.controllerIndex);
             ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
@@ -166,17 +268,18 @@ namespace VikingEngine.DSSWars
             FlagDesign_ToggleColor_Next = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
             Controller_FlagDesign_Colorpicker = new XboxButtonMap(Buttons.Y, inputSource.controllerIndex);
             FlagDesign_PaintBucket = new XboxButtonMap(Buttons.X, inputSource.controllerIndex);
+            refreshMouseInput();
         }
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 2;
+            const int InputVersion = 3;
             w.Write(InputVersion);
             //inputSource.write(w);
 
             ControllerFocus.write(w);
             ControllerCancel.write(w);
-            Stop.write(w);
+            StopStart.write(w);
             //AutomationSetting.write(w);
             //Home.write(w);
             ToggleHudDetail.write(w);
@@ -187,12 +290,18 @@ namespace VikingEngine.DSSWars
             NextBattle.write(w);
             ControllerMessageClick.write(w);
 
-
-
             if (inputSource.HasKeyBoard)
             {
                 wasd.write(w);
             }
+
+            w.Write((byte)leftMouseAction);
+            w.Write((byte)rightMouseAction);
+            w.Write((byte)middleMouseAction);
+            w.Write((byte)X1MouseAction);
+            w.Write((byte)X2MouseAction);
+
+            refreshMouseInput();
         }
         public void read(System.IO.BinaryReader r)
         {
@@ -201,7 +310,7 @@ namespace VikingEngine.DSSWars
 
             ControllerFocus = MapRead.Button(r, inputSource.controllerIndex);
             ControllerCancel = MapRead.Button(r, inputSource.controllerIndex);
-            Stop = MapRead.Button(r, inputSource.controllerIndex);
+            StopStart = MapRead.Button(r, inputSource.controllerIndex);
             if (inputVersion < 2)
             {
                 var AutomationSetting = MapRead.Button(r, inputSource.controllerIndex);
@@ -218,6 +327,15 @@ namespace VikingEngine.DSSWars
             if (inputSource.HasKeyBoard)
             {
                 wasd = MapRead.Directional(r);
+            }
+
+            if (inputVersion >= 3)
+            {
+                leftMouseAction = (MouseButtonAction)r.ReadByte();
+                rightMouseAction = (MouseButtonAction)r.ReadByte();
+                middleMouseAction = (MouseButtonAction)r.ReadByte();
+                X1MouseAction = (MouseButtonAction)r.ReadByte();
+                X2MouseAction = (MouseButtonAction)r.ReadByte();
             }
         }
 
@@ -271,11 +389,11 @@ namespace VikingEngine.DSSWars
                 case InputButtonType.Stop:
                     if (set)
                     {
-                        Stop = buttonMap;
+                        StopStart = buttonMap;
                     }
                     else
                     {
-                        buttonMap = Stop;
+                        buttonMap = StopStart;
                     }
                     break;
 
@@ -477,7 +595,7 @@ namespace VikingEngine.DSSWars
             return result;            
         }
 
-        public IButtonMap RichboxGuiSelect => Select;
+        public IButtonMap RichboxGuiSelect => ControllerSelect;
         public IntVector2 RichboxGuiMove() { return move.stepping + dpadMove.stepping; }
         public bool RichboxGuiUseMove => inputSource.IsController;
     }
@@ -504,5 +622,16 @@ namespace VikingEngine.DSSWars
         WASD_RIGHT,
 
         NUM,
+    }
+
+    enum MouseButtonAction
+    { 
+        None,
+        Select,
+        Pan,
+        PanAndOrder,
+        Order,
+        Cancel,
+        NUM
     }
 }

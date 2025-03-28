@@ -597,10 +597,14 @@ namespace VikingEngine.DSSWars.GameObject
                 state = GroupState.FindArmyPlacement;
             }
 
-            var soldiersC = soldiers.counter();
-            while (soldiersC.Next())
+            var soldiers_sp = soldiers;
+            if (soldiers_sp != null)
             {
-                soldiersC.sel.enterBattleState(enter);
+                var soldiersC = soldiers_sp.counter();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.enterBattleState(enter);
+                }
             }
         }
 

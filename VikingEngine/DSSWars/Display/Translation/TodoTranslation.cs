@@ -74,6 +74,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Settings_CentralGold => "Central gold";
         public string Settings_CentralGold_Description => "On: all your gold is in a shared pool for instant use. Off: gold is physical and needs to be transported.";
 
+        public string MouseSettings_Title => "Mouse input";
+        public string MouseButtonAction_None => "No action";
+        public string MouseButtonAction_Select => "Select";
+        public string MouseButtonAction_Pan => "Pan";
+        public string MouseButtonAction_PanAndOrder => "Pan and Order";
+        public string MouseButtonAction_Order => "Order";
+        public string MouseButtonAction_Cancel => "Cancel";
+
+
         public string Hud_None => "None";
         public string Hud_AllCities => "All cities";
         public string Hud_Time_Hours => "{0} hours";

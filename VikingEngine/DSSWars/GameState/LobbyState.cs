@@ -70,6 +70,7 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_ListSaves = "saves";
         const string UnderMenu_ListSavesForExport = "exportsaves";
         const string UnderMenu_Options = "options";
+        
         const string UnderMenu_Options_Language = "lang";
 
 
@@ -746,7 +747,7 @@ namespace VikingEngine.DSSWars
                     mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.mapSize == sz, defaultOptions.mapSize == sz,
                         new RbAction1Arg<MapSize>(setMapSize, sz), null);
                 }
-                mapSzOptions.Build(content, DssRef.lang.Lobby_MapSizeTitle, underMenu);
+                mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, underMenu);
             }
 
             Difficulty.OptionsRb(content, underMenu, difficultyOptionsLink);
@@ -759,7 +760,7 @@ namespace VikingEngine.DSSWars
                     modeOptions.AddOption(caption, mode == DssRef.difficulty.setting_gameMode, mode == Difficulty.DefaultMode, 
                         new RbAction1Arg<GameMode>(gameModeClick, mode), new RbTooltip_Text(desc));                    
                 }
-                modeOptions.Build(content, DssRef.lang.Settings_GameMode, underMenu);
+                modeOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_GameMode, underMenu);
             }
 
             content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
@@ -793,6 +794,11 @@ namespace VikingEngine.DSSWars
 
                 case UnderMenu_Options:
                     optionsMenu2();
+                    break;
+
+                case GameMenuSystem.UnderMenu_Options_Mouse:
+                    //mouseOptions();
+                    GameMenuSystem.mouseOptions(underMenu);
                     break;
 
                 case UnderMenu_Options_Language:
@@ -882,7 +888,7 @@ namespace VikingEngine.DSSWars
                             }
                             mpOptions.injectAfter = new List<AbsRichBoxMember>(2) { new RbSpace() };
                             HudLib.InfoButton(mpOptions.injectAfter, new RbTooltip_Text(DssRef.lang.Lobby_LocalMultiplayerControllerRequired));
-                            mpOptions.Build(content, string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount), underMenu);
+                            mpOptions.Build(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount), underMenu);
                         }
 
                         underMenu.Refresh(content);
@@ -963,7 +969,7 @@ namespace VikingEngine.DSSWars
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                                         new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, playerData.flagDesignIndex), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
                                 };
-                flagOptions.Build(content, null, underMenu);
+                flagOptions.Build(content, SpriteName.NO_IMAGE, null, underMenu);
             }
         }
 
@@ -1435,43 +1441,12 @@ namespace VikingEngine.DSSWars
             content.Add(btn);
 
             GameMenuSystem.SettingsToMenu(content, underMenu, true);
-            //Ref.gamesett.optionsMenu(content, underMenu);
-
-            //content.newParagraph();
-            //content.h2("Input", HudLib.TitleColor_Head);
-            //content.newLine();
-            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Pan on zoom") }, Ref.gamesett.panOnZoomProperty));
-
-            //content.newLine();
-            //content.Add(new RbImage(SpriteName.MouseScroll));
-            //content.space();
-            //content.Add(new RbText("Scroll sensitivity: game"));
-            //content.space();
-            //content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollGameProperty, true));
             
-            //content.newLine();
-            //content.Add(new RbImage(SpriteName.MouseScroll));
-            //content.space();
-            //content.Add(new RbText("Scroll sensitivity: menu"));
-            //content.space();
-            //content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollMenuProperty, true));
-
-            //content.newParagraph();
-            //content.h2("Gameplay options", HudLib.TitleColor_Head);
-            //content.newLine();
-            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
-            //content.newLine();
-            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
-            //content.newLine();
-            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, LocalPlayer.MaxSpeedOption)) }, speed5Property));
-            //content.newLine();
-            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
-            //content.newLine();
-            //RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
-
-
             underMenu.Refresh(content);
         }
+
+       
+
 
         public override void OnResolutionChange()
         {

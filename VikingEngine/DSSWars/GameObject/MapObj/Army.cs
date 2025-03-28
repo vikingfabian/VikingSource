@@ -10,6 +10,7 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
@@ -513,11 +514,16 @@ namespace VikingEngine.DSSWars.GameObject
             return distance.HasValue;
         }
 
+        public override bool rectangleCollision(ScreenToSpaceRectangleBound rectangle)
+        {
+            return rectangle.Intersects(bound);
+        }
+
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
         {
             selectionFramePlacement(out var pos, out var scale);
 
-            selection.OneFrameModel(false, pos, scale, hover, false);
+            selection.groupModels_terrian.OneFrameModel(pos, scale, hover, false);
 
             //selection.frameModel.Position = pos;
             //selection.frameModel.Scale = scale;

@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
 
@@ -88,6 +89,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Vector2 posXZ()
         { return new Vector2(position.X, position.Z); }
+
+        virtual public bool rectangleCollision(ScreenToSpaceRectangleBound rectangle)
+        { 
+            throw new NotImplementedException();
+        }
     }
 
 

@@ -1308,11 +1308,11 @@ namespace VikingEngine.DSSWars.GameObject
                 var soldiersC = soldiers_sp.counter();
                 int i = 0;
 
-                selection.BeginGroupModel(true);
+                selection.groupModels_detail.BeginGroupModel();
                 while (soldiersC.Next())
                 {
                     soldiersC.sel.selectionFramePlacement(out var pos, out var scale);
-                    selection.setGroupModel(i, pos, scale, hover, soldiersC.sel == this, false);
+                    selection.groupModels_detail.setGroupModel( i, pos, scale, hover, soldiersC.sel == this, false);
                     ++i;
                 }
 

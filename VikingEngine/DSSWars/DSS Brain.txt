@@ -1,7 +1,42 @@
 ﻿UPDATE
 -Change Log-
-graphical settings
-toggle camera angle with Q, E and R
+Fixed ALL reported crashes
+Changed the mouse control layout to support rectangle select
+Mouse button mapping
+Mouse 5 button support
+fixed rotation and rectangle select
+fixed missing selection rings
+
+Bronze
+Increased bog iron mining time 1min > 2min
+Craft copper 2 water & 30 fuel > 1 water & 10 fuel
+Craft tin 20 fuel > 4 fuel
+Craft bronze 30 fuel > 5 fuel
+Bronze sword damage 40 > 45
+Reduced padded armor by 25% (to give some gap towards bronze armor)
+Halfed the health of no armor units
+
+Water: reduced add rate to 1/6, will work on wells another day
+Sige weapons: doubled reload time on all of them
+School: incread one level training time 100 > 200 seconds (will later tie this to a book writing mechanic)
+Gold delivery: removed the requirement of a bank to move gold
+
+"Change in faction work priority did not automatically affect city work priority even if "use faction prio" was enabled. Had to toggle the flag to update it."
+-could not repeat this bug
+
+"Maybe start coal mining with a higher default priority"
+-already at max priority (5 is player reserved), I increased the default stockpile 200 > 300
+
+"After loading you have negative gold."
+-could not repeat (will keep an eye on it)
+
+"AI is far less aggressive and threatening than in version 1, even on 200% difficulty."
+-This should only be true for the first half hour of the game. (let me know if it is too peaceful after that)
+1. It was too much work to balance event timers for all difficult levels; so they are all the same now.
+2. I have slowed down the pacing in general since there is more manage work to deal with.
+3. Being aggressive at the start should drasticly shorten the first 30min of event-free peace.
+4. Working on an early event that is chasing down some barbarians.
+
 
 
 !save av settings

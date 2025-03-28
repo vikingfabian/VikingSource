@@ -26,10 +26,11 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
         { 
             this.name = name;
         }
+
         public void AddOption(string caption, bool selected, bool defaultOption, AbsRbAction select, AbsRbAction tooltip)
         {
             var option = new List<AbsRichBoxMember> { new RbText(caption) };
-            
+
             if (selected)
             {
                 selectedIx = options.Count;
@@ -44,6 +45,28 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
             onSelect.Add(select);
             optionsTooltip.Add(tooltip);
         }
+        //public void AddOption(SpriteName icon, string caption, bool selected, bool defaultOption, AbsRbAction select, AbsRbAction tooltip)
+        //{
+        //    var option = new List<AbsRichBoxMember> { new RbText(caption) };
+        //    if (icon != SpriteName.NO_IMAGE)
+        //    {
+        //        option.Insert(0, new RbImage(icon));
+        //    }
+            
+        //    if (selected)
+        //    {
+        //        selectedIx = options.Count;
+        //        menuCaption = new List<AbsRichBoxMember> { new RbText(caption, HudLib.MenuMoreOptionsArrowCol) };
+        //    }
+        //    else if (defaultOption)
+        //    {
+        //        defaultIx = options.Count;
+        //    }
+
+        //    options.Add(option);
+        //    onSelect.Add(select);
+        //    optionsTooltip.Add(tooltip);
+        //}
 
         public void AddSubOption(List<AbsRichBoxMember> buttonContent, bool selected, bool defaultOption, AbsRbAction select, AbsRbAction tooltip)
         {
@@ -63,19 +86,25 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
             optionsTooltip.Add(tooltip);
         }
 
-        public void Build(RichBoxContent content, string label, RichMenu menu)
+        public void Build(RichBoxContent content, SpriteName icon, string label, RichMenu menu)
         {
-            DropDown(content, label, menu.OnDropDownClick, menu.activeDropDown); 
+            DropDown(content, icon, label, menu.OnDropDownClick, menu.activeDropDown); 
         }
 
-        public void DropDown(RichBoxContent content, string label, Action<string> openClose, string activeDropDown)
+        public void DropDown(RichBoxContent content, SpriteName icon, string label, Action<string> openClose, string activeDropDown)
         {
             content.newLine();
             //content.text(label).overrideColor = HudLib.TitleColor_Label;
             //content.newLine();
+           
             if (label != null)
             {
                 menuCaption.Insert(0, new RbText(label + ":", HudLib.TitleColor_Label_Dark));
+                menuCaption.Insert(1, new RbSpace());
+            }
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                menuCaption.Insert(0, new RbImage(icon));
                 menuCaption.Insert(1, new RbSpace());
             }
             menuCaption.Add(new RbImage(SpriteName.WarsHudDropDownArrow));

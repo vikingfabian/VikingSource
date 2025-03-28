@@ -13,11 +13,13 @@ using VikingEngine.HUD.RichMenu;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.Display
 {
     class GameMenuSystem //: MenuSystem
     {
+        public const string UnderMenu_Options_Mouse = "options_mouse";
         bool gameWasPaused;
         Graphics.Image blackFade;
         protected ImageLayers layer = ImageLayers.Foreground7;
@@ -26,8 +28,7 @@ namespace VikingEngine.DSSWars.Display
         public GameMenuSystem()
             //: base(new InputMap(Engine.XGuide.LocalHostIndex), MenuType.InGame)
         {
-            input = new InputMap(true);
-            
+            input = new InputMap(true);            
         }
 
         public void openMenu()
@@ -269,6 +270,10 @@ namespace VikingEngine.DSSWars.Display
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollMenuProperty, true));
 
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Mouse, 0.8f), new RbText(DssRef.todoLang.MouseSettings_Title) },
+                new RbAction2Arg<string, bool>(menu.OpenMenu, UnderMenu_Options_Mouse, true)));
+
             content.newParagraph();
             content.h2(".Gameplay options", HudLib.TitleColor_Head);
             if (lobby)
@@ -330,6 +335,59 @@ namespace VikingEngine.DSSWars.Display
                 }
                 return DssRef.storage.longerBuildQueue;
             }
+        }
+
+        public static void mouseOptions(RichMenu menu)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            content.h1(DssRef.todoLang.MouseSettings_Title, HudLib.TitleColor_Head);
+
+            // Map of available actions and their display names
+            Dictionary<MouseButtonAction, string> mouseActions = new Dictionary<MouseButtonAction, string>()
+            {
+                { MouseButtonAction.None, DssRef.todoLang.MouseButtonAction_None },
+                { MouseButtonAction.Select, DssRef.todoLang.MouseButtonAction_Select },
+                { MouseButtonAction.Cancel, DssRef.todoLang.MouseButtonAction_Cancel },
+                { MouseButtonAction.Pan, DssRef.todoLang.MouseButtonAction_Pan },
+                { MouseButtonAction.PanAndOrder, DssRef.todoLang.MouseButtonAction_PanAndOrder },
+                { MouseButtonAction.Order, DssRef.todoLang.MouseButtonAction_Order },
+            };
+
+            // Local helper method for one dropdown
+            void AddMouseButtonDropdown(MouseButton button, SpriteName icon, string label)
+            {
+                DropDownBuilder dropDown = new DropDownBuilder(label);
+
+                MouseButtonAction currentAction = Ref.gamesett.keyboardMap.GetMouseAction(button);
+
+                foreach (var kv in mouseActions)
+                {
+                    dropDown.AddOption(
+                        kv.Value,
+                        kv.Key == currentAction,
+                        kv.Key == MouseButtonAction.Select,
+                        new RbAction1Arg<MouseButtonAction>((MouseButtonAction action) =>
+                        {
+                            Ref.gamesett.keyboardMap.SetMouseAction(button, action);
+                            Ref.gamesett.Save();
+                            menu.CloseDropDown();
+                        }, kv.Key),
+                        null
+                    );
+                }
+
+                dropDown.Build(content, icon, label, menu);
+            }
+
+            // Add dropdowns for each mouse button
+            AddMouseButtonDropdown(MouseButton.Left, SpriteName.MouseButtonLeft, ".left");
+            AddMouseButtonDropdown(MouseButton.Right, SpriteName.MouseButtonRight, ".right");
+            AddMouseButtonDropdown(MouseButton.Middle, SpriteName.MouseButtonMiddle, ".middle");
+            AddMouseButtonDropdown(MouseButton.X1, SpriteName.MouseButtonX1, ".x1");
+            AddMouseButtonDropdown(MouseButton.X2, SpriteName.MouseButtonX2, ".x2");
+
+            menu.Refresh(content);
         }
 
         void endTutorial()

@@ -225,19 +225,8 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Bank);
                 if (city.buildingStructure.Bank_count > 0 ||
                     StartupSettings.UnlockAllProgress)
-                {
-                    if (!DssRef.storage.centralGold)
-                    {
-                        list.Add(BuildAndExpandType.GoldDeliveryLvl1);
-                        if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-                            StartupSettings.UnlockAllProgress)
-                        {
-                            list.Add(BuildAndExpandType.GoldDeliveryLvl2);
-                            list.Add(BuildAndExpandType.GoldDeliveryLvl3);
-                        }
-                    }
+                {                    
                     list.Add(BuildAndExpandType.CoinMinter);
-
                 }
             }
 
@@ -251,6 +240,13 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Recruitment);
                 list.Add(BuildAndExpandType.RecruitmentLevel2);
                 list.Add(BuildAndExpandType.RecruitmentLevel3);
+
+                if (!DssRef.storage.centralGold)
+                {
+                    list.Add(BuildAndExpandType.GoldDeliveryLvl1);
+                    list.Add(BuildAndExpandType.GoldDeliveryLvl2);
+                    list.Add(BuildAndExpandType.GoldDeliveryLvl3);                    
+                }
 
                 list.Add(BuildAndExpandType.Storehouse);
                 list.Add(BuildAndExpandType.Tavern);

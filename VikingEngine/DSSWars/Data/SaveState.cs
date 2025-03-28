@@ -58,14 +58,6 @@ namespace VikingEngine.DSSWars.Data
                     DebugExtensions.BlueScreen.ThreadException = e;
                 }
             });
-            //.ContinueWith(t =>
-            //{
-            //    if (t.Exception != null)
-            //    {
-            //        // Handle the exception
-            //        Console.WriteLine($"Task error: {t.Exception.Flatten().InnerException.Message}");
-            //    }
-            //}, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         public void load()
@@ -80,7 +72,7 @@ namespace VikingEngine.DSSWars.Data
             //TODO error handling
             if (save == false)
             {
-                pointers.SetPointer();
+                pointers?.SetPointer();
             }
 
             complete = true;

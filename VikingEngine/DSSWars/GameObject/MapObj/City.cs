@@ -1923,7 +1923,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
             }
 
-            selection.OneFrameModel(false, pos, scale, hover, true);
+            selection.groupModels_terrian.OneFrameModel(pos, scale, hover, true);
             //frameModel.Scale = new Vector3(1.2f);
             //frameModel.SetSpriteName(SpriteName.WhiteArea_LFtiles);
             //selection.frameModel.LoadedMeshType = hover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid;

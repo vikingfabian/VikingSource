@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.XP
             //RichBoxContent content = new RichBoxContent();
             ExperienceLevel lvl = (ExperienceLevel)tag;
 
-            float time = (int)lvl * DssConst.WorkXpToLevel * DssConst.Time_SchoolOneXP;
+            float time = (int)lvl * DssConst.WorkXpToLevel * DssConst.Time_SchoolOneXPSec;
             TimeSpan timespan = TimeSpan.FromSeconds(time);
             var timeLabel = new RbText(string.Format( DssRef.lang.Conscript_TrainingTime, string.Empty));
             timeLabel.overrideColor = HudLib.TitleColor_Label;

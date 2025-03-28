@@ -25,12 +25,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
         {
-            selection.BeginGroupModel(false);
+            selection.groupModels_terrian.BeginGroupModel();
 
             for (int i = 0; i < objects.Count; i++)
             {
                 objects[i].GetArmy().selectionFramePlacement(out var pos, out var scale);
-                selection.setGroupModel(i, pos, scale, hover, true, false);
+                selection.groupModels_terrian.setGroupModel(i, pos, scale, hover, true, false);
             }
         }
 

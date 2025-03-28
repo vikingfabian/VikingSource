@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Build
         public void updateBuildMode()
         {           
 
-            if (player.gameControls.input.Select.DownEvent)
+            if (player.gameControls.input.ControllerSelect.DownEvent)
             {
                 deleteSelection();
                 buildKeyDown = true;
@@ -279,7 +279,7 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
 
-            if (player.gameControls.input.Select.UpEvent)
+            if (player.gameControls.input.ControllerSelect.UpEvent)
             {
                 foreach (var sel in selection)
                 {
@@ -829,13 +829,13 @@ namespace VikingEngine.DSSWars.Build
                                     content.h2(DssRef.lang.XP_UnlockBuilding).overrideColor = HudLib.TitleColor_Label;
                                     List<BuildAndExpandType> unlocks = new List<BuildAndExpandType>()
                                     {
-                                BuildAndExpandType.CoinMinter,
+                                        BuildAndExpandType.CoinMinter,
                                     };
 
-                                    if (!DssRef.storage.centralGold)
-                                    {
-                                        unlocks.Add(BuildAndExpandType.GoldDeliveryLvl1);
-                                    }
+                                    //if (!DssRef.storage.centralGold)
+                                    //{
+                                    //    unlocks.Add(BuildAndExpandType.GoldDeliveryLvl1);
+                                    //}
 
                                     foreach (var building in unlocks)
                                     {

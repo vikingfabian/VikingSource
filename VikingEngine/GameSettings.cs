@@ -464,7 +464,7 @@ namespace VikingEngine
                         new RbAction1Arg<int>(setResolutionPercProperty, m), null);
                 }
 
-                dropdown.Build(content, Ref.langOpt.GraphicsOption_Resolution, menu);
+                dropdown.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_Resolution, menu);
             }
 
             content.newLine();
@@ -490,8 +490,8 @@ namespace VikingEngine
                         new RbAction1Arg<int>(setOversizeHeightProperty, ov), null);
                 }
 
-                OversizeWidth.Build(content, Ref.langOpt.GraphicsOption_OversizeWidth, menu);
-                OversizeHeight.Build(content, Ref.langOpt.GraphicsOption_OversizeHeight, menu);
+                OversizeWidth.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_OversizeWidth, menu);
+                OversizeHeight.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_OversizeHeight, menu);
             }
 
             //new GuiTextButton(Ref.langOpt.GraphicsOption_RecordingPresets, null, new GuiAction1Arg<Gui>(recordingResolutionOptions, layout.gui), true, layout);
@@ -514,7 +514,7 @@ namespace VikingEngine
                             new RbAction1Arg<RecordingPresets>(setRecordingPreset, rp), null);
                     }
                 }
-                RecordPreset.Build(content, Ref.langOpt.GraphicsOption_RecordingPresets, menu);
+                RecordPreset.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_RecordingPresets, menu);
             }
 
             content.newLine();
@@ -550,7 +550,7 @@ namespace VikingEngine
                             menu.CloseDropDown();
                         }, opt), null);
                 }
-                mapLoadingDropDown.Build(content, ".Map loading speed", menu);
+                mapLoadingDropDown.Build(content, SpriteName.NO_IMAGE, ".Map loading speed", menu);
             }
         }
 

@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Data
                     new RbAction1Arg<int>(callback, i), null);
                 //content.Add(new ArtOption(DssRef.difficulty.difficulty == i, new List<AbsRichBoxMember> { new RbText(options[i].ToString() + "%") }, null));
             }
-            mapSzOptions.DropDown(content, string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), menu.OnDropDownClick, menu.activeDropDown);
+            mapSzOptions.DropDown(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), menu.OnDropDownClick, menu.activeDropDown);
         }
         public void set(int difficulty)
         {

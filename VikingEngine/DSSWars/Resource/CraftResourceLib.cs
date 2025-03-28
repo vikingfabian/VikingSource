@@ -21,8 +21,8 @@ namespace VikingEngine.DSSWars.Resource
             4,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Water_G, 2),
-                new UseResource(ItemResourceType.Fuel_G, 30),
+                new UseResource(ItemResourceType.Water_G, 1),
+                new UseResource(ItemResourceType.Fuel_G, 10),
                 new UseResource(ItemResourceType.CopperOre, 2)
             },
             XP.WorkExperienceType.Smelting,
@@ -36,8 +36,8 @@ namespace VikingEngine.DSSWars.Resource
             4,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.CoolingFluid, 2),
-                new UseResource(ItemResourceType.Fuel_G, 30),
+                new UseResource(ItemResourceType.CoolingFluid, 1),
+                new UseResource(ItemResourceType.Fuel_G, 10),
                 new UseResource(ItemResourceType.CopperOre, 2)
             },
            XP.WorkExperienceType.Smelting,
@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars.Resource
             new UseResource[]
             {
                 //new UseResource(ItemResourceType.Water_G, 1),
-                new UseResource(ItemResourceType.Fuel_G, 20),
+                new UseResource(ItemResourceType.Fuel_G, 4),
                 new UseResource(ItemResourceType.TinOre, 2)
             },
            XP.WorkExperienceType.Smelting,
@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.Resource
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Stone_G, 1),
-                new UseResource(ItemResourceType.Fuel_G, 30),
+                new UseResource(ItemResourceType.Fuel_G, 5),
                 new UseResource(ItemResourceType.Copper, 4),
                 new UseResource(ItemResourceType.Tin, 2),
             },

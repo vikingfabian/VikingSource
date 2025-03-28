@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars
                     //hoverArea.AddRadius(4);
                     //hoverbox.Area = hoverArea;
 
-                    if (player.gameControls.input.Select.DownEvent)
+                    if (player.gameControls.input.ControllerSelect.DownEvent)
                     {
                         SoundLib.select_faction.Play();
                         selected = currentHover;
@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars
                 {
                     //hoverbox.Visible = false;
 
-                    if (player.gameControls.input.Select.DownEvent)
+                    if (player.gameControls.input.ControllerSelect.DownEvent)
                     {
                         cancel();
                     }

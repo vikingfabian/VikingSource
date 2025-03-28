@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars.Delivery
 
 
             content.newLine();
-            content.Add(new RbImage(player.gameControls.input.Stop.Icon));
+            content.Add(new RbImage(player.gameControls.input.StopStart.Icon));
             content.space(0.5f);
             content.Add(new RbText(shortActiveString()));
 

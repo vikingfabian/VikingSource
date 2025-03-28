@@ -280,7 +280,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
 
             content.newParagraph();
-            content.icontext(player.gameControls.input.Select.Icon, DssRef.lang.Tutorial_SelectInput);            
+            content.icontext(player.gameControls.input.ControllerSelect.Icon, DssRef.lang.Tutorial_SelectInput);            
             content.icontext(player.gameControls.input.inputSource.IsController? player.gameControls.input.cameraTiltZoom.Icon : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
             if (tutorialMission == TutorialMission.MoveArmy)
             {

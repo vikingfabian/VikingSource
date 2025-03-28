@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Display
             if (subTile.selectTileResult != Players.SelectTileResult.None)
             {
                 content.Add(new RbBeginTitle(2));
-                content.Add(new RbImage(player.gameControls.input.Select.Icon));
+                content.Add(new RbImage(player.gameControls.input.ControllerSelect.Icon));
 
                 RbText title = null;
                 bool avaialableAction = true;

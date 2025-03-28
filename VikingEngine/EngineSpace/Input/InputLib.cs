@@ -10,7 +10,8 @@ namespace VikingEngine.Input
 {
     static class InputLib
     {
-        public const float ButtonHoldTimeMs = 250;
+        public const float ButtonMaxClickTimeMs = 250;
+        public const float ButtonHoldTimeMs = 500;
         public static void Init(MainGame main)
         {
             if (PlatformSettings.RunningWindows)
@@ -168,6 +169,15 @@ namespace VikingEngine.Input
             {
                 Input.XInput.Instance(buttons.ControllerIndex).vibrate(leftMotor, rightMotor, time);
             }
+        }
+
+        public static IButtonMap CombineButtons(IButtonMap buttonMap, IButtonMap add)
+        {
+            if (buttonMap is NoButtonMap)
+            {
+                return add;
+            }
+            return new AlternativeButtonsMap(buttonMap, add);
         }
 
         //public static bool DownEvent_AnyInstance(IButtonMap buttons)

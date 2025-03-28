@@ -6,7 +6,9 @@ using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
+using VikingEngine.Physics;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.ToggEngine;
 
@@ -38,7 +40,11 @@ namespace VikingEngine.DSSWars.Players
         SafeCollectAsynchList<AbsSoldierUnit> nearDetailUnits = new SafeCollectAsynchList<AbsSoldierUnit>(64);
 
         public Vector3 playerPointerPos = Vector3.Zero, mousePosition = Vector3.Zero;
-        VectorRect selectWpRectangle = VectorRect.Zero;
+        ScreenToSpaceRectangleBound rectangleBound;
+        Graphics.RectangleLines rectangleLines = null;
+        //VectorRect selectWpRectangle = VectorRect.Zero;
+        float multiSelectMoveLenght = 0;
+        float multiSelectHoldTime = 0;
 
 
         public IntVector2 tilePosition, subTilePosition;
@@ -53,7 +59,7 @@ namespace VikingEngine.DSSWars.Players
         public bool unlockEdgePush = false;
 
         public AbsGameObject cameraFocus = null;
-        Graphics.RectangleLines selectRectangle = null;
+        
         float targetZoom;
 
         public MapControls(LocalPlayer player)
@@ -81,6 +87,8 @@ namespace VikingEngine.DSSWars.Players
             player.playerData.view.LightCamera= lightcamera;
 
             controllerInput = player.gameControls.input.inputSource.IsController;
+
+            rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.Height.DeepWaterHeight-1, Map.Settings.Height.MaxHeight +1);
 
             if (controllerInput)
             {
@@ -210,7 +218,7 @@ namespace VikingEngine.DSSWars.Players
                     //        keypPanInput();
                     //    }
 
-                        if (selectRectangle == null)
+                        if (rectangleLines == null)
                         {
                             if (controllerInput)
                             {
@@ -296,70 +304,96 @@ namespace VikingEngine.DSSWars.Players
 
         void rectangleSelectUpdate()
         {
-            if (selectRectangle == null)
+           
+
+            if (rectangleLines == null)
             {
                 bool select;
                 if (controllerInput)
                 {
-                    select = player.gameControls.input.Select.DownEvent && hover.obj == null;
+                    select = player.gameControls.input.ControllerSelect.DownEvent && hover.obj == null;
                 }
                 else
                 {
-                    select = Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left);
+                    select = player.gameControls.input.mouseSelect.DownEvent;
                 }
                 if (select)
                 {
-                    //rectangleStart = mousePosition;
-                    //rectangleEnd = rectangleStart;
-
-                    selectWpRectangle.Position = VectorExt.V3XZtoV2(mousePosition);
-                    selectWpRectangle.Size =Vector2.Zero;
-
-                    selectRectangle = new RectangleLines(new VectorRect(pointerPos(), Vector2.Zero), 2, 0, HudLib.GUILayer);
+                    multiSelectMoveLenght = 0;
+                    multiSelectHoldTime = 0;
+                    //selectWpRectangle.Position = VectorExt.V3XZtoV2(mousePosition);
+                    //selectWpRectangle.Size =Vector2.Zero;
+                    rectangleBound.begin(pointerPos());
+                    rectangleLines = new RectangleLines(rectangleBound.vectorRect, 2, 0, HudLib.GUILayer);
                 }
             }
             else
             {
-                //rectangleEnd = mousePosition;
-                selectWpRectangle.SetRightBottom( VectorExt.V3XZtoV2(mousePosition), true);
-                selectRectangle.rectangle.Position = player.playerData.view.From3DToScreenPos(VectorExt.V3FromXZ(selectWpRectangle.Position, 0));
-                selectRectangle.rectangle.SetRightBottom(pointerPos(), true);
-                selectRectangle.rectangle.RemoveNegativeSize();
-                selectRectangle.Refresh();
+                //float mouseMove =  Input.Mouse.MoveDistance.Length();
+                multiSelectMoveLenght += Input.Mouse.MoveDistance.Length();
+                multiSelectHoldTime += Ref.DeltaTimeMs;
 
-                var wpRectangle_normalized = selectWpRectangle;
-                wpRectangle_normalized.RemoveNegativeSize();
-
-                if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
+                //Must start dragging to start multiselect
+                if (multiSelectMoveLenght > 10 || multiSelectHoldTime >= Input.InputLib.ButtonHoldTimeMs)
                 {
-                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(wpRectangle_normalized.Position), WP.ToTilePos(wpRectangle_normalized.RightBottom), player.faction);
-                    
-                    for (int i = nearMapObjects.Count - 1; i >= 0; i--)
-                    {
-                        if (!wpRectangle_normalized.IntersectPoint(VectorExt.V3XZtoV2(nearMapObjects[i].position)))
-                        {
-                            nearMapObjects.RemoveAt(i);
-                        }
-                    }
+                    //if (Input.Keyboard.Ctrl)
+                    //{
+                    //    lib.DoNothing();
+                    //}
 
-                    if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.ObjectCollection)
-                    {
-                        hover.obj = new MapObjectCollection(player.faction);
-                    }
+                    rectangleBound.update(pointerPos());
+                    //rectangleEnd = mousePosition;
+                    //selectWpRectangle.SetRightBottom(VectorExt.V3XZtoV2(mousePosition), true);
+                    //rectangleLines.rectangle.Position = player.playerData.view.From3DToScreenPos(VectorExt.V3FromXZ(selectWpRectangle.Position, 0));
+                    //rectangleLines.rectangle.SetRightBottom(pointerPos(), true);
+                    //rectangleLines.rectangle.RemoveNegativeSize();
 
-                    if (nearMapObjects.Count > 0)
-                    {
-                        lib.DoNothing();
-                    }
+                    rectangleLines.Refresh(rectangleBound.vectorRect);
 
-                    hover.obj.GetCollection().set(nearMapObjects);
+                    //var wpRectangle_normalized = selectWpRectangle;
+                    //wpRectangle_normalized.RemoveNegativeSize();
+
+                   
+
+                    switch (player.drawUnitsView.current.type)
+                    {
+                        case MapDetailLayerType.TerrainOverview2:
+
+                            rectangleBound.outerBound(out Vector3 topLeft, out Vector3 bottomRight);
+                            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction);
+
+                            if (Input.Keyboard.Ctrl)
+                            {
+                                lib.DoNothing();
+                            }
+
+                            for (int i = nearMapObjects.Count - 1; i >= 0; i--)
+                            {
+                                if (!nearMapObjects[i].rectangleCollision(rectangleBound))
+                                {
+                                    nearMapObjects.RemoveAt(i);
+                                }
+                            }
+
+                            if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.ObjectCollection)
+                            {
+                                hover.obj = new MapObjectCollection(player.faction);
+                            }
+
+                            if (nearMapObjects.Count > 0)
+                            {
+                                lib.DoNothing();
+                            }
+
+                            hover.obj.GetCollection().set(nearMapObjects);
+                            break;
+                    }
                 }
-
 
                 bool keyUp;
                 if (controllerInput)
                 {
-                    keyUp = !player.gameControls.input.Select.IsDown;
+                    keyUp = !player.gameControls.input.ControllerSelect.IsDown;
                 }
                 else
                 {
@@ -368,13 +402,12 @@ namespace VikingEngine.DSSWars.Players
 
                 if (keyUp)
                 {
-                    selectRectangle.DeleteMe();
-                    selectRectangle = null;
+                    rectangleLines.DeleteMe();
+                    rectangleLines = null;
                     //select
 
                     if (hover.obj != null && 
-                        hover.obj.gameobjectType() == GameObjectType.ObjectCollection
-                        )
+                        hover.obj.gameobjectType() == GameObjectType.ObjectCollection)
                     {
                         var coll = hover.obj.GetCollection();
                         if (coll.objects.Count > 0)
@@ -918,7 +951,7 @@ namespace VikingEngine.DSSWars.Players
                 
                 if (camRotationKeyDownTime > 0)
                 {
-                    bool bTap = camRotationKeyDownTime < VikingEngine.Input.InputLib.ButtonHoldTimeMs;
+                    bool bTap = camRotationKeyDownTime < VikingEngine.Input.InputLib.ButtonMaxClickTimeMs;
                     if (bTap)
                     {//Target next rotation point
                         if (lastRotationDir > 0)
@@ -1030,8 +1063,8 @@ namespace VikingEngine.DSSWars.Players
 
                 if (DssRef.state.localPlayers.Count == 1)
                 {
-                    if (!player.gameControls.input.DragPan.IsDown &&
-                        !player.gameControls.input.Select.IsDown &&
+                    if (!player.gameControls.input.mousePan.IsDown &&
+                        !player.gameControls.input.ControllerSelect.IsDown &&
                         Input.Mouse.HasEdgePush())
                     {
                         panCamera(-Input.Mouse.EdgePush() * Ref.DeltaTimeMs * PanSpeed(), true);
@@ -1102,8 +1135,8 @@ namespace VikingEngine.DSSWars.Players
         bool hasMouseMapPanInput()
         {
             return player.gameControls.input.inputSource.HasMouse &&
-                selectRectangle == null &&
-                ((player.gameControls.input.Select.IsDown && NoSelection()) || player.gameControls.input.DragPan.IsDown) &&
+                rectangleLines == null &&
+                player.gameControls.input.mousePan.IsDown &&
                 Input.Mouse.bMoveInput;
         }
 

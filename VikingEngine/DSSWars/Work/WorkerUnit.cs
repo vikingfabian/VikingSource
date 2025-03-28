@@ -514,8 +514,8 @@ namespace VikingEngine.DSSWars.Work
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
         {
             Vector3 scale = new Vector3(DssVar.StandardBoundRadius * 2f);
-            selection.BeginGroupModel(true);
-            selection.setGroupModel(0, model.position, scale, hover, true, false);
+            selection.groupModels_detail.BeginGroupModel();
+            selection.groupModels_detail.setGroupModel(0, model.position, scale, hover, true, false);
 
         }
 

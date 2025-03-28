@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
                 else
                 {
-                    if (input.Select.DownEvent)
+                    if (input.ControllerSelect.DownEvent)
                     {
                         mapSelect();
                     }
@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                         mapControls.hover.subTile.city.pasteDelivery(player, ix);
                                         SoundLib.paste.Play();
                                     }
-                                    if (input.Stop.DownEvent)
+                                    if (input.StopStart.DownEvent)
                                     {
                                         int ix = mapControls.hover.subTile.city.deliveryIxFromSubTile(mapControls.hover.subTile.subTilePos);
                                         bool start = mapControls.hover.subTile.city.toggleDeliveryStop(ix);
@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                         mapControls.hover.subTile.city.pasteConscript(player, ix);
                                         SoundLib.paste.Play();
                                     }
-                                    if (input.Stop.DownEvent)
+                                    if (input.StopStart.DownEvent)
                                     {
                                         int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
                                         bool start = mapControls.hover.subTile.city.toggleConscriptStop(ix);
@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 switch (player.cityTab)
                 {
                     case MenuTab.Delivery:
-                        if (input.Stop.DownEvent)
+                        if (input.StopStart.DownEvent)
                         {
                             bool start = city.toggleDeliveryStop(city.selectedDelivery);
                             player.hud.needRefresh = true;
@@ -277,7 +277,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                         break;
                     case MenuTab.Conscript:
-                        if (input.Stop.DownEvent)
+                        if (input.StopStart.DownEvent)
                         {
                             bool start = city.toggleConscriptStop(city.selectedConscript);
                             player.hud.needRefresh = true;

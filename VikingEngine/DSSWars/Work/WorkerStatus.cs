@@ -1065,7 +1065,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.School:
                     int toXp = workBonus * DssConst.WorkXpToLevel;
                     int diff = toXp - getXpFor(experienceType);
-                    return diff * DssConst.Time_SchoolOneXP;
+                    return diff * DssConst.Time_SchoolOneXPSec;
                     //lock (city.schoolBuildings)
                     //{
                     //    var ix = city.SchoolIxFromSubTile(subTileEnd);

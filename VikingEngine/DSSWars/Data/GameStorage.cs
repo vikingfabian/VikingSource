@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Data
                     DssRef.storage.Save(null);
                 }, item), null);
             }
-            dropDown.Build(content, DssRef.lang.Input_GameSpeed, menu);
+            dropDown.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Input_GameSpeed, menu);
             //new GuiOptionsList<float>(SpriteName.NO_IMAGE, DssRef.lang.Input_GameSpeed, options, multiplayerGameSpeedProperty, layout);
         }
 

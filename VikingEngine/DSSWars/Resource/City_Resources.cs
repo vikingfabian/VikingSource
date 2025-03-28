@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int gold = 5;
         public GroupedResource res_water = new GroupedResource();
         public GroupedResource res_wood = new GroupedResource() { amount = 20, goalBuffer = 300 };
-        public GroupedResource res_fuel = new GroupedResource() { amount = 100, goalBuffer = 300 };
+        public GroupedResource res_fuel = new GroupedResource() { amount = 100, goalBuffer = 400 };
         public GroupedResource res_stone = new GroupedResource() { amount = 20, goalBuffer = 100 };
         public GroupedResource res_rawFood = new GroupedResource() { amount = 50, goalBuffer = 200 };
         public GroupedResource res_food = new GroupedResource() { amount = 200, goalBuffer = 500 };
@@ -252,7 +252,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void defaultResourceBuffer()
         {
             res_wood.goalBuffer = 300;
-            res_fuel.goalBuffer = 300;
+            res_fuel.goalBuffer = 400;
             res_stone.goalBuffer = 200;
             res_rawFood.goalBuffer = 200;
             res_food.goalBuffer = DefaultFoodBuffer;

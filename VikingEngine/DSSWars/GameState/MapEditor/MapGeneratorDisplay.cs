@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                                 mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.mapSize == sz, defaultOptions.mapSize == sz,
                                     new RbAction1Arg<MapSize>(setMapSize, sz), null);
                             }
-                            mapSzOptions.Build(content, DssRef.lang.Lobby_MapSizeTitle, menu);
+                            mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, menu);
                         }
                     }
 
@@ -117,7 +117,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                                     menu.CloseDropDown();
                                 }, mapStartAs), null);
                         }
-                        startAs.Build(content, "Start as", menu);                        
+                        startAs.Build(content, SpriteName.NO_IMAGE, "Start as", menu);                        
                     }
 
                     if (Adv)
