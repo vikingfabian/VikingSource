@@ -67,6 +67,12 @@ namespace VikingEngine.EngineSpace.Maths
             return percValuesF[index] < chance;
         }
 
+        public bool ChanceF(float chance)
+        {
+            if (++index >= VALUE_SIZE) index = 0;
+            return percValuesF[index] < chance;
+        }
+
         public bool Chance_CheckForZero(float chance)
         {
             if (chance<= 0)

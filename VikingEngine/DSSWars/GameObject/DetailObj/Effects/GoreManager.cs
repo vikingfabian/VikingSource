@@ -15,8 +15,30 @@ namespace VikingEngine.DSSWars.GameObject
         public static void ViewDamage(AbsDetailUnit reciever, int damageAmount, Rotation1D attackDir)
         {
             if (Ref.gamesett.Blood > 0)
-            {               
-                int particleCount = Bound.Min( (reciever.Alive() ? damageAmount / 4 : damageAmount) * Ref.gamesett.Blood / 100, 2);
+            {
+                float soundChanceScream, soundChanceGore;
+                if (reciever.Alive())
+                {
+                    damageAmount /= 4;
+                    soundChanceScream = DssConst.SoundChanceDamageScream;
+                    soundChanceGore = DssConst.SoundChanceDamageGore;
+                }
+                else
+                {
+                    soundChanceScream = DssConst.SoundChanceDeathScream;
+                    soundChanceGore = DssConst.SoundChanceDeathGore;
+                }
+
+                if (Ref.peRnd.ChanceF(soundChanceScream))
+                {
+                    SoundLib.painvoice.Play(reciever.position);
+                }
+                if (Ref.peRnd.ChanceF(soundChanceGore))
+                {
+                    SoundLib.fleshgore.Play(reciever.position);
+                }
+
+                int particleCount = Bound.Min(damageAmount * Ref.gamesett.Blood / 100, 2);
                 Vector3 pos = reciever.position;
                 pos.Y += DssConst.Men_StandardModelScale * 0.1f;
                 Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.DssDamage, pos, BloodRadius, particleCount);

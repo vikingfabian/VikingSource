@@ -262,5 +262,18 @@ namespace VikingEngine.DSSWars
         //EVENTS
         public static Range DominationSizeIncrease = new Range(5, 7);
         public static IntervalF DominationWarTimeDelay_Minutes = new IntervalF(10, 20);
+
+        //SOUND
+        public static float SoundChanceProjectile = 0.4f;
+        public static float SoundChanceMachineProjectile = 0.6f;
+        public static float SoundChanceSword = 0.3f;
+
+        public static float SoundChanceDamageScream = 0.1f;
+        public static float SoundChanceDeathScream = 0.25f;
+        public static float SoundChanceDamageGore = 0.02f;
+        public static float SoundChanceDeathGore = 0.2f;
+
+
+
     }
 }

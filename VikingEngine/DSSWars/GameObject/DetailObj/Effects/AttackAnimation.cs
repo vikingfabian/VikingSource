@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -112,6 +113,40 @@ namespace VikingEngine.DSSWars.GameObject
                         new ShipMeleeAttack(GetSoldierUnit(), attackDir);
                     }
                     target.takeDamage(damage, this, attackDir, GetFaction(), fullUpdate);
+                    if (fullUpdate && Ref.peRnd.ChanceF(DssConst.SoundChanceSword))
+                    {
+                        switch (group.soldierConscript.conscript.weapon)
+                        {
+                            case Resource.ItemResourceType.HandSpear:
+                            case Resource.ItemResourceType.Pike:
+                            case Resource.ItemResourceType.SharpStick:
+                            case Resource.ItemResourceType.KnightsLance:
+                                SoundLib.spear_whoosh.Play(position);
+
+                                break;
+
+                            case Resource.ItemResourceType.BronzeSword:
+                            case Resource.ItemResourceType.ShortSword:
+                                SoundLib.blade_light.Play(position);
+                                break;
+
+                            case Resource.ItemResourceType.Sword:
+                            case Resource.ItemResourceType.LongSword:
+                                SoundLib.blade_medium.Play(position);
+                                break;
+
+                            case Resource.ItemResourceType.TwoHandSword:
+                            case Resource.ItemResourceType.MithrilSword:
+                                SoundLib.blade_heavy.Play(position);
+                                break;
+
+
+                            default:
+                                SoundLib.sword.Play(position);
+                                break;
+                        }
+                        
+                    }
                 }
                 else
                 {

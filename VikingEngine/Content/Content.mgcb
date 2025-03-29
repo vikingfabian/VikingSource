@@ -1129,17 +1129,83 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/back.wav
 
-#begin DSS/Sound/ballista_large.wav
+#begin DSS/Sound/blade_whoosh_heavy_03.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:DSS/Sound/ballista_large.wav
+/build:DSS/Sound/blade_whoosh_heavy_03.wav
 
-#begin DSS/Sound/ballista_small.wav
+#begin DSS/Sound/blade_whoosh_heavy_04.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:DSS/Sound/ballista_small.wav
+/build:DSS/Sound/blade_whoosh_heavy_04.wav
+
+#begin DSS/Sound/blade_whoosh_heavy_08.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/blade_whoosh_heavy_08.wav
+
+#begin DSS/Sound/blade_whoosh_heavy_14.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/blade_whoosh_heavy_14.wav
+
+#begin DSS/Sound/blade_whoosh_light_01.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/blade_whoosh_light_01.wav
+
+#begin DSS/Sound/blade_whoosh_light_02.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/blade_whoosh_light_02.wav
+
+#begin DSS/Sound/blade_whoosh_light_03.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/blade_whoosh_light_03.wav
+
+#begin DSS/Sound/blade_whoosh_light_08.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/blade_whoosh_light_08.wav
+
+#begin DSS/Sound/blade_whoosh_med_01.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/blade_whoosh_med_01.wav
+
+#begin DSS/Sound/blade_whoosh_med_02.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/blade_whoosh_med_02.wav
+
+#begin DSS/Sound/blade_whoosh_med_03.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/blade_whoosh_med_03.wav
+
+#begin DSS/Sound/blade_whoosh_med_05.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/blade_whoosh_med_05.wav
+
+#begin DSS/Sound/bladethrow.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/bladethrow.wav
 
 #begin DSS/Sound/bow1.wav
 /importer:WavImporter
@@ -1177,6 +1243,24 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/buy.wav
 
+#begin DSS/Sound/cannon1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/cannon1.wav
+
+#begin DSS/Sound/cannon2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/cannon2.wav
+
+#begin DSS/Sound/cannon3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/cannon3.wav
+
 #begin DSS/Sound/chat_message.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1189,11 +1273,35 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/click.wav
 
+#begin DSS/Sound/cloth_hit1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/cloth_hit1.wav
+
+#begin DSS/Sound/cloth_hit2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/cloth_hit2.wav
+
 #begin DSS/Sound/copy.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/copy.wav
+
+#begin DSS/Sound/CrossBow1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/CrossBow1.wav
+
+#begin DSS/Sound/CrossBow2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/CrossBow2.wav
 
 #begin DSS/Sound/dig.wav
 /importer:WavImporter
@@ -1206,6 +1314,180 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/drop_item.wav
+
+#begin DSS/Sound/Dwarf Pain 1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Dwarf Pain 1.wav
+
+#begin DSS/Sound/Dwarf Pain 2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Dwarf Pain 2.wav
+
+#begin DSS/Sound/Dwarf Pain 3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Dwarf Pain 3.wav
+
+#begin DSS/Sound/Dwarf Pain 4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Dwarf Pain 4.wav
+
+#begin DSS/Sound/Dwarf Pain 5.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Dwarf Pain 5.wav
+
+#begin DSS/Sound/Dwarf Pain 6.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Dwarf Pain 6.wav
+
+#begin DSS/Sound/flesh_gore (1).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (1).wav
+
+#begin DSS/Sound/flesh_gore (10).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (10).wav
+
+#begin DSS/Sound/flesh_gore (11).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (11).wav
+
+#begin DSS/Sound/flesh_gore (12).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (12).wav
+
+#begin DSS/Sound/flesh_gore (13).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (13).wav
+
+#begin DSS/Sound/flesh_gore (2).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (2).wav
+
+#begin DSS/Sound/flesh_gore (3).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (3).wav
+
+#begin DSS/Sound/flesh_gore (4).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (4).wav
+
+#begin DSS/Sound/flesh_gore (5).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (5).wav
+
+#begin DSS/Sound/flesh_gore (6).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (6).wav
+
+#begin DSS/Sound/flesh_gore (7).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (7).wav
+
+#begin DSS/Sound/flesh_gore (8).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (8).wav
+
+#begin DSS/Sound/flesh_gore (9).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/flesh_gore (9).wav
+
+#begin DSS/Sound/footstep (1).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/footstep (1).wav
+
+#begin DSS/Sound/footstep (10).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/footstep (10).wav
+
+#begin DSS/Sound/footstep (2).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/footstep (2).wav
+
+#begin DSS/Sound/footstep (3).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/footstep (3).wav
+
+#begin DSS/Sound/footstep (4).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/footstep (4).wav
+
+#begin DSS/Sound/footstep (5).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/footstep (5).wav
+
+#begin DSS/Sound/footstep (6).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/footstep (6).wav
+
+#begin DSS/Sound/footstep (7).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/footstep (7).wav
+
+#begin DSS/Sound/footstep (8).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/footstep (8).wav
+
+#begin DSS/Sound/footstep (9).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/footstep (9).wav
 
 #begin DSS/Sound/generic_work1.wav
 /importer:WavImporter
@@ -1225,11 +1507,17 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/hammer.wav
 
-#begin DSS/Sound/heavy_sword.wav
+#begin DSS/Sound/heavy_ballista1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:DSS/Sound/heavy_sword.wav
+/build:DSS/Sound/heavy_ballista1.wav
+
+#begin DSS/Sound/heavy_ballista2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_ballista2.wav
 
 #begin DSS/Sound/hen1.wav
 /importer:WavImporter
@@ -1254,6 +1542,24 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/load_ballista.wav
+
+#begin DSS/Sound/musket1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/musket1.wav
+
+#begin DSS/Sound/musket2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/musket2.wav
+
+#begin DSS/Sound/musket3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/musket3.wav
 
 #begin DSS/Sound/ordermove.wav
 /importer:WavImporter
@@ -1297,6 +1603,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/pig.wav
 
+#begin DSS/Sound/reload_ballista1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/reload_ballista1.wav
+
+#begin DSS/Sound/reload_ballista2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/reload_ballista2.wav
+
 #begin DSS/Sound/scythe.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1326,6 +1644,30 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/spear.wav
+
+#begin DSS/Sound/spearwhoosh (1).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/spearwhoosh (1).wav
+
+#begin DSS/Sound/spearwhoosh (2).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/spearwhoosh (2).wav
+
+#begin DSS/Sound/spearwhoosh (3).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/spearwhoosh (3).wav
+
+#begin DSS/Sound/spearwhoosh (4).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/spearwhoosh (4).wav
 
 #begin DSS/Sound/start.wav
 /importer:WavImporter
@@ -1362,6 +1704,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/tab_hover.wav
+
+#begin DSS/Sound/throw.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/throw.wav
 
 #begin DSS/Sound/tree_falling.wav
 /importer:WavImporter

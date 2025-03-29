@@ -15,8 +15,8 @@ namespace VikingEngine.Sound
 {
     static class SoundStackManager
     {
-        const float StackTimeRamgeMs = 300;
-        const int MaxSoundStack = 2;
+        const float StackTimeRamgeMs = 30;
+        const int MaxSoundStack = 3;
 
         static float time = 0;
         static int stack = 0;

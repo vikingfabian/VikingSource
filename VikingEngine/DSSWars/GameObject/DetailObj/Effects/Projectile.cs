@@ -63,11 +63,20 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 default://case AttackType.Arrow:
                     //warsRef.sound.bow.Play(start);
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceProjectile))
+                    {
+                        SoundLib.bow.Play(start);
+                    }
+
                     modelName = LootFest.VoxelModelName.Arrow;
                     scale = DssConst.Men_StandardModelScale * 0.7f;//0.8f;
                     break;
                 case AttackType.Bolt:
                     //warsRef.sound.bow.Play(start);
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceProjectile))
+                    {
+                        SoundLib.crossbow.Play(start);
+                    }
                     modelName = LootFest.VoxelModelName.little_boltarrow;
                     scale = DssConst.Men_StandardModelScale * 0.5f;
                     speed *= 1.5f;
@@ -83,6 +92,10 @@ namespace VikingEngine.DSSWars.GameObject
                     explosion(0.8f);
                     break;
                 case AttackType.Cannonball:
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceMachineProjectile))
+                    {
+                        SoundLib.cannon.Play(start);
+                    }
                     //warsRef.sound.rocket.Play(start);
                     modelName = LootFest.VoxelModelName.war_cannonball;
                     scale = DssConst.Men_StandardModelScale * 0.4f;
@@ -94,6 +107,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case AttackType.GunShot:
                     //warsRef.sound.rocket.Play(start);
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceProjectile))
+                    {
+                        SoundLib.musket.Play(start);
+                    }
                     modelName = LootFest.VoxelModelName.war_cannonball;
                     scale = DssConst.Men_StandardModelScale * 0.16f;
                     linear = true;
@@ -102,6 +119,10 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
 
                 case AttackType.GunBlast:
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceProjectile))
+                    {
+                        SoundLib.musket.Play(start);
+                    }
                     //warsRef.sound.rocket.Play(start);
                     modelName = LootFest.VoxelModelName.war_gunblast;
                     scale = DssConst.Men_StandardModelScale * 0.45f;
@@ -112,6 +133,10 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
 
                 case AttackType.MassiveCannonball:
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceMachineProjectile))
+                    {
+                        SoundLib.cannon.Play(start);
+                    }
                     //warsRef.sound.rocket.Play(start);
                     modelName = LootFest.VoxelModelName.war_cannonball;
                     scale = DssConst.Men_StandardModelScale * 0.8f;
@@ -123,6 +148,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case AttackType.SlingShot:
                     //warsRef.sound.knifethrow.Play(start);
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceProjectile))
+                    {
+                        SoundLib.throwitem.Play(start);
+                    }
                     modelName = LootFest.VoxelModelName.slingstone;
                     scale = DssConst.Men_StandardModelScale * 0.14f;
                     break;
@@ -134,11 +163,19 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case AttackType.Ballista:
                     //warsRef.sound.catapult.Play(start);
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceMachineProjectile))
+                    {
+                        SoundLib.heavyballista.Play(start);
+                    }
                     modelName = LootFest.VoxelModelName.war_ballista_proj;
                     scale = DssConst.Men_StandardModelScale * 1.2f;
                     linear = true;
                     break;
                 case AttackType.Catapult:
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceMachineProjectile))
+                    {
+                        SoundLib.heavyballista.Play(start);
+                    }
                     rotatingSpeed = 2f;
                     modelName = LootFest.VoxelModelName.boulder_proj;
                     scale = DssConst.Men_StandardModelScale * 0.5f;
@@ -152,13 +189,21 @@ namespace VikingEngine.DSSWars.GameObject
                     rotatingSpeed = 20f;
                     break;
                 case AttackType.SecondaryJavelin:
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceProjectile))
+                    {
+                        SoundLib.throwblade.Play(start);
+                    }
                     //warsRef.sound.javelin.Play(start);
                     modelName = LootFest.VoxelModelName.ThrowingSpear;
                     scale = 1.5f;
                     linear = true;
                     break;
                 case AttackType.Javelin:
-                   // warsRef.sound.javelin.Play(start);
+                    if (Ref.peRnd.ChanceF(DssConst.SoundChanceProjectile))
+                    {
+                        SoundLib.throwblade.Play(start);
+                    }
+                    // warsRef.sound.javelin.Play(start);
                     modelName = LootFest.VoxelModelName.little_javelin;
                     scale = DssConst.Men_StandardModelScale * 1f;//0.8f;
                     linear = true;
@@ -265,7 +310,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
-                ProjectileHit(true, target, damage, splashCount, /*splashPercDamage,*/ fromAttack);
+                if (Ref.peRnd.ChanceF(DssConst.SoundChanceProjectile))
+                {
+                    SoundLib.clothHit.Play(target.position);
+                }
+                ProjectileHit(true, target, damage, splashCount,  fromAttack);
             }
         }
 
