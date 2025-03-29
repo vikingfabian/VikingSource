@@ -1,5 +1,6 @@
 ﻿-Change Log-
-* Added steam stats, to collect user data; like how many play on easy difficulty
+* Fixed Blumpos multiplayer sound crash
+* Debug info on saves
 
 
 

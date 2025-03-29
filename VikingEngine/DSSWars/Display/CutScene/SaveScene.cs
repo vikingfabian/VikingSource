@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
@@ -18,6 +19,8 @@ namespace VikingEngine.DSSWars.Display.CutScene
         protected Graphics.TextG pressAnyKey;
         protected Graphics.Image bg;
         protected SaveStateMeta meta;
+        int updates = 0;
+        bool complete = false;
 
         public AbsSaveScene()
              : base()
@@ -42,9 +45,23 @@ namespace VikingEngine.DSSWars.Display.CutScene
             bg.Opacity = 0.8f;
         }
 
+        public override void Time_Update(float time)
+        {
+            if (!complete)
+            {
+                updates++;
+                if (updates > 99)
+                {
+                    updates = 0;
+                }
+            }
+            progress.TextString = string.Format(SaveString, SaveGamestate.MainProgress.ToString() + ":" + SaveGamestate.LoopProgress.ToString() + ":" + updates.ToString());
+        }
+
         abstract protected string SaveString { get; }
         protected void displaySaveComplete()
         {
+            complete = true;
             progress.TextString = string.Format(SaveString, DssRef.lang.Progressbar_ProgressComplete);
             progress.Color = Color.Gray;
             pressAnyKey.Visible = true;
@@ -81,12 +98,13 @@ namespace VikingEngine.DSSWars.Display.CutScene
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         {
             state_0Hold_1Save_2meta_3Done++;
-
+            
             displaySaveComplete();
         }        
 
         override public void Time_Update(float time)
         {
+            base.Time_Update(time);
             switch (state_0Hold_1Save_2meta_3Done)
             {
                 case 0:
@@ -152,10 +170,12 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
         override public void Time_Update(float time)
         {
+            //base.Time_Update(time);
             if (state_0load_1complete == 0)
             {
                 if (saveGamestate.complete)
                 {
+
                     displaySaveComplete();
                     DssRef.state.OnLoadComplete();
                     state_0load_1complete++;

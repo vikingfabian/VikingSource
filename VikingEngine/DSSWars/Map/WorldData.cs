@@ -8,6 +8,7 @@ using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.ToGG.Data;
 
 namespace VikingEngine.DSSWars
 {   
@@ -187,49 +188,20 @@ namespace VikingEngine.DSSWars
                 subtile.write(w, ref previuos);
 
                 previuos = subtile;
-
-                //if (subTileHasRepeatValue(ref subtile))
-                //{
-                //    //Find repeats
-                //    int repeating = 0;
-
-                //    while (true)
-                //    {
-                //        if (subTileGrid.LoopNext())
-                //        {
-                //            var nexttile = subTileGrid.LoopValueGet();
-                //            if (subtile.EqualSaveData(ref nexttile))
-                //            {
-                //                ++repeating;
-                //            }
-                //            else
-                //            {
-                //                subTileGrid.LoopUndoToPrev();
-                //                //end loop
-                //                DataStreamLib.WriteGrowingBitShiftValue(w, repeating);
-                //                break;
-                //            }
-                //        }
-                //        else
-                //        {
-                //            //end loop, and final position on map
-                //            DataStreamLib.WriteGrowingBitShiftValue(w, repeating);
-                //            break;
-                //        }
-                //    }                    
-                //}
-
             }
 
             Debug.WriteCheck(w);
-
+            SaveGamestate.MainProgress++;
+            SaveGamestate.LoopProgress = 0;
             foreach (City city in cities)
             {
                 city.writeGameState(w);
+                SaveGamestate.LoopProgress++;
             }
 
             Debug.WriteCheck(w);
-
+            SaveGamestate.MainProgress++;
+            SaveGamestate.LoopProgress = 0;
             foreach (var faction in factions.Array)
             {
                 if (faction != null && faction.isAlive)
@@ -242,6 +214,8 @@ namespace VikingEngine.DSSWars
                 { 
                     w.Write(false); 
                 }
+
+                SaveGamestate.LoopProgress++;
             }
 
             Debug.WriteCheck(w);
@@ -320,12 +294,12 @@ namespace VikingEngine.DSSWars
             w.Write(SaveMapVersion);
 
             w.Write(metaData.seed);
-            Size.write(w);
+            Size.write(w); SaveGamestate.MainProgress++;
 
             if (abortLoad) return;
             
             //tilesSz.begin(w);
-            ForXYLoop loop = new ForXYLoop(Size);
+            ForXYLoop loop = new ForXYLoop(Size); SaveGamestate.LoopProgress = 0;
             Tile previous = new Tile();
             while (loop.Next())
             {
@@ -333,6 +307,7 @@ namespace VikingEngine.DSSWars
                 tile.writeMapFile(w, previous);
 
                 previous = tile;
+                SaveGamestate.LoopProgress++;
             }
             //tilesSz.end(w);
 
@@ -341,10 +316,13 @@ namespace VikingEngine.DSSWars
             Debug.WriteCheck(w);
 
             //citiesSz.begin(w);
+            SaveGamestate.MainProgress++;
             w.Write(cities.Count);
+            SaveGamestate.LoopProgress = 0;
             foreach (var m in cities)
             {
                 m.writeMapFile(w);
+                SaveGamestate.LoopProgress++;
             }
             //citiesSz.end(w);
 
@@ -353,12 +331,15 @@ namespace VikingEngine.DSSWars
             Debug.WriteCheck(w);
 
             //factionsSz.begin(w);
+            SaveGamestate.MainProgress++;
             var factionsCount = factions.counter();
             w.Write(factions.Count);
+            SaveGamestate.LoopProgress = 0;
             while (factionsCount.Next())
             {
                 w.Write((byte)factionsCount.sel.factiontype);
                 factionsCount.sel.writeMapFile(w);
+                SaveGamestate.LoopProgress++;
             }
             //factionsSz.end(w);
 
