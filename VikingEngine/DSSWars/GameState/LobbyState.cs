@@ -35,6 +35,7 @@ using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.LootFest.GO.WeaponAttack;
+using Valve.Steamworks;
 
 namespace VikingEngine.DSSWars
 {
@@ -271,6 +272,16 @@ namespace VikingEngine.DSSWars
             content.Button("start", new RbAction(startGame), null, true);
             content.Button("map editor", new RbAction(openMapEditor), null, true);
             content.Button("battle lab", new RbAction(startBattleLab), null, true);
+            if (Ref.steam.isInitialized)
+            {
+                content.Button("wish", new RbAction(() =>
+                    {
+                        SteamAPI.SteamFriends().ActivateGameOverlayToStore(
+                        3585100,
+                        EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+                    }
+                ) , null, true);
+            }
 #endif
             var saves = DssRef.storage.meta.listSaves();
             if (arraylib.HasMembers(saves))

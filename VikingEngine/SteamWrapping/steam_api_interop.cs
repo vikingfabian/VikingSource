@@ -1322,8 +1322,10 @@ private void CheckIfUsable()
 {
     if (m_pSteamFriends == IntPtr.Zero)
     {
+#if DEBUG
         throw new EmptyUser_SteamException();
-    }
+#endif
+			}
 }
 public override string GetPersonaName()
 {
