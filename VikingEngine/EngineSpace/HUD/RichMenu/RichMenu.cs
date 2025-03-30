@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -279,7 +280,8 @@ namespace VikingEngine.HUD.RichMenu
         }
 
         public void updateMouseInput(ref bool mouseOver)
-        {
+        {           
+
             if (interaction != null)
             {      
                 if (backgroundArea.IntersectPoint(Input.Mouse.Position)
@@ -313,6 +315,15 @@ namespace VikingEngine.HUD.RichMenu
                     }
                 }
             }
+        }
+
+        public bool HasToolTip(int id)
+        {
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+            return tooltip != null && Tooltip.tooltip_id == id && (Ref.TotalTimeSec- Tooltip.tooltip_id_timestampsec) >= 1f;
         }
 
         public bool BlockRefresh()

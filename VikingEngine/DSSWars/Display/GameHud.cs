@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.Display
                 needRefresh |= objMenu.updateMouseInput(ref mouseOverHud);
                 needRefresh |= factionMenu.updateMouseInput(ref mouseOverHud);
                 //mouseOver = false;
-
+                player.tutorial?.update(ref mouseOverHud);
                 messages.Update(ref mouseOverHud);
             }
 

@@ -462,9 +462,6 @@ namespace VikingEngine.DSSWars.Build
 
         public void toHud(LocalPlayer player, RichBoxContent content, City city)
         {
-
-            
-
             List<BuildCategoryTab> buildCategories = new List<BuildCategoryTab>
             {
                  BuildCategoryTab.ExpandAndCraft,
@@ -477,10 +474,27 @@ namespace VikingEngine.DSSWars.Build
                 buildCategories.Add(BuildCategoryTab.Automation);
             }
 
-            foreach(var tab in buildCategories)
+            foreach (var tab in buildCategories)
             {
+                SpriteName tabIcon;
+                switch (tab)
+                {
+                    case BuildCategoryTab.ExpandAndCraft:
+                        tabIcon = SpriteName.warsBuildCategoryHouse;
+                        break;
+                    case BuildCategoryTab.Military:
+                        tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
+                        break;
+                    case BuildCategoryTab.Decor:
+                        tabIcon = SpriteName.warsBuildCategoryDecorTree;
+                        break;
+                    default:
+                        tabIcon = SpriteName.warsBuildCategoryAutomation;
+                        break;
+
+                }
                 var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                    new List<AbsRichBoxMember> { new RbText("." + tab.ToString()) },
+                    new List<AbsRichBoxMember> { new RbImage(tabIcon) },
                     new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, SoundLib.menutab));
                 content.Add(tabButton);
             }
@@ -581,6 +595,7 @@ namespace VikingEngine.DSSWars.Build
                             var build = BuildLib.BuildOptions[(int)type];
                             content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
                             build.blueprint.toMenu(content, city);
+                            build.altBlueprint?.toMenu(content, city);
 
                             content.newLine();
                             content.Add(new RbText(".Build time:", HudLib.TitleColor_Label));

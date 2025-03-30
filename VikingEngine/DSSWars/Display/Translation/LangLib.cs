@@ -1357,7 +1357,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.ServiceMen:
                     return DssRef.todoLang.ResourceType_ServiceMen;
 
-                case ItemResourceType.CupperCoin:
+                case ItemResourceType.CopperCoin:
                 case ItemResourceType.BronzeCoin:
                 case ItemResourceType.SilverCoin:
                 case ItemResourceType.ElfCoin:

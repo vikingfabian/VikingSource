@@ -10,6 +10,7 @@ namespace VikingEngine.HUD.RichBox
 {
     abstract class AbsRbAction
     {
+        public int tagId = 0;
         public RbSoundProfile sound;
 
         public bool enabled = true;

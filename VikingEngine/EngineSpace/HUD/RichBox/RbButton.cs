@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 
@@ -139,6 +140,16 @@ namespace VikingEngine.HUD.RichBox
                     var tooltip = enter.tooltip();
                     if (tooltip != null)
                     {
+                        if (Input.Keyboard.Ctrl)
+                        {
+                            lib.DoNothing();
+                        }
+                        
+                        if (Tooltip.tooltip_id != enter.tagId)
+                        {
+                            Tooltip.tooltip_id = enter.tagId;
+                            Tooltip.tooltip_id_timestampsec = Ref.TotalTimeSec;                          
+                        }
                         menu.addToolTip(tooltip, this.area());
                         return;
                     }

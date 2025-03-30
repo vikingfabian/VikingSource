@@ -29,8 +29,8 @@ namespace VikingEngine.DSSWars.Display
         bool current_menuToolTip;
         public bool refresh = false;
         Vector2 size;
-        public int tooltip_id = int.MinValue;
-        public int tooltip_id_timesec;
+        public static int tooltip_id = int.MinValue;
+        public static float tooltip_id_timestampsec;
         public void updateMapTip(Players.LocalPlayer player, bool refreshTime)
         {
             if (current_menuToolTip && images.HasMembers)
@@ -463,12 +463,12 @@ namespace VikingEngine.DSSWars.Display
 
             baseUpdate(player, menuToolTip);
 
-            ++tooltip_id_timesec;
-            if (this.tooltip_id != tooltip_id)
-            { 
-                this.tooltip_id = tooltip_id;
-                tooltip_id_timesec = 0;
-            }
+            //++tooltip_id_timesec;
+            //if (this.tooltip_id != tooltip_id)
+            //{ 
+            //    this.tooltip_id = tooltip_id;
+            //    tooltip_id_timesec = 0;
+            //}
         }
     }
 }

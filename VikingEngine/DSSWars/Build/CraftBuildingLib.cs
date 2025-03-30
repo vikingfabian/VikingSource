@@ -137,7 +137,18 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Iron_G, 5)
            },
             XP.WorkExperienceType.Cook, XP.ExperienceLevel.Beginner_1
-       );
+        );
+        public static readonly CraftBlueprint Brewery_Bronze = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Brewery,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wood_Group, 60),
+                new UseResource(ItemResourceType.Bronze, 5)
+           },
+            XP.WorkExperienceType.Cook, XP.ExperienceLevel.Beginner_1
+        );
 
         public static readonly CraftBlueprint Postal = new CraftBlueprint(
             CraftResultType.Building,
@@ -446,6 +457,19 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
 
+        public static readonly CraftBlueprint Cook_Copper = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Cook,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.Wood_Group, 10),
+               new UseResource(ItemResourceType.Stone_G, 10),
+               new UseResource(ItemResourceType.Copper, 5),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+        );
+
         public static readonly CraftBlueprint WorkBench = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WorkBench,
@@ -454,6 +478,18 @@ namespace VikingEngine.DSSWars.Build
            {
                new UseResource(ItemResourceType.Wood_Group, 10),
                new UseResource(ItemResourceType.Iron_G, 2),
+           },
+            XP.WorkExperienceType.HouseBuilding
+        );
+
+        public static readonly CraftBlueprint WorkBench_Bronze = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.WorkBench,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.Wood_Group, 10),
+               new UseResource(ItemResourceType.Bronze, 2),
            },
             XP.WorkExperienceType.HouseBuilding
         );
@@ -480,6 +516,17 @@ namespace VikingEngine.DSSWars.Build
            },
             XP.WorkExperienceType.HouseBuilding
         );
+        public static readonly CraftBlueprint Carpenter_Bronze = new CraftBlueprint(
+                   CraftResultType.Building,
+                   (int)Build.BuildAndExpandType.Carpenter,
+                  1,
+                  new UseResource[]
+                  {
+               new UseResource(ItemResourceType.Wood_Group, 20),
+               new UseResource(ItemResourceType.Bronze, 8),
+                  },
+                   XP.WorkExperienceType.HouseBuilding
+               );
 
 
         public static readonly CraftBlueprint Armory = new CraftBlueprint(
@@ -502,7 +549,6 @@ namespace VikingEngine.DSSWars.Build
            new UseResource[]
            {
                new UseResource(ItemResourceType.Stone_G, 30),
-               new UseResource(ItemResourceType.Iron_G, 5),
            },
             XP.WorkExperienceType.HouseBuilding
         );
@@ -595,7 +641,6 @@ namespace VikingEngine.DSSWars.Build
                    new UseResource[]
                    {
                new UseResource(ItemResourceType.Stone_G, 40),
-               new UseResource(ItemResourceType.Iron_G, 5),
                    },
                     XP.WorkExperienceType.HouseBuilding
                 );
@@ -636,7 +681,6 @@ namespace VikingEngine.DSSWars.Build
                new UseResource(ItemResourceType.ServiceMen, 1),
                     new UseResource(ItemResourceType.Wood_Group, 100),
                     new UseResource(ItemResourceType.Stone_G, 20),
-                    new UseResource(ItemResourceType.Iron_G, 5),
 
                    },
                     XP.WorkExperienceType.HouseBuilding

@@ -54,6 +54,7 @@ namespace VikingEngine.DSSWars
         public const ImageLayers IngameUiLayer = ImageLayers.Lay9;
 
         public static NineSplitSettings HudMenuBackground;
+        public static NineSplitSettings HudTutorialBackground;
         public static NineSplitSettings HudMenuScollBackground;
         public static NineSplitSettings MessageBackground;
         public static float MessageDisplayWidth;
@@ -65,6 +66,7 @@ namespace VikingEngine.DSSWars
         public static RichBoxSettings RbSettings_HeadOptions;
         public static RichBoxSettings RbOnGuiSettings;
         public static RichBoxSettings TooltipSettings;
+        public static RichBoxSettings TutorialRbSettings;
 
         public static RichboxGuiSettings richboxGui;
         public static RichboxGuiSettings cutsceneGui;
@@ -136,6 +138,15 @@ namespace VikingEngine.DSSWars
             {
                 notSelectedTexture = SpriteName.WarsHudSubTabNotSelected,
             };
+
+            TutorialRbSettings = RbSettings;
+            TutorialRbSettings.breadText.Color = Color.Black;
+            TutorialRbSettings.head2.Color = TitleColor_Label_Dark;
+            TutorialRbSettings.head1.Color = TitleColor_Label_Dark;
+            TutorialRbSettings.checkOn = SpriteName.LfCheckYes;
+            TutorialRbSettings.checkOff = SpriteName.LfCheckNo;
+
+            HudTutorialBackground = new HUD.NineSplitSettings(SpriteName.WarsHudTutorialBg, 1, 16, 1f, true, true);
 
             //RbSettingsLarge = RbSettings;
             //RbSettingsLarge.scaleUp(2f);

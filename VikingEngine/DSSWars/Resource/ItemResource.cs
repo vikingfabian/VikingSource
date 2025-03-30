@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Resource
         SiegeCannonIron,
         ManCannonIron,
         
-        CupperCoin,
+        CopperCoin,
         BronzeCoin,
         SilverCoin,
         ElfCoin,

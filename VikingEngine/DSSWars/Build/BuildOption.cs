@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Delivery;
@@ -18,6 +19,7 @@ namespace VikingEngine.DSSWars.Build
     {   
         public BuildAndExpandType buildType;
         public CraftBlueprint blueprint;
+        public CraftBlueprint altBlueprint = null;
         public TerrainMainType mainType;
         public int subType;
         public SpriteName sprite;
@@ -248,14 +250,29 @@ namespace VikingEngine.DSSWars.Build
                     break;
             }
 
-            if (upgrade)
+            CraftBlueprint bp;
+            if (altBlueprint != null && altBlueprint.hasResources(city))
             {
-                blueprint.payResources(city);
+                bp = altBlueprint;
             }
             else
             {
-                blueprint.payResources_BuildAndUpgrade(city);
+                bp = blueprint;
             }
+
+            if (upgrade)
+            {
+                bp.payResources(city);
+            }
+            else
+            {
+                bp.payResources_BuildAndUpgrade(city);
+            }
+        }
+
+        public bool availableBlueprintResources(City city)
+        {
+            return blueprint.hasResources(city) || (altBlueprint != null && altBlueprint.hasResources(city));
         }
     }
 }

@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Display
 {
     class MessageGroup
     {
-        Vector2 position;
+        //Vector2 position;
         public RichboxGuiSettings settings;
 
         List<Message> messages = new List<Message>();
@@ -32,8 +32,10 @@ namespace VikingEngine.DSSWars.Display
         {
             this.player = player;   
             this.settings = settings;
-            position = player.hud.headOptions.MessageStart;
+
         }
+
+        
 
         public void blockFoodWarning(bool block)
         {
@@ -145,8 +147,8 @@ namespace VikingEngine.DSSWars.Display
 
         public void Add(RichBoxContent content)
         {
-            SoundLib.message.Play(Pan.Left);
-            messages.Insert(0, new Message(player, content, settings));
+            SoundLib.message.Play(Pan.Right);
+            messages.Insert(0, new Message(player, content, position().X, settings));
             UpdatePositions();
         }
 
@@ -177,17 +179,25 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
+        Vector2 position()
+        {
+            var result = player.hud.headOptions.MessageStart;
+            if (player.tutorial != null)
+            {
+                result.X -= HudLib.richboxGui.width;
+            }
+
+            return result;
+        }
         void UpdatePositions()
         {
-            
-
-            Vector2 currentPos = position;
+            Vector2 currentPos = position();
             //if (messages.Count > 0)
             //{                
             foreach (var message in messages)
             {
                    
-                currentPos = message.UpdatePoisitions(currentPos, screenAreaBottom);
+                currentPos = message.UpdatePositions(currentPos, screenAreaBottom);
 
                 currentPos.Y += settings.edgeWidth * 2f;
             }
@@ -220,9 +230,9 @@ namespace VikingEngine.DSSWars.Display
         //Vector2 contentOffset;
         //RbInteraction interaction;
 
-        public Message(LocalPlayer player, RichBoxContent content, RichboxGuiSettings settings)
+        public Message(LocalPlayer player, RichBoxContent content, float startX, RichboxGuiSettings settings)
         {
-            menu = new RichMenu(HudLib.RbSettings, new VectorRect(VectorExt.V2FromX( player.hud.headOptions.MessageStart.X), new Vector2(HudLib.MessageDisplayWidth, 500)),
+            menu = new RichMenu(HudLib.RbSettings, new VectorRect(VectorExt.V2FromX(startX), new Vector2(HudLib.MessageDisplayWidth, 500)),
                 new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
 
             menu.Refresh(content);
@@ -257,7 +267,7 @@ namespace VikingEngine.DSSWars.Display
         }
 
 
-        public Vector2 UpdatePoisitions(Vector2 position, float screenAreaBottom)
+        public Vector2 UpdatePositions(Vector2 position, float screenAreaBottom)
         {
             //area.Position = position;
             //bg.Area = area;

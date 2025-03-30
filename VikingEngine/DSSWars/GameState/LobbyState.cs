@@ -107,17 +107,6 @@ namespace VikingEngine.DSSWars
             new Timer.TimedAction0ArgTrigger(playMusic, 1000);
 
             
-
-            //availableKeyboardKeys = VikingEngine.Input.Keyboard.AllKeys.ToList();
-
-            ////reserved keys
-            //availableKeyboardKeys.Remove(Keys.Escape);
-            //availableKeyboardKeys.Remove(Keys.Enter);
-            //availableKeyboardKeys.Remove(Keys.Up);
-            //availableKeyboardKeys.Remove(Keys.Down);
-            //availableKeyboardKeys.Remove(Keys.Left);
-            //availableKeyboardKeys.Remove(Keys.Right);
-
             if (Ref.lobby == null)
             {
                 new NetLobby();
@@ -447,7 +436,7 @@ namespace VikingEngine.DSSWars
                 {
                     new GuiTextButton("Map file generator", "Creates maps to play on. Takes about 10 minutes.", mapFileGenerator, false, layout);
                     
-                    new GuiLargeTextButton("Test sound", null, new GuiAction(testsound), false, layout);
+                    //new GuiLargeTextButton("Test sound", null, new GuiAction(testsound), false, layout);
                     new GuiTextButton("Load mod", null, loadMod, false, layout);
                     
                     if (Ref.steam.statsInitialized)
@@ -478,11 +467,11 @@ namespace VikingEngine.DSSWars
             Data.Constants.ModLoader loader = new Data.Constants.ModLoader(dir);
         }
 
-        void testsound()
-        {
-            Ref.music.stop(true);
-            Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
-        }
+        //void testsound()
+        //{
+        //    Ref.music.stop(true);
+        //    Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
+        //}
         public void credits()
         {
             GuiLayout layout = new GuiLayout("Credits", menuSystem.menu);
@@ -818,58 +807,27 @@ namespace VikingEngine.DSSWars
 
                         content.newParagraph();
 
-                        content.h1("Player setup", HudLib.TitleColor_Head);
+                        playerSetupToMenu(content);
 
-                        for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
+                        const bool ViewMultiplayer = false;
+                        if (ViewMultiplayer)
                         {
-                            var playerData = DssRef.storage.localPlayers[playerNum - 1];
-                            if (DssRef.storage.playerCount > 1)
-                            {
-                                content.h2(string.Format(DssRef.lang.Player_DefaultName, playerNum), HudLib.TitleColor_Name);
-                            }
-                            listAndEditFlag(content, playerNum, playerData, false);
-                        }
+                            content.newParagraph();
 
-                        content.newParagraph();
-
-                        DropDownBuilder mpOptions = new DropDownBuilder("local_mp");
-                        {
-                            for (int i = 1; i <= GameStorage.MaxLocalPlayerCount; ++i)
+                            DropDownBuilder mpOptions = new DropDownBuilder("local_mp");
                             {
-                                mpOptions.AddOption(i.ToString(), i == DssRef.storage.playerCount, i == 1, new RbAction2Arg<int, bool>(setPlayerCount, i, true), null);
+                                for (int i = 1; i <= GameStorage.MaxLocalPlayerCount; ++i)
+                                {
+                                    mpOptions.AddOption(i.ToString(), i == DssRef.storage.playerCount, i == 1, new RbAction2Arg<int, bool>(setPlayerCount, i, true), null);
+                                }
+                                mpOptions.injectAfter = new List<AbsRichBoxMember>(2) { new RbSpace() };
+                                HudLib.InfoButton(mpOptions.injectAfter, new RbTooltip_Text(DssRef.lang.Lobby_LocalMultiplayerControllerRequired));
+                                mpOptions.Build(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount), underMenu);
                             }
-                            mpOptions.injectAfter = new List<AbsRichBoxMember>(2) { new RbSpace() };
-                            HudLib.InfoButton(mpOptions.injectAfter, new RbTooltip_Text(DssRef.lang.Lobby_LocalMultiplayerControllerRequired));
-                            mpOptions.Build(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount), underMenu);
                         }
 
                         underMenu.Refresh(content);
-                        //     new GuiTextButton(string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount),
-                        //null, localMultiplayerMenu, true, layout);
 
-                        //     for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
-                        //     {
-                        //         var playerData = DssRef.storage.localPlayers[playerNum - 1];
-                        //         if (DssRef.storage.playerCount > 1)
-                        //         {
-                        //             new GuiLabel(string.Format(DssRef.lang.Player_DefaultName, playerNum), layout);
-                        //             new GuiTextButton(DssRef.lang.Lobby_NextScreen, null, new GuiAction1Arg<int>(nextScreenIndex, playerNum), false, layout);
-                        //         }
-                        //         DssRef.storage.flagStorage.flagDesigns[playerData.profile].Button(layout, new GuiAction1Arg<int>(listProfiles, playerNum), true);
-                        //         new GuiTextButton(DssRef.lang.Lobby_FlagEdit, null, new GuiAction1Arg<int>(openProfileEditor, playerData.profile), false, layout);
-
-                        //         if (DssRef.storage.playerCount > 1)
-                        //         {
-                        //             new GuiTextButton(string.Format(Ref.langOpt.InputSelect, playerData.inputSource.ToString()), null, new GuiAction3Arg<int, bool, SaveStateMeta>(selectInputMenu, playerNum, false, null), true, layout);
-                        //         }
-
-                        //         new GuiSectionSeparator(layout);
-                        //     }
-                        //     if (DssRef.storage.playerCount > 1)
-                        //     {
-                        //         new GuiCheckbox(Ref.langOpt.VerticalSplitScreen, null, verticalSplitProperty, layout);
-                        //         menuSystem.multiplayerGameSpeedToMenu(layout);
-                        //     }
                     }
                     break;
 
@@ -905,6 +863,21 @@ namespace VikingEngine.DSSWars
                         underMenu.Refresh(content);
                     }
                     break;
+            }
+        }
+
+        private void playerSetupToMenu(RichBoxContent content)
+        {
+            content.h1(".Player setup", HudLib.TitleColor_Head);
+
+            for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
+            {
+                var playerData = DssRef.storage.localPlayers[playerNum - 1];
+                if (DssRef.storage.playerCount > 1)
+                {
+                    content.h2(string.Format(DssRef.lang.Player_DefaultName, playerNum), HudLib.TitleColor_Name);
+                }
+                listAndEditFlag(content, playerNum, playerData, false);
             }
         }
 

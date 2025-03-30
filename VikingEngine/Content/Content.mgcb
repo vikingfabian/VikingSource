@@ -373,12 +373,6 @@
 /processorParam:Quality=Best
 /build:DSS/Music/Dreamscape Adventures.ogg
 
-#begin DSS/Music/DSS - The Game Begins.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/DSS - The Game Begins.ogg
-
 #begin DSS/Music/echoes of valor.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -414,12 +408,6 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/Guitar Shadows of the Fallen.ogg
-
-#begin DSS/Music/i am your doom.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/i am your doom.ogg
 
 #begin DSS/Music/Legends of Valor.ogg
 /importer:OggImporter

@@ -2459,6 +2459,7 @@ namespace VikingEngine
         WarsHudFlagBorder,
         WarsHudHeadBarBg,
         WarsHudToolUpButton,
+        WarsHudTutorialBg,
 
         WarsHudDropDownArrow,
         WarsHudYellowDot,
@@ -2502,6 +2503,7 @@ namespace VikingEngine
         warsBulletSeperationPoint,
         warsResourceChunkAvailable,
         warsResourceChunkNotAvailable,
+        warsCraftAvailableCount,
 
         warsFolder_carton,
         warsFolder_white,
@@ -2511,7 +2513,13 @@ namespace VikingEngine
         warsFolder_pink,
         warsFolder_blue,
         warsFolder_cyan,
-        
+
+        warsBuildCategoryMilitaryWall,
+        warsBuildCategoryHouse,
+        warsBuildCategoryDecorTree,
+        warsBuildCategoryAutomation,
+
+
         warsArmyTag_Lightning,
         warsArmyTag_Fire,
         warsArmyTag_Shield,

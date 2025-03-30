@@ -118,11 +118,6 @@ namespace VikingEngine.DSSWars.Players
             faction.addMoney_factionWide(10000);
         }
 
-        
-        
-
-        
-
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
@@ -326,8 +321,8 @@ namespace VikingEngine.DSSWars.Players
         {
             if (newGame && DssRef.storage.runTutorial)
             {
-                //tutorial = new PlayerControls.Tutorial(this);
-                DssRef.storage.runTutorial = false;
+                tutorial = new PlayerControls.Tutorial(this);
+                //DssRef.storage.runTutorial = false;
             }
             
         }
@@ -626,10 +621,10 @@ namespace VikingEngine.DSSWars.Players
         public void userUpdate(bool cityUpdate)
         {
 
-            if (tutorial != null)
-            {
-                tutorial.update();
-            }
+            //if (tutorial != null)
+            //{
+            //    tutorial.update();
+            //}
 
             gameControls.update();
 

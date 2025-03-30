@@ -1144,7 +1144,7 @@ namespace VikingEngine.DSSWars.Display
 
         public void resourcesToMenu(RichBoxContent content)
         {
-            if (player.tutorial == null || player.tutorial.DisplayStockpile())
+            if (player.tutorial == null || player.tutorial.DisplayResourseSubTabs())
             {
                 for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.Auto; ++resourcesSubTab)
                 {
@@ -1567,6 +1567,7 @@ namespace VikingEngine.DSSWars.Display
                     break;
                 case ResourcesSubTab.Stockpile_Weapons:
                     content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+                    stockpile(ItemResourceType.SharpStick);
                     stockpile(ItemResourceType.BronzeSword);
                     stockpile(ItemResourceType.ShortSword);
                     stockpile(ItemResourceType.Sword);
@@ -1784,13 +1785,21 @@ namespace VikingEngine.DSSWars.Display
             
             content.Add(new RbTab(0.65f));//roomForAnotherButton? 0.65f : 0.8f));
 
+            var tooltip = new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs()
+            {
+                blueprint = blueprint,
+                optionalBp = optionalBp
+            });
+
+            if (blueprint == CraftResourceLib.Food1)
+            {
+                tooltip.tagId = Tooltip.Food_BlueprintId;
+            }
+
             content.Add(new ArtButton( RbButtonStyle.HoverArea,new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.WarsBluePrint)
             },
-            null, new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs() {
-                blueprint = blueprint,
-                optionalBp = optionalBp
-            })));
+            null, tooltip));
 
         }
 

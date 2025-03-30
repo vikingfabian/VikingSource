@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG;
+using Valve.Steamworks;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -108,7 +109,8 @@ namespace VikingEngine.DSSWars.GameObject
                             findAdjacentFreeSpot(prevPos, ref pos);
                         }
                     }
-                    if (BuildLib.BuildOptions[(int)buildType].blueprint.available(this) &&
+                    
+                    if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources(this) &&
                         work_isFreeTile(pos))
                     {
                         workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.autoBuild.value, 0, 0));

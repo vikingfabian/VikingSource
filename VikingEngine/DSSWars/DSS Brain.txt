@@ -1,7 +1,12 @@
 ﻿UPDATE
 -Change Log-
 Battle sounds
-
+.obj exporter
+Added alternative blueprints for buildings
+Bronze: removed iron requirement on most tier1 buildings
+some hud work
+Repaired the tutorial, lowered all item collecting
+fixed bank crash
 
 !! Known issues, that I am working on !!
 -The guards are hard to select
@@ -21,11 +26,12 @@ Assign men to wall (ballista, har warmashine crew)
 (priest housing)
 
 
-#controls#
-pan on zoom option
-control layout: DSS recommended, classic rts, classic dss
-scroll wheel sensitivity: Zoom speed in terms of distance per scroll wheel tick
-wasd remap
+#DEMO#
+-short tutorial
+-load map with attackers
+-exit on win or loose
+-wishlist popup
+-battle sounds 
 
 #OPT#
 culling av worker

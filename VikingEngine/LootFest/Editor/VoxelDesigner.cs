@@ -986,7 +986,7 @@ namespace VikingEngine.LootFest.Editor
         public void exportObjModel()
         {
             var frame = animationFrames.Frames[currentFrame.Value];
-            
+            ObjExporterScript.Export(frame, storage.saveFileName + " (" + TextLib.IndexToString(currentFrame.Value) + ")");
              menusystem.mainMenu();
         }
 

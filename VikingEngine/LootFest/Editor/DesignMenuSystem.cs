@@ -927,7 +927,7 @@ namespace VikingEngine.LootFest.Editor
                 new GuiTextInputbox(designer.storage.saveFileName, designer.onFileNameChange, layout);
                 //new GuiTextButton("Replace Old Save", "Will use the current name", new GuiAction(save, closeMenu), false, layout);
                 new GuiTextButton("Save", "Save a .vox file", new GuiAction(designer.storage.save, closeMenu), false, layout);
-                //new GuiTextButton("Export as .OBJ", null, designer.exportObjModel, false, layout);
+                new GuiTextButton("Export as .OBJ", null, designer.exportObjModel, false, layout);
                 //new GuiTextButton("Export as textfile", null, designer.exportTextFile, false, layout);
             } layout.End();
             //menu.File = mFile;

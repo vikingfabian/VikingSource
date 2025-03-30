@@ -17,9 +17,9 @@ namespace VikingEngine.DSSWars.Data
         public static readonly SongData Victory = new SongData(FilePath + "we-are-heroes", "We are heroes", false, 0.8f);
         public static readonly SongData Fail = new SongData(FilePath + "Sadness in blue", "Sadness in blue", false, 0.5f);
 
-        public static readonly SongData IAmYourDoom = new SongData(FilePath + "i am your doom", "I am your doom", false, 0.45f);
+        //public static readonly SongData IAmYourDoom = new SongData(FilePath + "i am your doom", "I am your doom", false, 0.45f);
 
-        public static readonly SongData Tutorial = new SongData(FilePath + "DSS - The Game Begins", "DSS - The Game Begins", false, 0.3f);
+        //public static readonly SongData Tutorial = new SongData(FilePath + "DSS - The Game Begins", "DSS - The Game Begins", false, 0.3f);
         //public static string FilePath = DssLib.ContentDir + "Music\\";
         public static new List<Sound.SongData> PlayList()
         {
@@ -67,8 +67,8 @@ namespace VikingEngine.DSSWars.Data
                 DoomStory,
                 Victory,
                 Fail,
-                IAmYourDoom,
-                Tutorial,
+                //IAmYourDoom,
+                //Tutorial,
             };
         }
     } 

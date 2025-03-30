@@ -734,6 +734,7 @@ namespace VikingEngine
             if (set)
             {
                 MasterVolume = value;
+                Ref.music?.RefreshVolume();
                 settingsHasChanged = true;
             }
             return MasterVolume;

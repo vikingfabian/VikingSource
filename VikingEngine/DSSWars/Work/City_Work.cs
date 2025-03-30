@@ -692,7 +692,7 @@ namespace VikingEngine.DSSWars.GameObject
                     ItemResourceType topItem = ItemResourceType.NONE;
                     int topPrio = 0;
 
-                    getMintPriority(workTemplate.coinmaker_cupper, ItemResourceType.CupperCoin, ResourceLib.CupperCoin);
+                    getMintPriority(workTemplate.coinmaker_cupper, ItemResourceType.CopperCoin, ResourceLib.CupperCoin);
                     getMintPriority(workTemplate.coinmaker_bronze, ItemResourceType.BronzeCoin, ResourceLib.BronzeCoin);
                     getMintPriority(workTemplate.coinmaker_silver, ItemResourceType.SilverCoin, ResourceLib.SilverCoin);
                     getMintPriority(workTemplate.coinmaker_mithril, ItemResourceType.ElfCoin, ResourceLib.ElfCoin);
@@ -914,16 +914,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case WorkType.Build:
                     {
-                        var bp = BuildLib.BuildOptions[subWork].blueprint;
-                        if (bp.available(this))
-                        {
-                            //bp.createBackOrder(this);
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                        return BuildLib.BuildOptions[subWork].availableBlueprintResources(this);
                     }
 
                 default:

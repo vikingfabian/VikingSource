@@ -55,6 +55,7 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 cityStorageCenter;
         public void createBuildingSubtiles(WorldData world, CityTemplateCollection templateCollection)
         {
+            List<IntVector2> emptyGeneral = new List<IntVector2>();
             Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, out IntVector2 startSubTilePos);
 
             IntVector2 topleft = WP.ToSubTilePos_TopLeft(tilePos) + startSubTilePos;
@@ -71,6 +72,8 @@ namespace VikingEngine.DSSWars.GameObject
             double percWallGuard;
             bool large = false;
 
+            int cityServiceCount;
+
             switch (this.cityType)
             {
                 case CityType.Village:
@@ -83,6 +86,7 @@ namespace VikingEngine.DSSWars.GameObject
                     centerHall = (int)TerrainBuildingType.CityHall_Village;
                     percBuilding = 0.3;
                     percWallGuard = 0;
+                    cityServiceCount = DssConst.VillageHall_RequiredStaff;
                     break;
                 case CityType.Town:
                     tower = (int)TerrainWallType.WoodTower;
@@ -94,6 +98,7 @@ namespace VikingEngine.DSSWars.GameObject
                     centerHall = (int)TerrainBuildingType.CityHall_Town;
                     percBuilding = 0.5;
                     percWallGuard = 0.1;
+                    cityServiceCount = DssConst.TownHall_RequiredStaff;
                     break;
                 default:
                     large = true;
@@ -106,9 +111,11 @@ namespace VikingEngine.DSSWars.GameObject
                     centerHall = (int)TerrainBuildingType.CityHall_Capital;
                     percBuilding = 0.6;
                     percWallGuard = 0.25;
+                    cityServiceCount = DssConst.CapitalHall_RequiredStaff;
                     break;
 
             }
+            cityServiceCount += 1;
 
             //string[] template = SquareCity;
             List<TerrainBuildingType> craftStations = new List<TerrainBuildingType>
@@ -144,6 +151,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 main = TerrainMainType.Decor;
                                 sub = road;
+                                emptyGeneral.Add(pos);
                             }
                             break;
                         case  CityTemplateCellType.Wall:
@@ -228,7 +236,14 @@ namespace VikingEngine.DSSWars.GameObject
                 
             }
 
-
+            while (totalServiceMen < cityServiceCount && emptyGeneral.Count > 0)
+            {
+                var pos = arraylib.RandomListMemberPop(emptyGeneral, world.rnd);
+                var subTile = world.subTileGrid.Get(pos);
+                subTile.SetType(TerrainMainType.Building, servicehouse, 1);
+                world.subTileGrid.Set(pos, subTile);
+                onServiceHouseBuild(true, largeServiceHouse);
+            }
             //for (int y = 0; y < WorldData.TileSubDivitions; ++y)
             //{
             //    for (int x = 0; x < WorldData.TileSubDivitions; ++x)

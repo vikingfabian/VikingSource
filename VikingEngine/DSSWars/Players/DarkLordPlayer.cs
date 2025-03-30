@@ -92,11 +92,11 @@ namespace VikingEngine.DSSWars.Players
 
         public void EnterMap(Faction takeOverFaction, List<Faction> darkLordAllies)
         {
-            if (DssRef.difficulty.PercDifficulty > 100)
-            {
-                Ref.music.stop(true);
-                Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
-            }
+            //if (DssRef.difficulty.PercDifficulty > 100)
+            //{
+            //    Ref.music.stop(true);
+            //    Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
+            //}
 
             faction.gold = DssConst.HeadCityStartMaxWorkForce * 10;
 

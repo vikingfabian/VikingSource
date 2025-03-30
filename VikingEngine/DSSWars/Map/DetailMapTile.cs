@@ -441,10 +441,10 @@ namespace VikingEngine.DSSWars.Map
                     newFoliage().init(LootFest.VoxelModelName.city_dirttower, 0, VectorExt.AddY(wp, -0.02f), WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.WoodWall:
-                    newFoliage().init(LootFest.VoxelModelName.city_woodwall, 0, VectorExt.AddY(wp, -0.02f), WorldData.SubTileWidth * WallSize);
+                    newFoliage().init(LootFest.VoxelModelName.city_woodwall, 0, VectorExt.AddY(wp, -0.02f), WorldData.SubTileWidth * 1.5f);
                     break;
                 case TerrainWallType.WoodTower:
-                    newFoliage().init(LootFest.VoxelModelName.city_woodtower, 0, VectorExt.AddY(wp, -0.02f), WorldData.SubTileWidth * WallSize);
+                    newFoliage().init(LootFest.VoxelModelName.city_woodtower, 0, VectorExt.AddY(wp, -0.02f), WorldData.SubTileWidth * 1.5f);
                     break;
                 case TerrainWallType.StoneWall:
                     newFoliage().init(LootFest.VoxelModelName.city_stonewall, 0, VectorExt.AddY(wp, -0.03f), WorldData.SubTileWidth * WallSize);
@@ -671,10 +671,10 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
                 case TerrainBuildingType.Bank:
-                    newFoliage().init(LootFest.VoxelModelName.Bank, 0, wp, WorldData.SubTileWidth * 1.0f);
+                    newFoliage().init(LootFest.VoxelModelName.city_bank, 0, wp, WorldData.SubTileWidth * 1.0f);
                     break;
                 case TerrainBuildingType.CoinMinter:
-                    newFoliage().init(LootFest.VoxelModelName.Bank, 1, wp, WorldData.SubTileWidth * 1.0f);
+                    newFoliage().init(LootFest.VoxelModelName.city_bank, 1, wp, WorldData.SubTileWidth * 1.0f);
                     break;
                 case TerrainBuildingType.School:
                     newFoliage().init(LootFest.VoxelModelName.city_logistic, 2, wp, WorldData.SubTileWidth * 1.0f);

@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Resource
             items[(int)ItemResourceType.SiegeCannonIron] = new ItemProperties(DefaultWeight, CraftResourceLib.SiegeCannonIron, null);
             items[(int)ItemResourceType.ManCannonIron] = new ItemProperties(DefaultWeight, CraftResourceLib.ManCannonIron, null);
 
-            items[(int)ItemResourceType.CupperCoin] = new ItemProperties(DefaultWeight, ResourceLib.CupperCoin, null);
+            items[(int)ItemResourceType.CopperCoin] = new ItemProperties(DefaultWeight, ResourceLib.CupperCoin, null);
             items[(int)ItemResourceType.BronzeCoin] = new ItemProperties(DefaultWeight, ResourceLib.BronzeCoin, null);
             items[(int)ItemResourceType.SilverCoin] = new ItemProperties(DefaultWeight, ResourceLib.SilverCoin, null);
             items[(int)ItemResourceType.ElfCoin] = new ItemProperties(DefaultWeight, ResourceLib.ElfCoin, null);

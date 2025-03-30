@@ -384,7 +384,7 @@ namespace VikingEngine.LootFest
         MinerTree2,
         minerFence,
         Palace,
-        Bank,
+        //Bank,
         Theater,
         goblin_hut, orc_hut,
         scenery_test3,

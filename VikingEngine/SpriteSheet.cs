@@ -2476,7 +2476,12 @@ namespace VikingEngine
 
                     add(SpriteName.warsResourceChunkAvailable);
                     add(SpriteName.warsResourceChunkNotAvailable);
-
+                                        
+                    add(SpriteName.warsBuildCategoryMilitaryWall);
+                    add(SpriteName.warsBuildCategoryHouse);
+                    add(SpriteName.warsBuildCategoryDecorTree);
+                    add(SpriteName.warsBuildCategoryAutomation);
+                    add(SpriteName.warsCraftAvailableCount);
                 }
 
                 currentIndex = numTilesWidth * 97;
@@ -2704,6 +2709,7 @@ namespace VikingEngine
                     add(SpriteName.WarsHudFlagBorder, 2, 2);
                     add(SpriteName.WarsHudHeadBarBg, 2, 2);
                     add(SpriteName.WarsHudToolUpButton, 1, 2);
+                    add(SpriteName.WarsHudTutorialBg, 2, 2);
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 
