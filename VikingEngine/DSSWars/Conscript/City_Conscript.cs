@@ -113,21 +113,29 @@ namespace VikingEngine.DSSWars.GameObject
                                     status.menCollected = 0;
                                     status.equipmentCollected = 0;
 
-                                    if (status.inProgress.weapon == ItemResourceType.KnightsLance &&
-                                        (status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
-                                        status.inProgress.training == TrainingLevel.Professional)
+                                    if (faction.player.IsLocalPlayer())
                                     {
-                                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.elite_knights);
-                                    }
+                                        if (status.inProgress.specialization == SpecializationType.CityGuard)
+                                        {
+                                            DssRef.stats.guardsRecruited++;
+                                        }
 
-                                    switch (Culture)
-                                    { 
-                                        case CityCulture.Archers:
-                                            DssRef.state.progress.onCultureBuild(true);
-                                            break;
-                                        case CityCulture.Warriors:
-                                            DssRef.state.progress.onCultureBuild(false);
-                                            break;
+                                        if (status.inProgress.weapon == ItemResourceType.KnightsLance &&
+                                            (status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
+                                            status.inProgress.training == TrainingLevel.Professional)
+                                        {
+                                            DssRef.achieve.UnlockAchievement_async(AchievementIndex.elite_knights);
+                                        }
+
+                                        switch (Culture)
+                                        {
+                                            case CityCulture.Archers:
+                                                DssRef.state.progress.onCultureBuild(true);
+                                                break;
+                                            case CityCulture.Warriors:
+                                                DssRef.state.progress.onCultureBuild(false);
+                                                break;
+                                        }
                                     }
                                 }
                                 break;
@@ -423,7 +431,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void createStartupBarracks()
         {
             if (conscriptBuildings.Count == 0 &&
-                !DssRef.storage.runTutorial)
+                DssRef.storage.runTutorial_1short_2normal != 2)
             {
                 //IntVector2 pos = WP.ToSubTilePos_TopLeft(tilePos);
                 //pos.X += 4;

@@ -160,7 +160,7 @@ namespace VikingEngine.DSSWars.Display
                     fillWidth = true
                 });
 
-            if (DssRef.storage.runTutorial)
+            if (DssRef.storage.runTutorial_1short_2normal != 0)
             { //TODO yes no dialogue
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
@@ -328,11 +328,11 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (set)
                 {
-                    DssRef.storage.runTutorial = value;
+                    DssRef.storage.runTutorial_1short_2normal = value? 2 : 0;
 
                     DssRef.storage.Save(null);
                 }
-                return DssRef.storage.runTutorial;
+                return DssRef.storage.runTutorial_1short_2normal != 0;
             }
 
             bool longerBuildQueueProperty(int index, bool set, bool value)

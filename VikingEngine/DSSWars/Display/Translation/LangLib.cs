@@ -1054,7 +1054,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainMainType.Wall:
 
                     switch ((TerrainWallType)subType)
-                    { 
+                    {
+                        case TerrainWallType.Palisade: return DssRef.todoLang.BuildingType_Palisade;
                         case TerrainWallType.DirtWall:
                             return ".dirt wall";
                         case TerrainWallType.DirtTower:

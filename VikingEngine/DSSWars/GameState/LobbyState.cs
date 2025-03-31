@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars
         //List<Keys> availableKeyboardKeys;
 
         VectorRect underMenuArea;
-        RichMenu richmenu;
+        //RichMenu richmenu;
         const float MenuBgOpacity = 0.9f;
         RichMenu topMenu, underMenu;
 
@@ -272,6 +272,25 @@ namespace VikingEngine.DSSWars
                 ) , null, true);
             }
 #endif
+            {
+                content.newLine();
+
+                var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
+                moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
+
+                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                    new RbBeginTitle(),
+                    new RbImage(SpriteName.WarsHudIconAdd),
+                    new RbTab(ButtonTextTabbing),
+                    new RbText(".Quick tutorial"),
+                    new RbTab(MoreArrowTabbing),
+                    moreArrow,
+                },
+                new RbAction1Arg<bool>(beginDemoTutorial,  true), null);
+                btn.fillWidth = true;
+                content.Add(btn);
+            }
+
             var saves = DssRef.storage.meta.listSaves();
             if (arraylib.HasMembers(saves))
             {
@@ -356,6 +375,11 @@ namespace VikingEngine.DSSWars
             //}
         }
 
+        void beginDemoTutorial(bool bShort)
+        {
+            DssRef.storage.runTutorial_1short_2normal = bShort ? 1 : 2;
+            openUnderMenu(UnderMenu_PlayerSetup, true);
+        }
 
         void openMapEditor()
         {

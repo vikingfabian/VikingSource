@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars
 
                 }
 
-                if (DssRef.storage.runTutorial)
+                if (DssRef.storage.runTutorial_1short_2normal == 2)
                 {
                     DssRef.stats.startTutorial.addOne();
                 }

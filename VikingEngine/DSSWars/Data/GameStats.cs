@@ -9,6 +9,8 @@ namespace VikingEngine.DSSWars.Data
 {
     class GameStats : AbsGameStats
     {
+        public int guardsRecruited = 0;
+
         public StatsInt startTutorial = new StatsInt("start_tutorial");
         public StatsInt completeTutorial = new StatsInt("complete_tutorial");
         public StatsInt skipTutorial = new StatsInt("skip_tutorial");

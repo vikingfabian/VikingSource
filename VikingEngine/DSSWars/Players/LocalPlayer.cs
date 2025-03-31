@@ -319,7 +319,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void InitTutorial(bool newGame)
         {
-            if (newGame && DssRef.storage.runTutorial)
+            if (newGame && DssRef.storage.runTutorial_1short_2normal != 0)
             {
                 tutorial = new PlayerControls.Tutorial(this);
                 //DssRef.storage.runTutorial = false;
@@ -336,7 +336,7 @@ namespace VikingEngine.DSSWars.Players
             if (tutorial != null)
             {
                 w.Write(true);
-                tutorial.tutorial_writeGameState(w);
+                tutorial.writeGameState(w);
             }
             else
             { w.Write(false); }
@@ -356,7 +356,7 @@ namespace VikingEngine.DSSWars.Players
                 if (inTutorialMode)
                 {
                     tutorial = new PlayerControls.Tutorial(this);
-                    tutorial.tutorial_readGameState(r, subversion);
+                    tutorial.readGameState(r, subversion);
                 }
             }
         }

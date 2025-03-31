@@ -1,12 +1,6 @@
 ﻿UPDATE
 -Change Log-
-Battle sounds
-.obj exporter
-Added alternative blueprints for buildings
-Bronze: removed iron requirement on most tier1 buildings
-some hud work
-Repaired the tutorial, lowered all item collecting
-fixed bank crash
+Short tutorial
 
 !! Known issues, that I am working on !!
 -The guards are hard to select
@@ -31,7 +25,10 @@ Assign men to wall (ballista, har warmashine crew)
 -load map with attackers
 -exit on win or loose
 -wishlist popup
--battle sounds 
+-max timer med varning
+-stats
+-remove save, achievements
+-out of food still shows
 
 #OPT#
 culling av worker

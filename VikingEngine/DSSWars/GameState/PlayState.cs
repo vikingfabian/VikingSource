@@ -256,7 +256,7 @@ namespace VikingEngine.DSSWars
                     m.onGameStart(newGame);
                 }
 
-                if (newGame && !DssRef.storage.runTutorial)
+                if (newGame && DssRef.storage.runTutorial_1short_2normal != 2)
                 {
                     initStartUnits();
                 }

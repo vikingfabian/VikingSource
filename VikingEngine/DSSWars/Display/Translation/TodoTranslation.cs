@@ -333,6 +333,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string DecorType_Banner => "Banner";
 
         public string BuildingType_DirtRoad => "Dirt road";
+        public string BuildingType_Palisade => "Palisade Fort";
 
         public string ResourceType_ServiceMen => "Servicemen";
         public string BuildingType_ServiceHouse => "Service house";

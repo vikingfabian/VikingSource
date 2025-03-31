@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.Data
         public bool centralGold = true;
         public bool generateNewMaps = false;
         public bool autoSave = true;
-        public bool runTutorial = true;
+        public int runTutorial_1short_2normal = 2;
         public bool speed5x = false;
         public bool longerBuildQueue = false;
 
@@ -148,14 +148,9 @@ namespace VikingEngine.DSSWars.Data
         }
         public void write(System.IO.BinaryWriter w, bool gamestate = false)
         {
-            const int Version = 21;
+            const int Version = 22;
 
             w.Write(Version);
-
-            //foreach (var p in profiles)
-            //{
-            //    p.write(w);
-            //}
 
             w.Write((int)mapSize);
 
@@ -173,7 +168,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(multiplayerGameSpeed);
             DssRef.difficulty.write(w);   
             
-            w.Write(runTutorial);
+            w.Write((byte)runTutorial_1short_2normal);
 
             w.Write(speed5x);
             w.Write(longerBuildQueue);
@@ -192,14 +187,7 @@ namespace VikingEngine.DSSWars.Data
                 return;
             }
 
-            if (version < 12)
-            {
-                flagStorage.old_read(r);
-                //for (int i = 0; i < ProfilesCount; ++i)
-                //{
-                //    flagDesigns[i].read(r);
-                //}
-            }
+            
             mapSize = (MapSize)r.ReadInt32();
 
             if (!gamestate || version < 16)
@@ -212,29 +200,23 @@ namespace VikingEngine.DSSWars.Data
                 }
             }
 
-            if (version >= 11)
-            {
-                generateNewMaps = r.ReadBoolean();
-                if (version >= 13)
-                {
-                    autoSave = r.ReadBoolean();
-                }
-                if (version >= 14)
-                {
-                    multiplayerGameSpeed = r.ReadSingle();
-                }
-                DssRef.difficulty.read(r, version);
-            }
-
+            
+            generateNewMaps = r.ReadBoolean();
+            autoSave = r.ReadBoolean();
+            
+            multiplayerGameSpeed = r.ReadSingle();
+            
+            DssRef.difficulty.read(r, version);
+            
             if (version >= 15)
             {
-                runTutorial = r.ReadBoolean();
+                runTutorial_1short_2normal = r.ReadByte();
             }
             
-            if (version < 16)
-            {
-                runTutorial = true;
-            }
+            //if (version < 16)
+            //{
+            //    runTutorial = true;
+            //}
 
             if (version >= 18)
             { 

@@ -1167,7 +1167,11 @@ namespace VikingEngine.DSSWars.GameObject
             if (newGame)
             {
                 refreshWorkerSubtiles();
-
+                int freeGuardSpace = 0;
+                if (DssRef.storage.runTutorial_1short_2normal == 1)
+                {
+                    freeGuardSpace = 10;
+                }
                 //Place guards
                 //foreach (var post in defenceBuildings)
                 for (int i = 0;i <defenceBuildings.Count;i++) 
@@ -1176,7 +1180,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (post.autoAssign)
                     {
                         newGamePlaceGuard(post.idAndPosition, i);
-                        if (soldiersCount >= HousingCount_Guard)
+                        if (soldiersCount + freeGuardSpace >= HousingCount_Guard)
                         {
                             break;
                         }

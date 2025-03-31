@@ -8,6 +8,13 @@ using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine.DSSWars.Players.Command
 {
+    enum CommandType
+    { 
+        Move,
+        Attack,
+        EnterPost,
+    }
+
     abstract class AbsCommand
     {
         public AbsCommand nextCommand = null;
@@ -44,6 +51,20 @@ namespace VikingEngine.DSSWars.Players.Command
             }
         }
 
+        public bool HasCommand(CommandType type)
+        {
+            if (type == this.GetCommandType())
+            {
+                return true;
+            }
+            if (nextCommand != null)
+            {
+                return nextCommand.HasCommand(type);
+            }
+
+            return false;
+        }
+
         virtual public void begin(SoldierGroup group) { }
 
         public void placeLastInQueue(AbsCommand next)
@@ -62,6 +83,8 @@ namespace VikingEngine.DSSWars.Players.Command
         { 
             return false;
         }
+
+        abstract protected CommandType GetCommandType();
     }
 
     class EnterPostCommand : AbsCommand
@@ -120,6 +143,11 @@ namespace VikingEngine.DSSWars.Players.Command
         {
             return postId == id;
         }
+
+        protected override CommandType GetCommandType()
+        {
+            return CommandType.EnterPost;
+        }
     }
 
     class MoveCommand : AbsCommand
@@ -143,6 +171,10 @@ namespace VikingEngine.DSSWars.Players.Command
         {
             return goalWp;
         }
+        protected override CommandType GetCommandType()
+        {
+            return CommandType.Move;
+        }
     }
 
     class AttackCommand : AbsCommand
@@ -165,6 +197,10 @@ namespace VikingEngine.DSSWars.Players.Command
         public override AbsGroup AttackTarget()
         {
             return target;
+        }
+        protected override CommandType GetCommandType()
+        {
+            return CommandType.Attack;
         }
     }
 }

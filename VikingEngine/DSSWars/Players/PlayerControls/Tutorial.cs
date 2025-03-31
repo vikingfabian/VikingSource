@@ -8,6 +8,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -15,6 +16,7 @@ using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.PJ;
 using VikingEngine.Timer;
 using VikingEngine.ToGG;
@@ -24,6 +26,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
     class Tutorial
     {
+         
+
         enum TutorialMission
         {
             CollectResources,
@@ -32,10 +36,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             ProduceWeaponsArmor,
             ConscriptArmy,
             CollectFood,
+            RecruitGuard,
+            BuildDefences,
             MoveArmy,
+           
             Diplomatics,
             End,
         }
+
+        List2<TutorialMission> missions;
 
         const int CollectWoodStoneAmount = 30;
         const int CollectLinenAmount = 15;
@@ -62,6 +71,21 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool weaponsArmor_setArmorPrio = false;
         bool weaponsArmor_produceArmor = false;
         bool weaponsArmor_produceWeapons = false;
+
+        bool recruitGuard_zoomIn = false;
+        bool recruitGuard_zoomIn_sound = false;
+        bool recruitGuard_selectCity = false;
+        bool recruitGuard_selectCity_sound = false;
+        bool recruitGuard_selectConscriptTab = false;
+        bool recruitGuard_selectConscriptTab_sound = false;
+        bool recruitGuard_selectGuardTab = false;
+        bool recruitGuard_selectGuardTab_sound = false;
+        bool recruitGuard_createGuard = false;
+
+        bool buildDefences_selectBuildTab = false;
+        bool buildDefences_selectBuildTab_sound = false;
+        bool buildDefences_buildPalisade = false;
+        bool buildDefences_moveGuard = false;
 
         bool conscriptArmy_build = false;
         bool conscriptArmy_selectTab = false;
@@ -97,7 +121,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         //*The workers will move to the city hall for food
 
         LocalPlayer player;
-        TutorialMission tutorialMission = 0;
+        //TutorialMission tutorialMission = 0;
         Display.TutorialDisplay display;
 
         public List<MenuTab> cityTabs;
@@ -109,6 +133,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 BuildAndExpandType.WorkerHut,
                 BuildAndExpandType.ServiceHouse_Small,
                 BuildAndExpandType.SoldierBarracks,
+                BuildAndExpandType.Palisade,
       
                 //BuildAndExpandType.Brewery,
                 //BuildAndExpandType.Cook,
@@ -122,13 +147,45 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 BuildAndExpandType.LinenFarm,
             };
 
-            if (tutorialMission >= TutorialMission.CollectFood)
+            if (missions.sel >= TutorialMission.CollectFood)
             {
                 list.Insert(4, BuildAndExpandType.Cook);
                 list.Add(BuildAndExpandType.RapeSeedFarm);
             }
 
+
+
             return list;
+        }
+
+        void initMissions()
+        {
+            if (DssRef.storage.runTutorial_1short_2normal == 1)
+            {
+                missions = new List2<TutorialMission>
+                {
+                    TutorialMission.RecruitGuard,
+                    TutorialMission.BuildDefences,
+                    TutorialMission.MoveArmy,                
+                    TutorialMission.End,
+                };
+            }
+            else
+            {
+                missions = new List2<TutorialMission>
+                {
+                    TutorialMission.CollectResources,
+                    TutorialMission.Linen,
+                    TutorialMission.ProduceWeaponsArmor,
+                    TutorialMission.ConscriptArmy,
+                    TutorialMission.CollectFood,
+                    TutorialMission.MoveArmy,
+                    TutorialMission.Diplomatics,
+                    TutorialMission.End,
+                };
+            }
+
+            missions.selectFirst();
         }
 
         public Tutorial(LocalPlayer player)
@@ -137,6 +194,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             this.player = player;
             display = new Display.TutorialDisplay(player);
+            initMissions();
 
             //Setup resources and map
             var cityCounter = player.faction.cities.counter();
@@ -145,6 +203,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 cityCounter.sel.res_wood.amount = 0;
                 cityCounter.sel.res_sharpstick.amount = CollectWeaponArmorAmount - 6;//30;
                 cityCounter.sel.res_paddedArmor.amount = CollectWeaponArmorAmount - 6;
+
+                if (DssRef.storage.runTutorial_1short_2normal == 1)
+                {
+                    cityCounter.sel.res_Palisade.amount = 50;
+                    cityCounter.sel.createStartupBarracks();
+                }
+
 
                 CityStructure.WorkInstance.setupTutorialMap(cityCounter.sel);
 
@@ -163,7 +228,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.faction.workTemplate.craft_bow.value = 0;
             player.faction.workTemplate.craft_paddedarmor.value = 0;
             player.faction.refreshCityWork();
-
+            
             refreshLimits();
             //new TimedAction0ArgTrigger(song, 3000);
         }
@@ -175,7 +240,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void refreshLimits()
         {
-            player.gameControls.mapControls.setCameraBounds(tutorialMission < TutorialMission.Diplomatics, cityarea);
+            player.gameControls.mapControls.setCameraBounds(missions.sel < TutorialMission.Diplomatics, cityarea);
 
             cityTabs = new List<MenuTab>{ MenuTab.Info, MenuTab.Resources };
 
@@ -183,34 +248,34 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             //{
             //    cityTabs.Add(MenuTab.Work);
             //}
-            if (tutorialMission >= TutorialMission.Linen)
+            if (missions.sel >= TutorialMission.Linen)
             {
                 cityTabs.Add(MenuTab.Build);
             }
-            if (tutorialMission >= TutorialMission.ConscriptArmy)
+            if (missions.sel >= TutorialMission.ConscriptArmy)
             {
                 cityTabs.Add(MenuTab.Conscript);
             }
-            if (tutorialMission >= TutorialMission.CollectFood)
+            if (missions.sel >= TutorialMission.CollectFood)
             {
                 cityTabs.Add(MenuTab.BlackMarket);
             }
 
-            player.hud.messages.blockFoodWarning(tutorialMission < TutorialMission.CollectFood);
+            player.hud.messages.blockFoodWarning(missions.sel < TutorialMission.CollectFood);
         }
 
         public bool DisplayResourseSubTabs()
         { 
-            return tutorialMission >= TutorialMission.ProduceWeaponsArmor;
+            return missions.sel >= TutorialMission.ProduceWeaponsArmor;
         }
         
 
         public void tutorial_ToHud(RichBoxContent content)
         {
             content.h1(DssRef.lang.Tutorial_MissionsTitle);
-            content.h2(string.Format(DssRef.lang.Tutorial_MissionX, ((int)tutorialMission) +1)).overrideColor = HudLib.InfoYellow_Light;
+            content.h2(string.Format(DssRef.lang.Tutorial_MissionX, missions.selIndex +1), HudLib.InfoYellow_Light);
 
-            switch (tutorialMission)
+            switch (missions.sel)
             {
                 case TutorialMission.CollectResources:
                     content.icontext(HudLib.CheckImage(collectResources_selectCity), DssRef.lang.Tutorial_SelectACity);
@@ -244,6 +309,22 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.icontext(HudLib.CheckImage(weaponsArmor_setArmorPrio), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_LightArmor));
                     content.icontext(HudLib.CheckImage(weaponsArmor_produceWeapons), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_SharpStick));
                     content.icontext(HudLib.CheckImage(weaponsArmor_produceArmor), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_LightArmor));
+                    break;
+
+                case TutorialMission.RecruitGuard:
+                    content.icontext(HudLib.CheckImage(recruitGuard_selectCity), DssRef.lang.Tutorial_SelectACity);
+                    content.icontext(HudLib.CheckImage(recruitGuard_zoomIn), DssRef.lang.Tutorial_ZoomInWorkers);
+                    content.icontext(HudLib.CheckImage(recruitGuard_selectConscriptTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
+                    content.icontext(HudLib.CheckImage(recruitGuard_selectGuardTab), string.Format(".Open a barracks and select category: {0}", ".Guard"));
+                    content.icontext(HudLib.CheckImage(recruitGuard_createGuard), string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.todoLang.Resource_TypeName_PaddedArmor));
+                    
+                    break;
+
+                case TutorialMission.BuildDefences:
+                    content.icontext(HudLib.CheckImage(buildDefences_selectBuildTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
+                    content.icontext(HudLib.CheckImage(buildDefences_buildPalisade), string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Palisade].Label()));
+                    content.icontext(HudLib.CheckImage(buildDefences_moveGuard), ".Move a guard to a wall");
+                   
                     break;
 
                 case TutorialMission.ConscriptArmy:
@@ -297,9 +378,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
 
             content.newParagraph();
-            content.icontext(player.gameControls.input.ControllerSelect.Icon, DssRef.lang.Tutorial_SelectInput);            
+            content.icontext(player.gameControls.input.mouseSelect.Icon, DssRef.lang.Tutorial_SelectInput);            
             content.icontext(player.gameControls.input.inputSource.IsController? player.gameControls.input.cameraTiltZoom.Icon : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
-            if (tutorialMission == TutorialMission.MoveArmy)
+            if (missions.sel == TutorialMission.MoveArmy ||
+                missions.sel == TutorialMission.BuildDefences)
             {
                 content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
             }
@@ -309,7 +391,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             
 
-            switch (tutorialMission)
+            switch (missions.sel)
             {
                 case TutorialMission.CollectResources:
 
@@ -528,6 +610,161 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             weaponsArmor_produceArmor = true;
 
                             onPartSuccess();
+                        }
+                    }
+                    break;
+
+                case TutorialMission.RecruitGuard:
+                    
+                    bool guardTab = false;
+
+                    if (player.gameControls.mapControls.selection.obj is City)
+                    {
+                        if (!recruitGuard_selectCity)
+                        {
+                            recruitGuard_selectCity = true;
+                            onPartSuccess(recruitGuard_selectCity_sound);
+                            recruitGuard_selectCity = true;
+                        }
+
+                        //if (!recruitGuard_selectGuardTab)
+                        {
+                            var city = player.gameControls.mapControls.selection.obj.GetCity();
+                            if (arraylib.TryGet(city.conscriptBuildings, city.selectedConscript, out BarracksStatus barracks))
+                            {
+                                if (barracks.profile.specialization == SpecializationType.CityGuard)
+                                {
+                                    guardTab = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (recruitGuard_selectCity)
+                        {
+                            recruitGuard_selectCity = false;
+                            display.refresh = true;
+                        }
+                    }
+
+                    if (player.drawUnitsView.current.DrawDetailLayer)
+                    {
+                        if (!recruitGuard_zoomIn)
+                        {
+                            recruitGuard_zoomIn = true;
+                            onPartSuccess_goback(ref recruitGuard_zoomIn_sound);
+                        }
+                    }
+                    else
+                    {
+                        if (recruitGuard_zoomIn)
+                        {
+                            recruitGuard_zoomIn = false;
+                            display.refresh = true;
+                        }
+                    }
+
+                    if (player.cityTab == Display.MenuTab.Conscript)
+                    {
+                        if (!recruitGuard_selectConscriptTab)
+                        {
+                            recruitGuard_selectConscriptTab = true;
+                            onPartSuccess_goback(ref recruitGuard_selectConscriptTab_sound);
+                        }
+                    }
+                    else
+                    {
+                        if (recruitGuard_selectConscriptTab)
+                        {
+                            recruitGuard_selectConscriptTab = false;
+                            display.refresh = true;
+                        }
+                    }
+
+                    if (guardTab)
+                    {
+                        if (!recruitGuard_selectGuardTab)
+                        {
+                            recruitGuard_selectGuardTab = true;
+                            onPartSuccess_goback(ref recruitGuard_selectGuardTab_sound);
+                        }
+                    }
+                    else
+                    {
+                        if (recruitGuard_selectGuardTab)
+                        {
+                            recruitGuard_selectGuardTab = false;
+                            display.refresh = true;
+                        }
+                    }
+
+                    if (!recruitGuard_createGuard)
+                    {
+                        if (DssRef.stats.guardsRecruited >= 2)
+                        {
+                            recruitGuard_createGuard = true;
+                            onPartSuccess();
+                        }
+                    }
+                    break;
+
+                case TutorialMission.BuildDefences:
+
+                    if (player.cityTab == Display.MenuTab.Build)
+                    {
+                        if (!buildDefences_selectBuildTab)
+                        {
+                            buildDefences_selectBuildTab = true;
+                            onPartSuccess_goback(ref buildDefences_selectBuildTab_sound);
+                        }
+                    }
+                    else
+                    {
+                        if (buildDefences_selectBuildTab)
+                        {
+                            buildDefences_selectBuildTab = false;
+                            display.refresh = true;
+                        }
+                    }
+
+                    if (!buildDefences_buildPalisade)
+                    {
+                        for (int i = player.orders.orders.Count - 1; i >= 0; --i)
+                        {
+                            var order = player.orders.orders[i];
+                            if (order is BuildOrder)
+                            {
+                                switch (((BuildOrder)order).buildingType)
+                                {
+                                    case Build.BuildAndExpandType.Palisade:
+
+                                        buildDefences_buildPalisade = true;
+                                        onPartSuccess();
+                                        break;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!buildDefences_moveGuard)
+                    {
+                        var citiesC = player.faction.cities.counter();
+
+                        while (citiesC.Next())
+                        {
+                            var soldierGroupsC = citiesC.sel.groups.counter();
+                            while (soldierGroupsC.Next())
+                            {
+                                var cmd = soldierGroupsC.sel.command;
+                                if (cmd != null && cmd.HasCommand(Command.CommandType.EnterPost))
+                                {
+                                    buildDefences_moveGuard = true;
+                                    onPartSuccess();
+                                    return;
+                                }
+                            }
                         }
                     }
                     break;
@@ -782,7 +1019,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             bool missionComplete = false;
 
-            switch (tutorialMission)
+            switch (missions.sel)
             {
                 case TutorialMission.CollectResources:
                     missionComplete = collectResources_selectCity &&
@@ -797,6 +1034,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         linen_build &&
                         linen_collect;
                     break;
+
+                
                 //case TutorialMission.SharpStickWork:
                 //    missionComplete = weaponsArmor_setWeaponPrio;
                 //    break;
@@ -805,10 +1044,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     missionComplete = weaponsArmor_produceWeapons && weaponsArmor_produceArmor;
                     break;
 
+                case TutorialMission.RecruitGuard:
+                    missionComplete = recruitGuard_createGuard;
+                    break;
+
+                case TutorialMission.BuildDefences:
+                    missionComplete = buildDefences_buildPalisade && buildDefences_moveGuard;
+                    break;
+
                 case TutorialMission.ConscriptArmy:
-                    missionComplete = conscriptArmy_build &&
-                        conscriptArmy_selectTab &&
-                        conscriptArmy_createArmy;
+                    missionComplete = conscriptArmy_createArmy;
                     break;
                 case TutorialMission.CollectFood:
                     missionComplete = CollectFood_selecttab &&
@@ -838,18 +1083,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void onMissionSuccess()
         {
-            new TimedAction1ArgTrigger<TutorialMission>(nextMission, tutorialMission +1, 1000);
+            new TimedAction1ArgTrigger<int>(nextMission, missions.selIndex +1, 1000);
             
         }
 
-        void nextMission(TutorialMission next)
+        void nextMission(int nextIx)
         {
-            if (tutorialMission < next)
+            if (missions.selIndex < nextIx)
             {
-                tutorialMission = next;
+                missions.SelectIndex(nextIx);
                 display.refresh = true;
 
-                if (tutorialMission >= TutorialMission.End)
+                if (missions.sel >= TutorialMission.End)
                 {
                     DssRef.stats.completeTutorial.addOne();
                     player.hud.messages.Add(DssRef.lang.Tutorial_CompleteTitle, DssRef.lang.Tutorial_CompleteMessage);
@@ -867,14 +1112,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
         }
 
-        public void tutorial_writeGameState(BinaryWriter w)
+        public void writeGameState(BinaryWriter w)
         {
-            w.Write((int)tutorialMission);
+            //w.Write(DssRef.storage.shortTutorial);
+            w.Write((int)missions.selIndex);
         }
 
-        public void tutorial_readGameState(BinaryReader r, int subversion)
+        public void readGameState(BinaryReader r, int subversion)
         {
-            tutorialMission = (TutorialMission)r.ReadInt32();
+
+            missions.SelectIndex(r.ReadInt32());
 
             refreshLimits();
         }
@@ -882,21 +1129,23 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public void EndTutorial()
         {
             player.gameControls.mapControls.setCameraBounds(false, cityarea);
-            
-
-            DssRef.storage.runTutorial = false;
+            bool createStartUnits = DssRef.storage.runTutorial_1short_2normal == 2;
+            DssRef.storage.runTutorial_1short_2normal = 0;
             DssRef.storage.Save(null);
 
             player.tutorial = null;
             
             display.DeleteMe();
 
-            var factionC =  DssRef.world.factions.counter();
-            while (factionC.Next())
+            if (createStartUnits)
             {
-                factionC.sel.player.createStartupBarracks();
-                factionC.sel.player.createStartUnits();
+                var factionC = DssRef.world.factions.counter();
+                while (factionC.Next())
+                {
+                    factionC.sel.player.createStartupBarracks();
+                    factionC.sel.player.createStartUnits();
 
+                }
             }
 
             player.hud.messages.blockFoodWarning(false);
