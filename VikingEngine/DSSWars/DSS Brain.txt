@@ -21,7 +21,6 @@ Assign men to wall (ballista, har warmashine crew)
 
 
 #DEMO#
--short tutorial
 -load map with attackers
 -exit on win or loose
 -wishlist popup

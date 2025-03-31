@@ -447,6 +447,16 @@ namespace VikingEngine.DSSWars
             city.GetGroupedResource(type).toMenu(content, type, city.foodSafeGuardIsActive(type), ref buffer);
         }
 
+        public static List<AbsRichBoxMember> AddLockOnDemo(List<AbsRichBoxMember> buttonContent)
+        {
+            if (PlatformSettings.STEAM_DEMO)
+            {
+                buttonContent.Insert(0, new RbImage(SpriteName.birdLock, 1.4f));
+            }
+
+            return buttonContent;
+        }
+
         public static Color? NegativeRed(int value)
         {
             if (value < 0)

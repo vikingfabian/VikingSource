@@ -112,6 +112,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string InputActionName_ZoomOutKey => "Zoom Out";
 
 
+        public string LobbyDemoMode_Demo => "Demo";
+        public string LobbyDemoMode_ShortTutorial => "Quick Tutorial";
+        public string LobbyDemoMode_LongTutorial => "Extended Tutorial";
+
+        /// <summary>
+        /// Says wishlist on, followed by the STEAM logo
+        /// </summary>
+        public string LobbyDemoMode_WishlistOn => "Wishlist on";
+
         public string Hud_None => "None";
         public string Hud_AllCities => "All cities";
         public string Hud_Time_Hours => "{0} hours";

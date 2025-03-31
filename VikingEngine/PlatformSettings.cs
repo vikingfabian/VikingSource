@@ -106,9 +106,9 @@ namespace VikingEngine
 
         public static readonly bool PC_platform = TargetPlatform == ReleasePlatform.PC;
 
-        public const bool PCTrial =
-#if PCGAME
-            false;
+        public static bool STEAM_DEMO =
+#if DEMO
+            true;
 #else
             false;//DONT CHANGE
 #endif
