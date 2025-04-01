@@ -13,6 +13,20 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Option_Low = "Low";
         public string Option_Medium = "Medium";
         public string Option_High = "High";
+        public string MouseSettings_Title => "Mouse input";
+        public string KeyboardSettings_Title => "Key mapping";
+        public string MouseButtonAction_None => "No action";
+        public string MouseButtonAction_Select => "Select";
+        public string MouseButtonAction_Pan => "Pan";
+        public string MouseButtonAction_PanAndOrder => "Pan and Order";
+        public string MouseButtonAction_Order => "Order";
+        public string MouseButtonAction_Cancel => "Cancel";
+
+        public string MouseButton_Left => "Left Mouse";
+        public string MouseButton_Right => "Right Mouse";
+        public string MouseButton_Middle => "Middle Mouse";
+        public string MouseButton_X1 => "X1 Button Mouse";
+        public string MouseButton_X2 => "X2 Button Mouse";
 
 
         public string ArmyOption_NewArmy => "New army";
@@ -74,15 +88,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Settings_CentralGold => "Central gold";
         public string Settings_CentralGold_Description => "On: all your gold is in a shared pool for instant use. Off: gold is physical and needs to be transported.";
 
-        public string MouseSettings_Title => "Mouse input";
-        public string KeyboardSettings_Title => "Key mapping";
-        public string MouseButtonAction_None => "No action";
-        public string MouseButtonAction_Select => "Select";
-        public string MouseButtonAction_Pan => "Pan";
-        public string MouseButtonAction_PanAndOrder => "Pan and Order";
-        public string MouseButtonAction_Order => "Order";
-        public string MouseButtonAction_Cancel => "Cancel";
-
+      
 
         public string InputActionName_StopStart => "Stop/Start";
         public string InputActionName_ToggleHudDetail => "Toggle HUD Detail";
@@ -110,6 +116,17 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string InputActionName_CameraTiltUp => "Camera Tilt Up";
         public string InputActionName_ZoomInKey => "Zoom In";
         public string InputActionName_ZoomOutKey => "Zoom Out";
+
+        public string Settings_Title_Monitor => "Monitor options";
+        public string Settings_Title_Graphics => "Graphic options";
+        public string Settings_Title_Input => "Input";
+        public string Settings_Title_Gameplay => "Gameplay options";
+        public string Settings_PanOnZoom => "Pan on zoom";
+        public string Settings_ScrollSensitivity_Game => "Scroll sensitivity: game";
+        public string Settings_ScrollSensitivity_Menu => "Scroll sensitivity: menu";
+        public string Settings_Blood => "Blood";
+        public string Settings_ => "";
+        public string Settings_ => "";
 
 
         public string LobbyDemoMode_Demo => "Demo";

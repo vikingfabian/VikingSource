@@ -250,30 +250,30 @@ namespace VikingEngine.DSSWars.Display
             if (lobby)
             {
                 content.newParagraph();
-                content.h2(".Monitor options", HudLib.TitleColor_Head);
+                content.h2(DssRef.todoLang.Settings_Title_Monitor, HudLib.TitleColor_Head); 
                 Ref.gamesett.monitorOptions(content, menu);
             }
 
             content.newParagraph();
-            content.h2(".Graphics options", HudLib.TitleColor_Head);
+            content.h2(DssRef.todoLang.Settings_Title_Graphics, HudLib.TitleColor_Head);
             Ref.gamesett.graphicsOptions(content, menu);
 
             content.newParagraph();
-            content.h2(".Input", HudLib.TitleColor_Head);
+            content.h2(DssRef.todoLang.Settings_Title_Input, HudLib.TitleColor_Head);
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Pan on zoom") }, Ref.gamesett.panOnZoomProperty));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_PanOnZoom) }, Ref.gamesett.panOnZoomProperty));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.MouseScroll));
             content.space();
-            content.Add(new RbText(".Scroll sensitivity: game"));
+            content.Add(new RbText(DssRef.todoLang.Settings_ScrollSensitivity_Game));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollGameProperty, true));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.MouseScroll));
             content.space();
-            content.Add(new RbText(".Scroll sensitivity: menu"));
+            content.Add(new RbText(DssRef.todoLang.Settings_ScrollSensitivity_Menu));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollMenuProperty, true));
 
@@ -285,7 +285,7 @@ namespace VikingEngine.DSSWars.Display
                 new RbAction2Arg<string, bool>(menu.OpenMenu, UnderMenu_Options_Keyboard, true)));
 
             content.newParagraph();
-            content.h2(".Gameplay options", HudLib.TitleColor_Head);
+            content.h2(DssRef.todoLang.Settings_Title_Gameplay, HudLib.TitleColor_Head);
             if (lobby)
             {
                 content.newLine();
@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
             }
             content.newLine();
-            content.Add(new RbText(".Blood:", HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.todoLang.Settings_Blood + ":", HudLib.TitleColor_Label));
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
 
@@ -475,13 +475,13 @@ namespace VikingEngine.DSSWars.Display
 
                 dropDown.Build(content, icon, label, menu);
             }
-
+            
             // Add dropdowns for each mouse button
-            AddMouseButtonDropdown(MouseButton.Left, SpriteName.MouseButtonLeft, ".left");
-            AddMouseButtonDropdown(MouseButton.Right, SpriteName.MouseButtonRight, ".right");
-            AddMouseButtonDropdown(MouseButton.Middle, SpriteName.MouseButtonMiddle, ".middle");
-            AddMouseButtonDropdown(MouseButton.X1, SpriteName.MouseButtonX1, ".x1");
-            AddMouseButtonDropdown(MouseButton.X2, SpriteName.MouseButtonX2, ".x2");
+            AddMouseButtonDropdown(MouseButton.Left, SpriteName.MouseButtonLeft, DssRef.todoLang.MouseButton_Left);
+            AddMouseButtonDropdown(MouseButton.Right, SpriteName.MouseButtonRight, DssRef.todoLang.MouseButton_Right);
+            AddMouseButtonDropdown(MouseButton.Middle, SpriteName.MouseButtonMiddle, DssRef.todoLang.MouseButton_Middle);
+            AddMouseButtonDropdown(MouseButton.X1, SpriteName.MouseButtonX1, DssRef.todoLang.MouseButton_X1);
+            AddMouseButtonDropdown(MouseButton.X2, SpriteName.MouseButtonX2, DssRef.todoLang.MouseButton_X2);
 
             menu.Refresh(content);
         }
