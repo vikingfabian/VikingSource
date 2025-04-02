@@ -125,11 +125,9 @@ namespace VikingEngine.DSSWars.Display.CutScene
                     break;
 
                 case GameEndReason.TimesUp:
-                    content.h1(".Times up").overrideColor = Color.Yellow;
+                    content.h1(DssRef.todoLang.EndScreen_TimeHasEndedTitle).overrideColor = Color.Yellow;
                     break;
             }
-
-           
 
             content.newParagraph();
             if (endReason == GameEndReason.Victory && bossVictory && !PlatformSettings.STEAM_DEMO)

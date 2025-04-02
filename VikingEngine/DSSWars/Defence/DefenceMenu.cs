@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Defence
                 content.Add(new RbText(DssRef.todoLang.Defence_GuardPost + " " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_TypeName));
 
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Defence_AutoAssign) }, autoAssignProperty, new RbTooltip_Text(".New guards will move to this post")));
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Defence_AutoAssign) }, autoAssignProperty, new RbTooltip_Text(DssRef.todoLang.Defence_AutoAssign_Description)));
 
 
                 //content.newLine();

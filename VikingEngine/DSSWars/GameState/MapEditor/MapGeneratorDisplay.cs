@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         public void refreshMenu()
         {
             RichBoxContent content = new RichBoxContent();
-            content.h1(".Map editor - generate", HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.MapGenerator_Name, HudLib.TitleColor_Head);
 
             content.newLine();
 
@@ -75,20 +75,20 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             {
                 case MapGeneratorTab.Ground:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
-                        new List<AbsRichBoxMember> { new RbText(".Generate") }, new RbAction1Arg< GenerateMapPass>(state.generatePass, GenerateMapPass.AllTerrain)));
+                        new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MapGenerator_GenerateAction) }, new RbAction1Arg< GenerateMapPass>(state.generatePass, GenerateMapPass.AllTerrain)));
 
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Custom size") }, state.GenerateSettings.CustomSizeProperty));
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MapGenerator_Terrain_CustomSize) }, state.GenerateSettings.CustomSizeProperty));
 
                     if (state.GenerateSettings.bCustomSize)
                     {
                         content.newLine();
-                        content.Add(new RbText("X:", HudLib.TitleColor_Label));
+                        content.Add(new RbText(DssRef.todoLang.Hud_Vector_X + ":", HudLib.TitleColor_Label));
                         content.space();
                         RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapXProperty);
 
                         content.newLine();
-                        content.Add(new RbText("Y:", HudLib.TitleColor_Label));
+                        content.Add(new RbText(DssRef.todoLang.Hud_Vector_Y + ":", HudLib.TitleColor_Label));
                         content.space();
                         RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapYProperty);
                     }
@@ -117,19 +117,19 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                                     menu.CloseDropDown();
                                 }, mapStartAs), null);
                         }
-                        startAs.Build(content, SpriteName.NO_IMAGE, ".Start as", menu);                        
+                        startAs.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.MapGenerator_Terrain_StartAs, menu);                        
                     }
 
                     if (Adv)
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary,
-                            new List<AbsRichBoxMember> { new RbText(".Run Clear Pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Clear)));
+                            new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MapGenerator_Terrain_ClearPass) }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Clear)));
                     }
 
                     content.newLine();
 
-                    HudLib.Label(content, ".Build-Dig loop count");
+                    HudLib.Label(content, DssRef.todoLang.MapGenerator_Terrain_BuildDigLoops);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, BuildDigLoopBounds,
                         (bool set, int value) =>
@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
                     content.newLine();
 
-                    HudLib.Label(content, ".Build strokes count");
+                    HudLib.Label(content, DssRef.todoLang.MapGenerator_Terrain_BuildStrokes);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, StrokeCountBounds,
                         (bool set, float value) =>
@@ -156,17 +156,17 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                             return Sett.BuildChainsCount_per100Tiles;
                         }, false);
                     content.space();
-                    HudLib.InfoButton(content, new RbTooltip_Text(".Measured in paint strokes per 100 tiles"));
+                    HudLib.InfoButton(content, new RbTooltip_Text(DssRef.todoLang.MapGenerator_Terrain_BuildStrokes_Description));
 
                     if (Adv)
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary,
-                            new List<AbsRichBoxMember> { new RbText("Run Build Pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Build), null, state.canRunPass(GenerateMapPass.Build)));
+                            new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MapGenerator_Terrain_BuildPass) }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Build), null, state.canRunPass(GenerateMapPass.Build)));
                     }
                     content.newLine();
 
-                    HudLib.Label(content, "Dig strokes count");
+                    HudLib.Label(content, DssRef.todoLang.MapGenerator_Terrain_DigStrokes);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, StrokeCountBounds,
                         (bool set, float value) =>
@@ -178,23 +178,23 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                             return this.Sett.DigChainsCount_per100Tiles;
                         }, false);
                     content.space();
-                    HudLib.InfoButton(content, new RbTooltip_Text("Measured in paint strokes per 100 tiles"));
+                    HudLib.InfoButton(content, new RbTooltip_Text(DssRef.todoLang.MapGenerator_Terrain_BuildStrokes_Description));
 
                     if (Adv)
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary,
-                            new List<AbsRichBoxMember> { new RbText("Run Dig Pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Dig), null, state.canRunPass(GenerateMapPass.Dig)));
+                            new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MapGenerator_Terrain_DigPass) }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Dig), null, state.canRunPass(GenerateMapPass.Dig)));
                     }
 
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Cleanup of single tiles") }, state.GenerateSettings.CleanUpProperty));
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MapGenerator_Terrain_CleanUp_Option) }, state.GenerateSettings.CleanUpProperty));
 
                     if (Adv)
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary,
-                            new List<AbsRichBoxMember> { new RbText("Run cleanup Pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.CleanUp), null, state.canRunPass(GenerateMapPass.CleanUp)));
+                            new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MapGenerator_Terrain_CleanUpPass) }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.CleanUp), null, state.canRunPass(GenerateMapPass.CleanUp)));
                     }
 
                     break;
@@ -203,14 +203,14 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                 //    break;
                 case MapGeneratorTab.Populate:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
-                        new List<AbsRichBoxMember> { new RbText("Generate") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.AllPopulation), null, state.canRunPass(GenerateMapPass.AllPopulation)));
+                        new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MapGenerator_GenerateAction) }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.AllPopulation), null, state.canRunPass(GenerateMapPass.AllPopulation)));
 
 
                     if (Adv)
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary,
-                            new List<AbsRichBoxMember> { new RbText("Run Clear pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.ClearPopulation), null, state.canRunPass(GenerateMapPass.ClearPopulation)));
+                            new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MapGenerator_Terrain_ClearPass) }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.ClearPopulation), null, state.canRunPass(GenerateMapPass.ClearPopulation)));
                     }
                     break;
                 case MapGeneratorTab.Complete:
@@ -238,7 +238,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             
             content.newParagraph();
             content.Add(new RbSeperationLine());
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Advanced settings") }, state.userStorage.ViewAdvancedProperty));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Hud_AdvancedSettings) }, state.userStorage.ViewAdvancedProperty));
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exit)));

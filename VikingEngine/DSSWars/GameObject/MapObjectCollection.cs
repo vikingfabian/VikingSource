@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return ".Object Group";
+            return ".Map objects";
         }
 
     }

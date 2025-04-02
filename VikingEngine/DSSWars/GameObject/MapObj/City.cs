@@ -2204,7 +2204,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.space();
                     content.Add(new RbImage(SpriteName.WarsServiceMen));
                     content.space();
-                    var textCont = new RbText(string.Format(".Servicemen upkeep: {0}", Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
+                    var textCont = new RbText(string.Format(DssRef.todoLang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
                     content.Add(textCont);
                     if (interactive)
                     {
@@ -2218,7 +2218,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.space();
                     content.Add(new RbImage(SpriteName.WarsGuard));
                     content.space();
-                    var textCont = new RbText(string.Format(".Guard upkeep: {0}", Money.CopperToGoldString_Dynamic(cityEconomy.cityGuardUpkeep_copp)));
+                    var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.cityGuardUpkeep_copp)));
                     content.Add(textCont);
                     if (interactive)
                     {

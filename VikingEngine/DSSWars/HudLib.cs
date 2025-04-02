@@ -499,14 +499,14 @@ namespace VikingEngine.DSSWars
 
         public static void servicemenUpkeepInfo(RichBoxContent content, object tag)
         {
-            content.text(string.Format(".Upkeep is {0} gold per serviceman", Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerServiceMan_copp)));
+            content.text(string.Format(DssRef.todoLang.Economy_ServicemenUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerServiceMan_copp)));
             content.newParagraph();
             content.text(DssRef.lang.Info_PerSecond);
         }
 
         public static void guardUpkeepInfo(RichBoxContent content, object tag)
         {
-            content.text(string.Format(".Upkeep is {0} gold per guard", Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerGuard_copp)));
+            content.text(string.Format(DssRef.todoLang.Economy_GuardUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerGuard_copp)));
             content.newParagraph();
             content.text(DssRef.lang.Info_PerSecond);        
         }

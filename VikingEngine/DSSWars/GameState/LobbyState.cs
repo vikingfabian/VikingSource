@@ -405,17 +405,17 @@ namespace VikingEngine.DSSWars
             content.newParagraph();
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
-                     new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_Options, StackOption.ClearStack), new RbTooltip_Text(".Options"));
+                     new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_Options, StackOption.ClearStack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_Options));
                 content.Add(btn);
             }
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconEditor) }, 
-                    new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListEditors, StackOption.ClearStack), new RbTooltip_Text(".Editor"));
+                    new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListEditors, StackOption.ClearStack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_Editor));
                 content.Add(btn);
             }
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconExtraModes) },
-                    new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListExtra , StackOption.ClearStack), new RbTooltip_Text(".Extra modes"));
+                    new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListExtra , StackOption.ClearStack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_ExtraModes));
                 content.Add(btn);
             }
 
@@ -862,11 +862,13 @@ namespace VikingEngine.DSSWars
                     {
                         RichBoxContent content = new RichBoxContent();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(".Map editor") }),
+                        content.h1(DssRef.todoLang.Lobby_Category_Editor, HudLib.TitleColor_Head);
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Editor_MapEditor) }),
                             new RbAction(openMapEditor), null, !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(".Voxel editor") }),
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Editor_VoxelEditor) }),
                             new RbAction(voxeleditor), new RbTooltip_Text(".Create blocky models. Require Xbox controller"), !PlatformSettings.STEAM_DEMO));
 
                         content.newParagraph();
@@ -881,17 +883,17 @@ namespace VikingEngine.DSSWars
                     {
                         RichBoxContent content = new RichBoxContent();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(".Battle lab") }),
-                            new RbAction(startBattleLab), new RbTooltip_Text(".Pit any soldiers against eachother"), !PlatformSettings.STEAM_DEMO));
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Mode_BattleLab) }),
+                            new RbAction(startBattleLab), new RbTooltip_Text(DssRef.todoLang.Lobby_Mode_BattleLab_Description), !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(".Play Commander") }),
-                            new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text(".A small tactical board game"), !PlatformSettings.STEAM_DEMO));
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Mode_Commander) }),
+                            new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text(DssRef.todoLang.Lobby_Mode_Commander_Description), !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(".Music playlist") }),
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_MusicPlayList) }),
                             new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListMusic, StackOption.ClearStack),null, !PlatformSettings.STEAM_DEMO));
 
 

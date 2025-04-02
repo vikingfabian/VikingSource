@@ -379,7 +379,7 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo));
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(".Servicemen upkeep: {0}", Resource.Money.CopperToGoldString_Decimal(faction.citiesEconomy.servicemenUpkeep_copp)));
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.Economy_ServicemenUpkeep, Resource.Money.CopperToGoldString_Decimal(faction.citiesEconomy.servicemenUpkeep_copp)));
                 content.space();
                 HudLib.InfoButton(content, new RbTooltip(HudLib.servicemenUpkeepInfo));
 

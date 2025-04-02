@@ -23,8 +23,6 @@ namespace VikingEngine.DSSWars.Display
             {
                 var objectMenuArea = new VectorRect(player.hud.head.factionMenuStart,
                     new Vector2(HudLib.HeadDisplayWidth, 500));
-                //objectMenuArea.Width = HudLib.HeadDisplayWidth;
-                //objectMenuArea.Position.Y = player.hud.head.Bottom + Engine.Screen.IconSize * 0.5f;
                 objectMenuArea.SetBottom(player.playerData.view.safeScreenArea.Bottom, true);
                 menu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
                 var bgTex = menu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
@@ -88,36 +86,7 @@ namespace VikingEngine.DSSWars.Display
 
         void infoTab(LocalPlayer player)
         {
-            //FactionSize(faction, content, fullDisplay);
-
-
-            //if (fullDisplay)
-            //{
-            //content.newParagraph();
-            //content.Add(new RichBoxNewLine());
-            //content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
-            //content.space();
-            //content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(Convert.ToInt32( faction.citiesEconomy.tax())))));
-
-            //content.Add(new RichBoxNewLine());
-            //content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-            //content.space();
-            ////content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_ArmyUpkeep, TextLib.LargeNumber(faction.armyUpkeep))));
-
-            //content.newLine();
-            //var automationButton = new HUD.RichBox.RichboxButton(
-            //    new List<AbsRichBoxMember>
-            //    {
-            //            new RichBoxImage(player.input.AutomationSetting.Icon),
-            //            new RichBoxImage(SpriteName.MenuPixelIconSettings),
-            //            new HUD.RichBox.RichBoxText(DssRef.lang.Automation_Title),
-            //    },
-            //    new RbAction1Arg<string>(player.hud.displays.SetMenuState, AutomationMenuState, SoundLib.menu),
-            //    null);
-            //content.Add(automationButton);
-            //content.Button(SpriteName.MenuPixelIconSettings, "Automation", new RbAction(DssRef.state.exit), null, true);
-
-            //string diplomacy = "Diplomatic points: {0}/{1}({2})";
+           
             content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(DssRef.lang.ResourceType_DiplomacyPoints_WithSoftAndHardLimit, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
             content.space();
             HudLib.InfoButton(content, new RbAction(() =>
@@ -139,35 +108,20 @@ namespace VikingEngine.DSSWars.Display
 
                 player.hud.tooltip.create(player, content, true);
             }));
-            //content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_MercenaryMarket, player.mercenaryMarket.Int()));
-            //string command = "Command points: {0}";
-            //content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
-
+            
             content.Add(new RbNewLine(true));
 
-            //if (player.hud.detailLevel == HudDetailLevel.Extended)
-            //{
             content.text(string.Format(DssRef.lang.Hud_CityCount, TextLib.LargeNumber(player.faction.cities.Count)));
             content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(player.faction.armies.Count)));
-
-            //content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.Input_NextCity);
-            //content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.lang.Input_NextArmy);
-            //content.ButtonDescription(player.gameControls.input.NextBattle, DssRef.lang.Input_NextBattle);
 
             content.ButtonDescription(player.gameControls.input.Build, DssRef.lang.Input_Build);
             content.ButtonDescription(player.gameControls.input.Copy, DssRef.lang.Hud_CopySetup);
             content.ButtonDescription(player.gameControls.input.Paste, DssRef.lang.Hud_Paste);
 
             content.newParagraph();
-            //}
-
-            //if (Ref.isPaused && player.IsLocalHost())
-            //{
-            //    content.Button("Exit game", new RbAction(DssRef.state.exit), null, true);
-            //}
+            
             content.newLine();
             toggleMenu(player);
-            //}
         }
         void economyTab(LocalPlayer player)
         {
@@ -190,9 +144,7 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
             }
-            //content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_TaxIncome, Convert.ToInt32(player.faction.citiesEconomy.tax(null))));
-            //content.space();
-            //HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo));
+            
             {
                 content.newParagraph();
                 content.Add(new RbImage(SpriteName.rtsIncomeTime));
@@ -222,9 +174,6 @@ namespace VikingEngine.DSSWars.Display
                 HudLib.PerSecondInfo(player, content, false);
 
             }
-            //content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_SoldResources, player.faction.CitySoldResources));
-            //content.space();
-            //HudLib.PerSecondInfo(player, content, false);
 
             {
                 content.newLine();
@@ -232,7 +181,7 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsServiceMen));
                 content.space();
-                var textCont = new RbText(string.Format(".Servicemen upkeep: {0}", Money.CopperToGoldString_Dynamic(player.faction.citiesEconomy.servicemenUpkeep_copp)),
+                var textCont = new RbText(string.Format(DssRef.todoLang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(player.faction.citiesEconomy.servicemenUpkeep_copp)),
                     HudLib.NotAvailableColor);
                 content.Add(textCont);
 
@@ -246,7 +195,7 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsGuard));
                 content.space();
-                var textCont = new RbText(string.Format(".Guard upkeep: {0}", Money.CopperToGoldString_Dynamic(player.faction.citiesEconomy.cityGuardUpkeep_copp)),
+                var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(player.faction.citiesEconomy.cityGuardUpkeep_copp)),
                     HudLib.NotAvailableColor);
                 content.Add(textCont);
 
@@ -264,10 +213,7 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
             }
-            //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_GuardUpkeep, Convert.ToInt32(player.faction.citiesEconomy.cityGuardUpkeep_copp)));
-            //content.space();
-            //HudLib.PerSecondInfo(player, content, false);
-
+            
             if (DssLib.UseLocalTrading)
             {
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_LocalCityTrade_Export, player.faction.CityTradeExport));
@@ -279,18 +225,6 @@ namespace VikingEngine.DSSWars.Display
                 HudLib.PerSecondInfo(player, content, false);
             }
 
-
-            //content.icontext(SpriteName.WarsBuild_Nobelhouse, string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.Building_NobleHouse, player.faction.nobelHouseCount));
-
-            //{
-            //    content.newLine();
-            //    content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-            //    content.space();
-            //    content.Add(new RbText(string.Format(DssRef.lang.Language_XUpkeepIsY, DssRef.lang.Building_NobleHouse, Money.CopperToGoldString_Decimal(DssConst.NobleHouseUpkeep_copp * player.faction.nobelHouseCount)), HudLib.NotAvailableColor));
-            //    content.space();
-            //    HudLib.PerSecondInfo(player, content, false);
-            //}
-            //
 
             content.newParagraph();
             content.h2(DssRef.lang.UnitType_Armies).overrideColor = HudLib.TitleColor_Label;
@@ -326,16 +260,7 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RbImage(player.gameControls.input.ToggleHudDetail.Icon));
             content.Add(new RbImage(SpriteName.pjMenuIcon));
         }
-        //void taxInfo(RichBoxContent content, object tag)
-        //{
-        //    //RichBoxContent content = new RichBoxContent();
-        //    content.text(string.Format(DssRef.lang.Economy_TaxDescription, DssConst.TaxPerWorker));
-        //    content.newParagraph();
-        //    content.text(DssRef.lang.Info_PerSecond);
-        //    //player.hud.tooltip.create(player, content, true);
-        //}
-
-
+       
         void debugCultureFont()
         {
             string[] cultures = new string[]

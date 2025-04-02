@@ -8,7 +8,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
-        //Ref.langOpt
+        //## Ref.langOpt
         public string ReversedSterio = "Reversed stereo";
         public string Option_Low = "Low";
         public string Option_Medium = "Medium";
@@ -27,68 +27,28 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string MouseButton_Middle => "Middle Mouse";
         public string MouseButton_X1 => "X1 Button Mouse";
         public string MouseButton_X2 => "X2 Button Mouse";
+        
+        
+        //##End Ref.langOpt
 
 
         public string ArmyOption_NewArmy => "New army";
         public string ProfileEditor_AltMain => "Alternative main";
         public string Automation_CheckBoxTitle => "Automated";
 
-        //public string Hud_Advanced => "Advanced";
-        //public string Hud_Loading => "Loading...";
-
-        //public string CityOption_LowerGuardSize => "Release guard";
-        //public string Hud_Purchase_MinCapacity => "Minimum capacity reached";
-        //public string Settings_ResetToDefault => "Reset to default";
-        //public string Settings_NewGame => "New game";
         public string ArmyStructure_ColumnWidth = "Army column width";
         public string ArmyStructure_Row_Front = "Front";
         public string ArmyStructure_Row_Body = "Body";
         public string ArmyStructure_Row_Second = "Second";
         public string ArmyStructure_Row_Behind = "Behind";
 
-        //public string Tutorial_BuildSomething => "Build something that produces {0}";
-        //public string Tutorial_BuildCraft => "Build a crafting station for: {0}";
-        //public string Tutorial_IncreaseBufferLimit => "Increase buffer limit for: {0}";
-
-        //public string Settings_AdvancedGameSettings => "Advanced Game Settings";
-        //public string Settings_FoodMultiplier => "Food multiplier";
-        //public string Settings_FoodMultiplier_Description => "How long a worker or soldier lasts on a full stomach. A high value will lower computer performance.";
-
-        //public string Settings_GameMode => "Game mode";
-
-        //public string Settings_Mode_Story => "Full story";
-        //public string Settings_Mode_IncludeBoss => "Include Boss Events.";
-        //public string Settings_Mode_IncludeAttacks => "Include Random Attacks.";
-        //public string Settings_Mode_Sandbox => "Sandbox";
-        //public string Settings_Mode_Peaceful => "Peaceful";
-        //public string Settings_Mode_Peaceful_Description => "All wars are initiated by the player";
-
-        //public string Lobby_ImportSave => "Import save";
-
-        //public string Lobby_ExportSave => "Export save";
-        //public string Lobby_ExportSave_Description => "Creates a copy of the file and places it in the import folder: {0}";
-
-        //public string Resource_CurrentAmount => "Current amount: {0}";
-        //public string Resource_MaxAmount_Soft => "Soft Cap (Max Limit): {0}";
-        //public string Resource_MaxAmount => "Max limit: {0}";
-        //public string Resource_AddPerSec => "Increase Rate: {0} per second";
-
-        //public string Resource_WaterAddLimit => "Water increase rate can't be altered";
-
-        //public string Tutorial_Select_SubTab => "And select category: {0}";
-        //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
-        //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
         public string Diplomacy_RelationType_Enemies => "Enemies";
 
         public string EventMessage_EnemyAlliance_Title => "Fear of Domination";
         public string EventMessage_EnemyAlliance => "The nations, fearing your growing power, unite in an alliance against you.";
         
-
-
         public string Settings_CentralGold => "Central gold";
         public string Settings_CentralGold_Description => "On: all your gold is in a shared pool for instant use. Off: gold is physical and needs to be transported.";
-
-      
 
         public string InputActionName_StopStart => "Stop/Start";
         public string InputActionName_ToggleHudDetail => "Toggle HUD Detail";
@@ -126,6 +86,19 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Settings_ScrollSensitivity_Menu => "Scroll sensitivity: menu";
         public string Settings_Blood => "Blood";
 
+        public string Lobby_Category_Options => "Options";
+        public string Lobby_Category_Editor => "Editor";
+        public string Lobby_Category_ExtraModes => "Extra modes";
+
+        public string Lobby_Editor_MapEditor => "Map editor";
+        public string Lobby_Editor_VoxelEditor => "Voxel editor";
+
+        public string Lobby_Mode_BattleLab => "Battle lab";
+        public string Lobby_Mode_BattleLab_Description => "Pit any soldiers against eachother";
+        public string Lobby_Mode_Commander => "Play Commander";
+        public string Lobby_Mode_Commander_Description => "A small tactical board game";
+        public string Lobby_MusicPlayList => "Music playlist";
+
         public string Lobby_GameSetup => "Game steup";
         public string Lobby_PlayerSetup => "Player steup";
         public string LobbyDemoMode_Demo => "Demo";
@@ -137,6 +110,32 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public string LobbyDemoMode_WishlistOn => "Wishlist on";
 
+        public string MapGenerator_Name = "Map editor - generate";
+
+        public string MapGenerator_GenerateAction = "Generate";
+        public string MapGenerator_Terrain_CustomSize = "Custom size";
+        public string MapGenerator_Terrain_StartAs = "Start as";
+        public string MapGenerator_Terrain_ClearPass = "Run Clear Pass";
+        public string MapGenerator_Terrain_BuildPass = "Run Build Pass";
+        public string MapGenerator_Terrain_DigPass = "Run Dig Pass";
+        public string MapGenerator_Terrain_BuildDigLoops = "Build-Dig loop count";
+        public string MapGenerator_Terrain_BuildStrokes = "Build strokes count";
+        public string MapGenerator_Terrain_BuildStrokes_Description = "Measured in paint strokes per 100 tiles";
+        public string MapGenerator_Terrain_DigStrokes => "Dig strokes count";
+        public string MapGenerator_Terrain_CleanUp_Option => "Cleanup of single tiles";
+        public string MapGenerator_Terrain_CleanUpPass => "Run cleanup Pass";
+
+
+
+        public string Economy_ServicemenUpkeep => "Servicemen upkeep: {0}";
+        public string Economy_ServicemenUpkeep_Description => "Upkeep is {0} gold per serviceman";
+        public string Economy_GuardUpkeep_Description => "Upkeep is {0} gold per guard";
+
+        public string EndScreen_TimeHasEndedTitle => "Time's up";
+
+        public  string Hud_AdvancedSettings => "Advanced settings";
+        public string Hud_Vector_X => "X";
+        public string Hud_Vector_Y => "Y";
         public string Hud_Cancel => "Cancel";
         public string Hud_Next => "Next";
         public string Hud_None => "None";
@@ -166,7 +165,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Defence_Title => "Defence";
         public string Defence_GuardPost => "Guard post";
         public string Defence_AutoAssign => "Auto assign";
-
+        public string Defence_AutoAssign_Description => "New guards will move to this post";
         public string Conscript_SplashDamage => "Splash damage";
         public string Conscript_HighSplashDamage => "High splash damage";
 
@@ -317,10 +316,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_MithrilArmor => "Mithril armor";
         public string Resource_TypeName_Coin => "Coin";
 
-
-        //public string UnitType_SlingShot => "Slinger";
-        //public string UnitType_ThrowingSpear => "Javelineer";
-        //public string UnitType_ThrowingSpear => "Javelineer";
         public string UnitType_Warhammer => "Hammer knight";
         public string UnitType_MithrilKnight => "Immortal knight";
         public string UnitType_MithrilArcher=> "Immortal archer";
@@ -386,7 +381,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string DecorType_Square => "City square";
 
         public string DecorType_Garden =>"Garden";
-        //public string DecorType_Statue => "Statue";
         public string DecorType_Flag => "Flag";
         public string DecorType_Banner => "Banner";
 
@@ -453,8 +447,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Automation_AutomationFocus_Export => "Export";
         public string Automation_AutomationFocus_War => "War";
 
-
-
         public string CityCulture_Smelters_Description => "Improved ore smelting";
         public string CityCulture_Smelters => "Smelters";
 
@@ -467,201 +459,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_x_Description => "";
         public string CityCulture_x => "";
 
-        //public string InputTitle => "Input field";
-        //enum ExperenceOrDistancePrio
-        //{
-        //    Experience,
-        //    Mix,
-        //    Distance,
-        //}
-
-        //     public ExperienceLevel topskill_Farm = 0;
-        //public ExperienceLevel topskill_AnimalCare = 0;
-        //public ExperienceLevel topskill_HouseBuilding = 0;
-        //public ExperienceLevel topskill_WoodCutter = 0;
-        //public ExperienceLevel topskill_StoneCutter = 0;
-        //public ExperienceLevel topskill_Mining = 0;
-        //public ExperienceLevel topskill_Transport = 0;
-        //public ExperienceLevel topskill_Cook = 0;
-        //public ExperienceLevel topskill_CraftWood = 0;
-        //public ExperienceLevel topskill_CraftIron = 0;
-        //public ExperienceLevel topskill_CraftArmor = 0;
-        //public ExperienceLevel topskill_CraftWeapon = 0;
-        //public ExperienceLevel topskill_CraftFuel = 0;
-
-        //public string Diplomacy_RelationWithOthers => "Their relations with others";
-        //public string Automation_queue_description => "Will keep repeating until the que is empty";
-
-        //public string BuildingType_Storehourse_Description => "Workers may drop items here";
-
-        //public string Resource_TypeName_Longbow => "longbow";
-        //public string Resource_TypeName_Rapeseed => "rapeseed";
-        //public string Resource_TypeName_Hemp => "hemp";
-
-        //public string Resource_BogIronDescription => "Mining iron is more efficient than using bog iron.";
-
-
-        //public string Resource_FoodSafeGuard_Description => "Safe guard. Will maximize the priority of the food production chain, if it falls below {0}.";
-        //public string Resource_FoodSafeGuard_Active => "Safe guard is active.";
-
-        //public string GameMenu_NextSong => "Next song";
-
-        ////MAYBE
-        //public string BuildingType_Bank => "Bank";
-        //public string BuildingType_Bank_Description => "Send gold to other cities";
-
-        //public string BuildingType_Logistics => "Logistics";
-        //public string BuildingType_Logistics_Description => "Upgrade your ability to order buildings";
-
-        //public string BuildingType_Logistics_NationSizeRequirement => "Nation total workforce: {0}";
-        //public string Requirements_XItemStorageOfY => "City {0} storage of: {1}";
-
-
-        //public string XP_UnlockBuildQueue => "Unlock build queue to: {0}";
-        //public string XP_UnlockBuilding => "Unlock building: ";
-        //public string XP_Upgrade => "Upgrade";
-
-        //public string XP_UpgradeBuildingX => "Upgrade building: {0}";
-
-        ///// <summary>
-        ///// Title for describing the production cycle of farms
-        ///// </summary>
-        //public string BuildHud_PerCycle => "Per cycle";
-        //public string BuildHud_MayCraft => "May craft";
-        //public string BuildHud_WorkTime => "Work time: {0}";
-        //public string BuildHud_GrowTime => "Grow time: {0}";
-        //public string BuildHud_Produce => "Produce:";
-
-        //public string BuildHud_Queue => "Allowed build queue: {0}/{1}";
-
-        //public string LandType_Flatland => "Flat land";
-        //public string LandType_Water => "Water";
-        //public string BuildingType_Wall => "Wall";
-        //public string Delivery_AutoReciever_Description => "Will send to the city with lowest amount of resources";
-
-        //public string Hud_NoLimit => "No limit";
-
-        //public string Hud_On => "On";
-        //public string Hud_Off => "Off";
-
-        //public string Hud_Time_Seconds => "{0} seconds";
-        //public string Hud_Time_Minutes => "{0} minutes";
-        //public string Hud_Undo => "Undo";
-        //public string Hud_Redo => "Redo";
-
-        //public string Tag_ViewOnMap => "View tags on map";
-
-        //public string MenuTab_Tag => "Tag";
-
-
-
-        //public string Input_Build => "Build";
-
-        //public string FlagEditor_ClearAll => "Clear all";
-
-
-        //public string CityCulture_Stonemason => "Stonemason";
-        //public string CityCulture_Stonemason_Description => "Improved stone collecting";
-
-        //public string CityCulture_Brewmaster => "Brewmaster";
-        //public string CityCulture_Brewmaster_Description => "Better beer production";
-
-        //public string CityCulture_Weavers => "Weavers";
-        //public string CityCulture_Weavers_Description => "Improved light armor production";
-
-        //public string CityCulture_SiegeEngineer => "Siege engineer";
-        //public string CityCulture_SiegeEngineer_Description => "More powerful warmashines";
-
-        //public string CityCulture_Armorsmith => "Armorsmith";
-        //public string CityCulture_Armorsmith_Description => "Improved iron armor production";
-
-        //public string CityCulture_Nobelmen => "Nobelmen";
-        //public string CityCulture_Nobelmen_Description => "More powerful knights";
-
-        //public string CityCulture_Seafaring => "Seafaring";
-        //public string CityCulture_Seafaring_Description => "Soldiers with sea specialzation, have stronger ships";
-
-        //public string CityCulture_Backtrader => "Backtrader";
-        //public string CityCulture_Backtrader_Description => "Cheaper black market";
-
-        //public string CityCulture_Lawbiding => "Lawbiding";
-        //public string CityCulture_Lawbiding_Description => "Gain more tax. No black market.";
-
-
-        ///// <summary>
-        ///// The faction names are fantasy names designed to sound historic, they don't have to be directly translated as long as they keep some of their essense
-        ///// </summary>
-        //public string FactionName_Starshield=> "Starshield";
-        //public string FactionName_Bluepeak=> "Blue Peak";
-        //public string FactionName_Hoft=> "Hoft";
-        //public string FactionName_RiverStallion=> "River Stallion";
-        //public string FactionName_Sivo=> "Sivo";
-
-        //public string FactionName_AelthrenConclave=> "Aelthren Conclave";
-        //public string FactionName_VrakasundEnclave=> "Vrakasund Enclave";
-        //public string FactionName_Tormürd=> "Tormürd";
-        //public string FactionName_ElderysFyrd=> "Elderys Fyrd";
-        //public string FactionName_Hólmgar=> "Hólmgar";
-        //public string FactionName_RûnothalOrder=> "Rûnothal Order";
-        //public string FactionName_GrimwardEotain=> "Grimward Eotain";
-        //public string FactionName_SkaeldraHaim=> "Skaeldra Haim";
-        //public string FactionName_MordwynnCompact=> "Mordwynn Compact";
-        //public string FactionName_AethmireSovren=> "Aethmire Sovren";
-
-        //public string FactionName_ThurlanKin=> "Thurlan Kin";
-        //public string FactionName_ValestennOrder=> "Valestenn Order";
-        //public string FactionName_Mournfold=> "Mournfold";
-        //public string FactionName_OrentharTribes=> "Orenthar Tribes";
-        //public string FactionName_SkarnVael=> "Skarn Vael";
-        //public string FactionName_Glimmerfell=> "Glimmerfell";
-        //public string FactionName_BleakwaterFold=> "Bleakwater Fold";
-        //public string FactionName_Oathmaeren=> "Oathmaeren";
-        //public string FactionName_Elderforge=> "Elderforge";
-        //public string FactionName_MarhollowCartel=> "Marhollow Cartel";
-
-        //public string FactionName_TharvaniDominion=> "Tharvani Dominion";
-        //public string FactionName_KystraAscendancy=> "Kystra Ascendancy";
-        //public string FactionName_GildenmarkUnion=> "Gildenmark Union";
-        //public string FactionName_AurecanEmpire=> "Aurecan Empire";
-        //public string FactionName_BronzeReach=> "Bronze Reach";
-        //public string FactionName_ElbrethGuild=> "Elbreth Guild";
-        //public string FactionName_ValosianSenate=> "Valosian Senate";
-        //public string FactionName_IronmarchCompact=> "Ironmarch Compact";
-        //public string FactionName_KaranthCollective=> "Karanth Collective";
-        //public string FactionName_VerdicAlliance=> "Verdic Alliance";
-
-        //public string FactionName_OrokhCircles=> "Orokh Circles";
-        //public string FactionName_TannagHorde=> "Tannag Horde";
-        //public string FactionName_BraghkRaiders=> "Braghk Raiders";
-        //public string FactionName_ThurvanniStonekeepers=> "Thurvanni Stonekeepers";
-        //public string FactionName_KolvrenHunters=> "Kolvren Hunters";
-        //public string FactionName_JorathBloodbound=> "Jorath Bloodbound";
-        //public string FactionName_UlrethSkycallers=> "Ulreth Skycallers";
-        //public string FactionName_GharjaRavagers=> "Ghar'ja Ravagers";
-        //public string FactionName_RavkanShield=> "Ravkan Shield";
-        //public string FactionName_FenskaarTidewalkers=> "Fenskaar Tidewalkers";
-
-
-        //public string FactionName_HroldaniStormguard => "Hroldani Stormguard";
-        //public string FactionName_SkirnirWolfkin => "Skirnir Wolfkin";
-        //public string FactionName_ThalgarBearclaw => "Thalgar Bearclaw";
-        //public string FactionName_VarnokRimeguard => "Varnok Rimeguard";
-        //public string FactionName_KorrakFirehand => "Korrak Firehand";
-        //public string FactionName_MoongladeGat => "Moonglade Gat";
-        //public string FactionName_DraskarSons => "Draskar Sons";
-        //public string FactionName_YrdenFlamekeepers => "Yrden Flamekeepers";
-        //public string FactionName_BrundirWarhorns => "Brundir Warhorns";
-        //public string FactionName_OltunBonecarvers => "Oltun Bonecarvers";
-        //public string FactionName_HaskariEmber => "Haskari Ember";
-        //public string FactionName_ZalfrikThunderborn => "Zalfrik Thunderborn";
-        //public string FactionName_BjorunStonetender => "Bjorun Stonetender";
-        //public string FactionName_MyrdarrIcewalkers => "Myrdarr Icewalkers";
-        //public string FactionName_SkelvikSpear => "Skelvik Spear";
-        //public string FactionName_VaragThroatcallers => "Varag Throatcallers";
-        //public string FactionName_Durakai => "Durakai";
-        //public string FactionName_FjornfellWarhowl => "Fjornfell Warhowl";
-        //public string FactionName_AshgroveWard => "Ashgrove Ward";
-        //public string FactionName_HragmarHorncarvers => "Hragmar Horncarvers";
     }
 
 }
