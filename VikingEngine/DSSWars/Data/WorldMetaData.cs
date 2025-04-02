@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Data
         public int saveIndex = -1;
         public bool IsGenerated => saveIndex < 0;
         public PcgRandom objRnd;
+        public bool customMap = false;
 
         public WorldMetaData(ushort seed, MapSize mapSize, int saveIndex)
         {

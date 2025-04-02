@@ -91,8 +91,8 @@ namespace VikingEngine.DSSWars.Display
             int cityCount;
 
             var faction = player.faction;
-            gold = faction.gold;
-            income = faction.MoneySecDiff();
+            gold = faction.money.GetGold();
+            income = faction.GoldSecDiff();
             workForce = faction.totalWorkForce;
             totalStrength = Convert.ToInt32(faction.militaryStrength);
             foodAdd = faction.CityFoodProduction;
@@ -264,9 +264,9 @@ namespace VikingEngine.DSSWars.Display
 
         void factionGoldTip(RichBoxContent content, object tag)
         {
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Gold, TextLib.LargeNumber(player.faction.gold))));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Gold, TextLib.LargeNumber(player.faction.money.GetGold()))));
             content.newLine();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(player.faction.MoneySecDiff()))));
+            content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(player.faction.GoldSecDiff()))));
         }
 
         void diplomacyTip(RichBoxContent content, object tag)

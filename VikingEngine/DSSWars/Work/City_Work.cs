@@ -225,7 +225,7 @@ namespace VikingEngine.DSSWars.GameObject
                         status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
                         workerStatuses[i] = status;
                     }
-                    else if (workerStatuses[i].energy < 0 && (res_food.amount > 0 || faction.hasMoney(1, this)))
+                    else if (workerStatuses[i].energy < 0 && (res_food.amount > 0 || faction.hasGold(1, this)))
                     {
                         CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                         var status = workerStatuses[i];

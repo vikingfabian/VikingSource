@@ -166,11 +166,15 @@ namespace VikingEngine.HUD.RichMenu
             return backgroundTextures;
         }
 
-        public void OpenMenu(string menuName, bool stack)
+        public void OpenMenu(string menuName, StackOption stack)
         {
-            if (!stack)
+            if (stack == StackOption.ClearStack)
             {
                 menuStack.Clear();
+            }
+            else if (stack == StackOption.ReplaceLast)
+            {
+                arraylib.RemoveLast(menuStack);
             }
             menuStack.Add(menuName);
             needRefresh = true;
@@ -336,5 +340,12 @@ namespace VikingEngine.HUD.RichMenu
 
             richBox.SetOffset( new Vector2(renderEdge.X, renderEdge.Y + scrollBar.scrollResult));
         }
+    }
+
+    enum StackOption
+    { 
+        Stack,
+        ClearStack,
+        ReplaceLast,
     }
 }

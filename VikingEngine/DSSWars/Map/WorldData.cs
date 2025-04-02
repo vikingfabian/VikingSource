@@ -101,6 +101,7 @@ namespace VikingEngine.DSSWars
             : this()
         {
             this.metaData = metaData;
+            metaData.customMap = true;
             LoadingWorld = this;
 
             rnd = new PcgRandom(metaData.seed);

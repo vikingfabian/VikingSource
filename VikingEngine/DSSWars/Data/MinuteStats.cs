@@ -8,7 +8,7 @@ namespace VikingEngine.DSSWars.Data
 {
     struct MinuteStats
     {
-        public float displayValue_sec;
+        public float displayValue_gold_sec;
         float collectValue;
 
         public void add(float value)
@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Data
             float value = collectValue;
             collectValue -= value;
 
-            displayValue_sec = value / 60f;
+            displayValue_gold_sec = value / 60f;
         }
     }
 }

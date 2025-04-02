@@ -16,6 +16,7 @@ using VikingEngine.LootFest.Data;
 using VikingEngine.Network;
 using VikingEngine.ToGG.MoonFall;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars
 {
@@ -124,7 +125,7 @@ namespace VikingEngine.DSSWars
         {
             
             w.Write((ushort)factiontype);
-            w.Write(gold);
+            w.Write(money.copper);
 
             w.Write((ushort)cities.Count);
             var citiesC = cities.counter();
@@ -158,7 +159,15 @@ namespace VikingEngine.DSSWars
         virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             factiontype = (FactionType)r.ReadUInt16();
-            gold = r.ReadInt32();
+            if (subVersion < 53)
+            {
+                int gold = r.ReadInt32();
+                money.copper = gold * 100;
+            }
+            else
+            {
+                money.copper = r.ReadInt32();
+            }
 
             int citiesCount = r.ReadUInt16();
             for (int i = 0; i < citiesCount; i++)
@@ -456,7 +465,7 @@ namespace VikingEngine.DSSWars
             }
 
             double income = 0;
-            int citiesTotalGold = 0;
+            Money citiesTotalCopper = Money.Zero;
 
             //if (nobelHouseCount > 0)
             //{ 
@@ -475,7 +484,7 @@ namespace VikingEngine.DSSWars
                     nobelHouseCount += citiesC.sel.buildingStructure.Nobelhouse_count;
 
                     income += citiesC.sel.income_oneSecUpdate(incomeMultiplier);
-                    citiesTotalGold += citiesC.sel.gold;
+                    citiesTotalCopper.copper += citiesC.sel.money.copper;
                 }
                 else
                 {
@@ -487,18 +496,18 @@ namespace VikingEngine.DSSWars
 
             if (DssRef.storage.centralGold)
             {
-                gold += Convert.ToInt32(income);
+                money.copper += Convert.ToInt32(income);
             }
             else
             {
-                gold = citiesTotalGold;
+                money = citiesTotalCopper;
             }
 
             //int income = Convert.ToInt32(tax - citiesEconomy.cityGuardUpkeep - DssLib.NobleHouseUpkeep * nobelHouseCount);            
             //gold += income;
 
-            previuosGold = storeGold;
-            storeGold = gold;
+            previuosMoney = storeMoney;
+            storeMoney = money;
 
             if (armies.Count == 0 && cities.Count == 0)
             {

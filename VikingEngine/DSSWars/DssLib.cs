@@ -200,8 +200,7 @@ namespace VikingEngine.DSSWars
         public const int TruceTimeSec = 180;
 
        
-        public const int NobleHouseCost = 4000;
-        public const float NobleHouseUpkeep = 10;
+        
 
         public const float BattleConflictRadius = 2f;
         public const int BattleChainConflictRadius = 3;

@@ -17,50 +17,52 @@ namespace VikingEngine.DSSWars.Display.CutScene
         Graphics.Image blackout;
         Texture2D bgTex = null;
         Graphics.ImageAdvanced bgImage = null;
-        bool victory, bossVictory;
+        bool bossVictory;
+        GameEndReason endReason;
         EndSceneDisplay display;
 
         DoomEpilogue doomEpilouge;
 
-        public EndScene(bool victory, bool bossVictory)
+        public EndScene(GameEndReason endReason, bool bossVictory)
             : base()
         {
-            this.victory = victory;
+            this.endReason = endReason;
             this.bossVictory = bossVictory;
             VectorRect area = Screen.Area;
             area.AddRadius(5);
             blackout = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, HudLib.CutSceneBgLayer+1);
-            blackout.Color = victory ? new Color(16, 16, 32) : new Color(3, 9, 8);
+            blackout.Color = endReason == GameEndReason.Victory ? new Color(16, 16, 32) : new Color(3, 9, 8);
             blackout.Opacity = 0;
 
             new Timer.AsynchActionTrigger(load_asynch, true);
 
+            bool storyVictory = endReason == GameEndReason.Victory;
 
             switch (DssRef.difficulty.PercDifficulty)
             {
                 case 25:
-                    (victory? DssRef.stats.won25perc : DssRef.stats.lost25perc).addOne();
+                    (storyVictory? DssRef.stats.won25perc : DssRef.stats.lost25perc).addOne();
                     break;
                 case 50:
-                    (victory ? DssRef.stats.won50perc : DssRef.stats.lost50perc).addOne();
+                    (storyVictory ? DssRef.stats.won50perc : DssRef.stats.lost50perc).addOne();
                     break;
                 case 75:
-                    (victory ? DssRef.stats.won75perc : DssRef.stats.lost75perc).addOne();
+                    (storyVictory ? DssRef.stats.won75perc : DssRef.stats.lost75perc).addOne();
                     break;
                 case 100:
-                    (victory ? DssRef.stats.won100perc : DssRef.stats.lost100perc).addOne();
+                    (storyVictory ? DssRef.stats.won100perc : DssRef.stats.lost100perc).addOne();
                     break;
                 case 125:
-                    (victory ? DssRef.stats.won125perc : DssRef.stats.lost125perc).addOne();
+                    (storyVictory ? DssRef.stats.won125perc : DssRef.stats.lost125perc).addOne();
                     break;
                 case 150:
-                    (victory ? DssRef.stats.won150perc : DssRef.stats.lost150perc).addOne();
+                    (storyVictory ? DssRef.stats.won150perc : DssRef.stats.lost150perc).addOne();
                     break;
                 case 175:
-                    (victory ? DssRef.stats.won175perc : DssRef.stats.lost175perc).addOne();
+                    (storyVictory ? DssRef.stats.won175perc : DssRef.stats.lost175perc).addOne();
                     break;
                 case 200:
-                    (victory ? DssRef.stats.won200perc : DssRef.stats.lost200perc).addOne();
+                    (storyVictory ? DssRef.stats.won200perc : DssRef.stats.lost200perc).addOne();
                     break;
             }
 
@@ -72,7 +74,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
         void load_asynch()
         {
-            string image = victory ? "success" : "fail";
+            string image = endReason == GameEndReason.Victory ? "success" : "fail";
 
             bgTex = Ref.main.Content.Load<Texture2D>(DssLib.StoryContentDir + image);
         }
@@ -94,7 +96,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
                     blackout.Opacity += 0.6f * Ref.DeltaTimeSec;
                     if (blackout.Opacity >= 1)
                     {
-                        Ref.music.PlaySong(victory ? Data.Music.Victory : Data.Music.Fail, false);
+                        Ref.music.PlaySong(endReason == GameEndReason.Victory ? Data.Music.Victory : Data.Music.Fail, false);
                         state_0black_1in_2ready++;
                     }
                     break;
@@ -147,7 +149,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
         void initDisplay()
         {
-            display = new EndSceneDisplay(victory, bossVictory, watchEpilogue);
+            display = new EndSceneDisplay(endReason, bossVictory, watchEpilogue);
         }
 
         public override void Close()
@@ -157,5 +159,12 @@ namespace VikingEngine.DSSWars.Display.CutScene
             display.DeleteMe();
             base.Close();
         }
+    }
+
+    enum GameEndReason
+    { 
+        Victory,
+        Defeat,
+        TimesUp,
     }
 }

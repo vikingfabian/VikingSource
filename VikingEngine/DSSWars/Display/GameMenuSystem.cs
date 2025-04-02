@@ -160,6 +160,8 @@ namespace VikingEngine.DSSWars.Display
                     fillWidth = true
                 });
 
+            HudLib.WishListButton(content);
+
             if (DssRef.storage.runTutorial_1short_2normal != 0)
             { //TODO yes no dialogue
                 content.newLine();
@@ -169,25 +171,28 @@ namespace VikingEngine.DSSWars.Display
                 });
             }
 
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_SaveState) }, new RbAction(saveGameState),
-                new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
-            {
-                fillWidth = true
-            });
-
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_WatchPrologue) }, new RbAction(watchEpilogue))
-            {
-                fillWidth = true
-            });
-
-            if (DssRef.state.IsLocalMultiplayer())
+            if (!PlatformSettings.STEAM_DEMO)
             {
                 content.newLine();
-                DssRef.storage.multiplayerGameSpeedToMenu(content, menu);
-            }
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_SaveState) }, new RbAction(saveGameState),
+                    new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
+                {
+                    fillWidth = true
+                });
 
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_WatchPrologue) }, new RbAction(watchEpilogue))
+                {
+                    fillWidth = true
+                });
+
+                if (DssRef.state.IsLocalMultiplayer())
+                {
+                    content.newLine();
+                    DssRef.storage.multiplayerGameSpeedToMenu(content, menu);
+                }
+            }
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
             {
@@ -205,42 +210,17 @@ namespace VikingEngine.DSSWars.Display
             {
                 fillWidth = true
             });
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_SaveAndExit) }, new RbAction(saveAndExit))
+
+            if (!PlatformSettings.STEAM_DEMO)
             {
-                fillWidth = true
-            });
-
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_SaveAndExit) }, new RbAction(saveAndExit))
+                {
+                    fillWidth = true
+                });
+            }
             completeMenu(content);
-            //openMenu();
-            //GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_Title, menu);
-            //{
-
-            //    new GuiTextButton(DssRef.lang.GameMenu_Resume, null, closeMenu, false, layout);
-
-            //    if (DssRef.storage.runTutorial)
-            //    {
-            //        new GuiDialogButton(DssRef.lang.Tutorial_EndTutorial, null, new GuiAction(endTutorial),
-            //            false, layout);
-            //    }
-            //    new GuiTextButton(DssRef.lang.GameMenu_SaveState, DssRef.lang.GameMenu_SaveStateWarnings, saveGameState, false, layout);
-            //    new GuiTextButton(DssRef.lang.GameMenu_WatchPrologue, null, watchEpilogue, false, layout);
-
-            //    if (DssRef.state.IsLocalMultiplayer())
-            //    {
-            //        multiplayerGameSpeedToMenu(layout);
-            //    }
-            //    new GuiTextButton(DssRef.lang.GameMenu_NextSong, null, new GuiAction(() => { Ref.music.debugNext(); closeMenu(); }), false, layout);
-            //    new GuiCheckbox("Model light effect", null, Ref.gamesett.modelLightProperty, layout);
-
-            //    Ref.gamesett.soundOptions(layout);
-            //    new GuiSectionSeparator(layout);
-            //    new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(exit), false, layout);
-
-            //    new GuiDialogButton(DssRef.lang.Hud_SaveAndExit, null, new GuiAction(saveAndExit), false, layout);
-
-            //}
-            //layout.End();
+           
         }
 
         public static void SettingsToMenu(RichBoxContent content, RichMenu menu, bool lobby)
@@ -279,10 +259,10 @@ namespace VikingEngine.DSSWars.Display
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Mouse, 0.8f), new RbSpace(), new RbText(DssRef.todoLang.MouseSettings_Title) },
-                new RbAction2Arg<string, bool>(menu.OpenMenu, UnderMenu_Options_Mouse, true)));
+                new RbAction2Arg<string, StackOption>(menu.OpenMenu, UnderMenu_Options_Mouse, StackOption.Stack)));
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Keyboard, 0.8f), new RbSpace(), new RbText(DssRef.todoLang.KeyboardSettings_Title) },
-                new RbAction2Arg<string, bool>(menu.OpenMenu, UnderMenu_Options_Keyboard, true)));
+                new RbAction2Arg<string, StackOption>(menu.OpenMenu, UnderMenu_Options_Keyboard, StackOption.Stack)));
 
             content.newParagraph();
             content.h2(".Gameplay options", HudLib.TitleColor_Head);
@@ -370,7 +350,7 @@ namespace VikingEngine.DSSWars.Display
                     new RbAction1Arg<InputActionType>(
                     (InputActionType action) => {
                         CurrentEditInput = action;
-                        menu.OpenMenu(UnderMenu_Options_Keyboard_Key, true);
+                        menu.OpenMenu(UnderMenu_Options_Keyboard_Key,  StackOption.Stack);
                     }, input)));
 
                 //RichBoxContent.ButtonMap(button, buttonContent);
@@ -414,7 +394,7 @@ namespace VikingEngine.DSSWars.Display
         {
             IButtonMap map = new KeyboardButtonMap(key);
             Ref.gamesett.keyboardMap.getset(CurrentEditInput, ref map, true);
-            menu.OpenMenu(UnderMenu_Options_Keyboard, false);
+            menu.OpenMenu(UnderMenu_Options_Keyboard, StackOption.ClearStack);
         }
 
         static List<AbsRichBoxMember> KeyTypeButtonContent(string name, SpriteName icon)

@@ -247,7 +247,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 automationAction = AutomationAction.WaitForUpdate;
 
-                if (player.faction.MoneySecDiff() > 0)
+                if (player.faction.GoldSecDiff() > 0)
                 {
                     var citiesC = player.faction.cities.counter();
 

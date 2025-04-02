@@ -32,8 +32,11 @@ namespace VikingEngine.DSSWars
         }
         public void UnlockAchievement(AchievementIndex achievement)
         {
+#if DEMO
+            return;
+#endif
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine("[!] Achievement: " + achievement.ToString());
+            //System.Diagnostics.Debug.WriteLine("[!] Achievement: " + achievement.ToString());
 #endif
             if (Ref.steam.isInitialized)
             {
@@ -47,6 +50,9 @@ namespace VikingEngine.DSSWars
 
         public void UnlockAchievement_async(AchievementIndex achievement)
         {
+#if DEMO
+            return;
+#endif
             if (Ref.steam.isInitialized)
             {
                 Ref.steam.Achievements.SetAchievement_async((int)achievement);

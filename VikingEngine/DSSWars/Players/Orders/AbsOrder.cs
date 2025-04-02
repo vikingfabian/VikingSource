@@ -70,7 +70,8 @@ namespace VikingEngine.DSSWars.Players.Orders
             return OrderType.NONE;
         }
 
-        
+        abstract public OrderType Type();
+
     }
 
     enum OrderType

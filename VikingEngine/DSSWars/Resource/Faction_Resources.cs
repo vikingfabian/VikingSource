@@ -15,9 +15,10 @@ namespace VikingEngine.DSSWars
     //RESOURCES
     partial class Faction
     {
-        public int gold = 40;
-        int storeGold = 0;
-        int previuosGold = 0;
+        //public int gold = 40;
+        public Money money = new Money(4000);
+        Money storeMoney = Money.Zero;
+        Money previuosMoney = Money.Zero;
         public int totalWorkForce, armyFoodUpkeep, armyFoodImportCost, armyFoodBlackMarketCost;
         public int nobelHouseCount = 0;
 
@@ -112,9 +113,9 @@ namespace VikingEngine.DSSWars
         public ResourceOverview res_FullPlateArmor = new ResourceOverview();
         public ResourceOverview res_MithrilArmor = new ResourceOverview();
 
-        public int MoneySecDiff()
+        public int GoldSecDiff()
         {
-            return storeGold - previuosGold;
+            return storeMoney.GetGold() - previuosMoney.GetGold();
         }
 
         public void resourceTab(LocalPlayer player, RichBoxContent content)
@@ -400,28 +401,28 @@ namespace VikingEngine.DSSWars
             city.workTemplate.followFactionClick(prioType, workTemplate);
         }
 
-        public bool calcCost(int cost, ref int totalCost, City city) {
-            totalCost += cost;
+        //public bool calcCost(int cost, ref int totalCost, City city) {
+        //    totalCost += cost;
 
-            if (DssRef.storage.centralGold)
-            {
-                return gold >= totalCost;
-            }
-            else
-            {
-                return city.gold >= totalCost;
-            }
-        }
+        //    if (DssRef.storage.centralGold)
+        //    {
+        //        return gold >= totalCost;
+        //    }
+        //    else
+        //    {
+        //        return city.gold >= totalCost;
+        //    }
+        //}
 
-        public bool hasMoney(int cost, City city)
+        public bool hasGold(int cost, City city)
         {
             if (DssRef.storage.centralGold)
             {
-                return gold >= cost;
+                return money.GetGold() >= cost;
             }
             else
             {
-                return city.gold >= cost;
+                return city.money.GetGold() >= cost;
             }
         }
 
@@ -434,17 +435,17 @@ namespace VikingEngine.DSSWars
 
             if (DssRef.storage.centralGold)
             {
-                if (allowDept || gold >= cost)
+                if (allowDept || money.GetGold() >= cost)
                 {
-                    gold -= cost;
+                    money.AddGold(-cost);
                     return true;
                 }
             }
             else
             {
-                if (allowDept || city.gold >= cost)
+                if (allowDept || city.money.GetGold() >= cost)
                 {
-                    city.gold -= cost;
+                    city.money.AddGold(-cost);
                     return true;
                 }
             }
@@ -454,41 +455,41 @@ namespace VikingEngine.DSSWars
         {
             if (DssRef.storage.centralGold)
             {
-               return  pay(ref gold);
+                return money.payGold_MuchAsPossible(cost);//pay(ref gold);
             }
             else
             {
-               return pay(ref city.gold);
+                return city.money.payGold_MuchAsPossible(cost);
             }
 
-            int pay(ref int gold)
-            {
-                if (gold > 0)
-                {
-                    int canPay = lib.SmallestValue(gold, cost);
-                    gold-= canPay;
-                    return canPay;
-                }
-                return 0;
-            }
+            //int pay(ref int gold)
+            //{
+            //    if (gold > 0)
+            //    {
+            //        int canPay = lib.SmallestValue(gold, cost);
+            //        gold-= canPay;
+            //        return canPay;
+            //    }
+            //    return 0;
+            //}
         }
 
 
-        public void gainMoney(int value, City city)
+        public void addGold(int value, City city)
         {
             if (DssRef.storage.centralGold)
             {
-                gold += value;
+                money.AddGold(value);
             }
             else
             { 
-                city.gold += value;        
+                city.money.AddGold(value);        
             }
         }
 
-        public void addMoney_factionWide(int value)
+        public void addGold_factionWide(int value)
         {   
-            gold += value;
+            money.AddGold(value);
 
             if (cities.Count > 0)
             {
@@ -497,7 +498,7 @@ namespace VikingEngine.DSSWars
                 var citiesC = cities.counter();
                 while (citiesC.Next())
                 {
-                    citiesC.sel.gold += perCity;
+                    citiesC.sel.money.AddGold(perCity);
                 }
             }           
         }
@@ -518,13 +519,14 @@ namespace VikingEngine.DSSWars
             while (citiesC.Next())
             {
                 //citiesC.sel.updateIncome_asynch();
-                CityEconomyData data = citiesC.sel.calcIncome_async();
+                //CityEconomyData data = citiesC.sel.calcIncome_async();
+                CityEconomyData data = new CityEconomyData(citiesC.sel);
                 newCitiesEconomy.Add(data);
                 //cityIncomeCount += data.total();
                 workForceCount += citiesC.sel.workForce.amount;
-                citiesFoodProduce += citiesC.sel.foodProduction.displayValue_sec;
-                citiesFoodSpend += citiesC.sel.foodSpending.displayValue_sec;
-                soldResources += citiesC.sel.soldResources.displayValue_sec;
+                citiesFoodProduce += citiesC.sel.foodProduction.displayValue_gold_sec;
+                citiesFoodSpend += citiesC.sel.foodSpending.displayValue_gold_sec;
+                soldResources += citiesC.sel.soldResources.displayValue_gold_sec;
 
                 //if (citiesC.sel.nobelHouse)
                 //{
@@ -562,8 +564,8 @@ namespace VikingEngine.DSSWars
                 float foodUpkeep = energyUpkeep / DssRef.difficulty.FoodEnergySett;
 
                 //totalArmiesUpkeep += armyUpkeep;
-                foodImport += armiesC.sel.foodCosts_import.displayValue_sec;
-                foodBlackMarket += armiesC.sel.foodCosts_blackmarket.displayValue_sec;
+                foodImport += armiesC.sel.foodCosts_import.displayValue_gold_sec;
+                foodBlackMarket += armiesC.sel.foodCosts_blackmarket.displayValue_gold_sec;
 
                 totalArmiesFoodUpkeep += foodUpkeep;
          

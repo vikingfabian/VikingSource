@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space();
             HudLib.PerSecondInfo(args.player, args.content, false);
 
-            args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_sec)));
+            args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_gold_sec)));
             args.content.space();
             HudLib.PerSecondInfo(args.player, args.content, true);
 
@@ -881,7 +881,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     else if (gold > goldCarryCapacity)
                     {
-                        faction.gainMoney(gold - goldCarryCapacity, onCity);
+                        faction.addGold(gold - goldCarryCapacity, onCity);
                         gold = goldCarryCapacity;
                     }
                 }

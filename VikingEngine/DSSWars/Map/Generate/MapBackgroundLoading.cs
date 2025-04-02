@@ -86,6 +86,14 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
+        public WorldData WorldData()
+        { 
+            if (DssRef.world == null)
+                return null;
+
+            return DssRef.world;
+        }
+
         protected void generateLoopUntilSuccess(SaveStateMeta loadMeta, GenerateMapPass generatePass)
         {
             generateSuccess = false;

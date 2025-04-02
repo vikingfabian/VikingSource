@@ -1,6 +1,17 @@
 ﻿UPDATE
 -Change Log-
-Short tutorial
+-Short tutorial
+-Been playtesting and fixing a lot of small bugs
+-Added a cent system, 1/100 gold
+-Added costs for servicemen and guards
+-Removed upkeep for noble houses, and increased servicemen cost
+
+The demo should:
+-Lockout any extra content or modes.
+-Block saves.
+-Be about 30-60 minute experience.
+-There is a hard timeout after 90minutes, if the battle don't end.
+-You can either watch or interact, I call it "tourist mode"
 
 !! Known issues, that I am working on !!
 -The guards are hard to select
@@ -10,6 +21,7 @@ Short tutorial
 -Cant move units between armies and garrisons
 -Text with "." in the beginning are temporary, will go through spell check and translation.
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
+-Can sometimes show the wrong city on the hud
 
 #Free build defences
  Rock thrower
@@ -23,11 +35,7 @@ Assign men to wall (ballista, har warmashine crew)
 #DEMO#
 -load map with attackers
 -exit on win or loose
--wishlist popup
--max timer med varning
--stats
--remove save, achievements
--out of food still shows
+-stats, open stats 
 
 #OPT#
 culling av worker
@@ -44,6 +52,8 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-upkeep för servicemen
+-hantera negativa servicemen
 -flag editor behöver scroll
 -open editor state (för att minska risken fär  
 -palisade item, quick setup/teardown (palisade tower)
@@ -116,8 +126,6 @@ Polish
 #Art
 
 build categories
-
-
 
 
 (placement bonus icon

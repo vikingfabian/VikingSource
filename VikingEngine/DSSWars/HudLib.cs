@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox.Artistic;
+using Valve.Steamworks;
 
 namespace VikingEngine.DSSWars
 {
@@ -29,7 +30,8 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);
         public static readonly Color TitleColor_Label_Dark = new Color(0, 63, 76);
         public static readonly Color AvailableColor = Color.LightGreen;
-        public static readonly Color NotAvailableColor = Color.Red;
+        //     Salmon color (R:250,G:128,B:114,A:255).
+        public static readonly Color NotAvailableColor = new Color(250, 180, 180);
 
         public static readonly Color TextColor_Relation = Color.LightBlue;
 
@@ -73,6 +75,7 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color MenuMoreOptionsArrowCol = new Color(131, 63, 17);
 
+        public const string EngineVersionString = "VikingEngine ver: {0}";
         public static void Init()
         {
             const float TextToIconSz = 1.2f;
@@ -457,16 +460,55 @@ namespace VikingEngine.DSSWars
             return buttonContent;
         }
 
+        public static void WishListButton(RichBoxContent content)
+        {
+            if (PlatformSettings.STEAM_DEMO && Ref.steam.isInitialized)
+            {
+                content.newLine();
+                var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.todoLang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIcon) }, new RbAction(() =>
+                {
+                    SteamAPI.SteamFriends().ActivateGameOverlayToStore(
+                    3585100,
+                    EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+                }), null, true);
+                wishlistBtn.overrideBgColor = Color.Green;
+                wishlistBtn.fillWidth = true;
+                content.Add(wishlistBtn);
+            }
+        }
+
         public static Color? NegativeRed(int value)
         {
             if (value < 0)
             {
-                return Color.Red;
+                return NotAvailableColor;
             }
             else
             {
                 return null;
             }
+        }
+
+
+        public static void taxInfo(RichBoxContent content, object tag)
+        {
+            content.text(string.Format(DssRef.lang.Economy_TaxDescription, Resource.Money.CopperToGoldString_Decimal(DssConst.TaxPerWorker_copp)));
+            content.newParagraph();
+            content.text(DssRef.lang.Info_PerSecond);
+        }
+
+        public static void servicemenUpkeepInfo(RichBoxContent content, object tag)
+        {
+            content.text(string.Format(".Upkeep is {0} gold per serviceman", Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerServiceMan_copp)));
+            content.newParagraph();
+            content.text(DssRef.lang.Info_PerSecond);
+        }
+
+        public static void guardUpkeepInfo(RichBoxContent content, object tag)
+        {
+            content.text(string.Format(".Upkeep is {0} gold per guard", Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerGuard_copp)));
+            content.newParagraph();
+            content.text(DssRef.lang.Info_PerSecond);        
         }
     }
 }

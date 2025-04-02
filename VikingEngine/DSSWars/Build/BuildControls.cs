@@ -499,9 +499,6 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(tabButton);
             }
 
-            content.Add(new RichBoxScale(2.1f));
-            content.newLine();
-
             if (player.buildCategoryTab == BuildCategoryTab.Automation)
             {
                 if (city.buildingStructure.buildingLevel_logistics > 0)
@@ -553,9 +550,10 @@ namespace VikingEngine.DSSWars.Build
             }
             else
             {
+                content.Add(new RichBoxScale(2.1f));
+                content.newLine();
+
                 List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-
-
 
                 if (player.tutorial == null)
                 { BuildLib.AvailableBuildTypes(available, city); }
@@ -566,20 +564,13 @@ namespace VikingEngine.DSSWars.Build
                 {
                     var build = BuildLib.BuildOptions[(int)opt];
 
-                    //if (opt == BuildAndExpandType.ArcherBarracks)
-                    //{
-                    //    lib.DoNothing();
-                    //}
-
                     if (build.buildCategory == player.buildCategoryTab)
                     {
 
                         var buildCount = city.buildingStructure.getCount(opt);
 
                         var buttonIcon = new RbImage(build.sprite);
-                        var buttonContent = new List<AbsRichBoxMember> {
-                    buttonIcon,
-                };
+                        var buttonContent = new List<AbsRichBoxMember> {  buttonIcon  };
                         if (buildCount > 0)
                         {
                             buttonContent.Add(new RbOverlapText(buttonIcon, buildCount.ToString(), new Vector2(1.1f, 1.1f), 1.0f, new Vector2(1, 1f), Color.White));
@@ -705,9 +696,9 @@ namespace VikingEngine.DSSWars.Build
                                     content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
                                     content.newLine();
 
-                                    HudLib.BulletPoint(content);
-                                    content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                                    content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, DssLib.NobleHouseUpkeep)));
+                                    //HudLib.BulletPoint(content);
+                                    //content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                                    //content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, Resource.Money.CopperToGoldString_Decimal( DssConst.NobleHouseUpkeep_copp))));
 
                                     break;
 

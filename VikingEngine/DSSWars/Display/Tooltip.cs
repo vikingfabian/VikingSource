@@ -33,12 +33,16 @@ namespace VikingEngine.DSSWars.Display
         public static float tooltip_id_timestampsec;
         public void updateMapTip(Players.LocalPlayer player, bool refreshTime)
         {
-            if (current_menuToolTip && images.HasMembers)
+            //if (current_menuToolTip && images.HasMembers)
+            //{
+            //    images.DeleteAll();
+            //    current_menuToolTip = false;
+            //}
+            if (player.gameControls.input.mousePan.IsDown)
             {
                 images.DeleteAll();
-                current_menuToolTip = false;
             }
-            if (player.diplomacyMap == null)
+            else if (player.diplomacyMap == null && !player.gameControls.input.mousePan.IsDown)
             {
                 if (player.gameControls.mapControls.hover.isNew 
                     || player.gameControls.mapControls.hover.subTile.isNew 
@@ -264,7 +268,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newParagraph();
              
             }
-            content.h2(DssRef.lang.TerrainType).overrideColor = HudLib.TitleColor_TypeName;
+            content.h2(DssRef.lang.TerrainType, HudLib.TitleColor_Label);
             content.text(subTile.subTile.TypeToString());
             
             create(player, content, false);

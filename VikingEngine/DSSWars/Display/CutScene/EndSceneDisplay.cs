@@ -19,10 +19,10 @@ namespace VikingEngine.DSSWars.Display.CutScene
         EndSceneLeftDisplayMain left;
         EndSceneCenterDisplayMain center;
         EndSceneRightDisplayMain right;
-        public EndSceneDisplay(bool victory, bool bossVictory, Action watchEpilogue)
+        public EndSceneDisplay(GameEndReason endReason, bool bossVictory, Action watchEpilogue)
         { 
             left = new EndSceneLeftDisplayMain();
-            center = new EndSceneCenterDisplayMain(victory, bossVictory, watchEpilogue);
+            center = new EndSceneCenterDisplayMain(endReason, bossVictory, watchEpilogue);
             right = new EndSceneRightDisplayMain();
 
             center.beginMove(0);
@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
             content.newParagraph();
             content.text(HudLib.Date(DateTime.Now));
-            content.text(string.Format(DssRef.lang.Lobby_GameVersion, Engine.LoadContent.SteamVersion));
+            content.text(string.Format(HudLib.EngineVersionString, Engine.LoadContent.SteamVersion));
             
             Vector2 pos = Engine.Screen.SafeArea.CenterTop;
             pos.X -= HudLib.cutsceneGui.width * 1.5f + Engine.Screen.IconSize;
@@ -87,10 +87,10 @@ namespace VikingEngine.DSSWars.Display.CutScene
     {
         EndSceneCenterDisplayPart part;
 
-        public EndSceneCenterDisplayMain(bool victory, bool bossVictory, Action watchEpilogue)
+        public EndSceneCenterDisplayMain(GameEndReason endReason, bool bossVictory, Action watchEpilogue)
             : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].gameControls.input)
         {
-            part = new EndSceneCenterDisplayPart(victory, bossVictory, this, watchEpilogue);
+            part = new EndSceneCenterDisplayPart(endReason, bossVictory, this, watchEpilogue);
 
             parts = new List<HUD.RichBox.RichboxGuiPart>()
             {
@@ -101,37 +101,50 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
     class EndSceneCenterDisplayPart : RichboxGuiPart
     {
-        public EndSceneCenterDisplayPart(bool victory, bool bossVictory, RichboxGui gui, Action watchEpilogue)
+        public EndSceneCenterDisplayPart(GameEndReason endReason, bool bossVictory, RichboxGui gui, Action watchEpilogue)
             : base(gui)
         {
-            if (victory)
+            switch (endReason)
             {
+                case GameEndReason.Victory:
+                    content.h1(DssRef.lang.EndScreen_VictoryTitle).overrideColor = Color.Yellow;
 
-                content.h1(DssRef.lang.EndScreen_VictoryTitle).overrideColor = Color.Yellow;
+                    if (bossVictory)
+                    {
+                        content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
+                    }
+                    else
+                    {
+                        content.text(DssRef.lang.EndScreen_DominationVictoryQuote);
+                    }
+                    break;
+                
+                case GameEndReason.Defeat:
+                    content.h1(DssRef.lang.EndScreen_FailTitle).overrideColor = Color.Yellow;
+                    content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_FailureQuotes));
+                    break;
 
-                if (bossVictory)
-                {
-                    content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
-                }
-                else
-                {
-                    content.text(DssRef.lang.EndScreen_DominationVictoryQuote);
-                }
+                case GameEndReason.TimesUp:
+                    content.h1(".Times up").overrideColor = Color.Yellow;
+                    break;
             }
-            else
-            {
 
-                content.h1(DssRef.lang.EndScreen_FailTitle).overrideColor = Color.Yellow;
-                content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_FailureQuotes));
-            }
+           
 
             content.newParagraph();
-            if (victory && bossVictory)
+            if (endReason == GameEndReason.Victory && bossVictory && !PlatformSettings.STEAM_DEMO)
             {
                 content.Button(DssRef.lang.EndScreen_WatchEpilogue, new RbAction(watchEpilogue), null, true);
-                content.newLine();
+                
             }
-            content.Button(DssRef.lang.GameMenu_ContinueGame, new RbAction(DssRef.state.cutScene.Close), null, true);
+            if (!PlatformSettings.STEAM_DEMO)
+            {
+                content.newLine();
+                content.Button(DssRef.lang.GameMenu_ContinueGame, new RbAction(DssRef.state.cutScene.Close), null, true);
+            }
+
+            HudLib.WishListButton(content);
+
             content.newLine();
             content.Button(DssRef.lang.GameMenu_ExitGame, new RbAction(DssRef.state.exit), null, true);
 

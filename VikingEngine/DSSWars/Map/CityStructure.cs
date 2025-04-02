@@ -550,7 +550,9 @@ namespace VikingEngine.DSSWars.Map
             //Complete
             city.buildingStructure = buildingStructure;
             city.terrainStructure = terrainStructure;
-            city.totalServiceMen = serviceMenHousing;
+            //city.TotalServiceMen = serviceMenHousing;
+
+
 
             void farming(ref SubTile subTile)
             {

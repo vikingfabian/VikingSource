@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         public void refreshMenu()
         {
             RichBoxContent content = new RichBoxContent();
-            content.h1("Map editor - generate", HudLib.TitleColor_Head);
+            content.h1(".Map editor - generate", HudLib.TitleColor_Head);
 
             content.newLine();
 
@@ -75,10 +75,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             {
                 case MapGeneratorTab.Ground:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
-                        new List<AbsRichBoxMember> { new RbText("Generate") }, new RbAction1Arg< GenerateMapPass>(state.generatePass, GenerateMapPass.AllTerrain)));
+                        new List<AbsRichBoxMember> { new RbText(".Generate") }, new RbAction1Arg< GenerateMapPass>(state.generatePass, GenerateMapPass.AllTerrain)));
 
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Custom size") }, state.GenerateSettings.CustomSizeProperty));
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Custom size") }, state.GenerateSettings.CustomSizeProperty));
 
                     if (state.GenerateSettings.bCustomSize)
                     {
@@ -117,19 +117,19 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                                     menu.CloseDropDown();
                                 }, mapStartAs), null);
                         }
-                        startAs.Build(content, SpriteName.NO_IMAGE, "Start as", menu);                        
+                        startAs.Build(content, SpriteName.NO_IMAGE, ".Start as", menu);                        
                     }
 
                     if (Adv)
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary,
-                            new List<AbsRichBoxMember> { new RbText("Run Clear Pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Clear)));
+                            new List<AbsRichBoxMember> { new RbText(".Run Clear Pass") }, new RbAction1Arg<GenerateMapPass>(state.generatePass, GenerateMapPass.Clear)));
                     }
 
                     content.newLine();
 
-                    HudLib.Label(content, "Build-Dig loop count");
+                    HudLib.Label(content, ".Build-Dig loop count");
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, BuildDigLoopBounds,
                         (bool set, int value) =>
@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
                     content.newLine();
 
-                    HudLib.Label(content, "Build strokes count");
+                    HudLib.Label(content, ".Build strokes count");
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, StrokeCountBounds,
                         (bool set, float value) =>
@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                             return Sett.BuildChainsCount_per100Tiles;
                         }, false);
                     content.space();
-                    HudLib.InfoButton(content, new RbTooltip_Text("Measured in paint strokes per 100 tiles"));
+                    HudLib.InfoButton(content, new RbTooltip_Text(".Measured in paint strokes per 100 tiles"));
 
                     if (Adv)
                     {

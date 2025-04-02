@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars
         {//eventTriggerGameTimeSec = DssRef.difficulty.aiDelayTimeSec;
         }
 
-        public void asyncUpdate(float time)
+        virtual public void asyncUpdate(float time)
         {
             if (DssRef.state.localPlayers[0].tutorial != null ||
                 !DssRef.difficulty.runEvents)
@@ -190,9 +190,7 @@ namespace VikingEngine.DSSWars
 
             w.Write((int)nextEvent);
             w.Write((int)eventState);
-            //w.Write(eventPrepareTimeSec);
-            //w.Write(eventCheckGameTimeSec);
-            //w.Write(eventTriggerGameTimeSec);
+
             prepareTime.writeGameState(w);
             checkTime.writeGameState(w);
             triggerTime.writeGameState(w);
@@ -284,40 +282,14 @@ namespace VikingEngine.DSSWars
 
         public void TestNextEvent()
         {
-            //if (DssRef.state.events.AiDelay())
-            //{
-            //    DssRef.state.events.AiDelay() = false;
-            //    DssRef.state.localPlayers[0].hud.messages.Add(
-            //            "Test event", "Removed AI delay");
-            //}
-            //else
-            //{
+           
             DssRef.state.localPlayers[0].hud.messages.Add(
                     "Test event", (nextEvent).ToString());
-            //checkTime.zero();
-            //eventState = EventState.Done;
-
-            //asyncUpdate(0);
+            
             checkTime.start(1);
             triggerTime.start(2);
             triggerTimeSpan_Minutes = IntervalF.NoInterval(0.1f);
 
-
-            //if (nextEvent <= EventType.DarkLord)
-            //{
-            //    PowerCheck();
-            //    calcAndRunEvent();
-            //}
-            //else
-            //{
-            //    if (nextEvent == EventType.KillTheDarkLord)
-            //    {
-            //        victory(true);
-            //    }
-            //}
-
-
-            //}
         }
 
         
@@ -339,7 +311,7 @@ namespace VikingEngine.DSSWars
                 foreach (var faction in factions)
                 {
                     faction.growthMultiplier = 0.5f;
-                    faction.addMoney_factionWide( -10000);
+                    faction.addGold_factionWide( -10000);
                     //var citiesC = faction.cities.counter();
                     //while (citiesC.Next())
                     //{
@@ -773,7 +745,7 @@ namespace VikingEngine.DSSWars
                 DssRef.achieve.onVictory();
                 //DssRef.state.localPlayers[0].menuSystem.victoryScreen();
 
-                new EndScene(true, bossVictory);
+                new EndScene( GameEndReason.Victory, bossVictory);
             }
         }
 
@@ -787,7 +759,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            new EndScene(false, false);
+            new EndScene( GameEndReason.Defeat, false);
         }
 
         public void collectAllianceAgainstPlayerDomination(LocalPlayer player)

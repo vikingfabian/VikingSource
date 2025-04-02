@@ -74,6 +74,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             if (pass == GenerateMapPass.Clear || pass == GenerateMapPass.AllTerrain)
             {
                 mapBackgroundLoading = new MapGenerator_BackgroundLoading();
+                
                 mapStorage.autoName = $"CustomMap W{GenerateSettings.customMapSize.X} H{GenerateSettings.customMapSize.Y} id{Ref.rnd.Int(9999)}";
             }
             mapBackgroundLoading.generateSettings = GenerateSettings;

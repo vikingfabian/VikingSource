@@ -148,17 +148,17 @@ namespace VikingEngine.DSSWars.Display
             {
                 content.Add(new RbImage(SpriteName.rtsMoney));
                 content.space();
-                content.Add(new RbText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(faction.gold), HudLib.NegativeRed(faction.gold)));
+                content.Add(new RbText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(faction.money.GetGold()), HudLib.NegativeRed(faction.money.GetGold())));
                 content.Add(new RbNewLine());
             }
 
             void compressedGoldAndIncome()
             {
                 content.Add(new RbImage(SpriteName.rtsMoney));
-                content.Add(new RbText(TextLib.LargeNumber(faction.gold), HudLib.NegativeRed(faction.gold)));
+                content.Add(new RbText(TextLib.LargeNumber(faction.money.GetGold()), HudLib.NegativeRed(faction.money.GetGold())));
                 content.space();
                 content.Add(new RbImage(SpriteName.rtsIncomeTime));
-                content.Add(new RbText(TextLib.LargeNumber(faction.MoneySecDiff()), HudLib.NegativeRed(faction.MoneySecDiff())));
+                content.Add(new RbText(TextLib.LargeNumber(faction.GoldSecDiff()), HudLib.NegativeRed(faction.GoldSecDiff())));
                 
             }
 
@@ -221,8 +221,8 @@ namespace VikingEngine.DSSWars.Display
 
                     content.Add(new RbImage(SpriteName.rtsIncomeTime));
                     content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.MoneySecDiff())),
-                            HudLib.NegativeRed(faction.MoneySecDiff())));
+                    content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.GoldSecDiff())),
+                            HudLib.NegativeRed(faction.GoldSecDiff())));
                     content.newLine();
                 }
                 else
@@ -363,7 +363,7 @@ namespace VikingEngine.DSSWars.Display
             }
 
             void economyTab()
-            {                
+            {     
 
                 content.h2(DssRef.lang.UnitType_Cities).overrideColor = HudLib.TitleColor_Label;
 
@@ -377,15 +377,23 @@ namespace VikingEngine.DSSWars.Display
 
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_TaxIncome, Convert.ToInt32(faction.citiesEconomy.tax(null))));
                 content.space();
-                HudLib.InfoButton(content, new RbAction(taxInfo));
+                HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo));
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(faction.citiesEconomy.blackMarketCosts_Food)));
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(".Servicemen upkeep: {0}", Resource.Money.CopperToGoldString_Decimal(faction.citiesEconomy.servicemenUpkeep_copp)));
+                content.space();
+                HudLib.InfoButton(content, new RbTooltip(HudLib.servicemenUpkeepInfo));
+
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_GuardUpkeep, Resource.Money.CopperToGoldString_Decimal(faction.citiesEconomy.cityGuardUpkeep_copp)));
+                content.space();
+                HudLib.InfoButton(content, new RbTooltip(HudLib.guardUpkeepInfo));
+
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(faction.citiesEconomy.blackMarketCosts_Food_gold)));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_GuardUpkeep, Convert.ToInt32(faction.citiesEconomy.cityGuardUpkeep)));
-                content.space();
-                HudLib.PerSecondInfo(player, content, false);
+                //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_GuardUpkeep, Convert.ToInt32(faction.citiesEconomy.cityGuardUpkeep_copp)));
+                //content.space();
+                //HudLib.PerSecondInfo(player, content, false);
 
                 if (DssLib.UseLocalTrading)
                 {
@@ -401,11 +409,11 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
                 
-                content.icontext(SpriteName.WarsBuild_Nobelhouse, string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.Building_NobleHouse, faction.nobelHouseCount));
+                //content.icontext(SpriteName.WarsBuild_Nobelhouse, string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.Building_NobleHouse, faction.nobelHouseCount));
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_XUpkeepIsY, DssRef.lang.Building_NobleHouse, DssLib.NobleHouseUpkeep * faction.nobelHouseCount));
-                content.space();
-                HudLib.PerSecondInfo(player, content, false);
+                //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_XUpkeepIsY, DssRef.lang.Building_NobleHouse, Resource.Money.CopperToGoldString_Decimal(DssConst.NobleHouseUpkeep_copp * faction.nobelHouseCount)));
+                //content.space();
+                //HudLib.PerSecondInfo(player, content, false);
                 //
 
                 content.newParagraph();
@@ -424,20 +432,11 @@ namespace VikingEngine.DSSWars.Display
                 HudLib.PerSecondInfo(player, content, true);
             }
 
-            void taxInfo()
-            {
-                RichBoxContent content = new RichBoxContent();
-                content.text(string.Format(DssRef.lang.Economy_TaxDescription, DssConst.TaxPerWorker));
-                content.newParagraph();
-                content.text(DssRef.lang.Info_PerSecond);
-                player.hud.tooltip.create(player, content, true);
-            }
-
 
             void debugCultureFont()
             {
                 string[] cultures = new string[]
-        {
+            {
             //"en-US",  // English (United States)
             //"de-DE",  // German (Germany)
             //"fr-FR",  // French (France)

@@ -169,6 +169,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             w.Write((ushort)orders.Count);
             foreach (var order in orders)
             {
+                w.Write((byte)order.Type());
                 order.writeGameState(w);
             }
 
@@ -180,8 +181,28 @@ namespace VikingEngine.DSSWars.Players.Orders
             int ordersCount = r.ReadUInt16();
             for (int i = 0; i < ordersCount; i++)
             {
-                BuildOrder order = new BuildOrder();
+                OrderType type = OrderType.Build;
+                
+                if (subversion >= 52)
+                {
+                    type = (OrderType)r.ReadByte();
+                }
+
+                AbsOrder order;
+
+                switch (type)
+                { 
+                    default:
+                        order = new BuildOrder();
+                        break;
+                    case OrderType.Demolish:
+                        order = new DemolishOrder();
+                        break;
+                }
+                
+                
                 order.readGameState(r, subversion, pointers);
+                //orderConflictingSubTile(order.GetBuild().
                 orders.Add(order);
             }
             Debug.ReadCheck(r);

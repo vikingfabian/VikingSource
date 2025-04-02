@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             if (Input.Keyboard.KeyDownEvent(Keys.Escape))
             {
-                menu.OpenMenu(GameMenuSystem.UnderMenu_Options_Keyboard, false);
+                menu.OpenMenu(GameMenuSystem.UnderMenu_Options_Keyboard, StackOption.ClearStack);
             }
         }
         public override void DeleteMe()

@@ -138,9 +138,15 @@ namespace VikingEngine.DSSWars
             //detailMap = new Map.MapLayer_Detail();
             baseInit();
             technologyManager.initGame(newGame);
-            
-            events = new GameEvents();
 
+            if (PlatformSettings.STEAM_DEMO)
+            {
+                events = new GameEventsDemo();
+            }
+            else
+            {
+                events = new GameEvents();
+            }
              
         }
 

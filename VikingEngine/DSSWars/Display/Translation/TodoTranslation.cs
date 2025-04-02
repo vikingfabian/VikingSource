@@ -121,6 +121,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public string LobbyDemoMode_WishlistOn => "Wishlist on";
 
+        public string Hud_Cancel => "Cancel";
         public string Hud_None => "None";
         public string Hud_AllCities => "All cities";
         public string Hud_Time_Hours => "{0} hours";

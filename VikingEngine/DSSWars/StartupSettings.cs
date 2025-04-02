@@ -22,13 +22,13 @@ namespace VikingEngine.DSSWars
         public static bool EndlessResources = PlatformSettings.DevBuild ? false : 
             false;//DO NOT CHANGE    
 
-        public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? false :
+        public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? true :
             false;//DO NOT CHANGE
 
-        public static bool SkipRecruitTime = PlatformSettings.DevBuild ? false :
-            false;//DO NOT CHANGE
+        //public static bool SkipRecruitTime = PlatformSettings.DevBuild ? false :
+        //    false;//DO NOT CHANGE
         
-        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? true :
+        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
         public static bool TestOffscreenUpdate = PlatformSettings.DevBuild ? false :
@@ -53,8 +53,7 @@ namespace VikingEngine.DSSWars
             !SpawnStartingArmies ||
             !RunAI ||
             EndlessResources ||
-            EndlessDiplomacy ||
-            SkipRecruitTime;
+            EndlessDiplomacy;
 
     }
 }

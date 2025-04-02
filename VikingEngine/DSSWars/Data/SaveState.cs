@@ -20,8 +20,8 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 12;
-        public const int SubVersion = 50; 
-        //public const int MergeVersion = 26;
+        public const int SubVersion = 53; 
+
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
         bool dataReady = false;
@@ -64,8 +64,6 @@ namespace VikingEngine.DSSWars.Data
         {
             DataStream.BeginReadWrite.BinaryIO(false, meta.Path, null, readGameState, this, true);
         }
-
-        
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         {
@@ -160,7 +158,6 @@ namespace VikingEngine.DSSWars.Data
 
     class ObjectPointerCollection
     { 
-        //public List<LocalPlayer> localPlayers = new List<LocalPlayer>();
         public List<AbsObjectPointer> pointers = new List<AbsObjectPointer>();
 
         public void SetPointer()
@@ -301,27 +298,6 @@ namespace VikingEngine.DSSWars.Data
             }
         }
     }
-
-    //class BattleMemberObjectPointer: AbsObjectPointer
-    //{
-    //    //BattleGroup battle;
-
-    //    public BattleMemberObjectPointer(System.IO.BinaryWriter w, AbsGameObject target)
-    //    {
-    //        WriteObjectPointer(w, target);        
-    //    }
-
-    //    //public BattleMemberObjectPointer(BinaryReader r, BattleGroup battle)
-    //    //{
-    //    //    this.battle = battle;
-    //    //    ReadObjectPointer(r);
-    //    //}
-
-    //    //public override void SetPointer()
-    //    //{
-    //    //    battle.addPart((AbsMapObject)GetObject(), false);
-    //    //}
-    //}
 
     struct SaveVersion
     {

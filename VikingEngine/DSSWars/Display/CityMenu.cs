@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));
                 content.space();
-                content.Add(new RbText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(city.gold),  HudLib.NegativeRed(city.gold)));
+                content.Add(new RbText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(city.money.GetGold()),  HudLib.NegativeRed(city.money.GetGold())));
                 content.Add(new RbNewLine());
             }
 

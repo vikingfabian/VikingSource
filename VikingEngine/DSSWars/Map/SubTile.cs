@@ -310,9 +310,15 @@ namespace VikingEngine.DSSWars.Map
                         case TerrainWallType.WoodTower:
                             return WorldData.SubTileWidth * 0.4f;
 
+                        case TerrainWallType.StoneWall:
+                        case TerrainWallType.StoneWallBlueRoof:
+                        case TerrainWallType.StoneWallGreen:
+                        case TerrainWallType.StoneWallWoodHouse:
+                        case TerrainWallType.StoneGate:
+                            return WorldData.SubTileWidth * 0.6f;
 
                         case TerrainWallType.StoneTower:
-                            return WorldData.SubTileWidth * 1.2f;
+                            return WorldData.SubTileWidth * 1.3f;
 
                     }
             }

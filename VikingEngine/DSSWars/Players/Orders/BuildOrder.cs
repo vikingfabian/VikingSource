@@ -161,6 +161,11 @@ namespace VikingEngine.DSSWars.Players.Orders
             }
             return OrderType.NONE;
         }
+
+        public override OrderType Type()
+        {
+            return OrderType.Build;
+        }
     }
 
     enum OrderStatus

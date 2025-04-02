@@ -441,7 +441,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_DarkFollower;
                     faction.displayInFullOverview = true;
-                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
+                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
 
                     techSetup();
                     faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
@@ -539,7 +539,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_SouthHara;
                     faction.displayInFullOverview = true;
-                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 5);
+                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 5);
 
                     techSetup();
                     faction.technology.catapult = TechnologyTemplate.FactionUnlock;
@@ -554,7 +554,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Monger;
-                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
+                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
@@ -566,7 +566,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Hatu;
-                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
+                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
@@ -578,7 +578,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Destru;
-                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
+                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
@@ -1157,7 +1157,7 @@ namespace VikingEngine.DSSWars.Players
                 }
                 
 
-                async_buildUpCheck();
+                //async_buildUpCheck();
 
                 //Merge armies check
 
@@ -1190,43 +1190,43 @@ namespace VikingEngine.DSSWars.Players
         }
 
 
-        void async_buildUpCheck()
-        {
-            if (purchaseOrder == PurchaseOrderType_None &&
-                faction.gold > DssLib.GroupDefaultCost * 10)
-            { 
-                var city = faction.cities.GetRandomUnsafe(Ref.rnd);
+        //void async_buildUpCheck()
+        //{
+        //    if (purchaseOrder == PurchaseOrderType_None &&
+        //        faction.gold > DssLib.GroupDefaultCost * 10)
+        //    { 
+        //        var city = faction.cities.GetRandomUnsafe(Ref.rnd);
 
-                if (city != null /*&& !city.InBattle()*/)
-                {
-                    int friendCount = 0;
-                    int enemyCount = 0;
+        //        if (city != null /*&& !city.InBattle()*/)
+        //        {
+        //            int friendCount = 0;
+        //            int enemyCount = 0;
 
-                    foreach (var n in city.neighborCities)
-                    {
-                        if (DssRef.world.cities[n].faction == faction)
-                        {
-                            friendCount++;
-                        }
-                        else
-                        { 
-                            enemyCount++;
-                        }
-                    }
+        //            foreach (var n in city.neighborCities)
+        //            {
+        //                if (DssRef.world.cities[n].faction == faction)
+        //                {
+        //                    friendCount++;
+        //                }
+        //                else
+        //                { 
+        //                    enemyCount++;
+        //                }
+        //            }
 
-                    //if (friendCount > enemyCount)
-                    //{
-                    //    //purchaseOrder = PurchaseOrderType_CityWorkers;
-                    //}
-                    //else
-                    //{
-                    //    purchaseOrder = PurchaseOrderType_CityGuard;
-                    //}
+        //            //if (friendCount > enemyCount)
+        //            //{
+        //            //    //purchaseOrder = PurchaseOrderType_CityWorkers;
+        //            //}
+        //            //else
+        //            //{
+        //            //    purchaseOrder = PurchaseOrderType_CityGuard;
+        //            //}
 
-                    purchaseOrderIndex1 = city.parentArrayIndex;
-                }
-            }
-        }
+        //            purchaseOrderIndex1 = city.parentArrayIndex;
+        //        }
+        //    }
+        //}
 
         private void createPurchaseOrder(City city, int maxPurchaseCount)
         {

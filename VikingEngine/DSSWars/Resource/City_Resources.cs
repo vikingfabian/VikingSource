@@ -128,7 +128,8 @@ namespace VikingEngine.DSSWars.GameObject
         public float waterAddPerSec;
         static readonly GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
 
-        public int gold = 5;
+        //public int gold = 5;
+        public Money money = new Money(500);
         public GroupedResource res_water = new GroupedResource();
         public GroupedResource res_wood = new GroupedResource() { amount = 20, goalBuffer = 300 };
         public GroupedResource res_fuel = new GroupedResource() { amount = 100, goalBuffer = 400 };
@@ -331,7 +332,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    faction.gainMoney(add, this);
+                    faction.addGold(add, this);
                     break;
                 case ItemResourceType.Water_G:
                     res_water.amount += add;
@@ -657,7 +658,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    return new GroupedResource() { amount = DssRef.storage.centralGold? faction.gold : gold };
+                    return new GroupedResource() { amount = DssRef.storage.centralGold? faction.money.GetGold() : money.GetGold() };
                 case ItemResourceType.GoldOre:
                     return new GroupedResource() { amount = 1 };
                 case ItemResourceType.Men:
@@ -1083,7 +1084,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.GoldOre:
                     {
                         var price = convert1.amount * DssConst.GoldOreSellValue;
-                        faction.gainMoney( price, this);
+                        faction.addGold( price, this);
                         soldResources.add(price);
 
                         convert1.type = ItemResourceType.Gold;
@@ -1200,7 +1201,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (item != ItemResourceType.Water_G && 
                 item != ItemResourceType.Gold &&
-                item != ItemResourceType.Men)
+                item != ItemResourceType.Men &&
+                item != ItemResourceType.ServiceMen)
             {
                 bool reached = amount >= goalBuffer;
                 reachedBuffer |= reached;

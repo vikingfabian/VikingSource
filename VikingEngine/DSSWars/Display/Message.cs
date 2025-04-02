@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Network;
 using VikingEngine.ToGG;
@@ -17,7 +18,6 @@ namespace VikingEngine.DSSWars.Display
 {
     class MessageGroup
     {
-        //Vector2 position;
         public RichboxGuiSettings settings;
 
         List<Message> messages = new List<Message>();
@@ -34,9 +34,6 @@ namespace VikingEngine.DSSWars.Display
             this.settings = settings;
 
         }
-
-        
-
         public void blockFoodWarning(bool block)
         {
             if (block)
@@ -86,8 +83,9 @@ namespace VikingEngine.DSSWars.Display
         }
 
         public void cityLowFoodMessage(City city)
-        {
-            if (cityLowFoodMessageCooldown.TimeOut())
+        {   
+            if (DssRef.storage.runTutorial_1short_2normal == 0 && 
+                cityLowFoodMessageCooldown.TimeOut())
             {
                 cityLowFoodMessageCooldown.start();
 
@@ -101,7 +99,7 @@ namespace VikingEngine.DSSWars.Display
                 ControllerInputIcons(gotoBattleButtonContent);
                 gotoBattleButtonContent.Add(new RbText(city.TypeName()));
 
-                content.Add(new RbButton(gotoBattleButtonContent,
+                content.Add(new ArtButton( RbButtonStyle.Primary,gotoBattleButtonContent,
                     new RbAction1Arg<AbsGameObject>(goToMapObject, city, SoundLib.menu)));
 
                 Add(content);
@@ -110,7 +108,8 @@ namespace VikingEngine.DSSWars.Display
 
         public void armyLowFoodMessage(Army army)
         {
-            if (armyLowFoodMessageCooldown.TimeOut())
+            if (DssRef.storage.runTutorial_1short_2normal == 0 && 
+                armyLowFoodMessageCooldown.TimeOut())
             {
                 armyLowFoodMessageCooldown.start();
 
@@ -124,7 +123,7 @@ namespace VikingEngine.DSSWars.Display
                 ControllerInputIcons(gotoBattleButtonContent);
                 gotoBattleButtonContent.Add(new RbText(army.TypeName()));
 
-                content.Add(new RbButton(gotoBattleButtonContent,
+                content.Add(new ArtButton( RbButtonStyle.Primary,gotoBattleButtonContent,
                     new RbAction1Arg<AbsGameObject>(goToMapObject, army, SoundLib.menu)));
 
                 Add(content);

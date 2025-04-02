@@ -94,14 +94,15 @@ namespace VikingEngine.DSSWars
 
         public static float Conscript_SpecializePercentage = 0.5f;
 
-        
 
         //OTHER
         public static float Livestock_WalkingSpeed = Men_StandardWalkingSpeed * 0.2f;
         public static int DeliveryMaxDistance = 80;
 
         //CITY
-        public static float TaxPerWorker = 0.1f;
+        public static int TaxPerWorker_copp = 10;
+        public static int UpkeepPerServiceMan_copp = 10;
+        public static int UpkeepPerGuard_copp = 10;
         public static int SmallCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 5);
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
@@ -115,7 +116,7 @@ namespace VikingEngine.DSSWars
         public static int Maxwater = 60;
         public static int WaterResovoirWaterAdd = 20;
         public static int ExpandWorkForce = SoldierGroup_DefaultCount * 4;
-        public static int ExpandGuardSize = SoldierGroup_DefaultCount;
+        //public static int ExpandGuardSize = SoldierGroup_DefaultCount;
 
         public static int CupperSellValue = 5;
         public static int BronzeSellValue = 10;
@@ -134,8 +135,8 @@ namespace VikingEngine.DSSWars
         public static int CityDeliveryChunkSize_Level2 = 60;
         public static int CityDeliveryChunkSize_Level3 = 120;
 
-        public const int ExpandGuardSizeCost = 12000;
-        public const int ReleaseGuardSizeGain = ExpandGuardSizeCost / 2;
+        //public const int ExpandGuardSizeCost = 12000;
+        //public const int ReleaseGuardSizeGain = ExpandGuardSizeCost / 2;
 
         public const int HousingCount_WorkerHut = 30;
         public const int HousingCount_WorkerHutLarge = 50;
@@ -172,6 +173,9 @@ namespace VikingEngine.DSSWars
 
         public static int Harbour_BonusRadius = 6;
         public static byte Harbour_SpeedBonus = 5;
+
+        //public const int NobleHouseCost = 4000;
+        //public const int NobleHouseUpkeep_copp = 100;
 
         //WORK
         public static float WorkTime_Eat = 10;

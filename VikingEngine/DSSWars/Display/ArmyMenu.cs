@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Display
@@ -540,7 +541,7 @@ namespace VikingEngine.DSSWars.Display
                 {
                         new HUD.RichBox.RbText(DssRef.lang.ArmyOption_DisbandAll),
                 },
-                new RbAction2Arg<string, bool>(player.hud.objMenu.menu.OpenMenu, DisbandAllMenuState, true, SoundLib.menu),
+                new RbAction2Arg<string, StackOption>(player.hud.objMenu.menu.OpenMenu, DisbandAllMenuState, StackOption.Stack, SoundLib.menu),
                 null);
             content.Add(allbutton);
         }
@@ -641,7 +642,7 @@ namespace VikingEngine.DSSWars.Display
         void startArmyTrade(Army toarmy)
         {
             player.hud.objMenu.otherArmy = toarmy;
-            player.hud.objMenu.menu.OpenMenu(TradeMenuState, true);
+            player.hud.objMenu.menu.OpenMenu(TradeMenuState, StackOption.Stack);
         }
 
         void selectArmyTrade(Army toarmy)

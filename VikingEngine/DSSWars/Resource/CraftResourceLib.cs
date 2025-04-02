@@ -916,7 +916,7 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.SkinLinen_Group, 4),
         new UseResource(ItemResourceType.Bronze, 2),
             },
-           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Beginner_1
         );
 
         public static readonly CraftBlueprint MailArmor = new CraftBlueprint(

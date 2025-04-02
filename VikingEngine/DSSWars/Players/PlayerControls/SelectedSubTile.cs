@@ -256,7 +256,7 @@ namespace VikingEngine.DSSWars.Players
                     
                         if (city.faction.player == player)
                         {
-                            if (tilePos != city.tilePos) //center tile is protected
+                            if (subTilePos != city.cityStorageCenter && subTilePos != city.cityHallSubtilePos) //center tile is protected
                             {
                                 var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
                                 if (buildingType != BuildAndExpandType.NUM_NONE)

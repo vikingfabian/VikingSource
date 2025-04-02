@@ -692,8 +692,7 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[]
             {
-               new UseResource(ItemResourceType.ServiceMen, 8),
-                new UseResource(ItemResourceType.Gold, 5000),
+               new UseResource(ItemResourceType.ServiceMen, 20),
                 new UseResource(ItemResourceType.Wood_Group, 100),
                 new UseResource(ItemResourceType.Stone_G, 200)
             },

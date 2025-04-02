@@ -396,6 +396,8 @@ namespace VikingEngine.DSSWars.Map
             IntVector2 areaPosEnd = tilePosEnd / UnitGridSquareWidth;
 
             UnitCollArea area;
+            areaPosStart.Add(-1);
+            areaPosEnd.Add(1);
 
             for (int y = areaPosStart.Y; y <= areaPosEnd.Y; ++y)
             {

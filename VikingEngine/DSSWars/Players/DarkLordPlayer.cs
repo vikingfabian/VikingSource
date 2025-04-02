@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Players
             //    Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
             //}
 
-            faction.gold = DssConst.HeadCityStartMaxWorkForce * 10;
+            faction.money.copper = DssConst.HeadCityStartMaxWorkForce * 1000;
 
             this.darkLordAllies = darkLordAllies;
             Faction greenwood = DssRef.world.factions.Array[DssRef.settings.Faction_GreenWood];

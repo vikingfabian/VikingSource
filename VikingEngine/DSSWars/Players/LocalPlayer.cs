@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.Players
         public LocalPlayer(Faction faction)
            : base(faction)
         {
-            faction.addMoney_factionWide( DssRef.difficulty.PlayerBonusGold);
+            faction.addGold_factionWide( DssRef.difficulty.PlayerBonusGold);
             orders = new Orders.Orders();
 
             faction.factiontype = FactionType.Player;
@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.Players
             faction.technology = new XP.TechnologyTemplate();
             faction.technology.iron = XP.TechnologyTemplate.FactionUnlock;
 
-            faction.addMoney_factionWide(10000);
+            faction.addGold_factionWide(10000);
         }
 
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
@@ -1209,7 +1209,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (StartupSettings.EndlessResources)
             {
-                faction.addMoney_factionWide(1000);
+                faction.addGold_factionWide(1000);
             }
 
             if (StartupSettings.EndlessDiplomacy)

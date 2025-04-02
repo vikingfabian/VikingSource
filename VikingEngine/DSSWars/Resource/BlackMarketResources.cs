@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Resource
                         new RbText(name),
                     },
                 new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
-                tooltip(count), player.faction.calcCost(cost, ref non, city));
+                tooltip(count), player.faction.hasGold(cost, city));
 
                 content.Add(button);
                 content.Add(new RbTab(0.5f));
@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.Resource
                             new RbText(string.Format(DssRef.lang.Hud_XTimes, count)),
                         },
                     new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
-                    tooltip(count), player.faction.calcCost(cost * count, ref non, city));
+                    tooltip(count), player.faction.hasGold(cost * count, city));
                     content.Add(xbutton);
                     //content.space();
                 }
@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.Resource
                         //RichBoxContent content = new RichBoxContent();
                         content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
-                        HudLib.ResourceCost(content, ResourceType.Gold, cost * count, player.faction.gold);
+                        HudLib.ResourceCost(content, ResourceType.Gold, cost * count, player.faction.money.GetGold());
 
                         content.newParagraph();
 
