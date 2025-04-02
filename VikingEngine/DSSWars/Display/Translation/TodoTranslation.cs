@@ -13,6 +13,20 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Option_Low = "Low";
         public string Option_Medium = "Medium";
         public string Option_High = "High";
+        public string MouseSettings_Title => "Mouse input";
+        public string KeyboardSettings_Title => "Key mapping";
+        public string MouseButtonAction_None => "No action";
+        public string MouseButtonAction_Select => "Select";
+        public string MouseButtonAction_Pan => "Pan";
+        public string MouseButtonAction_PanAndOrder => "Pan and Order";
+        public string MouseButtonAction_Order => "Order";
+        public string MouseButtonAction_Cancel => "Cancel";
+
+        public string MouseButton_Left => "Left Mouse";
+        public string MouseButton_Right => "Right Mouse";
+        public string MouseButton_Middle => "Middle Mouse";
+        public string MouseButton_X1 => "X1 Button Mouse";
+        public string MouseButton_X2 => "X2 Button Mouse";
 
 
         public string ArmyOption_NewArmy => "New army";
@@ -74,15 +88,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Settings_CentralGold => "Central gold";
         public string Settings_CentralGold_Description => "On: all your gold is in a shared pool for instant use. Off: gold is physical and needs to be transported.";
 
-        public string MouseSettings_Title => "Mouse input";
-        public string KeyboardSettings_Title => "Key mapping";
-        public string MouseButtonAction_None => "No action";
-        public string MouseButtonAction_Select => "Select";
-        public string MouseButtonAction_Pan => "Pan";
-        public string MouseButtonAction_PanAndOrder => "Pan and Order";
-        public string MouseButtonAction_Order => "Order";
-        public string MouseButtonAction_Cancel => "Cancel";
-
+      
 
         public string InputActionName_StopStart => "Stop/Start";
         public string InputActionName_ToggleHudDetail => "Toggle HUD Detail";
@@ -111,7 +117,17 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string InputActionName_ZoomInKey => "Zoom In";
         public string InputActionName_ZoomOutKey => "Zoom Out";
 
+        public string Settings_Title_Monitor => "Monitor options";
+        public string Settings_Title_Graphics => "Graphic options";
+        public string Settings_Title_Input => "Input";
+        public string Settings_Title_Gameplay => "Gameplay options";
+        public string Settings_PanOnZoom => "Pan on zoom";
+        public string Settings_ScrollSensitivity_Game => "Scroll sensitivity: game";
+        public string Settings_ScrollSensitivity_Menu => "Scroll sensitivity: menu";
+        public string Settings_Blood => "Blood";
 
+        public string Lobby_GameSetup => "Game steup";
+        public string Lobby_PlayerSetup => "Player steup";
         public string LobbyDemoMode_Demo => "Demo";
         public string LobbyDemoMode_ShortTutorial => "Quick Tutorial";
         public string LobbyDemoMode_LongTutorial => "Extended Tutorial";
@@ -122,6 +138,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string LobbyDemoMode_WishlistOn => "Wishlist on";
 
         public string Hud_Cancel => "Cancel";
+        public string Hud_Next => "Next";
         public string Hud_None => "None";
         public string Hud_AllCities => "All cities";
         public string Hud_Time_Hours => "{0} hours";
@@ -140,6 +157,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Delivery_SpeedBonus => "Speed bonus: {0}%";
 
         public string Delivery_AutoResourceDescription => "Delivers items that has reached the stockpile limit, to cities in need.";
+
+        public string Conscript_Soldiers_ArmyType => "Army men";
+        public string Conscript_Soldiers_ArmyType_Description => "Recruit soldiers to an adjacent army";
+        public string Conscript_Soldiers_GuardType => "City guard";
+        public string Conscript_Soldiers_GuardType_Description => "Guards are used to fortify walls";
+
+        public string Defence_Title => "Defence";
+        public string Defence_GuardPost => "Guard post";
+        public string Defence_AutoAssign => "Auto assign";
 
         public string Conscript_SplashDamage => "Splash damage";
         public string Conscript_HighSplashDamage => "High splash damage";
@@ -195,6 +221,24 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Technology_AdvancedBuildings = "Advanced buildings";
         public string Technology_AdvancedFarming = "Advanced farming";
         public string Technology_AdvancedCasting = "Advanced casting";
+
+        public string Help_Title = "Help";
+        public string Help_Work_Title = "Work doesn't start";
+        public string Help_Work_Resources = "Buildings need available resources";
+        public string Help_Work_Skill = "The worker need correct skill level (or higher)";
+        public string Help_Work_Stockpile = "Collecting resources will be blocked by a full stockpile";
+        public string Help_Work_Priority = "The work may have low or zero priority";
+
+
+        public string Help_Soldiers_Title = "Produce soldiers";
+        public string Help_Soldiers_PlaceBuildingX = "Place building: {0}";
+        public string Help_Soldiers_Workers = "Available workers to recruit from";
+        public string Help_Soldiers_Weapon = "A weapon to each soldier";
+        public string Help_Soldiers_StartX = "Start: {0}";
+
+
+        public string Hud_SelectHistory => "Select history";
+
         public string Hud_PointsPerMinute => "{0} points per minute";
         public string Hud_PercentValueCost => "The service costs {0}% of the value";
 
@@ -285,6 +329,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildHud_AreaAffectTitle => "Area affect";
         public string BuildHud_BonusRadius => "Bonus radius: {0}";
 
+        public string BuildHud_BuildTime => "Build time";
         public string SchoolHud_ToLevel => "To level";
         public string SchoolHud_TimeDescription => "Time assumes zero experience; it decreases with experience.";
         public string SchoolHud_SelectSchool => "Select school";
@@ -337,6 +382,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_GoldDelivery => "Gold courier";
         public string BuildingType_Bank_Description => "Gold management";
 
+        public string DecorType_CobbleStones => "Cobble stones";
+        public string DecorType_Square => "City square";
+
         public string DecorType_Garden =>"Garden";
         //public string DecorType_Statue => "Statue";
         public string DecorType_Flag => "Flag";
@@ -349,7 +397,18 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_ServiceHouse => "Service house";
         public string BuildingType_ServiceHouse_DescriptionAddX => "Add {0} servicemen";
 
+        public string BuildingType_GuardOffice => "Guards office";
         public string BuildingType_GuardOffice_DescriptionAddX => "Increase guard limit by {0}";
+
+        public string BuildingType_DirtWall => "Dirt wall";
+        public string BuildingType_DirtTower => "Dirt tower";
+        public string BuildingType_WoodWall => "Wood wall";
+        public string BuildingType_WoodTower => "Wood tower";
+        public string BuildingType_StoneWall => "Stone wall";
+        public string BuildingType_StoneTower => "Stone tower";
+        public string BuildingType_StoneGate => "Stone gate";
+        public string BuildingType_StoneHouse => "Stone gate";
+
 
         /// <summary>
         /// When listing slight variations, like "Lamp A" and "Lamp B"
