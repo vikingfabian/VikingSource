@@ -174,59 +174,59 @@ namespace VikingEngine.DSSWars.Display
         }
         void helpTab(RichBoxContent content)
         {
-            content.h2(".Work doesn't start", HudLib.TitleColor_Head);
+            content.h2(DssRef.todoLang.Help_Work_Title, HudLib.TitleColor_Head);
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsBluePrint));
             content.space();
-            content.Add(new RbText("Buildings need available resources"));
+            content.Add(new RbText(DssRef.todoLang.Help_Work_Resources));
             
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsUnitLevelProfessional));
             content.space();
-            content.Add(new RbText("The worker need correct skill level (or higher)"));
+            content.Add(new RbText(DssRef.todoLang.Help_Work_Skill));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsStockpileStop));
             content.space();
-            content.Add(new RbText("Collecting resources will be blocked by a full stockpile"));
+            content.Add(new RbText(DssRef.todoLang.Help_Work_Stockpile));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsHammer));
             content.space();
-            content.Add(new RbText("The work may have low or zero priority"));
+            content.Add(new RbText(DssRef.todoLang.Help_Work_Priority));
 
             content.newParagraph();
 
-            content.h2("Produce soldiers", HudLib.TitleColor_Head);
+            content.h2(DssRef.todoLang.Help_Soldiers_Title, HudLib.TitleColor_Head);
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsBuild_Barracks));
             content.space();
-            content.Add(new RbText(string.Format("Place building: {0}", DssRef.lang.BuildingType_Barracks)));
+            content.Add(new RbText(string.Format(DssRef.todoLang.Help_Soldiers_PlaceBuildingX, DssRef.lang.BuildingType_Barracks)));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsWorker));
             content.space();
-            content.Add(new RbText(string.Format("Available workers to recruit from", DssRef.lang.BuildingType_Barracks)));
+            content.Add(new RbText(DssRef.todoLang.Help_Soldiers_Workers));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsResource_Sword));
             content.space();
-            content.Add(new RbText(string.Format("A weapon to each soldier", DssRef.lang.BuildingType_Barracks)));
+            content.Add(new RbText(DssRef.todoLang.Help_Soldiers_Weapon));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsSoldierIcon));
             content.space();
-            content.Add(new RbText(string.Format("Start the conscription queue", DssRef.lang.BuildingType_Barracks)));
+            content.Add(new RbText(string.Format(DssRef.todoLang.Help_Soldiers_StartX, DssRef.lang.Hud_ProductionQueue)));
 
 
 

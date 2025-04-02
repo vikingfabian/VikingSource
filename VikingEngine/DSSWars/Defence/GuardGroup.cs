@@ -17,14 +17,14 @@ namespace VikingEngine.DSSWars.Defence
     {
         public int assignedToPost_IdAndPosition = -1;
         public float postYPos;
-       
+
         public GuardGroup(City city, SoldierConscriptProfile conscript, Vector3 startPos)
-            :base(city, conscript, startPos) 
+            : base(city, conscript, startPos)
         {
 
         }
         public GuardGroup(AbsArmy army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
-            :base (army, r, version, pointers)  
+            : base(army, r, version, pointers)
         {
         }
         public override void writeGameState(BinaryWriter w)
@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Defence
 
         //public void refreshSoldierDefence()
         //{
-            
+
         //}
 
         public override void completeTransform(SoldierTransformType transformType, int positionId)
@@ -95,8 +95,8 @@ namespace VikingEngine.DSSWars.Defence
 
         public void onEnterGuard(City city, int IdAndPosition)
         {
-           assignedToPost_IdAndPosition = IdAndPosition;
-           soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
+            assignedToPost_IdAndPosition = IdAndPosition;
+            soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
 
             if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out SubTile subTile))
             {
@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.Defence
                     soldierAttackRangeBonus = 0.03f;
                 }
 
-            
+
                 switch (subTile.GetWallType())
                 {
                     case Map.TerrainWallType.NUM_NONE:
@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.Defence
         }
 
         void onExitGuard()
-        { 
+        {
             assignedToPost_IdAndPosition = -1;
             soldierAttackRangeBonus = 0;
             damageBlockChance = 0;
@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.Defence
                         refillGuardUnits(first.SoldierProfile(), soldierCount - 1, first.model != null);
                     }
                 }
-            }            
+            }
         }
 
         public override void update(float time, bool fullUpdate)
@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.Defence
             {
                 AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, tilePos, ref soldierData, createModels);
                 unit.firstUpdate();
-                refillGuardUnits(typeProfile, count-1, createModels);
+                refillGuardUnits(typeProfile, count - 1, createModels);
             }
         }
 
@@ -231,7 +231,7 @@ namespace VikingEngine.DSSWars.Defence
         }
 
         public bool IsAssignedTo(int postIdAndPosition)
-        { 
+        {
             if (assignedToPost_IdAndPosition == postIdAndPosition)
                 return true;
 
@@ -241,7 +241,7 @@ namespace VikingEngine.DSSWars.Defence
             return false;
 
             bool hasCommand(AbsCommand command)
-            { 
+            {
                 if (command == null) return false;
 
                 if (command.isEnterPost(postIdAndPosition)) return true;
@@ -253,6 +253,11 @@ namespace VikingEngine.DSSWars.Defence
         public override bool InGuardPost()
         {
             return assignedToPost_IdAndPosition >= 0;
+        }
+
+        public override string TypeName()
+        {
+            return DssRef.todoLang.Conscript_Soldiers_GuardType;
         }
     }
 }

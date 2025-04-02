@@ -770,7 +770,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.Conscription_Title;
                 case MenuTab.Defence:
                     description = null;
-                    return ".Defence";
+                    return DssRef.todoLang.Defence_Title;
                 case MenuTab.Trade:
                     description = null;
                     return DssRef.lang.MenuTab_Trade;
@@ -807,7 +807,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case MenuTab.Help:
                     description = null;
-                    return ".Help";
+                    return DssRef.todoLang.Help_Title;
                 default:
                     throw new NotImplementedException();
             }
@@ -885,7 +885,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                         case TerrainBuildingType.GuardHouse_Small:
                         case TerrainBuildingType.GuardHouse_Large:
-                            return ".Guards office";
+                            return DssRef.todoLang.BuildingType_GuardOffice;
                         
                         case TerrainBuildingType.ArcherBarracks:
                             return DssRef.todoLang.BuildingType_ArcherBarracks;
@@ -1036,9 +1036,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return string.Format(DssRef.todoLang.VariantType_E, DssRef.todoLang.DecorType_Flag);
 
                         case TerrainDecorType.CobbleStones:
-                            return ".Cobble stones";
+                            return DssRef.todoLang.DecorType_CobbleStones;
                         case TerrainDecorType.Square:
-                            return ".City square";
+                            return DssRef.todoLang.DecorType_Square;
                     }
                     break;
 
@@ -1057,19 +1057,18 @@ namespace VikingEngine.DSSWars.Display.Translation
                     {
                         case TerrainWallType.Palisade: return DssRef.todoLang.BuildingType_Palisade;
                         case TerrainWallType.DirtWall:
-                            return ".dirt wall";
+                            return DssRef.todoLang.BuildingType_DirtWall;
                         case TerrainWallType.DirtTower:
-                            return ".dirt tower";
-                        case TerrainWallType.WoodWall: return ".wood wall";
-                        case TerrainWallType.WoodTower: return ".wood tower";
-                        case TerrainWallType.StoneWall: return ".stonewall";
-                        case TerrainWallType.StoneTower: return ".stone tower";
-                        case TerrainWallType.StoneWallGreen: return ".stonewall green";
-                        case TerrainWallType.StoneWallBlueRoof: return ".stonewall with roof";
-                        case TerrainWallType.StoneWallWoodHouse: return ".stonewall with house";
-                        case TerrainWallType.StoneGate: return ".stonewall gate";
-                        case TerrainWallType.StoneHouse: return ".castle stone house";
-
+                            return DssRef.todoLang.BuildingType_DirtTower;
+                        case TerrainWallType.WoodWall: return DssRef.todoLang.BuildingType_WoodWall;
+                        case TerrainWallType.WoodTower: return DssRef.todoLang.BuildingType_WoodTower;
+                        case TerrainWallType.StoneWall: return string.Format(DssRef.todoLang.VariantType_A, DssRef.todoLang.BuildingType_StoneWall);
+                        case TerrainWallType.StoneTower: return DssRef.todoLang.BuildingType_StoneTower;
+                        case TerrainWallType.StoneWallGreen: return string.Format(DssRef.todoLang.VariantType_B, DssRef.todoLang.BuildingType_StoneWall);
+                        case TerrainWallType.StoneWallBlueRoof: return string.Format(DssRef.todoLang.VariantType_C, DssRef.todoLang.BuildingType_StoneWall);
+                        case TerrainWallType.StoneWallWoodHouse: return string.Format(DssRef.todoLang.VariantType_D, DssRef.todoLang.BuildingType_StoneWall);
+                        case TerrainWallType.StoneGate: return DssRef.todoLang.BuildingType_StoneGate;
+                        case TerrainWallType.StoneHouse: return DssRef.todoLang.BuildingType_StoneHouse;
                     }
 
                     return DssRef.lang.BuildingType_Wall;

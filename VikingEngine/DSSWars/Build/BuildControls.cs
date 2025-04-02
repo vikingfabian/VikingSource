@@ -598,7 +598,7 @@ namespace VikingEngine.DSSWars.Build
                             build.altBlueprint?.toMenu(content, city);
 
                             content.newLine();
-                            content.Add(new RbText(".Build time:", HudLib.TitleColor_Label));
+                            content.Add(new RbText(DssRef.todoLang.BuildHud_BuildTime + ":", HudLib.TitleColor_Label));
                             content.space();
                             content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_Seconds, build.buildTimeSec)));
 

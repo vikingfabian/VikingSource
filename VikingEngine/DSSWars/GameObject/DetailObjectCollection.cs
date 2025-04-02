@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return ".Army Groups";
+            return DssRef.todoLang.Conscript_Soldiers_ArmyType;
         }
     }
 }

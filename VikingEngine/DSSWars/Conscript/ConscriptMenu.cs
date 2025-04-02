@@ -155,11 +155,11 @@ namespace VikingEngine.DSSWars.Conscript
                 if (hasGuardOption)
                 {
                     content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabNotSelected : RbButtonStyle.SubTabSelected,
-                        new List<AbsRichBoxMember> { new RbText(".Army men") },
-                        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text(".Recruit soldiers to an adjacent army")));
+                        new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Conscript_Soldiers_ArmyType) },
+                        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text(DssRef.todoLang.Conscript_Soldiers_ArmyType_Description)));
                     content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                        new List<AbsRichBoxMember> { new RbText(".City guard") },
-                        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text(".Guards are used to fortify walls")));
+                        new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Conscript_Soldiers_GuardType) },
+                        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text(DssRef.todoLang.Conscript_Soldiers_GuardType_Description)));
                 }
 
                 content.newParagraph();
