@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.EngineSpace;
 using VikingEngine.HUD.RichBox;
 //
 
@@ -138,17 +139,17 @@ namespace VikingEngine.DSSWars.GameObject
             return position;
         }
 
-        protected void processAsynchWork(List<WorkerStatus> workerStatuses)
+        protected void processAsynchWork(ref StructList<WorkerStatus> workerStatuses)
         {
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                var status = workerStatuses[i];
+                ref WorkerStatus status = ref workerStatuses.array[i];
                 if (status.work > WorkType.Idle &&
                     Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
                 {
                     //Work complete
                     onWorkComplete_async(ref status);
-                    workerStatuses[i] = status;
+                    //workerStatuses[i] = status;
                 }
 
             }

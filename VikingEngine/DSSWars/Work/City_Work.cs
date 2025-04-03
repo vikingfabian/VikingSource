@@ -208,43 +208,45 @@ namespace VikingEngine.DSSWars.GameObject
             //Collect idle workers
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                if (workerStatuses[i].work == WorkType.Idle)
+                ref WorkerStatus status = ref workerStatuses.array[i];
+
+                if (status.work == WorkType.Idle)
                 {
                     if (workerStatusActiveCount > workForce.amount)
                     {
                         --workerStatusActiveCount;
-                        var status = workerStatuses[i];
+                        //ref WorkerStatus status = ref workerStatuses.array[i];
                         status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
-                        workerStatuses[i] = status;
+                        //workerStatuses[i] = status;
                     }
-                    else if (workerStatuses[i].carry.amount > 0)
+                    else if (status.carry.amount > 0)
                     {
                         CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                        var status = workerStatuses[i];
+                        //ref WorkerStatus status = ref workerStatuses.array[i];
                         //status.createWorkOrder(WorkType.DropOff, -1, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
                         status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
-                        workerStatuses[i] = status;
+                        //workerStatuses[i] = status;
                     }
-                    else if (workerStatuses[i].energy < 0 && (res_food.amount > 0 || faction.hasGold(1, this)))
+                    else if (status.energy < 0 && (res_food.amount > 0 || faction.hasGold(1, this)))
                     {
                         CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                        var status = workerStatuses[i];
+                        //ref WorkerStatus status = ref workerStatuses.array[i];
                         //status.createWorkOrder(WorkType.Eat, -1, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);
                         status.createWorkOrder(WorkType.Eat, -1, 0, WorkExperienceType.NONE, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);
-                        workerStatuses[i] = status;
+                        //workerStatuses[i] = status;
                     }
-                    else if (workerStatuses[i].energy <= DssConst.Worker_Starvation)
+                    else if (status.energy <= DssConst.Worker_Starvation)
                     {
                         --workerStatusActiveCount;
                         --workForce.amount;
-                        var status = workerStatuses[i];
+                        //ref WorkerStatus status = ref workerStatuses.array[i];
                         status.createWorkOrder(WorkType.Starving, -1, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
-                        workerStatuses[i] = status;
+                        //workerStatuses[i] = status;
                     }
                     else//else if (workQue.Count > 0)
                     {
                         idleWorkers.Add(i);
-                        var status = workerStatuses[i];
+                        //var status = workerStatuses[i];
                     }
                     //else
                     //{
@@ -348,7 +350,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (!inRender_detailLayer)
             {
-                processAsynchWork(workerStatuses);
+                processAsynchWork(ref workerStatuses);
             }
                         
             void buildWorkQue2()
@@ -835,7 +837,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             for (int i = 0; i < workerStatuses.Count; ++i)
             {
-                var status = workerStatuses[i];
+                var status = workerStatuses.array[i];
                 if (status.work != WorkType.Idle &&
                     status.subTileEnd == subtile)
                 {

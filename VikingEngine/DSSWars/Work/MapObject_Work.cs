@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.EngineSpace;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    partial class AbsMapObject
+    partial class AbsArmy
     {
-        protected List<WorkerStatus> workerStatuses = new List<WorkerStatus>();
+        protected StructList<WorkerStatus> workerStatuses = new StructList<WorkerStatus>(16);
         public List<WorkerUnit> workerUnits = null;
 
         protected void updateWorkerUnits()

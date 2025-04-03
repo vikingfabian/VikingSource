@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (!inRender_detailLayer)
             {
-                processAsynchWork(workerStatuses);
+                processAsynchWork(ref workerStatuses);
             }
 
             int getOrCreateFreeWorker()

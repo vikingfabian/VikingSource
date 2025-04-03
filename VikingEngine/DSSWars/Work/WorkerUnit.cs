@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Work
         WorkerUnitState state = WorkerUnitState.None;
         Vector3 goalPos;
         Vector3 walkDir;
-        AbsMapObject parentMapObject;
+        AbsArmy parentMapObject;
         float finalizeWorkTime;
         GameTimer workAnimation = new GameTimer(1f, true, true);
         bool isShip = false;
@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Work
         float walkDist_beforeRefresh = 0f;
         AbsWorkEffect workEffect = null;
 
-        public WorkerUnit(AbsMapObject mapObject, WorkerStatus status, int statusIndex)
+        public WorkerUnit(AbsArmy mapObject, WorkerStatus status, int statusIndex)
         {
             parentMapObject = mapObject;
             this.status = status;
