@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -283,6 +284,11 @@ namespace VikingEngine.DSSWars.Players
 
             zoomInput();
             rotateCameraInput();
+
+            if (player.gameControls.input.PinAndPing.DownEvent)
+            {
+                player.createPin();
+            }
         }
 
         public void leftFocusUpdate()
@@ -573,6 +579,9 @@ namespace VikingEngine.DSSWars.Players
             if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
             {
                 AbsMapObject intersectObj = null;
+
+                intersectObj = player.rayCollisionWithPin(ray);
+
                 var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, false);
                 foreach (var m in nearMapObjects)
                 {

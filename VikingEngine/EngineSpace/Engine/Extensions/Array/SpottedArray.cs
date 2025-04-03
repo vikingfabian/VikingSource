@@ -452,6 +452,25 @@ namespace VikingEngine
             return default(T);
         }
 
+        public T PullIndex_Safe(int index)
+        {
+            if (index >= 0 && index < Array.Length)
+            {
+                T value = Array[index];
+                if (value != null)
+                {
+                    --Count;
+                    Array[index] = default(T);
+                    mostLeftFreePosition = lib.SmallestValue(mostLeftFreePosition, index);
+                    updateSpottedLength();
+
+                    return value;
+                }
+            }
+
+            return default(T);
+        }
+
         void updateSpottedLength()
         {
             while (SpottedLength > 0 && Array[SpottedLength - 1] == null)

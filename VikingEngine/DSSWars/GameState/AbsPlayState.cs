@@ -159,6 +159,8 @@ namespace VikingEngine.DSSWars.GameState
                 }
 
                 culling.asynch_update(time);
+
+               
                 DssRef.state.detailMap.asynchUpdate();
                 overviewMap.unitMiniModels.asynchUpdate();
 

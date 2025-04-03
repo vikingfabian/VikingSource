@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.GameObject
         public BuildingStructure buildingStructure = new BuildingStructure();
         public TerrainStructure terrainStructure = new TerrainStructure();
 
-        bool customName = false;
+        //bool customName = false;
         ObjectName name = new ObjectName();
 
         IntVector2 cullingTopLeft, cullingBottomRight;

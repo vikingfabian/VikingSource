@@ -5,8 +5,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.Engine;
 using VikingEngine.LootFest.Data;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
+using VikingEngine.PJ.Moba.GO;
 
 namespace VikingEngine.DSSWars
 {
@@ -60,6 +63,11 @@ namespace VikingEngine.DSSWars
             {
                 m.asynchCullingUpdate(time, cullingStateA);
             }
+
+            foreach (var lp in DssRef.state.localPlayers)
+            {
+                lp.asynchCullingUpdate(time,cullingStateA);
+            }
         }
         void asynch_updateTiles()
         {
@@ -85,6 +93,29 @@ namespace VikingEngine.DSSWars
                 else
                 { GetRenderState_enter(ref tile.bits_renderStateB, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
                
+            }
+        }
+
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, IntVector2 pos, int cameraIx)
+        {
+            //if (DssRef.world.tileGrid.TryGet(pos, out Map.Tile tile))
+            //{
+            //    if (cullingStateA)
+            //    { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
+            //    else
+            //    { GetRenderState_enter(ref tile.bits_renderStateB, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
+
+            //}
+            var state = bStateA ? players[cameraIx].stateA : players[cameraIx].stateB;
+            if (state.enterArea.IntersectPoint(pos))
+            {
+                enterRender_overviewLayer = state.overviewLayer;
+                enterRender_detailLayer = state.detailLayer;
+            }
+            else
+            {
+                enterRender_overviewLayer = false;
+                enterRender_detailLayer = false;
             }
         }
 

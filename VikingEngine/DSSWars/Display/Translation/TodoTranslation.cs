@@ -137,6 +137,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Vector_X => "X";
         public string Hud_Vector_Y => "Y";
         public string Hud_Cancel => "Cancel";
+        public string Hud_Delete => "Delete";
         public string Hud_Next => "Next";
         public string Hud_None => "None";
         public string Hud_AllCities => "All cities";

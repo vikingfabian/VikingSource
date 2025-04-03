@@ -31,6 +31,7 @@ using System.Drawing;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.Input;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -99,6 +100,8 @@ namespace VikingEngine.DSSWars.Players
 
         public Vector3 ShaderThemeColor = ThemeMid_Yellow;
         public float opposingSizePerc = 0;
+
+        SpottedArray<LocationPin> pins = new SpottedArray<LocationPin>();
 
         public LocalPlayer(Faction faction)
            : base(faction)
@@ -278,6 +281,15 @@ namespace VikingEngine.DSSWars.Players
 
             w.Write((ushort)nextDominationSize);
             w.Write((ushort)dominationEvents);
+
+
+            w.Write((ushort)pins.Count);
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                pinsC.sel.writeGameState(w);
+            }
+
             Debug.WriteCheck(w);
         }
 
@@ -312,7 +324,17 @@ namespace VikingEngine.DSSWars.Players
                         
             nextDominationSize = r.ReadUInt16();
             dominationEvents = r.ReadUInt16();
-            
+
+            if (subversion > 53)
+            { 
+                int pinsCount = r.ReadUInt16();
+                for (int i = 0; i < pinsCount; ++i)
+                {
+                    LocationPin pin = new LocationPin(this, r, subversion);
+                    pin.parentArrayIndex = pins.Add(pin);
+                    pin.basicInit();
+                }
+            }
 
             Debug.ReadCheck(r);
         }
@@ -322,7 +344,6 @@ namespace VikingEngine.DSSWars.Players
             if (newGame && DssRef.storage.runTutorial_1short_2normal != 0)
             {
                 tutorial = new PlayerControls.Tutorial(this);
-                //DssRef.storage.runTutorial = false;
             }
             
         }
@@ -383,16 +404,23 @@ namespace VikingEngine.DSSWars.Players
             return ArmyMenu.Tabs;
         }
 
-       
+        public void createPin()
+        {
+#if DEBUG
+            LocationPin pin = new LocationPin(this,gameControls.mapControls.mousePosition);
+            pin.parentArrayIndex = pins.Add(pin);
+            pin.basicInit();
+#endif
+        }
 
-        
+        public void deletePin(int index)
+        {
+            if (pins.PullIndex_Safe(index, out var pin))
+            {
+                pin.DeleteMe(DeleteReason.Disband, false);
+            }
+        }
 
-        //public RbAction WorkSafeguardTooltip;
-        
-
-       
-
-       
 
         public override void createStartUnits()
         {
@@ -658,9 +686,30 @@ namespace VikingEngine.DSSWars.Players
                 updateMapOverlays();
                 cityBorders.update(this);
             }
+
+            //if (Ref.peRnd.Chance(0.1))
+            //{
+                var pinsC = pins.counter();
+                while (pinsC.Next())
+                {
+                    pinsC.sel.update();
+                }
+            //}
         }
 
-       
+        public LocationPin rayCollisionWithPin(Ray ray)
+        {
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                if (pinsC.sel.rayCollision(ray))
+                { 
+                    return pinsC.sel;
+                }
+            }
+
+            return null;
+        }
 
        
 
@@ -1127,7 +1176,14 @@ namespace VikingEngine.DSSWars.Players
             //return false;
         }
 
-        
+        public void asynchCullingUpdate(float time, bool bStateA)
+        {
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                pinsC.sel.asynchCullingUpdate(time, bStateA);
+            }
+        }
 
         public override void onGameStart(bool newGame)
         {

@@ -35,7 +35,8 @@ namespace VikingEngine.DSSWars
         public IButtonMap Copy;
         public IButtonMap Paste;
         public IButtonMap Build;
-        
+        public IButtonMap PinAndPing = new KeyboardButtonMap(Keys.P);
+
         public IButtonMap mousePan; //Do not save
         public IButtonMap mouseSelect; //Do not save
         public IButtonMap mouseOrder; //Do not save
