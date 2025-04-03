@@ -14,9 +14,6 @@ namespace VikingEngine.DSSWars.GameObject
         Graphics.AbsVoxelObj overviewModel;
         BoundingSphere bound;
 
-        
-
-
         public LocationPin(LocalPlayer player, Vector3 position)
         { 
             this.position = position;
@@ -34,7 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void basicInit()
         {
-            bound = new BoundingSphere(position, 0.2f);
+            bound = new BoundingSphere(position, 0.3f);
             name.setDefault("Pin " + parentArrayIndex.ToString());
         }
 

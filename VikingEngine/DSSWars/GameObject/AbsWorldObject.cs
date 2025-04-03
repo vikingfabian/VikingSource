@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public Vector3 position = Vector3.Zero;
         public bool debugTagged = false;
-        public bool isDeleted = false;
+        
         
         abstract public bool defeatedBy(Faction attacker);
 

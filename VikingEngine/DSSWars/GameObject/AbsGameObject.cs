@@ -19,7 +19,8 @@ namespace VikingEngine.DSSWars.GameObject
     {
 
         public int parentArrayIndex = -1;
-
+        public bool isDeleted = false;
+        
         abstract public GameObjectType gameobjectType();
 
         virtual public AbsWorldObject GetWorldObject() 

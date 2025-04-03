@@ -415,12 +415,9 @@ namespace VikingEngine.DSSWars.Players
 
         public void deletePin(int index)
         {
-            if (pins.PullIndex_Safe(index, out var pin))
-            {
-                pin.DeleteMe(DeleteReason.Disband, false);
-            }
+            var pin = pins.PullIndex_Safe(index);
+            pin?.DeleteMe(DeleteReason.Disband, false);            
         }
-
 
         public override void createStartUnits()
         {

@@ -26,7 +26,6 @@ namespace VikingEngine.DSSWars.Display
 
         public PlayerHud_Object(LocalPlayer player)
         {
-            //
             diplomacy = new DiplomacyDisplay(player);
         }
 
@@ -69,14 +68,23 @@ namespace VikingEngine.DSSWars.Display
             for (int i = selectHistory.Count - 1; i >= 0; --i)
             {
                 var obj = selectHistory[i];
-                content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+
+                if (obj.isDeleted)
+                {
+                    selectHistory.RemoveAt(i);
+                }
+                else
+                {
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
                     new RbText(obj.Name(out _), HudLib.TitleColor_Name),
                     new RbImage(SpriteName.warsBulletSeperationPoint),
                     new RbText(obj.TypeName(), HudLib.TitleColor_TypeName) },
-                    new RbAction1Arg<AbsGameObject>((AbsGameObject obj) => {
-                        player.gameControls.selectObject(obj);
-                    }, obj)));
+                        new RbAction1Arg<AbsGameObject>((AbsGameObject obj) =>
+                        {
+                            player.gameControls.selectObject(obj);
+                        }, obj)));
+                }
             }
 
             menu.Refresh(content);
