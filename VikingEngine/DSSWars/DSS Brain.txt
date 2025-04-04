@@ -1,6 +1,5 @@
 ﻿-Change Log-
-* Fixed Blumpos multiplayer sound crash
-* Debug info on saves
+* Moved the fix for the load negative money bug from DSS2
 
 
 

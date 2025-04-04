@@ -783,6 +783,8 @@ namespace VikingEngine.DSSWars.GameObject
             bound = volume.boundingBox();
 
             name = Data.NameGenerator.CityName(tilePos);
+
+            setTimeOnAllWorkers();
         }
 
         void initEconomy(bool newGame)

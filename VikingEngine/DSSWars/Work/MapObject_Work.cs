@@ -29,6 +29,17 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void setTimeOnAllWorkers()
+        {
+            for (int i = 0; i < workerStatuses.Count; ++i)
+            {
+                var status = workerStatuses[i];
+                status.processTimeStartStampSec = Ref.TotalGameTimeSec;
+
+                workerStatuses[i] = status;
+            }
+        }
+
         void addMissingWorkerUnits()
         {
             for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
