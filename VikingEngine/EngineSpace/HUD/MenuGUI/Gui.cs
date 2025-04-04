@@ -39,6 +39,7 @@ namespace VikingEngine.HUD
         public MenuInputMap inputmap;
 
         bool inputBlocked;
+        public bool blockMenuReturn = false;
         public bool useAnyControllerInput = false;
         public float soundVolume = 0f;
 
@@ -99,6 +100,8 @@ namespace VikingEngine.HUD
 
         public void PopLayout()
         {
+            if (blockMenuReturn) return;
+
             if (layoutStack.Count > 0)
             {
                 releaseInput();

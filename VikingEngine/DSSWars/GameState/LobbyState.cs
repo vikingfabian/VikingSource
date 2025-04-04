@@ -141,8 +141,6 @@ namespace VikingEngine.DSSWars
             menuSystem.openMenu();
             menuSystem.menu.PopAllLayouts();
 
-            
-
             var saves = DssRef.storage.meta.listSaves();
 
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
@@ -350,9 +348,10 @@ namespace VikingEngine.DSSWars
 
         }
 
-        //}
         void selectLanguageMenu()
         {
+            menuSystem.menu.blockMenuReturn = Ref.gamesett.language == LanguageType.NONE;
+
             Translation translate = new Translation();
             var options = translate.available();
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
@@ -367,10 +366,16 @@ namespace VikingEngine.DSSWars
 
         void selectLanguegeLink(LanguageType language)
         {
+            menuSystem.menu.blockMenuReturn = false;
+
             if (language != Ref.gamesett.language)
             {
                 Ref.gamesett.language = language;
                 new ChangeLanguageState();
+            }
+            else
+            {
+                menuSystem.menu.PopLayout();
             }
         }
 
