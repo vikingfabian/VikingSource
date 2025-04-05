@@ -517,6 +517,9 @@
 /processorParam:Quality=Best
 /build:DSS/Music/What Lurks Below.ogg
 
+#begin DSS/PlayMap/demomap2.sav
+/copy:DSS/PlayMap/demomap2.sav
+
 #begin DSS/Sound/ambience/battle/music_guitar_120bpm_loop_theme_02.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
