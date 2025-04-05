@@ -1,11 +1,9 @@
 ﻿UPDATE
 -Change Log-
--Short tutorial
--Been playtesting and fixing a lot of small bugs
--Added a cent system, 1/100 gold
--Added costs for servicemen and guards
--Removed upkeep for noble houses, and increased servicemen use
--Optimized the worker loop
+* Beige
+* Changed the fonts
+* demo disables enemy descition making
+* gave the attacker armies max food
 
 The demo should:
 -Lockout any extra content or modes.

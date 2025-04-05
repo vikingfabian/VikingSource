@@ -92,6 +92,7 @@ namespace VikingEngine.DSSWars
                 new TextFormat(LoadedFont.Regular, Engine.Screen.TextBreadHeight, Color.Black, Color.CornflowerBlue),
                 Engine.Screen.TextBreadHeight * TextToIconSz, 1.1f);
             RbSettings.head1.Font = LoadedFont.Bold;
+            RbSettings.head2.Font = LoadedFont.Bold;
             RbSettings.head1.Color = Color.LightGray;
             RbSettings.checkOn = SpriteName.WarsHudCheckYes;
             RbSettings.checkOff = SpriteName.WarsHudCheckNo;
