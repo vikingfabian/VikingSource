@@ -178,6 +178,8 @@ namespace VikingEngine.DSSWars.Data
 
     class SaveStateMeta : IStreamIOCallback
     {
+        public static readonly string PlayMapDir = DssLib.ContentDir + "PlayMap" + DataStream.FilePath.Dir;
+
         const int Version = 3;
         public const string FileEnd = ".sav";
         public DateTime saveDate;
@@ -190,19 +192,24 @@ namespace VikingEngine.DSSWars.Data
         
         public bool autosave;
         public int index;
+        public string playmap = null;
         public string import = null;
 
         public WorldMetaData worldmeta = null;
 
         DataStream.FilePath filepath(bool auto, int index)
         {
-            if (import == null)
+            if (import != null)
             {
-                return new DataStream.FilePath(Ref.steam.UserCloudPath, string.Format("DSS_{0}savestate{1}_v{2}", auto ? "auto_" : string.Empty, index, stateVersion), FileEnd);
+                return new DataStream.FilePath(SaveMeta.ImportSaveFolder, TextLib.RemoveEnding(import, FileEnd.Length), FileEnd);
+            }
+            else if (playmap != null)
+            {
+                return new DataStream.FilePath(PlayMapDir, playmap, FileEnd, false);
             }
             else
             {
-                return new DataStream.FilePath(SaveMeta.ImportSaveFolder, TextLib.RemoveEnding(import, FileEnd.Length), FileEnd);
+                return new DataStream.FilePath(Ref.steam.UserCloudPath, string.Format("DSS_{0}savestate{1}_v{2}", auto ? "auto_" : string.Empty, index, stateVersion), FileEnd);
             }
         }
 

@@ -111,25 +111,25 @@ namespace VikingEngine.DSSWars
             {
                 disableTexture = SpriteName.WarsHudSecondaryButtonDisabled
             };
-            RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudHeadBarOutlineButton, 1, 8, 1f, true, true);
+            RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudOutlineButton, 1, 8, 1f, true, true);
             RbSettings.artHoverAreaTex = new HUD.NineSplitSettings(SpriteName.WarsHudHoverArea, 1, 8, 1f, true, true);
 
             RbSettings.dragButtonTex = new ThreeSplitSettings(SpriteName.WarsHudDragButton, 1, 15);
 
-            RbSettings.artCheckButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true);
-            RbSettings.artOptionButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true)
+            RbSettings.artCheckButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 1f, true, true);
+            RbSettings.artOptionButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 1f, true, true)
             {
-                notSelectedTexture = SpriteName.WarsHudOptionNotSelected,
+                notSelectedTexture = SpriteName.WarsHudRoundButtonNotSelected,
             };
 
-            RbSettings.artToggleButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true)
+            RbSettings.artToggleButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 1f, true, true)
             {
-                notSelectedTexture = SpriteName.WarsHudToggleNotSelected,
+                notSelectedTexture = SpriteName.WarsHudRoundButtonNotSelected,
             };
 
             RbSettings.artDropDownButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 1f, true, true)
             {
-                notSelectedTexture = SpriteName.WarsHudRoundButtonNotSelected,
+                notSelectedTexture = SpriteName.WarsHudRoundButtonSecondary,
             };
 
             RbSettings.artTabTex = new NineSplitSettings(SpriteName.WarsHudTabSelected, 1, 8, 1f, true, true)
@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars
             RbSettings_HeadOptions = RbSettings_Head;
             RbSettings_HeadOptions.artOptionButtonTex = RbSettings.artOptionButtonTex;
 
-            HeadDisplayWidth = (int)( Engine.Screen.IconSize * 7);
+            HeadDisplayWidth = (int)(Engine.Screen.IconSize * 7);
             HeadDisplayEdge = Engine.Screen.BorderWidth;
             MessageDisplayWidth = (int)(Engine.Screen.IconSize * 6);
 
@@ -180,9 +180,9 @@ namespace VikingEngine.DSSWars
                 bgAlpha = HeadDisplayBgOpacity,
                 edgeWidth = HeadDisplayEdge,
                 width = HeadDisplayWidth,
-                contentLayer= HeadDisplayContentLayer,
+                contentLayer = HeadDisplayContentLayer,
                 bglayer = HeadDisplayLayer,
-                RbSettings= RbSettings,
+                RbSettings = RbSettings,
             };
 
             cutsceneGui = new RichboxGuiSettings()
@@ -191,8 +191,8 @@ namespace VikingEngine.DSSWars
                 bgAlpha = 0.5f,
                 edgeWidth = HeadDisplayEdge,
                 width = HeadDisplayWidth,
-                contentLayer = CutContentLayer -2,
-                bglayer = CutSceneBgLayer -2,
+                contentLayer = CutContentLayer - 2,
+                bglayer = CutSceneBgLayer - 2,
                 RbSettings = RbSettings,
             };
         }

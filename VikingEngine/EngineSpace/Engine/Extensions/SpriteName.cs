@@ -2465,6 +2465,7 @@ namespace VikingEngine
         WarsHudYellowDot,
         WarsHudBrownDot,
         WarsHudRoundButtonNotSelected,
+        WarsHudRoundButtonSecondary,
         WarsHudListArrowSelected,
         WarsHudListArrowDefault,
         WarsHudListArrowNotSelected,

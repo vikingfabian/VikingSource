@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (DssRef.storage.centralGold)
             {
-                return faction.payMoney(cost, false, null);
+                return faction.payGold(cost, false, null);
             }
             else
             {

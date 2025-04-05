@@ -19,6 +19,9 @@ namespace VikingEngine.DSSWars.Work
 {
     struct WorkerStatus
     {
+        static readonly IntervalF EnergyBounds = new IntervalF(DssConst.Worker_Starvation, DssConst.Worker_MaxEnergy);
+
+
         public WorkExperienceType xpType1, xpType2, xpType3;
         //5 levels, using 50xp each
         public byte xp1, xp2, xp3;
@@ -81,7 +84,9 @@ namespace VikingEngine.DSSWars.Work
             w.Write(xp2);
             w.Write(xp3);
 
-            w.Write((short)energy);
+            byte saveEnergy = EnergyBounds.GetValueBytePercentPos_WithBound(energy);
+            w.Write(saveEnergy);
+
             carry.writeGameState(w);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion)
@@ -93,7 +98,18 @@ namespace VikingEngine.DSSWars.Work
             xp2 = r.ReadByte();
             xp3 = r.ReadByte();
 
-            energy = r.ReadInt16();
+            if (subversion < 55)
+            {
+                energy = r.ReadInt16();
+                if (energy < 0)
+                {
+                    energy = 400;
+                }
+            }
+            else
+            {
+                energy = EnergyBounds.GetFromBytePercent(r.ReadByte());
+            }
             carry.readGameState(r, subversion);
 
         }

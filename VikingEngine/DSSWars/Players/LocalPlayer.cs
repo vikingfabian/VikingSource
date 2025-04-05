@@ -412,7 +412,30 @@ namespace VikingEngine.DSSWars.Players
             pin.basicInit();
 #endif
         }
+        public void clearPins()
+        {
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                pinsC.sel.DeleteMe(DeleteReason.Disband, false);
+            }
 
+            pins.Clear();
+        }
+
+        public LocationPin getPin(string name)
+        {
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                if (pinsC.sel.Name(out _) == name)
+                {
+                    return pinsC.sel;
+                }
+            }
+
+            return null;
+        }
         public void deletePin(int index)
         {
             var pin = pins.PullIndex_Safe(index);

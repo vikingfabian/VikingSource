@@ -426,7 +426,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public bool payMoney(int cost, bool allowDept, City city)
+        public bool payGold(int cost, bool allowDept, City city)
         {
             if (player.IsLocalPlayer() && StartupSettings.EndlessResources)
             {

@@ -40,6 +40,10 @@ namespace VikingEngine.DSSWars
         {//eventTriggerGameTimeSec = DssRef.difficulty.aiDelayTimeSec;
         }
 
+        virtual public void onGameStarted()
+        { }
+
+
         virtual public void asyncUpdate(float time)
         {
             if (DssRef.state.localPlayers[0].tutorial != null ||

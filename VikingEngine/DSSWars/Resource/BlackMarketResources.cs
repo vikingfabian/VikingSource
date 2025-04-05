@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Resource
         public static void AiPurchaseWood(City city, Faction faction)
         {
             int count = 5;
-            if (faction.payMoney(count * Cost_Wood, false, city))
+            if (faction.payGold(count * Cost_Wood, false, city))
             {
                 city.res_wood.amount += count;
             }
@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Resource
         public static bool AiPurchaseIron(City city, Faction faction)
         {
             int count = CraftBuildingLib.CraftSmith_IronUse;
-            if (faction.payMoney(count * Cost_Iron, false, city))
+            if (faction.payGold(count * Cost_Iron, false, city))
             {
                 city.res_iron.amount += count;
                 return true;

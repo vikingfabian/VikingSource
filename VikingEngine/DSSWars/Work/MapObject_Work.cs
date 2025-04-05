@@ -41,6 +41,15 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void setTimeOnAllWorkers()
+        {
+            for (int i = 0; i < workerStatuses._count; ++i)
+            {
+                ref var status = ref workerStatuses.array[i];
+                status.processTimeStartStampSec = Ref.TotalGameTimeSec;
+            }
+        }
+
         protected void setWorkersInRenderState()
         {
             if (inRender_detailLayer)

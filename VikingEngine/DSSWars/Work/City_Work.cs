@@ -879,7 +879,7 @@ namespace VikingEngine.DSSWars.GameObject
                 int buyFood = -res_food.amount;
 
                 int cost = (int)(buyFood * DssConst.FoodGoldValue_BlackMarket);
-                faction.payMoney(cost, true, this);
+                faction.payGold(cost, true, this);
                 blackMarketCosts_food.add(cost);
                 res_food.amount += buyFood;
 

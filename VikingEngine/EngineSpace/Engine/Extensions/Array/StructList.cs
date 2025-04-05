@@ -12,7 +12,7 @@ namespace VikingEngine.EngineSpace
     public struct StructList<T> where T : unmanaged
     {
         public T[] array;
-        private int _count;
+        public int _count;
 
         public int Count => _count;
         public int Capacity => array.Length;

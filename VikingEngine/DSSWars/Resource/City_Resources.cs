@@ -1129,7 +1129,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
         {
-            if (faction.payMoney(cost * count, false, this))
+            if (faction.payGold(cost * count, false, this))
             {
                 AddGroupedResource(resourceType, count);
             }

@@ -78,7 +78,20 @@ namespace VikingEngine.Timer
             method(arg1, arg2);
         }
     }
+    class TimedAction0ArgTrigger_InGame : AbsInGameTrigger
+    {
+        Action method;
 
+        public TimedAction0ArgTrigger_InGame(Action method, float timeSeconds)
+            : base(timeSeconds)
+        {
+            this.method = method;
+        }
+        protected override void timeTrigger()
+        {
+            method();
+        }
+    }
     class TimedAction2ArgTrigger_InGame<T1, T2> : AbsInGameTrigger
     {
         Action<T1, T2> method;

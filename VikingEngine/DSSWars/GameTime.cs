@@ -36,6 +36,7 @@ namespace VikingEngine.DSSWars
         public GameTime()
         {
             DssRef.time = this;
+            SetFullDaylightShader();
         }
 
         public void update()
@@ -131,13 +132,20 @@ namespace VikingEngine.DSSWars
             secondsToMinute = time.Seconds;
         }
 
+        public static void SetFullDaylightShader()
+        {
+            DssRef.time.ShaderDayLight_Objects = new Vector3(DayLight_Min + DayLight_Add);
+            DssRef.time.ShaderDayLight_Map = new Vector4(DayLight_Terrain_Min + DayLight_Terrain_Add);
+            DssRef.time.ShaderDayLight_Map.W = 1f;
+            DssRef.time.ShaderDayLight_RedTint = 0f;
+        }
         //public void writeGameState(System.IO.BinaryWriter w)
         //{
-            
+
         //}
         //public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         //{
-            
+
         //}
     }
 }

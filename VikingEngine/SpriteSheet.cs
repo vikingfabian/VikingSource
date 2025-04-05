@@ -2656,7 +2656,7 @@ namespace VikingEngine
                     add(SpriteName.WarsHudDropDownArrow);
                     add(SpriteName.WarsHudYellowDot);
                     add(SpriteName.WarsHudBrownDot);
-                    add(SpriteName.WarsHudRoundButtonNotSelected);
+                    add(SpriteName.WarsHudRoundButtonSecondary);
                     add(SpriteName.WarsHudListArrowSelected);
                     add(SpriteName.WarsHudListArrowDefault);
                     add(SpriteName.WarsHudListArrowNotSelected);
@@ -2691,6 +2691,7 @@ namespace VikingEngine
                     add(SpriteName.WarsHudIconExtraModes);
                     add(SpriteName.WarsResource_Palisade);
 
+                    add(SpriteName.WarsHudRoundButtonNotSelected);
 
                 }
 

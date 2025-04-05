@@ -46,6 +46,7 @@ namespace VikingEngine.DSSWars.Players
         int mainArmyWar = -1;
 
         public AiConscript aiConscript = AiConscript.Default;
+        public bool armyAi_enabled = true;
 
         public override void writeGameState(BinaryWriter w)
         {
@@ -1238,175 +1239,177 @@ namespace VikingEngine.DSSWars.Players
 
         void mainArmy_AsyncUpdate(List<int> wars)
         {
-
-            if (emptyMainArmy())
+            if (armyAi_enabled)
+            {
+                if (emptyMainArmy())
                 //||
                 //mainArmy.InBattle())
-            {
-                mainArmyState = MainArmyState_StartNew;
-                if (faction.armies.Count > 0)
                 {
-                    //Try find large army
-                    const int Trials = 3;
-                    for (int i = 0; i < Trials; i++)
+                    mainArmyState = MainArmyState_StartNew;
+                    if (faction.armies.Count > 0)
                     {
-                        var army = faction.armies.GetRandomUnsafe(Ref.rnd);
-                        if (army != null && army.IdleObjetive() && army.groups.Count >= 5)
+                        //Try find large army
+                        const int Trials = 3;
+                        for (int i = 0; i < Trials; i++)
+                        {
+                            var army = faction.armies.GetRandomUnsafe(Ref.rnd);
+                            if (army != null && army.IdleObjetive() && army.groups.Count >= 5)
+                            {
+                                mainArmy = army;
+                                mainArmyState = MainArmyState_CollectSupport;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+                if (mainArmyState == MainArmyState_StartNew)
+                {
+                    //bool haveIncome = faction.NetIncome() >= 0 &&
+                    //    faction.gold >= DssLib.GroupDefaultCost * 5;
+                    City city = null;
+                    city = cityCloseToCityInDanger(cityInDanger());
+
+                    if (city != null)
+                    {
+                        purchaseOrderFocus = PurchaseOrderFocus_Defend;
+                    }
+                    else
+                    {
+                        int war = findMainWar(wars);
+
+                        if (war >= 0)
+                        {
+                            //find close city
+                            city = cityCloseToOpponent(war);
+                        }
+                        else
+                        {
+                            city = cityCloseToNewTarget();
+                        }
+                        purchaseOrderFocus = PurchaseOrderFocus_AttackCity;
+                    }
+
+                    //if (haveIncomeForArmyPurchase(true))
+                    if (city != null && buySoldiers(city, true, false))
+                    {
+                        //Start fresh
+                        mainArmy = null;
+
+                        nextDecisionTimer.MilliSeconds += Ref.peRnd.Int(4000, 15000);
+                        mainArmyBuyAtCity(city);
+
+                    }
+                    else
+                    {
+                        Army army = StrongIdleArmy();
+
+                        if (army != null)
                         {
                             mainArmy = army;
-                            mainArmyState = MainArmyState_CollectSupport;
-                            break;
+                            mainArmyState = MainArmyState_BuySoldiers;
                         }
                     }
                 }
-            }
-
-
-            if (mainArmyState == MainArmyState_StartNew)
-            {
-                //bool haveIncome = faction.NetIncome() >= 0 &&
-                //    faction.gold >= DssLib.GroupDefaultCost * 5;
-                City city = null;
-                city = cityCloseToCityInDanger(cityInDanger());
-
-                if (city != null)
+                else if (mainArmyState == MainArmyState_BuySoldiers)
                 {
-                    purchaseOrderFocus = PurchaseOrderFocus_Defend;
-                }
-                else
-                {
-                    int war = findMainWar(wars);
+                    AbsMapObject city = null;
 
-                    if (war >= 0)
+                    //Begin with defence check
+                    city = cityInDanger();
+
+                    if (city != null)
                     {
-                        //find close city
-                        city = cityCloseToOpponent(war);
-                    }
-                    else
-                    {
-                        city = cityCloseToNewTarget();
-                    }
-                    purchaseOrderFocus = PurchaseOrderFocus_AttackCity;
-                }
+                        //Purchase some support for the city
+                        buyDefenceAtCity((City)city);
 
-                //if (haveIncomeForArmyPurchase(true))
-                if (city != null && buySoldiers(city, true, false))
-                {
-                    //Start fresh
-                    mainArmy = null;
-                    
-                    nextDecisionTimer.MilliSeconds += Ref.peRnd.Int(4000, 15000);
-                    mainArmyBuyAtCity(city);
-                    
-                }
-                else
-                {
-                    Army army = StrongIdleArmy();
+                        float l = city.distanceTo(mainArmy);
+                        float percDist = 1f - l / 64;
+                        double chance = 0.2 + percDist;
 
-                    if (army != null)
-                    {
-                        mainArmy = army;
-                        mainArmyState = MainArmyState_BuySoldiers;
-                    }
-                }
-            }
-            else if (mainArmyState == MainArmyState_BuySoldiers)
-            {
-                AbsMapObject city = null;
-
-                //Begin with defence check
-                city = cityInDanger();
-
-                if (city != null)
-                {
-                    //Purchase some support for the city
-                    buyDefenceAtCity((City)city);
-
-                    float l = city.distanceTo(mainArmy);
-                    float percDist = 1f - l / 64;
-                    double chance = 0.2 + percDist;
-
-                    if (Ref.rnd.Chance(chance))
-                    {
-                        mainArmyState = MainArmyState_Defend;
-
-                        nextDecisionTimer.MilliSeconds += 4000;
-                        if (city.distanceTo(mainArmy) > 2)
+                        if (Ref.rnd.Chance(chance))
                         {
-                            mainArmy.Ai_Order_MoveTo(city.tilePos);
-                        }
-                    }
-                    else
-                    {
-                        city = null;
-                    }                    
-                }
+                            mainArmyState = MainArmyState_Defend;
 
-                if (city == null)
-                {
-                    int war = findMainWar(wars);
-
-                    if (war < 0)
-                    {
-                        //Start new war
-                        city = AttackRamdom(mainArmy);
-                        if (city != null)
-                        {
-                            mainArmyWar = city.faction.parentArrayIndex;
-                        }
-                    }
-                    else
-                    {
-                        var opponent = DssRef.world.factions.Array[war];
-                        city = AttackFaction(mainArmy, opponent);
-                    }
-
-                    mainArmyState = MainArmyState_Attack;
-                }
-
-                if (city != null)
-                {
-                    collectLooseArmies(city.tilePos);
-                }
-                else
-                {
-                    mainArmyState = MainArmyState_CollectSupport;
-                }
-            }
-            else if (mainArmyState == MainArmyState_Attack ||
-                mainArmyState == MainArmyState_Defend)
-            {
-                if (mainArmy.IdleObjetive())
-                {
-                    mainArmyState = MainArmyState_CollectSupport;
-                }
-            }
-            else if (mainArmyState == MainArmyState_CollectSupport)
-            {
-                if (Ref.rnd.Chance(0.2))
-                {
-                    mainArmy = null;
-                }
-                else
-                {
-                    if (DssRef.world.tileGrid.TryGet(mainArmy.tilePos, out Tile tile))
-                    {
-                        var city = tile.City();
-                        if (city.faction == faction)
-                        {
-                            if (city.distanceTo(mainArmy) <= 2)
-                            {
-                                collectLooseArmies(city.tilePos);
-                                mainArmyBuyAtCity(city);
-                                mainArmyState = MainArmyState_BuySoldiers;
-                            }
-                            else
+                            nextDecisionTimer.MilliSeconds += 4000;
+                            if (city.distanceTo(mainArmy) > 2)
                             {
                                 mainArmy.Ai_Order_MoveTo(city.tilePos);
                             }
                         }
+                        else
+                        {
+                            city = null;
+                        }
                     }
 
+                    if (city == null)
+                    {
+                        int war = findMainWar(wars);
+
+                        if (war < 0)
+                        {
+                            //Start new war
+                            city = AttackRamdom(mainArmy);
+                            if (city != null)
+                            {
+                                mainArmyWar = city.faction.parentArrayIndex;
+                            }
+                        }
+                        else
+                        {
+                            var opponent = DssRef.world.factions.Array[war];
+                            city = AttackFaction(mainArmy, opponent);
+                        }
+
+                        mainArmyState = MainArmyState_Attack;
+                    }
+
+                    if (city != null)
+                    {
+                        collectLooseArmies(city.tilePos);
+                    }
+                    else
+                    {
+                        mainArmyState = MainArmyState_CollectSupport;
+                    }
+                }
+                else if (mainArmyState == MainArmyState_Attack ||
+                    mainArmyState == MainArmyState_Defend)
+                {
+                    if (mainArmy.IdleObjetive())
+                    {
+                        mainArmyState = MainArmyState_CollectSupport;
+                    }
+                }
+                else if (mainArmyState == MainArmyState_CollectSupport)
+                {
+                    if (Ref.rnd.Chance(0.2))
+                    {
+                        mainArmy = null;
+                    }
+                    else
+                    {
+                        if (DssRef.world.tileGrid.TryGet(mainArmy.tilePos, out Tile tile))
+                        {
+                            var city = tile.City();
+                            if (city.faction == faction)
+                            {
+                                if (city.distanceTo(mainArmy) <= 2)
+                                {
+                                    collectLooseArmies(city.tilePos);
+                                    mainArmyBuyAtCity(city);
+                                    mainArmyState = MainArmyState_BuySoldiers;
+                                }
+                                else
+                                {
+                                    mainArmy.Ai_Order_MoveTo(city.tilePos);
+                                }
+                            }
+                        }
+
+                    }
                 }
             }
         }
@@ -1719,7 +1722,7 @@ namespace VikingEngine.DSSWars.Players
         void searchAttackTarget(List<int> wars)
         {
             
-            if (faction.armies.Count > 0)
+            if (armyAi_enabled && faction.armies.Count > 0)
             {
                 Army army = StrongIdleArmy();
 

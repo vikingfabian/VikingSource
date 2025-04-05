@@ -139,7 +139,8 @@ namespace VikingEngine.DSSWars
             baseInit();
             technologyManager.initGame(newGame);
 
-            if (PlatformSettings.STEAM_DEMO)
+            if (PlatformSettings.STEAM_DEMO &&
+               DssRef.storage.runTutorial_1short_2normal == 0)
             {
                 events = new GameEventsDemo();
             }
@@ -147,7 +148,7 @@ namespace VikingEngine.DSSWars
             {
                 events = new GameEvents();
             }
-             
+
         }
 
         public override void OnLoadComplete()
@@ -321,6 +322,7 @@ namespace VikingEngine.DSSWars
             }
 
             isReady = true;
+            events.onGameStarted();
         }
 
        

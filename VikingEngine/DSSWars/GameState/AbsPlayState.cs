@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
@@ -296,7 +297,10 @@ namespace VikingEngine.DSSWars.GameState
         {
             return localPlayers.Count >= 2;
         }
-
+        public LocalPlayer LocalHost()
+        {
+            return localPlayers[0];
+        }
         virtual public PlayState Game()
         {
             throw new NotImplementedException();

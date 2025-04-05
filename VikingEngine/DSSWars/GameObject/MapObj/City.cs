@@ -1225,6 +1225,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 name.name = Data.NameGenerator.CityName(tilePos);
             }
+            setTimeOnAllWorkers();
         }
 
         
