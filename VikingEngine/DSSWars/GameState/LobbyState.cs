@@ -766,7 +766,7 @@ namespace VikingEngine.DSSWars
             }                      
 
             content.newParagraph();
-            content.h1(".Game setup", HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.Lobby_GameSetup, HudLib.TitleColor_Head);
             
             GameStorage defaultOptions = new GameStorage();
 
@@ -775,10 +775,10 @@ namespace VikingEngine.DSSWars
             if (loadingMeta != null && loadingMeta.customMap)
             {
                 content.newLine();
-                content.Add(new RbText(".Custom map"));
+                content.Add(new RbText(DssRef.todoLang.MapType_CustomMap));
                 content.space();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{new RbText(DssRef.todoLang.Hud_Cancel)}, 
-                    new RbAction(cancelCustomMap),new RbTooltip_Text(".Generate a new map")));
+                    new RbAction(cancelCustomMap),new RbTooltip_Text(DssRef.todoLang.MapType_CustomMap)));
             }
             else
             {

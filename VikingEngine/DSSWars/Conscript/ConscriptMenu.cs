@@ -244,16 +244,16 @@ namespace VikingEngine.DSSWars.Conscript
                 {
                     maxLevel = TrainingLevel.Basic;
                 }
+
                 for (TrainingLevel training = minLevel; training <= maxLevel; training++)
                 {
                     var button = new ArtOption(training == currentStatus.profile.training,new List<AbsRichBoxMember>{
-                        new RbImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)training)),
+                        new RbImage(LangLib.Training_Icon(training)),
                         new RbText( LangLib.Training(training))
                     }, new RbAction1Arg<TrainingLevel>(trainingClick, training, SoundLib.menu),
                     new RbTooltip(trainingTooltip, new TrainingTooltipArgs() { training = training, buildtype = currentStatus.type }));
-                    //button.setGroupSelectionColor(HudLib.RbSettings, training == currentStatus.profile.training);
+                    
                     content.Add(button);
-                    //content.space();
                 }
 
                 if (!guardTab)

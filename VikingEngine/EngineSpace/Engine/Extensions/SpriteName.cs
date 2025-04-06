@@ -2481,6 +2481,7 @@ namespace VikingEngine
         WarsHudIconImport,
         WarsHudIconChildArrow,
         WarsHudIconExtraModes,
+        WarsHudIconCollection,
         DSS2MainMenu,
         SteamIcon,
 
@@ -2585,6 +2586,7 @@ namespace VikingEngine
         WarsDiplomaticSub,
         WarsDiplomaticSubTime,
 
+        WarsArmy,
         WarsGuard,
         WarsGuardAdd,
         WarsWorker,

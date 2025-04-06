@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Display
                selectedRelation = DssRef.diplomacy.SetRelationType(player.faction, faction, RelationType.RelationType0_Neutral, true);
             }
 
-            if ( selectedRelation!= null)
+            if ( selectedRelation != null)
             {
                 FactionRelationDisplay(faction, selectedRelation.Relation, content);
 
@@ -200,9 +200,13 @@ namespace VikingEngine.DSSWars.Display
 
         public static void FactionRelationDisplay(Faction faction, RelationType relation, RichBoxContent content)
         {
-            content.Add(new RbBeginTitle(2));
+            content.Add(new RbBeginTitle(1));
             content.Add(faction.FlagTextureToHud());
-            content.Add(new RbText(faction.PlayerName));
+            content.space(0.5f);
+            content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
+            content.space(0.5f);
+            content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
+            
             content.Add(new RbSeperationLine());
 
             HeadDisplay.FactionSize(faction, content, false);

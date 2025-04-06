@@ -41,10 +41,6 @@ namespace VikingEngine.DSSWars
         public int nextGroupId = 0;
        
        
-        
-        //public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(64);
-
-        
         bool isReady= false;
         public bool PartyMode = false;   
         
@@ -322,6 +318,7 @@ namespace VikingEngine.DSSWars
             }
 
             isReady = true;
+            LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
             events.onGameStarted();
         }
 
@@ -434,6 +431,7 @@ namespace VikingEngine.DSSWars
             }
 
             detailMap.update();
+            overviewMap.update();
 
             if (localPlayers != null)
             {
@@ -444,10 +442,10 @@ namespace VikingEngine.DSSWars
                     {
                         menuSystem.pauseMenu();
                     }
-                    if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.B) && Keyboard.Ctrl)
-                    {
-                        menuSystem.debugMenu();
-                    }
+                    //if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.B) && Keyboard.Ctrl)
+                    //{
+                    //    menuSystem.debugMenu();
+                    //}
                 }
             }
 
@@ -475,6 +473,8 @@ namespace VikingEngine.DSSWars
             slowMinuteUpdate = true;
 
             if (host && DssRef.storage.autoSave && 
+                DssRef.storage.runTutorial_1short_2normal == 0 &&
+                !PlatformSettings.STEAM_DEMO &&
                 Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
             {
                 if (cutScene == null)
@@ -484,20 +484,13 @@ namespace VikingEngine.DSSWars
                 LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
             }            
         }
-
-        
+                
 
         public override void OnDestroy()
         {
             exitThreads = true;
             base.OnDestroy();
         }
-
-        
-
-        
-
-        
 
         
         public override void NetEvent_ConnectionLost(string reason)

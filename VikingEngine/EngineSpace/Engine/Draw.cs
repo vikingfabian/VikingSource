@@ -36,7 +36,7 @@ namespace VikingEngine.Engine
         //public static GraphicsDevice GraphicsDevice;
         public static Viewport defaultViewport;
         public static bool horizontalSplit = true;
-        public static Effect effectBR, effectFlag;
+        public static Effect effectBR, effectFlag, effectSeaNoise;
         //public static Effect PixelShader;
         public static Graphics.CustomEffect[] TextureEffects;
         static protected RenderTarget2D MainRenderTarget;
@@ -63,11 +63,12 @@ namespace VikingEngine.Engine
 
             effectBR = LoadContent.LoadShader("Effect");
             effectFlag = LoadContent.LoadShader("FlagWaveEffect");
+            effectSeaNoise = LoadContent.LoadShader("SeaNoiseEffect");
 
             TextureEffects = new VikingEngine.Graphics.CustomEffect[(int)Graphics.TextureEffectType.NUM_NON];
 
             TextureEffects[(int)Graphics.TextureEffectType.Flat] = new Graphics.CustomEffect("Flat", false);
-            TextureEffects[(int)Graphics.TextureEffectType.Flag] = new Graphics.FlagWaveEffect();
+            TextureEffects[(int)Graphics.TextureEffectType.SeaNoise] = new Graphics.SeaNoiseEffect();
 #if TOGG
             TextureEffects[(int)Graphics.TextureEffectType.FlatNoOpacity] = new Graphics.CustomEffect("FlatNoOpacity", false);
             TextureEffects[(int)Graphics.TextureEffectType.Shadow] = new Graphics.CustomEffect("Shadow", false);

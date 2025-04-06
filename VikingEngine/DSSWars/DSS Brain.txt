@@ -4,12 +4,20 @@
 * Changed the fonts
 * demo disables enemy descition making
 * gave the attacker armies max food
+* demo end game state on win or lose (untested)
+* removed the old debug menu that crashes the game
+* demo/tutorials blocks autosave
+* medium level water effect
+* redesign of all objects presentation hud
+* soldiers multiselect
 
 The demo should:
 -Lockout any extra content or modes.
 -Block saves.
 -Be about 30-60 minute experience.
--There is a hard timeout after 90minutes, if the battle don't end.
+-There is a hard timeout after 80minutes, if the battle don't end.
+-Win if the attack is stopped
+-Lose if the south city is lost
 -You can either watch or interact, I call it "tourist mode"
 
 !! Known issues, that I am working on !!

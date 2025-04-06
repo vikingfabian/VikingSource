@@ -11,9 +11,9 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class DetailObjectCollection: AbsWorldObject
+    class DetailObjectCollection: AbsGOCollection
     {
-        Faction faction;
+        //protected Faction faction;
         public List<SoldierGroup> objects = new List<SoldierGroup>(8);
 
         public DetailObjectCollection(Faction faction)
@@ -51,13 +51,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
+
+        public override void toTooltip(ObjectHudArgs args)
+        {
+            GroupPresentation(args, true);
+        }
         public override void toHud(ObjectHudArgs args)
         {
-
-            args.content.h2(string.Format(".Soldier group, count: {0}", objects.Count));
+            GroupPresentation(args, false);
+            //args.content.h2(string.Format(DssRef.todoLang.Hud_ObjectsAndCount, DssRef.todoLang.UnitType_CollectionOfSoldiers, objects.Count), HudLib.TitleColor_TypeName);
 
             for (int i = 0; i < objects.Count; ++i)
             {
+                args.content.newLine();
                 objects[i].toGroupHud(args.content);
                 if (i < objects.Count - 1)
                 {
@@ -67,8 +73,8 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public void Tooltip(RichBoxContent content)
-        {
-            content.text(string.Format(".Soldier group, count: {0}", objects.Count));
+        {            
+            content.Add(new RbText( string.Format(DssRef.todoLang.Hud_ObjectsAndCount, DssRef.todoLang.UnitType_CollectionOfSoldiers, objects.Count), HudLib.TitleColor_TypeName));
         }
 
         public override GameObjectType gameobjectType()
@@ -90,33 +96,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             return objects.Count > 0;
         }
-        public override Faction GetFaction()
-        {
-            return faction;
-        }
-
-        public override AbsMapObject RelatedMapObject()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool defeatedBy(Faction attacker)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool defeated()
-        {
-            return objects.Count == 0;
-        }
+       
 
         public void set(List<SoldierGroup> newObjects)
         {
             this.objects.Clear();
-            //if (newObjects.Count > 0)
-            //{
-            //    lib.DoNothing();
-            //}
             this.objects.AddRange(newObjects);
         }
 
@@ -173,9 +157,14 @@ namespace VikingEngine.DSSWars.GameObject
             return this;
         }
 
+        public override int CollectionCount()
+        {
+            return objects.Count;
+        }
+
         public override string TypeName()
         {
-            return DssRef.todoLang.Conscript_Soldiers_ArmyType;
+            return DssRef.todoLang.UnitType_CollectionOfSoldiers;
         }
     }
 }

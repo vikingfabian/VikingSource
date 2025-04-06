@@ -11,6 +11,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.PJ.Strategy;
 
 
 namespace VikingEngine
@@ -32,7 +33,7 @@ namespace VikingEngine
         public int DetailLevel = 1;
         public bool AutoJoinToCoopLevel = true;
         public int VibrationLevel = 100;
-        public const int MaxBlood = 100;//400;
+        public const int MaxBlood = 100;
         public int Blood = 100;
         public float UiScale = 1f;
         public float reversedStereoValue = 1f;
@@ -230,17 +231,6 @@ namespace VikingEngine
             if (version >= 4 && version < 9)
             {
                 string screenName = SaveLib.ReadString_safe(r);
-
-//#if PCGAME
-//                foreach (var m in System.Windows.Forms.Screen.AllScreens)
-//                {
-//                    if (m.DeviceName == screenName)
-//                    {
-//                        Engine.Screen.FormScreen = m;
-//                        break;
-//                    }
-//                }
-//#endif
             }
             if (version >= 7)
             {
@@ -392,7 +382,7 @@ namespace VikingEngine
             content.newLine();
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
             content.space();
-            content.Add(new RbText(".Master Volume"));
+            content.Add(new RbText(DssRef.todoLang.Settings_MasterVolume));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), masterVolProperty, true));
 
@@ -411,7 +401,7 @@ namespace VikingEngine
             content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
             content.space();
-            content.Add(new RbText(".Ambience Volume"));
+            content.Add(new RbText(DssRef.todoLang.Settings_AmbienceVolume));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), ambientVolProperty, true));
 
@@ -420,7 +410,7 @@ namespace VikingEngine
             content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
             content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
             content.space();
-            content.Add(new RbText(".Battle Melody"));
+            content.Add(new RbText(DssRef.todoLang.Settings_BattleMelody));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0, 2, 0.1f), BattleMelodyVolProperty, true));
 
@@ -507,7 +497,7 @@ namespace VikingEngine
             content.Add(new RbDragButton(new DragButtonSettings(0.5f, 2f, 0.1f), uiScaleProperty, true));
             
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Apply") },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Hud_Apply) },
                 new RbAction(Ref.gamestate.OnResolutionChange)));
             //new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
         }
@@ -515,10 +505,10 @@ namespace VikingEngine
         public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Model light effect") },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_ModelLight) },
                 modelLightProperty));
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Particle effects") },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_Particles) },
                 particlesProperty));
 
             DropDownBuilder mapLoadingDropDown = new DropDownBuilder("mapload");
@@ -533,7 +523,7 @@ namespace VikingEngine
                             menu.CloseDropDown();
                         }, opt), null);
                 }
-                mapLoadingDropDown.Build(content, SpriteName.NO_IMAGE, ".Map loading speed", menu);
+                mapLoadingDropDown.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Settings_MapLoadSpeed, menu);
             }
         }
 

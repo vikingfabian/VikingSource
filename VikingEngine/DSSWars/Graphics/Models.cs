@@ -26,7 +26,8 @@ namespace VikingEngine.DSSWars
         bool asycTaskComplete = false;
 
         public Texture2D[] waterTextures;
-        
+        public Texture2D[] seaTextures;
+
         public Models()
         {
             DssRef.models = this;
@@ -38,6 +39,12 @@ namespace VikingEngine.DSSWars
             for (int i = 1; i <= 4; ++i)
             {
                 waterTextures[i - 1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "watertex_i" + i);
+            }
+
+            seaTextures = new Texture2D[4];
+            for (int i = 1; i <= 4; ++i)
+            {
+                seaTextures[i - 1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "seatex_i" + i);
             }
             //RAW
             List<VoxelModelName> loadRawModels = new List<VoxelModelName>

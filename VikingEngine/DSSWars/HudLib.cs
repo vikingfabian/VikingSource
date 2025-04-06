@@ -35,6 +35,8 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color TextColor_Relation = Color.LightBlue;
 
+        public static readonly Color SecondaryTextColor = new Color(80, 90, 106);//new Color(66, 77, 81);
+
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
         public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
         public static readonly Color InfoYellow_Light = new Color(255, 255, 150);
@@ -256,13 +258,17 @@ namespace VikingEngine.DSSWars
         }
 
         public static void ItemCount(RichBoxContent content, SpriteName icon, string item, string count)
-        { 
+        {
+            content.newLine();
             string text = string.Format( DssRef.lang.Language_ItemCountPresentation, item, count);
-            content.icontext(icon, text);
+            content.Add(new RbImage(icon));
+            content.space(0.5f);
+            content.Add(new RbText(text));
         }
 
         public static RbText ItemCount(RichBoxContent content, string item, string count)
         {
+            
             string text = string.Format(DssRef.lang.Language_ItemCountPresentation, item, count);
             return content.text(text);
         }
@@ -444,7 +450,13 @@ namespace VikingEngine.DSSWars
             content.Add(dot);
             return dot;
         }
-
+        public static RbImage BulletSeperationPoint(RichBoxContent content)
+        {
+            var dot = new RbImage(SpriteName.warsBulletSeperationPoint, 0.8f, 0f, 0f);
+            //dot.color = Color.DarkGray;
+            content.Add(dot);
+            return dot;
+        }
         public static void CityResource(RichBoxContent content, City city, ItemResourceType type)
         {
             bool buffer = false;

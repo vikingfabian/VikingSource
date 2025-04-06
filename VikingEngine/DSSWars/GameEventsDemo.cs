@@ -11,8 +11,10 @@ namespace VikingEngine.DSSWars
 {
     class GameEventsDemo : GameEvents
     {
-        Time maxDemoTime = new Time(60f, TimeUnit.Minutes);
+        Time maxDemoTime = new Time(80f, TimeUnit.Minutes);
         City defendingCity;
+        int demoState_1start_2end = 0;
+        List<Army> attackerArmies;
 
         public override void onGameStarted()
         {
@@ -40,20 +42,29 @@ namespace VikingEngine.DSSWars
 
                 new Timer.TimedAction0ArgTrigger_InGame(() =>
                 {
+                    List<Army> all = new List<Army>(8);
+
                     var armiesC = attacker.armies.counter();
                     while (armiesC.Next())
                     {
-                        armiesC.sel.Order_Attack(defendingCity);
-                        armiesC.sel.setMaxFood();
+                        if (!armiesC.sel.isDeleted)
+                        {
+                            armiesC.sel.Order_Attack(defendingCity);
+                            armiesC.sel.setMaxFood();
+
+                            all.Add(armiesC.sel);
+                        }
                     }
+                    attackerArmies = all;
+                    demoState_1start_2end = 1;
                 }, 15 * TimeExt.MinuteInSeconds);
 
                 DssRef.state.LocalHost().clearPins();
 
 
                 var mission = new RichBoxContent();
-                mission.h1(".Mission Objective", HudLib.TitleColor_Head);
-                mission.text(".Defend against the attack from south");
+                mission.h1(DssRef.todoLang.Demo_MissionObjective_Title, HudLib.TitleColor_Head);
+                mission.text(DssRef.todoLang.Demo_MissionObjective_Description);
                 DssRef.state.LocalHost().hud.messages.Add(mission);
             }
         }
@@ -65,17 +76,59 @@ namespace VikingEngine.DSSWars
             {
                 Ref.update.AddSyncAction(new SyncAction(onDemoTimeUp));
             }
+
+            if (demoState_1start_2end == 1)
+            {
+                bool lostCity = defendingCity.faction.player.IsAi();
+
+                if (lostCity)
+                {
+                    onDemoVictory(false);
+                    return;
+                }
+
+
+                bool allDefeated = true;
+                foreach (var m in attackerArmies)
+                {
+                    if (!m.defeated())
+                    {
+                        allDefeated = false;
+                        break;
+                    }
+                }
+
+
+                if (allDefeated)
+                {
+                    onDemoVictory(true);
+                }
+            }
+        }
+
+        void onDemoVictory(bool victory)
+        {
+            if (demoState_1start_2end == 1)
+            {
+                demoState_1start_2end = 2;
+
+                Ref.update.AddSyncAction(new SyncAction(() =>
+                {
+                    DssRef.state.LocalHost().hud.messages.Add(DssRef.todoLang.Demo_Complete_Title, DssRef.todoLang.Demo_EndInOneMinuteDescription);
+                    new Timer.TimedAction1ArgTrigger_InGame<GameEndReason>(viewEndScreen, victory? GameEndReason.Victory : GameEndReason.Defeat , TimeExt.MinutesToMS(1f));
+                }));
+            }
         }
 
         void onDemoTimeUp()
         {
-            DssRef.state.localPlayers.First().hud.messages.Add(".Times' up!", ".The demo will end in one minute");
-            new Timer.TimedAction0ArgTrigger(viewTimesUpScreen, TimeExt.MinutesToMS(1f));
+            DssRef.state.LocalHost().hud.messages.Add(DssRef.todoLang.Demo_TimesUp_Title, DssRef.todoLang.Demo_EndInOneMinuteDescription);
+            new Timer.TimedAction1ArgTrigger_InGame<GameEndReason>(viewEndScreen, GameEndReason.TimesUp, TimeExt.MinutesToMS(1f));
         }
 
-        void viewTimesUpScreen()
+        void viewEndScreen(GameEndReason endReason)
         {
-            new EndScene(GameEndReason.TimesUp, false);
+            new EndScene(endReason, false);
         }
     }
 }

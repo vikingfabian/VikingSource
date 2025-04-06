@@ -286,25 +286,30 @@ namespace VikingEngine.DSSWars.Display
                 content.h2(DssRef.lang.ArmyOption_Attack).overrideColor = HudLib.TitleColor_Attack;
             }
 
-            string name = obj.Name(out _);
-            if (name != null)
-            {
-                content.text(name).overrideColor = HudLib.TitleColor_Name;
-            }
-            content.h2(obj.TypeName()).overrideColor = HudLib.TitleColor_TypeName;
+            obj.toTooltip(new ObjectHudArgs(content, player, false));
+            //string name = obj.Name(out _);
+            //if (name != null)
+            //{
+            //    content.text(name).overrideColor = HudLib.TitleColor_Name;
+            //}
+            //content.h2(obj.TypeName()).overrideColor = HudLib.TitleColor_TypeName;
 
-            if (obj.GetFaction() != player.faction)
-            {
-                var relation = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
+            //if (obj.GetFaction() != player.faction)
+            //{
+            //    var relation = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
 
-                content.newLine();
-                content.Add(new RbText(obj.GetFaction().PlayerName, HudLib.TitleColor_Name));
-                content.newLine();
-                content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
-                content.Add(new RbText(Diplomacy.RelationString(relation), HudLib.TextColor_Relation));
-                content.newLine();
+            //    content.newLine();
+            //    content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
+            //    content.space(0.5f);
+            //    content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+            //    content.space(0.5f);
+            //    content.Add(new RbText(obj.GetFaction().PlayerName, HudLib.TitleColor_Name));
+            //    //content.newLine();
                 
-            }
+            //    //content.Add(new RbText(Diplomacy.RelationString(relation), HudLib.TextColor_Relation));
+            //    content.newLine();
+                
+            //}
 
             if (attackTarget)
             {
@@ -347,83 +352,79 @@ namespace VikingEngine.DSSWars.Display
             }
             else
             {
-                switch (obj.gameobjectType())
-                {
-                    case GameObjectType.City:
-                        {   
-                            var mapObj = obj as AbsMapObject;
-                            if (mapObj != null)
-                            {
-                                const int LowAmount = 10;
-                                var city = mapObj.GetCity();
-                                content.newLine();
-                                HudLib.CityResource(content, city, ItemResourceType.Food_G);
+                //switch (obj.gameobjectType())
+                //{
+                //    //case GameObjectType.City:
+                    //    {   
+                    //        var mapObj = obj as AbsMapObject;
+                    //        if (mapObj != null)
+                    //        {
+                    //            const int LowAmount = 10;
+                    //            var city = mapObj.GetCity();
+                    //            content.newLine();
+                    //            HudLib.CityResource(content, city, ItemResourceType.Food_G);
 
-                                if (city.res_food.amount <= LowAmount)
-                                {
-                                    if (city.res_water.amount <= 2)
-                                    {
-                                        HudLib.CityResource(content, city, ItemResourceType.Water_G);
-                                    }
-                                    if (city.res_rawFood.amount <= LowAmount)
-                                    {
-                                        HudLib.CityResource(content, city, ItemResourceType.RawFood_Group);
-                                    }
-                                    if (city.res_fuel.amount <= LowAmount)
-                                    {
-                                        HudLib.CityResource(content, city, ItemResourceType.Fuel_G);
-                                    }
-                                }
+                    //            if (city.res_food.amount <= LowAmount)
+                    //            {
+                    //                if (city.res_water.amount <= 2)
+                    //                {
+                    //                    HudLib.CityResource(content, city, ItemResourceType.Water_G);
+                    //                }
+                    //                if (city.res_rawFood.amount <= LowAmount)
+                    //                {
+                    //                    HudLib.CityResource(content, city, ItemResourceType.RawFood_Group);
+                    //                }
+                    //                if (city.res_fuel.amount <= LowAmount)
+                    //                {
+                    //                    HudLib.CityResource(content, city, ItemResourceType.Fuel_G);
+                    //                }
+                    //            }
 
 
-                                warStrength(mapObj);
-                            }
-                        }
-                        break;
+                    //            warStrength(mapObj);
+                    //        }
+                    //    }
+                    //    break;
 
-                    case GameObjectType.Army:
-                        {
-                            var mapObj = obj as AbsMapObject;
-                            if (mapObj != null)
-                            {
+                    //case GameObjectType.Army:
+                    //    {
+                    //        var mapObj = obj as AbsMapObject;
+                    //        if (mapObj != null)
+                    //        {
                                 
-                                var army = obj.GetArmy();
-                                if (army.food < army.foodUpkeep * 2)
-                                {
-                                    HudLib.ItemCount(content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, TextLib.OneDecimal(army.food));
-                                }
-                                warStrength(mapObj);
-                                //content.newLine();
-                                //content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                                //content.Add(new RichBoxText(TextLib.OneDecimal(mapObj.strengthValue)));
-
-                                content.newLine();
-                                content.Add(new RbImage(SpriteName.WarsGroupIcon));
-                                content.space(1);
+                    //            var army = obj.GetArmy();
+                    //            if (army.food < army.foodUpkeep * 2)
+                    //            {
+                    //                HudLib.ItemCount(content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, TextLib.OneDecimal(army.food));
+                    //            }
+                    //            warStrength(mapObj);
+                                
+                    //            content.newLine();
+                    //            content.Add(new RbImage(SpriteName.WarsGroupIcon));
+                    //            content.space(1);
 
                                 
-                                var typeCounts = army.Status().getTypeCounts_Sorted(army.faction);
+                    //            var typeCounts = army.Status().getTypeCounts_Sorted(army.faction);
 
-                                foreach (var kv in typeCounts)
-                                {
-                                    //AbsSoldierData typeData = DssRef.unitsdata.Get(kv.Key);
-                                    content.Add(new RbText(kv.Value.ToString()));
-                                    content.Add(new RbImage(AllUnits.UnitFilterIcon(kv.Key)));
-                                    content.space(2);
-                                }
+                    //            foreach (var kv in typeCounts)
+                    //            {
+                    //                content.Add(new RbText(kv.Value.ToString()));
+                    //                content.Add(new RbImage(AllUnits.UnitFilterIcon(kv.Key)));
+                    //                content.space(2);
+                    //            }
 
-                            }
-                        }
-                        break;
+                    //        }
+                    //    }
+                    //    break;
 
-                    case GameObjectType.ObjectCollection:
-                        obj.GetCollection().Tooltip(content);
-                        break;
+                    //case GameObjectType.ObjectCollection:
+                    //    obj.GetMapCollection().Tooltip(content);
+                    //    break;
 
-                    case GameObjectType.Worker:
-                        obj.GetWorker().toolTip(content);
-                        break;
-                }
+                    //case GameObjectType.Worker:
+                    //    obj.GetWorker().toolTip(content);
+                    //    break;
+                //}
 
                 void warStrength(AbsMapObject mapObj)
                 {

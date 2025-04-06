@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars
             if (complete)
             {
                 loadingStatusText.TextString = 
-                    "Complete!";
+                    TextLib.LargeFirstLetter( DssRef.lang.Progressbar_ProgressComplete);
             }
             else
             {

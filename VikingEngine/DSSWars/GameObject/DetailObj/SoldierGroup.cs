@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,9 +16,11 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players.Command;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.PJ.CarBall;
 using VikingEngine.ToGG.HeroQuest;
 using VikingEngine.ToGG.MoonFall;
@@ -1097,14 +1100,44 @@ namespace VikingEngine.DSSWars.GameObject
             return state == GroupState.Idle || state == GroupState.GoingIdle;
         }
 
+        void SoldiersPresentationHud(ObjectHudArgs args, bool tooltip)
+        {
+            args.content.Add(new RbBeginTitle(tooltip? 2 : 1));
+            args.content.Add(GetFaction().FlagTextureToHud());
+            args.content.space(0.5f);
+            TypeIcon(args.content);
+            args.content.space(0.5f);
+            args.content.Add(new RbText(soldierConscript.conscript.TypeName(), tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+
+            args.content.space(1);
+            args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+
+
+            soldierConscript.conscript.toHud(args.content);
+        }
+
+        public override void toTooltip(ObjectHudArgs args)
+        {
+            SoldiersPresentationHud(args, true);
+        }
+
         public override void toHud(ObjectHudArgs args)
         {
-            //var typeData = typeSoldierData..conscript;
+            ////var typeData = typeSoldierData..conscript;
+            //args.content.Add(new RbBeginTitle(1));
+            //args.content.Add(GetFaction().FlagTextureToHud());
+            //TypeIcon(args.content);
+            //args.content.Add(new RbText(soldierConscript.conscript.TypeName(), HudLib.TitleColor_Head));
 
-            args.content.h2(soldierConscript.conscript.TypeName() + " " + DssRef.lang.UnitType_SoldierGroup + " (" + parentArrayIndex.ToString() + ")").overrideColor = HudLib.TitleColor_TypeName;
-            args.content.newLine();
+            //args.content.space(1);
+            //args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+
+
+            //soldierConscript.conscript.toHud(args.content);
+            SoldiersPresentationHud(args, false);
 
 #if DEBUG
+            args.content.newLine();
             debugTagButton(args.content);
 #endif
             if (army.IsArmy())
@@ -1113,15 +1146,17 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
                 {
-                    var button = new RbButton(new List<AbsRichBoxMember> { new RbText(w.ToString()) },
+                    var button = new ArtOption(w == army.armyColumnWidth, 
+                        new List<AbsRichBoxMember> { new RbText(w.ToString()) },
                         new RbAction1Arg<int>(army.armyColumnWidthClick, w, SoundLib.menu));
-                    button.setGroupSelectionColor(HudLib.RbSettings, w == army.armyColumnWidth);
+                    //button.setGroupSelectionColor(HudLib.RbSettings, );
                     args.content.Add(button);
-                    args.content.space();
+                    //args.content.space();
                 }
 
-                args.content.newLine();
+                args.content.newParagraph();
 
+                HudLib.Label(args.content, DssRef.todoLang.ArmyStructure_ArmyPlacement);
                 args.content.Add(new RbSeperationLine());
 
                 for (int y = 0; y < ArmyPlacementGrid.RowsCount; y++)
@@ -1147,21 +1182,21 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
                     args.content.newLine();
-                    args.content.Add(new RbText(name));
+                    args.content.Add(new RbText(name, HudLib.TitleColor_TypeName));
                     args.content.Add(new RbTab(0.3f));
                     for (int x = 0; x < ArmyPlacementGrid.ColsCount; x++)
                     {
-                        args.content.space();
+                        //args.content.space();
 
                         int colX = x - ArmyPlacementGrid.PosXAdd;
 
                         string caption = colX == 0 ? " C " : TextLib.PlusMinus(colX);
-                        var button = new RbButton(new List<AbsRichBoxMember> {
+                        var button = new ArtToggle(armyGridPlacement2.X == colX && armyGridPlacement2.Y == rowY, new List<AbsRichBoxMember> {
                         new RbText(caption)
                     },
                         new RbAction2Arg<int, int>(setNewArmyPlacement, colX, rowY), null);
 
-                        button.setGroupSelectionColor(HudLib.RbSettings, armyGridPlacement2.X == colX && armyGridPlacement2.Y == rowY);
+                        //button.setGroupSelectionColor(HudLib.RbSettings, );
                         args.content.Add(button);
                     }
 
@@ -1170,7 +1205,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             //args.content.Button("debug tag", new HUD.RichBox.RbAction(AddDebugTag), null, true);
 
-            soldierConscript.conscript.toHud(args.content);
+            
             args.content.newLine();
             //if (args.selected && GetFaction() == args.player.faction)
             //{
@@ -2371,7 +2406,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.Add(new RbText(TypeName()));
 
             content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-            content.Add(new RbText(TextLib.OneDecimal(strengthValue())));
+            content.Add(new RbText(TextLib.OneDecimal(strengthValue() / AllUnits.AverageGroupStrength)));
         }
     }    
 

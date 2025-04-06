@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.PJ;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Conscript
@@ -325,10 +326,34 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void toHud(RichBoxContent content)
         {
-            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_WeaponTitle, LangLib.Item(weapon)));
-            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_ArmorTitle, LangLib.Item(armorLevel)));
-            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_TrainingTitle, LangLib.Training(training)));
-            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_SpecializationTitle, LangLib.SpecializationTypeName(specialization)));
+            content.newLine();
+            HudLib.BulletSeperationPoint(content);
+
+            content.Add(new RbImage(LangLib.Training_Icon(training)));
+            content.Add(new RbText(LangLib.Training(training), HudLib.TitleColor_TypeName));
+            
+            HudLib.BulletSeperationPoint(content);
+            
+            content.Add(new RbImage(ResourceLib.Icon(weapon)));
+            content.Add(new RbText(LangLib.Item(weapon), HudLib.TitleColor_TypeName));
+
+            HudLib.BulletSeperationPoint(content);
+            
+            content.Add(new RbImage(ResourceLib.Icon(armorLevel)));
+            content.Add(new RbText(LangLib.Item(armorLevel), HudLib.TitleColor_TypeName));
+
+            content.newLine();
+            HudLib.BulletSeperationPoint(content);
+
+            //content.Add(new RbImage(ResourceLib.Icon(weapon)));
+            content.space();
+            content.Add(new RbText(LangLib.SpecializationTypeName(specialization), HudLib.TitleColor_TypeName));
+
+
+            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_WeaponTitle, LangLib.Item(weapon)));
+            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_ArmorTitle, LangLib.Item(armorLevel)));
+            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_TrainingTitle, LangLib.Training(training)));
+            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_SpecializationTitle, LangLib.SpecializationTypeName(specialization)));
         }
 
         public void writeGameState(System.IO.BinaryWriter w)

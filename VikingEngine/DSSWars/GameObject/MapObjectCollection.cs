@@ -13,9 +13,9 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class MapObjectCollection : AbsWorldObject
+    class MapObjectCollection : AbsGOCollection
     {
-        Faction faction;
+        //Faction faction;
         public List<AbsMapObject> objects = new List<AbsMapObject>(8);
 
         public MapObjectCollection(Faction faction)
@@ -45,8 +45,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void toHud(ObjectHudArgs args)
         {
-          
-            args.content.h2(string.Format(DssRef.lang.UnitType_ArmyCollectionAndCount, objects.Count));
+            GroupPresentation(args, false);
+            //args.content.h2(string.Format(DssRef.todoLang.Hud_ObjectsAndCount, DssRef.todoLang.UnitType_CollectionOfArmies, objects.Count), HudLib.TitleColor_TypeName);
 
             for (int i = 0; i < objects.Count;++i)
             {
@@ -58,16 +58,19 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void Tooltip(RichBoxContent content)
+        //public void Tooltip(RichBoxContent content)
+        //{
+        //    content.Add(new RbText(string.Format(DssRef.todoLang.Hud_ObjectsAndCount, DssRef.todoLang.UnitType_CollectionOfArmies, objects.Count), HudLib.TitleColor_TypeName));
+        //}
+        public override void toTooltip(ObjectHudArgs args)
         {
-            content.text(string.Format(DssRef.lang.UnitType_ArmyCollectionAndCount, objects.Count));
+            GroupPresentation(args, true);
         }
-
         public override GameObjectType gameobjectType()
         {
             return GameObjectType.ObjectCollection;
         }
-        public override MapObjectCollection GetCollection()
+        public override MapObjectCollection GetMapCollection()
         {
             return this;
         }
@@ -85,25 +88,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             return objects.Count > 0;
         }
-        public override Faction GetFaction()
-        {
-            return faction;
-        }
+        
 
-        public override AbsMapObject RelatedMapObject()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool defeatedBy(Faction attacker)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool defeated()
-        {
-            return objects.Count == 0;
-        }
 
         public void set(List<AbsMapObject> newObjects)
         { 
@@ -163,9 +149,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public override int CollectionCount()
+        {
+            return objects.Count;
+        }
+
         public override string TypeName()
         {
-            return ".Map objects";
+            return DssRef.todoLang.UnitType_CollectionOfArmies;
         }
 
     }

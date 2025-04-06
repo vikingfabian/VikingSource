@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.GameObject
         { 
             throw new NotImplementedException();
         }
-        public void tagToHud(RichBoxContent content)
+        public bool tagToHud(RichBoxContent content)
         {
             tagSprites(out SpriteName back, out SpriteName art);
             if (back != CityTag.NoBackSprite)
@@ -101,7 +101,11 @@ namespace VikingEngine.DSSWars.GameObject
                 content.Add(new RbOverlapImage(
                     new RbImage(back),
                     art, Vector2.Zero, 0.8f));
+
+                return true;
             }
+
+            return false;
         }
 
         public bool LocalMember

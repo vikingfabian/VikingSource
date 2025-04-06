@@ -171,6 +171,7 @@ namespace VikingEngine.Graphics
         Shadow,
         FixedLight,
         Flag,
+        SeaNoise,
         NUM_NON,
     }
 

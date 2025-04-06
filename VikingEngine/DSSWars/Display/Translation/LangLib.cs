@@ -710,6 +710,10 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         //    }
         //}
+        public static SpriteName Training_Icon(TrainingLevel training)
+        {
+            return (SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)training);
+        }
 
         public static string Training(TrainingLevel training)
         {
@@ -746,6 +750,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.Conscript_Specialization_Traditional;
                 case SpecializationType.AntiCavalry:
                     return DssRef.lang.Conscript_Specialization_AntiCavalry;
+                case SpecializationType.CityGuard:
+                    return DssRef.todoLang.Conscript_Soldiers_GuardType;
 
                 default:
                     return TextLib.Error;

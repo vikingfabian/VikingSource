@@ -2690,9 +2690,8 @@ namespace VikingEngine
                     add(SpriteName.WarsServiceMenTotal);
                     add(SpriteName.WarsHudIconExtraModes);
                     add(SpriteName.WarsResource_Palisade);
-
                     add(SpriteName.WarsHudRoundButtonNotSelected);
-
+                    add(SpriteName.WarsHudIconCollection);
                 }
 
                 currentIndex = numTilesWidth * 101;
@@ -2715,6 +2714,8 @@ namespace VikingEngine
                     add(SpriteName.WarsHudHeadBarBg, 2, 2);
                     add(SpriteName.WarsHudToolUpButton, 1, 2);
                     add(SpriteName.WarsHudTutorialBg, 2, 2);
+
+                    add(SpriteName.WarsArmy, 2, 2);
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 

@@ -480,13 +480,27 @@ namespace VikingEngine.DSSWars.Work
                 DssVar.WorkerUnit_ResourcePosDiff, model.position);
         }
 
+        void WorkerPresentationHud(ObjectHudArgs args, bool tooltip)
+        {
+            args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
+            args.content.Add(GetFaction().FlagTextureToHud());
+            args.content.space(0.5f);
+            args.content.Add(new RbImage(SpriteName.WarsWorker));
+            args.content.space(0.5f);
+            args.content.Add(new RbText(DssRef.lang.UnitType_Worker, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
+            args.content.space();
+            args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+
+            ownerToHud(args, false);
+        }
         public override void toHud(ObjectHudArgs args)
         {
-
-            args.content.h2(Name(out _)).overrideColor = Color.LightYellow;
+            WorkerPresentationHud(args, false);
+            //args.content.h2(Name(out _)).overrideColor = Color.LightYellow;
             args.content.text(string.Format(DssRef.lang.WorkerHud_WorkType, status.workString()));
-
+            
+            args.content.Add(new RbSeperationLine());
             status.xpToHud(args.content);
 
             if (status.carry.amount > 0)
@@ -506,9 +520,15 @@ namespace VikingEngine.DSSWars.Work
 #endif
         }
 
-        public void toolTip(RichBoxContent content)
+        //public void toolTip(RichBoxContent content)
+        //{
+        //    WorkerPresentationHud(content, true);
+        //    status.xpToHud(content);
+        //}
+        public override void toTooltip(ObjectHudArgs args)
         {
-            status.xpToHud(content);
+            WorkerPresentationHud(args, true);
+            status.xpToHud(args.content);
         }
 
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)

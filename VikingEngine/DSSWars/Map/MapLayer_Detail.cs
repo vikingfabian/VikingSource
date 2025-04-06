@@ -7,11 +7,10 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
 {
-    class MapLayer_Detail
+    class MapLayer_Detail: AbsMapLayer
     {
         ConcurrentStack<DetailMapTile> tilePool = new ConcurrentStack<DetailMapTile>();
         List<DetailMapTile> tiles;
-
 
         List<DetailMapTile> processingTiles_Add = new List<DetailMapTile>(400);
         List<DetailMapTile> processingTiles_Remove = new List<DetailMapTile>(400);
@@ -21,11 +20,9 @@ namespace VikingEngine.DSSWars.Map
         List<DetailMapTile> synchDelete = new List<DetailMapTile>(400);
         public List<Graphics.PolygonColor> polygons = new List<Graphics.PolygonColor>(256);
 
-        Graphics.Mesh waterSurface;
+        //Graphics.Mesh waterSurface;
 
-        Timer.Basic waterAnimTimer = new Timer.Basic(3000,true);
-        int waterFrame = 0;
-        double waterMoveCurve = 0;
+       
 
         public static Graphics.CustomEffect_NoColor ModelEffect = new Graphics.CustomEffect_NoColor("FlatVerticeColor", false);
         
@@ -40,10 +37,7 @@ namespace VikingEngine.DSSWars.Map
             DssRef.state.detailMap = this;
             tiles = new List<DetailMapTile>(128);
 
-            Graphics.Mesh waterBottom;
-            MapLayer_Overview.WaterModel(out waterSurface, out waterBottom, true);
-            waterSurface.AddToRender(DrawGame.UnitDetailLayer);
-            waterBottom.AddToRender(DrawGame.UnitDetailLayer);
+            WaterModel(true);
 
             switch (Ref.gamesett.MapLoadingSpeed)
             {
@@ -63,19 +57,20 @@ namespace VikingEngine.DSSWars.Map
 
         public void update()
         {
-            if (waterAnimTimer.Update(Ref.DeltaGameTimeMs))
-            {
-                if (++waterFrame >= DssRef.models.waterTextures.Length)
-                { 
-                    waterFrame = 0;
-                }
+            updateWaterTexture();
+            //if (waterAnimTimer.Update(Ref.DeltaGameTimeMs))
+            //{
+            //    if (++waterFrame >= DssRef.models.waterTextures.Length)
+            //    { 
+            //        waterFrame = 0;
+            //    }
 
-                waterSurface.texture = DssRef.models.waterTextures[waterFrame];
-            }
+            //    waterSurface.texture = DssRef.models.waterTextures[waterFrame];
+            //}
 
-            waterMoveCurve += Ref.DeltaGameTimeSec * 0.5f;
-            waterSurface.TextureSource.SourceF.X += Ref.DeltaGameTimeSec * -0.05f;
-            waterSurface.TextureSource.SourceF.Y = (float)(Math.Sin(waterMoveCurve) * 0.1);
+            //waterMoveCurve += Ref.DeltaGameTimeSec * 0.5f;
+            //waterSurface.TextureSource.SourceF.X += Ref.DeltaGameTimeSec * -0.05f;
+            //waterSurface.TextureSource.SourceF.Y = (float)(Math.Sin(waterMoveCurve) * 0.1);
 
             if (synchToRender.Count > 0)
             {
@@ -196,5 +191,11 @@ namespace VikingEngine.DSSWars.Map
             }
             processingTiles_Remove.Clear();
         }
+
+        protected override Texture2D[] WaterTex()
+        {
+            return DssRef.models.waterTextures;
+        }
+        
     }
 }

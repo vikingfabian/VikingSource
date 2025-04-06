@@ -315,7 +315,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.icontext(HudLib.CheckImage(recruitGuard_selectCity), DssRef.lang.Tutorial_SelectACity);
                     content.icontext(HudLib.CheckImage(recruitGuard_zoomIn), DssRef.lang.Tutorial_ZoomInWorkers);
                     content.icontext(HudLib.CheckImage(recruitGuard_selectConscriptTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
-                    content.icontext(HudLib.CheckImage(recruitGuard_selectGuardTab), string.Format(".Open a barracks and select category: {0}", ".Guard"));
+                    content.icontext(HudLib.CheckImage(recruitGuard_selectGuardTab), string.Format(DssRef.todoLang.Tutorial_OpenGuardSubTab, DssRef.todoLang.Conscript_Soldiers_GuardType));
                     content.icontext(HudLib.CheckImage(recruitGuard_createGuard), string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.todoLang.Resource_TypeName_PaddedArmor));
                     
                     break;
@@ -323,7 +323,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.BuildDefences:
                     content.icontext(HudLib.CheckImage(buildDefences_selectBuildTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
                     content.icontext(HudLib.CheckImage(buildDefences_buildPalisade), string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Palisade].Label()));
-                    content.icontext(HudLib.CheckImage(buildDefences_moveGuard), ".Move a guard to a wall");
+                    content.icontext(HudLib.CheckImage(buildDefences_moveGuard), DssRef.todoLang.Tutorial_GuardToWall);
                    
                     break;
 

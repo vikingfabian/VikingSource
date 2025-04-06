@@ -155,8 +155,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 }
             }
             else
-            {
-                
+            {                
                 if (isReady)
                 {                        
                     var factions = DssRef.world.factions.counter();
@@ -164,8 +163,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                     {
                         factions.sel.PauseUpdate();
                     }
-                }
-                
+                }                
             }
 
             if (DssRef.time.halfSecond)
@@ -179,6 +177,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             }
 
             detailMap.update();
+            overviewMap.update();
 
             if (localPlayers != null)
             {

@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.Data
         public const string FileEnd = ".sav";
         public DateTime saveDate;
         public TimeSpan playTime;
-        public int localPlayerCount;
+        public int localPlayerCount = 1;
         int difficulty;
 
         public int metaVersion = Version;

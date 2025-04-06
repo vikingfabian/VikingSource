@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void TypeIcon(RichBoxContent content)
         {
-            content.Add(new RbImage(SpriteName.WarsUnitIcon_Soldier));
+            content.Add(new RbImage(SpriteName.WarsArmy));
             tagToHud(content);
         }
 
@@ -197,9 +197,58 @@ namespace VikingEngine.DSSWars.GameObject
             name.setCustom(result);
         }
 
+
+        void ArmyPresentationHud(ObjectHudArgs args, bool tooltip)
+        {
+            nameToHud(args.content, !tooltip);
+
+            args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
+            if (!tagToHud(args.content))
+            {
+                args.content.Add(GetFaction().FlagTextureToHud());
+            }
+            args.content.space(0.5f);
+            args.content.Add(new RbImage(SpriteName.WarsArmy));
+            args.content.space(0.5f);
+            args.content.Add(new RbText(DssRef.lang.UnitType_Army, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+
+            args.content.space(1);
+            args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+
+            ownerToHud(args, !tooltip); 
+        }
+        public override void toTooltip(ObjectHudArgs args)
+        {
+            ArmyPresentationHud(args, true);
+
+            if (food < foodUpkeep * 2)
+            {
+                HudLib.ItemCount(args.content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, TextLib.OneDecimal(food));
+            }
+
+            args.content.newLine();
+            args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+
+            args.content.newLine();
+            args.content.Add(new RbImage(SpriteName.WarsGroupIcon));
+            args.content.space(1);
+
+
+            var typeCounts = Status().getTypeCounts_Sorted(faction);
+
+            foreach (var kv in typeCounts)
+            {
+                args.content.Add(new RbText(kv.Value.ToString()));
+                args.content.Add(new RbImage(AllUnits.UnitFilterIcon(kv.Key)));
+                args.content.space(2);
+            }
+
+        }
         public override void toHud(ObjectHudArgs args)
         {
-            base.toHud(args);
+            //base.toHud(args);
+            ArmyPresentationHud(args, false);
 
             if (args.player.hud.detailLevel == Display.HudDetailLevel.Minimal)
             {

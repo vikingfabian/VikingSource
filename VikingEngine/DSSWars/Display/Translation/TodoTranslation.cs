@@ -27,16 +27,24 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string MouseButton_Middle => "Middle Mouse";
         public string MouseButton_X1 => "X1 Button Mouse";
         public string MouseButton_X2 => "X2 Button Mouse";
-        
-        
+
+
         //##End Ref.langOpt
 
+        public string Tutorial_OpenGuardSubTab => "Open a barracks and select category: {0}";
+        public string Tutorial_GuardToWall => "Move a guard to a wall";
+        public string Demo_MissionObjective_Title => "Mission Objective";
+        public string Demo_MissionObjective_Description => "Defend against the attack from south";
+        public string Demo_Complete_Title => "Demo complete";
+        public string Demo_TimesUp_Title => "Times' up!";
+        public string Demo_EndInOneMinuteDescription => "The demo will end in one minute";
 
         public string ArmyOption_NewArmy => "New army";
         public string ProfileEditor_AltMain => "Alternative main";
         public string Automation_CheckBoxTitle => "Automated";
 
         public string ArmyStructure_ColumnWidth = "Army column width";
+        public string ArmyStructure_ArmyPlacement = "Placement in army";
         public string ArmyStructure_Row_Front = "Front";
         public string ArmyStructure_Row_Body = "Body";
         public string ArmyStructure_Row_Second = "Second";
@@ -86,6 +94,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Settings_ScrollSensitivity_Menu => "Scroll sensitivity: menu";
         public string Settings_Blood => "Blood";
 
+        public string Settings_MasterVolume => "Master Volume";
+        public string Settings_AmbienceVolume => "Ambience Volume";
+        public string Settings_BattleMelody => "Battle Melody";
+
+        public string Settings_ModelLight => "Model light effect";
+        public string Settings_Particles => "Particle effects";
+        public string Settings_MapLoadSpeed => "Map loading speed";
         public string Lobby_Category_Options => "Options";
         public string Lobby_Category_Editor => "Editor";
         public string Lobby_Category_ExtraModes => "Extra modes";
@@ -112,6 +127,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string MapGenerator_Name = "Map editor - generate";
 
+        public string MapType_CustomMap = "Custom Map";
+        public string MapType_GenerateNewMap = "Generate a new map";
         public string MapGenerator_GenerateAction = "Generate";
         public string MapGenerator_Terrain_CustomSize = "Custom size";
         public string MapGenerator_Terrain_StartAs = "Start as";
@@ -140,8 +157,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Delete => "Delete";
         public string Hud_Next => "Next";
         public string Hud_None => "None";
+        public string Hud_Apply => "Apply";
         public string Hud_AllCities => "All cities";
         public string Hud_Time_Hours => "{0} hours";
+
+
+        /// <summary>
+        /// 0: object collection type name, 1: number of objects
+        /// </summary>
+        public string Hud_ObjectsAndCount => "{0}, count: {1}";
 
         public string Hud_EffectDoesNotStack => "This effect does not stack";
 
@@ -321,6 +345,14 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string UnitType_MithrilKnight => "Immortal knight";
         public string UnitType_MithrilArcher=> "Immortal archer";
         public string UnitType_SpearAndShield => "Lineman";
+
+        public string UnitType_CollectionOfSoldiers => "Soldier Bundle";
+        public string UnitType_CollectionOfArmies => "Army Bundle";
+
+        /// <summary>
+        /// The id tag will be a unique number
+        /// </summary>
+        public string UnitId => "(id {0})";
 
         public string BuildHud_AreaAffectTitle => "Area affect";
         public string BuildHud_BonusRadius => "Bonus radius: {0}";

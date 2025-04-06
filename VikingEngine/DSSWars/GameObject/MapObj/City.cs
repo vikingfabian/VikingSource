@@ -27,6 +27,7 @@ using VikingEngine.PJ.MiniGolf;
 using VikingEngine.LootFest.GO.Gadgets;
 using System.ComponentModel;
 using Microsoft.CodeAnalysis.Text;
+using System.Reflection.Metadata;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -2030,12 +2031,60 @@ namespace VikingEngine.DSSWars.GameObject
             tagToHud(content);
         }
 
-        
+        void CityPresentationHud(ObjectHudArgs args, bool tooltip)
+        {
+            nameToHud(args.content, !tooltip);
+
+            args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
+            if (!tagToHud(args.content))
+            {
+                args.content.Add(GetFaction().FlagTextureToHud());
+            }
+            args.content.space(0.5f);
+            args.content.Add(new RbImage(SpriteName.WarsCityHall));
+            args.content.space(0.5f);
+            args.content.Add(new RbText(DssRef.lang.UnitType_City, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+
+            args.content.space(1);
+            args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+
+            ownerToHud(args, !tooltip);
+        }
+
+        public override void toTooltip(ObjectHudArgs args)
+        {
+            CityPresentationHud(args, true);
+            const int LowAmount = 10;
+            
+            args.content.newLine();
+            HudLib.CityResource(args.content, this, ItemResourceType.Food_G);
+
+            if (res_food.amount <= LowAmount)
+            {
+                if (res_water.amount <= 2)
+                {
+                    HudLib.CityResource(args.content, this, ItemResourceType.Water_G);
+                }
+                if (res_rawFood.amount <= LowAmount)
+                {
+                    HudLib.CityResource(args.content, this, ItemResourceType.RawFood_Group);
+                }
+                if (res_fuel.amount <= LowAmount)
+                {
+                    HudLib.CityResource(args.content, this, ItemResourceType.Fuel_G);
+                }
+            }
+
+            args.content.newLine();
+            args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));            
+        }
 
         public override void toHud(ObjectHudArgs args)
         {
-           
-            base.toHud(args);
+            CityPresentationHud(args, false);
+            //base.toHud(args);
+            args.content.newLine();
             if (args.ShowFull)
             {
                 if (faction == args.player.faction)
@@ -2059,12 +2108,13 @@ namespace VikingEngine.DSSWars.GameObject
             if (minimal)
             {
                 content.Add(new RbImage(SpriteName.WarsWorker));
+                content.space(0.5f);
                 content.Add(new RbText(TextLib.LargeNumber(workForce.amount)));
-                content.space();
-                //content.Add(new RbImage(SpriteName.WarsGuard));
-                //content.Add(new RbText(TextLib.Divition_Large(guardCount, maxGuardSize)));
-                content.space();
+                //content.space();
+                HudLib.BulletSeperationPoint(content);
+                //content.space();
                 content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                content.space(0.5f);
                 content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
             }
             else

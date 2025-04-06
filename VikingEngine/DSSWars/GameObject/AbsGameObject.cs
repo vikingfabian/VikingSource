@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
@@ -11,6 +12,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.MoonFall.GO;
+using VikingEngine.ToGG.MoonFall.Players;
 //
 
 namespace VikingEngine.DSSWars.GameObject
@@ -36,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public AbsSoldierUnit GetSoldier() { return null; }
         virtual public SoldierGroup GetSoldierGroup() { return null; }
 
-        virtual public MapObjectCollection GetCollection() { return null; }
+        virtual public MapObjectCollection GetMapCollection() { return null; }
         virtual public DetailObjectCollection GetDetailCollection() { return null; }
 
         virtual public WorkerUnit GetWorker() { return null; }
@@ -78,23 +80,58 @@ namespace VikingEngine.DSSWars.GameObject
             throw new NotImplementedException();
         }
 
-        virtual public void toHud(Display.ObjectHudArgs args)
+        virtual public void toTooltip(ObjectHudArgs args)
         {
+            string name = Name(out _);
+            if (name != null)
+            {
+                args.content.text(name).overrideColor = HudLib.TitleColor_Name;
+            }
+            args.content.h2(TypeName()).overrideColor = HudLib.TitleColor_TypeName;
+        }
+
+
+
+        protected void nameToHud(RichBoxContent content, bool mayInteract)
+        { 
             string name = Name(out bool mayEdit);
             if (name != null)
             {
-                if (mayEdit)
+                if (mayEdit && mayInteract)
                 {
                     var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
                         new RbAction(beginEditName), null);
-                    args.content.Add(editButton);
-                    args.content.space();
+                    content.Add(editButton);
+                    content.space();
                 }
                 var nameText = new RbText(name);
                 nameText.overrideColor = Color.LightYellow;
-                args.content.Add(nameText);
-                args.content.newLine();
+                content.Add(nameText);
+                content.newLine();
             }
+        }
+        protected void ownerToHud(Display.ObjectHudArgs args, bool divider)
+        {
+            if (GetFaction() != args.player.faction)
+            {
+                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+
+                args.content.newLine();
+                args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
+                args.content.space(0.5f);
+                args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                args.content.space(0.5f);
+                args.content.Add(new RbText(GetFaction().PlayerName, HudLib.TitleColor_Name));
+
+                if (divider)
+                {
+                    args.content.Add(new RbSeperationLine());
+                }
+            }
+        }
+        virtual public void toHud(Display.ObjectHudArgs args)
+        {
+            nameToHud(args.content, true);
             args.content.Add(new RbBeginTitle());
             args.content.Add(GetFaction().FlagTextureToHud());
             TypeIcon(args.content);
@@ -122,6 +159,9 @@ namespace VikingEngine.DSSWars.GameObject
         }
         virtual public bool CanMenuFocus() { return false; }
         virtual public bool aliveAndBelongTo(Faction faction) { return true; }
+
+        virtual public bool IsCollection() { return false; }
+        virtual public int CollectionCount() { return 0; }
         //abstract public bool IsDeleted();
     }
     enum GameObjectType

@@ -1342,14 +1342,22 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-
+        public override void toTooltip(ObjectHudArgs args)
+        {
+            group.toTooltip(args);
+        }
         public override void toHud(ObjectHudArgs args)
         {
-            base.toHud(args);
+            //base.toHud(args);
+            //args.content.Add(new RbBeginTitle());
+            //args.content.Add(GetFaction().FlagTextureToHud());
+            //TypeIcon(args.content);
+            //args.content.Add(new RbText(TypeName(), HudLib.TitleColor_TypeName));
 
+            group.toHud(args);
             if (args.ShowFull)
             {
-                group.toHud(args);
+                
 
                 stateDebugText(args.content);
             }

@@ -7,6 +7,7 @@ using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.Physics;
@@ -43,7 +44,6 @@ namespace VikingEngine.DSSWars.Players
         public Vector3 playerPointerPos = Vector3.Zero, mousePosition = Vector3.Zero;
         ScreenToSpaceRectangleBound rectangleBound;
         Graphics.RectangleLines rectangleLines = null;
-        //VectorRect selectWpRectangle = VectorRect.Zero;
         float multiSelectMoveLenght = 0;
         float multiSelectHoldTime = 0;
 
@@ -381,7 +381,7 @@ namespace VikingEngine.DSSWars.Players
                                     hover.obj = new MapObjectCollection(player.faction);
                                 }
 
-                                hover.obj.GetCollection().set(nearMapObjects);
+                                hover.obj.GetMapCollection().set(nearMapObjects);
                             }
                             break;
 
@@ -417,25 +417,69 @@ namespace VikingEngine.DSSWars.Players
                     rectangleLines = null;
                     //select
 
-                    if (hover.obj != null && 
-                        hover.obj.gameobjectType() == GameObjectType.ObjectCollection)
+                    if (hover.obj != null && hover.obj.IsCollection() && hover.obj.CollectionCount() > 0)
                     {
-                        var coll = hover.obj.GetCollection();
-                        if (coll.objects.Count > 0)
+                        switch (hover.obj.gameobjectType())
                         {
-                            SoundLib.click.Play();
+                            case GameObjectType.ObjectCollection:
+                                {
+                                    var coll = hover.obj.GetMapCollection();
 
-                            if (coll.objects.Count == 1)
-                            {
-                                selection.obj = coll.objects[0];
-                                player.gameControls.armyControls = new ArmyControls(player, coll.objects);
-                            }
-                            else
-                            {
-                                selection.obj = coll;
-                                player.gameControls.armyControls = new ArmyControls(player, coll.objects);
-                            }
+                                    SoundLib.click.Play();
+
+                                    if (coll.objects.Count == 1)
+                                    {
+                                        selection.obj = coll.objects[0];
+                                        player.gameControls.armyControls = new ArmyControls(player, coll.objects);
+                                    }
+                                    else
+                                    {
+                                        selection.obj = coll;
+                                        player.gameControls.armyControls = new ArmyControls(player, coll.objects);
+                                    }
+                                }
+                                break;
+
+
+                            case GameObjectType.DetailCollection:
+                                {
+                                    var coll = hover.obj.GetDetailCollection();
+
+                                    SoundLib.click.Play();
+
+                                    //if (coll.objects.Count == 1)
+                                    //{
+                                    //    selection.obj = coll.objects[0];
+                                    selection.obj = coll;
+                                    player.gameControls.soldierControls = new SoldierControls( coll.objects);
+                                    //}
+                                    //else
+                                    //{
+                                    //    selection.obj = coll;
+                                    //    player.gameControls.armyControls = new ArmyControls(player, coll.objects);
+                                    //}
+                                }
+                                break;
                         }
+                    //    if (hover.obj.gameobjectType() == GameObjectType.ObjectCollection)
+                    //    {
+                    //        var coll = hover.obj.GetCollection();
+                    //        if (coll.objects.Count > 0)
+                    //        {
+                    //            SoundLib.click.Play();
+
+                    //            if (coll.objects.Count == 1)
+                    //            {
+                    //                selection.obj = coll.objects[0];
+                    //                player.gameControls.armyControls = new ArmyControls(player, coll.objects);
+                    //            }
+                    //            else
+                    //            {
+                    //                selection.obj = coll;
+                    //                player.gameControls.armyControls = new ArmyControls(player, coll.objects);
+                    //            }
+                    //        }
+                    //    }
                     }
                 }
             }
