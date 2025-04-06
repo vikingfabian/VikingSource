@@ -26,7 +26,6 @@ The demo should:
 -Mutliselect is not completed
 -Soldiers can be stuck on idle in battle
 -Cant move units between armies and garrisons
--Text with "." in the beginning are temporary, will go through spell check and translation.
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
 -Can sometimes show the wrong city on the hud
 
