@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars
 
             if (Ref.music != null)
             {
-                musicReduceFade = Bound.Set(musicReduceFade - FarNearFadeSpeed_PerSec * lib.BoolToLeftRight(Ref.music.IsPlaying()) * Ref.DeltaGameTimeSec, 0f, 1f);
+                musicReduceFade = Bound.Set(musicReduceFade - FarNearFadeSpeed_PerSec * lib.BoolToLeftRight(Ref.music.IsPlayingNowOrSoon()) * Ref.DeltaGameTimeSec, 0f, 1f);
             }
 
             bool playerLookingAtBattle = detailLayer.current.type == MapDetailLayerType.UnitDetail1 &&
@@ -303,17 +303,17 @@ namespace VikingEngine.DSSWars
                 nearLoop.SetBiom(wind, windTime, melody, melodyTime);
                 nearLoop.SoundBiomReady();
             }
-            farLoop.update(farSoundLevel,out bool farNeedSoundBiom);
+            farLoop.update(farSoundLevel * musicReduceFade, out bool farNeedSoundBiom);
             if (farNeedSoundBiom)
             {
                 farLoop.SoundBiomReady();
             }
-            seaLoop.update(deepSeaFade, out bool seaNeedSoundBiom);
+            seaLoop.update(deepSeaFade * musicReduceFade, out bool seaNeedSoundBiom);
             if (seaNeedSoundBiom)
             {
                 seaLoop.SoundBiomReady();
             }
-            battleLoop.update(battleFadeTotal, out bool battleNeedSoundBiom);
+            battleLoop.update(battleFadeTotal * musicReduceFade, out bool battleNeedSoundBiom);
             if (battleNeedSoundBiom)
             {
                 battleLoop.SoundBiomReady();

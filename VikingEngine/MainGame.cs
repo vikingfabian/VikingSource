@@ -14,6 +14,7 @@ using Microsoft.Win32;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Threading;
+using VikingEngine.Sound;
 
 namespace VikingEngine
 {
@@ -165,7 +166,7 @@ namespace VikingEngine
 
             //System.Threading.Thread.Sleep(16);
 
-            Engine.Sound.StopMusic();
+            MusicPlayer.StopMusic();
             Engine.XGuide.OnSuspend(true);
             //Ref.gamestate.onClosingApplication();
             base.UnloadContent();

@@ -337,6 +337,12 @@
 #begin DSS/Map/map_sz5_i9.map
 /copy:DSS/Map/map_sz5_i9.map
 
+#begin DSS/Music/A History of Cubes - Gameplay Edit.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/A History of Cubes - Gameplay Edit.ogg
+
 #begin DSS/Music/ancient space.ogg
 /importer:OggImporter
 /processor:SongProcessor

@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Media;
 
 namespace VikingEngine.Sound
 {
     class MusicPlayer
     {
+        public static bool MediaPlayerError = false;
+
+        static Song currentMedia = null;
+
         public IntervalF LoopTimesRange = new IntervalF(2, 3);
         public IntervalF DelayBetweenSongs_minutes = new IntervalF(5, 8);
         public float currentDelay = 0;
@@ -29,6 +34,10 @@ namespace VikingEngine.Sound
 
         public MusicPlayer()
         {
+            if (Ref.music != null)
+            {
+                throw new Exception("Two music players");
+            }
             //lib.DoNothing();
         }
 
@@ -46,7 +55,7 @@ namespace VikingEngine.Sound
         public void OnGameStart()
         {
             nextRandomSong();
-            currentDelay = new IntervalF(5000, 8000).GetRandom();
+            currentDelay = new IntervalF(10000, 20000).GetRandom();
         }
 
         public void debugNext() 
@@ -98,7 +107,7 @@ namespace VikingEngine.Sound
             }
             else
             {
-                MediaPlayer.Stop();
+                StopMusic();
             }
         }
 
@@ -208,6 +217,7 @@ namespace VikingEngine.Sound
         {
             if (useDelay)
             {
+                StopMusic();
                 playSongState = PlaySongState.Delay;
             }
             else
@@ -228,7 +238,7 @@ namespace VikingEngine.Sound
                 else
                 {
                     currentSong = nextSongData;
-                    playTime.MilliSeconds = Engine.Sound.PlayMusic(nextSong, currentSong.seamlessLoop);
+                    playTime.MilliSeconds = PlayMusic(nextSong, currentSong.seamlessLoop);
 
                     if (currentSong.seamlessLoop)
                     {
@@ -302,7 +312,46 @@ namespace VikingEngine.Sound
             return playSongState == PlaySongState.Playing && MediaPlayer.Volume > 0;
         }
 
+        public bool IsPlayingNowOrSoon()
+        {
+            return playSongState == PlaySongState.Playing || 
+                (playSongState == PlaySongState.Delay && currentDelay <= 1000);
+        }
+
         public PlaySongState PlaySongState { get { return playSongState; } }
+
+        public static int PlayMusic(Song s, bool loop)
+        {
+            if (s != null)
+            {
+                try
+                {
+                    StopMusic();
+                    //MediaPlayer.Stop();
+
+                    currentMedia = s;
+                    MediaPlayer.Play(s);
+
+                    //MediaPlayer.Play(s);
+                    MediaPlayer.IsRepeating = loop;
+                    return (int)s.Duration.TotalMilliseconds;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message);
+                    MediaPlayerError = true;
+                }
+            }
+            return 0;
+        }
+        public static void StopMusic()
+        {
+            
+            MediaPlayer.Stop();
+
+            currentMedia?.Dispose();
+            currentMedia = null;
+        }
     }
 
     class LoadAndPlaySong : StorageTask
@@ -391,7 +440,7 @@ namespace VikingEngine.Sound
             {
                 MusicPlayer.SongVolumeAdjust = volume;
                 MediaPlayer.Volume = MusicPlayer.SongVolumeAdjust * Ref.gamesett.MusicVol();
-                Engine.Sound.PlayMusic(storedSong, seamlessLoop);
+                MusicPlayer.PlayMusic(storedSong, seamlessLoop);
             }
         }
 

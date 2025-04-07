@@ -294,7 +294,7 @@ namespace VikingEngine.Graphics
                 indices[i * GraphicsLib.PolygonDrawOrderCount + 5] = (ushort)(i * GraphicsLib.PolygonIndicesCount + 3);
             }
 
-            indexBuffer = new IndexBuffer(Engine.Draw.graphicsDeviceManager.GraphicsDevice, typeof(ushort), indices.Length, BufferUsage.WriteOnly);
+            indexBuffer = new IndexBuffer(Engine.Draw.graphicsDeviceManager.GraphicsDevice,  IndexElementSize.SixteenBits, indices.Length, BufferUsage.WriteOnly);
 
             indexBuffer.SetData(indices);
         }
