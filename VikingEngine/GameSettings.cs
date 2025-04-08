@@ -54,7 +54,7 @@ namespace VikingEngine
 
 
         float MasterVolume = 0.5f;
-        float MusicMasterVolume = 1f;
+        float MusicMasterVolume = 0f;//1f;
         float SoundVolume = Engine.Sound.SoundStandardVolume;
         float AmbientVolume = Engine.Sound.SoundStandardVolume;
         float BattleMelodyVolume = 1f;
@@ -172,6 +172,8 @@ namespace VikingEngine
             ParticlesEffect = r.ReadBoolean();
             
             Debug.ReadCheck(r);
+
+            MusicMasterVolume = 0;
         }
 
         public void write(System.IO.BinaryWriter w)

@@ -12,9 +12,9 @@ namespace VikingEngine.DSSWars.GameObject
         
         public int goldCost = DssLib.GroupDefaultCost;
 
-        protected const float StandardRotatingSpeed = 6.5f;
+        
 
-        public float rotationSpeed;
+        
         public float walkingWaggleAngle = 0.16f;
         public float ShipBuildTimeMultiplier = 1;
 

@@ -324,31 +324,44 @@ namespace VikingEngine.DSSWars.Conscript
             return specializationTypes;
         }
 
-        public void toHud(RichBoxContent content)
+        public void toHud(RichBoxContent content, bool compact)
         {
             content.newLine();
-            HudLib.BulletSeperationPoint(content);
 
-            content.Add(new RbImage(LangLib.Training_Icon(training)));
-            content.Add(new RbText(LangLib.Training(training), HudLib.TitleColor_TypeName));
-            
-            HudLib.BulletSeperationPoint(content);
-            
-            content.Add(new RbImage(ResourceLib.Icon(weapon)));
-            content.Add(new RbText(LangLib.Item(weapon), HudLib.TitleColor_TypeName));
+            if (compact)
+            {
+                //HudLib.BulletSeperationPoint(content);
+                content.Add(new RbImage(LangLib.Training_Icon(training)));
+                
+                content.Add(new RbImage(ResourceLib.Icon(weapon)));
 
-            HudLib.BulletSeperationPoint(content);
-            
-            content.Add(new RbImage(ResourceLib.Icon(armorLevel)));
-            content.Add(new RbText(LangLib.Item(armorLevel), HudLib.TitleColor_TypeName));
+                content.Add(new RbImage(ResourceLib.Icon(armorLevel)));
+            }
+            else
+            {
+                
+                HudLib.BulletSeperationPoint(content);
 
-            content.newLine();
-            HudLib.BulletSeperationPoint(content);
+                content.Add(new RbImage(LangLib.Training_Icon(training)));
+                content.Add(new RbText(LangLib.Training(training), HudLib.TitleColor_TypeName));
 
-            //content.Add(new RbImage(ResourceLib.Icon(weapon)));
-            content.space();
-            content.Add(new RbText(LangLib.SpecializationTypeName(specialization), HudLib.TitleColor_TypeName));
+                HudLib.BulletSeperationPoint(content);
 
+                content.Add(new RbImage(ResourceLib.Icon(weapon)));
+                content.Add(new RbText(LangLib.Item(weapon), HudLib.TitleColor_TypeName));
+
+                HudLib.BulletSeperationPoint(content);
+
+                content.Add(new RbImage(ResourceLib.Icon(armorLevel)));
+                content.Add(new RbText(LangLib.Item(armorLevel), HudLib.TitleColor_TypeName));
+
+                content.newLine();
+                HudLib.BulletSeperationPoint(content);
+
+                //content.Add(new RbImage(ResourceLib.Icon(weapon)));
+                content.space();
+                content.Add(new RbText(LangLib.SpecializationTypeName(specialization), HudLib.TitleColor_TypeName));
+            }
 
             //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_WeaponTitle, LangLib.Item(weapon)));
             //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_ArmorTitle, LangLib.Item(armorLevel)));

@@ -272,7 +272,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
                     // Also, lots more to fix on particle system
                     instancing.Draw(ref Camera.ViewMatrix, ref Camera.Projection);
                 }
-                Engine.ParticleHandler.Draw();
+                Engine.ParticleHandler.Draw(Camera);
             }
             graphicsDeviceManager.GraphicsDevice.Viewport = savedViewport;
 

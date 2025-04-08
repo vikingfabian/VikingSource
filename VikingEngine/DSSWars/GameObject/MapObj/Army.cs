@@ -366,7 +366,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             content.Add(new RbBeginTitle());
             content.Add(GetFaction().FlagTextureToHud());
-            content.Add(new RbText(TypeName()));
+            content.space(0.5f);
+            content.Add(new RbText(DssRef.lang.UnitType_Army, HudLib.TitleColor_TypeName));
+
+            content.space(0.5f);
+            content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+
 
             content.Add(new RbImage(SpriteName.WarsStrengthIcon));
             content.Add(new RbText(TextLib.OneDecimal(strengthValue)));

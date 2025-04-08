@@ -90,6 +90,8 @@ namespace VikingEngine
             centerPos.Y += posDiff.Y;
 
             return centerPos;
+
+            
         }
 
         public static Vector2 RotatePosDiffAroundCenter(Vector2 centerPos, Vector2 posDiff, float rotation)

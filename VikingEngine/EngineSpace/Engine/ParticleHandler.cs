@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Graphics;
 
 namespace VikingEngine.Engine
 {
@@ -79,13 +80,13 @@ namespace VikingEngine.Engine
 #endif
         }
 
-        public static void Draw()
+        public static void Draw(AbsCamera camera)
         {
             if (Ref.gamesett.ParticlesEffect)
             {
                 foreach (ParticleSystemData system in active)
                 {
-                    system.Draw();
+                    system.Draw(camera);
                 }
             }
 
@@ -279,9 +280,9 @@ namespace VikingEngine.Engine
             }
             return false;
         }
-        public void Draw()
+        public void Draw(AbsCamera camera)
         {
-            System.SetCamera();
+            System.SetCamera(camera);
             System.Draw();
         }
     }

@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
 
 
             //walkingSpeed = DssConst.Men_StandardWalkingSpeed;
-            rotationSpeed = StandardRotatingSpeed;
+            //rotationSpeed = SoldierGroupStandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
             data.attackRange = 0.02f;
             data.basehealth = DssConst.Soldier_DefaultHealth * 4;

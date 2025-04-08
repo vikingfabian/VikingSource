@@ -84,6 +84,10 @@ namespace VikingEngine.DSSWars.Defence
 
         }
 
+        public override float GroupMoveBoundRadius()
+        {
+            return WorldData.SubTileHalfWidth;
+        }
         void refreshGuardPosition()
         {
             IntVector2 subPos = conv.IntToIntVector2(assignedToPost_IdAndPosition);

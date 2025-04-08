@@ -149,12 +149,12 @@ namespace VikingEngine.Graphics
             get { return LoadedEffect.LightParticleEffect; }
         }
 
-        public void PostRender(RenderTarget2D scene, RenderTarget2D depthMap)
+        public void PostRender(AbsCamera camera, RenderTarget2D scene, RenderTarget2D depthMap)
         {
             particleEffect.Parameters["wvp"].SetValue(Ref.draw.wvpMatrix);
             //particleEffect.Parameters["SceneMap"].SetValue(scene);
             particleEffect.Parameters["DepthMap"].SetValue(depthMap);
-            SetCamera();
+            SetCamera(camera);
             Draw();
         }
     }

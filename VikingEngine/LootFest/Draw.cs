@@ -56,7 +56,7 @@ namespace VikingEngine.LootFest
                 }
                 // NOTE(Martin): Ends here
 
-                Engine.ParticleHandler.Draw();
+                Engine.ParticleHandler.Draw(Camera);
                 
                 Camera.SetPersonVisible(true);
             }

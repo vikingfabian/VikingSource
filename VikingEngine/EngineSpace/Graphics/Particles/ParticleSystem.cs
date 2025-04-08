@@ -1,19 +1,12 @@
-#region File Description
-//-----------------------------------------------------------------------------
-// ParticleSystem.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
 
-#region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
-#endregion
+using VikingEngine.Engine;
+
 
 namespace VikingEngine.Graphics
 {
@@ -315,9 +308,7 @@ namespace VikingEngine.Graphics
 
             particleEffect = Engine.LoadContent.LoadShader("ParticleEffect"); //particleEffect.Clone();
             EffectParameterCollection parameters = particleEffect.Parameters;
-            effectViewParameter = parameters["View"];
-            effectProjectionParameter = parameters["Projection"];
-            effectViewportScaleParameter = parameters["ViewportScale"];
+           
             effectTimeParameter = parameters["CurrentTime"];
             updateParameters();
         }
@@ -326,6 +317,8 @@ namespace VikingEngine.Graphics
         {
 
             EffectParameterCollection parameters = particleEffect.Parameters;
+
+
 
             // Look up shortcuts for parameters that change every frame.
             
@@ -450,78 +443,31 @@ namespace VikingEngine.Graphics
         /// </summary>
         virtual public void Draw() //GraphicsDevice device)
         {
-            //GraphicsDevice device = GraphicsDevice;
-
-            // Restore the vertex buffer contents if the graphics device was lost.
-            //if (vertexBuffer_GPU.IsContentLost)
-            //{
-            //    vertexBuffer_GPU.SetData(particles_CPU);
-            //}
-
-            // If there are any particles waiting in the newly added queue,
+            
             // we'd better upload them to the GPU ready for drawing.
             if (firstNewParticle != firstFreeParticle)
             {
                 AddNewParticlesToVertexBuffer();
             }
+            
             drawParticleRange(firstActiveParticle, firstFreeParticle);
-            // If there are any active particles, draw them now!
-            //if (firstActiveParticle != firstFreeParticle)
-            //{
-            //    Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = settings.BlendState;
-            //    Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
-
-            //    // Set an effect parameter describing the viewport size. This is
-            //    // needed to convert particle sizes into screen space point sizes.
-            //    effectViewportScaleParameter.SetValue(new Vector2(0.5f / Engine.Draw.graphicsDeviceManager.GraphicsDevice.Viewport.AspectRatio, -0.5f));
-
-            //    // Set an effect parameter describing the current time. All the vertex
-            //    // shader particle animation is keyed off this value.
-            //    effectTimeParameter.SetValue(currentTime);
-
-            //    // Set the particle vertex and index buffer.
-            //    Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetVertexBuffer(vertexBuffer_GPU);
-            //    Engine.Draw.graphicsDeviceManager.GraphicsDevice.Indices = indexBuffer;
-
-            //    // Activate the particle effect.
-            //    foreach (EffectPass pass in particleEffect.CurrentTechnique.Passes)
-            //    {
-            //        pass.Apply();
-
-            //        if (firstActiveParticle < firstFreeParticle)
-            //        {
-            //            // If the active particles are all in one consecutive range,
-            //            // we can draw them all in a single call.
-            //            Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-            //                                         firstActiveParticle * 4, (firstFreeParticle - firstActiveParticle) * 4,
-            //                                         firstActiveParticle * 6, (firstFreeParticle - firstActiveParticle) * 2);
-            //        }
-            //        else
-            //        {
-            //            // If the active particle range wraps past the end of the queue
-            //            // back to the start, we must split them over two draw calls.
-            //            Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-            //                                         firstActiveParticle * 4, (settings.MaxParticles - firstActiveParticle) * 4,
-            //                                         firstActiveParticle * 6, (settings.MaxParticles - firstActiveParticle) * 2);
-
-            //            if (firstFreeParticle > 0)
-            //            {
-            //                Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-            //                                             0, firstFreeParticle * 4,
-            //                                             0, firstFreeParticle * 2);
-            //            }
-            //        }
-            //    }
-
-            //    // Reset some of the renderstates that we changed,
-            //    // so as not to mess up any other subsequent drawing.
-            //    Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            //}
-
+           
             drawCounter++;
            
         }
-
+        /// <summary>
+        /// Sets the camera view and projection matrices
+        /// that will be used to draw this particle system.
+        /// </summary>
+        public void SetCamera(AbsCamera camera)//Matrix view, Matrix projection)
+        {
+            EffectParameterCollection parameters = particleEffect.Parameters;
+            parameters["View"].SetValue(camera.ViewMatrix);
+            parameters["Projection"].SetValue(camera.Projection);
+            parameters["ViewportScale"].SetValue(new Vector2(0.5f / camera.aspectRatio, -0.5f));
+            //effectViewParameter.SetValue(Ref.draw.Camera.ViewMatrix);
+            //effectProjectionParameter.SetValue(Ref.draw.Camera.Projection);
+        }
         protected void drawParticleRange(int start, int end)
         {
             // If there are any active particles, draw them now!
@@ -535,7 +481,7 @@ namespace VikingEngine.Graphics
 
                 // Set an effect parameter describing the viewport size. This is
                 // needed to convert particle sizes into screen space point sizes.
-                effectViewportScaleParameter.SetValue(new Vector2(0.5f / Engine.Draw.graphicsDeviceManager.GraphicsDevice.Viewport.AspectRatio, -0.5f));
+                //effectViewportScaleParameter.SetValue(new Vector2(0.5f / Engine.Draw.graphicsDeviceManager.GraphicsDevice.Viewport.AspectRatio, -0.5f));
 
                 // Set an effect parameter describing the current time. All the vertex
                 // shader particle animation is keyed off this value.
@@ -633,18 +579,6 @@ namespace VikingEngine.Graphics
         #endregion
 
         #region Public Methods
-
-
-        /// <summary>
-        /// Sets the camera view and projection matrices
-        /// that will be used to draw this particle system.
-        /// </summary>
-        public void SetCamera()//Matrix view, Matrix projection)
-        {
-            effectViewParameter.SetValue(Ref.draw.Camera.ViewMatrix);
-            effectProjectionParameter.SetValue(Ref.draw.Camera.Projection);
-        }
-
 
     
         abstract protected LoadedEffect loadedEffect { get; }

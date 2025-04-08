@@ -1,15 +1,12 @@
 ﻿UPDATE
 -Change Log-
-* Beige
-* Changed the fonts
-* demo disables enemy descition making
-* gave the attacker armies max food
-* demo end game state on win or lose (untested)
-* removed the old debug menu that crashes the game
-* demo/tutorials blocks autosave
-* medium level water effect
-* redesign of all objects presentation hud
-* soldiers multiselect
+* Moving groups without blobbing
+* Attacking with groups preserves the army structure
+* Improved multiselect hud
+* Soldiers keep angle of command
+* Attack options in batteLab
+* Added induvidual rotation speed, and increased catapults some, and wheeled cannons rotate much faster
+* Turned off the music because it glitches out and I cant figure out why
 
 The demo should:
 -Lockout any extra content or modes.
@@ -21,8 +18,8 @@ The demo should:
 -You can either watch or interact, I call it "tourist mode"
 
 !! Known issues, that I am working on !!
+-Jamming guards in one spot will crash the game
 -The guards are hard to select
--The soldier micro kinda sucks
 -Mutliselect is not completed
 -Soldiers can be stuck on idle in battle
 -Cant move units between armies and garrisons

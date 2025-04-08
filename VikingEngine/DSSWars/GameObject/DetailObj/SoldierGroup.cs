@@ -508,9 +508,13 @@ namespace VikingEngine.DSSWars.GameObject
             if (isWalkingIntoOtherGroup)
             {
                 //queueu, holding position
-                if (waitTime > 3000)
+                if (waitTime > 10000)
                 {
-                    waitTime = -2000;
+                    waitTime = 0;
+                }
+                else if (waitTime > 3000)
+                {
+                    waitTime = -8000;
                 }
                 else if (waitTime < 0)
                 {
@@ -521,10 +525,10 @@ namespace VikingEngine.DSSWars.GameObject
                     move = false;
                 }
             }
-            else
-            {
-                waitTime = 0;
-            }
+            //else
+            //{
+            //    waitTime = 0;
+            //}
 
             if (move)
             {
@@ -1100,41 +1104,41 @@ namespace VikingEngine.DSSWars.GameObject
             return state == GroupState.Idle || state == GroupState.GoingIdle;
         }
 
-        void SoldiersPresentationHud(ObjectHudArgs args, bool tooltip)
+        
+        void SoldiersPresentationHud(ObjectHudArgs args, bool tooltipOrGroup, bool compact)
         {
-            args.content.Add(new RbBeginTitle(tooltip? 2 : 1));
+            args.content.Add(new RbBeginTitle(tooltipOrGroup? 2 : 1));
             args.content.Add(GetFaction().FlagTextureToHud());
             args.content.space(0.5f);
             TypeIcon(args.content);
             args.content.space(0.5f);
-            args.content.Add(new RbText(soldierConscript.conscript.TypeName(), tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+            args.content.Add(new RbText(soldierConscript.conscript.TypeName(), tooltipOrGroup ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space(1);
             args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
 
-
-            soldierConscript.conscript.toHud(args.content);
+            if (compact)
+            {
+                HudLib.BulletSeperationPoint(args.content);
+            }
+            else
+            {
+                soldierConscript.conscript.toHud(args.content, compact);
+                args.content.newLine();
+            }
+            args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            args.content.Add(new RbText(TextLib.TwoDecimal(strengthValue() / AllUnits.AverageGroupStrength)));
         }
 
         public override void toTooltip(ObjectHudArgs args)
         {
-            SoldiersPresentationHud(args, true);
+            SoldiersPresentationHud(args, true, false);
         }
 
         public override void toHud(ObjectHudArgs args)
         {
-            ////var typeData = typeSoldierData..conscript;
-            //args.content.Add(new RbBeginTitle(1));
-            //args.content.Add(GetFaction().FlagTextureToHud());
-            //TypeIcon(args.content);
-            //args.content.Add(new RbText(soldierConscript.conscript.TypeName(), HudLib.TitleColor_Head));
 
-            //args.content.space(1);
-            //args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
-
-
-            //soldierConscript.conscript.toHud(args.content);
-            SoldiersPresentationHud(args, false);
+            SoldiersPresentationHud(args, false, false);
 
 #if DEBUG
             args.content.newLine();
@@ -1149,9 +1153,8 @@ namespace VikingEngine.DSSWars.GameObject
                     var button = new ArtOption(w == army.armyColumnWidth, 
                         new List<AbsRichBoxMember> { new RbText(w.ToString()) },
                         new RbAction1Arg<int>(army.armyColumnWidthClick, w, SoundLib.menu));
-                    //button.setGroupSelectionColor(HudLib.RbSettings, );
+                    
                     args.content.Add(button);
-                    //args.content.space();
                 }
 
                 args.content.newParagraph();
@@ -1196,21 +1199,14 @@ namespace VikingEngine.DSSWars.GameObject
                     },
                         new RbAction2Arg<int, int>(setNewArmyPlacement, colX, rowY), null);
 
-                        //button.setGroupSelectionColor(HudLib.RbSettings, );
                         args.content.Add(button);
                     }
 
                 }
                 args.content.Add(new RbSeperationLine());
             }
-            //args.content.Button("debug tag", new HUD.RichBox.RbAction(AddDebugTag), null, true);
-
             
             args.content.newLine();
-            //if (args.selected && GetFaction() == args.player.faction)
-            //{
-            //    new Display.GroupMenu(args.player, this, args.content);
-            //}
         }
 
         void setNewArmyPlacement(int colX, int rowY)
@@ -1365,10 +1361,19 @@ namespace VikingEngine.DSSWars.GameObject
             else if (rotate)
             {
                 //final adjust when reached goal
-                if (rotateTowardsAngle(finalRotation, time))
+                if (command != null && command.goalRotation != float.MinValue)
                 {
-                    //hasWalkingOrder = false;
-                    return true;
+                    if (rotateTowardsAngle(command.goalRotation, time))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (rotateTowardsAngle(finalRotation, time))
+                    {
+                        return true;
+                    }
                 }
             }
             else
@@ -1652,6 +1657,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return 3.5f;
             }
 
+            command?.asyncUpdate(this);
         }
 
         float distanceValueTo(AbsGroup toGroup, float maxRange)
@@ -1919,6 +1925,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        virtual public float GroupMoveBoundRadius()
+        {
+            return DssVar.SoldierGroup_Spacing_Radius;
+        }
+
         //void setObjective(int objective)
         //{
         //    if (objective != groupObjective)
@@ -2169,10 +2180,12 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public override bool aliveAndBelongTo(int faction)
         {
-
             return soldierCount > 0;
         }
-
+        public override bool defeated()
+        {
+            return soldierCount <= 0;
+        }
         public bool canMoveTo(IntVector2 from, IntVector2 to)
         {
             return true;
@@ -2393,20 +2406,22 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void toGroupHud(RichBoxContent content)
         {
-            string name = Name(out _);
+            //string name = Name(out _);
 
-            if (name != null)
-            {
-                content.text(name).overrideColor = Color.LightYellow;
-                content.newLine();
-            }
+            //if (name != null)
+            //{
+            //    content.text(name).overrideColor = Color.LightYellow;
+            //    content.newLine();
+            //}
 
-            content.Add(new RbBeginTitle());
-            content.Add(GetFaction().FlagTextureToHud());
-            content.Add(new RbText(TypeName()));
-
-            content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-            content.Add(new RbText(TextLib.OneDecimal(strengthValue() / AllUnits.AverageGroupStrength)));
+            //content.Add(new RbBeginTitle());
+            //content.Add(GetFaction().FlagTextureToHud());
+            //content.space(0.5f);
+            //content.Add(new RbText(soldierConscript.conscript.TypeName(), HudLib.TitleColor_TypeName));
+            //content.space(0.5f);
+            //content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            SoldiersPresentationHud(new ObjectHudArgs(content), true, true);
+            
         }
     }    
 

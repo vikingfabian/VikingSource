@@ -44,7 +44,11 @@ namespace VikingEngine.DSSWars.Display
             }
             else if (player.diplomacyMap == null && !player.gameControls.input.mousePan.IsDown)
             {
-                if (player.gameControls.mapControls.hover.isNew 
+                if (player.gameControls.mapControls.HasRectangleSelect())
+                {
+                    hoverTip(player, player.gameControls.mapControls.hover.obj);
+                }
+                else if (player.gameControls.mapControls.hover.isNew 
                     || player.gameControls.mapControls.hover.subTile.isNew 
                     || refreshTime)
                 {

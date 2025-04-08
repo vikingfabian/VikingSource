@@ -362,7 +362,7 @@ namespace VikingEngine.Engine
 
             Draw3d(0, 0);
 
-            ParticleHandler.Draw();
+            ParticleHandler.Draw(Camera);
            
             Draw2d(0);
         }

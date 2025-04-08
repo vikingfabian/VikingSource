@@ -586,6 +586,16 @@ namespace VikingEngine
             return result;
         }
 
+        public static Vector2 Reflect(Vector2 inDirection, Vector2 inNormal)
+        {
+            //vectorB = vectorA - 2(vectorA dot normal)
+
+            //return vectorA - Vector2.Dot(vectorA, normal);
+            //return 2 * Vector2.Dot(v, axis) * axis - v;
+
+            return inDirection - 2 * inNormal * Vector2.Dot(inDirection, inNormal);
+        }
+
         public static Vector2 RotateVector(Vector2 vector, float rotation, Vector2 addToOrigo)
         {
             return new Vector2(

@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.NPC;
@@ -18,9 +19,11 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 {
     class BattleLabPlayer : Players.LocalPlayer
     {
+        const int BothPlayers = 2;
         public bool StartState = true;
-        int selectedPlayer = 2;
+        int selectedPlayer = BothPlayers;
         ItemResourceType selectedWeapon = ItemResourceType.Sword;
+        int attackingPlayer = 0;
         Army friendlyArmy, enemyArmy;
         public BattleLabPlayer(Faction faction)
             : base(faction)
@@ -30,24 +33,29 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         public override bool updateObjectDisplay()
         {
-
+            hud.objMenu.createMenu(this);
             RichBoxContent content = new RichBoxContent();
 
-            content.h1("Battle lab", HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.Lobby_Mode_BattleLab, HudLib.TitleColor_Head);
 
             content.newLine();
             if (StartState)
             {
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Start battle here") },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Start battle here") },
                     new RbAction(beginBattleSetup)));
             }
             else
             {
-                ArtTabMember playerTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText(this.Name) });
-                ArtTabMember enemyTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText(DssRef.lang.FactionName_DarkLord) });
-                ArtTabMember bothTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText("Both") });
+                List<ArtTabMember> tabs = new List<ArtTabMember>();
+                for (int i = 0; i < 3; i++)
+                {
+                    tabs.Add(new ArtTabMember(new List<AbsRichBoxMember> { new RbText(PlayerOptionName(i)) }));
+                }
+                //ArtTabMember playerTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText(this.Name) });
+                //ArtTabMember enemyTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText(DssRef.lang.FactionName_DarkLord) });
+                //ArtTabMember bothTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText("Both") });
 
-                content.Add(new ArtTabgroup(new List<ArtTabMember> { playerTab, enemyTab, bothTab }, selectedPlayer,
+                content.Add(new ArtTabgroup(tabs, selectedPlayer,
                     new Action<int>((int ix) => { selectedPlayer = ix; })));
 
                 var weapons_groups =  ConscriptMenu.AllConstriptWeapons();
@@ -69,12 +77,42 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
                 content.newParagraph();
                 content.Add(new RbSeperationLine());
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Start battle") }, new RbAction1Arg<bool>(startBattle, false)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Start battle") }, new RbAction1Arg<bool>(startBattle, false)));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPauseIcon) }, new RbAction1Arg<bool>(startBattle, true)));
-            }
 
+                content.newParagraph();
+                DropDownBuilder attackerOptions = new DropDownBuilder("attacker");
+                {
+                    for (int i = -1; i < 3; i++)
+                    {
+                        attackerOptions.AddOption(PlayerOptionName(i), i == attackingPlayer, i == 0, new RbAction1Arg<int>((int player) => { attackingPlayer = player; }, i), null);
+                    }
+                    attackerOptions.Build(content, SpriteName.WarsBattleIcon, "Attacker", hud.objMenu.menu);
+                }
+
+                
+            }
             hud.objMenu.refresh(this, content);
+            
             return true;
+        }
+
+        string PlayerOptionName(int player)
+        {
+                switch (player)
+                {
+                    case -1:
+                        return DssRef.todoLang.Hud_None;
+
+                    case 0:
+                        return this.Name;
+                    case 1:
+                        return DssRef.lang.FactionName_DarkLord;
+
+                    default:
+                        return "Both";
+
+                }
         }
 
         void selectWeapon(ItemResourceType item)
@@ -152,9 +190,15 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             Ref.SetPause(paused);
             StartState = true;
 
-          
 
-            friendlyArmy.Order_Attack(enemyArmy);
+            if (attackingPlayer == 0 || attackingPlayer == BothPlayers)
+            {
+                friendlyArmy.Order_Attack(enemyArmy);
+            }
+            if (attackingPlayer == 1 || attackingPlayer == BothPlayers)
+            {
+                enemyArmy.Order_Attack(friendlyArmy);
+            }
         }
     }
 }

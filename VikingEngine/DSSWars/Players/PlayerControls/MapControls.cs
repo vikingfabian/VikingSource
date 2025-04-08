@@ -320,6 +320,10 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public bool HasRectangleSelect()
+        { 
+            return rectangleLines != null;
+        }
 
         void rectangleSelectUpdate()
         {          

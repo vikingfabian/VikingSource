@@ -342,6 +342,12 @@ namespace VikingEngine
             { list.RemoveAt(list.Count - 1); }
         }
 
+        public static void RemoveCurrentInForwardLoop<T>(List<T> list, ref int i)
+        {
+            list.RemoveAt(i);
+            i--;
+        }
+
         public static void SetMaxLength<T>(List<T> list, int max)
         {
             while (list.Count > max)

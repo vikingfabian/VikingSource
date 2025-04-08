@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             //walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
             //ArmySpeedBonusLand = -0.5;
-            rotationSpeed = StandardRotatingSpeed * 0.04f;
+            //rotationSpeed = SoldierGroupStandardRotatingSpeed * 0.04f;
             
             targetSpotRange = BallistaRange + StandardTargetSpotRange;
             

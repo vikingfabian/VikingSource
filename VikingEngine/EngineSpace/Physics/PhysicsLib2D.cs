@@ -37,6 +37,17 @@ namespace VikingEngine.Physics
                 (myRadius + otherRadius);
         }
 
+        public static bool CirkleIntersect(
+           Vector2 myPosXZ, float myRadius,
+           Vector2 otherPosXZ, float otherRadius, out float intersect)
+        {
+            float x = myPosXZ.X - otherPosXZ.X;
+            float y = myPosXZ.Y - otherPosXZ.Y;
+            float dist = (float)Math.Sqrt(x * x + y * y);
+            intersect = -dist + (myRadius + otherRadius);
+            return intersect > 0;
+        }
+
         public static bool MinRadiusColl(AbsBound2D obj1, AbsBound2D obj2)
         {
             float radius = obj1.InnerCirkleRadius + obj2.InnerCirkleRadius;

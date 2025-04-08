@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars
                     
                     
                     Draw3d(UnitDetailLayer, cameraIndex);
-                    Engine.ParticleHandler.Draw();
+                    Engine.ParticleHandler.Draw(p.view.Camera);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     break;
 

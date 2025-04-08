@@ -423,6 +423,8 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                     soldierData.hasBannerMan = false;
+
+                    soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
                     break;
 
                 case ItemResourceType.Manuballista:
@@ -449,6 +451,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                     soldierData.hasBannerMan = false;
+                    soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
                     break;
 
                 case ItemResourceType.Catapult:
@@ -477,6 +480,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
                     soldierData.hasBannerMan = false;
+                    soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
                     break;
 
                 case ItemResourceType.SiegeCannonBronze:
@@ -506,6 +510,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
                     soldierData.hasBannerMan = false;
                     soldierData.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 2.4f);
+                    soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
                     break;
 
                 case ItemResourceType.ManCannonBronze:
@@ -534,6 +539,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.hasBannerMan = false;
 
                     soldierData.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 1.1f);
+                    soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_Wheels;
                     break;
 
                 case ItemResourceType.SiegeCannonIron:
@@ -562,6 +568,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                     soldierData.hasBannerMan = false;
                     soldierData.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 0.3f);
+                    soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
                     break;
 
                 case ItemResourceType.ManCannonIron:
@@ -589,6 +596,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                     soldierData.hasBannerMan = false;
                     soldierData.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 1f);
+                    soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_Wheels;
                     break;
 
                 case ItemResourceType.RoseWarrior_soldier:

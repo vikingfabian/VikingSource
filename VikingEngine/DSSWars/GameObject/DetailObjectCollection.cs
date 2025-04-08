@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
@@ -63,11 +59,18 @@ namespace VikingEngine.DSSWars.GameObject
 
             for (int i = 0; i < objects.Count; ++i)
             {
-                args.content.newLine();
-                objects[i].toGroupHud(args.content);
-                if (i < objects.Count - 1)
+                if (objects[i].defeated())
                 {
-                    args.content.Add(new RbSeperationLine());
+                    arraylib.RemoveCurrentInForwardLoop(objects, ref i);
+                }
+                else
+                {
+                    args.content.newLine();
+                    objects[i].toGroupHud(args.content);
+                    if (i < objects.Count - 1)
+                    {
+                        args.content.Add(new RbSeperationLine());
+                    }
                 }
             }
         }

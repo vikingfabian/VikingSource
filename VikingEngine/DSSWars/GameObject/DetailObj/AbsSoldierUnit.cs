@@ -616,7 +616,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     state.walking = true;
                     state.rotating = true;
-                    rotateTowards(attackTarget, SoldierProfile().rotationSpeed);
+                    rotateTowards(attackTarget, soldierData.rotationSpeed);
                 }
             }
         }
@@ -624,7 +624,7 @@ namespace VikingEngine.DSSWars.GameObject
         void updateTurn()
         {
             float diff = rotation.AngleDifference(goalRotation);
-            float speed = SoldierProfile().rotationSpeed * Ref.DeltaGameTimeSec;
+            float speed = soldierData.rotationSpeed * Ref.DeltaGameTimeSec;
 
             if (Math.Abs(diff) > speed)
             {
@@ -695,7 +695,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     else
                     {
-                        rotateTowards(attackTarget, SoldierProfile().rotationSpeed);
+                        rotateTowards(attackTarget, soldierData.rotationSpeed);
                         state.walking = false;
                     }
                 }
@@ -731,7 +731,7 @@ namespace VikingEngine.DSSWars.GameObject
                     case HasTargetInReach.MustRotate:
                         state.walking = true;
                         state.rotating = true;
-                        rotateTowards(attackTarget, SoldierProfile().rotationSpeed);
+                        rotateTowards(attackTarget, soldierData.rotationSpeed);
                         break;
                     case HasTargetInReach.MustWalk:
                         if (mayMove)
@@ -740,7 +740,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else
                         {
-                            rotateTowards(attackTarget, SoldierProfile().rotationSpeed);
+                            rotateTowards(attackTarget, soldierData.rotationSpeed);
                             state.walking = false;
                         }
                         break;
@@ -1051,7 +1051,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         //Stand still and rotate
                         //state2 = SoldierState2.rotating;
-                        float rotationSpeed = Math.Min(SoldierProfile().rotationSpeed * Ref.DeltaGameTimeSec, abs_anglediff);
+                        float rotationSpeed = Math.Min(soldierData.rotationSpeed * Ref.DeltaGameTimeSec, abs_anglediff);
                         rotation.Add(lib.ToLeftRight(anglediff) * rotationSpeed);
                         //state.walking = false;
                         //state.rotating = true;
@@ -1153,7 +1153,7 @@ namespace VikingEngine.DSSWars.GameObject
         void rotateToAngle(float goalAngle)
         {
             float diff = rotation.AngleDifference(goalAngle);
-            float speed = SoldierProfile().rotationSpeed * Ref.DeltaGameTimeSec;
+            float speed = soldierData.rotationSpeed * Ref.DeltaGameTimeSec;
 
             if (Math.Abs(diff) > speed)
             {

@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars
         public static float StandardBoundRadius;
         public static float DefaultGroupSpacing;
         public static float SoldierGroup_Spacing;
+        public static float SoldierGroup_Spacing_Radius;
         public static float SoldierGroup_CollisionRadius;
         public static float SoldierGroup_MoveCollisionRadius;
 
@@ -28,6 +29,7 @@ namespace VikingEngine.DSSWars
             StandardBoundRadius = 0.4f * DssConst.Men_StandardModelScale;
             DefaultGroupSpacing = StandardBoundRadius * 2.5f;
             SoldierGroup_Spacing = DssConst.SoldierGroup_RowWidth * DefaultGroupSpacing * 1.15f;
+            SoldierGroup_Spacing_Radius = SoldierGroup_Spacing * 0.5f;
             SoldierGroup_CollisionRadius = DssConst.SoldierGroup_RowWidth * DefaultGroupSpacing * 0.45f;
             SoldierGroup_MoveCollisionRadius = SoldierGroup_CollisionRadius * 0.6f;
 

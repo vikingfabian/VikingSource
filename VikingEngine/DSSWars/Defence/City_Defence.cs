@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var defence = defenceBuildings[closestIx];
                         if (inRender_detailLayer)
                         {
-                            new MoveCommand(group, defence.WorldPos(), false);
+                            new MoveCommand(group, defence.WorldPos(), float.MinValue, false);
                             new EnterPostCommand(group, defence.idAndPosition, true).claimPost(group, this, closestIx);
                         }
                         else

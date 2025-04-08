@@ -46,12 +46,20 @@ namespace VikingEngine.DSSWars.Display
         public Players.LocalPlayer player;
         public bool selected;
         //public HUD.RichBox.RichboxGui gui;
-        public ObjectHudArgs(/*HUD.RichBox.RichboxGui gui,*/ HUD.RichBox.RichBoxContent content, Players.LocalPlayer player, bool selected)
+        public ObjectHudArgs(HUD.RichBox.RichBoxContent content, Players.LocalPlayer player, bool selected)
         {
             //this.gui = gui; 
             this.content = content;
             this.player = player;
             this.selected = selected;
+        }
+
+        public ObjectHudArgs(HUD.RichBox.RichBoxContent content)
+        {
+            //this.gui = gui; 
+            this.content = content;
+            this.player = null;
+            this.selected = false;
         }
 
         public bool ShowFull => player.hud.detailLevel == HudDetailLevel.Normal;

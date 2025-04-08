@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.GameObject
             //soldierData.convertSoldierShipType = shipUnitType;
 
             //walkingSpeed = DssConst.Men_StandardShipSpeed;
-            rotationSpeed = StandardRotatingSpeed * 0.4f;
+            //rotationSpeed = SoldierGroupStandardRotatingSpeed * 0.4f;
             //attackDamage = soldierData.attackDamageSea;
             //attackDamageSea = soldierData.attackDamageSea;
             //attackDamageStructure = soldierData.attackDamageStructure;

@@ -2,15 +2,15 @@
 // LightParticleEffect.fx
 //-----------------------------------------------------------------------------
 
-	#if OPENGL
-	#define SV_POSITION POSITION
-	#define VS_SHADERMODEL vs_3_0
-	#define PS_SHADERMODEL ps_3_0
-	#else
-	#define VS_SHADERMODEL vs_4_0_level_9_1
-	#define PS_SHADERMODEL ps_4_0_level_9_1
-	#endif
-// Camera parameters.
+#if OPENGL
+#define SV_POSITION POSITION
+#define VS_SHADERMODEL vs_3_0
+#define PS_SHADERMODEL ps_3_0
+#else
+#define VS_SHADERMODEL vs_4_0_level_9_1
+#define PS_SHADERMODEL ps_4_0_level_9_1
+#endif
+
 float4x4 View;
 float4x4 Projection;
 float2 ViewportScale;
@@ -188,18 +188,6 @@ VertexShaderOutput ParticleVertexShader(VertexShaderInput input)
 // Pixel shader for drawing particles.
 float4 ParticlePixelShader(VertexShaderOutput input) : COLOR0
 {
-	//float4 outCol = tex2D(Sampler, input.TextureCoordinate);
-	//if (outCol.a  < 1)
-	//{
-		//outCol.r *= outCol.a;		
-		//outCol.g *= outCol.a;		
-		//outCol.b *= outCol.a;
-		
- 	//	clip(outCol.a - 0.3);
-	//}
-	//return outCol;
-    
-    //return input.Color;
     return tex2D(Sampler, input.TextureCoordinate) * input.Color;
 }
 

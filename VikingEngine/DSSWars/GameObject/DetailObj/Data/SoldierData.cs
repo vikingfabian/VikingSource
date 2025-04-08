@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
     {
         public int basehealth=0;
         public bool arrowWeakness = false;
-        public AttackType mainAttack=0;
+        public AttackType mainAttack = 0;
         public AttackType secondaryAttack = 0;
         //public int defaultArmyPlacement;
         public int bonusProjectiles = 0;
@@ -29,8 +29,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public SpriteName icon = SpriteName.MissingImage;
         public bool hasBannerMan = true;
 
-        public int defaultArmyPlacement =0;
+        public int defaultArmyPlacement = 0;
         public float energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep;
+        public float rotationSpeed= DssConst.SoldierGroupStandardRotatingSpeed;
         public float walkingSpeed = DssConst.Men_StandardWalkingSpeed;
         public bool canAttackCharacters = true;
         public bool canAttackStructure = true;

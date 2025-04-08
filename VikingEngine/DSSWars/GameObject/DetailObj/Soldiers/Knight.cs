@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.GameObject
             attackFrame = 1;
             
             //ArmySpeedBonusLand = 0.8;
-            rotationSpeed = StandardRotatingSpeed * 2f;
+            //rotationSpeed = SoldierGroupStandardRotatingSpeed * 2f;
             targetSpotRange = StandardTargetSpotRange;
                         
             

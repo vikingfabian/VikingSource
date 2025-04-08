@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Display
             diplomacy = new DiplomacyDisplay(player);
         }
 
-        void createMenu(LocalPlayer player, bool highOpacity = true)
+        public void createMenu(LocalPlayer player, bool highOpacity = true)
         {
             if (menu == null)
             {
@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Display
 
         public void refresh(Players.LocalPlayer player, RichBoxContent content)
         {
-            createMenu(player);
+            //createMenu(player);
             menu.Refresh(content);
         }
 
