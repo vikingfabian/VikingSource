@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Data
                 new Sound.SongData(FilePath + "Epic Shadows of the Fallen","Epic Shadows of the Fallen", false, 0.5f),
                 new Sound.SongData(FilePath + "Guitar Shadows of the Fallen","Guitar Shadows of the Fallen", false, 0.6f),
                 new Sound.SongData(FilePath + "Legends of Valor","Legends of Valor", false, 0.4f),
-
+                new Sound.SongData(FilePath + "A History of Cubes - Gameplay Edit","A History of Cubes - Gameplay Edit by Rymdreglage", false, 4f),
             };
         }
 

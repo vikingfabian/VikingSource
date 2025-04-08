@@ -13,15 +13,15 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME;DEMO</DefineConstants>
+    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME;DEMO</DefineConstants>
+    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME;DEMO</DefineConstants>
+    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -88,9 +88,9 @@
 	</EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.3" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\DSS\BattleLab\" />

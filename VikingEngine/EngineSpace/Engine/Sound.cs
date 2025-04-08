@@ -8,18 +8,19 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Threading.Tasks;
 
 namespace VikingEngine.Engine
 {
     static class Sound
     {
-        static Song currentSong = null;
+        
 
         public const float SterioUnitReduction = 0.05f;
         public const float SterioMaxDist = 64;
 
         public static bool MuteSound = false;
-        public static bool MediaPlayerError = false;
+        
         
         static float stackVolume = SoundStandardVolume;
 
@@ -224,29 +225,6 @@ namespace VikingEngine.Engine
             get { return Microsoft.Xna.Framework.Media.MediaPlayer.State == Microsoft.Xna.Framework.Media.MediaState.Playing; }
         }
 
-        public static int PlayMusic(Song s, bool loop)
-        {
-            if (s != null)
-            {
-                try
-                {
-                    MediaPlayer.Stop();
-                    currentSong = s;
-                    MediaPlayer.Play(s);
-                    MediaPlayer.IsRepeating = loop;
-                    return (int)s.Duration.TotalMilliseconds;
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e.Message);
-                    MediaPlayerError = true;
-                }
-            }
-            return 0;
-        }
-        public static void StopMusic()
-        {
-            MediaPlayer.Stop();
-        }
+       
     }
 }

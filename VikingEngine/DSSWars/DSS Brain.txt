@@ -25,6 +25,7 @@ The demo should:
 -Cant move units between armies and garrisons
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
 -Can sometimes show the wrong city on the hud
+-Songs can get stuck in loops
 
 #Free build defences
  Rock thrower
