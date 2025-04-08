@@ -318,6 +318,10 @@ namespace VikingEngine.DSSWars
                 btn.fillWidth = true;
                 content.Add(btn);
             }
+            content.newLine();
+           
+            content.Add(new RbButton(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Mode_BattleLab) },
+                            new RbAction(startBattleLab), new RbTooltip_Text(DssRef.todoLang.Lobby_Mode_BattleLab_Description)));
 
             //if (Ref.steam.isInitialized)
             //{
