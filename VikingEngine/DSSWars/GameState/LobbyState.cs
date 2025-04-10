@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars
 
         void load_asynch()
         {
-            bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");//"dss_bg");
+            bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
             new Timer.Action0ArgTrigger(loadingComplete);
         }
 

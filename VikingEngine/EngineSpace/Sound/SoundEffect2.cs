@@ -166,13 +166,23 @@ namespace VikingEngine.Sound
         {
             ins = file.CreateInstance();
             ins.IsLooped = true;
-            ins.Volume = Ref.gamesett.AmbientVol() * basevolume * volume;
+            ins.Volume = Bound.Max(Ref.gamesett.AmbientVol() * basevolume * volume, 1f);
             ins.Play();
         }
 
         public void Stop()
         {
-            ins.Stop();
+            ins?.Stop();
+        }
+
+        public void StopAndUnload()
+        {
+            if (ins != null)
+            {
+                ins.Stop();
+                ins.Dispose();
+                ins = null;
+            }
         }
 
         public void Load(LoopingSoundData data)
@@ -184,24 +194,34 @@ namespace VikingEngine.Sound
         public void setVolume(float volume)
         {
             this.volume = volume;
-            if (ins != null)
+            if (ins == null)
+            {
+                if (volume > 0)
+                {
+                    Play();
+                }
+            }
+            else
             {
                 if (volume <= 0)
                 {
                     if (ins.State == SoundState.Playing)
                     {
-                        ins.Pause();
+                        ins.Stop();
+                        ins.Dispose();
+                        ins = null;
                     }
                 }
                 else
                 {
                     ins.Volume = Bound.Max( Ref.gamesett.AmbientVol() * basevolume * volume, 1f);
-                    if (ins.State == SoundState.Paused)
-                    {
-                        ins.Resume();
-                    }
+                    //if (ins.State == SoundState.Paused)
+                    //{
+                    //    ins.Resume();
+                    //}
                 }
             }
         }
+
     }
 }

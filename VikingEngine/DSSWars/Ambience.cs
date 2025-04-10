@@ -16,6 +16,8 @@ namespace VikingEngine.DSSWars
     /// </summary>
     class Ambience
     {
+        //const bool BlockAmbience = true;
+
         static readonly string AmbienceDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "ambience" + DataStream.FilePath.Dir;
 
         static readonly string BattleDir = AmbienceDir + "battle" + DataStream.FilePath.Dir;
@@ -187,6 +189,7 @@ namespace VikingEngine.DSSWars
         float musicReduceFade = 1f;
         public Ambience()
         {
+            
             nearLoop = new AmbientSoundLoop();
             farLoop = new AmbientSoundLoop();
             seaLoop = new AmbientSoundLoop();
@@ -194,6 +197,7 @@ namespace VikingEngine.DSSWars
         }
         public void contentLoad()
         {
+            
             nearLoop.contentLoad(WindMid, new IntervalF(5, 20),
                 MelodyGeneral, new IntervalF(5, 20));
 
@@ -208,6 +212,7 @@ namespace VikingEngine.DSSWars
         }
         public void update_async()
         {
+            
             IntVector2 tileCenter = WP.ToTilePos( DssRef.state.culling.players[0].MapCenter);
             Tile onTile = DssRef.world.tileGrid.Get(tileCenter);                      
 
@@ -322,13 +327,14 @@ namespace VikingEngine.DSSWars
 
         public void gameStart()
         {
-            nearLoop.Play();
-            farLoop.Play();
-            seaLoop.Play();
-            battleLoop.Play();
+            //nearLoop.Play();
+            //farLoop.Play();
+            //seaLoop.Play();
+            //battleLoop.Play();
         }
         public void gameEnd()
         {
+            
             nearLoop.stop();
             farLoop.stop();
             seaLoop.stop();
@@ -350,7 +356,7 @@ namespace VikingEngine.DSSWars
         Time nextNearSoundLoad = new Time(2f, TimeUnit.Seconds);
         SoundLoadingState loadingState = SoundLoadingState.None;
 
-        public void contentLoad(LoopingSoundData[] soundList, IntervalF playTime_sound, 
+        public void contentLoad(LoopingSoundData[] soundList, IntervalF playTime_sound,
             LoopingSoundData[] melodyList, IntervalF playTime_melody)
         {
             this.soundList = soundList;
@@ -389,7 +395,7 @@ namespace VikingEngine.DSSWars
                         }
                     }
                     break;
-                
+
                 case SoundLoadingState.Complete:
                     {
                         nextSound = loadingSound;
@@ -410,7 +416,7 @@ namespace VikingEngine.DSSWars
                         }
 
                         //Longer melodies when there is more danger
-                        
+
                         newSoundFade = 0;
                         loadingState = SoundLoadingState.FadeIn;
                     }
@@ -420,7 +426,7 @@ namespace VikingEngine.DSSWars
                     if (newSoundFade >= 1)
                     {
                         newSoundFade = 0;
-                        currentSound.Stop();
+                        currentSound.StopAndUnload();
                         currentSound = nextSound;
                         loadingState = SoundLoadingState.None;
                     }
@@ -475,8 +481,13 @@ namespace VikingEngine.DSSWars
 
         public void stop()
         {
-            currentSound.Stop();
+            currentSound?.StopAndUnload();
+            nextSound?.StopAndUnload();
         }
+        //public void stopAndUnload()
+        //{
+            
+        //}
     }
 
     enum SoundLoadingState
