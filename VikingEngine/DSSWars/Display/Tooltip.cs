@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Display
         Vector2 size;
         public static int tooltip_id = int.MinValue;
         public static float tooltip_id_timestampsec;
-        public void updateMapTip(Players.LocalPlayer player, bool refreshTime)
+        public void updateMapTip(Players.LocalPlayer player, bool refreshTime, bool aboveMouse)
         {
             //if (current_menuToolTip && images.HasMembers)
             //{
@@ -46,7 +46,14 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (player.gameControls.mapControls.HasRectangleSelect())
                 {
-                    hoverTip(player, player.gameControls.mapControls.hover.obj);
+                    if (player.gameControls.mapControls.hover.obj != null)
+                    {
+                        hoverTip(player, player.gameControls.mapControls.hover.obj);
+                    }
+                    else
+                    {
+                        images.DeleteAll();
+                    }
                 }
                 else if (player.gameControls.mapControls.hover.isNew 
                     || player.gameControls.mapControls.hover.subTile.isNew 
@@ -83,10 +90,10 @@ namespace VikingEngine.DSSWars.Display
                     images.DeleteAll();
                 }
             }
-            baseUpdate(player, false);
+            baseUpdate(player, false, aboveMouse);
         }
 
-        void baseUpdate(Players.LocalPlayer player, bool menuToolTip)
+        void baseUpdate(Players.LocalPlayer player, bool menuToolTip, bool aboveMouse)
         {
             if (images.HasMembers)
             {
@@ -109,7 +116,18 @@ namespace VikingEngine.DSSWars.Display
                 }
                 else
                 {
-                    Vector2 offset = Input.Mouse.Position + Engine.Screen.SmallIconSizeV2;
+                    Vector2 offset = Input.Mouse.Position;// + Engine.Screen.SmallIconSizeV2;
+                    offset.X += Engine.Screen.SmallIconSize;
+                    if (aboveMouse)
+                    {
+                        offset.Y -= 5 + size.Y;
+                    }
+                    else
+                    {
+                        offset.Y += Engine.Screen.SmallIconSize;
+                    }
+                    
+
                     Vector2 maxPos = offset + size;
 
                     if (maxPos.X > Engine.Screen.SafeArea.Right)
@@ -121,6 +139,7 @@ namespace VikingEngine.DSSWars.Display
                     {
                         offset.Y = Engine.Screen.SafeArea.Bottom - size.Y;
                     }
+                    
 
                     images.SetOffset(offset);
                 }                
@@ -135,7 +154,7 @@ namespace VikingEngine.DSSWars.Display
             }
             else
             {
-                baseUpdate(player, hoversButton);
+                baseUpdate(player, hoversButton, false);
             }
         }
 
@@ -464,13 +483,13 @@ namespace VikingEngine.DSSWars.Display
             //Graphics.Image bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size,
             //    ImageLayers.Lay4);
             //bg.ColorAndAlpha(Color.Black, 0.95f);
-            //size = area.Size;
+            size = area.Size;
 
             //images.Add(bg);
 
             images.Add(richBox);
 
-            baseUpdate(player, menuToolTip);
+            baseUpdate(player, menuToolTip, false);
 
             //++tooltip_id_timesec;
             //if (this.tooltip_id != tooltip_id)

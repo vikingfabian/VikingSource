@@ -62,16 +62,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {            
 
             bool hudState = false;
-
+            bool uiRefresh = false;
             if (!mapControls.overridingDrag())
             {
-                player.hud.update();
+                player.hud.update(out uiRefresh);
                 hudState = player.hud.mouseOverHud;
             }
 
             if (hudState)
             {
                 mapControls.leftFocusUpdate();
+                player.hud.updateToolTip_menu(uiRefresh);
             }
             else
             {
@@ -97,6 +98,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         mapExecute();
                     }
+                }
+
+                if (mapControls.HasRectangleSelect())
+                {
+                    player.hud.updateToolTip_multiselect(true, mapControls.RectangleSelect_ToolipAboveMouse());
+                }
+                else
+                {
+                    player.hud.updateToolTip_map(uiRefresh);
                 }
             }
 

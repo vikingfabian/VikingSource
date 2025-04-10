@@ -325,6 +325,11 @@ namespace VikingEngine.DSSWars.Players
             return rectangleLines != null;
         }
 
+        public bool RectangleSelect_ToolipAboveMouse()
+        { 
+            return rectangleBound.currentPointerPos.Y < rectangleBound.pointerDownPos.Y;
+        }
+
         void rectangleSelectUpdate()
         {          
 
