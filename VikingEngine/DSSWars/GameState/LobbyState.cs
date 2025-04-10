@@ -323,19 +323,6 @@ namespace VikingEngine.DSSWars
             content.Add(new RbButton(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Mode_BattleLab) },
                             new RbAction(startBattleLab), new RbTooltip_Text(DssRef.todoLang.Lobby_Mode_BattleLab_Description)));
 
-            //if (Ref.steam.isInitialized)
-            //{
-            //    content.newLine();
-            //    var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.todoLang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIcon) }, new RbAction(() =>
-            //    {
-            //        SteamAPI.SteamFriends().ActivateGameOverlayToStore(
-            //        3585100,
-            //        EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
-            //    }), null, true);
-            //    wishlistBtn.overrideBgColor = Color.Green;
-            //    wishlistBtn.fillWidth = true;
-            //    content.Add(wishlistBtn);
-            //}
             HudLib.WishListButton(content);
 
             {
@@ -433,12 +420,6 @@ namespace VikingEngine.DSSWars
             }
 
             topMenu.Refresh(content);
-
-            //if (Ref.gamesett.language == LanguageType.NONE)
-            //{
-            //    openUnderMenu(, false);
-            //    selectLanguageMenu2();
-            //}
         }
 
         void beginDemoTutorial(bool bShort)

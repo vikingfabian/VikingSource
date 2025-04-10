@@ -1,14 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Moving groups without blobbing
-* Attacking with groups preserves the army structure
-* Improved multiselect hud
-* Soldiers keep angle of command
-* Attack options in batteLab
-* Opened up battle lab for testing
-* Added induvidual rotation speed, and increased catapults some, and wheeled cannons rotate much faster
-* Turned off the music because it glitches out and I cant figure out why
-
+* multiselect tooltip
 
 The demo should:
 -Lockout any extra content or modes.
