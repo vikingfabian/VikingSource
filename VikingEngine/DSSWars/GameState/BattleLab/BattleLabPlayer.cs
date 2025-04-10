@@ -19,12 +19,9 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 {
     class BattleLabPlayer : Players.LocalPlayer
     {
-        const int BothPlayers = 2;
         public bool StartState = true;
-        int selectedPlayer = BothPlayers;
-        ItemResourceType selectedWeapon = ItemResourceType.Sword;
-        int attackingPlayer = 0;
         Army friendlyArmy, enemyArmy;
+        BattleSetup Setup => BattleLabStorage.Singleton.setup;
         public BattleLabPlayer(Faction faction)
             : base(faction)
         { 
@@ -55,8 +52,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 //ArtTabMember enemyTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText(DssRef.lang.FactionName_DarkLord) });
                 //ArtTabMember bothTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText("Both") });
 
-                content.Add(new ArtTabgroup(tabs, selectedPlayer,
-                    new Action<int>((int ix) => { selectedPlayer = ix; })));
+                content.Add(new ArtTabgroup(tabs, Setup.selectedPlayer,
+                    new Action<int>((int ix) => { Setup.selectedPlayer = ix; })));
 
                 var weapons_groups =  ConscriptMenu.AllConstriptWeapons();
                 foreach (var group in weapons_groups)
@@ -64,7 +61,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                     content.newLine();
                     foreach (var wep in group)
                     {
-                        content.Add(new ArtToggle(wep == selectedWeapon, new List<AbsRichBoxMember> { new RbImage(ResourceLib.Icon(wep)) },
+                        content.Add(new ArtToggle(wep == Setup.selectedWeapon, new List<AbsRichBoxMember> { new RbImage(ResourceLib.Icon(wep)) },
                             new RbAction1Arg<ItemResourceType>(selectWeapon, wep), new RbTooltip_Text(LangLib.Item(wep))));
                     }
                 }
@@ -85,7 +82,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 {
                     for (int i = -1; i < 3; i++)
                     {
-                        attackerOptions.AddOption(PlayerOptionName(i), i == attackingPlayer, i == 0, new RbAction1Arg<int>((int player) => { attackingPlayer = player; }, i), null);
+                        attackerOptions.AddOption(PlayerOptionName(i), i == Setup.attackingPlayer, i == 0, new RbAction1Arg<int>((int player) => { attackingPlayer = player; }, i), null);
                     }
                     attackerOptions.Build(content, SpriteName.WarsBattleIcon, "Attacker", hud.objMenu.menu);
                 }
@@ -117,7 +114,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         void selectWeapon(ItemResourceType item)
         {
-            selectedWeapon = item;
+            Setup.selectedWeapon = item;
         }
 
         void addSoldier(int count)
@@ -126,7 +123,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             {
                 conscript = new ConscriptProfile()
                 {
-                    weapon = selectedWeapon,
+                    weapon = Setup.selectedWeapon,
                     armorLevel = Resource.ItemResourceType.PaddedArmor,
                     training = TrainingLevel.Basic,
                     specialization = SpecializationType.Traditional,
@@ -135,21 +132,21 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             for (int i = 0; i < count; ++i)
             {
-                if (selectedPlayer != 1)
+                if (Setup.selectedPlayer != 1)
                 {
                     new SoldierGroup(friendlyArmy, SoldierProfile, friendlyArmy.position);
                 }
-                if (selectedPlayer != 0)
+                if (Setup.selectedPlayer != 0)
                 {
                     new SoldierGroup(enemyArmy, SoldierProfile, enemyArmy.position);
                 }
             }
 
-            if (selectedPlayer != 1)
+            if (Setup.selectedPlayer != 1)
             {
                 friendlyArmy.setAsStartArmy();
             }
-            if (selectedPlayer != 0)
+            if (Setup.selectedPlayer != 0)
             {
                 enemyArmy.setAsStartArmy();
             }
@@ -191,11 +188,11 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             StartState = true;
 
 
-            if (attackingPlayer == 0 || attackingPlayer == BothPlayers)
+            if (Setup.attackingPlayer == 0 || Setup.attackingPlayer == BattleSetup.BothPlayers)
             {
                 friendlyArmy.Order_Attack(enemyArmy);
             }
-            if (attackingPlayer == 1 || attackingPlayer == BothPlayers)
+            if (Setup.attackingPlayer == 1 || Setup.attackingPlayer == BattleSetup.BothPlayers)
             {
                 enemyArmy.Order_Attack(friendlyArmy);
             }

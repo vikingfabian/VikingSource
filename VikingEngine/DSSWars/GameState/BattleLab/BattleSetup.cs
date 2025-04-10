@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VikingEngine.DSSWars.Resource;
+
+namespace VikingEngine.DSSWars.GameState.BattleLab
+{
+    class BattleSetup
+    {
+        public const int BothPlayers = 2;
+        
+        public int selectedPlayer = BothPlayers;
+        public ItemResourceType selectedWeapon = ItemResourceType.Sword;
+        public int attackingPlayer = 0;
+        public int angle = 90;
+
+        public BattleSetup()
+        {
+        }
+    }
+}

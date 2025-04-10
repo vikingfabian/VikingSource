@@ -12,6 +12,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         public StartBattleLab(MapBackgroundLoading loading)
             : base()
         {
+            BattleLabStorage.Singleton = new BattleLabStorage();
+
             if (loading == null)
             {
                 loading = new MapBackgroundLoading(null);

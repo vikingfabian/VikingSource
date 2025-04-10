@@ -110,12 +110,12 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        public void update()
+        public void update(out bool refresh)
         {
             //Debug.Log("game hud update");
 
             mouseOverHud = false;
-            bool refresh = refreshTimer.Update();
+            refresh = refreshTimer.Update();
 
             refresh |= player.gameControls.mapControls.selection.isNew ||
                 player.gameControls.mapControls.hover.isNew ||
@@ -160,18 +160,7 @@ namespace VikingEngine.DSSWars.Display
             //    displays.menuStateHasChange = false;
             //}
 
-            if (mouseOverHud)
-            {
-                tooltip.clear();
-                //tooltip.updateDiplayTip(player, displays.hasInteractButtonHover());
-            }
-            else
-            {
-                if (!player.gameControls.mapControls.focusedObjectMenuState())
-                {
-                    tooltip.updateMapTip(player, refresh);
-                }
-            }
+            
 
             if (refresh)
             {
@@ -228,6 +217,54 @@ namespace VikingEngine.DSSWars.Display
                     objMenu.refreshObject(player, obj, selected);
                 }
             }
+        }
+
+        public void updateToolTip_menu(bool refresh)
+        {
+            //if (mouseOverHud)
+            //{
+                tooltip.clear();
+                //tooltip.updateDiplayTip(player, displays.hasInteractButtonHover());
+            //}
+            //else
+            //{
+            //    if (!player.gameControls.mapControls.focusedObjectMenuState())
+            //    {
+            //        tooltip.updateMapTip(player, refresh);
+            //    }
+            //}
+        }
+
+        public void updateToolTip_map(bool refresh)
+        {
+            //if (mouseOverHud)
+            //{
+            //    tooltip.clear();
+            //    //tooltip.updateDiplayTip(player, displays.hasInteractButtonHover());
+            //}
+            //else
+            //{
+                if (!player.gameControls.mapControls.focusedObjectMenuState())
+                {
+                    tooltip.updateMapTip(player, refresh, false);
+                }
+            //}
+        }
+
+        public void updateToolTip_multiselect(bool refresh, bool aboveMouse)
+        {
+            //if (mouseOverHud)
+            //{
+            //    tooltip.clear();
+            //    //tooltip.updateDiplayTip(player, displays.hasInteractButtonHover());
+            //}
+            //else
+            //{
+            if (!player.gameControls.mapControls.focusedObjectMenuState())
+            {
+                tooltip.updateMapTip(player, refresh, aboveMouse);
+            }
+            //}
         }
 
         //public void oneSecondUpdate(LocalPlayer player)
