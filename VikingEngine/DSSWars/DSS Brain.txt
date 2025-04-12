@@ -1,7 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* multiselect tooltip
-* lobby ambiance
+
 
 The demo should:
 -Lockout any extra content or modes.

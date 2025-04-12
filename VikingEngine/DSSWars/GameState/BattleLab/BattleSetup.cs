@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.Engine;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab
 {
@@ -19,5 +21,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         public BattleSetup()
         {
         }
+
+        
     }
 }
