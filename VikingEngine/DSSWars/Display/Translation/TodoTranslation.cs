@@ -161,6 +161,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_AllCities => "All cities";
         public string Hud_Time_Hours => "{0} hours";
 
+        public string MusicIsBroken => "Music is currently broken";
+
 
         /// <summary>
         /// 0: object collection type name, 1: number of objects

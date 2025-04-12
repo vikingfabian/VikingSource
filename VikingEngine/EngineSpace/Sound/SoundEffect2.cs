@@ -164,10 +164,13 @@ namespace VikingEngine.Sound
         float volume = 1f;
         public void Play()
         {
-            ins = file.CreateInstance();
-            ins.IsLooped = true;
-            ins.Volume = Bound.Max(Ref.gamesett.AmbientVol() * basevolume * volume, 1f);
-            ins.Play();
+            if (volume > 0)
+            {
+                ins = file.CreateInstance();
+                ins.IsLooped = true;
+                ins.Volume = Bound.Max(Ref.gamesett.AmbientVol() * basevolume * volume, 1f);
+                ins.Play();
+            }
         }
 
         public void Stop()
@@ -221,6 +224,14 @@ namespace VikingEngine.Sound
                     //}
                 }
             }
+        }
+
+        public void fadeInSound(float addPerSec, float fullVolume)
+        {
+            if (volume != fullVolume)
+            {
+                setVolume(Bound.Max(volume + addPerSec * Ref.DeltaTimeSec, fullVolume));
+            } 
         }
 
     }

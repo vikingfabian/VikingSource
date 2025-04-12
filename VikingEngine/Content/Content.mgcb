@@ -664,6 +664,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/ambience/battle/strings_120bpm_loop_theme_20.wav
 
+#begin DSS/Sound/ambience/lobby/mystery_amb_v1_fear1_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/lobby/mystery_amb_v1_fear1_loop.wav
+
+#begin DSS/Sound/ambience/lobby/mystery_amb_v1_theme1_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ambience/lobby/mystery_amb_v1_theme1_loop.wav
+
 #begin DSS/Sound/ambience/melody/drkfnt_amb_v1_flute_loop.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

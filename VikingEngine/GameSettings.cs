@@ -391,6 +391,8 @@ namespace VikingEngine
             if (Ref.music != null)
             {
                 content.newLine();
+                content.Add(new RbText(DssRef.todoLang.MusicIsBroken, HudLib.InfoYellow_Light));
+                content.newLine();
                 content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
                 content.space();

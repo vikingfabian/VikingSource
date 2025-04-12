@@ -23,7 +23,7 @@ namespace VikingEngine.Engine
 
         public void GotFocus(GameState previousGameState)
         {
-            if (previousGameState != null)
+            //if (previousGameState != null)
                 this.previousGameState = previousGameState;
 
             if (Ref.draw != null)
@@ -51,7 +51,8 @@ namespace VikingEngine.Engine
 
         virtual public void OnDestroy()
         {
-            Engine.Sound.StopAllLoopedSounds();            
+            previousGameState?.OnDestroy();
+            Engine.Sound.StopAllLoopedSounds();                    
         }
         
         public GameState()

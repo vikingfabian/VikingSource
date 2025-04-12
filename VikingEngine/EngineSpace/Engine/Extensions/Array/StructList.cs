@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +8,20 @@ using System.Threading.Tasks;
 namespace VikingEngine.EngineSpace
 {
 
+
+    struct ExampleStruct1
+    {
+        public bool isDeleted;
+    }
+    struct ExampleStruct2
+    {
+        public bool isDeleted;
+    }
+
+
     //GC optimized list that exposes the array for ref usage
     //Example: ref WorkerStatus status = ref workerStatuses.array[i];
-    public struct StructList<T> where T : unmanaged
+    struct StructList<T> where T : unmanaged
     {
         public T[] array;
         public int _count;
@@ -53,5 +65,43 @@ namespace VikingEngine.EngineSpace
         {
             Array.Resize(ref array, newSize);
         }
+
+        /// <summary>
+        /// places the last element in the empty spot
+        /// </summary>
+        public void RemoveAtSwapBack(int index)
+        {
+            if (index < 0 || index >= _count) return;
+            _count--;
+            array[index] = array[_count];
+        }
+
+        public static bool Example1_FindNextAlive(StructList<ExampleStruct1> array, ref int index)
+        {
+            while (index < array.Count)
+            {
+                if (array[index].isDeleted)
+                    ++index;
+                else
+                    return true;
+            }
+
+            return false;
+        }
+        public static bool Example2_FindNextAlive(StructList<ExampleStruct2> array, ref int index)
+        {
+            while (index < array.Count)
+            {
+                if (array[index].isDeleted)
+                    ++index;
+                else
+                    return true;
+            }
+
+            return false;
+        }
     }
+
+
+    
 }

@@ -36,6 +36,7 @@ using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.LootFest.GO.WeaponAttack;
 using Valve.Steamworks;
+using VikingEngine.Sound;
 
 namespace VikingEngine.DSSWars
 {
@@ -62,6 +63,15 @@ namespace VikingEngine.DSSWars
         //RichMenu richmenu;
         const float MenuBgOpacity = 0.9f;
         RichMenu topMenu, underMenu;
+
+        static readonly string LobbyAmbienceDir = Ambience.AmbienceDir + "lobby" + DataStream.FilePath.Dir;
+
+        static readonly LoopingSoundData[] AmbienceSounds = new LoopingSoundData[]
+           {
+                new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_fear1_loop", 0.04f),
+                new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_theme1_loop", 0.04f),
+           };
+        LoopingSound lobbyAmbienceLoop;
 
         const string UnderMenu_NewGame = "newgame";
         const string UnderMenu_ListEditors = "editors";
@@ -104,7 +114,7 @@ namespace VikingEngine.DSSWars
                 Color.DarkGray, ImageLayers.Background2);
 
             new Timer.AsynchActionTrigger(load_asynch, true);
-            new Timer.TimedAction0ArgTrigger(playMusic, 1000);
+            //new Timer.TimedAction0ArgTrigger(playMusic, 1000);
 
             
             if (Ref.lobby == null)
@@ -224,6 +234,12 @@ namespace VikingEngine.DSSWars
         {
             bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
             new Timer.Action0ArgTrigger(loadingComplete);
+
+            LoopingSound sound = new LoopingSound();
+            sound.setVolume(0);
+            sound.Load(arraylib.RandomListMember(AmbienceSounds));
+
+            lobbyAmbienceLoop = sound;
         }
 
         void loadingComplete()
@@ -1490,7 +1506,7 @@ namespace VikingEngine.DSSWars
         }
 
        
-
+        
 
         public override void OnResolutionChange()
         {
@@ -1498,6 +1514,17 @@ namespace VikingEngine.DSSWars
             Ref.gamesett.Save();
             new LobbyState().openUnderMenu(UnderMenu_Options, StackOption.ClearStack);
         }
+        public override void LostFocus()
+        {
+            base.LostFocus();
+            lobbyAmbienceLoop?.StopAndUnload();
+        }
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+           
+        }
+        
 
         //void optionsMenu()
         //{            
@@ -1517,7 +1544,7 @@ namespace VikingEngine.DSSWars
         //    layout.OnDelete += closingOptionsMenuEvent;
         //}
 
-       
+
 
         void selectProfileLink(int playerNumber, int profile)
         {
@@ -1568,6 +1595,8 @@ namespace VikingEngine.DSSWars
         {
             bool mouseOver = false;
             base.Time_Update(time);
+
+
 
             menuSystem.menu?.Update();
 
@@ -1622,6 +1651,7 @@ namespace VikingEngine.DSSWars
             {
                 Ref.music.Update();
             }
+            lobbyAmbienceLoop?.fadeInSound(0.5f, Ref.gamesett.AmbientVol());
 
             //if (inKeyMapsMenu)
             //{

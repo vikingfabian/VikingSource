@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars
     {
         //const bool BlockAmbience = true;
 
-        static readonly string AmbienceDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "ambience" + DataStream.FilePath.Dir;
+        public static readonly string AmbienceDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "ambience" + DataStream.FilePath.Dir;
 
         static readonly string BattleDir = AmbienceDir + "battle" + DataStream.FilePath.Dir;
 

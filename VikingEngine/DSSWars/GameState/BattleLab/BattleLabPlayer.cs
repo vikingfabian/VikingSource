@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 {
                     for (int i = -1; i < 3; i++)
                     {
-                        attackerOptions.AddOption(PlayerOptionName(i), i == Setup.attackingPlayer, i == 0, new RbAction1Arg<int>((int player) => { attackingPlayer = player; }, i), null);
+                        attackerOptions.AddOption(PlayerOptionName(i), i == Setup.attackingPlayer, i == 0, new RbAction1Arg<int>((int player) => {  Setup.attackingPlayer = player; }, i), null);
                     }
                     attackerOptions.Build(content, SpriteName.WarsBattleIcon, "Attacker", hud.objMenu.menu);
                 }
