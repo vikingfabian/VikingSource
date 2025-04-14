@@ -162,17 +162,19 @@ namespace VikingEngine.DSSWars.Display
 
             HudLib.WishListButton(content);
 
-            if (DssRef.storage.runTutorial_1short_2normal != 0)
-            { //TODO yes no dialogue
-                content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
-                {
-                    fillWidth = true
-                });
-            }
+            
 
             if (!PlatformSettings.STEAM_DEMO)
             {
+                if (DssRef.storage.runTutorial_1short_2normal != 0)
+                { //TODO yes no dialogue
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
+                    {
+                        fillWidth = true
+                    });
+                }
+
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_SaveState) }, new RbAction(saveGameState),
                     new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
@@ -192,12 +194,14 @@ namespace VikingEngine.DSSWars.Display
                     content.newLine();
                     DssRef.storage.multiplayerGameSpeedToMenu(content, menu);
                 }
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
+                {
+                    fillWidth = true
+                });
             }
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
-            {
-                fillWidth = true
-            });
+
 
             content.newLine();
             SettingsToMenu(content, menu, false);

@@ -125,6 +125,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public string LobbyDemoMode_WishlistOn => "Wishlist on";
 
+
+        public string BattleLab_StartHere => "Start battle here";
+        public string BattleLab_Start => "Start battle";
+        public string BattleLab_Attacker => "Attacker";
+
+
+
         public string MapGenerator_Name = "Map editor - generate";
 
         public string MapType_CustomMap = "Custom Map";
@@ -160,7 +167,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Apply => "Apply";
         public string Hud_AllCities => "All cities";
         public string Hud_Time_Hours => "{0} hours";
-
+        public string Hud_AddX => "Add {0}";
+        public string Hud_Both => "Both";
+        public string Hud_Direction => "Direction";
         public string MusicIsBroken => "Music is currently broken";
 
 

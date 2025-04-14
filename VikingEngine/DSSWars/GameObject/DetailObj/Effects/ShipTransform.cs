@@ -38,8 +38,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void Time_Update(float time_ms)
         {
-            
-
             updateEffect();
         }
 

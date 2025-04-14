@@ -24,30 +24,35 @@ namespace VikingEngine.EngineSpace
     struct StructList<T> where T : unmanaged
     {
         public T[] array;
-        public int _count;
+        public int Count;
 
-        public int Count => _count;
+        //public int Count => _count;
         public int Capacity => array.Length;
 
         public StructList(int initialCapacity)
         {
             array = new T[initialCapacity];
-            _count = 0;
+            Count = 0;
+        }
+
+        public StructList()
+            : this(16)
+        {
         }
 
         public void Add(T item)
         {
-            if (_count >= array.Length)
+            if (Count >= array.Length)
                 Resize(array.Length * 2);
 
-            array[_count++] = item;
+            array[Count++] = item;
         }
 
         public ref T this[int index]
         {
             get
             {
-                if (index < 0 || index >= _count)
+                if (index < 0 || index >= Count)
                     throw new IndexOutOfRangeException();
 
                 return ref array[index]; // ✅ ref access!
@@ -56,7 +61,7 @@ namespace VikingEngine.EngineSpace
 
         public void Clear()
         {
-            _count = 0;
+            Count = 0;
         }
 
         //public T[] RawArray => _array;
@@ -71,9 +76,9 @@ namespace VikingEngine.EngineSpace
         /// </summary>
         public void RemoveAtSwapBack(int index)
         {
-            if (index < 0 || index >= _count) return;
-            _count--;
-            array[index] = array[_count];
+            if (index < 0 || index >= Count) return;
+            Count--;
+            array[index] = array[Count];
         }
 
         public static bool Example1_FindNextAlive(StructList<ExampleStruct1> array, ref int index)
@@ -99,6 +104,11 @@ namespace VikingEngine.EngineSpace
             }
 
             return false;
+        }
+
+        public bool InBound(int index)
+        {
+            return index >= 0 && index < Count;
         }
     }
 

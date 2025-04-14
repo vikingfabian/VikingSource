@@ -452,9 +452,9 @@ namespace VikingEngine.DSSWars.GameObject
             writeGroups(w);
   
             w.Write((ushort)defenceBuildings.Count);
-            foreach (var defence in defenceBuildings)
-            { 
-                defence.writeGameState(w);
+            for (int i = 0; i < defenceBuildings.Count; ++i)//each (var defence in defenceBuildings)
+            {
+                defenceBuildings.array[i].writeGameState(w);
             }
  
 

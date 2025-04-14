@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Defence
         public void ToHud(City city, LocalPlayer player, RichBoxContent content)
         {
             this.city = city;
-            if (arraylib.InBound(city.defenceBuildings, city.selectedDefenceBuilding))
+            if (city.defenceBuildings.InBound(city.selectedDefenceBuilding))
             {
                 DefenceStatus currentStatus = getSelected();
                 content.Add(new RbText(DssRef.todoLang.Defence_GuardPost + " " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_TypeName));

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.Input;
 using VikingEngine.Network;
 
 namespace VikingEngine.HUD.RichBox
@@ -226,15 +227,19 @@ namespace VikingEngine.HUD.RichBox
         Vector2 prevMousePos;
         IntervalF mouseXRange;
         float moveLengthForValueChange;
+        TimeStamp timeStamp;
+        float buttonCenter;
+        
         public DragButtonInteraction(RichMenu.RichMenu menu, RbDragButton dragButton) 
         {
             prevMousePos = Input.Mouse.Position;
             this.dragButton = dragButton;
             menu.interaction.interactionStack = this;
-
+            timeStamp = TimeStamp.Now();
             
-            moveLengthForValueChange = Screen.MinClickSize * 0.8f; 
-
+            moveLengthForValueChange = Screen.MinClickSize * 0.8f;
+            mouseXRange = new IntervalF(menu.backgroundArea.X + Engine.Screen.IconSize, menu.backgroundArea.Right - Engine.Screen.IconSize);
+            buttonCenter = dragButton.area().Center.X + menu.backgroundArea.X;
         }
         public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClick, out bool needRefresh, out bool endInteraction)
         {
@@ -243,7 +248,7 @@ namespace VikingEngine.HUD.RichBox
             {
                 float change = (int)(move / moveLengthForValueChange);
                 prevMousePos.X += change * moveLengthForValueChange;
-                mouseXRange = new IntervalF(menu.backgroundArea.X + Engine.Screen.IconSize, menu.backgroundArea.Right - Engine.Screen.IconSize);
+                
                 if (Input.Mouse.Position.X < mouseXRange.Min)
                 {
                     Input.Mouse.SetPosition(new IntVector2(mouseXRange.Max, Input.Mouse.Position.Y));
@@ -263,7 +268,19 @@ namespace VikingEngine.HUD.RichBox
             }
 
             endInteraction = Input.Mouse.ButtonUpEvent(MouseButton.Left);
+
             return false;
+        }
+
+        public override void end(out bool needRefresh)
+        {
+            if (timeStamp.belowTime_ms(InputLib.ButtonMaxClickTimeMs))
+            {
+                dragButton.valueChangeInput(lib.BoolToLeftRight(prevMousePos.X > buttonCenter), true);
+                needRefresh = true;
+            }
+
+            needRefresh = true;
         }
     }
 }

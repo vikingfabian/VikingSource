@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Text;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.BlockMap.Level;
@@ -83,10 +84,25 @@ namespace VikingEngine.DSSWars.GameObject
             //add(new FolkWarshipData(UnitType.RecruitWarship,
             //    recruit));
 
-            int defaultAttackDamage = 50;
-            int defaultDps = Convert.ToInt32(defaultAttackDamage / (DssConst.Soldier_StandardAttackAndCoolDownTime / 1000.0));
+            int defaultAttackDamage = DssConst.WeaponDamage_Sword;
+            int defaultDps = DPS(defaultAttackDamage, DssConst.Soldier_StandardAttackAndCoolDownTime);//Convert.ToInt32(defaultAttackDamage / (DssConst.Soldier_StandardAttackAndCoolDownTime / 1000.0));
             //int defaultDps = DssRef.profile.Get(UnitType.Soldier).DPS_land();
-            AverageGroupStrength = DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
+            AverageGroupStrength = GroupStrengh_Raw(DssConst.SoldierGroup_DefaultCount, defaultDps, DssConst.Soldier_DefaultHealth);//DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
+            
+        }
+        static int DPS(int damage, float attackAndCoolDownTime)
+        {
+            return Convert.ToInt32(damage / (attackAndCoolDownTime / 1000.0));
+        }
+        static float GroupStrengh_Raw(int soldierCount, float dps, int health)
+        {
+            return soldierCount * (dps + HealthToStrengthConvertion * health);
+        }
+
+        public static float GroupStrengh(int soldierCount, ref SoldierData data, bool land)
+        {
+            var raw = GroupStrengh_Raw(soldierCount, DPS(land? data.attackDamage : data.attackDamageSea, data.attackTimePlusCoolDown), data.basehealth);
+            return raw / AverageGroupStrength;
         }
 
         public void AddRawModelsToLoad(List<VoxelModelName> modelNames)

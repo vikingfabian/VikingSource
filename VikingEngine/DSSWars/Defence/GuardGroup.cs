@@ -140,6 +140,8 @@ namespace VikingEngine.DSSWars.Defence
 
         void onExitGuard()
         {
+            //var ix = army.GetCity().defenceIxFromPosId(assignedToPost_IdAndPosition);
+            EnterPostCommand.ExitPost(this);
             assignedToPost_IdAndPosition = -1;
             soldierAttackRangeBonus = 0;
             damageBlockChance = 0;
@@ -252,6 +254,11 @@ namespace VikingEngine.DSSWars.Defence
 
                 return hasCommand(command.nextCommand);
             }
+        }
+
+        public override bool IsArmyGroup()
+        {
+            return false;
         }
 
         public override bool InGuardPost()

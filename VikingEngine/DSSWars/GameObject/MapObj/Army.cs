@@ -324,27 +324,36 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
             //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
             args.content.newLine();
-            args.content.Add(new RbImage(SpriteName.WarsResource_Food));
-            args.content.space();
-            args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food))));
-            args.content.space();
-            HudLib.InfoButton(args.content, new RbTooltip_Text(DssRef.lang.Info_ArmyFood));
+
+            if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+            {
+                args.content.Add(new RbImage(SpriteName.WarsResource_Food));
+                args.content.space();
+                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food))));
+
+                args.content.space();
+                HudLib.InfoButton(args.content, new RbTooltip_Text(DssRef.lang.Info_ArmyFood));
+
+                args.content.newLine();
+                args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
+                args.content.space();
+                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep))));
+                args.content.space();
+                HudLib.PerSecondInfo(args.player, args.content, false);
+
+                args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_gold_sec)));
+                args.content.space();
+                HudLib.PerSecondInfo(args.player, args.content, true);
+            }
+            
+            
             //    () =>
             //{
             //    RichBoxContent content = new RichBoxContent();
             //    HudLib.Description(content, DssRef.lang.Info_ArmyFood);
             //    args.player.hud.tooltip.create(args.player, content, true);
             //}));
-            args.content.newLine();
-            args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
-            args.content.space();
-            args.content.Add(new RbText( string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep))));
-            args.content.space();
-            HudLib.PerSecondInfo(args.player, args.content, false);
-
-            args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_gold_sec)));
-            args.content.space();
-            HudLib.PerSecondInfo(args.player, args.content, true);
+            
 
             if (PlatformSettings.DevBuild)
             {
@@ -818,7 +827,7 @@ namespace VikingEngine.DSSWars.GameObject
                 int shipCount = 0;
                 double speedbonus = 0;
                 float totalStrength = 0;
-                int dps;
+                //int dps;
                 bool allGropsAreIdle = true;
 
                 Vector2 minpos = VectorExt.V2Max;
@@ -837,27 +846,27 @@ namespace VikingEngine.DSSWars.GameObject
                     groupsC.sel.setBattleWalkingSpeed();
 
                     allGropsAreIdle &= groupsC.sel.state == GroupState.Idle;
-                    int health;
+                    //int health;
 
                     if (groupsC.sel.isShip)
                     {
                         ++shipCount;
-                        dps = groupsC.sel.soldierData.DPS_sea();
+                        //dps = groupsC.sel.soldierData.DPS_sea();
 
                         
                         speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);
                         groupsC.sel.walkSpeed = transportSpeedSea;
                         
                         //TODO ship health
-                        health = groupsC.sel.soldierData.basehealth;
+                        //health = groupsC.sel.soldierData.basehealth;
                     }
                     else
                     {
-                        dps = groupsC.sel.soldierData.DPS_land();
+                        //dps = groupsC.sel.soldierData.DPS_land();
                         speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(true);
                         groupsC.sel.walkSpeed = transportSpeedLand;
 
-                        health = groupsC.sel.soldierData.basehealth;
+                        //health = groupsC.sel.soldierData.basehealth;
                     }
 
                     if (groupsC.sel.position.X < minpos.X)
@@ -878,14 +887,14 @@ namespace VikingEngine.DSSWars.GameObject
                         maxpos.Y = groupsC.sel.position.Z;
                     }
 
-                    totalStrength += (dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
+                    totalStrength += AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip);//(dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
 
                 }
 
                 army_isIdle = allGropsAreIdle && IdleObjetive();
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
-                this.strengthValue = count;
+                //this.strengthValue = count;
                 soldiersCount = count;
 
                 //Endbart ändra när arme är i rörelse, måste följa center person
@@ -898,8 +907,8 @@ namespace VikingEngine.DSSWars.GameObject
                 speedbonus += 1;
                 transportSpeedLand = Convert.ToSingle(DssConst.Men_StandardWalkingSpeed * speedbonus);
                 transportSpeedSea = Convert.ToSingle(DssConst.Men_StandardShipSpeed * speedbonus);
-                
-                strengthValue = totalStrength / AllUnits.AverageGroupStrength;
+
+                strengthValue = totalStrength; // AllUnits.AverageGroupStrength;
 
                 cullingTopLeft = minpos - CamCullingRadius;
                 cullingBottomRight = maxpos + CamCullingRadius;

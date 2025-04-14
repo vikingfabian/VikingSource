@@ -306,7 +306,7 @@ namespace VikingEngine.HUD.RichMenu
                     interaction.clearSelection();
                 }
 
-                if (scrollBar.IsVisible() && mouseScrollArea.IntersectPoint(Input.Mouse.Position))
+                if (scrollBar.IsVisible() && ( mouseScrollArea.IntersectPoint(Input.Mouse.Position) || scrollBar.mouseDown))
                 {
                     mouseOver = true;
                     if (interaction.interactionStack == null && scrollBar.updateMouseInput())
@@ -317,6 +317,10 @@ namespace VikingEngine.HUD.RichMenu
                     {
                         updateContentScroll();
                     }
+                }
+                else
+                {
+                    scrollBar.updateOutOfFocus();
                 }
             }
         }

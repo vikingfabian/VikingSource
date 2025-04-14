@@ -70,6 +70,7 @@ namespace VikingEngine.EngineSpace.Graphics.In3D
         public void begin(Vector2 mouseDown)
         {
             this.pointerDownPos = mouseDown;
+            currentPointerPos = mouseDown;
             vectorRect = new VectorRect(mouseDown, Vector2.Zero);
         }
 

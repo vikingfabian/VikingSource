@@ -334,10 +334,10 @@ namespace VikingEngine.DSSWars
                 btn.fillWidth = true;
                 content.Add(btn);
             }
-            content.newLine();
+            //content.newLine();
            
-            content.Add(new RbButton(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Mode_BattleLab) },
-                            new RbAction(startBattleLab), new RbTooltip_Text(DssRef.todoLang.Lobby_Mode_BattleLab_Description)));
+            //content.Add(new RbButton(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Mode_BattleLab) },
+            //                new RbAction(startBattleLab), new RbTooltip_Text(DssRef.todoLang.Lobby_Mode_BattleLab_Description)));
 
             HudLib.WishListButton(content);
 
@@ -870,12 +870,13 @@ namespace VikingEngine.DSSWars
 
                         content.h1(DssRef.todoLang.Lobby_Category_Editor, HudLib.TitleColor_Head);
 
+                        content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Editor_MapEditor) }),
                             new RbAction(openMapEditor), null, !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Editor_VoxelEditor) }),
-                            new RbAction(voxeleditor), new RbTooltip_Text(".Create blocky models. Require Xbox controller"), !PlatformSettings.STEAM_DEMO));
+                            new RbAction(voxeleditor), new RbTooltip_Text(".Create blocky models. Requires Xbox controller"), !PlatformSettings.STEAM_DEMO));
 
                         content.newParagraph();
                         var playerData = DssRef.storage.localPlayers.First();
@@ -888,6 +889,10 @@ namespace VikingEngine.DSSWars
                 case UnderMenu_ListExtra:
                     {
                         RichBoxContent content = new RichBoxContent();
+
+                        content.h1(DssRef.todoLang.Lobby_Category_ExtraModes, HudLib.TitleColor_Head);
+
+                        content.newLine();
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Mode_BattleLab) }),
                             new RbAction(startBattleLab), new RbTooltip_Text(DssRef.todoLang.Lobby_Mode_BattleLab_Description), !PlatformSettings.STEAM_DEMO));

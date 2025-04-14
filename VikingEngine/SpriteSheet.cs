@@ -2163,6 +2163,11 @@ namespace VikingEngine
                 //    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
                 //}
             }
+            currentIndex = numTilesWidth * 86;
+            {
+                add(SpriteName.WarsHudPopUpButton);
+            }
+
             currentIndex = numTilesWidth * 87;
             {
                 add(SpriteName.WarsBuild_WoodWall, currentIndex, 3, 3);
@@ -2716,6 +2721,10 @@ namespace VikingEngine
                     add(SpriteName.WarsHudTutorialBg, 2, 2);
 
                     add(SpriteName.WarsArmy, 2, 2);
+
+                    add(SpriteName.WarsTutorialArmy, 2, 2);
+                    add(SpriteName.WarsTutorialCity, 2, 2);
+                    add(SpriteName.WarsTutorialSoldiers, 2, 2);
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 

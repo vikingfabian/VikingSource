@@ -64,7 +64,14 @@ namespace VikingEngine.DSSWars.GameObject
         //}
         public override void toTooltip(ObjectHudArgs args)
         {
-            GroupPresentation(args, true);
+            if ( CollectionCount() == 1)
+            {
+                objects.First().toTooltip(args);
+            }
+            else if (CollectionCount() > 1)
+            {
+                GroupPresentation(args, true);
+            }
         }
         public override GameObjectType gameobjectType()
         {

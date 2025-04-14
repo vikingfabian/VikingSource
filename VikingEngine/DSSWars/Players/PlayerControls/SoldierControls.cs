@@ -82,6 +82,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (groups_sp.Count > 0)
             {
                 bool wall = target == null && player.gameControls.mapControls.hover.subTile.selectTileResult == SelectTileResult.Wall;
+                IntVector2 subTile = player.gameControls.mapControls.hover.subTile.subTilePos;
+                var city = player.gameControls.mapControls.hover.subTile.city;
 
                 Task taskA = Task.Run(() =>
                 {
@@ -115,10 +117,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         mirror = Math.Abs(rotateGroupOffsets) > MathExt.TauOver4;
                     }
 
-                    Span<groupCommandPlacement> groupPlacements = stackalloc groupCommandPlacement[groups_sp.Count];
+                    Span<GroupCommandPlacement> groupPlacements = stackalloc GroupCommandPlacement[groups_sp.Count];
                     for (int i = 0; i < groups_sp.Count; i++)
                     {
-                        groupCommandPlacement placement = new groupCommandPlacement(groups_sp[i].position, groups_sp[i].GroupMoveBoundRadius(), center, goalPos);
+                        GroupCommandPlacement placement = new GroupCommandPlacement(groups_sp[i].position, groups_sp[i].GroupMoveBoundRadius(), center, goalPos);
                         
                         if (allSameDir)
                         {
@@ -198,8 +200,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                         if (wall)
                         {
-                            var enterCommand = new EnterPostCommand(group, player.gameControls.mapControls.hover.subTile.subTilePos, true);
-                            enterCommand.claimPost(group, player.gameControls.mapControls.hover.subTile.city, player.gameControls.mapControls.hover.subTile.city.defenceIxFromPosId(enterCommand.id));
+                            if (EnterPostCommand.tryClaimPost(group, city, subTile))
+                            {
+                                var enterCommand = new EnterPostCommand(group, subTile, true);
+                                //enterCommand.claimPost(group, city, city.defenceIxFromPosId(enterCommand.id));
+                            }
                         }
                     }
                 });
@@ -207,7 +212,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
     }
 
-    struct groupCommandPlacement
+    struct GroupCommandPlacement
     {
          
         bool isCenter;
@@ -219,7 +224,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         Vector2 goalPlusOffset;
         bool pastOffset;
-        public groupCommandPlacement(Vector3 position, float radius, Vector3 center, Vector3 goalPos)
+        public GroupCommandPlacement(Vector3 position, float radius, Vector3 center, Vector3 goalPos)
         {
             this.radius = radius;
             currentPlacement = VectorExt.V3XZtoV2(goalPos);
@@ -281,7 +286,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void finalize()
         {
-            groupOffsetNorm = VectorExt.Normalize(groupOffset, out groupOffsetLenght);
+            if (groupOffset.X != 0 || groupOffset.Y != 0)
+            {
+                groupOffsetNorm = VectorExt.Normalize(groupOffset, out groupOffsetLenght);
+            }
+            else
+            {
+                groupOffsetNorm = Vector2.UnitX;
+            }
             goalPlusOffset = currentPlacement + groupOffset;
         }
     }

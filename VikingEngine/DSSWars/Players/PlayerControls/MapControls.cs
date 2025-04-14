@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Reflection.Metadata.Ecma335;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
@@ -327,7 +328,7 @@ namespace VikingEngine.DSSWars.Players
 
         public bool RectangleSelect_ToolipAboveMouse()
         { 
-            return rectangleBound.currentPointerPos.Y < rectangleBound.pointerDownPos.Y;
+            return rectangleBound.currentPointerPos.Y + 10 < rectangleBound.pointerDownPos.Y;
         }
 
         void rectangleSelectUpdate()
@@ -439,13 +440,12 @@ namespace VikingEngine.DSSWars.Players
                                     if (coll.objects.Count == 1)
                                     {
                                         selection.obj = coll.objects[0];
-                                        player.gameControls.armyControls = new ArmyControls(player, coll.objects);
                                     }
                                     else
                                     {
-                                        selection.obj = coll;
-                                        player.gameControls.armyControls = new ArmyControls(player, coll.objects);
+                                        selection.obj = coll;                                        
                                     }
+                                    player.gameControls.armyControls = new ArmyControls(player, coll.objects);
                                 }
                                 break;
 
@@ -456,16 +456,22 @@ namespace VikingEngine.DSSWars.Players
 
                                     SoundLib.click.Play();
 
-                                    //if (coll.objects.Count == 1)
-                                    //{
-                                    //    selection.obj = coll.objects[0];
-                                    selection.obj = coll;
-                                    player.gameControls.soldierControls = new SoldierControls( coll.objects);
-                                    //}
-                                    //else
-                                    //{
-                                    //    selection.obj = coll;
-                                    //    player.gameControls.armyControls = new ArmyControls(player, coll.objects);
+                                    if (coll.armyGroups.Count > 0 && coll.guardGroups.Count > 0)
+                                    {
+                                        new PopMenu( player, coll);
+                                    }
+                                    else
+                                    {
+                                        if (coll.CollectionCount() == 1)
+                                        {
+                                            selection.obj =coll.first();
+                                        }
+                                        else
+                                        {
+                                            selection.obj = coll; //TODO if (coll.objects.Count == 1)
+                                        }
+                                        player.gameControls.soldierControls = new SoldierControls(coll.armyGroups.Count > 0 ? coll.armyGroups : coll.guardGroups);
+                                    }
                                     //}
                                 }
                                 break;
@@ -494,7 +500,15 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-       public  Vector3 screenPosToWorldPos(Vector2 screenPos)
+        public void selectCollection(List<SoldierGroup> coll)
+        {
+            var collObj = new DetailObjectCollection(player.faction); //TODO if (coll.objects.Count == 1)
+            collObj.set(coll);
+            selection.obj = collObj;
+            player.gameControls.soldierControls = new SoldierControls(coll);
+        }
+
+         public  Vector3 screenPosToWorldPos(Vector2 screenPos)
         {
             
             ray = camera.CastRay(screenPos, player.playerData.view.Viewport);

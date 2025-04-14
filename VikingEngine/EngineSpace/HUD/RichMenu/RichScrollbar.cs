@@ -17,7 +17,7 @@ namespace VikingEngine.HUD.RichMenu
         IntervalF valuerange;
         public float scrollResult;
         float slideRange;
-        bool mouseDown = false;
+        public bool mouseDown = false;
         float mouseDownY;
         float mouseDown_SliderY;
         VectorRect area;
@@ -178,6 +178,12 @@ namespace VikingEngine.HUD.RichMenu
                 }
             }
             return result;
+        }
+
+        public void updateOutOfFocus()
+        {
+            selectionOutline?.DeleteMe();
+            selectionOutline = null;
         }
 
         public bool updateScrollWheel()

@@ -451,6 +451,11 @@ namespace VikingEngine
 
         public static Vector2 Normalize(Vector2 vector, out float length)
         {
+            if (vector.X == 0 && vector.Y == 0)
+            {
+                length = 0;
+                return vector;
+            }
             length = vector.Length();
             vector.X /= length;
             vector.Y /= length;

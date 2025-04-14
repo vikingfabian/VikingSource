@@ -30,7 +30,6 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             LocalPlayer player = DssRef.state.LocalHost();
             Ref.SetPause(true);
             StartState = false;
-            //selectedPlayer = 0;
 
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
             Rotation1D playerRot = enemyRot.getInvert();
@@ -60,7 +59,6 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             Ref.SetPause(paused);
             StartState = true;
 
-
             if (Setup.attackingPlayer == 0 || Setup.attackingPlayer == BattleSetup.BothPlayers)
             {
                 friendlyArmy.Order_Attack(enemyArmy);
@@ -73,15 +71,12 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         public bool updateObjectDisplay(RichBoxContent content, RichMenu menu)
         {
-            
-            
-
             content.h1(DssRef.todoLang.Lobby_Mode_BattleLab, HudLib.TitleColor_Head);
 
             content.newLine();
             if (StartState)
             {
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Start battle here") },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.BattleLab_StartHere) },
                     new RbAction(beginBattleSetup)));
             }
             else
@@ -91,10 +86,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 {
                     tabs.Add(new ArtTabMember(new List<AbsRichBoxMember> { new RbText(PlayerOptionName(i)) }));
                 }
-                //ArtTabMember playerTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText(this.Name) });
-                //ArtTabMember enemyTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText(DssRef.lang.FactionName_DarkLord) });
-                //ArtTabMember bothTab = new ArtTabMember(new List<AbsRichBoxMember> { new RbText("Both") });
-
+               
                 content.Add(new ArtTabgroup(tabs, Setup.selectedPlayer,
                     new Action<int>((int ix) => { Setup.selectedPlayer = ix; })));
 
@@ -111,13 +103,19 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
                 content.newParagraph();
 
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Add 1") }, new RbAction1Arg<int>(addSoldier, 1)));
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("x 5") }, new RbAction1Arg<int>(addSoldier, 5)));
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("x 20") }, new RbAction1Arg<int>(addSoldier, 20)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.todoLang.Hud_AddX, 1)) }, new RbAction1Arg<int>(addSoldier, 1)));
+                {
+                    const int AddCount = 5;
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount)) }, new RbAction1Arg<int>(addSoldier, AddCount)));
+                }
+                {
+                    const int AddCount = 20;
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount)) }, new RbAction1Arg<int>(addSoldier, AddCount)));
+                }
 
                 content.newParagraph();
                 content.Add(new RbSeperationLine());
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Start battle") }, new RbAction1Arg<bool>(startBattle, false)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.BattleLab_Start) }, new RbAction1Arg<bool>(startBattle, false)));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPauseIcon) }, new RbAction1Arg<bool>(startBattle, true)));
 
                 content.newParagraph();
@@ -127,10 +125,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                     {
                         attackerOptions.AddOption(PlayerOptionName(i), i == Setup.attackingPlayer, i == 0, new RbAction1Arg<int>((int player) => { Setup.attackingPlayer = player; }, i), null);
                     }
-                    attackerOptions.Build(content, SpriteName.WarsBattleIcon, "Attacker", menu);
+                    attackerOptions.Build(content, SpriteName.WarsBattleIcon, DssRef.todoLang.BattleLab_Attacker, menu);
                 }
-
-
             }
             
 
@@ -150,7 +146,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                     return DssRef.lang.FactionName_DarkLord;
 
                 default:
-                    return "Both";
+                    return DssRef.todoLang.Hud_Both;
 
             }
         }

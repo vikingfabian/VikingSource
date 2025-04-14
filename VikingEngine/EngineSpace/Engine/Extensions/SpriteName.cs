@@ -2431,7 +2431,8 @@ namespace VikingEngine
         WarsHudSecondaryButton,
         WarsHudSecondaryButtonDisabled,
         WarsHudOutlineButton,
-       
+        WarsHudPopUpButton,
+
         WarsHudOptionSelected,
         WarsHudOptionNotSelected,
         
@@ -2484,6 +2485,11 @@ namespace VikingEngine
         WarsHudIconCollection,
         DSS2MainMenu,
         SteamIcon,
+
+        WarsTutorialArmy,
+        WarsTutorialCity,
+        WarsTutorialSoldiers,
+
 
         ToolPaintShape_Free,
         ToolPaintShape_Line,

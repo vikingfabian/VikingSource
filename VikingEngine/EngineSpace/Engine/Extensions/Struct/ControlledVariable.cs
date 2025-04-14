@@ -43,11 +43,11 @@ namespace VikingEngine
         public static readonly TimeStamp None = new TimeStamp(-1000000);
 
         //const float SecToMs = 0.001f;
-        public float totalGameTimeStampSec;
+        public float totalTimeStampSec;
         
         public TimeStamp(float totalGameTimeStampSec)
         {
-            this.totalGameTimeStampSec = totalGameTimeStampSec;
+            this.totalTimeStampSec = totalGameTimeStampSec;
         }
 
         public static TimeStamp Now()
@@ -57,16 +57,21 @@ namespace VikingEngine
 
         public bool secPassed(float seconds)
         {
-            return Ref.TotalTimeSec - totalGameTimeStampSec >= seconds;
+            return Ref.TotalTimeSec - totalTimeStampSec >= seconds;
         }
         public bool msPassed(float ms)
         {
-            return Ref.TotalTimeSec - totalGameTimeStampSec >= TimeExt.MsToSec * ms;
+            return Ref.TotalTimeSec - totalTimeStampSec >= TimeExt.MsToSec * ms;
+        }
+
+        public bool belowTime_ms(float ms)
+        {
+            return Ref.TotalTimeSec - totalTimeStampSec < TimeExt.MsToSec * ms;
         }
 
         public void setNow()
         {
-            this.totalGameTimeStampSec = Ref.TotalTimeSec;
+            this.totalTimeStampSec = Ref.TotalTimeSec;
         }
 
         /// <summary>
@@ -74,8 +79,8 @@ namespace VikingEngine
         /// </summary>
         public bool event_sec(float seconds)
         {
-            return Ref.PrevTotalTimeSec - totalGameTimeStampSec < seconds &&
-                Ref.TotalTimeSec - totalGameTimeStampSec >= seconds;
+            return Ref.PrevTotalTimeSec - totalTimeStampSec < seconds &&
+                Ref.TotalTimeSec - totalTimeStampSec >= seconds;
         }
 
         /// <summary>
@@ -88,15 +93,15 @@ namespace VikingEngine
 
         public float Hours
         {
-            get { return TimeExt.SecondsToHours(Ref.TotalTimeSec - totalGameTimeStampSec); }
+            get { return TimeExt.SecondsToHours(Ref.TotalTimeSec - totalTimeStampSec); }
         }
         public float Seconds
         {
-            get { return Ref.TotalTimeSec - totalGameTimeStampSec; }
+            get { return Ref.TotalTimeSec - totalTimeStampSec; }
         }
         public float MilliSec
         {
-            get { return TimeExt.SecondsToMS(Ref.TotalTimeSec - totalGameTimeStampSec); }
+            get { return TimeExt.SecondsToMS(Ref.TotalTimeSec - totalTimeStampSec); }
         }
     }   
 

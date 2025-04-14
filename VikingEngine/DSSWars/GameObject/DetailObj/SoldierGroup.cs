@@ -15,6 +15,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.EngineSpace.Graphics.In3D;
@@ -106,6 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
             initPart1();
 
             position = startPos;
+            goalWp = startPos;
             tilePos = WP.ToTilePos(position);
 
             initPart2(typeCurrentData);
@@ -1127,7 +1129,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
             }
             args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-            args.content.Add(new RbText(TextLib.TwoDecimal(strengthValue() / AllUnits.AverageGroupStrength)));
+            args.content.Add(new RbText(TextLib.TwoDecimal(strengthValue())));
         }
 
         public override void toTooltip(ObjectHudArgs args)
@@ -2066,7 +2068,45 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
+        {
+            //Vector3 scale = new Vector3(radius * 2f);
 
+            var soldiers_sp = soldiers;
+
+            if (soldiers_sp != null)
+            {
+                var soldiersC = soldiers_sp.counter();
+                int i = 0;
+
+                selection.groupModels_detail.BeginGroupModel();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.selectionFramePlacement(out var pos, out var scale);
+                    selection.groupModels_detail.setGroupModel(i, pos, scale, hover, true, false);
+                    ++i;
+                }
+
+                var target_sp = GetAttackTarget();
+                if (player.faction == GetFaction() && target_sp != null)
+                {
+                    selection.TargetLine(ref position, ref target_sp.position);
+                }
+                else
+                {
+                    selection.hideTargetLine();
+                }
+
+                if (HasIdleState())
+                {
+                    selection.viewGroupPath(null);
+                }
+                else
+                {
+                    selection.viewGroupPath(detailPath);
+                }
+            }
+        }
         //public bool inBattle()
         //{
         //    var soldiersC = soldiers.counter();
@@ -2081,15 +2121,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float strengthValue()
         {
-            //float result = 0;
-            return soldierData.DPS_land() * soldierCount;
-            //var soldiersC = soldiers.counter();
-            //while (soldiersC.Next())
-            //{
-            //    result += soldiersC.sel.DPS();
-            //}
-
-            //return result;
+            return AllUnits.GroupStrengh(soldierCount, ref soldierData, true);
+            
         }
 
         public AbsSoldierUnit FirstSoldier()
@@ -2356,10 +2389,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         //    return typeCurrentData;//DssRef.unitsdata.Get(type);
         //}
-
+        
         public override string TypeName()
         {
-            return soldierConscript.conscript.TypeName() + " Group(" + parentArrayIndex.ToString() + ")";
+            return soldierConscript.conscript.TypeName(); //+ " Group(" + parentArrayIndex.ToString() + ")";
+        }
+
+        virtual public bool IsArmyGroup()
+        {
+            return true;
         }
 
         //public override SpriteName TypeIcon()

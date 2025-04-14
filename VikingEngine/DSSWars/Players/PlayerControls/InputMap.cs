@@ -686,6 +686,11 @@ namespace VikingEngine.DSSWars
             xboxSetup();
         }
 
+        public bool anyActionKeyDown(bool includeCancel)
+        {
+            return mouseSelect.DownEvent || mouseOrder.DownEvent || mouseCancel.DownEvent || (includeCancel && CancelKey.DownEvent);
+        }
+
 
         const float KeyZoomSpeed = 10;
         public float ZoomValue()

@@ -59,7 +59,21 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
 
         public void update()
-        {            
+        {
+            if (player.hud.popMenu != null)
+            {
+                if (player.hud.popMenu.update(player, out bool overPopHud))
+                {
+                    player.hud.popMenu.DeleteMe();
+                    player.hud.popMenu = null;
+                }
+                
+                if (overPopHud)
+                {
+                    return;
+                }
+            }
+
 
             bool hudState = false;
             bool uiRefresh = false;

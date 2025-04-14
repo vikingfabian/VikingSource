@@ -132,10 +132,14 @@ namespace VikingEngine.DSSWars.Display
 
                     if (maxPos.X > Engine.Screen.SafeArea.Right)
                     { 
-                        offset.X = Input.Mouse.Position.X - (Engine.Screen.SmallIconSize + size.X);
+                        offset.X = Engine.Screen.SafeArea.Right - (Engine.Screen.SmallIconSize + size.X);
                     }
 
-                    if (maxPos.Y > Engine.Screen.SafeArea.Bottom)
+                    if (offset.Y < Engine.Screen.SafeArea.Y)
+                    {
+                        offset.Y = Engine.Screen.SafeArea.Y;
+                    }
+                    else if (maxPos.Y > Engine.Screen.SafeArea.Bottom)
                     {
                         offset.Y = Engine.Screen.SafeArea.Bottom - size.Y;
                     }
@@ -468,35 +472,40 @@ namespace VikingEngine.DSSWars.Display
         public void create(Players.LocalPlayer player, List<AbsRichBoxMember> content, bool menuToolTip, int tooltip_id = -1)
         {
             images.DeleteAll();
-            current_menuToolTip = menuToolTip;
 
-            float edge = 8;
-            float width = Engine.Screen.IconSize * 8;
+            if (content.Count > 0)
+            {
 
-            RichBoxGroup richBox = new RichBoxGroup(new Vector2(edge),
-                width, HudLib.MapToolTipLayer, HudLib.RbSettings, content);
+                current_menuToolTip = menuToolTip;
 
-            var area = richBox.maxArea;
-            area.AddRadius(edge);
-            var backgroundTextures = new NineSplitAreaTexture(HudLib.TooltipSettings.windowBackground, area, HudLib.MapToolTipLayer + 2);
-            images.Add(backgroundTextures.images);
-            //Graphics.Image bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size,
-            //    ImageLayers.Lay4);
-            //bg.ColorAndAlpha(Color.Black, 0.95f);
-            size = area.Size;
+                float edge = 8;
+                float width = Engine.Screen.IconSize * 8;
 
-            //images.Add(bg);
+                RichBoxGroup richBox = new RichBoxGroup(new Vector2(edge),
+                    width, HudLib.MapToolTipLayer, HudLib.RbSettings, content);
 
-            images.Add(richBox);
+                var area = richBox.maxArea;
+                area.AddRadius(edge);
+                var backgroundTextures = new NineSplitAreaTexture(HudLib.TooltipSettings.windowBackground, area, HudLib.MapToolTipLayer + 2);
+                images.Add(backgroundTextures.images);
+                //Graphics.Image bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size,
+                //    ImageLayers.Lay4);
+                //bg.ColorAndAlpha(Color.Black, 0.95f);
+                size = area.Size;
 
-            baseUpdate(player, menuToolTip, false);
+                //images.Add(bg);
 
-            //++tooltip_id_timesec;
-            //if (this.tooltip_id != tooltip_id)
-            //{ 
-            //    this.tooltip_id = tooltip_id;
-            //    tooltip_id_timesec = 0;
-            //}
+                images.Add(richBox);
+
+                baseUpdate(player, menuToolTip, false);
+
+                //++tooltip_id_timesec;
+                //if (this.tooltip_id != tooltip_id)
+                //{ 
+                //    this.tooltip_id = tooltip_id;
+                //    tooltip_id_timesec = 0;
+                //}
+            }
         }
     }
 }

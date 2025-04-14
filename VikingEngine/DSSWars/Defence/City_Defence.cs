@@ -11,13 +11,14 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.LootFest.Players;
 using VikingEngine.LootFest.GO.NPC;
+using VikingEngine.EngineSpace;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
         public int selectedDefenceBuilding = -1;
-        public List<DefenceStatus> defenceBuildings = new List<DefenceStatus>();
+        public StructList<DefenceStatus> defenceBuildings = new StructList<DefenceStatus>(64);
 
         public int defenceIxFromSubTile(IntVector2 subTilePos)
         {
@@ -29,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //Task.Factory.StartNew(() =>
             //{
-                lock (defenceBuildings)
+                lock (defenceBuildings.array)
                 {
                     DefenceStatus newDefence = new DefenceStatus();
                     newDefence.init(subPos);
@@ -37,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     for (int i = 0; i < defenceBuildings.Count; ++i)
                     {
-                        if (!defenceBuildings[i].active)
+                        if (!defenceBuildings.array[i].active)
                         {
                             defenceBuildings[i] = newDefence;
                             return;
@@ -52,19 +53,19 @@ namespace VikingEngine.DSSWars.GameObject
         public void destroyDefenceBuilding_async(IntVector2 subPos)
         {
             int id = conv.IntVector2ToInt(subPos);
-            lock (defenceBuildings)
+            lock (defenceBuildings.array)
             {
                 for (int i = 0; i < defenceBuildings.Count; ++i)
                 {
-                    if (defenceBuildings[i].idAndPosition == id)
+                    if (defenceBuildings.array[i].idAndPosition == id)
                     {
-                        var soldiers = defenceBuildings[i].soldierGroupId;
+                        var soldiers = defenceBuildings.array[i].soldierGroupId;
                         if (soldiers != DefenceStatus.NoSoldiers)
                         {
                             var group = groups.GetIndex_Safe(soldiers);
                             group?.completeTransform(SoldierTransformType.ExitGuard, 0);
                         }
-                        defenceBuildings[i] = DefenceStatus.Empty;
+                        defenceBuildings.array[i] = DefenceStatus.Empty;
                         return;
                     }
                 }
@@ -80,14 +81,14 @@ namespace VikingEngine.DSSWars.GameObject
                 int closestIx = -1;
                 float closestDist = float.MaxValue;
 
-                lock (defenceBuildings)
+                lock (defenceBuildings.array)
                 {
                     for (int i = 0; i < defenceBuildings.Count; ++i)
                     {
-                        var defence = defenceBuildings[i];
+                        var defence = defenceBuildings.array[i];
                         if (defence.checkSoldierAssignment(this))
                         {
-                            defenceBuildings[i] = defence;
+                            defenceBuildings.array[i] = defence;
                         }
 
                         if (defence.AvailableForAutoAssign())
@@ -103,7 +104,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (closestIx >= 0)
                     {
-                        var defence = defenceBuildings[closestIx];
+                        var defence = defenceBuildings.array[closestIx];
                         if (inRender_detailLayer)
                         {
                             new MoveCommand(group, defence.WorldPos(), float.MinValue, false);
@@ -114,6 +115,13 @@ namespace VikingEngine.DSSWars.GameObject
                             group.completeTransform(SoldierTransformType.EnterGuard, defence.idAndPosition);
                         }
                     }
+                    else
+                    {
+                        Rotation1D dir = new Rotation1D(Ref.peRnd.Rotation());
+                        float dist = Ref.peRnd.Float(WorldData.SubTileHalfWidth, WorldData.SubTileWidth * 2f);
+
+                        group.goalWp = VectorExt.AddXZ(group.position, dir.Direction(dist));
+                    }
                 }
 
                
@@ -122,7 +130,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int defenceIxFromPosId(int idAndPosition)
         {
-            lock (defenceBuildings)
+            lock (defenceBuildings.array)
             {
                 for (int i = 0; i < defenceBuildings.Count; ++i)
                 {

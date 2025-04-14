@@ -39,6 +39,18 @@ namespace VikingEngine.HUD.RichBox
 
             return textCont;
         }
+        public RbText iconicontext(SpriteName icon, SpriteName icon2, string textline)
+        {
+            newLine();
+            Add(new RbImage(icon));
+            space();
+            Add(new RbImage(icon2));
+            space();
+            var textCont = new RbText(textline);
+            Add(textCont);
+
+            return textCont;
+        }
 
         public AbsRichBoxMember AddReturn(AbsRichBoxMember member)
         { 

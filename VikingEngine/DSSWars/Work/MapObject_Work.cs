@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setTimeOnAllWorkers()
         {
-            for (int i = 0; i < workerStatuses._count; ++i)
+            for (int i = 0; i < workerStatuses.Count; ++i)
             {
                 ref var status = ref workerStatuses.array[i];
                 status.processTimeStartStampSec = Ref.TotalGameTimeSec;

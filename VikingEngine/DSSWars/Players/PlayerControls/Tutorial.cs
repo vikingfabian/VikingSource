@@ -278,23 +278,31 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             switch (missions.sel)
             {
                 case TutorialMission.CollectResources:
-                    content.icontext(HudLib.CheckImage(collectResources_selectCity), DssRef.lang.Tutorial_SelectACity);
-                    content.icontext(HudLib.CheckImage(collectResources_zoomIn), DssRef.lang.Tutorial_ZoomInWorkers);
-                    content.icontext(HudLib.CheckImage(collectResources_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
-                    content.icontext(HudLib.CheckImage(collectResources_collectwood), string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectWoodStoneAmount, DssRef.lang.Resource_TypeName_Wood));
-                    content.icontext(HudLib.CheckImage(collectResources_collectstone), string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectWoodStoneAmount, DssRef.lang.Resource_TypeName_Stone));
+                    //content.icontext(HudLib.CheckImage(collectResources_selectCity), DssRef.lang.Tutorial_SelectACity);
+                    content.newLine();
+                    content.Add(new RbImage(HudLib.CheckImage(collectResources_selectCity)));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsTutorialCity));
+                    content.Add(new RbText("/"));
+                    content.Add(new RbImage(SpriteName.WarsCityHall));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Tutorial_SelectACity));
+
+                    content.iconicontext(HudLib.CheckImage(collectResources_zoomIn), SpriteName.WarsWorker, DssRef.lang.Tutorial_ZoomInWorkers);
+                    content.iconicontext(HudLib.CheckImage(collectResources_selectTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
+                    content.iconicontext(HudLib.CheckImage(collectResources_collectwood), SpriteName.WarsResource_Wood, string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectWoodStoneAmount, DssRef.lang.Resource_TypeName_Wood));
+                    content.iconicontext(HudLib.CheckImage(collectResources_collectstone), SpriteName.WarsResource_Stone, string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectWoodStoneAmount, DssRef.lang.Resource_TypeName_Stone));
                     break;
                
                 case TutorialMission.Linen:
-                    content.icontext(HudLib.CheckImage(linen_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
-                    content.icontext(HudLib.CheckImage(linen_build), string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.LinenFarm].Label()));
+                    content.iconicontext(HudLib.CheckImage(linen_selectTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
+                    content.iconicontext(HudLib.CheckImage(linen_build), SpriteName.WarsBuild_LinenFarms, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.LinenFarm].Label()));
                     //content.icontext(HudLib.CheckImage(linen_armorWork), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_LightArmor));
-                    content.icontext(HudLib.CheckImage(linen_collect), string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectLinenAmount, DssRef.lang.Resource_TypeName_Linen));
+                    content.iconicontext(HudLib.CheckImage(linen_collect), SpriteName.WarsResource_LinenCloth, string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectLinenAmount, DssRef.lang.Resource_TypeName_Linen));
                     break;
 
-
                 case TutorialMission.ProduceWeaponsArmor:
-                    content.icontext(HudLib.CheckImage(weaponsArmor_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
+                    content.iconicontext(HudLib.CheckImage(weaponsArmor_selectTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
                     
                     content.newLine();
                     content.Add(new RbImage(HudLib.CheckImage(weaponsArmor_selectSubTab)));
@@ -305,18 +313,27 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(new RbOverlapImage(tabImg, SpriteName.WarsResource_Sword, Vector2.Zero, 0.8f));
                     content.space();
                     content.Add(new RbText(string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Work)));
-                    content.icontext(HudLib.CheckImage(weaponsArmor_setWeaponPrio), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_SharpStick));
-                    content.icontext(HudLib.CheckImage(weaponsArmor_setArmorPrio), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_LightArmor));
-                    content.icontext(HudLib.CheckImage(weaponsArmor_produceWeapons), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_SharpStick));
-                    content.icontext(HudLib.CheckImage(weaponsArmor_produceArmor), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_LightArmor));
+                    
+                    content.iconicontext(HudLib.CheckImage(weaponsArmor_setWeaponPrio), ResourceLib.Icon(ItemResourceType.SharpStick), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_SharpStick));
+                    content.iconicontext(HudLib.CheckImage(weaponsArmor_setArmorPrio), ResourceLib.Icon(ItemResourceType.PaddedArmor), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.todoLang.Resource_TypeName_PaddedArmor));
+                    content.iconicontext(HudLib.CheckImage(weaponsArmor_produceWeapons), ResourceLib.Icon(ItemResourceType.SharpStick), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_SharpStick));
+                    content.iconicontext(HudLib.CheckImage(weaponsArmor_produceArmor), ResourceLib.Icon(ItemResourceType.PaddedArmor), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.todoLang.Resource_TypeName_PaddedArmor));
                     break;
 
                 case TutorialMission.RecruitGuard:
-                    content.icontext(HudLib.CheckImage(recruitGuard_selectCity), DssRef.lang.Tutorial_SelectACity);
-                    content.icontext(HudLib.CheckImage(recruitGuard_zoomIn), DssRef.lang.Tutorial_ZoomInWorkers);
-                    content.icontext(HudLib.CheckImage(recruitGuard_selectConscriptTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
-                    content.icontext(HudLib.CheckImage(recruitGuard_selectGuardTab), string.Format(DssRef.todoLang.Tutorial_OpenGuardSubTab, DssRef.todoLang.Conscript_Soldiers_GuardType));
-                    content.icontext(HudLib.CheckImage(recruitGuard_createGuard), string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.todoLang.Resource_TypeName_PaddedArmor));
+                    content.newLine();
+                    content.Add(new RbImage(HudLib.CheckImage(recruitGuard_selectCity)));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsTutorialCity));
+                    content.Add(new RbText("/"));
+                    content.Add(new RbImage(SpriteName.WarsCityHall));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Tutorial_SelectACity));
+                    //content.icontext(HudLib.CheckImage(recruitGuard_selectCity), DssRef.lang.Tutorial_SelectACity);
+                    content.iconicontext(HudLib.CheckImage(recruitGuard_zoomIn), SpriteName.WarsWorker, DssRef.lang.Tutorial_ZoomInWorkers);
+                    content.iconicontext(HudLib.CheckImage(recruitGuard_selectConscriptTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
+                    content.iconicontext(HudLib.CheckImage(recruitGuard_selectGuardTab), SpriteName.WarsHudSubTabSelected, string.Format(DssRef.todoLang.Tutorial_OpenGuardSubTab, DssRef.todoLang.Conscript_Soldiers_GuardType));
+                    content.iconicontext(HudLib.CheckImage(recruitGuard_createGuard), SpriteName.WarsUnitIcon_Folkman, string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.todoLang.Resource_TypeName_PaddedArmor));
                     
                     break;
 
@@ -328,23 +345,23 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
 
                 case TutorialMission.ConscriptArmy:
-                    content.icontext(HudLib.CheckImage(conscriptArmy_build), string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.SoldierBarracks].Label()));
-                    content.icontext(HudLib.CheckImage(conscriptArmy_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
-                    content.icontext(HudLib.CheckImage(conscriptArmy_createArmy), string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.todoLang.Resource_TypeName_PaddedArmor));
+                    content.iconicontext(HudLib.CheckImage(conscriptArmy_build), SpriteName.WarsBuild_Barracks, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.SoldierBarracks].Label()));
+                    content.iconicontext(HudLib.CheckImage(conscriptArmy_selectTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
+                    content.iconicontext(HudLib.CheckImage(conscriptArmy_createArmy), SpriteName.WarsUnitIcon_Folkman, string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.todoLang.Resource_TypeName_PaddedArmor));
                     break;
 
                 case TutorialMission.CollectFood:
-                    content.icontext(HudLib.CheckImage(CollectFood_selecttab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
-                    content.icontext(HudLib.CheckImage(CollectFood_foodblueprint), DssRef.lang.Tutorial_LookAtFoodBlueprint);//-look at the food blueprint
-                    content.icontext(HudLib.CheckImage(CollectFood_buildfoodproduction), string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
-                    content.icontext(HudLib.CheckImage(CollectFood_buildfuelproduction), string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
-                    content.icontext(HudLib.CheckImage(CollectFood_builcook), string.Format(DssRef.lang.Tutorial_BuildCraft, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    content.iconicontext(HudLib.CheckImage(CollectFood_selecttab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
+                    content.iconicontext(HudLib.CheckImage(CollectFood_foodblueprint), SpriteName.WarsBluePrint, DssRef.lang.Tutorial_LookAtFoodBlueprint);//-look at the food blueprint
+                    content.iconicontext(HudLib.CheckImage(CollectFood_buildfoodproduction), SpriteName.WarsResource_RawFood, string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
+                    content.iconicontext(HudLib.CheckImage(CollectFood_buildfuelproduction), SpriteName.WarsResource_Fuel, string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
+                    content.iconicontext(HudLib.CheckImage(CollectFood_builcook), SpriteName.WarsBuild_Cook, string.Format(DssRef.lang.Tutorial_BuildCraft, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
                     
-                    content.icontext(HudLib.CheckImage(CollectFood_selectStockPile), 
+                    content.iconicontext(HudLib.CheckImage(CollectFood_selectStockPile), SpriteName.WarsStockpileAdd, 
                         string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources) + ". " + string.Format(DssRef.lang.Tutorial_Select_SubTab, DssRef.lang.Resource_Tab_Stockpile));//-build a food crafting station
 
-                    content.icontext(HudLib.CheckImage(CollectFood_increasefoodbuffer), string.Format(DssRef.lang.Tutorial_IncreaseBufferLimit, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
-                    content.icontext(HudLib.CheckImage(CollectFood_reachfoodamount), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ReachFoodBuffer, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    content.iconicontext(HudLib.CheckImage(CollectFood_increasefoodbuffer), SpriteName.WarsResource_Food, string.Format(DssRef.lang.Tutorial_IncreaseBufferLimit, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    content.iconicontext(HudLib.CheckImage(CollectFood_reachfoodamount), SpriteName.WarsStockpileStop, string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ReachFoodBuffer, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
 
                     content.newLine();
                     HudLib.BulletPoint(content);
@@ -367,12 +384,27 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
                 
                 case TutorialMission.MoveArmy:
-                    content.icontext(HudLib.CheckImage(moveArmy_ZoomOut), DssRef.lang.Tutorial_ZoomOutOverview);
-                    content.icontext(HudLib.CheckImage(moveArmy_SelectMove), DssRef.lang.Tutorial_Mission_MoveArmy);
+                    content.newLine();
+                    content.Add(new RbImage(HudLib.CheckImage(moveArmy_ZoomOut)));
+                    // content.space();
+                    //content.Add(new RbImage(SpriteName.WarsTutorialArmy));
+                     content.space();
+                    content.Add(new RbText(DssRef.lang.Tutorial_ZoomOutOverview));
+
+                    content.newLine();
+                    content.Add(new RbImage(HudLib.CheckImage(moveArmy_SelectMove)));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsTutorialArmy));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Tutorial_Mission_MoveArmy));
+
+
+                    //content.icontext(HudLib.CheckImage(moveArmy_ZoomOut), DssRef.lang.Tutorial_ZoomOutOverview);
+                    //content.icontext(HudLib.CheckImage(moveArmy_SelectMove), DssRef.lang.Tutorial_Mission_MoveArmy);
                     break;
                 case TutorialMission.Diplomatics:
-                    content.icontext(HudLib.CheckImage(diplomatics_ZoomOut),  DssRef.lang.Tutorial_ZoomOutDiplomacy);
-                    content.icontext(HudLib.CheckImage(diplomatics_goodRelation), DssRef.lang.Tutorial_ImproveRelations);
+                    content.iconicontext(HudLib.CheckImage(diplomatics_ZoomOut), SpriteName.WarsDiplomaticPoint,  DssRef.lang.Tutorial_ZoomOutDiplomacy);
+                    content.iconicontext(HudLib.CheckImage(diplomatics_goodRelation), SpriteName.WarsRelationGood, DssRef.lang.Tutorial_ImproveRelations);
                     break;
 
             }

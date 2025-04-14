@@ -1,6 +1,14 @@
 ﻿UPDATE
 -Change Log-
-
+* Adapted the HUD to better handle 720p resolution
+* Made the drag value button clickable
+* Improved scrollbar
+* Fixed mid layer tooltip
+* multiselect popup menu
+* added help icons to tutorial
+* fixed: New guards run off to world 0,0 if there are no free walls
+* fixed: Jamming guards in one spot will crash the game
+* repaired wall placements
 
 The demo should:
 -Lockout any extra content or modes.
@@ -11,15 +19,13 @@ The demo should:
 -Lose if the south city is lost
 -You can either watch or interact, I call it "tourist mode"
 
+
 !! Known issues, that I am working on !!
--Jamming guards in one spot will crash the game
--The guards are hard to select
--Mutliselect is not completed
 -Soldiers can be stuck on idle in battle
 -Cant move units between armies and garrisons
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
 -Can sometimes show the wrong city on the hud
--Songs can get stuck in loops
+
 
 #Free build defences
  Rock thrower
@@ -161,13 +167,13 @@ https://piratepr.com/treasure-trove/how-to-get-your-download-demo-button-visible
 -hör av till 300 streamers om demo, lägg screens i mailet
 -wishlist länk i spelet måste finnas i alla menyer (använd steam API)
 - https://impress.games/press-kitty
-
+- kolla steam db releases
 -description gifs ska vara 3st "three pillars, what you do in the game"
 
 VertexPositionColorNormal
 VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);
 
-admin(at)alphabetagamer(dot)com
+
 
 
 #Shaders

@@ -14,7 +14,6 @@ namespace VikingEngine.DSSWars.Display
 {
     class ArmyMenu
     {
-        //const string DisbandMenuState = "dis";
         const string DisbandAllMenuState = "disall";
         const string TradeMenuState = "trade";
         Players.LocalPlayer player;
@@ -211,7 +210,7 @@ namespace VikingEngine.DSSWars.Display
                     content.h1(DssRef.lang.ArmyOption_DisbandAll);
                     content.h2(Ref.langOpt.Hud_AreYouSure);
                     content.newLine();
-                    var allbuttonyes = new HUD.RichBox.RbButton(
+                    var allbuttonyes = new ArtButton( RbButtonStyle.Primary,
                         new List<AbsRichBoxMember>
                         {
                         new HUD.RichBox.RbText(Ref.langOpt.Hud_Yes),
@@ -490,8 +489,6 @@ namespace VikingEngine.DSSWars.Display
             {
                 
             }
-
-            
 
             if (player.hud.objMenu.otherArmy == null)
             {

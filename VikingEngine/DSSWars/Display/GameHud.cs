@@ -31,7 +31,9 @@ namespace VikingEngine.DSSWars.Display
         public PlayerHud_Faction factionMenu;
         public PlayerHud_Object objMenu;
 
-        Map.MiniMap miniMap;
+         Map.MiniMap miniMap;
+
+        public PopMenu popMenu = null;
 
         public GameHud(LocalPlayer player, int numPlayers)
         {

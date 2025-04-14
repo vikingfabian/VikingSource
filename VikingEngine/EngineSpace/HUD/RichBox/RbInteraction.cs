@@ -12,6 +12,7 @@ namespace VikingEngine.HUD.RichBox
     abstract class AbsRbInteraction
     {   
         abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
+        abstract public void end(out bool needRefresh);
     }
     class RbInteraction: AbsRbInteraction
     {
@@ -67,6 +68,7 @@ namespace VikingEngine.HUD.RichBox
                 var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out needRefresh, out bool endInteraction);
                 if (endInteraction)
                 {
+                    interactionStack.end(out needRefresh);
                     interactionStack = null;
                 }
                 return result;
@@ -146,6 +148,12 @@ namespace VikingEngine.HUD.RichBox
             }
 
             return false;
+        }
+
+        public override void end(out bool needRefresh)
+        {
+            needRefresh = false;
+            //throw new NotImplementedException();
         }
 
         public void refreshSelectOutline()
