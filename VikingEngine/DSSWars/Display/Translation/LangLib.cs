@@ -1174,6 +1174,10 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case TerrainBuildingType.School:
                     return DssRef.todoLang.BuildingType_School_Description;
+
+                
+
+
                 default:
                     return TextLib.Error;
             }

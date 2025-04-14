@@ -200,6 +200,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Defence_Title => "Defence";
         public string Defence_GuardPost => "Guard post";
+
+        public string Defence_WallDescription_Movement => "Hinders enemy movement.";
+        public string Defence_WallDescription_GuardPost => "Guard can be posted here.";
         public string Defence_AutoAssign => "Auto assign";
         public string Defence_AutoAssign_Description => "New guards will move to this post";
         public string Conscript_SplashDamage => "Splash damage";

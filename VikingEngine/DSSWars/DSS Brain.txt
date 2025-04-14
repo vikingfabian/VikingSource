@@ -1,14 +1,5 @@
 ﻿UPDATE
 -Change Log-
-* Adapted the HUD to better handle 720p resolution
-* Made the drag value button clickable
-* Improved scrollbar
-* Fixed mid layer tooltip
-* multiselect popup menu
-* added help icons to tutorial
-* fixed: New guards run off to world 0,0 if there are no free walls
-* fixed: Jamming guards in one spot will crash the game
-* repaired wall placements
 
 The demo should:
 -Lockout any extra content or modes.
@@ -25,7 +16,7 @@ The demo should:
 -Cant move units between armies and garrisons
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
 -Can sometimes show the wrong city on the hud
-
+-Stopping guard posting, blocks the wall
 
 #Free build defences
  Rock thrower

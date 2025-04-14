@@ -61,6 +61,15 @@ namespace VikingEngine.DSSWars.Build
                     return DssRef.lang.BuildingType_Farm_Description;
                 case TerrainMainType.Decor:
                     return DssRef.lang.BuildingType_Decor_Description;
+                case TerrainMainType.Wall:
+                    switch ((TerrainWallType)subType)
+                    {
+                        case TerrainWallType.StoneHouse:
+                            return DssRef.todoLang.Defence_WallDescription_Movement;
+                        default:
+                            return DssRef.todoLang.Defence_WallDescription_Movement + " " + DssRef.todoLang.Defence_WallDescription_GuardPost;
+                    }
+                    
             }
 
             return TextLib.Error;
