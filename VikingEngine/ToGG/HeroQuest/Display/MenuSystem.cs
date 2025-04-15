@@ -27,7 +27,7 @@ namespace VikingEngine.ToGG.HeroQuest.Display
                 new GuiTextButton("Give awards", null, listGiftedAwards, true, layout);
             }
 
-            if (!PlatformSettings.Demo)
+            if (!PlatformSettings.STEAM_DEMO)
             {
                 new GuiTextButton("*DEBUG*", null, debugOptions, true, layout);
             }

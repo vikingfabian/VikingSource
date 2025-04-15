@@ -9,6 +9,8 @@ using VikingEngine.HUD;
 using Valve.Steamworks;
 using VikingEngine.SteamWrapping;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars;
 
 #if PCGAME
 //using System.Windows.Forms;
@@ -105,6 +107,15 @@ namespace VikingEngine.DebugExtensions
             {
                 Engine.Draw.graphicsDeviceManager.ApplyChanges();
                 Ref.main.Exit();
+            }
+
+            if (PlatformSettings.RunProgram == StartProgram.DSS)
+            {  
+                if (Ref.steam != null && Ref.steam.statsInitialized)
+                {
+                    DssRef.stats?.blueScreen.addOne();
+                    Ref.steam.stats.upload();
+                }
             }
         }
 

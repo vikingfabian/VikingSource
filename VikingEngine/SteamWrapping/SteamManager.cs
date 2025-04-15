@@ -129,13 +129,20 @@ namespace VikingEngine.SteamWrapping
                     result = new SteamApplicationSettings(367030);
                     break;
                 case StartProgram.DSS:
-                    result = new SteamApplicationSettings(1223150);
+                    if (PlatformSettings.STEAM_DEMO)
+                    {
+                        result = new SteamApplicationSettings(3585100);
+                    }
+                    else
+                    {
+                        result = new SteamApplicationSettings(1223150);
+                    }
                     break;
                 case StartProgram.PartyJousting:
                     result = new SteamApplicationSettings(437900);
                     break;                    
                 case StartProgram.ToGG:
-                    if (PlatformSettings.Demo)
+                    if (PlatformSettings.STEAM_DEMO)
                     {
                         result = new SteamApplicationSettings(878070);
                     }

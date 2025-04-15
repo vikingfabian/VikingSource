@@ -1,6 +1,7 @@
 ﻿#if PCGAME
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -130,6 +131,8 @@ namespace VikingEngine.SteamWrapping
         bool setStat();
         bool getUserStats(ulong user);
 
+        void initAndSet();
+
         public string Name { get; }
     }
 
@@ -151,6 +154,12 @@ namespace VikingEngine.SteamWrapping
         public void set(int value)
         {
             this.value = value;
+            setStat();
+        }
+
+        public void initAndSet()
+        {
+            this.value = 1;
             setStat();
         }
 
@@ -241,7 +250,11 @@ namespace VikingEngine.SteamWrapping
             this.value = value;
             setStat();
         }
-
+        public void initAndSet()
+        {
+            this.value = 1;
+            setStat();
+        }
         public void add(float add)
         {
             this.value += add;

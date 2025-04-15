@@ -126,9 +126,23 @@ namespace VikingEngine.DSSWars
 
                 }
 
-                if (DssRef.storage.runTutorial_1short_2normal == 2)
+                switch (DssRef.storage.runTutorial_1short_2normal)
                 {
-                    DssRef.stats.startTutorial.addOne();
+                    case 0:
+                        if (PlatformSettings.STEAM_DEMO)
+                        {
+                            DssRef.stats.startNewDemo.addOne();
+                        }
+                        break;
+
+                    case 1:
+                        DssRef.stats.startShortTutorial.addOne();
+                        break;
+
+                    case 2:
+                        DssRef.stats.startTutorial.addOne();
+                        break;
+
                 }
 
                 if (DssRef.storage.playerCount > 1)

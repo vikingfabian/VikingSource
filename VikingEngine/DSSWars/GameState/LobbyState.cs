@@ -907,6 +907,18 @@ namespace VikingEngine.DSSWars
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_MusicPlayList) }),
                             new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListMusic, StackOption.ClearStack),null, !PlatformSettings.STEAM_DEMO));
 
+#if DEBUG
+                        content.newLine();
+                        content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Initialize steam stats") }, new RbAction(Ref.steam.stats.initializeAllStatsOnSteam)));
+                        content.newLine();
+                        content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Load global steam stats") }, new RbAction(Ref.steam.stats.beginRequestGlobalStats)));
+#endif
+
+                        //                    if (Ref.steam.statsInitialized)
+                        //                    {
+                        //                        new GuiTextButton("Initialize steam stats", null, Ref.steam.stats.initializeAllStatsOnSteam, false, layout);
+                        //                        new GuiTextButton("Load global steam stats", null, Ref.steam.stats.beginRequestGlobalStats, false, layout);
+                        //                    }
 
                         underMenu.Refresh(content);
                     }

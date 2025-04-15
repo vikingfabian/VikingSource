@@ -38,32 +38,40 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
             bool storyVictory = endReason == GameEndReason.Victory;
 
-            switch (DssRef.difficulty.PercDifficulty)
+            if (PlatformSettings.STEAM_DEMO)
             {
-                case 25:
-                    (storyVictory? DssRef.stats.won25perc : DssRef.stats.lost25perc).addOne();
-                    break;
-                case 50:
-                    (storyVictory ? DssRef.stats.won50perc : DssRef.stats.lost50perc).addOne();
-                    break;
-                case 75:
-                    (storyVictory ? DssRef.stats.won75perc : DssRef.stats.lost75perc).addOne();
-                    break;
-                case 100:
-                    (storyVictory ? DssRef.stats.won100perc : DssRef.stats.lost100perc).addOne();
-                    break;
-                case 125:
-                    (storyVictory ? DssRef.stats.won125perc : DssRef.stats.lost125perc).addOne();
-                    break;
-                case 150:
-                    (storyVictory ? DssRef.stats.won150perc : DssRef.stats.lost150perc).addOne();
-                    break;
-                case 175:
-                    (storyVictory ? DssRef.stats.won175perc : DssRef.stats.lost175perc).addOne();
-                    break;
-                case 200:
-                    (storyVictory ? DssRef.stats.won200perc : DssRef.stats.lost200perc).addOne();
-                    break;
+                DssRef.stats.completeDemo.addOne();
+            }
+            else
+            {
+
+                switch (DssRef.difficulty.PercDifficulty)
+                {
+                    case 25:
+                        (storyVictory ? DssRef.stats.won25perc : DssRef.stats.lost25perc).addOne();
+                        break;
+                    case 50:
+                        (storyVictory ? DssRef.stats.won50perc : DssRef.stats.lost50perc).addOne();
+                        break;
+                    case 75:
+                        (storyVictory ? DssRef.stats.won75perc : DssRef.stats.lost75perc).addOne();
+                        break;
+                    case 100:
+                        (storyVictory ? DssRef.stats.won100perc : DssRef.stats.lost100perc).addOne();
+                        break;
+                    case 125:
+                        (storyVictory ? DssRef.stats.won125perc : DssRef.stats.lost125perc).addOne();
+                        break;
+                    case 150:
+                        (storyVictory ? DssRef.stats.won150perc : DssRef.stats.lost150perc).addOne();
+                        break;
+                    case 175:
+                        (storyVictory ? DssRef.stats.won175perc : DssRef.stats.lost175perc).addOne();
+                        break;
+                    case 200:
+                        (storyVictory ? DssRef.stats.won200perc : DssRef.stats.lost200perc).addOne();
+                        break;
+                }
             }
 
             if (Ref.steam.statsInitialized)

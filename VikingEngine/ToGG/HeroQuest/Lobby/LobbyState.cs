@@ -137,7 +137,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
                 }
                 new GuiTextButton("Pick hero", null, pickHero, true, layout);
                 
-                if (!PlatformSettings.Demo)
+                if (!PlatformSettings.STEAM_DEMO)
                 {
                     new GuiTextButton("**Debug**", null, debugMenu, false, layout);
                 }

@@ -163,10 +163,10 @@ namespace VikingEngine
         public static readonly bool ViewCollisionBounds =
           DebugLevel != BuildDebugLevel.Dev ? LockedToFalse : Debug_ViewCollisionBounds;
 
-        public static readonly bool Demo =
-            DebugLevel == BuildDebugLevel.DebugDemo ||
-            DebugLevel == BuildDebugLevel.PublicDemo || 
-            DebugLevel == BuildDebugLevel.ShowDemo;
+        //public static readonly bool Demo =
+        //    DebugLevel == BuildDebugLevel.DebugDemo ||
+        //    DebugLevel == BuildDebugLevel.PublicDemo || 
+        //    DebugLevel == BuildDebugLevel.ShowDemo;
 
         /// <summary>
         /// Will make a delay when accessing files on the computer
@@ -200,7 +200,7 @@ namespace VikingEngine
             {
                 if (Engine.LoadContent.SteamVersion == null)
                     return "Unknown Version";
-                else if (PlatformSettings.Demo)
+                else if (PlatformSettings.STEAM_DEMO)
                     return "Demo v. " + Engine.LoadContent.SteamVersion;
                 else
                     return "Version " + Engine.LoadContent.SteamVersion;
