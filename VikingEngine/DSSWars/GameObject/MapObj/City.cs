@@ -2046,7 +2046,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbText(DssRef.lang.UnitType_City, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space(1);
-            args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
 
             ownerToHud(args, !tooltip);
         }
@@ -2133,13 +2133,13 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                        new RbText(DssRef.todoLang.Automation_AutomateCity)
+                        new RbText(DssRef.lang.Automation_AutomateCity)
                     }, AutomateCityProperty));
 
                     if (automateCity)
                     {
                         content.newLine();
-                        HudLib.Label(content, DssRef.todoLang.Automation_AutomationFocus);
+                        HudLib.Label(content, DssRef.lang.Automation_AutomationFocus);
 
                         content.newLine();
                         foreach (var focus in CityMenu.AvailableAutomationFocuses)
@@ -2148,16 +2148,16 @@ namespace VikingEngine.DSSWars.GameObject
                             switch (focus)
                             {
                                 case AutomationFocus.NoFocus:
-                                    caption = DssRef.todoLang.Hud_None;
+                                    caption = DssRef.lang.Hud_None;
                                     break;
                                 case AutomationFocus.Grow:
-                                    caption = DssRef.todoLang.Automation_AutomationFocus_Grow;
+                                    caption = DssRef.lang.Automation_AutomationFocus_Grow;
                                     break;
                                 case AutomationFocus.Export:
-                                    caption = DssRef.todoLang.Automation_AutomationFocus_Export;
+                                    caption = DssRef.lang.Automation_AutomationFocus_Export;
                                     break;
                                 case AutomationFocus.Military:
-                                    caption = DssRef.todoLang.Automation_AutomationFocus_War;
+                                    caption = DssRef.lang.Automation_AutomationFocus_War;
                                     break;
                             }
 
@@ -2218,7 +2218,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsServiceMen));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.ResourceType_ServiceMen, freeServiceMen.amount)));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount)));
                 content.Add(new RbTab(0.4f));
                 content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
                 content.space();
@@ -2255,7 +2255,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.space();
                     content.Add(new RbImage(SpriteName.WarsServiceMen));
                     content.space();
-                    var textCont = new RbText(string.Format(DssRef.todoLang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
+                    var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
                     content.Add(textCont);
                     if (interactive)
                     {
@@ -2328,7 +2328,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsCityHall));
-                content.Add(new RbText(string.Format(DssRef.todoLang.CityHall_MaxSupportedWorkers, WorkersMaxLimit), HudLib.ResourceCostColor(homeUsers() < WorkersMaxLimit)));
+                content.Add(new RbText(string.Format(DssRef.lang.CityHall_MaxSupportedWorkers, WorkersMaxLimit), HudLib.ResourceCostColor(homeUsers() < WorkersMaxLimit)));
             }
             //hud.tooltip.create(this, content, true);
         }
@@ -2599,7 +2599,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             //content.newLine();
             //HudLib.ResourceCost(content, ItemResourceType
-            //content.Add(new RbText(string.Format( DssRef.todoLang.ServicemenCount, HudLib.
+            //content.Add(new RbText(string.Format( DssRef.lang.ServicemenCount, HudLib.
 
             content.newParagraph();
 
@@ -2620,11 +2620,11 @@ namespace VikingEngine.DSSWars.GameObject
                 addGuardHousing = DssConst.CapitalHall_GuardHousing - DssConst.TownHall_GuardHousing;
             }
             HudLib.BulletPoint(content);
-            content.Add(new RbText(string.Format(DssRef.todoLang.CityHall_MaxSupportedWorkers, supportedWorkersString)));
+            content.Add(new RbText(string.Format(DssRef.lang.CityHall_MaxSupportedWorkers, supportedWorkersString)));
 
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.GuardHousingCount, TextLib.PlusMinus(addGuardHousing))));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.GuardHousingCount, TextLib.PlusMinus(addGuardHousing))));
         }
 
         public bool CanUpgradeCityHall()

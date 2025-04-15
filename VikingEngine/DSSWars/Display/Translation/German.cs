@@ -1557,5 +1557,476 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Tutorial_Select_SubTab => "Und wähle die Kategorie: {0}";
 
+
+        /* #### --------------- ##### */
+        /* #### DSS 2 DEMO      ##### */
+        /* #### --------------- ##### */
+
+        public override string Tutorial_OpenGuardSubTab => "Öffne eine Kaserne und wähle die Kategorie: {0}";
+        public override string Tutorial_GuardToWall => "Bewege einen Wächter an die Mauer";
+        public override string Demo_MissionObjective_Title => "Missionsziel";
+        public override string Demo_MissionObjective_Description => "Verteidige dich gegen den Angriff aus dem Süden";
+        public override string Demo_Complete_Title => "Demo abgeschlossen";
+        public override string Demo_TimesUp_Title => "Zeit abgelaufen!";
+        public override string Demo_EndInOneMinuteDescription => "Die Demo endet in einer Minute";
+
+        public override string ArmyOption_NewArmy => "Neue Armee";
+        public override string ProfileEditor_AltMain => "Alternative Hauptauswahl";
+        public override string Automation_CheckBoxTitle => "Automatisiert";
+
+        public override string ArmyStructure_ColumnWidth => "Armeespaltenbreite";
+        public override string ArmyStructure_ArmyPlacement => "Platzierung in der Armee";
+        public override string ArmyStructure_Row_Front => "Vorne";
+        public override string ArmyStructure_Row_Body => "Mitte";
+        public override string ArmyStructure_Row_Second => "Zweite Reihe";
+        public override string ArmyStructure_Row_Behind => "Hinten";
+
+        public override string Diplomacy_RelationType_Enemies => "Feinde";
+
+        public override string EventMessage_EnemyAlliance_Title => "Angst vor Vorherrschaft";
+        public override string EventMessage_EnemyAlliance => "Die Nationen, die deine wachsende Macht fürchten, schließen sich zu einem Bündnis gegen dich zusammen.";
+
+        public override string Settings_CentralGold => "Zentrales Gold";
+        public override string Settings_CentralGold_Description => "Ein: Dein gesamtes Gold befindet sich in einem gemeinsamen Pool zur sofortigen Nutzung. Aus: Gold ist physisch und muss transportiert werden.";
+
+        public override string InputActionName_StopStart => "Start/Stopp";
+        public override string InputActionName_ToggleHudDetail => "HUD-Details umschalten";
+        public override string InputActionName_NextCity => "Nächste Stadt";
+        public override string InputActionName_NextArmy => "Nächste Armee";
+        public override string InputActionName_NextBattle => "Nächste Schlacht";
+        public override string InputActionName_Build => "Bauen";
+        public override string InputActionName_Copy => "Kopieren";
+        public override string InputActionName_Paste => "Einfügen";
+        public override string InputActionName_Menu => "Menü";
+        public override string InputActionName_FlagDesign_ToggleColor_Prev => "Vorherige Farbe";
+        public override string InputActionName_FlagDesign_ToggleColor_Next => "Nächste Farbe";
+        public override string InputActionName_FlagDesign_PaintBucket => "Farbeimer";
+        public override string InputActionName_Controller_FlagDesign_Colorpicker => "Farbwähler";
+        public override string InputActionName_ControllerFocus => "Fokus";
+        public override string InputActionName_ControllerCancel => "Abbrechen";
+        public override string InputActionName_ControllerMessageClick => "Nachricht auswählen";
+        public override string InputActionName_ControllerSelect => "Auswählen";
+        public override string InputActionName_WASD_UP => "Hoch";
+        public override string InputActionName_WASD_DOWN => "Runter";
+        public override string InputActionName_WASD_LEFT => "Links";
+        public override string InputActionName_WASD_RIGHT => "Rechts";
+        public override string InputActionName_CameraTiltLeft => "Kamera nach links kippen";
+        public override string InputActionName_CameraTiltRight => "Kamera nach rechts kippen";
+        public override string InputActionName_CameraTiltUp => "Kamera nach oben kippen";
+        public override string InputActionName_ZoomInKey => "Hineinzoomen";
+        public override string InputActionName_ZoomOutKey => "Herauszoomen";
+
+        public override string Settings_Title_Monitor => "Monitoroptionen";
+        public override string Settings_Title_Graphics => "Grafikoptionen";
+        public override string Settings_Title_Input => "Eingabe";
+        public override string Settings_Title_Gameplay => "Spieloptionen";
+        public override string Settings_PanOnZoom => "Schwenken beim Zoomen";
+        public override string Settings_ScrollSensitivity_Game => "Scroll-Empfindlichkeit: Spiel";
+        public override string Settings_ScrollSensitivity_Menu => "Scroll-Empfindlichkeit: Menü";
+        public override string Settings_Blood => "Blut";
+
+        public override string Settings_MasterVolume => "Gesamtlautstärke";
+        public override string Settings_AmbienceVolume => "Umgebungslautstärke";
+        public override string Settings_BattleMelody => "Kampfmusik";
+
+        public override string Settings_ModelLight => "Modelleffektlicht";
+        public override string Settings_Particles => "Partikeleffekte";
+        public override string Settings_MapLoadSpeed => "Kartenladegeschwindigkeit";
+        public override string Lobby_Category_Options => "Optionen";
+        public override string Lobby_Category_Editor => "Editor";
+        public override string Lobby_Category_ExtraModes => "Zusätzliche Modi";
+
+        public override string Lobby_Editor_MapEditor => "Karteneditor";
+        public override string Lobby_Editor_VoxelEditor => "Voxel-Editor";
+
+        public override string Lobby_Mode_BattleLab => "Kampflabor";
+        public override string Lobby_Mode_BattleLab_Description => "Lasse beliebige Soldaten gegeneinander antreten";
+        public override string Lobby_Mode_Commander => "Commander spielen";
+        public override string Lobby_Mode_Commander_Description => "Ein kleines taktisches Brettspiel";
+        public override string Lobby_MusicPlayList => "Musikwiedergabeliste";
+
+        public override string Lobby_GameSetup => "Spielsetup";
+        public override string Lobby_PlayerSetup => "Spielereinstellungen";
+        public override string LobbyDemoMode_Demo => "Demo";
+        public override string LobbyDemoMode_ShortTutorial => "Kurzes Tutorial";
+        public override string LobbyDemoMode_LongTutorial => "Erweitertes Tutorial";
+
+        /// <summary>
+        /// Says wishlist on, followed by the STEAM logo
+        /// </summary>
+        public override string LobbyDemoMode_WishlistOn => "Zur Wunschliste hinzufügen";
+        public override string BattleLab_StartHere => "Schlacht hier starten";
+        public override string BattleLab_Start => "Schlacht starten";
+        public override string BattleLab_Attacker => "Angreifer";
+
+        public override string MapGenerator_Name => "Karteneditor – generieren";
+
+        public override string MapType_CustomMap => "Benutzerdefinierte Karte";
+        public override string MapType_GenerateNewMap => "Neue Karte generieren";
+        public override string MapGenerator_GenerateAction => "Generieren";
+        public override string MapGenerator_Terrain_CustomSize => "Benutzerdefinierte Größe";
+        public override string MapGenerator_Terrain_StartAs => "Starten als";
+        public override string MapGenerator_Terrain_ClearPass => "Clear-Pass ausführen";
+        public override string MapGenerator_Terrain_BuildPass => "Build-Pass ausführen";
+        public override string MapGenerator_Terrain_DigPass => "Dig-Pass ausführen";
+        public override string MapGenerator_Terrain_BuildDigLoops => "Anzahl Build-Dig-Schleifen";
+        public override string MapGenerator_Terrain_BuildStrokes => "Anzahl der Baupinselstriche";
+        public override string MapGenerator_Terrain_BuildStrokes_Description => "Gemessen in Pinselstrichen pro 100 Kacheln";
+        public override string MapGenerator_Terrain_DigStrokes => "Anzahl der Grabpinselstriche";
+        public override string MapGenerator_Terrain_CleanUp_Option => "Einzelfeldbereinigung";
+        public override string MapGenerator_Terrain_CleanUpPass => "Cleanup-Pass ausführen";
+
+        public override string Economy_ServicemenUpkeep => "Unterhalt für Dienstleute: {0}";
+        public override string Economy_ServicemenUpkeep_Description => "Unterhalt beträgt {0} Gold pro Dienstmann";
+        public override string Economy_GuardUpkeep_Description => "Unterhalt beträgt {0} Gold pro Wächter";
+
+        public override string EndScreen_TimeHasEndedTitle => "Zeit abgelaufen";
+        public override string Hud_AdvancedSettings => "Erweiterte Einstellungen";
+        public override string Hud_Vector_X => "X";
+        public override string Hud_Vector_Y => "Y";
+        public override string Hud_Cancel => "Abbrechen";
+        public override string Hud_Delete => "Löschen";
+        public override string Hud_Next => "Weiter";
+        //public override string Hud_None => "Keine";
+        public override string Hud_Apply => "Anwenden";
+        public override string Hud_AllCities => "Alle Städte";
+        public override string Hud_Time_Hours => "{0} Stunden";
+        public override string Hud_AddX => "{0} hinzufügen";
+        public override string Hud_Both => "Beide";
+        public override string Hud_Direction => "Richtung";
+        public override string MusicIsBroken => "Musik ist derzeit defekt";
+
+        /// <summary>
+        /// 0: object collection type name, 1: number of objects
+        /// </summary>
+        public override string Hud_ObjectsAndCount => "{0}, Anzahl: {1}";
+
+        public override string Hud_EffectDoesNotStack => "Dieser Effekt ist nicht stapelbar";
+
+        public override string Work_SmeltX => "{0} schmelzen";
+
+        public override string Info_TotalFoodProduction => "Gesamte Nahrungsproduktion";
+        public override string Info_TotalFoodSpending => "Gesamter Nahrungsverbrauch";
+
+        public override string Info_FooodAndDeliveryLocation => "Standardmäßig gehen Arbeiter zum Rathaus, um zu essen oder Gegenstände abzugeben";
+
+        public override string Delivery_SendChunk => "Gegenstände pro Lieferung";
+        public override string Delivery_SpeedBonus => "Geschwindigkeitsbonus: {0}%";
+
+        public override string Delivery_AutoResourceDescription => "Liefert Gegenstände, die das Lagerlimit erreicht haben, an bedürftige Städte";
+
+        public override string Conscript_Soldiers_ArmyType => "Soldaten";
+        public override string Conscript_Soldiers_ArmyType_Description => "Rekrutiere Soldaten in eine benachbarte Armee";
+        public override string Conscript_Soldiers_GuardType => "Stadtwache";
+        public override string Conscript_Soldiers_GuardType_Description => "Wachen werden zur Verstärkung von Mauern eingesetzt";
+
+        public override string Defence_Title => "Verteidigung";
+        public override string Defence_GuardPost => "Wachposten";
+
+        public override string Defence_WallDescription_Movement => "Erschwert feindliche Bewegungen.";
+        public override string Defence_WallDescription_GuardPost => "Wache kann hier stationiert werden.";
+        public override string Defence_AutoAssign => "Automatisch zuweisen";
+        public override string Defence_AutoAssign_Description => "Neue Wachen begeben sich zu diesem Posten";
+
+        public override string Conscript_SplashDamage => "Flächenschaden";
+        public override string Conscript_HighSplashDamage => "Starker Flächenschaden";
+
+        public override string Conscript_Training_Champion => "Champion";
+        public override string Conscript_Training_Legendary => "Legendär";
+
+        public override string Experience_Title => "Erfahrung";
+        public override string Experience_TopExperience => "Höchste Erfahrungsstufen";
+
+        public override string Experience_TimeReductionDescription => "Arbeitszeit wird pro Stufe um {0}% reduziert";
+
+        public override string ExperienceType_Farm => "Landwirt";
+        public override string ExperienceType_AnimalCare => "Tierpflege";
+        public override string ExperienceType_HouseBuilding => "Hausbauer";
+        public override string ExperienceType_WoodWork => "Holzarbeiter";
+        public override string ExperienceType_StoneCutter => "Steinmetz";
+        public override string ExperienceType_Mining => "Bergarbeiter";
+        public override string ExperienceType_Transport => "Transport";
+        public override string ExperienceType_Cook => "Koch";
+        public override string ExperienceType_Fletcher => "Bogenmacher";
+        public override string ExperienceType_RefineOre => "Schmelzer";
+        public override string ExperienceType_Casting => "Gießer";
+        public override string ExperienceType_CraftMetal => "Schmied";
+        public override string ExperienceType_CraftArmor => "Rüstungsschmied";
+        public override string ExperienceType_CraftWeapon => "Waffenschmied";
+        public override string ExperienceType_CraftFuel => "Köhler";
+        public override string ExperienceType_Chemist => "Chemiker";
+
+        public override string ExperienceLevel_1 => "Anfänger";
+        public override string ExperienceLevel_2 => "Fortgeschrittener";
+        public override string ExperienceLevel_3 => "Experte";
+        public override string ExperienceLevel_4 => "Meister";
+        public override string ExperienceLevel_5 => "Legendär";
+
+        public override string ExperenceOrDistancePrio_Title => "Arbeiterwahl";
+        public override string ExperenceOrDistancePrio_Description => "Arbeitslose Arbeiter werden je nach Entfernung oder Erfahrung ausgewählt";
+
+        public override string Technology_Description => "Jede Stadt hat einen Technologiebaum. Jede Technologie schaltet Gebäude und Gegenstände frei.";
+        public override string Experience_Description => "Arbeiter sammeln Erfahrung und verbessern sich";
+
+        public override string Technology_Title => "Technologie";
+        public override string Technology_ShareField => "Technologiefeld teilen";
+
+        public override string Technology_GainByNeigborRelation => "Für jede Nachbarstadt mit der Technologie. Und deine Beziehung ist {0}: {1}";
+        public override string Technology_ForEachMaster => "Wenn ein(e) {0} die Erfahrungsstufe {1} erreicht, im Technologiefeld: {2}";
+        public override string Technology_CitySpread => "Deine Städte teilen Technologie, wenn sie benachbart sind: {0}";
+        public override string Technology_CityCapture => "Die meisten Technologien gehen verloren, wenn eine Stadt im Kampf eingenommen wird";
+
+        public override string Technology_AdvancedBuildings => "Fortschrittliche Gebäude";
+        public override string Technology_AdvancedFarming => "Fortschrittliche Landwirtschaft";
+        public override string Technology_AdvancedCasting => "Fortschrittlicher Guss";
+
+        public override string Help_Title => "Hilfe";
+        public override string Help_Work_Title => "Arbeit beginnt nicht";
+        public override string Help_Work_Resources => "Gebäude benötigen verfügbare Ressourcen";
+        public override string Help_Work_Skill => "Der Arbeiter benötigt das passende Fähigkeitsniveau (oder höher)";
+        public override string Help_Work_Stockpile => "Das Sammeln von Ressourcen wird durch ein volles Lager blockiert";
+        public override string Help_Work_Priority => "Die Arbeit hat möglicherweise eine niedrige oder keine Priorität";
+
+        public override string Help_Soldiers_Title => "Soldaten ausbilden";
+        public override string Help_Soldiers_PlaceBuildingX => "Gebäude platzieren: {0}";
+        public override string Help_Soldiers_Workers => "Verfügbare Arbeiter zur Rekrutierung";
+        public override string Help_Soldiers_Weapon => "Jeder Soldat benötigt eine Waffe";
+        public override string Help_Soldiers_StartX => "Start: {0}";
+
+        public override string Hud_SelectHistory => "Verlauf auswählen";
+
+        public override string Hud_PointsPerMinute => "{0} Punkte pro Minute";
+        public override string Hud_PercentValueCost => "Der Dienst kostet {0}% des Wertes";
+
+        public override string Hud_Mixed => "Gemischt";
+        public override string Hud_Distance => "Entfernung";
+
+        public override string Hud_Unlock => "Freischalten";
+        public override string Hud_category => "Kategorie";
+
+        /// <summary>
+        /// Setzt die Spielgeschwindigkeit auf Einzelbildmodus
+        /// </summary>
+        public override string Input_StepOneFrame => "1 Bild weiter";
+
+        public override string Resource_TypeName_Wagon2Wheel => "Kleiner Wagen";
+        public override string Resource_TypeName_Wagon4Wheel => "Großer Wagen";
+        public override string Resource_TypeName_Tin => "Zinn";
+        public override string Resource_TypeName_TinOre => "Zinnerz";
+
+        public override string Resource_TypeName_Copper => "Kupfer";
+        public override string Resource_TypeName_CopperOre => "Kupfererz";
+        public override string Resource_TypeName_SilverOre => "Silbererz";
+        public override string Resource_TypeName_Silver => "Silber";
+
+        /// <summary>
+        /// Mithril ist ein Fantasiemetall
+        /// </summary>
+        public override string Resource_TypeName_RawMithril => "Rohes Mithril";
+        public override string Resource_TypeName_Mithril => "Mithril";
+
+        public override string Resource_TypeName_BronzeSword => "Bronzeschwert";
+        public override string Resource_TypeName_ShortSword => "Kurzschwert";
+        public override string Resource_TypeName_LongSword => "Langschwert";
+        public override string Resource_TypeName_HandSpear => "Handspeer";
+        public override string Resource_TypeName_Warhammer => "Kriegshammer";
+        public override string Resource_TypeName_MithrilSword => "Mithrilschwert";
+        public override string Resource_TypeName_SlingShot => "Schleuder";
+        public override string Resource_TypeName_ThrowingSpear => "Wurfspeer";
+        public override string Resource_TypeName_Crossbow => "Armbrust";
+        public override string Resource_TypeName_MithrilBow => "Mithrilbogen";
+
+        public override string Resource_TypeName_CoolingFluid => "Kühlflüssigkeit";
+        public override string Resource_TypeName_Palisade => "Palisade";
+        public override string Resource_TypeName_Toolkit => "Werkzeugkasten";
+
+        public override string Resource_TypeName_Sulfur => "Schwefel";
+        public override string Resource_TypeName_LeadOre => "Bleierz";
+        public override string Resource_TypeName_Lead => "Blei";
+        public override string Resource_TypeName_Bronze => "Bronze";
+        public override string Resource_TypeName_BloomIron => "Rohstahl";
+        public override string Resource_TypeName_Steel => "Stahl";
+        public override string Resource_TypeName_CastIron => "Gusseisen";
+
+        public override string Resource_TypeName_BlackPowder => "Schwarzpulver";
+        public override string Resource_TypeName_GunPowder => "Schießpulver";
+        public override string Resource_TypeName_LedBullet => "Kugel";
+
+        public override string Resource_TypeName_HandCannon => "Handkanone";
+        public override string Resource_TypeName_HandCulverin => "Handbüchse";
+        public override string Resource_TypeName_Rifle => "Gewehr";
+        public override string Resource_TypeName_Blunderbuss => "Donnerbüchse";
+
+        public override string Resource_TypeName_Manuballista => "Manubaliste";
+        public override string Resource_TypeName_Catapult => "Katapult";
+        public override string Resource_TypeName_BatteringRam => "Rammbock";
+        public override string Resource_TypeName_SiegeCannonBronze => "Basilisk";
+        public override string Resource_TypeName_ManCannonBronze => "Bombarde";
+        public override string Resource_TypeName_SiegeCannonIron => "Haubitze";
+        public override string Resource_TypeName_ManCannonIron => "Kanone";
+
+        public override string Resource_TypeName_PaddedArmor => "Gepolsterte Rüstung";
+        public override string Resource_TypeName_HeavyPaddedArmor => "Schwere gepolsterte Rüstung";
+
+        public override string Resource_TypeName_IronArmor => "Kettenrüstung";
+        public override string Resource_TypeName_HeavyIronArmor => "Schwere Kettenrüstung";
+
+        public override string Resource_TypeName_BronzeArmor => "Bronzerüstung";
+
+        public override string Resource_TypeName_LightPlateArmor => "Plattenrüstung";
+        public override string Resource_TypeName_FullPlateArmor => "Vollplattenrüstung";
+        public override string Resource_TypeName_MithrilArmor => "Mithrilrüstung";
+        public override string Resource_TypeName_Coin => "Münze";
+
+        public override string UnitType_Warhammer => "Hammerritter";
+        public override string UnitType_MithrilKnight => "Unsterblicher Ritter";
+        public override string UnitType_MithrilArcher => "Unsterblicher Bogenschütze";
+        public override string UnitType_SpearAndShield => "Linienkämpfer";
+
+        public override string UnitType_CollectionOfSoldiers => "Soldatenbündel";
+        public override string UnitType_CollectionOfArmies => "Armeenbündel";
+
+        /// <summary>
+        /// Die ID ist eine eindeutige Zahl
+        /// </summary>
+        public override string UnitId => "(ID {0})";
+
+        public override string BuildHud_AreaEffectTitle => "Gebietseffekt";
+        public override string BuildHud_BonusRadius => "Bonusradius: {0}";
+
+        public override string BuildHud_BuildTime => "Bauzeit";
+        public override string SchoolHud_ToLevel => "Bis Stufe";
+        public override string SchoolHud_TimeDescription => "Zeit basiert auf null Erfahrung; reduziert sich mit Erfahrung.";
+        public override string SchoolHud_SelectSchool => "Schule auswählen";
+        public override string Upgrade_Order => "Aufrüstungsreihenfolge";
+
+        public override string Building_ListDescription => "Eine Liste aller Gebäude in dieser Kategorie";
+
+        public override string BuildingType_IsUpgraded => "{0} – verbessert";
+        public override string BuildingType_WoodCutter => "Sägewerk";
+        public override string BuildingType_Workshop_Description => "Verbessert die Arbeit im Umkreis";
+
+        public override string BuildingType_WoodCutter_AreaAffect => "{0}% mehr Holz von Bäumen";
+
+        public override string BuildingType_StoneCutter_AreaAffect => "{0}% mehr Stein";
+
+        public override string BuildingType_StoneCutter => "Steinbruch";
+
+        public override string BuildingType_Embassy => "Botschaft";
+        public override string BuildingType_Embassy_Description => "Für diplomatische Beziehungen";
+
+        public override string BuildingType_SoldierBarracks => "Kaserne (Soldaten)";
+        public override string BuildingType_ArcherBarracks => "Kaserne (Bogenschützen)";
+        public override string BuildingType_WarmashineBarracks => "Kaserne (Kriegsmaschinen)";
+        public override string BuildingType_GunBarracks => "Kaserne (Schützen)";
+        public override string BuildingType_CannonBarracks => "Kaserne (Kanonen)";
+        public override string BuildingType_KnightsBarracks => "Kaserne (Ritter)";
+
+        public override string BuildingType_WaterResovoir => "Wasserspeicher";
+        public override string BuildingType_WaterResovoir_Description => "Erhöht die Wasserspeicherung";
+
+        public override string BuildingType_SmeltingFurnace => "Schmelzofen";
+        public override string BuildingType_SmeltingFurnace_Description => "Erz zu Metall verarbeiten";
+
+        public override string BuildingType_Foundry => "Gießerei";
+        public override string BuildingType_Foundry_Description => "Station für Metallguss";
+
+        public override string BuildingType_Armory => "Rüstkammer";
+        public override string BuildingType_Armory_Description => "Station zum Herstellen von Rüstungen";
+
+        public override string BuildingType_Chemist => "Alchemist";
+        public override string BuildingType_Chemist_Description => "Station zur Herstellung von Chemikalien";
+
+        public override string BuildingType_CoinMaker => "Münzprägestelle";
+        public override string BuildingType_CoinMaker_Description => "Verwandelt Metalle in Geld";
+
+        public override string BuildingType_Gunmaker => "Waffenmanufaktur";
+        public override string BuildingType_Gunmaker_Description => "Herstellung von Schusswaffen und Kanonen";
+
+        public override string BuildingType_School_Tab => "Schule";
+        public override string BuildingType_School => "Gilde der Meister";
+        public override string BuildingType_School_Description => "Erhöht das Fähigkeitsniveau der Arbeiter";
+
+        public override string BuildingType_GoldDelivery => "Goldkurier";
+        public override string BuildingType_Bank_Description => "Goldverwaltung";
+
+        public override string DecorType_CobbleStones => "Kopfsteinpflaster";
+        public override string DecorType_Square => "Stadtplatz";
+
+        public override string DecorType_Garden => "Garten";
+        public override string DecorType_Flag => "Fahne";
+        public override string DecorType_Banner => "Banner";
+
+        public override string BuildingType_DirtRoad => "Lehmpfad";
+        public override string BuildingType_Palisade => "Palisadenfestung";
+
+        public override string ResourceType_ServiceMen => "Dienende";
+        public override string BuildingType_ServiceHouse => "Diensthaus";
+        public override string BuildingType_ServiceHouse_DescriptionAddX => "Fügt {0} Dienende hinzu";
+
+        public override string BuildingType_GuardOffice => "Wachbüro";
+        public override string BuildingType_GuardOffice_DescriptionAddX => "Erhöht das Wachlimit um {0}";
+
+        public override string BuildingType_DirtWall => "Lehmwand";
+        public override string BuildingType_DirtTower => "Lehmturm";
+        public override string BuildingType_WoodWall => "Holzwand";
+        public override string BuildingType_WoodTower => "Holzturm";
+        public override string BuildingType_StoneWall => "Steinmauer";
+        public override string BuildingType_StoneTower => "Steinturm";
+        public override string BuildingType_StoneGate => "Steintor";
+        public override string BuildingType_StoneHouse => "Steinhaus";
+
+        /// <summary>
+        /// Beim Auflisten kleiner Varianten, z. B. „Lampe A“ und „Lampe B“
+        /// </summary>
+        public override string VariantType_A => "{0} A";
+        public override string VariantType_B => "{0} B";
+        public override string VariantType_C => "{0} C";
+        public override string VariantType_D => "{0} D";
+        public override string VariantType_E => "{0} E";
+        public override string VariantType_F => "{0} F";
+        public override string VariantType_G => "{0} G";
+        public override string VariantType_H => "{0} H";
+
+        public override string BuildingToolShape_Free => "Stift";
+        public override string BuildingToolShape_Area => "Rechteck";
+        public override string BuildingToolShape_Line => "Linie";
+        public override string BuildingToolShape_LShape => "L-Form";
+
+        public override string CityHall_Upgrade => "Rathaus aufrüsten";
+
+        /// <summary>
+        /// Begrenzung der maximal unterstützten Arbeiteranzahl
+        /// </summary>
+        public override string CityHall_MaxSupportedWorkers => "Maximale unterstützte Arbeiter: {0}";
+
+        public override string CityHall_Size_Small => "Dorf";
+        public override string CityHall_Size_Medium => "Stadt";
+        public override string CityHall_Size_Large => "Hauptstadt";
+
+        public override string GuardHousingCount => "Wachunterkunft";
+        public override string ServicemenCount => "Dienstpersonal: {0}";
+
+        public override string Work_MiningResource => "Abbau von {0}";
+
+        public override string MenuTab_Progress => "Fortschritt";
+
+        public override string Automation_AutomateCity => "Stadt automatisieren";
+        public override string Automation_AutomationFocus => "Automatisierungsfokus";
+        public override string Automation_AutomationFocus_Grow => "Wachstum";
+        public override string Automation_AutomationFocus_Export => "Export";
+        public override string Automation_AutomationFocus_War => "Krieg";
+
+        public override string CityCulture_Smelters_Description => "Verbesserte Erzverhüttung";
+        public override string CityCulture_Smelters => "Schmelzer";
+
+        public override string CityCulture_Apprentices_Description => "Neue Arbeiter erhalten Erfahrung von erfahrenen Kollegen";
+        public override string CityCulture_Apprentices => "Lehrlinge";
+
+        public override string CityCulture_BronzeCasters_Description => "Verbesserte Produktion von Bronze und Bronzeartikeln";
+        public override string CityCulture_BronzeCasters => "Bronzegießer";
+
+
+
     }
 }

@@ -1,5 +1,9 @@
 ﻿UPDATE
 -Change Log-
+Demo localization
+
+
+
 
 The demo should:
 -Lockout any extra content or modes.
@@ -131,7 +135,7 @@ work skill icons (carpenting)
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish, German
-+tyska
+
 
 #Todo (DSS 2)#
 1. better presentation

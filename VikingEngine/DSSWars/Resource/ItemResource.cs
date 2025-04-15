@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.Resource
         HandCulverin,
         HandCannon,
         Rifle,
-        Blunderbus,
+        Blunderbuss,
 
         Manuballista,
         Catapult,

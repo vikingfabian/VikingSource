@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbText(DssRef.lang.UnitType_Army, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space(1);
-            args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
 
             ownerToHud(args, !tooltip); 
         }
@@ -379,7 +379,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.Add(new RbText(DssRef.lang.UnitType_Army, HudLib.TitleColor_TypeName));
 
             content.space(0.5f);
-            content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
 
 
             content.Add(new RbImage(SpriteName.WarsStrengthIcon));

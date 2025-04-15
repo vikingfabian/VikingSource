@@ -252,14 +252,14 @@ namespace VikingEngine.DSSWars.Display
             //var player = this.player.GetLocalPlayer();
             content.Add(new RbText(string.Format(DssRef.lang.Hud_CityCount, player.faction.cities.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
-            content.ButtonDescription(player.gameControls.input.NextCity, DssRef.todoLang.InputActionName_NextCity);
+            content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.InputActionName_NextCity);
         }
         void nextArmyTip(RichBoxContent content, object tag)
         {
             //var player = this.player.GetLocalPlayer();
             content.Add(new RbText(string.Format(DssRef.lang.Hud_ArmyCount, player.faction.armies.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
-            content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.todoLang.InputActionName_NextArmy);
+            content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.lang.InputActionName_NextArmy);
         }
 
         void factionGoldTip(RichBoxContent content, object tag)
@@ -294,14 +294,14 @@ namespace VikingEngine.DSSWars.Display
             //foodSub = faction.CityFoodSpending;
             content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Info_TotalFoodProduction, player.faction.CityFoodProduction),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Info_TotalFoodProduction, player.faction.CityFoodProduction),
                 HudLib.AvailableColor));
 
             content.newLine();
 
             content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Info_TotalFoodSpending, player.faction.CityFoodSpending),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Info_TotalFoodSpending, player.faction.CityFoodSpending),
                 HudLib.NotAvailableColor));
         }
     }

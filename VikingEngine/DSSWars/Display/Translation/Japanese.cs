@@ -1685,5 +1685,478 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_WaterAddLimit => "水の増加率は変更できません";
 
         public override string Tutorial_Select_SubTab => "そしてカテゴリを選択：{0}";
+
+
+
+        /* #### --------------- ##### */
+        /* #### DSS 2 DEMO      ##### */
+        /* #### --------------- ##### */
+        public override string Tutorial_OpenGuardSubTab => "兵舎を開いてカテゴリを選択してください: {0}";
+        public override string Tutorial_GuardToWall => "衛兵を壁に移動させる";
+        public override string Demo_MissionObjective_Title => "ミッション目標";
+        public override string Demo_MissionObjective_Description => "南からの攻撃に備えて防衛する";
+        public override string Demo_Complete_Title => "デモ完了";
+        public override string Demo_TimesUp_Title => "時間切れ！";
+        public override string Demo_EndInOneMinuteDescription => "デモは1分後に終了します";
+
+        public override string ArmyOption_NewArmy => "新しい軍隊";
+        public override string ProfileEditor_AltMain => "代替メイン";
+        public override string Automation_CheckBoxTitle => "自動化";
+
+        public override string ArmyStructure_ColumnWidth => "軍隊の列の幅";
+        public override string ArmyStructure_ArmyPlacement => "軍隊内の配置";
+        public override string ArmyStructure_Row_Front => "前列";
+        public override string ArmyStructure_Row_Body => "中列";
+        public override string ArmyStructure_Row_Second => "第2列";
+        public override string ArmyStructure_Row_Behind => "後列";
+
+        public override string Diplomacy_RelationType_Enemies => "敵";
+
+        public override string EventMessage_EnemyAlliance_Title => "支配への恐れ";
+        public override string EventMessage_EnemyAlliance => "諸国はあなたの勢力拡大を恐れて、あなたに対抗する同盟を結成しました。";
+
+        public override string Settings_CentralGold => "中央ゴールド";
+        public override string Settings_CentralGold_Description => "オン：すべてのゴールドは共有プールで即時使用可能になります。オフ：ゴールドは物理的に存在し、輸送が必要です。";
+
+        public override string InputActionName_StopStart => "開始/停止";
+        public override string InputActionName_ToggleHudDetail => "HUD詳細の切り替え";
+        public override string InputActionName_NextCity => "次の都市";
+        public override string InputActionName_NextArmy => "次の軍隊";
+        public override string InputActionName_NextBattle => "次の戦闘";
+        public override string InputActionName_Build => "建設";
+        public override string InputActionName_Copy => "コピー";
+        public override string InputActionName_Paste => "貼り付け";
+        public override string InputActionName_Menu => "メニュー";
+        public override string InputActionName_FlagDesign_ToggleColor_Prev => "前の色";
+        public override string InputActionName_FlagDesign_ToggleColor_Next => "次の色";
+        public override string InputActionName_FlagDesign_PaintBucket => "ペイントバケツ";
+        public override string InputActionName_Controller_FlagDesign_Colorpicker => "カラーピッカー";
+        public override string InputActionName_ControllerFocus => "フォーカス";
+        public override string InputActionName_ControllerCancel => "キャンセル";
+        public override string InputActionName_ControllerMessageClick => "メッセージクリック";
+        public override string InputActionName_ControllerSelect => "選択";
+        public override string InputActionName_WASD_UP => "上";
+        public override string InputActionName_WASD_DOWN => "下";
+        public override string InputActionName_WASD_LEFT => "左";
+        public override string InputActionName_WASD_RIGHT => "右";
+        public override string InputActionName_CameraTiltLeft => "カメラ左傾き";
+        public override string InputActionName_CameraTiltRight => "カメラ右傾き";
+        public override string InputActionName_CameraTiltUp => "カメラ上傾き";
+        public override string InputActionName_ZoomInKey => "ズームイン";
+        public override string InputActionName_ZoomOutKey => "ズームアウト";
+        public override string Settings_Title_Monitor => "モニター設定";
+        public override string Settings_Title_Graphics => "グラフィック設定";
+        public override string Settings_Title_Input => "入力設定";
+        public override string Settings_Title_Gameplay => "ゲームプレイ設定";
+        public override string Settings_PanOnZoom => "ズーム時にパンする";
+        public override string Settings_ScrollSensitivity_Game => "スクロール感度：ゲーム";
+        public override string Settings_ScrollSensitivity_Menu => "スクロール感度：メニュー";
+        public override string Settings_Blood => "血の表現";
+
+        public override string Settings_MasterVolume => "マスターボリューム";
+        public override string Settings_AmbienceVolume => "環境音ボリューム";
+        public override string Settings_BattleMelody => "戦闘メロディ";
+
+        public override string Settings_ModelLight => "モデル光の効果";
+        public override string Settings_Particles => "パーティクルエフェクト";
+        public override string Settings_MapLoadSpeed => "マップ読み込み速度";
+        public override string Lobby_Category_Options => "オプション";
+        public override string Lobby_Category_Editor => "エディター";
+        public override string Lobby_Category_ExtraModes => "追加モード";
+
+        public override string Lobby_Editor_MapEditor => "マップエディター";
+        public override string Lobby_Editor_VoxelEditor => "ボクセルエディター";
+
+        public override string Lobby_Mode_BattleLab => "バトルラボ";
+        public override string Lobby_Mode_BattleLab_Description => "任意の兵士同士を戦わせる";
+        public override string Lobby_Mode_Commander => "コマンダーモード";
+        public override string Lobby_Mode_Commander_Description => "小規模な戦術ボードゲーム";
+        public override string Lobby_MusicPlayList => "音楽プレイリスト";
+
+        public override string Lobby_GameSetup => "ゲーム設定";
+        public override string Lobby_PlayerSetup => "プレイヤー設定";
+        public override string LobbyDemoMode_Demo => "デモ";
+        public override string LobbyDemoMode_ShortTutorial => "クイックチュートリアル";
+        public override string LobbyDemoMode_LongTutorial => "拡張チュートリアル";
+
+        /// <summary>
+        /// Says wishlist on, followed by the STEAM logo
+        /// </summary>
+        public override string LobbyDemoMode_WishlistOn => "ウィッシュリストに追加";
+        public override string BattleLab_StartHere => "ここで戦闘を開始";
+        public override string BattleLab_Start => "戦闘を開始";
+        public override string BattleLab_Attacker => "攻撃側";
+
+        public override string MapGenerator_Name => "マップエディタ - 生成";
+
+        public override string MapType_CustomMap => "カスタムマップ";
+        public override string MapType_GenerateNewMap => "新しいマップを生成";
+        public override string MapGenerator_GenerateAction => "生成";
+        public override string MapGenerator_Terrain_CustomSize => "カスタムサイズ";
+        public override string MapGenerator_Terrain_StartAs => "開始位置";
+        public override string MapGenerator_Terrain_ClearPass => "クリアパスを実行";
+        public override string MapGenerator_Terrain_BuildPass => "建設パスを実行";
+        public override string MapGenerator_Terrain_DigPass => "掘削パスを実行";
+        public override string MapGenerator_Terrain_BuildDigLoops => "建設-掘削ループ回数";
+        public override string MapGenerator_Terrain_BuildStrokes => "建設ストローク数";
+        public override string MapGenerator_Terrain_BuildStrokes_Description => "100タイルあたりのストローク数で測定";
+        public override string MapGenerator_Terrain_DigStrokes => "掘削ストローク数";
+        public override string MapGenerator_Terrain_CleanUp_Option => "単一タイルのクリーンアップ";
+        public override string MapGenerator_Terrain_CleanUpPass => "クリーンアップパスを実行";
+
+        public override string Economy_ServicemenUpkeep => "従者の維持費: {0}";
+        public override string Economy_ServicemenUpkeep_Description => "維持費は従者1人あたり{0}ゴールドです";
+        public override string Economy_GuardUpkeep_Description => "維持費は衛兵1人あたり{0}ゴールドです";
+
+        public override string EndScreen_TimeHasEndedTitle => "時間切れ";
+        public override string Hud_AdvancedSettings => "詳細設定";
+        public override string Hud_Vector_X => "X";
+        public override string Hud_Vector_Y => "Y";
+        public override string Hud_Cancel => "キャンセル";
+        public override string Hud_Delete => "削除";
+        public override string Hud_Next => "次へ";
+        //public override string Hud_None => "なし";
+        public override string Hud_Apply => "適用";
+        public override string Hud_AllCities => "すべての都市";
+        public override string Hud_Time_Hours => "{0} 時間";
+        public override string Hud_AddX => "{0} を追加";
+        public override string Hud_Both => "両方";
+        public override string Hud_Direction => "方向";
+        public override string MusicIsBroken => "現在、音楽が再生できません";
+
+        /// <summary>
+        /// 0: オブジェクトの種類名, 1: 数量
+        /// </summary>
+        public override string Hud_ObjectsAndCount => "{0}, 数: {1}";
+
+        public override string Hud_EffectDoesNotStack => "この効果は重複しません";
+
+        public override string Work_SmeltX => "{0} を精錬";
+
+        public override string Info_TotalFoodProduction => "総食料生産量";
+        public override string Info_TotalFoodSpending => "総食料消費量";
+
+        public override string Info_FooodAndDeliveryLocation => "デフォルトでは、労働者は市庁舎に食事またはアイテムを届けに行きます";
+
+        public override string Delivery_SendChunk => "配送ごとのアイテム数";
+        public override string Delivery_SpeedBonus => "速度ボーナス: {0}%";
+
+        public override string Delivery_AutoResourceDescription => "在庫上限に達したアイテムを、必要としている都市に配送します";
+
+        public override string Conscript_Soldiers_ArmyType => "兵士";
+        public override string Conscript_Soldiers_ArmyType_Description => "隣接する軍に兵士を徴兵します";
+        public override string Conscript_Soldiers_GuardType => "都市警備兵";
+        public override string Conscript_Soldiers_GuardType_Description => "警備兵は壁の防衛に使用されます";
+
+        public override string Defence_Title => "防衛";
+        public override string Defence_GuardPost => "警備所";
+
+        public override string Defence_WallDescription_Movement => "敵の移動を妨げます。";
+        public override string Defence_WallDescription_GuardPost => "警備兵を配置できます。";
+        public override string Defence_AutoAssign => "自動割り当て";
+        public override string Defence_AutoAssign_Description => "新しい警備兵がこの場所に移動します";
+
+        public override string Conscript_SplashDamage => "範囲ダメージ";
+        public override string Conscript_HighSplashDamage => "強力な範囲ダメージ";
+
+        public override string Conscript_Training_Champion => "チャンピオン";
+        public override string Conscript_Training_Legendary => "伝説";
+
+        public override string Experience_Title => "経験";
+        public override string Experience_TopExperience => "最高経験レベル";
+
+        public override string Experience_TimeReductionDescription => "作業時間はレベルごとに{0}%短縮されます";
+
+        public override string ExperienceType_Farm => "農夫";
+        public override string ExperienceType_AnimalCare => "動物の世話";
+        public override string ExperienceType_HouseBuilding => "家屋建築者";
+        public override string ExperienceType_WoodWork => "木工職人";
+        public override string ExperienceType_StoneCutter => "石工";
+        public override string ExperienceType_Mining => "鉱夫";
+        public override string ExperienceType_Transport => "運搬係";
+        public override string ExperienceType_Cook => "料理人";
+        public override string ExperienceType_Fletcher => "矢職人";
+        public override string ExperienceType_RefineOre => "製錬工";
+        public override string ExperienceType_Casting => "鋳造師";
+        public override string ExperienceType_CraftMetal => "鍛冶師";
+        public override string ExperienceType_CraftArmor => "防具職人";
+        public override string ExperienceType_CraftWeapon => "武器職人";
+        public override string ExperienceType_CraftFuel => "炭焼き職人";
+        public override string ExperienceType_Chemist => "化学者";
+
+        public override string ExperienceLevel_1 => "初心者";
+        public override string ExperienceLevel_2 => "中級者";
+        public override string ExperienceLevel_3 => "上級者";
+        public override string ExperienceLevel_4 => "達人";
+        public override string ExperienceLevel_5 => "伝説級";
+
+        public override string ExperenceOrDistancePrio_Title => "作業者の選択";
+        public override string ExperenceOrDistancePrio_Description => "待機中の作業者は距離または経験に基づいて選ばれます";
+
+        public override string Technology_Description => "各都市には技術ツリーがあります。技術は建物やアイテムを解放します。";
+        public override string Experience_Description => "作業者は経験を積み、成長していきます";
+
+        public override string Technology_Title => "技術";
+        public override string Technology_ShareField => "技術分野の共有";
+
+        public override string Technology_GainByNeigborRelation => "隣接する都市がこの技術を持ち、関係が{0}であれば: {1}";
+        public override string Technology_ForEachMaster => "{0}が経験レベル{1}に到達した時、技術分野: {2}";
+        public override string Technology_CitySpread => "隣接する都市同士で技術が共有されます: {0}";
+        public override string Technology_CityCapture => "都市が戦闘で占領された場合、ほとんどの技術は失われます";
+
+        public override string Technology_AdvancedBuildings => "高度な建築技術";
+        public override string Technology_AdvancedFarming => "高度な農業技術";
+        public override string Technology_AdvancedCasting => "高度な鋳造技術";
+
+        public override string Help_Title => "ヘルプ";
+        public override string Help_Work_Title => "作業が開始されない";
+        public override string Help_Work_Resources => "建物には利用可能な資源が必要です";
+        public override string Help_Work_Skill => "作業者には適切なスキルレベル（またはそれ以上）が必要です";
+        public override string Help_Work_Stockpile => "倉庫が満杯だと資源の収集が妨げられます";
+        public override string Help_Work_Priority => "作業の優先度が低い、またはゼロになっている可能性があります";
+
+        public override string Help_Soldiers_Title => "兵士の生産";
+        public override string Help_Soldiers_PlaceBuildingX => "建物を設置: {0}";
+        public override string Help_Soldiers_Workers => "募集可能な作業者";
+        public override string Help_Soldiers_Weapon => "兵士一人につき武器が必要です";
+        public override string Help_Soldiers_StartX => "開始: {0}";
+
+        public override string Hud_SelectHistory => "履歴を選択";
+
+        public override string Hud_PointsPerMinute => "毎分 {0} ポイント";
+        public override string Hud_PercentValueCost => "このサービスのコストは価値の {0}% です";
+
+        public override string Hud_Mixed => "混合";
+        public override string Hud_Distance => "距離";
+
+        public override string Hud_Unlock => "アンロック";
+        public override string Hud_category => "カテゴリ";
+
+
+        /// <summary>
+        /// ゲーム速度を1フレームずつに設定します
+        /// </summary>
+        public override string Input_StepOneFrame => "1フレーム進める";
+
+        public override string Resource_TypeName_Wagon2Wheel => "小型の荷車";
+        public override string Resource_TypeName_Wagon4Wheel => "大型の荷車";
+        public override string Resource_TypeName_Tin => "錫";
+        public override string Resource_TypeName_TinOre => "錫鉱石";
+
+        public override string Resource_TypeName_Copper => "銅";
+        public override string Resource_TypeName_CopperOre => "銅鉱石";
+        public override string Resource_TypeName_SilverOre => "銀鉱石";
+        public override string Resource_TypeName_Silver => "銀";
+
+        /// <summary>
+        /// ミスリルはファンタジー金属です
+        /// </summary>
+        public override string Resource_TypeName_RawMithril => "未精錬ミスリル";
+        public override string Resource_TypeName_Mithril => "ミスリル";
+
+        public override string Resource_TypeName_BronzeSword => "青銅の剣";
+        public override string Resource_TypeName_ShortSword => "ショートソード";
+        public override string Resource_TypeName_LongSword => "ロングソード";
+        public override string Resource_TypeName_HandSpear => "手槍";
+        public override string Resource_TypeName_Warhammer => "ウォーハンマー";
+        public override string Resource_TypeName_MithrilSword => "ミスリルの剣";
+        public override string Resource_TypeName_SlingShot => "投石器";
+        public override string Resource_TypeName_ThrowingSpear => "投槍";
+        public override string Resource_TypeName_Crossbow => "クロスボウ";
+        public override string Resource_TypeName_MithrilBow => "ミスリルの弓";
+
+        public override string Resource_TypeName_CoolingFluid => "冷却液";
+        public override string Resource_TypeName_Palisade => "柵";
+        public override string Resource_TypeName_Toolkit => "工具セット";
+
+        public override string Resource_TypeName_Sulfur => "硫黄";
+        public override string Resource_TypeName_LeadOre => "鉛鉱石";
+        public override string Resource_TypeName_Lead => "鉛";
+        public override string Resource_TypeName_Bronze => "青銅";
+        public override string Resource_TypeName_BloomIron => "鍛鉄";
+        public override string Resource_TypeName_Steel => "鋼鉄";
+        public override string Resource_TypeName_CastIron => "鋳鉄";
+
+        public override string Resource_TypeName_BlackPowder => "黒色火薬";
+        public override string Resource_TypeName_GunPowder => "火薬";
+        public override string Resource_TypeName_LedBullet => "弾丸";
+
+        public override string Resource_TypeName_HandCannon => "手砲";
+        public override string Resource_TypeName_HandCulverin => "ハンドカルヴァリン";
+        public override string Resource_TypeName_Rifle => "ライフル";
+        public override string Resource_TypeName_Blunderbuss => "ブランダーバス";
+
+        public override string Resource_TypeName_Manuballista => "マヌバリスタ";
+        public override string Resource_TypeName_Catapult => "カタパルト";
+        public override string Resource_TypeName_BatteringRam => "破城槌";
+        public override string Resource_TypeName_SiegeCannonBronze => "バジリスク砲";
+        public override string Resource_TypeName_ManCannonBronze => "ボンバルド";
+        public override string Resource_TypeName_SiegeCannonIron => "ハウィッツァー";
+        public override string Resource_TypeName_ManCannonIron => "カノン砲";
+
+        public override string Resource_TypeName_PaddedArmor => "布詰め鎧";
+        public override string Resource_TypeName_HeavyPaddedArmor => "重布詰め鎧";
+
+        public override string Resource_TypeName_IronArmor => "鎖かたびら";
+        public override string Resource_TypeName_HeavyIronArmor => "重鎖かたびら";
+
+        public override string Resource_TypeName_BronzeArmor => "青銅の鎧";
+
+        public override string Resource_TypeName_LightPlateArmor => "プレートアーマー";
+        public override string Resource_TypeName_FullPlateArmor => "フルプレートアーマー";
+        public override string Resource_TypeName_MithrilArmor => "ミスリルアーマー";
+        public override string Resource_TypeName_Coin => "コイン";
+
+        public override string UnitType_Warhammer => "ハンマー騎士";
+        public override string UnitType_MithrilKnight => "不死の騎士";
+        public override string UnitType_MithrilArcher => "不死の弓兵";
+        public override string UnitType_SpearAndShield => "槍盾兵";
+
+        public override string UnitType_CollectionOfSoldiers => "兵士の束";
+        public override string UnitType_CollectionOfArmies => "軍隊の束";
+
+        /// <summary>
+        /// IDタグは一意の番号になります
+        /// </summary>
+        public override string UnitId => "（ID {0}）";
+
+        public override string BuildHud_AreaEffectTitle => "範囲効果";
+        public override string BuildHud_BonusRadius => "ボーナス範囲：{0}";
+
+        public override string BuildHud_BuildTime => "建設時間";
+        public override string SchoolHud_ToLevel => "次のレベルまで";
+        public override string SchoolHud_TimeDescription => "時間は経験がゼロの場合を基準とします。経験により短縮されます。";
+        public override string SchoolHud_SelectSchool => "学校を選択";
+        public override string Upgrade_Order => "アップグレード順";
+
+        public override string Building_ListDescription => "このカテゴリのすべての建物の一覧";
+
+        public override string BuildingType_IsUpgraded => "{0} - 強化済み";
+        public override string BuildingType_WoodCutter => "製材所";
+        public override string BuildingType_Workshop_Description => "周囲の作業効率を向上させます";
+
+        public override string BuildingType_WoodCutter_AreaAffect => "木からの木材取得量 +{0}%";
+
+        public override string BuildingType_StoneCutter_AreaAffect => "石の取得量 +{0}%";
+
+        public override string BuildingType_StoneCutter => "採石場";
+
+        public override string BuildingType_Embassy => "大使館";
+        public override string BuildingType_Embassy_Description => "外交関係のための建物";
+
+        public override string BuildingType_SoldierBarracks => "兵士の兵舎";
+        public override string BuildingType_ArcherBarracks => "弓兵の兵舎";
+        public override string BuildingType_WarmashineBarracks => "兵器兵の兵舎";
+        public override string BuildingType_GunBarracks => "銃兵の兵舎";
+        public override string BuildingType_CannonBarracks => "砲兵の兵舎";
+        public override string BuildingType_KnightsBarracks => "騎士の兵舎";
+
+        public override string BuildingType_WaterResovoir => "貯水施設";
+        public override string BuildingType_WaterResovoir_Description => "水の貯蔵量を増加させます";
+
+        public override string BuildingType_SmeltingFurnace => "製錬炉";
+        public override string BuildingType_SmeltingFurnace_Description => "鉱石を金属に精錬します";
+
+        public override string BuildingType_Foundry => "鋳造所";
+        public override string BuildingType_Foundry_Description => "金属の鋳造施設";
+
+        public override string BuildingType_Armory => "防具工房";
+        public override string BuildingType_Armory_Description => "防具を製作する施設";
+
+        public override string BuildingType_Chemist => "錬金術工房";
+        public override string BuildingType_Chemist_Description => "化学薬品の製作所";
+
+        public override string BuildingType_CoinMaker => "造幣所";
+        public override string BuildingType_CoinMaker_Description => "金属をお金に変換します";
+
+        public override string BuildingType_Gunmaker => "銃製作所";
+        public override string BuildingType_Gunmaker_Description => "銃や大砲を製作する施設";
+
+        public override string BuildingType_School_Tab => "学校";
+        public override string BuildingType_School => "職人ギルド";
+        public override string BuildingType_School_Description => "労働者のスキルレベルを上げます";
+
+        public override string BuildingType_GoldDelivery => "金貨運搬所";
+        public override string BuildingType_Bank_Description => "金貨の管理施設";
+
+        public override string DecorType_CobbleStones => "石畳";
+        public override string DecorType_Square => "広場";
+
+        public override string DecorType_Garden => "庭園";
+        public override string DecorType_Flag => "旗";
+        public override string DecorType_Banner => "バナー";
+
+        public override string BuildingType_DirtRoad => "土の道";
+        public override string BuildingType_Palisade => "木柵砦";
+
+        public override string ResourceType_ServiceMen => "サービス係";
+        public override string BuildingType_ServiceHouse => "サービス小屋";
+        public override string BuildingType_ServiceHouse_DescriptionAddX => "サービス係 +{0}人";
+
+        public override string BuildingType_GuardOffice => "警備詰所";
+        public override string BuildingType_GuardOffice_DescriptionAddX => "警備員の上限 +{0}";
+
+        public override string BuildingType_DirtWall => "土壁";
+        public override string BuildingType_DirtTower => "土の塔";
+        public override string BuildingType_WoodWall => "木の壁";
+        public override string BuildingType_WoodTower => "木の塔";
+        public override string BuildingType_StoneWall => "石の壁";
+        public override string BuildingType_StoneTower => "石の塔";
+        public override string BuildingType_StoneGate => "石の門";
+        public override string BuildingType_StoneHouse => "石造りの家";
+
+        /// <summary>
+        /// 「ランプA」「ランプB」のようなバリエーションを表示する場合
+        /// </summary>
+        public override string VariantType_A => "{0} A";
+        public override string VariantType_B => "{0} B";
+        public override string VariantType_C => "{0} C";
+        public override string VariantType_D => "{0} D";
+        public override string VariantType_E => "{0} E";
+        public override string VariantType_F => "{0} F";
+        public override string VariantType_G => "{0} G";
+        public override string VariantType_H => "{0} H";
+
+        public override string BuildingToolShape_Free => "フリーハンド";
+        public override string BuildingToolShape_Area => "四角形";
+        public override string BuildingToolShape_Line => "直線";
+        public override string BuildingToolShape_LShape => "L字形";
+
+        public override string CityHall_Upgrade => "市庁舎をアップグレード";
+
+        /// <summary>
+        /// 街がサポートできる最大の労働者数の上限
+        /// </summary>
+        public override string CityHall_MaxSupportedWorkers => "最大労働者数：{0}";
+
+        public override string CityHall_Size_Small => "村";
+        public override string CityHall_Size_Medium => "町";
+        public override string CityHall_Size_Large => "首都";
+
+        public override string GuardHousingCount => "警備詰所の収容数";
+        public override string ServicemenCount => "サービス要員：{0}";
+
+        public override string Work_MiningResource => "{0}を採掘中";
+
+        public override string MenuTab_Progress => "進行状況";
+
+        public override string Automation_AutomateCity => "街を自動化";
+        public override string Automation_AutomationFocus => "自動化の方針";
+        public override string Automation_AutomationFocus_Grow => "発展重視";
+        public override string Automation_AutomationFocus_Export => "輸出重視";
+        public override string Automation_AutomationFocus_War => "戦争重視";
+
+        public override string CityCulture_Smelters_Description => "鉱石の精錬効率を向上";
+        public override string CityCulture_Smelters => "精錬師";
+
+        public override string CityCulture_Apprentices_Description => "新しい労働者が熟練者から経験を得る";
+        public override string CityCulture_Apprentices => "見習い";
+
+        public override string CityCulture_BronzeCasters_Description => "青銅およびその製品の生産効率が向上";
+        public override string CityCulture_BronzeCasters => "青銅鋳造師";
+
+
+
+
     }
 }

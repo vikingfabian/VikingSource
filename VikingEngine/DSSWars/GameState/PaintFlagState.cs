@@ -557,7 +557,7 @@ namespace VikingEngine.DSSWars
                 case ProfileColorType.Detail2: return DssRef.lang.ProfileEditor_Detail2Color;
                 case ProfileColorType.Skin: return DssRef.lang.ProfileEditor_SkinColor;
                 case ProfileColorType.Hair: return DssRef.lang.ProfileEditor_HairColor;
-                case ProfileColorType.AltMain: return DssRef.todoLang.ProfileEditor_AltMain;
+                case ProfileColorType.AltMain: return DssRef.lang.ProfileEditor_AltMain;
             }
             throw new NotImplementedException();
         }

@@ -95,5 +95,27 @@ namespace VikingEngine.HUD
         /// テキストとアイコンのサイズを変更
         /// </summary>
         public override string GraphicsOption_UiScale => "UIスケール";
+
+        public override string ReversedStereo => "ステレオ反転";
+        public override string Option_Low => "低";
+        public override string Option_Medium => "中";
+        public override string Option_High => "高";
+
+        public override string MouseSettings_Title => "マウス入力";
+        public override string KeyboardSettings_Title => "キー割り当て";
+
+        public override string MouseButtonAction_None => "なし";
+        public override string MouseButtonAction_Select => "選択";
+        public override string MouseButtonAction_Pan => "画面移動";
+        public override string MouseButtonAction_PanAndOrder => "画面移動と指示";
+        public override string MouseButtonAction_Order => "指示";
+        public override string MouseButtonAction_Cancel => "キャンセル";
+
+        public override string MouseButton_Left => "左クリック";
+        public override string MouseButton_Right => "右クリック";
+        public override string MouseButton_Middle => "中央クリック";
+        public override string MouseButton_X1 => "X1ボタン";
+        public override string MouseButton_X2 => "X2ボタン";
+
     }
 }

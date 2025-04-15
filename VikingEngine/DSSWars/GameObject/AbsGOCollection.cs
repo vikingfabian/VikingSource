@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space(0.5f);
             args.content.Add(new RbImage(SpriteName.WarsHudIconCollection));
             args.content.space(0.5f);
-            args.content.Add(new RbText(string.Format(DssRef.todoLang.Hud_ObjectsAndCount,TypeName(), CollectionCount()), tooltip? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+            args.content.Add(new RbText(string.Format(DssRef.lang.Hud_ObjectsAndCount,TypeName(), CollectionCount()), tooltip? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
         }
 
         public override Faction GetFaction()

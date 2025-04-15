@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
                     break;
 
                 case GameEndReason.TimesUp:
-                    content.h1(DssRef.todoLang.EndScreen_TimeHasEndedTitle).overrideColor = Color.Yellow;
+                    content.h1(DssRef.lang.EndScreen_TimeHasEndedTitle).overrideColor = Color.Yellow;
                     break;
             }
 

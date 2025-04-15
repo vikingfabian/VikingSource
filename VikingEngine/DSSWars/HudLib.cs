@@ -329,7 +329,7 @@ namespace VikingEngine.DSSWars
             }
             if (time.TotalHours >= 1)
             {
-                result = string.Format(DssRef.todoLang.Hud_Time_Hours, (int)time.TotalHours) + ", " + result;
+                result = string.Format(DssRef.lang.Hud_Time_Hours, (int)time.TotalHours) + ", " + result;
             }
             return result;
         }
@@ -490,7 +490,7 @@ namespace VikingEngine.DSSWars
             if (PlatformSettings.STEAM_DEMO && Ref.steam.isInitialized)
             {
                 content.newLine();
-                var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.todoLang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIcon) }, new RbAction(() =>
+                var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.lang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIcon) }, new RbAction(() =>
                 {
                     SteamAPI.SteamFriends().ActivateGameOverlayToStore(
                     3585100,
@@ -524,14 +524,14 @@ namespace VikingEngine.DSSWars
 
         public static void servicemenUpkeepInfo(RichBoxContent content, object tag)
         {
-            content.text(string.Format(DssRef.todoLang.Economy_ServicemenUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerServiceMan_copp)));
+            content.text(string.Format(DssRef.lang.Economy_ServicemenUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerServiceMan_copp)));
             content.newParagraph();
             content.text(DssRef.lang.Info_PerSecond);
         }
 
         public static void guardUpkeepInfo(RichBoxContent content, object tag)
         {
-            content.text(string.Format(DssRef.todoLang.Economy_GuardUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerGuard_copp)));
+            content.text(string.Format(DssRef.lang.Economy_GuardUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerGuard_copp)));
             content.newParagraph();
             content.text(DssRef.lang.Info_PerSecond);        
         }

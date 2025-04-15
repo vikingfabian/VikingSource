@@ -880,5 +880,466 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Tutorial_Select_SubTab { get; }
 
+
+        /* #### --------------- ##### */
+        /* #### DSS 2 DEMO      ##### */
+        /* #### --------------- ##### */
+
+        // Tutorial & Demo
+        public abstract string Tutorial_OpenGuardSubTab { get; }
+        public abstract string Tutorial_GuardToWall { get; }
+        public abstract string Demo_MissionObjective_Title { get; }
+        public abstract string Demo_MissionObjective_Description { get; }
+        public abstract string Demo_Complete_Title { get; }
+        public abstract string Demo_TimesUp_Title { get; }
+        public abstract string Demo_EndInOneMinuteDescription { get; }
+
+        // Army & Profile
+        public abstract string ArmyOption_NewArmy { get; }
+        public abstract string ProfileEditor_AltMain { get; }
+
+        // Automation
+        public abstract string Automation_CheckBoxTitle { get; }
+
+        // Army Structure
+        public abstract string ArmyStructure_ColumnWidth { get; }
+        public abstract string ArmyStructure_ArmyPlacement { get; }
+        public abstract string ArmyStructure_Row_Front { get; }
+        public abstract string ArmyStructure_Row_Body { get; }
+        public abstract string ArmyStructure_Row_Second { get; }
+        public abstract string ArmyStructure_Row_Behind { get; }
+
+        // Diplomacy
+        public abstract string Diplomacy_RelationType_Enemies { get; }
+
+        // Events
+        public abstract string EventMessage_EnemyAlliance_Title { get; }
+        public abstract string EventMessage_EnemyAlliance { get; }
+
+        // Settings - Gameplay
+        public abstract string Settings_CentralGold { get; }
+        public abstract string Settings_CentralGold_Description { get; }
+
+        // Input Actions
+        public abstract string InputActionName_StopStart { get; }
+        public abstract string InputActionName_ToggleHudDetail { get; }
+        public abstract string InputActionName_NextCity { get; }
+        public abstract string InputActionName_NextArmy { get; }
+        public abstract string InputActionName_NextBattle { get; }
+        public abstract string InputActionName_Build { get; }
+        public abstract string InputActionName_Copy { get; }
+        public abstract string InputActionName_Paste { get; }
+        public abstract string InputActionName_Menu { get; }
+        public abstract string InputActionName_FlagDesign_ToggleColor_Prev { get; }
+        public abstract string InputActionName_FlagDesign_ToggleColor_Next { get; }
+        public abstract string InputActionName_FlagDesign_PaintBucket { get; }
+        public abstract string InputActionName_Controller_FlagDesign_Colorpicker { get; }
+        public abstract string InputActionName_ControllerFocus { get; }
+        public abstract string InputActionName_ControllerCancel { get; }
+        public abstract string InputActionName_ControllerMessageClick { get; }
+        public abstract string InputActionName_ControllerSelect { get; }
+        public abstract string InputActionName_WASD_UP { get; }
+        public abstract string InputActionName_WASD_DOWN { get; }
+        public abstract string InputActionName_WASD_LEFT { get; }
+        public abstract string InputActionName_WASD_RIGHT { get; }
+        public abstract string InputActionName_CameraTiltLeft { get; }
+        public abstract string InputActionName_CameraTiltRight { get; }
+        public abstract string InputActionName_CameraTiltUp { get; }
+        public abstract string InputActionName_ZoomInKey { get; }
+        public abstract string InputActionName_ZoomOutKey { get; }
+
+        // Settings UI
+        public abstract string Settings_Title_Monitor { get; }
+        public abstract string Settings_Title_Graphics { get; }
+        public abstract string Settings_Title_Input { get; }
+        public abstract string Settings_Title_Gameplay { get; }
+        public abstract string Settings_PanOnZoom { get; }
+        public abstract string Settings_ScrollSensitivity_Game { get; }
+        public abstract string Settings_ScrollSensitivity_Menu { get; }
+        public abstract string Settings_Blood { get; }
+
+        public abstract string Settings_MasterVolume { get; }
+        public abstract string Settings_AmbienceVolume { get; }
+        public abstract string Settings_BattleMelody { get; }
+
+        public abstract string Settings_ModelLight { get; }
+        public abstract string Settings_Particles { get; }
+        public abstract string Settings_MapLoadSpeed { get; }
+
+        // Lobby
+        public abstract string Lobby_Category_Options { get; }
+        public abstract string Lobby_Category_Editor { get; }
+        public abstract string Lobby_Category_ExtraModes { get; }
+
+        public abstract string Lobby_Editor_MapEditor { get; }
+        public abstract string Lobby_Editor_VoxelEditor { get; }
+
+        public abstract string Lobby_Mode_BattleLab { get; }
+        public abstract string Lobby_Mode_BattleLab_Description { get; }
+        public abstract string Lobby_Mode_Commander { get; }
+        public abstract string Lobby_Mode_Commander_Description { get; }
+        public abstract string Lobby_MusicPlayList { get; }
+
+        public abstract string Lobby_GameSetup { get; }
+        public abstract string Lobby_PlayerSetup { get; }
+        public abstract string LobbyDemoMode_Demo { get; }
+        public abstract string LobbyDemoMode_ShortTutorial { get; }
+        public abstract string LobbyDemoMode_LongTutorial { get; }
+        public abstract string LobbyDemoMode_WishlistOn { get; }
+
+        public abstract string BattleLab_StartHere { get; }
+        public abstract string BattleLab_Start { get; }
+        public abstract string BattleLab_Attacker { get; }
+
+        public abstract string MapGenerator_Name { get; }
+        public abstract string MapType_CustomMap { get; }
+        public abstract string MapType_GenerateNewMap { get; }
+        public abstract string MapGenerator_GenerateAction { get; }
+
+        public abstract string MapGenerator_Terrain_CustomSize { get; }
+        public abstract string MapGenerator_Terrain_StartAs { get; }
+        public abstract string MapGenerator_Terrain_ClearPass { get; }
+        public abstract string MapGenerator_Terrain_BuildPass { get; }
+        public abstract string MapGenerator_Terrain_DigPass { get; }
+        public abstract string MapGenerator_Terrain_BuildDigLoops { get; }
+        public abstract string MapGenerator_Terrain_BuildStrokes { get; }
+        public abstract string MapGenerator_Terrain_BuildStrokes_Description { get; }
+        public abstract string MapGenerator_Terrain_DigStrokes { get; }
+        public abstract string MapGenerator_Terrain_CleanUp_Option { get; }
+        public abstract string MapGenerator_Terrain_CleanUpPass { get; }
+        public abstract string Economy_ServicemenUpkeep { get; }
+        public abstract string Economy_ServicemenUpkeep_Description { get; }
+        public abstract string Economy_GuardUpkeep_Description { get; }
+        public abstract string EndScreen_TimeHasEndedTitle { get; }
+        public abstract string Hud_AdvancedSettings { get; }
+        public abstract string Hud_Vector_X { get; }
+        public abstract string Hud_Vector_Y { get; }
+        public abstract string Hud_Cancel { get; }
+        public abstract string Hud_Delete { get; }
+        public abstract string Hud_Next { get; }
+        //public abstract string Hud_None { get; }
+        public abstract string Hud_Apply { get; }
+        public abstract string Hud_AllCities { get; }
+        public abstract string Hud_Time_Hours { get; }
+        public abstract string Hud_AddX { get; }
+        public abstract string Hud_Both { get; }
+        public abstract string Hud_Direction { get; }
+        public abstract string MusicIsBroken { get; }
+        public abstract string Hud_ObjectsAndCount { get; }
+        public abstract string Hud_EffectDoesNotStack { get; }
+        public abstract string Work_SmeltX { get; }
+        public abstract string Info_TotalFoodProduction { get; }
+        public abstract string Info_TotalFoodSpending { get; }
+
+        public abstract string BuildingType_StoneWall { get; }
+        public abstract string BuildingType_StoneTower { get; }
+        public abstract string BuildingType_StoneGate { get; }
+        public abstract string BuildingType_StoneHouse { get; }
+
+        public abstract string VariantType_A { get; }
+        public abstract string VariantType_B { get; }
+        public abstract string VariantType_C { get; }
+        public abstract string VariantType_D { get; }
+        public abstract string VariantType_E { get; }
+        public abstract string VariantType_F { get; }
+        public abstract string VariantType_G { get; }
+        public abstract string VariantType_H { get; }
+
+        public abstract string BuildingToolShape_Free { get; }
+        public abstract string BuildingToolShape_Area { get; }
+        public abstract string BuildingToolShape_Line { get; }
+        public abstract string BuildingToolShape_LShape { get; }
+
+        public abstract string CityHall_Upgrade { get; }
+        public abstract string CityHall_MaxSupportedWorkers { get; }
+
+        public abstract string CityHall_Size_Small { get; }
+        public abstract string CityHall_Size_Medium { get; }
+        public abstract string CityHall_Size_Large { get; }
+
+        public abstract string GuardHousingCount { get; }
+        public abstract string ServicemenCount { get; }
+
+        public abstract string Work_MiningResource { get; }
+
+        public abstract string MenuTab_Progress { get; }
+
+        public abstract string Automation_AutomateCity { get; }
+        public abstract string Automation_AutomationFocus { get; }
+        public abstract string Automation_AutomationFocus_Grow { get; }
+        public abstract string Automation_AutomationFocus_Export { get; }
+        public abstract string Automation_AutomationFocus_War { get; }
+
+        public abstract string CityCulture_Smelters_Description { get; }
+        public abstract string CityCulture_Smelters { get; }
+
+        public abstract string CityCulture_Apprentices_Description { get; }
+        public abstract string CityCulture_Apprentices { get; }
+
+        public abstract string CityCulture_BronzeCasters_Description { get; }
+        public abstract string CityCulture_BronzeCasters { get; }
+
+        public abstract string Info_FooodAndDeliveryLocation { get; }
+        //public abstract string GameMenu_UseSpeedX { get; }
+
+        public abstract string Delivery_SendChunk { get; }
+        public abstract string Delivery_SpeedBonus { get; }
+
+        public abstract string Delivery_AutoResourceDescription { get; }
+
+        public abstract string Conscript_Soldiers_ArmyType { get; }
+        public abstract string Conscript_Soldiers_ArmyType_Description { get; }
+        public abstract string Conscript_Soldiers_GuardType { get; }
+        public abstract string Conscript_Soldiers_GuardType_Description { get; }
+
+        public abstract string Defence_Title { get; }
+        public abstract string Defence_GuardPost { get; }
+
+        public abstract string Defence_WallDescription_Movement { get; }
+        public abstract string Defence_WallDescription_GuardPost { get; }
+        public abstract string Defence_AutoAssign { get; }
+        public abstract string Defence_AutoAssign_Description { get; }
+
+        public abstract string Conscript_SplashDamage { get; }
+        public abstract string Conscript_HighSplashDamage { get; }
+
+        public abstract string Conscript_Training_Champion { get; }
+        public abstract string Conscript_Training_Legendary { get; }
+
+        public abstract string Experience_Title { get; }
+        public abstract string Experience_TopExperience { get; }
+
+        public abstract string Experience_TimeReductionDescription { get; }
+
+        public abstract string ExperienceType_Farm { get; }
+        public abstract string ExperienceType_AnimalCare { get; }
+        public abstract string ExperienceType_HouseBuilding { get; }
+        public abstract string ExperienceType_WoodWork { get; }
+        public abstract string ExperienceType_StoneCutter { get; }
+        public abstract string ExperienceType_Mining { get; }
+        public abstract string ExperienceType_Transport { get; }
+        public abstract string ExperienceType_Cook { get; }
+        public abstract string ExperienceType_Fletcher { get; }
+        public abstract string ExperienceType_RefineOre { get; }
+        public abstract string ExperienceType_Casting { get; }
+        public abstract string ExperienceType_CraftMetal { get; }
+        public abstract string ExperienceType_CraftArmor { get; }
+        public abstract string ExperienceType_CraftWeapon { get; }
+        public abstract string ExperienceType_CraftFuel { get; }
+        public abstract string ExperienceType_Chemist { get; }
+
+        public abstract string ExperienceLevel_1 { get; }
+        public abstract string ExperienceLevel_2 { get; }
+        public abstract string ExperienceLevel_3 { get; }
+        public abstract string ExperienceLevel_4 { get; }
+        public abstract string ExperienceLevel_5 { get; }
+
+        public abstract string ExperenceOrDistancePrio_Title { get; }
+        public abstract string ExperenceOrDistancePrio_Description { get; }
+
+        public abstract string Technology_Description { get; }
+        public abstract string Experience_Description { get; }
+
+        public abstract string Technology_Title { get; }
+        public abstract string Technology_ShareField { get; }
+
+        public abstract string Technology_GainByNeigborRelation { get; }
+        public abstract string Technology_ForEachMaster { get; }
+        public abstract string Technology_CitySpread { get; }
+        public abstract string Technology_CityCapture { get; }
+
+        public abstract string Technology_AdvancedBuildings { get; }
+        public abstract string Technology_AdvancedFarming { get; }
+        public abstract string Technology_AdvancedCasting { get; }
+
+        public abstract string Help_Title { get; }
+        public abstract string Help_Work_Title { get; }
+        public abstract string Help_Work_Resources { get; }
+        public abstract string Help_Work_Skill { get; }
+        public abstract string Help_Work_Stockpile { get; }
+        public abstract string Help_Work_Priority { get; }
+
+        public abstract string Help_Soldiers_Title { get; }
+        public abstract string Help_Soldiers_PlaceBuildingX { get; }
+        public abstract string Help_Soldiers_Workers { get; }
+        public abstract string Help_Soldiers_Weapon { get; }
+        public abstract string Help_Soldiers_StartX { get; }
+
+        public abstract string Hud_SelectHistory { get; }
+
+        public abstract string Hud_PointsPerMinute { get; }
+        public abstract string Hud_PercentValueCost { get; }
+
+        public abstract string Hud_Mixed { get; }
+        public abstract string Hud_Distance { get; }
+
+        public abstract string Hud_Unlock { get; }
+        public abstract string Hud_category { get; }
+
+        /// <summary>
+        /// Sets the game speed to one frame at a time
+        /// </summary>
+        public abstract string Input_StepOneFrame { get; }
+
+        public abstract string Resource_TypeName_Wagon2Wheel { get; }
+        public abstract string Resource_TypeName_Wagon4Wheel { get; }
+        public abstract string Resource_TypeName_Tin { get; }
+        public abstract string Resource_TypeName_TinOre { get; }
+
+        public abstract string Resource_TypeName_Copper { get; }
+        public abstract string Resource_TypeName_CopperOre { get; }
+        public abstract string Resource_TypeName_SilverOre { get; }
+        public abstract string Resource_TypeName_Silver { get; }
+
+        /// <summary>
+        /// Mithril is a fantasy metal
+        /// </summary>
+        public abstract string Resource_TypeName_RawMithril { get; }
+        public abstract string Resource_TypeName_Mithril { get; }
+
+        public abstract string Resource_TypeName_BronzeSword { get; }
+        public abstract string Resource_TypeName_ShortSword { get; }
+        public abstract string Resource_TypeName_LongSword { get; }
+        public abstract string Resource_TypeName_HandSpear { get; }
+        public abstract string Resource_TypeName_Warhammer { get; }
+        public abstract string Resource_TypeName_MithrilSword { get; }
+        public abstract string Resource_TypeName_SlingShot { get; }
+        public abstract string Resource_TypeName_ThrowingSpear { get; }
+        public abstract string Resource_TypeName_Crossbow { get; }
+        public abstract string Resource_TypeName_MithrilBow { get; }
+
+        public abstract string Resource_TypeName_CoolingFluid { get; }
+        public abstract string Resource_TypeName_Palisade { get; }
+        public abstract string Resource_TypeName_Toolkit { get; }
+
+        public abstract string Resource_TypeName_Sulfur { get; }
+        public abstract string Resource_TypeName_LeadOre { get; }
+        public abstract string Resource_TypeName_Lead { get; }
+        public abstract string Resource_TypeName_Bronze { get; }
+        public abstract string Resource_TypeName_BloomIron { get; }
+        public abstract string Resource_TypeName_Steel { get; }
+        public abstract string Resource_TypeName_CastIron { get; }
+
+        public abstract string Resource_TypeName_BlackPowder { get; }
+        public abstract string Resource_TypeName_GunPowder { get; }
+        public abstract string Resource_TypeName_LedBullet { get; }
+
+        public abstract string Resource_TypeName_HandCannon { get; }
+        public abstract string Resource_TypeName_HandCulverin { get; }
+        public abstract string Resource_TypeName_Rifle { get; }
+        public abstract string Resource_TypeName_Blunderbuss { get; }
+
+        public abstract string Resource_TypeName_Manuballista { get; }
+        public abstract string Resource_TypeName_Catapult { get; }
+        public abstract string Resource_TypeName_BatteringRam { get; }
+        public abstract string Resource_TypeName_SiegeCannonBronze { get; }
+        public abstract string Resource_TypeName_ManCannonBronze { get; }
+        public abstract string Resource_TypeName_SiegeCannonIron { get; }
+        public abstract string Resource_TypeName_ManCannonIron { get; }
+
+        public abstract string Resource_TypeName_PaddedArmor { get; }
+        public abstract string Resource_TypeName_HeavyPaddedArmor { get; }
+
+        public abstract string Resource_TypeName_IronArmor { get; }
+        public abstract string Resource_TypeName_HeavyIronArmor { get; }
+
+        public abstract string Resource_TypeName_BronzeArmor { get; }
+
+        public abstract string Resource_TypeName_LightPlateArmor { get; }
+        public abstract string Resource_TypeName_FullPlateArmor { get; }
+        public abstract string Resource_TypeName_MithrilArmor { get; }
+        public abstract string Resource_TypeName_Coin { get; }
+
+        public abstract string UnitType_Warhammer { get; }
+        public abstract string UnitType_MithrilKnight { get; }
+        public abstract string UnitType_MithrilArcher { get; }
+        public abstract string UnitType_SpearAndShield { get; }
+
+        public abstract string UnitType_CollectionOfSoldiers { get; }
+        public abstract string UnitType_CollectionOfArmies { get; }
+
+        /// <summary>
+        /// The id tag will be a unique number
+        /// </summary>
+        public abstract string UnitId { get; }
+
+        public abstract string BuildHud_AreaEffectTitle { get; }
+        public abstract string BuildHud_BonusRadius { get; }
+
+        public abstract string BuildHud_BuildTime { get; }
+        public abstract string SchoolHud_ToLevel { get; }
+        public abstract string SchoolHud_TimeDescription { get; }
+        public abstract string SchoolHud_SelectSchool { get; }
+        public abstract string Upgrade_Order { get; }
+
+        public abstract string Building_ListDescription { get; }
+
+        public abstract string BuildingType_IsUpgraded { get; }
+        public abstract string BuildingType_WoodCutter { get; }
+        public abstract string BuildingType_Workshop_Description { get; }
+
+        public abstract string BuildingType_WoodCutter_AreaAffect { get; }
+
+        public abstract string BuildingType_StoneCutter_AreaAffect { get; }
+
+        public abstract string BuildingType_StoneCutter { get; }
+
+        public abstract string BuildingType_Embassy { get; }
+        public abstract string BuildingType_Embassy_Description { get; }
+
+        public abstract string BuildingType_SoldierBarracks { get; }
+        public abstract string BuildingType_ArcherBarracks { get; }
+        public abstract string BuildingType_WarmashineBarracks { get; }
+        public abstract string BuildingType_GunBarracks { get; }
+        public abstract string BuildingType_CannonBarracks { get; }
+        public abstract string BuildingType_KnightsBarracks { get; }
+
+        public abstract string BuildingType_WaterResovoir { get; }
+        public abstract string BuildingType_WaterResovoir_Description { get; }
+
+        public abstract string BuildingType_SmeltingFurnace { get; }
+        public abstract string BuildingType_SmeltingFurnace_Description { get; }
+
+        public abstract string BuildingType_Foundry { get; }
+        public abstract string BuildingType_Foundry_Description { get; }
+
+        public abstract string BuildingType_Armory { get; }
+        public abstract string BuildingType_Armory_Description { get; }
+        public abstract string BuildingType_Chemist { get; }
+        public abstract string BuildingType_Chemist_Description { get; }
+        public abstract string BuildingType_CoinMaker { get; }
+        public abstract string BuildingType_CoinMaker_Description { get; }
+        public abstract string BuildingType_Gunmaker { get; }
+        public abstract string BuildingType_Gunmaker_Description { get; }
+
+        public abstract string BuildingType_School_Tab { get; }
+        public abstract string BuildingType_School { get; }
+        public abstract string BuildingType_School_Description { get; }
+
+        public abstract string BuildingType_GoldDelivery { get; }
+        public abstract string BuildingType_Bank_Description { get; }
+
+        public abstract string DecorType_CobbleStones { get; }
+        public abstract string DecorType_Square { get; }
+
+        public abstract string DecorType_Garden { get; }
+        public abstract string DecorType_Flag { get; }
+        public abstract string DecorType_Banner { get; }
+
+        public abstract string BuildingType_DirtRoad { get; }
+        public abstract string BuildingType_Palisade { get; }
+
+        public abstract string ResourceType_ServiceMen { get; }
+        public abstract string BuildingType_ServiceHouse { get; }
+        public abstract string BuildingType_ServiceHouse_DescriptionAddX { get; }
+
+        public abstract string BuildingType_GuardOffice { get; }
+        public abstract string BuildingType_GuardOffice_DescriptionAddX { get; }
+
+        public abstract string BuildingType_DirtWall { get; }
+        public abstract string BuildingType_DirtTower { get; }
+        public abstract string BuildingType_WoodWall { get; }
+        public abstract string BuildingType_WoodTower { get; }
+
     }
-    }
+}

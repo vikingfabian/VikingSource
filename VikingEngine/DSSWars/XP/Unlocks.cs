@@ -217,7 +217,7 @@ namespace VikingEngine.DSSWars.XP
             {
                 items.Add(ItemResourceType.GunPowder);
                 items.Add(ItemResourceType.Rifle);
-                items.Add(ItemResourceType.Blunderbus);
+                items.Add(ItemResourceType.Blunderbuss);
             }
 
             if (item_cannon)

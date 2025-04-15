@@ -37,14 +37,14 @@ namespace VikingEngine.DSSWars.XP
                 content.Add(new RbImage(expIcon));
                 content.space();
                 content.Add(new RbBeginTitle(1));
-                var title = new RbText(DssRef.todoLang.BuildingType_School + " " + currentStatus.idAndPosition.ToString());
+                var title = new RbText(DssRef.lang.BuildingType_School + " " + currentStatus.idAndPosition.ToString());
                 title.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(title);
                 content.space();
                 HudLib.CloseButton(content, new RbAction(() => { city.selectedSchool = -1; }, SoundLib.menuBack));
 
                 content.newParagraph();
-                HudLib.Label(content, DssRef.todoLang.Experience_Title);
+                HudLib.Label(content, DssRef.lang.Experience_Title);
                 content.newLine();
 
                 foreach (var exp in XpLib.ExperienceTypes)
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.XP
 
                 if (currentStatus.learnExperience != WorkExperienceType.NONE)
                 {
-                    HudLib.Label(content, DssRef.todoLang.SchoolHud_ToLevel);
+                    HudLib.Label(content, DssRef.lang.SchoolHud_ToLevel);
                     content.newLine();
                     for (ExperienceLevel level = ExperienceLevel.Practitioner_2; level <= SchoolStatus.MaxLevel; level++)
                     {
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.XP
             else
             {
 
-                content.h2(DssRef.todoLang.SchoolHud_SelectSchool).overrideColor = HudLib.TitleColor_Action;
+                content.h2(DssRef.lang.SchoolHud_SelectSchool).overrideColor = HudLib.TitleColor_Action;
                 if (city.schoolBuildings.Count == 0)
                 {
                     //EMPTY
@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.XP
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsBuild_School));
                     content.space();
-                    content.Add(new RbText(DssRef.todoLang.BuildingType_School));                   
+                    content.Add(new RbText(DssRef.lang.BuildingType_School));                   
                 }
                 else
                 {
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.XP
 
             WorkExperienceType exp = (WorkExperienceType)tag;
            // RichBoxContent content = new RichBoxContent();
-            content.h2(DssRef.todoLang.Experience_TopExperience).overrideColor = HudLib.TitleColor_Label;
+            content.h2(DssRef.lang.Experience_TopExperience).overrideColor = HudLib.TitleColor_Label;
             
             content.newLine();
 
@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.XP
             content.Add(new RbText(HudLib.TimeSpan_LongText(timespan)));
              
             content.newLine();
-            content.text(DssRef.todoLang.SchoolHud_TimeDescription).overrideColor = HudLib.InfoYellow_Light;
+            content.text(DssRef.lang.SchoolHud_TimeDescription).overrideColor = HudLib.InfoYellow_Light;
 
             //player.hud.tooltip.create(player, content, true);
         }

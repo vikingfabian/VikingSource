@@ -234,42 +234,42 @@ namespace VikingEngine.DSSWars.Display
             if (lobby)
             {
                 content.newParagraph();
-                content.h2(DssRef.todoLang.Settings_Title_Monitor, HudLib.TitleColor_Head); 
+                content.h2(DssRef.lang.Settings_Title_Monitor, HudLib.TitleColor_Head); 
                 Ref.gamesett.monitorOptions(content, menu);
             }
 
             content.newParagraph();
-            content.h2(DssRef.todoLang.Settings_Title_Graphics, HudLib.TitleColor_Head);
+            content.h2(DssRef.lang.Settings_Title_Graphics, HudLib.TitleColor_Head);
             Ref.gamesett.graphicsOptions(content, menu);
 
             content.newParagraph();
-            content.h2(DssRef.todoLang.Settings_Title_Input, HudLib.TitleColor_Head);
+            content.h2(DssRef.lang.Settings_Title_Input, HudLib.TitleColor_Head);
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_PanOnZoom) }, Ref.gamesett.panOnZoomProperty));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_PanOnZoom) }, Ref.gamesett.panOnZoomProperty));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.MouseScroll));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Settings_ScrollSensitivity_Game));
+            content.Add(new RbText(DssRef.lang.Settings_ScrollSensitivity_Game));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollGameProperty, true));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.MouseScroll));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Settings_ScrollSensitivity_Menu));
+            content.Add(new RbText(DssRef.lang.Settings_ScrollSensitivity_Menu));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollMenuProperty, true));
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Mouse, 0.8f), new RbSpace(), new RbText(DssRef.todoLang.MouseSettings_Title) },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Mouse, 0.8f), new RbSpace(), new RbText(Ref.langOpt.MouseSettings_Title) },
                 new RbAction2Arg<string, StackOption>(menu.OpenMenu, UnderMenu_Options_Mouse, StackOption.Stack)));
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Keyboard, 0.8f), new RbSpace(), new RbText(DssRef.todoLang.KeyboardSettings_Title) },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Keyboard, 0.8f), new RbSpace(), new RbText(Ref.langOpt.KeyboardSettings_Title) },
                 new RbAction2Arg<string, StackOption>(menu.OpenMenu, UnderMenu_Options_Keyboard, StackOption.Stack)));
 
             content.newParagraph();
-            content.h2(DssRef.todoLang.Settings_Title_Gameplay, HudLib.TitleColor_Head);
+            content.h2(DssRef.lang.Settings_Title_Gameplay, HudLib.TitleColor_Head);
             if (lobby)
             {
                 content.newLine();
@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
             }
             content.newLine();
-            content.Add(new RbText(DssRef.todoLang.Settings_Blood + ":", HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.lang.Settings_Blood + ":", HudLib.TitleColor_Label));
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
 
@@ -337,7 +337,7 @@ namespace VikingEngine.DSSWars.Display
         {
             RichBoxContent content = new RichBoxContent();
 
-            content.h1(DssRef.todoLang.KeyboardSettings_Title, HudLib.TitleColor_Head);
+            content.h1(Ref.langOpt.KeyboardSettings_Title, HudLib.TitleColor_Head);
 
             var map = Ref.gamesett.keyboardMap;
             var list = map.listInputs(true);
@@ -421,17 +421,17 @@ namespace VikingEngine.DSSWars.Display
         {
             RichBoxContent content = new RichBoxContent();
 
-            content.h1(DssRef.todoLang.MouseSettings_Title, HudLib.TitleColor_Head);
+            content.h1(Ref.langOpt.MouseSettings_Title, HudLib.TitleColor_Head);
 
             // Map of available actions and their display names
             Dictionary<MouseButtonAction, string> mouseActions = new Dictionary<MouseButtonAction, string>()
             {
-                { MouseButtonAction.None, DssRef.todoLang.MouseButtonAction_None },
-                { MouseButtonAction.Select, DssRef.todoLang.MouseButtonAction_Select },
-                { MouseButtonAction.Cancel, DssRef.todoLang.MouseButtonAction_Cancel },
-                { MouseButtonAction.Pan, DssRef.todoLang.MouseButtonAction_Pan },
-                { MouseButtonAction.PanAndOrder, DssRef.todoLang.MouseButtonAction_PanAndOrder },
-                { MouseButtonAction.Order, DssRef.todoLang.MouseButtonAction_Order },
+                { MouseButtonAction.None, Ref.langOpt.MouseButtonAction_None },
+                { MouseButtonAction.Select, Ref.langOpt.MouseButtonAction_Select },
+                { MouseButtonAction.Cancel, Ref.langOpt.MouseButtonAction_Cancel },
+                { MouseButtonAction.Pan, Ref.langOpt.MouseButtonAction_Pan },
+                { MouseButtonAction.PanAndOrder, Ref.langOpt.MouseButtonAction_PanAndOrder },
+                { MouseButtonAction.Order, Ref.langOpt.MouseButtonAction_Order },
             };
 
             // Local helper method for one dropdown
@@ -461,11 +461,11 @@ namespace VikingEngine.DSSWars.Display
             }
             
             // Add dropdowns for each mouse button
-            AddMouseButtonDropdown(MouseButton.Left, SpriteName.MouseButtonLeft, DssRef.todoLang.MouseButton_Left);
-            AddMouseButtonDropdown(MouseButton.Right, SpriteName.MouseButtonRight, DssRef.todoLang.MouseButton_Right);
-            AddMouseButtonDropdown(MouseButton.Middle, SpriteName.MouseButtonMiddle, DssRef.todoLang.MouseButton_Middle);
-            AddMouseButtonDropdown(MouseButton.X1, SpriteName.MouseButtonX1, DssRef.todoLang.MouseButton_X1);
-            AddMouseButtonDropdown(MouseButton.X2, SpriteName.MouseButtonX2, DssRef.todoLang.MouseButton_X2);
+            AddMouseButtonDropdown(MouseButton.Left, SpriteName.MouseButtonLeft, Ref.langOpt.MouseButton_Left);
+            AddMouseButtonDropdown(MouseButton.Right, SpriteName.MouseButtonRight, Ref.langOpt.MouseButton_Right);
+            AddMouseButtonDropdown(MouseButton.Middle, SpriteName.MouseButtonMiddle, Ref.langOpt.MouseButton_Middle);
+            AddMouseButtonDropdown(MouseButton.X1, SpriteName.MouseButtonX1, Ref.langOpt.MouseButton_X1);
+            AddMouseButtonDropdown(MouseButton.X2, SpriteName.MouseButtonX2, Ref.langOpt.MouseButton_X2);
 
             menu.Refresh(content);
         }

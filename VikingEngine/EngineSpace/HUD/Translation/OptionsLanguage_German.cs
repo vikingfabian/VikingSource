@@ -96,5 +96,27 @@ namespace VikingEngine.HUD
         /// </summary>
         public override string GraphicsOption_UiScale => "UI-Skalierung";
 
+        public override string ReversedStereo => "Umgekehrtes Stereo";
+        public override string Option_Low => "Niedrig";
+        public override string Option_Medium => "Mittel";
+        public override string Option_High => "Hoch";
+
+        public override string MouseSettings_Title => "Mauseingabe";
+        public override string KeyboardSettings_Title => "Tastenzuweisung";
+
+        public override string MouseButtonAction_None => "Keine Aktion";
+        public override string MouseButtonAction_Select => "Auswählen";
+        public override string MouseButtonAction_Pan => "Verschieben";
+        public override string MouseButtonAction_PanAndOrder => "Verschieben und Befehl";
+        public override string MouseButtonAction_Order => "Befehl";
+        public override string MouseButtonAction_Cancel => "Abbrechen";
+
+        public override string MouseButton_Left => "Linke Maustaste";
+        public override string MouseButton_Right => "Rechte Maustaste";
+        public override string MouseButton_Middle => "Mittlere Maustaste";
+        public override string MouseButton_X1 => "Maus-Taste X1";
+        public override string MouseButton_X2 => "Maus-Taste X2";
+
+
     }
 }

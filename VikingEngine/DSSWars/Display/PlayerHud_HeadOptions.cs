@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary,
                     new List<AbsRichBoxMember>
-                    { new RbText("Step 1 frame", Color.White) }, new RbAction1Arg<int>(DssRef.state.stepFrames, 1)));
+                    { new RbText(DssRef.lang.Input_StepOneFrame, Color.White) }, new RbAction1Arg<int>(DssRef.state.stepFrames, 1)));
                 content.Add(new ArtButton(RbButtonStyle.Primary,
                     new List<AbsRichBoxMember>
                     { new RbText("4", Color.White) }, new RbAction1Arg<int>(DssRef.state.stepFrames, 4)));

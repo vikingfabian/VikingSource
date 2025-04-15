@@ -30,21 +30,21 @@ namespace VikingEngine.DSSWars.XP
             content.Add(new RbImage(SpriteName.WarsTechnology_Unlocked));
             content.space();
 
-            tech(technology.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.todoLang.Technology_AdvancedBuildings);
+            tech(technology.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.lang.Technology_AdvancedBuildings);
 
-            tech(technology.advancedFarming, SpriteName.WarsWorkFarm, DssRef.todoLang.Technology_AdvancedFarming);
+            tech(technology.advancedFarming, SpriteName.WarsWorkFarm, DssRef.lang.Technology_AdvancedFarming);
 
-            tech(technology.advancedCasting, SpriteName.WarsResource_IronManCannon, DssRef.todoLang.Technology_AdvancedCasting);
+            tech(technology.advancedCasting, SpriteName.WarsResource_IronManCannon, DssRef.lang.Technology_AdvancedCasting);
 
             tech(technology.iron, SpriteName.WarsResource_Iron, DssRef.lang.Resource_TypeName_Iron);
 
-            tech(technology.steel, SpriteName.WarsResource_Steel, DssRef.todoLang.Resource_TypeName_Steel);
+            tech(technology.steel, SpriteName.WarsResource_Steel, DssRef.lang.Resource_TypeName_Steel);
 
-            tech(technology.catapult, SpriteName.WarsResource_Catapult, DssRef.todoLang.Resource_TypeName_Catapult);
+            tech(technology.catapult, SpriteName.WarsResource_Catapult, DssRef.lang.Resource_TypeName_Catapult);
 
-            tech(technology.blackPowder, SpriteName.WarsResource_BronzeRifle, DssRef.todoLang.Resource_TypeName_BlackPowder);
+            tech(technology.blackPowder, SpriteName.WarsResource_BronzeRifle, DssRef.lang.Resource_TypeName_BlackPowder);
 
-            tech(technology.gunPowder, SpriteName.WarsResource_IronRifle, DssRef.todoLang.Resource_TypeName_GunPowder);
+            tech(technology.gunPowder, SpriteName.WarsResource_IronRifle, DssRef.lang.Resource_TypeName_GunPowder);
 
             void tech(int value, SpriteName icon, string caption)
             {
@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.XP
                     {
                         //RichBoxContent content = new RichBoxContent();
 
-                        content.h2(DssRef.todoLang.Technology_Title).overrideColor = HudLib.TitleColor_Label;
+                        content.h2(DssRef.lang.Technology_Title).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
                         content.Add(new RbImage(icon));
                         content.space();
@@ -131,49 +131,49 @@ namespace VikingEngine.DSSWars.XP
 
 
             Unlocks advBuildingUnlock = new Unlocks(); advBuildingUnlock.UnlockAdvancedBuilding();
-            tech(technology.advancedBuilding, TechnologyTemplate.Start.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.todoLang.Technology_AdvancedBuildings, advBuildingUnlock, advBuildingFields);
+            tech(technology.advancedBuilding, TechnologyTemplate.Start.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.lang.Technology_AdvancedBuildings, advBuildingUnlock, advBuildingFields);
 
             content.newParagraph();
             Unlocks advFarmUnlock = new Unlocks(); advFarmUnlock.UnlockAdvancedFarming();
-            tech(technology.advancedFarming, TechnologyTemplate.Start.advancedFarming, SpriteName.WarsWorkFarm, DssRef.todoLang.Technology_AdvancedFarming, advFarmUnlock, advFarmingFields);
+            tech(technology.advancedFarming, TechnologyTemplate.Start.advancedFarming, SpriteName.WarsWorkFarm, DssRef.lang.Technology_AdvancedFarming, advFarmUnlock, advFarmingFields);
 
             content.newParagraph();
             Unlocks advCastingUnlock = new Unlocks(); advCastingUnlock.UnlockAdvancedCasting();
-            tech(technology.advancedCasting, TechnologyTemplate.Start.advancedCasting, SpriteName.WarsResource_IronManCannon, DssRef.todoLang.Technology_AdvancedCasting, advCastingUnlock, advCastingFields);
+            tech(technology.advancedCasting, TechnologyTemplate.Start.advancedCasting, SpriteName.WarsResource_IronManCannon, DssRef.lang.Technology_AdvancedCasting, advCastingUnlock, advCastingFields);
 
             content.newParagraph();
             Unlocks ironUnlock = new Unlocks(); ironUnlock.UnlockIron();
             tech(technology.iron, TechnologyTemplate.Start.iron, SpriteName.WarsResource_Iron, DssRef.lang.Resource_TypeName_Iron, ironUnlock, ironSteelFields);
 
             Unlocks steelUnlock = new Unlocks(); steelUnlock.UnlockSteel();
-            tech(technology.steel, TechnologyTemplate.Start.steel, SpriteName.WarsResource_Steel, DssRef.todoLang.Resource_TypeName_Steel, steelUnlock, ironSteelFields);
+            tech(technology.steel, TechnologyTemplate.Start.steel, SpriteName.WarsResource_Steel, DssRef.lang.Resource_TypeName_Steel, steelUnlock, ironSteelFields);
 
             content.newParagraph();
 
             Unlocks catapultUnlock = new Unlocks(); catapultUnlock.UnlockCatapult();
-            tech(technology.catapult, TechnologyTemplate.Start.catapult, SpriteName.WarsResource_Catapult, DssRef.todoLang.Resource_TypeName_Catapult, catapultUnlock, catapultFields);
+            tech(technology.catapult, TechnologyTemplate.Start.catapult, SpriteName.WarsResource_Catapult, DssRef.lang.Resource_TypeName_Catapult, catapultUnlock, catapultFields);
 
             content.newParagraph();
 
             Unlocks blackpowUnlock = new Unlocks(); blackpowUnlock.UnlockBlackPowder();
-            tech(technology.blackPowder, TechnologyTemplate.Start.blackPowder, SpriteName.WarsResource_BronzeRifle, DssRef.todoLang.Resource_TypeName_BlackPowder, blackpowUnlock, gunPowderFields);
+            tech(technology.blackPowder, TechnologyTemplate.Start.blackPowder, SpriteName.WarsResource_BronzeRifle, DssRef.lang.Resource_TypeName_BlackPowder, blackpowUnlock, gunPowderFields);
 
             Unlocks gunpowUnlock = new Unlocks(); gunpowUnlock.UnlockGunPowder();
-            tech(technology.gunPowder, TechnologyTemplate.Start.gunPowder, SpriteName.WarsResource_IronRifle, DssRef.todoLang.Resource_TypeName_GunPowder, gunpowUnlock, gunPowderFields);
+            tech(technology.gunPowder, TechnologyTemplate.Start.gunPowder, SpriteName.WarsResource_IronRifle, DssRef.lang.Resource_TypeName_GunPowder, gunpowUnlock, gunPowderFields);
 
 
             content.newParagraph();
             {
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(SpriteName.WarsRelationGood));
-                content.Add(new RbText($"{DssRef.lang.Diplomacy_RelationType_Good}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))}"));
+                content.Add(new RbText($"{DssRef.lang.Diplomacy_RelationType_Good}: {string.Format(DssRef.lang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))}"));
                 content.space();
 
                 HudLib.InfoButton(content, new RbTooltip(tip)); //new RbAction(() =>
                 //{
                 //    RichBoxContent content = new RichBoxContent();
-                //    var info = new RbText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Good,
-                //        string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))));
+                //    var info = new RbText(string.Format(DssRef.lang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Good,
+                //        string.Format(DssRef.lang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))));
                 //    info.overrideColor = HudLib.InfoYellow_Light;
                 //    content.Add(info);
 
@@ -182,8 +182,8 @@ namespace VikingEngine.DSSWars.XP
 
                 void tip(RichBoxContent content, object tag)
                 {
-                    var info = new RbText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Good,
-                       string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))));
+                    var info = new RbText(string.Format(DssRef.lang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Good,
+                       string.Format(DssRef.lang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
                 }
@@ -195,15 +195,15 @@ namespace VikingEngine.DSSWars.XP
             {
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(SpriteName.WarsRelationAlly));
-                content.Add(new RbText($"{DssRef.lang.Diplomacy_RelationType_Ally}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))}"));
+                content.Add(new RbText($"{DssRef.lang.Diplomacy_RelationType_Ally}: {string.Format(DssRef.lang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))}"));
                 content.space();
 
                 HudLib.InfoButton(content, new RbTooltip(tip));
 
                 void tip(RichBoxContent content, object tag)
                 {
-                    var info = new RbText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Ally,
-                     string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))));
+                    var info = new RbText(string.Format(DssRef.lang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Ally,
+                     string.Format(DssRef.lang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
                 }
@@ -212,15 +212,15 @@ namespace VikingEngine.DSSWars.XP
             {
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(SpriteName.WarsCityHall));
-                content.Add(new RbText($"{DssRef.lang.UnitType_City}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))}"));
+                content.Add(new RbText($"{DssRef.lang.UnitType_City}: {string.Format(DssRef.lang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))}"));
                 content.space();
 
                 HudLib.InfoButton(content, new RbTooltip(tip));
 
                 void tip(RichBoxContent content, object tag)
                 {
-                    var info = new RbText(string.Format(DssRef.todoLang.Technology_CitySpread,
-                    string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))));
+                    var info = new RbText(string.Format(DssRef.lang.Technology_CitySpread,
+                    string.Format(DssRef.lang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
                 }
@@ -230,14 +230,14 @@ namespace VikingEngine.DSSWars.XP
             {
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(LangLib.ExperienceLevelIcon(ExperienceLevel.Master_4)));
-                content.Add(new RbText($"{DssRef.todoLang.ExperienceLevel_4}: {TextLib.PlusMinus(DssConst.TechnologyGain_Master)}"));
+                content.Add(new RbText($"{DssRef.lang.ExperienceLevel_4}: {TextLib.PlusMinus(DssConst.TechnologyGain_Master)}"));
                 content.space();
 
                 HudLib.InfoButton(content, new RbTooltip(tip));
 
                 void tip(RichBoxContent content, object tag)
                 {
-                    var info = new RbText(string.Format(DssRef.todoLang.Technology_ForEachMaster, DssRef.lang.ResourceType_Workers, DssRef.todoLang.ExperienceLevel_4, TextLib.PlusMinus(DssConst.TechnologyGain_Master)));
+                    var info = new RbText(string.Format(DssRef.lang.Technology_ForEachMaster, DssRef.lang.ResourceType_Workers, DssRef.lang.ExperienceLevel_4, TextLib.PlusMinus(DssConst.TechnologyGain_Master)));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
                 }
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.XP
             content.newLine();
             {
                 HudLib.BulletPoint(content);
-                var info = new RbText(DssRef.todoLang.Technology_CityCapture);
+                var info = new RbText(DssRef.lang.Technology_CityCapture);
                 info.overrideColor = HudLib.InfoYellow_Light;
                 content.Add(info);
             }
@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.XP
                 {
                     if (value >= faction.cities.Count)
                     {
-                        caption += $" ({DssRef.todoLang.Hud_AllCities})";
+                        caption += $" ({DssRef.lang.Hud_AllCities})";
                     }
                     else
                     {
@@ -308,7 +308,7 @@ namespace VikingEngine.DSSWars.XP
             var buildings = args.unlocks.ListBuildings();
             //RichBoxContent content = new RichBoxContent();
 
-            content.h2(DssRef.todoLang.Hud_Unlock).overrideColor = HudLib.TitleColor_Label;
+            content.h2(DssRef.lang.Hud_Unlock).overrideColor = HudLib.TitleColor_Label;
             foreach (var item in items)
             {
                 content.newLine();
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.XP
 
             content.newParagraph();
 
-            content.h2(DssRef.todoLang.Technology_ShareField).overrideColor = HudLib.TitleColor_Label;
+            content.h2(DssRef.lang.Technology_ShareField).overrideColor = HudLib.TitleColor_Label;
             foreach (var xpType in args.experienceField)
             {
                 LangLib.ExperienceType(xpType, out string name, out SpriteName icon);

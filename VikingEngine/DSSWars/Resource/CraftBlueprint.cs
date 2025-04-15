@@ -294,23 +294,23 @@ namespace VikingEngine.DSSWars.Resource
                         available = city.buildingStructure.Brewery_count>0;
                         break;
                     case CraftRequirement.Smelter:
-                        reqText = DssRef.todoLang.BuildingType_SmeltingFurnace;
+                        reqText = DssRef.lang.BuildingType_SmeltingFurnace;
                         available = city.buildingStructure.Smelter_count > 0;
                         break;
                     case CraftRequirement.Chemist:
-                        reqText = DssRef.todoLang.BuildingType_Chemist;
+                        reqText = DssRef.lang.BuildingType_Chemist;
                         available = city.buildingStructure.Chemist_count > 0;
                         break;
                     case CraftRequirement.Gunmaker:
-                        reqText = DssRef.todoLang.BuildingType_Gunmaker;
+                        reqText = DssRef.lang.BuildingType_Gunmaker;
                         available = city.buildingStructure.Gunmaker_count > 0;
                         break;
                     case CraftRequirement.CoinMaker:
-                        reqText = DssRef.todoLang.BuildingType_CoinMaker;
+                        reqText = DssRef.lang.BuildingType_CoinMaker;
                         available = city.buildingStructure.CoinMinter_count > 0;
                         break;
                     case CraftRequirement.Foundry:
-                        reqText = DssRef.todoLang.BuildingType_Foundry;
+                        reqText = DssRef.lang.BuildingType_Foundry;
                         available = city.buildingStructure.Foundry_count > 0;
                         break;
                     case CraftRequirement.Smith:

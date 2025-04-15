@@ -95,5 +95,27 @@ namespace VikingEngine.HUD
         /// 更改文字和图标的大小
         /// </summary>
         public override string GraphicsOption_UiScale => "UI缩放";
+
+        public override string ReversedStereo => "反向立体声";
+        public override string Option_Low => "低";
+        public override string Option_Medium => "中";
+        public override string Option_High => "高";
+
+        public override string MouseSettings_Title => "鼠标输入";
+        public override string KeyboardSettings_Title => "键位绑定";
+
+        public override string MouseButtonAction_None => "无操作";
+        public override string MouseButtonAction_Select => "选择";
+        public override string MouseButtonAction_Pan => "平移";
+        public override string MouseButtonAction_PanAndOrder => "平移并下达指令";
+        public override string MouseButtonAction_Order => "下达指令";
+        public override string MouseButtonAction_Cancel => "取消";
+
+        public override string MouseButton_Left => "鼠标左键";
+        public override string MouseButton_Right => "鼠标右键";
+        public override string MouseButton_Middle => "鼠标中键";
+        public override string MouseButton_X1 => "鼠标 X1 键";
+        public override string MouseButton_X2 => "鼠标 X2 键";
+
     }
 }

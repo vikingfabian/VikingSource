@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Display
             createMenu(player, false);
 
             var content = new RichBoxContent();
-            content.h2(DssRef.todoLang.Hud_SelectHistory);
+            content.h2(DssRef.lang.Hud_SelectHistory);
 
             //foreach (var obj in selectHistory)
             for (int i = selectHistory.Count - 1; i >= 0; --i)

@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static readonly ItemResourceType[] GunmakerCraftTypes = {
             ItemResourceType.HandCannon, ItemResourceType.HandCulverin,
-            ItemResourceType.Rifle, ItemResourceType.Blunderbus,
+            ItemResourceType.Rifle, ItemResourceType.Blunderbuss,
             ItemResourceType.SiegeCannonBronze, ItemResourceType.ManCannonBronze,
             ItemResourceType.SiegeCannonIron, ItemResourceType.ManCannonIron,
         };

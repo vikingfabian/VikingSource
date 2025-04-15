@@ -754,7 +754,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly CraftBlueprint Blunderbus = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.Blunderbus,
+            (int)ItemResourceType.Blunderbuss,
             1,
             new UseResource[]
             {

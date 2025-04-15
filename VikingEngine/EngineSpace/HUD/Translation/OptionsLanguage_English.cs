@@ -97,5 +97,26 @@ namespace VikingEngine.HUD
         /// Change size on text and icons
         /// </summary>
         public override string GraphicsOption_UiScale => "Ui Scale";
+
+
+        //---
+        public override string ReversedStereo => "Reversed stereo";
+        public override string Option_Low => "Low";
+        public override string Option_Medium => "Medium";
+        public override string Option_High => "High";
+        public override string MouseSettings_Title => "Mouse input";
+        public override string KeyboardSettings_Title => "Key mapping";
+        public override string MouseButtonAction_None => "No action";
+        public override string MouseButtonAction_Select => "Select";
+        public override string MouseButtonAction_Pan => "Pan";
+        public override string MouseButtonAction_PanAndOrder => "Pan and Order";
+        public override string MouseButtonAction_Order => "Order";
+        public override string MouseButtonAction_Cancel => "Cancel";
+
+        public override string MouseButton_Left => "Left Mouse";
+        public override string MouseButton_Right => "Right Mouse";
+        public override string MouseButton_Middle => "Middle Mouse";
+        public override string MouseButton_X1 => "X1 Button Mouse";
+        public override string MouseButton_X2 => "X2 Button Mouse";
     }
 }

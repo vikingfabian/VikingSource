@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (armyGroups.Count > 0)
                 {
                     args.content.Add(new RbImage(SpriteName.WarsArmy));
-                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_Soldiers_ArmyType, armyGroups.Count)));
+                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_Soldiers_ArmyType, armyGroups.Count)));
 
                     if (guardGroups.Count > 0)
                     {
@@ -78,14 +78,14 @@ namespace VikingEngine.DSSWars.GameObject
                 if (guardGroups.Count > 0)
                 {
                     args.content.Add(new RbImage(SpriteName.WarsGuard));
-                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_Soldiers_GuardType, guardGroups.Count)));
+                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_Soldiers_GuardType, guardGroups.Count)));
                 }
             }
         }
         public override void toHud(ObjectHudArgs args)
         {
             GroupPresentation(args, false);
-            //args.content.h2(string.Format(DssRef.todoLang.Hud_ObjectsAndCount, DssRef.todoLang.UnitType_CollectionOfSoldiers, objects.Count), HudLib.TitleColor_TypeName);
+            //args.content.h2(string.Format(DssRef.lang.Hud_ObjectsAndCount, DssRef.lang.UnitType_CollectionOfSoldiers, objects.Count), HudLib.TitleColor_TypeName);
             list(armyGroups);
             list(guardGroups);
 
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.GameObject
         //public void Tooltip(RichBoxContent content)
         //{
            
-        //    //content.Add(new RbText( string.Format(DssRef.todoLang.Hud_ObjectsAndCount, DssRef.todoLang.UnitType_CollectionOfSoldiers, objects.Count), HudLib.TitleColor_TypeName));
+        //    //content.Add(new RbText( string.Format(DssRef.lang.Hud_ObjectsAndCount, DssRef.lang.UnitType_CollectionOfSoldiers, objects.Count), HudLib.TitleColor_TypeName));
         //}
 
         public override GameObjectType gameobjectType()
@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DssRef.todoLang.UnitType_CollectionOfSoldiers;
+            return DssRef.lang.UnitType_CollectionOfSoldiers;
         }
     }
 }

@@ -29,9 +29,9 @@ namespace VikingEngine.DSSWars.Display
             float defaultWidth = Engine.Screen.IconSize * 3f;
             float defaultHeight = Engine.Screen.TextBreadHeight * 1.6f;
             nextarea = new VectorRect(Vector2.Zero, new Vector2(defaultWidth, defaultHeight));
-            addButton(SpriteName.WarsArmy, DssRef.todoLang.Conscript_Soldiers_ArmyType, 
+            addButton(SpriteName.WarsArmy, DssRef.lang.Conscript_Soldiers_ArmyType, 
                 new RbAction1Arg<List<SoldierGroup>>(player.gameControls.mapControls.selectCollection, collection.armyGroups));
-            addButton(SpriteName.WarsGuard, DssRef.todoLang.Conscript_Soldiers_GuardType,
+            addButton(SpriteName.WarsGuard, DssRef.lang.Conscript_Soldiers_GuardType,
                 new RbAction1Arg<List<SoldierGroup>>(player.gameControls.mapControls.selectCollection, collection.guardGroups));
 
             complete();

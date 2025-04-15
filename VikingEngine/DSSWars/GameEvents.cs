@@ -866,7 +866,7 @@ namespace VikingEngine.DSSWars
                     city.conscriptArmy(cannonProfile, city.defaultConscriptPos(), 2 + player.dominationEvents);
                 }
 
-                player.hud.messages.Add(DssRef.todoLang.EventMessage_EnemyAlliance_Title, DssRef.todoLang.EventMessage_EnemyAlliance);
+                player.hud.messages.Add(DssRef.lang.EventMessage_EnemyAlliance_Title, DssRef.lang.EventMessage_EnemyAlliance);
             }));
             
             new Timer.TimedAction2ArgTrigger_InGame<List<Faction>, LocalPlayer>((List<Faction> attackers, LocalPlayer player) =>

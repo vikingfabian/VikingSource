@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.HandCannon,
             ItemResourceType.HandCulverin,
             ItemResourceType.Rifle,
-            ItemResourceType.Blunderbus,
+            ItemResourceType.Blunderbuss,
         };
 
         static readonly ItemResourceType[] CannonWeapons = {
@@ -113,28 +113,28 @@ namespace VikingEngine.DSSWars.Conscript
                 switch (currentStatus.type)
                 {
                     case Build.BuildAndExpandType.SoldierBarracks:
-                        typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
+                        typeName = DssRef.lang.BuildingType_SoldierBarracks;
                         weapons = SoldierWeapons;
                         break;
                     case Build.BuildAndExpandType.ArcherBarracks:
-                        typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
+                        typeName = DssRef.lang.BuildingType_SoldierBarracks;
                         weapons = ArcherWeapons;
                         break;
                     case Build.BuildAndExpandType.WarmashineBarracks:
-                        typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
+                        typeName = DssRef.lang.BuildingType_SoldierBarracks;
                         weapons = WarmashineWeapons;
                         break;
                     case Build.BuildAndExpandType.KnightsBarracks:
                         hasGuardOption = false;
-                        typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
+                        typeName = DssRef.lang.BuildingType_SoldierBarracks;
                         weapons = NobelWeapons;
                         break;
                     case Build.BuildAndExpandType.GunBarracks:
-                        typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
+                        typeName = DssRef.lang.BuildingType_SoldierBarracks;
                         weapons = GunWeapons;
                         break;
                     case Build.BuildAndExpandType.CannonBarracks:
-                        typeName = DssRef.todoLang.BuildingType_CannonBarracks;
+                        typeName = DssRef.lang.BuildingType_CannonBarracks;
                         weapons = CannonWeapons;
                         break;
                 }
@@ -155,11 +155,11 @@ namespace VikingEngine.DSSWars.Conscript
                 if (hasGuardOption)
                 {
                     content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabNotSelected : RbButtonStyle.SubTabSelected,
-                        new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Conscript_Soldiers_ArmyType) },
-                        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text(DssRef.todoLang.Conscript_Soldiers_ArmyType_Description)));
+                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.Conscript_Soldiers_ArmyType) },
+                        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_ArmyType_Description)));
                     content.Add(new ArtButton(guardTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                        new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Conscript_Soldiers_GuardType) },
-                        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text(DssRef.todoLang.Conscript_Soldiers_GuardType_Description)));
+                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.Conscript_Soldiers_GuardType) },
+                        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_GuardType_Description)));
                 }
 
                 content.newParagraph();
@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.Conscript
                     
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    HudLib.ResourceCost(content, SpriteName.WarsBuild_GuardOffice, DssRef.todoLang.GuardHousingCount, menCostNext, city.AvailableGuardHousing());
+                    HudLib.ResourceCost(content, SpriteName.WarsBuild_GuardOffice, DssRef.lang.GuardHousingCount, menCostNext, city.AvailableGuardHousing());
                 }
 
                 content.newParagraph();
@@ -444,7 +444,7 @@ namespace VikingEngine.DSSWars.Conscript
             if (splashCount > 0)
             {
                 content.newLine();
-                content.Add(new RbText(splashCount < 6 ? DssRef.todoLang.Conscript_SplashDamage : DssRef.todoLang.Conscript_HighSplashDamage));
+                content.Add(new RbText(splashCount < 6 ? DssRef.lang.Conscript_SplashDamage : DssRef.lang.Conscript_HighSplashDamage));
             }
             
             switch (weapon)

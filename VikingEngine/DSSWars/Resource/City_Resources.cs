@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.GameObject
             ItemResourceType.HandCannon,
             ItemResourceType.HandCulverin,
             ItemResourceType.Rifle,
-            ItemResourceType.Blunderbus,
+            ItemResourceType.Blunderbuss,
 
             ItemResourceType.Ballista,
             ItemResourceType.Manuballista,
@@ -727,7 +727,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.HandCannon: return res_HandCannon;
                 case ItemResourceType.HandCulverin: return res_HandCulvertin;
                 case ItemResourceType.Rifle: return res_Rifle;
-                case ItemResourceType.Blunderbus: return res_Blunderbus;
+                case ItemResourceType.Blunderbuss: return res_Blunderbus;
 
                 case ItemResourceType.Ballista: return res_ballista;
                 case ItemResourceType.Manuballista: return res_Manuballista;
@@ -916,7 +916,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Rifle:
                     res_Rifle = resource;
                     break;
-                case ItemResourceType.Blunderbus:
+                case ItemResourceType.Blunderbuss:
                     res_Blunderbus = resource;
                     break;
                 case ItemResourceType.Ballista:

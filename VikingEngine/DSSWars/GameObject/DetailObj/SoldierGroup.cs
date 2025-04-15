@@ -1117,7 +1117,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbText(soldierConscript.conscript.TypeName(), tooltipOrGroup ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space(1);
-            args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
 
             if (compact)
             {
@@ -1148,7 +1148,7 @@ namespace VikingEngine.DSSWars.GameObject
 #endif
             if (army.IsArmy())
             {
-                HudLib.Label(args.content, DssRef.todoLang.ArmyStructure_ColumnWidth);
+                HudLib.Label(args.content, DssRef.lang.ArmyStructure_ColumnWidth);
                 args.content.newLine();
                 for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
                 {
@@ -1161,7 +1161,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 args.content.newParagraph();
 
-                HudLib.Label(args.content, DssRef.todoLang.ArmyStructure_ArmyPlacement);
+                HudLib.Label(args.content, DssRef.lang.ArmyStructure_ArmyPlacement);
                 args.content.Add(new RbSeperationLine());
 
                 for (int y = 0; y < ArmyPlacementGrid.RowsCount; y++)
@@ -1172,16 +1172,16 @@ namespace VikingEngine.DSSWars.GameObject
                     switch (rowY)
                     {
                         case ArmyPlacementGrid.Row_Front:
-                            name = DssRef.todoLang.ArmyStructure_Row_Front;
+                            name = DssRef.lang.ArmyStructure_Row_Front;
                             break;
                         default:
-                            name = DssRef.todoLang.ArmyStructure_Row_Body;
+                            name = DssRef.lang.ArmyStructure_Row_Body;
                             break;
                         case ArmyPlacementGrid.Row_Second:
-                            name = DssRef.todoLang.ArmyStructure_Row_Second;
+                            name = DssRef.lang.ArmyStructure_Row_Second;
                             break;
                         case ArmyPlacementGrid.Row_Behind:
-                            name = DssRef.todoLang.ArmyStructure_Row_Behind;
+                            name = DssRef.lang.ArmyStructure_Row_Behind;
                             break;
 
                     }
@@ -2457,7 +2457,7 @@ namespace VikingEngine.DSSWars.GameObject
             //content.space(0.5f);
             //content.Add(new RbText(soldierConscript.conscript.TypeName(), HudLib.TitleColor_TypeName));
             //content.space(0.5f);
-            //content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            //content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
             SoldiersPresentationHud(new ObjectHudArgs(content), true, true);
             
         }

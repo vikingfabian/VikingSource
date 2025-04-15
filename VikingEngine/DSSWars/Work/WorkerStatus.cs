@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.Work
                     return string.Format(DssRef.lang.WorkerStatus_BuildX, BuildLib.BuildOptions[workSubType].Label());
                
                 case WorkType.Upgrade:
-                    return DssRef.todoLang.Upgrade_Order;
+                    return DssRef.lang.Upgrade_Order;
 
                 case WorkType.Craft:
                     return string.Format(DssRef.lang.Work_CraftX, LangLib.Item((ItemResourceType)workSubType));

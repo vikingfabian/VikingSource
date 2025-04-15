@@ -442,7 +442,7 @@ namespace VikingEngine.DSSWars.Resource
                     return SpriteName.WarsResource_BronzeShotgun;
                 case ItemResourceType.Rifle:
                     return SpriteName.WarsResource_IronRifle;
-                case ItemResourceType.Blunderbus:
+                case ItemResourceType.Blunderbuss:
                     return SpriteName.WarsResource_IronShotgun;
 
                 case ItemResourceType.Manuballista:

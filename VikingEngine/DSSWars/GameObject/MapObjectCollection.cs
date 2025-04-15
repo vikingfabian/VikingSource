@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void toHud(ObjectHudArgs args)
         {
             GroupPresentation(args, false);
-            //args.content.h2(string.Format(DssRef.todoLang.Hud_ObjectsAndCount, DssRef.todoLang.UnitType_CollectionOfArmies, objects.Count), HudLib.TitleColor_TypeName);
+            //args.content.h2(string.Format(DssRef.lang.Hud_ObjectsAndCount, DssRef.lang.UnitType_CollectionOfArmies, objects.Count), HudLib.TitleColor_TypeName);
 
             for (int i = 0; i < objects.Count;++i)
             {
@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         //public void Tooltip(RichBoxContent content)
         //{
-        //    content.Add(new RbText(string.Format(DssRef.todoLang.Hud_ObjectsAndCount, DssRef.todoLang.UnitType_CollectionOfArmies, objects.Count), HudLib.TitleColor_TypeName));
+        //    content.Add(new RbText(string.Format(DssRef.lang.Hud_ObjectsAndCount, DssRef.lang.UnitType_CollectionOfArmies, objects.Count), HudLib.TitleColor_TypeName));
         //}
         public override void toTooltip(ObjectHudArgs args)
         {
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DssRef.todoLang.UnitType_CollectionOfArmies;
+            return DssRef.lang.UnitType_CollectionOfArmies;
         }
 
     }

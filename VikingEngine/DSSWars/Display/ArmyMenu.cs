@@ -403,7 +403,7 @@ namespace VikingEngine.DSSWars.Display
             //LIST SEND OPTIONS
             HudLib.Label(content, string.Format( DssRef.lang.ArmyOption_SendToX, string.Empty) );
             content.newLine();
-            var newArmyButton = new ArtOption(player.hud.objMenu.otherArmy == null, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.ArmyOption_NewArmy)},
+            var newArmyButton = new ArtOption(player.hud.objMenu.otherArmy == null, new List<AbsRichBoxMember> { new RbText(DssRef.lang.ArmyOption_NewArmy)},
                 new RbAction1Arg<Army>(selectArmyTrade, null, SoundLib.menutab));
             //newArmyButton.setGroupSelectionColor(HudLib.RbSettings, player.hud.objMenu.otherArmy == null);
             content.Add(newArmyButton);

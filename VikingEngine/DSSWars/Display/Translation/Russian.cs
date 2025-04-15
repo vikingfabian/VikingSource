@@ -1676,5 +1676,478 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_WaterAddLimit => "Скорость увеличения воды изменить нельзя";
 
         public override string Tutorial_Select_SubTab => "Выберите подкатегорию: {0}";
+
+
+
+        /* #### --------------- ##### */
+        /* #### DSS 2 DEMO      ##### */
+        /* #### --------------- ##### */
+
+        public override string Tutorial_OpenGuardSubTab => "Откройте казарму и выберите категорию: {0}";
+        public override string Tutorial_GuardToWall => "Переместите охранника на стену";
+        public override string Demo_MissionObjective_Title => "Цель миссии";
+        public override string Demo_MissionObjective_Description => "Защитите себя от атаки с юга";
+        public override string Demo_Complete_Title => "Демо завершено";
+        public override string Demo_TimesUp_Title => "Время вышло!";
+        public override string Demo_EndInOneMinuteDescription => "Демо завершится через одну минуту";
+
+        public override string ArmyOption_NewArmy => "Новая армия";
+        public override string ProfileEditor_AltMain => "Альтернативный основной";
+        public override string Automation_CheckBoxTitle => "Автоматически";
+
+        public override string ArmyStructure_ColumnWidth => "Ширина колонны армии";
+        public override string ArmyStructure_ArmyPlacement => "Расположение в армии";
+        public override string ArmyStructure_Row_Front => "Передний ряд";
+        public override string ArmyStructure_Row_Body => "Центр";
+        public override string ArmyStructure_Row_Second => "Второй ряд";
+        public override string ArmyStructure_Row_Behind => "Задний ряд";
+
+        public override string Diplomacy_RelationType_Enemies => "Враги";
+
+        public override string EventMessage_EnemyAlliance_Title => "Страх перед доминированием";
+        public override string EventMessage_EnemyAlliance => "Государства, опасаясь вашего растущего могущества, объединились в альянс против вас.";
+
+        public override string Settings_CentralGold => "Централизованное золото";
+        public override string Settings_CentralGold_Description => "Вкл.: всё золото в общем пуле и доступно сразу. Выкл.: золото является физическим и требует транспортировки.";
+
+        public override string InputActionName_StopStart => "Старт/Стоп";
+        public override string InputActionName_ToggleHudDetail => "Переключить подробности HUD";
+        public override string InputActionName_NextCity => "Следующий город";
+        public override string InputActionName_NextArmy => "Следующая армия";
+        public override string InputActionName_NextBattle => "Следующее сражение";
+        public override string InputActionName_Build => "Строить";
+        public override string InputActionName_Copy => "Копировать";
+        public override string InputActionName_Paste => "Вставить";
+        public override string InputActionName_Menu => "Меню";
+        public override string InputActionName_FlagDesign_ToggleColor_Prev => "Предыдущий цвет";
+        public override string InputActionName_FlagDesign_ToggleColor_Next => "Следующий цвет";
+        public override string InputActionName_FlagDesign_PaintBucket => "Заливка";
+        public override string InputActionName_Controller_FlagDesign_Colorpicker => "Палитра";
+        public override string InputActionName_ControllerFocus => "Фокус";
+        public override string InputActionName_ControllerCancel => "Отмена";
+        public override string InputActionName_ControllerMessageClick => "Щелчок по сообщению";
+        public override string InputActionName_ControllerSelect => "Выбрать";
+        public override string InputActionName_WASD_UP => "Вверх";
+        public override string InputActionName_WASD_DOWN => "Вниз";
+        public override string InputActionName_WASD_LEFT => "Влево";
+        public override string InputActionName_WASD_RIGHT => "Вправо";
+        public override string InputActionName_CameraTiltLeft => "Наклон камеры влево";
+        public override string InputActionName_CameraTiltRight => "Наклон камеры вправо";
+        public override string InputActionName_CameraTiltUp => "Наклон камеры вверх";
+        public override string InputActionName_ZoomInKey => "Приблизить";
+        public override string InputActionName_ZoomOutKey => "Отдалить";
+
+        public override string Settings_Title_Monitor => "Настройки монитора";
+        public override string Settings_Title_Graphics => "Графические настройки";
+        public override string Settings_Title_Input => "Настройки управления";
+        public override string Settings_Title_Gameplay => "Настройки геймплея";
+        public override string Settings_PanOnZoom => "Прокрутка при увеличении";
+        public override string Settings_ScrollSensitivity_Game => "Чувствительность прокрутки: игра";
+        public override string Settings_ScrollSensitivity_Menu => "Чувствительность прокрутки: меню";
+        public override string Settings_Blood => "Кровь";
+
+        public override string Settings_MasterVolume => "Общая громкость";
+        public override string Settings_AmbienceVolume => "Громкость окружения";
+        public override string Settings_BattleMelody => "Мелодия сражения";
+
+        public override string Settings_ModelLight => "Эффект освещения модели";
+        public override string Settings_Particles => "Эффекты частиц";
+        public override string Settings_MapLoadSpeed => "Скорость загрузки карты";
+        public override string Lobby_Category_Options => "Параметры";
+        public override string Lobby_Category_Editor => "Редактор";
+        public override string Lobby_Category_ExtraModes => "Дополнительные режимы";
+
+        public override string Lobby_Editor_MapEditor => "Редактор карт";
+        public override string Lobby_Editor_VoxelEditor => "Редактор вокселей";
+
+        public override string Lobby_Mode_BattleLab => "Боевой полигон";
+        public override string Lobby_Mode_BattleLab_Description => "Сразитесь любыми солдатами друг с другом";
+        public override string Lobby_Mode_Commander => "Командир";
+        public override string Lobby_Mode_Commander_Description => "Небольшая тактическая настольная игра";
+        public override string Lobby_MusicPlayList => "Плейлист музыки";
+
+        public override string Lobby_GameSetup => "Настройка игры";
+        public override string Lobby_PlayerSetup => "Настройка игрока";
+        public override string LobbyDemoMode_Demo => "Демо";
+        public override string LobbyDemoMode_ShortTutorial => "Краткое обучение";
+        public override string LobbyDemoMode_LongTutorial => "Расширенное обучение";
+
+        /// <summary>
+        /// Says wishlist on, followed by the STEAM logo
+        /// </summary>
+        public override string LobbyDemoMode_WishlistOn => "Добавить в список желаемого";
+        public override string BattleLab_StartHere => "Начать битву здесь";
+        public override string BattleLab_Start => "Начать битву";
+        public override string BattleLab_Attacker => "Атакующий";
+
+        public override string MapGenerator_Name => "Редактор карт — генерация";
+
+        public override string MapType_CustomMap => "Пользовательская карта";
+        public override string MapType_GenerateNewMap => "Сгенерировать новую карту";
+        public override string MapGenerator_GenerateAction => "Генерировать";
+        public override string MapGenerator_Terrain_CustomSize => "Пользовательский размер";
+        public override string MapGenerator_Terrain_StartAs => "Начать как";
+        public override string MapGenerator_Terrain_ClearPass => "Выполнить очистку";
+        public override string MapGenerator_Terrain_BuildPass => "Выполнить построение";
+        public override string MapGenerator_Terrain_DigPass => "Выполнить выемку";
+        public override string MapGenerator_Terrain_BuildDigLoops => "Количество циклов постройки/выемки";
+        public override string MapGenerator_Terrain_BuildStrokes => "Количество штрихов постройки";
+        public override string MapGenerator_Terrain_BuildStrokes_Description => "Измеряется в штрихах на 100 плиток";
+        public override string MapGenerator_Terrain_DigStrokes => "Количество штрихов выемки";
+        public override string MapGenerator_Terrain_CleanUp_Option => "Очистка одиночных плиток";
+        public override string MapGenerator_Terrain_CleanUpPass => "Выполнить проход очистки";
+
+        public override string Economy_ServicemenUpkeep => "Содержание обслуживающего персонала: {0}";
+        public override string Economy_ServicemenUpkeep_Description => "Содержание составляет {0} золота за одного работника";
+        public override string Economy_GuardUpkeep_Description => "Содержание составляет {0} золота за одного стражника";
+
+        public override string EndScreen_TimeHasEndedTitle => "Время вышло";
+
+        public override string Hud_AdvancedSettings => "Дополнительные настройки";
+        public override string Hud_Vector_X => "X";
+        public override string Hud_Vector_Y => "Y";
+        public override string Hud_Cancel => "Отмена";
+        public override string Hud_Delete => "Удалить";
+        public override string Hud_Next => "Далее";
+        //public override string Hud_None => "Нет";
+        public override string Hud_Apply => "Применить";
+        public override string Hud_AllCities => "Все города";
+        public override string Hud_Time_Hours => "{0} часов";
+        public override string Hud_AddX => "Добавить {0}";
+        public override string Hud_Both => "Оба";
+        public override string Hud_Direction => "Направление";
+        public override string MusicIsBroken => "Музыка сейчас не работает";
+
+        /// <summary>
+        /// 0: тип объектов, 1: количество
+        /// </summary>
+        public override string Hud_ObjectsAndCount => "{0}, количество: {1}";
+
+        public override string Hud_EffectDoesNotStack => "Этот эффект не суммируется";
+
+        public override string Work_SmeltX => "Плавить {0}";
+
+        public override string Info_TotalFoodProduction => "Общее производство пищи";
+        public override string Info_TotalFoodSpending => "Общее потребление пищи";
+
+        public override string Info_FooodAndDeliveryLocation => "По умолчанию рабочие идут в ратушу, чтобы поесть или отнести предметы";
+
+        public override string Delivery_SendChunk => "Предметов за доставку";
+        public override string Delivery_SpeedBonus => "Бонус к скорости: {0}%";
+
+        public override string Delivery_AutoResourceDescription => "Доставляет предметы, достигшие предела хранения, в нуждающиеся города";
+
+        public override string Conscript_Soldiers_ArmyType => "Армейские солдаты";
+        public override string Conscript_Soldiers_ArmyType_Description => "Призвать солдат в соседнюю армию";
+        public override string Conscript_Soldiers_GuardType => "Городская стража";
+        public override string Conscript_Soldiers_GuardType_Description => "Стража используется для укрепления стен";
+
+        public override string Defence_Title => "Оборона";
+        public override string Defence_GuardPost => "Караульный пост";
+
+        public override string Defence_WallDescription_Movement => "Замедляет передвижение врага.";
+        public override string Defence_WallDescription_GuardPost => "Здесь можно разместить стражу.";
+        public override string Defence_AutoAssign => "Автоназначение";
+        public override string Defence_AutoAssign_Description => "Новые стражи будут направлены на этот пост";
+
+        public override string Conscript_SplashDamage => "Урон по области";
+        public override string Conscript_HighSplashDamage => "Высокий урон по области";
+
+        public override string Conscript_Training_Champion => "Чемпион";
+        public override string Conscript_Training_Legendary => "Легендарный";
+
+        public override string Experience_Title => "Опыт";
+        public override string Experience_TopExperience => "Максимальные уровни опыта";
+
+        public override string Experience_TimeReductionDescription => "Время работы сокращается на {0}% за каждый уровень";
+
+        public override string ExperienceType_Farm => "Фермер";
+        public override string ExperienceType_AnimalCare => "Уход за животными";
+        public override string ExperienceType_HouseBuilding => "Строитель домов";
+        public override string ExperienceType_WoodWork => "Плотник";
+        public override string ExperienceType_StoneCutter => "Каменотёс";
+        public override string ExperienceType_Mining => "Шахтёр";
+        public override string ExperienceType_Transport => "Транспортировщик";
+        public override string ExperienceType_Cook => "Повар";
+        public override string ExperienceType_Fletcher => "Стрелок";
+        public override string ExperienceType_RefineOre => "Плавильщик";
+        public override string ExperienceType_Casting => "Литейщик";
+        public override string ExperienceType_CraftMetal => "Кузнец";
+        public override string ExperienceType_CraftArmor => "Бронник";
+        public override string ExperienceType_CraftWeapon => "Оружейник";
+        public override string ExperienceType_CraftFuel => "Угольщик";
+        public override string ExperienceType_Chemist => "Химик";
+
+        public override string ExperienceLevel_1 => "Новичок";
+        public override string ExperienceLevel_2 => "Практик";
+        public override string ExperienceLevel_3 => "Эксперт";
+        public override string ExperienceLevel_4 => "Мастер";
+        public override string ExperienceLevel_5 => "Легендарный";
+
+        public override string ExperenceOrDistancePrio_Title => "Выбор работника";
+        public override string ExperenceOrDistancePrio_Description => "Свободные работники будут выбраны по расстоянию или опыту";
+
+        public override string Technology_Description => "У каждого города есть технологическое дерево. Технологии открывают здания и предметы.";
+        public override string Experience_Description => "Рабочие получают опыт и становятся лучше";
+
+        public override string Technology_Title => "Технологии";
+        public override string Technology_ShareField => "Общий технологический сектор";
+
+        public override string Technology_GainByNeigborRelation => "За каждый город-сосед с этой технологией. Если ваши отношения {0}: {1}";
+        public override string Technology_ForEachMaster => "Когда {0} достигает уровня опыта {1}, в технологической области: {2}";
+        public override string Technology_CitySpread => "Ваши города обмениваются технологиями, если они соседствуют: {0}";
+        public override string Technology_CityCapture => "При захвате города в бою большинство технологий утрачиваются";
+
+        public override string Technology_AdvancedBuildings => "Продвинутое строительство";
+        public override string Technology_AdvancedFarming => "Продвинутое земледелие";
+        public override string Technology_AdvancedCasting => "Продвинутая литейка";
+
+
+        public override string Help_Title => "Помощь";
+        public override string Help_Work_Title => "Работа не начинается";
+        public override string Help_Work_Resources => "Для строительства нужны доступные ресурсы";
+        public override string Help_Work_Skill => "Работнику необходим соответствующий уровень навыка (или выше)";
+        public override string Help_Work_Stockpile => "Сбор ресурсов блокируется из-за переполненного склада";
+        public override string Help_Work_Priority => "Работа может иметь низкий или нулевой приоритет";
+
+        public override string Help_Soldiers_Title => "Создание солдат";
+        public override string Help_Soldiers_PlaceBuildingX => "Постройте здание: {0}";
+        public override string Help_Soldiers_Workers => "Доступные рабочие для набора";
+        public override string Help_Soldiers_Weapon => "Каждому солдату требуется оружие";
+        public override string Help_Soldiers_StartX => "Начало: {0}";
+
+        public override string Hud_SelectHistory => "Выбрать историю";
+
+        public override string Hud_PointsPerMinute => "{0} очков в минуту";
+        public override string Hud_PercentValueCost => "Услуга стоит {0}% от стоимости";
+
+        public override string Hud_Mixed => "Смешанный";
+        public override string Hud_Distance => "Расстояние";
+
+        public override string Hud_Unlock => "Разблокировать";
+        public override string Hud_category => "Категория";
+
+        /// <summary>
+        /// Устанавливает скорость игры по одному кадру
+        /// </summary>
+        public override string Input_StepOneFrame => "Пошагово: 1 кадр";
+
+        public override string Resource_TypeName_Wagon2Wheel => "Малый фургон";
+        public override string Resource_TypeName_Wagon4Wheel => "Большой фургон";
+        public override string Resource_TypeName_Tin => "Олово";
+        public override string Resource_TypeName_TinOre => "Оловянная руда";
+
+        public override string Resource_TypeName_Copper => "Медь";
+        public override string Resource_TypeName_CopperOre => "Медная руда";
+        public override string Resource_TypeName_SilverOre => "Серебряная руда";
+        public override string Resource_TypeName_Silver => "Серебро";
+
+        /// <summary>
+        /// Мифрил — это фантастический металл
+        /// </summary>
+        public override string Resource_TypeName_RawMithril => "Неочищенный мифрил";
+        public override string Resource_TypeName_Mithril => "Мифрил";
+
+        public override string Resource_TypeName_BronzeSword => "Бронзовый меч";
+        public override string Resource_TypeName_ShortSword => "Короткий меч";
+        public override string Resource_TypeName_LongSword => "Длинный меч";
+        public override string Resource_TypeName_HandSpear => "Ручное копьё";
+        public override string Resource_TypeName_Warhammer => "Боевой молот";
+        public override string Resource_TypeName_MithrilSword => "Мифриловый меч";
+        public override string Resource_TypeName_SlingShot => "Праща";
+        public override string Resource_TypeName_ThrowingSpear => "Метательное копьё";
+        public override string Resource_TypeName_Crossbow => "Арбалет";
+        public override string Resource_TypeName_MithrilBow => "Мифриловый лук";
+
+        public override string Resource_TypeName_CoolingFluid => "Охлаждающая жидкость";
+        public override string Resource_TypeName_Palisade => "Палисад";
+        public override string Resource_TypeName_Toolkit => "Набор инструментов";
+
+        public override string Resource_TypeName_Sulfur => "Сера";
+        public override string Resource_TypeName_LeadOre => "Свинцовая руда";
+        public override string Resource_TypeName_Lead => "Свинец";
+        public override string Resource_TypeName_Bronze => "Бронза";
+        public override string Resource_TypeName_BloomIron => "Крица";
+        public override string Resource_TypeName_Steel => "Сталь";
+        public override string Resource_TypeName_CastIron => "Чугун";
+
+        public override string Resource_TypeName_BlackPowder => "Чёрный порох";
+        public override string Resource_TypeName_GunPowder => "Порох";
+        public override string Resource_TypeName_LedBullet => "Пуля";
+
+        public override string Resource_TypeName_HandCannon => "Ручная пушка";
+        public override string Resource_TypeName_HandCulverin => "Ручной кулеврин";
+        public override string Resource_TypeName_Rifle => "Ружьё";
+        public override string Resource_TypeName_Blunderbuss => "Аркебуза";
+
+        public override string Resource_TypeName_Manuballista => "Манубаллиста";
+        public override string Resource_TypeName_Catapult => "Катапульта";
+        public override string Resource_TypeName_BatteringRam => "Таран";
+        public override string Resource_TypeName_SiegeCannonBronze => "Базилиск";
+        public override string Resource_TypeName_ManCannonBronze => "Бомбарда";
+        public override string Resource_TypeName_SiegeCannonIron => "Гаубица";
+        public override string Resource_TypeName_ManCannonIron => "Пушка";
+
+        public override string Resource_TypeName_PaddedArmor => "Стёганая броня";
+        public override string Resource_TypeName_HeavyPaddedArmor => "Тяжёлая стёганая броня";
+
+        public override string Resource_TypeName_IronArmor => "Кольчуга";
+        public override string Resource_TypeName_HeavyIronArmor => "Тяжёлая кольчуга";
+
+        public override string Resource_TypeName_BronzeArmor => "Бронзовая броня";
+
+        public override string Resource_TypeName_LightPlateArmor => "Лёгкая пластинчатая броня";
+        public override string Resource_TypeName_FullPlateArmor => "Полная пластинчатая броня";
+        public override string Resource_TypeName_MithrilArmor => "Мифриловая броня";
+        public override string Resource_TypeName_Coin => "Монета";
+
+        public override string UnitType_Warhammer => "Рыцарь с молотом";
+        public override string UnitType_MithrilKnight => "Бессмертный рыцарь";
+        public override string UnitType_MithrilArcher => "Бессмертный лучник";
+        public override string UnitType_SpearAndShield => "Копейщик с щитом";
+
+        public override string UnitType_CollectionOfSoldiers => "Отряд солдат";
+        public override string UnitType_CollectionOfArmies => "Сборная армия";
+
+        /// <summary>
+        /// Идентификатор будет уникальным числом
+        /// </summary>
+        public override string UnitId => "(ID {0})";
+
+        public override string BuildHud_AreaEffectTitle => "Эффект области";
+        public override string BuildHud_BonusRadius => "Радиус бонуса: {0}";
+
+        public override string BuildHud_BuildTime => "Время строительства";
+        public override string SchoolHud_ToLevel => "До уровня";
+        public override string SchoolHud_TimeDescription => "Время указано для нулевого опыта; уменьшается с ростом опыта.";
+        public override string SchoolHud_SelectSchool => "Выбрать школу";
+        public override string Upgrade_Order => "Порядок улучшения";
+
+        public override string Building_ListDescription => "Список всех зданий в данной категории";
+
+        public override string BuildingType_IsUpgraded => "{0} – улучшено";
+        public override string BuildingType_WoodCutter => "Лесопилка";
+        public override string BuildingType_Workshop_Description => "Улучшает работу в окрестностях";
+
+        public override string BuildingType_WoodCutter_AreaAffect => "Добыча древесины +{0}% от деревьев";
+
+        public override string BuildingType_StoneCutter_AreaAffect => "Добыча камня +{0}%";
+
+        public override string BuildingType_StoneCutter => "Каменоломня";
+
+        public override string BuildingType_Embassy => "Посольство";
+        public override string BuildingType_Embassy_Description => "Для дипломатических отношений";
+
+        public override string BuildingType_SoldierBarracks => "Казарма (пехота)";
+        public override string BuildingType_ArcherBarracks => "Казарма (лучники)";
+        public override string BuildingType_WarmashineBarracks => "Казарма (осадные орудия)";
+        public override string BuildingType_GunBarracks => "Казарма (стрелки)";
+        public override string BuildingType_CannonBarracks => "Казарма (артиллерия)";
+        public override string BuildingType_KnightsBarracks => "Казарма (рыцари)";
+
+        public override string BuildingType_WaterResovoir => "Водохранилище";
+        public override string BuildingType_WaterResovoir_Description => "Увеличивает запас воды";
+
+        public override string BuildingType_SmeltingFurnace => "Плавильная печь";
+        public override string BuildingType_SmeltingFurnace_Description => "Очистка руды для получения металла";
+
+        public override string BuildingType_Foundry => "Литейная";
+        public override string BuildingType_Foundry_Description => "Мастерская по литью металла";
+
+        public override string BuildingType_Armory => "Оружейная";
+        public override string BuildingType_Armory_Description => "Производство доспехов";
+
+        public override string BuildingType_Chemist => "Алхимическая лаборатория";
+        public override string BuildingType_Chemist_Description => "Создание химических веществ";
+
+        public override string BuildingType_CoinMaker => "Монетный двор";
+        public override string BuildingType_CoinMaker_Description => "Преобразование металлов в деньги";
+
+        public override string BuildingType_Gunmaker => "Оружейная мастерская";
+        public override string BuildingType_Gunmaker_Description => "Производство огнестрельного оружия и пушек";
+
+        public override string BuildingType_School_Tab => "Школа";
+        public override string BuildingType_School => "Гильдия мастеров";
+        public override string BuildingType_School_Description => "Повышает уровень навыков рабочих";
+
+        public override string BuildingType_GoldDelivery => "Золотой курьер";
+        public override string BuildingType_Bank_Description => "Управление золотым запасом";
+
+        public override string DecorType_CobbleStones => "Брусчатка";
+        public override string DecorType_Square => "Городская площадь";
+
+        public override string DecorType_Garden => "Сад";
+        public override string DecorType_Flag => "Флаг";
+        public override string DecorType_Banner => "Знамя";
+
+        public override string BuildingType_DirtRoad => "Грунтовая дорога";
+        public override string BuildingType_Palisade => "Палисадная крепость";
+
+        public override string ResourceType_ServiceMen => "Служащие";
+        public override string BuildingType_ServiceHouse => "Дом обслуживания";
+        public override string BuildingType_ServiceHouse_DescriptionAddX => "Добавляет служащих: {0}";
+
+        public override string BuildingType_GuardOffice => "Офис охраны";
+        public override string BuildingType_GuardOffice_DescriptionAddX => "Увеличивает лимит охраны на {0}";
+
+        public override string BuildingType_DirtWall => "Глиняная стена";
+        public override string BuildingType_DirtTower => "Глиняная башня";
+        public override string BuildingType_WoodWall => "Деревянная стена";
+        public override string BuildingType_WoodTower => "Деревянная башня";
+        public override string BuildingType_StoneWall => "Каменная стена";
+        public override string BuildingType_StoneTower => "Каменная башня";
+        public override string BuildingType_StoneGate => "Каменные ворота";
+        public override string BuildingType_StoneHouse => "Каменный дом";
+
+        /// <summary>
+        /// При отображении небольших вариаций, например «Лампа A» и «Лампа B»
+        /// </summary>
+        public override string VariantType_A => "{0} A";
+        public override string VariantType_B => "{0} B";
+        public override string VariantType_C => "{0} C";
+        public override string VariantType_D => "{0} D";
+        public override string VariantType_E => "{0} E";
+        public override string VariantType_F => "{0} F";
+        public override string VariantType_G => "{0} G";
+        public override string VariantType_H => "{0} H";
+
+        public override string BuildingToolShape_Free => "Свободная форма";
+        public override string BuildingToolShape_Area => "Прямоугольник";
+        public override string BuildingToolShape_Line => "Линия";
+        public override string BuildingToolShape_LShape => "L-образная форма";
+
+        public override string CityHall_Upgrade => "Улучшить ратушу";
+
+        /// <summary>
+        /// Ограничение на количество рабочих в городе
+        /// </summary>
+        public override string CityHall_MaxSupportedWorkers => "Макс. число рабочих: {0}";
+
+        public override string CityHall_Size_Small => "Деревня";
+        public override string CityHall_Size_Medium => "Город";
+        public override string CityHall_Size_Large => "Столица";
+
+        public override string GuardHousingCount => "Места для охраны";
+        public override string ServicemenCount => "Служащие: {0}";
+
+        public override string Work_MiningResource => "Добыча ресурса: {0}";
+
+        public override string MenuTab_Progress => "Прогресс";
+
+        public override string Automation_AutomateCity => "Автоматизировать город";
+        public override string Automation_AutomationFocus => "Фокус автоматизации";
+        public override string Automation_AutomationFocus_Grow => "Развитие";
+        public override string Automation_AutomationFocus_Export => "Экспорт";
+        public override string Automation_AutomationFocus_War => "Война";
+
+        public override string CityCulture_Smelters_Description => "Улучшенная выплавка руды";
+        public override string CityCulture_Smelters => "Плавильщики";
+
+        public override string CityCulture_Apprentices_Description => "Новые рабочие получают опыт от активных работников";
+        public override string CityCulture_Apprentices => "Подмастерья";
+
+        public override string CityCulture_BronzeCasters_Description => "Улучшенное производство бронзы и бронзовых изделий";
+        public override string CityCulture_BronzeCasters => "Бронзолитейщики";
+
     }
 }

@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             args.content.newLine();
             args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
-               new RbText(  DssRef.todoLang.Hud_Delete) }, new RbAction1Arg<int>(args.player.deletePin, parentArrayIndex)));
+               new RbText(  DssRef.lang.Hud_Delete) }, new RbAction1Arg<int>(args.player.deletePin, parentArrayIndex)));
                
         }
 

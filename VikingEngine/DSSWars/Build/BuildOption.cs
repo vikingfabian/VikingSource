@@ -65,9 +65,9 @@ namespace VikingEngine.DSSWars.Build
                     switch ((TerrainWallType)subType)
                     {
                         case TerrainWallType.StoneHouse:
-                            return DssRef.todoLang.Defence_WallDescription_Movement;
+                            return DssRef.lang.Defence_WallDescription_Movement;
                         default:
-                            return DssRef.todoLang.Defence_WallDescription_Movement + " " + DssRef.todoLang.Defence_WallDescription_GuardPost;
+                            return DssRef.lang.Defence_WallDescription_Movement + " " + DssRef.lang.Defence_WallDescription_GuardPost;
                     }
                     
             }

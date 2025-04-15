@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.Conscript
                         case ItemResourceType.Rifle:
                             return UnitFilterType.Rifle;
                         case ItemResourceType.HandCulverin:
-                        case ItemResourceType.Blunderbus:
+                        case ItemResourceType.Blunderbuss:
                             return UnitFilterType.Shotgun;
 
                         case ItemResourceType.Ballista:
@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
                     break;
 
-                case ItemResourceType.Blunderbus:
+                case ItemResourceType.Blunderbuss:
                     soldierData.mainAttack = AttackType.GunBlast;
                     soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
                     soldierData.attackRange = 0.5f;
@@ -815,7 +815,7 @@ namespace VikingEngine.DSSWars.Conscript
                     case ItemResourceType.HandCannon:
                     case ItemResourceType.HandCulverin:
                     case ItemResourceType.Rifle:
-                    case ItemResourceType.Blunderbus:
+                    case ItemResourceType.Blunderbuss:
                         soldierData.modelName = LootFest.VoxelModelName.wars_archer_ship;
                         break;
 

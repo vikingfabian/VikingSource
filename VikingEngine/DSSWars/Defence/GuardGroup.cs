@@ -268,7 +268,7 @@ namespace VikingEngine.DSSWars.Defence
 
         public override string TypeName()
         {
-            return DssRef.todoLang.Conscript_Soldiers_GuardType;
+            return DssRef.lang.Conscript_Soldiers_GuardType;
         }
     }
 }

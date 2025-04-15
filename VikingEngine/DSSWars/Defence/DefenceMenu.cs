@@ -21,10 +21,10 @@ namespace VikingEngine.DSSWars.Defence
             if (city.defenceBuildings.InBound(city.selectedDefenceBuilding))
             {
                 DefenceStatus currentStatus = getSelected();
-                content.Add(new RbText(DssRef.todoLang.Defence_GuardPost + " " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_TypeName));
+                content.Add(new RbText(DssRef.lang.Defence_GuardPost + " " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_TypeName));
 
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Defence_AutoAssign) }, autoAssignProperty, new RbTooltip_Text(DssRef.todoLang.Defence_AutoAssign_Description)));
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Defence_AutoAssign) }, autoAssignProperty, new RbTooltip_Text(DssRef.lang.Defence_AutoAssign_Description)));
 
 
                 //content.newLine();

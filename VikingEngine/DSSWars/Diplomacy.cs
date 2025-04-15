@@ -367,7 +367,7 @@ namespace VikingEngine.DSSWars
                 case RelationType.RelationType2_Good: return DssRef.lang.Diplomacy_RelationType_Good;
                 case RelationType.RelationType1_Peace: return DssRef.lang.Diplomacy_RelationType_Peace;
                 case RelationType.RelationType0_Neutral: return DssRef.lang.Diplomacy_RelationType_Neutral;
-                case RelationType.RelationTypeN1_Enemies: return DssRef.todoLang.Diplomacy_RelationType_Enemies;
+                case RelationType.RelationTypeN1_Enemies: return DssRef.lang.Diplomacy_RelationType_Enemies;
                 case RelationType.RelationTypeN2_Truce: return DssRef.lang.Diplomacy_RelationType_Truce;
                 case RelationType.RelationTypeN3_War: return DssRef.lang.Diplomacy_RelationType_War;
                 case RelationType.RelationTypeN4_TotalWar: return DssRef.lang.Diplomacy_RelationType_TotalWar;

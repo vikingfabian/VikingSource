@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Delivery
                         switch (resourcesSubTab)
                         {
                             case ResourcesSubTab.Overview_Resources:
-                                tabContent.Add(new RbText(DssRef.todoLang.Hud_category));
+                                tabContent.Add(new RbText(DssRef.lang.Hud_category));
                                 tabContent.space();
                                 tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                                 break;
@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Delivery
                                 //RichBoxContent content = new RichBoxContent();
 
                                 content.h2(DssRef.lang.Automation_Title);
-                                content.text(DssRef.todoLang.Delivery_AutoResourceDescription).overrideColor = HudLib.InfoYellow_Light;
+                                content.text(DssRef.lang.Delivery_AutoResourceDescription).overrideColor = HudLib.InfoYellow_Light;
 
                                 //player.hud.tooltip.create(player, content, true);
                             }));
@@ -266,7 +266,7 @@ namespace VikingEngine.DSSWars.Delivery
 
                 content.newParagraph();
                 //SEND CHUNK SIZE
-                HudLib.Label(content, DssRef.todoLang.Delivery_SendChunk);
+                HudLib.Label(content, DssRef.lang.Delivery_SendChunk);
                 content.newLine();
 
                 List<int> sendChunkOptions = new List<int>(4);

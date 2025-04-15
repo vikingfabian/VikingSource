@@ -266,7 +266,7 @@ namespace VikingEngine.DSSWars.Display
                         break;
                     case Players.SelectTileResult.School:
                         {
-                            title = new RbText(DssRef.todoLang.BuildingType_School);
+                            title = new RbText(DssRef.lang.BuildingType_School);
                             content.Add(title);
 
                             content.newLine();

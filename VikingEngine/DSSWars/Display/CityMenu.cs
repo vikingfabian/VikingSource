@@ -174,59 +174,59 @@ namespace VikingEngine.DSSWars.Display
         }
         void helpTab(RichBoxContent content)
         {
-            content.h2(DssRef.todoLang.Help_Work_Title, HudLib.TitleColor_Head);
+            content.h2(DssRef.lang.Help_Work_Title, HudLib.TitleColor_Head);
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsBluePrint));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Work_Resources));
+            content.Add(new RbText(DssRef.lang.Help_Work_Resources));
             
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsUnitLevelProfessional));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Work_Skill));
+            content.Add(new RbText(DssRef.lang.Help_Work_Skill));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsStockpileStop));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Work_Stockpile));
+            content.Add(new RbText(DssRef.lang.Help_Work_Stockpile));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsHammer));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Work_Priority));
+            content.Add(new RbText(DssRef.lang.Help_Work_Priority));
 
             content.newParagraph();
 
-            content.h2(DssRef.todoLang.Help_Soldiers_Title, HudLib.TitleColor_Head);
+            content.h2(DssRef.lang.Help_Soldiers_Title, HudLib.TitleColor_Head);
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsBuild_Barracks));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.todoLang.Help_Soldiers_PlaceBuildingX, DssRef.lang.BuildingType_Barracks)));
+            content.Add(new RbText(string.Format(DssRef.lang.Help_Soldiers_PlaceBuildingX, DssRef.lang.BuildingType_Barracks)));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsWorker));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Soldiers_Workers));
+            content.Add(new RbText(DssRef.lang.Help_Soldiers_Workers));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsResource_Sword));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Soldiers_Weapon));
+            content.Add(new RbText(DssRef.lang.Help_Soldiers_Weapon));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsSoldierIcon));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.todoLang.Help_Soldiers_StartX, DssRef.lang.Hud_ProductionQueue)));
+            content.Add(new RbText(string.Format(DssRef.lang.Help_Soldiers_StartX, DssRef.lang.Hud_ProductionQueue)));
 
 
 
@@ -244,23 +244,23 @@ namespace VikingEngine.DSSWars.Display
                     case ProgressSubTab.Technology:
                         tabContent.Add(new RbImage(SpriteName.WarsTechnology_Unlocked));
                         tabContent.space(0.6f);
-                        tabContent.Add(new RbText(DssRef.todoLang.Technology_Title));
-                        description = DssRef.todoLang.Technology_Description;
+                        tabContent.Add(new RbText(DssRef.lang.Technology_Title));
+                        description = DssRef.lang.Technology_Description;
                         break;
 
                     case ProgressSubTab.Experience:
                         tabContent.Add(new RbImage(SpriteName.WarsUnitLevelProfessional));
                         tabContent.space(0.6f);
-                        tabContent.Add(new RbText(DssRef.todoLang.Experience_Title));
-                        description = DssRef.todoLang.Experience_Description;
+                        tabContent.Add(new RbText(DssRef.lang.Experience_Title));
+                        description = DssRef.lang.Experience_Description;
                         break;
 
                     case ProgressSubTab.Schools:
                         tabContent.Add(new RbImage(SpriteName.WarsBuild_School));
                         tabContent.space(0.6f);
-                        tabContent.Add(new RbText(DssRef.todoLang.BuildingType_School_Tab));
-                        description = DssRef.todoLang.BuildingType_School_Description + Environment.NewLine +
-                             DssRef.todoLang.Building_ListDescription;
+                        tabContent.Add(new RbText(DssRef.lang.BuildingType_School_Tab));
+                        description = DssRef.lang.BuildingType_School_Description + Environment.NewLine +
+                             DssRef.lang.Building_ListDescription;
                         break;
                 }
             
@@ -703,7 +703,7 @@ namespace VikingEngine.DSSWars.Display
                         end(item);
                     }
                     {
-                        ItemResourceType item = ItemResourceType.Blunderbus;
+                        ItemResourceType item = ItemResourceType.Blunderbuss;
                         mixResource(item, false);
                         blueprint(CraftResourceLib.Blunderbus);
                         work(item, WorkPriorityType.craftBlunderbus);
@@ -1005,7 +1005,7 @@ namespace VikingEngine.DSSWars.Display
         //                    break;
 
         //                //case WorkSubTab.Experience:
-        //                //    tabContent.Add(new RichBoxText(DssRef.todoLang.Experience_Title));
+        //                //    tabContent.Add(new RichBoxText(DssRef.lang.Experience_Title));
         //                //    break;
         //            }
         //            var subTab = new RichboxButton(tabContent,
@@ -1033,32 +1033,32 @@ namespace VikingEngine.DSSWars.Display
 
         void experienceTab(RichBoxContent content)
         {
-            HudLib.Label(content, DssRef.todoLang.Experience_TopExperience);
-            experience(SpriteName.WarsWorkFarm, DssRef.todoLang.ExperienceType_Farm, city.topskill_Farm);
-            experience(SpriteName.WarsBuild_HenPen, DssRef.todoLang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
-            experience(SpriteName.WarsHammer, DssRef.todoLang.ExperienceType_HouseBuilding, city.topskill_HouseBuilding);
-            experience(SpriteName.WarsResource_Wood, DssRef.todoLang.ExperienceType_WoodWork, city.topskill_WoodCutter);
-            experience(SpriteName.WarsResource_Stone, DssRef.todoLang.ExperienceType_StoneCutter, city.topskill_StoneCutter);
-            experience(SpriteName.WarsWorkMine, DssRef.todoLang.ExperienceType_Mining, city.topskill_Mining);
-            experience(SpriteName.WarsWorkMove, DssRef.todoLang.ExperienceType_Transport, city.topskill_Transport);
-            experience(SpriteName.WarsResource_Food, DssRef.todoLang.ExperienceType_Cook, city.topskill_Cook);
-            experience(SpriteName.WarsFletcherArrowIcon, DssRef.todoLang.ExperienceType_Fletcher, city.topskill_Fletcher);
-            experience(SpriteName.WarsResource_Iron, DssRef.todoLang.ExperienceType_CraftMetal, city.topskill_CraftMetal);
-            experience(SpriteName.WarsResource_IronArmor, DssRef.todoLang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
-            experience(SpriteName.WarsResource_Sword, DssRef.todoLang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
-            experience(SpriteName.WarsResource_Fuel, DssRef.todoLang.ExperienceType_CraftFuel, city.topskill_CraftFuel);
-            experience(SpriteName.WarsBuild_Chemist, DssRef.todoLang.ExperienceType_Chemist, city.topskill_Chemistry);
-            //experience(SpriteName.WarsResource_GunPowder, DssRef.todoLang.BuildingType_Gunmaker, city.);
+            HudLib.Label(content, DssRef.lang.Experience_TopExperience);
+            experience(SpriteName.WarsWorkFarm, DssRef.lang.ExperienceType_Farm, city.topskill_Farm);
+            experience(SpriteName.WarsBuild_HenPen, DssRef.lang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
+            experience(SpriteName.WarsHammer, DssRef.lang.ExperienceType_HouseBuilding, city.topskill_HouseBuilding);
+            experience(SpriteName.WarsResource_Wood, DssRef.lang.ExperienceType_WoodWork, city.topskill_WoodCutter);
+            experience(SpriteName.WarsResource_Stone, DssRef.lang.ExperienceType_StoneCutter, city.topskill_StoneCutter);
+            experience(SpriteName.WarsWorkMine, DssRef.lang.ExperienceType_Mining, city.topskill_Mining);
+            experience(SpriteName.WarsWorkMove, DssRef.lang.ExperienceType_Transport, city.topskill_Transport);
+            experience(SpriteName.WarsResource_Food, DssRef.lang.ExperienceType_Cook, city.topskill_Cook);
+            experience(SpriteName.WarsFletcherArrowIcon, DssRef.lang.ExperienceType_Fletcher, city.topskill_Fletcher);
+            experience(SpriteName.WarsResource_Iron, DssRef.lang.ExperienceType_CraftMetal, city.topskill_CraftMetal);
+            experience(SpriteName.WarsResource_IronArmor, DssRef.lang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
+            experience(SpriteName.WarsResource_Sword, DssRef.lang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
+            experience(SpriteName.WarsResource_Fuel, DssRef.lang.ExperienceType_CraftFuel, city.topskill_CraftFuel);
+            experience(SpriteName.WarsBuild_Chemist, DssRef.lang.ExperienceType_Chemist, city.topskill_Chemistry);
+            //experience(SpriteName.WarsResource_GunPowder, DssRef.lang.BuildingType_Gunmaker, city.);
             content.newParagraph();
-            HudLib.Description(content, string.Format(DssRef.todoLang.Experience_TimeReductionDescription, MathExt.PercentageInteger(DssConst.XpLevelWorkTimePercReduction)));
+            HudLib.Description(content, string.Format(DssRef.lang.Experience_TimeReductionDescription, MathExt.PercentageInteger(DssConst.XpLevelWorkTimePercReduction)));
 
             content.newParagraph();
             content.Add(new RbBeginTitle());
-            var prioTitle = new RbText( DssRef.todoLang.ExperenceOrDistancePrio_Title);
+            var prioTitle = new RbText( DssRef.lang.ExperenceOrDistancePrio_Title);
             prioTitle.overrideColor = HudLib.TitleColor_Label;
             content.Add(prioTitle);
             content.space();
-            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.todoLang.ExperenceOrDistancePrio_Description));
+            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.ExperenceOrDistancePrio_Description));
 
             content.newLine();
             for (ExperienceOrDistancePrio prio = 0; prio < ExperienceOrDistancePrio.NUM; ++prio)
@@ -1067,13 +1067,13 @@ namespace VikingEngine.DSSWars.Display
                 switch (prio)
                 {
                     case ExperienceOrDistancePrio.Distance:
-                        text = DssRef.todoLang.Hud_Distance;
+                        text = DssRef.lang.Hud_Distance;
                         break;
                     case ExperienceOrDistancePrio.Mix:
-                        text = DssRef.todoLang.Hud_Mixed;
+                        text = DssRef.lang.Hud_Mixed;
                         break;
                     case ExperienceOrDistancePrio.Experience:
-                        text = DssRef.todoLang.Experience_Title;
+                        text = DssRef.lang.Experience_Title;
                         break;
 
                 }
@@ -1458,7 +1458,7 @@ namespace VikingEngine.DSSWars.Display
                     city.res_Rifle.toMenu(content, ItemResourceType.Rifle, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
                     blueprintButton(player, content, CraftResourceLib.Rifle);
 
-                    city.res_Blunderbus.toMenu(content, ItemResourceType.Blunderbus, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.res_Blunderbus.toMenu(content, ItemResourceType.Blunderbuss, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
                     blueprintButton(player, content, CraftResourceLib.Blunderbus);
                     content.newParagraph();
 
@@ -1596,7 +1596,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.HandCannon);
                     stockpile(ItemResourceType.HandCulverin);
                     stockpile(ItemResourceType.Rifle);
-                    stockpile(ItemResourceType.Blunderbus);
+                    stockpile(ItemResourceType.Blunderbuss);
 
                     content.newParagraph();
 

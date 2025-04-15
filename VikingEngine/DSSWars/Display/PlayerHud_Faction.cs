@@ -181,7 +181,7 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsServiceMen));
                 content.space();
-                var textCont = new RbText(string.Format(DssRef.todoLang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(player.faction.citiesEconomy.servicemenUpkeep_copp)),
+                var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(player.faction.citiesEconomy.servicemenUpkeep_copp)),
                     HudLib.NotAvailableColor);
                 content.Add(textCont);
 

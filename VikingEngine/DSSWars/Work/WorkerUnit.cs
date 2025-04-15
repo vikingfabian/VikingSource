@@ -490,7 +490,7 @@ namespace VikingEngine.DSSWars.Work
             args.content.Add(new RbText(DssRef.lang.UnitType_Worker, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space();
-            args.content.Add(new RbText(string.Format(DssRef.todoLang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
 
             ownerToHud(args, false);
         }

@@ -94,5 +94,27 @@ namespace VikingEngine.HUD
         /// Изменить размер текста и иконок
         /// </summary>
         public override string GraphicsOption_UiScale => "Масштаб интерфейса";
+
+        public override string ReversedStereo => "Обратное стерео";
+        public override string Option_Low => "Низкое";
+        public override string Option_Medium => "Среднее";
+        public override string Option_High => "Высокое";
+
+        public override string MouseSettings_Title => "Настройки мыши";
+        public override string KeyboardSettings_Title => "Назначение клавиш";
+
+        public override string MouseButtonAction_None => "Нет действия";
+        public override string MouseButtonAction_Select => "Выбор";
+        public override string MouseButtonAction_Pan => "Прокрутка";
+        public override string MouseButtonAction_PanAndOrder => "Прокрутка и приказ";
+        public override string MouseButtonAction_Order => "Приказ";
+        public override string MouseButtonAction_Cancel => "Отмена";
+
+        public override string MouseButton_Left => "Левая кнопка мыши";
+        public override string MouseButton_Right => "Правая кнопка мыши";
+        public override string MouseButton_Middle => "Средняя кнопка мыши";
+        public override string MouseButton_X1 => "Кнопка мыши X1";
+        public override string MouseButton_X2 => "Кнопка мыши X2";
+
     }
 }

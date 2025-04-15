@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars.Profile
             content.text(PaintFlagState.ProfileColorName(colorType));
             content.newLine();
             content.Add(new RbCheckbox(new List<AbsRichBoxMember> { 
-                new RbText(DssRef.todoLang.Automation_CheckBoxTitle) }, 
+                new RbText(DssRef.lang.Automation_CheckBoxTitle) }, 
                 state.autoAltMainProperty));
             content.space();
             var color = new RbImage(SpriteName.WhiteArea);

@@ -589,7 +589,7 @@ namespace VikingEngine.DSSWars.Build
                             build.altBlueprint?.toMenu(content, city);
 
                             content.newLine();
-                            content.Add(new RbText(DssRef.todoLang.BuildHud_BuildTime + ":", HudLib.TitleColor_Label));
+                            content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ":", HudLib.TitleColor_Label));
                             content.space();
                             content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_Seconds, build.buildTimeSec)));
 
@@ -618,27 +618,27 @@ namespace VikingEngine.DSSWars.Build
                                     break;
 
                                 case BuildAndExpandType.WoodCutter:
-                                    HudLib.Label(content, DssRef.todoLang.BuildHud_AreaAffectTitle);
+                                    HudLib.Label(content, DssRef.lang.BuildHud_AreaEffectTitle);
 
                                     content.newLine();
                                     HudLib.BulletPoint(content);
-                                    content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_WoodCutter_AreaAffect, DssConst.WoodCutter_WoodBonus)));
+                                    content.Add(new RbText(string.Format(DssRef.lang.BuildingType_WoodCutter_AreaAffect, DssConst.WoodCutter_WoodBonus)));
 
                                     content.newLine();
                                     HudLib.BulletPoint(content);
-                                    content.Add(new RbText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.WoodCutter_BonusRadius)));
+                                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_BonusRadius, DssConst.WoodCutter_BonusRadius)));
                                     break;
 
                                 case BuildAndExpandType.StoneCutter:
-                                    HudLib.Label(content, DssRef.todoLang.BuildHud_AreaAffectTitle);
+                                    HudLib.Label(content, DssRef.lang.BuildHud_AreaEffectTitle);
 
                                     content.newLine();
                                     HudLib.BulletPoint(content);
-                                    content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_StoneCutter_AreaAffect, DssConst.StoneCutter_StoneBonus)));
+                                    content.Add(new RbText(string.Format(DssRef.lang.BuildingType_StoneCutter_AreaAffect, DssConst.StoneCutter_StoneBonus)));
 
                                     content.newLine();
                                     HudLib.BulletPoint(content);
-                                    content.Add(new RbText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.StoneCutter_BonusRadius)));
+                                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_BonusRadius, DssConst.StoneCutter_BonusRadius)));
                                     break;
 
                                 case BuildAndExpandType.Storehouse:
@@ -859,7 +859,7 @@ namespace VikingEngine.DSSWars.Build
                                     content.newLine();
                                     HudLib.BulletPoint(content);
                                     content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(MathExt.PercentageInteger(DssConst.BankTaxIncreasePercUnits)))));
-                                    content.text(DssRef.todoLang.Hud_EffectDoesNotStack).overrideColor = HudLib.InfoYellow_Light;
+                                    content.text(DssRef.lang.Hud_EffectDoesNotStack).overrideColor = HudLib.InfoYellow_Light;
                                     break;
 
                             }
@@ -905,12 +905,12 @@ namespace VikingEngine.DSSWars.Build
 
                                 content.newLine();
                                 HudLib.BulletPoint(content);
-                                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Delivery_SendChunk, maxAmount)));
+                                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Delivery_SendChunk, maxAmount)));
                                 if (speedBonus > 0)
                                 {
                                     content.newLine();
                                     HudLib.BulletPoint(content);
-                                    content.Add(new RbText(string.Format(DssRef.todoLang.Delivery_SpeedBonus, speedBonus)));
+                                    content.Add(new RbText(string.Format(DssRef.lang.Delivery_SpeedBonus, speedBonus)));
                                 }
                             }
                             void farmHud(bool upgrade, ItemResource produce1, ItemResource produce2)
@@ -1017,19 +1017,19 @@ namespace VikingEngine.DSSWars.Build
                     switch (shape)
                     {
                         default:
-                            caption = DssRef.todoLang.BuildingToolShape_Free;
+                            caption = DssRef.lang.BuildingToolShape_Free;
                             icon = SpriteName.ToolPaintShape_Free;
                             break;
                         case MapPaintToolShape.Line:
-                            caption = DssRef.todoLang.BuildingToolShape_Line;
+                            caption = DssRef.lang.BuildingToolShape_Line;
                             icon = SpriteName.ToolPaintShape_Line;
                             break;
                         case MapPaintToolShape.Area:
-                            caption = DssRef.todoLang.BuildingToolShape_Area;
+                            caption = DssRef.lang.BuildingToolShape_Area;
                             icon = SpriteName.ToolPaintShape_Area;
                             break;
                         case MapPaintToolShape.LShape:
-                            caption = DssRef.todoLang.BuildingToolShape_LShape;
+                            caption = DssRef.lang.BuildingToolShape_LShape;
                             icon = SpriteName.ToolPaintShape_LShape;
                             break;
                     }
@@ -1086,7 +1086,7 @@ namespace VikingEngine.DSSWars.Build
                 content.newParagraph();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.WarsCityHall),
-                new RbText(DssRef.todoLang.CityHall_Upgrade)
+                new RbText(DssRef.lang.CityHall_Upgrade)
             }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
                 city.CanUpgradeCityHall()));
 

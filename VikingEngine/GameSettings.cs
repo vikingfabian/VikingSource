@@ -376,7 +376,7 @@ namespace VikingEngine
             }
             new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, Ref.langOpt.SoundOption_SoundVolume, soundVolProperty, new IntervalF(0, 4), false, layout);
 
-            new GuiCheckbox(DssRef.todoLang.ReversedSterio, null, ReversedStereoProperty, layout);
+            new GuiCheckbox(Ref.langOpt.ReversedStereo, null, ReversedStereoProperty, layout);
         }
 
         public void volumeOptions(RichBoxContent content)
@@ -384,14 +384,14 @@ namespace VikingEngine
             content.newLine();
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Settings_MasterVolume));
+            content.Add(new RbText(DssRef.lang.Settings_MasterVolume));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), masterVolProperty, true));
 
             if (Ref.music != null)
             {
                 content.newLine();
-                content.Add(new RbText(DssRef.todoLang.MusicIsBroken, HudLib.InfoYellow_Light));
+                content.Add(new RbText(DssRef.lang.MusicIsBroken, HudLib.InfoYellow_Light));
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
@@ -405,7 +405,7 @@ namespace VikingEngine
             content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
             content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Settings_AmbienceVolume));
+            content.Add(new RbText(DssRef.lang.Settings_AmbienceVolume));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), ambientVolProperty, true));
 
@@ -414,7 +414,7 @@ namespace VikingEngine
             content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
             content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Settings_BattleMelody));
+            content.Add(new RbText(DssRef.lang.Settings_BattleMelody));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0, 2, 0.1f), BattleMelodyVolProperty, true));
 
@@ -501,7 +501,7 @@ namespace VikingEngine
             content.Add(new RbDragButton(new DragButtonSettings(0.5f, 2f, 0.1f), uiScaleProperty, true));
             
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Hud_Apply) },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) },
                 new RbAction(Ref.gamestate.OnResolutionChange)));
             //new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
         }
@@ -509,10 +509,10 @@ namespace VikingEngine
         public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_ModelLight) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ModelLight) },
                 modelLightProperty));
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_Particles) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_Particles) },
                 particlesProperty));
 
             DropDownBuilder mapLoadingDropDown = new DropDownBuilder("mapload");
@@ -527,7 +527,7 @@ namespace VikingEngine
                             menu.CloseDropDown();
                         }, opt), null);
                 }
-                mapLoadingDropDown.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Settings_MapLoadSpeed, menu);
+                mapLoadingDropDown.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_MapLoadSpeed, menu);
             }
         }
 

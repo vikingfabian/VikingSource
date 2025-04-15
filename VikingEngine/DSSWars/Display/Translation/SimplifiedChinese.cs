@@ -1678,5 +1678,479 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_WaterAddLimit => "水的增加速率不能改变";
 
         public override string Tutorial_Select_SubTab => "并选择分类：{0}";
+
+
+
+        /* #### --------------- ##### */
+        /* #### DSS 2 DEMO      ##### */
+        /* #### --------------- ##### */
+
+        public override string Tutorial_OpenGuardSubTab => "打开兵营并选择类别：{0}";
+        public override string Tutorial_GuardToWall => "将守卫移动到城墙上";
+        public override string Demo_MissionObjective_Title => "任务目标";
+        public override string Demo_MissionObjective_Description => "抵御来自南方的进攻";
+        public override string Demo_Complete_Title => "演示完成";
+        public override string Demo_TimesUp_Title => "时间到！";
+        public override string Demo_EndInOneMinuteDescription => "演示将在一分钟后结束";
+
+        public override string ArmyOption_NewArmy => "新军队";
+        public override string ProfileEditor_AltMain => "备用主角";
+        public override string Automation_CheckBoxTitle => "自动化";
+
+        public override string ArmyStructure_ColumnWidth => "军队列宽";
+        public override string ArmyStructure_ArmyPlacement => "军队中的位置";
+        public override string ArmyStructure_Row_Front => "前排";
+        public override string ArmyStructure_Row_Body => "中排";
+        public override string ArmyStructure_Row_Second => "第二排";
+        public override string ArmyStructure_Row_Behind => "后排";
+
+        public override string Diplomacy_RelationType_Enemies => "敌人";
+
+        public override string EventMessage_EnemyAlliance_Title => "对统治的恐惧";
+        public override string EventMessage_EnemyAlliance => "由于担心你日益增长的力量，各国联合组成了反对你的联盟。";
+
+        public override string Settings_CentralGold => "中央金币";
+        public override string Settings_CentralGold_Description => "开启：所有金币集中共享，可立即使用。关闭：金币为实体资源，需要运输。";
+
+        public override string InputActionName_StopStart => "开始/停止";
+        public override string InputActionName_ToggleHudDetail => "切换 HUD 详情";
+        public override string InputActionName_NextCity => "下一个城市";
+        public override string InputActionName_NextArmy => "下一支军队";
+        public override string InputActionName_NextBattle => "下一场战斗";
+        public override string InputActionName_Build => "建造";
+        public override string InputActionName_Copy => "复制";
+        public override string InputActionName_Paste => "粘贴";
+        public override string InputActionName_Menu => "菜单";
+        public override string InputActionName_FlagDesign_ToggleColor_Prev => "上一个颜色";
+        public override string InputActionName_FlagDesign_ToggleColor_Next => "下一个颜色";
+        public override string InputActionName_FlagDesign_PaintBucket => "油漆桶";
+        public override string InputActionName_Controller_FlagDesign_Colorpicker => "颜色选择器";
+        public override string InputActionName_ControllerFocus => "聚焦";
+        public override string InputActionName_ControllerCancel => "取消";
+        public override string InputActionName_ControllerMessageClick => "点击消息";
+        public override string InputActionName_ControllerSelect => "选择";
+        public override string InputActionName_WASD_UP => "上";
+        public override string InputActionName_WASD_DOWN => "下";
+        public override string InputActionName_WASD_LEFT => "左";
+        public override string InputActionName_WASD_RIGHT => "右";
+        public override string InputActionName_CameraTiltLeft => "摄像机向左倾斜";
+        public override string InputActionName_CameraTiltRight => "摄像机向右倾斜";
+        public override string InputActionName_CameraTiltUp => "摄像机向上倾斜";
+        public override string InputActionName_ZoomInKey => "放大";
+        public override string InputActionName_ZoomOutKey => "缩小";
+
+        public override string Settings_Title_Monitor => "显示器设置";
+        public override string Settings_Title_Graphics => "图形设置";
+        public override string Settings_Title_Input => "输入设置";
+        public override string Settings_Title_Gameplay => "游戏设置";
+        public override string Settings_PanOnZoom => "缩放时平移";
+        public override string Settings_ScrollSensitivity_Game => "滚动灵敏度：游戏";
+        public override string Settings_ScrollSensitivity_Menu => "滚动灵敏度：菜单";
+        public override string Settings_Blood => "血液效果";
+
+        public override string Settings_MasterVolume => "主音量";
+        public override string Settings_AmbienceVolume => "环境音量";
+        public override string Settings_BattleMelody => "战斗旋律";
+
+        public override string Settings_ModelLight => "模型光照效果";
+        public override string Settings_Particles => "粒子效果";
+        public override string Settings_MapLoadSpeed => "地图加载速度";
+        public override string Lobby_Category_Options => "选项";
+        public override string Lobby_Category_Editor => "编辑器";
+        public override string Lobby_Category_ExtraModes => "额外模式";
+
+        public override string Lobby_Editor_MapEditor => "地图编辑器";
+        public override string Lobby_Editor_VoxelEditor => "体素编辑器";
+
+        public override string Lobby_Mode_BattleLab => "战斗实验室";
+        public override string Lobby_Mode_BattleLab_Description => "让任意士兵互相对抗";
+        public override string Lobby_Mode_Commander => "指挥官模式";
+        public override string Lobby_Mode_Commander_Description => "一个小型战术桌游模式";
+        public override string Lobby_MusicPlayList => "音乐播放列表";
+
+        public override string Lobby_GameSetup => "游戏设置";
+        public override string Lobby_PlayerSetup => "玩家设置";
+        public override string LobbyDemoMode_Demo => "演示";
+        public override string LobbyDemoMode_ShortTutorial => "快速教程";
+        public override string LobbyDemoMode_LongTutorial => "扩展教程";
+
+        /// <summary>
+        /// Says wishlist on, followed by the STEAM logo
+        /// </summary>
+        public override string LobbyDemoMode_WishlistOn => "已加入愿望单";
+
+        public override string BattleLab_StartHere => "从这里开始战斗";
+        public override string BattleLab_Start => "开始战斗";
+        public override string BattleLab_Attacker => "进攻方";
+
+        public override string MapGenerator_Name => "地图编辑器 - 生成";
+
+        public override string MapType_CustomMap => "自定义地图";
+        public override string MapType_GenerateNewMap => "生成新地图";
+        public override string MapGenerator_GenerateAction => "生成";
+        public override string MapGenerator_Terrain_CustomSize => "自定义大小";
+        public override string MapGenerator_Terrain_StartAs => "开始为";
+        public override string MapGenerator_Terrain_ClearPass => "执行清除流程";
+        public override string MapGenerator_Terrain_BuildPass => "执行建造流程";
+        public override string MapGenerator_Terrain_DigPass => "执行挖掘流程";
+        public override string MapGenerator_Terrain_BuildDigLoops => "建造-挖掘循环次数";
+        public override string MapGenerator_Terrain_BuildStrokes => "建造笔触数量";
+        public override string MapGenerator_Terrain_BuildStrokes_Description => "以每100格的笔触次数计量";
+        public override string MapGenerator_Terrain_DigStrokes => "挖掘笔触数量";
+        public override string MapGenerator_Terrain_CleanUp_Option => "清理单个格子";
+        public override string MapGenerator_Terrain_CleanUpPass => "执行清理流程";
+
+        public override string Economy_ServicemenUpkeep => "服务人员维护费：{0}";
+        public override string Economy_ServicemenUpkeep_Description => "每位服务人员的维护费用为 {0} 金币";
+        public override string Economy_GuardUpkeep_Description => "每位守卫的维护费用为 {0} 金币";
+
+        public override string EndScreen_TimeHasEndedTitle => "时间到";
+        public override string Hud_AdvancedSettings => "高级设置";
+        public override string Hud_Vector_X => "X";
+        public override string Hud_Vector_Y => "Y";
+        public override string Hud_Cancel => "取消";
+        public override string Hud_Delete => "删除";
+        public override string Hud_Next => "下一步";
+        //public override string Hud_None => "无";
+        public override string Hud_Apply => "应用";
+        public override string Hud_AllCities => "所有城市";
+        public override string Hud_Time_Hours => "{0} 小时";
+        public override string Hud_AddX => "添加 {0}";
+        public override string Hud_Both => "两个";
+        public override string Hud_Direction => "方向";
+        public override string MusicIsBroken => "音乐目前无法播放";
+
+        /// <summary>
+        /// 0: 对象类型名称，1: 对象数量
+        /// </summary>
+        public override string Hud_ObjectsAndCount => "{0}，数量：{1}";
+
+        public override string Hud_EffectDoesNotStack => "该效果不可叠加";
+
+        public override string Work_SmeltX => "熔炼 {0}";
+
+        public override string Info_TotalFoodProduction => "总食物产量";
+        public override string Info_TotalFoodSpending => "总食物消耗";
+
+        public override string Info_FooodAndDeliveryLocation => "默认情况下，工人会前往市政厅用餐或投递物品";
+
+        public override string Delivery_SendChunk => "每次配送的物品数量";
+        public override string Delivery_SpeedBonus => "速度加成：{0}%";
+
+        public override string Delivery_AutoResourceDescription => "将达到库存上限的物资送往有需求的城市";
+
+        public override string Conscript_Soldiers_ArmyType => "军队士兵";
+        public override string Conscript_Soldiers_ArmyType_Description => "招募士兵到相邻军队";
+        public override string Conscript_Soldiers_GuardType => "城市守卫";
+        public override string Conscript_Soldiers_GuardType_Description => "守卫用于加固城墙";
+
+        public override string Defence_Title => "防御";
+        public override string Defence_GuardPost => "警戒哨所";
+
+        public override string Defence_WallDescription_Movement => "阻碍敌人移动。";
+        public override string Defence_WallDescription_GuardPost => "可在此驻守守卫。";
+        public override string Defence_AutoAssign => "自动分配";
+        public override string Defence_AutoAssign_Description => "新守卫将自动前往此岗位";
+
+        public override string Conscript_SplashDamage => "范围伤害";
+        public override string Conscript_HighSplashDamage => "高范围伤害";
+
+        public override string Conscript_Training_Champion => "冠军";
+        public override string Conscript_Training_Legendary => "传奇";
+
+        public override string Experience_Title => "经验";
+        public override string Experience_TopExperience => "最高经验等级";
+
+        public override string Experience_TimeReductionDescription => "每提升一级，工作时间减少 {0}%";
+
+        public override string ExperienceType_Farm => "农夫";
+        public override string ExperienceType_AnimalCare => "畜牧";
+        public override string ExperienceType_HouseBuilding => "建房工";
+        public override string ExperienceType_WoodWork => "木工";
+        public override string ExperienceType_StoneCutter => "石匠";
+        public override string ExperienceType_Mining => "矿工";
+        public override string ExperienceType_Transport => "运输工";
+        public override string ExperienceType_Cook => "厨师";
+        public override string ExperienceType_Fletcher => "制箭匠";
+        public override string ExperienceType_RefineOre => "炼矿工";
+        public override string ExperienceType_Casting => "铸造工";
+        public override string ExperienceType_CraftMetal => "铁匠";
+        public override string ExperienceType_CraftArmor => "护甲匠";
+        public override string ExperienceType_CraftWeapon => "武器匠";
+        public override string ExperienceType_CraftFuel => "制炭工";
+        public override string ExperienceType_Chemist => "炼金术士";
+
+        public override string ExperienceLevel_1 => "初学者";
+        public override string ExperienceLevel_2 => "熟练者";
+        public override string ExperienceLevel_3 => "专家";
+        public override string ExperienceLevel_4 => "大师";
+        public override string ExperienceLevel_5 => "传奇";
+
+        public override string ExperenceOrDistancePrio_Title => "工人选择";
+        public override string ExperenceOrDistancePrio_Description => "空闲工人将根据距离或经验进行分配";
+
+        public override string Technology_Description => "每座城市拥有一个科技树。每项科技都能解锁建筑和物品。";
+        public override string Experience_Description => "工人将获得经验并逐渐成长";
+
+        public override string Technology_Title => "科技";
+        public override string Technology_ShareField => "共享科技领域";
+
+        public override string Technology_GainByNeigborRelation => "每个拥有该科技的邻近城市，且关系为 {0}：{1}";
+        public override string Technology_ForEachMaster => "当一名 {0} 达到经验等级 {1} 时，在科技领域：{2}";
+        public override string Technology_CitySpread => "当城市相邻时，它们将共享科技：{0}";
+        public override string Technology_CityCapture => "城市在战斗中被攻陷时，大部分科技将会丢失";
+
+        public override string Technology_AdvancedBuildings => "高级建筑技术";
+        public override string Technology_AdvancedFarming => "高级农业技术";
+        public override string Technology_AdvancedCasting => "高级铸造技术";
+
+        public override string Help_Title => "帮助";
+        public override string Help_Work_Title => "工作未开始";
+        public override string Help_Work_Resources => "建筑需要可用资源";
+        public override string Help_Work_Skill => "工人需要具备相应或更高的技能等级";
+        public override string Help_Work_Stockpile => "仓库已满会阻碍资源收集";
+        public override string Help_Work_Priority => "该任务可能优先级过低或为零";
+
+        public override string Help_Soldiers_Title => "生产士兵";
+        public override string Help_Soldiers_PlaceBuildingX => "建造建筑：{0}";
+        public override string Help_Soldiers_Workers => "可供招募的工人";
+        public override string Help_Soldiers_Weapon => "每个士兵需要一件武器";
+        public override string Help_Soldiers_StartX => "开始：{0}";
+
+        public override string Hud_SelectHistory => "选择历史记录";
+
+        public override string Hud_PointsPerMinute => "每分钟 {0} 分";
+        public override string Hud_PercentValueCost => "该服务花费相当于价值的 {0}%";
+
+        public override string Hud_Mixed => "混合";
+        public override string Hud_Distance => "距离";
+
+        public override string Hud_Unlock => "解锁";
+        public override string Hud_category => "类别";
+
+
+        /// <summary>
+        /// 将游戏速度设置为单帧模式
+        /// </summary>
+        public override string Input_StepOneFrame => "前进1帧";
+
+        public override string Resource_TypeName_Wagon2Wheel => "小型货车";
+        public override string Resource_TypeName_Wagon4Wheel => "大型货车";
+        public override string Resource_TypeName_Tin => "锡";
+        public override string Resource_TypeName_TinOre => "锡矿石";
+
+        public override string Resource_TypeName_Copper => "铜";
+        public override string Resource_TypeName_CopperOre => "铜矿石";
+        public override string Resource_TypeName_SilverOre => "银矿石";
+        public override string Resource_TypeName_Silver => "银";
+
+        /// <summary>
+        /// 秘银是一种幻想金属
+        /// </summary>
+        public override string Resource_TypeName_RawMithril => "未精炼秘银";
+        public override string Resource_TypeName_Mithril => "秘银";
+
+        public override string Resource_TypeName_BronzeSword => "青铜剑";
+        public override string Resource_TypeName_ShortSword => "短剑";
+        public override string Resource_TypeName_LongSword => "长剑";
+        public override string Resource_TypeName_HandSpear => "手持长矛";
+        public override string Resource_TypeName_Warhammer => "战锤";
+        public override string Resource_TypeName_MithrilSword => "秘银剑";
+        public override string Resource_TypeName_SlingShot => "弹弓";
+        public override string Resource_TypeName_ThrowingSpear => "投矛";
+        public override string Resource_TypeName_Crossbow => "弩";
+        public override string Resource_TypeName_MithrilBow => "秘银弓";
+
+        public override string Resource_TypeName_CoolingFluid => "冷却液";
+        public override string Resource_TypeName_Palisade => "木栅";
+        public override string Resource_TypeName_Toolkit => "工具包";
+
+        public override string Resource_TypeName_Sulfur => "硫磺";
+        public override string Resource_TypeName_LeadOre => "铅矿石";
+        public override string Resource_TypeName_Lead => "铅";
+        public override string Resource_TypeName_Bronze => "青铜";
+        public override string Resource_TypeName_BloomIron => "熟铁";
+        public override string Resource_TypeName_Steel => "钢";
+        public override string Resource_TypeName_CastIron => "生铁";
+
+        public override string Resource_TypeName_BlackPowder => "黑火药";
+        public override string Resource_TypeName_GunPowder => "火药";
+        public override string Resource_TypeName_LedBullet => "子弹";
+
+        public override string Resource_TypeName_HandCannon => "手持火炮";
+        public override string Resource_TypeName_HandCulverin => "手持长管火枪";
+        public override string Resource_TypeName_Rifle => "步枪";
+        public override string Resource_TypeName_Blunderbuss => "火铳";
+
+        public override string Resource_TypeName_Manuballista => "手动弩炮";
+        public override string Resource_TypeName_Catapult => "投石机";
+        public override string Resource_TypeName_BatteringRam => "攻城锤";
+        public override string Resource_TypeName_SiegeCannonBronze => "青铜巨炮";
+        public override string Resource_TypeName_ManCannonBronze => "青铜火炮";
+        public override string Resource_TypeName_SiegeCannonIron => "铁质重炮";
+        public override string Resource_TypeName_ManCannonIron => "铁制火炮";
+
+        public override string Resource_TypeName_PaddedArmor => "软甲";
+        public override string Resource_TypeName_HeavyPaddedArmor => "重型软甲";
+
+        public override string Resource_TypeName_IronArmor => "锁子甲";
+        public override string Resource_TypeName_HeavyIronArmor => "重型锁子甲";
+
+        public override string Resource_TypeName_BronzeArmor => "青铜甲";
+
+        public override string Resource_TypeName_LightPlateArmor => "板甲";
+        public override string Resource_TypeName_FullPlateArmor => "全身板甲";
+        public override string Resource_TypeName_MithrilArmor => "秘银甲";
+        public override string Resource_TypeName_Coin => "金币";
+
+        public override string UnitType_Warhammer => "战锤骑士";
+        public override string UnitType_MithrilKnight => "不朽骑士";
+        public override string UnitType_MithrilArcher => "不朽弓箭手";
+        public override string UnitType_SpearAndShield => "枪盾兵";
+
+        public override string UnitType_CollectionOfSoldiers => "士兵集群";
+        public override string UnitType_CollectionOfArmies => "军队集群";
+
+        /// <summary>
+        /// ID标签为唯一编号
+        /// </summary>
+        public override string UnitId => "（编号 {0}）";
+
+        public override string BuildHud_AreaEffectTitle => "区域效果";
+        public override string BuildHud_BonusRadius => "加成范围：{0}";
+
+        public override string BuildHud_BuildTime => "建造时间";
+        public override string SchoolHud_ToLevel => "升级所需";
+        public override string SchoolHud_TimeDescription => "时间基于零经验，经验越高所需时间越短。";
+        public override string SchoolHud_SelectSchool => "选择学院";
+        public override string Upgrade_Order => "升级顺序";
+
+        public override string Building_ListDescription => "该类别中所有建筑的列表";
+
+        public override string BuildingType_IsUpgraded => "{0} - 已升级";
+        public override string BuildingType_WoodCutter => "伐木场";
+        public override string BuildingType_Workshop_Description => "提升周围地区的工作效率";
+
+        public override string BuildingType_WoodCutter_AreaAffect => "从树木获取木材提升 {0}%";
+
+        public override string BuildingType_StoneCutter_AreaAffect => "获取石材提升 {0}%";
+
+        public override string BuildingType_StoneCutter => "采石场";
+
+        public override string BuildingType_Embassy => "大使馆";
+        public override string BuildingType_Embassy_Description => "用于处理外交关系";
+
+        public override string BuildingType_SoldierBarracks => "士兵兵营";
+        public override string BuildingType_ArcherBarracks => "弓兵兵营";
+        public override string BuildingType_WarmashineBarracks => "战争机器兵营";
+        public override string BuildingType_GunBarracks => "火枪兵兵营";
+        public override string BuildingType_CannonBarracks => "火炮兵兵营";
+        public override string BuildingType_KnightsBarracks => "骑士兵营";
+
+        public override string BuildingType_WaterResovoir => "蓄水池";
+        public override string BuildingType_WaterResovoir_Description => "提高水的储存量";
+
+        public override string BuildingType_SmeltingFurnace => "冶炼炉";
+        public override string BuildingType_SmeltingFurnace_Description => "将矿石提炼为金属";
+
+        public override string BuildingType_Foundry => "铸造厂";
+        public override string BuildingType_Foundry_Description => "金属铸造车间";
+
+        public override string BuildingType_Armory => "护甲工坊";
+        public override string BuildingType_Armory_Description => "用于制造盔甲的设施";
+
+        public override string BuildingType_Chemist => "炼金工坊";
+        public override string BuildingType_Chemist_Description => "用于制造化学材料的设施";
+
+        public override string BuildingType_CoinMaker => "造币厂";
+        public override string BuildingType_CoinMaker_Description => "将金属转换为货币";
+
+        public override string BuildingType_Gunmaker => "火器工坊";
+        public override string BuildingType_Gunmaker_Description => "制造火枪与大炮的场所";
+
+        public override string BuildingType_School_Tab => "学院";
+        public override string BuildingType_School => "工匠公会";
+        public override string BuildingType_School_Description => "提高工人的技能等级";
+
+        public override string BuildingType_GoldDelivery => "金币运送站";
+        public override string BuildingType_Bank_Description => "金币管理中心";
+
+        public override string DecorType_CobbleStones => "鹅卵石路";
+        public override string DecorType_Square => "城市广场";
+
+        public override string DecorType_Garden => "花园";
+        public override string DecorType_Flag => "旗帜";
+        public override string DecorType_Banner => "横幅";
+
+        public override string BuildingType_DirtRoad => "泥土路";
+        public override string BuildingType_Palisade => "木栅要塞";
+
+        public override string ResourceType_ServiceMen => "服务人员";
+        public override string BuildingType_ServiceHouse => "服务小屋";
+        public override string BuildingType_ServiceHouse_DescriptionAddX => "增加服务人员：{0}";
+
+        public override string BuildingType_GuardOffice => "守卫室";
+        public override string BuildingType_GuardOffice_DescriptionAddX => "守卫上限增加：{0}";
+
+        public override string BuildingType_DirtWall => "土墙";
+        public override string BuildingType_DirtTower => "土塔";
+        public override string BuildingType_WoodWall => "木墙";
+        public override string BuildingType_WoodTower => "木塔";
+        public override string BuildingType_StoneWall => "石墙";
+        public override string BuildingType_StoneTower => "石塔";
+        public override string BuildingType_StoneGate => "石门";
+        public override string BuildingType_StoneHouse => "石屋";
+
+
+        /// <summary>
+        /// 用于列出轻微变化的名称，例如“灯A”“灯B”
+        /// </summary>
+        public override string VariantType_A => "{0} A";
+        public override string VariantType_B => "{0} B";
+        public override string VariantType_C => "{0} C";
+        public override string VariantType_D => "{0} D";
+        public override string VariantType_E => "{0} E";
+        public override string VariantType_F => "{0} F";
+        public override string VariantType_G => "{0} G";
+        public override string VariantType_H => "{0} H";
+
+        public override string BuildingToolShape_Free => "自由绘制";
+        public override string BuildingToolShape_Area => "矩形";
+        public override string BuildingToolShape_Line => "直线";
+        public override string BuildingToolShape_LShape => "L形";
+
+        public override string CityHall_Upgrade => "升级市政厅";
+
+        /// <summary>
+        /// 城市可支持的最大工人数上限
+        /// </summary>
+        public override string CityHall_MaxSupportedWorkers => "最大可支持工人数量：{0}";
+
+        public override string CityHall_Size_Small => "村庄";
+        public override string CityHall_Size_Medium => "城镇";
+        public override string CityHall_Size_Large => "都城";
+
+        public override string GuardHousingCount => "守卫宿舍容量";
+        public override string ServicemenCount => "服务人员：{0}";
+
+        public override string Work_MiningResource => "开采 {0}";
+
+        public override string MenuTab_Progress => "发展进度";
+
+        public override string Automation_AutomateCity => "自动化城市";
+        public override string Automation_AutomationFocus => "自动化方向";
+        public override string Automation_AutomationFocus_Grow => "发展";
+        public override string Automation_AutomationFocus_Export => "出口";
+        public override string Automation_AutomationFocus_War => "战争";
+
+        public override string CityCulture_Smelters_Description => "提升矿石的冶炼效率";
+        public override string CityCulture_Smelters => "炼金工";
+
+        public override string CityCulture_Apprentices_Description => "新工人可从现有工人获得经验";
+        public override string CityCulture_Apprentices => "学徒";
+
+        public override string CityCulture_BronzeCasters_Description => "提高青铜及其制品的产量";
+        public override string CityCulture_BronzeCasters => "青铜铸造师";
+
     }
 }

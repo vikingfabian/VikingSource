@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars
                     new RbBeginTitle(),
                     new RbImage(SpriteName.WarsHudIconTutorial),
                     new RbTab(ButtonTextTabbing),
-                    new RbText(DssRef.todoLang.LobbyDemoMode_ShortTutorial),
+                    new RbText(DssRef.lang.LobbyDemoMode_ShortTutorial),
                     new RbTab(MoreArrowTabbing),
                     moreArrow,
                 },
@@ -326,7 +326,7 @@ namespace VikingEngine.DSSWars
                     new RbBeginTitle(),
                     new RbImage(SpriteName.WarsHudIconStart),
                     new RbTab(ButtonTextTabbing),
-                    new RbText(DssRef.todoLang.LobbyDemoMode_Demo),
+                    new RbText(DssRef.lang.LobbyDemoMode_Demo),
                     new RbTab(MoreArrowTabbing),
                     moreArrow,
                 },
@@ -336,8 +336,8 @@ namespace VikingEngine.DSSWars
             }
             //content.newLine();
            
-            //content.Add(new RbButton(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Mode_BattleLab) },
-            //                new RbAction(startBattleLab), new RbTooltip_Text(DssRef.todoLang.Lobby_Mode_BattleLab_Description)));
+            //content.Add(new RbButton(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Mode_BattleLab) },
+            //                new RbAction(startBattleLab), new RbTooltip_Text(DssRef.lang.Lobby_Mode_BattleLab_Description)));
 
             HudLib.WishListButton(content);
 
@@ -351,7 +351,7 @@ namespace VikingEngine.DSSWars
                     new RbBeginTitle(),
                     new RbImage(SpriteName.WarsHudIconTutorial),
                     new RbTab(ButtonTextTabbing),
-                    new RbText(DssRef.todoLang.LobbyDemoMode_LongTutorial),
+                    new RbText(DssRef.lang.LobbyDemoMode_LongTutorial),
                     new RbTab(MoreArrowTabbing),
                     moreArrow,
                 },
@@ -412,17 +412,17 @@ namespace VikingEngine.DSSWars
             content.newParagraph();
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
-                     new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_Options, StackOption.ClearStack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_Options));
+                     new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_Options, StackOption.ClearStack), new RbTooltip_Text(DssRef.lang.Lobby_Category_Options));
                 content.Add(btn);
             }
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconEditor) }, 
-                    new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListEditors, StackOption.ClearStack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_Editor));
+                    new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListEditors, StackOption.ClearStack), new RbTooltip_Text(DssRef.lang.Lobby_Category_Editor));
                 content.Add(btn);
             }
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconExtraModes) },
-                    new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListExtra , StackOption.ClearStack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_ExtraModes));
+                    new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListExtra , StackOption.ClearStack), new RbTooltip_Text(DssRef.lang.Lobby_Category_ExtraModes));
                 content.Add(btn);
             }
 
@@ -756,7 +756,7 @@ namespace VikingEngine.DSSWars
                                     new RbBeginTitle(),
                                     new RbImage(SpriteName.WarsHudIconAdd),
                                     new RbSpace(),
-                                    new RbText(DssRef.todoLang.Hud_Next),
+                                    new RbText(DssRef.lang.Hud_Next),
                                     new RbTab(MoreArrowTabbing),
                                     moreArrow,
                                 },
@@ -767,7 +767,7 @@ namespace VikingEngine.DSSWars
             }                      
 
             content.newParagraph();
-            content.h1(DssRef.todoLang.Lobby_GameSetup, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Lobby_GameSetup, HudLib.TitleColor_Head);
             
             GameStorage defaultOptions = new GameStorage();
 
@@ -776,10 +776,10 @@ namespace VikingEngine.DSSWars
             if (loadingMeta != null && loadingMeta.customMap)
             {
                 content.newLine();
-                content.Add(new RbText(DssRef.todoLang.MapType_CustomMap));
+                content.Add(new RbText(DssRef.lang.MapType_CustomMap));
                 content.space();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{new RbText(DssRef.todoLang.Hud_Cancel)}, 
-                    new RbAction(cancelCustomMap),new RbTooltip_Text(DssRef.todoLang.MapType_CustomMap)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{new RbText(DssRef.lang.Hud_Cancel)}, 
+                    new RbAction(cancelCustomMap),new RbTooltip_Text(DssRef.lang.MapType_CustomMap)));
             }
             else
             {
@@ -811,8 +811,8 @@ namespace VikingEngine.DSSWars
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_AllowPause) }, allowPauseProperty));
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_CentralGold) }, centralGoldProperty, 
-                new RbTooltip_Text(DssRef.todoLang.Settings_CentralGold_Description)));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_CentralGold) }, centralGoldProperty, 
+                new RbTooltip_Text(DssRef.lang.Settings_CentralGold_Description)));
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsResource_Food));
             content.space();
@@ -868,14 +868,14 @@ namespace VikingEngine.DSSWars
                     {
                         RichBoxContent content = new RichBoxContent();
 
-                        content.h1(DssRef.todoLang.Lobby_Category_Editor, HudLib.TitleColor_Head);
+                        content.h1(DssRef.lang.Lobby_Category_Editor, HudLib.TitleColor_Head);
 
                         content.newLine();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Editor_MapEditor) }),
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Editor_MapEditor) }),
                             new RbAction(openMapEditor), null, !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Editor_VoxelEditor) }),
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Editor_VoxelEditor) }),
                             new RbAction(voxeleditor), new RbTooltip_Text(".Create blocky models. Requires Xbox controller"), !PlatformSettings.STEAM_DEMO));
 
                         content.newParagraph();
@@ -890,21 +890,21 @@ namespace VikingEngine.DSSWars
                     {
                         RichBoxContent content = new RichBoxContent();
 
-                        content.h1(DssRef.todoLang.Lobby_Category_ExtraModes, HudLib.TitleColor_Head);
+                        content.h1(DssRef.lang.Lobby_Category_ExtraModes, HudLib.TitleColor_Head);
 
                         content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Mode_BattleLab) }),
-                            new RbAction(startBattleLab), new RbTooltip_Text(DssRef.todoLang.Lobby_Mode_BattleLab_Description), !PlatformSettings.STEAM_DEMO));
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Mode_BattleLab) }),
+                            new RbAction(startBattleLab), new RbTooltip_Text(DssRef.lang.Lobby_Mode_BattleLab_Description), !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_Mode_Commander) }),
-                            new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text(DssRef.todoLang.Lobby_Mode_Commander_Description), !PlatformSettings.STEAM_DEMO));
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Mode_Commander) }),
+                            new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text(DssRef.lang.Lobby_Mode_Commander_Description), !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Lobby_MusicPlayList) }),
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_MusicPlayList) }),
                             new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListMusic, StackOption.ClearStack),null, !PlatformSettings.STEAM_DEMO));
 
 
@@ -922,13 +922,13 @@ namespace VikingEngine.DSSWars
                             switch (DssRef.storage.runTutorial_1short_2normal)
                             {
                                 default:
-                                    modeTitle = DssRef.todoLang.LobbyDemoMode_Demo;
+                                    modeTitle = DssRef.lang.LobbyDemoMode_Demo;
                                     break;
                                 case 1:
-                                    modeTitle = DssRef.todoLang.LobbyDemoMode_ShortTutorial;
+                                    modeTitle = DssRef.lang.LobbyDemoMode_ShortTutorial;
                                     break;
                                 case 2:
-                                    modeTitle = DssRef.todoLang.LobbyDemoMode_LongTutorial;
+                                    modeTitle = DssRef.lang.LobbyDemoMode_LongTutorial;
                                     break;
 
                             }
@@ -1008,7 +1008,7 @@ namespace VikingEngine.DSSWars
 
         private void playerSetupToMenu(RichBoxContent content)
         {
-            content.h1(DssRef.todoLang.Lobby_PlayerSetup, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Lobby_PlayerSetup, HudLib.TitleColor_Head);
 
             for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
             {
@@ -1070,7 +1070,7 @@ namespace VikingEngine.DSSWars
         //        foodSlider.onLeaveCallback = new Action(foodSliderLeave);
         //        foodSlider.ToolTip = DssRef.lang.Settings_FoodMultiplier_Description;
 
-        //        new GuiCheckbox(DssRef.todoLang.Settings_CentralGold, DssRef.todoLang.Settings_CentralGold_Description, centralGoldProperty, layout);
+        //        new GuiCheckbox(DssRef.lang.Settings_CentralGold, DssRef.lang.Settings_CentralGold_Description, centralGoldProperty, layout);
 
         //        new GuiTextButton(DssRef.lang.Settings_ResetToDefault, null, resetToDefault, false, layout);
         //    }

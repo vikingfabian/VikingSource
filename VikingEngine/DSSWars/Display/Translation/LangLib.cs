@@ -65,103 +65,103 @@ namespace VikingEngine.DSSWars.Display.Translation
                     break;
 
                 case WorkPriorityType.craftCoolingFluid:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_CoolingFluid);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_CoolingFluid);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_CoolingFluid;
                     break;
 
                 case WorkPriorityType.craftToolkit:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Toolkit);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Toolkit);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Toolkit;
                     break;
 
                 case WorkPriorityType.craftWagonLight:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Wagon2Wheel);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Wagon2Wheel);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Wagon2Wheel;
                     break;
 
                 case WorkPriorityType.craftWagonHeavy:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Wagon4Wheel);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Wagon4Wheel);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Wagon4Wheel;
                     break;
 
                 case WorkPriorityType.craftBlackPowder:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BlackPowder);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BlackPowder);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_BlackPowder;
                     break;
 
                 case WorkPriorityType.craftGunPowder:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_GunPowder);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_GunPowder);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_GunPowder;
                     break;
 
                 case WorkPriorityType.craftBullet:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_LedBullet);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LedBullet);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Bullets;
                     break;
 
                 case WorkPriorityType.smeltIron:
-                    name = string.Format(DssRef.todoLang.Work_SmeltX, DssRef.lang.Resource_TypeName_Iron);
+                    name = string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Iron);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Iron;
                     break;
 
                 case WorkPriorityType.smeltTin:
-                    name = string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Tin);
+                    name = string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Tin);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Tin;
                     break;
 
                 case WorkPriorityType.smeltCopper:
-                    name = string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Copper);
+                    name = string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Copper);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Copper;
                     break;
 
                 case WorkPriorityType.smeltLead:
-                    name = string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Lead);
+                    name = string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Lead);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Lead;
                     break;
 
                 case WorkPriorityType.smeltSilver:
-                    name = string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Silver);
+                    name = string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Silver);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Silver;
                     break;
 
                 case WorkPriorityType.craftBronze:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Bronze);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bronze);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Bronze;
                     break;
 
                 case WorkPriorityType.craftCastIron:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_CastIron);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_CastIron);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_CastIron;
                     break;
 
                 case WorkPriorityType.craftBloomeryIron:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BloomIron);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BloomIron);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_BloomeryIron;
                     break;
 
                 case WorkPriorityType.craftSteel:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Steel);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Steel);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Steel;
                     break;
 
                 case WorkPriorityType.craftMithril:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Mithril);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Mithril);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_MithrilAlloy;
                     break;
@@ -191,47 +191,47 @@ namespace VikingEngine.DSSWars.Display.Translation
                     break;
 
                 case WorkPriorityType.miningIron:
-                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.lang.Resource_TypeName_Iron);
+                    name = string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Iron);
                     workIcon = SpriteName.WarsWorkMine;
                     typeIcon = SpriteName.WarsResource_Iron;
                     break;
 
                 case WorkPriorityType.miningTin:
-                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Tin);
+                    name = string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Tin);
                     workIcon = SpriteName.WarsWorkMine;
                     typeIcon = SpriteName.WarsResource_Tin;
                     break;
 
                 case WorkPriorityType.miningCopper:
-                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Copper);
+                    name = string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Copper);
                     workIcon = SpriteName.WarsWorkMine;
                     typeIcon = SpriteName.WarsResource_Copper;
                     break;
 
                 case WorkPriorityType.miningLead:
-                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Lead);
+                    name = string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Lead);
                     workIcon = SpriteName.WarsWorkMine;
                     typeIcon = SpriteName.WarsResource_Lead;
                     break;
 
                 case WorkPriorityType.miningSilver:
-                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Silver);
+                    name = string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Silver);
                     workIcon = SpriteName.WarsWorkMine;
                     typeIcon = SpriteName.WarsResource_Silver;
                     break;
 
                 case WorkPriorityType.miningGold:
-                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.lang.ResourceType_Gold);
+                    name = string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.ResourceType_Gold);
                     workIcon = SpriteName.WarsWorkMine;
                     typeIcon = SpriteName.WarsResource_Gold;
                     break;
                 case WorkPriorityType.miningSulfur:
-                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Sulfur);
+                    name = string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Sulfur);
                     workIcon = SpriteName.WarsWorkMine;
                     typeIcon = SpriteName.WarsResource_Sulfur;
                     break;
                 case WorkPriorityType.miningMithril:
-                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_RawMithril);
+                    name = string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_RawMithril);
                     workIcon = SpriteName.WarsWorkMine;
                     typeIcon = SpriteName.WarsResource_Mithril;
                     break;
@@ -243,13 +243,13 @@ namespace VikingEngine.DSSWars.Display.Translation
                     break;
 
                 case WorkPriorityType.craftBronzeSword:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BronzeSword);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BronzeSword);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_BronzeSword;
                     break;
 
                 case WorkPriorityType.craftShortSword:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ShortSword);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ShortSword);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_ShortSword;
                     break;
@@ -261,19 +261,19 @@ namespace VikingEngine.DSSWars.Display.Translation
                     break;
 
                 case WorkPriorityType.craftLongSword:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_LongSword);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LongSword);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Longsword;
                     break;
 
                 case WorkPriorityType.craftHandSpear:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HandSpear);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HandSpear);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_HandSpear;
                     break;
 
                 case WorkPriorityType.craftWarhammer:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Warhammer);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Warhammer);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Warhammer;
                     break;
@@ -291,19 +291,19 @@ namespace VikingEngine.DSSWars.Display.Translation
                     break;
 
                 case WorkPriorityType.craftMithrilSword:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_MithrilSword);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilSword);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_MithrilSword;
                     break;
 
                 case WorkPriorityType.craftSlingshot:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_SlingShot);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SlingShot);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Slingshot;
                     break;
 
                 case WorkPriorityType.craftThrowingspear:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ThrowingSpear);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ThrowingSpear);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_ThrowSpear;
                     break;
@@ -321,37 +321,37 @@ namespace VikingEngine.DSSWars.Display.Translation
                     break;
 
                 case WorkPriorityType.craftCrossbow:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Crossbow);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Crossbow);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Crossbow;
                     break;
 
                 case WorkPriorityType.craftMithrilbow:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_MithrilBow);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilBow);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Mithrilbow;
                     break;
 
                 case WorkPriorityType.craftHandCannon:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HandCannon);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HandCannon);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_BronzeRifle;
                     break;
 
                 case WorkPriorityType.craftHandCulverin:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HandCulverin);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HandCulverin);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_BronzeShotgun;
                     break;
 
                 case WorkPriorityType.craftRifle:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Rifle);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Rifle);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_IronRifle;
                     break;
 
                 case WorkPriorityType.craftBlunderbus:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Blunderbus);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Blunderbuss);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_IronShotgun;
                     break;
@@ -363,91 +363,91 @@ namespace VikingEngine.DSSWars.Display.Translation
                     break;
 
                 case WorkPriorityType.craftManuBallista:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Manuballista);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Manuballista);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Manuballista;
                     break;
 
                 case WorkPriorityType.craftCatapult:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Catapult);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Catapult);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Catapult;
                     break;
 
                 case WorkPriorityType.craftBatteringRam:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BatteringRam);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BatteringRam);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.MissingImage;
                     break;
 
                 case WorkPriorityType.craftSiegeCannonBronze:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_SiegeCannonBronze);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SiegeCannonBronze);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_BronzeSiegeCannon;
                     break;
 
                 case WorkPriorityType.craftManCannonBronze:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ManCannonBronze);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ManCannonBronze);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_BronzeManCannon;
                     break;
 
                 case WorkPriorityType.craftSiegeCannonIron:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_SiegeCannonIron);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SiegeCannonIron);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_IronSiegeCannon;
                     break;
 
                 case WorkPriorityType.craftManCannonIron:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ManCannonIron);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ManCannonIron);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_IronManCannon;
                     break;
 
                 case WorkPriorityType.craftPaddedArmor:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_PaddedArmor);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_PaddedArmor);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_PaddedArmor;
                     break;
 
                 case WorkPriorityType.craftHeavyPaddedArmor:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HeavyPaddedArmor);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyPaddedArmor);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_HeavyPaddedArmor;
                     break;
 
                 case WorkPriorityType.craftBronzeArmor:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BronzeArmor);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BronzeArmor);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_BronzeArmor;
                     break;
 
                 case WorkPriorityType.craftMailArmor:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_IronArmor);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_IronArmor);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_IronArmor;
                     break;
 
                 case WorkPriorityType.craftHeavyMailArmor:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HeavyIronArmor);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyIronArmor);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_HeavyIronArmor;
                     break;
 
                 case WorkPriorityType.craftPlateArmor:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_LightPlateArmor);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LightPlateArmor);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_LightPlateArmor;
                     break;
 
                 case WorkPriorityType.craftFullPlateArmor:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_FullPlateArmor);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_FullPlateArmor);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_FullPlateArmor;
                     break;
 
                 case WorkPriorityType.craftMithrilArmor:
-                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_MithrilArmor);
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilArmor);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_MithrilArmor;
                     break;
@@ -464,15 +464,15 @@ namespace VikingEngine.DSSWars.Display.Translation
             switch (level)
             {
                 case XP.ExperienceLevel.Beginner_1:
-                    return DssRef.todoLang.ExperienceLevel_1;
+                    return DssRef.lang.ExperienceLevel_1;
                 case XP.ExperienceLevel.Practitioner_2:
-                    return DssRef.todoLang.ExperienceLevel_2;
+                    return DssRef.lang.ExperienceLevel_2;
                 case XP.ExperienceLevel.Expert_3:
-                    return DssRef.todoLang.ExperienceLevel_3;
+                    return DssRef.lang.ExperienceLevel_3;
                 case XP.ExperienceLevel.Master_4:
-                    return DssRef.todoLang.ExperienceLevel_4;
+                    return DssRef.lang.ExperienceLevel_4;
                 case XP.ExperienceLevel.Legendary_5:
-                    return DssRef.todoLang.ExperienceLevel_5;
+                    return DssRef.lang.ExperienceLevel_5;
             }
 
             return TextLib.Error;
@@ -483,72 +483,72 @@ namespace VikingEngine.DSSWars.Display.Translation
             switch (type)
             {
                 case WorkExperienceType.NONE:
-                    name = DssRef.todoLang.Hud_None;
+                    name = DssRef.lang.Hud_None;
                     icon = SpriteName.BluePrintSquareFull;
                     break;
 
                 case WorkExperienceType.Farm:
-                    name = DssRef.todoLang.ExperienceType_Farm;
+                    name = DssRef.lang.ExperienceType_Farm;
                     icon = SpriteName.WarsWorkFarm;
                     break;
                 case WorkExperienceType.AnimalCare:
-                    name = DssRef.todoLang.ExperienceType_AnimalCare;
+                    name = DssRef.lang.ExperienceType_AnimalCare;
                     icon = SpriteName.WarsBuild_HenPen;
                     break;
                 case WorkExperienceType.HouseBuilding:
-                    name = DssRef.todoLang.ExperienceType_HouseBuilding;
+                    name = DssRef.lang.ExperienceType_HouseBuilding;
                     icon = SpriteName.WarsHammer;
                     break;
                 case WorkExperienceType.WoodWork:
-                    name = DssRef.todoLang.ExperienceType_WoodWork;
+                    name = DssRef.lang.ExperienceType_WoodWork;
                     icon = SpriteName.WarsResource_Wood;
                     break;
                 case WorkExperienceType.StoneCutter:
-                    name = DssRef.todoLang.ExperienceType_StoneCutter;
+                    name = DssRef.lang.ExperienceType_StoneCutter;
                     icon = SpriteName.WarsResource_Stone;
                     break;
                 case WorkExperienceType.Mining:
-                    name = DssRef.todoLang.ExperienceType_Mining;
+                    name = DssRef.lang.ExperienceType_Mining;
                     icon = SpriteName.WarsWorkMine;
                     break;
                 case WorkExperienceType.Transport:
-                    name = DssRef.todoLang.ExperienceType_Transport;
+                    name = DssRef.lang.ExperienceType_Transport;
                     icon = SpriteName.WarsWorkMove;
                     break;
                 case WorkExperienceType.Cook:
-                    name = DssRef.todoLang.ExperienceType_Cook;
+                    name = DssRef.lang.ExperienceType_Cook;
                     icon = SpriteName.WarsResource_Food;
                     break;
                 case WorkExperienceType.Fletcher:
-                    name = DssRef.todoLang.ExperienceType_Fletcher;
+                    name = DssRef.lang.ExperienceType_Fletcher;
                     icon = SpriteName.WarsFletcherArrowIcon;
                     break;
                 case WorkExperienceType.Smelting:
-                    name = DssRef.todoLang.ExperienceType_RefineOre;
+                    name = DssRef.lang.ExperienceType_RefineOre;
                     icon = SpriteName.WarsResource_CastIron;
                     break;
                 case WorkExperienceType.CastMetal:
-                    name = DssRef.todoLang.ExperienceType_Casting;
+                    name = DssRef.lang.ExperienceType_Casting;
                     icon = SpriteName.WarsResource_Bronze;
                     break;
                 case WorkExperienceType.CraftMetal:
-                    name = DssRef.todoLang.ExperienceType_CraftMetal;
+                    name = DssRef.lang.ExperienceType_CraftMetal;
                     icon = SpriteName.WarsBuild_Smith;
                     break;
                 case WorkExperienceType.CraftArmor:
-                    name = DssRef.todoLang.ExperienceType_CraftArmor;
+                    name = DssRef.lang.ExperienceType_CraftArmor;
                     icon = SpriteName.WarsResource_IronArmor;
                     break;
                 case WorkExperienceType.CraftWeapon:
-                    name = DssRef.todoLang.ExperienceType_CraftWeapon;
+                    name = DssRef.lang.ExperienceType_CraftWeapon;
                     icon = SpriteName.WarsResource_Sword;
                     break;
                 case WorkExperienceType.CraftFuel:
-                    name = DssRef.todoLang.ExperienceType_CraftFuel;
+                    name = DssRef.lang.ExperienceType_CraftFuel;
                     icon = SpriteName.WarsResource_Fuel;
                     break;
                 case WorkExperienceType.Chemistry:
-                    name = DssRef.todoLang.BuildingType_Chemist;
+                    name = DssRef.lang.BuildingType_Chemist;
                     icon = SpriteName.WarsBuild_Chemist;
                     break;
 
@@ -592,7 +592,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         //        case MainWeapon.TwoHandSword: return DssRef.lang.Resource_TypeName_TwoHandSword;
         //        case MainWeapon.KnightsLance: return DssRef.lang.Resource_TypeName_KnightsLance;
         //        case MainWeapon.Bow: return DssRef.lang.Resource_TypeName_Bow;
-        //        case MainWeapon.Longbow: return DssRef.todoLang.Resource_TypeName_Longbow;
+        //        case MainWeapon.Longbow: return DssRef.lang.Resource_TypeName_Longbow;
         //        case MainWeapon.Ballista: return DssRef.lang.UnitType_Ballista;
 
         //        default:
@@ -605,61 +605,61 @@ namespace VikingEngine.DSSWars.Display.Translation
             switch (action)
             {
                 case InputActionType.StopStart:
-                    return DssRef.todoLang.InputActionName_StopStart;
+                    return DssRef.lang.InputActionName_StopStart;
                 case InputActionType.ToggleHudDetail:
-                    return DssRef.todoLang.InputActionName_ToggleHudDetail;
+                    return DssRef.lang.InputActionName_ToggleHudDetail;
                 case InputActionType.GameSpeed:
                     return DssRef.lang.Input_GameSpeed;
                 case InputActionType.PauseGame:
                     return DssRef.lang.Input_Pause;
                 case InputActionType.NextCity:
-                    return DssRef.todoLang.InputActionName_NextCity;
+                    return DssRef.lang.InputActionName_NextCity;
                 case InputActionType.NextArmy:
-                    return DssRef.todoLang.InputActionName_NextArmy;
+                    return DssRef.lang.InputActionName_NextArmy;
                 case InputActionType.NextBattle:
-                    return DssRef.todoLang.InputActionName_NextBattle;
+                    return DssRef.lang.InputActionName_NextBattle;
                 case InputActionType.Build:
-                    return DssRef.todoLang.InputActionName_Build;
+                    return DssRef.lang.InputActionName_Build;
                 case InputActionType.Copy:
-                    return DssRef.todoLang.InputActionName_Copy;
+                    return DssRef.lang.InputActionName_Copy;
                 case InputActionType.Paste:
-                    return DssRef.todoLang.InputActionName_Paste;
+                    return DssRef.lang.InputActionName_Paste;
                 case InputActionType.Menu:
-                    return DssRef.todoLang.InputActionName_Menu;
+                    return DssRef.lang.InputActionName_Menu;
                 case InputActionType.FlagDesign_ToggleColor_Prev:
-                    return DssRef.todoLang.InputActionName_FlagDesign_ToggleColor_Prev;
+                    return DssRef.lang.InputActionName_FlagDesign_ToggleColor_Prev;
                 case InputActionType.FlagDesign_ToggleColor_Next:
-                    return DssRef.todoLang.InputActionName_FlagDesign_ToggleColor_Next;
+                    return DssRef.lang.InputActionName_FlagDesign_ToggleColor_Next;
                 case InputActionType.FlagDesign_PaintBucket:
-                    return DssRef.todoLang.InputActionName_FlagDesign_PaintBucket;
+                    return DssRef.lang.InputActionName_FlagDesign_PaintBucket;
                 case InputActionType.Controller_FlagDesign_Colorpicker:
-                    return DssRef.todoLang.InputActionName_Controller_FlagDesign_Colorpicker;
+                    return DssRef.lang.InputActionName_Controller_FlagDesign_Colorpicker;
                 case InputActionType.ControllerFocus:
-                    return DssRef.todoLang.InputActionName_ControllerFocus;
+                    return DssRef.lang.InputActionName_ControllerFocus;
                 case InputActionType.ControllerCancel:
-                    return DssRef.todoLang.InputActionName_ControllerCancel;
+                    return DssRef.lang.InputActionName_ControllerCancel;
                 case InputActionType.ControllerMessageClick:
-                    return DssRef.todoLang.InputActionName_ControllerMessageClick;
+                    return DssRef.lang.InputActionName_ControllerMessageClick;
                 case InputActionType.ControllerSelect:
-                    return DssRef.todoLang.InputActionName_ControllerSelect;
+                    return DssRef.lang.InputActionName_ControllerSelect;
                 case InputActionType.WASD_UP:
-                    return DssRef.todoLang.InputActionName_WASD_UP;
+                    return DssRef.lang.InputActionName_WASD_UP;
                 case InputActionType.WASD_DOWN:
-                    return DssRef.todoLang.InputActionName_WASD_DOWN;
+                    return DssRef.lang.InputActionName_WASD_DOWN;
                 case InputActionType.WASD_LEFT:
-                    return DssRef.todoLang.InputActionName_WASD_LEFT;
+                    return DssRef.lang.InputActionName_WASD_LEFT;
                 case InputActionType.WASD_RIGHT:
-                    return DssRef.todoLang.InputActionName_WASD_RIGHT;
+                    return DssRef.lang.InputActionName_WASD_RIGHT;
                 case InputActionType.CameraTiltLeft:
-                    return DssRef.todoLang.InputActionName_CameraTiltLeft;
+                    return DssRef.lang.InputActionName_CameraTiltLeft;
                 case InputActionType.CameraTiltRight:
-                    return DssRef.todoLang.InputActionName_CameraTiltRight;
+                    return DssRef.lang.InputActionName_CameraTiltRight;
                 case InputActionType.CameraTiltUp:
-                    return DssRef.todoLang.InputActionName_CameraTiltUp;
+                    return DssRef.lang.InputActionName_CameraTiltUp;
                 case InputActionType.ZoomInKey:
-                    return DssRef.todoLang.InputActionName_ZoomInKey;
+                    return DssRef.lang.InputActionName_ZoomInKey;
                 case InputActionType.ZoomOutKey:
-                    return DssRef.todoLang.InputActionName_ZoomOutKey;
+                    return DssRef.lang.InputActionName_ZoomOutKey;
 
                 default:
                     throw new NotImplementedException($"InputActionName not implemented for {action}");
@@ -723,8 +723,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TrainingLevel.Basic: return DssRef.lang.Conscript_Training_Basic;
                 case TrainingLevel.Skillful: return DssRef.lang.Conscript_Training_Skillful;
                 case TrainingLevel.Professional: return DssRef.lang.Conscript_Training_Professional;
-                case TrainingLevel.Champion: return DssRef.todoLang.Conscript_Training_Champion;
-                case TrainingLevel.Legendary: return DssRef.todoLang.Conscript_Training_Legendary;
+                case TrainingLevel.Champion: return DssRef.lang.Conscript_Training_Champion;
+                case TrainingLevel.Legendary: return DssRef.lang.Conscript_Training_Legendary;
 
                 default:
                     throw new NotImplementedException();
@@ -751,7 +751,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case SpecializationType.AntiCavalry:
                     return DssRef.lang.Conscript_Specialization_AntiCavalry;
                 case SpecializationType.CityGuard:
-                    return DssRef.todoLang.Conscript_Soldiers_GuardType;
+                    return DssRef.lang.Conscript_Soldiers_GuardType;
 
                 default:
                     return TextLib.Error;
@@ -776,7 +776,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.Conscription_Title;
                 case MenuTab.Defence:
                     description = null;
-                    return DssRef.todoLang.Defence_Title;
+                    return DssRef.lang.Defence_Title;
                 case MenuTab.Trade:
                     description = null;
                     return DssRef.lang.MenuTab_Trade;
@@ -806,14 +806,14 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.ArmyOption_Disband;
                 case MenuTab.Progress:
                     description= null;
-                    return DssRef.todoLang.MenuTab_Progress;
+                    return DssRef.lang.MenuTab_Progress;
                 case MenuTab.Mix:
                     description = "All info compressed to one place";
                     return ".Mix";
 
                 case MenuTab.Help:
                     description = null;
-                    return DssRef.todoLang.Help_Title;
+                    return DssRef.lang.Help_Title;
                 default:
                     throw new NotImplementedException();
             }
@@ -829,11 +829,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainBuildingType.Logistics:
                             return DssRef.lang.BuildingType_Logistics;
                         case TerrainBuildingType.SoldierBarracks:
-                            return DssRef.todoLang.BuildingType_SoldierBarracks;
+                            return DssRef.lang.BuildingType_SoldierBarracks;
                         case TerrainBuildingType.Bank:
                             return DssRef.lang.BuildingType_Bank;
                         case TerrainBuildingType.CoinMinter:
-                            return DssRef.todoLang.BuildingType_CoinMaker;
+                            return DssRef.lang.BuildingType_CoinMaker;
                         case TerrainBuildingType.Brewery:
                             return DssRef.lang.BuildingType_Brewery;
                         case TerrainBuildingType.Carpenter:
@@ -853,19 +853,19 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.BuildingType_Postal;
                         case TerrainBuildingType.PostalLevel2:
                         case TerrainBuildingType.PostalLevel3:
-                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
+                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
 
                         case TerrainBuildingType.GoldDeliveryLevel1:
-                            return DssRef.todoLang.BuildingType_GoldDelivery;
+                            return DssRef.lang.BuildingType_GoldDelivery;
                         case TerrainBuildingType.GoldDeliveryLevel2:
                         case TerrainBuildingType.GoldDeliveryLevel3:
-                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.todoLang.BuildingType_GoldDelivery);
+                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_GoldDelivery);
 
                         case TerrainBuildingType.Recruitment:
                             return DssRef.lang.BuildingType_Recruitment;
                         case TerrainBuildingType.RecruitmentLevel2:
                         case TerrainBuildingType.RecruitmentLevel3:
-                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
+                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
 
                         case TerrainBuildingType.Work_Smith:
                             return DssRef.lang.BuildingType_Smith;                       
@@ -879,44 +879,44 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.BuildingType_WorkerHut;
 
                         case TerrainBuildingType.Smelter:
-                            return DssRef.todoLang.BuildingType_SmeltingFurnace;
+                            return DssRef.lang.BuildingType_SmeltingFurnace;
                         case TerrainBuildingType.WoodCutter:
-                            return DssRef.todoLang.BuildingType_WoodCutter;
+                            return DssRef.lang.BuildingType_WoodCutter;
                         case TerrainBuildingType.StoneCutter:
-                            return DssRef.todoLang.BuildingType_StoneCutter;
+                            return DssRef.lang.BuildingType_StoneCutter;
                         case TerrainBuildingType.Embassy:
-                            return DssRef.todoLang.BuildingType_Embassy;
+                            return DssRef.lang.BuildingType_Embassy;
                         case TerrainBuildingType.WaterResovoir:
-                            return DssRef.todoLang.BuildingType_WaterResovoir;
+                            return DssRef.lang.BuildingType_WaterResovoir;
 
                         case TerrainBuildingType.GuardHouse_Small:
                         case TerrainBuildingType.GuardHouse_Large:
-                            return DssRef.todoLang.BuildingType_GuardOffice;
+                            return DssRef.lang.BuildingType_GuardOffice;
                         
                         case TerrainBuildingType.ArcherBarracks:
-                            return DssRef.todoLang.BuildingType_ArcherBarracks;
+                            return DssRef.lang.BuildingType_ArcherBarracks;
                         case TerrainBuildingType.WarmashineBarracks:
-                            return DssRef.todoLang.BuildingType_WarmashineBarracks;
+                            return DssRef.lang.BuildingType_WarmashineBarracks;
                         case TerrainBuildingType.GunBarracks:
-                            return DssRef.todoLang.BuildingType_GunBarracks;
+                            return DssRef.lang.BuildingType_GunBarracks;
                         case TerrainBuildingType.CannonBarracks:
-                            return DssRef.todoLang.BuildingType_CannonBarracks;
+                            return DssRef.lang.BuildingType_CannonBarracks;
                         case TerrainBuildingType.KnightsBarracks:
-                            return DssRef.todoLang.BuildingType_KnightsBarracks;
+                            return DssRef.lang.BuildingType_KnightsBarracks;
                         case TerrainBuildingType.Foundry:
-                            return DssRef.todoLang.BuildingType_Foundry;
+                            return DssRef.lang.BuildingType_Foundry;
                         case TerrainBuildingType.Armory:
-                            return DssRef.todoLang.BuildingType_Armory;
+                            return DssRef.lang.BuildingType_Armory;
                         case TerrainBuildingType.Chemist:
-                            return DssRef.todoLang.BuildingType_Chemist;
+                            return DssRef.lang.BuildingType_Chemist;
                         case TerrainBuildingType.Gunmaker:
-                            return DssRef.todoLang.BuildingType_Gunmaker;
+                            return DssRef.lang.BuildingType_Gunmaker;
                         case TerrainBuildingType.School:
-                            return DssRef.todoLang.BuildingType_School;
+                            return DssRef.lang.BuildingType_School;
                                                     
                         case TerrainBuildingType.ServiceMenHouse_small:
                         case TerrainBuildingType.ServiceMenHouse_Large:
-                            return DssRef.todoLang.BuildingType_ServiceHouse;
+                            return DssRef.lang.BuildingType_ServiceHouse;
                         
                         default:
                             return DssRef.lang.BuildingType_DefaultName;
@@ -941,22 +941,22 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainSubFoilType.LinenFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen);
                         case TerrainSubFoilType.LinenFarmUpgraded:
-                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen));
+                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen));
 
                         case TerrainSubFoilType.WheatFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
                         case TerrainSubFoilType.WheatFarmUpgraded:
-                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat));
+                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat));
 
                         case TerrainSubFoilType.RapeSeedFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed);
                         case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed));
+                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed));
 
                         case TerrainSubFoilType.HempFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp);
                         case TerrainSubFoilType.HempFarmUpgraded:
-                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp));
+                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp));
 
                         case TerrainSubFoilType.BogIron:
                             return DssRef.lang.Resource_TypeName_BogIron;
@@ -974,17 +974,17 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.ResourceType_Gold);
 
                         case TerrainMineType.TinOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Tin);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Tin);
                         case TerrainMineType.CopperOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Copper);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Copper);
                         case TerrainMineType.SilverOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Silver);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Silver);
                         case TerrainMineType.LeadOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Lead);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Lead);
                         case TerrainMineType.Mithril:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Mithril);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Mithril);
                         case TerrainMineType.Sulfur:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Sulfur);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Sulfur);
 
                     }
                     break;
@@ -993,7 +993,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                     switch ((TerrainRoadType)subType)
                     {
                         case TerrainRoadType.DirtRoad:
-                            return DssRef.todoLang.BuildingType_DirtRoad;
+                            return DssRef.lang.BuildingType_DirtRoad;
                     }
                     break;
 
@@ -1001,50 +1001,50 @@ namespace VikingEngine.DSSWars.Display.Translation
                     switch ((TerrainDecorType)subType)
                     {
                         case TerrainDecorType.Pavement:
-                            return string.Format(DssRef.todoLang.VariantType_A, DssRef.lang.DecorType_Pavement);
+                            return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Pavement);
                         case TerrainDecorType.PavementFlower:
-                            return string.Format(DssRef.todoLang.VariantType_B, DssRef.lang.DecorType_Pavement);
+                            return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Pavement);
                         case TerrainDecorType.Statue_ThePlayer:
-                            return string.Format(DssRef.todoLang.VariantType_A, DssRef.lang.DecorType_Statue);
+                            return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Statue);
 
-                        case TerrainDecorType.PavementLamp: return string.Format(DssRef.todoLang.VariantType_D, DssRef.lang.DecorType_Pavement); 
-                        case TerrainDecorType.PavemenFountain: return string.Format(DssRef.todoLang.VariantType_E, DssRef.lang.DecorType_Pavement); 
-                        case TerrainDecorType.PavementRectFlower: return string.Format(DssRef.todoLang.VariantType_C, DssRef.lang.DecorType_Pavement);
-                        case TerrainDecorType.GardenFourBushes: return string.Format(DssRef.todoLang.VariantType_D, DssRef.todoLang.DecorType_Garden); 
-                        case TerrainDecorType.GardenLongTree: return string.Format(DssRef.todoLang.VariantType_E, DssRef.todoLang.DecorType_Garden);
-                        case TerrainDecorType.GardenWalledBush: return string.Format(DssRef.todoLang.VariantType_C, DssRef.todoLang.DecorType_Garden); 
-                        case TerrainDecorType.GardenGrass: return string.Format(DssRef.todoLang.VariantType_A, DssRef.todoLang.DecorType_Garden);
-                        case TerrainDecorType.GardenBird: return string.Format(DssRef.todoLang.VariantType_B, DssRef.todoLang.DecorType_Garden);
+                        case TerrainDecorType.PavementLamp: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Pavement); 
+                        case TerrainDecorType.PavemenFountain: return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Pavement); 
+                        case TerrainDecorType.PavementRectFlower: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Pavement);
+                        case TerrainDecorType.GardenFourBushes: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Garden); 
+                        case TerrainDecorType.GardenLongTree: return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Garden);
+                        case TerrainDecorType.GardenWalledBush: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Garden); 
+                        case TerrainDecorType.GardenGrass: return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Garden);
+                        case TerrainDecorType.GardenBird: return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Garden);
 
 
-                        case TerrainDecorType.GardenMemoryStone: return string.Format(DssRef.todoLang.VariantType_F, DssRef.todoLang.DecorType_Garden);
-                        case TerrainDecorType.Statue_Leader: return string.Format(DssRef.todoLang.VariantType_B, DssRef.lang.DecorType_Statue);
-                        case TerrainDecorType.Statue_Lion: return string.Format(DssRef.todoLang.VariantType_C, DssRef.lang.DecorType_Statue);
-                        case TerrainDecorType.Statue_Horse: return string.Format(DssRef.todoLang.VariantType_D, DssRef.lang.DecorType_Statue);
-                        case TerrainDecorType.Statue_Pillar: return string.Format(DssRef.todoLang.VariantType_E, DssRef.lang.DecorType_Statue);
+                        case TerrainDecorType.GardenMemoryStone: return string.Format(DssRef.lang.VariantType_F, DssRef.lang.DecorType_Garden);
+                        case TerrainDecorType.Statue_Leader: return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Statue);
+                        case TerrainDecorType.Statue_Lion: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Statue);
+                        case TerrainDecorType.Statue_Horse: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Statue);
+                        case TerrainDecorType.Statue_Pillar: return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Statue);
 
                         case TerrainDecorType.FlagPole_LongBanner:
-                            return string.Format(DssRef.todoLang.VariantType_A, DssRef.todoLang.DecorType_Banner);
+                            return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Banner);
                         case TerrainDecorType.FlagPole_Banner:
-                            return string.Format(DssRef.todoLang.VariantType_B, DssRef.todoLang.DecorType_Banner);
+                            return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Banner);
                         case TerrainDecorType.FlagPole_SlimBanner:
-                            return string.Format(DssRef.todoLang.VariantType_C, DssRef.todoLang.DecorType_Banner);
+                            return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Banner);
 
                         case TerrainDecorType.FlagPole_Flag:
-                            return string.Format(DssRef.todoLang.VariantType_A, DssRef.todoLang.DecorType_Flag);
+                            return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Flag);
                         case TerrainDecorType.FlagPole_FlagRound:
-                            return string.Format(DssRef.todoLang.VariantType_B, DssRef.todoLang.DecorType_Flag);
+                            return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Flag);
                         case TerrainDecorType.FlagPole_FlagLarge:
-                            return string.Format(DssRef.todoLang.VariantType_C, DssRef.todoLang.DecorType_Flag);
+                            return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Flag);
                         case TerrainDecorType.FlagPole_Streamer:
-                            return string.Format(DssRef.todoLang.VariantType_D, DssRef.todoLang.DecorType_Flag);
+                            return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Flag);
                         case TerrainDecorType.FlagPole_Triangle:
-                            return string.Format(DssRef.todoLang.VariantType_E, DssRef.todoLang.DecorType_Flag);
+                            return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Flag);
 
                         case TerrainDecorType.CobbleStones:
-                            return DssRef.todoLang.DecorType_CobbleStones;
+                            return DssRef.lang.DecorType_CobbleStones;
                         case TerrainDecorType.Square:
-                            return DssRef.todoLang.DecorType_Square;
+                            return DssRef.lang.DecorType_Square;
                     }
                     break;
 
@@ -1061,20 +1061,20 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                     switch ((TerrainWallType)subType)
                     {
-                        case TerrainWallType.Palisade: return DssRef.todoLang.BuildingType_Palisade;
+                        case TerrainWallType.Palisade: return DssRef.lang.BuildingType_Palisade;
                         case TerrainWallType.DirtWall:
-                            return DssRef.todoLang.BuildingType_DirtWall;
+                            return DssRef.lang.BuildingType_DirtWall;
                         case TerrainWallType.DirtTower:
-                            return DssRef.todoLang.BuildingType_DirtTower;
-                        case TerrainWallType.WoodWall: return DssRef.todoLang.BuildingType_WoodWall;
-                        case TerrainWallType.WoodTower: return DssRef.todoLang.BuildingType_WoodTower;
-                        case TerrainWallType.StoneWall: return string.Format(DssRef.todoLang.VariantType_A, DssRef.todoLang.BuildingType_StoneWall);
-                        case TerrainWallType.StoneTower: return DssRef.todoLang.BuildingType_StoneTower;
-                        case TerrainWallType.StoneWallGreen: return string.Format(DssRef.todoLang.VariantType_B, DssRef.todoLang.BuildingType_StoneWall);
-                        case TerrainWallType.StoneWallBlueRoof: return string.Format(DssRef.todoLang.VariantType_C, DssRef.todoLang.BuildingType_StoneWall);
-                        case TerrainWallType.StoneWallWoodHouse: return string.Format(DssRef.todoLang.VariantType_D, DssRef.todoLang.BuildingType_StoneWall);
-                        case TerrainWallType.StoneGate: return DssRef.todoLang.BuildingType_StoneGate;
-                        case TerrainWallType.StoneHouse: return DssRef.todoLang.BuildingType_StoneHouse;
+                            return DssRef.lang.BuildingType_DirtTower;
+                        case TerrainWallType.WoodWall: return DssRef.lang.BuildingType_WoodWall;
+                        case TerrainWallType.WoodTower: return DssRef.lang.BuildingType_WoodTower;
+                        case TerrainWallType.StoneWall: return string.Format(DssRef.lang.VariantType_A, DssRef.lang.BuildingType_StoneWall);
+                        case TerrainWallType.StoneTower: return DssRef.lang.BuildingType_StoneTower;
+                        case TerrainWallType.StoneWallGreen: return string.Format(DssRef.lang.VariantType_B, DssRef.lang.BuildingType_StoneWall);
+                        case TerrainWallType.StoneWallBlueRoof: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.BuildingType_StoneWall);
+                        case TerrainWallType.StoneWallWoodHouse: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.BuildingType_StoneWall);
+                        case TerrainWallType.StoneGate: return DssRef.lang.BuildingType_StoneGate;
+                        case TerrainWallType.StoneHouse: return DssRef.lang.BuildingType_StoneHouse;
                     }
 
                     return DssRef.lang.BuildingType_Wall;
@@ -1104,14 +1104,14 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, DssConst.HousingCount_WorkerHutLarge);
 
                 case TerrainBuildingType.ServiceMenHouse_small:
-                    return string.Format(DssRef.todoLang.BuildingType_ServiceHouse_DescriptionAddX, DssConst.HousingCount_ServiceHouse_Small);
+                    return string.Format(DssRef.lang.BuildingType_ServiceHouse_DescriptionAddX, DssConst.HousingCount_ServiceHouse_Small);
                 case TerrainBuildingType.ServiceMenHouse_Large:
-                    return string.Format(DssRef.todoLang.BuildingType_ServiceHouse_DescriptionAddX, DssConst.HousingCount_ServiceHouse_Large);
+                    return string.Format(DssRef.lang.BuildingType_ServiceHouse_DescriptionAddX, DssConst.HousingCount_ServiceHouse_Large);
 
                 case TerrainBuildingType.GuardHouse_Small:
-                    return string.Format(DssRef.todoLang.BuildingType_GuardOffice_DescriptionAddX, DssConst.HousingCount_GuardsOffice_Small);
+                    return string.Format(DssRef.lang.BuildingType_GuardOffice_DescriptionAddX, DssConst.HousingCount_GuardsOffice_Small);
                 case TerrainBuildingType.GuardHouse_Large:
-                    return string.Format(DssRef.todoLang.BuildingType_GuardOffice_DescriptionAddX, DssConst.HousingCount_GuardsOffice_Large);
+                    return string.Format(DssRef.lang.BuildingType_GuardOffice_DescriptionAddX, DssConst.HousingCount_GuardsOffice_Large);
 
 
                 case TerrainBuildingType.Postal:
@@ -1139,18 +1139,18 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.Work_Smith:
                     return DssRef.lang.BuildingType_Smith_Description;
                 case TerrainBuildingType.Smelter:
-                    return DssRef.todoLang.BuildingType_SmeltingFurnace_Description;
+                    return DssRef.lang.BuildingType_SmeltingFurnace_Description;
                 case TerrainBuildingType.Foundry:
-                    return DssRef.todoLang.BuildingType_Foundry_Description;
+                    return DssRef.lang.BuildingType_Foundry_Description;
                 case TerrainBuildingType.Carpenter:
                     return DssRef.lang.BuildingType_Carpenter_Description;
                 case TerrainBuildingType.Armory:
-                    return DssRef.todoLang.BuildingType_Armory_Description;
+                    return DssRef.lang.BuildingType_Armory_Description;
 
                 case TerrainBuildingType.Nobelhouse:
                     return DssRef.lang.BuildingType_Nobelhouse_Description;
                 case TerrainBuildingType.Embassy:
-                    return DssRef.todoLang.BuildingType_Embassy_Description;
+                    return DssRef.lang.BuildingType_Embassy_Description;
                 case TerrainBuildingType.Brewery:
                     return DssRef.lang.BuildingType_Tavern_Brewery;
                 case TerrainBuildingType.Work_CoalPit:
@@ -1158,7 +1158,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.Bank:
                     return DssRef.lang.BuildingType_GoldDelivery_Description;
                 case TerrainBuildingType.CoinMinter:
-                    return DssRef.todoLang.BuildingType_CoinMaker_Description;
+                    return DssRef.lang.BuildingType_CoinMaker_Description;
 
                 case TerrainBuildingType.GoldDeliveryLevel1:
                 case TerrainBuildingType.GoldDeliveryLevel2:
@@ -1167,13 +1167,13 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case TerrainBuildingType.WoodCutter:
                 case TerrainBuildingType.StoneCutter:
-                    return DssRef.todoLang.BuildingType_Workshop_Description;
+                    return DssRef.lang.BuildingType_Workshop_Description;
 
                 case TerrainBuildingType.WaterResovoir:
-                    return DssRef.todoLang.BuildingType_WaterResovoir_Description;
+                    return DssRef.lang.BuildingType_WaterResovoir_Description;
 
                 case TerrainBuildingType.School:
-                    return DssRef.todoLang.BuildingType_School_Description;
+                    return DssRef.lang.BuildingType_School_Description;
 
                 
 
@@ -1188,14 +1188,14 @@ namespace VikingEngine.DSSWars.Display.Translation
         {
             switch (item)
             {
-                case ItemResourceType.NONE: return DssRef.todoLang.Hud_None;
+                case ItemResourceType.NONE: return DssRef.lang.Hud_None;
 
                 case ItemResourceType.GoldOre: return DssRef.lang.Resource_TypeName_GoldOre;
                 case ItemResourceType.Gold: return DssRef.lang.ResourceType_Gold;
 
                 case ItemResourceType.Water_G: return DssRef.lang.Resource_TypeName_Water;
                 case ItemResourceType.Beer: return DssRef.lang.Resource_TypeName_Beer;
-                case ItemResourceType.CoolingFluid: return DssRef.todoLang.Resource_TypeName_CoolingFluid;
+                case ItemResourceType.CoolingFluid: return DssRef.lang.Resource_TypeName_CoolingFluid;
                 case ItemResourceType.IronOre_G: return DssRef.lang.Resource_TypeName_IronOre;
                 case ItemResourceType.Iron_G: return DssRef.lang.Resource_TypeName_Iron;
                 case ItemResourceType.BogIron: return DssRef.lang.Resource_TypeName_BogIron;
@@ -1252,126 +1252,126 @@ namespace VikingEngine.DSSWars.Display.Translation
 
 
                 case ItemResourceType.Palisade:
-                    return DssRef.todoLang.Resource_TypeName_Palisade;
+                    return DssRef.lang.Resource_TypeName_Palisade;
                 case ItemResourceType.Wagon2Wheel:
-                    return DssRef.todoLang.Resource_TypeName_Wagon2Wheel;
+                    return DssRef.lang.Resource_TypeName_Wagon2Wheel;
                 case ItemResourceType.Wagon4Wheel:
-                    return DssRef.todoLang.Resource_TypeName_Wagon4Wheel;
+                    return DssRef.lang.Resource_TypeName_Wagon4Wheel;
                 case ItemResourceType.Tin:
-                    return DssRef.todoLang.Resource_TypeName_Tin;
+                    return DssRef.lang.Resource_TypeName_Tin;
                 case ItemResourceType.TinOre:
-                    return DssRef.todoLang.Resource_TypeName_TinOre;
+                    return DssRef.lang.Resource_TypeName_TinOre;
                 case ItemResourceType.Bronze:
-                    return DssRef.todoLang.Resource_TypeName_Bronze;
+                    return DssRef.lang.Resource_TypeName_Bronze;
                 case ItemResourceType.Copper:
-                    return DssRef.todoLang.Resource_TypeName_Copper;
+                    return DssRef.lang.Resource_TypeName_Copper;
                 case ItemResourceType.CopperOre:
-                    return DssRef.todoLang.Resource_TypeName_CopperOre;
+                    return DssRef.lang.Resource_TypeName_CopperOre;
                 case ItemResourceType.Silver:
-                    return DssRef.todoLang.Resource_TypeName_Silver;
+                    return DssRef.lang.Resource_TypeName_Silver;
                 case ItemResourceType.SilverOre:
-                    return DssRef.todoLang.Resource_TypeName_SilverOre;
+                    return DssRef.lang.Resource_TypeName_SilverOre;
                 case ItemResourceType.Mithril:
-                    return DssRef.todoLang.Resource_TypeName_Mithril;
+                    return DssRef.lang.Resource_TypeName_Mithril;
                 case ItemResourceType.RawMithril:
-                    return DssRef.todoLang.Resource_TypeName_RawMithril;
+                    return DssRef.lang.Resource_TypeName_RawMithril;
 
                 case ItemResourceType.BronzeSword:
-                    return DssRef.todoLang.Resource_TypeName_BronzeSword;
+                    return DssRef.lang.Resource_TypeName_BronzeSword;
                 case ItemResourceType.ShortSword:
-                    return DssRef.todoLang.Resource_TypeName_ShortSword;
+                    return DssRef.lang.Resource_TypeName_ShortSword;
                 case ItemResourceType.LongSword:
-                    return DssRef.todoLang.Resource_TypeName_LongSword;
+                    return DssRef.lang.Resource_TypeName_LongSword;
                 case ItemResourceType.HandSpear:
-                    return DssRef.todoLang.Resource_TypeName_HandSpear;
+                    return DssRef.lang.Resource_TypeName_HandSpear;
                 case ItemResourceType.Warhammer:
-                    return DssRef.todoLang.Resource_TypeName_Warhammer;
+                    return DssRef.lang.Resource_TypeName_Warhammer;
                 case ItemResourceType.MithrilSword:
-                    return DssRef.todoLang.Resource_TypeName_MithrilSword;
+                    return DssRef.lang.Resource_TypeName_MithrilSword;
                 case ItemResourceType.SlingShot:
-                    return DssRef.todoLang.Resource_TypeName_SlingShot;
+                    return DssRef.lang.Resource_TypeName_SlingShot;
                 case ItemResourceType.ThrowingSpear:
-                    return DssRef.todoLang.Resource_TypeName_ThrowingSpear;
+                    return DssRef.lang.Resource_TypeName_ThrowingSpear;
                 case ItemResourceType.Crossbow:
-                    return DssRef.todoLang.Resource_TypeName_Crossbow;
+                    return DssRef.lang.Resource_TypeName_Crossbow;
                 case ItemResourceType.MithrilBow:
-                    return DssRef.todoLang.Resource_TypeName_MithrilBow;
+                    return DssRef.lang.Resource_TypeName_MithrilBow;
 
                 case ItemResourceType.Toolkit:
-                    return DssRef.todoLang.Resource_TypeName_Toolkit;
+                    return DssRef.lang.Resource_TypeName_Toolkit;
 
                 case ItemResourceType.Sulfur:
-                    return DssRef.todoLang.Resource_TypeName_Sulfur;
+                    return DssRef.lang.Resource_TypeName_Sulfur;
                 case ItemResourceType.LeadOre:
-                    return DssRef.todoLang.Resource_TypeName_LeadOre;
+                    return DssRef.lang.Resource_TypeName_LeadOre;
                 case ItemResourceType.Lead:
-                    return DssRef.todoLang.Resource_TypeName_Lead;
+                    return DssRef.lang.Resource_TypeName_Lead;
                 case ItemResourceType.BloomeryIron:
-                    return DssRef.todoLang.Resource_TypeName_BloomIron;
+                    return DssRef.lang.Resource_TypeName_BloomIron;
                 case ItemResourceType.Steel:
-                    return DssRef.todoLang.Resource_TypeName_Steel;
+                    return DssRef.lang.Resource_TypeName_Steel;
                 case ItemResourceType.CastIron:
-                    return DssRef.todoLang.Resource_TypeName_CastIron;
+                    return DssRef.lang.Resource_TypeName_CastIron;
 
                 case ItemResourceType.BlackPowder:
-                    return DssRef.todoLang.Resource_TypeName_BlackPowder;
+                    return DssRef.lang.Resource_TypeName_BlackPowder;
                 case ItemResourceType.GunPowder:
-                    return DssRef.todoLang.Resource_TypeName_GunPowder;
+                    return DssRef.lang.Resource_TypeName_GunPowder;
                 case ItemResourceType.LedBullet:
-                    return DssRef.todoLang.Resource_TypeName_LedBullet;
+                    return DssRef.lang.Resource_TypeName_LedBullet;
 
                 case ItemResourceType.HandCannon:
-                    return DssRef.todoLang.Resource_TypeName_HandCannon;
+                    return DssRef.lang.Resource_TypeName_HandCannon;
                 case ItemResourceType.HandCulverin:
-                    return DssRef.todoLang.Resource_TypeName_HandCulverin;
+                    return DssRef.lang.Resource_TypeName_HandCulverin;
                 case ItemResourceType.Rifle:
-                    return DssRef.todoLang.Resource_TypeName_Rifle;
-                case ItemResourceType.Blunderbus:
-                    return DssRef.todoLang.Resource_TypeName_Blunderbus;
+                    return DssRef.lang.Resource_TypeName_Rifle;
+                case ItemResourceType.Blunderbuss:
+                    return DssRef.lang.Resource_TypeName_Blunderbuss;
 
                 case ItemResourceType.Manuballista:
-                    return DssRef.todoLang.Resource_TypeName_Manuballista;
+                    return DssRef.lang.Resource_TypeName_Manuballista;
                 case ItemResourceType.Catapult:
-                    return DssRef.todoLang.Resource_TypeName_Catapult;
+                    return DssRef.lang.Resource_TypeName_Catapult;
                 case ItemResourceType.SiegeCannonBronze:
-                    return DssRef.todoLang.Resource_TypeName_SiegeCannonBronze;
+                    return DssRef.lang.Resource_TypeName_SiegeCannonBronze;
                 case ItemResourceType.ManCannonBronze:
-                    return DssRef.todoLang.Resource_TypeName_ManCannonBronze;
+                    return DssRef.lang.Resource_TypeName_ManCannonBronze;
                 case ItemResourceType.SiegeCannonIron:
-                    return DssRef.todoLang.Resource_TypeName_SiegeCannonIron;
+                    return DssRef.lang.Resource_TypeName_SiegeCannonIron;
                 case ItemResourceType.ManCannonIron:
-                    return DssRef.todoLang.Resource_TypeName_ManCannonIron;
+                    return DssRef.lang.Resource_TypeName_ManCannonIron;
 
                 case ItemResourceType.PaddedArmor:
-                    return DssRef.todoLang.Resource_TypeName_PaddedArmor;
+                    return DssRef.lang.Resource_TypeName_PaddedArmor;
                 case ItemResourceType.HeavyPaddedArmor:
-                    return DssRef.todoLang.Resource_TypeName_HeavyPaddedArmor;
+                    return DssRef.lang.Resource_TypeName_HeavyPaddedArmor;
 
                 case ItemResourceType.IronArmor:
-                    return DssRef.todoLang.Resource_TypeName_IronArmor;
+                    return DssRef.lang.Resource_TypeName_IronArmor;
                 case ItemResourceType.HeavyIronArmor:
-                    return DssRef.todoLang.Resource_TypeName_HeavyIronArmor;
+                    return DssRef.lang.Resource_TypeName_HeavyIronArmor;
 
                 case ItemResourceType.BronzeArmor:
-                    return DssRef.todoLang.Resource_TypeName_BronzeArmor;
+                    return DssRef.lang.Resource_TypeName_BronzeArmor;
 
                 case ItemResourceType.LightPlateArmor:
-                    return DssRef.todoLang.Resource_TypeName_LightPlateArmor;
+                    return DssRef.lang.Resource_TypeName_LightPlateArmor;
                 case ItemResourceType.FullPlateArmor:
-                    return DssRef.todoLang.Resource_TypeName_FullPlateArmor;
+                    return DssRef.lang.Resource_TypeName_FullPlateArmor;
                 case ItemResourceType.MithrilArmor:
-                    return DssRef.todoLang.Resource_TypeName_MithrilArmor;
+                    return DssRef.lang.Resource_TypeName_MithrilArmor;
 
                 case ItemResourceType.Men:
                     return DssRef.lang.ResourceType_Workers;
                 case ItemResourceType.ServiceMen:
-                    return DssRef.todoLang.ResourceType_ServiceMen;
+                    return DssRef.lang.ResourceType_ServiceMen;
 
                 case ItemResourceType.CopperCoin:
                 case ItemResourceType.BronzeCoin:
                 case ItemResourceType.SilverCoin:
                 case ItemResourceType.ElfCoin:
-                    return DssRef.todoLang.Resource_TypeName_Coin;
+                    return DssRef.lang.Resource_TypeName_Coin;
 
                 default:
                     return TextLib.Error;
@@ -1417,11 +1417,11 @@ namespace VikingEngine.DSSWars.Display.Translation
 
 
                 case DSSWars.CityCulture.Smelters:
-                    return title ? DssRef.todoLang.CityCulture_Smelters : DssRef.todoLang.CityCulture_Smelters_Description;
+                    return title ? DssRef.lang.CityCulture_Smelters : DssRef.lang.CityCulture_Smelters_Description;
                 case DSSWars.CityCulture.BronzeCasters:
-                    return title ? DssRef.todoLang.CityCulture_BronzeCasters : DssRef.todoLang.CityCulture_BronzeCasters_Description;
+                    return title ? DssRef.lang.CityCulture_BronzeCasters : DssRef.lang.CityCulture_BronzeCasters_Description;
                 case DSSWars.CityCulture.Apprentices:
-                    return title ? DssRef.todoLang.CityCulture_Apprentices : DssRef.todoLang.CityCulture_Apprentices_Description;
+                    return title ? DssRef.lang.CityCulture_Apprentices : DssRef.lang.CityCulture_Apprentices_Description;
 
                 default: return TextLib.Error;
             }

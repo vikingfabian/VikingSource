@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Players
              new AutoWeaponOption(ItemResourceType.LongSword,true, BuildAndExpandType.SoldierBarracks),
              new AutoWeaponOption(ItemResourceType.Sword,true, BuildAndExpandType.SoldierBarracks),
 
-             new AutoWeaponOption(ItemResourceType.Blunderbus,true, BuildAndExpandType.GunBarracks),
+             new AutoWeaponOption(ItemResourceType.Blunderbuss,true, BuildAndExpandType.GunBarracks),
              new AutoWeaponOption(ItemResourceType.Rifle,false, BuildAndExpandType.GunBarracks),
             new AutoWeaponOption( ItemResourceType.HandCulverin,true, BuildAndExpandType.GunBarracks),
              new AutoWeaponOption(ItemResourceType.HandCannon,false, BuildAndExpandType.GunBarracks),

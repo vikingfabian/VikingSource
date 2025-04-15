@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars
                     res_HandCulvertin.toMenu(content, ItemResourceType.HandCulverin);
                     content.Add(new RbSeperationLine());
                     res_Rifle.toMenu(content, ItemResourceType.Rifle);
-                    res_Blunderbus.toMenu(content, ItemResourceType.Blunderbus);
+                    res_Blunderbus.toMenu(content, ItemResourceType.Blunderbuss);
                     content.Add(new RbSeperationLine());
 
                     //res_BatteringRam.toMenu(content, ItemResourceType.UN_BatteringRam);

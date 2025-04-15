@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Resource
             items[(int)ItemResourceType.HandCannon] = new ItemProperties(DefaultWeight, CraftResourceLib.BronzeHandCannon, null);
             items[(int)ItemResourceType.HandCulverin] = new ItemProperties(DefaultWeight, CraftResourceLib.BronzeHandCulverin, null);
             items[(int)ItemResourceType.Rifle] = new ItemProperties(DefaultWeight, CraftResourceLib.Rifle, null);
-            items[(int)ItemResourceType.Blunderbus] = new ItemProperties(DefaultWeight, CraftResourceLib.Blunderbus, null);
+            items[(int)ItemResourceType.Blunderbuss] = new ItemProperties(DefaultWeight, CraftResourceLib.Blunderbus, null);
 
             items[(int)ItemResourceType.Ballista] = new ItemProperties(DefaultWeight, CraftResourceLib.Ballista_Iron, CraftResourceLib.Ballista_Bronze);
             items[(int)ItemResourceType.Manuballista] = new ItemProperties(DefaultWeight, CraftResourceLib.ManuBallista, null);

@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.HandCannon:
                 case ItemResourceType.HandCulverin:
                 case ItemResourceType.Rifle:
-                case ItemResourceType.Blunderbus:
+                case ItemResourceType.Blunderbuss:
                     ranged = true;
                     rangedMan = true;
                     meleeMan = false;
@@ -241,23 +241,23 @@ namespace VikingEngine.DSSWars.Conscript
                             return DssRef.lang.UnitType_Soldier;
 
                         case ItemResourceType.HandSpear:
-                            return  DssRef.todoLang.UnitType_SpearAndShield;
+                            return  DssRef.lang.UnitType_SpearAndShield;
 
                         case ItemResourceType.Warhammer:
-                            return DssRef.todoLang.UnitType_Warhammer;
+                            return DssRef.lang.UnitType_Warhammer;
                         case ItemResourceType.KnightsLance:
                             return DssRef.lang.UnitType_CavalryKnight;
                         case ItemResourceType.TwoHandSword:
                             return DssRef.lang.UnitType_FootKnight;
                         case ItemResourceType.MithrilSword:
-                            return DssRef.todoLang.UnitType_MithrilKnight;
+                            return DssRef.lang.UnitType_MithrilKnight;
                         case ItemResourceType.MithrilBow:
-                            return DssRef.todoLang.UnitType_MithrilArcher;
+                            return DssRef.lang.UnitType_MithrilArcher;
 
                         case ItemResourceType.SlingShot:
-                            return DssRef.todoLang.Resource_TypeName_SlingShot;
+                            return DssRef.lang.Resource_TypeName_SlingShot;
                         case ItemResourceType.ThrowingSpear:
-                            return DssRef.todoLang.Resource_TypeName_ThrowingSpear;
+                            return DssRef.lang.Resource_TypeName_ThrowingSpear;
                         case ItemResourceType.Bow:
                         case ItemResourceType.LongBow:
                             return DssRef.lang.UnitType_Archer;
@@ -265,32 +265,32 @@ namespace VikingEngine.DSSWars.Conscript
                             return DssRef.lang.UnitType_Crossbow;
 
                         case ItemResourceType.HandCannon:
-                            return DssRef.todoLang.Resource_TypeName_HandCannon;
+                            return DssRef.lang.Resource_TypeName_HandCannon;
                         case ItemResourceType.HandCulverin:
-                            return DssRef.todoLang.Resource_TypeName_HandCulverin;
+                            return DssRef.lang.Resource_TypeName_HandCulverin;
                         case ItemResourceType.Rifle:
-                            return DssRef.todoLang.Resource_TypeName_Rifle;
-                        case ItemResourceType.Blunderbus:
-                            return DssRef.todoLang.Resource_TypeName_Blunderbus;
+                            return DssRef.lang.Resource_TypeName_Rifle;
+                        case ItemResourceType.Blunderbuss:
+                            return DssRef.lang.Resource_TypeName_Blunderbuss;
 
 
                         case ItemResourceType.Ballista:
                             return DssRef.lang.UnitType_Ballista;
                         case ItemResourceType.Manuballista:
-                            return DssRef.todoLang.Resource_TypeName_Manuballista;
+                            return DssRef.lang.Resource_TypeName_Manuballista;
                         case ItemResourceType.Catapult:
-                            return DssRef.todoLang.Resource_TypeName_Catapult;
+                            return DssRef.lang.Resource_TypeName_Catapult;
                         case ItemResourceType.UN_BatteringRam:
-                            return DssRef.todoLang.Resource_TypeName_BatteringRam;
+                            return DssRef.lang.Resource_TypeName_BatteringRam;
 
                         case ItemResourceType.SiegeCannonBronze:
-                            return DssRef.todoLang.Resource_TypeName_SiegeCannonBronze;
+                            return DssRef.lang.Resource_TypeName_SiegeCannonBronze;
                         case ItemResourceType.ManCannonBronze:
-                            return DssRef.todoLang.Resource_TypeName_ManCannonBronze;
+                            return DssRef.lang.Resource_TypeName_ManCannonBronze;
                         case ItemResourceType.SiegeCannonIron:
-                            return DssRef.todoLang.Resource_TypeName_SiegeCannonIron;
+                            return DssRef.lang.Resource_TypeName_SiegeCannonIron;
                         case ItemResourceType.ManCannonIron:
-                            return DssRef.todoLang.Resource_TypeName_ManCannonIron;
+                            return DssRef.lang.Resource_TypeName_ManCannonIron;
 
 
                         default:
@@ -416,7 +416,7 @@ namespace VikingEngine.DSSWars.Conscript
                     splashCount = 7;
                     return DssConst.WeaponDamage_Handculvetin;
                 case ItemResourceType.Rifle: return DssConst.WeaponDamage_Rifle;
-                case ItemResourceType.Blunderbus:
+                case ItemResourceType.Blunderbuss:
                     splashCount = 8;
                     return DssConst.WeaponDamage_Blunderbus;
 

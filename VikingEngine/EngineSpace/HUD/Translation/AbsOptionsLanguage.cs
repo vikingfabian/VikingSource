@@ -41,16 +41,37 @@ namespace VikingEngine.HUD
 
         public abstract string GraphicsOption_UiScale { get; }
 
+
+        //
+        public abstract string ReversedStereo { get; }
+        public abstract string Option_Low { get; }
+        public abstract string Option_Medium { get; }
+        public abstract string Option_High { get; }
+        public abstract string MouseSettings_Title { get; }
+        public abstract string KeyboardSettings_Title { get; }
+        public abstract string MouseButtonAction_None { get; }
+        public abstract string MouseButtonAction_Select { get; }
+        public abstract string MouseButtonAction_Pan { get; }
+        public abstract string MouseButtonAction_PanAndOrder { get; }
+        public abstract string MouseButtonAction_Order { get; }
+        public abstract string MouseButtonAction_Cancel { get; }
+        public abstract string MouseButton_Left { get; }
+        public abstract string MouseButton_Right { get; }
+        public abstract string MouseButton_Middle { get; }
+        public abstract string MouseButton_X1 { get; }
+        public abstract string MouseButton_X2 { get; }
+
+
         public string ThreeOption(ThreeOptions option)
         {
             switch (option)
             {
                 case ThreeOptions.Low:
-                    return DssRef.todoLang.Option_Low;
+                    return Ref.langOpt.Option_Low;
                 case ThreeOptions.Medium:
-                    return DssRef.todoLang.Option_Medium;
+                    return Ref.langOpt.Option_Medium;
                 case ThreeOptions.High:
-                    return DssRef.todoLang.Option_High;
+                    return Ref.langOpt.Option_High;
                 default:
                     throw new NotImplementedException();
             }
