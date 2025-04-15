@@ -6,7 +6,6 @@ using VikingEngine.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
-using VikingEngine.DSSWars.Profile;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Input;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,7 +14,7 @@ using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.ToGG.ToggEngine.GO;
 
 
-namespace VikingEngine.DSSWars
+namespace VikingEngine.DSSWars.GameState.FlagEditor
 {
     class PaintFlagState : Engine.GameState, DataStream.IStreamIOCallback
     {
@@ -35,8 +34,8 @@ namespace VikingEngine.DSSWars
         public bool controllerMode;
         public bool controllerPickColorState = false;
         bool paitingHasChanged = false;
-        Graphics.Image pointer;
-        Graphics.Image pixelOutline;
+        Image pointer;
+        Image pixelOutline;
         public List<FlagAndColor> undoHistory = new List<FlagAndColor>();
         public List<FlagAndColor> redoHistory = new List<FlagAndColor>();
 
@@ -45,9 +44,9 @@ namespace VikingEngine.DSSWars
         {
             
 
-            Engine.XGuide.UnjoinAll();
+            XGuide.UnjoinAll();
             int player = 0;
-            Engine.XGuide.LocalHostIndex = player;
+            XGuide.LocalHostIndex = player;
 
 
             keyboardInput = new InputMap(player);
@@ -60,14 +59,14 @@ namespace VikingEngine.DSSWars
             //file = profile.flagDesign;
 
             //GRID
-            float gridW = Engine.Screen.SafeArea.Height * 0.6f;
+            float gridW = Screen.SafeArea.Height * 0.6f;
 
             squareWidth = MathExt.RoundAndEven(gridW / DssLib.UserHeraldicWidth);
             squareSz = new Vector2(squareWidth);
             float totalWidth = squareWidth * DssLib.UserHeraldicWidth;
             start = new Vector2(
-                Engine.Screen.CenterScreen.X - totalWidth * 0.5f,
-                Engine.Screen.SafeArea.Y);
+                Screen.CenterScreen.X - totalWidth * 0.5f,
+                Screen.SafeArea.Y);
 
             paintArea = new VectorRect(start, new Vector2(totalWidth));
 
@@ -85,8 +84,8 @@ namespace VikingEngine.DSSWars
 
             updateImageGrid();
 
-            pointer = new Graphics.Image(SpriteName.ColorPickerCircle,
-                    paintArea.Center, Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1_Front, true);
+            pointer = new Image(SpriteName.ColorPickerCircle,
+                    paintArea.Center, Screen.SmallIconSizeV2, ImageLayers.Lay1_Front, true);
 
             pixelOutline = new Image(SpriteName.InterfaceBorder, Vector2.Zero, squareSz, ImageLayers.Bottom4);
 
@@ -96,7 +95,7 @@ namespace VikingEngine.DSSWars
             HudLib.Init();
             menuSystem = new Display.MenuSystem(keyboardInput, Display.MenuType.Editor);
 
-            hud = new PaintFlagHud(keyboardInput, this);
+            hud = new PaintFlagHud(XGuide.GetPlayer(player), keyboardInput, this);
             setColorType(ProfileColorType.Main);
             //new Timer.AsynchActionTrigger(load_asynch, true);
             new Display.EditorBackground();
@@ -158,17 +157,17 @@ namespace VikingEngine.DSSWars
                 if (Input.Keyboard.AnyActivationKey_DownEvent())
                 {
                     setControllerMode(false);
-                    hud.part.refresh();
+                    hud.refresh();
                     return;
                 }
             }
             else
             {
                 int p = -1;
-                if (Input.XInput.AnyActivationKey_DownEvent(ref p))
+                if (XInput.AnyActivationKey_DownEvent(ref p))
                 {
                     setControllerMode(true);
-                    hud.part.refresh();
+                    hud.refresh();
                     return;
                 }
             }
@@ -196,7 +195,7 @@ namespace VikingEngine.DSSWars
                     controllerInput.Controller_FlagDesign_Colorpicker.DownEvent_AnyInstance)
                 {
                     controllerPickColorState = false;
-                    hud.part.refresh();
+                    hud.refresh();
                 }
             }
             else
@@ -204,7 +203,7 @@ namespace VikingEngine.DSSWars
                 if (controllerInput.Controller_FlagDesign_Colorpicker.DownEvent_AnyInstance)
                 {
                     controllerPickColorState = true;
-                    hud.part.refresh();
+                    hud.refresh();
                 }
 
                 foreach (var ins in XInput.controllers)
@@ -265,7 +264,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            if (VikingEngine.Input.Keyboard.KeyDownEvent(Keys.B) && VikingEngine.Input.Keyboard.Ctrl)
+            if (Input.Keyboard.KeyDownEvent(Keys.B) && Input.Keyboard.Ctrl)
             {
                 debugMenu();
 
@@ -296,7 +295,7 @@ namespace VikingEngine.DSSWars
             FlagAndColor flag = new FlagAndColor(factionType, 0, null);
             profile = flag;
             updateImageGrid();
-            hud.part.refresh();
+            hud.refresh();
             setUndoPoint();
         }
 
@@ -349,7 +348,7 @@ namespace VikingEngine.DSSWars
                     selectedColorType = ProfileColorType.NUM - 1;
                 }
             }
-            hud.part.selectColorType(selectedColorType);
+            hud.selectColorType(selectedColorType);
         }
 
         public void discardAndExit()
@@ -452,7 +451,7 @@ namespace VikingEngine.DSSWars
         void onColorChange()
         {
             updateImageGrid();
-            hud.part.refresh();
+            hud.refresh();
             //colorButtons.refreshColors(profile);
         }
 
@@ -473,7 +472,7 @@ namespace VikingEngine.DSSWars
             redoHistory.Clear();
 
             paitingHasChanged = false;
-            hud.part.refresh();
+            hud.refresh();
         }
 
         public void undo()
@@ -483,7 +482,7 @@ namespace VikingEngine.DSSWars
                 redoHistory.Add(arraylib.PullLastMember(undoHistory));
                 profile = undoHistory.Last().Clone();
                 updateImageGrid();
-                hud.part.refresh();
+                hud.refresh();
             }
         }
 
@@ -495,7 +494,7 @@ namespace VikingEngine.DSSWars
                 profile = r.Clone();
                 undoHistory.Add(r);
                 updateImageGrid();
-                hud.part.refresh();
+                hud.refresh();
             }
         }
 

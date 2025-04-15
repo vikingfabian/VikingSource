@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameState.FlagEditor;
 using VikingEngine.Input;
 using VikingEngine.Network;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;

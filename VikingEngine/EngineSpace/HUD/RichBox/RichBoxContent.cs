@@ -136,6 +136,19 @@ namespace VikingEngine.HUD.RichBox
             Add(result);
             return result;
         }
+
+        public ArtButton ArtButton(string caption, AbsRbAction action, AbsRbAction enter, bool enabled)
+        {
+            var result = new ArtButton( RbButtonStyle.Primary,
+                new List<AbsRichBoxMember>
+                {
+                    new RbText(caption),
+                },
+                action, enter, enabled);
+            Add(result);
+            return result;
+        }
+
         public RbButton Button(SpriteName icon, string caption, AbsRbAction action, AbsRbAction enter, bool enabled)
         {
             var buttonContent = new List<AbsRichBoxMember>(3);
@@ -152,6 +165,28 @@ namespace VikingEngine.HUD.RichBox
             //},
 
             var result = new RbButton(
+                buttonContent,
+                action, enter, enabled);
+            Add(result);
+            return result;
+        }
+
+        public ArtButton ArtButton(SpriteName icon, string caption, AbsRbAction action, AbsRbAction enter, bool enabled)
+        {
+            var buttonContent = new List<AbsRichBoxMember>(3);
+
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                buttonContent.Add(new RbImage(icon));
+                buttonContent.Add(new RbSpace());
+            }
+            buttonContent.Add(new RbText(caption));
+            //{
+            //    new RichBoxImage(icon),
+            //    new RichBoxText(caption),
+            //},
+
+            var result = new ArtButton( RbButtonStyle.Primary,
                 buttonContent,
                 action, enter, enabled);
             Add(result);

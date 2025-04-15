@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.GameState.FlagEditor;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 
