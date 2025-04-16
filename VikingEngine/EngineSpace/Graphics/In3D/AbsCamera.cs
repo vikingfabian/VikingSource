@@ -37,7 +37,10 @@ namespace VikingEngine.Graphics
         {
             get { return lookTarget; }
             set 
-            { 
+            {
+
+                Debug.CrashCorruptValue(value);
+
                 lookTarget = value;
                 clearGoalTarget(); 
             }
@@ -112,7 +115,10 @@ namespace VikingEngine.Graphics
         public Vector3 GoalLookTarget
         {
             get { return goalLookTarget; }
-            set { 
+            set {
+
+                Debug.CrashCorruptValue(value);
+
                 goalLookTarget = value; 
             }
         }

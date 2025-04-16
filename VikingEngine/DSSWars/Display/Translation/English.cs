@@ -1800,6 +1800,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Lobby_GameSetup => "Game setup";
         public override string Lobby_PlayerSetup => "Player setup";
         public override string LobbyDemoMode_Demo => "Demo";
+
+        public override string Lobby_Tutorial => "Tutorial";
+        
         public override string LobbyDemoMode_ShortTutorial => "Quick Tutorial";
         public override string LobbyDemoMode_LongTutorial => "Extended Tutorial";
 

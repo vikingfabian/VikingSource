@@ -142,8 +142,8 @@ namespace VikingEngine
         public static bool PlayMusic =
             DebugLevel >= BuildDebugLevel.ShowDemo ? LockedToTrue : Debug_PlayMusic;
 
-        public static readonly bool StartLiveConnection =
-            DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_StartLiveConnection;
+        //public static readonly bool StartLiveConnection =
+        //    DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_StartLiveConnection;
 
         public static readonly bool AutoJoinNetSession =
             DebugLevel != BuildDebugLevel.Dev ? LockedToFalse : Debug_AutoJoinNetSession;
@@ -163,6 +163,7 @@ namespace VikingEngine
         public static readonly bool ViewCollisionBounds =
           DebugLevel != BuildDebugLevel.Dev ? LockedToFalse : Debug_ViewCollisionBounds;
 
+        public static readonly bool OnlineMultiplayer = false;
         //public static readonly bool Demo =
         //    DebugLevel == BuildDebugLevel.DebugDemo ||
         //    DebugLevel == BuildDebugLevel.PublicDemo || 

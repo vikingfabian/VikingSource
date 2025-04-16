@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars
                     new RbBeginTitle(),
                     new RbImage(SpriteName.WarsHudIconTutorial),
                     new RbTab(ButtonTextTabbing),
-                    new RbText(DssRef.lang.LobbyDemoMode_ShortTutorial),
+                    new RbText(DssRef.lang.Lobby_Tutorial),
                     new RbTab(MoreArrowTabbing),
                     moreArrow,
                 },
@@ -341,24 +341,24 @@ namespace VikingEngine.DSSWars
 
             HudLib.WishListButton(content);
 
-            {
-                content.newParagraph();
+            //{
+            //    content.newParagraph();
 
-                var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
-                moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
+            //    var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
+            //    moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                    new RbBeginTitle(),
-                    new RbImage(SpriteName.WarsHudIconTutorial),
-                    new RbTab(ButtonTextTabbing),
-                    new RbText(DssRef.lang.LobbyDemoMode_LongTutorial),
-                    new RbTab(MoreArrowTabbing),
-                    moreArrow,
-                },
-                new RbAction1Arg<bool>(beginDemoTutorial, false), null);
-                btn.fillWidth = true;
-                content.Add(btn);
-            }
+            //    var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+            //        new RbBeginTitle(),
+            //        new RbImage(SpriteName.WarsHudIconTutorial),
+            //        new RbTab(ButtonTextTabbing),
+            //        new RbText(DssRef.lang.LobbyDemoMode_LongTutorial),
+            //        new RbTab(MoreArrowTabbing),
+            //        moreArrow,
+            //    },
+            //    new RbAction1Arg<bool>(beginDemoTutorial, false), null);
+            //    btn.fillWidth = true;
+            //    content.Add(btn);
+            //}
 #else
             var saves = DssRef.storage.meta.listSaves();
             if (arraylib.HasMembers(saves))
@@ -440,7 +440,7 @@ namespace VikingEngine.DSSWars
 
         void beginDemoTutorial(bool bShort)
         {
-            DssRef.storage.runTutorial_1short_2normal = bShort ? 1 : 2;
+            DssRef.storage.runTutorial_1short_2normal = 2;//bShort ? 1 : 2;
             openUnderMenu(UnderMenu_PlayerSetup, StackOption.Stack);
         }
 
@@ -928,35 +928,53 @@ namespace VikingEngine.DSSWars
                     {
                         RichBoxContent content = new RichBoxContent();
 
+                        bool startTutorialDisplay = false;
+
                         if (PlatformSettings.STEAM_DEMO)
                         {
-                            string modeTitle;
-                            switch (DssRef.storage.runTutorial_1short_2normal)
-                            {
-                                default:
-                                    modeTitle = DssRef.lang.LobbyDemoMode_Demo;
-                                    break;
-                                case 1:
-                                    modeTitle = DssRef.lang.LobbyDemoMode_ShortTutorial;
-                                    break;
-                                case 2:
-                                    modeTitle = DssRef.lang.LobbyDemoMode_LongTutorial;
-                                    break;
+                            startTutorialDisplay = DssRef.storage.runTutorial_1short_2normal > 0;
+                            string modeTitle = startTutorialDisplay ? modeTitle = DssRef.lang.Lobby_Tutorial : DssRef.lang.LobbyDemoMode_Demo;
+                            //switch (DssRef.storage.runTutorial_1short_2normal)
+                            //{
+                            //    default:
+                            //        modeTitle = DssRef.lang.LobbyDemoMode_Demo;
+                            //        break;
+                            //    case 1:
+                            //        modeTitle = DssRef.lang.LobbyDemoMode_ShortTutorial;
+                            //        break;
+                            //    case 2:
+                            //        modeTitle = DssRef.lang.LobbyDemoMode_LongTutorial;
+                            //        break;
 
-                            }
+                            //}
 
                             content.h1(modeTitle, HudLib.TitleColor_Head);
                             content.newLine();
+                        
+                        
                         }
 
-
-
-                        var start = new ArtButton(RbButtonStyle.Primary,
-                          new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
-                          new RbAction(startGame));
-                        //start.fillWidth = false;
-                        content.Add(start);
-
+                        if (startTutorialDisplay)
+                        {
+                            
+                            var startlong = new ArtButton(RbButtonStyle.Primary,
+                              new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_LongTutorial) },
+                              new RbAction1Arg<bool>(startTutorial, false));
+                            content.Add(startlong);
+                            content.newLine();
+                            var startshort = new ArtButton(RbButtonStyle.Secondary,
+                              new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_ShortTutorial) },
+                              new RbAction1Arg<bool>(startTutorial, true));
+                            //start.fillWidth = false;
+                            content.Add(startshort);
+                        }
+                        else
+                        {
+                            var start = new ArtButton(RbButtonStyle.Primary,
+                              new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
+                              new RbAction(startGame));
+                            content.Add(start);
+                        }
                         content.newParagraph();
 
                         playerSetupToMenu(content);
@@ -1748,6 +1766,12 @@ namespace VikingEngine.DSSWars
                 //layout.End();
             }
 
+        }
+
+        void startTutorial(bool shorter)
+        {
+            DssRef.storage.runTutorial_1short_2normal = shorter ? 1 : 2;
+            startGame();
         }
 
         void startGame()

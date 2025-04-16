@@ -338,9 +338,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
 
                 case TutorialMission.BuildDefences:
-                    content.icontext(HudLib.CheckImage(buildDefences_selectBuildTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
-                    content.icontext(HudLib.CheckImage(buildDefences_buildPalisade), string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Palisade].Label()));
-                    content.icontext(HudLib.CheckImage(buildDefences_moveGuard), DssRef.lang.Tutorial_GuardToWall);
+                    content.iconicontext(HudLib.CheckImage(buildDefences_selectBuildTab),SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
+                    content.iconicontext(HudLib.CheckImage(buildDefences_buildPalisade), SpriteName.WarsBuild_Palisade, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Palisade].Label()));
+                    content.iconicontext(HudLib.CheckImage(buildDefences_moveGuard), SpriteName.WarsGuardPostIcon, DssRef.lang.Tutorial_GuardToWall);
                    
                     break;
 

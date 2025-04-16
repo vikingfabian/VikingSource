@@ -1,8 +1,10 @@
 ﻿UPDATE
 -Change Log-
-Demo localization
-Demo stats
-Flag editor got the new HUD
+/turned off multiplayer
+/place palisade tut icon
+/demo has palisades
+/not be able to order army men to walls
+/have short tutorial as secondary recommend
 
 
 The demo should:

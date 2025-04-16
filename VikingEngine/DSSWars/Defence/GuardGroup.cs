@@ -260,7 +260,10 @@ namespace VikingEngine.DSSWars.Defence
         {
             return false;
         }
-
+        public override bool IsGuardGroup()
+        {
+            return true;
+        }
         public override bool InGuardPost()
         {
             return assignedToPost_IdAndPosition >= 0;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using VikingEngine.DebugExtensions;
 using Microsoft.Xna.Framework;
+using System.Data;
 
 namespace VikingEngine
 {
@@ -21,7 +22,15 @@ namespace VikingEngine
         {
             return CorruptValue(value.X) || CorruptValue(value.Y) || CorruptValue(value.Z);
         }
-        
+
+        public static void CrashCorruptValue(Vector3 value)
+        {
+            if (CorruptValue(value.X) || CorruptValue(value.Y) || CorruptValue(value.Z))
+            {
+                throw new DivideByZeroException();
+            }
+        }
+
         public static void ToggleOutput()
         {
             viewOutput = !viewOutput;

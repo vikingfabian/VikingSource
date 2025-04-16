@@ -20,6 +20,13 @@ namespace VikingEngine.DSSWars
         {
             base.onGameStarted();
 
+            var citiesC = DssRef.state.LocalHost().faction.cities.counter();
+            while (citiesC.Next())
+            {
+                citiesC.sel.res_Palisade.amount += 20;
+                citiesC.sel.res_food.amount += 500;
+            }
+
             var enemy = DssRef.state.LocalHost().getPin("enemy");
             if (enemy != null)
             {

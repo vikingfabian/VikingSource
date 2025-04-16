@@ -2399,7 +2399,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return true;
         }
-
+        virtual public bool IsGuardGroup()
+        {
+            return false;
+        }
         //public override SpriteName TypeIcon()
         //{
         //    return AllUnits.UnitFilterIcon( soldierConscript.filterType());

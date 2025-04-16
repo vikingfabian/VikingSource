@@ -152,6 +152,8 @@ namespace VikingEngine.DSSWars.Build
                 unlocks.unlockAll();
             }
 
+            list.Add(BuildAndExpandType.Palisade);
+
             if (city.buildingStructure.buildingLevel_logistics == 0 ||
                 StartupSettings.UnlockAllProgress)
             {
@@ -312,7 +314,7 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.Statue_ThePlayer);
             }
-            list.Add(BuildAndExpandType.Palisade);
+            
             list.Add(BuildAndExpandType.DirtWall);
             list.Add(BuildAndExpandType.DirtTower);
             list.Add(BuildAndExpandType.WoodWall);

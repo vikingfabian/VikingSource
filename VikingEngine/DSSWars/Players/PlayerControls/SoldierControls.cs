@@ -179,7 +179,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
 
 
-                    for (int i = 0; i < groups_sp.Count; ++i)//each (SoldierGroup group in groups_sp)
+                    for (int i = 0; i < groups_sp.Count; ++i)
                     {
                         var place = groupPlacements[i];
                         var group = groups_sp[i];
@@ -193,17 +193,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             new AttackCommand(group, place.currentPlacement - goalCenter, target, false);
                         }
 
-                        if (group.InGuardPost())
+                        if (group.IsGuardGroup())
                         {
-                            new GuardPostTransform(group, -1, false);
-                        }
-
-                        if (wall)
-                        {
-                            if (EnterPostCommand.tryClaimPost(group, city, subTile))
+                            if (group.InGuardPost())
                             {
-                                var enterCommand = new EnterPostCommand(group, subTile, true);
-                                //enterCommand.claimPost(group, city, city.defenceIxFromPosId(enterCommand.id));
+                                new GuardPostTransform(group, -1, false);
+                            }
+
+                            if (wall)
+                            {
+                                if (EnterPostCommand.tryClaimPost(group, city, subTile))
+                                {
+                                    var enterCommand = new EnterPostCommand(group, subTile, true);
+                                }
                             }
                         }
                     }

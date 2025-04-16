@@ -983,6 +983,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Lobby_GameSetup { get; }
         public abstract string Lobby_PlayerSetup { get; }
         public abstract string LobbyDemoMode_Demo { get; }
+
+        public abstract string Lobby_Tutorial { get; }
         public abstract string LobbyDemoMode_ShortTutorial { get; }
         public abstract string LobbyDemoMode_LongTutorial { get; }
         public abstract string LobbyDemoMode_WishlistOn { get; }

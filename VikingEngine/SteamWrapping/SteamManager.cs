@@ -204,11 +204,14 @@ namespace VikingEngine.SteamWrapping
                 PlatformSettings.RunProgram == StartProgram.DSS ||
                 PlatformSettings.RunProgram == StartProgram.ToGG)
             {
-                P2PManager = new SteamP2PManager();
-                LobbyMatchmaker = new SteamLobbyMatchmaker();
-                VOIP = new SteamVOIP();
+                if (PlatformSettings.OnlineMultiplayer)
+                {
+                    P2PManager = new SteamP2PManager();
+                    LobbyMatchmaker = new SteamLobbyMatchmaker();
+                    VOIP = new SteamVOIP();
 
-                isNetworkInitialized = true;
+                    isNetworkInitialized = true;
+                }
             }
             
             DLC = new SteamDLC();

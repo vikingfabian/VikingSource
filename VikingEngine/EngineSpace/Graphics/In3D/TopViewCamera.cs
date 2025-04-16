@@ -87,7 +87,7 @@ namespace VikingEngine.Graphics
 
             if (float.NaN.Equals(lookTarget.Z))
             {
-                throw new Exception();
+                throw new DivideByZeroException();
             }
             
             positionFromRotation();
