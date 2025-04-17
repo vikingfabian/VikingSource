@@ -426,6 +426,7 @@ namespace VikingEngine.DSSWars
                             (
                                 factionC.sel.factiontype == FactionType.DefaultAi ||
                                 factionC.sel.factiontype == FactionType.DarkFollower ||
+                                factionC.sel.factiontype == FactionType.Barbarians ||
                                 factionC.sel.factiontype == FactionType.SouthHara
                             ) &&
                             factionC.sel.cities.Count >= 2 &&
@@ -939,7 +940,7 @@ namespace VikingEngine.DSSWars
 
         bool factionMayStartWar(Faction attacker, Faction defender)
         {
-            if ((attacker.factiontype == FactionType.DefaultAi || attacker.factiontype == FactionType.DarkFollower) &&
+            if ((attacker.factiontype == FactionType.DefaultAi || attacker.diplomaticSide == DiplomaticSide.Dark) &&
                 attacker.armies.Count > 0)
             {
                 var rel = DssRef.diplomacy.GetRelationType(defender, attacker);

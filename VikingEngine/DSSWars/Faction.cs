@@ -1069,6 +1069,7 @@ namespace VikingEngine.DSSWars
                 case FactionType.DarkLord:
                 case FactionType.SouthHara:
                 case FactionType.DarkFollower:
+                case FactionType.Barbarians:
                 case FactionType.GreenWood:
                     return SpeakTerms.SpeakTermsN2_None;
 
@@ -1233,6 +1234,8 @@ namespace VikingEngine.DSSWars
         FjornfellWarhowl,
         AshgroveWard,
         HragmarHorncarvers,
+
+        Barbarians,
     }
 
     enum FactionGroupType

@@ -1,11 +1,5 @@
 ﻿UPDATE
 -Change Log-
-/turned off multiplayer
-/place palisade tut icon
-/demo has palisades
-/not be able to order army men to walls
-/have short tutorial as secondary recommend
-
 
 The demo should:
 -Lockout any extra content or modes.

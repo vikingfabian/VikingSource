@@ -8,11 +8,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
-        //## Ref.langOpt
-        
-
-
-        //##End Ref.langOpt
+        public string FactionName_Barbarian => "Dark horde";
 
 
     }

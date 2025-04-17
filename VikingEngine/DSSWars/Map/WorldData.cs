@@ -906,6 +906,7 @@ namespace VikingEngine.DSSWars
             {
                 FactionType.DarkLord,
                 FactionType.DarkFollower,
+                FactionType.Barbarians,
                 FactionType.UnitedKingdom,
                 FactionType.GreenWood,
                 FactionType.EasternEmpire,

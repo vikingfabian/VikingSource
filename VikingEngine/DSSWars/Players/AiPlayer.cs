@@ -423,7 +423,6 @@ namespace VikingEngine.DSSWars.Players
                     name = DssRef.lang.FactionName_DarkLord;
                     faction.displayInFullOverview = true;
 
-
                     techSetup();
                     faction.technology.advancedBuilding = TechnologyTemplate.FactionUnlock;
                     faction.technology.advancedCasting = TechnologyTemplate.FactionUnlock;
@@ -446,6 +445,18 @@ namespace VikingEngine.DSSWars.Players
 
                     techSetup();
                     faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
+                    break;
+
+                case FactionType.Barbarians:
+                    aiConscript = AiConscript.Orcs;
+                    faction.diplomaticSide = DiplomaticSide.Dark;
+                    DssRef.settings.Faction_DarkFollower = faction.parentArrayIndex;
+                    aggressionLevel = AggressionLevel3_FocusedAttacks;
+                    faction.growthMultiplier = 1.5f;
+                    name = DssRef.todoLang.FactionName_Barbarian;
+                    faction.displayInFullOverview = false;
+
+                    techSetup();
                     break;
 
                 case FactionType.UnitedKingdom:
