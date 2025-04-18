@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.Display.Translation
     class TodoTranslation
     {
         public string FactionName_Barbarian => "Dark horde";
-
+        public string Tutorial_AttackAndDestroyX => "Attack and destroy: {0}";
 
     }
 

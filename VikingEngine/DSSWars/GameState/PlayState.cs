@@ -176,6 +176,7 @@ namespace VikingEngine.DSSWars
 
             new Faction(DssRef.world, FactionType.DarkLord);
             new Faction(DssRef.world, FactionType.SouthHara);
+            new Faction(DssRef.world, FactionType.Barbarians);
 
             int playerCount = DssRef.storage.playerCount;
             //int playerIndex = 0;
@@ -187,21 +188,29 @@ namespace VikingEngine.DSSWars
             while (factionsCounter.Next())
             {
                 factionsCounter.sel.initDiplomacy(DssRef.world);
-                if (factionsCounter.sel.factiontype == FactionType.DarkLord)
+
+                switch (factionsCounter.sel.factiontype)
                 {
-                    DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel);
+                    case FactionType.DarkLord:
+                        {
+                            DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel);
+                        }
+                        break;
+                    case FactionType.Player:
+                        {
+                            var local = new Players.LocalPlayer(factionsCounter.sel);
+                            //var local = arraylib.PullFirstMember(pointers.localPlayers);//new Players.LocalPlayer(factionsCounter.sel, 
+
+                            localPlayers.Add(local);
+                        }
+                        break;
+                    default:
+                        {
+                            new Players.AiPlayer(factionsCounter.sel);
+                        }
+                        break;
                 }
-                else if (factionsCounter.sel.factiontype == FactionType.Player)
-                {
-                    var local = new Players.LocalPlayer(factionsCounter.sel);
-                    //var local = arraylib.PullFirstMember(pointers.localPlayers);//new Players.LocalPlayer(factionsCounter.sel, 
-                    
-                    localPlayers.Add(local);
-                }
-                else
-                {
-                    new Players.AiPlayer(factionsCounter.sel);
-                }
+                
 
 #if DEBUG
                 if (factionsCounter.sel.player == null)

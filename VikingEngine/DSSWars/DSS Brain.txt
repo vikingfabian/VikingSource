@@ -1,5 +1,6 @@
 ﻿UPDATE
 -Change Log-
+* added attacking to turtorial
 
 The demo should:
 -Lockout any extra content or modes.

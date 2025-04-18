@@ -450,11 +450,13 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.Barbarians:
                     aiConscript = AiConscript.Orcs;
                     faction.diplomaticSide = DiplomaticSide.Dark;
-                    DssRef.settings.Faction_DarkFollower = faction.parentArrayIndex;
+
+                    DssRef.settings.Faction_Barbarian = faction.parentArrayIndex;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.todoLang.FactionName_Barbarian;
                     faction.displayInFullOverview = false;
+                    faction.hasDeserters = false;
 
                     techSetup();
                     break;

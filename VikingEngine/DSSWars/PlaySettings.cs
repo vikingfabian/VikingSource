@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars
         public int Faction_SouthHara;
         public int Faction_GreenWood;
         public int Faction_DarkFollower;
+        public int Faction_Barbarian;
         public int Faction_UnitedKingdom;
 
         public int Faction_DyingMonger;

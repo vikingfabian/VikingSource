@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             RecruitGuard,
             BuildDefences,
             MoveArmy,
-           
+            AttackBarbarian,
             Diplomatics,
             End,
         }
@@ -102,8 +102,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         bool moveArmy_ZoomOut = false;
         bool moveArmy_ZoomOut_sound = false;
-        //bool moveArmy_Select = false;
         bool moveArmy_SelectMove = false;
+
+        Army barbarianArmy = null;
+        bool attackBarbarian_win = false;
 
         bool diplomatics_ZoomOut = false;
         bool diplomatics_ZoomOut_sound = false;
@@ -180,6 +182,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     TutorialMission.ConscriptArmy,
                     TutorialMission.CollectFood,
                     TutorialMission.MoveArmy,
+                    TutorialMission.AttackBarbarian,
                     TutorialMission.Diplomatics,
                     TutorialMission.End,
                 };
@@ -402,6 +405,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //content.icontext(HudLib.CheckImage(moveArmy_ZoomOut), DssRef.lang.Tutorial_ZoomOutOverview);
                     //content.icontext(HudLib.CheckImage(moveArmy_SelectMove), DssRef.lang.Tutorial_Mission_MoveArmy);
                     break;
+
+                case TutorialMission.AttackBarbarian:
+                    content.iconicontext(HudLib.CheckImage(attackBarbarian_win), SpriteName.WarsRelationWar, string.Format( DssRef.todoLang.Tutorial_AttackAndDestroyX, DssRef.todoLang.FactionName_Barbarian));
+                    break;
+
                 case TutorialMission.Diplomatics:
                     content.iconicontext(HudLib.CheckImage(diplomatics_ZoomOut), SpriteName.WarsDiplomaticPoint,  DssRef.lang.Tutorial_ZoomOutDiplomacy);
                     content.iconicontext(HudLib.CheckImage(diplomatics_goodRelation), SpriteName.WarsRelationGood, DssRef.lang.Tutorial_ImproveRelations);
@@ -413,6 +421,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             content.icontext(player.gameControls.input.mouseSelect.Icon, DssRef.lang.Tutorial_SelectInput);            
             content.icontext(player.gameControls.input.inputSource.IsController? player.gameControls.input.cameraTiltZoom.Icon : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
             if (missions.sel == TutorialMission.MoveArmy ||
+                missions.sel == TutorialMission.AttackBarbarian ||
                 missions.sel == TutorialMission.BuildDefences)
             {
                 content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
@@ -994,6 +1003,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                     }
                     break;
+
+                case TutorialMission.AttackBarbarian:                    
+                    
+                    if (!attackBarbarian_win && 
+                        barbarianArmy != null && barbarianArmy.defeated())
+                    {
+                        attackBarbarian_win = true;
+
+                        onPartSuccess();
+                    }
+                    
+                    break;
+
                 case TutorialMission.Diplomatics:
 
                     if (player.drawUnitsView.current.DrawOverview)
@@ -1100,6 +1122,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     missionComplete = moveArmy_ZoomOut &&
                         moveArmy_SelectMove;
                     break;
+                case TutorialMission.AttackBarbarian:
+                    missionComplete = attackBarbarian_win;
+                    break;
                 case TutorialMission.Diplomatics:
                     missionComplete = diplomatics_ZoomOut &&
                         diplomatics_goodRelation;
@@ -1141,6 +1166,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
                 else
                 {
+                    if (missions.sel == TutorialMission.AttackBarbarian)
+                    {
+                        startUnits();
+                        spawnBarbarians();
+                        player.gameControls.mapControls.setCameraBounds(false, cityarea);
+                    }
+
                     refreshLimits();
 
                     RichBoxContent content = new RichBoxContent();
@@ -1149,6 +1181,69 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     player.hud.messages.Add(content);
                 }
             }
+        }
+        
+        void spawnBarbarians()
+        {
+            var city = player.faction.mainCity;
+
+            ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
+            for (int radius = city.cityTileRadius - 2; radius > 1; ++radius)
+            {
+                loop.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                while (loop.Next())
+                {
+                    if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile) &&
+                        tile.IsLand())
+                    {
+                        //Available for spawn
+                        Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
+                        enemyFac.player.GetAiPlayer().armyAi_enabled = false;
+
+                        barbarianArmy = enemyFac.NewArmy(loop.Position);
+                        {
+                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                            {
+                                conscript = new ConscriptProfile()
+                                {
+                                    weapon = Resource.ItemResourceType.ShortSword,
+                                    armorLevel = Resource.ItemResourceType.PaddedArmor,
+                                    training = TrainingLevel.Basic,
+                                    specialization = SpecializationType.Field,
+                                }
+                            };
+
+                            for (int i = 0; i < 2; ++i)
+                            {
+                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                            }
+                        }
+                        {
+                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                            {
+                                conscript = new ConscriptProfile()
+                                {
+                                    weapon = Resource.ItemResourceType.Crossbow,
+                                    armorLevel = Resource.ItemResourceType.NONE,
+                                    training = TrainingLevel.Basic,
+                                    specialization = SpecializationType.Field,
+                                }
+                            };
+
+                            for (int i = 0; i < 1; ++i)
+                            {
+                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                            }
+                        }
+                        barbarianArmy.refreshPositions(true);
+                        barbarianArmy.setAsStartArmy();
+
+                        return;
+                    }
+                }
+            }
+
+            throw new Exception("No enemy spawn");
         }
 
         public void writeGameState(BinaryWriter w)
@@ -1168,9 +1263,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public void EndTutorial()
         {
             player.gameControls.mapControls.setCameraBounds(false, cityarea);
-            bool createStartUnits = DssRef.storage.runTutorial_1short_2normal == 2;
+            bool createStartUnits = DssRef.storage.runTutorial_1short_2normal == 2 && 
+                missions.sel < TutorialMission.AttackBarbarian;
             DssRef.storage.runTutorial_1short_2normal = 0;
             DssRef.storage.Save(null);
+
+            Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
+            enemyFac.player.GetAiPlayer().armyAi_enabled = true;
 
             player.tutorial = null;
             
@@ -1178,16 +1277,31 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             if (createStartUnits)
             {
-                var factionC = DssRef.world.factions.counter();
-                while (factionC.Next())
-                {
-                    factionC.sel.player.createStartupBarracks();
-                    factionC.sel.player.createStartUnits();
-
-                }
+                startUnits();
             }
+            //{
+            //    var factionC = DssRef.world.factions.counter();
+            //    while (factionC.Next())
+            //    {
+            //        factionC.sel.player.createStartupBarracks();
+            //        factionC.sel.player.createStartUnits();
+
+            //    }
+            //}
 
             player.hud.messages.blockFoodWarning(false);
+        }
+
+        void startUnits()
+        {
+
+            var factionC = DssRef.world.factions.counter();
+            while (factionC.Next())
+            {
+                factionC.sel.player.createStartupBarracks();
+                factionC.sel.player.createStartUnits();
+
+            }
         }
     }
 }
