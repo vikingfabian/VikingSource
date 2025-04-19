@@ -45,16 +45,26 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public MapBackgroundLoading()
         { }
+        public MapBackgroundLoading(MapGenerateSettings generateSettings)
+        { 
+            this.generateSettings = generateSettings;
+            begin();
+        }
         public MapBackgroundLoading(SaveStateMeta loadMeta)
         {
             this.loadMeta = loadMeta;
+            begin();
+        }
+
+        void begin()
+        {
             if (loadMeta != null)
             {
                 DssRef.storage.generateNewMaps = loadMeta.worldmeta.IsGenerated;
                 DssRef.storage.mapSize = loadMeta.worldmeta.mapSize;
             }
 
-            if (DssRef.storage.generateNewMaps)
+            if (GenerateNewMap())
             {
                 loadingState = LoadingState.StorageDone;
                 generateLoopUntilSuccess(loadMeta, GenerateMapPass.All);
@@ -85,6 +95,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 storage.loadMap(worldMeta);
             }
         }
+
 
         public WorldData WorldData()
         { 
@@ -222,7 +233,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         virtual protected bool GenerateNewMap()
         {
-            return DssRef.storage.generateNewMaps;
+            return DssRef.storage.generateNewMaps || generateSettings.useGenerate;
         }
 
         public void Abort()

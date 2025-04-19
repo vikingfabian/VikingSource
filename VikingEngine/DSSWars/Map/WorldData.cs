@@ -75,7 +75,6 @@ namespace VikingEngine.DSSWars
 
         public List<City> cities = new List<City>(0); 
         public SpottedArray<Faction> factions;
-        //public SpottedArrayCounter<Faction> factionsCounter;
 
         public bool BordersUpdated = true;
         
@@ -84,23 +83,26 @@ namespace VikingEngine.DSSWars
         
        
         public int areaTileCount;
-        //public int evilFactionIndex=-1;
         public bool abortLoad = false;
 
-        public List<FactionType> availableGenericAiTypes = new List<FactionType>();// AvailableGenericAiTypes();
+        public List<FactionType> availableGenericAiTypes = new List<FactionType>();
 
         public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
 
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
-            //factionsCounter = new SpottedArrayCounter<Faction>(factions);
         }
 
         public WorldData(WorldMetaData metaData, MapGenerateSettings generateSettings)//ushort seed, MapSize size)
             : this()
         {
             this.metaData = metaData;
+            if (generateSettings.customSeed)
+            { 
+                metaData.seed = generateSettings.seed;
+            }
+
             metaData.customMap = true;
             LoadingWorld = this;
 

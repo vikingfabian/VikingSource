@@ -8,6 +8,11 @@ namespace VikingEngine.DSSWars.Map.Generate
 {
     class MapGenerateSettings
     {
+        public bool useGenerate = false;
+
+        public bool customSeed = false;
+        public ushort seed = 0;
+
         public float LandChainMinRadius = 2;
         public float LandChainMaxRadius = 30;
         public IntervalF linkPosDiffRange = new IntervalF(0.5f, 3);
@@ -68,6 +73,12 @@ namespace VikingEngine.DSSWars.Map.Generate
             return customMapSize.Y;
         }
 
+        public void setCustomSize(IntVector2 customMapSize)
+        { 
+            this.customMapSize = customMapSize;
+            
+            bCustomSize = true;
+        }
 
     }
 }

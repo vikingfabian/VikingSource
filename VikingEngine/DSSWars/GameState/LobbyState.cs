@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars
             Engine.Screen.SetupSplitScreen(1, true);
             if (startLoadingMap && !StartupSettings.BlockBackgroundLoading)
             {
-                mapBackgroundLoading = new MapBackgroundLoading(null);
+                mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }
 
             Ref.draw.ClrColor = new Color(11, 30, 34);
@@ -283,6 +283,7 @@ namespace VikingEngine.DSSWars
             content.Button("start", new RbAction(startGame), null, true);
             content.Button("map editor", new RbAction(openMapEditor), null, true);
             content.Button("battle lab", new RbAction(startBattleLab), null, true);
+            content.Button("trial", new RbAction(startTrial), null, true);
             if (Ref.steam.isInitialized)
             {
                 content.Button("wish", new RbAction(() =>
@@ -465,98 +466,101 @@ namespace VikingEngine.DSSWars
         {
             new StartBattleLab(mapBackgroundLoading);
         }
+        void startTrial()
+        {
+            new StartBattleLab();
+        }
+        //        void mainMenu()
+        //        {
+        //            controllerStartGameUpdate = false;
+        //            menuSystem.openMenu();
+        //            menuSystem.menu.PopAllLayouts();
 
-//        void mainMenu()
-//        {
-//            controllerStartGameUpdate = false;
-//            menuSystem.openMenu();
-//            menuSystem.menu.PopAllLayouts();
+        //            var saves = DssRef.storage.meta.listSaves();
 
-//            var saves = DssRef.storage.meta.listSaves();
+        //            GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
+        //            {
+        //                if (StartupSettings.CheatActive)
+        //                {
+        //                    new GuiLabel("! debug cheats !", layout);
+        //                }
+        //#if DEBUG
+        //                new GuiLargeTextButton(DssRef.lang.Lobby_Start, null, new GuiAction(startGame), false, layout);
+        //#endif
 
-//            GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
-//            {
-//                if (StartupSettings.CheatActive)
-//                {
-//                    new GuiLabel("! debug cheats !", layout);
-//                }
-//#if DEBUG
-//                new GuiLargeTextButton(DssRef.lang.Lobby_Start, null, new GuiAction(startGame), false, layout);
-//#endif
+        //                if (arraylib.HasMembers(saves))
+        //                {
+        //                    new GuiTextButton(DssRef.lang.GameMenu_ContinueFromSave, saves[0].InfoString(), new GuiAction1Arg<SaveStateMeta>(continueFromSave, saves[0]), false, layout);
+        //                }
 
-//                if (arraylib.HasMembers(saves))
-//                {
-//                    new GuiTextButton(DssRef.lang.GameMenu_ContinueFromSave, saves[0].InfoString(), new GuiAction1Arg<SaveStateMeta>(continueFromSave, saves[0]), false, layout);
-//                }
+        //                new GuiLargeTextButton(DssRef.lang.Settings_NewGame, null, new GuiAction(newGameSettings) /*new GuiAction(startGame)*/, true, layout);
 
-//                new GuiLargeTextButton(DssRef.lang.Settings_NewGame, null, new GuiAction(newGameSettings) /*new GuiAction(startGame)*/, true, layout);
+        //                if (arraylib.HasMembers(saves))
+        //                {
+        //                    new GuiTextButton(DssRef.lang.GameMenu_LoadState, null, listSaves, true, layout);
+        //                }
 
-//                if (arraylib.HasMembers(saves))
-//                {
-//                    new GuiTextButton(DssRef.lang.GameMenu_LoadState, null, listSaves, true, layout);
-//                }
+        //                new GuiTextButton(string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount),
+        //                    null, localMultiplayerMenu, true, layout);
 
-//                new GuiTextButton(string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount),
-//                    null, localMultiplayerMenu, true, layout);
+        //                for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
+        //                {
+        //                    var playerData = DssRef.storage.localPlayers[playerNum - 1];
+        //                    if (DssRef.storage.playerCount > 1)
+        //                    {
+        //                        new GuiLabel(string.Format(DssRef.lang.Player_DefaultName, playerNum), layout);
+        //                        new GuiTextButton(DssRef.lang.Lobby_NextScreen, null, new GuiAction1Arg<int>(nextScreenIndex, playerNum), false, layout);
+        //                    }
+        //                    DssRef.storage.flagStorage.flagDesigns[playerData.flagDesignIndex].Button(layout, new GuiAction1Arg<int>(listProfiles, playerNum), true);
+        //                    new GuiTextButton(DssRef.lang.Lobby_FlagEdit, null, new GuiAction1Arg<int>(openProfileEditor, playerData.flagDesignIndex), false, layout);
 
-//                for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
-//                {
-//                    var playerData = DssRef.storage.localPlayers[playerNum - 1];
-//                    if (DssRef.storage.playerCount > 1)
-//                    {
-//                        new GuiLabel(string.Format(DssRef.lang.Player_DefaultName, playerNum), layout);
-//                        new GuiTextButton(DssRef.lang.Lobby_NextScreen, null, new GuiAction1Arg<int>(nextScreenIndex, playerNum), false, layout);
-//                    }
-//                    DssRef.storage.flagStorage.flagDesigns[playerData.flagDesignIndex].Button(layout, new GuiAction1Arg<int>(listProfiles, playerNum), true);
-//                    new GuiTextButton(DssRef.lang.Lobby_FlagEdit, null, new GuiAction1Arg<int>(openProfileEditor, playerData.flagDesignIndex), false, layout);
+        //                    if (DssRef.storage.playerCount > 1)
+        //                    {
+        //                        new GuiTextButton(string.Format(Ref.langOpt.InputSelect, playerData.inputSource.ToString()), null, new GuiAction3Arg<int, bool, SaveStateMeta>(selectInputMenu, playerNum, false, null), true, layout);
+        //                    }
 
-//                    if (DssRef.storage.playerCount > 1)
-//                    {
-//                        new GuiTextButton(string.Format(Ref.langOpt.InputSelect, playerData.inputSource.ToString()), null, new GuiAction3Arg<int, bool, SaveStateMeta>(selectInputMenu, playerNum, false, null), true, layout);
-//                    }
-
-//                    new GuiSectionSeparator(layout);
-//                }
-//                if (DssRef.storage.playerCount > 1)
-//                {
-//                    new GuiCheckbox(Ref.langOpt.VerticalSplitScreen, null, verticalSplitProperty, layout);
-//                    //menuSystem.multiplayerGameSpeedToMenu(layout);
-//                }
+        //                    new GuiSectionSeparator(layout);
+        //                }
+        //                if (DssRef.storage.playerCount > 1)
+        //                {
+        //                    new GuiCheckbox(Ref.langOpt.VerticalSplitScreen, null, verticalSplitProperty, layout);
+        //                    //menuSystem.multiplayerGameSpeedToMenu(layout);
+        //                }
 
 
-//                new GuiSectionSeparator(layout);
-//                //new GuiIconTextButton(SpriteName.AutomationGearIcon, Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
-//                //new GuiTextButton("*Crash game*", null, crashTest, false, layout); 
+        //                new GuiSectionSeparator(layout);
+        //                //new GuiIconTextButton(SpriteName.AutomationGearIcon, Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
+        //                //new GuiTextButton("*Crash game*", null, crashTest, false, layout); 
 
-//                new GuiTextButton("Play Commander", "A small tactical board game", new GuiAction(extra_PlayCommanderVersus), false, layout);
-                
-//                if (PlatformSettings.DevBuild)
-//                {
-//                    new GuiTextButton("Map file generator", "Creates maps to play on. Takes about 10 minutes.", mapFileGenerator, false, layout);
-                    
-//                    //new GuiLargeTextButton("Test sound", null, new GuiAction(testsound), false, layout);
-//                    new GuiTextButton("Load mod", null, loadMod, false, layout);
-                    
-//                    if (Ref.steam.statsInitialized)
-//                    {
-//                        new GuiTextButton("Initialize steam stats", null, Ref.steam.stats.initializeAllStatsOnSteam, false, layout);
-//                        new GuiTextButton("Load global steam stats", null, Ref.steam.stats.beginRequestGlobalStats, false, layout);
-//                    }
-                    
-//                    new GuiTextButton("Text Input", null, new Action(() =>
-//                    {
-//                        new TextInput("test", null, null);
-//                    }), true, layout);
-//                }
-//                new GuiTextButton("Credits", null, credits, true, layout);
+        //                new GuiTextButton("Play Commander", "A small tactical board game", new GuiAction(extra_PlayCommanderVersus), false, layout);
 
-//                //new GuiTextButton("Voxel Editor", "Tool to create the voxel models. Xbox controller required!", voxeleditor, false, layout);
-//                new GuiSectionSeparator(layout);
-//                new GuiTextButton(DssRef.lang.Lobby_ExitGame, null, exitGame, false, layout);
-//            } layout.End();
+        //                if (PlatformSettings.DevBuild)
+        //                {
+        //                    new GuiTextButton("Map file generator", "Creates maps to play on. Takes about 10 minutes.", mapFileGenerator, false, layout);
 
-            
-//        }
+        //                    //new GuiLargeTextButton("Test sound", null, new GuiAction(testsound), false, layout);
+        //                    new GuiTextButton("Load mod", null, loadMod, false, layout);
+
+        //                    if (Ref.steam.statsInitialized)
+        //                    {
+        //                        new GuiTextButton("Initialize steam stats", null, Ref.steam.stats.initializeAllStatsOnSteam, false, layout);
+        //                        new GuiTextButton("Load global steam stats", null, Ref.steam.stats.beginRequestGlobalStats, false, layout);
+        //                    }
+
+        //                    new GuiTextButton("Text Input", null, new Action(() =>
+        //                    {
+        //                        new TextInput("test", null, null);
+        //                    }), true, layout);
+        //                }
+        //                new GuiTextButton("Credits", null, credits, true, layout);
+
+        //                //new GuiTextButton("Voxel Editor", "Tool to create the voxel models. Xbox controller required!", voxeleditor, false, layout);
+        //                new GuiSectionSeparator(layout);
+        //                new GuiTextButton(DssRef.lang.Lobby_ExitGame, null, exitGame, false, layout);
+        //            } layout.End();
+
+
+        //        }
 
         void loadMod()
         {
@@ -1294,7 +1298,7 @@ namespace VikingEngine.DSSWars
             if (mapBackgroundLoading != null)
             {
                 mapBackgroundLoading.Abort();
-                mapBackgroundLoading = new MapBackgroundLoading(null);
+                mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }
         }
 
