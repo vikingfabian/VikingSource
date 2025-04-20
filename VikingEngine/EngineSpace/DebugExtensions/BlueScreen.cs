@@ -11,6 +11,9 @@ using VikingEngine.SteamWrapping;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars;
+using Microsoft.CodeAnalysis;
+using System.Diagnostics;
+using System.Linq;
 
 #if PCGAME
 //using System.Windows.Forms;
@@ -38,7 +41,7 @@ namespace VikingEngine.DebugExtensions
         {
             cleanUp();
 
-            logError(errorMessageDetailed);
+            logError(Engine.LoadContent.SteamVersion + errorMessageDetailed);
             //if (PlatformSettings.PC_platform)
             //{
             //    try
@@ -67,7 +70,7 @@ namespace VikingEngine.DebugExtensions
             //}
 
 
-            errorMessageDetailed = Engine.LoadContent.SteamVersion + compressText(errorMessageDetailed);
+            errorMessageDetailed = Engine.LoadContent.SteamVersion + errorMessageDetailed;
 
 
             Engine.StateHandler.ReplaceGamestate(this);
@@ -76,18 +79,9 @@ namespace VikingEngine.DebugExtensions
             {
                 detailedText = errorMessageDetailed;
 
-                //Ref.draw.ClrColor = Color.DarkBlue;
-
-                //float t = 0.075f;
-                //float t_w = (1 - 2 * t);
-                //VectorRect rect = new VectorRect(t * Ref.draw.ScreenWidth, t * Ref.draw.ScreenHeight, t_w * Ref.draw.ScreenWidth, t_w * Ref.draw.ScreenHeight);
-                //var style = new GuiStyle(rect.Width, 5, SpriteName.WhiteArea);
-                //style.headBar = false;
-                //menu = new Gui(style, rect, 0, ImageLayers.AbsoluteBottomLayer, Input.InputSource.DefaultPC);
-                //GuiLayout layout = new GuiLayout("Game Crashed!", menu);
+               
                 GuiLayout layout = createMenu("Game Crashed!");
                 {
-                    //new GuiLabel("You would really help us out if you sent us a screenshot of the message below, so we can stop this from happening again. Thank you for helping us!", layout);
                     if (PlatformSettings.PC_platform)
                     {
                         new GuiLabel("A file with the crash details is created, see " + logFullPath, layout);
@@ -130,6 +124,8 @@ namespace VikingEngine.DebugExtensions
 
         protected void logError(string errorMessageDetailed)
         {
+            Ref.sentry?.sendReport(errorMessageDetailed);
+
             if (PlatformSettings.PC_platform)
             {
                 try
@@ -175,11 +171,11 @@ namespace VikingEngine.DebugExtensions
 
         string compressText(string error)
         {
-            error = error.Replace("VikingEngine.LootFest.", "");
-            error = error.Replace("VikingEngine.", "");
-            error = error.Replace("VikingEngine.", "");
-            error = error.Replace("..ctor", "");
-            error = error.Replace(" at", " ");
+            //error = error.Replace("VikingEngine.LootFest.", "");
+            //error = error.Replace("VikingEngine.", "");
+            //error = error.Replace("VikingEngine.", "");
+            //error = error.Replace("..ctor", "");
+            //error = error.Replace(" at", " ");
 
             string result = "";
             bool addChar = true;
@@ -316,7 +312,30 @@ namespace VikingEngine.DebugExtensions
                 type += " N" + ((int)Network.NetLib.PacketType).ToString();
             }
 
-            return type + ": " + e.ToString() + "; " + e.Message + " @" + e.StackTrace;
+            string stacktrace = string.Empty;
+            var stackFrames = new StackTrace(e, fNeedFileInfo: true).GetFrames();
+            foreach (var frame in stackFrames)
+            {
+                string fileName = frame.GetFileName();
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    fileName = TextLib.Unknown;
+                }
+                else
+                {
+                    fileName = fileName.Split("VikingEngine").Last();
+                }
+                stacktrace += $"{fileName} ::line {frame.GetFileLineNumber()}, col {frame.GetFileColumnNumber()}" + Environment.NewLine;
+                var m = frame.GetMethod();
+                if (m != null)
+                {
+                    stacktrace += m + Environment.NewLine;
+                }
+
+                stacktrace += Environment.NewLine;
+            }
+
+            return type + "; " + e.Message + " @" + stacktrace;
         }
 
 

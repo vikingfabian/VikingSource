@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars
         VectorRect underMenuArea;
         //RichMenu richmenu;
         const float MenuBgOpacity = 0.9f;
-        RichMenu topMenu, underMenu;
+        RichMenu topMenu, underMenu, reportsMenu;
 
         static readonly string LobbyAmbienceDir = Ambience.AmbienceDir + "lobby" + DataStream.FilePath.Dir;
 
@@ -125,6 +125,11 @@ namespace VikingEngine.DSSWars
             Ref.lobby.startSearchLobbies(true);
 
             createMenuLayout();
+
+#if DEBUG
+            new TimedAction0ArgTrigger(collectReports, 600);
+            
+#endif
         }
 
         public void playOnCustomMap(MapBackgroundLoading map)
@@ -215,6 +220,59 @@ namespace VikingEngine.DSSWars
             underMenu.OpenMenu(menuName, stack);
         }
 
+
+        void collectReports()
+        {
+            createReportMenu();
+            if (Ref.steam.isInitialized)
+            {
+                var report = new DebugExtensions.DownloadSteamCrashReports(false, reportContent);
+            }
+            else
+            {
+                RichBoxContent content = new RichBoxContent();
+                content.text("Steam not initialized");
+                reportsMenu.OpenMenu(content, string.Empty);
+            }
+
+            void createReportMenu()
+            {
+                var area = Engine.Screen.SafeArea;
+                area.X = underMenuArea.X;
+                area.SetRight(Engine.Screen.SafeArea.Right, true);
+                reportsMenu = new RichMenu(HudLib.RbSettings, area, new Vector2(8), RichMenu.DefaultRenderEdge, ImageLayers.Background0, new PlayerData(PlayerData.AllPlayers));
+                reportsMenu.addBackground(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), ImageLayers.Background3);
+            }
+
+            void reportContent(DownloadSteamCrashReports reports)
+            {
+                RichBoxContent content = new RichBoxContent();
+                foreach (var report in reports.reports)
+                {
+                    bool first = true;
+                    foreach (var line in report)
+                    {
+                        if (first)
+                        {
+                            first = false;
+                            content.h2(line, HudLib.TitleColor_Head);
+                        }
+                        else
+                        {
+                            content.text(line);
+                        }
+                    }
+
+                    content.Add(new RbSeperationLine());
+                }
+
+                reportsMenu.OpenMenu(content, string.Empty);
+            }
+        }
+              
+
+        
+
         void closingOptionsMenuEvent()
         {
             if (Ref.gamesett.settingsHasChanged)
@@ -270,12 +328,21 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        void testCrash()
+        {
+            throw new Exception("Test crash");
+            //Ref.sentry.debugMessage();
+        }
+
+       // new HUD.GuiTextButton(">>download crash reports", null, downloadCrashReports, false, layout);
+
         void mainMenu2()
         {
             const float ButtonTextTabbing = 0.15f;
             
             RichBoxContent content = new RichBoxContent();
 #if DEBUG
+
             if (StartupSettings.CheatActive)
             {
                 content.text("! debug cheats !");
@@ -284,6 +351,7 @@ namespace VikingEngine.DSSWars
             content.Button("map editor", new RbAction(openMapEditor), null, true);
             content.Button("battle lab", new RbAction(startBattleLab), null, true);
             content.Button("trial", new RbAction(startTrial), null, true);
+            content.Button("cresh reports", new RbAction(Ref.steam.downloadCrashReports), null, true);
             if (Ref.steam.isInitialized)
             {
                 content.Button("wish", new RbAction(() =>
@@ -294,6 +362,9 @@ namespace VikingEngine.DSSWars
                     }
                 ), null, true);
             }
+
+            content.Button("crash", new RbAction(testCrash), null, true);
+
 #endif
 
 #if DEMO

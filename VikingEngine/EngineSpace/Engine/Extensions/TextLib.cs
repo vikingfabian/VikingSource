@@ -9,6 +9,7 @@ using System.Text;
 using System.Reflection;
 using System.Globalization;
 using VikingEngine.Input;
+using System.Security.Cryptography;
 
 namespace VikingEngine
 {
@@ -20,6 +21,7 @@ namespace VikingEngine
 
         public const string EmptyString = "";
         public const string Error = "ERR";
+        public const string Unknown = "Unknown";
         const string MaxTwoDecimalsFormat = "0.##";
         public const string TextFileEnding = ".txt";
         public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '^' };
@@ -32,6 +34,39 @@ namespace VikingEngine
         public static NTStringBuilder TextLine = new NTStringBuilder();
         static NTStringBuilder test = new NTStringBuilder();
 
+        public static int GetDeterministicHashCode(this string str)
+        {
+            unchecked
+            {
+                int hash1 = (5381 << 16) + 5381;
+                int hash2 = hash1;
+
+                for (int i = 0; i < str.Length; i += 2)
+                {
+                    hash1 = ((hash1 << 5) + hash1) ^ str[i];
+                    if (i == str.Length - 1)
+                        break;
+                    hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
+                }
+
+                return hash1 + (hash2 * 1566083941);
+            }
+        }
+
+        public static string GetStableHash(string input)
+        {
+            using (var sha = SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(input);
+                var hashBytes = sha.ComputeHash(bytes);
+                var sb = new StringBuilder();
+
+                foreach (var b in hashBytes)
+                    sb.Append(b.ToString("x2"));
+
+                return sb.ToString(); // or use BitConverter.ToString(hashBytes) for a dash-separated version
+            }
+        }
         public static string Quote(string text)
         {
             return "\"" + text + "\"";

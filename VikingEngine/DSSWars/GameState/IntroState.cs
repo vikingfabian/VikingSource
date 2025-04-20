@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars
                    LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
                    Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
 
-            Ref.music = new Sound.MusicPlayer();
+            
             DssVar.UpdateConstants();
 
             if (isReset)
@@ -53,6 +53,8 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                new EngineSpace.DebugExtensions.SentryReport();
+                Ref.music = new Sound.MusicPlayer();
                 Engine.ParticleHandler.Init();
                 new VikingEngine.Engine.LoadBaseTextures();
                

@@ -341,9 +341,9 @@ namespace VikingEngine.SteamWrapping
         {
             new DownloadAllUserStats();
         }
-        void downloadCrashReports()
+        public void downloadCrashReports()
         {
-            new DebugExtensions.DownloadSteamCrashReports();
+            new DebugExtensions.DownloadSteamCrashReports(true, null);
         }
     }
 

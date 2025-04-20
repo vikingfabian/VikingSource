@@ -170,6 +170,7 @@ namespace VikingEngine
     enum ExceptionType : byte
     {
         Other,
+        Default,
         NullRef,
         NotImplemented,
         IndexOutOfRange,

@@ -12,6 +12,7 @@ namespace VikingEngine
     /// </summary>
     static class Ref
     {
+        public static EngineSpace.DebugExtensions.SentryReport sentry;
         public static Sound.MusicPlayer music;
         public static GameState gamestate;
         public static Engine.Draw draw;

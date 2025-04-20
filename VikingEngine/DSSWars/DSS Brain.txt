@@ -1,6 +1,9 @@
 ﻿UPDATE
 -Change Log-
-* added attacking to turtorial
+* added attacking to tutorial
+* improved crash details
+* added a steam bug report system
+* and added Sentry, a crash reporter, sends your crashes to my email :)
 
 The demo should:
 -Lockout any extra content or modes.
@@ -54,8 +57,8 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 -open editor state (för att minska risken fär  
 -palisade item, quick setup/teardown (palisade tower)
 -show all resources option
--toggle cam angle
 -build prio
+-new game plus, skip story
 
 (-house variants)
 +  ports can speed up how much u can send or recieve
