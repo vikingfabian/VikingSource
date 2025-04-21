@@ -454,7 +454,7 @@ namespace VikingEngine.DSSWars.Players
                     DssRef.settings.Faction_Barbarian = faction.parentArrayIndex;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
-                    name = DssRef.todoLang.FactionName_Barbarian;
+                    name = DssRef.lang.FactionName_Barbarian;
                     faction.displayInFullOverview = false;
                     faction.hasDeserters = false;
 

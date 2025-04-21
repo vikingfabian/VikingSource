@@ -1284,6 +1284,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.Resource_TypeName_LongSword;
                 case ItemResourceType.HandSpear:
                     return DssRef.lang.Resource_TypeName_HandSpear;
+                case ItemResourceType.Pike:
+                    return DssRef.lang.Resource_TypeName_Pike;
+
                 case ItemResourceType.Warhammer:
                     return DssRef.lang.Resource_TypeName_Warhammer;
                 case ItemResourceType.MithrilSword:

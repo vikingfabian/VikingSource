@@ -1198,7 +1198,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Settings_ButtonMapping => "按钮映射";
 
-        
+
 
         /// <summary>
         /// 输入类型，标准PC输入
@@ -2154,6 +2154,17 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string CityCulture_BronzeCasters_Description => "提高青铜及其制品的产量";
         public override string CityCulture_BronzeCasters => "青铜铸造师";
+
+        //DEMO PATCH 1
+        /// <summary>
+        /// 在地图上游荡的邪恶兽人
+        /// </summary>
+        public override string FactionName_Barbarian => "黑暗部落";
+        public override string Tutorial_AttackAndDestroyX => "攻击并摧毁：{0}";
+        public override string Resource_TypeName_Pike => "长矛";
+
+        public override string BattleTrials_Title => "战斗试炼";
+        public override string BattleTrials_Description => "在正面对决中检验你的战术策略。";
 
     }
 }

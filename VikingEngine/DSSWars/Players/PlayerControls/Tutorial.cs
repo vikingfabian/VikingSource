@@ -407,7 +407,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
 
                 case TutorialMission.AttackBarbarian:
-                    content.iconicontext(HudLib.CheckImage(attackBarbarian_win), SpriteName.WarsRelationWar, string.Format( DssRef.todoLang.Tutorial_AttackAndDestroyX, DssRef.todoLang.FactionName_Barbarian));
+                    content.iconicontext(HudLib.CheckImage(attackBarbarian_win), SpriteName.WarsRelationWar, string.Format( DssRef.lang.Tutorial_AttackAndDestroyX, DssRef.lang.FactionName_Barbarian));
                     break;
 
                 case TutorialMission.Diplomatics:

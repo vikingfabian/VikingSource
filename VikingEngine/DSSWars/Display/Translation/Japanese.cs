@@ -2158,6 +2158,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string CityCulture_BronzeCasters => "青銅鋳造師";
 
 
+        //DEMO PATCH 1
+        /// <summary>
+        /// マップ上を徘徊する邪悪なオークたち
+        /// </summary>
+        public override string FactionName_Barbarian => "ダークホード";
+        public override string Tutorial_AttackAndDestroyX => "攻撃して破壊せよ：{0}";
+        public override string Resource_TypeName_Pike => "パイク";
+
+        public override string BattleTrials_Title => "戦闘試練";
+        public override string BattleTrials_Description => "軍対軍の直接対決で戦術を試そう。";
 
 
     }

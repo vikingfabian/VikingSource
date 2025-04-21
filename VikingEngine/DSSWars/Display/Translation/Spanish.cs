@@ -2157,6 +2157,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string CityCulture_BronzeCasters_Description => "Mayor producción de bronce y objetos de bronce";
         public override string CityCulture_BronzeCasters => "Fundidores de bronce";
 
+        //DEMO PATCH 1
+        /// <summary>
+        /// Orcos malvados que merodean por el mapa
+        /// </summary>
+        public override string FactionName_Barbarian => "Horda Oscura";
+        public override string Tutorial_AttackAndDestroyX => "Ataca y destruye: {0}";
+        public override string Resource_TypeName_Pike => "Pica";
+
+        public override string BattleTrials_Title => "Pruebas de Batalla";
+        public override string BattleTrials_Description => "Pon a prueba tu táctica en un enfrentamiento directo entre ejércitos.";
 
     }
 }

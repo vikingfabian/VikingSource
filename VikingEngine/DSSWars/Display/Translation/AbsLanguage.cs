@@ -1343,5 +1343,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string BuildingType_WoodWall { get; }
         public abstract string BuildingType_WoodTower { get; }
 
+
+        //DEMO PATCH 1
+        public abstract string FactionName_Barbarian { get; }
+        public abstract string Tutorial_AttackAndDestroyX { get; }
+        public abstract string Resource_TypeName_Pike { get; }
+
+        public abstract string BattleTrials_Title { get; }
+        public abstract string BattleTrials_Description { get; }
     }
 }

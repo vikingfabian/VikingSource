@@ -2192,5 +2192,18 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string CityCulture_BronzeCasters_Description => "Improved production of bronze and bronze items";
         public override string CityCulture_BronzeCasters => "Bronze casters";
+
+        //DEMO PATCH 1
+
+        /// <summary>
+        /// Evil orcs that roam on the map
+        /// </summary>
+        public override string FactionName_Barbarian => "Dark horde";
+        public override string Tutorial_AttackAndDestroyX => "Attack and destroy: {0}";
+        public override string Resource_TypeName_Pike => "Pike";
+
+
+        public override string BattleTrials_Title => "Battle Trials";
+        public override string BattleTrials_Description => "Test your tactics in a direct army-versus-army encounter.";
     }
 }

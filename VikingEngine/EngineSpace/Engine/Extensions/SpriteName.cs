@@ -2749,6 +2749,7 @@ namespace VikingEngine
         WarsResource_IronArmor,
         WarsResource_FullPlateArmor,
         WarsResource_Sharpstick,
+        WarsResource_Pike,
         WarsResource_Sword,
         WarsResource_MithrilSword,
         WarsResource_Bow,

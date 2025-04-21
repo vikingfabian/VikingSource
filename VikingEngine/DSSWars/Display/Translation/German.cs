@@ -2029,6 +2029,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string CityCulture_BronzeCasters => "Bronzegießer";
 
 
+        //DEMO PATCH 1
+        /// <summary>
+        /// Böse Orks, die über die Karte streifen
+        /// </summary>
+        public override string FactionName_Barbarian => "Dunkle Horde";
+        public override string Tutorial_AttackAndDestroyX => "Angreifen und zerstören: {0}";
+        public override string Resource_TypeName_Pike => "Pike";
+
+        public override string BattleTrials_Title => "Kampfübungen";
+        public override string BattleTrials_Description => "Teste deine Taktik in einem direkten Armee-gegen-Armee-Gefecht.";
 
     }
 }

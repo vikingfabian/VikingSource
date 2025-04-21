@@ -1139,9 +1139,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void toHud(ObjectHudArgs args)
         {
-
             SoldiersPresentationHud(args, false, false);
-
 #if DEBUG
             args.content.newLine();
             debugTagButton(args.content);

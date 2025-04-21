@@ -1,9 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* added attacking to tutorial
-* improved crash details
-* added a steam bug report system
-* and added Sentry, a crash reporter, sends your crashes to my email :)
+* translated the new tutorial
 
 The demo should:
 -Lockout any extra content or modes.
@@ -16,6 +13,7 @@ The demo should:
 
 
 !! Known issues, that I am working on !!
+-Camera chase can crash
 -Soldiers can be stuck on idle in battle
 -Cant move units between armies and garrisons
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
@@ -37,11 +35,7 @@ Assign men to wall (ballista, har warmashine crew)
 -stats, open stats 
 
 #OPT#
-culling av worker
-//stanna musik spelaren
-
 monogame fork? DrawUserPrimitives opt, titta på OGG filer
-//försöka återvinna class DetailMapTile
 
 # WORKER PATH #
 Ha en loop som går! igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
@@ -51,11 +45,7 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
--upkeep för servicemen
--hantera negativa servicemen
--flag editor behöver scroll
--open editor state (för att minska risken fär  
--palisade item, quick setup/teardown (palisade tower)
+
 -show all resources option
 -build prio
 -new game plus, skip story
@@ -120,6 +110,7 @@ Polish
 -krig icon på karta
 -the horses dont load when paused, plus rotation error
 -dölj move path OnHud 
+-start war popup
 -attack ally yes/no warning
 
 #Art

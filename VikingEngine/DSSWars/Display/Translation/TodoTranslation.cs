@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
-        public string FactionName_Barbarian => "Dark horde";
-        public string Tutorial_AttackAndDestroyX => "Attack and destroy: {0}";
+        
 
     }
 

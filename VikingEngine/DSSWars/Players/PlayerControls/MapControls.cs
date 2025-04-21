@@ -299,6 +299,11 @@ namespace VikingEngine.DSSWars.Players
 
         public void passiveUpdate()
         {
+            if (player.gameControls.mapControls.selection.obj != null &&
+                player.gameControls.mapControls.selection.obj.isDeleted)
+            {
+                player.gameControls.mapControls.clearSelection();
+            }
             keypPanInput();
             cameraFocusUpdate();
             updateCamera();

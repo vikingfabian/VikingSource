@@ -2398,7 +2398,8 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Bow);
                     add(SpriteName.WarsResource_Longbow);
                     add(SpriteName.WarsResource_Mithrilbow);
-                    currentIndex += 6;
+                    currentIndex += 5;
+                    add(SpriteName.WarsResource_Pike);
                     add(SpriteName.WarsDelivery);
                     add(SpriteName.WarsTrade);
                     add(SpriteName.WarsResource_Beer);

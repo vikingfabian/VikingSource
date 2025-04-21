@@ -324,7 +324,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_Battle => "Битва";
 
-        
+
 
         /// <summary>
         /// Описывает ввод кнопки. Пауза.
@@ -1197,7 +1197,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Settings_ButtonMapping => "Назначение кнопок";
 
-       
+
 
         /// <summary>
         /// Тип ввода, стандартный ПК ввод
@@ -2151,6 +2151,17 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string CityCulture_BronzeCasters_Description => "Улучшенное производство бронзы и бронзовых изделий";
         public override string CityCulture_BronzeCasters => "Бронзолитейщики";
+
+        //DEMO PATCH 1
+        /// <summary>
+        /// Злые орки, блуждающие по карте
+        /// </summary>
+        public override string FactionName_Barbarian => "Тёмная Орда";
+        public override string Tutorial_AttackAndDestroyX => "Атакуйте и уничтожьте: {0}";
+        public override string Resource_TypeName_Pike => "Пика";
+
+        public override string BattleTrials_Title => "Испытания в бою";
+        public override string BattleTrials_Description => "Проверьте свои тактические навыки в сражении армия против армии.";
 
     }
 }

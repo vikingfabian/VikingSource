@@ -191,6 +191,8 @@ namespace VikingEngine.DSSWars.Display
                 {
                     updateObjectDisplay(player.gameControls.mapControls.selection.obj, true, refresh);
                     player.factionTab = MenuTab.NUM_NONE;
+
+                    
                 }
                 else if (player.gameControls.mapControls.hover.obj != null)
                 {

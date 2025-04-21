@@ -408,6 +408,8 @@ namespace VikingEngine.DSSWars.Resource
                     return SpriteName.WarsResource_Slingshot;
                 case ItemResourceType.ThrowingSpear:
                     return SpriteName.WarsResource_ThrowSpear;
+                case ItemResourceType.Pike:
+                    return SpriteName.WarsResource_Pike;
                 case ItemResourceType.MithrilBow:
                     return SpriteName.WarsResource_Mithrilbow;
 
