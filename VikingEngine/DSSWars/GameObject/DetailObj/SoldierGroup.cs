@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Rotation1D rotation;
 
         public float terrainSpeedMultiplier = 1.0f;
-        public float walkSpeed = DssConst.Men_StandardWalkingSpeed;
+        public float walkSpeed_peace = DssConst.Men_StandardWalkingSpeed;
         float rotateSpeed;
 
         public AbsGroup attackTarget_soldierGroupOrCity = null;
@@ -401,7 +401,7 @@ namespace VikingEngine.DSSWars.GameObject
         void refreshRotateSpeed()
         {
             float muliply = 1.6f - 0.15f * (int)soldierConscript.conscript.training;
-            rotateSpeed = (float)Math.Abs(Math.Atan2(walkSpeed * muliply, groupRadius));
+            rotateSpeed = (float)Math.Abs(Math.Atan2(walkSpeed_peace * muliply, groupRadius));
         }
 
         IntVector2 bannerManPos()
@@ -501,7 +501,7 @@ namespace VikingEngine.DSSWars.GameObject
             return s;
         }
 
-        void walking_Peace(float time, Vector3 goalWp, out bool complete)
+        void walking_Peace(float time, Vector3 goalWp, bool induvidualSpeed, out bool complete)
         {
             waitTime += time;
 
@@ -535,7 +535,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (move)
             {
                 Vector3 goal = walkingGoalWp(goalWp, out bool waterNode, out bool ready);
-                complete = updateWalking(goal, ready, true, army.armyGoalRotation, time);
+                complete = updateWalking(goal, ready, true, induvidualSpeed, army.armyGoalRotation, time);
                 if (ready)
                 {
                     //if (complete)
@@ -648,7 +648,7 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 //Battle update
-                updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, 0, time);
+                updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, true, 0, time);
 
                 if (soldiers != null)
                 {
@@ -731,18 +731,29 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (command_sp != null)
                 {
-                    Vector2 diff = new Vector2(
-                       attack_sp.position.X - position.X,
-                       attack_sp.position.Z - position.Z);
-                    if (diff.Length() < attackRadius)
+                    if (Ref.peRnd.Chance(0.1))
                     {
-                        cancelCommand();
-                    }
+                        Vector2 diff = new Vector2(
+                           attack_sp.position.X - position.X,
+                           attack_sp.position.Z - position.Z);
 
+                        if (diff.Length() < groupRadius)
+                        {
+                            cancelCommand();
+                        }
+
+                        var goalTarget = command_sp.AttackTarget();
+                        if (goalTarget != null && distance(goalTarget) < attackRadius)
+                        {
+                            attackTarget_soldierGroupOrCity = goalTarget;
+                            cancelCommand();
+                            updateMoveAndAttackTarget(time, fullUpdate, attackTarget_soldierGroupOrCity);
+                        }
+                    }
                     if (command_sp.hasPathCommand(out bool towardsUnit))
                     {
                         Vector3 nodePos = towardsUnit ? walkingGoalAttackTarget(command_sp.AttackTarget(), out _) : walkingGoalWp(command_sp.GoalPosition(), out _, out _);
-                        updateWalking(nodePos, true, false, 0, time);
+                        updateWalking(nodePos, true, false, true, 0, time);
 
                         if (soldiers != null)
                         {
@@ -750,10 +761,10 @@ namespace VikingEngine.DSSWars.GameObject
                             while (soldiersC.Next())
                             {
                                 soldiersC.sel.update2_battle_move(time, fullUpdate);
-
                             }
                         }
                     }
+
                 }
                 else
                 {
@@ -794,7 +805,7 @@ namespace VikingEngine.DSSWars.GameObject
                     case GroupState.CityCapture:
                         if (command == null)
                         {
-                            walking_Peace(time, goalWp, out bool complete);
+                            walking_Peace(time, goalWp, true, out bool complete);
 
                             if (Ref.peRnd.Chance(0.1))
                             {
@@ -825,7 +836,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (command_sp.hasPathCommand(out bool towardsUnit))
                     {
-                        walking_Peace(time, towardsUnit? command_sp.AttackTarget().position : command_sp.GoalPosition(), out bool complete);
+                        walking_Peace(time, towardsUnit? command_sp.AttackTarget().position : command_sp.GoalPosition(), false, out bool complete);
                         if (complete)
                         {
                             command_sp.OnMovePathComplete(this);
@@ -861,7 +872,7 @@ namespace VikingEngine.DSSWars.GameObject
                             break;
 
                         case GroupState.FindArmyPlacement:
-                            walking_Peace(time, goalWp, out bool complete);
+                            walking_Peace(time, goalWp, false, out bool complete);
                             if (complete)
                             {
                                 state = GroupState.GoingIdle;
@@ -1332,13 +1343,22 @@ namespace VikingEngine.DSSWars.GameObject
         //}
 
         static readonly float GoalCompleteDistance = WorldData.SubTileWidth * 0.2f;
-        bool updateWalking(Vector3 walkTowards, bool walk, bool rotate, Rotation1D finalRotation, float time)
+        bool updateWalking(Vector3 walkTowards, bool walk, bool rotate, bool induvidualSpeed, Rotation1D finalRotation, float time)
         {
             Vector2 diff = new Vector2(
                 walkTowards.X - position.X,
                 walkTowards.Z - position.Z);
 
-            float speed = walkSpeed * terrainSpeedMultiplier * time;
+            float speed;
+
+            if (induvidualSpeed)
+            {
+                speed = soldierData.walkingSpeed * terrainSpeedMultiplier * time;
+            }
+            else
+            {
+                speed = walkSpeed_peace * terrainSpeedMultiplier * time;
+            }
             float l = diff.Length();
             if (l > Math.Max(speed, GoalCompleteDistance))
             {
@@ -1353,7 +1373,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-            else if (l > walkSpeed)
+            else if (l > walkSpeed_peace)
             {
                 position.X = walkTowards.X;
                 position.Z = walkTowards.Z;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.Input;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab
@@ -32,12 +33,14 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             initPlayers();
             baseInit();
+            initScenario();
+
+            LocalHost().gameControls.mapControls.battleModeCamBound();
         }
 
-        void initPlayers()
+        virtual protected void initPlayers()
         {
             new Faction(DssRef.world, FactionType.DarkLord);
-
 
             var factionsCounter = DssRef.world.factions.counter();
             while (factionsCounter.Next())
@@ -60,11 +63,19 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             for (var i = 0; i < playerCount; ++i)
             {
                 var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
-                var local = new BattleLabPlayer(startFaction);
+                var local = createLocalPlayer(startFaction);
                 local.assignPlayer(i, playerCount, true);
                 localPlayers.Add(local);
             }
         }
+
+        virtual protected LocalPlayer createLocalPlayer(Faction faction)
+        { 
+          return new BattleLabPlayer(faction);
+        }
+
+        virtual protected void initScenario()
+        { }
 
         void onGameStart()
         {

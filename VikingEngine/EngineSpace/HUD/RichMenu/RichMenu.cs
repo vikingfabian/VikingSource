@@ -162,6 +162,7 @@ namespace VikingEngine.HUD.RichMenu
 
         public NineSplitAreaTexture addBackground(NineSplitSettings texture, ImageLayers layer)
         {
+            backgroundTextures?.DeleteMe();
             backgroundTextures = new NineSplitAreaTexture(texture, backgroundArea, layer + 1);
             return backgroundTextures;
         }

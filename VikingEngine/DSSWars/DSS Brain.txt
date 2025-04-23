@@ -1,20 +1,18 @@
 ﻿UPDATE
 -Change Log-
-* translated the new tutorial
-
-The demo should:
--Lockout any extra content or modes.
--Block saves.
--Be about 30-60 minute experience.
--There is a hard timeout after 80minutes, if the battle don't end.
--Win if the attack is stopped
--Lose if the south city is lost
--You can either watch or interact, I call it "tourist mode"
+* fixad the instant crash
+* battle trials demo
+* hud improvements
+* more control over soldiers in battle
+* fixed error armor
+* fixed slow horses
+* bannermen attacks
 
 
 !! Known issues, that I am working on !!
 -Camera chase can crash
 -Soldiers can be stuck on idle in battle
+-Soldiers can get stuck attacking a dead army
 -Cant move units between armies and garrisons
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
 -Can sometimes show the wrong city on the hud

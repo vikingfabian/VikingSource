@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
         const int GroupsWidth_Size3 = 6;
         const int GroupsWidth_Size4 = 8;
 
-        static readonly int Size1Capacity = MathExt.Square(GroupsWidth_Size1 * 3);
+        static readonly int Size1Capacity = MathExt.Square(GroupsWidth_Size1 * 2);
         static readonly int Size2Capacity = MathExt.Square(GroupsWidth_Size2 * 3);
         static readonly int Size3Capacity = MathExt.Square(GroupsWidth_Size3 * 3);
 

@@ -15,17 +15,29 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.DSSWars.Display;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab
 {
     class BattleSetupManager
     {
+        public const int NoPlayer = -1;
+        public const int HumanPlayer = 0;
+        public const int EnemyPlayer = 1;
+        public const int BothPlayers = 2;
+
         public bool StartState = true;
-        Army friendlyArmy, enemyArmy;
+        public Army friendlyArmy, enemyArmy;
 
         BattleSetup Setup => BattleLabStorage.Singleton.setup;
 
         public void beginBattleSetup()
+        {
+            LocalPlayer player = DssRef.state.LocalHost();
+            beginBattleSetup(WP.ToTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter));
+        }
+
+        public void beginBattleSetup(IntVector2 center)
         {
             LocalPlayer player = DssRef.state.LocalHost();
             Ref.SetPause(true);
@@ -38,32 +50,39 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
             DssRef.diplomacy.declareWar(player.faction, enemyFac);
 
-            IntVector2 position = WP.ToTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter);//mapConttilePosition;
+            //IntVector2 position = WP.ToTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter);//mapConttilePosition;
 
             {
-                var army = player.faction.NewArmy(VectorExt.AddX(position, -2));
+                var army = player.faction.NewArmy(VectorExt.AddX(center, -2));
                 friendlyArmy = army;
                 army.rotation = playerRot;
                 army.food = float.MaxValue;
+
+                army.armyColumnWidth = 6;
             }
             {
-                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                var army = enemyFac.NewArmy(VectorExt.AddX(center, 2));
                 enemyArmy = army;
                 army.rotation = enemyRot;
                 army.food = float.MaxValue;
+
+                army.armyColumnWidth = 6;
             }
         }
-
         public void startBattle(bool paused)
+        {
+            startBattle(paused, Setup.attackingPlayer);
+        }
+        public void startBattle(bool paused, int attacker)
         {
             Ref.SetPause(paused);
             StartState = true;
 
-            if (Setup.attackingPlayer == 0 || Setup.attackingPlayer == BattleSetup.BothPlayers)
+            if (attacker == 0 || attacker == BattleSetupManager.BothPlayers)
             {
                 friendlyArmy.Order_Attack(enemyArmy);
             }
-            if (Setup.attackingPlayer == 1 || Setup.attackingPlayer == BattleSetup.BothPlayers)
+            if (attacker == 1 || attacker == BattleSetupManager.BothPlayers)
             {
                 enemyArmy.Order_Attack(friendlyArmy);
             }
@@ -137,12 +156,12 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         {
             switch (player)
             {
-                case -1:
+                case NoPlayer:
                     return DssRef.lang.Hud_None;
 
-                case 0:
+                case HumanPlayer:
                     return DssRef.state.LocalHost().Name;
-                case 1:
+                case EnemyPlayer:
                     return DssRef.lang.FactionName_DarkLord;
 
                 default:
@@ -158,11 +177,16 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         void addSoldier(int count)
         {
+            addSoldier(count, Setup.selectedWeapon, Setup.selectedPlayer);
+        }
+
+        public void addSoldier(int count, ItemResourceType weapon, int toPlayer)
+        {
             SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
             {
                 conscript = new ConscriptProfile()
                 {
-                    weapon = Setup.selectedWeapon,
+                    weapon = weapon,
                     armorLevel = Resource.ItemResourceType.PaddedArmor,
                     training = TrainingLevel.Basic,
                     specialization = SpecializationType.Traditional,
@@ -171,21 +195,21 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             for (int i = 0; i < count; ++i)
             {
-                if (Setup.selectedPlayer != 1)
+                if (toPlayer != EnemyPlayer)
                 {
                     new SoldierGroup(friendlyArmy, SoldierProfile, friendlyArmy.position);
                 }
-                if (Setup.selectedPlayer != 0)
+                if (toPlayer != HumanPlayer)
                 {
                     new SoldierGroup(enemyArmy, SoldierProfile, enemyArmy.position);
                 }
             }
 
-            if (Setup.selectedPlayer != 1)
+            if (toPlayer != EnemyPlayer)
             {
                 friendlyArmy.setAsStartArmy();
             }
-            if (Setup.selectedPlayer != 0)
+            if (toPlayer != HumanPlayer)
             {
                 enemyArmy.setAsStartArmy();
             }

@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public bool bCustomSize = false;
         public IntVector2 customMapSize = new IntVector2(WorldData.CustomMapSize_Min);
         public bool cleanUpSingleTiles = false;
+        public bool factionsOnMap = true;
 
         public MapGenerateSettings()
         {

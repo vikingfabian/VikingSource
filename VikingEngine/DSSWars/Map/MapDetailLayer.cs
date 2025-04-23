@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Map
         public DetailLayer prevLayer;
 
         public static readonly IntervalF FullZoomRange = new IntervalF(1, 2500);
-        public static IntervalF TutorialZoomRange;
+        public static IntervalF MidToDetailZoomRange;
 
         public const float OverviewZoomStart = 80f;
         static readonly float UnitMaxZoom = FullZoomRange.Max - 0.4f;
@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Map
 
                 layers.Add(new DetailLayer(MapDetailLayerType.TerrainOverview2, minZoom, maxZoom, zoomBuffer));
 
-                TutorialZoomRange = new IntervalF(FullZoomRange.Min, maxZoom - zoomBuffer);
+                MidToDetailZoomRange = new IntervalF(FullZoomRange.Min, maxZoom - zoomBuffer);
 
                 minZoom = maxZoom;
                 maxZoom = 450;//FullZoomRange.GetFromPercent(0.75f);

@@ -158,13 +158,19 @@ namespace VikingEngine.DSSWars.Map.Generate
                     return false;
                 }
                 LoadStatus = 70;
-                factionStartAreas(worldMeta.mapSize);
+
+                if (generateSettings.factionsOnMap)
+                {
+                    factionStartAreas(worldMeta.mapSize);
+                }
 
                 if (save)
                 {
                     WorldDataStorage storage = new WorldDataStorage();
                     storage.saveMap(world);
                 }
+
+                world.generatePassCompleted = GenerateMapPass.All;
                 return true;
             }
             catch (Exception e)

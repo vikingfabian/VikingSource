@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.GameObject
         protected bool army_isIdle = true;
 
         public SpottedArray<SoldierGroup> groups = new SpottedArray<SoldierGroup>(32);
-        public Rotation1D rotation = Rotation1D.D180.Add(Ref.peRnd.Plus_MinusF(0.8f));
+        public Rotation1D rotation = Rotation1D.D180.Add(Ref.peRnd.Plus_MinusF(0.2f));
         public int goalId = 0;
         public bool walkGoalAsShip = false;
         public int soldiersCount = 0;

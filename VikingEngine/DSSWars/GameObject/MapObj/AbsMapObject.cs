@@ -34,6 +34,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public AbsMapObject()
         {
+            
             //battlesCounter = new SpottedArrayCounter<AbsMapObject>(battles);
         }
         

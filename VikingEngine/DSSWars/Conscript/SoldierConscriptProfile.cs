@@ -260,7 +260,7 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
                 case ItemResourceType.KnightsLance:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2f;
+                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2.5f;
                     soldierData.attackRange = 0.06f;
                     soldierData.basehealth *= 3;
                     soldierData.mainAttack = AttackType.Melee;
@@ -732,8 +732,11 @@ namespace VikingEngine.DSSWars.Conscript
         public SoldierData bannermanSetup(SoldierData soldierData)
         {
             soldierData.modelScale = DssConst.Men_StandardModelScale;
-            soldierData.canAttackCharacters = false;
-            soldierData.canAttackStructure = false;
+            soldierData.attackDamage /= 2;
+            soldierData.attackDamageStructure /= 2;
+
+            //soldierData.canAttackCharacters = true;
+            //soldierData.canAttackStructure = true;
 
             soldierData.factionColoredModel = true;
             soldierData.modelName = LootFest.VoxelModelName.war_bannerman;

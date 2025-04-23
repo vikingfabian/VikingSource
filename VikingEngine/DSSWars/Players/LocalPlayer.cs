@@ -715,6 +715,15 @@ namespace VikingEngine.DSSWars.Players
                     pinsC.sel.update();
                 }
             //}
+
+#if DEBUG
+            if (Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left))
+            {
+                RichBoxContent c = new RichBoxContent();
+                c.text(gameControls.mapControls.tilePosition.ToString());
+                hud.messages.Add(c);
+            }
+#endif 
         }
 
         public LocationPin rayCollisionWithPin(Ray ray)
@@ -1230,9 +1239,12 @@ namespace VikingEngine.DSSWars.Players
             }
 
             if (newGame)
-            { 
-                faction.mainCity.tagBack = CityTagBack.Carton;
-                faction.mainCity.tagArt = CityTagArt.IconFaction;
+            {
+                if (faction.mainCity != null)
+                {
+                    faction.mainCity.tagBack = CityTagBack.Carton;
+                    faction.mainCity.tagArt = CityTagArt.IconFaction;
+                }
             }
 
             nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();

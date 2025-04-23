@@ -332,14 +332,17 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 //HudLib.BulletSeperationPoint(content);
                 content.Add(new RbImage(LangLib.Training_Icon(training)));
-                
+
                 content.Add(new RbImage(ResourceLib.Icon(weapon)));
 
-                content.Add(new RbImage(ResourceLib.Icon(armorLevel)));
+                if (armorLevel != ItemResourceType.NONE)
+                {
+                    content.Add(new RbImage(ResourceLib.Icon(armorLevel)));
+                }
             }
             else
             {
-                
+
                 HudLib.BulletSeperationPoint(content);
 
                 content.Add(new RbImage(LangLib.Training_Icon(training)));
@@ -350,10 +353,13 @@ namespace VikingEngine.DSSWars.Conscript
                 content.Add(new RbImage(ResourceLib.Icon(weapon)));
                 content.Add(new RbText(LangLib.Item(weapon), HudLib.TitleColor_TypeName));
 
-                HudLib.BulletSeperationPoint(content);
+                if (armorLevel != ItemResourceType.NONE)
+                {
+                    HudLib.BulletSeperationPoint(content);
 
-                content.Add(new RbImage(ResourceLib.Icon(armorLevel)));
-                content.Add(new RbText(LangLib.Item(armorLevel), HudLib.TitleColor_TypeName));
+                    content.Add(new RbImage(ResourceLib.Icon(armorLevel)));
+                    content.Add(new RbText(LangLib.Item(armorLevel), HudLib.TitleColor_TypeName));
+                }
 
                 content.newLine();
                 HudLib.BulletSeperationPoint(content);

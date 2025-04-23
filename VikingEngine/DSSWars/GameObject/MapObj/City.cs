@@ -1181,6 +1181,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             initEconomy(newGame);
             CalcRecruitToTile();
+            armyGoalRotation = rotation.radians;
 
             //if (newGame)
             //{

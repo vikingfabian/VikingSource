@@ -73,7 +73,12 @@ namespace VikingEngine.DSSWars.Display
             bool mouseOver = false;
             if (menu != null)
             {
+                if (menu.needRefresh)
+                {
+                    pauseMenu();
+                }
                 menu.updateMouseInput(ref mouseOver);
+                
                 if (input.Menu.DownEvent)
                 {
                     closeMenu();

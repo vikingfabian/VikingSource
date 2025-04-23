@@ -843,7 +843,7 @@ namespace VikingEngine.DSSWars.GameObject
                 while (groupsC.Next())
                 {
                     count += groupsC.sel.soldierCount;
-                    groupsC.sel.setBattleWalkingSpeed();
+                    //groupsC.sel.setBattleWalkingSpeed();
 
                     allGropsAreIdle &= groupsC.sel.state == GroupState.Idle;
                     //int health;
@@ -855,7 +855,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         
                         speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);
-                        groupsC.sel.walkSpeed = transportSpeedSea;
+                        groupsC.sel.walkSpeed_peace = transportSpeedSea;
                         
                         //TODO ship health
                         //health = groupsC.sel.soldierData.basehealth;
@@ -864,7 +864,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         //dps = groupsC.sel.soldierData.DPS_land();
                         speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(true);
-                        groupsC.sel.walkSpeed = transportSpeedLand;
+                        groupsC.sel.walkSpeed_peace = transportSpeedLand;
 
                         //health = groupsC.sel.soldierData.basehealth;
                     }

@@ -97,11 +97,17 @@ namespace VikingEngine.DSSWars.Players
             {
                 controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.Center, Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
             }
+
+        }
+
+        public void battleModeCamBound()
+        {
+            ZoomRange = MapDetailLayerManager.MidToDetailZoomRange;
         }
 
         public void setCameraBounds(bool tutorial, Rectangle2 cityArea)
         {
-            ZoomRange = tutorial? MapDetailLayerManager.TutorialZoomRange : MapDetailLayerManager.FullZoomRange;
+            ZoomRange = tutorial? MapDetailLayerManager.MidToDetailZoomRange : MapDetailLayerManager.FullZoomRange;
 
             if (tutorial)
             {

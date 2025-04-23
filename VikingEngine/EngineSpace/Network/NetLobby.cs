@@ -161,7 +161,7 @@ namespace VikingEngine.Network
                     if (state != NetLobbyState.Closing)
                     {
                         state = NetLobbyState.Lobby;
-                        Ref.steamlobby.CreateLobbyIfNotInOne();
+                        Ref.steamlobby?.CreateLobbyIfNotInOne();
                     }
                     updateTimer.Seconds = SearchTimerSec;
                     

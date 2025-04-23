@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 //using VikingEngine.DSSWars.Battle;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -104,12 +105,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void setBattleWalkingSpeed()
+        //public void setBattleWalkingSpeed()
+        //{
+        //    //AbsSoldierData typeData = FirstSoldierData();
+
+        //    //TODO pick subtile
+        //    walkSpeed_peace = soldierData.walkingSpeed * terrainSpeedMultiplier;
+        //}
+        protected float WalkingSpeed_Battle()
         {
-            //AbsSoldierData typeData = FirstSoldierData();
-            
-            //TODO pick subtile
-            walkSpeed = soldierData.walkingSpeed * terrainSpeedMultiplier;
+            return soldierData.walkingSpeed * terrainSpeedMultiplier;
         }
     }
 }
