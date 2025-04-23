@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Players.Command
         public AttackHereAnimation(SoldierGroup target, int playerIndex)
             : base()
         {
-            var soldiers_sp = target.soldiers;
+            var soldiers_sp = target?.soldiers;
             if (soldiers_sp != null)
             {
                 var soldiersC = soldiers_sp.counter();

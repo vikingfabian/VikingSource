@@ -15,29 +15,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setAsStartArmy()
         {
-            //IntVector2 start = tilePos;
-            //tilePos.Y -= 1;
-            //OnSoldierPurchaseCompleted();
-
-            //var groupsC = groups.counter();
-            //while (groupsC.Next())
-            //{
-            //    groupsC.sel.setAsStartArmy();
-            //}
-            ////Order_MoveTo(start);
-            //position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
-            //refreshPositions(true);
+           
             refreshGroupPlacements2(tilePos, false, true, false);
-            //var groupsC = groups.counter();
-            //while (groupsC.Next())
-            //{
-            //    groupsC.sel.setAsStartArmy();
-            //}
-            //updateArmyMovement(1);
-
             setMaxFood();
-            //tilePos = start;
-            //updateModelsPosition();
+        }
+
+        public void setMassiveFood()
+        {
+            setMaxFood();
+            food *= 10;
         }
 
         public void setMaxFood()

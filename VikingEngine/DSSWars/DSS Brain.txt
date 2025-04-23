@@ -1,13 +1,9 @@
 ﻿UPDATE
 -Change Log-
-* fixad the instant crash
-* battle trials demo
-* hud improvements
-* more control over soldiers in battle
-* fixed error armor
-* fixed slow horses
-* bannermen attacks
+* fixed command crash
+* soldiers with move command will not hold/idle in battle
 
+-ground diff + timer
 
 !! Known issues, that I am working on !!
 -Camera chase can crash

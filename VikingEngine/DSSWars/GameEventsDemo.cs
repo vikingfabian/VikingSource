@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars
             if (enemy != null)
             {
                 Faction attacker = DssRef.world.tileGrid.Get(enemy.tilePos).Faction();
+                attacker.addGold_factionWide(100000);
 
                 var defend = DssRef.state.LocalHost().getPin("defend");
                 defendingCity = DssRef.world.tileGrid.Get(defend.tilePos).City();
@@ -43,7 +44,7 @@ namespace VikingEngine.DSSWars
                     const int FirstAttackerId = 6;
                     var firstAttacker = attacker.armies.GetIndex_Safe(FirstAttackerId);
                     firstAttacker.Order_Attack(defendingCity);
-                    firstAttacker.setMaxFood();
+                    firstAttacker.setMassiveFood();
 
                 }, 20);
 
@@ -57,7 +58,7 @@ namespace VikingEngine.DSSWars
                         if (!armiesC.sel.isDeleted)
                         {
                             armiesC.sel.Order_Attack(defendingCity);
-                            armiesC.sel.setMaxFood();
+                            armiesC.sel.setMassiveFood();
 
                             all.Add(armiesC.sel);
                         }

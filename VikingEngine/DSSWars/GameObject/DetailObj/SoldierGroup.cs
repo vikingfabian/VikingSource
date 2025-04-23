@@ -733,6 +733,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (Ref.peRnd.Chance(0.1))
                     {
+
                         Vector2 diff = new Vector2(
                            attack_sp.position.X - position.X,
                            attack_sp.position.Z - position.Z);
@@ -753,7 +754,10 @@ namespace VikingEngine.DSSWars.GameObject
                     if (command_sp.hasPathCommand(out bool towardsUnit))
                     {
                         Vector3 nodePos = towardsUnit ? walkingGoalAttackTarget(command_sp.AttackTarget(), out _) : walkingGoalWp(command_sp.GoalPosition(), out _, out _);
-                        updateWalking(nodePos, true, false, true, 0, time);
+                        if (updateWalking(nodePos, true, false, true, 0, time))
+                        {
+                            cancelCommand();
+                        }
 
                         if (soldiers != null)
                         {

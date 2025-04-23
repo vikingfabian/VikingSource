@@ -285,7 +285,7 @@ namespace VikingEngine.DSSWars.Players
                 selection.begin(false);
             }
 
-            updateSeletionGui();
+            updateSeletionGui(true);
 
             mousePanInput();
 
@@ -301,6 +301,7 @@ namespace VikingEngine.DSSWars.Players
         public void leftFocusUpdate()
         {
             hover.clear();
+            updateSeletionGui(false);
         }
 
         public void passiveUpdate()
@@ -947,35 +948,34 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        void updateSeletionGui()
+        void updateSeletionGui(bool focus)
         {
-            bool viewTile = hover.subTile.viewSelection(true);//hover.obj == null);
-
-            if (!viewTile && hover.obj != null && hover.obj != selection.obj)
+            if (focus)
             {
-                //hover.frameModel.Visible = true;
-                hover.obj.selectionFrame(player, true, hover);
+                bool viewTile = hover.subTile.viewSelection(true);
 
-                //hover.frameModel.Color = hover.obj.GetFaction() == player.faction? Color.White : Color.LightGray;
+                if (!viewTile && hover.obj != null && hover.obj != selection.obj)
+                {
+                    hover.obj.selectionFrame(player, true, hover);
 
-                updateSelectionGui(hover);
-            }
-            else
-            {
-                hover.ClearSelectionModels();                
+                    updateSelectionGui(hover);
+                }
+                else
+                {
+                    hover.ClearSelectionModels();
+                }
             }
 
             if (selection.obj != null)
-            {
-                //selection.frameModel.Visible = true;
+            {                
                 selection.obj.selectionFrame(player, false, selection);
 
                 updateSelectionGui(selection);
             }
             else
             {
-                //selection.guiModels.DeleteAll();
-                selection.ClearSelectionModels();//.frameModel.Visible = false;
+                
+                selection.ClearSelectionModels();
             }
         }
 
