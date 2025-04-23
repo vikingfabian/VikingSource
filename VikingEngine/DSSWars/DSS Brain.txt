@@ -1,13 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* fixed command crash
-* soldiers with move command will not hold/idle in battle
-* found soldier position drift bug
-* demo attackers have more food
-* fixed city capture bug
-* fixed a idle guard bug
-* removed path finding on guards on wall
-* fixed: Stopping guard posting, blocks the wall
+
 
 
 -ground diff + timer
