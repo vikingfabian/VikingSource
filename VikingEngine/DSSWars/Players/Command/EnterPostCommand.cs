@@ -47,7 +47,8 @@ namespace VikingEngine.DSSWars.Players.Command
             
             ref var defence = ref city.defenceBuildings.array[defenceIndex];
 
-            if (defence.soldierGroupId == DefenceStatus.NoSoldiers)
+
+            if (defence.CheckIsEmpty(city)) //.soldierGroupId == DefenceStatus.NoSoldiers)
             {
                 defence.soldierGroupId = group.parentArrayIndex;
                 return true;

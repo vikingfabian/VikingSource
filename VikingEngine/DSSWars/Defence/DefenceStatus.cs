@@ -25,6 +25,43 @@ namespace VikingEngine.DSSWars.Defence
             active = true;
         }
 
+        public bool CheckIsEmpty(City city)
+        {
+            if (soldierGroupId == NoSoldiers)
+            {
+                return true;
+            }
+
+            var guard = city.groups.GetIndex_Safe(soldierGroupId)?.GetGuardGroup();
+            if (guard == null || guard.isDeleted)
+            {
+                soldierGroupId = NoSoldiers;
+                return true;
+            }
+
+            if (guard.assignedToPost_IdAndPosition < 0)
+            {
+                //Is he walking towards
+                var command_sp = guard.command;
+                if (command_sp != null)
+                {
+                    if (command_sp.isEnterPost(idAndPosition))
+                    {
+                        return false; //got guard walking towards it
+                    }
+                }
+                soldierGroupId = NoSoldiers;
+                return true;
+            }
+            else if (guard.assignedToPost_IdAndPosition != idAndPosition)
+            {
+                soldierGroupId = NoSoldiers;
+                return true;
+            }
+
+            return false; //occupied
+        }
+
         /// <summary>
         /// Is the assigned soldiers actually there
         /// </summary>

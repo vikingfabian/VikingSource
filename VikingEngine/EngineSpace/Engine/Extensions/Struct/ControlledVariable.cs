@@ -45,11 +45,14 @@ namespace VikingEngine
         //const float SecToMs = 0.001f;
         public float totalTimeStampSec;
         
-        public TimeStamp(float totalGameTimeStampSec)
+        public TimeStamp(float totalTimeStampSec)
         {
-            this.totalTimeStampSec = totalGameTimeStampSec;
+            this.totalTimeStampSec = totalTimeStampSec;
         }
-
+        public bool HasTime()
+        {
+            return totalTimeStampSec > 0;
+        }
         public static TimeStamp Now()
         {
             return new TimeStamp(Ref.TotalTimeSec);
@@ -103,7 +106,79 @@ namespace VikingEngine
         {
             get { return TimeExt.SecondsToMS(Ref.TotalTimeSec - totalTimeStampSec); }
         }
-    }   
+    }
+
+    struct GameTimeStamp
+    {
+        public static readonly GameTimeStamp None = new GameTimeStamp(-1000000);
+
+        //const float SecToMs = 0.001f;
+        public float totalTimeStampSec;
+
+        public GameTimeStamp(float totalGameTimeStampSec)
+        {
+            this.totalTimeStampSec = totalGameTimeStampSec;
+        }
+
+        public bool HasTime()
+        {
+            return totalTimeStampSec > 0;
+        }
+
+        public static TimeStamp Now()
+        {
+            return new TimeStamp(Ref.TotalGameTimeSec);
+        }
+
+        public bool secPassed(float seconds)
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec >= seconds;
+        }
+        public bool msPassed(float ms)
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec >= TimeExt.MsToSec * ms;
+        }
+
+        public bool belowTime_ms(float ms)
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec < TimeExt.MsToSec * ms;
+        }
+
+        public void setNow()
+        {
+            this.totalTimeStampSec = Ref.TotalGameTimeSec;
+        }
+
+        /// <summary>
+        /// Time passed this frame
+        /// </summary>
+        public bool event_sec(float seconds)
+        {
+            return Ref.PrevTotalTimeSec - totalTimeStampSec < seconds &&
+                Ref.TotalGameTimeSec - totalTimeStampSec >= seconds;
+        }
+
+        /// <summary>
+        /// Time passed this frame
+        /// </summary>
+        public bool event_ms(float ms)
+        {
+            return event_sec(ms * TimeExt.MsToSec);
+        }
+
+        public float Hours
+        {
+            get { return TimeExt.SecondsToHours(Ref.TotalGameTimeSec - totalTimeStampSec); }
+        }
+        public float Seconds
+        {
+            get { return Ref.TotalGameTimeSec - totalTimeStampSec; }
+        }
+        public float MilliSec
+        {
+            get { return TimeExt.SecondsToMS(Ref.TotalGameTimeSec - totalTimeStampSec); }
+        }
+    }
 
     struct AddFloatPerTime
     {

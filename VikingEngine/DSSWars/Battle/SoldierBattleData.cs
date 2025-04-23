@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Physics;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.ToGG.MoonFall.GO;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.Battle
@@ -238,7 +239,23 @@ namespace VikingEngine.DSSWars.Battle
                 nearBodyCollisionUnits.AddRange(SoldierBuffer);
             }
 
+            if (closestOpponent == null)
+            {
+                var groupTarget_sp = parent.group.attackTarget_soldierGroupOrCity?.Soldiers();
+
+                if (groupTarget_sp != null)
+                {
+                    var soldiersC = groupTarget_sp.counter();
+                    while (soldiersC.Next())
+                    {
+                        parent.closestTargetCheck(soldiersC.sel,
+                            ref closestOpponent, ref closestOpponentDistance);
+                    }
+                }
+            }
+
             parent.nextAttackTarget = closestOpponent;
+            
         }
 
     }

@@ -311,6 +311,7 @@ namespace VikingEngine.DSSWars.Display
             if (attackTarget)
             {
                 content.h2(DssRef.lang.ArmyOption_Attack).overrideColor = HudLib.TitleColor_Attack;
+                content.newLine();
             }
 
             obj.toTooltip(new ObjectHudArgs(content, player, false));

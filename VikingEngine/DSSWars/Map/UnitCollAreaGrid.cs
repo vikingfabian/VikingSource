@@ -469,7 +469,7 @@ namespace VikingEngine.DSSWars.Map
 
             foreach (var kv in faction_power)
             {
-                if (kv.Value > strongest)
+                if (kv.Value > strongestValue)
                 {
                     strongest = kv.Key;
                     strongestValue = kv.Value;

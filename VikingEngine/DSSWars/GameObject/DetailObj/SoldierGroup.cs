@@ -193,6 +193,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        override public SpottedArray<AbsSoldierUnit> Soldiers()
+        {
+            return soldiers;
+        }
+
         void createSoldierObjects(bool create, bool models)
         {
             if (create)
@@ -639,9 +644,26 @@ namespace VikingEngine.DSSWars.GameObject
                 if (soldiers != null)
                 {
                     var soldiersC = soldiers.counter();
-                    while (soldiersC.Next())
+
+                    if (Ref.peRnd.Chance(0.1))
                     {
-                        soldiersC.sel.update2_battle_attack(time, fullUpdate);
+                        Vector3 posSum = Vector3.Zero;
+                        int posCount = 0;
+                        while (soldiersC.Next())
+                        {
+                            soldiersC.sel.update2_battle_attack(time, fullUpdate); //same
+                            posSum += soldiersC.sel.position;
+                            ++posCount;
+                        }
+
+                        position = posSum / posCount;
+                    }
+                    else
+                    {
+                        while (soldiersC.Next())
+                        {
+                            soldiersC.sel.update2_battle_attack(time, fullUpdate); //same
+                        }
                     }
                 }
             }
@@ -1776,20 +1798,23 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asyncBattleUpdate()
         {
-            var attack_sp = attackTarget_soldierGroupOrCity;
+            //var attack_sp = attackTarget_soldierGroupOrCity;
             var soldiers_sp = soldiers;        
             if (soldiers_sp != null)
             {
+                //Vector3 posSum = Vector3.Zero;
+                //int posCount = 0;
                 var counter = soldiers_sp.counter();
                 while (counter.Next())
                 {
                     counter.sel.asyncBattleUpdate();
+                    //posSum += counter.sel.position;
+                    //++posCount;
                 }
+
+                //position = posSum / posCount;
             }            
         }
-
-
-
 
         public void asyncPathUpdate(int pathThreadIndex)
         {
@@ -1823,7 +1848,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (attack_sp != null)
             {
-                pathTowardsTarget(attack_sp);
+                if (InGuardPost())
+                {
+                    recyclePath(true, true, pathThreadIndex);
+                }
+                else
+                {
+                    pathTowardsTarget(attack_sp);
+                }
             }
             else
             {

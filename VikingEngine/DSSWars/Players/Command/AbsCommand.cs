@@ -82,6 +82,10 @@ namespace VikingEngine.DSSWars.Players.Command
 
         virtual public bool isEnterPost(int postId)
         {
+            if (nextCommand != null)
+            {
+                return nextCommand.isEnterPost(postId);
+            }
             return false;
         }
 

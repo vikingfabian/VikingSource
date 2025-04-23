@@ -23,6 +23,9 @@ namespace VikingEngine.DSSWars.GameObject
         protected static float GoalReachDist_GROUP = DssVar.StandardBoundRadius * 2f;
         protected static float GoalReachDist_WhenColliding = GoalReachDist_GROUP * 3f;
 
+        IntVector2 prevTilePos;
+        GameTimeStamp prevTileTimeStamp = GameTimeStamp.None; 
+        
         public Vector3 walkingGoal;
         public Vector2 groupOffset;
         //float goalDistans = 0;
@@ -718,32 +721,37 @@ namespace VikingEngine.DSSWars.GameObject
             void applyTargetReach(HasTargetInReach inReach)
             {
                 state.rotating = false;
+                var attackTarget_sp = attackTarget;
 
-                switch (inReach)
+                if (attackTarget_sp != null)
                 {
-                    case HasTargetInReach.InReach:
-                        commitAttack(fullUpdate);
-                        break;
-                    case HasTargetInReach.UseBlankTarget:
-                        //startAttack(fullUpdate, null, true, true);
-                        //onEvent(UnitEventType.StartAttack);
-                        break;
-                    case HasTargetInReach.MustRotate:
-                        state.walking = true;
-                        state.rotating = true;
-                        rotateTowards(attackTarget, soldierData.rotationSpeed);
-                        break;
-                    case HasTargetInReach.MustWalk:
-                        if (mayMove)
-                        {
-                            walkTowards(time, attackTarget.position);
-                        }
-                        else
-                        {
-                            rotateTowards(attackTarget, soldierData.rotationSpeed);
-                            state.walking = false;
-                        }
-                        break;
+                    switch (inReach)
+                    {
+                        case HasTargetInReach.InReach:
+                            commitAttack(fullUpdate);
+                            break;
+                        case HasTargetInReach.UseBlankTarget:
+                            //startAttack(fullUpdate, null, true, true);
+                            //onEvent(UnitEventType.StartAttack);
+                            break;
+                        case HasTargetInReach.MustRotate:
+                            state.walking = true;
+                            state.rotating = true;
+                            rotateTowards(attackTarget_sp, soldierData.rotationSpeed);
+                            break;
+                        case HasTargetInReach.MustWalk:
+                            if (mayMove)
+                            {
+
+                                walkTowards(time, attackTarget_sp.position);
+                            }
+                            else
+                            {
+                                rotateTowards(attackTarget_sp, soldierData.rotationSpeed);
+                                state.walking = false;
+                            }
+                            break;
+                    }
                 }
             }
         }
@@ -800,6 +808,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         HasTargetInReach checkTargetInReach()
         {
+           
+            
+
+            if (attackTarget == null)
+            {
+                attackTarget = group.attackTarget_soldierGroupOrCity.Soldiers().GetRandomSafe(Ref.peRnd);
+            }
+
             var target = attackTarget;
 
             if (target == null ||
@@ -1173,6 +1189,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asyncBattleUpdate()
         {
+            var newTilePos = WP.ToTilePos(position);
+
+            if (newTilePos != tilePos)
+            {
+                tilePos = newTilePos;
+                prevTilePos = tilePos;
+                prevTileTimeStamp.setNow();
+            }
+
             battleData?.asycUpdate(this);
         }
 
@@ -1185,32 +1210,32 @@ namespace VikingEngine.DSSWars.GameObject
                 battleData?.onTakeMeleeDamage(this, meleeAttacker);
             }
         }
-        override public void asynchUpdate()
-        {
-           
-            //if (localMember)
-            //{
-            //    tilePos = WP.ToTilePos(position);
+        //override public void asynchUpdate()
+        //{
+        //    tilePos = WP.ToTilePos(position);
+        //    //if (localMember)
+        //    //{
+        //    //    tilePos = WP.ToTilePos(position);
 
-            //    goalDistans = VectorExt.PlaneXZLength(walkingGoal - position);
+        //    //    goalDistans = VectorExt.PlaneXZLength(walkingGoal - position);
 
-            //    if (aiState == SoldierAiState.ColumnQue)
-            //    {
-            //        bumpIntoEnemyWhileQue_asynch();
+        //    //    if (aiState == SoldierAiState.ColumnQue)
+        //    //    {
+        //    //        bumpIntoEnemyWhileQue_asynch();
 
-            //        if (soldierData.mainAttack != AttackType.Melee || bonusProjectiles > 0)
-            //        {
-            //            groupAttackTarget_asynch();
-            //        }
-            //    }
-            //    else if (aiState == SoldierAiState.FreeAttack)
-            //    {
-            //        groupAttackTarget_asynch();
-            //        asynchFriendlyCollisionsCheck();
-            //    }
+        //    //        if (soldierData.mainAttack != AttackType.Melee || bonusProjectiles > 0)
+        //    //        {
+        //    //            groupAttackTarget_asynch();
+        //    //        }
+        //    //    }
+        //    //    else if (aiState == SoldierAiState.FreeAttack)
+        //    //    {
+        //    //        groupAttackTarget_asynch();
+        //    //        asynchFriendlyCollisionsCheck();
+        //    //    }
 
-            //}
-        }
+        //    //}
+        //}
 
         //void bumpIntoEnemyWhileQue_asynch()
         //{

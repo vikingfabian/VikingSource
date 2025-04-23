@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -18,8 +19,11 @@ namespace VikingEngine.DSSWars.GameObject
             return VectorExt.V3XZtoV2(position);
         }
         virtual public SoldierGroup GetGroup() { return null; }
-        
-        
+
+        virtual public SpottedArray<AbsSoldierUnit> Soldiers()
+        {
+            return null;
+        }
 
         //abstract public bool isMelee();
     }

@@ -65,7 +65,12 @@ namespace VikingEngine.DSSWars
                     }
                     attackerArmies = all;
                     demoState_1start_2end = 1;
-                }, 15 * TimeExt.MinuteInSeconds);
+                },
+#if DEBUG
+                1);
+#else
+                15 * TimeExt.MinuteInSeconds);
+#endif
 
                 DssRef.state.LocalHost().clearPins();
 

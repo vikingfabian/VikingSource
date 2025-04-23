@@ -123,7 +123,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract public void update(float time, bool fullUpdate);
 
-        abstract public void asynchUpdate();
+        //abstract public void asynchUpdate();
 
         //public void setDetailLevel(bool unitDetailView)
         //{
@@ -185,6 +185,10 @@ namespace VikingEngine.DSSWars.GameObject
         //}
         protected void refreshAttackTarget()
         {
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
             var attackTarget_sp = attackTarget;
 
             if (attackTarget_sp != null && attackTarget_sp.defeatedBy(GetFaction()))
