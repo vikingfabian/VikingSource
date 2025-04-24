@@ -503,7 +503,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (enter)
             {
-                battleData = new SoldierBattleData();
+                battleData = new SoldierBattleData(this);
             }
             else
             { 
@@ -1199,9 +1199,25 @@ namespace VikingEngine.DSSWars.GameObject
             battleData?.asycUpdate(this);
         }
 
-        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate)
+        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate, out bool blocked)
         {
-            base.takeDamage(damageAmount, meleeAttacker, attackDir, enemyFaction, fullUpdate);
+            float diff = Rotation1D.AngleDifference_Absolute(attackDir.radians, rotation.radians);
+
+            if (diff > MathExt.TauOver3 && Ref.peRnd.ChanceF(soldierData.blockChance))
+            {
+                var battle_sp = battleData;
+                if (battle_sp == null || battle_sp.spendBlock())
+                {
+                    blocked = true;
+                    if (fullUpdate)
+                    {
+                        GoreManager.ViewBlock(this, damageAmount, attackDir);
+                    }
+                    return;
+                }
+            }
+
+            base.takeDamage(damageAmount, meleeAttacker, attackDir, enemyFaction, fullUpdate, out blocked);
 
             if (meleeAttacker != null)
             {

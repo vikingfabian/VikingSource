@@ -125,9 +125,9 @@ namespace VikingEngine
             return totalTimeStampSec > 0;
         }
 
-        public static TimeStamp Now()
+        public static GameTimeStamp Now()
         {
-            return new TimeStamp(Ref.TotalGameTimeSec);
+            return new GameTimeStamp(Ref.TotalGameTimeSec);
         }
 
         public bool secPassed(float seconds)

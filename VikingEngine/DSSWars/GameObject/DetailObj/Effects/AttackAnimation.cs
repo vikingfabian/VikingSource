@@ -104,15 +104,15 @@ namespace VikingEngine.DSSWars.GameObject
                     damage = soldierData.secondaryAttackDamage;
                 }
 
+                attackDir = angleToUnit(target);
+
                 if (soldierData.mainAttack == AttackType.Melee && mainAttack)
                 {
-                    attackDir = angleToUnit(target);
-
                     if (fullUpdate && IsShipType())
                     {
                         new ShipMeleeAttack(GetSoldierUnit(), attackDir);
                     }
-                    target.takeDamage(damage, this, attackDir, GetFaction(), fullUpdate);
+                    target.takeDamage(damage, this, attackDir, GetFaction(), fullUpdate, out _);
                     if (fullUpdate && Ref.peRnd.ChanceF(DssConst.SoundChanceSword))
                     {
                         switch (group.soldierConscript.conscript.weapon)

@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupState state = GroupState.Idle;
         
         public bool inShipOrGuardTransform = false;
-        public float damageBlockChance = 0;
+        public float damageBlockChance_fromTerrain = 0;
 
         public AbsSoldierProfile typeCurrentData;
         public AbsSoldierProfile typeSoldierData;

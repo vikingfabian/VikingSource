@@ -24,6 +24,28 @@ namespace VikingEngine.DSSWars.Battle
         List<AbsSoldierUnit> nearBodyCollisionUnits = new List<AbsSoldierUnit>(8);
         public float queueTime = 0;
         static CircleBound QueBound = new CircleBound();
+
+        int maxBlock;
+        int blocks;
+        GameTimeStamp lastBlockTime;
+
+        public SoldierBattleData(AbsSoldierUnit parent)
+        {
+            maxBlock = parent.soldierData.MaxBlockCount();
+            blocks = maxBlock;
+            lastBlockTime = GameTimeStamp.Now();
+        }
+
+        public bool spendBlock()
+        {
+            if (blocks > 0)
+            {
+                --blocks;
+                return true;
+            }
+            return false;
+        }
+
         public void update(AbsSoldierUnit parent)
         {
             //1. Is the soldier queuing behind friendlies
@@ -82,6 +104,15 @@ namespace VikingEngine.DSSWars.Battle
 
         public bool InQueue(AbsSoldierUnit parent)
         {
+            if (lastBlockTime.secPassed(parent.soldierData.floatBlocksRefillTimeSec))
+            {
+                lastBlockTime.setNow();
+                if (blocks < maxBlock)
+                {
+                    ++blocks;
+                }
+            }
+
             const float Regular_QueTime = 400;
             const float Turn_QueTime = 1200;
 

@@ -32,15 +32,17 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
                 multiAttackCount = Math.Min(soldierCount, group.soldierData.rowWidth);
                 multiAttackTimeCooldown = defaultSoldier.attackTimePlusCoolDown / (soldierCount / multiAttackCount);
             }
-            
-
         }
 
-        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate)
+        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate, out bool blocked)
         {
-            base.takeDamage(damageAmount, meleeAttacker, attackDir, damageFaction, fullUpdate);
-            refreshShipCarryCount();
-            model?.displayHealth(health / (float)soldierData.basehealth);
+            base.takeDamage(damageAmount, meleeAttacker, attackDir, damageFaction, fullUpdate, out blocked);
+
+            if (!blocked)
+            {
+                refreshShipCarryCount();
+                model?.displayHealth(health / (float)soldierData.basehealth);
+            }
         }
 
         public override bool IsShipType()

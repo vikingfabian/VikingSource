@@ -44,6 +44,18 @@ namespace VikingEngine.DSSWars.GameObject
                 Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.DssDamage, pos, BloodRadius, particleCount);
             }
         }
+
+        public static void ViewBlock(AbsDetailUnit reciever, int damageAmount, Rotation1D attackDir)
+        {
+            if (Ref.peRnd.ChanceF(0.1f))
+            {
+                SoundLib.anvil.Play(reciever.position);
+            }
+           
+             Vector3 pos = VectorExt.AddXZ(reciever.position, attackDir.Direction(DssConst.Men_StandardModelScale * -0.5f));
+            pos.Y += DssConst.Men_StandardModelScale * 0.1f;
+            Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.WeaponSparks, pos, BloodRadius, 10);
+        }
     }
 
     class BloodBlock : AbsInGameUpdateable

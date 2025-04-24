@@ -15,6 +15,7 @@ namespace VikingEngine
 
         public const float Tau = MathHelper.TwoPi;
         public const float TauOver2 = MathHelper.Pi;
+        public const float TauOver3 = MathHelper.TwoPi / 3f;
         public const float TauOver4 = MathHelper.PiOver2;
         public const float TauOver8 = MathHelper.PiOver4;
         public const float TauOver6 = MathHelper.Pi / 3f;

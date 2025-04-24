@@ -9,11 +9,16 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 {
     struct SoldierData
     {
-        public int basehealth=0;
+        public float blockChance = DssConst.DefaultBlockChance;
+        /// <summary>
+        /// Max blocks are refills per second
+        /// </summary>
+        public float floatBlocksRefillTimeSec = DssConst.DefaultBlockRefillTimeSec; 
+
+        public int basehealth = 0;
         public bool arrowWeakness = false;
         public AttackType mainAttack = 0;
         public AttackType secondaryAttack = 0;
-        //public int defaultArmyPlacement;
         public int bonusProjectiles = 0;
         public int attackDamage = 0, attackDamageSea = 0, attackDamageStructure = 0;
         public int attackSplashCount = 0;
@@ -69,6 +74,11 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             {
                 return modelName;
             }
+        }
+
+        public int MaxBlockCount()
+        {
+            return (int)(1f / floatBlocksRefillTimeSec + 0.9f);
         }
 
         public int DPS_land()

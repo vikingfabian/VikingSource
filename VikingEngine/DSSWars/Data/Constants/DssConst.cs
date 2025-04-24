@@ -23,6 +23,10 @@ namespace VikingEngine.DSSWars
         public static float GuardPostEnter_TimeSec = 3f;
         public static float GuardPostExit_TimeSec = 2f;
 
+        public static float DefaultBlockChance = 0.75f;
+        public static float DefaultBlockRefillTimeSec= 0.25f;
+
+
         //MEN
         public static float SoldierGroupStandardRotatingSpeed = 6.5f;
         public static float WarmashineRotatingSpeed_NoWheels = SoldierGroupStandardRotatingSpeed * 0.1f;

@@ -5,6 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.PJ.Strategy;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -83,19 +84,22 @@ namespace VikingEngine.DSSWars.GameObject
             return Rotation1D.FromDirection(VectorExt.V3XZtoV2(targetPosDiff));
         }
 
-        virtual public void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate)
+        
+
+        virtual public void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate, out bool blocked)
         {
             if (health > 0)
             {
-                if (Ref.peRnd.Chance_CheckForZero(group.damageBlockChance))
+                if (Ref.peRnd.Chance_CheckForZero(group.damageBlockChance_fromTerrain))
                 {
+                    blocked = true;
                     return;
-                }
+                }                
 
-                lockedIncomingDamage -= damageAmount;
-               
-                if (damageAmount>0)
+                if (damageAmount > 0)
                 {
+                    lockedIncomingDamage -= damageAmount;
+
                     recievedProjectileAttackWhileIdle = state.idle;
                    
                     health -= damageAmount;
@@ -111,8 +115,13 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
+
+            blocked = false;
+
+            
         }
-        
+
+
         public void lockInAttackDamage(int damageAmount)
         {
             if (damageAmount > 0)
