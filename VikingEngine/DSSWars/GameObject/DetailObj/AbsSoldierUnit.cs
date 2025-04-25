@@ -811,7 +811,7 @@ namespace VikingEngine.DSSWars.GameObject
            
             if (attackTarget == null)
             {
-                attackTarget = group.attackTarget_soldierGroupOrCity?.Soldiers().GetRandomSafe(Ref.peRnd);
+                attackTarget = group.attackTarget_soldierGroupOrCity?.Soldiers()?.GetRandomSafe(Ref.peRnd);
             }
 
             var target = attackTarget;

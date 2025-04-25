@@ -63,8 +63,11 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
             manager.addSoldier(8, Resource.ItemResourceType.Ballista, BattleSetupManager.BothPlayers);
 
             manager.startBattle(false, BattleSetupManager.NoPlayer);
+            manager.addTimedAttackFromEnemy(10);
 
             LocalHost().gameControls.mapControls.cameraFocus = manager.friendlyArmy;
+
+
 
         }
     }
