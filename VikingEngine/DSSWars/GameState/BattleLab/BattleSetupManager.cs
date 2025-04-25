@@ -16,6 +16,7 @@ using VikingEngine.ToGG.MoonFall;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.LootFest.Players;
+using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab
 {
@@ -213,6 +214,14 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             {
                 enemyArmy.setAsStartArmy();
             }
+        }
+
+        public void addTimedAttackFromEnemy(float seconds)
+        {
+            new TimedAction0ArgTrigger(() => 
+            {
+                enemyArmy.Order_Attack(friendlyArmy);
+            }, seconds * TimeExt.SecondToMs); 
         }
     }
 }
