@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (Ref.peRnd.ChanceF(0.1f))
             {
-                SoundLib.anvil.Play(reciever.position);
+                SoundLib.block_attack.Play(reciever.position);
             }
            
              Vector3 pos = VectorExt.AddXZ(reciever.position, attackDir.Direction(DssConst.Men_StandardModelScale * -0.5f));

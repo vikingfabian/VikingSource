@@ -86,11 +86,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        virtual public void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate, out bool blocked)
+        virtual public void takeDamage(int damageAmount, float blockReduce, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate, out bool blocked)
         {
             if (health > 0)
             {
-                if (Ref.peRnd.Chance_CheckForZero(group.damageBlockChance_fromTerrain))
+                if (Ref.peRnd.Chance_CheckForZero(group.damageBlockChance_fromTerrain * blockReduce))
                 {
                     blocked = true;
                     return;

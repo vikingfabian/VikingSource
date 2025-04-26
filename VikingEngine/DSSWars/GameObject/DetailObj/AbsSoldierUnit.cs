@@ -1199,11 +1199,11 @@ namespace VikingEngine.DSSWars.GameObject
             battleData?.asycUpdate(this);
         }
 
-        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate, out bool blocked)
+        public override void takeDamage(int damageAmount, float blockReduce, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate, out bool blocked)
         {
             float diff = Rotation1D.AngleDifference_Absolute(attackDir.radians, rotation.radians);
 
-            if (diff > MathExt.TauOver3 && Ref.peRnd.ChanceF(soldierData.blockChance))
+            if (diff > MathExt.TauOver3 && Ref.peRnd.ChanceF(soldierData.blockChance * blockReduce))
             {
                 var battle_sp = battleData;
                 if (battle_sp == null || battle_sp.spendBlock())
@@ -1217,7 +1217,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            base.takeDamage(damageAmount, meleeAttacker, attackDir, enemyFaction, fullUpdate, out blocked);
+            base.takeDamage(damageAmount, blockReduce, meleeAttacker, attackDir, enemyFaction, fullUpdate, out blocked);
 
             if (meleeAttacker != null)
             {

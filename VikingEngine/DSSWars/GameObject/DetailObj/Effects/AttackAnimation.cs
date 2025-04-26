@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.Conscript;
@@ -81,22 +82,29 @@ namespace VikingEngine.DSSWars.GameObject
                                
 
                 int damage;
+                float blockReduce = soldierData.blockReducingAttack_Inv;
+
+                //Height advantage
+                if (group.position.Y + position.Y - Map.Settings.Height.DefaultGroundYoffset >= target.group.position.Y + target.position.Y)
+                {
+                    blockReduce *= DssConst.HeightAdvantageBlockReduce_multiply;
+                    if (fullUpdate)
+                    {
+                        Vector3 pos = position;
+                        pos.Y += DssConst.Men_StandardModelScale * 0.8f;
+                        Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.GoldenSparkle, pos, DssConst.Men_StandardModelScale * 0.3f, 6);
+                    }
+                }
+
                 if (mainAttack)
                 {
-                    if (target.DetailUnitType() == UnitType.City)
-                    {
-                        damage = soldierData.attackDamageStructure;
-                    }
-                    else
-                    {
-                        damage = soldierData.attackDamage;
+                    damage = soldierData.attackDamage;
 
-                        if (group != null &&
-                            group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry && 
-                            target.DetailUnitType() == UnitType.ConscriptCavalry)
-                        {
-                            damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
-                        }
+                    if (group != null &&
+                        group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry && 
+                        target.DetailUnitType() == UnitType.ConscriptCavalry)
+                    {
+                        damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
                     }
                 }
                 else
@@ -108,45 +116,49 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (soldierData.mainAttack == AttackType.Melee && mainAttack)
                 {
-                    if (fullUpdate && IsShipType())
+                    if (fullUpdate)
                     {
-                        new ShipMeleeAttack(GetSoldierUnit(), attackDir);
-                    }
-                    target.takeDamage(damage, this, attackDir, GetFaction(), fullUpdate, out _);
-                    if (fullUpdate && Ref.peRnd.ChanceF(DssConst.SoundChanceSword))
-                    {
-                        switch (group.soldierConscript.conscript.weapon)
+                        if (IsShipType())
                         {
-                            case Resource.ItemResourceType.HandSpear:
-                            case Resource.ItemResourceType.Pike:
-                            case Resource.ItemResourceType.SharpStick:
-                            case Resource.ItemResourceType.KnightsLance:
-                                SoundLib.spear_whoosh.Play(position);
-
-                                break;
-
-                            case Resource.ItemResourceType.BronzeSword:
-                            case Resource.ItemResourceType.ShortSword:
-                                SoundLib.blade_light.Play(position);
-                                break;
-
-                            case Resource.ItemResourceType.Sword:
-                            case Resource.ItemResourceType.LongSword:
-                                SoundLib.blade_medium.Play(position);
-                                break;
-
-                            case Resource.ItemResourceType.TwoHandSword:
-                            case Resource.ItemResourceType.MithrilSword:
-                                SoundLib.blade_heavy.Play(position);
-                                break;
-
-
-                            default:
-                                SoundLib.sword.Play(position);
-                                break;
+                            new ShipMeleeAttack(GetSoldierUnit(), attackDir);
                         }
-                        
+
+                        if (Ref.peRnd.ChanceF(DssConst.SoundChanceSword))
+                        {
+                            switch (group.soldierConscript.conscript.weapon)
+                            {
+                                case Resource.ItemResourceType.HandSpear:
+                                case Resource.ItemResourceType.Pike:
+                                case Resource.ItemResourceType.SharpStick:
+                                case Resource.ItemResourceType.KnightsLance:
+                                    SoundLib.spear_whoosh.Play(position);
+
+                                    break;
+
+                                case Resource.ItemResourceType.BronzeSword:
+                                case Resource.ItemResourceType.ShortSword:
+                                    SoundLib.blade_light.Play(position);
+                                    break;
+
+                                case Resource.ItemResourceType.Sword:
+                                case Resource.ItemResourceType.LongSword:
+                                    SoundLib.blade_medium.Play(position);
+                                    break;
+
+                                case Resource.ItemResourceType.TwoHandSword:
+                                case Resource.ItemResourceType.MithrilSword:
+                                    SoundLib.blade_heavy.Play(position);
+                                    break;
+
+                                default:
+                                    SoundLib.sword.Play(position);
+                                    break;
+                            }
+
+                        }
                     }
+
+                    target.takeDamage(damage, blockReduce, this, attackDir, GetFaction(), fullUpdate, out _);
                 }
                 else
                 {
@@ -157,11 +169,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (mainAttack)
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage, soldierData.attackSplashCount);
+                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage, blockReduce, soldierData.attackSplashCount);
                     }
                     else
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage, soldierData.attackSplashCount);
+                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage, blockReduce, soldierData.attackSplashCount);
                     }
                 }
             }

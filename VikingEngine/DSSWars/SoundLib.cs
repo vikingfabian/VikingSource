@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars
 
            bow, sword, spear, throwblade, throwitem, clothHit, crossbow, heavyballista, reloadballista,
            blade_light, blade_medium, blade_heavy, spear_whoosh,
-            musket, cannon,
+            musket, cannon, block_attack,
             
            painvoice, fleshgore;
 
@@ -102,6 +102,8 @@ namespace VikingEngine.DSSWars
             spear_whoosh = new SoundContainerMultiple([SoundDir + "spearwhoosh (1)", SoundDir + "spearwhoosh (2)", SoundDir + "spearwhoosh (3)", SoundDir + "spearwhoosh (4)"], 0.06f, 0.4f);
             musket = new SoundContainerMultiple([SoundDir + "musket1",SoundDir + "musket2",SoundDir + "musket3"], 2f, 0.4f);
             cannon = new SoundContainerMultiple([SoundDir + "cannon1",SoundDir + "cannon2",SoundDir + "cannon3"], 3f, 0.4f);
+            block_attack = new SoundContainerMultiple([SoundDir + "block_attack (1)", SoundDir + "block_attack (3)"], 0.8f, 0.4f);
+
 
             //Damage
             painvoice = new SoundContainerMultiple([SoundDir + "Dwarf Pain 1", SoundDir + "Dwarf Pain 2", SoundDir + "Dwarf Pain 3", SoundDir + "Dwarf Pain 4", SoundDir + "Dwarf Pain 5", SoundDir + "Dwarf Pain 6" ], 0.4f, 0.6f);

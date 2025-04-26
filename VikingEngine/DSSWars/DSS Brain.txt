@@ -1,9 +1,10 @@
 ﻿UPDATE
 -Change Log-
-* fixed two reported crashes
+* Added block system, for more powerful flanking
+* Block chance is different depending on soldier type
+* Height advantage (reduces block)
+* Some weapons reduce block chance
 
-
--ground diff + timer
 
 !! Known issues, that I am working on !!
 -Camera chase can crash

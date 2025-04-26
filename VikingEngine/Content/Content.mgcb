@@ -1252,6 +1252,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/bladethrow.wav
 
+#begin DSS/Sound/block_attack (1).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/block_attack (1).wav
+
+#begin DSS/Sound/block_attack (3).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/block_attack (3).wav
+
 #begin DSS/Sound/bow1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

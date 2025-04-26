@@ -9,13 +9,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 {
     class BaseWarship : AbsSoldierUnit
     {
-        //int storedAttacks = 0;
         int soldierCount;
         int multiAttackCount;
         float multiAttackTimeCooldown;
-
-        //float maxHealth;
-        //public UnitType carryUnitType;
 
         public BaseWarship()
             : base()
@@ -34,9 +30,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
             }
         }
 
-        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate, out bool blocked)
+        public override void takeDamage(int damageAmount, float blockReduce, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate, out bool blocked)
         {
-            base.takeDamage(damageAmount, meleeAttacker, attackDir, damageFaction, fullUpdate, out blocked);
+            base.takeDamage(damageAmount, blockReduce, meleeAttacker, attackDir, damageFaction, fullUpdate, out blocked);
 
             if (!blocked)
             {

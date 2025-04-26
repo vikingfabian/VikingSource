@@ -24,8 +24,15 @@ namespace VikingEngine.DSSWars
         public static float GuardPostExit_TimeSec = 2f;
 
         public static float DefaultBlockChance = 0.75f;
-        public static float DefaultBlockRefillTimeSec= 0.25f;
 
+        public static float DefaultBlockRefillTimeSec = 0.25f;
+        public static float LowBlockRefillTimeSec = 0.5f;
+        public static float BadBlockRefillTimeSec = 1f;
+
+        public static float HeightAdvantageBlockReduce_multiply = 0.5f;
+        public static float HeavyBlockReduceAttack_Inv = 0.2f;
+        public static float MediumBlockReduceAttack_Inv = 0.5f;
+        public static float SmallBlockReduceAttack_Inv = 0.75f;
 
         //MEN
         public static float SoldierGroupStandardRotatingSpeed = 6.5f;
@@ -280,12 +287,10 @@ namespace VikingEngine.DSSWars
         public static float SoundChanceMachineProjectile = 0.6f;
         public static float SoundChanceSword = 0.3f;
 
-        public static float SoundChanceDamageScream = 0.1f;
-        public static float SoundChanceDeathScream = 0.25f;
+        public static float SoundChanceDamageScream = 0.04f;
+        public static float SoundChanceDeathScream = 0.12f;
         public static float SoundChanceDamageGore = 0.02f;
         public static float SoundChanceDeathGore = 0.2f;
-
-
 
     }
 }

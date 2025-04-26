@@ -10,8 +10,12 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
-        
+        public string Conscript_BlockReducingAttack => "These attacks reduces block chance";
 
+        public string Conscript_BlockPerSecond => "May block {0} times per second";
+
+        public string Conscript_BlockDescription => "Soldiers will block most attacks coming in their forward arc";
+        
     }
 
 }

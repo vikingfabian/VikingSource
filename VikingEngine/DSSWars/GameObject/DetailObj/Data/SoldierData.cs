@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         /// <summary>
         /// Max blocks are refills per second
         /// </summary>
-        public float floatBlocksRefillTimeSec = DssConst.DefaultBlockRefillTimeSec; 
+        public float blocksRefillTimeSec = DssConst.DefaultBlockRefillTimeSec; 
 
         public int basehealth = 0;
         public bool arrowWeakness = false;
@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public AttackType secondaryAttack = 0;
         public int bonusProjectiles = 0;
         public int attackDamage = 0, attackDamageSea = 0, attackDamageStructure = 0;
+        public float blockReducingAttack_Inv = 1f;
         public int attackSplashCount = 0;
         public int secondaryAttackDamage = 0;
         public float attackTimePlusCoolDown = 0;
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 
         public int MaxBlockCount()
         {
-            return (int)(1f / floatBlocksRefillTimeSec + 0.9f);
+            return (int)(1f / blocksRefillTimeSec + 0.9f);
         }
 
         public int DPS_land()

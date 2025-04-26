@@ -1798,22 +1798,18 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asyncBattleUpdate()
         {
-            //var attack_sp = attackTarget_soldierGroupOrCity;
             var soldiers_sp = soldiers;        
             if (soldiers_sp != null)
             {
-                //Vector3 posSum = Vector3.Zero;
-                //int posCount = 0;
                 var counter = soldiers_sp.counter();
                 while (counter.Next())
                 {
                     counter.sel.asyncBattleUpdate();
-                    //posSum += counter.sel.position;
-                    //++posCount;
                 }
+            }
 
-                //position = posSum / posCount;
-            }            
+            tilePos = WP.ToTilePos(position);
+            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY();
         }
 
         public void asyncPathUpdate(int pathThreadIndex)

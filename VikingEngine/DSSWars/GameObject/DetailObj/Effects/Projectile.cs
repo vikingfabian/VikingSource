@@ -9,16 +9,16 @@ namespace VikingEngine.DSSWars.GameObject
     class Projectile : AbsUpdateable
     {
         public static void ProjectileAttack(bool fullUpdate, AbsDetailUnit attacker,
-            AttackType type, AbsDetailUnit target, int damage, int splashCount) /*int splashCount, float splashPercDamage)*/
+            AttackType type, AbsDetailUnit target, int damage, float blockReduce_inv, int splashCount) /*int splashCount, float splashPercDamage)*/
         {
             if (fullUpdate)
             {
                 new Projectile(attacker.projectileStartPos(), attacker,
-                    type, target, damage, splashCount);
+                    type, target, damage, blockReduce_inv, splashCount);
             }
             else
             {
-                ProjectileHit(false, target, damage, splashCount, attacker);
+                ProjectileHit(false, target, damage, blockReduce_inv, splashCount, attacker);
             }
         }
         
@@ -43,15 +43,17 @@ namespace VikingEngine.DSSWars.GameObject
         Rotation1D dir;
 
         Vector3 blankTarget;
+        float blockReduce_inv;
 
         public Projectile(Vector3 start, AbsDetailUnit fromAttack, AttackType type, 
-            AbsDetailUnit target, int damage, int splashCount)
+            AbsDetailUnit target, int damage, float blockReduce_inv, int splashCount)
             : base(true)
         {
             this.fromAttack = fromAttack;
             this.target = target;
             this.damage = damage;
-            
+            this.blockReduce_inv = blockReduce_inv;
+
             this.splashCount = splashCount;
             //this.splashPercDamage = splashPercDamage; 
             
@@ -314,16 +316,14 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     SoundLib.clothHit.Play(target.position);
                 }
-                ProjectileHit(true, target, damage, splashCount,  fromAttack);
+                ProjectileHit(true, target, damage, blockReduce_inv, splashCount,  fromAttack);
             }
         }
 
-        public static void ProjectileHit(bool fullUpdate, AbsDetailUnit target, int damage, int splashCount,
-            //int splashCount, float splashPercDamage,
-            AbsDetailUnit fromAttack)
+        public static void ProjectileHit(bool fullUpdate, AbsDetailUnit target, int damage, float blockReduce_inv, int splashCount, AbsDetailUnit fromAttack)
         {
 
-            target.takeDamage(damage, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
+            target.takeDamage(damage, blockReduce_inv, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
             if (splashCount > 0 && target.IsSoldierUnit())
             {
                 int splashDamage = damage;//Convert.ToInt32(splashPercDamage * damage);
@@ -333,7 +333,7 @@ namespace VikingEngine.DSSWars.GameObject
                     var target2 = target.group.soldiers?.GetRandomUnsafe(Ref.rnd);
                     if (target2 != null)
                     {
-                        target2.takeDamage(splashDamage, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
+                        target2.takeDamage(splashDamage, blockReduce_inv, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
                     }
                 }
             }

@@ -247,6 +247,8 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelName = LootFest.VoxelModelName.wars_hammer;
                     soldierData.modelScale *= 1.14f;
                     soldierData.icon = SpriteName.WarsResource_Warhammer;
+
+                    soldierData.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                     break;
 
                 case ItemResourceType.TwoHandSword:
@@ -257,6 +259,8 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelVariationCount = 1;
                     soldierData.modelScale *= 1.6f;
                     soldierData.icon = SpriteName.WarsUnitIcon_TwoHand;
+                    soldierData.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.KnightsLance:
@@ -280,6 +284,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.workForcePerUnit = 2;
                     soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                     soldierData.hasBannerMan = false;
+                    soldierData.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
                     //soldierData.ArmySpeedBonusLand = 0.8;
                     break;
 
@@ -290,6 +295,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelName = LootFest.VoxelModelName.wars_mithrilman;
                     soldierData.icon = SpriteName.WarsUnitIcon_MithrilMan;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
+                    soldierData.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                     break;
 
                 case ItemResourceType.SlingShot:
@@ -300,6 +306,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelName = LootFest.VoxelModelName.wars_slingman;
                     soldierData.icon = SpriteName.WarsUnitIcon_Slingshot;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
+                    soldierData.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.ThrowingSpear:
@@ -320,6 +327,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelVariationCount = 2;
                     soldierData.icon = SpriteName.WarsUnitIcon_Archer;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
+                    soldierData.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.LongBow:
@@ -330,6 +338,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelVariationCount = 2;
                     soldierData.icon = SpriteName.WarsUnitIcon_Archer;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
+                    soldierData.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.Crossbow:
@@ -340,6 +349,8 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelVariationCount = 1;
                     soldierData.icon = SpriteName.LittleUnitIconCrossBowman;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 15f;
+
+                    soldierData.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
                     break;
 
                 case ItemResourceType.MithrilBow:
@@ -351,6 +362,9 @@ namespace VikingEngine.DSSWars.Conscript
                     
                     soldierData.icon = SpriteName.WarsUnitIcon_MithrilArcher;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 8f;
+
+                    soldierData.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                     break;
 
 
@@ -362,6 +376,9 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelVariationCount = 1;
                     soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+
+                    soldierData.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.HandCulverin:
@@ -373,6 +390,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelVariationCount = 1;
                     soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+                    soldierData.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.Rifle:
@@ -383,6 +401,9 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelVariationCount = 1;
                     soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+
+                    soldierData.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.Blunderbuss:
@@ -394,6 +415,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelVariationCount = 1;
                     soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+                    soldierData.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.Ballista:
@@ -425,6 +447,9 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.hasBannerMan = false;
 
                     soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+
+                    soldierData.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.Manuballista:
@@ -452,6 +477,9 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                     soldierData.hasBannerMan = false;
                     soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+
+                    soldierData.blockReducingAttack_Inv = DssConst.HeavyBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.Catapult:
@@ -481,6 +509,9 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
                     soldierData.hasBannerMan = false;
                     soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+
+                    soldierData.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.SiegeCannonBronze:
@@ -511,6 +542,8 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.hasBannerMan = false;
                     soldierData.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 2.4f);
                     soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                    soldierData.blockReducingAttack_Inv = DssConst.HeavyBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.ManCannonBronze:
@@ -540,6 +573,8 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 1.1f);
                     soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_Wheels;
+                    soldierData.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.SiegeCannonIron:
@@ -569,6 +604,8 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.hasBannerMan = false;
                     soldierData.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 0.3f);
                     soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                    soldierData.blockReducingAttack_Inv = DssConst.HeavyBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.ManCannonIron:
@@ -597,6 +634,8 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.hasBannerMan = false;
                     soldierData.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 1f);
                     soldierData.rotationSpeed = DssConst.WarmashineRotatingSpeed_Wheels;
+                    soldierData.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.RoseWarrior_soldier:
@@ -640,6 +679,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.rowWidth =3;
                     soldierData.columnsDepth = 2;
                     soldierData.groupSpacingRndOffset = DssVar.StandardBoundRadius * 1f;
+                    soldierData.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                     break;
 
 

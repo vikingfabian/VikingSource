@@ -33,8 +33,6 @@ namespace VikingEngine.Graphics
 
                 settings.EndVelocity = 0;
 
-
-
                 const float Rotate = 1.6f;
                 settings.MinRotateSpeed = -Rotate;
                 settings.MaxRotateSpeed = Rotate;

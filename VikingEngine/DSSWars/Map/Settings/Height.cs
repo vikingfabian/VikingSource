@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Map.Settings
         //static readonly Color Ground5 = new Color(70, 70, 70);
 
         const double DefaultGroundYoffsetChance = 0.6;
-        const float DefaultGroundYoffset = 0.012f;
+        public const float DefaultGroundYoffset = 0.012f;
 
         //public Color color;
         public double groundYoffsetChance;
