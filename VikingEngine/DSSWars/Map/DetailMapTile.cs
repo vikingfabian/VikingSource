@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.Map
                                 break;
                             case TerrainMainType.Road:
                                 bSurfacePolygonTexture = false;
-                                createRoad((TerrainRoadType)subTile.subTerrain, ref surfaceSprite);
+                                createRoad((TerrainRoadType)subTile.subTerrain, ref surfaceSprite, ref surfaceColor);
                                 break;
                             case TerrainMainType.Decor:
                                 bSurfacePolygonTexture = false;
@@ -323,8 +323,10 @@ namespace VikingEngine.DSSWars.Map
             return result;
         }
 
-        void createRoad(TerrainRoadType type, ref SpriteName surfaceSprite)
+        void createRoad(TerrainRoadType type, ref SpriteName surfaceSprite, ref Color surfaceColor)
         {
+            surfaceColor.Deconstruct(out byte r, out byte g, out byte b);
+            surfaceColor = new Color(r + 30, g + 30, b + 20);
             surfaceSprite = SpriteName.warsFoliageDirtRoad;
         }
 

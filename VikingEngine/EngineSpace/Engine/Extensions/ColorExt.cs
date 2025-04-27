@@ -60,6 +60,13 @@ namespace VikingEngine
             return new Color(r+change, g+change, b+change);
         }
 
+        public static Color ChangeYellow(Color col, int change)
+        {
+            col.Deconstruct(out byte r, out byte g, out byte b);
+            
+            return new Color(r + change, g + change, b);
+        }
+
         public static float GetBrightNess(Color col)
         {
             float r, g, b;
