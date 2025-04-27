@@ -21,19 +21,36 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             {
                 int y = 0;
-                BiomType defaultBiom = BiomType.Frozen;                
+                              
 
                 for (int x = 0; x < Width; x++)
                 {
+                    BiomType defaultBiom;
+
+                    if (x < 4)
+                    {
+                        defaultBiom = BiomType.Frozen;
+                    }
+                    else
+                    {
+                        defaultBiom = BiomType.Tundra;
+                    }
+
                     var options = new RandomObjects<BiomType>(new ObjectCommonessPair<BiomType>(10, defaultBiom));
-                    if (rnd.Chance(0.25))
+
+                    if (rnd.Chance(0.2))
                     {
                         options.AddItem(BiomType.WetGreen, 20);
                     }
                     if (rnd.Chance(0.1))
                     {
+                        options.AddItem(BiomType.Swamp, 10);
+                    }
+                    if (rnd.Chance(0.1))
+                    {
                         options.AddItem(BiomType.Green, 20);
                     }
+                    
 
                     biomGrid[x, y] = options;
                 }
@@ -52,7 +69,26 @@ namespace VikingEngine.DSSWars.Map.Generate
                     }
                     if (rnd.Chance(0.1))
                     {
-                        options.AddItem(BiomType.Frozen, 20);
+                        options.AddItem(BiomType.Hills, 20);
+                    }
+                    if (rnd.Chance(0.2))
+                    {
+                        options.AddItem(BiomType.WetGreen, 20);
+                    }
+                    if (rnd.Chance(0.1))
+                    {
+                        options.AddItem(BiomType.Swamp, 10);
+                    }
+                    if (rnd.Chance(0.1))
+                    {
+                        if (x < 4)
+                        {
+                            options.AddItem(BiomType.Frozen, 20);
+                        }
+                        else
+                        {
+                            options.AddItem(BiomType.Tundra, 20);
+                        }
                     }
 
                     biomGrid[x, y] = options;
@@ -66,13 +102,24 @@ namespace VikingEngine.DSSWars.Map.Generate
                 for (int x = 0; x < Width; x++)
                 {
                     var options = new RandomObjects<BiomType>(new ObjectCommonessPair<BiomType>(10, defaultBiom));
-                    if (rnd.Chance(0.25))
+                    if (rnd.Chance(0.1))
                     {
                         options.AddItem(BiomType.WetGreen, 20);
                     }
                     if (rnd.Chance(0.1))
                     {
-                        options.AddItem(BiomType.YellowDry, 20);
+                        options.AddItem(BiomType.Hills, 10);
+                    }
+                    if (rnd.Chance(0.1))
+                    {
+                        if (x < 2)
+                        {
+                            options.AddItem(BiomType.DarkLands, 20);
+                        }
+                        else
+                        {
+                            options.AddItem(BiomType.YellowDry, 20);
+                        }
                     }
 
                     biomGrid[x, y] = options;
@@ -81,12 +128,23 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             {
                 int y = 3;
-                BiomType defaultBiom = BiomType.YellowDry;
-
+                
                 for (int x = 0; x < Width; x++)
                 {
+                    BiomType defaultBiom;
+
+                    if (x < 2)
+                    {
+                        defaultBiom = BiomType.DarkLands;
+                    }
+                    else
+                    {
+                        defaultBiom = BiomType.YellowDry;
+                    }
+
                     var options = new RandomObjects<BiomType>(new ObjectCommonessPair<BiomType>(10, defaultBiom));
-                    if (rnd.Chance(0.25))
+
+                    if (x > 2 && rnd.Chance(0.25))
                     {
                         options.AddItem(BiomType.Green, 20);
                     }

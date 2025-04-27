@@ -13,12 +13,21 @@ namespace VikingEngine.DSSWars.Map.Settings
         public WorldBioms()
         {
             bioms[(int)BiomType.WetGreen] = new Biom(
-                new TileColor( new Color(113, 123, 31), SurfaceTextureType.Grass),
+                new TileColor( new Color(94, 118, 25), SurfaceTextureType.Grass),
 
-                new TileColor(new Color(208,207,148), SurfaceTextureType.Sand),
-                new TileColor(new Color(40, 43, 19), SurfaceTextureType.None), 
+                new TileColor(new Color(210, 209, 136), SurfaceTextureType.Sand),
+                new TileColor(new Color(68, 85, 20), SurfaceTextureType.None), 
                 new TileColor(new Color(75, 76, 73), SurfaceTextureType.None),
                 1.1f, 0.6f, 0
+                );
+
+            bioms[(int)BiomType.Swamp] = new Biom(
+                new TileColor(new Color(113, 123, 31), SurfaceTextureType.Grass),
+
+                new TileColor(new Color(208, 207, 148), SurfaceTextureType.Sand),
+                new TileColor(new Color(40, 43, 19), SurfaceTextureType.None),
+                new TileColor(new Color(75,82, 59), SurfaceTextureType.None),
+                1.1f, 0.2f, 0
                 );
 
             bioms[(int)BiomType.Green] = new Biom(
@@ -29,6 +38,15 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(73, 76, 73), SurfaceTextureType.None),
                 1f, 0.25f, 0
                 );
+
+            bioms[(int)BiomType.Hills] = new Biom(
+               new TileColor(new Color(115, 198, 68), SurfaceTextureType.Grass),
+
+               new TileColor(new Color(216, 230, 129), SurfaceTextureType.Sand),
+               new TileColor(new Color(70, 151, 41), SurfaceTextureType.None),
+               new TileColor(new Color(73, 76, 73), SurfaceTextureType.None),
+               1.2f, 0.1f, 0
+               );
 
             bioms[(int)BiomType.YellowDry] = new Biom(
                 new TileColor(new Color(171,162,54), SurfaceTextureType.Sand), 
@@ -48,6 +66,15 @@ namespace VikingEngine.DSSWars.Map.Settings
                 0.6f, 0, 0.5f
                 );
 
+            bioms[(int)BiomType.DarkLands] = new Biom(
+                new TileColor(new Color(58, 94, 108), SurfaceTextureType.None),
+
+               new TileColor(new Color(102, 115, 116), SurfaceTextureType.Sand),
+                new TileColor(new Color(58, 94, 108), SurfaceTextureType.None),
+                new TileColor(new Color(39, 59, 57), SurfaceTextureType.None),
+                0.4f, 0, 0.8f
+                );
+
             bioms[(int)BiomType.Frozen] = new Biom(
                 new TileColor(new Color(86, 109, 83), SurfaceTextureType.Grass), 
 
@@ -55,6 +82,15 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(40, 53, 47), SurfaceTextureType.None), 
                 new TileColor(new Color(97, 114, 114), SurfaceTextureType.None),
                 1.3f, 0.8f, 0.2f
+                );
+
+            bioms[(int)BiomType.Tundra] = new Biom(
+                new TileColor(new Color(148,133,55), SurfaceTextureType.Grass),
+
+                new TileColor(new Color(178, 188, 152), SurfaceTextureType.Sand),
+                new TileColor(new Color(100, 91, 42), SurfaceTextureType.None),
+                new TileColor(new Color(86, 91, 75), SurfaceTextureType.None),
+                0.5f, 0.9f, 0.5f
                 );
         }
     }
@@ -163,11 +199,15 @@ namespace VikingEngine.DSSWars.Map.Settings
 
     enum BiomType
     {
+        Hills,
         Green,
         WetGreen,
+        Swamp,
         Frozen,
+        Tundra,
         YellowDry,
         RedDry,
+        DarkLands,
         NUM
     }
 }

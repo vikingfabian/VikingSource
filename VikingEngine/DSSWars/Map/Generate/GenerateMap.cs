@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public WorldData world;
 
         public bool postComplete = false;
-        bool[] partComplete;
+        //bool[] partComplete;
         GenerateRegion region = new GenerateRegion();
         CityCultureCollection cityCultureCollection = new CityCultureCollection();
         public bool abort = false;
@@ -315,30 +315,35 @@ namespace VikingEngine.DSSWars.Map.Generate
             world.rnd = new PcgRandom(world.metaData.seed);
             noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.seed);
 
-            partComplete = new bool[ProcessSubTileParts];
-
-            for (int i = 0; i < ProcessSubTileParts; i++)
+            //partComplete = new bool[ProcessSubTileParts];
+            Task.Factory.StartNew(async () =>
             {
-                int part = i;
-                Task.Factory.StartNew(() =>
+                List<Task> tasks = new List<Task>();
+
+                for (int i = 0; i < ProcessSubTileParts; i++)
                 {
-                    processSubTiles(part);
-                    partComplete[part] = true;
-                    //postComplete = true;
-
-                    bool allComplete = true;
-                    for (int pc = 0; pc < ProcessSubTileParts; pc++)
+                    int part = i;
+                    tasks.Add(Task.Factory.StartNew(() =>
                     {
-                        if (!partComplete[pc])
-                        {
-                            allComplete = false;
-                            break;
-                        }
-                    }
+                        biomGradient(part);
+                    }));
+                }
 
-                    postComplete = allComplete;
-                });
-            }
+                await Task.WhenAll(tasks);
+                tasks.Clear();
+
+                for (int i = 0; i < ProcessSubTileParts; i++)
+                {
+                    int part = i;
+                    tasks.Add(Task.Factory.StartNew(() =>
+                    {
+                        processSubTiles(part);
+                    }));
+                }
+
+                await Task.WhenAll(tasks);
+                postComplete = true;
+            });
         }
 
         //public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
@@ -1196,6 +1201,62 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         const int ProcessSubTileParts = 8;
 
+        void biomGradient(int part)
+        {
+            int partWidth = world.Size.X / ProcessSubTileParts;
+            int startX = partWidth * part;
+            int endX = startX + partWidth;
+
+            for (int loopy = 0; loopy < world.Size.Y; ++loopy)
+            {
+                int supTileStartY = loopy * WorldData.TileSubDivitions;
+                for (int loopx = startX; loopx < endX; ++loopx)
+                {
+                    int supTileStartX = loopx * WorldData.TileSubDivitions;
+
+                    ref Tile tile = ref world.tileGrid.array[loopx, loopy]; //lefttop side
+                    checkAdj(loopx + 1, loopy, ref tile);
+                    checkAdj(loopx, loopy + 1, ref tile);
+
+                    void checkAdj(int x, int y, ref Tile tile)
+                    {
+                        if (world.tileGrid.InBounds(x, y))
+                        {
+                            ref Tile ntile = ref world.tileGrid.array[x, y];
+                            if (tile.biom != ntile.biom)
+                            {
+                                tile.secondaryBiom = ntile.biom;
+                                tile.secondaryBiomStrength = 2;
+                                lowFade(loopx -1, loopy, tile.biom, ntile.biom);
+                                lowFade(loopx - 1, loopy -1, tile.biom, ntile.biom);
+                                lowFade(loopx, loopy -1, tile.biom, ntile.biom);
+
+                                ntile.secondaryBiom = tile.biom;
+                                ntile.secondaryBiomStrength = 2;
+                                lowFade(x + 1, y, ntile.biom, tile.biom);
+                                lowFade(x + 1, y + 1, ntile.biom, tile.biom);
+                                lowFade(x, y + 1, ntile.biom, tile.biom);
+
+
+                                void lowFade(int x, int y, BiomType fromBiom, BiomType toBiom)
+                                {
+                                    if (world.tileGrid.InBounds(x, y))
+                                    {
+                                        ref Tile fadeTile = ref world.tileGrid.array[x, y];
+                                        if (fadeTile.biom == fromBiom)
+                                        {
+                                            fadeTile.secondaryBiom = toBiom;
+                                            fadeTile.secondaryBiomStrength = 1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         void processSubTiles(int part)
         {
             List<IntVector2> mineLocations = new List<IntVector2>(1024);
@@ -1221,6 +1282,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                     Height heightSett = DssRef.map.heigts[tile.heightLevel];
                     Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];
+                    Biom secondarybiom = DssRef.map.bioms.bioms[(int)tile.secondaryBiom];
 
                     int defaultLandType = 0;
                     TerrainMainType tileType;
@@ -1290,6 +1352,11 @@ namespace VikingEngine.DSSWars.Map.Generate
                         Color rndColor;
 
                         var col = biom.Color(tile);
+                        if (tile.secondaryBiomStrength > 0)
+                        {
+                            TileColor col2 = secondarybiom.Color(tile);
+                            col.Color = ColorExt.Mix(col2.Color, col.Color, tile.secondaryBiomStrength * 0.25f); 
+                        }
 
                         if (world.rnd.Chance(0.6))
                         {

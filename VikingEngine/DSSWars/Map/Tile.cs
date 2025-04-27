@@ -35,6 +35,8 @@ namespace VikingEngine.DSSWars.Map
         //Save data
         public int CityIndex;
         public BiomType biom =  BiomType.Green;
+        public float secondaryBiomStrength = 0;
+        public BiomType secondaryBiom = BiomType.Green;
         public int heightLevel;
         public TileContent tileContent = TileContent.NONE;
         public int BorderCount;
@@ -413,8 +415,25 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
-                return DssRef.map.bioms.bioms[(int)biom].Color(this).Color;
+                var col = DssRef.map.bioms.bioms[(int)biom].Color(this).Color;
+                if (secondaryBiomStrength > 0)
+                {
+                    var col2 = DssRef.map.bioms.bioms[(int)secondaryBiom].Color(this).Color;
+                    return ColorExt.Mix(col2, col, secondaryBiomStrength * 0.25f);
+                }
+                return col;
             }
+        }
+
+        public Color BiomColor()
+        {
+            var col = DssRef.map.bioms.bioms[(int)biom].Color(this).Color;
+            if (secondaryBiomStrength > 0)
+            {
+                var col2 = DssRef.map.bioms.bioms[(int)secondaryBiom].Color(this).Color;
+                return ColorExt.Mix(col2, col, secondaryBiomStrength * 0.25f);
+            }
+            return col;
         }
 
         public float GroundY() { return TypeToHeight[heightLevel]; }
