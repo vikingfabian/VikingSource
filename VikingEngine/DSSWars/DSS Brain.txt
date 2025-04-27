@@ -5,6 +5,10 @@
 * Height advantage (reduces block)
 * Some weapons reduce block chance
 
+--full game--
+* map seed option
+* roads
+
 
 !! Known issues, that I am working on !!
 -Camera chase can crash
