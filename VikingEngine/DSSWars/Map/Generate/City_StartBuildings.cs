@@ -11,50 +11,13 @@ using VikingEngine.ToGG.Commander.UnitsData;
 namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
-    {
-        //static readonly string[] SquareCity = new string[]
-        //    {
-        //        "TWWWWWWT",
-        //        "W______W",
-        //        "W______W",
-        //        "WrrrHrrW",
-        //        "W__cXc_W",
-        //        "W__crc_W",
-        //        "W___r__W",
-        //        "TWWWWWWT",
-
-        //    };
-
-        //static readonly string[] RoundSquareCity = new string[]
-        //    {
-        //        "  WWWW",
-        //        " TW__WT ",
-        //        "WW____WW",
-        //        "WrrrHrrW",
-        //        "W__cXc_W",
-        //        "WW_crcWW",
-        //        " TW_rWT ",
-        //        "  WWWW  ",
-
-        //    };
-
-        //static readonly string[] SquareCity_Segmented = new string[]
-        //   {
-        //        "TWWWWWWT",
-        //        "W___H__W",
-        //        "W___X__W",
-        //        "TWWWrWWT",
-        //        "w__crc_w",
-        //        "w__crc_w",
-        //        "w___r__w",
-        //        "wwwwrwww",
-
-        //   };
-
+    {        
         IntVector2 barracksReservedSpot;
         public IntVector2 cityStorageCenter;
         public void createBuildingSubtiles(WorldData world, CityTemplateCollection templateCollection)
         {
+            PcgRandom rnd = new PcgRandom(world.metaData.seed * parentArrayIndex);
+
             List<IntVector2> emptyGeneral = new List<IntVector2>();
             Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, out IntVector2 startSubTilePos);
 
@@ -129,8 +92,8 @@ namespace VikingEngine.DSSWars.GameObject
             };
 
             //IntVector2 templatePos = IntVector2.Zero;
-            template.LoopBegin();
-            while (template.LoopNext())
+            var templateLoop = template.LoopInstance();
+            while (templateLoop.Next())
             {
                 //for (templatePos.Y = 0; templatePos.Y < template.Length; templatePos.Y++)
                 //{ 
@@ -139,13 +102,13 @@ namespace VikingEngine.DSSWars.GameObject
                 //    {
                 TerrainMainType main = TerrainMainType.Building;
                 int sub = -1;
-                IntVector2 pos = topleft + template.LoopPosition;
+                IntVector2 pos = topleft + templateLoop.Position;
                 var subTile = world.subTileGrid.Get(pos);
 
-                switch (template.LoopValueGet())
+                switch (template.Get(templateLoop.Position))
                 {
                     case CityTemplateCellType.General:
-                        if (world.rnd.Chance(percBuilding))
+                        if (rnd.Chance(percBuilding))
                         {
                             sub = servicehouse;
                             onServiceHouseBuild(true, largeServiceHouse);
@@ -162,7 +125,7 @@ namespace VikingEngine.DSSWars.GameObject
                             DefenceStatus defence = new DefenceStatus();
                             main = TerrainMainType.Wall;
                             sub = wall;
-                            defence.autoAssign = world.rnd.Chance(percWallGuard);
+                            defence.autoAssign = rnd.Chance(percWallGuard);
 
                             defence.init(pos);
                             defenceBuildings.Add(defence);
@@ -173,7 +136,7 @@ namespace VikingEngine.DSSWars.GameObject
                             DefenceStatus defence = new DefenceStatus();
                             main = TerrainMainType.Wall;
                             sub = lowWall;
-                            defence.autoAssign = world.rnd.Chance(percWallGuard);
+                            defence.autoAssign = rnd.Chance(percWallGuard);
 
                             defence.init(pos);
                             defenceBuildings.Add(defence);
@@ -211,7 +174,7 @@ namespace VikingEngine.DSSWars.GameObject
                     case CityTemplateCellType.CraftArea:
                         if (craftStations.Count > 0)
                         {
-                            var building = arraylib.RandomListMemberPop(craftStations, DssRef.world.rnd);
+                            var building = arraylib.RandomListMemberPop(craftStations, rnd);
                             sub = (int)building;
                             switch (building)
                             {
@@ -253,7 +216,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             while (freeServiceMen.amount < 1 && emptyGeneral.Count > 0)
             {
-                var pos = arraylib.RandomListMemberPop(emptyGeneral, world.rnd);
+                var pos = arraylib.RandomListMemberPop(emptyGeneral, rnd);
                 var subTile = world.subTileGrid.Get(pos);
                 subTile.SetType(TerrainMainType.Building, servicehouse, 1);
                 world.subTileGrid.Set(pos, subTile);

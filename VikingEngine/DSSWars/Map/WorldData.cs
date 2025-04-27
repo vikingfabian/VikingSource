@@ -94,16 +94,18 @@ namespace VikingEngine.DSSWars
             factions = new SpottedArray<Faction>();
         }
 
-        public WorldData(WorldMetaData metaData, MapGenerateSettings generateSettings)//ushort seed, MapSize size)
+        public WorldData(WorldMetaData metaData, MapGenerateSettings generateSettings/*, bool customEditorMap*/)//ushort seed, MapSize size)
             : this()
         {
             this.metaData = metaData;
-            if (generateSettings.customSeed)
+            if (generateSettings.storage.customSeed)
             { 
-                metaData.seed = generateSettings.seed;
+                metaData.seed = generateSettings.storage.seed;
+                metaData.objSeed = generateSettings.storage.seed;
+                metaData.objRnd = new PcgRandom(generateSettings.storage.seed);
             }
 
-            metaData.customMap = true;
+            //metaData.customEditorMap = customEditorMap;
             LoadingWorld = this;
 
             rnd = new PcgRandom(metaData.seed);

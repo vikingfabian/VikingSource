@@ -37,6 +37,7 @@ using VikingEngine.DSSWars.Display;
 using VikingEngine.LootFest.GO.WeaponAttack;
 using Valve.Steamworks;
 using VikingEngine.Sound;
+using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars
 {
@@ -886,7 +887,8 @@ namespace VikingEngine.DSSWars
 
             var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
 
-            if (loadingMeta != null && loadingMeta.customMap)
+            bool continueCustomMap = loadingMeta != null && loadingMeta.customEditorMap;
+            if (continueCustomMap)
             {
                 content.newLine();
                 content.Add(new RbText(DssRef.lang.MapType_CustomMap));
@@ -905,6 +907,7 @@ namespace VikingEngine.DSSWars
                     }
                     mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, underMenu);
                 }
+
             }
 
             Difficulty.OptionsRb(content, underMenu, difficultyOptionsLink);
@@ -921,6 +924,23 @@ namespace VikingEngine.DSSWars
             }
 
             content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
+
+            if (!continueCustomMap)
+            {
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapType_GenerateNewMap) }, generateNewMapsProperty, null));
+
+                if (DssRef.storage.generateNewMaps)
+                {
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Map_CustomSeed) }, bCustomSeedProperty, null));
+                    if (DssRef.storage.mapSettings.customSeed)
+                    {
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(ushort.MinValue, ushort.MaxValue, 1),
+                            SeedProperty);
+                    }
+                }
+            }
+
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_AllowPause) }, allowPauseProperty));
             content.newLine();
@@ -938,6 +958,43 @@ namespace VikingEngine.DSSWars
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ResetToDefault) }, new RbAction(resetToDefault)));
 
             underMenu.Refresh(content);
+
+
+        bool generateNewMapsProperty(int index, bool set, bool value)
+        {
+            if (set && DssRef.storage.generateNewMaps != value)
+            {
+                DssRef.storage.generateNewMaps = value;
+                DssRef.storage.Save(null);
+                restartBackgroundLoading();
+            }
+            return DssRef.storage.generateNewMaps;
+        }
+
+        bool bCustomSeedProperty(int index, bool set, bool value)
+            {
+                if (set)
+                {
+                    DssRef.storage.mapSettings.customSeed = value;
+
+                    restartBackgroundLoading();
+                    DssRef.storage.Save(null);
+                }
+                return DssRef.storage.mapSettings.customSeed;
+            }
+
+            int SeedProperty(bool set, int value)
+            {
+              
+                if (set)
+                {
+                    DssRef.storage.mapSettings.seed = (ushort)value;
+
+                    restartBackgroundLoading();
+                    DssRef.storage.Save(null);
+                }
+                return DssRef.storage.mapSettings.seed;
+            }
         }
                
         void refreshUnderMenu()
@@ -1524,16 +1581,7 @@ namespace VikingEngine.DSSWars
         //    return DssRef.storage.runTutorial;
         //}
 
-        public bool generateNewMapsProperty(int index, bool set, bool value)
-        {
-            if (set && DssRef.storage.generateNewMaps != value)
-            {
-                DssRef.storage.generateNewMaps = value;
-                DssRef.storage.Save(null);
-                restartBackgroundLoading();
-            }
-            return DssRef.storage.generateNewMaps;
-        }
+        
 
         void refreshSplitScreen()
         {

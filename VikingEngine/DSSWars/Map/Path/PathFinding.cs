@@ -90,7 +90,9 @@ namespace VikingEngine.DSSWars.Map
             nodeGrid = new PathNode[DssRef.world.Size.X, DssRef.world.Size.Y];
         }
 
-        public WalkingPath FindPath(int pathThreadIndex, IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip)
+
+        //conv.ToDir8_INT(startDir)
+        public WalkingPath FindPath(int pathThreadIndex, IntVector2 center, int startDir, IntVector2 goal, bool startAsShip)
         {
             /*
             * Path finding algorithm
@@ -107,7 +109,7 @@ namespace VikingEngine.DSSWars.Map
             * 4.Varje ny ruta ska till en öppen lista
             */
 
-            PathNode startNode = new PathNode(center, conv.ToDir8_INT(startDir), startAsShip);
+            PathNode startNode = new PathNode(center, startDir, startAsShip);
 
             nodeGrid[center.X, center.Y] = startNode;
 
@@ -164,7 +166,16 @@ namespace VikingEngine.DSSWars.Map
             }
 
             //List<PathNodeResult> result = new List<PathNodeResult>();
-            var path = DssRef.state.pathUpdates[DssRef.state.pathUpdates.Length -1].pathFindingPool.GetRes();
+            WalkingPath path;
+
+            if (pathThreadIndex < 0)
+            {
+                path = new WalkingPath();
+            }
+            else
+            {
+                path = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetRes();
+            }
 
             while (currentNode.Position != startNode.Position)
             {
@@ -210,6 +221,11 @@ namespace VikingEngine.DSSWars.Map
         public bool HasValue()
         {
             return position.X >= 0;
+        }
+
+        public override string ToString()
+        {
+            return position.ToString() + " water {" + ship.ToString() + "}";
         }
     }
 

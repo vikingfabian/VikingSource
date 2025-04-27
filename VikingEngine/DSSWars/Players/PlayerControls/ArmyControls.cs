@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     PathFinding pf = DssRef.state.pathUpdates[DssRef.state.pathUpdates.Length -1].pathFindingPool.GetPf();
                     {
-                        newPath = pf.FindPath(PlayState.PathThreadCount, army.tilePos, army.rotation, player.gameControls.mapControls.tilePosition,
+                        newPath = pf.FindPath(PlayState.PathThreadCount, army.tilePos, conv.ToDir8_INT(army.rotation), player.gameControls.mapControls.tilePosition,
                             false);
                     }
                     DssRef.state.pathUpdates[DssRef.state.pathUpdates.Length -1].pathFindingPool.Return(pf);

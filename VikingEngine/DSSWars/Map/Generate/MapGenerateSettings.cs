@@ -3,15 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Network;
 
 namespace VikingEngine.DSSWars.Map.Generate
 {
+    struct MapSettingsStorage
+    {
+        public static readonly MapSettingsStorage Default = new MapSettingsStorage()
+        {
+            seed = 0,
+        };
+
+        public bool customSeed;
+        public ushort seed;
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(customSeed);
+            w.Write(seed);
+        }
+
+        public void read(System.IO.BinaryReader r, int version)
+        {
+            if (version >= 23)
+            {
+                customSeed = r.ReadBoolean();
+                seed = r.ReadUInt16();
+            }
+        }
+    }
+
     class MapGenerateSettings
     {
         public bool useGenerate = false;
-
-        public bool customSeed = false;
-        public ushort seed = 0;
 
         public float LandChainMinRadius = 2;
         public float LandChainMaxRadius = 30;
@@ -19,7 +43,6 @@ namespace VikingEngine.DSSWars.Map.Generate
         public Range landSpotSzRange = new Range(2, 24);
         public IntervalF startRadiusRange;
         public Range chainLengthRange = new Range(2, 20);
-
 
         public float BuildChainsCount_per100Tiles = 1 / 20f; //Per 100 tiles 
         public float DigChainsCount_per100Tiles = 1 / 18f; //Per 100 tiles 
@@ -32,8 +55,11 @@ namespace VikingEngine.DSSWars.Map.Generate
         public bool cleanUpSingleTiles = false;
         public bool factionsOnMap = true;
 
+        public MapSettingsStorage storage;
+
         public MapGenerateSettings()
         {
+            storage = DssRef.storage.mapSettings;
             startRadiusRange = new IntervalF(LandChainMinRadius, LandChainMaxRadius * 0.5f);
         }
 

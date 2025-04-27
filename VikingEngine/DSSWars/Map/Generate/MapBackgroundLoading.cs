@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void generate(GenerateMapPass pass)
         {
             loadingState = LoadingState.StorageDone;
-            generateLoopUntilSuccess(null, pass);
+            generateLoopUntilSuccess(null, pass, true);
         }
 
         protected override bool GenerateNewMap()
@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             if (GenerateNewMap())
             {
                 loadingState = LoadingState.StorageDone;
-                generateLoopUntilSuccess(loadMeta, GenerateMapPass.All);
+                generateLoopUntilSuccess(loadMeta, GenerateMapPass.All, false);
             }
             else
             {
@@ -105,7 +105,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             return DssRef.world;
         }
 
-        protected void generateLoopUntilSuccess(SaveStateMeta loadMeta, GenerateMapPass generatePass)
+        protected void generateLoopUntilSuccess(SaveStateMeta loadMeta, GenerateMapPass generatePass, bool customEditorMap)
         {
             generateSuccess = false;
             tokenSource = new CancellationTokenSource();
@@ -132,6 +132,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     else
                     {
                         worldmeta = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.mapSize, -1);
+                        worldmeta.customEditorMap = customEditorMap;
                         seed = Ref.rnd.Ushort();
                     }
 
@@ -143,6 +144,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     else
                     {
                         success = dataGenerate.GeneratePass(worldmeta, generateSettings, generatePass);
+
                     }
 
                     if (success)

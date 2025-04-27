@@ -341,29 +341,79 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
+        //public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
+        //{
+        //    this.world = world;
+        //    world.rnd = new PcgRandom(world.metaData.seed);
+
+        //    Task.Factory.StartNew(() =>
+        //    {
+        //        GenerateRoads roads = new GenerateRoads();
+
+        //        if (loadMeta == null)
+        //        {
+        //            CityTemplateCollection templateCollection = new CityTemplateCollection();
+
+        //            foreach (var c in world.cities)
+        //            {
+        //                Task.Factory.StartNew(() =>
+        //                {
+        //                    c.createBuildingSubtiles(world, templateCollection);
+        //                });
+        //            }
+
+        //            //How do I wait for all threads to complete?
+        //        }
+
+        //        postComplete = true;
+        //    });
+        //}
         public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             this.world = world;
             world.rnd = new PcgRandom(world.metaData.seed);
 
-            Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(async () =>
             {
-                //generateSubTileFoliage();
+                GenerateRoads roads = new GenerateRoads();
+
                 if (loadMeta == null)
                 {
                     CityTemplateCollection templateCollection = new CityTemplateCollection();
 
+                    // Create a list to hold the tasks
+                    List<Task> tasks = new List<Task>();
+
                     foreach (var c in world.cities)
                     {
-                        c.createBuildingSubtiles(world, templateCollection);
+                        // Start the task and add it to the list
+                        tasks.Add(Task.Factory.StartNew(() =>
+                        {
+                            c.createBuildingSubtiles(world, templateCollection);
+                        }));
                     }
+
+                    // Wait for all tasks to complete
+                    await Task.WhenAll(tasks);
+
+                    tasks.Clear();
+
+                    foreach (var c in world.cities)
+                    {
+                        // Start the task and add it to the list
+                        tasks.Add(Task.Factory.StartNew(() =>
+                        {
+                            roads.fromCity(world, c);
+                        }));
+                    }
+
+                    // Wait for all tasks to complete
+                    await Task.WhenAll(tasks);
                 }
 
                 postComplete = true;
             });
         }
-
-
 
         void generateLandChains(MapGenerateSettings generateSettings)
         {

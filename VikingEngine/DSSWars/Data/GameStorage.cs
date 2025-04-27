@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Schema;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Profile;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
@@ -27,7 +28,6 @@ namespace VikingEngine.DSSWars.Data
 
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_gameoptions", ".sav");
         
-
         public MapSize mapSize = MapSize.Medium;
         public bool centralGold = true;
         public bool generateNewMaps = false;
@@ -40,6 +40,10 @@ namespace VikingEngine.DSSWars.Data
         public Profile.FlagStorage flagStorage;
         public SaveMeta meta = null;
         public float multiplayerGameSpeed = 2;
+
+        public MapSettingsStorage mapSettings = MapSettingsStorage.Default;
+        //public bool bCustomSeed = false;
+        //public ushort customSeed = 0;
 
         public GameStorage()
         {
@@ -148,7 +152,7 @@ namespace VikingEngine.DSSWars.Data
         }
         public void write(System.IO.BinaryWriter w, bool gamestate = false)
         {
-            const int Version = 22;
+            const int Version = 23;
 
             w.Write(Version);
 
@@ -173,6 +177,8 @@ namespace VikingEngine.DSSWars.Data
             w.Write(speed5x);
             w.Write(longerBuildQueue);
             w.Write(centralGold);
+
+            mapSettings.write(w);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -186,7 +192,6 @@ namespace VikingEngine.DSSWars.Data
             {
                 return;
             }
-
             
             mapSize = (MapSize)r.ReadInt32();
 
@@ -213,11 +218,6 @@ namespace VikingEngine.DSSWars.Data
                 runTutorial_1short_2normal = r.ReadByte();
             }
             
-            //if (version < 16)
-            //{
-            //    runTutorial = true;
-            //}
-
             if (version >= 18)
             { 
                 speed5x = r.ReadBoolean();
@@ -230,6 +230,7 @@ namespace VikingEngine.DSSWars.Data
             { 
                 centralGold = r.ReadBoolean();
             }
+            mapSettings.read(r, version);
         }
 
         public void checkPlayerDoublettes()

@@ -15,7 +15,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Conscript_BlockPerSecond => "May block {0} times per second";
 
         public string Conscript_BlockDescription => "Soldiers will block most attacks coming in their forward arc";
-        
+
+        public string Map_CustomSeed => "Map seed";
     }
 
 }

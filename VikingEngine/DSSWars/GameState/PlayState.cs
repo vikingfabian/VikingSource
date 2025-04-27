@@ -385,6 +385,10 @@ namespace VikingEngine.DSSWars
                     {
                         foreach (var m in DssRef.world.cities)
                         {
+                            if (m.parentArrayIndex == 75)
+                            {
+                                lib.DoNothing();
+                            }
                             m.update();
                         }
 

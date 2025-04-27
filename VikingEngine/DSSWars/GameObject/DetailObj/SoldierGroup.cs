@@ -1939,7 +1939,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             PathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetPf();
             { 
-                path = pf.FindPath(pathThreadIndex, tilePos, rotation, WP.ToTilePos( goalWp), isShip);
+                path = pf.FindPath(pathThreadIndex, tilePos, conv.ToDir8_INT(rotation), WP.ToTilePos( goalWp), isShip);
             }
             DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(pf);
         }
