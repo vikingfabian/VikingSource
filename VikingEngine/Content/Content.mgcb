@@ -2455,6 +2455,9 @@
 #begin VoxelModel/LfWars/fol_farmculture2.vox
 /copy:VoxelModel/LfWars/fol_farmculture2.vox
 
+#begin VoxelModel/LfWars/fol_greenfoliage.vox
+/copy:VoxelModel/LfWars/fol_greenfoliage.vox
+
 #begin VoxelModel/LfWars/fol_herbs.vox
 /copy:VoxelModel/LfWars/fol_herbs.vox
 

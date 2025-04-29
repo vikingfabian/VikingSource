@@ -730,6 +730,7 @@ namespace VikingEngine.LootFest
         fol_herbs,
         fol_farmculture,
         fol_farmculture2,
+        fol_greenfoliage,
 
         resource_tree,
         resource_rubble,

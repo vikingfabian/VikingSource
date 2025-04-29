@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Map
             this.modelName = modelName;
             this.pos = pos;
             this.scale = scale;
-            this.randomFrame = rnd.Double();
+            this.randomFrame = Math.Min(rnd.Double(), rnd.Double());
         }
 
         public void init(LootFest.VoxelModelName modelName, int frame, Vector3 pos, float scale)

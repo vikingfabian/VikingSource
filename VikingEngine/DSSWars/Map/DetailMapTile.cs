@@ -19,11 +19,14 @@ namespace VikingEngine.DSSWars.Map
             IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.2f * WorldData.SubTileWidth);
 
         static readonly Vector2 GrassSize = new Vector2(0.03f, 0.11f) * WorldData.SubTileWidth;
+        static readonly Vector2 TuftSize = new Vector2(0.08f, 0.25f) * WorldData.SubTileWidth;
 
         static readonly Vector2 SandSize = new Vector2(0.03f) * WorldData.SubTileWidth;
 
         static readonly IntervalF GrassCenterRange =
             IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.45f * WorldData.SubTileWidth);
+        static readonly IntervalF GrassTuftCenterRange =
+                    IntervalF.FromCenter(0.4f * WorldData.SubTileWidth, 0.35f * WorldData.SubTileWidth);
 
         static ConcurrentStack<FoliageModel> foliagePool = new ConcurrentStack<FoliageModel>();
 
@@ -43,6 +46,7 @@ namespace VikingEngine.DSSWars.Map
                 LootFest.VoxelModelName.fol_stoneblock,
                 LootFest.VoxelModelName.fol_farmculture,
                 LootFest.VoxelModelName.fol_farmculture2,
+                LootFest.VoxelModelName.fol_greenfoliage,
 
                 LootFest.VoxelModelName.resource_tree,
                 LootFest.VoxelModelName.resource_rubble,
@@ -213,14 +217,16 @@ namespace VikingEngine.DSSWars.Map
                     DssRef.state.detailMap.polygons.Add(right);
                 }
 
-                Vector3 topCenter(ref SubTile subTile, ref Vector2 subTopLeft)
-                {
-                    return new Vector3(
-                         pos.X + subTopLeft.X,
-                         subTile.groundY,
-                         pos.Y + subTopLeft.Y);
-                }
+               
             }
+        }
+
+        Vector3 topCenter(ref SubTile subTile, ref Vector2 subTopLeft)
+        {
+            return new Vector3(
+                 pos.X + subTopLeft.X,
+                 subTile.groundY,
+                 pos.Y + subTopLeft.Y);
         }
 
         void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft, Color tileColor, SurfaceTextureType textureType)
@@ -233,81 +239,101 @@ namespace VikingEngine.DSSWars.Map
 
             
           
-                switch (textureType)
-                {
-                    case SurfaceTextureType.Grass:
+            switch (textureType)
+            {
+                case SurfaceTextureType.Grass:
+                    {
+                        bool tuft = rnd.Chance(0.06);
+                        IntervalF centerRange;
+                        Vector2 sz;
+                        if (tuft)
                         {
-                            int count = rnd.Int(5, 20);
-                            for (int i = 0; i < count; ++i)
+                            centerRange = GrassTuftCenterRange;
+                            sz = TuftSize;
+                        }
+                        else
+                        {
+                            centerRange = GrassCenterRange;
+                            sz = GrassSize;
+
+                            if (rnd.Chance(0.01))
                             {
-                                Vector3 pos = center;
-                                pos.X += GrassCenterRange.GetRandom(rnd);
-                                pos.Z += GrassCenterRange.GetRandom(rnd);
-
-                                Color bottomCol = ColorExt.ChangeBrighness(tileColor, 4);
-                                Color topCol = bottomCol;
-
-                                double rndCol = rnd.Double();
-                                if (rndCol < 0.7)
-                                {
-                                    topCol = ColorExt.ChangeBrighness(topCol, 6);
-                                }
-                                else if (rndCol < 0.9)
-                                {//Red tint
-                                    topCol.R = Bound.Byte(topCol.R + 10);
-                                }
-                                else
-                                {//Yellow tint
-                                    topCol.G = Bound.Byte(topCol.G + 8);
-                                    topCol.B = Bound.Byte(topCol.B + 8);
-                                }
-
-                                Graphics.PolygonColor straw = new PolygonColor();
-                                //Bottom left
-                                straw.V2se.Position = pos;
-                                straw.V2se.Position.X -= GrassSize.X * 0.5f;
-                                straw.V3ne.Color = bottomCol;
-
-                                //Bottom right
-                                straw.V3ne.Position = straw.V2se.Position;
-                                straw.V3ne.Position.X += GrassSize.X;
-                                straw.V2se.Color = bottomCol;
-
-                                //Top left
-                                straw.V0sw.Position = straw.V2se.Position;
-                                straw.V0sw.Position.Y += GrassSize.Y;
-                                straw.V1nw.Color = topCol;
-
-                                //Top right
-                                straw.V1nw.Position = straw.V3ne.Position;
-                                straw.V1nw.Position.Y += GrassSize.Y;
-                                straw.V0sw.Color = topCol;
-
-                                straw.setSprite(SpriteName.WhiteArea_LFtiles, Dir4.N);
-
-                                DssRef.state.detailMap.polygons.Add(straw);
+                                newFoliage().init(LootFest.VoxelModelName.fol_greenfoliage, rnd, VectorExt.AddXZ(center, pos.X + WorldData.SubTileHalfWidth, pos.Y + WorldData.SubTileHalfWidth), 0.12f);
                             }
                         }
-                        break;
-                    case SurfaceTextureType.Sand:
+
+
+                        int count = rnd.Int(5, 20);
+                        for (int i = 0; i < count; ++i)
                         {
-                            int count = rnd.Int(24, 30);
-                            for (int i = 0; i < count; ++i)
+                            Vector3 pos = center;
+                            pos.X += GrassCenterRange.GetRandom(rnd);
+                            pos.Z += GrassCenterRange.GetRandom(rnd);
+
+                            Color bottomCol = ColorExt.ChangeBrighness(tileColor, 4);
+                            Color topCol = bottomCol;
+
+                            double rndCol = rnd.Double();
+                            if (rndCol < 0.7)
                             {
-                                Vector2 pos = Vector2.Zero;
-                                pos.X = center.X + GrassCenterRange.GetRandom(rnd);
-                                pos.Y = center.Z + GrassCenterRange.GetRandom(rnd);
+                                topCol = ColorExt.ChangeBrighness(topCol, 6);
+                            }
+                            else if (rndCol < 0.9)
+                            {//Red tint
+                                topCol.R = Bound.Byte(topCol.R + 10);
+                            }
+                            else
+                            {//Yellow tint
+                                topCol.G = Bound.Byte(topCol.G + 8);
+                                topCol.B = Bound.Byte(topCol.B + 8);
+                            }
+
+                            Graphics.PolygonColor straw = new PolygonColor();
+                            //Bottom left
+                            straw.V2se.Position = pos;
+                            straw.V2se.Position.X -= sz.X * 0.5f;
+                            straw.V3ne.Color = bottomCol;
+
+                            //Bottom right
+                            straw.V3ne.Position = straw.V2se.Position;
+                            straw.V3ne.Position.X += sz.X;
+                            straw.V2se.Color = bottomCol;
+
+                            //Top left
+                            straw.V0sw.Position = straw.V2se.Position;
+                            straw.V0sw.Position.Y += sz.Y;
+                            straw.V1nw.Color = topCol;
+
+                            //Top right
+                            straw.V1nw.Position = straw.V3ne.Position;
+                            straw.V1nw.Position.Y += sz.Y;
+                            straw.V0sw.Color = topCol;
+
+                            straw.setSprite(SpriteName.WhiteArea_LFtiles, Dir4.N);
+
+                            DssRef.state.detailMap.polygons.Add(straw);
+                        }
+                    }
+                    break;
+                case SurfaceTextureType.Sand:
+                    {
+                        int count = rnd.Int(24, 30);
+                        for (int i = 0; i < count; ++i)
+                        {
+                            Vector2 pos = Vector2.Zero;
+                            pos.X = center.X + GrassCenterRange.GetRandom(rnd);
+                            pos.Y = center.Z + GrassCenterRange.GetRandom(rnd);
                                 
-                                Color color = ColorExt.ChangeBrighness(subTile.color, rnd.Int(-6, 20));
+                            Color color = ColorExt.ChangeBrighness(subTile.color, rnd.Int(-6, 20));
 
-                                DssRef.state.detailMap.polygons.Add(
-                                    PolygonColor.QuadXZ(pos, SandSize, true,
-                                    center.Y + 0.001f, SpriteName.WhiteArea_LFtiles, Dir4.N,
-                                    color));
-                            }
+                            DssRef.state.detailMap.polygons.Add(
+                                PolygonColor.QuadXZ(pos, SandSize, true,
+                                center.Y + 0.001f, SpriteName.WhiteArea_LFtiles, Dir4.N,
+                                color));
                         }
-                        break;
-                }
+                    }
+                    break;
+            }
             
         }
 

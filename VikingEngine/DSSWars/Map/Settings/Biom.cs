@@ -34,8 +34,8 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(104,146,70), SurfaceTextureType.Grass),
 
                 new TileColor(new Color(255,254,181), SurfaceTextureType.Sand),
-                new TileColor(new Color(8, 71, 6), SurfaceTextureType.None), 
-                new TileColor(new Color(73, 76, 73), SurfaceTextureType.None),
+                new TileColor(ColorExt.ChangeBrighness( new Color(8, 71, 6), -10), SurfaceTextureType.None), 
+                new TileColor(ColorExt.ChangeBrighness(new Color(73, 76, 73), -10), SurfaceTextureType.None),
                 1f, 0.25f, 0
                 );
 
@@ -46,6 +46,15 @@ namespace VikingEngine.DSSWars.Map.Settings
                new TileColor(new Color(70, 151, 41), SurfaceTextureType.None),
                new TileColor(new Color(73, 76, 73), SurfaceTextureType.None),
                1.2f, 0.1f, 0
+               );
+
+            bioms[(int)BiomType.GreenDry] = new Biom(
+               new TileColor(new Color(208, 188, 119), SurfaceTextureType.Grass),
+
+               new TileColor(new Color(230, 214, 162), SurfaceTextureType.Sand),
+               new TileColor(ColorExt.ChangeBrighness(new Color(180, 161, 97), -10), SurfaceTextureType.None),
+               new TileColor(ColorExt.ChangeBrighness(new Color(124, 128, 107), -10), SurfaceTextureType.None),
+               0.5f, 0.9f, 0.5f
                );
 
             bioms[(int)BiomType.YellowDry] = new Biom(
@@ -201,6 +210,7 @@ namespace VikingEngine.DSSWars.Map.Settings
     {
         Hills,
         Green,
+        GreenDry,
         WetGreen,
         Swamp,
         Frozen,

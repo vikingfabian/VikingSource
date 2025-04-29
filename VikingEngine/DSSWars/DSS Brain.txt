@@ -8,6 +8,9 @@
 --full game--
 * map seed option
 * roads
+* 5 new bioms
+* fade between bioms
+* adjusted the generating to mix the bioms more
 
 
 !! Known issues, that I am working on !!
