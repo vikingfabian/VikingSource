@@ -130,6 +130,11 @@ namespace VikingEngine
         {
             return array[position.X, position.Y];
         }
+
+        public ref T GetRef(IntVector2 position)
+        {
+            return ref array[position.X, position.Y];
+        }
         public T Get(int x, int y)
         {
             return array[x, y];

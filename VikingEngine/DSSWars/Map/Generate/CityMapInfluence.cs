@@ -13,62 +13,163 @@ namespace VikingEngine.DSSWars.Map
     class CityMapInfluence
     {
         Grid2D<Influence> inflenceMap;
-        List<MapCity> cities;
+        MapCity[] cities;
 
-        //public void reset(WorldData world)
-        //{
-        //    for (int i = 0; i < world.cities.Count; ++i)
-        //    {
-        //        world.cities[i].parentArrayIndex = i;
-        //        world.cities[i].neighborCities.Clear();
-        //        world.cities[i].areaSize = 0;
-        //    }
-
-        //    world.tileGrid.LoopBegin();
-        //    while (world.tileGrid.LoopNext())
-        //    {
-        //        var tile = world.tileGrid.LoopValueGet();
-        //        tile.removeCity();
-
-        //    }
-        //}
-        public void generate(WorldData world) 
+        public bool generate(WorldData world) 
         {
             inflenceMap = new Grid2D<Influence>(world.Size);
-            inflenceMap.LoopBegin();
-            while (inflenceMap.LoopNext())
-            {
-                inflenceMap.LoopValueSet(new Influence());
-            }
+            //inflenceMap.LoopBegin();
+            //while (inflenceMap.LoopNext())
+            //{
+            //    inflenceMap.LoopValueSet(new Influence());
+            //}
 
-            cities = new List<MapCity>(world.cities.Count);
-            //List<MapCity> complete = new List<MapCity>(world.cities.Count);
+            cities = new MapCity[world.cities.Count];//new List<MapCity>(world.cities.Count);
 
-            foreach (var c in world.cities)
-            {
-                cities.Add(new MapCity(c, inflenceMap));
-            }
+            int verticalDivitions = world.Size.X / (Generate.GenerateMap.HeadCityNeededFreeRadius * 4);
+            
+            bool result = Task.Run(async ()=> {
 
-            int loopCount = 0;
-            while (cities.Count > 0)
-            {
-                for (int i = cities.Count - 1; i >= 0; --i)
-                {
-                    if (cities[i].next(inflenceMap, world))
+                List<Task> tasks = new List<Task>(verticalDivitions);
+
+                const int InitDivitions = 8;
+                int cityCountDiv = world.cities.Count / 8;
+                for (int i = 0; i < InitDivitions; ++i)
+                { 
+                    int start = i * cityCountDiv;
+                    int end_plusone = start + cityCountDiv;
+                    if (i == InitDivitions - 1)
                     {
-                        //complete.Add(cities[i]);
-                        cities.RemoveAt(i);
+                        end_plusone = world.cities.Count;
+                    }
+
+                    tasks.Add(Task.Run(() =>
+                    {
+                        for (int cityIx = start; cityIx < end_plusone; cityIx++)
+                        {
+                            cities[cityIx] = new MapCity(world.cities[cityIx], inflenceMap);
+                        }
+                    }));
+                }
+
+                //foreach (var c in world.cities)
+                //{
+                //    cities.Add(new MapCity(c, inflenceMap));
+                //}
+
+                await Task.WhenAll(tasks);
+                tasks.Clear();
+
+                //Optimized by diviting the world in vertical stripes, and running even, then odd
+
+                int loopCount = 0;
+
+                bool activeCities = false;
+
+                //while (cities.Count > 0)
+                do
+                {
+                    activeCities = false;
+
+                    for (int evenOdd = 0; evenOdd < 2; evenOdd++)
+                    {
+                        for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
+                        {
+                            if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
+                            {
+                                int ix = verticalStripeIx;
+                                tasks.Add(Task.Run(() =>
+                                {
+                                    var area = cityArea(ix, verticalDivitions);
+
+                                    for (int cityIx = 0; cityIx < world.cities.Count; cityIx++)
+                                    {
+                                        if (cities[cityIx].active)
+                                        {
+                                            activeCities = true;
+
+                                            if (area.IntersectTilePoint(cities[cityIx].city.tilePos))
+                                            {
+                                                cities[cityIx].next(inflenceMap, world);
+                                            }
+                                        }
+                                    }
+
+                                }));
+                            }
+                        }
+                        await Task.WhenAll(tasks);
+                        tasks.Clear();
+                    }
+                    //for (int i = cities.Count - 1; i >= 0; --i)
+                    //{
+                    //    if (cities[i].next(inflenceMap, world))
+                    //    {
+                    //        cities.RemoveAt(i);
+                    //    }
+                    //}
+
+                    if (++loopCount > 10000)
+                    {
+                        throw new EndlessLoopException("CityMapInfluence");
+                    }
+                } while (activeCities);
+
+                cleanUpEdges(world);
+
+                debugLog();
+
+                //End by binding tiles to cities
+                inflenceMap.LoopBegin();
+                while (inflenceMap.LoopNext())
+                {
+                    if (inflenceMap.LoopValueGet().city == null)
+                    {
+                        throw new Exception();
+                    }
+
+                    var city = inflenceMap.LoopValueGet().city;
+                    var tile = world.tileGrid.Get(inflenceMap.LoopPosition);
+                    tile.CityIndex = city.parentArrayIndex;
+                    world.tileGrid.Set(inflenceMap.LoopPosition, tile);
+
+                    var r = inflenceMap.LoopPosition.SideLength(city.tilePos);
+                    if (city.cityTileRadius < r)
+                    {
+                        city.cityTileRadius = r;
                     }
                 }
 
-                if (++loopCount > 10000)
+                Rectangle2 cityArea(int part, int divitions)
                 {
-                    throw new EndlessLoopException("CityMapInfluence");
+                    Rectangle2 area = new Rectangle2();
+                    int widthChunk = world.Size.X / divitions;
+                    area.X = part * widthChunk;
+                    area.Width = widthChunk;
+
+                    if (part == 0)
+                    {
+                        area.AddToLeftSide(-1);
+                    }
+                    else if (part == divitions - 1)
+                    {
+                        //last
+                        area.SetRight(world.Size.X -1, true);
+                    }
+
+                    area.Y = 1;
+                    area.Height = world.Size.Y - 2;
+
+                    return area;
                 }
-            }
+                return true;
+            }).Result;
 
-            cleanUpEdges(world);
+            return result;
+        }
 
+        void debugLog()
+        {
             const bool LogInfluence = false;
             if (LogInfluence)
             {
@@ -84,29 +185,6 @@ namespace VikingEngine.DSSWars.Map
                     System.Diagnostics.Debug.WriteLine(line.ToString());
                 }
             }
-
-
-            inflenceMap.LoopBegin();
-            while (inflenceMap.LoopNext())
-            {
-                if (inflenceMap.LoopValueGet().city == null)
-                {
-                    throw new Exception();
-                }
-
-                var city = inflenceMap.LoopValueGet().city;
-                var tile = world.tileGrid.Get(inflenceMap.LoopPosition);
-                {
-                    tile.CityIndex = city.parentArrayIndex;
-                }
-                world.tileGrid.Set(inflenceMap.LoopPosition, tile);
-                
-                var r = inflenceMap.LoopPosition.SideLength(city.tilePos);
-                if (city.cityTileRadius < r)
-                { 
-                    city.cityTileRadius = r;
-                }
-            }
         }
 
         void cleanUpEdges(WorldData world)
@@ -118,9 +196,8 @@ namespace VikingEngine.DSSWars.Map
             {
                 if (world.tileGrid.Get(loop.Position).IsLand())
                 {
-
                     Dictionary<int, int> cityInfluence = new Dictionary<int, int>();
-                    var inf = inflenceMap.Get(loop.Position);
+                    ref var inf = ref inflenceMap.GetRef(loop.Position);
                     cityInfluence.Add(inf.city.parentArrayIndex, 1);
 
                     int mostInfluence = 1;
@@ -159,18 +236,19 @@ namespace VikingEngine.DSSWars.Map
             
         }
 
-        class Influence
+        struct Influence
         {
-            public City city = null;
-            public int influence = 0;
-            public bool locked = false;
+            public City city;
+            public int influence;
+            public bool locked;
         }
 
         class MapCity
         {
-            GameObject.City city;
-            ForXYEdgeLoop loop;
+            public GameObject.City city;
+            ForXYEdgeLoop edgeloop;
             int radius = 1;
+            public bool active = true;
 
             public MapCity(GameObject.City city, Grid2D<Influence> inflenceMap)
             { 
@@ -181,25 +259,29 @@ namespace VikingEngine.DSSWars.Map
                 ForXYLoop startloop = new ForXYLoop(startArea);
                 while(startloop.Next())
                 {
-                    var inf = inflenceMap.Get(startloop.Position);
+                    ref var inf = ref inflenceMap.GetRef(startloop.Position);
                     inf.city = city;
                     inf.influence = startInfluence;
                     inf.locked = true;  
                 }
 
-                loop = new ForXYEdgeLoop(startArea);
+                edgeloop = new ForXYEdgeLoop(startArea);
             }
 
             /// <returns>Is complete</returns>
             public bool next(Grid2D<Influence> inflenceMap, WorldData world)
             { 
+                //Will loop the outer edge of the city influence, and end by expanding one tile
+                //All cities will expand this way until they meet eachother
+
                 bool madeInflence = false;
 
-                while (loop.Next())
+                while (edgeloop.Next())
                 {
-                    Influence inf;
-                    if (inflenceMap.TryGet(loop.Position, out inf))
+                    //Influence inf;
+                    if (inflenceMap.InBounds(edgeloop.Position))
                     {
+                        ref var inf = ref inflenceMap.GetRef(edgeloop.Position);
                         if (inf.city == city)
                         {
                             int influence = inf.influence;
@@ -207,10 +289,11 @@ namespace VikingEngine.DSSWars.Map
                             //Collect supporting tiles (avoid thin areas)
                             foreach (var dir in IntVector2.Dir8Array)
                             {
-                                Influence adjInf;
-                                var npos = loop.Position + dir;
-                                if (inflenceMap.TryGet(npos, out adjInf))
+                                //Influence adjInf;
+                                var npos = edgeloop.Position + dir;
+                                if (inflenceMap.InBounds(npos))//, out adjInf))
                                 {
+                                    ref var adjInf = ref inflenceMap.GetRef(npos);
                                     if (adjInf.city == city)
                                     {
                                         support++;
@@ -233,10 +316,11 @@ namespace VikingEngine.DSSWars.Map
 
                             foreach (var dir in IntVector2.Dir8Array)
                             {
-                                Influence adjInf;
-                                var npos = loop.Position + dir;
-                                if (inflenceMap.TryGet(npos, out adjInf))
+                                //Influence adjInf;
+                                var npos = edgeloop.Position + dir;
+                                if (inflenceMap.InBounds(npos))//, out adjInf))
                                 {
+                                    ref var adjInf = ref inflenceMap.GetRef(npos);
                                     if (!adjInf.locked)
                                     {
                                         double length = (npos-city.tilePos).Length64();
@@ -258,11 +342,12 @@ namespace VikingEngine.DSSWars.Map
 
                 if (madeInflence)
                 {
-                    loop.ExpandRadius();
+                    edgeloop.ExpandRadius();
                     return false;
                 }
                 else
                 {
+                    active = false;
                     return true;
                 }
             }

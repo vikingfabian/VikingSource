@@ -8,6 +8,8 @@ using VikingEngine.Physics;
 using VikingEngine.EngineSpace.Maths;
 using System.Runtime.CompilerServices;
 
+using VikingEngine.ToGG.HeroQuest.Data.Condition;
+
 
 namespace VikingEngine
 {
@@ -378,7 +380,28 @@ namespace VikingEngine
                 case Dir4.E: size.X += add; return;
             }
         }
-
+        public void SetRight(float right, bool adjustWidth)
+        {
+            if (adjustWidth)
+            {
+                size.X = Right - pos.X;
+            }
+            else
+            {
+                pos.X = Right - size.X;
+            }
+        }
+        public void SetBottom(float bottom, bool adjustHeight)
+        {
+            if (adjustHeight)
+            {
+                size.Y = Bottom - pos.Y;
+            }
+            else
+            {
+                pos.Y = Bottom - size.Y;
+            }
+        }
         public Vector2 CenterF
         {
             get
