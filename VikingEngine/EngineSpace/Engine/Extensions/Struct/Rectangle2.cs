@@ -380,26 +380,26 @@ namespace VikingEngine
                 case Dir4.E: size.X += add; return;
             }
         }
-        public void SetRight(float right, bool adjustWidth)
+        public void SetRight(int right, bool adjustWidth)
         {
             if (adjustWidth)
             {
-                size.X = Right - pos.X;
+                size.X = right - pos.X;
             }
             else
             {
-                pos.X = Right - size.X;
+                pos.X = right - size.X;
             }
         }
-        public void SetBottom(float bottom, bool adjustHeight)
+        public void SetBottom(int bottom, bool adjustHeight)
         {
             if (adjustHeight)
             {
-                size.Y = Bottom - pos.Y;
+                size.Y = bottom - pos.Y;
             }
             else
             {
-                pos.Y = Bottom - size.Y;
+                pos.Y = bottom - size.Y;
             }
         }
         public Vector2 CenterF

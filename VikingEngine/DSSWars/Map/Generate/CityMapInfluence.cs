@@ -276,6 +276,7 @@ namespace VikingEngine.DSSWars.Map
             //End by binding tiles to cities
             //inflenceMap.LoopBegin();
             ForXYLoop loop = new ForXYLoop(area);
+            Debug.Log("bindTiles " + area.ToString());
             while (loop.Next())
             {
                 var city = inflenceMap.Get(loop.Position).city;
