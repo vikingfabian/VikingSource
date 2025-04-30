@@ -274,24 +274,6 @@ namespace VikingEngine.DSSWars.Map
 
         }
 
-        //public void removeCity()
-        //{
-        //    BorderCount=0;
-        //    BorderRegion_North = NoBorderRegion; 
-        //    BorderRegion_East = NoBorderRegion; 
-        //    BorderRegion_South = NoBorderRegion; 
-        //    BorderRegion_West = NoBorderRegion;
-        //    CityIndex = -1;
-        //    tileContent = TileContent.NONE;
-        //}
-
-        //public void setRenderState(bool inRender)
-        //{
-        //    this.inRender = inRender;
-
-        //    City()?.setRenderState(inRender);
-        //}
-
         public void AddBorder(int dir, int toregion)
         {
             ++BorderCount;
@@ -373,13 +355,13 @@ namespace VikingEngine.DSSWars.Map
             if (tileContent == TileContent.City)
                 return cityColor;
 
-            if (heightLevel == Height.DeepWaterHeight)
+            if (heightLevel <= Height.LowerWaterHeight)
             {
                 foreach (var dir in IntVector2.Dir4Array)
                 {
                     if (DssRef.world.tileGrid.TryGet(pos + dir, out var nTile))
                     {
-                        if (nTile.heightLevel > Height.DeepWaterHeight)
+                        if (nTile.heightLevel > Height.LowerWaterHeight)
                         {
                             return lib.IsEven(pos.X + pos.Y) ?
                                 WorldData.WaterDarkCol1 : WorldData.WaterDarkCol2;
@@ -392,10 +374,7 @@ namespace VikingEngine.DSSWars.Map
             }
             else if (heightLevel == Height.LowWaterHeight)
             {
-
                 return lib.IsEven(pos.X + pos.Y) ? WorldData.WaterEdgeColorBright : WorldData.WaterEdgeColor;
-                    //lib.IsEven(pos.X + pos.Y) ? 
-                    //WorldData.WaterDarkCol : WorldData.WaterDarkCol2;
             }
             else
             {
@@ -415,10 +394,10 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
-                var col = DssRef.map.bioms.bioms[(int)biom].Color(this).Color;
+                var col = DssRef.map.bioms.bioms[(int)biom].TileColor(this).Color;
                 if (secondaryBiomStrength > 0)
                 {
-                    var col2 = DssRef.map.bioms.bioms[(int)secondaryBiom].Color(this).Color;
+                    var col2 = DssRef.map.bioms.bioms[(int)secondaryBiom].TileColor(this).Color;
                     return ColorExt.Mix(col2, col, secondaryBiomStrength * 0.25f);
                 }
                 return col;
@@ -427,10 +406,10 @@ namespace VikingEngine.DSSWars.Map
 
         public Color BiomColor()
         {
-            var col = DssRef.map.bioms.bioms[(int)biom].Color(this).Color;
+            var col = DssRef.map.bioms.bioms[(int)biom].TileColor(this).Color;
             if (secondaryBiomStrength > 0)
             {
-                var col2 = DssRef.map.bioms.bioms[(int)secondaryBiom].Color(this).Color;
+                var col2 = DssRef.map.bioms.bioms[(int)secondaryBiom].TileColor(this).Color;
                 return ColorExt.Mix(col2, col, secondaryBiomStrength * 0.25f);
             }
             return col;
@@ -544,6 +523,7 @@ namespace VikingEngine.DSSWars.Map
 
         static readonly float[] TypeToWalkingDistance = new float[]
         {
+            12,//Deep water
             6,//Deep water
             3,//Water_0,
             0.8f,//OpenField_1,
@@ -552,6 +532,7 @@ namespace VikingEngine.DSSWars.Map
             1.5f,//Hills_4,
             2.4f,//Mountain_5,
             4,//MountainRidge_6,
+            8,
         };
 
         static float[] TypeToShipTravelMultiplier;
@@ -559,28 +540,33 @@ namespace VikingEngine.DSSWars.Map
         static readonly float[] TypeToShipDistance = new float[]
         {
             0.8f,//Deep water
+            0.8f,
             1f,//Water_0,
             4f,//OpenField_1,
             6,//Plains_2,
             6,//Vegetation_3,
             6,//Hills_4,
             6,//Mountain_5,
+            6,
             6,//MountainRidge_6,
         };
 
         public const float WaterSurfaceY = -0.1f;
         public const float UnitMinY = WaterSurfaceY + 0.02f;
+        const float LayerHeight = 0.06f;
 
         static readonly float[] TypeToHeight = new float[]
         {
-            WaterSurfaceY - 0.1f,//Deep water
-            WaterSurfaceY - 0.08f,//Water_0,
+            WaterSurfaceY - 0.3f,//Deep water
+            WaterSurfaceY - 0.18f,//Deep water
+            WaterSurfaceY - 0.07f,//Water_0,
             0f,//OpenField_1,
-            0.1f,//Plains_2,
-            0.2f,//Vegetation_3,
-            0.3f,//Hills_4,
-            0.45f,//Mountain_5,
-            0.6f,//MountainRidge_6,
+            LayerHeight,//Plains_2,
+            LayerHeight * 2f,//Vegetation_3,
+            LayerHeight * 3f,//Hills_4,
+            LayerHeight * 4.2f,//Mountain_5,
+            LayerHeight * 5.4f,
+            LayerHeight * 6.8f,//MountainRidge_6,
         };
 
         static float[] TypeToHeight_aboveWater;
@@ -605,42 +591,17 @@ namespace VikingEngine.DSSWars.Map
         }
 
         public bool IsLand() { return heightLevel > Height.LowWaterHeight; }
+
+        public bool MayBuild() { return heightLevel > Height.LowWaterHeight && heightLevel < Height.MountainLowPeak; }
+
         public bool IsWater() { return heightLevel <= Height.LowWaterHeight; }
         
         public override string ToString()
         {
-            //if (IsWater())
-            //{
-            //    return "Water";
-            //}
             return (IsWater()? "water" : "land") + heightLevel.ToString() + " city:" + CityIndex.ToString();
         }
     }
 
-    enum TerrainType
-    {
-        DeepWater_0,
-        LowWater_1,
-        OpenField_2,
-        Plains_3,
-        Vegetation_4,
-        Hills_5,
-        Mountain_6,
-        MountainRidge_7,
-
-       // Urban,
-        NUM
-    }
-
-    enum BattleTerrain
-    { 
-        //Water,
-        Ship,
-        Land,
-        City,
-        LandAndCityMix,
-        NUM
-    }
     enum TileSpecialType
     {
         NON,
@@ -652,6 +613,5 @@ namespace VikingEngine.DSSWars.Map
     {
         NONE,
         City,
-        //WorkerHut,
     }
 }

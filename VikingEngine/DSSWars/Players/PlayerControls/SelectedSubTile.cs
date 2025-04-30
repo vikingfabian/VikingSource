@@ -177,9 +177,12 @@ namespace VikingEngine.DSSWars.Players
             { 
                 if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
                 {
-                    city = tile.City();
+                    if (tile.MayBuild())
+                    {
+                        city = tile.City();
 
-                    return MayBuild(city, subTile, player, out upgrade);
+                        return MayBuild(city, subTile, player, out upgrade);
+                    }
                 }
             }
 

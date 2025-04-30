@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor( new Color(94, 118, 25), SurfaceTextureType.Grass),
 
                 new TileColor(new Color(210, 209, 136), SurfaceTextureType.Sand),
-                new TileColor(new Color(68, 85, 20), SurfaceTextureType.None), 
+                new TileColor(new Color(68, 85, 20), SurfaceTextureType.Grass), 
                 new TileColor(new Color(75, 76, 73), SurfaceTextureType.None),
                 1.1f, 0.6f, 0
                 );
@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(113, 123, 31), SurfaceTextureType.Grass),
 
                 new TileColor(new Color(208, 207, 148), SurfaceTextureType.Sand),
-                new TileColor(new Color(40, 43, 19), SurfaceTextureType.None),
+                new TileColor(new Color(40, 43, 19), SurfaceTextureType.Grass),
                 new TileColor(new Color(75,82, 59), SurfaceTextureType.None),
                 1.1f, 0.2f, 0
                 );
@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(104,146,70), SurfaceTextureType.Grass),
 
                 new TileColor(new Color(255,254,181), SurfaceTextureType.Sand),
-                new TileColor(ColorExt.ChangeBrighness( new Color(8, 71, 6), -10), SurfaceTextureType.None), 
+                new TileColor(ColorExt.ChangeBrighness( new Color(8, 71, 6), -10), SurfaceTextureType.Grass), 
                 new TileColor(ColorExt.ChangeBrighness(new Color(73, 76, 73), -10), SurfaceTextureType.None),
                 1f, 0.25f, 0
                 );
@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                new TileColor(new Color(115, 198, 68), SurfaceTextureType.Grass),
 
                new TileColor(new Color(216, 230, 129), SurfaceTextureType.Sand),
-               new TileColor(new Color(70, 151, 41), SurfaceTextureType.None),
+               new TileColor(new Color(70, 151, 41), SurfaceTextureType.Grass),
                new TileColor(new Color(73, 76, 73), SurfaceTextureType.None),
                1.2f, 0.1f, 0
                );
@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                new TileColor(new Color(208, 188, 119), SurfaceTextureType.Grass),
 
                new TileColor(new Color(230, 214, 162), SurfaceTextureType.Sand),
-               new TileColor(ColorExt.ChangeBrighness(new Color(180, 161, 97), -10), SurfaceTextureType.None),
+               new TileColor(ColorExt.ChangeBrighness(new Color(180, 161, 97), -10), SurfaceTextureType.Grass),
                new TileColor(ColorExt.ChangeBrighness(new Color(124, 128, 107), -10), SurfaceTextureType.None),
                0.5f, 0.9f, 0.5f
                );
@@ -81,8 +81,8 @@ namespace VikingEngine.DSSWars.Map.Settings
                new TileColor(new Color(102, 115, 116), SurfaceTextureType.Sand),
                 new TileColor(new Color(58, 94, 108), SurfaceTextureType.None),
                 new TileColor(new Color(39, 59, 57), SurfaceTextureType.None),
-                0.4f, 0, 0.8f
-                );
+                0.4f, 0, 0.8f)
+                { mudColor= new Color(24, 56, 67) };
 
             bioms[(int)BiomType.Frozen] = new Biom(
                 new TileColor(new Color(86, 109, 83), SurfaceTextureType.Grass), 
@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(148,133,55), SurfaceTextureType.Grass),
 
                 new TileColor(new Color(178, 188, 152), SurfaceTextureType.Sand),
-                new TileColor(new Color(100, 91, 42), SurfaceTextureType.None),
+                new TileColor(new Color(100, 91, 42), SurfaceTextureType.Grass),
                 new TileColor(new Color(86, 91, 75), SurfaceTextureType.None),
                 0.5f, 0.9f, 0.5f
                 );
@@ -106,12 +106,13 @@ namespace VikingEngine.DSSWars.Map.Settings
 
     class Biom
     {
-        const int MainColorHeight = 4;
+        const int MainColorHeight = 5;
         public TileColor[] colors_height = new TileColor[Height.MaxHeight+1];
         public TileColor brightCoast;
         public float percTree;
         public float percSoftTree;
         public float percDryWood;
+        public Color mudColor = new Color(221, 193, 77);
 
         public SurfaceTextureType textureType = SurfaceTextureType.None;
 
@@ -124,23 +125,25 @@ namespace VikingEngine.DSSWars.Map.Settings
             this.percDryWood = percDryWood;
             this.brightCoast = brightCoast;
             //Under water coastal color
-            for (int height = 0; height <= Height.LowWaterHeight; height++)
+            //for (int height = 0; height <= Height.LowWaterHeight; height++)
             {
-                colors_height[height] = brightCoast;
-                
+                TileColor seafloor = brightCoast;
+                seafloor.Color = Color.Black;//ColorExt.VeryDarkGray;//ColorExt.ChangeBrighness(WorldData.WaterDarkCol, -50);
+                colors_height[Height.LowerWaterHeight] = seafloor;
+                colors_height[Height.LowWaterHeight] = brightCoast;                
             }
 
             //Mix towards bright coast
             {
-                int height = 2;
+                int height = Height.MinLandHeight;
                 float percCoast = 0.5f;
-                colors_height[height] = TileColor.Mix(brightCoast, mainCol, percCoast);
+                colors_height[height] = Settings.TileColor.Mix(brightCoast, mainCol, percCoast);
             }
 
             {
-                int height = 3;
+                int height = Height.MinLandHeight + 1;
                 float percCoast = 0.2f;
-                colors_height[height] = TileColor.Mix(brightCoast, mainCol, percCoast);
+                colors_height[height] = Settings.TileColor.Mix(brightCoast, mainCol, percCoast);
             }
 
             //Main level colors
@@ -150,24 +153,26 @@ namespace VikingEngine.DSSWars.Map.Settings
 
             //Mix towards dark mountain
             {
-                int height = 5;
+                int height = MainColorHeight + 1;
                 float percDark = 0.2f;
-                colors_height[height] = TileColor.Mix(darkGradient, mainCol, percDark);
+                colors_height[height] = Settings.TileColor.Mix(darkGradient, mainCol, percDark);
             }
 
             {
-                int height = 6;
                 float percDark = 0.4f;
-                colors_height[height] = TileColor.Mix(darkGradient, mainCol, percDark);
+                colors_height[Height.MountainHeightStart] = Settings.TileColor.Mix(darkGradient, mainCol, percDark);
 
                 float percMountainGray = 0.8f;
-                colors_height[Height.MaxHeight] = TileColor.Mix(mountain, colors_height[height], percMountainGray);
+                colors_height[Height.MountainHeightStart + 1] = Settings.TileColor.Mix(mountain, colors_height[Height.MountainHeightStart], percMountainGray);
+
+                
+                colors_height[Height.MaxHeight] = mountain;
             }
 
 
         }
 
-        public TileColor Color(Tile tile)
+        public TileColor TileColor(Tile tile)
         {
             var result = colors_height[tile.heightLevel];
             if (tile.seaDistanceHeatMap <= 12)

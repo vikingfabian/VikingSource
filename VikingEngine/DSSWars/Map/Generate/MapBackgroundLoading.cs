@@ -111,10 +111,14 @@ namespace VikingEngine.DSSWars.Map.Generate
             tokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = tokenSource.Token;
 
-            Task task = Task.Factory.StartNew(() =>
+            Task task = Task.Factory.StartNew(async () =>
             {
+                
+
                 while (!abort && failCount < 10)
                 {
+                    List<Task> extraTasks = new List<Task>();
+
                     if (dataGenerate == null ||
                         generatePass == GenerateMapPass.All || 
                         generatePass == GenerateMapPass.Clear || 
@@ -139,12 +143,13 @@ namespace VikingEngine.DSSWars.Map.Generate
                     bool success;
                     if (generatePass == GenerateMapPass.All)
                     {
-                        success = dataGenerate.Generate(false, worldmeta, generateSettings);
+                        List<Task> tasks = new List<Task>();
+                        success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks);
+                        await Task.WhenAll(tasks);
                     }
                     else
                     {
-                        success = dataGenerate.GeneratePass(worldmeta, generateSettings, generatePass);
-
+                        success = dataGenerate.GeneratePass(worldmeta, generateSettings, generatePass, extraTasks);
                     }
 
                     if (success)
@@ -160,6 +165,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
                         failCount++;
                     }
+
+                    await Task.WhenAll(extraTasks);
                 }
             }, cancellationToken);
 

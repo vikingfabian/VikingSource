@@ -115,21 +115,34 @@ namespace VikingEngine.DSSWars.Map
 
                         switch (subTile.mainTerrain)
                         {
+                            case TerrainMainType.Destroyed:
+                                surfacePolygonTexture = SurfaceTextureType.Sand;
+                                surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.2f);
+                                break;
+
                             case TerrainMainType.Foil:
                                 bSurfacePolygonTexture = false;
+                                
                                 createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainAmount,
-                                    topCenter(ref subTile, ref subTopLeft), ref surfaceSprite);
+                                    topCenter(ref subTile, ref subTopLeft), ref surfaceSprite, out bool manMade);
+                                if (manMade)
+                                {
+                                    surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.2f);
+                                }
                                 break;
                             case TerrainMainType.Resourses:
+                                surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.2f);
                                 createResoursePile((TerrainResourcesType)subTile.subTerrain,
                                     topCenter(ref subTile, ref subTopLeft));
                                 break;
                             case TerrainMainType.Building:
+                                surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.3f);
                                 bSurfacePolygonTexture = false;
                                 createBuilding(tile, ref subTile, (TerrainBuildingType)subTile.subTerrain,
                                     topCenter(ref subTile, ref subTopLeft), ref surfaceColor);
                                 break;
                             case TerrainMainType.Wall:
+                                surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.1f);
                                 createWall(tile, ref subTile, (TerrainWallType)subTile.subTerrain,
                                     topCenter(ref subTile, ref subTopLeft), ref surfaceColor);
                                 break;
@@ -139,9 +152,11 @@ namespace VikingEngine.DSSWars.Map
                                 break;
                             case TerrainMainType.Road:
                                 bSurfacePolygonTexture = false;
+                                surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.3f);
                                 createRoad((TerrainRoadType)subTile.subTerrain, ref surfaceSprite, ref surfaceColor);
                                 break;
                             case TerrainMainType.Decor:
+                                surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.2f);
                                 bSurfacePolygonTexture = false;
                                 createDecor(tile, ref subTile, (TerrainDecorType)subTile.subTerrain,
                                     topCenter(ref subTile, ref subTopLeft), ref bSurfacePolygonTexture, ref surfacePolygonTexture, ref surfaceColor);
@@ -324,7 +339,7 @@ namespace VikingEngine.DSSWars.Map
                             pos.X = center.X + GrassCenterRange.GetRandom(rnd);
                             pos.Y = center.Z + GrassCenterRange.GetRandom(rnd);
                                 
-                            Color color = ColorExt.ChangeBrighness(subTile.color, rnd.Int(-6, 20));
+                            Color color = ColorExt.ChangeBrighness(tileColor, rnd.Int(-6, 20));
 
                             DssRef.state.detailMap.polygons.Add(
                                 PolygonColor.QuadXZ(pos, SandSize, true,
@@ -351,12 +366,12 @@ namespace VikingEngine.DSSWars.Map
 
         void createRoad(TerrainRoadType type, ref SpriteName surfaceSprite, ref Color surfaceColor)
         {
-            surfaceColor.Deconstruct(out byte r, out byte g, out byte b);
-            surfaceColor = new Color(r + 30, g + 30, b + 20);
+            //surfaceColor.Deconstruct(out byte r, out byte g, out byte b);
+            //surfaceColor = new Color(r + 30, g + 30, b + 20);
             surfaceSprite = SpriteName.warsFoliageDirtRoad;
         }
 
-        void createFoliage(TerrainSubFoilType type, int sizeValue, Vector3 wp, ref SpriteName surfaceSprite)
+        void createFoliage(TerrainSubFoilType type, int sizeValue, Vector3 wp, ref SpriteName surfaceSprite, out bool manMade)
         {
             wp.X += FoliageCenterRange.GetRandom(rnd);
             wp.Z += FoliageCenterRange.GetRandom(rnd);
@@ -364,64 +379,82 @@ namespace VikingEngine.DSSWars.Map
             switch (type)
             {
                 case TerrainSubFoilType.TallGrass:
+                    manMade = false;
                     newFoliage().init(LootFest.VoxelModelName.fol_tallgrass, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.StoneBlock:
+                    manMade = false;
                     newFoliage().init(LootFest.VoxelModelName.fol_stoneblock, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.Bush:
+                    manMade = false;
                     newFoliage().init(LootFest.VoxelModelName.fol_bush1, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.Herbs:
+                    manMade = false;
                     newFoliage().init(LootFest.VoxelModelName.fol_herbs, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.Stones:
+                    manMade = false;
                     newFoliage().init(LootFest.VoxelModelName.fo_stone1, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.TreeHard:
+                    manMade = false;
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     newFoliage().init(LootFest.VoxelModelName.fol_tree_hard, rnd, wp, 0.03f + 0.0012f * sizeValue);
                     break;
                 case TerrainSubFoilType.TreeSoft:
+                    manMade = false;
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     newFoliage().init(LootFest.VoxelModelName.fol_tree_soft, rnd, wp, 0.03f + 0.0012f * sizeValue);
                     break;
                 case TerrainSubFoilType.DryWood:
+                    manMade = false;
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     newFoliage().init(LootFest.VoxelModelName.fol_tree_dry, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.TreeSoftSprout:
                 case TerrainSubFoilType.TreeHardSprout:
+                    manMade = false;
                     newFoliage().init(LootFest.VoxelModelName.fol_sprout, rnd, wp, 0.05f + 0.01f * sizeValue);
                     break;
 
                 case TerrainSubFoilType.WheatFarm:
+                    manMade = true;
                     farm(3, false);                    
                     break;
                 case TerrainSubFoilType.LinenFarm:
+                    manMade = true;
                     farm(4, false);                    
                     break;
                 case TerrainSubFoilType.HempFarm:
+                    manMade = true;
                     farm(6, false);
                     break;
                 case TerrainSubFoilType.RapeSeedFarm:
+                    manMade = true;
                     farm(5, false);
                     break;
 
                 case TerrainSubFoilType.WheatFarmUpgraded:
+                    manMade = true;
                     farm(3, true);
                     break;
                 case TerrainSubFoilType.LinenFarmUpgraded:
+                    manMade = true;
                     farm(4, true);
                     break;
                 case TerrainSubFoilType.HempFarmUpgraded:
+                    manMade = true;
                     farm(6, true);
                     break;
                 case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                    manMade = true;
                     farm(5, true);
                     break;
 
                 case TerrainSubFoilType.BogIron:
+                    manMade = false;
                     newFoliage().init(LootFest.VoxelModelName.city_mine, 3, wp, 0.14f);
                     break;
                 default:

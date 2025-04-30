@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Map
             waterBottom.Scale = vol.Scale;
 
             waterSurface = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
-                TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.White,//Color.CornflowerBlue,
+                TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.White,
                 false);
 
             //if (highDetail)
@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars.Map
                         //move out the texture source 
                         imgCoords.UpdateSourcePolygon(false);
 
-                        if (tile.IsLand())
+                        if (tile.heightLevel > Height.LowerWaterHeight)
                         {
                             float h = Bound.Max(TileSideHeight, center.Y + 0.5f); 
 

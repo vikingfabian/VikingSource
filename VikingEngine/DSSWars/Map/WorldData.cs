@@ -673,21 +673,21 @@ namespace VikingEngine.DSSWars
         //    }
         //}
 
-        public static BattleTerrain ToGeneralTerrain(TerrainType ground, bool shipBattle, bool city)
-        {
-            if (city)
-            {
-                return BattleTerrain.City;
-            }
-            else if (shipBattle)
-            {
-                return BattleTerrain.Ship;
-            }
-            else
-            {
-                return BattleTerrain.Land;
-            }
-        }
+        //public static BattleTerrain ToGeneralTerrain(TerrainType ground, bool shipBattle, bool city)
+        //{
+        //    if (city)
+        //    {
+        //        return BattleTerrain.City;
+        //    }
+        //    else if (shipBattle)
+        //    {
+        //        return BattleTerrain.Ship;
+        //    }
+        //    else
+        //    {
+        //        return BattleTerrain.Land;
+        //    }
+        //}
 
         public AbsMapObject getUnit(System.IO.BinaryReader r)
         {
@@ -882,6 +882,20 @@ namespace VikingEngine.DSSWars
                 return false;
             }
         }
+
+        //public bool GetTileSafe_ref(IntVector2 pos, ref Tile tile)
+        //{
+        //    if (tileBounds.IntersectTilePoint(pos))
+        //    {
+        //        ref tile = ref tileGrid.array[pos.X, pos.Y];
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        tile = new Tile();
+        //        return false;
+        //    }
+        //}
 
         public IntVector2 GetFreeTile(IntVector2 center)
         {

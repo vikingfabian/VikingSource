@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.PJ;
@@ -52,46 +53,52 @@ namespace VikingEngine.DSSWars
 
         void loadThread()
         {
-            if (StartupSettings.SaveLoadSpecificMap.HasValue)
+            Task.Factory.StartNew(async () =>
             {
-                loadingSz = StartupSettings.SaveLoadSpecificMap.Value;
-                generateLoopUntilSucess(loadingSz, 1);
-            }
-            else
-            {
-                MapSize startSize = 0;
-                for (loadingSz = startSize; loadingSz < MapSize.NUM; ++loadingSz)
+                if (StartupSettings.SaveLoadSpecificMap.HasValue)
                 {
-                    for (loadingNumber = 1; loadingNumber <= MapCountPerSize; ++loadingNumber)
+                    loadingSz = StartupSettings.SaveLoadSpecificMap.Value;
+                    generateLoopUntilSucess(loadingSz, 1);
+                }
+                else
+                {
+                    MapSize startSize = 0;
+                    for (loadingSz = startSize; loadingSz < MapSize.NUM; ++loadingSz)
                     {
-                        generateLoopUntilSucess(loadingSz, loadingNumber);
+                        for (loadingNumber = 1; loadingNumber <= MapCountPerSize; ++loadingNumber)
+                        {
+                            generateLoopUntilSucess(loadingSz, loadingNumber);
+                        }
                     }
                 }
-            }
-            new Timer.TimedAction0ArgTrigger(()=> 
-            {
-                new ExitGamePlay();
-            }, 5000);
-            complete = true;
-
-
-            void generateLoopUntilSucess(MapSize size, int number)
-            {
-                while (true)
+                new Timer.TimedAction0ArgTrigger(() =>
                 {
-                    bool success = new GenerateMap().Generate(true, new Data.WorldMetaData(Ref.rnd.Ushort(), loadingSz, loadingNumber), new MapGenerateSettings());
+                    new ExitGamePlay();
+                }, 5000);
+                complete = true;
 
-                    if (success)
+
+                async Task generateLoopUntilSucess(MapSize size, int number)
+                {
+                    while (true)
                     {
-                        return;
+                        List<Task> tasks = new List<Task>();
+                        bool success = new GenerateMap().Generate(true, new Data.WorldMetaData(Ref.rnd.Ushort(), loadingSz, loadingNumber), new MapGenerateSettings(), tasks);
+
+                        await Task.WhenAll(tasks);
+
+                        if (success)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            failCount++;
+                        }
                     }
-                    else
-                    {
-                        failCount++;
-                    }
-                }              
-                
-            }
+
+                }
+            });
         }
 
         

@@ -4,13 +4,16 @@
 * Block chance is different depending on soldier type
 * Height advantage (reduces block)
 * Some weapons reduce block chance
-
---full game--
 * map seed option
 * roads
 * 5 new bioms
 * fade between bioms
 * adjusted the generating to mix the bioms more
+* added two new height levels
+* opt: split the map generating into multiple cores
+* flatter map (too better see behind hills)
+* blocked building on mountains
+
 
 
 !! Known issues, that I am working on !!
@@ -19,6 +22,13 @@
 -Cant move units between armies and garrisons
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
 -Can sometimes show the wrong city on the hud
+-Soldier groups glitch in battle
+-Cant capture defenseless cities
+-Automation insta builds
+-Faction automations are broken/out of date
+-Ships on land
+-Must inform how faction priority works
+-City walls are confusing
 
 
 #Free build defences

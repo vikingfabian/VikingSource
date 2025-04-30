@@ -8,11 +8,14 @@ namespace VikingEngine.DSSWars.Map.Settings
     class Height
     {
         public const int DeepWaterHeight = 0;
-        public const int LowWaterHeight = 1;
-        public const int MinLandHeight = 2;
-        public const int MineHeightStart = 5;
-        public const int MountainHeightStart = 6;
-        public const int MaxHeight = 7;
+        public const int LowerWaterHeight = 1;
+        public const int LowWaterHeight = 2;
+        public const int MinLandHeight = 3;
+        public const int MineHeightStart = 6;
+        public const int MountainHeightStart = 7;
+        public const int MountainLowPeak = 8;
+
+        public const int MaxHeight = 9;
 
         //public const int BiomTypeGreen = 0;
         //public const int BiomTypeDry = 1;
@@ -61,138 +64,68 @@ namespace VikingEngine.DSSWars.Map.Settings
             switch (height)
             {
                 case DeepWaterHeight:
-                    //color = DeepWaterCol1;
+                    influenceCost = 2000;
+                    break;
+
+                case 1:
                     influenceCost = 1600;
                     break;
 
                 case LowWaterHeight:
-                    //color = SeaBottomCol;
                     influenceCost = 800;
                     break;
 
-                case 2:
-                    //foilEnabled[(int)SubTileFoilType.Stones] = true;
-                    //switch (biom)
-                    //{
-                    //    case BiomTypeGreen:
-                    //        color = Ground0;
-                    //        textureType = SurfaceTextureType.Sand;
-                    //        percTree = 0.3f;
-                    //        break;
-                    //    case BiomTypeDry:
-                    //        color = Dry0;
-                    //        textureType = SurfaceTextureType.Sand;
-                    //        percTree = 0.1f;
-                    //        break;
-                    //}
+                case 3:
                     percTree = 0.3f;
                     influenceCost = 10;
 
                     break;
 
-                case 3:
-                    //foilEnabled[(int)SubTileFoilType.Stones] = true;
-                    //switch (biom)
-                    //{
-                    //    case BiomTypeGreen:
-                    //        color = Ground1;
-                    //        textureType = SurfaceTextureType.Grass;
-                    //        foilEnabled[(int)SubTileFoilType.TreeHard] = true;
-                    //        culture = TerrainCultureType.Forest;
-                    //        percTree = 0.6f;
-                    //        break;
-                    //    case BiomTypeDry:
-                    //        color = Dry1;
-                    //        textureType = SurfaceTextureType.Sand;
-                    //        percTree = 0.3f;
-                    //        break;
-                    //}
+                case 4:
                     culture = TerrainCultureType.Forest;
                     influenceCost = 12;
                     percTree = 0.4f;
                     break;
 
-                case 4:
-                    //foilEnabled[(int)SubTileFoilType.Stones] = true;
-                    //switch (biom)
-                    //{
-                    //    case BiomTypeGreen:
-                    //        color = Ground2;
-                    //        textureType = SurfaceTextureType.Grass;
-                    //        foilEnabled[(int)SubTileFoilType.TreeHard] = true;
-                    //        culture = TerrainCultureType.Forest;
-                    //        percTree = 0.6f;
-                    //        break;
-                    //    case BiomTypeDry:
-                    //        color = Dry2;
-                    //        culture = TerrainCultureType.Mountain;
-                    //        percTree = 0.4f;
-                    //        break;
-                    //}
+                case 5:
                     culture = TerrainCultureType.Forest;
                     percTree = 0.6f;
                     influenceCost = 14;
                     break;
 
-                case 5:
-                    //foilEnabled[(int)SubTileFoilType.Stones] = true;
-                    //switch (biom)
-                    //{
-                    //    case BiomTypeGreen:
-                    //        color = Ground3;
-                    //        textureType = SurfaceTextureType.Grass;
-                    //        foilEnabled[(int)SubTileFoilType.TreeHard] = true;
-                    //        culture = TerrainCultureType.Forest;
-                    //        percTree = 0.75f;
-                    //        break;
-                    //    case BiomTypeDry:
-                    //        color = Dry3;
-                    //        culture = TerrainCultureType.Mountain;
-                    //        percTree = 0.45f;
-                    //        break;
-                    //}
+                case 6:
                     culture = TerrainCultureType.Forest;
                     percTree = 0.75f;
                     influenceCost = 16;
                     break;
 
-                case 6:
+                case 7:
                     groundYoffset = DefaultGroundYoffset * 1.2f;
                     groundYoffsetChance = 0.7;
-                    createMountainPeak(0.14f);
+                    createMountainPeak(0.07f);
                     culture = TerrainCultureType.Mountain;
 
-                    //switch (biom)
-                    //{
-                    //    case BiomTypeGreen:
-                    //        color = Ground4;
-                    //        percTree = 0.4f;
-                    //        break;
-                    //    case BiomTypeDry:
-                    //        color = Dry4;
-                    //        percTree = 0.2f;
-                    //        break;
-                    //}
                     percTree = 0.4f;
                     influenceCost = 18;
                     break;
 
-                case 7:
-                    groundYoffset = DefaultGroundYoffset * 1.4f;
+                case 8:
+                    groundYoffset = DefaultGroundYoffset * 1.8f;
                     groundYoffsetChance = 0.8;
-                    createMountainPeak(0.22f);
+                    createMountainPeak(0.20f);
                     culture = TerrainCultureType.Mountain;
 
-                    //switch (biom)
-                    //{
-                    //    case BiomTypeGreen:
-                    //        color = Ground5;
-                    //        break;
-                    //    case BiomTypeDry:
-                    //        color = Dry5;
-                    //        break;
-                    //}
                     influenceCost = 100;
+                    isMountainPeek = true;
+                    break;
+
+                case 9:
+                    groundYoffset = DefaultGroundYoffset * 2.2f;
+                    groundYoffsetChance = 0.8;
+                    createMountainPeak(0.28f);
+                    culture = TerrainCultureType.Mountain;
+
+                    influenceCost = 200;
                     isMountainPeek = true;
                     break;
 
