@@ -1098,10 +1098,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             // figure out which tile is closest to which city, version 2
             new CityMapInfluence().generate(world);
-
             {
                 //calc what tiles are in border to eachother
-                //IntVector2[] checkDirs = IntVector2.Dir4Array;
                 Rectangle2 area = world.tileBounds;
                 area.AddRadius(-1);
 
