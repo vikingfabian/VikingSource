@@ -37,6 +37,10 @@ namespace VikingEngine.DSSWars.Map
                 LootFest.VoxelModelName.fol_tree_hard,
                 LootFest.VoxelModelName.fol_tree_soft,
                 LootFest.VoxelModelName.fol_tree_dry,
+                 LootFest.VoxelModelName.fol_tree_hard_lava,
+                LootFest.VoxelModelName.fol_tree_soft_lava,
+                LootFest.VoxelModelName.fol_tree_hard_snow,
+                LootFest.VoxelModelName.fol_tree_soft_snow,
 
                 LootFest.VoxelModelName.fo_stone1,
                 LootFest.VoxelModelName.fol_sprout,
@@ -124,7 +128,7 @@ namespace VikingEngine.DSSWars.Map
                                 bSurfacePolygonTexture = false;
                                 
                                 createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainAmount,
-                                    topCenter(ref subTile, ref subTopLeft), ref surfaceSprite, out bool manMade);
+                                    topCenter(ref subTile, ref subTopLeft), ref surfaceSprite, biom, out bool manMade);
                                 if (manMade)
                                 {
                                     surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.2f);
@@ -371,7 +375,7 @@ namespace VikingEngine.DSSWars.Map
             surfaceSprite = SpriteName.warsFoliageDirtRoad;
         }
 
-        void createFoliage(TerrainSubFoilType type, int sizeValue, Vector3 wp, ref SpriteName surfaceSprite, out bool manMade)
+        void createFoliage(TerrainSubFoilType type, int sizeValue, Vector3 wp, ref SpriteName surfaceSprite, Biom biom, out bool manMade)
         {
             wp.X += FoliageCenterRange.GetRandom(rnd);
             wp.Z += FoliageCenterRange.GetRandom(rnd);
@@ -401,12 +405,12 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainSubFoilType.TreeHard:
                     manMade = false;
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
-                    newFoliage().init(LootFest.VoxelModelName.fol_tree_hard, rnd, wp, 0.03f + 0.0012f * sizeValue);
+                    newFoliage().init(biom.treeHard, rnd, wp, 0.03f + 0.0012f * sizeValue);
                     break;
                 case TerrainSubFoilType.TreeSoft:
                     manMade = false;
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
-                    newFoliage().init(LootFest.VoxelModelName.fol_tree_soft, rnd, wp, 0.03f + 0.0012f * sizeValue);
+                    newFoliage().init(biom.treeHard, rnd, wp, 0.03f + 0.0012f * sizeValue);
                     break;
                 case TerrainSubFoilType.DryWood:
                     manMade = false;

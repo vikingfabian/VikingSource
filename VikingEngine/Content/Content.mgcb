@@ -2473,8 +2473,20 @@
 #begin VoxelModel/LfWars/fol_tree_dry.vox
 /copy:VoxelModel/LfWars/fol_tree_dry.vox
 
+#begin VoxelModel/LfWars/fol_tree_hard_lava.vox
+/copy:VoxelModel/LfWars/fol_tree_hard_lava.vox
+
+#begin VoxelModel/LfWars/fol_tree_hard_snow.vox
+/copy:VoxelModel/LfWars/fol_tree_hard_snow.vox
+
 #begin VoxelModel/LfWars/fol_tree_hard.vox
 /copy:VoxelModel/LfWars/fol_tree_hard.vox
+
+#begin VoxelModel/LfWars/fol_tree_soft_lava.vox
+/copy:VoxelModel/LfWars/fol_tree_soft_lava.vox
+
+#begin VoxelModel/LfWars/fol_tree_soft_snow.vox
+/copy:VoxelModel/LfWars/fol_tree_soft_snow.vox
 
 #begin VoxelModel/LfWars/fol_tree_soft.vox
 /copy:VoxelModel/LfWars/fol_tree_soft.vox

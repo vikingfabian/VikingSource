@@ -13,7 +13,7 @@
 * opt: split the map generating into multiple cores
 * flatter map (too better see behind hills)
 * blocked building on mountains
-
+! The game is loading slower because of the added map processing and new models
 
 
 !! Known issues, that I am working on !!
@@ -24,7 +24,7 @@
 -Can sometimes show the wrong city on the hud
 -Soldier groups glitch in battle
 -Cant capture defenseless cities
--Automation insta builds
+-Automation insta builds armies
 -Faction automations are broken/out of date
 -Ships on land
 -Must inform how faction priority works
@@ -42,7 +42,7 @@ Assign men to wall (ballista, har warmashine crew)
 
 #DEMO#
 -load map with attackers
--exit on win or loose
+-exit on win or looseF
 -stats, open stats 
 
 #OPT#

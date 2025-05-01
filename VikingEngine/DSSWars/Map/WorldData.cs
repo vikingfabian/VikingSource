@@ -778,7 +778,11 @@ namespace VikingEngine.DSSWars
             FindMinValue closest = new FindMinValue(false);
             for (int i = 0; i < cities.Count; ++i)
             {
-                closest.Next((pos.Vec - cities[i].tilePos.Vec).Length(), i);
+                var city = cities[i];
+                if (city != null)
+                {
+                    closest.Next((pos.Vec - city.tilePos.Vec).Length(), i);
+                }
             }
             dist = closest.minValue;
             return cities[closest.minMemberIndex];
