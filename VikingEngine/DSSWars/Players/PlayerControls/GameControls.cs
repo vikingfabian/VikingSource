@@ -591,7 +591,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             return player.cityTab == Display.MenuTab.Build &&
                 mapControls.selection.obj != null &&
                 mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
-                buildControls.buildMode != SelectTileResult.None;
+                buildControls.buildMode != SelectTileResult.None &&
+                player.drawUnitsView.current.DrawDetailLayer;
         }
     }
 }

@@ -344,10 +344,20 @@ namespace VikingEngine.DSSWars.Players
         }
 
         void rectangleSelectUpdate()
-        {          
+        {
+            if (player.drawUnitsView.current.DrawOverview)
+            {
+                if (rectangleLines != null)
+                {
+                    rectangleLines.DeleteMe();
+                    rectangleLines = null;
+                }
+                return;
+            }
+
 
             if (rectangleLines == null)
-            {
+            {   
                 bool select;
                 if (controllerInput)
                 {
