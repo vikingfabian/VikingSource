@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -1099,47 +1100,51 @@ namespace VikingEngine.DSSWars.Map.Generate
             // figure out which tile is closest to which city, version 2
             new CityMapInfluence().generate(world);
 
+            
+            //calc what tiles are in border to eachother
+            Rectangle2 area = world.tileBounds;
+            area.AddRadius(-1);
+
+            ForXYLoop loop = new ForXYLoop(area);
+
+            while (loop.Next())
             {
-                //calc what tiles are in border to eachother
-                //IntVector2[] checkDirs = IntVector2.Dir4Array;
-                Rectangle2 area = world.tileBounds;
-                area.AddRadius(-1);
-
-                ForXYLoop loop = new ForXYLoop(area);
-
-                while (loop.Next())
+                Tile t = world.tileGrid.Get(loop.Position);
+                if (t.IsLand())
                 {
-                    Tile t = world.tileGrid.Get(loop.Position);
-                    if (t.IsLand())
+                    //if (!arraylib.InBound(world.cities, t.CityIndex)) 
+                    //{
+                    //    lib.DoNothing();
+                    //}
+
+                    City owner = world.cities[t.CityIndex];
+                    int borderCity = -1;
+
+                    for (int dirIx = 0; dirIx < IntVector2.Dir4Array.Length; ++dirIx)
                     {
-                        City owner = world.cities[t.CityIndex];
-                        int borderCity = -1;
-
-                        for (int dirIx = 0; dirIx < IntVector2.Dir4Array.Length; ++dirIx)
+                        IntVector2 dir = IntVector2.Dir4Array[dirIx];
+                        Tile neighbor = world.tileGrid.array[dir.X + loop.Position.X, dir.Y + loop.Position.Y];
+                        bool land = neighbor.IsLand();
+                        if (neighbor.CityIndex != owner.parentArrayIndex)
                         {
-                            IntVector2 dir = IntVector2.Dir4Array[dirIx];
-                            Tile neighbor = world.tileGrid.array[dir.X + loop.Position.X, dir.Y + loop.Position.Y];
-                            bool land = neighbor.IsLand();
-                            if (neighbor.CityIndex != owner.parentArrayIndex)
-                            {
-                                t.AddBorder(dirIx, land? neighbor.CityIndex: Tile.SeaBorder);
-                                borderCity = neighbor.CityIndex;
-                            }
+                            t.AddBorder(dirIx, land ? neighbor.CityIndex : Tile.SeaBorder);
+                            borderCity = neighbor.CityIndex;
                         }
-
-                        if (t.BorderCount > 0)
-                        {
-                            if (!arraylib.InBound(world.cities, borderCity))
-                            {
-                                lib.DoNothing();
-                            }
-                            owner.AddNeighborCity(borderCity);
-                        }
-
-                        world.tileGrid.Set(loop.Position, t);
                     }
+
+                    if (t.BorderCount > 0)
+                    {
+                        if (!arraylib.InBound(world.cities, borderCity))
+                        {
+                            lib.DoNothing();
+                        }
+                        owner.AddNeighborCity(borderCity);
+                    }
+
+                    world.tileGrid.Set(loop.Position, t);
                 }
             }
+           
         }
 
 
@@ -1188,9 +1193,14 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             namedFactionsOnMap(goalWorkForce);
 
+            //var last = world.cities.Last();
 
             foreach (City c in world.cities)
             {
+                //if (c == last)
+                //{
+                //    lib.DoNothing();
+                //}
                 //c.SetStartFaction(goalWorkForce, world.factions, world);
 
                 if (c.faction == null)
@@ -1358,14 +1368,18 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         City randomCity()
         {
-            City city=null;
+            int ix = world.rnd.Int(world.cities.Count);
 
-            do
+            while (world.cities[ix].faction != null)
             {
-                city = arraylib.RandomListMember(world.cities, world.rnd);
-            } while (city.faction != null);
+                ix++;
+                if (ix >= world.cities.Count)
+                {
+                    ix = 0;
+                }
+            }
 
-            return city;
+            return world.cities[ix];
         }
 
        

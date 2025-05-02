@@ -112,8 +112,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             CancellationToken cancellationToken = tokenSource.Token;
 
             Task task = Task.Factory.StartNew(async () =>
-            {
-                
+            {               
 
                 while (!abort && failCount < 10)
                 {

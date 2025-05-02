@@ -81,8 +81,12 @@ namespace VikingEngine.DSSWars.Map.Settings
                new TileColor(new Color(102, 115, 116), SurfaceTextureType.Sand),
                 new TileColor(new Color(58, 94, 108), SurfaceTextureType.None),
                 new TileColor(new Color(39, 59, 57), SurfaceTextureType.None),
-                0.4f, 0, 0.8f)
-                { mudColor= new Color(24, 56, 67) };
+                0.6f, 0, 0.6f)
+                { 
+                    mudColor= new Color(24, 56, 67), 
+                    treeHard = LootFest.VoxelModelName.fol_tree_hard_lava,
+                    treeSoft = LootFest.VoxelModelName.fol_tree_soft_lava,
+                };
 
             bioms[(int)BiomType.Frozen] = new Biom(
                 new TileColor(new Color(86, 109, 83), SurfaceTextureType.Grass), 
@@ -91,7 +95,11 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(40, 53, 47), SurfaceTextureType.None), 
                 new TileColor(new Color(97, 114, 114), SurfaceTextureType.None),
                 1.3f, 0.8f, 0.2f
-                );
+                )
+            {
+                treeHard = LootFest.VoxelModelName.fol_tree_hard_snow,
+                treeSoft = LootFest.VoxelModelName.fol_tree_soft_snow,
+            };
 
             bioms[(int)BiomType.Tundra] = new Biom(
                 new TileColor(new Color(148,133,55), SurfaceTextureType.Grass),
@@ -115,6 +123,10 @@ namespace VikingEngine.DSSWars.Map.Settings
         public Color mudColor = new Color(221, 193, 77);
 
         public SurfaceTextureType textureType = SurfaceTextureType.None;
+
+        public LootFest.VoxelModelName treeHard = LootFest.VoxelModelName.fol_tree_hard;
+        public LootFest.VoxelModelName treeSoft = LootFest.VoxelModelName.fol_tree_soft;
+
 
         public Biom(TileColor mainCol, 
             TileColor brightCoast, TileColor darkGradient, TileColor mountain,

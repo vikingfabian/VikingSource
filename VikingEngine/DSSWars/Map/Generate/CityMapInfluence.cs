@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.DSSWars.Map
@@ -80,7 +81,7 @@ namespace VikingEngine.DSSWars.Map
                                 int ix = verticalStripeIx;
                                 tasks.Add(Task.Run(() =>
                                 {
-                                    var area = cityArea(ix, verticalDivitions);
+                                    Rectangle2 area = cityArea(ix, verticalDivitions, true);
 
                                     for (int cityIx = 0; cityIx < world.cities.Count; cityIx++)
                                     {
@@ -115,53 +116,89 @@ namespace VikingEngine.DSSWars.Map
                     }
                 } while (activeCities);
 
-                cleanUpEdges(world);
+                
 
                 debugLog();
 
-                //End by binding tiles to cities
-                inflenceMap.LoopBegin();
-                while (inflenceMap.LoopNext())
+                for (int evenOdd = 0; evenOdd < 2; evenOdd++)
                 {
-                    if (inflenceMap.LoopValueGet().city == null)
+                    for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
                     {
-                        throw new Exception();
-                    }
+                        if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
+                        {
+                            int ix = verticalStripeIx;
+                            tasks.Add(Task.Run(() =>
+                            {
+                                Rectangle2 area = cityArea(ix, verticalDivitions, true);
 
-                    var city = inflenceMap.LoopValueGet().city;
-                    var tile = world.tileGrid.Get(inflenceMap.LoopPosition);
-                    tile.CityIndex = city.parentArrayIndex;
-                    world.tileGrid.Set(inflenceMap.LoopPosition, tile);
+                                cleanUpEdges(world, area);
 
-                    var r = inflenceMap.LoopPosition.SideLength(city.tilePos);
-                    if (city.cityTileRadius < r)
-                    {
-                        city.cityTileRadius = r;
+                            }));
+                        }
                     }
+                    await Task.WhenAll(tasks);
+                    tasks.Clear();
                 }
 
-                Rectangle2 cityArea(int part, int divitions)
+
+                for (int evenOdd = 0; evenOdd < 2; evenOdd++)
+                {
+                    for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
+                    {
+                        if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
+                        {
+                            int ix = verticalStripeIx;
+                            tasks.Add(Task.Run(() =>
+                            {
+                                Rectangle2 area = cityArea(ix, verticalDivitions, false);
+
+                                bindTiles(world, area);
+
+                            }));
+                        }
+                    }
+                    await Task.WhenAll(tasks);
+                    tasks.Clear();
+                }
+
+
+                Rectangle2 cityArea(int part, int divitions, bool insertEdges)
                 {
                     Rectangle2 area = new Rectangle2();
                     int widthChunk = world.Size.X / divitions;
                     area.X = part * widthChunk;
                     area.Width = widthChunk;
 
-                    if (part == 0)
+                    if (part == 0 && insertEdges)
                     {
                         area.AddToLeftSide(-1);
                     }
                     else if (part == divitions - 1)
                     {
                         //last
-                        area.SetRight(world.Size.X -1, true);
+                        if (insertEdges)
+                        {
+                            area.SetRight(world.Size.X - 1, true);
+                        }
+                        else
+                        {
+                            area.SetRight(world.Size.X, true);
+                        }
                     }
 
-                    area.Y = 1;
-                    area.Height = world.Size.Y - 2;
-
+                    if (insertEdges)
+                    {
+                        area.Y = 1;
+                        area.Height = world.Size.Y - 2;
+                    }
+                    else
+                    {
+                        area.Y = 0;
+                        area.Height = world.Size.Y;
+                    }
                     return area;
                 }
+
                 return true;
             }).Result;
 
@@ -187,10 +224,10 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        void cleanUpEdges(WorldData world)
+        void cleanUpEdges(WorldData world, Rectangle2 area)
         {
-            Rectangle2 area = inflenceMap.Area;
-            area.AddRadius(-1);
+            //Rectangle2 area = inflenceMap.Area;
+            //area.AddRadius(-1);
             ForXYLoop loop = new ForXYLoop(area);
             while (loop.Next())
             {
@@ -232,8 +269,32 @@ namespace VikingEngine.DSSWars.Map
                     inf.city = world.cities[ mostInfluenceCity];
                 }
             }
+        }
 
-            
+        void bindTiles(WorldData world, Rectangle2 area)
+        {
+            //End by binding tiles to cities
+            //inflenceMap.LoopBegin();
+            ForXYLoop loop = new ForXYLoop(area);
+            Debug.Log("bindTiles " + area.ToString());
+            while (loop.Next())
+            {
+                var city = inflenceMap.Get(loop.Position).city;
+                if (city == null)
+                {
+                    throw new Exception();
+                }
+                
+                var tile = world.tileGrid.Get(loop.Position);
+                tile.CityIndex = city.parentArrayIndex;
+                world.tileGrid.Set(loop.Position, tile);
+
+                var r = loop.Position.SideLength(city.tilePos);
+                if (city.cityTileRadius < r)
+                {
+                    city.cityTileRadius = r;
+                }
+            }
         }
 
         struct Influence

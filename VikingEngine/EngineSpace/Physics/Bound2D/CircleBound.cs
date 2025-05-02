@@ -118,6 +118,40 @@ namespace VikingEngine.Physics
             }
             return Collision2D.NoCollision;
         }
+
+        public Collision2D Intersect2(CircleBound otherBound)
+        {            
+            Vector2 collitionDiff = center - otherBound.Center;
+            float totalRadius = radius + otherBound.radius;
+
+            float l = collitionDiff.Length();
+
+            if (l < totalRadius)
+            {
+                Collision2D result = new Collision2D();
+                result.IsCollision = true;
+                result.depth = Math.Abs(l - totalRadius);
+
+                if (collitionDiff == Vector2.Zero)
+                {
+                    collitionDiff = Rotation1D.Random().Direction(1f);
+                }
+                else
+                {
+                    collitionDiff = collitionDiff / l;
+                }
+                result.surfaceNormal = collitionDiff;
+                result.direction = collitionDiff * result.depth;
+
+
+                return result;
+            }
+            else
+            {
+                return Collision2D.NoCollision;
+            }
+            
+        }
         override public Vector2[] Vertices()
         { throw new NotImplementedException(); }
 
