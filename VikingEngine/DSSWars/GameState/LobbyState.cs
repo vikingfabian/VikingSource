@@ -420,7 +420,7 @@ namespace VikingEngine.DSSWars
 
             HudLib.WishListButton(content);
 
-            if (false)
+            if (true)
             {
                 content.newParagraph();
 
@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars
             DssRef.storage.runTutorial_1short_2normal = 0;
 
             SaveStateMeta meta = new SaveStateMeta();
-            meta.playmap = "demomap2";
+            meta.playmap = "demomap3";
 
             loadGame = meta;
             //openUnderMenu(UnderMenu_PlayerSetup, StackOption.Stack);

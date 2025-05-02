@@ -511,8 +511,8 @@
 /processorParam:Quality=Best
 /build:DSS/Music/What Lurks Below.ogg
 
-#begin DSS/PlayMap/demomap2.sav
-/copy:DSS/PlayMap/demomap2.sav
+#begin DSS/PlayMap/demomap3.sav
+/copy:DSS/PlayMap/demomap3.sav
 
 #begin DSS/seatex_i1.png
 /importer:TextureImporter

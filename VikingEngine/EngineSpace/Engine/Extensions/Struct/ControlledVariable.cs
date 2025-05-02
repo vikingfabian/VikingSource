@@ -144,9 +144,20 @@ namespace VikingEngine
             return Ref.TotalGameTimeSec - totalTimeStampSec < TimeExt.MsToSec * ms;
         }
 
+        public bool TimeOut()
+        {
+            return Ref.TotalGameTimeSec >= totalTimeStampSec;
+                
+        }
+
         public void setNow()
         {
             this.totalTimeStampSec = Ref.TotalGameTimeSec;
+        }
+
+        public void setTimeFromNow(float seconds)
+        {
+            this.totalTimeStampSec = Ref.TotalGameTimeSec + seconds;
         }
 
         /// <summary>

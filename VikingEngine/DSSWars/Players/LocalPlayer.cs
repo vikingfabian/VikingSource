@@ -341,7 +341,9 @@ namespace VikingEngine.DSSWars.Players
 
         public void InitTutorial(bool newGame)
         {
-            if (newGame && DssRef.storage.runTutorial_1short_2normal != 0)
+            if ((newGame || PlatformSettings.STEAM_DEMO) && 
+                DssRef.storage.runTutorial_1short_2normal != 0 &&
+                DssRef.state.PlayType() == PlayStateType.Play)
             {
                 tutorial = new PlayerControls.Tutorial(this);
             }

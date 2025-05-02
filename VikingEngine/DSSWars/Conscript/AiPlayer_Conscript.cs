@@ -72,9 +72,13 @@ namespace VikingEngine.DSSWars.Players
             ItemResourceType.PaddedArmor,
         };
 
-        void setupConscriptAi_async(City city)
+       
+
+        int setupConscriptAi_async(City city, out ConscriptProfile profile)
         {
-            
+
+            int count = 0;
+
             if (city.res_food.amount > 20 &&
                 city.conscriptBuildings.Count > 0)
             {
@@ -83,7 +87,7 @@ namespace VikingEngine.DSSWars.Players
 
                 foreach (var w in conscriptWeaponPrioOrder)
                 {
-                    
+
                     if (city.GetGroupedResource(w.item).amount >= DssConst.SoldierGroup_DefaultCount &&
                         city.buildingStructure.getBarracksCount(w.barracks) > 0)
                     {
@@ -104,36 +108,37 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
+                profile = new ConscriptProfile()
+                {
+                    weapon = weapon.item,
+                    armorLevel = armorLevel,
+                    training = TrainingLevel.Basic,
+                };
+
+
+
+                
                 lock (city.conscriptBuildings)
                 {
                     for (int i = 0; i < city.conscriptBuildings.Count; ++i)//each (var c in city.conscriptBuildings)
                     {
                         if (city.conscriptBuildings[i].type == weapon.barracks)
                         {
+                            ++count;
                             var conscript = city.conscriptBuildings[i];
-                            conscript.profile = new ConscriptProfile()
-                            {
-                                weapon = weapon.item,
-                                armorLevel = armorLevel,
-                                training = TrainingLevel.Basic,
-                            };
+                            conscript.profile = profile;
                             city.conscriptBuildings[i] = conscript;
                         }
                     }
-                    //if (city.conscriptBuildings.Count > 0)
-                    //{
-                    //    city.conscriptBuildings[0] = new BarracksStatus() 
-                    //    { 
-                    //        profile = new ConscriptProfile()
-                    //        { 
-                    //            weapon = weapon.item,
-                    //            armorLevel = armorLevel,
-                    //            training = TrainingLevel.Basic,
-                    //        }
-                    //    };
-                    //}
                 }
+                
             }
+            else
+            {
+                profile = new ConscriptProfile();
+            }
+
+            return count;
         }
 
         //int canConscriptCount()
@@ -148,26 +153,27 @@ namespace VikingEngine.DSSWars.Players
                 return false;
             }
 
-            if (!commit)
-            {
-                setupConscriptAi_async(city);
-            }
+            //if (!commit)
+            //{
+            int barracksCount = setupConscriptAi_async(city, out ConscriptProfile profile);
+            //}
 
-            ConscriptProfile profile = new ConscriptProfile();
+             //= new ConscriptProfile();
 
-            lock (city.conscriptBuildings)
-            {
-                if (city.conscriptBuildings.Count > 0)
-                {
-                    profile = city.conscriptBuildings[0].profile;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            //lock (city.conscriptBuildings)
+            //{
+            //    if (city.conscriptBuildings.Count > 0)
+            //    {
+            //        profile = city.conscriptBuildings[0].profile;
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
 
-            if (profile.weapon == ItemResourceType.NONE)
+            if (profile.weapon == ItemResourceType.NONE ||
+                barracksCount == 0)
             { 
                 return false;
             }
@@ -179,9 +185,9 @@ namespace VikingEngine.DSSWars.Players
             int availableArmors = city.GetGroupedResource(profile.armorLevel).amount / DssConst.SoldierGroup_DefaultCount;
             int availableMen = (city.workForce.amount / DssConst.SoldierGroup_DefaultCount) - 1;
 
-            int get = lib.SmallestValue(availableArmors, availableWeapons, availableMen, city.conscriptBuildings.Count * 2);
+            int get = lib.SmallestValue(availableArmors, availableWeapons, availableMen, barracksCount);
 
-            if (commit && get > 0)
+            if (city.nextAutoConscriptTime.TimeOut() && commit && get > 0)
             {
                 city.AddGroupedResource(profile.weapon, -get * DssConst.SoldierGroup_DefaultCount);
                 city.AddGroupedResource(profile.armorLevel, -get * DssConst.SoldierGroup_DefaultCount);
@@ -230,6 +236,8 @@ namespace VikingEngine.DSSWars.Players
                 }
                 
                 city.conscriptArmy(profile, city.defaultConscriptPos(), get);
+
+                city.nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic / barracksCount);
             }
 
             return get > 0;

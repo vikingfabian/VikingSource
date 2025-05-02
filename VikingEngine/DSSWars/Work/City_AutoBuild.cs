@@ -27,6 +27,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool automateCity = false;
         public AutomationFocus automationFocus = AutomationFocus.NoFocus;
+        public GameTimeStamp nextAutoConscriptTime = GameTimeStamp.None;
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
         {

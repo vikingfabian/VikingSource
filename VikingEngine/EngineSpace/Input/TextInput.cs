@@ -181,7 +181,7 @@ namespace VikingEngine.Input
         public override void OnDestroy()
         {
             RegisterFocusedButtonForTextInput(OnTextInput, false);
-            base.OnDestroy();
+            //base.OnDestroy();
 
         }
 

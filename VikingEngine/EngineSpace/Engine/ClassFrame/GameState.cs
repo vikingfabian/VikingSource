@@ -52,7 +52,7 @@ namespace VikingEngine.Engine
         virtual public void OnDestroy()
         {
             previousGameState?.OnDestroy();
-            Engine.Sound.StopAllLoopedSounds();                    
+            Engine.Sound.StopAllLoopedSounds();
         }
         
         public GameState()

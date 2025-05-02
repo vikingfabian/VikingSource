@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars
                     DssRef.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
                     attacker.player.GetAiPlayer().armyAi_enabled = false;
 
-                    const int FirstAttackerId = 6;
+                    const int FirstAttackerId = 4;
                     var firstAttacker = attacker.armies.GetIndex_Safe(FirstAttackerId);
                     firstAttacker.Order_Attack(defendingCity);
                     firstAttacker.setMassiveFood();

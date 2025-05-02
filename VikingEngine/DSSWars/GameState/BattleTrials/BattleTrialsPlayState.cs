@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
         protected override void initScenario()
         {
             //Hard coded demo scenario
-            IntVector2 center = new IntVector2(43, 109);
+            IntVector2 center = new IntVector2(98, 143);
 
             var manager =  new BattleLab.BattleSetupManager();
             manager.beginBattleSetup(center);

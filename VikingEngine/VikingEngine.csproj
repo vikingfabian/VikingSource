@@ -13,7 +13,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);DSS;PCGAME;DEMO</DefineConstants>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

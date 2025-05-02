@@ -2186,6 +2186,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 new RbAction(() =>
                                 {
                                     automationFocus = focus;
+                                    nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
                                 }, SoundLib.menu));
 
                             //button.setGroupSelectionColor(HudLib.RbSettings, automationFocus == focus);
