@@ -327,7 +327,18 @@ namespace VikingEngine.DSSWars.GameObject
             else if (percWater >= 0.25 && percY <= 0.25)
             {
                 cityCultureCollection.NorthSea.Add(this);
-            }            
+            }
+            else if (percY > 0.5f)
+            {
+                if (percX < 0.3f)
+                {
+                    cityCultureCollection.WestKingdom.Add(this);
+                }
+                else
+                {
+                    cityCultureCollection.DarkLands.Add(this);
+                }
+            }
 
             if (world.rnd.Chance(0.3))
             {
@@ -1535,7 +1546,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             const int MinWorkforce = 8;
 
-            if (parentArrayIndex == 65)
+            if (parentArrayIndex == 177)
             {
                 lib.DoNothing();
             }
@@ -1592,21 +1603,26 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (capturePoints >= 100 || strengthValue == 0)
-            { 
-                //Power check
-                cityCaptureCehck();
-                capturePoints = 0;
+            if (strengthValue == 0 || capturePoints < 0)
+            {
+                capturePoints += 10;
             }
 
-            capturePoints = Bound.Min(capturePoints - 10, 0);
+            if (capturePoints >= 100)
+            {
+                //Power check
+                cityCaptureCehck();
+                capturePoints = -100;                
+            }
+
+            //capturePoints = Bound.Min(capturePoints - 10, 0);
         }
 
         void cityCaptureCehck()
         {
             Task.Run(() =>
             {
-                Faction newOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this);
+                Faction newOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
                 if (newOwner != faction)
                 {
                     Ref.update.AddSyncAction(new SyncAction(() =>
@@ -2640,14 +2656,14 @@ namespace VikingEngine.DSSWars.GameObject
             if (toSize == CityType.Town)
             {
                 blueprint = CraftBuildingLib.CityHall_Town;
-                serviceHouses_required = DssConst.TownHall_RequiredStaff;
+                serviceHouses_required = DssConst.TownHall_RequiredStaff  - DssConst.VillageHall_RequiredStaff;
                 currentStaff = DssConst.VillageHall_RequiredStaff;
                 
             }
             else
             {
                 blueprint = CraftBuildingLib.CityHall_Capital;
-                serviceHouses_required = DssConst.CapitalHall_RequiredStaff;
+                serviceHouses_required = DssConst.CapitalHall_RequiredStaff - DssConst.TownHall_RequiredStaff;
                 currentStaff = DssConst.TownHall_RequiredStaff;
             }
 
@@ -2661,7 +2677,7 @@ namespace VikingEngine.DSSWars.GameObject
             bool available = canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available);
 
             blueprint.payResources(this);
-            freeServiceMen.amount -= serviceHouses_required - currentStaff;
+            freeServiceMen.amount -= serviceHouses_required;
             cityType++;
             TerrainBuildingType hall;
             if (cityType == CityType.Town)

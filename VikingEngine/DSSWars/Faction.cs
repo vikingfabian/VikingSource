@@ -1064,16 +1064,22 @@ namespace VikingEngine.DSSWars
         {
             switch (factiontype)
             { 
-                default: return SpeakTerms.SpeakTerms0_Normal;
+                default:
+                    if (diplomaticSide == DiplomaticSide.Dark)
+                    {
+                        return SpeakTerms.SpeakTermsN1_Bad;
+                    }
+                    return SpeakTerms.SpeakTerms0_Normal;
 
                 case FactionType.DarkLord:
                 case FactionType.SouthHara:
                 case FactionType.DarkFollower:
                 case FactionType.Barbarians:
                 case FactionType.GreenWood:
+                case FactionType.UnitedKingdom:
                     return SpeakTerms.SpeakTermsN2_None;
 
-                case FactionType.UnitedKingdom:
+                
                 case FactionType.EasternEmpire:
                     return SpeakTerms.SpeakTermsN1_Bad;
             }

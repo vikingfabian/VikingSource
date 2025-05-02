@@ -22,7 +22,7 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Display
 {
-    class GameMenuSystem //: MenuSystem
+    class GameMenuSystem
     {
         public const string UnderMenu_Options_Mouse = "options_mouse";
         public const string UnderMenu_Options_Keyboard = "options_keyboard";
@@ -280,8 +280,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
-                content.newLine();
+                
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
@@ -313,16 +312,7 @@ namespace VikingEngine.DSSWars.Display
                 return DssRef.storage.speed5x;
             }
 
-            bool tutorialProperty(int index, bool set, bool value)
-            {
-                if (set)
-                {
-                    DssRef.storage.runTutorial_1short_2normal = value? 2 : 0;
-
-                    DssRef.storage.Save(null);
-                }
-                return DssRef.storage.runTutorial_1short_2normal != 0;
-            }
+            
 
             bool longerBuildQueueProperty(int index, bool set, bool value)
             {

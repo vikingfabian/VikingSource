@@ -428,34 +428,40 @@ namespace VikingEngine.DSSWars.Map
         }
 
 
-        public Faction cityCaptureCheck(City city)
+        public Faction cityCaptureCheck(City city, int radius)
         {
-            IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
-            UnitCollArea area;
-
+            IntVector2 areaStart = (city.tilePos - radius) / UnitGridSquareWidth;
+            IntVector2 areaEnd = (city.tilePos + radius) / UnitGridSquareWidth;
+            
             Dictionary<int, float> faction_power = new Dictionary<int, float>();
             //faction_power.Add(city.faction.parentArrayIndex, 0);
 
-            if (grid.TryGet(areaPos, out area))
+            for (int arY = areaStart.Y; arY <= areaEnd.Y; ++arY)
             {
-                lock (area.groups)
+                for (int arX = areaStart.X; arX <= areaEnd.X; ++arX)
                 {
-                    if (area.groups != null)
+                    if (grid.TryGet(arX, arY, out UnitCollArea area))
                     {
-                        foreach (var m in area.groups)
+                        lock (area.groups)
                         {
-                            if (m.tilePos.SideLength(city.tilePos) <= 1)
+                            if (area.groups != null)
                             {
-                                if (city.faction == m.army.faction ||
-                                    DssRef.diplomacy.InWar(city.faction, m.army.faction))
+                                foreach (var m in area.groups)
                                 {
-                                    if (faction_power.TryGetValue(m.army.faction.parentArrayIndex, out float strength))
+                                    if (m.tilePos.SideLength(city.tilePos) <= radius)
                                     {
-                                        faction_power[m.army.faction.parentArrayIndex] = strength + m.strengthValue();
-                                    }
-                                    else
-                                    {
-                                        faction_power.Add(m.army.faction.parentArrayIndex, m.strengthValue());
+                                        if (city.faction == m.army.faction ||
+                                            DssRef.diplomacy.InWar(city.faction, m.army.faction))
+                                        {
+                                            if (faction_power.TryGetValue(m.army.faction.parentArrayIndex, out float strength))
+                                            {
+                                                faction_power[m.army.faction.parentArrayIndex] = strength + m.strengthValue();
+                                            }
+                                            else
+                                            {
+                                                faction_power.Add(m.army.faction.parentArrayIndex, m.strengthValue());
+                                            }
+                                        }
                                     }
                                 }
                             }

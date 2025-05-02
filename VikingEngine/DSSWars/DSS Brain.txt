@@ -15,8 +15,14 @@
 * blocked building on mountains
 * Optimized battle collisions
 * Reduced ship attack speed
-
-
+* Temporary removad of trial mode (its broken)
+* Fixed: Tutorial can start demo instead some times
+* Fixed: Cant capture defenseless cities
+* Reduced demo time fom 80 to 60 minutes (to remove stagnation at the end)
+* Cities have 4X water gain
+* Blocked alliance with United kingdoms
+* More lore accurate placemens of the enemies
+* fixed city hall upgrade
 ! The game is loading slower because of the added map processing and new models
 
 
@@ -27,7 +33,6 @@
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
 -Can sometimes show the wrong city on the hud
 -Soldier groups glitch in battle
--Cant capture defenseless cities
 -Automation insta builds armies
 -Faction automations are broken/out of date
 -Ships on land
@@ -35,8 +40,10 @@
 -City walls are confusing
 -Ai cant build defences
 -Ship attacks are visually broken, no sound and bad feedback
--Water limits are too strict
 -Hud get stuck on lagging out (could be related to the text input)
+-Upgrade logistics is missing info
+
+
 
 #Free build defences
  Rock thrower
@@ -63,6 +70,7 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-ikonen på uppgraderade postal behöver symbol
 -not be able to ally with the kingdom
 -notification when Battles are taking place on the map and an ability to jump quickly to that area with the camera
 -lock camera on army

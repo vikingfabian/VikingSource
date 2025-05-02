@@ -61,10 +61,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void async_SoldiersUpdate(bool oneMinute)
         {
+            int count = 0;
+            float totalStrength = 0;
+
             if (groups.Count > 0)
             {
-                int count = 0;
-                float totalStrength = 0;
+                
                 //int dps;
 
                 var groupsC = groups.counter();
@@ -91,10 +93,12 @@ namespace VikingEngine.DSSWars.GameObject
                     totalStrength += AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip);
                 }
 
-                this.strengthValue = totalStrength;//count;
-                soldiersCount = count;
+                
+                
                 //strengthValue = 2f * totalStrength / AllUnits.AverageGroupStrength;
             }
+            soldiersCount = count;
+            this.strengthValue = totalStrength;//count;
 
         }
     }

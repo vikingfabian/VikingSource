@@ -39,52 +39,31 @@ namespace VikingEngine.DSSWars
             Ref.draw.ClrColor = Color.Black;
 
             pressStartText = new Graphics.TextG(
-                   LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
-                   Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
-
-            
+                LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
+                Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
+                        
             DssVar.UpdateConstants();
 
             if (isReset)
             {
-                //bStorageReady = true;
                 loadingDataComplete = true;
                 loadingContentComplete = true;
             }
             else
             {
-                new EngineSpace.DebugExtensions.SentryReport();
+                if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
+                {
+                    new EngineSpace.DebugExtensions.SentryReport();
+                }
                 Ref.music = new Sound.MusicPlayer();
                 Engine.ParticleHandler.Init();
                 new VikingEngine.Engine.LoadBaseTextures();
                
-                //const string MusicFolder = DssLib.ContentDir + "Music\\";
-                //Ref.music.SetPlaylist(new List<Sound.SongData>
-                //{
-                //    new Sound.SongData(MusicFolder + "BBaaB_loop", true, 1f),
-                //    new Sound.SongData(MusicFolder + "Gargoyle_loop", true, 1f),
-                //    new Sound.SongData(MusicFolder + "RM 1 - Introversion", false, 1f),
-                //    new Sound.SongData(MusicFolder + "RM 10 - Incubation", false, 1f),
-                //    new Sound.SongData(MusicFolder + "RM 2 - Arcane Benevolence", false, 1f),
-                //    new Sound.SongData(MusicFolder + "RM 3 - Left in Autumn", false, 1f),
-                //    new Sound.SongData(MusicFolder + "RM 4 - Warhogs", false, 1f),
-                //    new Sound.SongData(MusicFolder + "RM 5 - Suddenly Empty", false, 1f),
-                //    new Sound.SongData(MusicFolder + "RM 6 - Auderesne", false, 1f),
-                //    new Sound.SongData(MusicFolder + "RM 7 - For Eternity", false, 1f),
-                //    new Sound.SongData(MusicFolder + "RM 8 - Asynchronous Flanking", false, 1f),
-                //    new Sound.SongData(MusicFolder + "RM 9 - Weeping Bedlam", false, 1f),
-                //    new Sound.SongData(MusicFolder + "YesIAmYourGodHQ", true, 1f),
-                //},
-                //PlatformSettings.PlayMusic);
-                //Ref.music.SetVolume(0.04f);
-
                 new Timer.AsynchActionTrigger(asynchContentLoading);
                 new Timer.AsynchActionTrigger(asynchStorageLoading);
 
                 new MapSettings();
                 Map.Tile.Init();
-                
-                //new Network.Session();
             }
         }
 

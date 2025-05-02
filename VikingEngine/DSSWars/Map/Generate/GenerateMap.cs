@@ -1243,7 +1243,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 //region.Reset(MathExt.MultiplyInt(3, standardWorkForce));
 
                 int size = MathExt.MultiplyInt(3, standardWorkForce);
-                region.GetStartFactionRegion(size, randomCity(), world, faction);
+                region.GetStartFactionRegion(size, collection_pullNextCity(cityCultureCollection.DarkLands), world, faction);
                 //region.ApplyFaction(DarkFollower);
             }
 
@@ -1252,7 +1252,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 int size = MathExt.MultiplyInt(5, standardWorkForce);
 
-                region.GetStartFactionRegion(size, randomCity(), world, faction);
+                region.GetStartFactionRegion(size, collection_pullNextCity(cityCultureCollection.WestKingdom), world, faction);
                 //region.ApplyFaction(UnitedKingdom);
             }
 
@@ -1666,6 +1666,10 @@ namespace VikingEngine.DSSWars.Map.Generate
         public List<City> LargeGreen = new List<City>();
         public List<City> DryEast = new List<City>();
         public List<City> NorthSea = new List<City>();
+
+        public List<City> DarkLands = new List<City>();
+        public List<City> WestKingdom = new List<City>();
+
 
         public static readonly CityCulture[] GeneralCultures =
             {

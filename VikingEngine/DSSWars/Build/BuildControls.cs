@@ -1085,9 +1085,9 @@ namespace VikingEngine.DSSWars.Build
 
                 content.newParagraph();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.WarsCityHall),
-                new RbText(DssRef.lang.CityHall_Upgrade)
-            }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
+                    new RbImage(SpriteName.WarsCityHall),
+                    new RbText(DssRef.lang.CityHall_Upgrade)
+                }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
                 city.CanUpgradeCityHall()));
 
                 

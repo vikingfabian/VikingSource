@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars
 {
     class GameEventsDemo : GameEvents
     {
-        Time maxDemoTime = new Time(80f, TimeUnit.Minutes);
+        Time maxDemoTime = new Time(65f, TimeUnit.Minutes);
         City defendingCity;
         int demoState_1start_2end = 0;
         List<Army> attackerArmies;

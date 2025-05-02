@@ -113,7 +113,7 @@ namespace VikingEngine.HUD.RichBox
 
     class RbText : AbsRichBoxMember
     {
-        string text;
+        public string text;
         public Text2 pointer;
         public Color? overrideColor;
         public LoadedFont? overrideFont;

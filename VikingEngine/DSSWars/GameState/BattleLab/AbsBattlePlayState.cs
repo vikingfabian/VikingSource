@@ -153,7 +153,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                     var factions = DssRef.world.factions.counter();
                     while (factions.Next())
                     {
-                        factions.sel.update();
+                        if (factions.sel.player != null)
+                        {
+                            factions.sel.update();
+                        }
 
                         //if (DssRef.time.oneSecond)
                         //{
