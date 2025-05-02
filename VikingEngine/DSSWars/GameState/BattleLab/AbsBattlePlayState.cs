@@ -12,6 +12,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
     abstract class AbsBattlePlayState : AbsPlayState
     {
         bool isReady = false;
+        
 
         public AbsBattlePlayState()
             : base()
@@ -115,7 +116,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                     Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
                 }
 
-                initPathFindingThreads(1);
+                initPathFindingThreads();
             }
 
             isReady = true;
@@ -253,6 +254,11 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 }
             }
             return exitThreads;
+        }
+
+        public override int PathThreadCount()
+        {
+            return 1;
         }
     }
 }

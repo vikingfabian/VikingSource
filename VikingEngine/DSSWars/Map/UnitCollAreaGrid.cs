@@ -444,7 +444,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foreach (var m in area.groups)
                         {
-                            if (m.tilePos == city.tilePos)
+                            if (m.tilePos.SideLength(city.tilePos) <= 1)
                             {
                                 if (city.faction == m.army.faction ||
                                     DssRef.diplomacy.InWar(city.faction, m.army.faction))

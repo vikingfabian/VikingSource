@@ -239,8 +239,10 @@ namespace VikingEngine.DSSWars.GameState
             return exitThreads;
         }
 
-        protected void initPathFindingThreads(int count)
+        protected void initPathFindingThreads()
         {
+            int count = PathThreadCount();
+
             pathUpdates = new PathUpdateThread[count + 1];
             int startIx = 0;
             int factionLength = DssRef.world.factions.Count / count;
@@ -307,6 +309,8 @@ namespace VikingEngine.DSSWars.GameState
         }
 
         abstract public PlayStateType PlayType();
+
+        abstract public int PathThreadCount();
     }
 
     enum PlayStateType

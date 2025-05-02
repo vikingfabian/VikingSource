@@ -152,6 +152,12 @@ namespace VikingEngine.Physics
             }
             
         }
+
+        public bool Intersect2_IsCollision(CircleBound otherBound)
+        {
+            return (center - otherBound.Center).Length() < radius + otherBound.radius;
+        }
+
         override public Vector2[] Vertices()
         { throw new NotImplementedException(); }
 

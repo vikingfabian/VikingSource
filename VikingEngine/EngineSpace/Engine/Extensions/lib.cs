@@ -992,7 +992,11 @@ namespace VikingEngine
             if (direction == Vector2.Zero) return 0;
             direction.Normalize();
             return (float)Math.Atan2(direction.X, -direction.Y);
+        }
 
+        public static float V2ToAngle_PreNorm_Unsafe(Vector2 direction)
+        {
+            return (float)Math.Atan2(direction.X, -direction.Y);
         }
 
         public static float V2ToAngle_normalized_unsafe(float xDir, float yDir)

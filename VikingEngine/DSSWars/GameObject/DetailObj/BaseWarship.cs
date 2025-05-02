@@ -9,6 +9,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 {
     class BaseWarship : AbsSoldierUnit
     {
+        const float ShipAttackCooldownMulti = 2;
         int soldierCount;
         int multiAttackCount;
         float multiAttackTimeCooldown;
@@ -20,13 +21,14 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 
         override public void refreshShipCarryCount()
         {
-            var defaultSoldier = group.soldierConscript.init(group.typeSoldierData);
+            //var defaultSoldier = group.soldierConscript.init(group.typeSoldierData);
             //var data = group.typeCurrentData;//.SoldierData();
-            soldierCount = MathExt.Div_Ceiling(this.health, defaultSoldier.basehealth);
+            soldierCount = MathExt.Div_Ceiling(this.health, group.soldierData.basehealth);
             if (soldierCount > 0)
             {
                 multiAttackCount = Math.Min(soldierCount, group.soldierData.rowWidth);
-                multiAttackTimeCooldown = defaultSoldier.attackTimePlusCoolDown / (soldierCount / multiAttackCount);
+                multiAttackTimeCooldown = group.soldierData.attackTimePlusCoolDown / (soldierCount / multiAttackCount);
+                multiAttackTimeCooldown *= ShipAttackCooldownMulti; 
             }
         }
 
@@ -64,24 +66,6 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         protected override void commitAttack(bool fullUpdate)
         {
 
-
-            //int attacks = Ref.rnd.Int(5, 10) + Bound.Max(storedAttacks, 5) - 1;
-
-            //var soldiersC = attackTarget.group.soldiers.counter();
-            //while (soldiersC.Next())
-            //{
-            //    if (soldiersC.sel != attackTarget && soldiersC.sel.Alive_IncomingDamageIncluded())
-            //    {
-            //        --attacks;
-            //        startAttack(fullUpdate, soldiersC.sel, true, true);
-            //    }
-
-            //    if (attacks <= 0)
-            //    {
-            //        break;
-            //    }
-            //}
-            //storedAttacks = attacks;
             startMultiAttack(fullUpdate, attackTarget, true, multiAttackCount, true);
             attackCooldownTime.MilliSeconds = multiAttackTimeCooldown;
         }

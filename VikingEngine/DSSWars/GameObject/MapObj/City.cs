@@ -1592,7 +1592,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (capturePoints >= 100)
+            if (capturePoints >= 100 || strengthValue == 0)
             { 
                 //Power check
                 cityCaptureCehck();

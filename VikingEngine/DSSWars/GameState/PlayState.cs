@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars
 {
     class PlayState : AbsPlayState
     {
-        public const int PathThreadCount = 4;
+        //public const int PathThreadCount = 4;
 
         
 
@@ -322,8 +322,8 @@ namespace VikingEngine.DSSWars
                 //    startIx = end + 1;
                 //}
                 //pathUpdates[PathThreadCount] = new PathUpdateThread_Player(PathThreadCount);
-
-                initPathFindingThreads(PathThreadCount);
+                
+                initPathFindingThreads();
             }
 
             isReady = true;
@@ -813,7 +813,10 @@ namespace VikingEngine.DSSWars
                 }
             }
         }
-
+        public override int PathThreadCount()
+        {
+            return 4;
+        }
         public override PlayState Game()
         {
             return this;

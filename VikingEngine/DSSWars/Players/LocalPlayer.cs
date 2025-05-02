@@ -686,8 +686,9 @@ namespace VikingEngine.DSSWars.Players
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
-                    var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
-                    Debug.Log(tile.ToString());
+                    battleLineUpTest2(true);
+                    //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
+                    //Debug.Log(tile.ToString());
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.N) && !Input.Keyboard.Ctrl)
@@ -915,7 +916,68 @@ namespace VikingEngine.DSSWars.Players
            
         }
 
+        void battleLineUpTest2(bool friendly)
+        {
+            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
+            Rotation1D playerRot = enemyRot.getInvert();
 
+            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
+            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
+            DssRef.diplomacy.declareWar(faction, enemyFac);
+
+
+            IntVector2 position = gameControls.mapControls.tilePosition;
+
+            Army friendlyArmy, enemyArmy;
+
+
+            //if (friendly)
+            {
+                var army = faction.NewArmy(position);
+                friendlyArmy = army;
+                army.rotation = playerRot;
+
+               
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.ShortSword,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 8; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Bow,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 4; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+               
+                army.setAsStartArmy();
+                //army.(true);
+            }
+            
+        }
 
         void battleLineUpTest(bool friendly)
         {
@@ -950,7 +1012,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 8; ++i)
+                    for (int i = 0; i < 16; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -977,7 +1039,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         conscript = new ConscriptProfile()
                         {
-                            weapon = Resource.ItemResourceType.HandCannon,
+                            weapon = Resource.ItemResourceType.Crossbow,
                             armorLevel = Resource.ItemResourceType.IronArmor,
                             training = TrainingLevel.Basic,
                             specialization = SpecializationType.Traditional,
@@ -994,7 +1056,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         conscript = new ConscriptProfile()
                         {
-                            weapon = Resource.ItemResourceType.ManCannonBronze,
+                            weapon = Resource.ItemResourceType.Ballista,
                             armorLevel = Resource.ItemResourceType.IronArmor,
                             training = TrainingLevel.Basic,
                             specialization = SpecializationType.Traditional,
@@ -1113,7 +1175,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 2; ++i)
+                    for (int i = 0; i < 8; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
