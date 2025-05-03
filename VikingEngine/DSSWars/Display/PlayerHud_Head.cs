@@ -27,6 +27,10 @@ namespace VikingEngine.DSSWars.Display
         public Vector2 factionMenuStart;
 
         LocalPlayer player;
+
+        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, MenuTab.Automation, MenuTab.Progress };
+        public static readonly MenuTab[] TutorialTabs = { MenuTab.Economy };
+
         public PlayerHud_Head(LocalPlayer player)
         {
             this.player = player;
@@ -160,25 +164,10 @@ namespace VikingEngine.DSSWars.Display
 
             content.newLine();
 
-            //int tabSel = 0;
-            //var tabs = new List<ArtTabMember>((int)MenuTab.NUM);
-            for (int i = 0; i < HeadDisplay.Tabs.Length; ++i)
+            MenuTab[] tabOptions = DssRef.storage.runTutorial_1short_2normal == 0 ? Tabs : TutorialTabs;
+            for (int i = 0; i < tabOptions.Length; ++i)
             {
-                //var text = new RbText(LangLib.Tab( HeadDisplay.Tabs[i], out string description));
-                //text.overrideColor = HudLib.RbSettings.tabSelected.Color;
-
-                //AbsRbAction enter = null;
-                //if (description != null)
-                //{
-                //    enter = new RbAction(() =>
-                //    {
-                //        RichBoxContent content = new RichBoxContent();
-                //        content.text(description).overrideColor = HudLib.InfoYellow_Light;
-
-                //        player.hud.tooltip.create(player, content, true);
-                //    });
-                //}
-                var tab = HeadDisplay.Tabs[i];
+                var tab = tabOptions[i];
                 SpriteName icon = SpriteName.NO_IMAGE;
                 switch (tab)
                 {

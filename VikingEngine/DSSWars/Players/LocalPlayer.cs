@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars.Players
         }
         public void factionTabClick(int tab)
         {
-            factionTab = HeadDisplay.Tabs[tab];
+            factionTab = PlayerHud_Head.Tabs[tab];
         }
         public void cityTabClick(int tab)
         {

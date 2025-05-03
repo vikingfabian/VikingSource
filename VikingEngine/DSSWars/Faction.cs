@@ -529,18 +529,18 @@ namespace VikingEngine.DSSWars
         
         public void asynchGameObjectsUpdate(float time, float oneSecondUpdate, bool oneMinute)
         {
-            float totalStrength = 0;
+            float armiesStrength = 0;
 
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
                 armiesC.sel.asynchGameObjectsUpdate(time, oneMinute);
-                totalStrength += armiesC.sel.strengthValue;
+                armiesStrength += armiesC.sel.strengthValue;
             }
+            
+            resources_updateAsynch(oneSecondUpdate, out float citiesStrength);
 
-            militaryStrength = totalStrength;
-
-            resources_updateAsynch(oneSecondUpdate);
+            militaryStrength = armiesStrength + citiesStrength;
         }
 
         public void asynchSleepObjectsUpdate(float time)

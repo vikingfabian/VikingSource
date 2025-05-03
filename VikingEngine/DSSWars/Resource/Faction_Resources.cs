@@ -505,7 +505,7 @@ namespace VikingEngine.DSSWars
 
         
 
-        public void resources_updateAsynch(float oneSecondUpdate)
+        public void resources_updateAsynch(float oneSecondUpdate, out float citiesMilitaryStrenght)
         {
             //int cityIncomeCount = 0;
             int workForceCount = 0;
@@ -515,6 +515,7 @@ namespace VikingEngine.DSSWars
             float citiesFoodProduce = 0;
             float citiesFoodSpend = 0;
             float soldResources = 0;
+            citiesMilitaryStrenght = 0;
 
             while (citiesC.Next())
             {
@@ -527,7 +528,7 @@ namespace VikingEngine.DSSWars
                 citiesFoodProduce += citiesC.sel.foodProduction.displayValue_gold_sec;
                 citiesFoodSpend += citiesC.sel.foodSpending.displayValue_gold_sec;
                 soldResources += citiesC.sel.soldResources.displayValue_gold_sec;
-
+                citiesMilitaryStrenght += citiesC.sel.strengthValue;
                 //if (citiesC.sel.nobelHouse)
                 //{
                 //    ++nobel;
