@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Data
 
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
-        public BossTimeSettings bossTimeSettings = BossTimeSettings.Normal;
+        //public BossTimeSettings bossTimeSettings = BossTimeSettings.Normal;
         
         public int aiEconomyLevel = 1;
         public double aiEconomyMultiplier = 1.0;
@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Data
                 new GuiTextButton(options[i].ToString() + "%",
                     string.Format( DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficultyLvl.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficultyLvl.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
+                    //string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficultyLvl.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficultyLvl.aiEconomyLevel].ToString()) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficultyLvl.aiDelayTimeSec).ToString()) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficultyLvl.diplomacyDifficulty, DiplomacyDifficultyCount)) + Environment.NewLine +
@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.Data
                 case 0:
                     aiAggressivity = AiAggressivity.Low;
                     bossSize = BossSize.Small;
-                    bossTimeSettings = BossTimeSettings.VeryLate;
+                    //bossTimeSettings = BossTimeSettings.VeryLate;
                     aiEconomyLevel = 0;
                     resourceMultiplyChance = 0.5;
                     resourceMultiplyDecrease = true;
@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.Data
                 case 1:
                     aiAggressivity = AiAggressivity.Low;
                     bossSize = BossSize.Small;
-                    bossTimeSettings = BossTimeSettings.Late;
+                    //bossTimeSettings = BossTimeSettings.Late;
                     aiEconomyLevel = 1;
                     resourceMultiplyChance = 0.25;
                     resourceMultiplyDecrease = true;
@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.Data
                 case 2:
                     aiAggressivity = AiAggressivity.Low;
                     bossSize = BossSize.Medium;
-                    bossTimeSettings = BossTimeSettings.Late;
+                    //bossTimeSettings = BossTimeSettings.Late;
                     aiEconomyLevel = 1;
                     resourceMultiplyChance = 0.25;
                     resourceMultiplyDecrease = true;
@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.Data
                 case 3: //Medium
                     aiAggressivity = AiAggressivity.Medium;
                     bossSize = BossSize.Medium;
-                    bossTimeSettings = BossTimeSettings.Normal;
+                    //bossTimeSettings = BossTimeSettings.Normal;
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.Data
                 case 4:
                     aiAggressivity = AiAggressivity.Medium;
                     bossSize = BossSize.Medium;
-                    bossTimeSettings = BossTimeSettings.Normal;
+                    //bossTimeSettings = BossTimeSettings.Normal;
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars.Data
                 case 5:
                     aiAggressivity = AiAggressivity.Medium;
                     bossSize = BossSize.Large;
-                    bossTimeSettings = BossTimeSettings.Early;
+                    //bossTimeSettings = BossTimeSettings.Early;
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
@@ -219,7 +219,7 @@ namespace VikingEngine.DSSWars.Data
                 case 6:
                     aiAggressivity = AiAggressivity.High;
                     bossSize = BossSize.Huge;
-                    bossTimeSettings = BossTimeSettings.Early;
+                    //bossTimeSettings = BossTimeSettings.Early;
                     aiEconomyLevel = 3;
 
                     resourceMultiplyChance = 0.25;
@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Data
                 case 7: //Max
                     aiAggressivity = AiAggressivity.High;
                     bossSize = BossSize.Huge;
-                    bossTimeSettings = BossTimeSettings.Immediate;
+                    //bossTimeSettings = BossTimeSettings.Immediate;
                     aiEconomyLevel = 4;
 
 

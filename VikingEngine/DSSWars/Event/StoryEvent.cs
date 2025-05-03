@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace VikingEngine.DSSWars.Event
     {
         //protected TimeInGameCountdown prepareTime;
         protected TimeInGameCountdown checkTime;
-        protected TimeInGameCountdown triggerTime;
+        public TimeInGameCountdown triggerTime;
         protected EventState eventState = EventState.InQueue;
         protected IntervalF triggerTimeSpan_Minutes;
         protected IntervalF nextExpectedPlayerSize;
@@ -103,7 +104,7 @@ namespace VikingEngine.DSSWars.Event
             //Ref.update.AddSyncAction(new SyncAction1Arg<EventType>(RunNextEvent_synced, nextEvent));
         }
 
-        
+
 
         protected void PowerCheck()
         {
@@ -148,6 +149,41 @@ namespace VikingEngine.DSSWars.Event
             asyncPrepare(ref time);
 
             triggerTime.start(time);//eventTriggerGameTimeSec = time + eventPrepareTimeSec;
+
+        }
+
+        public void TriggerNow()
+        {
+            checkTime.start(1);
+            triggerTime.start(2);
+            triggerTimeSpan_Minutes = IntervalF.NoInterval(0.1f);
+        }
+
+        virtual public bool HasSaveData()
+        {
+            return eventState > EventState.InQueue;
+        }
+
+        virtual public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((int)eventState);
+
+            checkTime.writeGameState(w);
+            triggerTime.writeGameState(w);
+
+            triggerTimeSpan_Minutes.Write(w);
+            nextExpectedPlayerSize.Write(w);
+        }
+
+        virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        {
+            eventState = (EventState)r.ReadInt32();
+
+            checkTime.readGameState(r);
+            triggerTime.readGameState(r);
+
+            triggerTimeSpan_Minutes.Read(r);
+            nextExpectedPlayerSize.Read(r);
         }
 
         virtual protected void asyncPrepare(ref float time)
@@ -158,6 +194,8 @@ namespace VikingEngine.DSSWars.Event
         //abstract protected string DebugName();
         abstract public EventType StoryEventType();
 
+
+        abstract public int OrderIndex();
         virtual public bool RunAi()
         {
             return true;
@@ -202,6 +240,11 @@ namespace VikingEngine.DSSWars.Event
         {
             return false;
         }
+
+        public override int OrderIndex()
+        {
+            return 1;
+        }
         //public bool AiDelay()
         //{
         //    return nextEvent <= EventType.AiDelay;
@@ -237,6 +280,10 @@ namespace VikingEngine.DSSWars.Event
         {
             return false;
         }
+        public override int OrderIndex()
+        {
+            return 2;
+        }
     }
 
     class StoryEvent_WarmanagerDelay : AbsStoryEvent
@@ -252,6 +299,10 @@ namespace VikingEngine.DSSWars.Event
         public override bool RunWarManager()
         {
             return false;
+        }
+        public override int OrderIndex()
+        {
+            return 3;
         }
     }
     class StoryEvent_SouthShips : AbsStoryEvent
@@ -442,6 +493,25 @@ namespace VikingEngine.DSSWars.Event
                 }
             }
         }
+
+        public override void writeGameState(BinaryWriter w)
+        {
+            base.writeGameState(w);
+            IOLib.WriteObjectList(w, playerMostSouthCity);
+            IOLib.WriteBinaryList(w, spawnPos_Player);
+        }
+
+        public override void readGameState(BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        {
+            base.readGameState(r, subVersion, pointers);
+            playerMostSouthCity = arraylib.ToArray_Safe(IOLib.ReadObjectList<City>(r));
+            spawnPos_Player = arraylib.ToArray_Safe(IOLib.ReadBinaryList<IntVector2>(r));
+        }
+
+        public override int OrderIndex()
+        {
+            return 4;
+        }
     }
 
     class StoryEvent_DarkLordWarning : AbsStoryEvent
@@ -558,6 +628,20 @@ namespace VikingEngine.DSSWars.Event
                 }
             }));
         }
+
+        public override void writeGameState(BinaryWriter w)
+        {
+            base.writeGameState(w);
+            IOLib.WriteObjectList(w, darkLordAvailableFactions);
+            IOLib.WriteObjectList(w, darkLordAllies);
+        }
+
+        public override void readGameState(BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        {
+            base.readGameState(r, subVersion, pointers);
+            darkLordAvailableFactions = IOLib.ReadObjectList<Faction>(r);
+            darkLordAllies = IOLib.ReadObjectList<Faction>(r);
+        }
     }
 
     class StoryEvent_Factories : AbsStoryEvent
@@ -604,6 +688,17 @@ namespace VikingEngine.DSSWars.Event
             return Event.EventType.KillTheDarkLord;
         }
 
+        public override void onStart()
+        {
+            Ref.update.AddSyncAction(new SyncAction(() =>
+            {
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
+                }
+            }));
+        }
+
         protected override bool TimedEvent()
         {
             return false;
@@ -625,7 +720,6 @@ namespace VikingEngine.DSSWars.Event
         DarkLordInPerson,
         KillTheDarkLord,
 
-        End,
     }
 
     enum EventState

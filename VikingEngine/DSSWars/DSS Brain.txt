@@ -19,6 +19,7 @@
 -Upgrade logistics is missing info
 -Sandbox mode never start ai attacks
 -Auto expand dont consider town hall limits
+-The destroy factory missions break when save/load
 
 
 #DSS1 issues#

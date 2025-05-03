@@ -111,7 +111,7 @@ namespace VikingEngine.DSSWars
             baseInit();
             technologyManager.initGame(false);
 
-            events = new GameEvents();
+            events = new Event.EventManager();
         }
 
         public void initGameState(bool newGame, ObjectPointerCollection pointers)

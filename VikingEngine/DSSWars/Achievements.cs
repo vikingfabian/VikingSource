@@ -125,30 +125,30 @@ namespace VikingEngine.DSSWars
                 UnlockAchievement(AchievementIndex.greenwood_ally);
             }
 
-            if (DssRef.state.events.nextEvent >= EventType.DarkLord)
-            {
-                //Count allies
-                Task.Factory.StartNew(() =>
-                {
-                    int allyCount = 0;
+            //if (DssRef.state.events.nextEvent >= EventType.DarkLord)
+            //{
+            //    //Count allies
+            //    Task.Factory.StartNew(() =>
+            //    {
+            //        int allyCount = 0;
 
-                    for (int i = 0; i < playerFaction.diplomaticRelations.Length; ++i)
-                    {
-                        var rel = playerFaction.diplomaticRelations[i];
-                        if (rel != null &&
-                            rel.Relation >= RelationType.RelationType3_Ally &&
-                            !DssRef.world.factions[i].HasZeroUnits())
-                        {
-                            ++allyCount;
-                        }
-                    }
+            //        for (int i = 0; i < playerFaction.diplomaticRelations.Length; ++i)
+            //        {
+            //            var rel = playerFaction.diplomaticRelations[i];
+            //            if (rel != null &&
+            //                rel.Relation >= RelationType.RelationType3_Ally &&
+            //                !DssRef.world.factions[i].HasZeroUnits())
+            //            {
+            //                ++allyCount;
+            //            }
+            //        }
 
-                    if (allyCount >= FriendshipAllyCount)
-                    {
-                        Ref.update.AddSyncAction(new SyncAction1Arg<AchievementIndex>(UnlockAchievement, AchievementIndex.friendship));
-                    }
-                });
-            }
+            //        if (allyCount >= FriendshipAllyCount)
+            //        {
+            //            Ref.update.AddSyncAction(new SyncAction1Arg<AchievementIndex>(UnlockAchievement, AchievementIndex.friendship));
+            //        }
+            //    });
+            //}
         }
 
         public void onFactionUniquePurchase(int uniqeTypeIndex)

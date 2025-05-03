@@ -451,7 +451,7 @@ namespace VikingEngine.DSSWars
             double incomeMultiplier = 1;
             if (player.IsAi())
             {
-                if (DssRef.state.events.AiDelay())
+                if (DssRef.state.events.RunAi() == false)
                 {
                     incomeMultiplier = 0.1;
                 }
@@ -967,13 +967,14 @@ namespace VikingEngine.DSSWars
                 isAlive = false;
                 DssRef.diplomacy.onFactionDeath(this);
 
-                if (factiontype == FactionType.SouthHara &&
-                    DssRef.state.events.nextEvent <= EventType.DarkLord &&
-                    DssRef.difficulty.bossTimeSettings <= BossTimeSettings.Early)
-                {
-                    DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
-                }
-                else if (factiontype == FactionType.Player)
+                //if (factiontype == FactionType.SouthHara &&
+                //    DssRef.state.events.nextEvent <= EventType.DarkLord &&
+                //    DssRef.difficulty.bossTimeSettings <= BossTimeSettings.Early)
+                //{
+                //    DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
+                //}
+                //else 
+                if (factiontype == FactionType.Player)
                 {
                     DssRef.state.events.onPlayerDeath();
                 }
