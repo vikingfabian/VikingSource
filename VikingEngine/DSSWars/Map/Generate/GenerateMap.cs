@@ -332,7 +332,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.seed);
 
             //partComplete = new bool[ProcessSubTileParts];
-            Task.Factory.StartNew(async () =>
+            var task = Task.Factory.StartNew(async () =>
             {
                 List<Task> tasks = new List<Task>();
 
@@ -348,6 +348,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                 await Task.WhenAll(tasks);
                 tasks.Clear();
 
+                throw new Exception("test");
+
                 for (int i = 0; i < ProcessTilesDivisionParts; i++)
                 {
                     int part = i;
@@ -357,9 +359,13 @@ namespace VikingEngine.DSSWars.Map.Generate
                     }));
                 }
 
+
                 await Task.WhenAll(tasks);
                 postComplete = true;
             });
+
+            task.ContinueWith(t => { BlueScreen.ThreadException = t.Exception; },
+                TaskContinuationOptions.OnlyOnFaulted);
         }
 
         //public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)

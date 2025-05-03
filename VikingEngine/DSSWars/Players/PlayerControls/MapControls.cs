@@ -278,7 +278,15 @@ namespace VikingEngine.DSSWars.Players
             
                 checkSelectionAlive();
 
-            if (!player.gameControls.InBuildOrdersMode())
+            if (player.gameControls.InBuildOrdersMode())
+            {
+                if (rectangleLines != null)
+                {
+                    rectangleLines.DeleteMe();
+                    rectangleLines = null;
+                }
+            }
+            else
             {
                 selection.end();
                 rectangleSelectUpdate();
