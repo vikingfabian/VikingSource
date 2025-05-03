@@ -1370,6 +1370,10 @@ namespace VikingEngine.DSSWars
                     caption = DssRef.lang.Settings_Mode_Peaceful;
                     desc = DssRef.lang.Settings_Mode_Peaceful_Description;
                     break;
+                case GameMode.Spectator:
+                    caption = DssRef.todoLang.Settings_Mode_Spectator;
+                    desc = DssRef.todoLang.Settings_Mode_Spectator_Description;
+                    break;
             }
         }
        

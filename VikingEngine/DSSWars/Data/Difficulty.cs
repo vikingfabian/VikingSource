@@ -254,6 +254,7 @@ namespace VikingEngine.DSSWars.Data
                     peaceful = false;
                     break;
                 case GameMode.Sandbox:
+                case GameMode.Spectator:
                     runEvents = false;
                     peaceful = false;
                     break;
@@ -310,6 +311,7 @@ namespace VikingEngine.DSSWars.Data
         FullStory,
         Sandbox,
         Peaceful,
+        Spectator,
         NUM
     }
     //enum AiResourceMultiplyType

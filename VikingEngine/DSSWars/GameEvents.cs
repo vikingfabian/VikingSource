@@ -756,15 +756,18 @@ namespace VikingEngine.DSSWars
 
         public void onPlayerDeath()
         {
-            foreach (var p in DssRef.state.localPlayers)
+            if (DssRef.difficulty.setting_gameMode != GameMode.Spectator)
             {
-                if (p.faction.isAlive)
+                foreach (var p in DssRef.state.localPlayers)
                 {
-                    return;
+                    if (p.faction.isAlive)
+                    {
+                        return;
+                    }
                 }
-            }
 
-            new EndScene( GameEndReason.Defeat, false);
+                new EndScene(GameEndReason.Defeat, false);
+            }
         }
 
         public void collectAllianceAgainstPlayerDomination(LocalPlayer player)

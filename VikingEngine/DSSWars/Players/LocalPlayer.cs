@@ -446,49 +446,52 @@ namespace VikingEngine.DSSWars.Players
 
         public override void createStartUnits()
         {
-            IntVector2 onTile = DssRef.world.GetFreeTile(faction.mainCity.tilePos);
-
-            var mainArmy = faction.NewArmy(onTile);
-            mainArmy.tagBack = CityTagBack.Blue;
-            mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
-
-            for (int i = 0; i < 5; ++i)
+            if (faction.cities.Count > 0)
             {
-                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
-            }
+                IntVector2 onTile = DssRef.world.GetFreeTile(faction.mainCity.tilePos);
 
-            if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
-            {
-                int guardCount = 12;
+                var mainArmy = faction.NewArmy(onTile);
+                mainArmy.tagBack = CityTagBack.Blue;
+                mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
 
-                var citiesC = faction.cities.counter();
-                while (citiesC.Next())
+                for (int i = 0; i < 5; ++i)
                 {
-                    if (citiesC.sel != faction.mainCity)
+                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+                }
+
+                if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+                {
+                    int guardCount = 12;
+
+                    var citiesC = faction.cities.counter();
+                    while (citiesC.Next())
                     {
-                        onTile = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
-                        var army = faction.NewArmy(onTile);
-                        for (int i = 0; i < 4; ++i)
+                        if (citiesC.sel != faction.mainCity)
                         {
-                            new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
-                            --guardCount;
-                        }
-                        //army.OnSoldierPurchaseCompleted();
-                        army.setAsStartArmy();
-                        if (guardCount <= 3)
-                        {
-                            break;
+                            onTile = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
+                            var army = faction.NewArmy(onTile);
+                            for (int i = 0; i < 4; ++i)
+                            {
+                                new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
+                                --guardCount;
+                            }
+                            //army.OnSoldierPurchaseCompleted();
+                            army.setAsStartArmy();
+                            if (guardCount <= 3)
+                            {
+                                break;
+                            }
                         }
                     }
-                }
 
-                for (int i = 0; i < guardCount; ++i)
-                {
-                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
+                    for (int i = 0; i < guardCount; ++i)
+                    {
+                        new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
+                    }
                 }
+                //mainArmy.OnSoldierPurchaseCompleted();
+                mainArmy.setAsStartArmy();
             }
-            //mainArmy.OnSoldierPurchaseCompleted();
-            mainArmy.setAsStartArmy();
         }
 
         public void toPeacefulCheck_asynch()

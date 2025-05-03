@@ -69,10 +69,10 @@ namespace VikingEngine.DSSWars
 
         public Faction(WorldData addTo, FactionType factiontype)
         {
-            if (factiontype == FactionType.SkaeldraHaim)
-            {
-                lib.DoNothing();
-            }
+            //if (factiontype == FactionType.SkaeldraHaim)
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (factiontype == FactionType.DefaultAi)
             {
