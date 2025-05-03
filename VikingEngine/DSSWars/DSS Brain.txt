@@ -19,6 +19,7 @@
 -Automation builds too many low grade soldiers
 -Ship attacks are visually broken, no sound and bad feedback
 -Upgrade logistics is missing info
+-tutorial doesnt end
 
 
 #Free build defences
