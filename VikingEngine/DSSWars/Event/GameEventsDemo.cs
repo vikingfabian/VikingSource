@@ -7,9 +7,9 @@ using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 
-namespace VikingEngine.DSSWars
+namespace VikingEngine.DSSWars.Event
 {
-    class GameEventsDemo : GameEvents
+    class GameEventsDemo : EventManager
     {
         Time maxDemoTime = new Time(65f, TimeUnit.Minutes);
         City defendingCity;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -40,7 +41,7 @@ namespace VikingEngine.DSSWars.Data
         public float setting_foodMulti = 1;
         public const GameMode DefaultMode = GameMode.FullStory;
         public GameMode setting_gameMode = DefaultMode;
-        public bool runEvents = true;
+        public bool runStory = true;
         public bool peaceful = false;
         //public bool toPeacefulCheck = true;
 
@@ -250,16 +251,16 @@ namespace VikingEngine.DSSWars.Data
             switch (setting_gameMode)
             {
                 case GameMode.FullStory:
-                    runEvents = true;
+                    runStory = true;
                     peaceful = false;
                     break;
                 case GameMode.Sandbox:
                 case GameMode.Spectator:
-                    runEvents = false;
+                    runStory = false;
                     peaceful = false;
                     break;
                 case GameMode.Peaceful:
-                    runEvents = false;
+                    runStory = false;
                     peaceful = true;
                     toPeacefulPercentage = 0;
                     //toPeacefulCheck = false;
@@ -286,8 +287,8 @@ namespace VikingEngine.DSSWars.Data
             setting_allowPauseCommand = r.ReadBoolean();
             if (storageversion < 20)
             {
-                runEvents = r.ReadBoolean();
-                if (!runEvents)
+                runStory = r.ReadBoolean();
+                if (!runStory)
                 {
                     setting_gameMode = GameMode.Sandbox;
                 }

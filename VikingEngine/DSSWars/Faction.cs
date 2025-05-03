@@ -17,6 +17,7 @@ using VikingEngine.Network;
 using VikingEngine.ToGG.MoonFall;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Event;
 
 namespace VikingEngine.DSSWars
 {

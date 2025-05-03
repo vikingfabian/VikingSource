@@ -1500,11 +1500,11 @@ namespace VikingEngine.DSSWars
         {
             if (set)
             {
-                DssRef.difficulty.runEvents = value;
+                DssRef.difficulty.runStory = value;
                 DssRef.storage.Save(null);
                 refreshDifficultyLevel();
             }
-            return DssRef.difficulty.runEvents;
+            return DssRef.difficulty.runStory;
         }
 
         public MapSize mapSizeProperty(bool set, MapSize value)

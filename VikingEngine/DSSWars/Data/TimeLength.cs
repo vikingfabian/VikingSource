@@ -53,6 +53,11 @@ namespace VikingEngine.DSSWars.Data
             return new TimeLength(minutes * TimeExt.MinuteInSeconds);
         }
 
+        public static TimeLength FromHours(float hours)
+        {
+            return new TimeLength(hours * TimeExt.HourInSeconds);
+        }
+
         public override string ToString()
         {
             return $"Time length: {seconds} seconds";

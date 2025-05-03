@@ -139,11 +139,11 @@ namespace VikingEngine.DSSWars
             if (PlatformSettings.STEAM_DEMO &&
                DssRef.storage.runTutorial_1short_2normal == 0)
             {
-                events = new GameEventsDemo();
+                events = new Event.GameEventsDemo();
             }
             else
             {
-                events = new GameEvents();
+                events = new Event.EventManager();
             }
 
         }
