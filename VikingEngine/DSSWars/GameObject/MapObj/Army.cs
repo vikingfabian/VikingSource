@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 using Valve.Steamworks;
+using VikingEngine.DebugExtensions;
+
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
@@ -736,11 +738,19 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Task.Factory.StartNew(() =>
             {
-                var groupsC = groups.counter();
-                while (groupsC.Next())
+                try
                 {
-                    groupsC.sel.setArmyPlacement2(position, false, true);
+                    var groupsC = groups.counter();
+                    while (groupsC.Next())
+                    {
+                        groupsC.sel.setArmyPlacement2(position, false, true);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+                
             });
             
         }

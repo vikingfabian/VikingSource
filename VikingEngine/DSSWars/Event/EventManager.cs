@@ -43,6 +43,9 @@ namespace VikingEngine.DSSWars.Event
         virtual public void onGameStarted()
         { }
 
+        virtual public void onTutorialEnd()
+        { }
+
         public AbsStoryEvent CurrentEvent()
         {
             return mainStory.FirstOrDefault();

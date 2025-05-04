@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Map
 
                             while (subTileLoop.Next())
                             {
-                                var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                ref var subTile = ref DssRef.world.subTileGrid.GetRef(subTileLoop.Position);
 
                                 switch (subTile.mainTerrain)
                                 {
@@ -77,13 +77,13 @@ namespace VikingEngine.DSSWars.Map
                                         {
                                             --wood;
                                             subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.DryWood, TerrainContent.TreeReadySize);
-                                            DssRef.world.subTileGrid.Set(subTileLoop.Position, subTile);
+                                            //DssRef.world.subTileGrid.Set(subTileLoop.Position, subTile);
                                         }
                                         else 
                                         {
                                             
                                             subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones, 1);
-                                            DssRef.world.subTileGrid.Set(subTileLoop.Position, subTile);
+                                            //DssRef.world.subTileGrid.Set(subTileLoop.Position, subTile);
                                             if (--stone <= 0)
                                             {
                                                 return;

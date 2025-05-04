@@ -128,15 +128,21 @@ namespace VikingEngine.DSSWars.Event
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {
                     DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_Complete_Title, DssRef.lang.Demo_EndInOneMinuteDescription);
-                    new Timer.TimedAction1ArgTrigger_InGame<GameEndReason>(viewEndScreen, victory? GameEndReason.Victory : GameEndReason.Defeat , TimeExt.MinutesToMS(1f));
+                    new Timer.TimedAction1ArgTrigger_InGame<GameEndReason>(viewEndScreen, victory? GameEndReason.Victory : GameEndReason.Defeat, TimeExt.MinuteInSeconds * 1f);
                 }));
             }
+        }
+
+        public override void onTutorialEnd()
+        {
+            base.onTutorialEnd();
+            onDemoTimeUp();
         }
 
         void onDemoTimeUp()
         {
             DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, DssRef.lang.Demo_EndInOneMinuteDescription);
-            new Timer.TimedAction1ArgTrigger_InGame<GameEndReason>(viewEndScreen, GameEndReason.TimesUp, TimeExt.MinutesToMS(1f));
+            new Timer.TimedAction1ArgTrigger_InGame<GameEndReason>(viewEndScreen, GameEndReason.TimesUp, TimeExt.MinuteInSeconds *1f);
         }
 
         void viewEndScreen(GameEndReason endReason)

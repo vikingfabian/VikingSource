@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.LootFest.Players;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.EngineSpace;
+using VikingEngine.DebugExtensions;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -77,52 +78,59 @@ namespace VikingEngine.DSSWars.GameObject
             //Find a free guard post or move to a guard house (or city center)
             Task.Factory.StartNew(() =>
             {
-
-                int closestIx = -1;
+                try
+                {
+int closestIx = -1;
                 float closestDist = float.MaxValue;
 
-                lock (defenceBuildings.array)
-                {
-                    for (int i = 0; i < defenceBuildings.Count; ++i)
+                    lock (defenceBuildings.array)
                     {
-                        var defence = defenceBuildings.array[i];
-                        if (defence.checkSoldierAssignment(this))
+                        for (int i = 0; i < defenceBuildings.Count; ++i)
                         {
-                            defenceBuildings.array[i] = defence;
-                        }
-
-                        if (defence.AvailableForAutoAssign())
-                        {
-                            float dist = (defence.WorldPos() - group.position).PlaneXZLength();
-                            if (dist < closestDist)
+                            var defence = defenceBuildings.array[i];
+                            if (defence.checkSoldierAssignment(this))
                             {
-                                closestIx = i;
-                                closestDist = dist; 
+                                defenceBuildings.array[i] = defence;
+                            }
+
+                            if (defence.AvailableForAutoAssign())
+                            {
+                                float dist = (defence.WorldPos() - group.position).PlaneXZLength();
+                                if (dist < closestDist)
+                                {
+                                    closestIx = i;
+                                    closestDist = dist;
+                                }
                             }
                         }
-                    }
 
-                    if (closestIx >= 0)
-                    {
-                        var defence = defenceBuildings.array[closestIx];
-                        if (inRender_detailLayer)
+                        if (closestIx >= 0)
                         {
-                            new MoveCommand(group, defence.WorldPos(), float.MinValue, false);
-                            new EnterPostCommand(group, defence.idAndPosition, true).claimPost(group, this, closestIx);
+                            var defence = defenceBuildings.array[closestIx];
+                            if (inRender_detailLayer)
+                            {
+                                new MoveCommand(group, defence.WorldPos(), float.MinValue, false);
+                                new EnterPostCommand(group, defence.idAndPosition, true).claimPost(group, this, closestIx);
+                            }
+                            else
+                            {
+                                group.completeTransform(SoldierTransformType.EnterGuard, defence.idAndPosition);
+                            }
                         }
                         else
                         {
-                            group.completeTransform(SoldierTransformType.EnterGuard, defence.idAndPosition);
+                            Rotation1D dir = new Rotation1D(Ref.peRnd.Rotation());
+                            float dist = Ref.peRnd.Float(WorldData.SubTileHalfWidth, WorldData.SubTileWidth * 2f);
+
+                            group.goalWp = VectorExt.AddXZ(group.position, dir.Direction(dist));
                         }
                     }
-                    else
-                    {
-                        Rotation1D dir = new Rotation1D(Ref.peRnd.Rotation());
-                        float dist = Ref.peRnd.Float(WorldData.SubTileHalfWidth, WorldData.SubTileWidth * 2f);
-
-                        group.goalWp = VectorExt.AddXZ(group.position, dir.Direction(dist));
-                    }
                 }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+                
 
                
             });

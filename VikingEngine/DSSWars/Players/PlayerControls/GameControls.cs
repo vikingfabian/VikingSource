@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 if ((mapControls.hover.subTile.hasSelection && InBuildOrdersMode()) || buildControls.buildKeyDown)
                 {
-                    //cancel rect
+                    mapControls.cancelRectangleSelect();
                     buildControls.updateBuildMode();
                     if (input.CancelKey.DownEvent)
                     {

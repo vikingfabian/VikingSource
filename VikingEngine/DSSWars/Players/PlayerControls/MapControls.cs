@@ -280,11 +280,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (player.gameControls.InBuildOrdersMode())
             {
-                if (rectangleLines != null)
-                {
-                    rectangleLines.DeleteMe();
-                    rectangleLines = null;
-                }
+                cancelRectangleSelect();
             }
             else
             {
@@ -351,15 +347,20 @@ namespace VikingEngine.DSSWars.Players
             return rectangleBound.currentPointerPos.Y + 10 < rectangleBound.pointerDownPos.Y;
         }
 
+        public void cancelRectangleSelect()
+        { 
+            if (rectangleLines != null)
+            {
+                rectangleLines.DeleteMe();
+                rectangleLines = null;
+            }
+        }
+
         void rectangleSelectUpdate()
         {
             if (player.drawUnitsView.current.DrawOverview)
             {
-                if (rectangleLines != null)
-                {
-                    rectangleLines.DeleteMe();
-                    rectangleLines = null;
-                }
+                cancelRectangleSelect();
                 return;
             }
 

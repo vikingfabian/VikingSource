@@ -43,32 +43,40 @@ namespace VikingEngine.DSSWars
             {
                 Task.Run(async () =>
                 {
-                    int numLoops = 0;
+                    try
+                    {
+                        int numLoops = 0;
 #if DEBUG
-                    if (!DssRef.models.rawModels.ContainsKey(name))
-                    {
-                        lib.DoNothing();
-                    }
-#endif
-                    var grid = DssRef.models.rawModels[name];
-
-
-                    generateFromGrid_asynch(name, grid);
-
-                    while (!models_loaded.TryGetValue(name, out master))
-                    {
-                        if (++numLoops > 1000)
+                        if (!DssRef.models.rawModels.ContainsKey(name))
                         {
                             lib.DoNothing();
                         }
-                        await Task.Delay(100);
-                    }
+#endif
+                        var grid = DssRef.models.rawModels[name];
 
-                    if (master == null)
-                    {
-                        lib.DoNothing();
+
+                        generateFromGrid_asynch(name, grid);
+
+                        while (!models_loaded.TryGetValue(name, out master))
+                        {
+                            if (++numLoops > 1000)
+                            {
+                                lib.DoNothing();
+                            }
+                            await Task.Delay(100);
+                        }
+
+                        if (master == null)
+                        {
+                            lib.DoNothing();
+                        }
+                        setMaster(instance, master);
                     }
-                    setMaster(instance, master);
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                   
                 });
 
             }

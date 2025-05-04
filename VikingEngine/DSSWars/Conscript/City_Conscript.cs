@@ -436,9 +436,9 @@ namespace VikingEngine.DSSWars.GameObject
                 //IntVector2 pos = WP.ToSubTilePos_TopLeft(tilePos);
                 //pos.X += 4;
                 //pos.Y += 5;
-                var subTile = DssRef.world.subTileGrid.Get(barracksReservedSpot);
+                ref var subTile = ref DssRef.world.subTileGrid.GetRef(barracksReservedSpot);
                 subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, 1);
-                DssRef.world.subTileGrid.Set(barracksReservedSpot, subTile);
+                //DssRef.world.subTileGrid.Set(barracksReservedSpot, subTile);
 
 
                 BarracksStatus newBarrack = new BarracksStatus(Build.BuildAndExpandType.SoldierBarracks);

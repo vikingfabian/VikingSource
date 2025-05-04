@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
@@ -31,46 +32,112 @@ namespace VikingEngine.DSSWars.Map
             
             bool result = Task.Run(async ()=> {
 
-                List<Task> tasks = new List<Task>(verticalDivitions);
+                try
+                {
+                    List<Task> tasks = new List<Task>(verticalDivitions);
 
-                const int InitDivitions = 8;
-                int cityCountDiv = world.cities.Count / 8;
-                for (int i = 0; i < InitDivitions; ++i)
-                { 
-                    int start = i * cityCountDiv;
-                    int end_plusone = start + cityCountDiv;
-                    if (i == InitDivitions - 1)
+                    const int InitDivitions = 8;
+                    int cityCountDiv = world.cities.Count / 8;
+                    for (int i = 0; i < InitDivitions; ++i)
                     {
-                        end_plusone = world.cities.Count;
+                        int start = i * cityCountDiv;
+                        int end_plusone = start + cityCountDiv;
+                        if (i == InitDivitions - 1)
+                        {
+                            end_plusone = world.cities.Count;
+                        }
+
+                        tasks.Add(Task.Run(() =>
+                        {
+                            try
+                            {
+                                for (int cityIx = start; cityIx < end_plusone; cityIx++)
+                                {
+                                    cities[cityIx] = new MapCity(world.cities[cityIx], inflenceMap);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                BlueScreen.ThreadException = ex;
+                            }
+                            
+                        }));
                     }
 
-                    tasks.Add(Task.Run(() =>
+                    //foreach (var c in world.cities)
+                    //{
+                    //    cities.Add(new MapCity(c, inflenceMap));
+                    //}
+
+                    await Task.WhenAll(tasks);
+                    tasks.Clear();
+
+                    //Optimized by diviting the world in vertical stripes, and running even, then odd
+
+                    int loopCount = 0;
+
+                    bool activeCities = false;
+
+                    //while (cities.Count > 0)
+                    do
                     {
-                        for (int cityIx = start; cityIx < end_plusone; cityIx++)
+                        activeCities = false;
+
+                        for (int evenOdd = 0; evenOdd < 2; evenOdd++)
                         {
-                            cities[cityIx] = new MapCity(world.cities[cityIx], inflenceMap);
+                            for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
+                            {
+                                if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
+                                {
+                                    int ix = verticalStripeIx;
+                                    tasks.Add(Task.Run(() =>
+                                    {
+                                        try
+                                        {
+                                            Rectangle2 area = cityArea(ix, verticalDivitions, true);
+
+                                            for (int cityIx = 0; cityIx < world.cities.Count; cityIx++)
+                                            {
+                                                if (cities[cityIx].active)
+                                                {
+                                                    activeCities = true;
+
+                                                    if (area.IntersectTilePoint(cities[cityIx].city.tilePos))
+                                                    {
+                                                        cities[cityIx].next(inflenceMap, world);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            BlueScreen.ThreadException = ex;
+                                        }
+                                        
+
+                                    }));
+                                }
+                            }
+                            await Task.WhenAll(tasks);
+                            tasks.Clear();
                         }
-                    }));
-                }
+                        //for (int i = cities.Count - 1; i >= 0; --i)
+                        //{
+                        //    if (cities[i].next(inflenceMap, world))
+                        //    {
+                        //        cities.RemoveAt(i);
+                        //    }
+                        //}
 
-                //foreach (var c in world.cities)
-                //{
-                //    cities.Add(new MapCity(c, inflenceMap));
-                //}
+                        if (++loopCount > 10000)
+                        {
+                            throw new EndlessLoopException("CityMapInfluence");
+                        }
+                    } while (activeCities);
 
-                await Task.WhenAll(tasks);
-                tasks.Clear();
 
-                //Optimized by diviting the world in vertical stripes, and running even, then odd
 
-                int loopCount = 0;
-
-                bool activeCities = false;
-
-                //while (cities.Count > 0)
-                do
-                {
-                    activeCities = false;
+                    debugLog();
 
                     for (int evenOdd = 0; evenOdd < 2; evenOdd++)
                     {
@@ -81,20 +148,17 @@ namespace VikingEngine.DSSWars.Map
                                 int ix = verticalStripeIx;
                                 tasks.Add(Task.Run(() =>
                                 {
-                                    Rectangle2 area = cityArea(ix, verticalDivitions, true);
-
-                                    for (int cityIx = 0; cityIx < world.cities.Count; cityIx++)
+                                    try
                                     {
-                                        if (cities[cityIx].active)
-                                        {
-                                            activeCities = true;
+                                        Rectangle2 area = cityArea(ix, verticalDivitions, true);
 
-                                            if (area.IntersectTilePoint(cities[cityIx].city.tilePos))
-                                            {
-                                                cities[cityIx].next(inflenceMap, world);
-                                            }
-                                        }
+                                        cleanUpEdges(world, area);
                                     }
+                                    catch (Exception ex)
+                                    {
+                                        BlueScreen.ThreadException = ex;
+                                    }
+                                   
 
                                 }));
                             }
@@ -102,104 +166,83 @@ namespace VikingEngine.DSSWars.Map
                         await Task.WhenAll(tasks);
                         tasks.Clear();
                     }
-                    //for (int i = cities.Count - 1; i >= 0; --i)
-                    //{
-                    //    if (cities[i].next(inflenceMap, world))
-                    //    {
-                    //        cities.RemoveAt(i);
-                    //    }
-                    //}
 
-                    if (++loopCount > 10000)
+
+                    for (int evenOdd = 0; evenOdd < 2; evenOdd++)
                     {
-                        throw new EndlessLoopException("CityMapInfluence");
-                    }
-                } while (activeCities);
-
-                
-
-                debugLog();
-
-                for (int evenOdd = 0; evenOdd < 2; evenOdd++)
-                {
-                    for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
-                    {
-                        if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
+                        for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
                         {
-                            int ix = verticalStripeIx;
-                            tasks.Add(Task.Run(() =>
+                            if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
                             {
-                                Rectangle2 area = cityArea(ix, verticalDivitions, true);
+                                int ix = verticalStripeIx;
+                                tasks.Add(Task.Run(() =>
+                                {
+                                    try
+                                    {
+                                        Rectangle2 area = cityArea(ix, verticalDivitions, false);
 
-                                cleanUpEdges(world, area);
+                                        bindTiles(world, area);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        BlueScreen.ThreadException = ex;
+                                    }
+                                    
 
-                            }));
+                                }));
+                            }
                         }
+                        await Task.WhenAll(tasks);
+                        tasks.Clear();
                     }
-                    await Task.WhenAll(tasks);
-                    tasks.Clear();
-                }
 
 
-                for (int evenOdd = 0; evenOdd < 2; evenOdd++)
-                {
-                    for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
+                    Rectangle2 cityArea(int part, int divitions, bool insertEdges)
                     {
-                        if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
+                        Rectangle2 area = new Rectangle2();
+                        int widthChunk = world.Size.X / divitions;
+                        area.X = part * widthChunk;
+                        area.Width = widthChunk;
+
+                        if (part == 0 && insertEdges)
                         {
-                            int ix = verticalStripeIx;
-                            tasks.Add(Task.Run(() =>
-                            {
-                                Rectangle2 area = cityArea(ix, verticalDivitions, false);
-
-                                bindTiles(world, area);
-
-                            }));
+                            area.AddToLeftSide(-1);
                         }
-                    }
-                    await Task.WhenAll(tasks);
-                    tasks.Clear();
-                }
+                        else if (part == divitions - 1)
+                        {
+                            //last
+                            if (insertEdges)
+                            {
+                                area.SetRight(world.Size.X - 1, true);
+                            }
+                            else
+                            {
+                                area.SetRight(world.Size.X, true);
+                            }
+                        }
 
-
-                Rectangle2 cityArea(int part, int divitions, bool insertEdges)
-                {
-                    Rectangle2 area = new Rectangle2();
-                    int widthChunk = world.Size.X / divitions;
-                    area.X = part * widthChunk;
-                    area.Width = widthChunk;
-
-                    if (part == 0 && insertEdges)
-                    {
-                        area.AddToLeftSide(-1);
-                    }
-                    else if (part == divitions - 1)
-                    {
-                        //last
                         if (insertEdges)
                         {
-                            area.SetRight(world.Size.X - 1, true);
+                            area.Y = 1;
+                            area.Height = world.Size.Y - 2;
                         }
                         else
                         {
-                            area.SetRight(world.Size.X, true);
+                            area.Y = 0;
+                            area.Height = world.Size.Y;
                         }
+                        return area;
                     }
 
-                    if (insertEdges)
-                    {
-                        area.Y = 1;
-                        area.Height = world.Size.Y - 2;
-                    }
-                    else
-                    {
-                        area.Y = 0;
-                        area.Height = world.Size.Y;
-                    }
-                    return area;
+                    
+                }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
                 }
 
                 return true;
+
             }).Result;
 
             return result;

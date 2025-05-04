@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars.Work
                 energyCost *= 0.5f;
             }
             energy -= energyCost;
-            SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
+            ref SubTile subTile = ref DssRef.world.subTileGrid.GetRef(subTileEnd);
 
             bool tryRepeatWork = false;
 
@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Work
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 gainXp = WorkExperienceType.Farm;
                                 break;
 
@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Work
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
 
                                 gainXp = WorkExperienceType.Farm;
                                 break;
@@ -277,7 +277,7 @@ namespace VikingEngine.DSSWars.Work
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
 
 
                                 gainXp = WorkExperienceType.Farm;
@@ -292,7 +292,7 @@ namespace VikingEngine.DSSWars.Work
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
 
                                 gainXp = WorkExperienceType.Farm;
                                 break;
@@ -344,7 +344,7 @@ namespace VikingEngine.DSSWars.Work
                     if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
                     {
                         subTile.terrainAmount++;
-                        DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                        //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                         city.res_water.amount -= DssConst.PlantWaterCost;
 
                         gainXp = WorkExperienceType.Farm;

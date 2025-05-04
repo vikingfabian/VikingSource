@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Data
         
         public MapSize mapSize = MapSize.Medium;
         public bool centralGold = true;
-        public bool generateNewMaps = false;
+        public bool generateNewMaps = true;
         public bool autoSave = true;
         public int runTutorial_1short_2normal = 2;
         public bool speed5x = false;
@@ -231,6 +231,8 @@ namespace VikingEngine.DSSWars.Data
                 centralGold = r.ReadBoolean();
             }
             mapSettings.read(r, version);
+
+            generateNewMaps = true;//temp
         }
 
         public void checkPlayerDoublettes()

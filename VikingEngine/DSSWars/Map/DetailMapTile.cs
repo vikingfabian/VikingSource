@@ -166,7 +166,12 @@ namespace VikingEngine.DSSWars.Map
                                     topCenter(ref subTile, ref subTopLeft), ref bSurfacePolygonTexture, ref surfacePolygonTexture, ref surfaceColor);
                                 break;
                         }
-
+#if DEBUG
+                        if (surfaceColor == ColorExt.Empty)
+                        {
+                            throw new Exception("Empty col");
+                        }
+#endif
                         block(subTopLeft, surfaceSprite, surfaceColor, ref subTile);
 
                         if (bSurfacePolygonTexture)
@@ -174,9 +179,9 @@ namespace VikingEngine.DSSWars.Map
                             surfaceTexture(tile, subTile, subTopLeft, surfaceColor, surfacePolygonTexture);
                         }
 
-                        DssRef.world.subTileGrid.Set(
-                            subTileStart.X + x, subTileStart.Y + y,
-                            subTile);
+                        //DssRef.world.subTileGrid.Set(
+                        //    subTileStart.X + x, subTileStart.Y + y,
+                        //    subTile);
                     }
                 }
 

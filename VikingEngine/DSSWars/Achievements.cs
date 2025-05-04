@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
@@ -147,6 +148,13 @@ namespace VikingEngine.DSSWars
             //        {
             //            Ref.update.AddSyncAction(new SyncAction1Arg<AchievementIndex>(UnlockAchievement, AchievementIndex.friendship));
             //        }
+            //    });
+            //}
+            //        catch (Exception ex)
+            //        {
+            //            BlueScreen.ThreadException = ex;
+            //        }
+                    
             //    });
             //}
         }

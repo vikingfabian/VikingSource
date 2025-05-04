@@ -656,7 +656,10 @@ namespace VikingEngine.DSSWars.GameObject
                             ++posCount;
                         }
 
-                        position = posSum / posCount;
+                        if (posCount > 0)
+                        {
+                            position = posSum / posCount;
+                        }
                     }
                     else
                     {

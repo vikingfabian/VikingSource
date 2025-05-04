@@ -28,6 +28,7 @@ using VikingEngine.LootFest.GO.Gadgets;
 using System.ComponentModel;
 using Microsoft.CodeAnalysis.Text;
 using System.Reflection.Metadata;
+using VikingEngine.DebugExtensions;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -146,19 +147,27 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Task task = Task.Factory.StartNew(() =>
             {
-                if (CityStructure.WorkInstance.find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
+                try
                 {
-                    CraftBuildingLib.CraftLogisticsLevel2.payResources(this);
+                    if (CityStructure.WorkInstance.find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
+                    {
+                        CraftBuildingLib.CraftLogisticsLevel2.payResources(this);
 
-                    EditSubTile edit = new EditSubTile();
-                    edit.position = position;
-                    edit.value.terrainAmount = 2;
-                    edit.editAmount = true;
+                        EditSubTile edit = new EditSubTile();
+                        edit.position = position;
+                        edit.value.terrainAmount = 2;
+                        edit.editAmount = true;
 
-                    edit.Submit();
+                        edit.Submit();
 
-                    buildingStructure.buildingLevel_logistics = 2;
+                        buildingStructure.buildingLevel_logistics = 2;
+                    }
                 }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+               
             });
         }
 
@@ -913,109 +922,117 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 Task.Factory.StartNew(() =>
                 {
-                    ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, 1));
-                    edgeLoop.RandomPosition(true);
-
-                    int maxLoops = 10000;
-
-                    while (goalDisplayCount > totalWorkerHutAndLevelCount)
+                    try
                     {
-                        if (edgeLoop.Next())
+                        ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, 1));
+                        edgeLoop.RandomPosition(true);
+
+                        int maxLoops = 10000;
+
+                        while (goalDisplayCount > totalWorkerHutAndLevelCount)
                         {
-
-                            if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out Tile t) &&
-                                    t.IsLand() && t.CityIndex == parentArrayIndex)
+                            if (edgeLoop.Next())
                             {
-                                const int SubStartTrialCount = 4;
-                                IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
 
-                                for (int trialIx = 0; trialIx < SubStartTrialCount; ++trialIx)
+                                if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out Tile t) &&
+                                        t.IsLand() && t.CityIndex == parentArrayIndex)
                                 {
-                                    IntVector2 subPos = topLeft;
-                                    subPos.X += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
-                                    subPos.Y += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
+                                    const int SubStartTrialCount = 4;
+                                    IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
 
-
-                                    if (Build.BuildLib.TryAutoBuild(subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
+                                    for (int trialIx = 0; trialIx < SubStartTrialCount; ++trialIx)
                                     {
-                                        ++totalWorkerHutAndLevelCount;
-
-                                        //Place farm curlutures
-                                        const int CulturesPerFarm = 8;
-                                        int cultureCount = 0;
-
-                                        ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
-                                        farmLoop.RandomPosition(true);
+                                        IntVector2 subPos = topLeft;
+                                        subPos.X += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
+                                        subPos.Y += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
 
 
-                                        while (cultureCount < CulturesPerFarm)
+                                        if (Build.BuildLib.TryAutoBuild(subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
                                         {
-                                            while (farmLoop.Next())
+                                            ++totalWorkerHutAndLevelCount;
+
+                                            //Place farm curlutures
+                                            const int CulturesPerFarm = 8;
+                                            int cultureCount = 0;
+
+                                            ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
+                                            farmLoop.RandomPosition(true);
+
+
+                                            while (cultureCount < CulturesPerFarm)
                                             {
-                                                TerrainMainType terrain;
-                                                int sub;
-                                                int maxAmount;
-                                                if (Ref.peRnd.Chance(0.75))
+                                                while (farmLoop.Next())
                                                 {
-                                                    terrain = TerrainMainType.Foil;
-                                                    sub = (int)TerrainSubFoilType.WheatFarm;
-                                                    maxAmount = TerrainContent.FarmCulture_MaxSize;
-                                                }
-                                                else
-                                                {
-                                                    terrain = TerrainMainType.Building;
-                                                    if (Ref.peRnd.Chance(0.4))
+                                                    TerrainMainType terrain;
+                                                    int sub;
+                                                    int maxAmount;
+                                                    if (Ref.peRnd.Chance(0.75))
                                                     {
-                                                        sub = (int)TerrainBuildingType.PigPen;
-                                                        maxAmount = TerrainContent.PigMaxSize;
+                                                        terrain = TerrainMainType.Foil;
+                                                        sub = (int)TerrainSubFoilType.WheatFarm;
+                                                        maxAmount = TerrainContent.FarmCulture_MaxSize;
                                                     }
                                                     else
                                                     {
-                                                        sub = (int)TerrainBuildingType.HenPen;
-                                                        maxAmount = TerrainContent.HenMaxSize;
+                                                        terrain = TerrainMainType.Building;
+                                                        if (Ref.peRnd.Chance(0.4))
+                                                        {
+                                                            sub = (int)TerrainBuildingType.PigPen;
+                                                            maxAmount = TerrainContent.PigMaxSize;
+                                                        }
+                                                        else
+                                                        {
+                                                            sub = (int)TerrainBuildingType.HenPen;
+                                                            maxAmount = TerrainContent.HenMaxSize;
+                                                        }
+                                                    }
+
+                                                    if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
+                                                    {
+                                                        ++cultureCount;
+                                                        if (cultureCount >= CulturesPerFarm)
+                                                        {
+                                                            break;
+                                                        }
                                                     }
                                                 }
 
-                                                if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
+                                                farmLoop.ExpandRadius();
+                                                farmLoop.RandomPosition(true);
+
+                                                if (--maxLoops < 0)
                                                 {
-                                                    ++cultureCount;
-                                                    if (cultureCount >= CulturesPerFarm)
-                                                    {
-                                                        break;
-                                                    }
+                                                    return;
                                                 }
                                             }
 
-                                            farmLoop.ExpandRadius();
-                                            farmLoop.RandomPosition(true);
-
-                                            if (--maxLoops < 0)
+                                            if (goalDisplayCount <= totalWorkerHutAndLevelCount)
                                             {
                                                 return;
                                             }
                                         }
-
-                                        if (goalDisplayCount <= totalWorkerHutAndLevelCount)
-                                        {
-                                            return;
-                                        }
                                     }
                                 }
+
+                            }
+                            else
+                            {
+                                edgeLoop.ExpandRadius();
+                                edgeLoop.RandomPosition(true);
                             }
 
-                        }
-                        else
-                        {
-                            edgeLoop.ExpandRadius();
-                            edgeLoop.RandomPosition(true);
-                        }
 
-
-                        if (--maxLoops < 0)
-                        {
-                            return;
+                            if (--maxLoops < 0)
+                            {
+                                return;
+                            }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                    
                 });
 
 
@@ -1622,23 +1639,31 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Task.Run(() =>
             {
-                Faction newOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
-                if (newOwner != faction)
+                try
                 {
-                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    Faction newOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
+                    if (newOwner != faction)
                     {
-                        if (faction.player.IsLocalPlayer())
+                        Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            ++faction.player.GetLocalPlayer().statistics.CitiesLost;
-                        }
-                        if (newOwner.player.IsLocalPlayer())
-                        {
-                            ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
-                        }
+                            if (faction.player.IsLocalPlayer())
+                            {
+                                ++faction.player.GetLocalPlayer().statistics.CitiesLost;
+                            }
+                            if (newOwner.player.IsLocalPlayer())
+                            {
+                                ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
+                            }
 
-                        setFaction(newOwner);
-                    }));
+                            setFaction(newOwner);
+                        }));
+                    }
                 }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+                
             });
 
             //        void ExitBattle()

@@ -209,7 +209,7 @@ namespace VikingEngine.DSSWars.Display
             
             content.Add(new RbSeperationLine());
 
-            HeadDisplay.FactionSize(faction, content, false);
+            FactionSize(faction, content, false);
 
             content.newParagraph();
 
@@ -218,6 +218,29 @@ namespace VikingEngine.DSSWars.Display
             content.Add(relType);
             content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
             content.Add(new RbText(Diplomacy.RelationString(relation)));
+        }
+
+        public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)
+        {
+            if (fullDisplay)
+            {
+                content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(faction.totalWorkForce));
+                content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+            }
+            else
+            {
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsWorker));
+                content.space();
+                content.Add(new RbText(TextLib.LargeNumber(faction.totalWorkForce)));
+
+                content.space(2);
+
+                content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                content.space();
+                content.Add(new RbText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+            }
+            content.newLine();
         }
 
         void playerToPlayer(RichBoxContent content)

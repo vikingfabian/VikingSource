@@ -1,5 +1,6 @@
 ﻿UPDATE
 -Change Log-
+* Fixed rectangle select hangup
 * Remade the story events to be dynmaic, will allow it to be more dynamic; branshing paths, new game plus etc 
 
 
@@ -15,8 +16,14 @@
 -Must inform how faction priority works
 -City walls are confusing
 -Ai cant build defences
+-Automation builds too many low grade soldiers
 -Ship attacks are visually broken, no sound and bad feedback
 -Upgrade logistics is missing info
+-"homes" are confusing in child description
+-army center can move to far from soldiers
+-armies can be too passive to enemy armies passing by
+-army centers should not stay on cities 
+-rectangle select can lock up the game
 -Sandbox mode never start ai attacks
 -Auto expand dont consider town hall limits
 -The destroy factory missions break when save/load

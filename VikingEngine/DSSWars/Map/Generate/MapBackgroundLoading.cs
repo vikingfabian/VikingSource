@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.PJ.Joust;
 
@@ -112,64 +113,69 @@ namespace VikingEngine.DSSWars.Map.Generate
             CancellationToken cancellationToken = tokenSource.Token;
 
             Task task = Task.Factory.StartNew(async () =>
-            {               
-
-                while (!abort && failCount < 10)
+            {
+                try
                 {
-                    List<Task> extraTasks = new List<Task>();
+                    while (!abort && failCount < 10)
+                    {
+                        List<Task> extraTasks = new List<Task>();
 
-                    if (dataGenerate == null ||
-                        generatePass == GenerateMapPass.All || 
-                        generatePass == GenerateMapPass.Clear || 
-                        generatePass == GenerateMapPass.AllTerrain)
-                    {
-                        dataGenerate = new GenerateMap();
-                    }
-
-                    WorldMetaData worldmeta;
-                    ushort seed;
-                    if (loadMeta != null)
-                    {
-                        worldmeta = loadMeta.worldmeta;
-                    }
-                    else
-                    {
-                        worldmeta = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.mapSize, -1);
-                        worldmeta.customEditorMap = customEditorMap;
-                        seed = Ref.rnd.Ushort();
-                    }
-
-                    bool success;
-                    if (generatePass == GenerateMapPass.All)
-                    {
-                        List<Task> tasks = new List<Task>();
-                        success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks);
-                        await Task.WhenAll(tasks);
-                    }
-                    else
-                    {
-                        success = dataGenerate.GeneratePass(worldmeta, generateSettings, generatePass, extraTasks);
-                    }
-
-                    if (success)
-                    {
-                        if (!abort)
+                        if (dataGenerate == null ||
+                            generatePass == GenerateMapPass.All ||
+                            generatePass == GenerateMapPass.Clear ||
+                            generatePass == GenerateMapPass.AllTerrain)
                         {
-                            DssRef.world = dataGenerate.world;
+                            dataGenerate = new GenerateMap();
                         }
-                        generateSuccess = true;
-                        return;
-                    }
-                    else
-                    {
-                        failCount++;
-                    }
 
-                    await Task.WhenAll(extraTasks);
+                        WorldMetaData worldmeta;
+                        ushort seed;
+                        if (loadMeta != null)
+                        {
+                            worldmeta = loadMeta.worldmeta;
+                        }
+                        else
+                        {
+                            worldmeta = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.mapSize, -1);
+                            worldmeta.customEditorMap = customEditorMap;
+                            seed = Ref.rnd.Ushort();
+                        }
+
+                        bool success;
+                        if (generatePass == GenerateMapPass.All)
+                        {
+                            List<Task> tasks = new List<Task>();
+                            success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks);
+                            await Task.WhenAll(tasks);
+                        }
+                        else
+                        {
+                            success = dataGenerate.GeneratePass(worldmeta, generateSettings, generatePass, extraTasks);
+                        }
+
+                        if (success)
+                        {
+                            if (!abort)
+                            {
+                                DssRef.world = dataGenerate.world;
+                            }
+                            generateSuccess = true;
+                            return;
+                        }
+                        else
+                        {
+                            failCount++;
+                        }
+
+                        await Task.WhenAll(extraTasks);
+                    }
                 }
-            }, cancellationToken);
-
-            
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+                
+            }, cancellationToken);            
         }
 
         public void Update()
@@ -183,7 +189,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (generateSuccess)
                 {
-                    if (DssRef.world.generatePassCompleted >= GenerateMapPass.Countries)
+                    if (dataGenerate.world.generatePassCompleted >= GenerateMapPass.Countries)
                     {
                         postGenerateUpdate();
                     }
@@ -214,7 +220,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 {
                     loadingState = LoadingState.Post1Started;
                     postGenerate = new Map.Generate.GenerateMap();
-                    postGenerate.postLoadGenerate_Part1(DssRef.world);
+                    postGenerate.postLoadGenerate_Part1(dataGenerate.world);
                 }
                 else if (loadingState == LoadingState.Post1Started)
                 {
@@ -222,7 +228,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
                         loadingState = LoadingState.Post2Started;
                         postGenerate = new Map.Generate.GenerateMap();
-                        postGenerate.postLoadGenerate_Part2(DssRef.world, loadMeta);
+                        postGenerate.postLoadGenerate_Part2(dataGenerate.world, loadMeta);
                     }
                 }
                 else if (loadingState == LoadingState.Post2Started)

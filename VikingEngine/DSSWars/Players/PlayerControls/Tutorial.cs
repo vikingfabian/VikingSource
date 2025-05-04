@@ -1290,6 +1290,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             //}
 
             player.hud.messages.blockFoodWarning(false);
+            DssRef.state.events.onTutorialEnd();
         }
 
         void startUnits()

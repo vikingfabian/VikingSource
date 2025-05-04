@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 
 namespace VikingEngine.DSSWars.XP
 {
@@ -17,17 +18,25 @@ namespace VikingEngine.DSSWars.XP
             {
                 Task.Factory.StartNew(() =>
                 {
-                    var factionsCounter = DssRef.world.factions.counter();
-                    while (factionsCounter.Next())
+                    try
                     {
-                        var citiesC = factionsCounter.sel.cities.counter();
-                        while (citiesC.Next())
+                        var factionsCounter = DssRef.world.factions.counter();
+                        while (factionsCounter.Next())
                         {
-                            citiesC.sel.technology.addFactionUnlocked(factionsCounter.sel.technology, true, true);
+                            var citiesC = factionsCounter.sel.cities.counter();
+                            while (citiesC.Next())
+                            {
+                                citiesC.sel.technology.addFactionUnlocked(factionsCounter.sel.technology, true, true);
+                            }
                         }
-                    }
 
-                    asyncOneMinuteUpdate(false);
+                        asyncOneMinuteUpdate(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                    
                 });
             }
         }
