@@ -1,5 +1,6 @@
 ﻿UPDATE
 -Change Log-
+* Fixed rectangle select hangup
 
 
 !! Known issues, that I am working on !!
