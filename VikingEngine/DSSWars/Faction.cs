@@ -513,7 +513,7 @@ namespace VikingEngine.DSSWars
             if (armies.Count == 0 && cities.Count == 0)
             {
                 bool protectedFaction = factiontype == FactionType.DarkLord ||
-                    (factiontype == FactionType.SouthHara && DssRef.state.events.nextEvent < EventType.SouthShips);
+                    (factiontype == FactionType.SouthHara && DssRef.state.events.StoryIndex() < EventsOrder.SouthShips);
                                     
                 if (!protectedFaction)
                 {
@@ -1106,7 +1106,7 @@ namespace VikingEngine.DSSWars
         public bool WantToAllyAgainstDark()
         {
             return diplomaticSide == DiplomaticSide.Light &&
-                DssRef.state.events.nextEvent >= EventType.DarkLord;
+                DssRef.state.events.StoryIndex() >= EventsOrder.DarkLord;
         }
         
         public override Faction GetFaction()

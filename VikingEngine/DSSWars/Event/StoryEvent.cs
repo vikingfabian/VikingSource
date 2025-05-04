@@ -243,7 +243,7 @@ namespace VikingEngine.DSSWars.Event
 
         public override int OrderIndex()
         {
-            return 1;
+            return EventsOrder.AiDelay;
         }
         //public bool AiDelay()
         //{
@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars.Event
         }
         public override int OrderIndex()
         {
-            return 2;
+            return EventsOrder.AiWarDelay;
         }
     }
 
@@ -302,7 +302,7 @@ namespace VikingEngine.DSSWars.Event
         }
         public override int OrderIndex()
         {
-            return 3;
+            return EventsOrder.WarmanagerDelay;
         }
     }
     class StoryEvent_SouthShips : AbsStoryEvent
@@ -510,7 +510,7 @@ namespace VikingEngine.DSSWars.Event
 
         public override int OrderIndex()
         {
-            return 4;
+            return EventsOrder.SouthShips;
         }
     }
 
@@ -536,6 +536,10 @@ namespace VikingEngine.DSSWars.Event
                     p.hud.messages.Add(DssRef.lang.EventMessage_ProphesyTitle, DssRef.lang.EventMessage_ProphesyText);
                 }
             }));
+        }
+        public override int OrderIndex()
+        {
+            return EventsOrder.DarkLordWarning;
         }
     }
 
@@ -642,6 +646,10 @@ namespace VikingEngine.DSSWars.Event
             darkLordAvailableFactions = IOLib.ReadObjectList<Faction>(r);
             darkLordAllies = IOLib.ReadObjectList<Faction>(r);
         }
+        public override int OrderIndex()
+        {
+            return EventsOrder.DarkLord;
+        }
     }
 
     class StoryEvent_Factories : AbsStoryEvent
@@ -654,6 +662,11 @@ namespace VikingEngine.DSSWars.Event
         protected override bool TimedEvent()
         {
             return false;
+        }
+
+        public override int OrderIndex()
+        {
+            return EventsOrder.Factories;
         }
     }
 
@@ -668,6 +681,11 @@ namespace VikingEngine.DSSWars.Event
         {
             return false;
         }
+
+        public override int OrderIndex()
+        {
+            return EventsOrder.FactoriesDestroyed;
+        }
     }
 
     class StoryEvent_DarkLordInPerson : AbsStoryEvent
@@ -679,6 +697,10 @@ namespace VikingEngine.DSSWars.Event
         protected override bool TimedEvent()
         {
             return false;
+        }
+        public override int OrderIndex()
+        {
+            return EventsOrder.DarkLordInPerson;
         }
     }
     class StoryEvent_KillTheDarkLord : AbsStoryEvent
@@ -703,12 +725,34 @@ namespace VikingEngine.DSSWars.Event
         {
             return false;
         }
+        public override int OrderIndex()
+        {
+            return EventsOrder.KillTheDarkLord;
+        }
     }
 
-
-
-    enum EventType
+    static class EventsOrder
     {
+        //Do NOT use for save
+        public const int AiDelay = 1;
+        public const int AiWarDelay = 2;
+        public const int WarmanagerDelay = 3;
+        public const int SouthShips = 4;
+        public const int DarkLordWarning = 5;
+        public const int DarkLord = 6;
+        public const int Factories = 7;
+        public const int FactoriesDestroyed = 8;
+        public const int DarkLordInPerson = 9;
+        public const int KillTheDarkLord = 10;
+
+        public const int StoryEnd = 100;
+    }
+
+    /// <summary>
+    /// Do NOT change index
+    /// </summary>
+    enum EventType
+    {        
         AiDelay,
         AiWarDelay,
         WarmanagerDelay,
@@ -719,7 +763,6 @@ namespace VikingEngine.DSSWars.Event
         FactoriesDestroyed,
         DarkLordInPerson,
         KillTheDarkLord,
-
     }
 
     enum EventState

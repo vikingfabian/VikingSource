@@ -48,6 +48,16 @@ namespace VikingEngine.DSSWars.Event
             return mainStory.FirstOrDefault();
         }
 
+        public int StoryIndex()
+        { 
+            var ev = mainStory.FirstOrDefault();
+            if (ev == null)
+            {
+                return EventsOrder.StoryEnd;
+            }
+            return ev.OrderIndex();
+        }
+
         virtual public void asyncUpdate(float time)
         {
             if (DssRef.state.localPlayers[0].tutorial != null)// ||

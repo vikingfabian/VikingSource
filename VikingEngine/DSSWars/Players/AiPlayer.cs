@@ -1794,7 +1794,7 @@ namespace VikingEngine.DSSWars.Players
 
         AbsMapObject AttackFaction(Army army, Faction opponent)
         {
-            if (!DssRef.state.events.AiDelay() && army != null)
+            if (DssRef.state.events.RunAi() && army != null)
             {
                 var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
                 DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,
@@ -1811,7 +1811,7 @@ namespace VikingEngine.DSSWars.Players
 
         City AttackRamdom(Army army)
         {
-            if (!DssRef.state.events.AiDelay() && army != null)
+            if (DssRef.state.events.RunAi() && army != null)
             {
                 var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
 

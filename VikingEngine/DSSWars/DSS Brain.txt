@@ -23,7 +23,7 @@
 
 
 #DSS1 issues#
--Auto expand doesnt run
+
 
 #Free build defences
  Rock thrower
