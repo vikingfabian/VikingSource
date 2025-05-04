@@ -1,6 +1,5 @@
 ﻿UPDATE
 -Change Log-
-* Fixed rectangle select hangup
 * Remade the story events to be dynmaic, will allow it to be more dynamic; branshing paths, new game plus etc 
 
 
@@ -23,11 +22,11 @@
 -army center can move to far from soldiers
 -armies can be too passive to enemy armies passing by
 -army centers should not stay on cities 
--rectangle select can lock up the game
+-ai breaks peace too easy
+-war, grow, export needs description
 -Sandbox mode never start ai attacks
 -Auto expand dont consider town hall limits
 -The destroy factory missions break when save/load
-
 
 #DSS1 issues#
 

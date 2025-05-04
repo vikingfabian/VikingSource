@@ -85,7 +85,8 @@ namespace VikingEngine.DSSWars.GameObject
                 float blockReduce = soldierData.blockReducingAttack_Inv;
 
                 //Height advantage
-                if (group.position.Y + position.Y - Map.Settings.Height.DefaultGroundYoffset >= target.group.position.Y + target.position.Y)
+                if (group.position.Y + position.Y - Map.Settings.Height.DefaultGroundYoffset >= target.group.position.Y + target.position.Y &&
+                    !IsShipType())
                 {
                     blockReduce *= DssConst.HeightAdvantageBlockReduce_multiply;
                     if (fullUpdate)

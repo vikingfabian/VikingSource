@@ -797,9 +797,15 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.modelToShadowScale = new Vector3(0.5f, 1f, 0.8f);
             soldierData.rowWidth = 1;
             soldierData.columnsDepth = 1;
+            soldierData.rotationSpeed = DssConst.ShipRotatingSpeed;
 
             switch (conscript.specialization)
             {
+                case SpecializationType.Sea:
+                    soldierData.walkingSpeed *= 1.4f;
+                    soldierData.rotationSpeed *= 1.2f;
+                    break;
+
                 case SpecializationType.Viking:
                     conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
                     if (!ranged)
@@ -811,6 +817,7 @@ namespace VikingEngine.DSSWars.Conscript
                         soldierData.attackRange = 1f;
                     }
                     soldierData.walkingSpeed *= 1.5f;
+                    soldierData.rotationSpeed *= 1.2f;
                     break;
 
                 case SpecializationType.DarkLord:

@@ -11,6 +11,8 @@ namespace VikingEngine.DSSWars.GameObject
     {
         Graphics.AbsVoxelObj captain, leftcrew, rightcrew;
         Vector3 captainPosDiff, leftCrewPosDiff, rightCrewPosDiff;
+        GameTimeStamp soundStamp = GameTimeStamp.None;
+
         public ShipUnitAdvancedModel()
         { }
 
@@ -61,6 +63,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             rightcrew = soldier.group.army.faction.AutoLoadModelInstance(
                 LootFest.VoxelModelName.wars_shipcrew, crewScale, true);
+
+           
         }
 
         public override void update(AbsSoldierUnit soldier)
@@ -81,6 +85,14 @@ namespace VikingEngine.DSSWars.GameObject
             rightcrew.position = model.Rotation.TranslateAlongAxis(
                 rightCrewPosDiff, model.position);
 
+            if (soundStamp.TimeOut())
+            {
+                soundStamp.setTimeFromNow(DssConst.ShipSoundTimeSec.PeRandom());
+                if (Ref.peRnd.ChanceF(DssConst.SoundChanceShip))
+                {
+                    SoundLib.ship_knirr.Play(model.position);
+                }
+            }
         }
 
         public override void displayHealth(float percHealth)

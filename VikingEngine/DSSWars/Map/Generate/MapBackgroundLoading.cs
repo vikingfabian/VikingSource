@@ -292,7 +292,11 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             if (loadingState == LoadingState.Complete)
             {
-                if (!GenerateNewMap())
+                if (GenerateNewMap())
+                {
+                    DssRef.world = dataGenerate.world;
+                }
+                else
                 {
                     DssRef.world = storage.worldData;
                 }

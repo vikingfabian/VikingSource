@@ -23,11 +23,11 @@ namespace VikingEngine.DSSWars
             select_army, select_city, select_faction,
             ordermove, orderstop, message, trophy,
             woodcut, tree_falling, breaking, scythe, drop_item, pickaxe, hen, pig, pickup,
-            anvil, dig, genericWork, hammer, footstep,
+            anvil, dig, genericWork, hammer, footstep, ship_knirr,
 
            bow, sword, spear, throwblade, throwitem, clothHit, crossbow, heavyballista, reloadballista,
            blade_light, blade_medium, blade_heavy, spear_whoosh,
-            musket, cannon, block_attack,
+            musket, cannon, block_attack, wood_bonk,
             
            painvoice, fleshgore;
 
@@ -86,6 +86,7 @@ namespace VikingEngine.DSSWars
                 SoundDir + "footstep (9)",
                 SoundDir + "footstep (10)"
             ], 0.26f, 0.4f);
+            ship_knirr = new SoundContainerMultiple([SoundDir + "ship_knirr1", SoundDir + "ship_knirr2"], 2f, 0.4f);
             //Attacks
             bow = new SoundContainerMultiple([SoundDir + "bow1", SoundDir + "bow2"], 0.5f, 0.4f);
             crossbow = new SoundContainerMultiple([SoundDir + "CrossBow1", SoundDir + "CrossBow2"], 0.5f, 0.4f);
@@ -103,7 +104,7 @@ namespace VikingEngine.DSSWars
             musket = new SoundContainerMultiple([SoundDir + "musket1",SoundDir + "musket2",SoundDir + "musket3"], 2f, 0.4f);
             cannon = new SoundContainerMultiple([SoundDir + "cannon1",SoundDir + "cannon2",SoundDir + "cannon3"], 3f, 0.4f);
             block_attack = new SoundContainerMultiple([SoundDir + "block_attack (1)", SoundDir + "block_attack (3)"], 0.8f, 0.4f);
-
+            wood_bonk = new SoundContainerMultiple([SoundDir + "wood_bonk1", SoundDir + "wood_bonk2"], 0.8f, 0.4f);
 
             //Damage
             painvoice = new SoundContainerMultiple([SoundDir + "Dwarf Pain 1", SoundDir + "Dwarf Pain 2", SoundDir + "Dwarf Pain 3", SoundDir + "Dwarf Pain 4", SoundDir + "Dwarf Pain 5", SoundDir + "Dwarf Pain 6" ], 0.4f, 0.6f);

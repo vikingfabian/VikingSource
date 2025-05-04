@@ -74,16 +74,18 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         {
             return true;
         }
-        //protected override DetailUnitModel initModel()
-        //{
-        //    if (this.parentArrayIndex == 11)
-        //    {
-        //        return new KnightBannerModel(this);
-        //    }
-        //    else
-        //    {
-        //        return new KnightModel(this);
-        //    }
-        //}
+        public override void DeleteMe(DeleteReason reason, bool removeFromParent)
+        {
+            //base.DeleteMe(reason, removeFromParent);
+            isDeleted = true;
+            health = 0;
+
+            deleteModels();
+
+            if (removeFromParent)
+            {
+                group?.remove(this);
+            }
+        }
     }
 }
