@@ -38,6 +38,7 @@ namespace VikingEngine.DSSWars
         public static float SoldierGroupStandardRotatingSpeed = 6.5f;
         public static float WarmashineRotatingSpeed_NoWheels = SoldierGroupStandardRotatingSpeed * 0.1f;
         public static float WarmashineRotatingSpeed_Wheels = SoldierGroupStandardRotatingSpeed * 0.2f;
+        public static float ShipRotatingSpeed = SoldierGroupStandardRotatingSpeed * 0.4f;
 
         public static float Men_StandardModelScale = 0.06f;
         public static float Men_StandardWalkingSpeed = 0.00018f;
@@ -291,6 +292,9 @@ namespace VikingEngine.DSSWars
         public static float SoundChanceDeathScream = 0.12f;
         public static float SoundChanceDamageGore = 0.02f;
         public static float SoundChanceDeathGore = 0.2f;
+
+        public static IntervalF ShipSoundTimeSec = new IntervalF(3, 4);
+        public static float SoundChanceShip = 0.2f;
 
     }
 }

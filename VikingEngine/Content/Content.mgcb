@@ -1696,6 +1696,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/select_faction.wav
 
+#begin DSS/Sound/ship_knirr1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ship_knirr1.wav
+
+#begin DSS/Sound/ship_knirr2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ship_knirr2.wav
+
 #begin DSS/Sound/spear.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1779,6 +1791,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/trophy.wav
+
+#begin DSS/Sound/wood_bonk1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wood_bonk1.wav
+
+#begin DSS/Sound/wood_bonk2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wood_bonk2.wav
 
 #begin DSS/Sound/woodcut.wav
 /importer:WavImporter

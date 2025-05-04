@@ -1,6 +1,5 @@
 ﻿UPDATE
 -Change Log-
-* Fixed rectangle select hangup
 
 
 !! Known issues, that I am working on !!
@@ -22,8 +21,8 @@
 -army center can move to far from soldiers
 -armies can be too passive to enemy armies passing by
 -army centers should not stay on cities 
--rectangle select can lock up the game
-
+-ai breaks peace too easy
+-war, grow, export needs description
 
 #Free build defences
  Rock thrower

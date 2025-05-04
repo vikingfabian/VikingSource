@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.Battle
             if (nearBodyCollisionUnits.Count > 0)
             {
                
-                if (Ref.peRnd.ChanceF(0.12f))
+                if (Ref.peRnd.ChanceF(0.2f))
                 {
                     collisionForce = Vector2.Zero;
 

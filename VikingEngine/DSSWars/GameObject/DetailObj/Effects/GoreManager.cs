@@ -11,6 +11,7 @@ namespace VikingEngine.DSSWars.GameObject
     static class GoreManager
     {
         static float BloodRadius = DssConst.Men_StandardModelScale * 0.1f;
+        static float BloodRadiusShip = DssConst.Men_StandardModelScale * 0.8f;
 
         public static void ViewDamage(AbsDetailUnit reciever, int damageAmount, Rotation1D attackDir)
         {
@@ -35,13 +36,30 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 if (Ref.peRnd.ChanceF(soundChanceGore))
                 {
-                    SoundLib.fleshgore.Play(reciever.position);
+                    if (reciever.IsShipType())
+                    {
+                        SoundLib.wood_bonk.Play(reciever.position);
+                    }
+                    else
+                    {
+                        SoundLib.fleshgore.Play(reciever.position);
+                    }
                 }
 
                 int particleCount = Bound.Min(damageAmount * Ref.gamesett.Blood / 100, 2);
                 Vector3 pos = reciever.position;
-                pos.Y += DssConst.Men_StandardModelScale * 0.1f;
-                Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.DssDamage, pos, BloodRadius, particleCount);
+                float radius;
+                if (reciever.IsShipType())
+                {
+                    pos.Y += DssConst.Men_StandardModelScale * 1f;
+                    radius = BloodRadiusShip;
+                }
+                else
+                { 
+                    pos.Y += DssConst.Men_StandardModelScale * 0.1f;
+                    radius = BloodRadius;
+                }
+                Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.DssDamage, pos, radius, particleCount);
             }
         }
 

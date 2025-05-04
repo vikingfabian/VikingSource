@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.ToGG.HeroQuest.Gadgets;
 using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -35,17 +36,24 @@ namespace VikingEngine.DSSWars.GameObject
             model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipmelee, true, DssConst.Men_StandardModelScale * 2f, true);
             model.Frame = frame;
             model.AddToRender(DrawGame.UnitDetailLayer);
+
+            Time_Update(0);
         }
 
         public override void Time_Update(float time_ms)
         {
-            WP.Rotation1DToQuaterion(model, ship.rotation.Radians);
-            model.position = model.Rotation.TranslateAlongAxis(
-                posDiff, ship.position);
-
-            if (!ship.inAttackAnimation() || ship.isDeleted)
+            var shipModel_sp = ship.model;
+            if (shipModel_sp != null)
             {
-                DeleteMe();
+                //WP.Rotation1DToQuaterion(model, ship.rotation.Radians);
+                model.Rotation = shipModel_sp.model.Rotation;
+                model.position = model.Rotation.TranslateAlongAxis(
+                    posDiff, shipModel_sp.model.position);
+
+                if (!ship.inAttackAnimation() || ship.isDeleted)
+                {
+                    DeleteMe();
+                }
             }
         }
 
