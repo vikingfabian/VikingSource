@@ -152,8 +152,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         }
 
         public bool Generate(bool save, Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings, List<Task> extraTasks)
-        {           
-
+        {
+            //Debug.Log("Generate map, " + worldMeta.seed);
             try
             {
                 generate_clearpass(worldMeta, generateSettings);
@@ -331,6 +331,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             world.rnd = new PcgRandom(world.metaData.seed);
             noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.seed);
 
+            //Debug.Log("postLoadGenerate_Part1, " + world.metaData.seed);
             //partComplete = new bool[ProcessSubTileParts];
             var task = Task.Factory.StartNew(async () =>
             {
@@ -343,7 +344,14 @@ namespace VikingEngine.DSSWars.Map.Generate
                         int part = i;
                         tasks.Add(Task.Factory.StartNew(() =>
                         {
-                            biomGradient(part);
+                            try
+                            {
+                                biomGradient(part);
+                            }
+                            catch (Exception ex)
+                            {
+                                BlueScreen.ThreadException = ex;
+                            }
                         }));
                     }
 
@@ -356,7 +364,15 @@ namespace VikingEngine.DSSWars.Map.Generate
                         int part = i;
                         tasks.Add(Task.Factory.StartNew(() =>
                         {
-                            processSubTiles(part);
+                            try
+                            {
+                                processSubTiles(part);
+                            }
+                            catch (Exception ex)
+                            {
+                                BlueScreen.ThreadException = ex;
+                            }
+                            
                         }));
                     }
 
@@ -373,35 +389,35 @@ namespace VikingEngine.DSSWars.Map.Generate
             });
 
         }
+        
+//public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
+//{
+//    this.world = world;
+//    world.rnd = new PcgRandom(world.metaData.seed);
 
-        //public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
-        //{
-        //    this.world = world;
-        //    world.rnd = new PcgRandom(world.metaData.seed);
+//    Task.Factory.StartNew(() =>
+//    {
+//        GenerateRoads roads = new GenerateRoads();
 
-        //    Task.Factory.StartNew(() =>
-        //    {
-        //        GenerateRoads roads = new GenerateRoads();
+//        if (loadMeta == null)
+//        {
+//            CityTemplateCollection templateCollection = new CityTemplateCollection();
 
-        //        if (loadMeta == null)
-        //        {
-        //            CityTemplateCollection templateCollection = new CityTemplateCollection();
+//            foreach (var c in world.cities)
+//            {
+//                Task.Factory.StartNew(() =>
+//                {
+//                    c.createBuildingSubtiles(world, templateCollection);
+//                });
+//            }
 
-        //            foreach (var c in world.cities)
-        //            {
-        //                Task.Factory.StartNew(() =>
-        //                {
-        //                    c.createBuildingSubtiles(world, templateCollection);
-        //                });
-        //            }
+//            //How do I wait for all threads to complete?
+//        }
 
-        //            //How do I wait for all threads to complete?
-        //        }
-
-        //        postComplete = true;
-        //    });
-        //}
-        public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
+//        postComplete = true;
+//    });
+//}
+public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             this.world = world;
             world.rnd = new PcgRandom(world.metaData.seed);
@@ -421,10 +437,19 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                         foreach (var c in world.cities)
                         {
+                            City city = c;
                             // Start the task and add it to the list
                             tasks.Add(Task.Factory.StartNew(() =>
                             {
-                                c.createBuildingSubtiles(world, templateCollection);
+                                try
+                                {
+                                    city.createBuildingSubtiles(world, templateCollection);
+                                }
+                                catch (Exception ex)
+                                {
+                                    BlueScreen.ThreadException = ex;
+                                }
+                                
                             }));
                         }
 
@@ -438,7 +463,15 @@ namespace VikingEngine.DSSWars.Map.Generate
                             // Start the task and add it to the list
                             tasks.Add(Task.Factory.StartNew(() =>
                             {
-                                roads.fromCity(world, c);
+                                try
+                                {
+                                    roads.fromCity(world, c);
+                                }
+                                catch (Exception ex)
+                                {
+                                    BlueScreen.ThreadException = ex;
+                                }
+                               
                             }));
                         }
 
@@ -708,29 +741,37 @@ namespace VikingEngine.DSSWars.Map.Generate
                     // Start the task and add it to the list
                     tasks.Add(Task.Factory.StartNew(() =>
                     {
-                        Tile nTile;
-                        while (loop.Next())
+                        try
                         {
-                            ref var tile = ref world.tileGrid.array[loop.Position.X, loop.Position.Y];
-                            if (tile.heightLevel == Height.MountainLowPeak)
+                            Tile nTile;
+                            while (loop.Next())
                             {
-                                bool centermountain = true;
-                                foreach (IntVector2 dir in IntVector2.Dir4Array)
+                                ref var tile = ref world.tileGrid.array[loop.Position.X, loop.Position.Y];
+                                if (tile.heightLevel == Height.MountainLowPeak)
                                 {
-                                    var npos = loop.Position + dir;
-                                    if (world.GetTileSafe(npos, out nTile) && nTile.heightLevel < Height.MountainLowPeak)
+                                    bool centermountain = true;
+                                    foreach (IntVector2 dir in IntVector2.Dir4Array)
                                     {
-                                        centermountain = false;
-                                        break;
+                                        var npos = loop.Position + dir;
+                                        if (world.GetTileSafe(npos, out nTile) && nTile.heightLevel < Height.MountainLowPeak)
+                                        {
+                                            centermountain = false;
+                                            break;
+                                        }
                                     }
-                                }
 
-                                if (centermountain)
-                                {
-                                    tile.heightLevel = Height.MaxHeight;
+                                    if (centermountain)
+                                    {
+                                        tile.heightLevel = Height.MaxHeight;
+                                    }
                                 }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            BlueScreen.ThreadException = ex;
+                        }
+                        
                     }));
                 }
 
@@ -748,179 +789,187 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             var result = Task.Factory.StartNew(async () =>
             {
+                try
                 {
-                    //Clean up all water heights
-                    List<Task> tasks = new List<Task>();
-
-                    for (int part = 0; part < ProcessTilesDivisionParts; ++part)
                     {
-                        ForXYLoop loop = ProcessPartLoop(part);
-                        
-                        tasks.Add(Task.Factory.StartNew(() =>
+                        //Clean up all water heights
+                        List<Task> tasks = new List<Task>();
+
+                        for (int part = 0; part < ProcessTilesDivisionParts; ++part)
                         {
-                            while (loop.Next())
+                            ForXYLoop loop = ProcessPartLoop(part);
+
+                            tasks.Add(Task.Factory.StartNew(() =>
                             {
-                                ref var tile = ref world.tileGrid.array[loop.Position.X, loop.Position.Y];
-                                if (tile.IsWater())
-                                {
-                                    tile.heightLevel = Height.DeepWaterHeight;                                   
-                                }
-                            }
-                        }));
-                    }
-
-
-                    // Wait for all tasks to complete
-                    await Task.WhenAll(tasks);
-                }
-                {
-                    List<Task> tasks = new List<Task>();
-
-                    for (int part = 0; part < ProcessTilesDivisionParts; ++part)
-                    {
-                        ForXYLoop loop = ProcessPartLoop(part);
-                        // Start the task and add it to the list
-                        tasks.Add(Task.Factory.StartNew(() =>
-                        {
-                            Tile nTile;
-                            while (loop.Next())
-                            {
-                                ref var tile = ref world.tileGrid.array[loop.Position.X, loop.Position.Y];
-                                if (tile.IsWater())
-                                {
-                                    //tile.heightLevel = Height.DeepWaterHeight;
-
-                                    bool landAdjacent = false;
-                                    //Check if it has a neighbor tile that is land
-                                    foreach (IntVector2 dir in IntVector2.Dir4Array)
-                                    {                                        
-                                        var npos = loop.Position + dir;
-                                        if (world.GetTileSafe(npos, out nTile) && nTile.IsLand())
-                                        {
-                                            landAdjacent = true;
-                                            //Is water to land border
-                                            nTile.seaDistanceHeatMap = OrthogonalHeat;
-
-                                            
-                                            tile.seaDistanceHeatMap = -OrthogonalHeat;
-
-                                            world.tileGrid.Set(npos, nTile);
-                                        }
-                                    }
-
-                                    if (tile.seaDistanceHeatMap == int.MinValue)
-                                    {                                       
-                                        foreach (IntVector2 dir in IntVector2.AllDiagonalsArray)
-                                        {
-                                            var npos = loop.Position + dir;
-                                            if (world.GetTileSafe(npos, out  nTile) && nTile.IsLand())
-                                            {   
-                                                landAdjacent = true;
-                                                //Is water to land border
-                                                if (nTile.seaDistanceHeatMap == int.MinValue)
-                                                {
-                                                    nTile.seaDistanceHeatMap = DiagonalHeat;
-                                                }
-                                                //tile.heightLevel = Height.LowWaterHeight;
-                                                if (tile.seaDistanceHeatMap == int.MinValue)
-                                                {
-                                                    tile.seaDistanceHeatMap = -DiagonalHeat;
-                                                }
-                                            }
-                                        }                                        
-                                    }
-
-                                    if (landAdjacent)
-                                    {
-                                        tile.heightLevel = Height.LowWaterHeight;
-                                        foreach (IntVector2 dir in IntVector2.Dir4Array)
-                                        {
-                                            var npos = loop.Position + dir;
-
-                                            if (world.tileGrid.InBounds(npos))
-                                            {
-                                                ref var neigborTile = ref world.tileGrid.array[npos.X, npos.Y];
-                                                if (neigborTile.heightLevel == Height.DeepWaterHeight)
-                                                {
-                                                    neigborTile.heightLevel = Height.LowerWaterHeight;
-                                                }
-                                            }
-
-                                        }
-                                    }
-
-                                }
-                            }
-
-
-                            //Loop until every tile has a distance value
-                            int updatedTiles = int.MaxValue;
-
-                            while (updatedTiles > 0)
-                            {
-                                updatedTiles = 0;
-
-                                loop.Reset();
                                 while (loop.Next())
                                 {
-                                    var tile = world.tileGrid.array[loop.Position.X, loop.Position.Y];
-                                    if (tile.seaDistanceHeatMap == int.MinValue)
+                                    ref var tile = ref world.tileGrid.array[loop.Position.X, loop.Position.Y];
+                                    if (tile.IsWater())
                                     {
-                                        //Tile nTile;
+                                        tile.heightLevel = Height.DeepWaterHeight;
+                                    }
+                                }
+                            }));
+                        }
 
+
+                        // Wait for all tasks to complete
+                        await Task.WhenAll(tasks);
+                    }
+                    {
+                        List<Task> tasks = new List<Task>();
+
+                        for (int part = 0; part < ProcessTilesDivisionParts; ++part)
+                        {
+                            ForXYLoop loop = ProcessPartLoop(part);
+                            // Start the task and add it to the list
+                            tasks.Add(Task.Factory.StartNew(() =>
+                            {
+                                Tile nTile;
+                                while (loop.Next())
+                                {
+                                    ref var tile = ref world.tileGrid.array[loop.Position.X, loop.Position.Y];
+                                    if (tile.IsWater())
+                                    {
+                                        //tile.heightLevel = Height.DeepWaterHeight;
+
+                                        bool landAdjacent = false;
+                                        //Check if it has a neighbor tile that is land
                                         foreach (IntVector2 dir in IntVector2.Dir4Array)
                                         {
                                             var npos = loop.Position + dir;
-                                            if (world.GetTileSafe(npos, out nTile) && nTile.seaDistanceHeatMap != int.MinValue)
+                                            if (world.GetTileSafe(npos, out nTile) && nTile.IsLand())
                                             {
-                                                ++updatedTiles;
+                                                landAdjacent = true;
+                                                //Is water to land border
+                                                nTile.seaDistanceHeatMap = OrthogonalHeat;
 
-                                                if (tile.IsLand())
+
+                                                tile.seaDistanceHeatMap = -OrthogonalHeat;
+
+                                                world.tileGrid.Set(npos, nTile);
+                                            }
+                                        }
+
+                                        if (tile.seaDistanceHeatMap == int.MinValue)
+                                        {
+                                            foreach (IntVector2 dir in IntVector2.AllDiagonalsArray)
+                                            {
+                                                var npos = loop.Position + dir;
+                                                if (world.GetTileSafe(npos, out nTile) && nTile.IsLand())
                                                 {
-                                                    tile.setWaterHeat_Land(nTile.seaDistanceHeatMap + OrthogonalHeat);
-                                                }
-                                                else
-                                                {
-                                                    tile.setWaterHeat_Water(nTile.seaDistanceHeatMap - OrthogonalHeat);
+                                                    landAdjacent = true;
+                                                    //Is water to land border
+                                                    if (nTile.seaDistanceHeatMap == int.MinValue)
+                                                    {
+                                                        nTile.seaDistanceHeatMap = DiagonalHeat;
+                                                    }
+                                                    //tile.heightLevel = Height.LowWaterHeight;
+                                                    if (tile.seaDistanceHeatMap == int.MinValue)
+                                                    {
+                                                        tile.seaDistanceHeatMap = -DiagonalHeat;
+                                                    }
                                                 }
                                             }
                                         }
 
-                                        foreach (IntVector2 dir in IntVector2.AllDiagonalsArray)
+                                        if (landAdjacent)
                                         {
-                                            var npos = loop.Position + dir;
-                                            if (world.GetTileSafe(npos, out nTile) &&
-                                                nTile.seaDistanceHeatMap != int.MinValue)
+                                            tile.heightLevel = Height.LowWaterHeight;
+                                            foreach (IntVector2 dir in IntVector2.Dir4Array)
                                             {
-                                                bool land = tile.IsLand();
+                                                var npos = loop.Position + dir;
 
-                                                if (land == nTile.IsLand())
+                                                if (world.tileGrid.InBounds(npos))
+                                                {
+                                                    ref var neigborTile = ref world.tileGrid.array[npos.X, npos.Y];
+                                                    if (neigborTile.heightLevel == Height.DeepWaterHeight)
+                                                    {
+                                                        neigborTile.heightLevel = Height.LowerWaterHeight;
+                                                    }
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+                                }
+
+
+                                //Loop until every tile has a distance value
+                                int updatedTiles = int.MaxValue;
+
+                                while (updatedTiles > 0)
+                                {
+                                    updatedTiles = 0;
+
+                                    loop.Reset();
+                                    while (loop.Next())
+                                    {
+                                        var tile = world.tileGrid.array[loop.Position.X, loop.Position.Y];
+                                        if (tile.seaDistanceHeatMap == int.MinValue)
+                                        {
+                                            //Tile nTile;
+
+                                            foreach (IntVector2 dir in IntVector2.Dir4Array)
+                                            {
+                                                var npos = loop.Position + dir;
+                                                if (world.GetTileSafe(npos, out nTile) && nTile.seaDistanceHeatMap != int.MinValue)
                                                 {
                                                     ++updatedTiles;
 
-                                                    if (land)
+                                                    if (tile.IsLand())
                                                     {
-                                                        tile.setWaterHeat_Land(nTile.seaDistanceHeatMap + DiagonalHeat);
+                                                        tile.setWaterHeat_Land(nTile.seaDistanceHeatMap + OrthogonalHeat);
                                                     }
                                                     else
                                                     {
-                                                        tile.setWaterHeat_Water(nTile.seaDistanceHeatMap - DiagonalHeat);
+                                                        tile.setWaterHeat_Water(nTile.seaDistanceHeatMap - OrthogonalHeat);
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        world.tileGrid.array[loop.Position.X, loop.Position.Y] = tile;
+                                            foreach (IntVector2 dir in IntVector2.AllDiagonalsArray)
+                                            {
+                                                var npos = loop.Position + dir;
+                                                if (world.GetTileSafe(npos, out nTile) &&
+                                                    nTile.seaDistanceHeatMap != int.MinValue)
+                                                {
+                                                    bool land = tile.IsLand();
+
+                                                    if (land == nTile.IsLand())
+                                                    {
+                                                        ++updatedTiles;
+
+                                                        if (land)
+                                                        {
+                                                            tile.setWaterHeat_Land(nTile.seaDistanceHeatMap + DiagonalHeat);
+                                                        }
+                                                        else
+                                                        {
+                                                            tile.setWaterHeat_Water(nTile.seaDistanceHeatMap - DiagonalHeat);
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            world.tileGrid.array[loop.Position.X, loop.Position.Y] = tile;
+                                        }
                                     }
                                 }
-                            }
-                        }));
+                            }));
+                        }
+
+
+                        // Wait for all tasks to complete
+                        await Task.WhenAll(tasks);
                     }
-
-
-                    // Wait for all tasks to complete
-                    await Task.WhenAll(tasks);
                 }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+                
             });
 
             return result;
@@ -968,28 +1017,44 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 Task prepTask = Task.Factory.StartNew(() =>
                 {
-                    prepAvailableCityTiles();
+                    try
+                    {
+                        prepAvailableCityTiles();
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                    
                 });
 
                 bool success = Task.Run(() =>
                 {
-                    while (!prepTask.IsCompleted || preppedTiles.Count > 0)
+                    try
                     {
-                        if (preppedTiles.TryPop(out IntVector2 pos))
+                        while (!prepTask.IsCompleted || preppedTiles.Count > 0)
                         {
-                            if (cityHasNeededSpace(pos))
+                            if (preppedTiles.TryPop(out IntVector2 pos))
                             {
-                                City c = new City(world.cities.Count, pos, type, world);
-                                c.generateCultureAndEconomy(world, cityCultureCollection);
-                                world.cities.Add(c);
+                                if (cityHasNeededSpace(pos))
+                                {
+                                    City c = new City(world.cities.Count, pos, type, world);
+                                    c.generateCultureAndEconomy(world, cityCultureCollection);
+                                    world.cities.Add(c);
 
-                                Tile cityTile = world.tileGrid.Get(pos);
-                                cityTile.tileContent = TileContent.City;
-                                world.tileGrid.Set(pos, cityTile);
+                                    Tile cityTile = world.tileGrid.Get(pos);
+                                    cityTile.tileContent = TileContent.City;
+                                    world.tileGrid.Set(pos, cityTile);
 
-                                world.unitCollAreaGrid.add(c);
+                                    world.unitCollAreaGrid.add(c);
+                                }
                             }
                         }
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
                     }
                     return true;
                 }).Result;
@@ -1466,7 +1531,9 @@ namespace VikingEngine.DSSWars.Map.Generate
             int partWidth = world.Size.X / ProcessTilesDivisionParts;
             int startX = partWidth * part;
             int endX = startX + partWidth;
-            
+
+            //Debug.Log($"processSubTiles part{part} start{startX}, end{endX}");
+
             for (int loopy = 0; loopy < world.Size.Y; ++loopy)
             {
                 int supTileStartY = loopy * WorldData.TileSubDivitions;

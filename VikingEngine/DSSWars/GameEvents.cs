@@ -43,6 +43,8 @@ namespace VikingEngine.DSSWars
         virtual public void onGameStarted()
         { }
 
+        virtual public void onTutorialEnd()
+        { }
 
         virtual public void asyncUpdate(float time)
         {

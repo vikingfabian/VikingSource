@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.PJ.CarBall;
 
@@ -102,7 +103,15 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 Task.Factory.StartNew(() =>
                 {
-                    execute();
+                    try
+                    {
+                        execute();
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                    
                 });
             }
             else

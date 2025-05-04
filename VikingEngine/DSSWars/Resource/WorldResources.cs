@@ -92,15 +92,15 @@ namespace VikingEngine.DSSWars.Resource
                     edit.ExecuteEdit();
                 }
 
-                var subtile = DssRef.world.subTileGrid.Get(loop.Position);
+                ref var subtile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
 
                 if (subtile.mainTerrain == TerrainMainType.Foil)
                 {
-                    terrainContent.asyncFoilGroth(loop.Position, subtile);
+                    terrainContent.asyncFoilGroth(loop.Position, ref subtile);
                 }
                 else if (subtile.mainTerrain == TerrainMainType.Building)
                 {
-                    terrainContent.asyncCityProduce(loop.Position, subtile);
+                    terrainContent.asyncCityProduce(loop.Position, ref subtile);
                 }
             }
         }

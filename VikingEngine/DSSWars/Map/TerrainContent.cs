@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.Map
         public const int DefaultMineAmount = 10;
         public const int MineAmount_Coal = 20;
 
-        public void asyncFoilGroth(IntVector2 pos, SubTile subtile)
+        public void asyncFoilGroth(IntVector2 pos, ref SubTile subtile)
         {
             Map.TerrainSubFoilType foilType = (Map.TerrainSubFoilType)subtile.subTerrain;
             switch (foilType)
@@ -53,16 +53,17 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 rndDir *= 2;
                             }
-                            Map.SubTile ntile;
+                            //Map.SubTile ntile;
                             var npos = pos + rndDir;
-                            if (DssRef.world.subTileGrid.TryGet(npos, out ntile))
+                            if (DssRef.world.subTileGrid.InBounds(npos))//.TryGet(npos, out ntile))
                             {
+                                ref var ntile = ref DssRef.world.subTileGrid.GetRef(npos);
                                 if (ntile.mainTerrain == Map.TerrainMainType.DefaultLand)
                                 {
                                     Map.TerrainSubFoilType sprout = foilType == Map.TerrainSubFoilType.TreeSoft ? Map.TerrainSubFoilType.TreeSoftSprout : Map.TerrainSubFoilType.TreeHardSprout;
                                     ntile.SetType(Map.TerrainMainType.Foil, (int)sprout, 1);
 
-                                    DssRef.world.subTileGrid.Set(npos, ntile);
+                                    //DssRef.world.subTileGrid.Set(npos, ntile);
                                 }
                             }
 
@@ -77,7 +78,7 @@ namespace VikingEngine.DSSWars.Map
                             subtile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHard, 1);
                         }
 
-                        DssRef.world.subTileGrid.Set(pos, subtile);
+                        //DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;
 
@@ -93,13 +94,13 @@ namespace VikingEngine.DSSWars.Map
                         subtile.terrainAmount < FarmCulture_MaxSize)
                     {
                         subtile.terrainAmount++;
-                        DssRef.world.subTileGrid.Set(pos, subtile);
+                        //DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;
             }
         }
 
-        public void asyncCityProduce(IntVector2 pos, SubTile subtile)
+        public void asyncCityProduce(IntVector2 pos, ref SubTile subtile)
         {
             Map.TerrainBuildingType buildingType = (Map.TerrainBuildingType)subtile.subTerrain;
             switch (buildingType)
@@ -108,7 +109,7 @@ namespace VikingEngine.DSSWars.Map
                     if (subtile.terrainAmount < PigMaxTotal)
                     {
                         subtile.terrainAmount++;
-                        DssRef.world.subTileGrid.Set(pos, subtile);
+                        //DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;
                 case TerrainBuildingType.HenPen:
@@ -131,7 +132,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         subtile.terrainAmount++;
                     }
-                    DssRef.world.subTileGrid.Set(pos, subtile);
+                    //DssRef.world.subTileGrid.Set(pos, subtile);
                     break;
             }
         }

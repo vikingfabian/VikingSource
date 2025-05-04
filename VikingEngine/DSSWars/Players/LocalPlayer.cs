@@ -32,6 +32,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.Input;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
+using VikingEngine.DebugExtensions;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -1294,11 +1295,19 @@ namespace VikingEngine.DSSWars.Players
             {
                 Task.Factory.StartNew(() =>
                 {
-                    var citiesC = faction.cities.counter();
-                    while (citiesC.Next())
+                    try
                     {
-                        citiesC.sel.checkPlayerFuelAccess_OnGamestart_async();
+                        var citiesC = faction.cities.counter();
+                        while (citiesC.Next())
+                        {
+                            citiesC.sel.checkPlayerFuelAccess_OnGamestart_async();
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                    
                 });
             }
 

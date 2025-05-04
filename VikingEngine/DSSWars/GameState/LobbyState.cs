@@ -580,10 +580,12 @@ namespace VikingEngine.DSSWars
 
         void startBattleLab()
         {
+            mapBackgroundLoading?.Abort();
             new StartBattleLab(mapBackgroundLoading);
         }
         void startTrial()
         {
+            mapBackgroundLoading?.Abort();
             new StartBattleLab();
         }
         //        void mainMenu()

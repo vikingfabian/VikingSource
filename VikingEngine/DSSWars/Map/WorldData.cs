@@ -448,9 +448,9 @@ namespace VikingEngine.DSSWars
 
             while (loop.Next())
             {
-                var tile = DssRef.world.subTileGrid.Get(loop.Position);
+                ref var tile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
                 tile.read(r, ref previous, int.MaxValue);
-                DssRef.world.subTileGrid.Set(loop.Position, tile);
+                //DssRef.world.subTileGrid.Set(loop.Position, tile);
 
                 previous = tile;
             }

@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void ExecuteEdit()
         {
-            var subTile = DssRef.world.subTileGrid.Get(position);
+            ref var subTile = ref DssRef.world.subTileGrid.GetRef(position);
             if (editTerrain)
             {
                 subTile.mainTerrain = value.mainTerrain;
@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.Map
                 subTile.collectionPointer = value.collectionPointer;
             }
 
-            DssRef.world.subTileGrid.Set(position, subTile);
+            //DssRef.world.subTileGrid.Set(position, subTile);
         }
     }
 }

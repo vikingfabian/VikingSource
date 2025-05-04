@@ -9,6 +9,7 @@ using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -368,87 +369,90 @@ namespace VikingEngine.DSSWars.Build
 
             Task.Factory.StartNew(() =>
             {
-                List<IntVector2> positions = new List<IntVector2>(count);
-                CityStructure structure = new CityStructure();
-                structure.update(city, 1);
-
-                findBuildPositons_AutoBuilder(positions);
-                if (count > 0)
+                try
                 {
-                    findBuildPositons_Loop(positions);
-                }
+                    List<IntVector2> positions = new List<IntVector2>(count);
+                    CityStructure structure = new CityStructure();
+                    structure.update(city, 1);
 
-                foreach (IntVector2 position in positions)
-                {
-                    player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, false);
-                }
-
-                void findBuildPositons_AutoBuilder(List<IntVector2> result)
-                {
-                    if (city.buildingStructure.getCount(buildType) > 0)
+                    findBuildPositons_AutoBuilder(positions);
+                    if (count > 0)
                     {
-                        var prevPos = structure.buildingPosition.getPos(buildType);
-                        if (prevPos.X > 0)
-                        {                            
-                            findAdjacentFreeSpot(prevPos);
-                        }
+                        findBuildPositons_Loop(positions);
                     }
 
-                    void findAdjacentFreeSpot(IntVector2 center)
+                    foreach (IntVector2 position in positions)
                     {
-                        ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
-                        for (int r = 1; r <= 2; r++)
-                        {
-                            Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+                        player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, false);
+                    }
 
-                            while (Auto_EdgeRandomizer.Next())
+                    void findBuildPositons_AutoBuilder(List<IntVector2> result)
+                    {
+                        if (city.buildingStructure.getCount(buildType) > 0)
+                        {
+                            var prevPos = structure.buildingPosition.getPos(buildType);
+                            if (prevPos.X > 0)
                             {
-                                if (structure.MayAutoBuildHere(city, Auto_EdgeRandomizer.Position) &&
-                                    !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
+                                findAdjacentFreeSpot(prevPos);
+                            }
+                        }
+
+                        void findAdjacentFreeSpot(IntVector2 center)
+                        {
+                            ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
+                            for (int r = 1; r <= 2; r++)
+                            {
+                                Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+
+                                while (Auto_EdgeRandomizer.Next())
                                 {
-                                    result.Add(Auto_EdgeRandomizer.Position);
-                                    //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
-                                    if (--count <= 0)
-                                    { return; }
+                                    if (structure.MayAutoBuildHere(city, Auto_EdgeRandomizer.Position) &&
+                                        !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
+                                    {
+                                        result.Add(Auto_EdgeRandomizer.Position);
+                                        //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
+                                        if (--count <= 0)
+                                        { return; }
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
 
-                void findBuildPositons_Loop(List<IntVector2> result)
-                {
-                    IntVector2 topleft;
-                    ForXYLoop subTileLoop;
-
-                    for (int radius = 1; radius <= city.cityTileRadius; ++radius)
+                    void findBuildPositons_Loop(List<IntVector2> result)
                     {
-                        int distanceValue = -radius;
-                        ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                        IntVector2 topleft;
+                        ForXYLoop subTileLoop;
 
-                        while (cirkleLoop.Next())
+                        for (int radius = 1; radius <= city.cityTileRadius; ++radius)
                         {
-                            if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                            int distanceValue = -radius;
+                            ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+
+                            while (cirkleLoop.Next())
                             {
-                                var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                                if (tile.CityIndex == city.parentArrayIndex && tile.MayBuild())
+                                if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
                                 {
-                                    topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                                    subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
-
-                                    while (subTileLoop.Next())
+                                    var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+                                    if (tile.CityIndex == city.parentArrayIndex && tile.MayBuild())
                                     {
-                                        var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                        topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
+                                        subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
 
-                                        if (subTile.MayBuild(placeBuildingType, out bool upgrade)
-                                            &&
-                                            !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
+                                        while (subTileLoop.Next())
                                         {
-                                            result.Add(subTileLoop.Position);
-                                            //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
-                                            if (--count <= 0)
-                                            { return; }
+                                            var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+
+                                            if (subTile.MayBuild(placeBuildingType, out bool upgrade)
+                                                &&
+                                                !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
+                                            {
+                                                result.Add(subTileLoop.Position);
+                                                //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
+                                                if (--count <= 0)
+                                                { return; }
+                                            }
                                         }
                                     }
                                 }
@@ -456,6 +460,11 @@ namespace VikingEngine.DSSWars.Build
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+               
 
             });           
         }

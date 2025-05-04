@@ -1,7 +1,5 @@
 ﻿UPDATE
 -Change Log-
-* tutorial is hiding parts of the faction head display
-* fixed: faction strength did not include guards
 
 
 !! Known issues, that I am working on !!
@@ -19,7 +17,11 @@
 -Automation builds too many low grade soldiers
 -Ship attacks are visually broken, no sound and bad feedback
 -Upgrade logistics is missing info
--tutorial doesnt end
+-"homes" are confusing in child description
+-army center can move to far from soldiers
+-armies can be too passive to enemy armies passing by
+-army centers should not stay on cities 
+-rectangle select can lock up the game
 
 
 #Free build defences

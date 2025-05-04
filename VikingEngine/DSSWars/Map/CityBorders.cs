@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
@@ -65,7 +66,15 @@ namespace VikingEngine.DSSWars.Map
                     //state_0del_1process_2created = 1;
                     process = Task.Factory.StartNew(() =>
                     {
-                        create_async(player);
+                        try
+                        {
+                            create_async(player);
+                        }
+                        catch (Exception ex)
+                        {
+                            BlueScreen.ThreadException = ex;
+                        }
+                        
                     });
                 }
             }

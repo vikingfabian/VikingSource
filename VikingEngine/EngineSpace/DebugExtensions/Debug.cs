@@ -94,7 +94,9 @@ namespace VikingEngine
 
         public static void Log(string text)
         {
+#if DEBUG
             Log(DebugLogType.MSG, text);
+#endif
         }
         public static void LogWarning(string text)
         {

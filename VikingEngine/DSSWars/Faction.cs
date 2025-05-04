@@ -17,6 +17,7 @@ using VikingEngine.Network;
 using VikingEngine.ToGG.MoonFall;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DebugExtensions;
 
 namespace VikingEngine.DSSWars
 {
@@ -99,7 +100,7 @@ namespace VikingEngine.DSSWars
        
         public void onGameStart(bool newGame)
         {
-            player.onGameStart(newGame);
+            player?.onGameStart(newGame);
         }
 
         public void initDiplomacy(WorldData world)
@@ -869,34 +870,42 @@ namespace VikingEngine.DSSWars
 
         public void tradeAllianceWars(Faction otherFaction)
         {
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+                Task.Factory.StartNew(() =>
                 {
-                    foreach (var m in otherFaction.diplomaticRelations)
+                    try
                     {
-                        if (m != null)
+                        foreach (var m in otherFaction.diplomaticRelations)
                         {
-                            if (m.Relation <= RelationType.RelationTypeN3_War)
+                            if (m != null)
                             {
-                                var thirdFaction = m.opponent(otherFaction);
+                                if (m.Relation <= RelationType.RelationTypeN3_War)
+                                {
+                                    var thirdFaction = m.opponent(otherFaction);
 
-                                var thisAndThirdRelation = diplomaticRelations[thirdFaction.parentArrayIndex];
-                                if (thisAndThirdRelation == null)
-                                {
-                                    //Gain bad relation
-                                    DssRef.diplomacy.SetRelationType(this, thirdFaction, m.Relation);
-                                }
-                                else
-                                {
-                                    if (thisAndThirdRelation.Relation < RelationType.RelationType3_Ally)
+                                    var thisAndThirdRelation = diplomaticRelations[thirdFaction.parentArrayIndex];
+                                    if (thisAndThirdRelation == null)
                                     {
-                                        //share worst relation
-                                        RelationType worst = (RelationType)Math.Min((int)m.Relation, (int)thisAndThirdRelation.Relation);
-                                        DssRef.diplomacy.SetRelationType(this, thirdFaction, worst);
+                                        //Gain bad relation
+                                        DssRef.diplomacy.SetRelationType(this, thirdFaction, m.Relation);
+                                    }
+                                    else
+                                    {
+                                        if (thisAndThirdRelation.Relation < RelationType.RelationType3_Ally)
+                                        {
+                                            //share worst relation
+                                            RelationType worst = (RelationType)Math.Min((int)m.Relation, (int)thisAndThirdRelation.Relation);
+                                            DssRef.diplomacy.SetRelationType(this, thirdFaction, worst);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                    
                 }
             );
         }
@@ -905,11 +914,19 @@ namespace VikingEngine.DSSWars
         {
             Task task = Task.Factory.StartNew(() =>
             {
-                var armiesC = armies.counter();
-                while (armiesC.Next())
+                try
                 {
-                    armiesC.sel.stopAllAttacksAgainst(otherFaction);
+                    var armiesC = armies.counter();
+                    while (armiesC.Next())
+                    {
+                        armiesC.sel.stopAllAttacksAgainst(otherFaction);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+                
             });
         }
 

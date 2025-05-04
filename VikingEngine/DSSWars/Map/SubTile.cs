@@ -33,6 +33,12 @@ namespace VikingEngine.DSSWars.Map
 
         public SubTile(TerrainMainType type, int subType, Color color, float groundY)
         {
+#if DEBUG
+            if (color == ColorExt.Empty)
+            {
+                throw new Exception("Empty col");
+            }
+#endif
             this.color = color;
             this.groundY = groundY;
             this.mainTerrain = type;
@@ -159,6 +165,12 @@ namespace VikingEngine.DSSWars.Map
 
             groundY = r.ReadSingle();
             color = SaveLib.ReadColorStream_3B(r);
+#if DEBUG
+            if (color == ColorExt.Empty)
+            {
+                throw new Exception("Empty col");
+            }
+#endif
         }
 
         public bool EqualSaveData(ref SubTile other)
@@ -177,6 +189,13 @@ namespace VikingEngine.DSSWars.Map
             this.subTerrain = other.subTerrain;
             this.groundY = other.groundY;
             this.color = other.color;
+
+#if DEBUG
+            if (color == ColorExt.Empty)
+            {
+                throw new Exception("Empty col");
+            }
+#endif
         }
 
         public bool MayBuild(BuildAndExpandType build, out bool upgrade)

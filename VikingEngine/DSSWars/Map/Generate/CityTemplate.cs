@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         virtual public bool followsRequirements(IntVector2 tilePos, out int templateRotation, WorldData world)
         {
             templateRotation = -1;
-            checkTile(tilePos, out List<Dir4> availableGateRotations, out List<Dir4> availableHarborDirs, out int waterCount, out int landCount);
+            checkTile(world, tilePos, out List<Dir4> availableGateRotations, out List<Dir4> availableHarborDirs, out int waterCount, out int landCount);
 
             if (requireDryLand && waterCount > 0)
             {
@@ -200,7 +200,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             return false;
         }
 
-        protected void checkTile(IntVector2 tilePos, out List<Dir4> availableGateRotations, out List<Dir4> availableHarborDirs, out int waterCount, out int landCount)
+        protected void checkTile(WorldData world, IntVector2 tilePos, out List<Dir4> availableGateRotations, out List<Dir4> availableHarborDirs, out int waterCount, out int landCount)
         {
             landCount = 0;
             waterCount = 0;
@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             for (int i = 0; i < IntVector2.Dir4Array.Length; i++)
             {
                 IntVector2 nPos = tilePos + IntVector2.Dir4Array[i];
-                if (DssRef.world.tileGrid.Get(nPos).IsLand())
+                if (world.tileGrid.Get(nPos).IsLand())
                 {
                     availableGateRotations.Add((Dir4)i);
                 }
@@ -219,7 +219,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             for (int i = 0; i < IntVector2.Dir8Array.Length; i++)
             {
                 IntVector2 nPos = tilePos + IntVector2.Dir8Array[i];
-                if (DssRef.world.tileGrid.Get(nPos).IsLand())
+                if (world.tileGrid.Get(nPos).IsLand())
                 {
                     landCount++;
                 }

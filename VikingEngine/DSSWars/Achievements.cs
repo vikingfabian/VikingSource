@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.ToGG.MoonFall;
@@ -129,23 +130,31 @@ namespace VikingEngine.DSSWars
                 //Count allies
                 Task.Factory.StartNew(() =>
                 {
-                    int allyCount = 0;
-
-                    for (int i = 0; i < playerFaction.diplomaticRelations.Length; ++i)
+                    try
                     {
-                        var rel = playerFaction.diplomaticRelations[i];
-                        if (rel != null &&
-                            rel.Relation >= RelationType.RelationType3_Ally &&
-                            !DssRef.world.factions[i].HasZeroUnits())
+                        int allyCount = 0;
+
+                        for (int i = 0; i < playerFaction.diplomaticRelations.Length; ++i)
                         {
-                            ++allyCount;
+                            var rel = playerFaction.diplomaticRelations[i];
+                            if (rel != null &&
+                                rel.Relation >= RelationType.RelationType3_Ally &&
+                                !DssRef.world.factions[i].HasZeroUnits())
+                            {
+                                ++allyCount;
+                            }
+                        }
+
+                        if (allyCount >= FriendshipAllyCount)
+                        {
+                            Ref.update.AddSyncAction(new SyncAction1Arg<AchievementIndex>(UnlockAchievement, AchievementIndex.friendship));
                         }
                     }
-
-                    if (allyCount >= FriendshipAllyCount)
+                    catch (Exception ex)
                     {
-                        Ref.update.AddSyncAction(new SyncAction1Arg<AchievementIndex>(UnlockAchievement, AchievementIndex.friendship));
+                        BlueScreen.ThreadException = ex;
                     }
+                    
                 });
             }
         }
