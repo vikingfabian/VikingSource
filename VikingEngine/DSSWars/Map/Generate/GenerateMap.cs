@@ -334,38 +334,44 @@ namespace VikingEngine.DSSWars.Map.Generate
             //partComplete = new bool[ProcessSubTileParts];
             var task = Task.Factory.StartNew(async () =>
             {
-                List<Task> tasks = new List<Task>();
-
-                for (int i = 0; i < ProcessTilesDivisionParts; i++)
+                try
                 {
-                    int part = i;
-                    tasks.Add(Task.Factory.StartNew(() =>
+                    List<Task> tasks = new List<Task>();
+
+                    for (int i = 0; i < ProcessTilesDivisionParts; i++)
                     {
-                        biomGradient(part);
-                    }));
+                        int part = i;
+                        tasks.Add(Task.Factory.StartNew(() =>
+                        {
+                            biomGradient(part);
+                        }));
+                    }
+
+                    await Task.WhenAll(tasks);
+                    tasks.Clear();
+
+
+                    for (int i = 0; i < ProcessTilesDivisionParts; i++)
+                    {
+                        int part = i;
+                        tasks.Add(Task.Factory.StartNew(() =>
+                        {
+                            processSubTiles(part);
+                        }));
+                    }
+
+
+                    await Task.WhenAll(tasks);
+                    postComplete = true;
+
+                    //new Exception("test");
                 }
-
-                await Task.WhenAll(tasks);
-                tasks.Clear();
-
-                throw new Exception("test");
-
-                for (int i = 0; i < ProcessTilesDivisionParts; i++)
+                catch (Exception ex)
                 {
-                    int part = i;
-                    tasks.Add(Task.Factory.StartNew(() =>
-                    {
-                        processSubTiles(part);
-                    }));
+                    BlueScreen.ThreadException = ex;
                 }
-
-
-                await Task.WhenAll(tasks);
-                postComplete = true;
             });
 
-            task.ContinueWith(t => { BlueScreen.ThreadException = t.Exception; },
-                TaskContinuationOptions.OnlyOnFaulted);
         }
 
         //public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
@@ -402,43 +408,49 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             Task.Factory.StartNew(async () =>
             {
-                GenerateRoads roads = new GenerateRoads();
-
-                if (loadMeta == null)
+                try
                 {
-                    CityTemplateCollection templateCollection = new CityTemplateCollection();
+                    GenerateRoads roads = new GenerateRoads();
 
-                    // Create a list to hold the tasks
-                    List<Task> tasks = new List<Task>();
-
-                    foreach (var c in world.cities)
+                    if (loadMeta == null)
                     {
-                        // Start the task and add it to the list
-                        tasks.Add(Task.Factory.StartNew(() =>
+                        CityTemplateCollection templateCollection = new CityTemplateCollection();
+
+                        // Create a list to hold the tasks
+                        List<Task> tasks = new List<Task>();
+
+                        foreach (var c in world.cities)
                         {
-                            c.createBuildingSubtiles(world, templateCollection);
-                        }));
-                    }
+                            // Start the task and add it to the list
+                            tasks.Add(Task.Factory.StartNew(() =>
+                            {
+                                c.createBuildingSubtiles(world, templateCollection);
+                            }));
+                        }
 
-                    // Wait for all tasks to complete
-                    await Task.WhenAll(tasks);
+                        // Wait for all tasks to complete
+                        await Task.WhenAll(tasks);
 
-                    tasks.Clear();
+                        tasks.Clear();
 
-                    foreach (var c in world.cities)
-                    {
-                        // Start the task and add it to the list
-                        tasks.Add(Task.Factory.StartNew(() =>
+                        foreach (var c in world.cities)
                         {
-                            roads.fromCity(world, c);
-                        }));
-                    }
+                            // Start the task and add it to the list
+                            tasks.Add(Task.Factory.StartNew(() =>
+                            {
+                                roads.fromCity(world, c);
+                            }));
+                        }
 
-                    // Wait for all tasks to complete
-                    await Task.WhenAll(tasks);
+                        // Wait for all tasks to complete
+                        await Task.WhenAll(tasks);
+                    }
+                    postComplete = true;
                 }
-
-                postComplete = true;
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
             });
         }
 
