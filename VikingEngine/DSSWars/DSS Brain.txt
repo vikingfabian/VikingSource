@@ -1,33 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Added block system, for more powerful flanking
-* Block chance is different depending on soldier type
-* Height advantage (reduces block)
-* Some weapons reduce block chance
-* map seed option
-* roads
-* 5 new bioms
-* fade between bioms
-* adjusted the generating to mix the bioms more
-* added two new height levels
-* opt: split the map generating into multiple cores
-* flatter map (too better see behind hills)
-* blocked building on mountains
-* Optimized battle collisions
-* Reduced ship attack speed
-* Repaired trial mode
-* Fixed: Tutorial can start demo instead some times
-* Fixed: Cant capture defenseless cities
-* Reduced demo time fom 80 to 60 minutes (to remove stagnation at the end)
-* Cities have 4X water gain
-* Blocked alliance with United kingdoms
-* More lore accurate placemens of the enemies
-* fixed city hall upgrade
-* fixed: Hud get stuck on lagging out
-* fixed: Automation insta builds armies
-* improved ai conscripting
-* fixed: renaming breaks the game
-! The game is loading slower because of the added map processing and new models
+* Remade the story events to be dynmaic, will allow it to be more dynamic; branshing paths, new game plus etc 
 
 
 !! Known issues, that I am working on !!
@@ -37,7 +10,6 @@
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
 -Can sometimes show the wrong city on the hud
 -Soldier groups glitch in battle
-
 -Faction automations are broken/out of date
 -Ships on land
 -Must inform how faction priority works
@@ -45,7 +17,12 @@
 -Ai cant build defences
 -Ship attacks are visually broken, no sound and bad feedback
 -Upgrade logistics is missing info
+-Sandbox mode never start ai attacks
+-Auto expand dont consider town hall limits
+-The destroy factory missions break when save/load
 
+
+#DSS1 issues#
 
 
 #Free build defences

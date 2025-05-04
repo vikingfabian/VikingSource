@@ -28,6 +28,8 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt startNewStory = new StatsInt("startnew_story");
         public StatsInt startNewSandbox = new StatsInt("startnew_sandbox");
         public StatsInt startNewPeaceful = new StatsInt("startnew_peaceful");
+        public StatsInt startNewSpectator = new StatsInt("startnew_spectator");
+
         public StatsInt keyboard_user = new StatsInt("keyboard_user");
         public StatsInt controller_user = new StatsInt("controller_user");
 

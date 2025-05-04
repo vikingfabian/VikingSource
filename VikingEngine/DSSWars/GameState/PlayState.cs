@@ -2,6 +2,7 @@
 
 
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -110,7 +111,7 @@ namespace VikingEngine.DSSWars
             baseInit();
             technologyManager.initGame(false);
 
-            events = new GameEvents();
+            events = new Event.EventManager();
         }
 
         public void initGameState(bool newGame, ObjectPointerCollection pointers)
@@ -138,11 +139,11 @@ namespace VikingEngine.DSSWars
             if (PlatformSettings.STEAM_DEMO &&
                DssRef.storage.runTutorial_1short_2normal == 0)
             {
-                events = new GameEventsDemo();
+                events = new Event.GameEventsDemo();
             }
             else
             {
-                events = new GameEvents();
+                events = new Event.EventManager();
             }
 
         }
@@ -179,7 +180,16 @@ namespace VikingEngine.DSSWars
             new Faction(DssRef.world, FactionType.Barbarians);
 
             int playerCount = DssRef.storage.playerCount;
-            //int playerIndex = 0;
+
+            Stack<Faction> spectatorFaction = new Stack<Faction>(playerCount);
+            if (DssRef.difficulty.setting_gameMode == GameMode.Spectator)
+            {
+                for (int i = 0; i < playerCount; ++i)
+                {
+                    spectatorFaction.Push(new Faction(DssRef.world, FactionType.Player));
+                }
+            }
+
             localPlayers = new List<Players.LocalPlayer>(playerCount);
             Engine.Screen.SetupSplitScreen(playerCount, !DssRef.storage.verticalScreenSplit);
 
@@ -225,10 +235,23 @@ namespace VikingEngine.DSSWars
             {
                 for (var i = 0; i < playerCount; ++i)
                 {
-                    var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
-                    var local = new Players.LocalPlayer(startFaction);
+                    Players.LocalPlayer local;
+                    Faction startFaction;
+                    if (DssRef.difficulty.setting_gameMode == GameMode.Spectator)
+                    {
+                        startFaction = spectatorFaction.Pop();
+                        local = startFaction.player.GetLocalPlayer();
+                    }
+                    else
+                    {
+                        startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
+                        local = new Players.LocalPlayer(startFaction);
+                        localPlayers.Add(local);
+                    }
+                    
                     local.assignPlayer(i, playerCount, newGame);
-                    localPlayers.Add(local);
+                    
+                    
                 }
             }
             else

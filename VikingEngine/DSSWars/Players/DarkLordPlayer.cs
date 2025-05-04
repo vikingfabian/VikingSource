@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.LootFest.Players;
 
@@ -232,7 +233,7 @@ namespace VikingEngine.DSSWars.Players
         {
             bool result = base.buySoldiers(city, aggresive, commit);
 
-            if (commit && DssRef.state.events.nextEvent == EventType.DarkLordInPerson)
+            if (commit && DssRef.state.events.CurrentEvent()?.StoryEventType() == EventType.DarkLordInPerson)
             {
                 city.conscriptArmy(DssLib.SoldierProfile_HonorGuard.conscript, city.defaultConscriptPos(), 4);
 
@@ -240,7 +241,11 @@ namespace VikingEngine.DSSWars.Players
                 profile.specialization = SpecializationType.DarkLord;
                 city.conscriptArmy(profile, city.defaultConscriptPos(), 1);
 
-                DssRef.state.events.nextEvent = EventType.KillTheDarkLord;
+                DssRef.state.events.addStoryEvent(new List<AbsStoryEvent>
+                    {
+                        new StoryEvent_KillTheDarkLord()
+                    }, true);
+                //DssRef.state.events.nextEvent = EventType.KillTheDarkLord;
             }
 
             return result;

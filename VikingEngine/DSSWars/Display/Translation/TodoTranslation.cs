@@ -17,6 +17,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Conscript_BlockDescription => "Soldiers will block most attacks coming in their forward arc";
 
         public string Map_CustomSeed => "Map seed";
+
+        public string Settings_Mode_Spectator => "Spectator";
+
+        public string Settings_Mode_Spectator_Description => "Just watch";
     }
 
 }
