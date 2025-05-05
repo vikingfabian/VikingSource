@@ -658,7 +658,8 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 2),
             },
             XP.WorkExperienceType.Fletcher, 
-            XP.ExperienceLevel.Practitioner_2
+            XP.ExperienceLevel.Practitioner_2,
+            CraftRequirement.Carpenter
 
         );
         public static readonly CraftBlueprint LongBow = new CraftBlueprint(

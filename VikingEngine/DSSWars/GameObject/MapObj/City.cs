@@ -2212,7 +2212,8 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     automationFocus = focus;
                                     nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
-                                }, SoundLib.menu));
+                                }, SoundLib.menu), 
+                                new RbTooltip(automationToolTip, focus));
 
                             //button.setGroupSelectionColor(HudLib.RbSettings, automationFocus == focus);
                             content.Add(button);
@@ -2355,7 +2356,97 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
+
+            void automationToolTip(RichBoxContent content, object tag)
+            {
+                AutomationFocus focus = (AutomationFocus)tag;
+                switch (focus)
+                {
+                    case AutomationFocus.NoFocus:
+                        content.Add(new RbText(DssRef.todoLang.Automation_AutomationFocus_NoFocus_Description, HudLib.InfoYellow_Light));
+                        break;
+                    case AutomationFocus.Export:
+                        content.Add(new RbText(DssRef.todoLang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_Postal));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+                        //
+                        //content.newLine();
+                        //HudLib.BulletPoint(content);
+                        //content.space();
+                        //content.Add(new RbImage(SpriteName.WarsResource_Wood));
+                        //content.space();
+                        //content.Add(new RbText(DssRef.lang.Resource_TypeName_Wood));
+                        ////
+                        //content.newLine();
+                        //HudLib.BulletPoint(content);
+                        //content.space();
+                        //content.Add(new RbImage(SpriteName.WarsResource_Stone));
+                        //content.space();
+                        //content.Add(new RbText(DssRef.lang.Resource_TypeName_Stone));
+                        ////
+                        //content.newLine();
+                        //HudLib.BulletPoint(content);
+                        //content.space();
+                        //content.Add(new RbImage(SpriteName.));
+                        //content.space();
+                        //content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+
+
+                        break;
+
+                    case AutomationFocus.Military:
+                        content.Add(new RbText(DssRef.todoLang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_SoldierBarracks));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_SoldierBarracks));
+
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsSoldierIcon));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.UnitType_Soldier));
+
+                        break;
+
+                    case AutomationFocus.Grow:
+                        content.Add(new RbText(DssRef.todoLang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_WorkerHut));
+
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Wheat));
+
+                        break;
+                }
+            }
         }
+
+
+
         public void childrenTooltip(RichBoxContent content, object tag)
         {
             City city = (City)tag;

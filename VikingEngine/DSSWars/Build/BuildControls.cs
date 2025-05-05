@@ -473,9 +473,10 @@ namespace VikingEngine.DSSWars.Build
         {
             List<BuildCategoryTab> buildCategories = new List<BuildCategoryTab>
             {
-                 BuildCategoryTab.ExpandAndCraft,
-                  BuildCategoryTab.Military,
-                   BuildCategoryTab.Decor,
+                BuildCategoryTab.ExpandAndCraft,
+                BuildCategoryTab.Military,
+                BuildCategoryTab.Decor,
+                BuildCategoryTab.Updgrade,
             };
 
             if (city.buildingStructure.buildingLevel_logistics > 0)
@@ -496,6 +497,9 @@ namespace VikingEngine.DSSWars.Build
                         break;
                     case BuildCategoryTab.Decor:
                         tabIcon = SpriteName.warsBuildCategoryDecorTree;
+                        break;
+                    case BuildCategoryTab.Updgrade:
+                        tabIcon = SpriteName.MissingImage;
                         break;
                     default:
                         tabIcon = SpriteName.warsBuildCategoryAutomation;
@@ -1062,44 +1066,52 @@ namespace VikingEngine.DSSWars.Build
                     {
                         player.orders.clearAll(city);
                     }, SoundLib.menuBack), null, orderLength > 0));
-
-                if (city.buildingStructure.buildingLevel_logistics == 1)
-                {
-                    content.space();
-                    var upgradeText = new RbText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics));
-
-                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { upgradeText }, new RbAction(city.upgradeLogistics, SoundLib.menuBuy), new RbAction(() =>
-                    {
-                        RichBoxContent content = new RichBoxContent();
-                        HudLib.Label(content, DssRef.lang.XP_Upgrade);
-                        content.newLine();
-                        CraftBuildingLib.CraftLogistics.toMenu(content, city);
-
-                        content.newParagraph();
-                        HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
-                        content.newLine();
-                        content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor = city.faction.totalWorkForce >= DssConst.Logistics2_PopulationRequirement ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-
-                        content.newParagraph();
-                        HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
-                        content.newLine();
-                        content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(city.faction.totalWorkForce));
-
-                        player.hud.tooltip.create(player, content, true);
-                    }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
-                }
-
                 content.newLine();
                 content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
 
-                content.newParagraph();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.WarsCityHall),
-                    new RbText(DssRef.lang.CityHall_Upgrade)
-                }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
-                city.CanUpgradeCityHall()));
+                if (player.buildCategoryTab == BuildCategoryTab.Updgrade)
+                {
 
-                
+                    if (city.buildingStructure.buildingLevel_logistics == 1)
+                    {
+                        
+                        var upgradeText = new RbText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics));
+                        content.newParagraph();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() {
+                            new RbImage(SpriteName.WarsBuild_Logistics),
+                            new RbSpace(),
+                            upgradeText }, 
+                            new RbAction(city.upgradeLogistics, SoundLib.menuBuy), new RbTooltip((RichBoxContent content, object tag) =>
+                        {                            
+                            HudLib.Label(content, DssRef.lang.XP_Upgrade);
+                            content.newLine();
+                            CraftBuildingLib.CraftLogistics.toMenu(content, city);
+
+                            content.newParagraph();
+                            HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
+                            content.newLine();
+                            content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor = city.faction.totalWorkForce >= DssConst.Logistics2_PopulationRequirement ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+
+                            content.newParagraph();
+                            HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
+                            content.newLine();
+                            content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(city.faction.totalWorkForce));
+
+                            player.hud.tooltip.create(player, content, true);
+                        }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
+                    }
+
+
+
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.WarsCityHall),
+                        new RbSpace(),
+                        new RbText(DssRef.lang.CityHall_Upgrade)
+                        }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
+                            city.CanUpgradeCityHall()));
+
+                }
 
                 void autoBuildButton(string caption, int count)
                 {

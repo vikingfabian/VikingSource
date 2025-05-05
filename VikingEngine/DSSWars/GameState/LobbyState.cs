@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars
             DssRef.storage.runTutorial_1short_2normal = 0;
 
             SaveStateMeta meta = new SaveStateMeta();
-            meta.playmap = "demomap3";
+            meta.playmap = "demomap4";
 
             loadGame = meta;
             //openUnderMenu(UnderMenu_PlayerSetup, StackOption.Stack);

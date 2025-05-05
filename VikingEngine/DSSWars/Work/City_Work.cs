@@ -358,7 +358,7 @@ namespace VikingEngine.DSSWars.GameObject
                 IntVector2 center = WP.ToSubTilePos_Centered(tilePos);
                 workQue.Clear();
 
-                if (debugTagged)
+                if (debugTagged || parentArrayIndex == 218)
                 {
                     lib.DoNothing();
                 }
