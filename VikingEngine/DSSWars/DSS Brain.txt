@@ -1,6 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Remade the story events to be dynmaic, will allow it to be more dynamic; branshing paths, new game plus etc 
+* Remade the story events to be dynmaic, will allow branshing paths, new game plus etc 
 
 
 !! Known issues, that I am working on !!
