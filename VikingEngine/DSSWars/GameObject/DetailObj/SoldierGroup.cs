@@ -543,17 +543,10 @@ namespace VikingEngine.DSSWars.GameObject
                 complete = updateWalking(goal, ready, true, induvidualSpeed, army.armyGoalRotation, time);
                 if (ready)
                 {
-                    //if (complete)
-                    //{
-                    //    state = GroupState.GoingIdle;
-                    //    waitTime = 0;
-                    //}
-
                     if (waterNode != isShip)
                     {
                         if (!inShipOrGuardTransform)
                         {
-                            //inShipOrGuardTransform = true;
                             new ShipTransform(this, true);
                         }
                     }
@@ -592,9 +585,18 @@ namespace VikingEngine.DSSWars.GameObject
             if (path_sp != null && path_sp.NodeCountLeft() > 1)
             {
                 Vector3 result = path_sp.NextNodeWp(position, out bool complete, out waterNode);
+                if (waterNode != isShip)
+                {
+                    if (!inShipOrGuardTransform)
+                    {
+                        new ShipTransform(this, true);
+                    }
+                }
+
                 return result;
             }
 
+            
             waterNode = isShip;
             return target.position;
         }
