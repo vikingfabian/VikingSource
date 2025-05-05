@@ -1,5 +1,7 @@
 ﻿UPDATE
 -Change Log-
+* fixed crafting mithril crash
+* improved conscript tooltip
 
 
 !! Known issues, that I am working on !!

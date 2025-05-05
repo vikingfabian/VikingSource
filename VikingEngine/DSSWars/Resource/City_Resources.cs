@@ -585,6 +585,14 @@ namespace VikingEngine.DSSWars.GameObject
                     res_FullPlateArmor.amount += add;
                     faction.res_FullPlateArmor.onChange(add);
                     break;
+                case ItemResourceType.MithrilArmor:
+                    res_MithrilArmor.amount += add;
+                    faction.res_MithrilArmor.onChange(add);
+                    break;
+                case ItemResourceType.MithrilSword:
+                    res_MithrilSword.amount += add;
+                    faction.res_MithrilSword.onChange(add);
+                    break;
 
                 case ItemResourceType.ServiceMen:
                     freeServiceMen.amount += add;
@@ -964,6 +972,12 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.FullPlateArmor:
                     res_FullPlateArmor = resource;
                     break;
+                case ItemResourceType.MithrilArmor:
+                    res_MithrilArmor = resource;
+                    break;
+                //case ItemResourceType.MithrilSword:
+                //    res_MithrilSword = resource;
+                //    break;
                 case ItemResourceType.NONE:
                 case ItemResourceType.Gold:
                     // No action needed for these types

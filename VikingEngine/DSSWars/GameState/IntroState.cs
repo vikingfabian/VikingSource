@@ -55,7 +55,10 @@ namespace VikingEngine.DSSWars
                 {
                     new EngineSpace.DebugExtensions.SentryReport();
                 }
-                Ref.music = new Sound.MusicPlayer();
+                if (Ref.music == null)
+                {
+                    Ref.music = new Sound.MusicPlayer();
+                }
                 Engine.ParticleHandler.Init();
                 new VikingEngine.Engine.LoadBaseTextures();
                

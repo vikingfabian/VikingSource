@@ -291,6 +291,11 @@ namespace VikingEngine.DSSWars.Conscript
             content.Add(new RbImage(player.gameControls.input.Paste.Icon));
             content.space(0.5f);
             content.Add(new RbText(DssRef.lang.Hud_Paste));
+
+            content.Add(new RbSeperationLine());
+
+            ConscriptMenu.resourcesToMenu(content, city, this);
+
         }
     }
 }
