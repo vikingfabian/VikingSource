@@ -10,6 +10,10 @@ namespace VikingEngine.DSSWars
     {
         public const int MaxSpeedOption = 5;
 
+        //DIPLOMACY
+        public const int TruceTimeSec = 180;
+        public static IntervalF PeaceSafeTimeSec = new IntervalF(10, 60) * TimeExt.MinuteInSeconds;
+
         //SOLDIER
         public static int Soldier_DefaultHealth = 400;
         public static float Soldier_StandardAttackAndCoolDownTime = 1600;

@@ -96,7 +96,6 @@ namespace VikingEngine.DSSWars.GameState
             return detail ? voxelModelInstancesPool_detail : voxelModelInstancesPool_overview;
         }
 
-
         virtual public void OnLoadComplete()
         {
            

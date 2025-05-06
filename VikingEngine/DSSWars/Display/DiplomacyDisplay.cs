@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (selectedRelation.Relation == RelationType.RelationTypeN2_Truce)
                 {
-                    int sec = Convert.ToInt32(selectedRelation.RelationEnd_GameTimeSec - Ref.TotalGameTimeSec);
+                    int sec = Convert.ToInt32(selectedRelation.RelationEnd_GameTimeSec.Seconds);//selectedRelation.RelationEnd_GameTimeSec - Ref.TotalGameTimeSec);
                     content.text(string.Format(DssRef.lang.Diplomacy_TruceTimeLength, sec));
                 }
 
@@ -363,7 +363,7 @@ namespace VikingEngine.DSSWars.Display
             int cost = Diplomacy.ExtendTruceCost();
             if (player.diplomaticPoints.pay(cost, false))
             {
-                selectedRelation.RelationEnd_GameTimeSec += DssLib.TruceTimeSec;
+                selectedRelation.RelationEnd_GameTimeSec.addTime(DssConst.TruceTimeSec);
                 player.hud.needRefresh = true;
             }
         }
@@ -375,7 +375,7 @@ namespace VikingEngine.DSSWars.Display
 
             diplomacyCostToHud(cost, content);
             //string truceDesc = "Extends truce by {0} seconds";
-            content.text(string.Format(DssRef.lang.Diplomacy_TruceExtendTimeLength, DssLib.TruceTimeSec));
+            content.text(string.Format(DssRef.lang.Diplomacy_TruceExtendTimeLength, DssConst.TruceTimeSec));
 
             //player.hud.tooltip.create(player, content, true);
         }
@@ -396,12 +396,14 @@ namespace VikingEngine.DSSWars.Display
                 if (peace_notTruce)
                 {
                     DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType1_Peace);
+
+                    selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.PeaceSafeTimeSec.GetRandom());
                 }
                 else
                 {
                     DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationTypeN2_Truce);
                     
-                    selectedRelation.RelationEnd_GameTimeSec = Ref.TotalGameTimeSec + DssLib.TruceTimeSec;
+                    selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.TruceTimeSec);
                 }
             }
         }
@@ -433,7 +435,7 @@ namespace VikingEngine.DSSWars.Display
             if (peace_notTruce == false)
             {
                // string truceTimeString = "For {0} seconds";
-                content.text(string.Format(DssRef.lang.Diplomacy_TruceTimeLength, DssLib.TruceTimeSec));
+                content.text(string.Format(DssRef.lang.Diplomacy_TruceTimeLength, DssConst.TruceTimeSec));
             }
 
             //player.hud.tooltip.create(player, content, true);
@@ -454,6 +456,8 @@ namespace VikingEngine.DSSWars.Display
                 else
                 {
                     DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType2_Good);
+
+                    selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.PeaceSafeTimeSec.GetRandom());
                 }
 
                 player.hud.needRefresh = true;

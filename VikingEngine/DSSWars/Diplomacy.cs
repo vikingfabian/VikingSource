@@ -497,7 +497,7 @@ namespace VikingEngine.DSSWars
         int faction1, faction2;
         public RelationType Relation;
         public SpeakTerms SpeakTerms;
-        public float RelationEnd_GameTimeSec;
+        public GameTimeStamp RelationEnd_GameTimeSec;
         public bool secret = false;
 
         public DiplomaticRelation()
@@ -535,20 +535,62 @@ namespace VikingEngine.DSSWars
         {
             w.Write((short)faction1);
             w.Write((short)faction2);
-            w.Write((sbyte)Relation);
-            w.Write((sbyte)SpeakTerms);
-            w.Write(Convert.ToUInt16(RelationEnd_GameTimeSec));
+
+
+            bool hasRelation = Relation != RelationType.RelationType0_Neutral;
+            bool hasSpeakTerms = SpeakTerms != SpeakTerms.SpeakTerms0_Normal;
+            bool hasEndTime = RelationEnd_GameTimeSec.HasTime();
+
+            EightBit bools = new EightBit(hasRelation, hasSpeakTerms, hasEndTime);
+            bools.write(w);
+
+            if (hasRelation)
+            {
+                w.Write((sbyte)Relation);
+            }
+            if (hasSpeakTerms)
+            { 
+                w.Write((sbyte)SpeakTerms);
+            }
+            if (hasEndTime)
+            { 
+                RelationEnd_GameTimeSec.write(w);
+            }
+            //w.Write((sbyte)Relation);
+            //w.Write((sbyte)SpeakTerms);
+            //RelationEnd_GameTimeSec.write_ushort(w);
+            //w.Write(Convert.ToUInt16(RelationEnd_GameTimeSec));
         }
 
-        public bool read(System.IO.BinaryReader r, int version)
+        public bool read(System.IO.BinaryReader r, int subVersion)
         {
             faction1 = r.ReadInt16();
             if (faction1 >= 0)
             {
                 faction2 = r.ReadInt16();
-                Relation = (RelationType)r.ReadSByte();
-                SpeakTerms = (SpeakTerms)r.ReadSByte();
-                RelationEnd_GameTimeSec = r.ReadUInt16();
+                if (subVersion < 58)
+                {
+                    Relation = (RelationType)r.ReadSByte();
+                    SpeakTerms = (SpeakTerms)r.ReadSByte();
+                    RelationEnd_GameTimeSec.read_ushort(r);
+                }
+                else
+                {
+                    EightBit bools = EightBit.FromStream(r);
+                    bools.Get(out bool hasRelation, out bool hasSpeakTerms, out bool hasEndTime);
+                    if (hasRelation)
+                    {
+                        Relation = (RelationType)r.ReadSByte();
+                    }
+                    if (hasSpeakTerms)
+                    {
+                        SpeakTerms = (SpeakTerms)r.ReadSByte();
+                    }
+                    if (hasEndTime)
+                    {
+                        RelationEnd_GameTimeSec.read(r);
+                    }
+                }
                 return true;
             }
 
@@ -593,7 +635,7 @@ namespace VikingEngine.DSSWars
         public void truce_update()
         {
             if (Relation == RelationType.RelationTypeN2_Truce && 
-                RelationEnd_GameTimeSec < Ref.TotalGameTimeSec)
+                RelationEnd_GameTimeSec.TimeOut())
             {
                 Relation = RelationType.RelationTypeN3_War;
             }

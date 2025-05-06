@@ -191,7 +191,12 @@ namespace VikingEngine
             value1 = Get(0);
             value2 = Get(1);
         }
-
+        public void Get(out bool value1, out bool value2,  out bool value3)
+        {
+            value1 = Get(0);
+            value2 = Get(1);
+            value3 = Get(2);
+        }
 
         public void Set(int index, bool value)
         {

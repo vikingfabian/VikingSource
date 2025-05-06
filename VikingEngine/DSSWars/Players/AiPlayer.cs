@@ -1854,19 +1854,24 @@ namespace VikingEngine.DSSWars.Players
                 return false;
             }
 
-            RelationType rel = DssRef.diplomacy.GetRelationType(faction, otherFaction);
-
-            if (rel <= RelationType.RelationType0_Neutral)
+            var relation = DssRef.diplomacy.GetRelationType(faction, otherFaction);
+            
+            if (relation <= RelationType.RelationType0_Neutral)
             {
-                if (rel == RelationType.RelationTypeN2_Truce)
+                if (relation == RelationType.RelationTypeN2_Truce)
                 {
                     return false;
                 }
                 return true;
             }
-            else if (rel == RelationType.RelationType1_Peace ||
-                rel == RelationType.RelationType2_Good) 
+            else if (relation == RelationType.RelationType1_Peace ||
+                relation == RelationType.RelationType2_Good) 
             {
+                DiplomaticRelation rel = faction.diplomaticRelations[otherFaction.parentArrayIndex];
+                if (rel.RelationEnd_GameTimeSec.HasTime())
+                {
+                    return false;
+                }
                 return Ref.peRnd.Chance(0.05);
             }
             return false;

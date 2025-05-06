@@ -197,8 +197,7 @@ namespace VikingEngine.DSSWars
             }
         };
 
-        public const int TruceTimeSec = 180;
-
+        
        
         
 

@@ -1,12 +1,10 @@
 ﻿UPDATE
 -Change Log-
-* Remade the story events to be dynmaic, will allow branshing paths, new game plus etc 
-* fixed: Upgrade logistics is missing info
-* added build tab for upgrades
-* war, grow, export description
-* improved blueprint tooltip
-* demo map has a bit more resources
-* slight improvements to land going ships
+* Compressed diplomacy saves
+* Fixed a 1000hour kill screen
+* Good or Peace will ensure no war between 10 and 60 minutes
+! story is broken, no bosses appear
+
 
 !! Known issues, that I am working on !!
 -Camera chase can crash
@@ -24,11 +22,13 @@
 -army center can move to far from soldiers
 -armies can be too passive to enemy armies passing by
 -army centers should not stay on cities 
--ai breaks peace too easy
 -Sandbox mode never start ai attacks
 -Auto expand dont consider town hall limits
 -The destroy factory missions break when save/load
 -Ships on land
+-the camera should be free on the barbarian mission
+
+
 
 #DSS1 issues#
 
@@ -163,17 +163,11 @@ https://discord.com/verification
 
 -steam stats
 -Min 7K wishlists
--oktober next fest, demo måste vara redo senast september, 30min lång, direkt action (giant battle)
--stor grön knapp (special settings)
-https://piratepr.com/treasure-trove/how-to-get-your-download-demo-button-visible-in-green-on-your-steam-page/
 -hör av till 300 streamers om demo, lägg screens i mailet
 -wishlist länk i spelet måste finnas i alla menyer (använd steam API)
 - https://impress.games/press-kitty
 - kolla steam db releases
--description gifs ska vara 3st "three pillars, what you do in the game"
 
-VertexPositionColorNormal
-VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);
 
 
 

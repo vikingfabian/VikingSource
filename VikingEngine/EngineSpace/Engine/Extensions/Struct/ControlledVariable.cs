@@ -120,9 +120,30 @@ namespace VikingEngine
             this.totalTimeStampSec = totalGameTimeStampSec;
         }
 
+        public void write_ushort(System.IO.BinaryWriter w)
+        {
+            //MAX 1000 hours
+            w.Write(Convert.ToUInt16(totalTimeStampSec));
+        }
+
+        public void read_ushort(System.IO.BinaryReader r)
+        {
+            totalTimeStampSec = r.ReadUInt16();
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(totalTimeStampSec);
+        }
+
+        public void read(System.IO.BinaryReader r)
+        {
+            totalTimeStampSec = r.ReadSingle();
+        }
+
         public bool HasTime()
         {
-            return totalTimeStampSec > 0;
+            return totalTimeStampSec >= Ref.TotalGameTimeSec;
         }
 
         public static GameTimeStamp Now()
@@ -167,6 +188,11 @@ namespace VikingEngine
         {
             return Ref.PrevTotalTimeSec - totalTimeStampSec < seconds &&
                 Ref.TotalGameTimeSec - totalTimeStampSec >= seconds;
+        }
+
+        public void addTime(float seconds)
+        {
+            totalTimeStampSec += seconds;
         }
 
         /// <summary>
