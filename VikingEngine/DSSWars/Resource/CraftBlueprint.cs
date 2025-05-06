@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
@@ -202,12 +203,18 @@ namespace VikingEngine.DSSWars.Resource
             foreach (var r in resources)
             {
                 available = city.GetGroupedResource(r.type).amount >= r.amount;
-                addResources(r.amount, ResourceLib.Icon(r.type), LangLib.Item(r.type));
+
+                addResources(r.amount, ResourceLib.Icon(r.type), LangLib.Item(r.type), available);
                 first = false;
             }
 
             if (resultType != CraftResultType.NoSet)
             {
+                if (resources.Length > 1)
+                {
+                    content.newLine();
+                }
+
                 var arrow = new RbImage(SpriteName.pjNumArrowR);
                 arrow.color = Color.CornflowerBlue;
                 content.Add(arrow);
@@ -219,11 +226,17 @@ namespace VikingEngine.DSSWars.Resource
             content.newLine();
             //if (levelRequirement > ExperienceLevel.Beginner_1)
             {
-                var levelReqText = new RbText(DssRef.lang.Hud_PurchaseTitle_Requirement + ":");
-                levelReqText.overrideColor = HudLib.TitleColor_Label;
-                content.Add(levelReqText);
-                content.space();
                 
+                //var levelReqText = new RbText(DssRef.lang.Hud_PurchaseTitle_Requirement + ":");
+                //levelReqText.overrideColor = HudLib.TitleColor_Label;
+                //content.Add(levelReqText);
+                //content.space();
+                HudLib.Label(content, DssRef.lang.Experience_Title);
+                content.newLine();
+
+                bool gotskill = city.GetTopSkill(experienceType) >= levelRequirement;
+                content.Add(new RbImage(gotskill ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+
                 LangLib.ExperienceType(experienceType, out string expName, out SpriteName expIcon);
                 content.Add(new RbImage(expIcon));
                 content.space();
@@ -240,7 +253,7 @@ namespace VikingEngine.DSSWars.Resource
                 content.newLine();
             }
 
-            void addResources(int count, SpriteName sprite, string name)
+            void addResources(int count, SpriteName sprite, string name, bool available)
             {
                 if (count > 0)
                 {
@@ -250,6 +263,10 @@ namespace VikingEngine.DSSWars.Resource
                         content.Add(new RbImage(SpriteName.pjNumPlus));
                         //countString = " + " + countString;
                     }
+
+                    content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+                    content.space(0.5f);
+
                     var countText = new RbText(count.ToString());
                     //if (!available)
                     //{ 
@@ -282,46 +299,56 @@ namespace VikingEngine.DSSWars.Resource
                     HudLib.BulletPoint(content);
                 }
                 string reqText;
-
+                SpriteName icon;
                 switch (requirement)
                 {
                     case CraftRequirement.Carpenter:
+                        icon = SpriteName.WarsBuild_Carpenter;
                         reqText = DssRef.lang.BuildingType_Carpenter;
                         available = city.buildingStructure.Carpenter_count>0;
                         break;
                     case CraftRequirement.Brewery:
+                        icon = SpriteName.WarsBuild_Brewery;
                         reqText = DssRef.lang.BuildingType_Brewery;
                         available = city.buildingStructure.Brewery_count>0;
                         break;
                     case CraftRequirement.Smelter:
+                        icon = SpriteName.WarsBuild_Smelter;
                         reqText = DssRef.lang.BuildingType_SmeltingFurnace;
                         available = city.buildingStructure.Smelter_count > 0;
                         break;
                     case CraftRequirement.Chemist:
+                        icon = SpriteName.WarsBuild_Chemist;
                         reqText = DssRef.lang.BuildingType_Chemist;
                         available = city.buildingStructure.Chemist_count > 0;
                         break;
                     case CraftRequirement.Gunmaker:
+                        icon = SpriteName.WarsBuild_Gunmaker;
                         reqText = DssRef.lang.BuildingType_Gunmaker;
                         available = city.buildingStructure.Gunmaker_count > 0;
                         break;
                     case CraftRequirement.CoinMaker:
+                        icon = SpriteName.WarsBuild_Coinminter;
                         reqText = DssRef.lang.BuildingType_CoinMaker;
                         available = city.buildingStructure.CoinMinter_count > 0;
                         break;
                     case CraftRequirement.Foundry:
+                        icon = SpriteName.WarsBuild_Foundry;
                         reqText = DssRef.lang.BuildingType_Foundry;
                         available = city.buildingStructure.Foundry_count > 0;
                         break;
                     case CraftRequirement.Smith:
+                        icon = SpriteName.WarsBuild_Smith;
                         reqText = DssRef.lang.BuildingType_Smith;
                         available = city.buildingStructure.Smith_count > 0;
                         break;
                     case CraftRequirement.CoalPit:
+                        icon = SpriteName.WarsBuild_CoalPit;
                         reqText = DssRef.lang.BuildingType_CoalPit;
                         available = city.buildingStructure.CoalPit_count > 0;
                         break;
                     case CraftRequirement.Logistics1:
+                        icon = SpriteName.WarsBuild_Logistics;
                         reqText = string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage);
                         available = city.res_food.amount >= City.Logistics1FoodStorage;
                         break;
@@ -332,6 +359,10 @@ namespace VikingEngine.DSSWars.Resource
 
                 if (content != null)
                 {
+                    content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+
+                    content.Add(new RbImage(icon));
+                    content.space();
                     RbText requirement1 = new RbText(reqText);
                     requirement1.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                     content.Add(requirement1);

@@ -33,11 +33,6 @@ namespace VikingEngine.DSSWars.Display
         public static float tooltip_id_timestampsec;
         public void updateMapTip(Players.LocalPlayer player, bool refreshTime, bool aboveMouse)
         {
-            //if (current_menuToolTip && images.HasMembers)
-            //{
-            //    images.DeleteAll();
-            //    current_menuToolTip = false;
-            //}
             if (player.gameControls.input.mousePan.IsDown)
             {
                 images.DeleteAll();

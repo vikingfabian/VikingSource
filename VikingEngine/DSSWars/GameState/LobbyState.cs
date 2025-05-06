@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars
             DssRef.storage.runTutorial_1short_2normal = 0;
 
             SaveStateMeta meta = new SaveStateMeta();
-            meta.playmap = "demomap3";
+            meta.playmap = "demomap4";
 
             loadGame = meta;
             //openUnderMenu(UnderMenu_PlayerSetup, StackOption.Stack);
@@ -1372,6 +1372,10 @@ namespace VikingEngine.DSSWars
                     caption = DssRef.lang.Settings_Mode_Peaceful;
                     desc = DssRef.lang.Settings_Mode_Peaceful_Description;
                     break;
+                case GameMode.Spectator:
+                    caption = DssRef.todoLang.Settings_Mode_Spectator;
+                    desc = DssRef.todoLang.Settings_Mode_Spectator_Description;
+                    break;
             }
         }
        
@@ -1498,11 +1502,11 @@ namespace VikingEngine.DSSWars
         {
             if (set)
             {
-                DssRef.difficulty.runEvents = value;
+                DssRef.difficulty.runStory = value;
                 DssRef.storage.Save(null);
                 refreshDifficultyLevel();
             }
-            return DssRef.difficulty.runEvents;
+            return DssRef.difficulty.runStory;
         }
 
         public MapSize mapSizeProperty(bool set, MapSize value)

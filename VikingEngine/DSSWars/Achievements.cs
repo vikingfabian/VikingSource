@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -125,38 +126,37 @@ namespace VikingEngine.DSSWars
                 UnlockAchievement(AchievementIndex.greenwood_ally);
             }
 
-            if (DssRef.state.events.nextEvent >= EventType.DarkLord)
-            {
-                //Count allies
-                Task.Factory.StartNew(() =>
-                {
-                    try
-                    {
-                        int allyCount = 0;
+            //if (DssRef.state.events.nextEvent >= EventType.DarkLord)
+            //{
+            //    //Count allies
+            //    Task.Factory.StartNew(() =>
+            //    {
+            //        int allyCount = 0;
 
-                        for (int i = 0; i < playerFaction.diplomaticRelations.Length; ++i)
-                        {
-                            var rel = playerFaction.diplomaticRelations[i];
-                            if (rel != null &&
-                                rel.Relation >= RelationType.RelationType3_Ally &&
-                                !DssRef.world.factions[i].HasZeroUnits())
-                            {
-                                ++allyCount;
-                            }
-                        }
+            //        for (int i = 0; i < playerFaction.diplomaticRelations.Length; ++i)
+            //        {
+            //            var rel = playerFaction.diplomaticRelations[i];
+            //            if (rel != null &&
+            //                rel.Relation >= RelationType.RelationType3_Ally &&
+            //                !DssRef.world.factions[i].HasZeroUnits())
+            //            {
+            //                ++allyCount;
+            //            }
+            //        }
 
-                        if (allyCount >= FriendshipAllyCount)
-                        {
-                            Ref.update.AddSyncAction(new SyncAction1Arg<AchievementIndex>(UnlockAchievement, AchievementIndex.friendship));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        BlueScreen.ThreadException = ex;
-                    }
+            //        if (allyCount >= FriendshipAllyCount)
+            //        {
+            //            Ref.update.AddSyncAction(new SyncAction1Arg<AchievementIndex>(UnlockAchievement, AchievementIndex.friendship));
+            //        }
+            //    });
+            //}
+            //        catch (Exception ex)
+            //        {
+            //            BlueScreen.ThreadException = ex;
+            //        }
                     
-                });
-            }
+            //    });
+            //}
         }
 
         public void onFactionUniquePurchase(int uniqeTypeIndex)

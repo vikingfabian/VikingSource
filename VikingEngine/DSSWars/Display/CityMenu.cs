@@ -1814,11 +1814,11 @@ namespace VikingEngine.DSSWars.Display
             //hover
             BlueprintTooltipArgs args = (BlueprintTooltipArgs)tag;
             //RichBoxContent content = new RichBoxContent();
-            content.h2(DssRef.lang.Blueprint_Title).overrideColor = HudLib.TitleColor_TypeName;
+            content.h2(DssRef.lang.Blueprint_Title, HudLib.TitleColor_Head);
             args.blueprint.toMenu(content, city);
             if (args.optionalBp != null)
             { 
-                content.newLine();
+                content.newParagraph();
                 args.optionalBp.toMenu(content, city);
             }
 

@@ -552,7 +552,7 @@ namespace VikingEngine.DSSWars.Map
         };
 
         public const float WaterSurfaceY = -0.1f;
-        public const float UnitMinY = 0.011f;//WaterSurfaceY + 0.02f;
+        public const float UnitMinY = WaterSurfaceY; //+ 0.02f;
         const float LayerHeight = 0.06f;
 
         static readonly float[] TypeToHeight = new float[]

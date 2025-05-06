@@ -1,8 +1,12 @@
 ﻿UPDATE
 -Change Log-
-* fixed crafting mithril crash
-* improved conscript tooltip
-
+* Remade the story events to be dynmaic, will allow branshing paths, new game plus etc 
+* fixed: Upgrade logistics is missing info
+* added build tab for upgrades
+* war, grow, export description
+* improved blueprint tooltip
+* demo map has a bit more resources
+* slight improvements to land going ships
 
 !! Known issues, that I am working on !!
 -Camera chase can crash
@@ -12,19 +16,22 @@
 -Can sometimes show the wrong city on the hud
 -Soldier groups glitch in battle
 -Faction automations are broken/out of date
--Ships on land
 -Must inform how faction priority works
 -City walls are confusing
 -Ai cant build defences
 -Automation builds too many low grade soldiers
--Ship attacks are visually broken, no sound and bad feedback
--Upgrade logistics is missing info
 -"homes" are confusing in child description
 -army center can move to far from soldiers
 -armies can be too passive to enemy armies passing by
 -army centers should not stay on cities 
 -ai breaks peace too easy
--war, grow, export needs description
+-Sandbox mode never start ai attacks
+-Auto expand dont consider town hall limits
+-The destroy factory missions break when save/load
+-Ships on land
+
+#DSS1 issues#
+
 
 #Free build defences
  Rock thrower
@@ -86,7 +93,7 @@ förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 
 
 --Efter release polish--
--war icon
+-
 
 pilar med resurser från delivery
 Factories modeller

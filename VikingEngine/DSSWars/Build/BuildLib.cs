@@ -358,7 +358,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static void Init()
         {
-            new BuildOption(BuildAndExpandType.Logistics, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, SpriteName.WarsBuild_Logistics, CraftBuildingLib.CraftLogistics, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
+            new BuildOption(BuildAndExpandType.Logistics, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, SpriteName.WarsBuild_Logistics, CraftBuildingLib.CraftLogistics, true, BuildCategoryTab.Updgrade, MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
             {
                 uniqueBuilding = true
             };
@@ -373,16 +373,16 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.GuardHouse_Large, TerrainMainType.Building, (int)TerrainBuildingType.GuardHouse_Large, SpriteName.WarsBuild_GuardOfficeLarge, CraftBuildingLib.GuardHouse_Large, false, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
             new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.PostalLevel2, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel2, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal_Level2, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.PostalLevel3, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel3, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal_Level3, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.PostalLevel2, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel2, SpriteName.WarsBuild_PostalLevel2, CraftBuildingLib.Postal_Level2, false, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.PostalLevel3, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel3, SpriteName.WarsBuild_PostalLevel3, CraftBuildingLib.Postal_Level3, false, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
             new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.RecruitmentLevel2, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel2, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment_Level2, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.RecruitmentLevel3, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel3, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment_Level3, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.RecruitmentLevel2, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel2, SpriteName.WarsBuild_RecruitmentLevel2, CraftBuildingLib.Recruitment_Level2, false, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.RecruitmentLevel3, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel3, SpriteName.WarsBuild_RecruitmentLevel3, CraftBuildingLib.Recruitment_Level3, false, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
-            new BuildOption(BuildAndExpandType.GoldDeliveryLvl1, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel1, SpriteName.WarsBuild_Postal, CraftBuildingLib.GoldDelivery, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.GoldDeliveryLvl2, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel2, SpriteName.WarsBuild_Postal, CraftBuildingLib.GoldDelivery_Level2, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.GoldDeliveryLvl3, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel3, SpriteName.WarsBuild_Postal, CraftBuildingLib.GoldDelivery_Level3, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl1, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel1, SpriteName.WarsBuild_GoldDeliver, CraftBuildingLib.GoldDelivery, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl2, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel2, SpriteName.WarsBuild_GoldDeliverLevel2, CraftBuildingLib.GoldDelivery_Level2, false, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl3, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel3, SpriteName.WarsBuild_GoldDeliverLevel3, CraftBuildingLib.GoldDelivery_Level3, false, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
 
             new BuildOption(BuildAndExpandType.SoldierBarracks, TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, SpriteName.WarsBuild_SoldierBarracks, CraftBuildingLib.SoldierBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
@@ -399,13 +399,13 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, CraftBuildingLib.Carpenter, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default) { altBlueprint = CraftBuildingLib.Carpenter_Bronze };
 
             new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarm, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.WheatFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarmUpgraded, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarmUpgrade, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.WheatFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarmUpgraded, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarmUpgrade, true, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarm, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.LinenFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarmUpgraded, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarmUpgrade, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.LinenFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarmUpgraded, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarmUpgrade, true, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarm, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.HempFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarmUpgraded, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarmUpgrade, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.HempFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarmUpgraded, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarmUpgrade, true, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarm, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.RapeSeedFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarmUpgraded, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarmUpgrade, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.RapeSeedFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarmUpgraded, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarmUpgrade, true, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.DirtRoad, TerrainMainType.Road, (int)TerrainRoadType.DirtRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false, BuildCategoryTab.Decor, MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
             new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, CraftBuildingLib.Pavement, false, BuildCategoryTab.Decor, MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
@@ -598,6 +598,7 @@ namespace VikingEngine.DSSWars.Build
         ExpandAndCraft,
         Military,
         Decor,
+        Updgrade,
         Automation,
         NUM
     }

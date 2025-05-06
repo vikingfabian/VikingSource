@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Display.CutScene;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Path;
@@ -38,7 +39,7 @@ namespace VikingEngine.DSSWars.GameState
         public GameMenuSystem menuSystem;
         public SpottedArray<Players.RemotePlayer> remotePlayers = new SpottedArray<Players.RemotePlayer>();
         public List<Players.LocalPlayer> localPlayers;
-        public GameEvents events;
+        public EventManager events;
         public Progress progress = new Progress();
         public int NextArmyId = 0;
         protected int stepFramesCount = 0;

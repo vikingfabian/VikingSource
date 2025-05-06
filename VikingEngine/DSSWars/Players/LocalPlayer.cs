@@ -447,54 +447,57 @@ namespace VikingEngine.DSSWars.Players
 
         public override void createStartUnits()
         {
-            IntVector2 onTile = DssRef.world.GetFreeTile(faction.mainCity.tilePos);
-
-            var mainArmy = faction.NewArmy(onTile);
-            mainArmy.tagBack = CityTagBack.Blue;
-            mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
-
-            for (int i = 0; i < 5; ++i)
+            if (faction.cities.Count > 0)
             {
-                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
-            }
+                IntVector2 onTile = DssRef.world.GetFreeTile(faction.mainCity.tilePos);
 
-            if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
-            {
-                int guardCount = 12;
+                var mainArmy = faction.NewArmy(onTile);
+                mainArmy.tagBack = CityTagBack.Blue;
+                mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
 
-                var citiesC = faction.cities.counter();
-                while (citiesC.Next())
+                for (int i = 0; i < 5; ++i)
                 {
-                    if (citiesC.sel != faction.mainCity)
+                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+                }
+
+                if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+                {
+                    int guardCount = 12;
+
+                    var citiesC = faction.cities.counter();
+                    while (citiesC.Next())
                     {
-                        onTile = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
-                        var army = faction.NewArmy(onTile);
-                        for (int i = 0; i < 4; ++i)
+                        if (citiesC.sel != faction.mainCity)
                         {
-                            new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
-                            --guardCount;
+                            onTile = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
+                            var army = faction.NewArmy(onTile);
+                            for (int i = 0; i < 4; ++i)
+                            {
+                                new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
+                                --guardCount;
+                            }
+
+                            army.setAsStartArmy();
+                            if (guardCount <= 3)
+                            {
+                                break;
+                            }
                         }
-                        //army.OnSoldierPurchaseCompleted();
-                        army.setAsStartArmy();
-                        if (guardCount <= 3)
-                        {
-                            break;
-                        }
+                    }
+
+                    for (int i = 0; i < guardCount; ++i)
+                    {
+                        new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
                     }
                 }
 
-                for (int i = 0; i < guardCount; ++i)
-                {
-                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
-                }
+                mainArmy.setAsStartArmy();
             }
-            //mainArmy.OnSoldierPurchaseCompleted();
-            mainArmy.setAsStartArmy();
         }
 
         public void toPeacefulCheck_asynch()
         {
-            if (faction.citiesEconomy.tax(null) > 0 && !DssRef.state.events.AiDelay())
+            if (faction.citiesEconomy.tax(null) > 0)
             {
                 int warCount = 0;
                 float opposingSize = 0;
@@ -517,8 +520,6 @@ namespace VikingEngine.DSSWars.Players
 
                 if (opposingSize > 0)
                 {
-                    //float opposingSizePerc;
-
                     opposingSizePerc = opposingSize / faction.citiesEconomy.tax(null);
 
                     toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage;
@@ -531,36 +532,6 @@ namespace VikingEngine.DSSWars.Players
                 if (toPeaceful)
                 {
                     //start a war
-                    //const int MaxTrials = 10;
-
-                    //for (int i = 0; i < MaxTrials; ++i)
-                    //{
-                    //    var city = faction.cities.GetRandomUnsafe(Ref.rnd);
-                    //    if (city != null)
-                    //    {
-                    //        foreach (var cindex in city.neighborCities)
-                    //        {
-                    //            var otherfaction = DssRef.world.cities[cindex].faction;
-                    //            if ((otherfaction.factiontype == FactionType.DefaultAi ||  otherfaction.factiontype == FactionType.DarkFollower) &&
-                    //                otherfaction.armies.Count > 0)
-                    //            {
-                    //                var rel = DssRef.diplomacy.GetRelationType(faction, otherfaction);
-                    //                if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
-                    //                {
-                    //                    var aiPlayer = otherfaction.player.GetAiPlayer();
-                    //                    if (aiPlayer.aggressionLevel <= AiPlayer.AggressionLevel1_RevengeOnly)
-                    //                    {
-                    //                        aiPlayer.aggressionLevel = AiPlayer.AggressionLevel2_RandomAttacks;
-                    //                        aiPlayer.refreshAggression();
-                    //                    }
-                    //                    DssRef.diplomacy.declareWar(otherfaction, faction);
-                    //                    return;
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //}
-
                     var attacker = DssRef.state.events.findAttackingNeighborFaction(faction);
                     attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
                     DssRef.diplomacy.declareWar(attacker, faction);

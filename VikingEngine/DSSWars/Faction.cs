@@ -18,6 +18,7 @@ using VikingEngine.ToGG.MoonFall;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Event;
 
 namespace VikingEngine.DSSWars
 {
@@ -70,10 +71,10 @@ namespace VikingEngine.DSSWars
 
         public Faction(WorldData addTo, FactionType factiontype)
         {
-            if (factiontype == FactionType.SkaeldraHaim)
-            {
-                lib.DoNothing();
-            }
+            //if (factiontype == FactionType.SkaeldraHaim)
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (factiontype == FactionType.DefaultAi)
             {
@@ -451,7 +452,7 @@ namespace VikingEngine.DSSWars
             double incomeMultiplier = 1;
             if (player.IsAi())
             {
-                if (DssRef.state.events.AiDelay())
+                if (DssRef.state.events.RunAi() == false)
                 {
                     incomeMultiplier = 0.1;
                 }
@@ -513,7 +514,7 @@ namespace VikingEngine.DSSWars
             if (armies.Count == 0 && cities.Count == 0)
             {
                 bool protectedFaction = factiontype == FactionType.DarkLord ||
-                    (factiontype == FactionType.SouthHara && DssRef.state.events.nextEvent < EventType.SouthShips);
+                    (factiontype == FactionType.SouthHara && DssRef.state.events.StoryIndex() < EventsOrder.SouthShips);
                                     
                 if (!protectedFaction)
                 {
@@ -983,13 +984,14 @@ namespace VikingEngine.DSSWars
                 isAlive = false;
                 DssRef.diplomacy.onFactionDeath(this);
 
-                if (factiontype == FactionType.SouthHara &&
-                    DssRef.state.events.nextEvent <= EventType.DarkLord &&
-                    DssRef.difficulty.bossTimeSettings <= BossTimeSettings.Early)
-                {
-                    DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
-                }
-                else if (factiontype == FactionType.Player)
+                //if (factiontype == FactionType.SouthHara &&
+                //    DssRef.state.events.nextEvent <= EventType.DarkLord &&
+                //    DssRef.difficulty.bossTimeSettings <= BossTimeSettings.Early)
+                //{
+                //    DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
+                //}
+                //else 
+                if (factiontype == FactionType.Player)
                 {
                     DssRef.state.events.onPlayerDeath();
                 }
@@ -1121,7 +1123,7 @@ namespace VikingEngine.DSSWars
         public bool WantToAllyAgainstDark()
         {
             return diplomaticSide == DiplomaticSide.Light &&
-                DssRef.state.events.nextEvent >= EventType.DarkLord;
+                DssRef.state.events.StoryIndex() >= EventsOrder.DarkLord;
         }
         
         public override Faction GetFaction()
