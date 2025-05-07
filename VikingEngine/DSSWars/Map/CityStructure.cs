@@ -333,11 +333,13 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.ServiceMenHouse_small:
                                                 ++buildingStructure.ServiceMenHouse_count;
                                                 serviceMenHousing += DssConst.HousingCount_ServiceHouse_Small;
+                                                buildingPosition.ServiceHouse_pos = subTileLoop.Position;
                                                 break;
 
                                             case TerrainBuildingType.ServiceMenHouse_Large:
                                                 ++buildingStructure.ServiceMenHouse_Large_count;
                                                 serviceMenHousing += DssConst.HousingCount_ServiceHouse_Large;
+                                                buildingPosition.ServiceHouse_pos = subTileLoop.Position;
                                                 break;
 
                                             case TerrainBuildingType.GuardHouse_Small:

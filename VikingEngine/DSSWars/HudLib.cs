@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color TextColor_Relation = Color.LightBlue;
 
-        public static readonly Color SecondaryTextColor = new Color(80, 90, 106);//new Color(66, 77, 81);
+        public static readonly Color SecondaryTextColor = new Color(95, 105, 130);//new Color(66, 77, 81);
 
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
         public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);

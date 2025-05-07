@@ -1380,7 +1380,7 @@ namespace VikingEngine.DSSWars.GameObject
                         overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
                     }
 
-                    DssRef.state.events.onFactoryDestroyed(this);
+                    DssRef.state.events?.onFactoryDestroyed(this);
                 }
             }
         }

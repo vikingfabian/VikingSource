@@ -24,12 +24,14 @@ namespace VikingEngine.DSSWars.GameObject
         public const int WorkTeamSize = 6;
         TimeStamp previousWorkQueUpdate = TimeStamp.None;
         List<WorkQueMember> workQue = new List<WorkQueMember>();
+        static List<WorkQueMember> WaitingHighSkillJobs = new List<WorkQueMember>(16);
         bool starving = false;
         static List<int> idleWorkers = new List<int>(64);
              
         public void async_workUpdate()
         {
             CityStructure.WorkInstance.newCity = true;
+            //WaitingHighSkillJobs.Clear();
 
             async_blackMarketUpdate();
 
@@ -190,7 +192,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
             {
-                if (parentArrayIndex == 346 || debugTagged)
+                if (parentArrayIndex == 3 || debugTagged)
                 {
                     lib.DoNothing();
                 }
@@ -285,59 +287,62 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (checkAvailable(work.work, work.subWork) &&
                     work_isFreeTile(work.subTile))
-                {                    
+                {
                     WorkExperienceType experienceType = WorkLib.WorkToExperienceType(work.work, work.subWork, work.workBonus, work.subTile, this,
-                        out int xpRequired, out int maxXp);
+                       out ExperienceLevel requiredLvl, out int xpRequired, out int maxXp);
 
-                    int bestWorkerListIx = -1;
-                    int bestvalue = int.MaxValue;
-
-                    for (int i = 0; i < idleWorkers.Count; ++i)
+                    if (requiredLvl == ExperienceLevel.Beginner_1 || requiredLvl <= GetTopSkill(experienceType))
                     {
-                        var worderIx = idleWorkers[i];
-                        var worker = workerStatuses[worderIx];
-                        
-                        var xp = worker.getXpFor(experienceType);
 
-                        if (xp >= xpRequired && xp < maxXp)
+                        int bestWorkerListIx = -1;
+                        int bestvalue = int.MaxValue;
+
+                        for (int i = 0; i < idleWorkers.Count; ++i)
                         {
-                            var distance = work.subTile.SideLength(worker.subTileEnd);
-                            int value = distance * distanceValue - xp * experienceValue;
+                            var worderIx = idleWorkers[i];
+                            var worker = workerStatuses[worderIx];
 
-                            if (value < bestvalue)
+                            var xp = worker.getXpFor(experienceType);
+
+                            if (xp >= xpRequired && xp < maxXp)
                             {
-                                bestvalue = value;
-                                bestWorkerListIx = i;
+                                var distance = work.subTile.SideLength(worker.subTileEnd);
+                                int value = distance * distanceValue - xp * experienceValue;
+
+                                if (value < bestvalue)
+                                {
+                                    bestvalue = value;
+                                    bestWorkerListIx = i;
+                                }
                             }
                         }
-                    }
 
-//                    if (bestWorkerListIx == -1)
-//                    {
-//#if DEBUG
-//                        throw new Exception();
-//#else
-//                        return;
-//#endif
-//                    }
+                        if (bestWorkerListIx >= 0)
+                        {//Assign job
+                            var worderIx = idleWorkers[bestWorkerListIx];
+                            idleWorkers.RemoveAt(bestWorkerListIx);
 
-                    if (bestWorkerListIx >= 0)
-                    {//Assign job
-                        var worderIx = idleWorkers[bestWorkerListIx];
-                        idleWorkers.RemoveAt(bestWorkerListIx);
+                            var status = workerStatuses[worderIx];
+                            status.createWorkOrder(work.work, work.subWork, work.workBonus, experienceType, work.orderId, work.subTile, this);
+                            workerStatuses[worderIx] = status;
 
-                        var status = workerStatuses[worderIx];
-                        status.createWorkOrder(work.work, work.subWork, work.workBonus, experienceType, work.orderId, work.subTile, this);
-                        workerStatuses[worderIx] = status;
-
-                        if (work.orderId >= 0)
+                            if (work.orderId >= 0)
+                            {
+                                faction.player.orders?.StartOrderId(work.orderId);
+                            }
+                        }
+                        else if (requiredLvl > ExperienceLevel.Beginner_1)
                         {
-                            faction.player.orders?.StartOrderId(work.orderId);
+                            //put back experiece required job
+                            WaitingHighSkillJobs.Add(work);
                         }
                     }
-                   
+
                 }
             }
+
+            workQue.AddRange(WaitingHighSkillJobs);
+            WaitingHighSkillJobs.Clear();
 
             //Set remaning workers to wait
             foreach (var workerIx in idleWorkers)

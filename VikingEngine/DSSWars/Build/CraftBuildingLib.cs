@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Mithril };
 
         public static readonly ItemResourceType[] SmithCraftTypes = {
+            ItemResourceType.BronzeSword,
             ItemResourceType.ShortSword, ItemResourceType.Sword, ItemResourceType.LongSword,
             ItemResourceType.HandSpear,
             ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance,
