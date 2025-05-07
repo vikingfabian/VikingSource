@@ -24,6 +24,8 @@ namespace VikingEngine.DSSWars.Data
         DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, null);
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, $"DSS_savemeta_v{SaveGamestate.Version}", ".mta");
 
+        
+
         public void CreateImportFolders()
         {
             System.IO.Directory.CreateDirectory(importSavePath.CompleteDirectory);
@@ -90,10 +92,11 @@ namespace VikingEngine.DSSWars.Data
         }
 
         public void write(System.IO.BinaryWriter w)
-        {            
+        {
             w.Write(Version);
 
             saves.write(w);
+
             autosaves.write(w); 
         }
 

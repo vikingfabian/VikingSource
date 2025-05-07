@@ -2885,7 +2885,7 @@ namespace VikingEngine
                 add(SpriteName.cgSacrificeForCards, currentIndex, 4, 2);
                 add(SpriteName.cgSacrificeForMana, currentIndex, 4, 2);
                 add(SpriteName.birdSkyTex, currentIndex, 2, 2);
-                currentIndex += 16;
+                currentIndex += 10;
                 add(SpriteName.EditorPencilCube, 2, 2);
                 add(SpriteName.EditorFillAreaTexture, 2, 2);
 

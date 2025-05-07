@@ -91,6 +91,8 @@ namespace VikingEngine.DSSWars.GameObject
         public CityTagBack tagBack = CityTagBack.NONE;
         public CityTagArt tagArt = CityTagArt.None;
 
+        int starvingTimeSeconds = 0;
+
         public float capturePoints = 0;
 
 
@@ -1256,6 +1258,8 @@ namespace VikingEngine.DSSWars.GameObject
                 name.name = Data.NameGenerator.CityName(tilePos);
             }
             setTimeOnAllWorkers();
+
+            setTimeOnAllWorkers();
         }
 
         
@@ -1376,7 +1380,7 @@ namespace VikingEngine.DSSWars.GameObject
                         overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
                     }
 
-                    DssRef.state.events.onFactoryDestroyed(this);
+                    DssRef.state.events?.onFactoryDestroyed(this);
                 }
             }
         }
@@ -1563,7 +1567,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             const int MinWorkforce = 8;
 
-            if (parentArrayIndex == 177)
+            if (parentArrayIndex == 35 || debugTagged)
             {
                 lib.DoNothing();
             }
@@ -1612,12 +1616,23 @@ namespace VikingEngine.DSSWars.GameObject
             res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
 
             if (starving)
-            { 
-                starving = false;
-                if (faction.player.IsLocalPlayer())
+            {
+                starvingTimeSeconds++;
+                
+                if (starvingTimeSeconds > 15)
                 {
-                    faction.player.GetLocalPlayer().hud.messages.cityLowFoodMessage(this);
+                    starvingTimeSeconds = -30;
+                    starving = false;
+
+                    if (faction.player.IsLocalPlayer())
+                    {
+                        faction.player.GetLocalPlayer().hud.messages.cityLowFoodMessage(this);
+                    }
                 }
+            }
+            else
+            {
+                starvingTimeSeconds = 0;
             }
 
             if (strengthValue == 0 || capturePoints < 0)

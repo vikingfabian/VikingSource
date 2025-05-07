@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Data
         ObjectPointerCollection pointers;
         SaveStateMeta meta;
         public WorldData worldData;
-
+        public static int MainProgress = 0, LoopProgress = 0;
         public SaveGamestate(SaveStateMeta meta)
              : base(false)
         {
@@ -93,23 +93,24 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            new SaveVersion(Version, SubVersion).write(w);
+            MainProgress = 0; LoopProgress = 0;
+            new SaveVersion(Version, SubVersion).write(w); MainProgress++;
 
             //META
-            meta.write(w);
+            meta.write(w); MainProgress++;
             Debug.WriteCheck(w);
 
             //WORLD
-            DssRef.world.writeMapFile(w);
+            DssRef.world.writeMapFile(w); MainProgress++;
 
             //STATE
-            DssRef.storage.write(w, true);
+            DssRef.storage.write(w, true); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.settings.writeGameState(w);
+            DssRef.settings.writeGameState(w); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.world.writeGameState(w);
+            DssRef.world.writeGameState(w); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.state.Game().writeGameState(w);
+            DssRef.state.Game().writeGameState(w); MainProgress++;
         }        
 
         public void readGameState(System.IO.BinaryReader r)

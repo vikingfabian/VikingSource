@@ -526,8 +526,13 @@ namespace VikingEngine.DSSWars
         {
             if (arraylib.InBound(DssRef.world.factions.Array, faction1, faction2))
             {
-                DssRef.world.factions.Array[faction1].diplomaticRelations[faction2] = this;
-                DssRef.world.factions.Array[faction2].diplomaticRelations[faction1] = this;
+                if (DssRef.world.factions.Array[faction1] != null &&
+                    DssRef.world.factions.Array[faction2] != null)
+                {
+
+                    DssRef.world.factions.Array[faction1].diplomaticRelations[faction2] = this;
+                    DssRef.world.factions.Array[faction2].diplomaticRelations[faction1] = this;
+                }
             }
         }
 

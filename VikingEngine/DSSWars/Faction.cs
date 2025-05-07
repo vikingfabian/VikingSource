@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars
             armies = new SpottedArray<Army>(16);
         }
 
-        public Faction(WorldData addTo, FactionType factiontype)
+        public Faction(WorldData addTo, FactionType factiontype, int arrayIndex = -1)
         {
             //if (factiontype == FactionType.SkaeldraHaim)
             //{
@@ -90,8 +90,15 @@ namespace VikingEngine.DSSWars
 
             this.factiontype = factiontype;
 
-            this.parentArrayIndex = addTo.factions.Add(this);
-
+            if (arrayIndex >= 0)
+            {
+                this.parentArrayIndex = arrayIndex;
+                addTo.factions.HardSet(this, arrayIndex);
+            }
+            else
+            {
+                this.parentArrayIndex = addTo.factions.Add(this);
+            }
             initVisuals(addTo.metaData);
 
             cities = new SpottedArray<GameObject.City>(8);
@@ -243,11 +250,15 @@ namespace VikingEngine.DSSWars
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
-            w.Write((ushort)cities.Count);
-            var citiesC = cities.counter();
-            while (citiesC.Next())
+            var cityList = cities.toList();
+
+            w.Write((ushort)cityList.Count);
+            //var citiesC = cities.counter();
+            //while (citiesC.Next())
+            //{
+            foreach(var c in cityList)
             {
-                w.Write((ushort)citiesC.sel.parentArrayIndex);
+                w.Write((ushort)c.parentArrayIndex);
             }
 
             w.Write(availableForPlayer);

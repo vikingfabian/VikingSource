@@ -35,11 +35,12 @@ namespace VikingEngine.DSSWars.Work
         }
 
         public static WorkExperienceType WorkToExperienceType(WorkType work, int workSubType, byte bonus, IntVector2 subTileEnd, City city, 
-            out int requiredXp, out int maxXp)
+            out ExperienceLevel requiredLvl, out int requiredXp, out int maxXp)
         {
             WorkExperienceType gainXp = WorkExperienceType.NONE;
             maxXp = int.MaxValue;
             requiredXp = 0;
+            requiredLvl = ExperienceLevel.Beginner_1;
 
             switch (work)
             {
@@ -102,13 +103,15 @@ namespace VikingEngine.DSSWars.Work
                     ItemResourceType item = (ItemResourceType)workSubType;
                     ItemPropertyColl.Blueprint(item, out CraftBlueprint bp1, out var bp2);
                     gainXp = bp1.experienceType;
-                    requiredXp = DssConst.WorkXpToLevel * (int)bp1.levelRequirement;
+                    requiredLvl = bp1.levelRequirement;
+                    requiredXp = DssConst.WorkXpToLevel * (int)requiredLvl;
                     break;
 
                 case WorkType.Build:
                     var build = BuildLib.BuildOptions[workSubType];
                     gainXp = build.experienceType();
-                    requiredXp = DssConst.WorkXpToLevel * (int)build.blueprint.levelRequirement;
+                    requiredLvl = build.blueprint.levelRequirement;
+                    requiredXp = DssConst.WorkXpToLevel * (int)requiredLvl;
                     break;
 
                 case WorkType.School:

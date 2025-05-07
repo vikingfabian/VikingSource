@@ -98,8 +98,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     buildControls.updateBuildMode();
                     if (input.CancelKey.DownEvent)
                     {
+                        
                         player.hud.needRefresh = true;
                         buildControls.buildMode = SelectTileResult.None;
+                        mapControls.selection.subTile.selectTileResult = SelectTileResult.None;
+
+                        //player.hud.tooltip.clear();
                     }
                 }
                 else

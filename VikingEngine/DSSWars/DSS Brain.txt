@@ -1,6 +1,5 @@
 ﻿UPDATE
 -Change Log-
-* 
 
 
 !! Known issues, that I am working on !!

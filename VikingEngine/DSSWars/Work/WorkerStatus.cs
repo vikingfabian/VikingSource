@@ -977,7 +977,7 @@ namespace VikingEngine.DSSWars.Work
 
         public float finalizeWorkTime(City city)
         {
-            return finalizeWorkTime(WorkLib.WorkToExperienceType(work, workSubType, workBonus, subTileEnd, city, out _, out _), city);
+            return finalizeWorkTime(WorkLib.WorkToExperienceType(work, workSubType, workBonus, subTileEnd, city, out _, out _, out _), city);
         }
 
 
