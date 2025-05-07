@@ -132,7 +132,9 @@ namespace VikingEngine.DSSWars.Display
 
         void goToMapObject(AbsGameObject city)
         {
+            player.gameControls.mapControls.selection.obj = city;
             player.gameControls.mapControls.cameraFocus = city;
+            player.hud.needRefresh = true;
         }
 
         public void Add(string title, string text)

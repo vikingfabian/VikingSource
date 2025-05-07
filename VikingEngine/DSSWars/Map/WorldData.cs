@@ -539,7 +539,7 @@ namespace VikingEngine.DSSWars
             //DebugWriteSize citiesSz = new DebugWriteSize();
             //DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 7;
+            const int SaveMapVersion = 8;
             w.Write(SaveMapVersion);
 
             w.Write(metaData.seed);
@@ -576,14 +576,27 @@ namespace VikingEngine.DSSWars
 
                 Debug.WriteCheck(w);
 
-
-                var factionsCount = factions.counter();
-                w.Write(factions.Count);
-                while (factionsCount.Next())
+                w.Write(factions.Array.Length);
+                foreach (var f in factions.Array)
                 {
-                    w.Write((byte)factionsCount.sel.factiontype);
-                    factionsCount.sel.writeMapFile(w);
+                    if (f != null)
+                    {
+                        w.Write(true);
+                        w.Write((byte)f.factiontype);
+                        f.writeMapFile(w);
+                    }
+                    else
+                    {
+                        w.Write(false);
+                    }
                 }
+                //var factionsCount = factions.counter();
+                //w.Write(factions.Count);
+                //while (factionsCount.Next())
+                //{
+                //    w.Write((byte)factionsCount.sel.factiontype);
+                //    factionsCount.sel.writeMapFile(w);
+                //}
 
 
                 Debug.WriteCheck(w);
@@ -601,7 +614,6 @@ namespace VikingEngine.DSSWars
             int version = r.ReadInt32();
 
             metaData.seed = r.ReadUInt16();
-            //rnd = new PcgRandom(metaData.seed);
 
             Size.read(r);
             refreshSize(Size);
@@ -631,13 +643,30 @@ namespace VikingEngine.DSSWars
 
                 Debug.ReadCheck(r);
 
-                int factionCount = r.ReadInt32();
-                for (int factionIx = 0; factionIx < factionCount; ++factionIx)
+                if (version < 8)
+                { //OLD
+                    int factionCount = r.ReadInt32();
+                    for (int factionIx = 0; factionIx < factionCount; ++factionIx)
+                    {
+                        FactionType factionType = (FactionType)r.ReadByte();
+                        var faction = new Faction(this, factionType);
+                        faction.readMapFile(r, version, this);
+                    }
+                }
+                else
                 {
-                    FactionType factionType = (FactionType)r.ReadByte();
-                    var faction = new Faction(this, factionType);
-                    faction.readMapFile(r, version, this);
+                    int factionLength = r.ReadInt32();
+                    factions = new SpottedArray<Faction>(factionLength);
 
+                    for (int i = 0; i < factionLength; ++i)
+                    {
+                        if (r.ReadBoolean())
+                        {
+                            FactionType factionType = (FactionType)r.ReadByte();
+                            var faction = new Faction(this, factionType, i);
+                            faction.readMapFile(r, version, this);
+                        }
+                    }
                 }
 
                 Debug.ReadCheck(r);

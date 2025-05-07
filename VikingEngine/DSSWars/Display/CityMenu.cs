@@ -229,6 +229,40 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RbText(string.Format(DssRef.lang.Help_Soldiers_StartX, DssRef.lang.Hud_ProductionQueue)));
 
 
+            content.newParagraph();
+
+            content.h2(DssRef.lang.Resource_TypeName_Food, HudLib.TitleColor_Head);
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Help_Food_WhoEats));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsArmy));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Help_Food_BigArmy));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Help_Food_DontBuild));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsResource_Water));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Help_Food_UseWater));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsBuild_Postal));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Help_Food_Postal));
+
 
 
         }

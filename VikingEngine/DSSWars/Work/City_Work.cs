@@ -885,6 +885,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                 starving = true;
             }
+            else if (res_food.amount > 10)
+            {
+                starving = false;
+            }
         }
 
         bool checkAvailable(WorkType work, int subWork)

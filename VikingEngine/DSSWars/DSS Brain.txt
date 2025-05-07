@@ -1,9 +1,5 @@
 ﻿UPDATE
 -Change Log-
-* Fixed commander mode
-* better build tooltip
-* fixed cancel build delay
-
 
 
 !! Known issues, that I am working on !!

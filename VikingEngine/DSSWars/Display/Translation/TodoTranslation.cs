@@ -25,6 +25,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Automation_AutomationFocus_NoFocus_Description => "Will build a little bit of everything";
 
         public string Automation_AutomationFocus_WillProduce => "Will mainly produce:";
+
+        public string Help_Food_WhoEats => "All soldiers and workers consume food";
+
+        public string Help_Food_BigArmy => "A large army can starve out the city in its area";
+
+        public string Help_Food_DontBuild => "Building more farms doesn't automatically increase food; you need available workers to gather and process it";
+
+        public string Help_Food_UseWater => "Food production requires water";
+
+        public string Help_Food_Postal => "Make sure your cities support each other by sending food";
     }
 
 }

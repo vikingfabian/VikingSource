@@ -481,7 +481,7 @@ namespace VikingEngine
 
         public void adjustLength()
         {
-            T[] newArray = new T[Array.Length * 2];
+            T[] newArray = new T[Math.Max(Array.Length * 2, 8)];
             for (int i = 0; i < Array.Length; ++i)
             {
                 newArray[i] = Array[i];
