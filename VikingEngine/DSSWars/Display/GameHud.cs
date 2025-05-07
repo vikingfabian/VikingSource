@@ -105,8 +105,7 @@ namespace VikingEngine.DSSWars.Display
             //displays.updateMove(out bool bRefresh);
             //needRefresh |= bRefresh;
 
-            if (//player.gameControls.input.AutomationSetting.DownEvent ||
-                player.gameControls.input.CancelKey.DownEvent)
+            if (player.gameControls.input.CancelKey.DownEvent)
             {
                 player.gameControls.clearSelection();
             }
@@ -123,6 +122,8 @@ namespace VikingEngine.DSSWars.Display
                 player.gameControls.mapControls.hover.isNew ||
                 needRefresh;
 
+            
+
             if (player.gameControls.input.ToggleHudDetail.DownEvent)
             {
                 detailLevel++;
@@ -133,7 +134,7 @@ namespace VikingEngine.DSSWars.Display
                 refresh = true;
             }
 
-            needRefresh = false;
+            
             //updateMenuDisplays(refresh);
             
             
@@ -145,12 +146,11 @@ namespace VikingEngine.DSSWars.Display
 
                 if (head != null)
                 {
-                    needRefresh |= head.updateMouseInput(ref mouseOverHud);
+                    refresh |= head.updateMouseInput(ref mouseOverHud);
                 }
-                needRefresh |= headOptions.updateMouseInput(ref mouseOverHud);
-                needRefresh |= objMenu.updateMouseInput(ref mouseOverHud);
-                needRefresh |= factionMenu.updateMouseInput(ref mouseOverHud);
-                //mouseOver = false;
+                refresh |= headOptions.updateMouseInput(ref mouseOverHud);
+                refresh |= objMenu.updateMouseInput(ref mouseOverHud);
+                //refresh = false;
                 player.tutorial?.update(ref mouseOverHud);
                 messages.Update(ref mouseOverHud);
             }
@@ -172,6 +172,8 @@ namespace VikingEngine.DSSWars.Display
                 headOptions.refreshUpdate();
                 updateMenuDisplays(true);
                 factionMenu.refreshUpdate(player);
+
+                needRefresh = false;
             }
 
             
@@ -225,61 +227,30 @@ namespace VikingEngine.DSSWars.Display
 
         public void updateToolTip_menu(bool refresh)
         {
-            //if (mouseOverHud)
-            //{
-                tooltip.clear();
-                //tooltip.updateDiplayTip(player, displays.hasInteractButtonHover());
-            //}
-            //else
-            //{
-            //    if (!player.gameControls.mapControls.focusedObjectMenuState())
-            //    {
-            //        tooltip.updateMapTip(player, refresh);
-            //    }
-            //}
+            tooltip.clear();               
         }
 
         public void updateToolTip_map(bool refresh)
         {
-            //if (mouseOverHud)
-            //{
-            //    tooltip.clear();
-            //    //tooltip.updateDiplayTip(player, displays.hasInteractButtonHover());
-            //}
-            //else
-            //{
-                if (!player.gameControls.mapControls.focusedObjectMenuState())
-                {
-                    tooltip.updateMapTip(player, refresh, false);
-                }
-            //}
+            
+            if (!player.gameControls.mapControls.focusedObjectMenuState())
+            {
+                tooltip.updateMapTip(player, refresh, false);
+            }
         }
 
         public void updateToolTip_multiselect(bool refresh, bool aboveMouse)
         {
-            //if (mouseOverHud)
-            //{
-            //    tooltip.clear();
-            //    //tooltip.updateDiplayTip(player, displays.hasInteractButtonHover());
-            //}
-            //else
-            //{
+            
             if (!player.gameControls.mapControls.focusedObjectMenuState())
             {
                 tooltip.updateMapTip(player, refresh, aboveMouse);
             }
-            //}
         }
-
-        //public void oneSecondUpdate(LocalPlayer player)
-        //{
-        //    refreshFaction(player);
-        //}
 
         public bool hudMouseOver()
         {
             return mouseOverHud;
-            //return displays.mouseOver() || messages.mouseOver();
         }
     }
     enum HudDetailLevel

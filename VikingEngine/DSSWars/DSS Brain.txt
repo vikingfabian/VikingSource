@@ -1,9 +1,9 @@
 ﻿UPDATE
 -Change Log-
-* Compressed diplomacy saves
-* Fixed a 1000hour kill screen
-* Good or Peace will ensure no war between 10 and 60 minutes
-! story is broken, no bosses appear
+* Fixed commander mode
+* better build tooltip
+* fixed cancel build delay
+
 
 
 !! Known issues, that I am working on !!

@@ -1435,21 +1435,22 @@ namespace VikingEngine.DSSWars
 
         void extra_PlayCommanderVersus()
         {
-            VikingEngine.ToGG.toggLib.Init();
-            VikingEngine.ToGG.Commander.BattleLib.Init();
-            new ToGG.ToggEngine.Map.SquareDic();
-            ToGG.ToggEngine.Map.MainTerrainProperties.Init();
-            new VikingEngine.ToGG.InputMap(0);
-            //new Network.Session();
+            //VikingEngine.ToGG.toggLib.Init();
+            //VikingEngine.ToGG.Commander.BattleLib.Init();
+            //new ToGG.ToggEngine.Map.SquareDic();
+            //ToGG.ToggEngine.Map.MainTerrainProperties.Init();
+            //new VikingEngine.ToGG.InputMap(0);
+            ////new Network.Session();
 
-            ToGG.Commander.LevelSetup.GameSetup setup = new ToGG.Commander.LevelSetup.GameSetup();
-            setup.lobbyMembers = new List<ToGG.AbsLobbyMember>
-            {
-                new ToGG.LocalLobbyMember(0),
-                new ToGG.AiLobbyMember(),
-            };
+            //ToGG.Commander.LevelSetup.GameSetup setup = new ToGG.Commander.LevelSetup.GameSetup();
+            //setup.lobbyMembers = new List<ToGG.AbsLobbyMember>
+            //{
+            //    new ToGG.LocalLobbyMember(0),
+            //    new ToGG.AiLobbyMember(),
+            //};
 
-            new ToGG.Commander.CmdPlayState(setup);
+            //new ToGG.Commander.CmdPlayState(setup);
+            new StartExtra();
         }
 
         void refreshDifficultyLevel()

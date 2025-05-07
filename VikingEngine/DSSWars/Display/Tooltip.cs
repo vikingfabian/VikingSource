@@ -170,6 +170,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 content.Add(new RbBeginTitle(2));
                 content.Add(new RbImage(player.gameControls.input.ControllerSelect.Icon));
+                content.space(0.5f);
 
                 RbText title = null;
                 bool avaialableAction = true;
@@ -179,8 +180,11 @@ namespace VikingEngine.DSSWars.Display
                         var buildOpt = BuildLib.BuildOptions[(int)player.gameControls.buildControls.placeBuildingType];
                         title = new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
                         content.Add(title);
-                        content.newLine();
+
+                        cancelInput();
+
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
+                        content.newLine();
                         var bp = player.gameControls.buildControls.placeBuildingOption().blueprint;
                         bp.toMenu(content, subTile.city);
 
@@ -218,6 +222,8 @@ namespace VikingEngine.DSSWars.Display
                     case Players.SelectTileResult.Demolish:
                         title = new RbText(DssRef.lang.Build_DestroyBuilding);
                         content.Add(title);
+
+                        cancelInput();
                         break;
 
                     case Players.SelectTileResult.ClearTerrain:
@@ -294,6 +300,14 @@ namespace VikingEngine.DSSWars.Display
             content.text(subTile.subTile.TypeToString());
             
             create(player, content, false);
+
+            void cancelInput()
+            {
+                content.newLine();
+                content.Add(new RbImage(player.gameControls.input.CancelKey.Icon));
+                content.space(0.5f);
+                content.Add(new RbText(DssRef.lang.Hud_Cancel, HudLib.TitleColor_Action));
+            }
         }
 
         void hoverTip(Players.LocalPlayer player, GameObject.AbsGameObject obj)
@@ -458,6 +472,8 @@ namespace VikingEngine.DSSWars.Display
             }
             
             create(player, content, false);
+
+            
         }
 
         public void clear()
