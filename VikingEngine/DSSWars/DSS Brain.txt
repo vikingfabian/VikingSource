@@ -4,7 +4,7 @@
 * Changed some wording/spelling
 * Fixed no language select crash
 * Moved the fix for the load negative money bug from DSS2
-
+* Corrupted save files fix
 
 --Efter release polish--
 -war icon

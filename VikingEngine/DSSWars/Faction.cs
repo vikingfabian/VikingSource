@@ -216,11 +216,15 @@ namespace VikingEngine.DSSWars
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
-            w.Write((ushort)cities.Count);
-            var citiesC = cities.counter();
-            while (citiesC.Next())
+            var cityList = cities.toList();
+
+            w.Write((ushort)cityList.Count);
+            //var citiesC = cities.counter();
+            //while (citiesC.Next())
+            //{
+            foreach(var c in cityList)
             {
-                w.Write((ushort)citiesC.sel.parentArrayIndex);
+                w.Write((ushort)c.parentArrayIndex);
             }
 
             w.Write(availableForPlayer);
