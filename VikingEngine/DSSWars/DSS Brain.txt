@@ -1,14 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* updated conscript and delivery hud
-* multiselt popup will pick first option on mouseleave
-* some improvements to the tutorial
-* removed collisions on guards
-* fixed mashinegunning ships
-* fixed: Spectator mode crashes on load
-* fixed: Spectator should remove ai delay
-* war messages
-* city lost messages
+* 
 
 !! Known issues, that I am working on !!
 -Soldiers can get stuck attacking a dead army

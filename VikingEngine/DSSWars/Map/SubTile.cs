@@ -34,10 +34,10 @@ namespace VikingEngine.DSSWars.Map
         public SubTile(TerrainMainType type, int subType, Color color, float groundY)
         {
 #if DEBUG
-            if (color == ColorExt.Empty)
-            {
-                throw new Exception("Empty col");
-            }
+            //if (color == ColorExt.Empty)
+            //{
+            //    throw new Exception("Empty col");
+            //}
 #endif
             this.color = color;
             this.groundY = groundY;
@@ -166,10 +166,10 @@ namespace VikingEngine.DSSWars.Map
             groundY = r.ReadSingle();
             color = SaveLib.ReadColorStream_3B(r);
 #if DEBUG
-            if (color == ColorExt.Empty)
-            {
-                throw new Exception("Empty col");
-            }
+            //if (color == ColorExt.Empty)
+            //{
+            //    throw new Exception("Empty col");
+            //}
 #endif
         }
 
@@ -191,10 +191,10 @@ namespace VikingEngine.DSSWars.Map
             this.color = other.color;
 
 #if DEBUG
-            if (color == ColorExt.Empty)
-            {
-                throw new Exception("Empty col");
-            }
+            //if (color == ColorExt.Empty)
+            //{
+            //    throw new Exception("Empty col");
+            //}
 #endif
         }
 

@@ -167,10 +167,10 @@ namespace VikingEngine.DSSWars.Map
                                 break;
                         }
 #if DEBUG
-                        if (surfaceColor == ColorExt.Empty)
-                        {
-                            throw new Exception("Empty col");
-                        }
+                        //if (surfaceColor == ColorExt.Empty)
+                        //{
+                        //    throw new Exception("Empty col");
+                        //}
 #endif
                         block(subTopLeft, surfaceSprite, surfaceColor, ref subTile);
 
