@@ -1,5 +1,10 @@
 ﻿UPDATE
 -Change Log-
+* fixed faction menu
+* I hid the automation tab (too broken)
+* Child birth speed is reduced by half
+* Food on army tooltip
+* Removed Epic map size from game options
 
 
 !! Known issues, that I am working on !!

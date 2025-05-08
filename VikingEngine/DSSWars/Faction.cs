@@ -252,10 +252,8 @@ namespace VikingEngine.DSSWars
         {
             var cityList = cities.toList();
 
-            w.Write((ushort)cityList.Count);
-            //var citiesC = cities.counter();
-            //while (citiesC.Next())
-            //{
+            w.Write((ushort)Debug.Ushort_OrCrash(cityList.Count));
+            
             foreach(var c in cityList)
             {
                 w.Write((ushort)c.parentArrayIndex);
@@ -392,7 +390,7 @@ namespace VikingEngine.DSSWars
                 armiesCounter.sel.update();
             }
 
-            player.Update();
+            player?.Update();
         }
 
         public void PauseUpdate()

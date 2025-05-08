@@ -908,7 +908,7 @@ namespace VikingEngine.DSSWars
             {
                 DropDownBuilder mapSzOptions = new DropDownBuilder("mapSz");
                 {
-                    for (MapSize sz = 0; sz < MapSize.NUM; ++sz)
+                    for (MapSize sz = 0; sz < MapSize.Epic; ++sz)
                     {
                         mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.mapSize == sz, defaultOptions.mapSize == sz,
                             new RbAction1Arg<MapSize>(setMapSize, sz), null);

@@ -1528,7 +1528,7 @@ namespace VikingEngine.DSSWars.GameObject
                 res_food.amount > 0 &&
                 homeUsers() < workersMax())
             {
-                var result = workForce.amount / 200.0 * faction.growthMultiplier;
+                var result = workForce.amount / 400.0 * faction.growthMultiplier;
                 if (Culture == CityCulture.LargeFamilies)
                 {
                     result *= 2;

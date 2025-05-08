@@ -147,9 +147,12 @@ namespace VikingEngine.DSSWars.Display
                 if (head != null)
                 {
                     refresh |= head.updateMouseInput(ref mouseOverHud);
+                    refresh |= factionMenu.updateMouseInput(ref mouseOverHud);
                 }
                 refresh |= headOptions.updateMouseInput(ref mouseOverHud);
                 refresh |= objMenu.updateMouseInput(ref mouseOverHud);
+                //refresh |= head.updateMouseInput(ref mouseOverHud);
+
                 //refresh = false;
                 player.tutorial?.update(ref mouseOverHud);
                 messages.Update(ref mouseOverHud);

@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Display
 
         LocalPlayer player;
 
-        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, MenuTab.Automation, MenuTab.Progress };
+        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, /*MenuTab.Automation*/ MenuTab.Progress };
         public static readonly MenuTab[] TutorialTabs = { MenuTab.Economy };
 
         public PlayerHud_Head(LocalPlayer player)

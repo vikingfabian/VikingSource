@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             ArmyPresentationHud(args, true);
 
-            if (food < foodUpkeep * 2)
+            //if (food < foodUpkeep * 2)
             {
                 HudLib.ItemCount(args.content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, TextLib.OneDecimal(food));
             }
@@ -329,23 +329,24 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
             {
-                args.content.Add(new RbImage(SpriteName.WarsResource_Food));
-                args.content.space();
-                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food))));
+                foodToHud(args, true);
+                //args.content.Add(new RbImage(SpriteName.WarsResource_Food));
+                //args.content.space();
+                //args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food))));
 
-                args.content.space();
-                HudLib.InfoButton(args.content, new RbTooltip_Text(DssRef.lang.Info_ArmyFood));
+                //args.content.space();
+                //HudLib.InfoButton(args.content, new RbTooltip_Text(DssRef.lang.Info_ArmyFood));
 
-                args.content.newLine();
-                args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
-                args.content.space();
-                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep))));
-                args.content.space();
-                HudLib.PerSecondInfo(args.player, args.content, false);
+                //args.content.newLine();
+                //args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
+                //args.content.space();
+                //args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep))));
+                //args.content.space();
+                //HudLib.PerSecondInfo(args.player, args.content, false);
 
-                args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_gold_sec)));
-                args.content.space();
-                HudLib.PerSecondInfo(args.player, args.content, true);
+                //args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_gold_sec)));
+                //args.content.space();
+                //HudLib.PerSecondInfo(args.player, args.content, true);
             }
             
             
@@ -361,6 +362,30 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 args.content.text("Id: " + id.ToString());
             }
+        }
+
+        void foodToHud(ObjectHudArgs args, bool mayInteract)
+        {
+            args.content.Add(new RbImage(SpriteName.WarsResource_Food));
+            args.content.space();
+            args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food))));
+
+            if (mayInteract)
+            {
+                args.content.space();
+                HudLib.InfoButton(args.content, new RbTooltip_Text(DssRef.lang.Info_ArmyFood));
+            }
+
+            args.content.newLine();
+            args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
+            args.content.space();
+            args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep))));
+            args.content.space();
+            HudLib.PerSecondInfo(args.player, args.content, false);
+
+            args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_gold_sec)));
+            args.content.space();
+            HudLib.PerSecondInfo(args.player, args.content, true);
         }
 
 

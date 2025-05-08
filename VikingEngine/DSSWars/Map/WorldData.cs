@@ -638,7 +638,6 @@ namespace VikingEngine.DSSWars
                     City c = new City(cityIndex, r, version);
                     cities.Add(c);
                     unitCollAreaGrid.add(c);
-
                 }
 
                 Debug.ReadCheck(r);
