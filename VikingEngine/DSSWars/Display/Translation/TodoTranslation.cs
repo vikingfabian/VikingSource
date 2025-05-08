@@ -35,6 +35,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Help_Food_UseWater => "Food production requires water";
 
         public string Help_Food_Postal => "Make sure your cities support each other by sending food";
+
+
+        public string Message_LostCity => "City lost";
     }
 
 }

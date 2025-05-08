@@ -49,6 +49,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int childrenAge1 = 0;
 
         public IntVector2 cityHallSubtilePos;
+        IntVector2 armySpawnTilePos = IntVector2.Zero;
         public GroupedResource workForce = new GroupedResource();
         bool needServiceMenRefresh = true;
         public GroupedResource freeServiceMen = new GroupedResource();
@@ -113,6 +114,45 @@ namespace VikingEngine.DSSWars.GameObject
         public int MaxBuildQueue()
         {
             return LevelToMaxBuildQueue(buildingStructure.buildingLevel_logistics);
+        }
+
+        public IntVector2 ArmySpawnTilePos()
+        {
+            //    public IntVector2 GetFreeTile(IntVector2 center)
+            //{
+            if (armySpawnTilePos.HasValue())
+            {
+                return armySpawnTilePos;
+            }
+
+            for (int radius = 2; radius >= 1; --radius)
+            {
+                ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
+                while (loop.Next())
+                {
+                    Tile t = DssRef.world.tileGrid.Get(loop.Position);
+                    if (t.IsLand())
+                    {
+                        armySpawnTilePos = loop.Position;
+                        return loop.Position;
+                    }
+                }
+            }
+
+            Debug.LogError("GetFreeTile" + tilePos.ToString());
+            return tilePos;
+            //foreach (IntVector2 dir in IntVector2.Dir8Array)
+            //{
+            //    IntVector2 pos = center + dir;
+            //    Tile t = tileGrid.Get(pos);
+            //    if (t.IsLand())
+            //    {
+            //        return pos;
+            //    }
+            //}
+            //Debug.LogError("GetFreeTile" + center.ToString());
+            //return center;
+            //}
         }
 
         //public void onCityStructureUpdate_async()
@@ -2609,6 +2649,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (prevOwner != null)
                 {
                     prevOwner.remove(this);
+                   
                 }
                 OnNewOwner();
                 //guardCount = Bound.Min(guardCount, 1);

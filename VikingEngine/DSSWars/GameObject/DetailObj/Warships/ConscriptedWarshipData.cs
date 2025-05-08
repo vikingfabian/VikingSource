@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
 
             AbsSoldierUnit result = base.CreateUnit();
+            //result.refreshShipCarryCount();
             //if (result.group.soldierConscript.conscript.specialization == SpecializationType.DarkLord)
             //{
             //    DssRef.settings.darkLordPlayer.darkLordUnit = result;

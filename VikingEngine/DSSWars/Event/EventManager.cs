@@ -14,19 +14,6 @@ namespace VikingEngine.DSSWars.Event
 {
     class EventManager
     {
-        //public EventType nextEvent = 0;
-        
-        //TimeInGameCountdown prepareTime;
-        //TimeInGameCountdown checkTime;
-        //TimeInGameCountdown triggerTime;
-
-
-        //IntervalF triggerTimeSpan_Minutes;
-        //IntervalF nextExpectedPlayerSize;
-
-        
-
-        
 
         public List<City> factories = new List<City>(3);
 
@@ -43,8 +30,23 @@ namespace VikingEngine.DSSWars.Event
         virtual public void onGameStarted()
         { }
 
-        virtual public void onTutorialEnd()
-        { }
+        public void onTutorialEnd()
+        {
+            if (PlatformSettings.STEAM_DEMO)
+            {
+                onDemoTimeUp();
+            }
+        }
+
+        protected void onDemoTimeUp()
+        {
+            DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, DssRef.lang.Demo_EndInOneMinuteDescription);
+            new Timer.TimedAction1ArgTrigger_InGame<GameEndReason>(viewEndScreen, GameEndReason.TimesUp, TimeExt.MinuteInSeconds * 1f);
+        }
+        protected void viewEndScreen(GameEndReason endReason)
+        {
+            new EndScene(endReason, false);
+        }
 
         public AbsStoryEvent CurrentEvent()
         {
@@ -69,20 +71,6 @@ namespace VikingEngine.DSSWars.Event
                 return;
             }
 
-            //if (eventState == EventState.Done)
-            //{
-            //    ++nextEvent;
-            //    eventState = EventState.Prepare;
-            //}
-
-            //if (eventState == EventState.Prepare)
-            //{
-            //    prepareNext();
-            //    eventState = EventState.Countdown;
-            //}
-
-            //bool timedEvent;
-
             var ev = mainStory.FirstOrDefault();
             if (ev != null)
             {
@@ -95,24 +83,6 @@ namespace VikingEngine.DSSWars.Event
                     }
                 }
             }
-
-            //switch (nextEvent)
-            //{
-            //    case EventType.AiDelay:
-            //    case EventType.AiWarDelay:
-            //    case EventType.WarmanagerDelay:
-            //    case EventType.SouthShips:
-            //    case EventType.DarkLordWarning:
-            //    case EventType.DarkLord:
-            //        timedEvent = true;
-            //        break;
-
-            //    default:
-            //        timedEvent = false;
-            //        break;
-            //}
-
-            
 
             asyncUpdateDyingFactions(time);
 
@@ -166,24 +136,27 @@ namespace VikingEngine.DSSWars.Event
         {
             if (newGame)
             {
-                addStoryEvent(new List<AbsStoryEvent>
-                {
-                    new StoryEvent_AiDelay(),
-                    new StoryEvent_AiWarDelay(),
-                    new StoryEvent_WarmanagerDelay(),
-                }, true);
-
-                if (DssRef.difficulty.runStory &&
-                    PlatformSettings.STEAM_DEMO == false)
+                if (DssRef.difficulty.setting_gameMode != GameMode.Spectator)
                 {
                     addStoryEvent(new List<AbsStoryEvent>
                     {
-                        new StoryEvent_SouthShips(),
-                        new StoryEvent_DarkLordWarning(),
-                        new StoryEvent_DarkLord(),
-                        new StoryEvent_Factories(),
-                        //new StoryEvent_FactoriesDestroyed(),
-                    }, false);
+                        new StoryEvent_AiDelay(),
+                        new StoryEvent_AiWarDelay(),
+                        new StoryEvent_WarmanagerDelay(),
+                    }, true);
+
+                    if (DssRef.difficulty.runStory &&
+                        PlatformSettings.STEAM_DEMO == false)
+                    {
+                        addStoryEvent(new List<AbsStoryEvent>
+                        {
+                            new StoryEvent_SouthShips(),
+                            new StoryEvent_DarkLordWarning(),
+                            new StoryEvent_DarkLord(),
+                            new StoryEvent_Factories(),
+                            //new StoryEvent_FactoriesDestroyed(),
+                        }, false);
+                    }
                 }
 
                 //Prepare secret alliances
@@ -771,19 +744,7 @@ namespace VikingEngine.DSSWars.Event
                         var otherfaction = DssRef.world.cities[cindex].faction;
                         if (factionMayStartWar(otherfaction, defender))
                         {
-                            //var rel = DssRef.diplomacy.GetRelationType(faction, otherfaction);
-                            //if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
-                            //{
-                            //    otherfaction.player.setMinimumAggression(AiPlayer.AggressionLevel2_RandomAttacks);
-                                //var aiPlayer = otherfaction.player.GetAiPlayer();
-                                //if (aiPlayer.aggressionLevel <= AiPlayer.AggressionLevel1_RevengeOnly)
-                                //{
-                                //    aiPlayer.aggressionLevel = AiPlayer.AggressionLevel2_RandomAttacks;
-                                //    aiPlayer.refreshAggression();
-                                //}
-                                //DssRef.diplomacy.declareWar(otherfaction, faction);
-                                return otherfaction;
-                            //}
+                            return otherfaction;
                         }
                     }
                 }

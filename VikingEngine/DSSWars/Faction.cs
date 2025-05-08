@@ -614,7 +614,25 @@ namespace VikingEngine.DSSWars
                 refreshMainCity();                     
             }
 
-            player?.orders?.refreshAvailable(this);
+            if (player != null && player.IsLocalPlayer())
+            {
+                player.orders.refreshAvailable(this);
+
+                Ref.update.AddSyncAction(new SyncAction(() =>
+                {
+                    RichBoxContent content = new RichBoxContent();
+                    MessageGroup.Title(content, DssRef.todoLang.Message_LostCity);
+
+                    var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                    MessageGroup.ControllerInputIcons(player.GetLocalPlayer(), gotoBattleButtonContent);
+                    gotoBattleButtonContent.Add(new RbText(city.TypeName()));
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
+                        new RbAction1Arg<AbsGameObject>(player.GetLocalPlayer().hud.messages.goToMapObject, city)));
+
+                    player.GetLocalPlayer().hud.messages.Add(content);
+                }));
+            }
         }
 
         public void refreshMainCity()

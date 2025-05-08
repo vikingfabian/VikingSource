@@ -9,8 +9,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 {
     class BaseWarship : AbsSoldierUnit
     {
-        const float ShipAttackCooldownMulti = 2;
-        int soldierCount;
+        const float ShipAttackCooldownMulti = 1;
+        int crewCount;
         int multiAttackCount;
         float multiAttackTimeCooldown;
 
@@ -18,16 +18,22 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
             : base()
         {
         }
+        public override void InitLocal(Vector3 center, IntVector2 gridPlacement, IntVector2 tile, SoldierGroup group)
+        {
+            
+            base.InitLocal(center, gridPlacement, tile, group);
 
+            refreshShipCarryCount();
+        }
         override public void refreshShipCarryCount()
         {
             //var defaultSoldier = group.soldierConscript.init(group.typeSoldierData);
             //var data = group.typeCurrentData;//.SoldierData();
-            soldierCount = MathExt.Div_Ceiling(this.health, group.soldierData.basehealth);
-            if (soldierCount > 0)
+            crewCount = MathExt.Div_Ceiling(this.health, group.soldierData_soldier.basehealth);
+            if (crewCount > 0)
             {
-                multiAttackCount = Math.Min(soldierCount, group.soldierData.rowWidth);
-                multiAttackTimeCooldown = group.soldierData.attackTimePlusCoolDown / (soldierCount / multiAttackCount);
+                multiAttackCount = Math.Min(crewCount, group.soldierData_soldier.rowWidth);
+                multiAttackTimeCooldown = group.soldierData_soldier.attackTimePlusCoolDown / (crewCount / multiAttackCount);
                 multiAttackTimeCooldown *= ShipAttackCooldownMulti; 
             }
         }

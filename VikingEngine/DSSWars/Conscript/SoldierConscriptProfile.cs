@@ -795,9 +795,12 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.modelScale = DssConst.Men_StandardModelScale * 6f;
 
             soldierData.modelToShadowScale = new Vector3(0.5f, 1f, 0.8f);
+            soldierData.basehealth = soldierData.basehealth * soldierData.rowWidth * soldierData.columnsDepth;
             soldierData.rowWidth = 1;
             soldierData.columnsDepth = 1;
             soldierData.rotationSpeed = DssConst.ShipRotatingSpeed;
+
+            
 
             switch (conscript.specialization)
             {

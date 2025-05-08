@@ -25,6 +25,8 @@ namespace VikingEngine.DSSWars.Display
 
         public PopMenu(Players.LocalPlayer player, DetailObjectCollection collection)
         {
+            
+
             player.hud.popMenu = this;
             float defaultWidth = Engine.Screen.IconSize * 3f;
             float defaultHeight = Engine.Screen.TextBreadHeight * 1.6f;
@@ -39,6 +41,8 @@ namespace VikingEngine.DSSWars.Display
 
         public bool update(Players.LocalPlayer player, out bool overHud)
         {
+            player.hud.tooltip.clear();
+
             foreach (var b in buttons)
             {
                 if (b.area.IntersectPoint(Input.Mouse.Position))
@@ -59,17 +63,22 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
 
-            if (sel != null)
-            {
-                sel = null;
-                refreshSelectOutline();
-            }
+            //Auto select if leaving the menu
             overHud = false;
-            if (player.gameControls.input.anyActionKeyDown(true))
-            {
-                return true;
-            }
-            return false;
+            buttons.First().link.actionTrigger();
+            return true;
+
+            //if (sel != null)
+            //{
+            //    sel = null;
+            //    refreshSelectOutline();
+            //}
+            //o
+            //if (player.gameControls.input.anyActionKeyDown(true))
+            //{
+            //    return true;
+            //}
+            //return false;
         }
 
         public void refreshSelectOutline()

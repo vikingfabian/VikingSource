@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
+using VikingEngine.DSSWars.Display;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -18,6 +21,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int goalId = 0;
         public bool walkGoalAsShip = false;
         public int soldiersCount = 0;
+        protected bool inBattle = false;
 
         public void AddSoldierGroup(SoldierGroup group)
         {
@@ -30,9 +34,47 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.CrashIfThreaded();
             groups.RemoveAt_EqualSafeCheck(group, group.parentArrayIndex);
             
-               
-            
         }
+
+        public void asyncBattleUpdate()
+        {
+            int groupsInBattle = 0;
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {
+                groupsC.sel.asyncBattleUpdate(ref groupsInBattle);
+            }
+
+            if (inBattle)
+            {
+                if (groupsInBattle == 0)
+                {
+                    inBattle = false;
+                }
+            }
+            else if (groupsInBattle >= 2)
+            {
+                inBattle = true;
+                if (faction.player.IsLocalPlayer())
+                {
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        MessageGroup.Title(content, DssRef.lang.Hud_Battle);
+
+                        var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                        MessageGroup.ControllerInputIcons(faction.player.GetLocalPlayer(), gotoBattleButtonContent);
+                        gotoBattleButtonContent.Add(new RbText(TypeName()));
+
+                        content.Add(new ArtButton( RbButtonStyle.Primary, gotoBattleButtonContent,
+                            new RbAction1Arg<AbsGameObject>(faction.player.GetLocalPlayer().hud.messages.goToMapObject, this)));
+                       
+                        faction.player.GetLocalPlayer().hud.messages.Add(content);
+                    }));
+                }
+            }
+        }
+
         protected void writeGroups(System.IO.BinaryWriter w)
         {
             w.Write((ushort)groups.Count);

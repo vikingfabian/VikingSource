@@ -913,7 +913,7 @@ namespace VikingEngine.DSSWars.Players
                                 int count = citiesC.sel.cityType == CityType.Town ? 5 : 2;
                                 //if (citiesC.sel.CityType == CityType.Large)
                                 //{
-                                IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
+                                IntVector2 pos = citiesC.sel.ArmySpawnTilePos();
                                 var army = faction.NewArmy(pos);
                                 
                                 for (int i = 0; i < count; ++i)
@@ -939,7 +939,7 @@ namespace VikingEngine.DSSWars.Players
                             {
                                 if (citiesC.sel.cityType == CityType.Town)
                                 {
-                                    IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
+                                    IntVector2 pos = citiesC.sel.ArmySpawnTilePos();
                                     var army = faction.NewArmy(pos);
 
                                     for (int i = 0; i < 10; ++i)
@@ -982,7 +982,7 @@ namespace VikingEngine.DSSWars.Players
                             {
                                 if (citiesC.sel.cityType == CityType.Town)
                                 {
-                                    IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
+                                    IntVector2 pos = citiesC.sel.ArmySpawnTilePos();
                                     var army = faction.NewArmy(pos);
 
                                     for (int i = 0; i < 10; ++i)
@@ -1023,7 +1023,7 @@ namespace VikingEngine.DSSWars.Players
 
             Army startMainArmy()
             {
-                IntVector2 onTile = DssRef.world.GetFreeTile(faction.mainCity.tilePos);
+                IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                 return faction.NewArmy(onTile);
             }
         }

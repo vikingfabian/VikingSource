@@ -336,7 +336,9 @@ namespace VikingEngine.DSSWars.Delivery
                 if (currentStatus.profile.toCity >= 0)
                 {
                     content.newParagraph();
-                    que.toHud(player, content, queClick, currentStatus.que, Conscript.BarracksStatus.MaxQue, true);
+                    que.labelToHud(content);
+                    progress(currentStatus);
+                    que.buttonsToHud(player, content, queClick, currentStatus.que, Conscript.BarracksStatus.MaxQue, true);
                 }
 
                 content.newParagraph();
@@ -356,49 +358,7 @@ namespace VikingEngine.DSSWars.Delivery
                 },
                 new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, SoundLib.menuPaste)));
 
-                bool isSending = currentStatus.active == DeliveryActiveStatus.Delivering;
-
-                if (isSending || currentStatus.que > 0)
-                {
-
-                    //content.newParagraph();
-                    content.Add(new RbSeperationLine());
-                    {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        var text = new RbText(DssRef.lang.Delivery_ItemsReady);
-                        bool ready = isSending || currentStatus.CanSend(city, out currentStatus.inProgress.type);
-                        text.overrideColor = ready? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        content.Add(text);
-
-                        if (ready)
-                        {
-                            content.newLine();
-                            content.Add(new RbImage(ResourceLib.Icon(currentStatus.inProgress.type)));
-                            content.space();
-                            content.Add(new RbText(LangLib.Item(currentStatus.inProgress.type) + ": " + currentStatus.inProgress.SendAmount.ToString()));
-                        }
-                    }
-                    {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        var text = new RbText(DssRef.lang.Delivery_RecieverReady);
-                        text.overrideColor = isSending || currentStatus.CanRecieve(currentStatus.inProgress.type) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        content.Add(text);
-
-                        if (isSending && currentStatus.inProgress.toCity == DeliveryProfile.ToCityAuto)
-                        {
-                            content.Add(new RbText(" - " + DssRef.world.cities[currentStatus.inProgress.autoCity].TypeName()));
-                        }
-                    }
-
-                    if (isSending)
-                    {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(currentStatus.longTimeProgress(city)));
-                    }
-                }
+                
             }
             else
             {
@@ -462,6 +422,53 @@ namespace VikingEngine.DSSWars.Delivery
                         content.Add(new ArtButton( RbButtonStyle.Primary, buttonContent,
                             new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 
+                    }
+                }
+            }
+
+            void progress(DeliveryStatus currentStatus)
+            {
+                bool isSending = currentStatus.active == DeliveryActiveStatus.Delivering;
+
+                if (isSending || currentStatus.que > 0)
+                {
+
+                    //content.newParagraph();
+                    content.Add(new RbSeperationLine());
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        var text = new RbText(DssRef.lang.Delivery_ItemsReady);
+                        bool ready = isSending || currentStatus.CanSend(city, out currentStatus.inProgress.type);
+                        text.overrideColor = ready ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        content.Add(text);
+
+                        if (ready)
+                        {
+                            content.newLine();
+                            content.Add(new RbImage(ResourceLib.Icon(currentStatus.inProgress.type)));
+                            content.space();
+                            content.Add(new RbText(LangLib.Item(currentStatus.inProgress.type) + ": " + currentStatus.inProgress.SendAmount.ToString()));
+                        }
+                    }
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        var text = new RbText(DssRef.lang.Delivery_RecieverReady);
+                        text.overrideColor = isSending || currentStatus.CanRecieve(currentStatus.inProgress.type) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        content.Add(text);
+
+                        if (isSending && currentStatus.inProgress.toCity == DeliveryProfile.ToCityAuto)
+                        {
+                            content.Add(new RbText(" - " + DssRef.world.cities[currentStatus.inProgress.autoCity].TypeName()));
+                        }
+                    }
+
+                    //if (isSending)
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(currentStatus.longTimeProgress(city), isSending ? null : HudLib.SecondaryTextColor));
                     }
                 }
             }

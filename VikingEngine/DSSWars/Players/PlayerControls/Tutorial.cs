@@ -335,7 +335,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //content.icontext(HudLib.CheckImage(recruitGuard_selectCity), DssRef.lang.Tutorial_SelectACity);
                     content.iconicontext(HudLib.CheckImage(recruitGuard_zoomIn), SpriteName.WarsWorker, DssRef.lang.Tutorial_ZoomInWorkers);
                     content.iconicontext(HudLib.CheckImage(recruitGuard_selectConscriptTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
-                    content.iconicontext(HudLib.CheckImage(recruitGuard_selectGuardTab), SpriteName.WarsHudSubTabSelected, string.Format(DssRef.lang.Tutorial_OpenGuardSubTab, DssRef.lang.Conscript_Soldiers_GuardType));
+                    content.iconicontext(HudLib.CheckImage(recruitGuard_selectGuardTab), SpriteName.WarsGuard, string.Format(DssRef.lang.Tutorial_OpenGuardSubTab, DssRef.lang.Conscript_Soldiers_GuardType));
                     content.iconicontext(HudLib.CheckImage(recruitGuard_createGuard), SpriteName.WarsUnitIcon_Folkman, string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.Resource_TypeName_PaddedArmor));
                     
                     break;

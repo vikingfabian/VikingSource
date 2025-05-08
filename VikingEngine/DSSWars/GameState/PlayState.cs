@@ -182,12 +182,16 @@ namespace VikingEngine.DSSWars
 
             int playerCount = DssRef.storage.playerCount;
 
+
             Stack<Faction> spectatorFaction = new Stack<Faction>(playerCount);
-            if (DssRef.difficulty.setting_gameMode == GameMode.Spectator)
+            if (newGame)
             {
-                for (int i = 0; i < playerCount; ++i)
+                if (DssRef.difficulty.setting_gameMode == GameMode.Spectator)
                 {
-                    spectatorFaction.Push(new Faction(DssRef.world, FactionType.Player));
+                    for (int i = 0; i < playerCount; ++i)
+                    {
+                        spectatorFaction.Push(new Faction(DssRef.world, FactionType.Player));
+                    }
                 }
             }
 

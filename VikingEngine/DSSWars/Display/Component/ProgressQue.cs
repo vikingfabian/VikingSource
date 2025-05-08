@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
@@ -13,28 +14,23 @@ namespace VikingEngine.DSSWars.Display.Component
 {
     class ProgressQue
     {
-        public void toHud(LocalPlayer player, RichBoxContent content, Action<int> queClick, int currentQue, int maxQue, bool noLimitOption)
+        public void labelToHud(RichBoxContent content)
         {
             HudLib.Label(content, DssRef.lang.Hud_ProductionQueue);
             content.space();
             HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Automation_queue_description));
-                //{
-                //    RichBoxContent content = new RichBoxContent();
+        }
 
-                //    content.text(DssRef.lang.Automation_queue_description);
-
-                //    player.hud.tooltip.create(player, content, true);
-                //}
-            //}));
-
+        public void buttonsToHud(LocalPlayer player, RichBoxContent content, Action<int> queClick, int currentQue, int maxQue, bool noLimitOption)
+        {
             content.newLine();
             content.Add(new RbImage(player.gameControls.input.StopStart.Icon));
             content.space();
             for (int length = 0; length <= maxQue; length++)
             {
-                var button = new ArtToggle(length == currentQue,new List<AbsRichBoxMember>{
+                var button = new ArtToggle(length == currentQue, new List<AbsRichBoxMember>{
                        new RbText( length.ToString())
-                    }, new RbAction1Arg<int>(queClick, length, length == 0? SoundLib.menuStop : SoundLib.menuStart));
+                    }, new RbAction1Arg<int>(queClick, length, length == 0 ? SoundLib.menuStop : SoundLib.menuStart));
                 //button.setGroupSelectionColor(HudLib.RbSettings, length == currentQue);
                 content.Add(button);
                 //content.space();
@@ -48,6 +44,45 @@ namespace VikingEngine.DSSWars.Display.Component
                 //button.setGroupSelectionColor(HudLib.RbSettings, currentQue > maxQue);
                 content.Add(button);
             }
+        }
+
+        public void toHud(LocalPlayer player, RichBoxContent content, Action<int> queClick, int currentQue, int maxQue, bool noLimitOption)
+        {
+            labelToHud(content);
+            buttonsToHud(player, content, queClick, currentQue, maxQue, noLimitOption);
+            //HudLib.Label(content, DssRef.lang.Hud_ProductionQueue);
+            //content.space();
+            //HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Automation_queue_description));
+                //{
+                //    RichBoxContent content = new RichBoxContent();
+
+                //    content.text(DssRef.lang.Automation_queue_description);
+
+                //    player.hud.tooltip.create(player, content, true);
+                //}
+            //}));
+
+            //content.newLine();
+            //content.Add(new RbImage(player.gameControls.input.StopStart.Icon));
+            //content.space();
+            //for (int length = 0; length <= maxQue; length++)
+            //{
+            //    var button = new ArtToggle(length == currentQue,new List<AbsRichBoxMember>{
+            //           new RbText( length.ToString())
+            //        }, new RbAction1Arg<int>(queClick, length, length == 0? SoundLib.menuStop : SoundLib.menuStart));
+            //    //button.setGroupSelectionColor(HudLib.RbSettings, length == currentQue);
+            //    content.Add(button);
+            //    //content.space();
+            //}
+
+            //if (noLimitOption)
+            //{
+            //    var button = new ArtToggle(currentQue > maxQue, new List<AbsRichBoxMember>{
+            //           new RbText(DssRef.lang.Hud_NoLimit)
+            //        }, new RbAction1Arg<int>(queClick, 255, SoundLib.menuStart));
+            //    //button.setGroupSelectionColor(HudLib.RbSettings, currentQue > maxQue);
+            //    content.Add(button);
+            //}
         }
 
 

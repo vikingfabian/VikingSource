@@ -88,6 +88,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public SoldierConscriptProfile soldierConscript;
         public SoldierData soldierData;
+        public SoldierData soldierData_soldier;
         public bool isShip = false;
 
 #if VISUAL_NODES
@@ -137,10 +138,12 @@ namespace VikingEngine.DSSWars.GameObject
             var type = soldierConscript.unitType();
             typeSoldierData = DssRef.profile.Get(type);
             typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
-            soldierData = soldierConscript.init(typeSoldierData);
+
+            soldierData_soldier = soldierConscript.init(typeSoldierData);
+            soldierData = soldierData_soldier;
             typeCurrentData = typeSoldierData;
 
-            armyGridPlacement2 = army.nextArmyPlacement(soldierData.defaultArmyPlacement);
+            armyGridPlacement2 = army.nextArmyPlacement(soldierData_soldier.defaultArmyPlacement);
 
         }
 
@@ -1801,8 +1804,13 @@ namespace VikingEngine.DSSWars.GameObject
             isWalkingIntoOtherGroup = false;
         }
 
-        public void asyncBattleUpdate()
+        public void asyncBattleUpdate(ref int groupsInBattle)
         {
+            if (state == GroupState.Battle)
+            {
+                groupsInBattle++;
+            }
+
             var soldiers_sp = soldiers;        
             if (soldiers_sp != null)
             {

@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Display
          screenAreaBottom = player.playerData.view.DrawArea.Bottom + Engine.Screen.SmallIconSize;
         }
 
-        public void Title(RichBoxContent content, string title)
+        public static void Title(RichBoxContent content, string title)
         {
             content.Add(new RbBeginTitle(2));
             content.Add(new RbImage(SpriteName.cmdWarningTriangle));
@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
         }
 
-        public void ControllerInputIcons(List<AbsRichBoxMember> button)
+        public static void ControllerInputIcons(LocalPlayer player, List<AbsRichBoxMember> button)
         {
             if (player.gameControls.input.inputSource.IsController)
             {
@@ -96,7 +96,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newParagraph();
 
                 var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                ControllerInputIcons(gotoBattleButtonContent);
+                MessageGroup.ControllerInputIcons(player,gotoBattleButtonContent);
                 gotoBattleButtonContent.Add(new RbText(city.TypeName()));
 
                 content.Add(new ArtButton( RbButtonStyle.Primary,gotoBattleButtonContent,
@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newParagraph();
 
                 var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                ControllerInputIcons(gotoBattleButtonContent);
+                ControllerInputIcons(player,gotoBattleButtonContent);
                 gotoBattleButtonContent.Add(new RbText(army.TypeName()));
 
                 content.Add(new ArtButton( RbButtonStyle.Primary,gotoBattleButtonContent,
@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        void goToMapObject(AbsGameObject city)
+        public void goToMapObject(AbsGameObject city)
         {
             player.gameControls.mapControls.selection.obj = city;
             player.gameControls.mapControls.cameraFocus = city;

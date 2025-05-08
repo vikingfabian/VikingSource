@@ -329,7 +329,7 @@ namespace VikingEngine.DSSWars.Display
             message.newLine();
 
             var acceptButtonContent = new List<AbsRichBoxMember>(7);
-            otherPlayer.hud.messages.ControllerInputIcons(acceptButtonContent);
+            MessageGroup.ControllerInputIcons(player, acceptButtonContent);
             acceptButtonContent.Add(new RbText(DssRef.lang.Diplomacy_AcceptRelationOffer));
             message.Add(new ArtButton(RbButtonStyle.Primary,
                 acceptButtonContent,

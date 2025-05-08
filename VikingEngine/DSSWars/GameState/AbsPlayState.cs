@@ -219,21 +219,23 @@ namespace VikingEngine.DSSWars.GameState
                     var armiesC = factions.sel.armies.counter();
                     while (armiesC.Next())
                     {
-                        var groupsC = armiesC.sel.groups.counter();
-                        while (groupsC.Next())
-                        {
-                            groupsC.sel.asyncBattleUpdate();
-                        }
+                        armiesC.sel.asyncBattleUpdate();
+                        //var groupsC = armiesC.sel.groups.counter();
+                        //while (groupsC.Next())
+                        //{
+                        //    groupsC.sel.asyncBattleUpdate();
+                        //}
                     }
                 }
 
                 foreach (var m in DssRef.world.cities)
                 {
-                    var groupsC = m.groups.counter();
-                    while (groupsC.Next())
-                    {
-                        groupsC.sel.asyncBattleUpdate();
-                    }
+                    m.asyncBattleUpdate();
+                    //var groupsC = m.groups.counter();
+                    //while (groupsC.Next())
+                    //{
+                    //    groupsC.sel.asyncBattleUpdate();
+                    //}
                 }
             }
             return exitThreads;

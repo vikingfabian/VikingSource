@@ -1,14 +1,16 @@
 ﻿UPDATE
 -Change Log-
-* fixed faction menu
-* I hid the automation tab (too broken)
-* Child birth speed is reduced by half
-* Food on army tooltip
-* Removed Epic map size from game options
-
+* updated conscript and delivery hud
+* multiselt popup will pick first option on mouseleave
+* some improvements to the tutorial
+* removed collisions on guards
+* fixed mashinegunning ships
+* fixed: Spectator mode crashes on load
+* fixed: Spectator should remove ai delay
+* war messages
+* city lost messages
 
 !! Known issues, that I am working on !!
--Camera chase can crash
 -Soldiers can get stuck attacking a dead army
 -Cant move units between armies and garrisons
 -There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.

@@ -54,11 +54,8 @@ namespace VikingEngine.DSSWars.Battle
             //1. Is the soldier queuing behind friendlies
             //2. Is he bumping into other people/items
 
-            
-
             if (nearBodyCollisionUnits.Count > 0)
-            {
-               
+            {               
                 if (Ref.peRnd.ChanceF(0.2f))
                 {
                     collisionForce = Vector2.Zero;
@@ -223,12 +220,15 @@ namespace VikingEngine.DSSWars.Battle
 
         public void asycUpdate(AbsSoldierUnit parent) 
         {
+
             if (parent.group.debugTagged)
             {
                 lib.DoNothing();
             }
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
+
+            bool collectCollisions = !parent.group.InGuardPost();
 
             //const float SoldierToGroupMaxDistance = 1.0f;
 
@@ -253,7 +253,8 @@ namespace VikingEngine.DSSWars.Battle
                                 {
                                     if (soldiersC.sel.Alive_IncomingDamageIncluded())
                                     {
-                                        if (parent.Bound2D(ParentBound).AsynchCollect(soldiersC.sel.Bound2D(OtherBound)) &&
+                                        if (collectCollisions &&
+                                            parent.Bound2D(ParentBound).AsynchCollect(soldiersC.sel.Bound2D(OtherBound)) &&
                                             soldiersC.sel != parent)
                                         {
                                             SoldierBuffer.Add(soldiersC.sel);
