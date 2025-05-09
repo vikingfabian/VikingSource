@@ -1,6 +1,7 @@
 ﻿UPDATE
 -Change Log-
-* 
+* Limited the war messages
+
 
 !! Known issues, that I am working on !!
 -Soldiers can get stuck attacking a dead army

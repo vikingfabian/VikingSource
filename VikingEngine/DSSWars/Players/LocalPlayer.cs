@@ -104,6 +104,8 @@ namespace VikingEngine.DSSWars.Players
 
         SpottedArray<LocationPin> pins = new SpottedArray<LocationPin>();
 
+        List<MessagePosition> battleMessages = new List<MessagePosition>(8);
+
         public LocalPlayer(Faction faction)
            : base(faction)
         {
@@ -120,6 +122,24 @@ namespace VikingEngine.DSSWars.Players
             faction.technology.iron = XP.TechnologyTemplate.FactionUnlock;
 
             faction.addGold_factionWide(10000);
+        }
+
+        public bool battleMessageCheck(IntVector2 tilepos)
+        {
+            for (int i = battleMessages.Count - 1; i >= 0; --i)
+            {
+                if (battleMessages[i].time.secPassed(20))
+                {
+                    battleMessages.RemoveAt(i);
+                }
+                else if (battleMessages[i].tilePos.SideLength(tilepos) <= 5)
+                {
+                    return false;
+                }
+            }
+
+            battleMessages.Add(new MessagePosition(tilepos));
+            return true;
         }
 
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
@@ -1452,5 +1472,17 @@ namespace VikingEngine.DSSWars.Players
             return this;
         }
         public override string Name => playerData.PublicName(LoadedFont.Regular);
+    }
+
+    struct MessagePosition
+    {
+        public IntVector2 tilePos;
+        public GameTimeStamp time;
+
+        public MessagePosition(IntVector2 tilePos)
+        {
+            this.tilePos = tilePos;
+            time = GameTimeStamp.Now();
+        }
     }
 }

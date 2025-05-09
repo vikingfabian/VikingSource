@@ -621,16 +621,20 @@ namespace VikingEngine.DSSWars
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {
                     RichBoxContent content = new RichBoxContent();
-                    MessageGroup.Title(content, DssRef.todoLang.Message_LostCity);
+                    var localplayer = player.GetLocalPlayer();
+                    if (localplayer.battleMessageCheck(city.tilePos))
+                    {
+                        MessageGroup.Title(content, DssRef.todoLang.Message_LostCity);
 
-                    var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                    MessageGroup.ControllerInputIcons(player.GetLocalPlayer(), gotoBattleButtonContent);
-                    gotoBattleButtonContent.Add(new RbText(city.TypeName()));
+                        var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                        MessageGroup.ControllerInputIcons(localplayer, gotoBattleButtonContent);
+                        gotoBattleButtonContent.Add(new RbText(city.TypeName()));
 
-                    content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                        new RbAction1Arg<AbsGameObject>(player.GetLocalPlayer().hud.messages.goToMapObject, city)));
+                        content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
+                            new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city)));
 
-                    player.GetLocalPlayer().hud.messages.Add(content);
+                        localplayer.hud.messages.Add(content);
+                    }
                 }));
             }
         }

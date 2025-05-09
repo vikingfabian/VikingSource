@@ -59,17 +59,21 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        RichBoxContent content = new RichBoxContent();
-                        MessageGroup.Title(content, DssRef.lang.Hud_Battle);
+                        var localplayer = faction.player.GetLocalPlayer();
+                        if (localplayer.battleMessageCheck(tilePos))
+                        {
+                            RichBoxContent content = new RichBoxContent();
+                            MessageGroup.Title(content, DssRef.lang.Hud_Battle);
 
-                        var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                        MessageGroup.ControllerInputIcons(faction.player.GetLocalPlayer(), gotoBattleButtonContent);
-                        gotoBattleButtonContent.Add(new RbText(TypeName()));
+                            var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                            MessageGroup.ControllerInputIcons(localplayer, gotoBattleButtonContent);
+                            gotoBattleButtonContent.Add(new RbText(TypeName()));
 
-                        content.Add(new ArtButton( RbButtonStyle.Primary, gotoBattleButtonContent,
-                            new RbAction1Arg<AbsGameObject>(faction.player.GetLocalPlayer().hud.messages.goToMapObject, this)));
-                       
-                        faction.player.GetLocalPlayer().hud.messages.Add(content);
+                            content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
+                                new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this)));
+
+                            localplayer.hud.messages.Add(content);
+                        }
                     }));
                 }
             }
