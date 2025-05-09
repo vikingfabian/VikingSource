@@ -1,7 +1,10 @@
 ﻿UPDATE
 -Change Log-
 * Limited the war messages
-
+* Free camera on tutorial > attack barbarians
+* fixed: ship converts back to one soldier
+* updated some icon art
+* new end screen art
 
 !! Known issues, that I am working on !!
 -Soldiers can get stuck attacking a dead army

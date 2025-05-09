@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
         void load_asynch()
         {
-            string image = endReason == GameEndReason.Victory ? "success" : "fail";
+            string image = "endscreen2";// endReason == GameEndReason.Victory ? "success" : "fail";
 
             bgTex = Ref.main.Content.Load<Texture2D>(DssLib.StoryContentDir + image);
         }

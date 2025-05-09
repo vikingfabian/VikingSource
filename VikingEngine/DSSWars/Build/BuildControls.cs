@@ -499,7 +499,7 @@ namespace VikingEngine.DSSWars.Build
                         tabIcon = SpriteName.warsBuildCategoryDecorTree;
                         break;
                     case BuildCategoryTab.Updgrade:
-                        tabIcon = SpriteName.MissingImage;
+                        tabIcon = SpriteName.warsBuildCategoryUpgrades;
                         break;
                     default:
                         tabIcon = SpriteName.warsBuildCategoryAutomation;

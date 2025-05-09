@@ -2166,6 +2166,7 @@ namespace VikingEngine
             currentIndex = numTilesWidth * 86;
             {
                 add(SpriteName.WarsHudPopUpButton);
+                add(SpriteName.warsBuildCategoryUpgrades);
             }
 
             currentIndex = numTilesWidth * 87;

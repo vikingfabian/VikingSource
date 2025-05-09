@@ -243,7 +243,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void refreshLimits()
         {
-            player.gameControls.mapControls.setCameraBounds(missions.sel < TutorialMission.Diplomatics, cityarea);
+            player.gameControls.mapControls.setCameraBounds(missions.sel < TutorialMission.MoveArmy, cityarea);
 
             cityTabs = new List<MenuTab>{ MenuTab.Info, MenuTab.Resources };
 

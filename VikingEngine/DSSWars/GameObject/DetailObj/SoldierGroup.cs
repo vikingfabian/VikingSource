@@ -437,14 +437,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (isShip)
                 {
-                    shipHealth = soldierData.basehealth * soldierCount;
+                    shipHealth = soldierData_soldier.basehealth * soldierCount;
                     soldierCount = 1;
                     typeCurrentData = typeShipData;
                     soldierData = soldierConscript.init(typeCurrentData);
                 }
                 else
                 {
-                    soldierCount = shipHealth / soldierData.basehealth;
+                    soldierCount = shipHealth / soldierData_soldier.basehealth;
                     typeCurrentData = typeSoldierData;
                     soldierData = soldierConscript.init(typeCurrentData);
                 }

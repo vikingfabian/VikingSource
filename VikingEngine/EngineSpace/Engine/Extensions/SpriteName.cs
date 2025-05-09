@@ -2528,6 +2528,7 @@ namespace VikingEngine
         warsBuildCategoryHouse,
         warsBuildCategoryDecorTree,
         warsBuildCategoryAutomation,
+        warsBuildCategoryUpgrades,
 
 
         warsArmyTag_Lightning,
