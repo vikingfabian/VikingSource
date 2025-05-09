@@ -51,7 +51,12 @@ namespace VikingEngine.DSSWars.Display
 
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
-                new RbAction(pauseAction), new RbTooltip_Text(DssRef.lang.Input_Pause)));
+                new RbAction(pauseAction), new RbTooltip((RichBoxContent content, object tag) =>
+                {
+                    content.Add(new RbImage(player.gameControls.input.PauseGame.Icon));
+                    content.Add(new RbSpace(0.5f));
+                    content.Add(new RbText(DssRef.lang.Input_Pause));
+                })));
 
             for (int i = 0; i < player.gameControls.GameSpeedOptions.Length; i++)
             {
@@ -59,14 +64,24 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new ArtOption(Ref.TargetGameTimeSpeed == speed,
                     new List<AbsRichBoxMember> { new RbText(speed.ToString()) },
                     new RbAction1Arg<int>(gameSpeedClick, speed),
-                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, speed)))));
+                    new RbTooltip((RichBoxContent content, object tag)=>{
+                        content.Add(new RbImage(player.gameControls.input.GameSpeed.Icon));
+                        content.Add(new RbSpace(0.5f));
+                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, speed))));
+                    })));
                
             }
 
             content.space();
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarMenuIcon) },
-                new RbAction(DssRef.state.menuSystem.pauseMenu), new RbTooltip_Text(DssRef.lang.GameMenu_Title)));
+                new RbAction(DssRef.state.menuSystem.pauseMenu),
+                new RbTooltip((RichBoxContent content, object tag) => {
+                    content.Add(new RbImage(player.gameControls.input.menuInput.OpenCloseKeyBoard.Icon));
+                    content.Add(new RbSpace(0.5f));
+                    content.Add(new RbText(DssRef.lang.GameMenu_Title));
+                })
+                ));
 
             if (DssRef.state.PlayType() == GameState.PlayStateType.BattleLab)
             {
