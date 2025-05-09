@@ -2884,20 +2884,21 @@ namespace VikingEngine
                 add(SpriteName.LfAchievementAllCards_lock, currentIndex, 2, 2);
                 add(SpriteName.cgSacrificeForCards, currentIndex, 4, 2);
                 add(SpriteName.cgSacrificeForMana, currentIndex, 4, 2);
+                currentIndex += 2;
                 add(SpriteName.birdSkyTex, currentIndex, 2, 2);
-                currentIndex += 10;
+                currentIndex += 14;
                 add(SpriteName.EditorPencilCube, 2, 2);
                 add(SpriteName.EditorFillAreaTexture, 2, 2);
 
                 add(SpriteName.cmdTileOpenWater, currentIndex, 2, 2);
-                add(SpriteName.cmdTileCastle, currentIndex, 2, 2);
+                //add(SpriteName.cmdTileCastle, currentIndex, 2, 2);
                 add(SpriteName.cmdTilePalisad, currentIndex, 2, 2);
                 add(SpriteName.cmdTilePavedRoad, currentIndex, 2, 2);
                 add(SpriteName.cmdTileStoneWall, currentIndex, 2, 2);
                 add(SpriteName.cmdTileStoneGate, currentIndex, 2, 2);
 
-                add(SpriteName.cmdTileDungeonGround, currentIndex, 2, 2);
-                add(SpriteName.cmdTileDungeonWall, currentIndex, 2, 2);
+                //add(SpriteName.cmdTileDungeonGround, currentIndex, 2, 2);
+                //add(SpriteName.cmdTileDungeonWall, currentIndex, 2, 2);
 
                 add(SpriteName.cmdIconButtonReadyCheckGray, currentIndex, 2, 2);
                 add(SpriteName.cmdIconButtonReadyCheck, currentIndex, 2, 2);
