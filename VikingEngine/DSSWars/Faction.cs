@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars
         public Faction()
         { }
 
-        public Faction(WorldData addTo, FactionType factiontype)
+        public Faction(WorldData addTo, FactionType factiontype, int toIndex = -1)
         {
             if (factiontype == FactionType.SkaeldraHaim)
             {
@@ -77,7 +77,15 @@ namespace VikingEngine.DSSWars
 
             this.factiontype = factiontype;
 
-            this.parentArrayIndex = addTo.factions.Add(this);
+            if (toIndex >= 0)
+            {
+                this.parentArrayIndex = toIndex;
+                addTo.factions.Array[toIndex] = this;
+            }
+            else
+            {
+                this.parentArrayIndex = addTo.factions.Add(this);
+            }
 
             initVisuals(addTo.metaData);
 
