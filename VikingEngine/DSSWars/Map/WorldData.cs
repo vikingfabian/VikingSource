@@ -214,37 +214,6 @@ namespace VikingEngine.DSSWars
 
                 previuos = subtile;
 
-                //if (subTileHasRepeatValue(ref subtile))
-                //{
-                //    //Find repeats
-                //    int repeating = 0;
-
-                //    while (true)
-                //    {
-                //        if (subTileGrid.LoopNext())
-                //        {
-                //            var nexttile = subTileGrid.LoopValueGet();
-                //            if (subtile.EqualSaveData(ref nexttile))
-                //            {
-                //                ++repeating;
-                //            }
-                //            else
-                //            {
-                //                subTileGrid.LoopUndoToPrev();
-                //                //end loop
-                //                DataStreamLib.WriteGrowingBitShiftValue(w, repeating);
-                //                break;
-                //            }
-                //        }
-                //        else
-                //        {
-                //            //end loop, and final position on map
-                //            DataStreamLib.WriteGrowingBitShiftValue(w, repeating);
-                //            break;
-                //        }
-                //    }                    
-                //}
-
             }
 
             Debug.WriteCheck(w);
@@ -275,8 +244,6 @@ namespace VikingEngine.DSSWars
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            //if (subversion >= 22  && subversion != SaveGamestate.MergeVersion)
-            //{
             availableGenericAiTypes.Clear();
             subTileGrid.LoopBegin();
             SubTile previuos = new SubTile();
@@ -289,29 +256,8 @@ namespace VikingEngine.DSSWars
                 subTileGrid.LoopValueSet(subtile);
 
                 previuos = subtile;
-                //if (subTileHasRepeatValue(ref subtile))
-                //{
-                //    int repeating = DataStreamLib.ReadGrowingBitShiftValue(r);
-                //    for (int i = 0; i < repeating; i++)
-                //    {
-                //        subTileGrid.LoopNext();
-                //        SubTile nexttile = subTileGrid.LoopValueGet();
-                //        nexttile.copySaveDataFrom(ref subtile);
-                //        subTileGrid.LoopValueSet(nexttile);
-                //    }
-                //}   
             }
-            //}
-            //else
-            //{
-            //    subTileGrid.LoopBegin();
-            //    while (subTileGrid.LoopNext())
-            //    {
-            //        SubTile st = subTileGrid.LoopValueGet();
-            //        st.read(r, subversion);
-            //        subTileGrid.LoopValueSet(st);
-            //    }
-            //}
+            
             Debug.ReadCheck(r);
 
             foreach (City city in cities)
@@ -328,10 +274,6 @@ namespace VikingEngine.DSSWars
                     factions.Array[i].readGameState(r, subversion, pointers);
                     Debug.ReadCheck(r);
                 }
-                //else
-                //{
-                //    factions.Array[i] = null;
-                //}
             }
 
             Debug.ReadCheck(r);
