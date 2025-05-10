@@ -516,39 +516,63 @@ namespace VikingEngine.DSSWars
 
                 if (abortLoad) return;
 
-                Debug.WriteCheck(w);
+                //factionsSz.begin(w);
+                SaveGamestate.MainProgress++;
 
+                Debug.WriteCheck(w);
+                //var factionsCount = factions.counter();
                 w.Write(factions.Array.Length);
-                foreach (var f in factions.Array)
+                //SaveGamestate.LoopProgress = 0;
+
+                for (int i = 0; i < factions.Array.Length; ++i)
                 {
-                    if (f != null)
+
+
+                    //w.Write(factions.Array.Length);
+                    //foreach (var f in factions.Array)
+                    //{
+                    //    if (f != null)
+                    //    {
+                    //        w.Write(true);
+                    //        w.Write((byte)f.factiontype);
+                    //        f.writeMapFile(w);
+                    //    }
+                    //    else
+                    //    {
+                    //        w.Write(false);
+                    //    }
+                    //}
+                    //var factionsCount = factions.counter();
+                    //w.Write(factions.Count);
+                    //while (factionsCount.Next())
+                    //{
+                    //    w.Write((byte)factionsCount.sel.factiontype);
+                    //    factionsCount.sel.writeMapFile(w);
+                    //}
+
+
+
+                    if (factions.Array[i] != null)
                     {
                         w.Write(true);
-                        w.Write((byte)f.factiontype);
-                        f.writeMapFile(w);
+                        w.Write((byte)factions.Array[i].factiontype);
+                        factions.Array[i].writeMapFile(w);
                     }
                     else
                     {
                         w.Write(false);
                     }
+
+                    SaveGamestate.LoopProgress++;
+                    Debug.WriteCheck(w);
                 }
-                //var factionsCount = factions.counter();
-                //w.Write(factions.Count);
-                //while (factionsCount.Next())
-                //{
-                //    w.Write((byte)factionsCount.sel.factiontype);
-                //    factionsCount.sel.writeMapFile(w);
-                //}
-
-
-                Debug.WriteCheck(w);
             }
             else
             {
                 w.Write(0);
             }
-            
-            lib.DoNothing();
+
+                //lib.DoNothing();
         }
 
         public void readMapFile(System.IO.BinaryReader r)
@@ -607,10 +631,9 @@ namespace VikingEngine.DSSWars
                             var faction = new Faction(this, factionType, i);
                             faction.readMapFile(r, version, this);
                         }
+                        Debug.ReadCheck(r);
                     }
                 }
-
-                Debug.ReadCheck(r);
             }
         }
 
