@@ -96,21 +96,21 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 case WorkExperienceType.Farm: return topskill_Farm;
 
-                case WorkExperienceType.AnimalCare: return topskill_Farm;
-                case WorkExperienceType.HouseBuilding: return topskill_Farm;
-                case WorkExperienceType.WoodWork: return topskill_Farm;
-                case WorkExperienceType.StoneCutter: return topskill_Farm;
-                case WorkExperienceType.Mining: return topskill_Farm;
-                case WorkExperienceType.Transport: return topskill_Farm;
-                case WorkExperienceType.Cook: return topskill_Farm;
-                case WorkExperienceType.Fletcher: return topskill_Farm;
-                case WorkExperienceType.Smelting: return topskill_Farm;
-                case WorkExperienceType.CastMetal: return topskill_Farm;
-                case WorkExperienceType.CraftMetal: return topskill_Farm;
-                case WorkExperienceType.CraftArmor: return topskill_Farm;
-                case WorkExperienceType.CraftWeapon: return topskill_Farm;
-                case WorkExperienceType.CraftFuel: return topskill_Farm;
-                case WorkExperienceType.Chemistry: return topskill_Farm;
+                case WorkExperienceType.AnimalCare: return topskill_AnimalCare;
+                case WorkExperienceType.HouseBuilding: return topskill_HouseBuilding;
+                case WorkExperienceType.WoodWork: return topskill_WoodCutter;
+                case WorkExperienceType.StoneCutter: return topskill_StoneCutter;
+                case WorkExperienceType.Mining: return topskill_Mining;
+                case WorkExperienceType.Transport: return topskill_Transport;
+                case WorkExperienceType.Cook: return topskill_Cook;
+                case WorkExperienceType.Fletcher: return topskill_Fletcher;
+                case WorkExperienceType.Smelting: return topskill_Smelting;
+                case WorkExperienceType.CastMetal: return topskill_Casting;
+                case WorkExperienceType.CraftMetal: return topskill_CraftMetal;
+                case WorkExperienceType.CraftArmor: return topskill_CraftArmor;
+                case WorkExperienceType.CraftWeapon: return topskill_CraftWeapon;
+                case WorkExperienceType.CraftFuel: return topskill_CraftFuel;
+                case WorkExperienceType.Chemistry: return topskill_Chemistry;
 
                 default: throw new NotImplementedException();
             }
