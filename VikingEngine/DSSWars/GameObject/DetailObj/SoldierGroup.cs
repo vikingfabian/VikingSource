@@ -88,6 +88,7 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierConscriptProfile soldierConscript;
         //float energyPerSoldier;
         public SoldierData soldierData;
+        public SoldierData soldierData_soldier;
 
         public SoldierGroup(Army army, SoldierConscriptProfile conscript)
         {
@@ -118,7 +119,7 @@ namespace VikingEngine.DSSWars.GameObject
             type = soldierConscript.unitType();
             typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
             typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
-
+            soldierData_soldier = soldierConscript.init(typeSoldierData);
             typeCurrentData = typeSoldierData;
         }
 

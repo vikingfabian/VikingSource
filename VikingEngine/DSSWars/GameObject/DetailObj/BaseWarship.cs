@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
     class BaseWarship : AbsSoldierUnit
     {
         int storedAttacks = 0;
-        int soldierCount;
+        int crewCount;
         int multiAttackCount;
         float multiAttackTimeCooldown;
 
@@ -24,13 +24,13 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 
         override public void refreshShipCarryCount()
         {
-            var defaultSoldier = group.soldierConscript.init(group.typeSoldierData);
+            //var defaultSoldier = group.soldierConscript.init(group.typeSoldierData);
             //var data = group.typeCurrentData;//.SoldierData();
-            soldierCount = MathExt.Div_Ceiling(this.health, defaultSoldier.basehealth);
-            if (soldierCount > 0)
+            crewCount = MathExt.Div_Ceiling(this.health, group.soldierData_soldier.basehealth);
+            if (crewCount > 0)
             {
-                multiAttackCount = Math.Min(soldierCount, group.typeSoldierData.rowWidth);
-                multiAttackTimeCooldown = defaultSoldier.attackTimePlusCoolDown / (soldierCount / multiAttackCount);
+                multiAttackCount = Math.Min(crewCount, group.typeSoldierData.rowWidth);
+                multiAttackTimeCooldown = group.soldierData_soldier.attackTimePlusCoolDown / (crewCount / multiAttackCount);
             }
             
 
