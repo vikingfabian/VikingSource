@@ -790,6 +790,10 @@ namespace VikingEngine.DSSWars
                     ++loops;
                 }
 
+                if (++loops > 1000)
+                {
+                    throw new EndlessLoopException("MapPaintToolShape.Line");
+                }
             }
 
             //return null;

@@ -254,6 +254,7 @@ namespace VikingEngine.DSSWars.Build
 
                                 IntVector2 pos = start;
 
+                                int loopCount = 0;
                                 while (true)
                                 {
                                     addToSelection(pos, false); // Add the current position to selection
@@ -270,6 +271,11 @@ namespace VikingEngine.DSSWars.Build
                                     {
                                         err += dx;
                                         pos.Y += sy;
+                                    }
+
+                                    if (++loopCount > 1000)
+                                    {
+                                        throw new EndlessLoopException("MapPaintToolShape.Line");
                                     }
                                 }
 

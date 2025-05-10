@@ -237,7 +237,14 @@ namespace VikingEngine.DSSWars.Delivery
             }
             else
             {
-                remaining = DeliveryProfile.DeliveryTime(from, DssRef.world.cities[profile.toCity], level, out _).LongString();
+                if (arraylib.InBound(DssRef.world.cities, profile.toCity))
+                {
+                    remaining = DeliveryProfile.DeliveryTime(from, DssRef.world.cities[profile.toCity], level, out _).LongString();
+                }
+                else
+                {
+                    remaining = TextLib.Error;
+                }
             }
             return string.Format("Delivering {0}", remaining);
         }

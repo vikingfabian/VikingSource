@@ -355,7 +355,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual protected void createAllSoldiers(AbsSoldierProfile typeProfile, int count, bool createModels)
         {
-            soldiers = new SpottedArray<AbsSoldierUnit>(count);
+            soldiers = new SpottedArray<AbsSoldierUnit>(count +1);
             soldierData = soldierConscript.init(typeProfile);
 
             if (typeProfile.IsShip())

@@ -405,7 +405,7 @@ namespace VikingEngine
 
         public void RemoveAt_EqualSafeCheck(T obj, int index)
         {
-            if (obj.Equals(Array[index]))
+            if (index < Array.Length && obj.Equals(Array[index]))
             {
                 --Count;
                 Array[index] = default(T);

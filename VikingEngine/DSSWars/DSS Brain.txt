@@ -1,5 +1,6 @@
 ﻿UPDATE
 -Change Log-
+* Added some endless loop safety
 
 
 !! Known issues, that I am working on !!
@@ -53,6 +54,8 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-låt inte dread anfalla spelaren
+-lättare upgrades
 -ikonen på uppgraderade postal behöver symbol
 -not be able to ally with the kingdom
 -notification when Battles are taking place on the map and an ability to jump quickly to that area with the camera
