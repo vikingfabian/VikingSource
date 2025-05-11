@@ -2205,5 +2205,37 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string BattleTrials_Title => "Battle Trials";
         public override string BattleTrials_Description => "Test your tactics in a direct army-versus-army encounter.";
+
+
+        //DEMO PATCH 2
+        public override string Conscript_BlockReducingAttack => "These attacks reduce block chance";
+
+        public override string Conscript_BlockPerSecond => "May block {0} times per second";
+
+        public override string Conscript_BlockDescription => "Soldiers will block most attacks coming from their forward arc";
+
+        public override string Map_CustomSeed => "Map seed";
+
+        public override string Settings_Mode_Spectator => "Spectator";
+
+        public override string Settings_Mode_Spectator_Description => "Just watch";
+
+        public override string Automation_AutomationFocus_NoFocus_Description => "Will build a little bit of everything";
+
+        public override string Automation_AutomationFocus_WillProduce => "Will mainly produce:";
+
+        public override string Help_Food_WhoEats => "All soldiers and workers consume food";
+
+        public override string Help_Food_BigArmy => "A large army can starve out the city in its area";
+
+        public override string Help_Food_DontBuild => "Building more farms doesn't automatically increase food; you need available workers and cook stations to gather and process it";
+
+        public override string Help_Food_UseWater => "Food production requires water";
+
+        public override string Help_Food_Postal => "Make sure your cities support each other by sending food";
+
+        public override string Message_LostCity => "City lost";
+
+        public override string Demo_Description => "A short scenario: defend your city for {0} minutes";
     }
 }

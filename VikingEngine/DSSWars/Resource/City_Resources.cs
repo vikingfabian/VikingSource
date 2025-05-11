@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_HandCannon = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_HandCulvertin = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_Rifle = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Blunderbus = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Blunderbuss = new GroupedResource() { goalBuffer = 100 };
 
         public GroupedResource res_BatteringRam = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_ballista = new GroupedResource() { amount = 0, goalBuffer = 100 };
@@ -300,7 +300,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_HandCannon.goalBuffer = 100;
             res_HandCulvertin.goalBuffer = 100;
             res_Rifle.goalBuffer = 100;
-            res_Blunderbus.goalBuffer = 100;
+            res_Blunderbuss.goalBuffer = 100;
 
             res_ballista.goalBuffer = 100;
             res_Manuballista.goalBuffer = 100;
@@ -601,11 +601,31 @@ namespace VikingEngine.DSSWars.GameObject
                     workForce.amount += add;
                     break;
 
+                case ItemResourceType.HandCulverin:
+                    res_HandCulvertin.amount += add;
+                    faction.res_HandCulvertin.onChange(add);
+                    break;
+
+                case ItemResourceType.HandCannon:
+                    res_HandCannon.amount += add;
+                    faction.res_HandCannon.onChange(add);
+                    break;
+
+                case ItemResourceType.Rifle:
+                    res_Rifle.amount += add;
+                    faction.res_Rifle.onChange(add);
+                    break;
+
+                case ItemResourceType.Blunderbuss:
+                    res_Blunderbuss.amount += add;
+                    faction.res_Blunderbuss.onChange(add);
+                    break;
+
                 case ItemResourceType.NONE:
                     return;
 
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(type.ToString());
             }
         }
 
@@ -735,7 +755,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.HandCannon: return res_HandCannon;
                 case ItemResourceType.HandCulverin: return res_HandCulvertin;
                 case ItemResourceType.Rifle: return res_Rifle;
-                case ItemResourceType.Blunderbuss: return res_Blunderbus;
+                case ItemResourceType.Blunderbuss: return res_Blunderbuss;
 
                 case ItemResourceType.Ballista: return res_ballista;
                 case ItemResourceType.Manuballista: return res_Manuballista;
@@ -759,7 +779,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.NONE: return Res_Nothing;
 
                 default:
-                     throw new NotImplementedException();
+                     throw new NotImplementedException(type.ToString());
             }
         }
 
@@ -925,7 +945,7 @@ namespace VikingEngine.DSSWars.GameObject
                     res_Rifle = resource;
                     break;
                 case ItemResourceType.Blunderbuss:
-                    res_Blunderbus = resource;
+                    res_Blunderbuss = resource;
                     break;
                 case ItemResourceType.Ballista:
                     res_ballista = resource;
@@ -983,7 +1003,7 @@ namespace VikingEngine.DSSWars.GameObject
                     // No action needed for these types
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(type.ToString());
             }
         }
 
@@ -1007,7 +1027,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
 
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(itemResourceType.ToString());
             }
 
             int goldCost = (int)Math.Ceiling( ItemPropertyColl.CarryAmount(itemResourceType) * resource.price);
@@ -1034,7 +1054,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
 
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(itemResourceType.ToString());
             }
 
             return new ItemResource(itemResourceType, 1, payment, carry);

@@ -624,7 +624,7 @@ namespace VikingEngine.DSSWars
                     var localplayer = player.GetLocalPlayer();
                     if (localplayer.battleMessageCheck(city.tilePos))
                     {
-                        MessageGroup.Title(content, DssRef.todoLang.Message_LostCity);
+                        MessageGroup.Title(content, DssRef.lang.Message_LostCity);
 
                         var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
                         MessageGroup.ControllerInputIcons(localplayer, gotoBattleButtonContent);

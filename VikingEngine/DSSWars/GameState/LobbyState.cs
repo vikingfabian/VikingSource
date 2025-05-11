@@ -409,7 +409,7 @@ namespace VikingEngine.DSSWars
                     new RbTab(MoreArrowTabbing),
                     moreArrow,
                 },
-                new RbAction(beginDemo), new RbTooltip_Text(string.Format(DssRef.todoLang.Demo_Description, 60)));
+                new RbAction(beginDemo), new RbTooltip_Text(string.Format(DssRef.lang.Demo_Description, 60)));
                 btn.fillWidth = true;
                 content.Add(btn);
             }
@@ -945,7 +945,7 @@ namespace VikingEngine.DSSWars
                 if (DssRef.storage.generateNewMaps)
                 {
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Map_CustomSeed) }, bCustomSeedProperty, null));
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Map_CustomSeed) }, bCustomSeedProperty, null));
                     if (DssRef.storage.mapSettings.customSeed)
                     {
                         RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(ushort.MinValue, ushort.MaxValue, 1),
@@ -1373,8 +1373,8 @@ namespace VikingEngine.DSSWars
                     desc = DssRef.lang.Settings_Mode_Peaceful_Description;
                     break;
                 case GameMode.Spectator:
-                    caption = DssRef.todoLang.Settings_Mode_Spectator;
-                    desc = DssRef.todoLang.Settings_Mode_Spectator_Description;
+                    caption = DssRef.lang.Settings_Mode_Spectator;
+                    desc = DssRef.lang.Settings_Mode_Spectator_Description;
                     break;
             }
         }

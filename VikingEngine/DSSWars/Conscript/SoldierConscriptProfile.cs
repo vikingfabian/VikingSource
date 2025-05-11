@@ -351,6 +351,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 15f;
 
                     soldierData.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
+                    soldierData.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                     break;
 
                 case ItemResourceType.MithrilBow:

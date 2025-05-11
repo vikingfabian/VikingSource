@@ -757,7 +757,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_HandCannon.writeGameState(w); // ItemResourceType.HandCannon
             res_HandCulvertin.writeGameState(w); // ItemResourceType.HandCulvertin
             res_Rifle.writeGameState(w); // ItemResourceType.Rifle
-            res_Blunderbus.writeGameState(w); // ItemResourceType.Blunderbus
+            res_Blunderbuss.writeGameState(w); // ItemResourceType.Blunderbus
 
             res_BatteringRam.writeGameState(w); // ItemResourceType.BatteringRam
             res_ballista.writeGameState(w); // ItemResourceType.Ballista
@@ -843,7 +843,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_HandCannon.readGameState(r, subversion); // ItemResourceType.HandCannon
             res_HandCulvertin.readGameState(r, subversion); // ItemResourceType.HandCulvertin
             res_Rifle.readGameState(r, subversion); // ItemResourceType.Rifle
-            res_Blunderbus.readGameState(r, subversion); // ItemResourceType.Blunderbus
+            res_Blunderbuss.readGameState(r, subversion); // ItemResourceType.Blunderbus
 
             res_BatteringRam.readGameState(r, subversion); // ItemResourceType.BatteringRam
             res_ballista.readGameState(r, subversion); // ItemResourceType.Ballista
@@ -2418,10 +2418,10 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (focus)
                 {
                     case AutomationFocus.NoFocus:
-                        content.Add(new RbText(DssRef.todoLang.Automation_AutomationFocus_NoFocus_Description, HudLib.InfoYellow_Light));
+                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_NoFocus_Description, HudLib.InfoYellow_Light));
                         break;
                     case AutomationFocus.Export:
-                        content.Add(new RbText(DssRef.todoLang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
 
                         //
                         content.newLine();
@@ -2456,7 +2456,7 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
 
                     case AutomationFocus.Military:
-                        content.Add(new RbText(DssRef.todoLang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
 
                         //
                         content.newLine();
@@ -2477,7 +2477,7 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
 
                     case AutomationFocus.Grow:
-                        content.Add(new RbText(DssRef.todoLang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
 
                         //
                         content.newLine();

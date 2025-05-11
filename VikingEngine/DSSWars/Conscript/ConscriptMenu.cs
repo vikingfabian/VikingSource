@@ -576,13 +576,13 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(DssRef.todoLang.Conscript_BlockReducingAttack));
+                content.Add(new RbText(DssRef.lang.Conscript_BlockReducingAttack));
             }
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbText(string.Format( DssRef.todoLang.Conscript_BlockPerSecond, TextLib.OneDecimal(1f/ data.blocksRefillTimeSec)), HudLib.InfoYellow_Light));
+            content.Add(new RbText(string.Format( DssRef.lang.Conscript_BlockPerSecond, TextLib.OneDecimal(1f/ data.blocksRefillTimeSec))));
             content.newLine();
-            content.Add(new RbText(DssRef.todoLang.Conscript_BlockDescription));
+            content.Add(new RbText(DssRef.lang.Conscript_BlockDescription, HudLib.InfoYellow_Light));
 
             content.newParagraph();
             var res = city.GetGroupedResource(weapon);

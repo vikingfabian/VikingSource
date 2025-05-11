@@ -1,6 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Added some endless loop safety
+* Fixed build hand cannon crash
 
 
 !! Known issues, that I am working on !!

@@ -327,7 +327,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_Battle => "戦闘";
 
-        
+
 
         /// <summary>
         /// ボタン入力の説明。一時停止。
@@ -1206,7 +1206,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// ボタン入力を説明します。HUDの情報量を拡大または縮小します
         /// </summary>
-        
+
 
         /// <summary>
         /// 入力タイプ、標準のPC入力
@@ -2168,6 +2168,37 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string BattleTrials_Title => "戦闘試練";
         public override string BattleTrials_Description => "軍対軍の直接対決で戦術を試そう。";
+
+        //DEMO PATCH 2
+        public override string Conscript_BlockReducingAttack => "これらの攻撃はブロック率を下げます";
+
+        public override string Conscript_BlockPerSecond => "1秒間に最大{0}回ブロック可能";
+
+        public override string Conscript_BlockDescription => "兵士は前方の弧内からのほとんどの攻撃をブロックします";
+
+        public override string Map_CustomSeed => "マップシード";
+
+        public override string Settings_Mode_Spectator => "観戦モード";
+
+        public override string Settings_Mode_Spectator_Description => "観戦のみ";
+
+        public override string Automation_AutomationFocus_NoFocus_Description => "すべてを少しずつ建設します";
+
+        public override string Automation_AutomationFocus_WillProduce => "主に生産するもの：";
+
+        public override string Help_Food_WhoEats => "すべての兵士と労働者は食料を消費します";
+
+        public override string Help_Food_BigArmy => "大軍はその地域の都市を飢えさせる可能性があります";
+
+        public override string Help_Food_DontBuild => "農場を増やしても自動的に食料は増えません。収穫と加工のための労働者と調理設備が必要です";
+
+        public override string Help_Food_UseWater => "食料生産には水が必要です";
+
+        public override string Help_Food_Postal => "都市同士で食料を送り合って支援し合いましょう";
+
+        public override string Message_LostCity => "都市を失いました";
+
+        public override string Demo_Description => "短いシナリオ：{0}分間都市を防衛してください";
 
 
     }
