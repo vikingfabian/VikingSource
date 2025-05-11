@@ -45,6 +45,29 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
             onSelect.Add(select);
             optionsTooltip.Add(tooltip);
         }
+
+        public void AddOption(SpriteName icon, string caption, bool selected, bool defaultOption, AbsRbAction select, AbsRbAction tooltip)
+        {
+            var option = new List<AbsRichBoxMember> { new RbText(caption) };
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                option.Insert(0, new RbImage(icon));
+            }
+
+            if (selected)
+            {
+                selectedIx = options.Count;
+                menuCaption = new List<AbsRichBoxMember> { new RbText(caption, HudLib.MenuMoreOptionsArrowCol) };
+            }
+            else if (defaultOption)
+            {
+                defaultIx = options.Count;
+            }
+
+            options.Add(option);
+            onSelect.Add(select);
+            optionsTooltip.Add(tooltip);
+        }
         //public void AddOption(SpriteName icon, string caption, bool selected, bool defaultOption, AbsRbAction select, AbsRbAction tooltip)
         //{
         //    var option = new List<AbsRichBoxMember> { new RbText(caption) };
@@ -52,7 +75,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
         //    {
         //        option.Insert(0, new RbImage(icon));
         //    }
-            
+
         //    if (selected)
         //    {
         //        selectedIx = options.Count;

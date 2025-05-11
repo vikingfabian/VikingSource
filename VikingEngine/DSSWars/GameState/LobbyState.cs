@@ -1171,55 +1171,11 @@ namespace VikingEngine.DSSWars
                                 break;
                         }
 
-                        //if (startGameMode == StartGameMode.BattleTrials)
-                        //{
-                        //    title.text = DssRef.lang.BattleTrials_Title;
-                        //    //content.h1(DssRef.lang.BattleTrials_Title, HudLib.TitleColor_Head);
-                        //    content.newLine();
-                        //    var start = new ArtButton(RbButtonStyle.Primary,
-                        //          new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
-                        //          new RbAction(startTrial));
-                        //    content.Add(start);
-                        //}
-                        //else
-                        //{
-                        //    if (PlatformSettings.STEAM_DEMO)
-                        //    {
-                        //        //startTutorialDisplay = DssRef.storage.runTutorial_1short_2normal > 0;
-                        //        string modeTitle = startTutorialDisplay ? modeTitle = DssRef.lang.Lobby_Tutorial : DssRef.lang.LobbyDemoMode_Demo;
-
-                        //        content.h1(modeTitle, HudLib.TitleColor_Head);
-                        //        content.newLine();
-
-                        //    }
-
-                        //    if (startGameMode == StartGameMode.Tutorial)
-                        //    {
-
-                        //        var startlong = new ArtButton(RbButtonStyle.Primary,
-                        //          new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_LongTutorial) },
-                        //          new RbAction1Arg<bool>(startTutorial, false));
-                        //        content.Add(startlong);
-                        //        content.newLine();
-                        //        var startshort = new ArtButton(RbButtonStyle.Secondary,
-                        //          new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_ShortTutorial) },
-                        //          new RbAction1Arg<bool>(startTutorial, true));
-                        //        //start.fillWidth = false;
-                        //        content.Add(startshort);
-                        //    }
-                        //    else
-                        //    {
-                        //        var start = new ArtButton(RbButtonStyle.Primary,
-                        //          new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
-                        //          new RbAction(startGame));
-                        //        content.Add(start);
-                        //    }
-                        //}
                         content.newParagraph();
 
                         playerSetupToMenu(content);
 
-                        const bool ViewMultiplayer = false;
+                        const bool ViewMultiplayer = true;
                         if (ViewMultiplayer)
                         {
                             content.newParagraph();
@@ -1278,18 +1234,63 @@ namespace VikingEngine.DSSWars
 
         private void playerSetupToMenu(RichBoxContent content)
         {
+            var available = availableInput();
+
             content.h1(DssRef.lang.Lobby_PlayerSetup, HudLib.TitleColor_Head);
 
             for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
             {
+                
                 var playerData = DssRef.storage.localPlayers[playerNum - 1];
                 if (DssRef.storage.playerCount > 1)
                 {
                     content.h2(string.Format(DssRef.lang.Player_DefaultName, playerNum), HudLib.TitleColor_Name);
                 }
+                if (available.Count > 1)
+                {
+                    DropDownBuilder inputOptions = new DropDownBuilder($"inputOptions{playerNum}");
+                    foreach (var m in available)
+                    {
+                        inputOptions.AddOption(m.IsController ? SpriteName.birdControllerIcon : SpriteName.Keyboard, HudLib.InputName(m.sourceType),
+                            playerData.inputSource.Equals(m), m.HasMouse,
+                            new RbAction1Arg<InputSource>((InputSource inputSource) =>
+                            {
+                                //var playerData = DssRef.storage.localPlayers[0];
+                                playerData.inputSource = inputSource;
+                                DssRef.storage.checkPlayerDoublettes(0);
+                            }, m), null);
+                    }
+                }
                 listAndEditFlag(content, playerNum, playerData, false);
             }
         }
+
+        //void selectInputMenu(int playerNumber, bool startGame, SaveStateMeta saveMeta)
+        //{
+        //    var available = availableInput();
+        //    GuiLayout layout = new GuiLayout(Ref.langOpt.InputSelect, menuSystem.menu);
+        //    {
+        //        foreach (var m in available)
+        //        {
+        //            if (startGame)
+        //            {
+        //                if (m.IsController)
+        //                {
+        //                    new GuiIconTextButton(SpriteName.ButtonSTART, HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, SaveStateMeta>(selectController_startGame, m, saveMeta), false, layout);
+        //                }
+        //                else
+        //                {
+        //                    new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, SaveStateMeta>(selectController_startGame, m, saveMeta), false, layout);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<int, InputSource>(selectInputClick, playerNumber, m), false, layout);
+        //            }
+        //        }
+        //    }
+        //    layout.End();
+        //}
 
         void listAndEditFlag(RichBoxContent content, int playerNum, LocalPlayerStorage playerData, bool editor)
         {
@@ -1543,32 +1544,6 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        //void selectInputMenu(int playerNumber, bool startGame, SaveStateMeta saveMeta)
-        //{
-        //    var available = availableInput();
-        //    GuiLayout layout = new GuiLayout(Ref.langOpt.InputSelect, menuSystem.menu);
-        //    {
-        //        foreach (var m in available)
-        //        {
-        //            if (startGame)
-        //            {
-        //                if (m.IsController)
-        //                {
-        //                    new GuiIconTextButton(SpriteName.ButtonSTART, HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, SaveStateMeta>(selectController_startGame, m, saveMeta), false, layout);
-        //                }
-        //                else
-        //                {
-        //                    new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, SaveStateMeta>(selectController_startGame, m, saveMeta), false, layout);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<int, InputSource>(selectInputClick, playerNumber, m), false, layout);
-        //            }
-        //        }
-        //    }
-        //    layout.End();
-        //}
 
         //void inputWarningMenu()
         //{
