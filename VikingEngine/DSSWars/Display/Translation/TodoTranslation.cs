@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Help_Food_BigArmy => "A large army can starve out the city in its area";
 
-        public string Help_Food_DontBuild => "Building more farms doesn't automatically increase food; you need available workers to gather and process it";
+        public string Help_Food_DontBuild => "Building more farms doesn't automatically increase food; you need available workers and cook stations, to gather and process it";
 
         public string Help_Food_UseWater => "Food production requires water";
 
@@ -38,6 +38,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
 
         public string Message_LostCity => "City lost";
+
+        public string Demo_Description => "A short scenario; defend your city for {0} minutes";
     }
 
 }

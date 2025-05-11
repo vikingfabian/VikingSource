@@ -409,7 +409,7 @@ namespace VikingEngine.DSSWars
                     new RbTab(MoreArrowTabbing),
                     moreArrow,
                 },
-                new RbAction(beginDemo), null);
+                new RbAction(beginDemo), new RbTooltip_Text(string.Format(DssRef.todoLang.Demo_Description, 60)));
                 btn.fillWidth = true;
                 content.Add(btn);
             }
