@@ -1,6 +1,8 @@
 ﻿UPDATE
 -Change Log-
-* Fixed build hand cannon crash
+* Fixed craft hand cannon crash
+* Fixed build queue crash
+* Added "demo ends in 15min" warning
 
 
 !! Known issues, that I am working on !!

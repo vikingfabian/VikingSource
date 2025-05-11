@@ -15,6 +15,8 @@ namespace VikingEngine.DSSWars.Event
         City defendingCity;
         int demoState_1start_2end = 0;
         List<Army> attackerArmies;
+        bool endPreWarning = false;
+        float endPreWarningTime = 15 * TimeExt.MinuteInMs;
 
         public override void onGameStarted()
         {
@@ -87,7 +89,14 @@ namespace VikingEngine.DSSWars.Event
             base.asyncUpdate(time);
             if (maxDemoTime.CountDownGameTime_IfActive())
             {
-                Ref.update.AddSyncAction(new SyncAction(onDemoTimeUp));
+               
+                Ref.update.AddSyncAction(new SyncAction(endPreWarningMessage));
+            }
+
+            if (!endPreWarning && maxDemoTime.MilliSeconds < endPreWarningTime)
+            {
+                endPreWarning = true;
+                Ref.update.AddSyncAction(new SyncAction(endPreWarningMessage));
             }
 
             if (demoState_1start_2end == 1)
@@ -117,6 +126,11 @@ namespace VikingEngine.DSSWars.Event
                     onDemoVictory(true);
                 }
             }
+        }
+
+        protected void endPreWarningMessage()
+        {
+            DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, string.Format( DssRef.todoLang.Demo_EndInXMinuteDescription, 15));
         }
 
         void onDemoVictory(bool victory)

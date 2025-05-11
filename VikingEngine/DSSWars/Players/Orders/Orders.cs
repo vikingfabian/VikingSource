@@ -17,57 +17,67 @@ namespace VikingEngine.DSSWars.Players.Orders
         public int buildQueue(City city)
         {
             int count = 0;
-            for (int i = 0; i < orders.Count; ++i)
+
+            lock (orders)
             {
-                if (orders[i].BuildQueue(city))
+                for (int i = 0; i < orders.Count; ++i)
                 {
-                    ++count;
+                    if (orders[i].BuildQueue(city))
+                    {
+                        ++count;
+                    }
                 }
             }
-
             return count;
         }
 
         public void refreshAvailable(Faction faction)
         {
-            for (int i = orders.Count - 1; i >= 0; --i)
+            lock (orders)
             {
-                if (!orders[i].refreshAvailable(faction))
+                for (int i = orders.Count - 1; i >= 0; --i)
                 {
-                    orders[i].DeleteMe();
-                    orders.RemoveAt(i);
+                    if (!orders[i].refreshAvailable(faction))
+                    {
+                        orders[i].DeleteMe();
+                        orders.RemoveAt(i);
+                    }
                 }
             }
         }
 
         public AbsOrder orderOnSubTile(IntVector2 subTilePos)
         {
-            for (int i = 0; i < orders.Count; ++i)
+            lock (orders)
             {
-                if (orders[i].IsBuildOnSubTile(subTilePos))
+                for (int i = 0; i < orders.Count; ++i)
                 {
-                    return orders[i];
+                    if (orders[i].IsBuildOnSubTile(subTilePos))
+                    {
+                        return orders[i];
+                    }
                 }
             }
-
             return null;
         }
 
         public bool orderConflictingSubTile(IntVector2 subTilePos, bool removeConflict)
         {
-            for (int i = 0; i < orders.Count; ++i)
+            lock (orders)
             {
-                if (orders[i].IsBuildOnSubTile(subTilePos))
+                for (int i = 0; i < orders.Count; ++i)
                 {
-                    if (removeConflict)
+                    if (orders[i].IsBuildOnSubTile(subTilePos))
                     {
-                        orders[i].DeleteMe();
-                        orders.RemoveAt(i);
+                        if (removeConflict)
+                        {
+                            orders[i].DeleteMe();
+                            orders.RemoveAt(i);
+                        }
+                        return true;
                     }
-                    return true;
                 }
             }
-
             return false;
         }
 
@@ -109,12 +119,15 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public void clearAll(City city)
         {
-            for (int i = orders.Count - 1; i >= 0; --i)
+            lock (orders)
             {
-                if (orders[i].GetWorkType(city) !=  OrderType.NONE)
+                for (int i = orders.Count - 1; i >= 0; --i)
                 {
-                    orders[i].DeleteMe();
-                    orders.RemoveAt(i);
+                    if (orders[i].GetWorkType(city) != OrderType.NONE)
+                    {
+                        orders[i].DeleteMe();
+                        orders.RemoveAt(i);
+                    }
                 }
             }
         }

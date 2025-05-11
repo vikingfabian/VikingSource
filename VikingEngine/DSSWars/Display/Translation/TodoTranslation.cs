@@ -10,7 +10,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
-       
+        public string Demo_EndInXMinuteDescription => "The demo will end in {0} minutes";
+
+        public string Experience_Required => "Required experience";
     }
 
 }
