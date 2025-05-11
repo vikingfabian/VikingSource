@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using VikingEngine.EngineSpace.HUD.RichBox;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.HUD.RichBox
@@ -27,6 +28,7 @@ namespace VikingEngine.HUD.RichBox
         public int bTitelFormat = 0;
         public Stack<AbsRichBoxMember> parentMember = new Stack<AbsRichBoxMember>();
         public List<List<AbsRbButton>> buttonGrid_Y_X = new List<List<AbsRbButton>>();
+        public List<ControllerSection> controllerSections = new List<ControllerSection>();
 
         int tryCreatePosition = -1;
         bool lockNewLine = false;
