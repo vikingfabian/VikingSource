@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public void fromCity(WorldData world, City city)
         {
+            DssRef.world = world;
             PcgRandom rnd = new PcgRandom(world.metaData.seed * city.parentArrayIndex);
 
 
