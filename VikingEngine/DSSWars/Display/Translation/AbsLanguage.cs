@@ -1375,5 +1375,11 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Demo_Description { get; }
 
+
+        //DEMO PATCH 3
+        public abstract string Demo_EndInXMinuteDescription { get; }
+        public abstract string Experience_Required { get; }
+        public abstract string InputActionName_ToggleMenu { get; }
+
     }
 }

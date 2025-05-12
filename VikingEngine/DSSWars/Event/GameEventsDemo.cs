@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.Event
 
         protected void endPreWarningMessage()
         {
-            DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, string.Format( DssRef.todoLang.Demo_EndInXMinuteDescription, 15));
+            DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, string.Format( DssRef.lang.Demo_EndInXMinuteDescription, 15));
         }
 
         void onDemoVictory(bool victory)

@@ -231,7 +231,7 @@ namespace VikingEngine.DSSWars.Resource
                 //levelReqText.overrideColor = HudLib.TitleColor_Label;
                 //content.Add(levelReqText);
                 //content.space();
-                HudLib.Label(content, DssRef.todoLang.Experience_Required);
+                HudLib.Label(content, DssRef.lang.Experience_Required);
                 content.newLine();
 
                 bool gotskill = city.GetTopSkill(experienceType) >= levelRequirement;

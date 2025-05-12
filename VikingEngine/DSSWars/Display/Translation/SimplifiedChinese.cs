@@ -2196,6 +2196,13 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Demo_Description => "简短场景：守住你的城市 {0} 分钟";
 
+        //DEMO PATCH 3
+        public override string Demo_EndInXMinuteDescription => "演示将在 {0} 分钟后结束";
+
+        public override string Experience_Required => "所需经验";
+
+        public override string InputActionName_ToggleMenu => "切换菜单";
+
 
     }
 }

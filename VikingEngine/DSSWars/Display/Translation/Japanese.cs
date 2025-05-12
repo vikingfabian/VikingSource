@@ -2200,6 +2200,12 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Demo_Description => "短いシナリオ：{0}分間都市を防衛してください";
 
+        //DEMO PATCH 3
+        public override string Demo_EndInXMinuteDescription => "デモはあと {0} 分で終了します";
+
+        public override string Experience_Required => "必要な経験値";
+
+        public override string InputActionName_ToggleMenu => "メニューの切り替え";
 
     }
 }

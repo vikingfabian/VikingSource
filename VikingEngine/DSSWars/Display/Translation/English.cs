@@ -2237,5 +2237,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Message_LostCity => "City lost";
 
         public override string Demo_Description => "A short scenario: defend your city for {0} minutes";
+
+
+        //DEMO PATCH 3
+        public override string Demo_EndInXMinuteDescription => "The demo will end in {0} minutes";
+
+        public override string Experience_Required => "Required experience";
+
+        public override string InputActionName_ToggleMenu => "Toggle menu";
     }
 }
