@@ -414,6 +414,18 @@ namespace VikingEngine.DSSWars
         //    }
         //}
 
+        public int GetGold(City city)
+        {
+            if (DssRef.storage.centralGold)
+            {
+                return money.GetGold();
+            }
+            else
+            {
+                return city.money.GetGold();
+            }
+        }
+
         public bool hasGold(int cost, City city)
         {
             if (DssRef.storage.centralGold)

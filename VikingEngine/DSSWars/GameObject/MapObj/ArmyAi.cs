@@ -386,21 +386,22 @@ namespace VikingEngine.DSSWars.GameObject
 
         void Ai_Finalize_Attack()
         {
-            if (attackTarget != null)
+            AbsMapObject attackTarget_sp = attackTarget;
+            if (attackTarget_sp != null)
             {
                 //todo räkna in support
-                if (this.strengthValue > attackTarget.strengthValue)
+                if (this.strengthValue > attackTarget_sp.strengthValue)
                 {
-                    if (attackTarget.gameobjectType() == GameObjectType.City)
+                    if (attackTarget_sp.gameobjectType() == GameObjectType.City)
                     {
-                        attackTarget.GetCity().setFaction(faction);
+                        attackTarget_sp.GetCity().setFaction(faction);
                     }
                     else
                     {
                         Ref.update.AddSyncAction(new SyncAction1Arg<AbsMapObject>((AbsMapObject attackTarget) =>
                         {
                             attackTarget?.DeleteMe(DeleteReason.Death, true);
-                        }, attackTarget));
+                        }, attackTarget_sp));
                     }
                 }
                 else
@@ -460,9 +461,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Order_Attack(AbsMapObject attackTarget)
         {
-            if (attackTarget != null)
+            AbsMapObject attackTarget_sp = attackTarget;
+            if (attackTarget_sp != null)
             {
-                Order_Attack_Setup(attackTarget);
+                Order_Attack_Setup(attackTarget_sp);
                 objective = ArmyObjective.Attack;
                 onNewGoal(false);
             }
@@ -496,7 +498,15 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (objective == ArmyObjective.Attack || objective == ArmyObjective.TeleportAttack)
             {
-                goal = attackTarget.tilePos;
+                AbsMapObject attackTarget_sp = attackTarget;
+                if (attackTarget_sp != null)
+                {
+                    goal = attackTarget_sp.tilePos;
+                }
+                else
+                {
+                    goal = tilePos;
+                }
             }
             else
             {

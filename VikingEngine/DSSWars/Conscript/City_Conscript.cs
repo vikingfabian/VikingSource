@@ -95,7 +95,8 @@ namespace VikingEngine.DSSWars.GameObject
                                 workForce.amount -= collectMen;
                                 status.menCollected += collectMen;
 
-                                if (status.menCollected == status.menNeeded)
+                                if (status.menCollected == status.menNeeded &&
+                                    (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= status.menNeeded))
                                 {
                                     status.active++;
                                     status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.type)));
@@ -105,36 +106,43 @@ namespace VikingEngine.DSSWars.GameObject
                             case ConscriptActiveStatus.Training:
                                 if (status.countdown.TimeOut())
                                 {
-                                    Vector3 startPos = WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition));
-                                    Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmy, status.inProgress, startPos, 1));
-
-                                    status.active = ConscriptActiveStatus.Idle;
-
-                                    status.menCollected = 0;
-                                    status.equipmentCollected = 0;
-
-                                    if (faction.player.IsLocalPlayer())
+                                    if (status.profile.specialization == SpecializationType.CityGuard && AvailableGuardHousing() < status.menNeeded)
                                     {
-                                        if (status.inProgress.specialization == SpecializationType.CityGuard)
-                                        {
-                                            DssRef.stats.guardsRecruited++;
-                                        }
+                                        status.active = ConscriptActiveStatus.CollectingMen;
+                                    }
+                                    else
+                                    {
+                                        Vector3 startPos = WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition));
+                                        Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmy, status.inProgress, startPos, 1));
 
-                                        if (status.inProgress.weapon == ItemResourceType.KnightsLance &&
-                                            (status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
-                                            status.inProgress.training == TrainingLevel.Professional)
-                                        {
-                                            DssRef.achieve.UnlockAchievement_async(AchievementIndex.elite_knights);
-                                        }
+                                        status.active = ConscriptActiveStatus.Idle;
 
-                                        switch (Culture)
+                                        status.menCollected = 0;
+                                        status.equipmentCollected = 0;
+
+                                        if (faction.player.IsLocalPlayer())
                                         {
-                                            case CityCulture.Archers:
-                                                DssRef.state.progress.onCultureBuild(true);
-                                                break;
-                                            case CityCulture.Warriors:
-                                                DssRef.state.progress.onCultureBuild(false);
-                                                break;
+                                            if (status.inProgress.specialization == SpecializationType.CityGuard)
+                                            {
+                                                DssRef.stats.guardsRecruited++;
+                                            }
+
+                                            if (status.inProgress.weapon == ItemResourceType.KnightsLance &&
+                                                (status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
+                                                status.inProgress.training == TrainingLevel.Professional)
+                                            {
+                                                DssRef.achieve.UnlockAchievement_async(AchievementIndex.elite_knights);
+                                            }
+
+                                            switch (Culture)
+                                            {
+                                                case CityCulture.Archers:
+                                                    DssRef.state.progress.onCultureBuild(true);
+                                                    break;
+                                                case CityCulture.Warriors:
+                                                    DssRef.state.progress.onCultureBuild(false);
+                                                    break;
+                                            }
                                         }
                                     }
                                 }

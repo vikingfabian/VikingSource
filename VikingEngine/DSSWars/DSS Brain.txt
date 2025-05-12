@@ -3,7 +3,10 @@
 * Fixed craft hand cannon crash
 * Fixed build queue crash
 * Added "demo ends in 15min" warning
-
+* Fixed: Local gold shows total gold in your nation instead of city gold when using the black market
+* Fixed: Guard limit wont work to prevent new guards from spawning
+* Division by zero security on camera
+* Pointer security to army targets
 
 !! Known issues, that I am working on !!
 -Soldiers can get stuck attacking a dead army

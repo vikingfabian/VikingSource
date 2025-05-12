@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.Resource
                         //RichBoxContent content = new RichBoxContent();
                         content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
-                        HudLib.ResourceCost(content, ResourceType.Gold, cost * count, player.faction.money.GetGold());
+                        HudLib.ResourceCost(content, ResourceType.Gold, cost * count, player.faction.GetGold(city));
 
                         content.newParagraph();
 

@@ -1204,7 +1204,7 @@ namespace VikingEngine.DSSWars.Players
                 if (VectorExt.HasValue(diff))
                 {
                     float panSpeed = 0.003f * Ref.DeltaTimeMs * camera.targetZoom;
-                    
+
                     if (panSpeed >= diff.Length())
                     {
                         camera.LookTarget = goal;
@@ -1213,7 +1213,10 @@ namespace VikingEngine.DSSWars.Players
                     {
                         diff.Normalize();
                         Vector3 move = diff * panSpeed;
-                        camera.LookTarget += move;
+                        if (!Debug.CorruptValue(move))
+                        {
+                            camera.LookTarget += move;
+                        }
                     }
                     
                     playerPointerPos = camera.LookTarget;
