@@ -167,6 +167,13 @@ namespace VikingEngine.HUD.RichMenu
             return backgroundTextures;
         }
 
+        public Graphics.Image addBackground_Flat(Color color, float opacity)
+        {
+            Graphics.Image bg = new Image( SpriteName.WhiteArea, backgroundArea.Position, backgroundArea.Size,  layer + 1);
+            bg.ColorAndAlpha(color, opacity);
+            return bg;
+        }
+
         public void OpenMenu(string menuName, StackOption stack)
         {
             if (stack == StackOption.ClearStack)

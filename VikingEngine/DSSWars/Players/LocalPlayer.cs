@@ -430,7 +430,7 @@ namespace VikingEngine.DSSWars.Players
         public void createPin()
         {
 #if DEBUG
-            LocationPin pin = new LocationPin(this,gameControls.mapControls.mousePosition);
+            LocationPin pin = new LocationPin(this,gameControls.mapControls.pointerPosWP);
             pin.parentArrayIndex = pins.Add(pin);
             pin.basicInit();
 #endif

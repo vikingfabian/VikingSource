@@ -1,6 +1,7 @@
 ﻿UPDATE
 -Change Log-
 * Added some endless loop safety
+* Rectangle select works with map pan
 
 
 !! Known issues, that I am working on !!

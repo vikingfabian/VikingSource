@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Players
         SafeCollectAsynchList<AbsMapObject> nearMapObjects = new SafeCollectAsynchList<AbsMapObject>(8);
         SafeCollectAsynchList<AbsSoldierUnit> nearDetailUnits = new SafeCollectAsynchList<AbsSoldierUnit>(64);
 
-        public Vector3 playerPointerPos = Vector3.Zero, mousePosition = Vector3.Zero;
+        public Vector3 playerPointerPos = Vector3.Zero, pointerPosWP = Vector3.Zero;
         ScreenToSpaceRectangleBound rectangleBound;
         Graphics.RectangleLines rectangleLines = null;
         float multiSelectMoveLenght = 0;
@@ -202,10 +202,10 @@ namespace VikingEngine.DSSWars.Players
                     //}
                     //else
                     //{
-                    mousePosition = screenPosToWorldPos(Input.Mouse.Position);
+                    pointerPosWP = screenPosToWorldPos(pointerPos());
                     //}
                     IntVector2 prevTile = tilePosition;
-                    tilePosition = WP.ToTilePos(mousePosition);
+                    tilePosition = WP.ToTilePos(pointerPosWP);
                     onNewTile = prevTile != tilePosition;
 
                     //if (focusedObjectMenuState() || player.hud.menuFocus)
@@ -253,14 +253,14 @@ namespace VikingEngine.DSSWars.Players
                             //mouseHoverUpdate();
                             hover.begin(true);
                             {
-                                if (controllerInput)
-                                {
-                                    controllerHoverUpdate();
-                                }
-                                else
-                                {
+                                //if (controllerInput)
+                                //{
+                                //    controllerHoverUpdate();
+                                //}
+                                //else
+                                //{
                                     mouseHoverUpdate();
-                                }
+                                //}
                             }
                             subTileHoverUpdate();
                             //mouseHoverUpdate();
@@ -370,7 +370,7 @@ namespace VikingEngine.DSSWars.Players
                 bool select;
                 if (controllerInput)
                 {
-                    select = player.gameControls.input.ControllerSelect.DownEvent && hover.obj == null;
+                    select = player.gameControls.input.ControllerSelect.DownEvent;//&& hover.obj == null;
                 }
                 else
                 {
@@ -380,7 +380,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     multiSelectMoveLenght = 0;
                     multiSelectHoldTime = 0;
-                    rectangleBound.begin(pointerPos());
+                    rectangleBound.begin(pointerPos(), pointerPosWP);
                     rectangleLines = new RectangleLines(rectangleBound.vectorRect, 2, 0, HudLib.GUILayer);
                 }
             }
@@ -390,7 +390,7 @@ namespace VikingEngine.DSSWars.Players
                 multiSelectHoldTime += Ref.DeltaTimeMs;
 
                 //Must start dragging to start multiselect
-                if (multiSelectMoveLenght > 10 || multiSelectHoldTime >= Input.InputLib.ButtonHoldTimeMs)
+                if (multiSelectMoveLenght > 10 || multiSelectHoldTime >= Input.InputLib.ButtonMaxClickTimeMs)
                 {
                     rectangleBound.update(pointerPos());
 
@@ -449,7 +449,7 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else
                 {
-                    keyUp = !Input.Mouse.IsButtonDown(MouseButton.Left);
+                    keyUp = !player.gameControls.input.mouseSelect.IsDown;//Input.Mouse.IsButtonDown(MouseButton.Left);
                 }
 
                 if (keyUp)
@@ -547,7 +547,7 @@ namespace VikingEngine.DSSWars.Players
             //Place cubes and find the exact spot of the subtile
             bool hasValue;
             Vector3 result = this.camera.CastRayInto3DPlane(ray, groundPlane, out hasValue);
-            subTilePosition = WP.ToSubTilePos(mousePosition);
+            subTilePosition = WP.ToSubTilePos(pointerPosWP);
 
             IntVector2 subTilePositionInLoop= IntVector2.Zero;
             
@@ -621,7 +621,7 @@ namespace VikingEngine.DSSWars.Players
                                 while (soldiers.Next())
                                 {
                                     if (soldiers.sel.model != null &&
-                                        VectorExt.PlaneXZLength(soldiers.sel.position - mousePosition) < DetailUnitRadius)
+                                        VectorExt.PlaneXZLength(soldiers.sel.position - pointerPosWP) < DetailUnitRadius)
                                     {
                                         nearDetailUnits.processList.Add(soldiers.sel);
                                     }
@@ -680,6 +680,12 @@ namespace VikingEngine.DSSWars.Players
 
                 intersectObj = player.rayCollisionWithPin(ray);
 
+                if (intersectObj != null)
+                {
+                    hover.obj = intersectObj;
+                    return;
+                }
+
                 var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, false);
                 foreach (var m in nearMapObjects)
                 {
@@ -697,6 +703,17 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
+                if (intersectObj != null)
+                {
+                    hover.obj = intersectObj;
+                    return;
+                }
+
+                if (controllerInput)
+                {
+                    controllerNearHoverUpdate(nearMapObjects, ref intersectObj);
+                }
+
                 hover.obj = intersectObj;
             }
             else if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
@@ -705,12 +722,54 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public bool armyMayAttackHoverObj()
+        void controllerNearHoverUpdate(List<AbsMapObject> nearMapObjects, ref AbsMapObject intersectObj)
         {
-            return hover.obj != null &&
-                 hover.obj.GetFaction() != player.faction;
+            const float FriendlyPriorityDistAdd = 0.25f;
+            float maxDistance_enemy;
+            float maxDistance_friend;
+            if (player.gameControls.armyControls != null)
+            {
+                maxDistance_enemy = 1.5f;
+                maxDistance_friend = 0.5f;
+            }
+            else
+            {
+                maxDistance_enemy = 1f;
+                maxDistance_friend = 1.5f;
+            }
+
+            //var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, true);
+            AbsMapObject closestObj = null;
+            float closest = float.MaxValue;
+            foreach (var m in nearMapObjects)
+            {
+                var dist = VectorExt.PlaneXZLength(m.position - pointerPosWP);
+                bool enemy = m.faction != player.faction;
+                float maxDistance = enemy ? maxDistance_enemy : maxDistance_friend;
+
+                if (dist <= maxDistance)
+                {
+                    if (dist < closest ||
+                        (
+                            closestObj.faction != player.faction &&
+                            dist < closest + FriendlyPriorityDistAdd &&
+                            !lookingForAttackTarget()
+                        )
+                        )
+                    {
+                        closest = dist;
+                        closestObj = m;
+                    }
+                }
+            }
+
+            if (closestObj != null)
+            {
+                intersectObj = closestObj;
+            }
         }
 
+        
         void controllerHoverUpdate()
         {
             if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
@@ -734,7 +793,7 @@ namespace VikingEngine.DSSWars.Players
                 float closest = float.MaxValue;
                 foreach (var m in nearMapObjects)
                 {
-                    var dist= VectorExt.PlaneXZLength(m.position - mousePosition);
+                    var dist= VectorExt.PlaneXZLength(m.position - pointerPosWP);
                     bool enemy = m.faction != player.faction;
                     float maxDistance = enemy ? maxDistance_enemy : maxDistance_friend;
 
@@ -770,6 +829,12 @@ namespace VikingEngine.DSSWars.Players
                 detailHoverUpdate();
             }
         }
+        public bool armyMayAttackHoverObj()
+        {
+            return hover.obj != null &&
+                 hover.obj.GetFaction() != player.faction;
+        }
+
 
         void detailHoverUpdate()
         {
@@ -1035,7 +1100,7 @@ namespace VikingEngine.DSSWars.Players
                     if (Ref.gamesett.panOnZoom)
                     {
                         var mousePosition2 = screenPosToWorldPos(Input.Mouse.Position);
-                        Vector3 diff = mousePosition2 - mousePosition;
+                        Vector3 diff = mousePosition2 - pointerPosWP;
                         panCamera(VectorExt.V3XZtoV2( diff), true);
                     }
                 }
@@ -1170,7 +1235,7 @@ namespace VikingEngine.DSSWars.Players
                     //bool hasValue;
                     Vector3 prevMousePosition = screenPosToWorldPos(Input.Mouse.Position - Input.Mouse.MoveDistance);
 
-                    Vector3 diff = mousePosition - prevMousePosition;
+                    Vector3 diff = pointerPosWP - prevMousePosition;
 
                     panCamera(VectorExt.V3XZtoV2(diff), false);
 

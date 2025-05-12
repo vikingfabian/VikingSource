@@ -10,7 +10,6 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
-using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Display
 {

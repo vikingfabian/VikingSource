@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.Build
                 deleteSelection();
                 buildKeyDown = true;
                 startTile = player.gameControls.mapControls.hover.subTile.subTilePos;
-                keyDownPos = player.gameControls.mapControls.mousePosition;
+                keyDownPos = player.gameControls.mapControls.pointerPosWP;
                 lShape = LShapeDir.NoSet;
                 //actOnTile(player.mapControls.hover.subTile);
             }
@@ -169,7 +169,7 @@ namespace VikingEngine.DSSWars.Build
                                 {
                                     if (lShape == LShapeDir.NoSet)
                                     {
-                                        if (Math.Abs(player.gameControls.mapControls.mousePosition.X - keyDownPos.X) > Math.Abs(player.gameControls.mapControls.mousePosition.Z - keyDownPos.Z))
+                                        if (Math.Abs(player.gameControls.mapControls.pointerPosWP.X - keyDownPos.X) > Math.Abs(player.gameControls.mapControls.pointerPosWP.Z - keyDownPos.Z))
                                         {
                                             lShape = LShapeDir.StartX;
                                         }

@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.Display
         public PlayerHud_HeadOptions headOptions;
         public PlayerHud_Faction factionMenu;
         public PlayerHud_Object objMenu;
+        public PlayerHud_InputHelp inputHelp;
 
          Map.MiniMap miniMap;
 
@@ -47,7 +48,9 @@ namespace VikingEngine.DSSWars.Display
             headOptions = new PlayerHud_HeadOptions(player);
             objMenu = new PlayerHud_Object(player);
             factionMenu = new PlayerHud_Faction();
-           
+
+            inputHelp = new PlayerHud_InputHelp(player);
+
             //hudmenu = new GameHudMenu(player);
             messages = new MessageGroup(player, numPlayers, HudLib.richboxGui);
             tooltip = new Tooltip();
@@ -175,6 +178,7 @@ namespace VikingEngine.DSSWars.Display
                 headOptions.refreshUpdate();
                 updateMenuDisplays(true);
                 factionMenu.refreshUpdate(player);
+                inputHelp.refreshUpdate(player);
 
                 needRefresh = false;
             }

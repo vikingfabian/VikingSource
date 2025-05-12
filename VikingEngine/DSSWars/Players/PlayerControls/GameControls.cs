@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         int tabCity = -1;
         SpottedArrayCounter<Army> tabArmy;
         public int[] GameSpeedOptions;
-
+        public InputHelpState inputHelpState = InputHelpState.Map;
 
         public GameControls(LocalPlayer player, InputMap input)
         { 
@@ -85,15 +85,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             if (hudState)
             {
+                inputHelpState = InputHelpState.Menu;
                 mapControls.leftFocusUpdate();
                 player.hud.updateToolTip_menu(uiRefresh);
             }
             else
             {
+                inputHelpState = InputHelpState.Map;
                 mapControls.focusedUpdate();
 
                 if ((mapControls.hover.subTile.hasSelection && InBuildOrdersMode()) || buildControls.buildKeyDown)
                 {
+                    inputHelpState = InputHelpState.Build;
                     mapControls.cancelRectangleSelect();
                     buildControls.updateBuildMode();
                     if (input.CancelKey.DownEvent)
@@ -138,6 +141,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             if (armyControls != null)
             {
+                inputHelpState = InputHelpState.Army;
                 armyControls.update();
             }
             else

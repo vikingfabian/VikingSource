@@ -255,7 +255,8 @@ namespace VikingEngine.DSSWars
             cameraTiltZoom =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
 
             ControllerSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
-            ControllerFocus = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
+            mouseOrder = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
+            ControllerFocus = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
             CancelKey = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
 
             StopStart = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);
@@ -350,7 +351,7 @@ namespace VikingEngine.DSSWars
             int inputVersion = r.ReadInt32();
             //inputSource.read(r);
 
-            ControllerFocus = MapRead.Button(r, inputSource.controllerIndex);
+            var  old1 = MapRead.Button(r, inputSource.controllerIndex);
             CancelKey = MapRead.Button(r, inputSource.controllerIndex);
             StopStart = MapRead.Button(r, inputSource.controllerIndex);
                         
