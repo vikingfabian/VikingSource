@@ -20,6 +20,7 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.ToGG.MoonFall;
@@ -126,7 +127,7 @@ namespace VikingEngine.DSSWars.Build
         public void updateBuildMode()
         {           
 
-            if (player.gameControls.input.ControllerSelect.DownEvent)
+            if (player.gameControls.input.mouseSelect.DownEvent)
             {
                 deleteSelection();
                 buildKeyDown = true;
@@ -286,7 +287,7 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
 
-            if (player.gameControls.input.ControllerSelect.UpEvent)
+            if (player.gameControls.input.mouseSelect.UpEvent)
             {
                 foreach (var sel in selection)
                 {
@@ -1173,7 +1174,8 @@ namespace VikingEngine.DSSWars.Build
         {
             buildMode = SelectTileResult.Build;
             placeBuildingType = type;
-            player.gameControls.mapControls.setObjectMenuFocus(false);
+            player.gameControls.setMenuFocus(false);
+            //player.gameControls.mapControls.setObjectMenuFocus(false);
         }
 
        

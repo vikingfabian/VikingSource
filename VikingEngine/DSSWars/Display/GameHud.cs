@@ -108,10 +108,10 @@ namespace VikingEngine.DSSWars.Display
             //displays.updateMove(out bool bRefresh);
             //needRefresh |= bRefresh;
 
-            if (player.gameControls.input.CancelKey.DownEvent)
-            {
-                player.gameControls.clearSelection();
-            }
+            //if (player.gameControls.input.CancelKey.DownEvent)
+            //{
+            //    player.gameControls.clearSelection();
+            //}
         }
 
         public void update(out bool refresh)
@@ -127,15 +127,15 @@ namespace VikingEngine.DSSWars.Display
 
             
 
-            if (player.gameControls.input.ToggleHudDetail.DownEvent)
-            {
-                detailLevel++;
-                if (detailLevel >= HudDetailLevel.NUM)
-                { 
-                    detailLevel = 0;
-                }
-                refresh = true;
-            }
+            //if (player.gameControls.input.ToggleHudDetail.DownEvent)
+            //{
+            //    detailLevel++;
+            //    if (detailLevel >= HudDetailLevel.NUM)
+            //    { 
+            //        detailLevel = 0;
+            //    }
+            //    refresh = true;
+            //}
 
             
             //updateMenuDisplays(refresh);
@@ -144,9 +144,6 @@ namespace VikingEngine.DSSWars.Display
 
             if (player.gameControls.input.inputSource.HasMouse)
             {
-                //needRefresh |= displays.update();
-                //mouseOver = hudMouseOver();
-
                 if (head != null)
                 {
                     refresh |= head.updateMouseInput(ref mouseOverHud);
@@ -154,9 +151,7 @@ namespace VikingEngine.DSSWars.Display
                 }
                 refresh |= headOptions.updateMouseInput(ref mouseOverHud);
                 refresh |= objMenu.updateMouseInput(ref mouseOverHud);
-                //refresh |= head.updateMouseInput(ref mouseOverHud);
-
-                //refresh = false;
+                
                 player.tutorial?.update(ref mouseOverHud);
                 messages.Update(ref mouseOverHud);
             }

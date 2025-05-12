@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Display
 
         void completeMenu(RichBoxContent content)
         {
-            menu.Refresh(content);
+            menu.Refresh(content, null);
             menu.updateHeightFromContent();
             menu.addBackground(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), layer + 2);
         }
@@ -358,7 +358,7 @@ namespace VikingEngine.DSSWars.Display
                 //    true, layout);
             }
 
-            menu.Refresh(content);
+            menu.Refresh(content, null);
         }
 
         public static void listMapOptions(RichMenu menu)

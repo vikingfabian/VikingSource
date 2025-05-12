@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Display
         {
             var content = new RichBoxContent();
             headMenu(content, false);
-            menu.Refresh(content);
+            menu.Refresh(content, player.gameControls.controllerPointer);
         }
         public void refreshUpdate(LocalPlayer player)
         {

@@ -47,13 +47,21 @@ namespace VikingEngine.DSSWars.Display
             switch (player.gameControls.inputHelpState)
             {
                 case InputHelpState.Map:
-                    input(ct? map.ControllerSelect.Icon : map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
+                    input(ct? map.mouseSelect.Icon : map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
                     input(ct ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
                     break;
 
                 case InputHelpState.Army:
-                    input(ct ? map.ControllerSelect.Icon : map.mouseSelect.Icon, DssRef.lang.Hud_Cancel);
+                    input(ct ? map.mouseSelect.Icon : map.mouseSelect.Icon, DssRef.lang.Hud_Cancel);
                     input(map.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
+                    if (ct)
+                    {
+                        input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ControllerFocus);
+                    }
+                    break;
+
+                case InputHelpState.Menu:
+                    input(ct ? map.mouseSelect.Icon : map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
                     if (ct)
                     {
                         input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ControllerFocus);
@@ -62,7 +70,7 @@ namespace VikingEngine.DSSWars.Display
             }
             
 
-            menu.Refresh(content);
+            menu.Refresh(content, player.gameControls.controllerPointer);
 
             void input(SpriteName button, string text)
             {

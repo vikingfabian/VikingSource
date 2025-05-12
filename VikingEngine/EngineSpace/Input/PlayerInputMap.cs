@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework;
-using VikingEngine.SteamWrapping;
+﻿using Microsoft.Xna.Framework.Input;
 
 namespace VikingEngine.Input
 {
@@ -54,7 +48,7 @@ namespace VikingEngine.Input
             menuInput = new HUD.MenuInputMap();
         }
 
-        
+        abstract public IButtonMap MenuClick { get; }
 
         public void setInputSource(InputSourceType inputSource, int index)
         {

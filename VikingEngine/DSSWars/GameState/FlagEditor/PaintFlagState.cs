@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
 
                 if (XInput.KeyDownEvent(Buttons.Back) ||
                     controllerInput.CancelKey.DownEvent_AnyInstance ||
-                    controllerInput.ControllerSelect.DownEvent_AnyInstance ||
+                    controllerInput.mouseSelect.DownEvent_AnyInstance ||
                     controllerInput.Controller_FlagDesign_Colorpicker.DownEvent_AnyInstance)
                 {
                     controllerPickColorState = false;
@@ -251,7 +251,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
 
 
                 paintInput(Input.Mouse.Position,
-                    keyboardInput.ControllerSelect.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left),
+                    keyboardInput.mouseSelect.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left),
                     keyboardInput.FlagDesign_PaintBucket.IsDown);
 
                 if (XInput.KeyDownEvent(Buttons.Back))

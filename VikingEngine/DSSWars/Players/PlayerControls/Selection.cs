@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Players
         /// <summary>
         /// Only for controller input
         /// </summary>
-        public bool menuFocus = false;
+        //public bool menuFocus = false;
 
         int playerCam;
         bool isHover;
@@ -209,7 +209,7 @@ namespace VikingEngine.DSSWars.Players
 
         public bool clear()
         {
-            menuFocus = false;
+            //menuFocus = false;
             isNew = false;
             //frameModel.Visible = false;
             //if (groupModels != null)

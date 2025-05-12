@@ -36,6 +36,8 @@ namespace VikingEngine.LootFest.Players
             editorInput = new Voxels.EditorInputMap();
         }
 
+        public override IButtonMap MenuClick => throw new NotImplementedException();
+
         override public void keyboardSetup()
         {
             movement = new AlternativeDirectionalMap(arrowKeys, WASD);

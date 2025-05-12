@@ -681,6 +681,20 @@ namespace VikingEngine //AreaVolyme
     {
         public Vector2 Position;
         public Vector2 Size;
+
+        public float distanceTo(Vector2 point)
+        {
+            float left = Position.X;
+            float right = Position.X + Size.X;
+            float top = Position.Y;
+            float bottom = Position.Y + Size.Y;
+
+            float dx = lib.LargestValue(left - point.X, 0, point.X - right);
+            float dy = lib.LargestValue(top - point.Y, 0, point.Y - bottom);
+
+            return MathF.Sqrt(dx * dx + dy * dy);
+        }
+
         public float X
         {
             get { return Position.X; }

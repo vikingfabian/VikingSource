@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars
 
         public IButtonMap zoomInKey, zoomOutKey;
 
-        public IButtonMap ControllerSelect;
+        //public IButtonMap ControllerSelect;
         public IButtonMap CancelKey;
         public IButtonMap ControllerFocus;
         public IButtonMap ControllerMessageClick;
@@ -128,6 +128,8 @@ namespace VikingEngine.DSSWars
             Engine.XGuide.GetPlayer(playerIx).inputMap = this;
         }
 
+        public override IButtonMap MenuClick => mouseSelect;
+
         public void copyDataFrom(InputMap other)
         {
             MemoryStreamHandler memoryStream = new MemoryStreamHandler();
@@ -154,7 +156,7 @@ namespace VikingEngine.DSSWars
             cameraTiltUp = new KeyboardButtonMap(Keys.R);
 
 
-            ControllerSelect = new MouseButtonMap(MouseButton.Left);
+            //ControllerSelect = new MouseButtonMap(MouseButton.Left);
             //Execute = new MouseButtonMap(MouseButton.Right);
             CancelKey = new KeyboardButtonMap(Keys.Back);
             //DragPan = new MouseButtonMap(MouseButton.Middle);
@@ -254,7 +256,7 @@ namespace VikingEngine.DSSWars
             dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);  
             cameraTiltZoom =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
 
-            ControllerSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
+            mouseSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
             mouseOrder = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
             ControllerFocus = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
             CancelKey = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
@@ -265,7 +267,8 @@ namespace VikingEngine.DSSWars
             //DragPan = new NoButtonMap();//new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
             //Home = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);
             Menu = new XboxButtonMap(Buttons.Start, inputSource.controllerIndex);
-            ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
+            //ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
+            ToggleHudDetail = new NoButtonMap();
 
             GameSpeed = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
             PauseGame = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
@@ -339,7 +342,7 @@ namespace VikingEngine.DSSWars
             if (inputSource.IsController)
             {
                 Controller_FlagDesign_Colorpicker.write(w);
-                ControllerSelect.write(w);
+                mouseSelect.write(w);
             }
 
             refreshMouseInput();
@@ -400,7 +403,7 @@ namespace VikingEngine.DSSWars
             if (inputSource.IsController)
             {
                 Controller_FlagDesign_Colorpicker = MapRead.Button(r, inputSource.controllerIndex);
-                ControllerSelect = MapRead.Button(r, inputSource.controllerIndex);
+                mouseSelect = MapRead.Button(r, inputSource.controllerIndex);
             }
 
             Debug.ReadCheck(r);
@@ -439,7 +442,7 @@ namespace VikingEngine.DSSWars
                     InputActionType.ControllerCancel,
                     InputActionType.ControllerMessageClick,
 
-                    InputActionType.ControllerSelect,
+                    //InputActionType.ControllerSelect,
                 });
             }
 
@@ -634,10 +637,10 @@ namespace VikingEngine.DSSWars
                     if (set) Controller_FlagDesign_Colorpicker = buttonMap;
                     else buttonMap = Controller_FlagDesign_Colorpicker;
                     break;
-                case InputActionType.ControllerSelect:
-                    if (set) ControllerSelect = buttonMap;
-                    else buttonMap = ControllerSelect;
-                    break;
+                //case InputActionType.ControllerSelect:
+                //    if (set) ControllerSelect = buttonMap;
+                //    else buttonMap = ControllerSelect;
+                //    break;
                 case InputActionType.WASD_UP:
                     if (set) wasd_up = buttonMap;
                     else buttonMap = wasd_up;
@@ -713,7 +716,7 @@ namespace VikingEngine.DSSWars
             return result;            
         }
 
-        public IButtonMap RichboxGuiSelect => ControllerSelect;
+        public IButtonMap RichboxGuiSelect => mouseSelect;
         public IntVector2 RichboxGuiMove() { return move.stepping + dpadMove.stepping; }
         public bool RichboxGuiUseMove => inputSource.IsController;
     }
@@ -739,7 +742,7 @@ namespace VikingEngine.DSSWars
         ControllerFocus, //"Focus"
         ControllerCancel,
         ControllerMessageClick,
-        ControllerSelect,
+        //ControllerSelect,
 
         WASD_UP,//"Up"
         WASD_DOWN,

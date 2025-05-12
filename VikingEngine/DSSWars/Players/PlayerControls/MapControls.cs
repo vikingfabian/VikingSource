@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Players
         public bool onNewTile = false;
 
         public Graphics.TopViewCamera camera;
-        Graphics.Image controllerPointer;
+        public Graphics.Image controllerPointer;
 
         public Selection hover;
         public Selection selection;
@@ -234,22 +234,22 @@ namespace VikingEngine.DSSWars.Players
 
                         if (rectangleLines == null)
                         {
-                            if (controllerInput)
-                            {
-                                if (player.gameControls.input.ControllerFocus.DownEvent)
-                                {
-                                    if (selection.obj != null)
-                                    {
-                                        setObjectMenuFocus(true);
-                                    }
-                                    else if (hover.obj == null)
-                                    {
-                                        setHeadMenuFocus(true);
-                                    }
-                                }
+                            //if (controllerInput)
+                            //{
+                            //    if (player.gameControls.input.ControllerFocus.DownEvent)
+                            //    {
+                            //        if (selection.obj != null)
+                            //        {
+                            //            setObjectMenuFocus(true);
+                            //        }
+                            //        else if (hover.obj == null)
+                            //        {
+                            //            setHeadMenuFocus(true);
+                            //        }
+                            //    }
 
                                 
-                            }
+                            //}
                             //mouseHoverUpdate();
                             hover.begin(true);
                             {
@@ -368,14 +368,14 @@ namespace VikingEngine.DSSWars.Players
             if (rectangleLines == null)
             {   
                 bool select;
-                if (controllerInput)
-                {
-                    select = player.gameControls.input.ControllerSelect.DownEvent;//&& hover.obj == null;
-                }
-                else
-                {
+                //if (controllerInput)
+                //{
+                //    select = player.gameControls.input.ControllerSelect.DownEvent;//&& hover.obj == null;
+                //}
+                //else
+                //{
                     select = player.gameControls.input.mouseSelect.DownEvent;
-                }
+                //}
                 if (select)
                 {
                     multiSelectMoveLenght = 0;
@@ -443,14 +443,14 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 bool keyUp;
-                if (controllerInput)
-                {
-                    keyUp = !player.gameControls.input.ControllerSelect.IsDown;
-                }
-                else
-                {
+                //if (controllerInput)
+                //{
+                //    keyUp = !player.gameControls.input.ControllerSelect.IsDown;
+                //}
+                //else
+                //{
                     keyUp = !player.gameControls.input.mouseSelect.IsDown;//Input.Mouse.IsButtonDown(MouseButton.Left);
-                }
+                //}
 
                 if (keyUp)
                 {
@@ -953,7 +953,7 @@ namespace VikingEngine.DSSWars.Players
         {
             return selection.obj != null &&
                 controllerInput &&
-                selection.menuFocus;
+                selection.obj.gameobjectType() == GameObjectType.City;
         }
 
         public void setHeadMenuFocus(bool set)
@@ -978,39 +978,39 @@ namespace VikingEngine.DSSWars.Players
 
         }
         
-        public void setObjectMenuFocus(bool set)
-        {
-            //if (!set )//&& selection.obj.gameobjectType() == GameObjectType.City)
-            //{
-            //    return;
-            //}
-            if (controllerInput)
-            {
+        //public void setObjectMenuFocus(bool set)
+        //{
+        //    //if (!set )//&& selection.obj.gameobjectType() == GameObjectType.City)
+        //    //{
+        //    //    return;
+        //    //}
+        //    if (controllerInput)
+        //    {
 
-                if (set && !selection.obj.CanMenuFocus())
-                {
-                    return;
-                }
+        //        if (set && !selection.obj.CanMenuFocus())
+        //        {
+        //            return;
+        //        }
 
-                selection.menuFocus = set;
-                //player.hud.displays.objectDisplay.viewOutLine(set);
+        //        selection.menuFocus = set;
+        //        //player.hud.displays.objectDisplay.viewOutLine(set);
 
-                if (set)
-                {
+        //        if (set)
+        //        {
                     
-                    //player.hud.displays.beginMove(1);
-                }
-                else
-                {
-                    //player.hud.displays.clearMoveSelection();
-                }
+        //            //player.hud.displays.beginMove(1);
+        //        }
+        //        else
+        //        {
+        //            //player.hud.displays.clearMoveSelection();
+        //        }
 
 
-                controllerPointer.Visible = !set;
+        //        controllerPointer.Visible = !set;
 
-                player.hud.needRefresh = true;
-            }
-        }
+        //        player.hud.needRefresh = true;
+        //    }
+        //}
 
         public bool clearSelection()
         {
@@ -1213,7 +1213,11 @@ namespace VikingEngine.DSSWars.Players
 
         private void keypPanInput()
         {
-            if (player.diplomacyMap!= null && player.diplomacyMap.hasSelection())
+            if (player.gameControls.controllerPointer != null)
+            {
+                return;
+            }
+            if (player.diplomacyMap != null && player.diplomacyMap.hasSelection())
             {
                 return;
             }
@@ -1225,10 +1229,14 @@ namespace VikingEngine.DSSWars.Players
         {
             //if (!player.hud.hudMouseOver() && !controllerInput)
             //{
-            if (player.gameControls.input.mousePan.DownEvent)
+            //
+            //
+            if (!controllerInput)
             {
-                panDownInput = true;
-            }
+                if (player.gameControls.input.mousePan.DownEvent)
+                {
+                    panDownInput = true;
+                }
 
                 if (panDownInput && hasMouseMapPanInput())
                 {
@@ -1245,13 +1253,14 @@ namespace VikingEngine.DSSWars.Players
                 if (DssRef.state.localPlayers.Count == 1)
                 {
                     if (!player.gameControls.input.mousePan.IsDown &&
-                        !player.gameControls.input.ControllerSelect.IsDown &&
+                        //!player.gameControls.input.ControllerSelect.IsDown &&
                         Input.Mouse.HasEdgePush())
                     {
                         panCamera(-Input.Mouse.EdgePush() * Ref.DeltaTimeMs * PanSpeed(), true);
 
                     }
                 }
+            }
             //}
         }
 
