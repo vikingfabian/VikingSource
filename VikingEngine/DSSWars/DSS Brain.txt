@@ -153,3 +153,7 @@ https://www.shadertoy.com/view/4ltcRB
 
 Most of what I use can be found here: 
 https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping 
+
+#Export
+dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+
