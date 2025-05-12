@@ -547,6 +547,9 @@ namespace VikingEngine.DSSWars.Conscript
         {
             ItemResourceType weapon = (ItemResourceType)tag;
 
+            
+            var data = new SoldierConscriptProfile() { conscript = new ConscriptProfile() { weapon = weapon } }.init(null);
+
             content.h1(LangLib.Item(weapon), HudLib.TitleColor_Head);
             content.newLine();
             content.Add(new RbImage(SpriteName.warsArmyTag_Hit));
@@ -568,13 +571,27 @@ namespace VikingEngine.DSSWars.Conscript
                     content.Add(new RbText(string.Format(DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(DssConst.WeaponHealthAdd_Handspear))));
                     break;
             }
+
+            if (data.blockReducingAttack_Inv < 1f)
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(DssRef.lang.Conscript_BlockReducingAttack));
+            }
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbText(string.Format( DssRef.lang.Conscript_BlockPerSecond, TextLib.OneDecimal(1f/ data.blocksRefillTimeSec))));
+            content.newLine();
+            content.Add(new RbText(DssRef.lang.Conscript_BlockDescription, HudLib.InfoYellow_Light));
+
             content.newParagraph();
             var res = city.GetGroupedResource(weapon);
 
             content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
             bool reachedBuffer = false;
             res.toMenu(content, weapon, false, ref reachedBuffer);
-
+            
+           
         }
         void armorClick(ItemResourceType armor)
         {

@@ -1,30 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Added some endless loop safety
 * Rectangle select works with map pan
-
-
-!! Known issues, that I am working on !!
--Soldiers can get stuck attacking a dead army
--Cant move units between armies and garrisons
--There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
--Can sometimes show the wrong city on the hud
--Soldier groups glitch in battle
--Faction automations are broken/out of date
--Must inform how faction priority works
--City walls are confusing
--Ai cant build defences
--Automation builds too many low grade soldiers
--"homes" are confusing in child description
--army center can move to far from soldiers
--armies can be too passive to enemy armies passing by
--army centers should not stay on cities 
--Sandbox mode never start ai attacks
--Auto expand dont consider town hall limits
--The destroy factory missions break when save/load
--Ships on land
--the camera should be free on the barbarian mission
-
 
 
 #DSS1 issues#
@@ -55,6 +31,7 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-vatten multiplier setting
 -låt inte dread anfalla spelaren
 -lättare upgrades
 -ikonen på uppgraderade postal behöver symbol
@@ -177,3 +154,7 @@ https://www.shadertoy.com/view/4ltcRB
 
 Most of what I use can be found here: 
 https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping 
+
+#Export
+dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+

@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_Battle => "Schlacht";
 
-        
+
 
         /// <summary>
         /// Tastenbeschreibung: Pause
@@ -1078,7 +1078,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Settings_ButtonMapping => "Tastenbelegung";
 
-       
+
 
         /// <summary>
         /// Eingabetyp, Standard-PC-Eingabe.
@@ -2039,6 +2039,46 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string BattleTrials_Title => "Kampfübungen";
         public override string BattleTrials_Description => "Teste deine Taktik in einem direkten Armee-gegen-Armee-Gefecht.";
+
+        //DEMO PATCH 2
+
+        public override string Conscript_BlockReducingAttack => "Diese Angriffe verringern die Blockchance";
+
+        public override string Conscript_BlockPerSecond => "Kann bis zu {0} Mal pro Sekunde blocken";
+
+        public override string Conscript_BlockDescription => "Soldaten blocken die meisten Angriffe, die aus ihrem vorderen Bereich kommen";
+
+        public override string Map_CustomSeed => "Karten-Seed";
+
+        public override string Settings_Mode_Spectator => "Zuschauer";
+
+        public override string Settings_Mode_Spectator_Description => "Nur zuschauen";
+
+        public override string Automation_AutomationFocus_NoFocus_Description => "Baut von allem ein wenig";
+
+        public override string Automation_AutomationFocus_WillProduce => "Wird hauptsächlich produzieren:";
+
+        public override string Help_Food_WhoEats => "Alle Soldaten und Arbeiter verbrauchen Nahrung";
+
+        public override string Help_Food_BigArmy => "Eine große Armee kann die Stadt in ihrem Gebiet aushungern";
+
+        public override string Help_Food_DontBuild => "Mehr Bauernhöfe erhöhen die Nahrungsproduktion nicht automatisch – du brauchst verfügbare Arbeiter und Kochstationen, um die Nahrung zu sammeln und zu verarbeiten";
+
+        public override string Help_Food_UseWater => "Für die Nahrungsproduktion wird Wasser benötigt";
+
+        public override string Help_Food_Postal => "Stelle sicher, dass sich deine Städte gegenseitig mit Nahrung versorgen";
+
+        public override string Message_LostCity => "Stadt verloren";
+
+        public override string Demo_Description => "Ein kurzes Szenario: Verteidige deine Stadt für {0} Minuten";
+
+
+        //DEMO PATCH 3
+        public override string Demo_EndInXMinuteDescription => "Die Demo endet in {0} Minuten";
+
+        public override string Experience_Required => "Erforderliche Erfahrung";
+
+        public override string InputActionName_ToggleMenu => "Menü umschalten";
 
     }
 }

@@ -617,6 +617,7 @@ namespace VikingEngine.DSSWars
                         var faction = new Faction(this, factionType);
                         faction.readMapFile(r, version, this);
                     }
+                    Debug.ReadCheck(r);
                 }
                 else
                 {

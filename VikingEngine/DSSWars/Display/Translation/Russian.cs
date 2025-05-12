@@ -2163,5 +2163,45 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string BattleTrials_Title => "Испытания в бою";
         public override string BattleTrials_Description => "Проверьте свои тактические навыки в сражении армия против армии.";
 
+        //DEMO PATCH 2
+
+        public override string Conscript_BlockReducingAttack => "Эти атаки снижают шанс блока";
+
+        public override string Conscript_BlockPerSecond => "Может блокировать до {0} раз в секунду";
+
+        public override string Conscript_BlockDescription => "Солдаты блокируют большинство атак, идущих с фронта";
+
+        public override string Map_CustomSeed => "Сид карты";
+
+        public override string Settings_Mode_Spectator => "Наблюдатель";
+
+        public override string Settings_Mode_Spectator_Description => "Только наблюдать";
+
+        public override string Automation_AutomationFocus_NoFocus_Description => "Будет понемногу строить всё";
+
+        public override string Automation_AutomationFocus_WillProduce => "Основное производство:";
+
+        public override string Help_Food_WhoEats => "Все солдаты и рабочие потребляют еду";
+
+        public override string Help_Food_BigArmy => "Большая армия может вызвать голод в городе в своей зоне";
+
+        public override string Help_Food_DontBuild => "Дополнительные фермы не увеличивают количество еды автоматически — нужны доступные рабочие и кухни для сбора и переработки";
+
+        public override string Help_Food_UseWater => "Для производства еды требуется вода";
+
+        public override string Help_Food_Postal => "Убедитесь, что города поддерживают друг друга, отправляя еду";
+
+        public override string Message_LostCity => "Город потерян";
+
+        public override string Demo_Description => "Короткий сценарий: защитите свой город в течение {0} минут";
+
+        //DEMO PATCH 3
+        public override string Demo_EndInXMinuteDescription => "Демонстрация завершится через {0} минут";
+
+        public override string Experience_Required => "Требуемый опыт";
+
+        public override string InputActionName_ToggleMenu => "Переключить меню";
+
+
     }
 }

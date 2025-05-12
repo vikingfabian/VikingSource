@@ -2165,6 +2165,44 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string BattleTrials_Title => "战斗试炼";
         public override string BattleTrials_Description => "在正面对决中检验你的战术策略。";
+        //DEMO PATCH 2
+        public override string Conscript_BlockReducingAttack => "这些攻击会降低格挡几率";
+
+        public override string Conscript_BlockPerSecond => "每秒最多可格挡 {0} 次";
+
+        public override string Conscript_BlockDescription => "士兵会格挡来自前方扇形区域的大部分攻击";
+
+        public override string Map_CustomSeed => "地图种子";
+
+        public override string Settings_Mode_Spectator => "观战模式";
+
+        public override string Settings_Mode_Spectator_Description => "仅观看";
+
+        public override string Automation_AutomationFocus_NoFocus_Description => "会平均建造各种设施";
+
+        public override string Automation_AutomationFocus_WillProduce => "主要生产：";
+
+        public override string Help_Food_WhoEats => "所有士兵和工人都会消耗食物";
+
+        public override string Help_Food_BigArmy => "庞大的军队可能会让所在区域的城市陷入饥荒";
+
+        public override string Help_Food_DontBuild => "建造更多农场并不会自动增加食物产量；你需要有空闲工人和烹饪站来收集和处理食物";
+
+        public override string Help_Food_UseWater => "食物生产需要水";
+
+        public override string Help_Food_Postal => "确保城市之间通过运送食物相互支援";
+
+        public override string Message_LostCity => "城市已失守";
+
+        public override string Demo_Description => "简短场景：守住你的城市 {0} 分钟";
+
+        //DEMO PATCH 3
+        public override string Demo_EndInXMinuteDescription => "演示将在 {0} 分钟后结束";
+
+        public override string Experience_Required => "所需经验";
+
+        public override string InputActionName_ToggleMenu => "切换菜单";
+
 
     }
 }

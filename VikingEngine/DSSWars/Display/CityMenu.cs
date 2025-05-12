@@ -237,31 +237,31 @@ namespace VikingEngine.DSSWars.Display
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Food_WhoEats));
+            content.Add(new RbText(DssRef.lang.Help_Food_WhoEats));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsArmy));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Food_BigArmy));
+            content.Add(new RbText(DssRef.lang.Help_Food_BigArmy));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Food_DontBuild));
+            content.Add(new RbText(DssRef.lang.Help_Food_DontBuild));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsResource_Water));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Food_UseWater));
+            content.Add(new RbText(DssRef.lang.Help_Food_UseWater));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsBuild_Postal));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Help_Food_Postal));
+            content.Add(new RbText(DssRef.lang.Help_Food_Postal));
 
 
 
@@ -1492,7 +1492,7 @@ namespace VikingEngine.DSSWars.Display
                     city.res_Rifle.toMenu(content, ItemResourceType.Rifle, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
                     blueprintButton(player, content, CraftResourceLib.Rifle);
 
-                    city.res_Blunderbus.toMenu(content, ItemResourceType.Blunderbuss, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.res_Blunderbuss.toMenu(content, ItemResourceType.Blunderbuss, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
                     blueprintButton(player, content, CraftResourceLib.Blunderbus);
                     content.newParagraph();
 

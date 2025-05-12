@@ -2048,7 +2048,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void setGroundY()
         {
-            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
+            if (DssRef.world.tileGrid.TryGet(tilePos, out Tile tile))
+            {
+                position.Y = tile.GroundY_aboveWater();
+            }
         }
 
         //public void OrderHalt()

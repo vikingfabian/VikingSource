@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars
         public ResourceOverview res_HandCannon = new ResourceOverview();
         public ResourceOverview res_HandCulvertin = new ResourceOverview();
         public ResourceOverview res_Rifle = new ResourceOverview();
-        public ResourceOverview res_Blunderbus = new ResourceOverview();
+        public ResourceOverview res_Blunderbuss = new ResourceOverview();
 
         public ResourceOverview res_BatteringRam = new ResourceOverview();
         public ResourceOverview res_ballista = new ResourceOverview();
@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars
                     res_HandCulvertin.toMenu(content, ItemResourceType.HandCulverin);
                     content.Add(new RbSeperationLine());
                     res_Rifle.toMenu(content, ItemResourceType.Rifle);
-                    res_Blunderbus.toMenu(content, ItemResourceType.Blunderbuss);
+                    res_Blunderbuss.toMenu(content, ItemResourceType.Blunderbuss);
                     content.Add(new RbSeperationLine());
 
                     //res_BatteringRam.toMenu(content, ItemResourceType.UN_BatteringRam);
@@ -413,6 +413,18 @@ namespace VikingEngine.DSSWars
         //        return city.gold >= totalCost;
         //    }
         //}
+
+        public int GetGold(City city)
+        {
+            if (DssRef.storage.centralGold)
+            {
+                return money.GetGold();
+            }
+            else
+            {
+                return city.money.GetGold();
+            }
+        }
 
         public bool hasGold(int cost, City city)
         {
@@ -651,7 +663,7 @@ namespace VikingEngine.DSSWars
             res_HandCannon.oneSecondUpdate();
             res_HandCulvertin.oneSecondUpdate();
             res_Rifle.oneSecondUpdate();
-            res_Blunderbus.oneSecondUpdate();
+            res_Blunderbuss.oneSecondUpdate();
 
             res_BatteringRam.oneSecondUpdate();
             res_ballista.oneSecondUpdate();
@@ -732,7 +744,7 @@ namespace VikingEngine.DSSWars
             res_HandCannon.clearCurrent();
             res_HandCulvertin.clearCurrent();
             res_Rifle.clearCurrent();
-            res_Blunderbus.clearCurrent();
+            res_Blunderbuss.clearCurrent();
 
             res_BatteringRam.clearCurrent();
             res_ballista.clearCurrent();
@@ -813,7 +825,7 @@ namespace VikingEngine.DSSWars
                 res_HandCannon.current += citiesC.sel.res_HandCannon.amount;
                 res_HandCulvertin.current += citiesC.sel.res_HandCulvertin.amount;
                 res_Rifle.current += citiesC.sel.res_Rifle.amount;
-                res_Blunderbus.current += citiesC.sel.res_Blunderbus.amount;
+                res_Blunderbuss.current += citiesC.sel.res_Blunderbuss.amount;
 
                 res_BatteringRam.current += citiesC.sel.res_BatteringRam.amount;
                 res_ballista.current += citiesC.sel.res_ballista.amount;

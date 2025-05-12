@@ -1351,5 +1351,35 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string BattleTrials_Title { get; }
         public abstract string BattleTrials_Description { get; }
+
+        //DEMO PATCH 2
+        public abstract string Conscript_BlockReducingAttack { get; }
+        public abstract string Conscript_BlockPerSecond { get; }
+        public abstract string Conscript_BlockDescription { get; }
+
+        public abstract string Map_CustomSeed { get; }
+
+        public abstract string Settings_Mode_Spectator { get; }
+        public abstract string Settings_Mode_Spectator_Description { get; }
+
+        public abstract string Automation_AutomationFocus_NoFocus_Description { get; }
+        public abstract string Automation_AutomationFocus_WillProduce { get; }
+
+        public abstract string Help_Food_WhoEats { get; }
+        public abstract string Help_Food_BigArmy { get; }
+        public abstract string Help_Food_DontBuild { get; }
+        public abstract string Help_Food_UseWater { get; }
+        public abstract string Help_Food_Postal { get; }
+
+        public abstract string Message_LostCity { get; }
+
+        public abstract string Demo_Description { get; }
+
+
+        //DEMO PATCH 3
+        public abstract string Demo_EndInXMinuteDescription { get; }
+        public abstract string Experience_Required { get; }
+        public abstract string InputActionName_ToggleMenu { get; }
+
     }
 }
