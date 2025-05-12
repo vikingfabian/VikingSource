@@ -1,34 +1,5 @@
 ﻿UPDATE
 -Change Log-
-* Fixed craft hand cannon crash
-* Fixed build queue crash
-* Added "demo ends in 15min" warning
-* Fixed: Local gold shows total gold in your nation instead of city gold when using the black market
-* Fixed: Guard limit wont work to prevent new guards from spawning
-* Division by zero security on camera
-* Pointer security to army targets
-
-!! Known issues, that I am working on !!
--Soldiers can get stuck attacking a dead army
--Cant move units between armies and garrisons
--There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
--Can sometimes show the wrong city on the hud
--Soldier groups glitch in battle
--Faction automations are broken/out of date
--Must inform how faction priority works
--City walls are confusing
--Ai cant build defences
--Automation builds too many low grade soldiers
--"homes" are confusing in child description
--army center can move to far from soldiers
--armies can be too passive to enemy armies passing by
--army centers should not stay on cities 
--Sandbox mode never start ai attacks
--Auto expand dont consider town hall limits
--The destroy factory missions break when save/load
--Ships on land
--the camera should be free on the barbarian mission
-
 
 
 #DSS1 issues#
