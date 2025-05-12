@@ -59,6 +59,7 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-vatten multiplier setting
 -låt inte dread anfalla spelaren
 -lättare upgrades
 -ikonen på uppgraderade postal behöver symbol
