@@ -51,7 +51,9 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
             var option = new List<AbsRichBoxMember> { new RbText(caption) };
             if (icon != SpriteName.NO_IMAGE)
             {
+
                 option.Insert(0, new RbImage(icon));
+                option.Insert(1, new RbSpace());
             }
 
             if (selected)

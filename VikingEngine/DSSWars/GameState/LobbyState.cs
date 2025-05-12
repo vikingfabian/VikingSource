@@ -1251,7 +1251,7 @@ namespace VikingEngine.DSSWars
                     DropDownBuilder inputOptions = new DropDownBuilder($"inputOptions{playerNum}");
                     foreach (var m in available)
                     {
-                        inputOptions.AddOption(m.IsController ? SpriteName.birdControllerIcon : SpriteName.Keyboard, HudLib.InputName(m.sourceType),
+                        inputOptions.AddOption(m.IsController ? SpriteName.birdControllerIcon : SpriteName.Keyboard, m.ToString(),
                             playerData.inputSource.Equals(m), m.HasMouse,
                             new RbAction1Arg<InputSource>((InputSource inputSource) =>
                             {
@@ -1260,6 +1260,7 @@ namespace VikingEngine.DSSWars
                                 DssRef.storage.checkPlayerDoublettes(0);
                             }, m), null);
                     }
+                    inputOptions.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.InputSelect, underMenu);
                 }
                 listAndEditFlag(content, playerNum, playerData, false);
             }
@@ -1994,22 +1995,22 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                if (DssRef.storage.playerCount == 1)
-                {
-                    var availableList = availableInput();
-                    //if (availableList.Count > 1)
-                    //{
-                    //    controllerStartGameUpdate = true;
-                    //    selectInputMenu(1, true, null);
-                    //}
-                    //else
-                    {
-                        selectController_startGame(availableList[0], null);
-                    }
-                    return;
-                }
-                else
-                {
+                //if (DssRef.storage.playerCount == 1)
+                //{
+                //    var availableList = availableInput();
+                //    //if (availableList.Count > 1)
+                //    //{
+                //    //    controllerStartGameUpdate = true;
+                //    //    selectInputMenu(1, true, null);
+                //    //}
+                //    //else
+                //    {
+                //        selectController_startGame(availableList[0], null);
+                //    }
+                //    return;
+                //}
+                //else
+                //{
                     //Check if a player is without input
                     for (int i = 0; i < DssRef.storage.playerCount; ++i)
                     {
@@ -2020,7 +2021,7 @@ namespace VikingEngine.DSSWars
                         }
                     }
 
-                }
+                //}
                 startGame_nochecks();
             }
         }
