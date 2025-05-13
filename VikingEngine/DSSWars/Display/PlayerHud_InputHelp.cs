@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Display
                     input(map.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
                     if (ct)
                     {
-                        input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ControllerFocus);
+                        input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     break;
 
@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Display
                     input(ct ? map.mouseSelect.Icon : map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
                     if (ct)
                     {
-                        input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ControllerFocus);
+                        input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     break;
             }

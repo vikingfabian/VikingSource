@@ -325,7 +325,7 @@ namespace VikingEngine.DSSWars.Players
         }
 
 
-        Vector2 pointerPos()
+        public Vector2 pointerPos()
         {
             if (controllerInput)
             {

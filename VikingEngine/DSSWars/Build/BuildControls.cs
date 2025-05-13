@@ -1174,7 +1174,7 @@ namespace VikingEngine.DSSWars.Build
         {
             buildMode = SelectTileResult.Build;
             placeBuildingType = type;
-            player.gameControls.setMenuFocus(false);
+            player.gameControls.setMenuFocus(false, true);
             //player.gameControls.mapControls.setObjectMenuFocus(false);
         }
 

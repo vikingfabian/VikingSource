@@ -13,6 +13,8 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
+using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls
@@ -31,6 +33,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public int[] GameSpeedOptions;
         public InputHelpState inputHelpState = InputHelpState.Map;
         public RichMenuControllerPointer controllerPointer = null;
+        
 
         public GameControls(LocalPlayer player, InputMap input)
         { 
@@ -85,8 +88,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 if (controllerPointer != null)
                 {
                     hudState = true;
-                    controllerPointer.menu.updateControllerInput(controllerPointer);
-                    player.hud.needRefresh |= controllerPointer.menu.needRefresh;
+                    var menu = controllerPointer.menu;
+                    menu.updateControllerInput(controllerPointer);
+                    player.hud.needRefresh |= menu.needRefresh;
+                    
                 }
                 player.hud.update(out uiRefresh);
             }
@@ -121,8 +126,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         player.hud.needRefresh = true;
                         buildControls.buildMode = SelectTileResult.None;
                         mapControls.selection.subTile.selectTileResult = SelectTileResult.None;
-
-                        //player.hud.tooltip.clear();
                     }
                 }
                 else
@@ -170,61 +173,164 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 if (input.ControllerFocus.DownEvent)
                 {
                     //Toggle menu focus
-                    setMenuFocus(controllerPointer == null);
+                    bool toFocus = controllerPointer == null;
+                    bool objectMenu = true;
+
+                    if (toFocus && player.hud.factionMenu.IsOpen())
+                    {
+                        objectMenu = false;
+                    }
+                    else if (toFocus && mapControls.selection.obj == null)
+                    {
+                        mapSelect();
+                    }
+                    setMenuFocus(toFocus, objectMenu);
                 }
+
+                if (input.ControllerFaction.DownEvent)
+                {
+                    if (controllerPointer != null && controllerPointer.menu == player.hud.factionMenu.menu)
+                    {
+                        setMenuFocus(false, false);
+                    }
+                    else
+                    {
+                        setMenuFocus(false, false);
+
+                        player.hud.head.TabClick(player.hud.head.factionTabOptions()[0]);
+                        player.hud.factionMenu.createMenu(player);
+                        player.hud.objMenu.deleteMenu();
+                        mapControls.hover.obj = null;
+                        setMenuFocus(true, false);
+                    }
+                }
+
                 if (input.CancelKey.DownEvent)
                 {
-                    setMenuFocus(false);
+                    setMenuFocus(false, true);
                     clearSelection();
                 }
+
+                if (input.Controller_TabLeft.DownEvent)
+                {
+                    controllerTabbing(-1);
+                }
+                if (input.Controller_TabRight.DownEvent)
+                {
+                    controllerTabbing(1);
+                }
+
             }
 
-                //if (input.inputSource.IsController)
-                //{
+            //if (input.inputSource.IsController)
+            //{
 
-                //    bool friendlyHoverObj = mapControls.hover.obj != null && mapControls.hover.obj.GetFaction() == faction;
-                //    if (!menuFocusState &&
-                //    !hud.menuFocus &&
-                //        (input.Select.DownEvent || (friendlyHoverObj && input.ControllerFocus.DownEvent)))
-                //    {
-                //        if (armyControls != null &&
-                //            (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
-                //        {
-                //            mapExecute();
-                //        }
-                //        else
-                //        {
-                //            mapSelect();
-                //        }
-                //    }
+            //    bool friendlyHoverObj = mapControls.hover.obj != null && mapControls.hover.obj.GetFaction() == faction;
+            //    if (!menuFocusState &&
+            //    !hud.menuFocus &&
+            //        (input.Select.DownEvent || (friendlyHoverObj && input.ControllerFocus.DownEvent)))
+            //    {
+            //        if (armyControls != null &&
+            //            (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
+            //        {
+            //            mapExecute();
+            //        }
+            //        else
+            //        {
+            //            mapSelect();
+            //        }
+            //    }
 
-                //    if (input.ControllerMessageClick.DownEvent)
-                //    {
-                //        hud.messages.onControllerClick();
-                //    }
+            //    if (input.ControllerMessageClick.DownEvent)
+            //    {
+            //        hud.messages.onControllerClick();
+            //    }
 
-                //    if (inputConnected && !input.Connected)
-                //    {
-                //        DssRef.state.menuSystem.controllerLost();
-                //    }
-                //    inputConnected = input.Connected;
-                //}
-                //else
-                //{
-                //    if (!hud.mouseOverHud)
-                //    {
+            //    if (inputConnected && !input.Connected)
+            //    {
+            //        DssRef.state.menuSystem.controllerLost();
+            //    }
+            //    inputConnected = input.Connected;
+            //}
+            //else
+            //{
+            //    if (!hud.mouseOverHud)
+            //    {
 
-                //    }
-                //}
+            //    }
+            //}
 
 
 
-             gameSpeedInput();
+            gameSpeedInput();
 
             updateObjectTabbing();
         }
 
-        public void setMenuFocus(bool set)
+        public ControllerTabFocus tabFocus()
+        {            
+            if (controllerPointer != null)
+            {
+                if (controllerPointer.menu == player.hud.objMenu.menu)
+                {
+                    return ControllerTabFocus.ObjectMenu;
+                }
+                if (controllerPointer.menu == player.hud.factionMenu.menu)
+                {
+                    return ControllerTabFocus.Headmenu;
+                }
+            }
+
+            if (InBuildOrdersMode())
+            {
+                return ControllerTabFocus.Build;
+            }
+
+            return ControllerTabFocus.Pause;
+        }
+
+        void controllerTabbing(int dir)
+        {
+            switch (tabFocus())
+            {
+                case ControllerTabFocus.ObjectMenu:
+                    switch (mapControls.selection.obj.gameobjectType())
+                    {
+                        case GameObjectType.City:
+                            {
+                                var tabs = player.AvailableCityTabs();
+                                var index = arraylib.IndexFromValue(tabs, player.cityTab);
+                                index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
+                                player.cityTab = tabs[index];
+                            }
+                            break;
+                    }
+                    break;
+                case ControllerTabFocus.Headmenu:
+                    {
+                        var tabs = player.hud.head.factionTabOptions();
+                        var index = arraylib.IndexFromValue(tabs, player.factionTab);
+                        index = Bound.SetRollover(index + dir, 0, tabs.Length - 1);
+                        player.hud.head.TabClick(tabs[index]);
+                    }
+                    break;
+            }
+            player.hud.needRefresh = true;
+        }
+
+        public bool tabFocusColor(ControllerTabFocus inFocus, out Color color)
+        {
+            if (input.inputSource.IsController)
+            {
+                color = tabFocus() == inFocus ? Color.White : Color.Black;
+                return true;
+            }
+
+            color = Color.White;
+            return false;
+        }
+
+        public void setMenuFocus(bool set, bool objectMenu)
         {
             if (input.inputSource.IsController) 
             {
@@ -233,7 +339,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (controllerPointer == null)
                     {
                         controllerPointer = new RichMenuControllerPointer(input);
-                        controllerPointer.setMenu(player.hud.objMenu.menu);
+                        controllerPointer.setMenu(objectMenu? player.hud.objMenu.menu : player.hud.factionMenu.menu);
                         player.hud.needRefresh = true;
                     }
                 }
@@ -246,9 +352,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         player.hud.needRefresh = true;
                     }
                 }
+
+
+                mapControls.controllerPointer.Visible = !set;
             }
 
-            mapControls.controllerPointer.Visible = !set;
         }
 
         void updateMapShortCuts()
@@ -416,7 +524,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (input.ControllerFocus.DownEvent || mapControls.focusedObjectMenuState())
                     {
                         //mapControls.setObjectMenuFocus(true);
-                        setMenuFocus(true);
+                        setMenuFocus(true, true);
                     }
                 }
 
@@ -660,5 +768,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 buildControls.buildMode != SelectTileResult.None &&
                 player.drawUnitsView.current.DrawDetailLayer;
         }
+    }
+
+    enum ControllerTabFocus
+    { 
+        Pause,
+        ObjectMenu,
+        Headmenu,
+        Build,
     }
 }

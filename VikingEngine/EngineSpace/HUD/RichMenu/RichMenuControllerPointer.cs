@@ -39,6 +39,7 @@ namespace VikingEngine.HUD.RichMenu
 
         public void DeleteMe()
         {
+            menu.deleteTooltip();
             pointer?.DeleteMe();
         }
     }

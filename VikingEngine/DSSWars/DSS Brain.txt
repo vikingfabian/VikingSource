@@ -1,7 +1,9 @@
 ﻿UPDATE
 -Change Log-
+* Controller support
 * Rectangle select works with map pan
-
+* Input display in the corner
+! the settings are reset
 
 #DSS1 issues#
 

@@ -21,7 +21,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 20;
+        const int Version = 21;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -188,7 +188,7 @@ namespace VikingEngine
             {
                 int version = r.ReadInt32();
 
-                if (version >= 20)
+                if (version >= 21)
                 {
                     readSettings(r, version);
                 }

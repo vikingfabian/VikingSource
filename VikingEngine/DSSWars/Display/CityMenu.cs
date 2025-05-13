@@ -111,8 +111,20 @@ namespace VikingEngine.DSSWars.Display
                     }
                 }
 
-                content.Add(new ArtTabgroup(tabs, tabSel, player.cityTabClick, null, SoundLib.menutab, null));
-
+                bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.ObjectMenu, out Color focusColor);
+                if (viewControllerTabs)
+                {
+                    content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
+                    content.space(0.5f);
+                }
+               
+                var tabGroup = new ArtTabgroup(tabs, tabSel, player.cityTabClick, null, SoundLib.menutab, null);
+                if (viewControllerTabs)
+                {
+                    tabGroup.endAttach = new List<AbsRichBoxMember> { new RbSpace(0.5f), new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor } };
+                }
+                content.Add(tabGroup);
+                //content.Add(new RbImage(SpriteName.ButtonLB));
                 content.newLine();
 
                 switch (player.cityTab)

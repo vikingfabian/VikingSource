@@ -75,6 +75,9 @@ namespace VikingEngine.DSSWars.Display
             return menu.needRefresh;
         }
 
+        public MenuTab[] factionTabOptions()
+        { return DssRef.storage.runTutorial_1short_2normal == 0 ? Tabs : TutorialTabs; }
+
         public void headMenu(RichBoxContent content, bool prepareLayout)
         {
             //LocalPlayer localPlayer = player.GetLocalPlayer();
@@ -164,7 +167,19 @@ namespace VikingEngine.DSSWars.Display
 
             content.newLine();
 
-            MenuTab[] tabOptions = DssRef.storage.runTutorial_1short_2normal == 0 ? Tabs : TutorialTabs;
+            if (player.gameControls.input.inputSource.IsController)
+            {
+                content.Add(new RbImage(player.gameControls.input.ControllerFaction.Icon));
+                content.space();                
+            }
+            bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Headmenu, out Color focusColor);
+            if (viewControllerTabs)
+            {
+                content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
+                content.space(0.5f);
+            }
+
+            MenuTab[] tabOptions = factionTabOptions();
             for (int i = 0; i < tabOptions.Length; ++i)
             {
                 var tab = tabOptions[i];
@@ -193,6 +208,12 @@ namespace VikingEngine.DSSWars.Display
                     }, new RbAction1Arg<MenuTab>(TabClick, tab), new RbTooltip(TabTip, tab)));
             }
 
+            if (viewControllerTabs)
+            {
+                content.space(0.5f);
+                content.Add(new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor });
+            }
+
             content.space(2);
             {
                 RichBoxContent buttonContent = new RichBoxContent();
@@ -212,7 +233,7 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        void TabClick(MenuTab tab)
+        public void TabClick(MenuTab tab)
         {
             var player = this.player.GetLocalPlayer();
             player.gameControls.mapControls.clearSelection();

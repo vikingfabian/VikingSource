@@ -404,10 +404,10 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
         }
-        public void factionTabClick(int tab)
-        {
-            factionTab = PlayerHud_Head.Tabs[tab];
-        }
+        //public void factionTabClick(int tab)
+        //{
+        //    factionTab = PlayerHud_Head.Tabs[tab];
+        //}
         public void cityTabClick(int tab)
         {
             cityTab = AvailableCityTabs()[tab];
