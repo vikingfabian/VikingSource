@@ -1377,6 +1377,12 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public GameObjectType FocusObjectType()
+        {
+            var obj = FocusObject();
+            return obj != null ? obj.gameobjectType() : GameObjectType.NONE;
+        }
+
         public bool NoSelection() { return selection.obj == null; }
     }
 

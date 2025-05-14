@@ -16,12 +16,15 @@ namespace VikingEngine.HUD.RichMenu
         public Image pointer;
         public RichMenu menu;
         public float maxInteractDistance;
+
+        const float LowAccelerate = 0.4f;
+        float moveAcc = LowAccelerate;
         public RichMenuControllerPointer(InputMap inputMap)
         {
             this.inputMap = inputMap;
         }
 
-        public void setMenu(RichMenu menu)
+        public void setMenu(RichMenu menu, Vector2 storedPosition)
         {
             this.menu = menu;
 
@@ -34,11 +37,37 @@ namespace VikingEngine.HUD.RichMenu
 
             pointer.Layer = menu.layer - 2;
 
-            pointer.position = menu.renderArea.Position;
+            if (storedPosition == Vector2.Zero)
+            {
+                pointer.position = menu.renderArea.Position + Engine.Screen.IconSizeV2;
+            }
+            else
+            {
+                pointer.position = storedPosition;
+            }
         }
 
-        public void DeleteMe()
+        
+        public Vector2 accelerateInput(Vector2 input)
         {
+            float speed = 1.0f;
+            var l = input.Length();
+            Vector2 result = Ref.DeltaTimeMs * moveAcc * speed * input;
+            if (l < 0.5f)
+            {
+                moveAcc = LowAccelerate;
+            }
+            else
+            {
+                moveAcc = Bound.Max(moveAcc + Ref.DeltaTimeSec * 3f, 1f);
+            }
+
+            return result;
+        }
+
+        public void DeleteMe(out Vector2 storedPos)
+        {
+            storedPos = pointer.position;
             menu.deleteTooltip();
             pointer?.DeleteMe();
         }

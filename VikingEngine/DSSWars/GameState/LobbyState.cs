@@ -1295,7 +1295,7 @@ namespace VikingEngine.DSSWars
 
         void listAndEditFlag(RichBoxContent content, int playerNum, LocalPlayerStorage playerData, bool editor)
         {
-            DropDownBuilder flagOptions = new DropDownBuilder("listflags");
+            DropDownBuilder flagOptions = new DropDownBuilder("listflags" + playerNum.ToString());
             {
                 for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
                 {

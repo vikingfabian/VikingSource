@@ -473,8 +473,18 @@ namespace VikingEngine.HUD.RichBox
     class RbSeperationLine : AbsRichBoxMember
     {
         public Image pointer;
+        float opacity;
+        Color color;
+
+        public RbSeperationLine(Color color, float opacity)
+        {
+            this.color = color;
+            this.opacity = opacity;            
+        }
         public RbSeperationLine()
-        { }
+            :this(Color.White, 0.3f)
+        { 
+        }
 
         public override void Create(RichBoxGroup group)
         {
@@ -482,7 +492,7 @@ namespace VikingEngine.HUD.RichBox
 
             pointer = new Image(SpriteName.WhiteArea, pos,
                 new Vector2(group.boxWidth, 2), group.layer, false, group.addToRender);
-            pointer.Opacity = 0.3f;
+            pointer.ColorAndAlpha(color, opacity);
             group.Add(pointer);
         }
 

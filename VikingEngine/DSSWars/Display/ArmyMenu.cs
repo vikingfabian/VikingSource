@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Text;
@@ -9,6 +10,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.Display
 {
@@ -74,7 +76,19 @@ namespace VikingEngine.DSSWars.Display
                         }
                     }
 
-                    content.Add(new ArtTabgroup(tabs, tabSel, player.armyTabClick, null, SoundLib.menutab, null));
+                    bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.ArmyMenu, out Color focusColor);
+                    if (viewControllerTabs)
+                    {
+                        content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
+                        content.space(0.5f);
+                    }
+                    var tabGroup = new ArtTabgroup(tabs, tabSel, player.armyTabClick, null, SoundLib.menutab, null);
+                    if (viewControllerTabs)
+                    {
+                        tabGroup.endAttach = new List<AbsRichBoxMember> { new RbSpace(0.5f), new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor } };
+                    }
+
+                    content.Add(tabGroup);
                     content.newParagraph();
                     //content.newLine();
                     switch (player.armyTab)

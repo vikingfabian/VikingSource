@@ -1,8 +1,10 @@
 ﻿UPDATE
 -Change Log-
-* Controller support
+* Controller support (ingame only)
 * Rectangle select works with map pan
 * Input display in the corner
+* Improvements to blueprint tooltip
+
 ! the settings are reset
 
 #DSS1 issues#

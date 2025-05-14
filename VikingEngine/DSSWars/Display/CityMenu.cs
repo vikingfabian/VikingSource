@@ -111,7 +111,7 @@ namespace VikingEngine.DSSWars.Display
                     }
                 }
 
-                bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.ObjectMenu, out Color focusColor);
+                bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.CityMenu, out Color focusColor);
                 if (viewControllerTabs)
                 {
                     content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });

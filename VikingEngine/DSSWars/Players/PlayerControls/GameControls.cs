@@ -33,7 +33,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public int[] GameSpeedOptions;
         public InputHelpState inputHelpState = InputHelpState.Map;
         public RichMenuControllerPointer controllerPointer = null;
-        
+        GameObjectType controllerPointer_objectFocus;
+        Vector2 controllerPointer_storedPos_city;
+        Vector2 controllerPointer_storedPos_army;
+        Vector2 controllerPointer_storedPos_defaultObject;
+        Vector2 controllerPointer_storedPos_faction;
+
 
         public GameControls(LocalPlayer player, InputMap input)
         { 
@@ -267,13 +272,23 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             updateObjectTabbing();
         }
 
+
+
         public ControllerTabFocus tabFocus()
         {            
             if (controllerPointer != null)
             {
                 if (controllerPointer.menu == player.hud.objMenu.menu)
                 {
-                    return ControllerTabFocus.ObjectMenu;
+                    switch (mapControls.FocusObjectType())
+                    {
+                        case GameObjectType.City:
+                            return ControllerTabFocus.CityMenu;
+                        case GameObjectType.Army:
+                            return ControllerTabFocus.ArmyMenu;
+                        default:
+                            return ControllerTabFocus.GeneralObjectsMenu;
+                    }
                 }
                 if (controllerPointer.menu == player.hud.factionMenu.menu)
                 {
@@ -293,17 +308,20 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             switch (tabFocus())
             {
-                case ControllerTabFocus.ObjectMenu:
-                    switch (mapControls.selection.obj.gameobjectType())
+                case ControllerTabFocus.CityMenu:
                     {
-                        case GameObjectType.City:
-                            {
-                                var tabs = player.AvailableCityTabs();
-                                var index = arraylib.IndexFromValue(tabs, player.cityTab);
-                                index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
-                                player.cityTab = tabs[index];
-                            }
-                            break;
+                        var tabs = player.AvailableCityTabs();
+                        var index = arraylib.IndexFromValue(tabs, player.cityTab);
+                        index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
+                        player.cityTab = tabs[index];                           
+                    }
+                    break;
+                case ControllerTabFocus.ArmyMenu:
+                    {
+                        var tabs = player.AvailableArmyTabs();
+                        var index = arraylib.IndexFromValue(tabs, player.armyTab);
+                        index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
+                        player.armyTab = tabs[index];
                     }
                     break;
                 case ControllerTabFocus.Headmenu:
@@ -312,6 +330,26 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         var index = arraylib.IndexFromValue(tabs, player.factionTab);
                         index = Bound.SetRollover(index + dir, 0, tabs.Length - 1);
                         player.hud.head.TabClick(tabs[index]);
+                    }
+                    break;
+                case ControllerTabFocus.Build:
+                    var city = mapControls.selection.obj?.GetCity();
+                    if (city != null)
+                    {
+                        var tabs = buildControls.availableBuildOptions(city);
+                        var index = arraylib.IndexFromValue(tabs, buildControls.placeBuildingType);
+                        index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
+                        buildControls.buildingTypeClick(tabs[index]);
+                    }
+                    break;
+                case ControllerTabFocus.Pause:
+                    if (dir < 0)
+                    {
+                        player.hud.headOptions.pauseAction();
+                    }
+                    else
+                    {
+                        setNextGameSpeed();
                     }
                     break;
             }
@@ -339,7 +377,28 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (controllerPointer == null)
                     {
                         controllerPointer = new RichMenuControllerPointer(input);
-                        controllerPointer.setMenu(objectMenu? player.hud.objMenu.menu : player.hud.factionMenu.menu);
+                        if (objectMenu)
+                        {
+                            Vector2 storedPos;
+                            controllerPointer_objectFocus = mapControls.FocusObjectType();
+                            switch (controllerPointer_objectFocus)
+                            {
+                                case GameObjectType.City:
+                                    storedPos = controllerPointer_storedPos_city;
+                                    break;
+                                case GameObjectType.Army:
+                                    storedPos = controllerPointer_storedPos_army;
+                                    break;
+                                default:
+                                    storedPos = controllerPointer_storedPos_defaultObject;
+                                    break;
+                            }
+                            controllerPointer.setMenu(player.hud.objMenu.menu, storedPos);
+                        }
+                        else
+                        {
+                            controllerPointer.setMenu(player.hud.factionMenu.menu, controllerPointer_storedPos_faction);
+                        }
                         player.hud.needRefresh = true;
                     }
                 }
@@ -347,7 +406,26 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     if (controllerPointer != null)
                     {
-                        controllerPointer.DeleteMe();
+                        if (controllerPointer.menu == player.hud.objMenu.menu)
+                        {
+                            controllerPointer.DeleteMe(out Vector2 storedPos);
+                            switch (controllerPointer_objectFocus)
+                            {
+                                case GameObjectType.City:
+                                    controllerPointer_storedPos_city = storedPos;
+                                    break;
+                                case GameObjectType.Army:
+                                    controllerPointer_storedPos_army = storedPos;
+                                    break;
+                                default:
+                                    controllerPointer_storedPos_defaultObject = storedPos;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            controllerPointer.DeleteMe(out controllerPointer_storedPos_faction);
+                        }
                         controllerPointer = null;
                         player.hud.needRefresh = true;
                     }
@@ -718,15 +796,24 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         void gameSpeedInput()
         {
-
-            if (DssRef.difficulty.setting_allowPauseCommand &&
-                input.PauseGame.DownEvent &&
-                DssRef.state.localPlayers.Count == 1)//IsLocalHost())
+            if (DssRef.state.IsSinglePlayer())
             {
-                player.hud.headOptions.pauseAction();
-            }
+                if (DssRef.difficulty.setting_allowPauseCommand &&
+                    input.PauseGame.DownEvent)//IsLocalHost())
+                {
+                    player.hud.headOptions.pauseAction();
+                }
 
-            if (DssRef.state.IsSinglePlayer() && input.GameSpeed.DownEvent)
+                if (input.GameSpeed.DownEvent)
+                {
+                    setNextGameSpeed();
+                }
+            }
+        }
+
+        void setNextGameSpeed()
+        {
+            if (DssRef.state.IsSinglePlayer())
             {
                 if (Ref.isPaused)
                 {
@@ -773,7 +860,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
     enum ControllerTabFocus
     { 
         Pause,
-        ObjectMenu,
+        CityMenu,
+        ArmyMenu,
+        GeneralObjectsMenu,
         Headmenu,
         Build,
     }

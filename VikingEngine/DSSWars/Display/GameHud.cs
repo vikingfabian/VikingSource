@@ -152,10 +152,11 @@ namespace VikingEngine.DSSWars.Display
                 refresh |= headOptions.updateMouseInput(ref mouseOverHud);
                 refresh |= objMenu.updateMouseInput(ref mouseOverHud);
                 
-                player.tutorial?.update(ref mouseOverHud);
-                messages.Update(ref mouseOverHud);
+                
+               
             }
-
+            player.tutorial?.update(ref mouseOverHud);
+            messages.Update(ref mouseOverHud);
 
             //if (displays.menuStateHasChange)
             //{

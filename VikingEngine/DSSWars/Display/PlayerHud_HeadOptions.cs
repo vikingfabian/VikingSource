@@ -49,6 +49,14 @@ namespace VikingEngine.DSSWars.Display
         {
             //content.Add(new RichBoxScale(1.6f));
 
+
+            bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause, out Color focusColor);
+            if (viewControllerTabs)
+            {
+                content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
+                content.space(0.5f);
+            }
+
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
                 new RbAction(pauseAction), new RbTooltip((RichBoxContent content, object tag) =>
@@ -58,6 +66,12 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RbText(DssRef.lang.Input_Pause));
                 })));
 
+
+            if (viewControllerTabs)
+            {
+                content.Add(new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor });
+                content.space(0.5f);
+            }
             for (int i = 0; i < player.gameControls.GameSpeedOptions.Length; i++)
             {
                 int speed = player.gameControls.GameSpeedOptions[i];
@@ -73,6 +87,11 @@ namespace VikingEngine.DSSWars.Display
             }
 
             content.space();
+            if (player.gameControls.input.inputSource.IsController)
+            {
+                content.Add(new RbImage(player.gameControls.input.Menu.Icon));
+                content.space(0.5f);
+            }
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarMenuIcon) },
                 new RbAction(DssRef.state.menuSystem.pauseMenu),

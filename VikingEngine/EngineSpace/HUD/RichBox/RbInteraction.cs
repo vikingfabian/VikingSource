@@ -51,7 +51,7 @@ namespace VikingEngine.HUD.RichBox
        
         public bool updateController(RichMenuControllerPointer pointer)
         {
-            pointer.pointer.position += pointer.inputMap.move.directionAndTime;
+            pointer.pointer.position += pointer.accelerateInput(pointer.inputMap.move.direction);
             pointer.pointer.position = pointer.menu.renderArea.KeepPointInsideBound_Position(pointer.pointer.position);
 
             refreshControllerHover(pointer);
