@@ -1021,11 +1021,14 @@ namespace VikingEngine.DSSWars.Build
                 }
 
                 int orderLength = 0;
-                foreach (var m in player.orders.orders)
+                lock (player.orders.orders)
                 {
-                    if (m.GetWorkType(city) != OrderType.NONE)
+                    foreach (var m in player.orders.orders)
                     {
-                        orderLength++;
+                        if (m.GetWorkType(city) != OrderType.NONE)
+                        {
+                            orderLength++;
+                        }
                     }
                 }
                 content.newParagraph();

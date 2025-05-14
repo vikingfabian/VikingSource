@@ -38,6 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
         public CityType cityType;
         public List<int> neighborCities = new List<int>();
 
+        int overviewModelFaction = -1;
         Graphics.AbsVoxelObj overviewModel;
 
         BoundingBox bound;
@@ -1472,12 +1473,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         void createOverViewModel()
         {
-            overviewModel?.DeleteMe();
+            if (overviewModelFaction != faction.parentArrayIndex)
+            {
+                overviewModelFaction = faction.parentArrayIndex;
 
-            overviewModel = faction.AutoLoadModelInstance(
-               LootFest.VoxelModelName.cityicon, IconScale());
-            overviewModel.AddToRender(DrawGame.TerrainLayer);
-            overviewModel.position = position;
+                overviewModel?.DeleteMe();
+
+                overviewModel = faction.AutoLoadModelInstance(
+                   LootFest.VoxelModelName.cityicon, IconScale());
+                overviewModel.AddToRender(DrawGame.TerrainLayer);
+                overviewModel.position = position;
+            }
         }
 
         float IconScale()
@@ -2640,6 +2646,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void setFaction(Faction faction)
         {
+            
             if (this.faction != faction)
             {
                 Faction prevOwner = this.faction;
@@ -2670,7 +2677,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else if (overviewModel != null)
                 {
-                    createOverViewModel();
+                    Ref.update.AddSyncAction(new SyncAction(createOverViewModel));
+                    //createOverViewModel();
                 }
 
                 workTemplate.onFactionChange(faction.workTemplate);

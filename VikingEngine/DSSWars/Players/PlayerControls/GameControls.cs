@@ -131,11 +131,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             mapControls.passiveUpdate();
 
-            //if (cityUpdate && player.input.AutomationSetting.DownEvent)
-            //{
-            //    hud.OpenAutomationMenu();
-            //}
-
             if (armyControls != null)
             {
                 armyControls.update();
@@ -144,48 +139,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 updateMapShortCuts();
             }
-
-            
-
-            //if (input.inputSource.IsController)
-            //{
-
-            //    bool friendlyHoverObj = mapControls.hover.obj != null && mapControls.hover.obj.GetFaction() == faction;
-            //    if (!menuFocusState &&
-            //    !hud.menuFocus &&
-            //        (input.Select.DownEvent || (friendlyHoverObj && input.ControllerFocus.DownEvent)))
-            //    {
-            //        if (armyControls != null &&
-            //            (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
-            //        {
-            //            mapExecute();
-            //        }
-            //        else
-            //        {
-            //            mapSelect();
-            //        }
-            //    }
-
-            //    if (input.ControllerMessageClick.DownEvent)
-            //    {
-            //        hud.messages.onControllerClick();
-            //    }
-
-            //    if (inputConnected && !input.Connected)
-            //    {
-            //        DssRef.state.menuSystem.controllerLost();
-            //    }
-            //    inputConnected = input.Connected;
-            //}
-            //else
-            //{
-            //    if (!hud.mouseOverHud)
-            //    {
-                    
-            //    }
-            //}
-                      
-
 
             gameSpeedInput();
 
