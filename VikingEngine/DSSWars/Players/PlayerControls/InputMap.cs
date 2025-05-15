@@ -275,7 +275,7 @@ namespace VikingEngine.DSSWars
             //Home = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);
             Menu = new XboxButtonMap(Buttons.Start, inputSource.controllerIndex);
             //ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
-            ToggleHudDetail = new NoButtonMap();
+            ToggleHudDetail = new XboxButtonMap(Buttons.DPadDown, inputSource.controllerIndex);//new NoButtonMap();
 
 
             Controller_TabLeft = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);

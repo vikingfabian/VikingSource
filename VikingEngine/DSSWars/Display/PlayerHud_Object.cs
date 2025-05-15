@@ -122,13 +122,19 @@ namespace VikingEngine.DSSWars.Display
                 return;
             }
 
+            if (player.hud.detailLevel == HudDetailLevel.Minimal && 
+                (obj == null || !selected))
+            {
+                deleteMenu();
+                return;
+            }
+
             if (obj == null)
             {
                 historyDisplay(player);
             }
             else
             {
-
                 createMenu(player);
 
                 var content = new RichBoxContent();

@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Players;
 
@@ -35,17 +36,24 @@ namespace VikingEngine.DSSWars.Display
          Map.MiniMap miniMap;
 
         public PopMenu popMenu = null;
+        public Vector2 MessageStart;
 
         public GameHud(LocalPlayer player, int numPlayers)
         {
             this.player = player;
             player.hud = this;
+            MessageStart = new Vector2(player.playerData.view.safeScreenArea.Right - (RichMenu.DefaultRenderEdge.X + HudLib.MessageDisplayWidth),
+               player.playerData.view.safeScreenArea.Y);
+
             //displays = new GameHudDisplays(player);
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
             {
                 head = new PlayerHud_Head(player);
             }
-            headOptions = new PlayerHud_HeadOptions(player);
+            if (player.IsLocalHost())
+            {
+                headOptions = new PlayerHud_HeadOptions(player);
+            }
             objMenu = new PlayerHud_Object(player);
             factionMenu = new PlayerHud_Faction();
 
@@ -54,6 +62,8 @@ namespace VikingEngine.DSSWars.Display
             //hudmenu = new GameHudMenu(player);
             messages = new MessageGroup(player, numPlayers, HudLib.richboxGui);
             tooltip = new Tooltip();
+
+            
         }
 
         public void initMap()
@@ -125,22 +135,17 @@ namespace VikingEngine.DSSWars.Display
                 player.gameControls.mapControls.hover.isNew ||
                 needRefresh;
 
-            
 
-            //if (player.gameControls.input.ToggleHudDetail.DownEvent)
-            //{
-            //    detailLevel++;
-            //    if (detailLevel >= HudDetailLevel.NUM)
-            //    { 
-            //        detailLevel = 0;
-            //    }
-            //    refresh = true;
-            //}
+            if (player.gameControls.input.ToggleHudDetail.DownEvent)
+            {
+                detailLevel++;
+                if (detailLevel >= HudDetailLevel.NUM)
+                {
+                    detailLevel = 0;
+                }
+                refresh = true;
+            }
 
-            
-            //updateMenuDisplays(refresh);
-            
-            
 
             if (player.gameControls.input.inputSource.HasMouse)
             {
@@ -149,11 +154,12 @@ namespace VikingEngine.DSSWars.Display
                     refresh |= head.updateMouseInput(ref mouseOverHud);
                     refresh |= factionMenu.updateMouseInput(ref mouseOverHud);
                 }
-                refresh |= headOptions.updateMouseInput(ref mouseOverHud);
+                if (headOptions != null)
+                {
+                    refresh |= headOptions.updateMouseInput(ref mouseOverHud);
+                }
                 refresh |= objMenu.updateMouseInput(ref mouseOverHud);
                 
-                
-               
             }
             player.tutorial?.update(ref mouseOverHud);
             messages.Update(ref mouseOverHud);
@@ -171,7 +177,7 @@ namespace VikingEngine.DSSWars.Display
                 //Debug.Log("game hud -refresh");
                 refreshTimer.Reset();
                 head?.refreshUpdate(player);
-                headOptions.refreshUpdate();
+                headOptions?.refreshUpdate();
                 updateMenuDisplays(true);
                 factionMenu.refreshUpdate(player);
                 inputHelp.refreshUpdate(player);

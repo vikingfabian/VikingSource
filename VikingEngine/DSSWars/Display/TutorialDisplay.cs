@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Display
             VectorRect area = player.playerData.view.safeScreenArea;
             area.Width = HudLib.richboxGui.width;
             area.X = player.playerData.view.safeScreenArea.Right - area.Width;
-            area.Y = player.hud.headOptions.MessageStart.Y;
+            area.Y = player.hud.MessageStart.Y;
             area.SetBottom(player.playerData.view.safeScreenArea.Bottom, true);
 
             display = new RichMenu(HudLib.TutorialRbSettings, area, new Vector2(16), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);

@@ -182,7 +182,16 @@ namespace VikingEngine.DSSWars.Display
 
         Vector2 position()
         {
-            var result = player.hud.headOptions.MessageStart;
+            Vector2 result;
+            if (player.hud.headOptions != null)
+            {
+                result = player.hud.MessageStart;
+            }
+            else
+            {
+                result = player.playerData.view.safeScreenArea.RightTop;
+            }
+
             if (player.tutorial != null)
             {
                 result.X -= HudLib.richboxGui.width;

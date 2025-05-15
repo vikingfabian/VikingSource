@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.GameState
         { }
         public bool IsSinglePlayer()
         {
-            return localPlayers.Count == 1;
+            return DssRef.storage.playerCount == 1;
         }
         public bool IsLocalMultiplayer()
         {

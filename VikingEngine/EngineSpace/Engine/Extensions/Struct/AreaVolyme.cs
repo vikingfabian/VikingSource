@@ -1158,20 +1158,22 @@ namespace VikingEngine //AreaVolyme
                 // Place the point on closest border
                 if (smallRect.Position.X < Position.X)
                 {
-                    smallRect.Position.X = Position.X;
+                    //smallRect.Position.X = Position.X;
+                    smallRect.AddToLeftSide(-Position.X + smallRect.Position.X);
                 }
-                else if (smallRect.Right > Right)
+                if (smallRect.Right > Right)
                 {
                     smallRect.SetRight(Right, true);
                 }
 
                 if (smallRect.Y < Position.Y)
                 {
-                    smallRect.Y = Position.Y;
+                    //smallRect.Y = Position.Y;
+                    smallRect.AddToTopSide(-Position.Y + smallRect.Position.Y);
                 }
-                else if (smallRect.Bottom > Bottom)
+                if (smallRect.Bottom > Bottom)
                 {
-                    smallRect.Bottom = Bottom;
+                    smallRect.SetBottom(Bottom, true);
                 }
             }
 

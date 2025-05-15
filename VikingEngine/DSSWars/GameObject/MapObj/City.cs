@@ -2182,7 +2182,7 @@ namespace VikingEngine.DSSWars.GameObject
             CityPresentationHud(args, false);
             //base.toHud(args);
             args.content.newLine();
-            if (args.ShowFull)
+            //if (args.ShowFull)
             {
                 if (faction == args.player.faction)
                 {

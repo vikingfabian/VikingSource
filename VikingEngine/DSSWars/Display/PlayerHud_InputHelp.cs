@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Display
     class PlayerHud_InputHelp
     {
         public RichMenu menu;
-
+        Graphics.Image bgTex;
         public PlayerHud_InputHelp(LocalPlayer player)
         {
             createMenu(player);
@@ -28,17 +28,32 @@ namespace VikingEngine.DSSWars.Display
             if (menu == null)
             {
                 var objectMenuArea = new VectorRect(0, 0,
-                    HudLib.HeadDisplayWidth * 0.6f, HudLib.HeadDisplayWidth * 0.8f);
+                    HudLib.HeadDisplayWidth * 0.6f, HudLib.HeadDisplayWidth * 0.5f);
                 objectMenuArea.X = player.playerData.view.safeScreenArea.Right - objectMenuArea.Width;
                 objectMenuArea.Y = player.playerData.view.safeScreenArea.Bottom - objectMenuArea.Height;
 
                 menu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(0), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
-                var bgTex = menu.addBackground_Flat(new Color(20, 37, 65), 0.4f);
+                bgTex = menu.addBackground_Flat(new Color(20, 37, 65), 0.4f);
             }
+        }
+
+        public void deleteMenu()
+        {
+            menu?.DeleteMe();
+            bgTex?.DeleteMe();
+            menu = null;
         }
 
         public void refreshUpdate(LocalPlayer player)
         {
+            if (player.hud.detailLevel == HudDetailLevel.Minimal)
+            {
+                deleteMenu();
+                return;
+            }
+
+            createMenu(player);
+
             var content = new RichBoxContent();
             InputMap map = player.gameControls.input;
             bool ct = map.inputSource.IsController;
@@ -75,7 +90,8 @@ namespace VikingEngine.DSSWars.Display
                     }
                     break;
             }
-            
+            input(map.ToggleHudDetail.Icon, DssRef.lang.InputActionName_ToggleHudDetail);
+
 
             menu.Refresh(content, player.gameControls.controllerPointer);
 

@@ -35,10 +35,6 @@ namespace VikingEngine.DSSWars
 {
     class PlayState : AbsPlayState
     {
-        //public const int PathThreadCount = 4;
-
-        
-
         public int nextGroupId = 0;
        
        

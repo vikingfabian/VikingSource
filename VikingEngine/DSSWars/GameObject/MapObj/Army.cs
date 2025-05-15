@@ -252,22 +252,22 @@ namespace VikingEngine.DSSWars.GameObject
             //base.toHud(args);
             ArmyPresentationHud(args, false);
 
-            if (args.player.hud.detailLevel == Display.HudDetailLevel.Minimal)
-            {
-                //if (args.gui.menuState.Count == 0)
-                //{
-                args.content.Add(new RbImage(SpriteName.WarsGroupIcon));
-                args.content.Add(new RbText(groups.Count.ToString()));
-                args.content.space();
-                args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
-                args.content.space();
-                args.content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                //args.content.Add(new RichBoxText(TextLib.LargeNumber(upkeep)));
-                //}
-            }
-            else
-            {
+            //if (args.player.hud.detailLevel == Display.HudDetailLevel.Minimal)
+            //{
+            //    //if (args.gui.menuState.Count == 0)
+            //    //{
+            //    args.content.Add(new RbImage(SpriteName.WarsGroupIcon));
+            //    args.content.Add(new RbText(groups.Count.ToString()));
+            //    args.content.space();
+            //    args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            //    args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+            //    args.content.space();
+            //    args.content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+            //    //args.content.Add(new RichBoxText(TextLib.LargeNumber(upkeep)));
+            //    //}
+            //}
+            //else
+            //{
 
                 //if (args.gui.menuState.Count == 0)
                 //{
@@ -307,7 +307,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
                 //}
-            }
+            //}
         }
 
         public void basicInfoHud(ObjectHudArgs args)

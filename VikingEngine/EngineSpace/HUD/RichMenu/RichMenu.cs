@@ -292,7 +292,7 @@ namespace VikingEngine.HUD.RichMenu
         public void DeleteMe()
         {
             renderList.DeleteMe();
-            backgroundTextures.DeleteMe();
+            backgroundTextures?.DeleteMe();
             //Debug.Log("deleteTooltip: del menu");
             deleteTooltip();
             scrollBar.DeleteMe();
