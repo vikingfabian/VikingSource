@@ -597,6 +597,11 @@ namespace VikingEngine.DSSWars.Event
         {
             var neighbor = findAttackingNeighborFaction(player.faction);
 
+            if (neighbor == null)
+            {
+                return;
+            }
+
             List<Faction> attackers = new List<Faction>() { neighbor };
             int totalSize = neighbor.totalWorkForce;
             List<Faction> search = adjacentFactions(neighbor);

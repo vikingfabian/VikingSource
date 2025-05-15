@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
         public CityType cityType;
         public List<int> neighborCities = new List<int>();
 
-        int overviewModelFaction = -1;
+        //int overviewModelFaction = -1;
         Graphics.AbsVoxelObj overviewModel;
 
         BoundingBox bound;
@@ -1473,9 +1473,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         void createOverViewModel()
         {
-            if (overviewModelFaction != faction.parentArrayIndex)
-            {
-                overviewModelFaction = faction.parentArrayIndex;
+            //if (overviewModelFaction != faction.parentArrayIndex)
+            //{
+            //    overviewModelFaction = faction.parentArrayIndex;
 
                 overviewModel?.DeleteMe();
 
@@ -1483,7 +1483,7 @@ namespace VikingEngine.DSSWars.GameObject
                    LootFest.VoxelModelName.cityicon, IconScale());
                 overviewModel.AddToRender(DrawGame.TerrainLayer);
                 overviewModel.position = position;
-            }
+            //}
         }
 
         float IconScale()

@@ -1,8 +1,7 @@
 ﻿UPDATE
 -Change Log-
-* The exe is standalone and has .NET baked into it
-* Player orders crash fix
-* Fixed city model crash
+* Fixed two reported crashes
+* Fixed broken city images
 
 #DSS1 issues#
 
