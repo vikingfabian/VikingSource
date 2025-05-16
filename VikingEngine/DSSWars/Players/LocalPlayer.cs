@@ -623,8 +623,11 @@ namespace VikingEngine.DSSWars.Players
                 {
                     //start a war
                     var attacker = DssRef.state.events.findAttackingNeighborFaction(faction);
-                    attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
-                    DssRef.diplomacy.declareWar(attacker, faction);
+                    if (attacker != null)
+                    {
+                        attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
+                        DssRef.diplomacy.declareWar(attacker, faction);
+                    }
                 }
             }
         }

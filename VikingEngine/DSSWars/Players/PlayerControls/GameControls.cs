@@ -158,11 +158,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             mapControls.passiveUpdate();
 
-            //if (cityUpdate && player.input.AutomationSetting.DownEvent)
-            //{
-            //    hud.OpenAutomationMenu();
-            //}
-
             if (armyControls != null)
             {
                 inputHelpState = InputHelpState.Army;

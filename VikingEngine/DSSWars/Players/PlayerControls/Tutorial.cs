@@ -535,13 +535,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     if (!linen_build)
                     {
-                        foreach (var order in player.orders.orders)
+                        lock (player.orders.orders)
                         {
-                            if (order is BuildOrder && ((BuildOrder)order).buildingType == Build.BuildAndExpandType.LinenFarm)
+                            foreach (var order in player.orders.orders)
                             {
-                                linen_build = true;
-                                onPartSuccess();
-                                break;
+                                if (order is BuildOrder && ((BuildOrder)order).buildingType == Build.BuildAndExpandType.LinenFarm)
+                                {
+                                    linen_build = true;
+                                    onPartSuccess();
+                                    break;
+                                }
                             }
                         }
                     }
@@ -771,20 +774,23 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!buildDefences_buildPalisade)
                     {
-                        for (int i = player.orders.orders.Count - 1; i >= 0; --i)
+                        lock (player.orders.orders)
                         {
-                            var order = player.orders.orders[i];
-                            if (order is BuildOrder)
+                            for (int i = player.orders.orders.Count - 1; i >= 0; --i)
                             {
-                                switch (((BuildOrder)order).buildingType)
+                                var order = player.orders.orders[i];
+                                if (order is BuildOrder)
                                 {
-                                    case Build.BuildAndExpandType.Palisade:
+                                    switch (((BuildOrder)order).buildingType)
+                                    {
+                                        case Build.BuildAndExpandType.Palisade:
 
-                                        buildDefences_buildPalisade = true;
-                                        onPartSuccess();
-                                        break;
+                                            buildDefences_buildPalisade = true;
+                                            onPartSuccess();
+                                            break;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
@@ -812,14 +818,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.ConscriptArmy:
                     if (!conscriptArmy_build)
-                    {   
-                        foreach (var order in player.orders.orders)
+                    {
+                        lock (player.orders.orders)
                         {
-                            if (order is BuildOrder && ((BuildOrder)order).buildingType == Build.BuildAndExpandType.SoldierBarracks)
+                            foreach (var order in player.orders.orders)
                             {
-                                conscriptArmy_build = true;
-                                onPartSuccess();
-                                break;
+                                if (order is BuildOrder && ((BuildOrder)order).buildingType == Build.BuildAndExpandType.SoldierBarracks)
+                                {
+                                    conscriptArmy_build = true;
+                                    onPartSuccess();
+                                    break;
+                                }
                             }
                         }
                     }
@@ -874,58 +883,67 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     if (!CollectFood_buildfoodproduction)
                     {
-                        for (int i = player.orders.orders.Count -1; i>=0; --i)//each (var order in player.orders.orders)
+                        lock (player.orders.orders)
                         {
-                            var order = player.orders.orders[i];
-                            if (order is BuildOrder)
+                            for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
                             {
-                                switch (((BuildOrder)order).buildingType)
+                                var order = player.orders.orders[i];
+                                if (order is BuildOrder)
                                 {
-                                    case Build.BuildAndExpandType.HenPen:
-                                    case Build.BuildAndExpandType.PigPen:
-                                    case Build.BuildAndExpandType.WheatFarm:
-                                        CollectFood_buildfoodproduction = true;
-                                        onPartSuccess();
-                                        break;
+                                    switch (((BuildOrder)order).buildingType)
+                                    {
+                                        case Build.BuildAndExpandType.HenPen:
+                                        case Build.BuildAndExpandType.PigPen:
+                                        case Build.BuildAndExpandType.WheatFarm:
+                                            CollectFood_buildfoodproduction = true;
+                                            onPartSuccess();
+                                            break;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
                     if (!CollectFood_buildfuelproduction)
                     {
-                        for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
+                        lock (player.orders.orders)
                         {
-                            var order = player.orders.orders[i];
-                            if (order is BuildOrder)
+                            for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
                             {
-                                switch (((BuildOrder)order).buildingType)
+                                var order = player.orders.orders[i];
+                                if (order is BuildOrder)
                                 {
-                                    case Build.BuildAndExpandType.CoalPit:
-                                    case Build.BuildAndExpandType.RapeSeedFarm:
-                                        CollectFood_buildfuelproduction = true;
-                                        onPartSuccess();
-                                        break;
+                                    switch (((BuildOrder)order).buildingType)
+                                    {
+                                        case Build.BuildAndExpandType.CoalPit:
+                                        case Build.BuildAndExpandType.RapeSeedFarm:
+                                            CollectFood_buildfuelproduction = true;
+                                            onPartSuccess();
+                                            break;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
                     if (!CollectFood_builcook)
                     {
-                        for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
+                        lock (player.orders.orders)
                         {
-                            var order = player.orders.orders[i];
-                            if (order is BuildOrder)
+                            for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
                             {
-                                switch (((BuildOrder)order).buildingType)
+                                var order = player.orders.orders[i];
+                                if (order is BuildOrder)
                                 {
-                                    case Build.BuildAndExpandType.Cook:
-                                        CollectFood_builcook = true;
-                                        onPartSuccess();
-                                        break;
+                                    switch (((BuildOrder)order).buildingType)
+                                    {
+                                        case Build.BuildAndExpandType.Cook:
+                                            CollectFood_builcook = true;
+                                            onPartSuccess();
+                                            break;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
