@@ -225,6 +225,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     controllerTabbing(1);
                 }
 
+                if (input.ControllerMessageClick.DownEvent)
+                {
+                    player.hud.messages.onControllerClick();
+                }
+
             }
 
             //if (input.inputSource.IsController)

@@ -194,17 +194,19 @@ namespace VikingEngine.DSSWars.Display
                     fillWidth = true
                 });
 
-                if (DssRef.state.IsLocalMultiplayer())
-                {
-                    content.newLine();
-                    DssRef.storage.multiplayerGameSpeedToMenu(content, menu);
-                }
+                
 
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
                 {
                     fillWidth = true
                 });
+            }
+
+            if (DssRef.state.IsLocalMultiplayer())
+            {
+                content.newLine();
+                DssRef.storage.multiplayerGameSpeedToMenu(content, menu);
             }
 
 

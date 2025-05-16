@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -149,6 +150,25 @@ namespace VikingEngine.DSSWars.Display
         public void Add(RichBoxContent content)
         {
             SoundLib.message.Play(Pan.Right);
+
+            if (player.hud.detailLevel == HudDetailLevel.Minimal)
+            {
+                RichBoxContent compact = new RichBoxContent();
+                foreach (var m in content)
+                {
+                    if (m.IsNewLine())
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        compact.Add(m);
+                    }
+                }
+
+                content = compact;
+            }
+
             messages.Insert(0, new Message(player, content, position().X, settings));
             UpdatePositions();
         }
@@ -182,15 +202,15 @@ namespace VikingEngine.DSSWars.Display
 
         Vector2 position()
         {
-            Vector2 result;
-            if (player.hud.headOptions != null)
-            {
-                result = player.hud.MessageStart;
-            }
-            else
-            {
-                result = player.playerData.view.safeScreenArea.RightTop;
-            }
+            //Vector2 result;
+            //if (player.hud.headOptions != null)
+            //{
+            Vector2 result = player.hud.MessageStart;
+            //}
+            //else
+            //{
+            //    result = player.playerData.view.safeScreenArea.RightTop;
+            //}
 
             if (player.tutorial != null)
             {
@@ -265,14 +285,14 @@ namespace VikingEngine.DSSWars.Display
 
         public bool onControllerClick()
         {
-            //if (richBox.buttonGrid_Y_X.Count > 0 && richBox.buttonGrid_Y_X[0].Count > 0)
-            //{
-            //    if (time.msPassed(200))
-            //    {
-            //        richBox.buttonGrid_Y_X[0][0].onClick(null);
-            //    }
-            //    return true;
-            //}
+            if (menu.richBox.buttonGrid_Y_X.Count > 0 && menu.richBox.buttonGrid_Y_X[0].Count > 0)
+            {
+                if (time.msPassed(200))
+                {
+                    menu.richBox.buttonGrid_Y_X[0][0].onClick(null);
+                }
+                return true;
+            }
             return false;
         }
 

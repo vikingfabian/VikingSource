@@ -217,6 +217,11 @@ namespace VikingEngine.DSSWars.Display
             content.space(2);
             {
                 RichBoxContent buttonContent = new RichBoxContent();
+                if (player.gameControls.input.inputSource.IsController)
+                {
+                    buttonContent.Add(new RbImage(player.gameControls.input.NextCity.Icon));
+                    buttonContent.space(0.5f);
+                }
                 buttonContent.Add(new RbImage(SpriteName.WarsCityHall));
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(cityCount.ToString()));
@@ -225,6 +230,11 @@ namespace VikingEngine.DSSWars.Display
             }
             {
                 RichBoxContent buttonContent = new RichBoxContent();
+                if (player.gameControls.input.inputSource.IsController)
+                {
+                    buttonContent.Add(new RbImage(player.gameControls.input.NextArmy.Icon));
+                    buttonContent.space(0.5f);
+                }
                 buttonContent.Add(new RbImage(SpriteName.WarsFlagType_Banner));
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(armyCount.ToString()));

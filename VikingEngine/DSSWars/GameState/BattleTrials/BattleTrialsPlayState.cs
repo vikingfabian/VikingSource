@@ -21,14 +21,14 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
 
         protected override LocalPlayer createLocalPlayer(Faction faction)
         {
-            return new LocalPlayer(faction);
+            return new LocalPlayer(faction, true);
         }
 
         protected override void initPlayers()
         {
             //base.initPlayers();
             var enemy = new Faction(DssRef.world, FactionType.DarkLord);
-            DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(enemy);
+            DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(enemy, true);
 
             var human = new Faction(DssRef.world, FactionType.Player);
             

@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Data
         public LocalPlayerStorage[] localPlayers = null;
         public Profile.FlagStorage flagStorage;
         public SaveMeta meta = null;
-        public float multiplayerGameSpeed = 2;
+        public float multiplayerGameSpeed = 1;
 
         public MapSettingsStorage mapSettings = MapSettingsStorage.Default;
         //public bool bCustomSeed = false;

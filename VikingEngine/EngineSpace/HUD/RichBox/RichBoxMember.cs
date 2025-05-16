@@ -63,6 +63,8 @@ namespace VikingEngine.HUD.RichBox
         virtual public Vector2 Position => throw new NotImplementedException();
         virtual public Vector2 Center => throw new NotImplementedException();
         virtual public Vector2 Size => throw new NotImplementedException();
+
+        virtual public bool IsNewLine() { return false; }
     }
 
     class RbNewLine : AbsRichBoxMember
@@ -80,6 +82,8 @@ namespace VikingEngine.HUD.RichBox
         {
             group.newLine(newParagraph, lineheight);
         }
+
+        override public bool IsNewLine() { return true; }
     }
 
     class RbNewLine_AtHeight : AbsRichBoxMember

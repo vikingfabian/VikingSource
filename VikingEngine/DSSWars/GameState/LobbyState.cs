@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars
             DssRef.storage.runTutorial_1short_2normal = 0;
 
             SaveStateMeta meta = new SaveStateMeta();
-            meta.playmap = "demomap4";
+            meta.playmap = "demomap5";
 
             loadGame = meta;
             //openUnderMenu(UnderMenu_PlayerSetup, StackOption.Stack);
@@ -1950,8 +1950,8 @@ namespace VikingEngine.DSSWars
                 return;
             }
 
-            if (saveMeta.localPlayerCount == DssRef.storage.playerCount)
-            {
+            //if (saveMeta.localPlayerCount == DssRef.storage.playerCount)
+            //{
                 mapBackgroundLoading?.Abort();
 
                 //mapBackgroundLoading = new MapBackgroundLoading(save);
@@ -1963,21 +1963,23 @@ namespace VikingEngine.DSSWars
                 //    selectInputMenu(1, true, saveMeta);
                 //}
                 //else
-                {
-                    selectController_startGame(availableList[0], saveMeta);
-                }
-                //new StartGame(netLobby, save, mapBackgroundLoading);
-            }
-            else
-            {
-                //setPlayerCount(saveMeta.localPlayerCount, false);
-                //GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
                 //{
-                //    new GuiLabel(string.Format(DssRef.lang.GameMenu_Load_PlayerCountError, saveMeta.localPlayerCount), layout);
-                //    new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_OK, null, mainMenu, false, layout);
+                //    selectController_startGame(availableList[0], saveMeta);
+
                 //}
-                //layout.End();
-            }
+            new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
+            //new StartGame(netLobby, save, mapBackgroundLoading);
+            //}
+            //else
+            //{
+            //setPlayerCount(saveMeta.localPlayerCount, false);
+            //GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
+            //{
+            //    new GuiLabel(string.Format(DssRef.lang.GameMenu_Load_PlayerCountError, saveMeta.localPlayerCount), layout);
+            //    new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_OK, null, mainMenu, false, layout);
+            //}
+            //layout.End();
+            //}
 
         }
 
@@ -2132,7 +2134,7 @@ namespace VikingEngine.DSSWars
         void exportSaveSelected(SaveStateMeta saveMeta)
         {
             SaveStateMeta exportPath = new SaveStateMeta();
-            exportPath.storageSetup();
+            //exportPath.storageSetup();
             exportPath.import = saveMeta.ExportString();
 
             var fileName = DataStreamHandler.SearchFilesInStorageDir(saveMeta.Path, false)[0];
@@ -2258,7 +2260,16 @@ namespace VikingEngine.DSSWars
 
             new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
         }
-        
+
+        //void startGame(SaveStateMeta saveMeta)
+        //{
+        //    //var playerData = DssRef.storage.localPlayers[0];
+        //    //playerData.inputSource = inputSource;
+        //    //DssRef.storage.checkPlayerDoublettes(0);
+
+        //    new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
+        //}
+
     }
 
     class GamerStatus

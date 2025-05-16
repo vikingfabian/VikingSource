@@ -1,14 +1,19 @@
 ﻿UPDATE
 -Change Log-
+* Local multiplayer!
 * Controller support (ingame only)
 * Rectangle select works with map pan
 * Input display in the corner
 * Improvements to blueprint tooltip
+* Split screen
+* Drop in multiplayer on saves, and demo map (! does not work with old saves)
+* Changed default multiplayer speed from 2 to 1
 
-! the settings are reset
-
-#DSS1 issues#
-
+! The settings are reset
+! Controller doesnt work in any menues
+! Players with no controller selection crashes the game
+! Some unfinished hud
+! Can't go from multiplayer to single on a save
 
 #Free build defences
  Rock thrower

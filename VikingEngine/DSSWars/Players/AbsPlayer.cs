@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
@@ -28,12 +29,15 @@ namespace VikingEngine.DSSWars.Players
 
         public AbsPlayer()
         { }
-        public AbsPlayer(Faction faction)
+        public AbsPlayer(Faction faction, bool newGame)
         {
             this.faction = faction;
             faction.SetStartOwner(this);
 
-            createStartupBarracks();
+            if (newGame)
+            {
+                createStartupBarracks();
+            }
         }
 
         public void createStartupBarracks()
@@ -48,6 +52,14 @@ namespace VikingEngine.DSSWars.Players
         {
 
         }
+
+        protected void readAiPlayerGameState(BinaryReader r, int version)
+        {
+            IsPlayerNeighbor = r.ReadBoolean();
+            aggressionLevel = r.ReadByte();
+            protectedPlayer = r.ReadBoolean();
+        }
+
         virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
 
