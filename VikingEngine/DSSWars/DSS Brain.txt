@@ -1,6 +1,8 @@
 ﻿UPDATE
 -Change Log-
 * Removed 5X speed from the demo
+* Army colletion hud improvements
+* Fixed battle lab crash on start
 
 #DSS1 issues#
 
@@ -12,12 +14,6 @@ Assign men to wall (ballista, har warmashine crew)
 
 -nobel housing (kräver park?)
 (priest housing)
-
-
-#DEMO#
--load map with attackers
--exit on win or looseF
--stats, open stats 
 
 #OPT#
 monogame fork? DrawUserPrimitives opt, titta på OGG filer

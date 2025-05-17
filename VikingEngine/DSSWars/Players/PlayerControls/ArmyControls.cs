@@ -15,17 +15,17 @@ namespace VikingEngine.DSSWars.Players
         LocalPlayer player;
         
         public bool newSquare = false;
+  
+        MapObjectCollection collection;
 
-        
-        List<ArmyControlsMember> armies;
-        
-        public ArmyControls(LocalPlayer player, List<AbsMapObject> list)
+        public ArmyControls(LocalPlayer player, MapObjectCollection collection)
         {
             this.player = player;
-            armies = new List<ArmyControlsMember>(list.Count);
-            foreach (AbsMapObject item in list)
+            this.collection = collection;
+           
+            foreach (var item in collection.objects)
             {
-                armies.Add(new ArmyControlsMember(player, item.GetArmy()));
+                item.initControls(player);
             }
 
             newSquare = true;
@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.Players
 
             bool alive = false;
 
-            foreach (var m in armies)
+            foreach (var m in collection.objects)
             { 
                 m.update();
                 alive |= m.isAlive;
@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Players
             if (player.gameControls.input.StopStart.DownEvent)
             {
                 SoundLib.orderstop.Play();
-                foreach (var m in armies)
+                foreach (var m in collection.objects)
                 {
                     if (m.isAlive)
                     {
@@ -68,31 +68,34 @@ namespace VikingEngine.DSSWars.Players
             
         }
 
-        public void asynchUpdate()
+        public void asynchPathUpdate()
         {
             if (newSquare)
             {
                 newSquare = false;
 
-                foreach (var m in armies)
+                lock (collection.objects)
                 {
-                    m.asynchUpdate(player);
+                    foreach (var m in collection.objects)
+                    {
+                        m.asynchUpdate(player);
+                    }
                 }
             }
         }
 
         public void clearState()
         {
-            foreach (var m in armies)
-            {
-                m.pathVisuals.DeleteMe();
-            }
-            
+            //foreach (var m in collection.objects)
+            //{
+            //    m.pathVisuals.DeleteMe();
+            //}
+            collection.DeleteMembers(false);
         }
 
         public void moveOrderEffect()
         {
-            foreach (var m in armies)
+            foreach (var m in collection.objects)
             {
                 if (m.isAlive)
                 {
@@ -111,7 +114,7 @@ namespace VikingEngine.DSSWars.Players
                 if (target != null)
                 {
                     SoundLib.ordermove.Play();
-                    foreach (var m in armies)
+                    foreach (var m in collection.objects)
                     {
                         if (m.isAlive)
                         {
@@ -123,7 +126,7 @@ namespace VikingEngine.DSSWars.Players
             else
             {
                 SoundLib.ordermove.Play();
-                foreach (var m in armies)
+                foreach (var m in collection.objects)
                 {
                     if (m.isAlive)
                     {
@@ -144,12 +147,18 @@ namespace VikingEngine.DSSWars.Players
 
         public bool isAlive = true;
 
-        public ArmyControlsMember(LocalPlayer player, GameObject.Army army)
+
+        public ArmyControlsMember(GameObject.Army army)
         {
-            pathVisuals = new PathVisuals(player.playerData.localPlayerIndex);
             this.army = army;
         }
 
+        public void initControls(LocalPlayer player)
+        { 
+            pathVisuals = new PathVisuals(player.playerData.localPlayerIndex);
+        }
+
+     
 
         public void update()
         {
@@ -203,6 +212,11 @@ namespace VikingEngine.DSSWars.Players
                     pathState = PathFindState.NoPath;
                 }
             }
+        }
+
+        public void DeleteMe()
+        {
+            pathVisuals.DeleteMe();            
         }
 
         enum PathFindState

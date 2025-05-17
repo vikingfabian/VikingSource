@@ -15,6 +15,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.HeroQuest.Data;
 using VikingEngine.ToGG.HeroQuest.Data.Condition;
@@ -219,6 +220,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             ownerToHud(args, !tooltip); 
         }
+
+        public void groupTooltip(RichBoxContent content, object tag)
+        {
+            toTooltip(new ObjectHudArgs() { content = content });
+        }
+
         public override void toTooltip(ObjectHudArgs args)
         {
             ArmyPresentationHud(args, true);
@@ -268,35 +275,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-
-                //if (args.gui.menuState.Count == 0)
-                //{
-
-                //}
-                //var groupsCounter = groups.counter();
-                //while (groupsCounter.Next())
-                //{
-                //    count += groupsCounter.sel.soldierCount;
-                ////}
-                //if (args.gui.menuState.Count == 0)
-                //{
-                //    //HudLib.ItemCount(args.content, SpriteName.WarsGroupIcon, DssRef.lang.Hud_SoldierGroupsCount, groups.Count.ToString());
-                //    args.content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
-                //    args.content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(soldiersCount)));
-                //    args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                //    //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
-                //    args.content.text(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food)));
-                //    args.content.space();
-                //    HudLib.InfoButton(args.content, new RbAction(() =>
-                //    {
-                //        RichBoxContent content = new RichBoxContent();
-                //        HudLib.Description(content, DssRef.lang.Info_ArmyFood);
-                //        args.player.hud.tooltip.create(args.player, content, true);
-                //    }));
-                //    args.content.text(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep)));
-                //    args.content.space();
-                //    HudLib.PerSecondInfo(args.player, args.content, false);
-
                     if (faction == args.player.faction)
                     {
                         new Display.ArmyMenu(args.player, this, args.content);
@@ -305,8 +283,6 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         basicInfoHud(args);
                     }
-
-                //}
             }
         }
 
@@ -392,25 +368,31 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void toGroupHud(RichBoxContent content)
         {
-            string name = Name(out _);
+            //string name = Name(out _);
 
-            if (name != null)
-            {
-                content.text(name).overrideColor = Color.LightYellow;
-                content.newLine();
-            }
+            //if (name != null)
+            //{
+            //    content.text(name).overrideColor = Color.LightYellow;
+            //    content.newLine();
+            //}
 
-            content.Add(new RbBeginTitle());
-            content.Add(GetFaction().FlagTextureToHud());
-            content.space(0.5f);
-            content.Add(new RbText(DssRef.lang.UnitType_Army, HudLib.TitleColor_TypeName));
+            //content.Add(new RbBeginTitle());
 
-            content.space(0.5f);
-            content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            RichBoxContent buttonContent = new RichBoxContent();
+
+            buttonContent.Add(GetFaction().FlagTextureToHud());
+            buttonContent.space(0.5f);
+            buttonContent.Add(new RbText(DssRef.lang.UnitType_Army, HudLib.TitleColor_TypeName));
+
+            buttonContent.space(0.5f);
+            buttonContent.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
 
 
-            content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-            content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+            buttonContent.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            buttonContent.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+
+            content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent,
+                null, new RbTooltip(groupTooltip)));
         }
 
         public ArmyStatus Status()
@@ -568,13 +550,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void disbandArmyAction()
         {
-            //var groupsCounter = groups.counter();
-            //while (groupsCounter.Next())
-            //{   
-            //    groupsCounter.sel.deleteGroup(true);
-            //    groupsCounter.sel.onDisband(false);
-            //}
-
             DeleteMe( DeleteReason.Disband, true);
         }
 

@@ -470,13 +470,13 @@ namespace VikingEngine.DSSWars.Players
 
                                     if (coll.objects.Count == 1)
                                     {
-                                        selection.obj = coll.objects[0];
+                                        selection.obj = coll.objects[0].army;
                                     }
                                     else
                                     {
                                         selection.obj = coll;                                        
                                     }
-                                    player.gameControls.armyControls = new ArmyControls(player, coll.objects);
+                                    player.gameControls.armyControls = new ArmyControls(player, coll);
                                 }
                                 break;
 

@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 var obj = selectHistory[i];
 
-                if (obj.isDeleted)
+                if (obj.IsDeleted())
                 {
                     selectHistory.RemoveAt(i);
                 }

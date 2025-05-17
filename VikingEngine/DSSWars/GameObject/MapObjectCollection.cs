@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
 
@@ -15,8 +17,16 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class MapObjectCollection : AbsGOCollection
     {
-        //Faction faction;
-        public List<AbsMapObject> objects = new List<AbsMapObject>(8);
+        public List<ArmyControlsMember> objects = new List<ArmyControlsMember>(8);
+
+
+        public MapObjectCollection(Army army)
+        {
+            lock (objects)
+            {
+                objects.Add(new ArmyControlsMember(army));
+            }
+        }
 
         public MapObjectCollection(Faction faction)
         {
@@ -29,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             for (int i = 0; i < objects.Count; i++)
             {
-                objects[i].GetArmy().selectionFramePlacement(out var pos, out var scale);
+                objects[i].army.selectionFramePlacement(out var pos, out var scale);
                 selection.groupModels_terrian.setGroupModel(i, pos, scale, hover, true, false);
             }
         }
@@ -38,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             foreach (var obj in objects)
             {
-                obj.GetArmy().hoverAndSelectInfo(player, guiModels);
+                obj.army.hoverAndSelectInfo(player, guiModels);
             }
 
         }
@@ -46,27 +56,68 @@ namespace VikingEngine.DSSWars.GameObject
         public override void toHud(ObjectHudArgs args)
         {
             GroupPresentation(args, false);
-            //args.content.h2(string.Format(DssRef.lang.Hud_ObjectsAndCount, DssRef.lang.UnitType_CollectionOfArmies, objects.Count), HudLib.TitleColor_TypeName);
-
+            
             for (int i = 0; i < objects.Count;++i)
             {
-                objects[i].GetArmy().toGroupHud(args.content);
-                if (i < objects.Count-1)
+                Army obj = objects[i].army;
+
+                args.content.newLine();
+
+                args.content.Add(new ArtButton(RbButtonStyle.Outline,
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.ButtonDisabledCross) { color = HudLib.NotAvailableColor } },
+                    new RbAction1Arg<AbsMapObject>(removeClick, obj),
+                    new RbTooltip_Text(DssRef.todoLang.Hud_RemoveFromList)));
+
+                args.content.Add(new ArtButton(RbButtonStyle.Outline,
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.ClickCirkleEffect) { color = HudLib.AvailableColor } },
+                    new RbAction1Arg<AbsMapObject>(selectClick, obj),
+                    new RbTooltip_Text(DssRef.lang.InputActionName_ControllerSelect)));
+
+                obj.GetArmy().toGroupHud(args.content);
+                
+                args.content.Add(new RbSeperationLine());
+                
+            }
+            //args.content.Add(new RbSeperationLine());
+            new ArmyMenu(args.player, this, args.content);
+        }
+
+        void removeClick(AbsMapObject obj)
+        {
+            remove(obj.GetArmy());
+            obj.faction.player.GetLocalPlayer().hud.needRefresh = true;
+        }
+
+        void remove(Army army)
+        {
+            for (int i = 0; i < objects.Count; ++i)
+            {
+                if (objects[i].army == army)
                 {
-                    args.content.Add(new RbSeperationLine());
+                    lock (objects)
+                    {
+                        objects[i].DeleteMe();
+                        objects.RemoveAt(i);
+                    }
+                    return;
                 }
             }
         }
 
-        //public void Tooltip(RichBoxContent content)
-        //{
-        //    content.Add(new RbText(string.Format(DssRef.lang.Hud_ObjectsAndCount, DssRef.lang.UnitType_CollectionOfArmies, objects.Count), HudLib.TitleColor_TypeName));
-        //}
+       
+
+        void selectClick(AbsMapObject obj)
+        {            
+            obj.faction.player.GetLocalPlayer().gameControls.mapSelect(obj);
+
+            DeleteMembers(false);
+        }
+
         public override void toTooltip(ObjectHudArgs args)
         {
             if ( CollectionCount() == 1)
             {
-                objects.First().toTooltip(args);
+                objects.First().army.toTooltip(args);
             }
             else if (CollectionCount() > 1)
             {
@@ -86,9 +137,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             for (int i = objects.Count - 1; i >= 0; i--)
             {
-                if (!objects[i].aliveAndBelongTo(faction))
-                { 
-                    objects.RemoveAt(i);
+                if (!objects[i].army.aliveAndBelongTo(faction))
+                {
+                    lock (objects)
+                    {
+                        objects.RemoveAt(i);
+                    }
                 }
             }
             
@@ -96,16 +150,17 @@ namespace VikingEngine.DSSWars.GameObject
             return objects.Count > 0;
         }
         
-
-
         public void set(List<AbsMapObject> newObjects)
-        { 
-            this.objects.Clear();
-            if (newObjects.Count > 0)
+        {
+            lock (objects)
             {
-                lib.DoNothing();
+                this.objects.Clear();
+
+                foreach (AbsMapObject item in newObjects)
+                {
+                    objects.Add(new ArmyControlsMember(item.GetArmy()));
+                }
             }
-            this.objects.AddRange(newObjects);
         }
 
         public override Vector3 WorldPos()
@@ -113,11 +168,10 @@ namespace VikingEngine.DSSWars.GameObject
             Vector3 result = new Vector3();
             for (int i = 0; i < objects.Count; i++)
             {
-                result += objects[i].WorldPos();
+                result += objects[i].army.WorldPos();
             }
             return result / objects.Count;
         }
-
 
         public override string Name(out bool mayEdit)
         {
@@ -127,13 +181,16 @@ namespace VikingEngine.DSSWars.GameObject
             int armyCount = 0;
             for (int i = objects.Count -1; i >=0; i--)
             {
-                if (objects[i].defeated())
+                if (objects[i].army.defeated())
                 {
-                    objects.RemoveAt(i);
+                    lock (objects)
+                    {
+                        objects.RemoveAt(i);
+                    }
                 }
                 else
                 {
-                    switch (objects[i].gameobjectType())
+                    switch (objects[i].army.gameobjectType())
                     {
                         case GameObjectType.Army:
                             armyCount++;
@@ -148,12 +205,47 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (objects.Count == 1)
             {
-                return objects[0].Name(out _);
+                return objects[0].army.Name(out _);
             }
             else
             {
-                return objects[0].Name(out _) + " +" + (armyCount-1).ToString();
+                return objects[0].army.Name(out _) + " +" + (armyCount-1).ToString();
             }
+        }
+
+        public void disbandArmyAction()
+        {
+            if (objects.Count > 0)
+            {
+                foreach (var obj in objects)
+                {
+                    obj.army.disbandArmyAction();
+                }
+
+                objects[0].army.faction.player.GetLocalPlayer().gameControls.clearSelection();
+
+                DeleteMembers(false);
+            }
+        }
+        public void DeleteMembers(bool clear)
+        {
+            foreach (var m in objects)
+            {
+                m.DeleteMe();
+            }
+
+            if (clear)
+            {
+                lock (objects)
+                {
+                    objects.Clear();
+                }
+            }
+        }
+
+        public override bool IsDeleted()
+        {
+            return objects.Count == 0;
         }
 
         public override int CollectionCount()

@@ -30,6 +30,11 @@ namespace VikingEngine.DSSWars.GameObject
             return null;
         }
 
+        virtual public bool IsDeleted()
+        {
+            return isDeleted;
+        }
+
         abstract public Faction GetFaction();
 
         virtual public City GetCity() { return null; }
@@ -112,7 +117,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
         protected void ownerToHud(Display.ObjectHudArgs args, bool divider)
         {
-            if (GetFaction() != args.player.faction)
+            if (args.player != null && GetFaction() != args.player.faction)
             {
                 var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
 

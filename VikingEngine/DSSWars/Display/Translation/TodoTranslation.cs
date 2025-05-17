@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
-       
+        public string Hud_RemoveFromList => "Remove from list";
     }
 
 }
