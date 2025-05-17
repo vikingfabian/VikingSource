@@ -1,7 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Fixed two reported crashes
-* Fixed broken city images
+* 
 * Local multiplayer!
 * Controller support (ingame only)
 * Rectangle select works with map pan

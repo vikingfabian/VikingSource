@@ -429,17 +429,14 @@ namespace VikingEngine.DSSWars.GameObject
         public void nextPlacement(Vector2 centerWp, float endRotation, Vector2 relativePosition, float centerPan, int armyColumnWidth, 
             out Vector2 cellSize, out float adjLeft, bool frontRow, bool endAsShip, bool resetCommand, bool teleport, List<SoldierGroup> failedPlacements)
         {
-            if (centerPan < 0)
-            {
-                lib.DoNothing();
-            }
+            //if (centerPan < 0)
+            //{
+            //    lib.DoNothing();
+            //}
             int cols = Bound.Min(lib.SmallestValue(groups.Count, armyColumnWidth), 1);
             int rows = Bound.Min((int)Math.Ceiling(groups.Count / (double)cols), 1);
 
             cellSize = new Vector2(cols * DssVar.SoldierGroup_Spacing, rows * DssVar.SoldierGroup_Spacing);
-
-            //Adjust center
-            //this.relativePosition.X += cellSize.X * centerPan;
 
             Vector2 topleft = relativePosition;
             topleft.X += cellSize.X * centerPan + DssVar.SoldierGroup_Spacing * 0.5f;//cellSize.X * 0.5f + DssVar.SoldierGroup_Spacing * 0.5f;
@@ -448,8 +445,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (groups.Count > 0)
             {
-                //Debug.Log($"####place grid x{x} y{y}");
-
                 
                 if (frontRow)
                 {

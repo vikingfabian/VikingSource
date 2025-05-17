@@ -193,6 +193,11 @@ namespace VikingEngine.DSSWars.Players
             playerData.Tag = this;
             playerData.view.SetDrawArea(numPlayers, pStorage.screenIndex, false, null);
 
+            if (!Bound.IsWithin(playerData.view.ScreenIndex, 0, 3))
+            {
+                throw new Exception("Screen index error: " + playerData.view.ScreenIndex.ToString());
+            }
+
             new GameControls(this, input);
 
             new GameHud(this, numPlayers);
