@@ -1,7 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Fixed two reported crashes
-* Fixed broken city images
+* 
 
 #DSS1 issues#
 
