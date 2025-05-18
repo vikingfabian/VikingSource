@@ -16,9 +16,9 @@ namespace VikingEngine.DSSWars.Players
         
         public bool newSquare = false;
   
-        MapObjectCollection collection;
+        ArmyCollection collection;
 
-        public ArmyControls(LocalPlayer player, MapObjectCollection collection)
+        public ArmyControls(LocalPlayer player, ArmyCollection collection)
         {
             this.player = player;
             this.collection = collection;
@@ -137,93 +137,5 @@ namespace VikingEngine.DSSWars.Players
         }
     }
 
-    class ArmyControlsMember
-    {
-        public GameObject.Army army;
-        public PathVisuals pathVisuals;
-        public WalkingPath path = null, newPath = null;
-
-        PathFindState pathState = PathFindState.None;
-
-        public bool isAlive = true;
-
-
-        public ArmyControlsMember(GameObject.Army army)
-        {
-            this.army = army;
-        }
-
-        public void initControls(LocalPlayer player)
-        { 
-            pathVisuals = new PathVisuals(player.playerData.localPlayerIndex);
-        }
-
-     
-
-        public void update()
-        {
-            if (isAlive)
-            {
-                if (army.isDeleted)
-                {
-                    pathVisuals.DeleteMe();
-                    isAlive = false;
-                }
-                else if (pathState != PathFindState.None)
-                {
-                    if (pathState == PathFindState.NewPath)
-                    {
-
-                        path = newPath;
-                        newPath = null;
-
-                        pathVisuals.refresh(path, false, false);
-                    }
-                    else
-                    {
-
-                        path = null;
-                        pathVisuals.DeleteMe();
-                    }
-
-                    pathState = PathFindState.None;
-                }
-            }
-        }
-
-        public void asynchUpdate(LocalPlayer player)
-        {
-            if (pathState == PathFindState.None && isAlive)
-            {
-                if (army.tilePos != player.gameControls.mapControls.tilePosition &&
-                    DssRef.world.tileGrid.InBounds(player.gameControls.mapControls.tilePosition))
-                {
-                    PathFinding pf = DssRef.state.pathUpdates[DssRef.state.pathUpdates.Length -1].pathFindingPool.GetPf();
-                    {
-                        newPath = pf.FindPath(DssRef.state.PathThreadCount(), army.tilePos, conv.ToDir8_INT(army.rotation), player.gameControls.mapControls.tilePosition,
-                            false);
-                    }
-                    DssRef.state.pathUpdates[DssRef.state.pathUpdates.Length -1].pathFindingPool.Return(pf);
-
-                    pathState = PathFindState.NewPath;
-                }
-                else
-                {
-                    pathState = PathFindState.NoPath;
-                }
-            }
-        }
-
-        public void DeleteMe()
-        {
-            pathVisuals.DeleteMe();            
-        }
-
-        enum PathFindState
-        {
-            None,
-            NewPath,
-            NoPath,
-        }
-    }
+   
 }

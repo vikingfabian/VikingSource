@@ -419,7 +419,7 @@ namespace VikingEngine.DSSWars.Players
 
                                 if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.ObjectCollection)
                                 {
-                                    hover.obj = new MapObjectCollection(player.faction);
+                                    hover.obj = new ArmyCollection(player.faction);
                                 }
 
                                 hover.obj.GetMapCollection().set(nearMapObjects);

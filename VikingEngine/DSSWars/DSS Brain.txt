@@ -1,8 +1,11 @@
 ﻿UPDATE
 -Change Log-
 * Removed 5X speed from the demo
-* Army colletion hud improvements
+* Army collection hud improvements
 * Fixed battle lab crash on start
+* Repaired army path visuals, and improved them a bit
+* Army seletion is viewed on detail zoom
+* Soldier command is blocked when zoomed out
 
 #DSS1 issues#
 

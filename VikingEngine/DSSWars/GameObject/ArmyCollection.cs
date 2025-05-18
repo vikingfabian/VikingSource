@@ -15,12 +15,11 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class MapObjectCollection : AbsGOCollection
+    class ArmyCollection : AbsGOCollection
     {
         public List<ArmyControlsMember> objects = new List<ArmyControlsMember>(8);
 
-
-        public MapObjectCollection(Army army)
+        public ArmyCollection(Army army)
         {
             lock (objects)
             {
@@ -28,7 +27,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public MapObjectCollection(Faction faction)
+        public ArmyCollection(Faction faction)
         {
             this.faction = faction;
         }
@@ -128,7 +127,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return GameObjectType.ObjectCollection;
         }
-        public override MapObjectCollection GetMapCollection()
+        public override ArmyCollection GetMapCollection()
         {
             return this;
         }

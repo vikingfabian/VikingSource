@@ -2065,6 +2065,9 @@
 #begin VoxelModel/LfWars/armybanner.vox
 /copy:VoxelModel/LfWars/armybanner.vox
 
+#begin VoxelModel/LfWars/armystand_detail.vox
+/copy:VoxelModel/LfWars/armystand_detail.vox
+
 #begin VoxelModel/LfWars/armystand.vox
 /copy:VoxelModel/LfWars/armystand.vox
 

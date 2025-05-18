@@ -24,56 +24,21 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void mapExecute(LocalPlayer player)
         {
-            var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.mapControls.subTilePosition);
-            SoldierGroup target = null;
-            if (player.gameControls.mapControls.armyMayAttackHoverObj())
+            if (player.drawUnitsView.current.DrawDetailLayer)
             {
-                target = player.gameControls.mapControls.hover.obj.GetSoldierGroup();
-                new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
+                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.mapControls.subTilePosition);
+                SoldierGroup target = null;
+                if (player.gameControls.mapControls.armyMayAttackHoverObj())
+                {
+                    target = player.gameControls.mapControls.hover.obj.GetSoldierGroup();
+                    new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
+                }
+                else
+                {
+                    new MoveHereAnimation(pos);
+                }
+                calculateGroupOrder(player, pos, target);
             }
-            else
-            {
-                new MoveHereAnimation(pos);
-            }
-            calculateGroupOrder(player, pos, target);
-            //if (target == null)
-            //{
-            //    new MoveHereAnimation(pos);
-            //}
-            //else
-            //{ 
-            //    new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
-            //}
-
-            //if (player.gameControls.mapControls.armyMayAttackHoverObj())
-            //{
-
-            //    foreach (SoldierGroup group in groups)
-            //    {
-            //        new AttackCommand(group, target, false);
-            //    }
-            //    new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
-            //}
-            //else
-            //{
-
-            //    foreach (SoldierGroup group in groups)
-            //    {
-            //        new MoveCommand(group, pos, false);
-
-            //        if (group.InGuardPost())
-            //        {
-            //            new GuardPostTransform(group, -1, false);
-            //        }
-
-            //        if (player.gameControls.mapControls.hover.subTile.selectTileResult == SelectTileResult.Wall)
-            //        {
-            //            var enterCommand = new EnterPostCommand(group, player.gameControls.mapControls.hover.subTile.subTilePos, true);
-            //            enterCommand.claimPost(group, player.gameControls.mapControls.hover.subTile.city, player.gameControls.mapControls.hover.subTile.city.defenceIxFromPosId(enterCommand.id));
-            //        }
-            //    }
-            //    new MoveHereAnimation(pos);
-            //}
         }
 
         void calculateGroupOrder(LocalPlayer player, Vector3 goalPos, SoldierGroup target)

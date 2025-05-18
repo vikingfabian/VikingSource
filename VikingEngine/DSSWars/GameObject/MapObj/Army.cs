@@ -26,14 +26,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public const float MaxTradeDistance = 3;
 
-       
-
-
         const LootFest.VoxelModelName OverviewBannerModelName = LootFest.VoxelModelName.armystand;
-
-        //public ArmyAi ai;
-        //public SpottedArray<SoldierGroup> groups = new SpottedArray<SoldierGroup>(32);
-        //public SpottedArrayCounter<SoldierGroup> groupsCounter;
 
         protected Graphics.AbsVoxelObj overviewBanner;
 

@@ -601,28 +601,28 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void recyclePath(int pathThreadIndex)
-        {
-            //if (path != null)
-            //{
-            //lock (DssRef.state.pathFindingPool)
-            //{
-            DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(path);
-            path = null;
-            //}
-            //}
-        }
+        //void recyclePath(int pathThreadIndex)
+        //{
+        //    //if (path != null)
+        //    //{
+        //    //lock (DssRef.state.pathFindingPool)
+        //    //{
+        //    DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(path);
+        //    path = null;
+        //    //}
+        //    //}
+        //}
 
-        void path_calulate(int pathThreadIndex)
-        {
-            recyclePath(pathThreadIndex);
+        //void path_calulate(int pathThreadIndex)
+        //{
+        //    recyclePath(pathThreadIndex);
 
-            PathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetPf();
-            {
-                path = pf.FindPath(pathThreadIndex, tilePos, conv.ToDir8_INT(rotation), walkGoal, isShip);
-            }
-            DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(pf);
-        }
+        //    PathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetPf();
+        //    {
+        //        path = pf.FindPath(pathThreadIndex, tilePos, conv.ToDir8_INT(rotation), walkGoal, isShip);
+        //    }
+        //    DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(pf);
+        //}
 
         public override void stateDebugText(RichBoxContent content)
         {

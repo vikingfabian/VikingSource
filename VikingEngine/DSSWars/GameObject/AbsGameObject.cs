@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public AbsSoldierUnit GetSoldier() { return null; }
         virtual public SoldierGroup GetSoldierGroup() { return null; }
 
-        virtual public MapObjectCollection GetMapCollection() { return null; }
+        virtual public ArmyCollection GetMapCollection() { return null; }
         virtual public DetailObjectCollection GetDetailCollection() { return null; }
 
         virtual public WorkerUnit GetWorker() { return null; }

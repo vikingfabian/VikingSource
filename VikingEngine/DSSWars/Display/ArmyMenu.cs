@@ -18,12 +18,12 @@ namespace VikingEngine.DSSWars.Display
         const string TradeMenuState = "trade";
         Players.LocalPlayer player;
         Army army;
-        MapObjectCollection objectCollection;
+        ArmyCollection objectCollection;
 
         public static readonly List<MenuTab> Tabs = new List<MenuTab>() {
             MenuTab.Info, MenuTab.Divide, MenuTab.Disband, MenuTab.Tag };
 
-        public ArmyMenu(Players.LocalPlayer player, MapObjectCollection objectCollection, RichBoxContent content)
+        public ArmyMenu(Players.LocalPlayer player, ArmyCollection objectCollection, RichBoxContent content)
         {
             this.player = player;
             this.objectCollection = objectCollection;
