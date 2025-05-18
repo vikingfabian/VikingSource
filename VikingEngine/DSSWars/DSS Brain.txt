@@ -7,7 +7,7 @@
 * Army seletion is viewed on detail zoom
 * Soldier command is blocked when zoomed out
 * Fixed: Players with no controller selection crashes the game
-* Repaired move player screen
+* Repaired: move multiplayer screen
 
 ! Controller doesnt work in any menues 
 ! Some unfinished hud
