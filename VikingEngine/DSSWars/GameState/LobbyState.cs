@@ -1129,6 +1129,8 @@ namespace VikingEngine.DSSWars
                         var title = content.h1(string.Empty, HudLib.TitleColor_Head);
                         content.newLine();
 
+                        bool startAvailable = checkAllPlayersHasControls();
+
                         switch (startGameMode)
                         {
                             case StartGameMode.Play:
@@ -1137,7 +1139,7 @@ namespace VikingEngine.DSSWars
 
                                     var start = new ArtButton(RbButtonStyle.Primary,
                                       new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
-                                      new RbAction(startGame));
+                                      new RbAction(startGame), null, startAvailable);
                                     content.Add(start);
                                 }
                                 break;
@@ -1148,12 +1150,12 @@ namespace VikingEngine.DSSWars
 
                                     var startlong = new ArtButton(RbButtonStyle.Primary,
                                       new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_LongTutorial) },
-                                      new RbAction1Arg<bool>(startTutorial, false));
+                                      new RbAction1Arg<bool>(startTutorial, false), null, startAvailable);
                                     content.Add(startlong);
                                     content.newLine();
                                     var startshort = new ArtButton(RbButtonStyle.Secondary,
                                       new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_ShortTutorial) },
-                                      new RbAction1Arg<bool>(startTutorial, true));
+                                      new RbAction1Arg<bool>(startTutorial, true), null, startAvailable);
                                     //start.fillWidth = false;
                                     content.Add(startshort);
                                 }
@@ -1165,10 +1167,16 @@ namespace VikingEngine.DSSWars
                                     content.newLine();
                                     var start = new ArtButton(RbButtonStyle.Primary,
                                           new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
-                                          new RbAction(startTrial));
+                                          new RbAction(startTrial), null, startAvailable);
                                     content.Add(start);
                                 }
                                 break;
+                        }
+
+                        if (!startAvailable)
+                        {
+                            content.newLine();
+                            content.Add(new RbText(DssRef.lang.Lobby_PlayerWithoutInputWarning, HudLib.NotAvailableColor));
                         }
 
                         content.newParagraph();
@@ -1188,7 +1196,7 @@ namespace VikingEngine.DSSWars
                                 }
                                 mpOptions.injectAfter = new List<AbsRichBoxMember>(2) { new RbSpace() };
                                 HudLib.InfoButton(mpOptions.injectAfter, new RbTooltip_Text(DssRef.lang.Lobby_LocalMultiplayerControllerRequired));
-                                mpOptions.Build(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount), underMenu);
+                                mpOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_LocalMultiplayerEdit, underMenu);
                             }
                         }
 
@@ -1258,40 +1266,24 @@ namespace VikingEngine.DSSWars
                                 //var playerData = DssRef.storage.localPlayers[0];
                                 playerData.inputSource = inputSource;
                                 DssRef.storage.checkPlayerDoublettes(0);
+                                refreshSplitScreen();
+                                underMenu.CloseDropDown();
                             }, m), null);
                     }
-                    inputOptions.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.InputSelect, underMenu);
+                    inputOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_Title_Input, underMenu);
+
+                    
                 }
                 listAndEditFlag(content, playerNum, playerData, false);
+                if (DssRef.storage.playerCount > 1)
+                {
+                    content.newLine();
+                    //new GuiTextButton(DssRef.lang.Lobby_NextScreen, null, new GuiAction1Arg<int>(nextScreenIndex, playerNum), false, layout);
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_NextScreen) },
+                        new RbAction1Arg<int>(nextScreenIndex, playerNum)));
+                }
             }
         }
-
-        //void selectInputMenu(int playerNumber, bool startGame, SaveStateMeta saveMeta)
-        //{
-        //    var available = availableInput();
-        //    GuiLayout layout = new GuiLayout(Ref.langOpt.InputSelect, menuSystem.menu);
-        //    {
-        //        foreach (var m in available)
-        //        {
-        //            if (startGame)
-        //            {
-        //                if (m.IsController)
-        //                {
-        //                    new GuiIconTextButton(SpriteName.ButtonSTART, HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, SaveStateMeta>(selectController_startGame, m, saveMeta), false, layout);
-        //                }
-        //                else
-        //                {
-        //                    new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, SaveStateMeta>(selectController_startGame, m, saveMeta), false, layout);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<int, InputSource>(selectInputClick, playerNumber, m), false, layout);
-        //            }
-        //        }
-        //    }
-        //    layout.End();
-        //}
 
         void listAndEditFlag(RichBoxContent content, int playerNum, LocalPlayerStorage playerData, bool editor)
         {
@@ -1797,8 +1789,8 @@ namespace VikingEngine.DSSWars
         {
             int ix = playerNumber - 1;
             LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
-            playerData.inputSource = InputSource.DefaultPC;
-            DssRef.storage.checkPlayerDoublettes(playerNumber - 1);
+            //playerData.inputSource = InputSource.DefaultPC;
+            //DssRef.storage.checkPlayerDoublettes(playerNumber - 1);
 
             playerData.flagDesignIndex = profile;
 
@@ -1991,41 +1983,67 @@ namespace VikingEngine.DSSWars
 
         void startGame()
         {
-            if (loadGame != null)
+            if (checkAllPlayersHasControls())
             {
-                continueFromSave(loadGame);
-            }
-            else
-            {
-                //if (DssRef.storage.playerCount == 1)
-                //{
-                //    var availableList = availableInput();
-                //    //if (availableList.Count > 1)
-                //    //{
-                //    //    controllerStartGameUpdate = true;
-                //    //    selectInputMenu(1, true, null);
-                //    //}
-                //    //else
-                //    {
-                //        selectController_startGame(availableList[0], null);
-                //    }
-                //    return;
-                //}
-                //else
-                //{
+                if (loadGame != null)
+                {
+                    continueFromSave(loadGame);
+                }
+                else
+                {
+                    //if (DssRef.storage.playerCount == 1)
+                    //{
+                    //    var availableList = availableInput();
+                    //    //if (availableList.Count > 1)
+                    //    //{
+                    //    //    controllerStartGameUpdate = true;
+                    //    //    selectInputMenu(1, true, null);
+                    //    //}
+                    //    //else
+                    //    {
+                    //        selectController_startGame(availableList[0], null);
+                    //    }
+                    //    return;
+                    //}
+                    //else
+                    //{
                     //Check if a player is without input
-                    for (int i = 0; i < DssRef.storage.playerCount; ++i)
-                    {
-                        if (DssRef.storage.localPlayers[i].inputSource.sourceType == InputSourceType.Num_Non)
-                        {
-                            //inputWarningMenu();
-                            return;
-                        }
-                    }
+                    //for (int i = 0; i < DssRef.storage.playerCount; ++i)
+                    //{
+                    //    if (DssRef.storage.localPlayers[i].inputSource.sourceType == InputSourceType.Num_Non)
+                    //    {
+                    //        //inputWarningMenu();
+                    //        return;
+                    //    }
+                    //}
 
-                //}
-                startGame_nochecks();
+                    //}
+
+                    startGame_nochecks();
+                }
             }
+        }
+
+        bool checkAllPlayersHasControls()
+        {
+            for (int i = 0; i < DssRef.storage.playerCount; ++i)
+            {
+                if (DssRef.storage.localPlayers[i].inputSource.sourceType == InputSourceType.Num_Non)
+                {
+                    if (DssRef.storage.playerCount == 1)
+                    {
+                        var playerData = DssRef.storage.localPlayers[i];
+                        playerData.inputSource = availableInput().First();
+                        return true;
+                    }
+                    else
+                    {
+                        //inputWarningMenu();
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         void startGame_nochecks()

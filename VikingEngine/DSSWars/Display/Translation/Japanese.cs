@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// ローカルマルチプレイヤー数を選択するボタン, 0: 現在のプレイヤー数
         /// </summary>
-        public override string Lobby_LocalMultiplayerEdit => "ローカルマルチプレイヤー ({0})";
+        public override string Lobby_LocalMultiplayerEdit => "ローカルマルチプレイヤー";
 
         /// <summary>
         /// 分割画面のプレイヤー数を選択するメニューのタイトル

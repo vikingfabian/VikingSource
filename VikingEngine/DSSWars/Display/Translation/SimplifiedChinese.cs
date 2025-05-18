@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// 按钮选择本地多人游戏数量，0:当前玩家数量
         /// </summary>
-        public override string Lobby_LocalMultiplayerEdit => "本地多人游戏 ({0})";
+        public override string Lobby_LocalMultiplayerEdit => "本地多人游戏";
 
         /// <summary>
         /// 选择分屏玩家数量菜单的标题

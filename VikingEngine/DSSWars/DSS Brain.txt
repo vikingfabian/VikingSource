@@ -6,18 +6,10 @@
 * Repaired army path visuals, and improved them a bit
 * Army seletion is viewed on detail zoom
 * Soldier command is blocked when zoomed out
-* Local multiplayer!
-* Controller support (ingame only)
-* Rectangle select works with map pan
-* Input display in the corner
-* Improvements to blueprint tooltip
-* Split screen
-* Drop in multiplayer on saves, and demo map (! does not work with old saves)
-* Changed default multiplayer speed from 2 to 1
+* Fixed: Players with no controller selection crashes the game
+* Repaired move player screen
 
-! The settings are reset
-! Controller doesnt work in any menues
-! Players with no controller selection crashes the game
+! Controller doesnt work in any menues 
 ! Some unfinished hud
 ! Can't go from multiplayer to single on a save
 
