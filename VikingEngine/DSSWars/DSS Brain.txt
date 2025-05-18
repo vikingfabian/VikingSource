@@ -1,6 +1,11 @@
 ﻿UPDATE
 -Change Log-
-* 
+* Removed 5X speed from the demo
+* Army collection hud improvements
+* Fixed battle lab crash on start
+* Repaired army path visuals, and improved them a bit
+* Army seletion is viewed on detail zoom
+* Soldier command is blocked when zoomed out
 * Local multiplayer!
 * Controller support (ingame only)
 * Rectangle select works with map pan
@@ -23,12 +28,6 @@ Assign men to wall (ballista, har warmashine crew)
 
 -nobel housing (kräver park?)
 (priest housing)
-
-
-#DEMO#
--load map with attackers
--exit on win or looseF
--stats, open stats 
 
 #OPT#
 monogame fork? DrawUserPrimitives opt, titta på OGG filer

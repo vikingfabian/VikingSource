@@ -587,6 +587,7 @@ namespace VikingEngine.LootFest
         citybanner,
         armybanner,
         armystand,
+        armystand_detail,
         cityicon,
         buildarea,
         wars_borderstick,

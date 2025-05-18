@@ -256,7 +256,26 @@ namespace VikingEngine.Engine
                 AddToContainer.RemoveImage(obj);
             }
         }
-        
+
+        public void AddToRenderList(Graphics.AbsDraw obj, int layer, bool add)
+        {
+            Debug.CrashIfThreaded();
+
+            if (obj == null)
+                throw new Exception("Draw object is null");
+
+            obj.inRenderLayer = layer;
+            
+            if (add)
+            {
+                renderList[layer].AddObj(obj);
+            }
+            else
+            {
+                renderList[layer].RemoveObj(obj);
+            }            
+        }
+
         public void ClearRenderLayer(RenderLayer layer)
         {
             renderList[(int)layer].Clear();

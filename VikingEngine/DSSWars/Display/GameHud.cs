@@ -91,6 +91,7 @@ namespace VikingEngine.DSSWars.Display
         public void clearState()
         {
             setHeadMenuFocus(false);
+            needRefresh = true;
             //displays.clearState();
         }
 

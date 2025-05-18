@@ -637,7 +637,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     case GameObjectType.Army:
                         SoundLib.select_army.Play();
                         {
-                            armyControls = new ArmyControls(player, new List<AbsMapObject> { mapControls.selection.obj.GetArmy() });
+                            armyControls = new ArmyControls(player, new ArmyCollection(mapControls.selection.obj.GetArmy()));
                         }
                         break;
                     case GameObjectType.City:

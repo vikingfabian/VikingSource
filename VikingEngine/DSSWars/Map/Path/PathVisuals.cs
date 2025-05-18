@@ -10,6 +10,7 @@ namespace VikingEngine.DSSWars.Map
     {
         Graphics.ImageGroup moveDots = new Graphics.ImageGroup(64);
         int playerIndex;
+        bool midLayer = false;
         public PathVisuals(int playerIndex)
         {
             this.playerIndex = playerIndex;
@@ -21,10 +22,11 @@ namespace VikingEngine.DSSWars.Map
             Color color = attack ? Color.Pink : Color.White;
             float opacity = hover ? 0.5f : 1f;
 
-            moveDots.DeleteAll();
+            DeleteMe();
 
             if (path != null)
             {
+                midLayer = true;
                 for (int i = path.currentNodeIx; i >= 0; --i)
                 {
                     Graphics.Mesh dot = new Graphics.Mesh(LoadedMesh.SelectCircleThick,
@@ -33,6 +35,7 @@ namespace VikingEngine.DSSWars.Map
                         SpriteName.WhiteArea, color, false);
                     dot.Opacity = opacity;
                     dot.AddToRender(DrawGame.TerrainLayer);
+                    dot.AddToRender(DrawGame.UnitDetailLayer);
                     dot.setVisibleCamera(playerIndex);
                     moveDots.Add(dot);
                 }
@@ -45,10 +48,12 @@ namespace VikingEngine.DSSWars.Map
             Color color = /*attack ? Color.Pink :*/ Color.White;
             float opacity = hover ? 0.5f : 1f;
 
-            moveDots.DeleteAll();
+            DeleteMe();
+            //moveDots.DeleteAll();
 
             if (path != null)
             {
+                midLayer = false;
                 for (int i = path.currentNodeIx; i >= 0; --i)
                 {
                     Graphics.Mesh dot = new Graphics.Mesh(LoadedMesh.SelectCircleThick,
@@ -70,8 +75,17 @@ namespace VikingEngine.DSSWars.Map
 
         public void DeleteMe()
         {
-            moveDots.DeleteAll();
+            foreach (var dot in moveDots.images)
+            {
+                Ref.draw.AddToRenderList(dot, false, DrawGame.UnitDetailLayer);
+                if (midLayer)
+                {
+                    Ref.draw.AddToRenderList(dot, false, DrawGame.TerrainLayer);
+                }
+            }
         }
+
+
 
         public void addTo(Graphics.ImageGroup images)
         {

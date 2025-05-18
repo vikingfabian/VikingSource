@@ -1381,7 +1381,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void asyncPlayerPathUpdate(float time)
         {
-            gameControls.armyControls?.asynchUpdate();
+            gameControls.armyControls?.asynchPathUpdate();
 
             //return false;
         }
