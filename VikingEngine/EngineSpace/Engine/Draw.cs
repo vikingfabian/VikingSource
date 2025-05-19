@@ -257,7 +257,7 @@ namespace VikingEngine.Engine
             }
         }
 
-        public void AddToRenderList(Graphics.AbsDraw obj, int layer, bool add)
+        public void AddToRenderList(Graphics.AbsDraw obj, ref int renderListIndex, int layer, bool add)
         {
             Debug.CrashIfThreaded();
 
@@ -268,11 +268,11 @@ namespace VikingEngine.Engine
             
             if (add)
             {
-                renderList[layer].AddObj(obj);
+                renderListIndex = renderList[layer].AddObj(obj);
             }
             else
             {
-                renderList[layer].RemoveObj(obj);
+                renderList[layer].RemoveObj(obj, renderListIndex);
             }            
         }
 
@@ -557,14 +557,20 @@ namespace VikingEngine.Engine
                 render[i] = new SpottedArray<Graphics.AbsDraw>();
             }
         }
-        public void AddObj(Graphics.AbsDraw obj)
+        public int AddObj(Graphics.AbsDraw obj)
         {
-            render[(int)obj.DrawType].Add(obj);
+            return render[(int)obj.DrawType].Add(obj);
         }
         public void RemoveObj(Graphics.AbsDraw obj)
         {
             render[(int)obj.DrawType].Remove(obj);
         }
+
+        public void RemoveObj(Graphics.AbsDraw obj, int index)
+        {
+            render[(int)obj.DrawType].RemoveAt_EqualSafeCheck(obj, index);
+        }
+
         public SpottedArray<Graphics.AbsDraw> GetList(Graphics.DrawObjType type)
         { return render[(int)type]; }
         

@@ -126,11 +126,20 @@ namespace VikingEngine.DSSWars.Players
             else
             {
                 SoundLib.ordermove.Play();
+                //int radius = 0;
+                ForXYEdgeLoop nextPlacementLoop = new ForXYEdgeLoop(player.gameControls.mapControls.tilePosition, player.gameControls.mapControls.tilePosition);
+
                 foreach (var m in collection.objects)
                 {
                     if (m.isAlive)
                     {
-                        m.army.Ai_Order_MoveTo(player.gameControls.mapControls.tilePosition);
+                        bool continueLoop = nextPlacementLoop.Next();
+                        if (!continueLoop)
+                        {
+                            nextPlacementLoop.ExpandRadius();
+                        }
+                        m.army.Ai_Order_MoveTo(nextPlacementLoop.Position);//player.gameControls.mapControls.tilePosition);
+                        
                     }
                 }
             }

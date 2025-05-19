@@ -10,14 +10,6 @@ namespace VikingEngine.Graphics
 {
     class Point3D : Abs3DModel, IRotationCallBack
     {
-        /* Properties */
-       
-
-        /* Fields */
-        //protected Vector3 position;
-        //protected Vector3 scale = Vector3.Zero;
-
-        /* Constructors */
         public Point3D(Vector3 pos, Vector3 size, bool addToRender)
             : base(addToRender)
         { 
@@ -61,19 +53,6 @@ namespace VikingEngine.Graphics
             inRenderList = true;
         }
 
-        //public override float GetPositionX
-        //{
-        //    get { return Position.X; }
-        //}
-        //public override float GetPositionZ
-        //{
-        //    get { return Position.Z; }
-        //}
-        //public override float Opacity
-        //{
-        //    get { return 0; }
-        //    set { }
-        //}
         public override DrawObjType DrawType { get { return DrawObjType.Mesh; } }
 
         public virtual Vector3 Position
