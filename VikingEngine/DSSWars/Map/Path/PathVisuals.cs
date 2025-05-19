@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
 {
     class PathVisuals
     {
-        Graphics.ImageGroup moveDots = new Graphics.ImageGroup(64);
+        List<Mesh_MultiLayer> moveDots = new List<Mesh_MultiLayer>(32);
         int playerIndex;
         bool midLayer = false;
         public PathVisuals(int playerIndex)
@@ -29,13 +30,15 @@ namespace VikingEngine.DSSWars.Map
                 midLayer = true;
                 for (int i = path.currentNodeIx; i >= 0; --i)
                 {
-                    Graphics.Mesh dot = new Graphics.Mesh(LoadedMesh.SelectCircleThick,
+                    Graphics.Mesh_MultiLayer dot = new Graphics.Mesh_MultiLayer(LoadedMesh.SelectCircleThick,
                         WP.ToMapPos(path.nodes[i].position),
                         new Vector3(0.2f), Graphics.TextureEffectType.Flat,
-                        SpriteName.WhiteArea, color, false);
+                        SpriteName.WhiteArea, color);
                     dot.Opacity = opacity;
-                    dot.AddToRender(DrawGame.TerrainLayer);
-                    dot.AddToRender(DrawGame.UnitDetailLayer);
+                    //dot.AddToRender(DrawGame.TerrainLayer);
+                    //dot.AddToRender(DrawGame.UnitDetailLayer);
+                    dot.AddToLayer1(DrawGame.UnitDetailLayer);
+                    dot.AddToLayer2(DrawGame.TerrainLayer);
                     dot.setVisibleCamera(playerIndex);
                     moveDots.Add(dot);
                 }
@@ -56,12 +59,12 @@ namespace VikingEngine.DSSWars.Map
                 midLayer = false;
                 for (int i = path.currentNodeIx; i >= 0; --i)
                 {
-                    Graphics.Mesh dot = new Graphics.Mesh(LoadedMesh.SelectCircleThick,
+                    Graphics.Mesh_MultiLayer dot = new Graphics.Mesh_MultiLayer(LoadedMesh.SelectCircleThick,
                         WP.SubtileToWorldPosXZgroundY_Centered(path.nodes[i].position),
                         new Vector3(0.02f), Graphics.TextureEffectType.Flat,
-                        SpriteName.WhiteArea, color, false);
+                        SpriteName.WhiteArea, color);
                     dot.Opacity = opacity;
-                    dot.AddToRender(DrawGame.UnitDetailLayer);
+                    dot.AddToLayer1(DrawGame.UnitDetailLayer);
                     dot.setVisibleCamera(playerIndex);
                     moveDots.Add(dot);
                 }
@@ -70,26 +73,39 @@ namespace VikingEngine.DSSWars.Map
 
         public void SetVisible(bool visible)
         {
-            moveDots.SetVisible(visible);
+            foreach (var m in moveDots)
+            { 
+                m.Visible = visible;
+            }
+            //moveDots.SetVisible(visible);
         }
 
         public void DeleteMe()
         {
-            foreach (var dot in moveDots.images)
+            //foreach (var dot in moveDots.images)
+            //{
+            //    Ref.draw.AddToRenderList(dot, false, DrawGame.UnitDetailLayer, );
+            //    if (midLayer)
+            //    {
+            //        Ref.draw.AddToRenderList(dot, false, DrawGame.TerrainLayer);
+            //    }
+            //}
+            foreach (var m in moveDots)
             {
-                Ref.draw.AddToRenderList(dot, false, DrawGame.UnitDetailLayer);
-                if (midLayer)
-                {
-                    Ref.draw.AddToRenderList(dot, false, DrawGame.TerrainLayer);
-                }
+                m.DeleteMe();
             }
+            moveDots.Clear();
         }
 
 
 
         public void addTo(Graphics.ImageGroup images)
         {
-            images.Add(moveDots);
+            foreach (var m in moveDots)
+            {
+                images.Add(m);
+            }
+            
         }
     }
 
