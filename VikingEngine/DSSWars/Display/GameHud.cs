@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Display
                 //    displays.clearMoveSelection();
                 //}
 
-                player.gameControls.mapControls.focusMap(!set);
+                player.gameControls.map.focusMap(!set);
                 menuFocus = set;
             }
         }
@@ -132,8 +132,8 @@ namespace VikingEngine.DSSWars.Display
             mouseOverHud = false;
             refresh = refreshTimer.Update();
 
-            refresh |= player.gameControls.mapControls.selection.isNew ||
-                player.gameControls.mapControls.hover.isNew ||
+            refresh |= player.gameControls.map.selection.isNew ||
+                player.gameControls.map.hover.isNew ||
                 needRefresh;
 
 
@@ -191,24 +191,24 @@ namespace VikingEngine.DSSWars.Display
             void updateMenuDisplays(bool refresh)
             {
 
-                if (player.diplomacyMap != null)
+                if (player.gameControls.diplomacy != null)
                 {
-                    var faction = player.diplomacyMap.mainSelection(out bool selected);
+                    var faction = player.gameControls.diplomacy.mainSelection(out bool selected);
 
                     objMenu.refreshDiplomacy(player, faction, selected);
 
                     player.factionTab = MenuTab.NUM_NONE;
                 }
-                else if (player.gameControls.mapControls.selection.obj != null)
+                else if (player.gameControls.map.selection.obj != null)
                 {
-                    updateObjectDisplay(player.gameControls.mapControls.selection.obj, true, refresh);
+                    updateObjectDisplay(player.gameControls.map.selection.obj, true, refresh);
                     player.factionTab = MenuTab.NUM_NONE;
 
                     
                 }
-                else if (player.gameControls.mapControls.hover.obj != null)
+                else if (player.gameControls.map.hover.obj != null)
                 {
-                    updateObjectDisplay(player.gameControls.mapControls.hover.obj, false, refresh);
+                    updateObjectDisplay(player.gameControls.map.hover.obj, false, refresh);
                     player.factionTab = MenuTab.NUM_NONE;
                 }
                 else if (player.factionTab != MenuTab.NUM_NONE)
@@ -235,7 +235,7 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        public void updateToolTip_menu(bool refresh)
+        public void updateToolTip_menu()
         {
             tooltip.clear();               
         }
@@ -243,7 +243,7 @@ namespace VikingEngine.DSSWars.Display
         public void updateToolTip_map(bool refresh)
         {
             
-            if (!player.gameControls.mapControls.focusedObjectMenuState())
+            if (!player.gameControls.map.focusedObjectMenuState())
             {
                 tooltip.updateMapTip(player, refresh, false);
             }
@@ -252,7 +252,7 @@ namespace VikingEngine.DSSWars.Display
         public void updateToolTip_multiselect(bool refresh, bool aboveMouse)
         {
             
-            if (!player.gameControls.mapControls.focusedObjectMenuState())
+            if (!player.gameControls.map.focusedObjectMenuState())
             {
                 tooltip.updateMapTip(player, refresh, aboveMouse);
             }

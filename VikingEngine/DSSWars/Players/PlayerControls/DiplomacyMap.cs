@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars
                         {
                             if (player.gameControls.input.inputSource.IsController)
                             {
-                                float dist = (player.gameControls.mapControls.XPointerPos() - rel.bg.RealCenter).Length();
+                                float dist = (player.gameControls.map.XPointerPos() - rel.bg.RealCenter).Length();
                                 if (dist < controller_closestDist)
                                 {
                                     controller_closestDist = dist;
@@ -229,7 +229,10 @@ namespace VikingEngine.DSSWars
                         selected = currentHover;
                         player.hud.needRefresh = true;
 
-                        //player.hud.displays.beginMove(2);
+                        if (player.gameControls.input.inputSource.IsController)
+                        {
+                            player.gameControls.setMenuFocus(true, true);
+                        }
 
                         var faction = DssRef.world.factions.Array[selected.faction];
 
@@ -289,6 +292,7 @@ namespace VikingEngine.DSSWars
         {
             if (selected != null)
             {
+                player.gameControls.setMenuFocus(false, true);
                 selected = null;
                 seletionbox.Visible = false;
             }

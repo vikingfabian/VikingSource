@@ -26,11 +26,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (player.drawUnitsView.current.DrawDetailLayer)
             {
-                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.mapControls.subTilePosition);
+                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.subTilePosition);
                 SoldierGroup target = null;
-                if (player.gameControls.mapControls.armyMayAttackHoverObj())
+                if (player.gameControls.map.armyMayAttackHoverObj())
                 {
-                    target = player.gameControls.mapControls.hover.obj.GetSoldierGroup();
+                    target = player.gameControls.map.hover.obj.GetSoldierGroup();
                     new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
                 }
                 else
@@ -47,9 +47,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             if (groups_sp.Count > 0)
             {
-                bool wall = target == null && player.gameControls.mapControls.hover.subTile.selectTileResult == SelectTileResult.Wall;
-                IntVector2 subTile = player.gameControls.mapControls.hover.subTile.subTilePos;
-                var city = player.gameControls.mapControls.hover.subTile.city;
+                bool wall = target == null && player.gameControls.map.hover.subTile.selectTileResult == SelectTileResult.Wall;
+                IntVector2 subTile = player.gameControls.map.hover.subTile.subTilePos;
+                var city = player.gameControls.map.hover.subTile.city;
 
                 Task.Run(() =>
                 {

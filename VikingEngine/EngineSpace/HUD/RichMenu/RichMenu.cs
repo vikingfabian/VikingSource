@@ -362,6 +362,10 @@ namespace VikingEngine.HUD.RichMenu
 
         public bool BlockRefresh()
         {
+            if (interaction == null)
+            {
+                return false;
+            }
             return interaction.interactionStack != null;
         }
 

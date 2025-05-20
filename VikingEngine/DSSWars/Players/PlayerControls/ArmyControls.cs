@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Players
         public void update()
         {
             
-            if (player.gameControls.mapControls.onNewTile)
+            if (player.gameControls.map.onNewTile)
             {
                 newSquare = true;
             }
@@ -108,9 +108,9 @@ namespace VikingEngine.DSSWars.Players
 
         public void mapExecute()
         {
-            if (player.gameControls.mapControls.armyMayAttackHoverObj())
+            if (player.gameControls.map.armyMayAttackHoverObj())
             {
-                var target = player.gameControls.mapControls.hover.obj.RelatedMapObject();
+                var target = player.gameControls.map.hover.obj.RelatedMapObject();
                 if (target != null)
                 {
                     SoundLib.ordermove.Play();
@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 SoundLib.ordermove.Play();
                 //int radius = 0;
-                ForXYEdgeLoop nextPlacementLoop = new ForXYEdgeLoop(player.gameControls.mapControls.tilePosition, player.gameControls.mapControls.tilePosition);
+                ForXYEdgeLoop nextPlacementLoop = new ForXYEdgeLoop(player.gameControls.map.tilePosition, player.gameControls.map.tilePosition);
 
                 foreach (var m in collection.objects)
                 {

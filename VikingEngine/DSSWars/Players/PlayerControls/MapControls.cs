@@ -196,87 +196,83 @@ namespace VikingEngine.DSSWars.Players
             //    }
             //    else
             //    {
+            //if (controllerInput)
+            //{
+            //    mousePosition = screenPosToWorldPos(controllerPointer.position);
+            //}
+            //else
+            //{
+            updatePointer();
+
+            //if (focusedObjectMenuState() || player.hud.menuFocus)
+            //{
+            //    //player.hud.displays.updateMove(out bool bRefresh);
+            //    //player.hud.needRefresh |= bRefresh;
+
+            //    if (player.gameControls.input.ControllerFocus.DownEvent)
+            //    {
+            //        if (player.hud.menuFocus)
+            //        {
+            //            setHeadMenuFocus(false);
+            //        }
+            //        else
+            //        {
+            //            setObjectMenuFocus(false);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    if (controllerInput)
+            //    {
+            //        keypPanInput();
+            //    }
+
+            if (rectangleLines == null)
+            {
+                //if (controllerInput)
+                //{
+                //    if (player.gameControls.input.ControllerFocus.DownEvent)
+                //    {
+                //        if (selection.obj != null)
+                //        {
+                //            setObjectMenuFocus(true);
+                //        }
+                //        else if (hover.obj == null)
+                //        {
+                //            setHeadMenuFocus(true);
+                //        }
+                //    }
+
+
+                //}
+                //mouseHoverUpdate();
+                hover.begin(true);
+                {
                     //if (controllerInput)
                     //{
-                    //    mousePosition = screenPosToWorldPos(controllerPointer.position);
+                    //    controllerHoverUpdate();
                     //}
                     //else
                     //{
-                    pointerPosWP = screenPosToWorldPos(pointerPos());
+                    mouseHoverUpdate();
                     //}
-                    IntVector2 prevTile = tilePosition;
-                    tilePosition = WP.ToTilePos(pointerPosWP);
-                    onNewTile = prevTile != tilePosition;
+                }
+                subTileHoverUpdate();
+                //mouseHoverUpdate();
+            }
+            hover.end();
+            //}
+            //}
 
-                    //if (focusedObjectMenuState() || player.hud.menuFocus)
-                    //{
-                    //    //player.hud.displays.updateMove(out bool bRefresh);
-                    //    //player.hud.needRefresh |= bRefresh;
+            //if (controllerInput && player.gameControls.input.ControllerCancel.DownEvent)
+            //{
+            //    //player.hud.displays.clearMoveSelection();
+            //    player.gameControls.clearSelection();
+            //}
 
-                    //    if (player.gameControls.input.ControllerFocus.DownEvent)
-                    //    {
-                    //        if (player.hud.menuFocus)
-                    //        {
-                    //            setHeadMenuFocus(false);
-                    //        }
-                    //        else
-                    //        {
-                    //            setObjectMenuFocus(false);
-                    //        }
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    if (controllerInput)
-                    //    {
-                    //        keypPanInput();
-                    //    }
 
-                        if (rectangleLines == null)
-                        {
-                            //if (controllerInput)
-                            //{
-                            //    if (player.gameControls.input.ControllerFocus.DownEvent)
-                            //    {
-                            //        if (selection.obj != null)
-                            //        {
-                            //            setObjectMenuFocus(true);
-                            //        }
-                            //        else if (hover.obj == null)
-                            //        {
-                            //            setHeadMenuFocus(true);
-                            //        }
-                            //    }
-
-                                
-                            //}
-                            //mouseHoverUpdate();
-                            hover.begin(true);
-                            {
-                                //if (controllerInput)
-                                //{
-                                //    controllerHoverUpdate();
-                                //}
-                                //else
-                                //{
-                                    mouseHoverUpdate();
-                                //}
-                            }
-                            subTileHoverUpdate();
-                            //mouseHoverUpdate();
-                        }
-                        hover.end();
-                    //}
-                //}
-
-                //if (controllerInput && player.gameControls.input.ControllerCancel.DownEvent)
-                //{
-                //    //player.hud.displays.clearMoveSelection();
-                //    player.gameControls.clearSelection();
-                //}
-
-            
-                checkSelectionAlive();
+            checkSelectionAlive();
 
             if (player.gameControls.InBuildOrdersMode())
             {
@@ -292,7 +288,6 @@ namespace VikingEngine.DSSWars.Players
             updateSeletionGui(true);
 
             mousePanInput();
-
             zoomInput();
             rotateCameraInput();
 
@@ -300,6 +295,25 @@ namespace VikingEngine.DSSWars.Players
             {
                 player.createPin();
             }
+        }
+
+        private void updatePointer()
+        {
+            pointerPosWP = screenPosToWorldPos(pointerPos());
+            IntVector2 prevTile = tilePosition;
+            tilePosition = WP.ToTilePos(pointerPosWP);
+            onNewTile = prevTile != tilePosition;
+        }
+
+        public void mapControlsUpdate()
+        {
+            updatePointer();
+
+            mousePanInput();
+            zoomInput();
+            rotateCameraInput();
+
+            
         }
 
         public void leftFocusUpdate()
@@ -310,10 +324,10 @@ namespace VikingEngine.DSSWars.Players
 
         public void passiveUpdate()
         {
-            if (player.gameControls.mapControls.selection.obj != null &&
-                player.gameControls.mapControls.selection.obj.isDeleted)
+            if (player.gameControls.map.selection.obj != null &&
+                player.gameControls.map.selection.obj.isDeleted)
             {
-                player.gameControls.mapControls.clearSelection();
+                player.gameControls.map.clearSelection();
             }
             keypPanInput();
             cameraFocusUpdate();
@@ -476,7 +490,7 @@ namespace VikingEngine.DSSWars.Players
                                     {
                                         selection.obj = coll;                                        
                                     }
-                                    player.gameControls.armyControls = new ArmyControls(player, coll);
+                                    player.gameControls.army = new ArmyControls(player, coll);
                                 }
                                 break;
 
@@ -501,7 +515,7 @@ namespace VikingEngine.DSSWars.Players
                                         {
                                             selection.obj = coll; //TODO if (coll.objects.Count == 1)
                                         }
-                                        player.gameControls.soldierControls = new SoldierControls(coll.armyGroups.Count > 0 ? coll.armyGroups : coll.guardGroups);
+                                        player.gameControls.soldier = new SoldierControls(coll.armyGroups.Count > 0 ? coll.armyGroups : coll.guardGroups);
                                     }
                                     //}
                                 }
@@ -536,7 +550,7 @@ namespace VikingEngine.DSSWars.Players
             var collObj = new DetailObjectCollection(player.faction); //TODO if (coll.objects.Count == 1)
             collObj.set(coll);
             selection.obj = collObj;
-            player.gameControls.soldierControls = new SoldierControls(coll);
+            player.gameControls.soldier = new SoldierControls(coll);
         }
 
          public  Vector3 screenPosToWorldPos(Vector2 screenPos)
@@ -727,7 +741,7 @@ namespace VikingEngine.DSSWars.Players
             const float FriendlyPriorityDistAdd = 0.25f;
             float maxDistance_enemy;
             float maxDistance_friend;
-            if (player.gameControls.armyControls != null)
+            if (player.gameControls.army != null)
             {
                 maxDistance_enemy = 1.5f;
                 maxDistance_friend = 0.5f;
@@ -777,7 +791,7 @@ namespace VikingEngine.DSSWars.Players
                 const float FriendlyPriorityDistAdd = 0.25f;
                 float maxDistance_enemy;
                 float maxDistance_friend;
-                if (player.gameControls.armyControls != null)
+                if (player.gameControls.army != null)
                 {
                     maxDistance_enemy = 1.5f;
                     maxDistance_friend = 0.5f;
@@ -1217,7 +1231,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 return;
             }
-            if (player.diplomacyMap != null && player.diplomacyMap.hasSelection())
+            if (player.gameControls.diplomacy != null && player.gameControls.diplomacy.hasSelection())
             {
                 return;
             }
@@ -1379,6 +1393,11 @@ namespace VikingEngine.DSSWars.Players
 
         public GameObjectType FocusObjectType()
         {
+            if (player.gameControls.diplomacy != null)
+            {
+                return GameObjectType.Faction;
+            }
+
             var obj = FocusObject();
             return obj != null ? obj.gameobjectType() : GameObjectType.NONE;
         }

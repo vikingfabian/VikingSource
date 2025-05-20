@@ -169,7 +169,7 @@ namespace VikingEngine.DSSWars.Display
 
             if (player.gameControls.input.inputSource.IsController)
             {
-                content.Add(new RbImage(player.gameControls.input.ControllerFaction.Icon));
+                content.Add(new RbImage(player.gameControls.input.ControllerFaction.Icon) { color = player.gameControls.controller_mayUseHeadDisplay()? Color.White : Color.Black });
                 content.space();                
             }
             bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Headmenu, out Color focusColor);
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.Display
         public void TabClick(MenuTab tab)
         {
             var player = this.player.GetLocalPlayer();
-            player.gameControls.mapControls.clearSelection();
+            player.gameControls.map.clearSelection();
             if (player.factionTab == tab)
             {
                 player.factionTab = MenuTab.NUM_NONE;

@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.Players
 
                     if (player.gameControls.InBuildOrdersMode())
                     {
-                        selectTileResult = player.gameControls.buildControls.buildMode;
+                        selectTileResult = player.gameControls.build.buildMode;
                         hasSelection = true;
                         model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
                         //model.position.Y = subTile.groundY;
@@ -198,9 +198,9 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (city.faction.player == player)
                 {
-                    if (subTile.MayBuild(player.gameControls.buildControls.placeBuildingType, out upgrade))
+                    if (subTile.MayBuild(player.gameControls.build.placeBuildingType, out upgrade))
                     {
-                        if (player.gameControls.mapControls.selection.obj == city)
+                        if (player.gameControls.map.selection.obj == city)
                         {
                             return MayBuildResult.Yes;
                         }

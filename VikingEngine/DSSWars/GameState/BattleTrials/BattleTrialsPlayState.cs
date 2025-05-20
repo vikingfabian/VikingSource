@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
             manager.startBattle(false, BattleSetupManager.NoPlayer);
             manager.addTimedAttackFromEnemy(10);
 
-            LocalHost().gameControls.mapControls.cameraFocus = manager.friendlyArmy;
+            LocalHost().gameControls.map.cameraFocus = manager.friendlyArmy;
 
 
 

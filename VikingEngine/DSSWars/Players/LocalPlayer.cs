@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Players
         public bool bUnitDetailLayer;
 
         public Rectangle2 cullingTileArea = Rectangle2.ZeroOne;
-        public DiplomacyMap diplomacyMap = null;
+        
         public CityTagMap cityTagMap = null;
 
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
@@ -505,7 +505,7 @@ namespace VikingEngine.DSSWars.Players
         public void createPin()
         {
 #if DEBUG
-            LocationPin pin = new LocationPin(this,gameControls.mapControls.pointerPosWP);
+            LocationPin pin = new LocationPin(this,gameControls.map.pointerPosWP);
             pin.parentArrayIndex = pins.Add(pin);
             pin.basicInit();
 #endif
@@ -768,7 +768,7 @@ namespace VikingEngine.DSSWars.Players
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.N) && !Input.Keyboard.Ctrl)
                 {
-                    AbsWorldObject obj = gameControls.mapControls.hover.obj as AbsWorldObject;
+                    AbsWorldObject obj = gameControls.map.hover.obj as AbsWorldObject;
                     obj?.AddDebugTag();
                 }
             }
@@ -796,7 +796,7 @@ namespace VikingEngine.DSSWars.Players
             if (Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left))
             {
                 RichBoxContent c = new RichBoxContent();
-                c.text(gameControls.mapControls.tilePosition.ToString());
+                c.text(gameControls.map.tilePosition.ToString());
                 hud.messages.Add(c);
             }
 #endif 
@@ -901,7 +901,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void asyncUserUpdate()
         {
-            diplomacyMap?.asynchUpdate();
+            gameControls.diplomacy?.asynchUpdate();
 
             automation.asyncUpdate();
 
@@ -921,7 +921,7 @@ namespace VikingEngine.DSSWars.Players
 
             faction.updateResourceOverview_async();
 
-            float z = gameControls.mapControls.camera.LookTarget.Z / DssRef.world.Size.Y;
+            float z = gameControls.map.camera.LookTarget.Z / DssRef.world.Size.Y;
             if (z < 0.5)
             {
                 setThemeColor(z / 0.5f, ThemeNorth_Blue, ThemeMid_Yellow);
@@ -945,19 +945,19 @@ namespace VikingEngine.DSSWars.Players
             
             if (drawUnitsView.current.DrawOverview)
             {
-                if (diplomacyMap == null)
+                if (gameControls.diplomacy == null)
                 {
-                    diplomacyMap = new DiplomacyMap(this);
+                    gameControls.diplomacy = new DiplomacyMap(this);
                 }
 
-                diplomacyMap.update();
+                gameControls.diplomacy.update();
             }
             else
             {
-                if (diplomacyMap != null)
+                if (gameControls.diplomacy != null)
                 {
-                    diplomacyMap.DeleteMe();
-                    diplomacyMap = null;
+                    gameControls.diplomacy.DeleteMe();
+                    gameControls.diplomacy = null;
                 }
             }
 
@@ -1001,7 +1001,7 @@ namespace VikingEngine.DSSWars.Players
             DssRef.diplomacy.declareWar(faction, enemyFac);
 
 
-            IntVector2 position = gameControls.mapControls.tilePosition;
+            IntVector2 position = gameControls.map.tilePosition;
 
             Army friendlyArmy, enemyArmy;
 
@@ -1108,7 +1108,7 @@ namespace VikingEngine.DSSWars.Players
             DssRef.diplomacy.declareWar(faction, enemyFac);
            
 
-            IntVector2 position = gameControls.mapControls.tilePosition;
+            IntVector2 position = gameControls.map.tilePosition;
 
             Army friendlyArmy, enemyArmy;
 
@@ -1381,7 +1381,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void asyncPlayerPathUpdate(float time)
         {
-            gameControls.armyControls?.asynchPathUpdate();
+            gameControls.army?.asynchPathUpdate();
 
             //return false;
         }

@@ -8,10 +8,10 @@
 * Soldier command is blocked when zoomed out
 * Fixed: Players with no controller selection crashes the game
 * Repaired: move multiplayer screen
+* Blocked map click in diplomacy view
+* Repaired: diplomacy controller support
 
-! Controller doesnt work in any menues 
-! Some unfinished hud
-! Can't go from multiplayer to single on a save
+
 
 #Free build defences
  Rock thrower

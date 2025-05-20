@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             baseInit();
             initScenario();
 
-            LocalHost().gameControls.mapControls.battleModeCamBound();
+            LocalHost().gameControls.map.battleModeCamBound();
         }
 
         virtual protected void initPlayers()

@@ -21,10 +21,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 {
     class GameControls
     {
-        public MapControls mapControls;
-        public ArmyControls armyControls = null;
-        public SoldierControls soldierControls = null;
-        public Build.BuildControls buildControls;
+        public MapControls map;
+        public ArmyControls army = null;
+        public SoldierControls soldier = null;
+        public DiplomacyMap diplomacy = null;
+        public Build.BuildControls build;
         LocalPlayer player;
         public InputMap input;
         bool cityUpdate;
@@ -38,6 +39,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Vector2 controllerPointer_storedPos_army;
         Vector2 controllerPointer_storedPos_defaultObject;
         Vector2 controllerPointer_storedPos_faction;
+        Vector2 controllerPointer_storedPos_diplomacy;
 
 
         public GameControls(LocalPlayer player, InputMap input)
@@ -46,16 +48,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             this.input = input;
             player.gameControls = this;
 
-            buildControls = new Build.BuildControls(player);
+            build = new Build.BuildControls(player);
 
             cityUpdate = DssRef.state.PlayType() == GameState.PlayStateType.Play;
 
             tabArmy = player.faction.armies.counter();            
 
-            mapControls = new Players.MapControls(player);
+            map = new Players.MapControls(player);
             if (player.faction.mainCity != null)
             {
-                mapControls.setCameraPos(player.faction.mainCity.tilePos);
+                map.setCameraPos(player.faction.mainCity.tilePos);
             }
 
             if (DssRef.storage.speed5x)
@@ -102,7 +104,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             else
             {
-                if (!mapControls.overridingDrag())
+                if (!map.overridingDrag())
                 {
                     player.hud.update(out uiRefresh);
                     hudState = player.hud.mouseOverHud;
@@ -112,25 +114,31 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (hudState)
             {
                 inputHelpState = InputHelpState.Menu;
-                mapControls.leftFocusUpdate();
-                player.hud.updateToolTip_menu(uiRefresh);
+                map.leftFocusUpdate();
+                player.hud.updateToolTip_menu();
+            }
+            else if (diplomacy != null)
+            {   
+                map.mapControlsUpdate();
+                player.hud.updateToolTip_menu();
+                //diplomacy.update();
             }
             else
             {
                 inputHelpState = InputHelpState.Map;
-                mapControls.focusedUpdate();
+                map.focusedUpdate();
 
-                if ((mapControls.hover.subTile.hasSelection && InBuildOrdersMode()) || buildControls.buildKeyDown)
+                if ((map.hover.subTile.hasSelection && InBuildOrdersMode()) || build.buildKeyDown)
                 {
                     inputHelpState = InputHelpState.Build;
-                    mapControls.cancelRectangleSelect();
-                    buildControls.updateBuildMode();
+                    map.cancelRectangleSelect();
+                    build.updateBuildMode();
                     if (input.CancelKey.DownEvent)
                     {
-                        
+
                         player.hud.needRefresh = true;
-                        buildControls.buildMode = SelectTileResult.None;
-                        mapControls.selection.subTile.selectTileResult = SelectTileResult.None;
+                        build.buildMode = SelectTileResult.None;
+                        map.selection.subTile.selectTileResult = SelectTileResult.None;
                     }
                 }
                 else
@@ -146,9 +154,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                 }
 
-                if (mapControls.HasRectangleSelect())
+                if (map.HasRectangleSelect())
                 {
-                    player.hud.updateToolTip_multiselect(true, mapControls.RectangleSelect_ToolipAboveMouse());
+                    player.hud.updateToolTip_multiselect(true, map.RectangleSelect_ToolipAboveMouse());
                 }
                 else
                 {
@@ -156,12 +164,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
             }
 
-            mapControls.passiveUpdate();
+            map.passiveUpdate();
 
-            if (armyControls != null)
+            if (army != null)
             {
                 inputHelpState = InputHelpState.Army;
-                armyControls.update();
+                army.update();
             }
             else
             {
@@ -180,18 +188,20 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         objectMenu = false;
                     }
-                    else if (toFocus && mapControls.selection.obj == null)
+                    else if (toFocus && map.selection.obj == null)
                     {
                         mapSelect();
                     }
                     setMenuFocus(toFocus, objectMenu);
                 }
 
-                if (input.ControllerFaction.DownEvent)
+                if (input.ControllerFaction.DownEvent &&
+                    controller_mayUseHeadDisplay())
                 {
                     if (controllerPointer != null && controllerPointer.menu == player.hud.factionMenu.menu)
                     {
                         setMenuFocus(false, false);
+                        
                     }
                     else
                     {
@@ -200,7 +210,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         player.hud.head.TabClick(player.hud.head.factionTabOptions()[0]);
                         player.hud.factionMenu.createMenu(player);
                         player.hud.objMenu.deleteMenu();
-                        mapControls.hover.obj = null;
+                        map.hover.obj = null;
                         setMenuFocus(true, false);
                     }
                 }
@@ -272,6 +282,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             updateObjectTabbing();
         }
 
+        public bool controller_mayUseHeadDisplay()
+        {
+            return diplomacy == null;
+        }
 
 
         public ControllerTabFocus tabFocus()
@@ -280,12 +294,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 if (controllerPointer.menu == player.hud.objMenu.menu)
                 {
-                    switch (mapControls.FocusObjectType())
+                    switch (map.FocusObjectType())
                     {
                         case GameObjectType.City:
                             return ControllerTabFocus.CityMenu;
                         case GameObjectType.Army:
                             return ControllerTabFocus.ArmyMenu;
+                        case GameObjectType.Faction:
+                            return ControllerTabFocus.None;
                         default:
                             return ControllerTabFocus.GeneralObjectsMenu;
                     }
@@ -333,13 +349,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     break;
                 case ControllerTabFocus.Build:
-                    var city = mapControls.selection.obj?.GetCity();
+                    var city = map.selection.obj?.GetCity();
                     if (city != null)
                     {
-                        var tabs = buildControls.availableBuildOptions(city);
-                        var index = arraylib.IndexFromValue(tabs, buildControls.placeBuildingType);
+                        var tabs = build.availableBuildOptions(city);
+                        var index = arraylib.IndexFromValue(tabs, build.placeBuildingType);
                         index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
-                        buildControls.buildingTypeClick(tabs[index]);
+                        build.buildingTypeClick(tabs[index]);
                     }
                     break;
                 case ControllerTabFocus.Pause:
@@ -380,7 +396,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         if (objectMenu)
                         {
                             Vector2 storedPos;
-                            controllerPointer_objectFocus = mapControls.FocusObjectType();
+                            controllerPointer_objectFocus = map.FocusObjectType();
                             switch (controllerPointer_objectFocus)
                             {
                                 case GameObjectType.City:
@@ -389,10 +405,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 case GameObjectType.Army:
                                     storedPos = controllerPointer_storedPos_army;
                                     break;
+                                case GameObjectType.Faction:
+                                    storedPos = controllerPointer_storedPos_diplomacy;
+                                    break;
                                 default:
                                     storedPos = controllerPointer_storedPos_defaultObject;
                                     break;
                             }
+                            player.hud.objMenu.createMenu(player);
                             controllerPointer.setMenu(player.hud.objMenu.menu, storedPos);
                         }
                         else
@@ -432,7 +452,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
 
 
-                mapControls.controllerPointer.Visible = !set;
+                map.controllerPointer.Visible = !set;
             }
 
         }
@@ -441,50 +461,50 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (player.drawUnitsView.current.DrawDetailLayer)
             {
-                if (input.Build.DownEvent && mapControls.hover.subTile.city.faction == player.faction)
+                if (input.Build.DownEvent && map.hover.subTile.city.faction == player.faction)
                 {
-                    var order = player.orders.orderOnSubTile(mapControls.hover.subTile.subTilePos) as BuildOrder;
+                    var order = player.orders.orderOnSubTile(map.hover.subTile.subTilePos) as BuildOrder;
                     if (order != null)
                     {
-                        setBuildMode(mapControls.hover.subTile.city, order.buildingType);
+                        setBuildMode(map.hover.subTile.city, order.buildingType);
                         return;
                     }
 
-                    var build = BuildLib.BuildTypeFromTerrain(mapControls.hover.subTile.subTile.mainTerrain, mapControls.hover.subTile.subTile.subTerrain);
-                    setBuildMode(mapControls.hover.subTile.city, build);
+                    var build = BuildLib.BuildTypeFromTerrain(map.hover.subTile.subTile.mainTerrain, map.hover.subTile.subTile.subTerrain);
+                    setBuildMode(map.hover.subTile.city, build);
                     return;
                 }
 
-                bool inHotkeyRepeceptiveMenu = mapControls.selection.obj != null &&
-                    mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
+                bool inHotkeyRepeceptiveMenu = map.selection.obj != null &&
+                    map.selection.obj.gameobjectType() == GameObjectType.City &&
                     (player.cityTab == MenuTab.Delivery || player.cityTab == MenuTab.Conscript);
 
                 if (!inHotkeyRepeceptiveMenu)
                 {
-                    switch (mapControls.hover.subTile.subTile.mainTerrain)
+                    switch (map.hover.subTile.subTile.mainTerrain)
                     {
                         case TerrainMainType.Building:
 
-                            switch ((TerrainBuildingType)mapControls.hover.subTile.subTile.subTerrain)
+                            switch ((TerrainBuildingType)map.hover.subTile.subTile.subTerrain)
                             {
                                 case TerrainBuildingType.Recruitment:
                                 case TerrainBuildingType.Postal:
                                     if (input.Copy.DownEvent)
                                     {
-                                        int ix = mapControls.hover.subTile.city.deliveryIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        mapControls.hover.subTile.city.copyDelivery(player, ix);
+                                        int ix = map.hover.subTile.city.deliveryIxFromSubTile(map.hover.subTile.subTilePos);
+                                        map.hover.subTile.city.copyDelivery(player, ix);
                                         SoundLib.copy.Play();
                                     }
                                     if (input.Paste.DownEvent)
                                     {
-                                        int ix = mapControls.hover.subTile.city.deliveryIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        mapControls.hover.subTile.city.pasteDelivery(player, ix);
+                                        int ix = map.hover.subTile.city.deliveryIxFromSubTile(map.hover.subTile.subTilePos);
+                                        map.hover.subTile.city.pasteDelivery(player, ix);
                                         SoundLib.paste.Play();
                                     }
                                     if (input.StopStart.DownEvent)
                                     {
-                                        int ix = mapControls.hover.subTile.city.deliveryIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        bool start = mapControls.hover.subTile.city.toggleDeliveryStop(ix);
+                                        int ix = map.hover.subTile.city.deliveryIxFromSubTile(map.hover.subTile.subTilePos);
+                                        bool start = map.hover.subTile.city.toggleDeliveryStop(ix);
                                         (start ? SoundLib.start : SoundLib.stop).Play();
                                     }
                                     break;
@@ -493,20 +513,20 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 case TerrainBuildingType.SoldierBarracks:
                                     if (input.Copy.DownEvent)
                                     {
-                                        int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        mapControls.hover.subTile.city.copyConscript(player, ix);
+                                        int ix = map.hover.subTile.city.conscriptIxFromSubTile(map.hover.subTile.subTilePos);
+                                        map.hover.subTile.city.copyConscript(player, ix);
                                         SoundLib.copy.Play();
                                     }
                                     if (input.Paste.DownEvent)
                                     {
-                                        int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        mapControls.hover.subTile.city.pasteConscript(player, ix);
+                                        int ix = map.hover.subTile.city.conscriptIxFromSubTile(map.hover.subTile.subTilePos);
+                                        map.hover.subTile.city.pasteConscript(player, ix);
                                         SoundLib.paste.Play();
                                     }
                                     if (input.StopStart.DownEvent)
                                     {
-                                        int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        bool start = mapControls.hover.subTile.city.toggleConscriptStop(ix);
+                                        int ix = map.hover.subTile.city.conscriptIxFromSubTile(map.hover.subTile.subTilePos);
+                                        bool start = map.hover.subTile.city.toggleConscriptStop(ix);
                                         (start ? SoundLib.start : SoundLib.stop).Play();
                                         player.hud.needRefresh = true;
                                     }
@@ -519,18 +539,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 #if DEBUG
                 if (VikingEngine.Input.Keyboard.KeyDownEvent(Keys.P))
                 {
-                    var subtile = DssRef.world.subTileGrid.Get(mapControls.hover.subTile.subTilePos);
+                    var subtile = DssRef.world.subTileGrid.Get(map.hover.subTile.subTilePos);
                     subtile.SetType(TerrainMainType.Wall, (int)TerrainWallType.StoneWall, 1);
-                    DssRef.world.subTileGrid.Set(mapControls.hover.subTile.subTilePos, subtile);
+                    DssRef.world.subTileGrid.Set(map.hover.subTile.subTilePos, subtile);
                 }
 #endif
 
             }
 
-            if (mapControls.selection.obj != null &&
-                mapControls.selection.obj.gameobjectType() == GameObjectType.City)
+            if (map.selection.obj != null &&
+                map.selection.obj.gameobjectType() == GameObjectType.City)
             {
-                var city = mapControls.selection.obj.GetCity();
+                var city = map.selection.obj.GetCity();
                 switch (player.cityTab)
                 {
                     case MenuTab.Delivery:
@@ -583,14 +603,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             //}
             //else if (downEvent)
             {
-                bool sameMapObject = mapControls.selection.obj != null;
-                if (mapControls.hover.subTile.hasSelection)
+                bool sameMapObject = map.selection.obj != null;
+                if (map.hover.subTile.hasSelection)
                 {
-                    sameMapObject &= mapControls.selection.obj == mapControls.hover.subTile.city;
+                    sameMapObject &= map.selection.obj == map.hover.subTile.city;
                 }
                 else
                 {
-                    sameMapObject &= mapControls.hover.obj == mapControls.selection.obj;
+                    sameMapObject &= map.hover.obj == map.selection.obj;
                 }
 
                 bool oldselection = clearSelection();
@@ -599,7 +619,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 if (newselection && input.inputSource.IsController)
                 {
-                    if (input.ControllerFocus.DownEvent || mapControls.focusedObjectMenuState())
+                    if (input.ControllerFocus.DownEvent || map.focusedObjectMenuState())
                     {
                         //mapControls.setObjectMenuFocus(true);
                         setMenuFocus(true, true);
@@ -616,28 +636,28 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         bool clickHover(bool sameMapObject)
         {
-            if (mapControls.hover.subTile.hasSelection)//.selectable(faction, out var city))
+            if (map.hover.subTile.hasSelection)//.selectable(faction, out var city))
             {
 
                 SoundLib.click.Play();
 
-                mapControls.onTileSelect(mapControls.hover.subTile, sameMapObject);
+                map.onTileSelect(map.hover.subTile, sameMapObject);
 
                 return true;
             }
 
-            if (mapControls.hover.obj != null &&
-                mapControls.hover.obj.GetFaction() == player.faction)
+            if (map.hover.obj != null &&
+                map.hover.obj.GetFaction() == player.faction)
             {
                 SoundLib.click.Play();
-                mapControls.onSelect();
+                map.onSelect();
 
-                switch (mapControls.selection.obj.gameobjectType())
+                switch (map.selection.obj.gameobjectType())
                 {
                     case GameObjectType.Army:
                         SoundLib.select_army.Play();
                         {
-                            armyControls = new ArmyControls(player, new ArmyCollection(mapControls.selection.obj.GetArmy()));
+                            army = new ArmyControls(player, new ArmyCollection(map.selection.obj.GetArmy()));
                         }
                         break;
                     case GameObjectType.City:
@@ -647,7 +667,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     case GameObjectType.Soldier:
                         SoundLib.select_army.Play();
                         {
-                            soldierControls = new SoldierControls(new List<SoldierGroup> { mapControls.selection.obj.GetSoldierGroup() });
+                            soldier = new SoldierControls(new List<SoldierGroup> { map.selection.obj.GetSoldierGroup() });
                         }
                         break;
                         //case GameObjectType.Faction:
@@ -665,17 +685,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void mapSelect(AbsWorldObject mapObject)
         {
-            bool sameMapObject = mapControls.selection.obj != null && mapObject == mapControls.selection.obj;
+            bool sameMapObject = map.selection.obj != null && mapObject == map.selection.obj;
             clearSelection();
 
-            mapControls.hover.obj = mapObject;
+            map.hover.obj = mapObject;
             clickHover(sameMapObject);
 
         }
 
         public void selectObject(GameObject.AbsGameObject obj)
         {
-            mapControls.cameraFocus = obj;
+            map.cameraFocus = obj;
             mapSelect(obj.GetWorldObject());
         }
 
@@ -724,7 +744,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 if (current == tabCity)
                 {
                     //focus on city
-                    mapControls.cameraFocus = citiesC.sel;
+                    map.cameraFocus = citiesC.sel;
                     mapSelect(citiesC.sel);
 
                     return;
@@ -738,7 +758,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 if (tabArmy.Next_Rollover())
                 {
-                    mapControls.cameraFocus = tabArmy.sel;
+                    map.cameraFocus = tabArmy.sel;
                     mapSelect(tabArmy.sel);
 
                     return;
@@ -748,7 +768,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 if (tabArmy.Prev_Rollover())
                 {
-                    mapControls.cameraFocus = tabArmy.sel;
+                    map.cameraFocus = tabArmy.sel;
                     mapSelect(tabArmy.sel);
 
                     return;
@@ -759,18 +779,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             bool bClear = false;
 
-            if (armyControls != null)
+            if (army != null)
             {
-                armyControls.clearState();
-                armyControls = null;
+                army.clearState();
+                army = null;
             }
 
-            if (soldierControls != null)
+            if (soldier != null)
             {
-                soldierControls = null;
+                soldier = null;
             }
 
-            bClear = mapControls.clearSelection();
+            bClear = map.clearSelection();
             player.hud.clearState();
 
             return bClear;
@@ -778,10 +798,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void mapExecute()
         {
-            if (armyControls != null)
+            if (army != null)
             {
-                armyControls.mapExecute();
-                armyControls.moveOrderEffect();
+                army.mapExecute();
+                army.moveOrderEffect();
 
                 if (input.inputSource.IsController)
                 {
@@ -789,9 +809,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
             }
 
-            if (soldierControls != null)
+            if (soldier != null)
             {
-                soldierControls.mapExecute(player);
+                soldier.mapExecute(player);
             }
         }
         void gameSpeedInput()
@@ -843,22 +863,23 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.cityTab = MenuTab.Build;
             if (type != BuildAndExpandType.NUM_NONE)
             {
-                buildControls.buildMode = SelectTileResult.Build;
-                buildControls.placeBuildingType = type;
+                build.buildMode = SelectTileResult.Build;
+                build.placeBuildingType = type;
             }
         }
         public bool InBuildOrdersMode()
         {
             return player.cityTab == Display.MenuTab.Build &&
-                mapControls.selection.obj != null &&
-                mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
-                buildControls.buildMode != SelectTileResult.None &&
+                map.selection.obj != null &&
+                map.selection.obj.gameobjectType() == GameObjectType.City &&
+                build.buildMode != SelectTileResult.None &&
                 player.drawUnitsView.current.DrawDetailLayer;
         }
     }
 
     enum ControllerTabFocus
     { 
+        None,
         Pause,
         CityMenu,
         ArmyMenu,

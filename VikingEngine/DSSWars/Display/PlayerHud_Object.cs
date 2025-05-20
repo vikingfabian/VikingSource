@@ -101,6 +101,14 @@ namespace VikingEngine.DSSWars.Display
             {
                 return;
             }
+
+            if (player.hud.detailLevel == HudDetailLevel.Minimal &&
+                (faction == null || !selected))
+            {
+                deleteMenu();
+                return;
+            }
+
             if (faction == null)
             {
                 historyDisplay(player);

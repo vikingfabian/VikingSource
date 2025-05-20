@@ -49,9 +49,9 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            if (player.gameControls.mapControls.selection.obj != current)
+            if (player.gameControls.map.selection.obj != current)
             {
-                current = player.gameControls.mapControls.selection.obj as City;
+                current = player.gameControls.map.selection.obj as City;
                 //imageGroup.DeleteAll();
                 for(int i = 0; i < imageGroup.Count; ++i)//each (var img in imageGroup)
                 {

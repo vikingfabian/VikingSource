@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.Map
                 visible = player.playerData.view.DrawAreaF.IntersectPoint(bg.position);
             }
 
-            if ((player.gameControls.mapControls.pointerPos() - bg.position).Length() < Engine.Screen.IconSize)
+            if ((player.gameControls.map.pointerPos() - bg.position).Length() < Engine.Screen.IconSize)
             { 
                 visible = false;
             }
