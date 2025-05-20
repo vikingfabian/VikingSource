@@ -1,15 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Removed 5X speed from the demo
-* Army collection hud improvements
-* Fixed battle lab crash on start
-* Repaired army path visuals, and improved them a bit
-* Army seletion is viewed on detail zoom
-* Soldier command is blocked when zoomed out
-* Fixed: Players with no controller selection crashes the game
-* Repaired: move multiplayer screen
-* Blocked map click in diplomacy view
-* Repaired: diplomacy controller support
+* 
 
 
 
