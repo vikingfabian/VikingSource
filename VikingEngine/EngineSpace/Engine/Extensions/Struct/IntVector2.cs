@@ -5,9 +5,7 @@ using System.Collections.Generic;
 namespace VikingEngine
 {
     public struct IntVector2 : IBinaryIOobj, IComparable
-    {
-       
-        
+    {        
         public static readonly IntVector2[] Dir4Array = new IntVector2[] {
             new IntVector2(0, -1),
             new IntVector2(1, 0),

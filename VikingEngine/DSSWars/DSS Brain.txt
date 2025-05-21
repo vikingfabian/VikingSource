@@ -1,6 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Removed 5X speed from the demo
+* Optimized draw models in monogame source
 
 #DSS1 issues#
 
