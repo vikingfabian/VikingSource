@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VikingEngine", "VikingEngine\VikingEngine.csproj", "{6EED285D-F1AF-4F1F-9ADF-9517ED8C35C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.DesktopGL", "..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj", "{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,30 @@ Global
 		{6EED285D-F1AF-4F1F-9ADF-9517ED8C35C3}.Release|ARM64.Build.0 = Release|ARM64
 		{6EED285D-F1AF-4F1F-9ADF-9517ED8C35C3}.Release|x64.ActiveCfg = Release|x64
 		{6EED285D-F1AF-4F1F-9ADF-9517ED8C35C3}.Release|x64.Build.0 = Release|x64
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Debug|x64.Build.0 = Debug|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Linux x64|Any CPU.ActiveCfg = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Linux x64|Any CPU.Build.0 = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Linux x64|ARM64.ActiveCfg = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Linux x64|ARM64.Build.0 = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Linux x64|x64.ActiveCfg = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Linux x64|x64.Build.0 = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.LinuxARM|Any CPU.ActiveCfg = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.LinuxARM|Any CPU.Build.0 = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.LinuxARM|ARM64.ActiveCfg = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.LinuxARM|ARM64.Build.0 = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.LinuxARM|x64.ActiveCfg = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.LinuxARM|x64.Build.0 = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Release|ARM64.Build.0 = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Release|x64.ActiveCfg = Release|Any CPU
+		{C29DB7B5-2BD5-7819-1B1C-882B2FDE125B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
