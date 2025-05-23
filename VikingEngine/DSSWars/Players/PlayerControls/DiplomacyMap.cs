@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars
                         {
                             if (player.gameControls.input.inputSource.IsController)
                             {
-                                float dist = (player.gameControls.mapControls.XPointerPos() - rel.bg.RealCenter).Length();
+                                float dist = (player.gameControls.map.XPointerPos() - rel.bg.RealCenter).Length();
                                 if (dist < controller_closestDist)
                                 {
                                     controller_closestDist = dist;
@@ -223,13 +223,16 @@ namespace VikingEngine.DSSWars
                     //hoverArea.AddRadius(4);
                     //hoverbox.Area = hoverArea;
 
-                    if (player.gameControls.input.ControllerSelect.DownEvent)
+                    if (player.gameControls.input.mouseSelect.DownEvent)
                     {
                         SoundLib.select_faction.Play();
                         selected = currentHover;
                         player.hud.needRefresh = true;
 
-                        //player.hud.displays.beginMove(2);
+                        if (player.gameControls.input.inputSource.IsController)
+                        {
+                            player.gameControls.setMenuFocus(true, true);
+                        }
 
                         var faction = DssRef.world.factions.Array[selected.faction];
 
@@ -245,7 +248,7 @@ namespace VikingEngine.DSSWars
                 {
                     //hoverbox.Visible = false;
 
-                    if (player.gameControls.input.ControllerSelect.DownEvent)
+                    if (player.gameControls.input.mouseSelect.DownEvent)
                     {
                         cancel();
                     }
@@ -289,6 +292,7 @@ namespace VikingEngine.DSSWars
         {
             if (selected != null)
             {
+                player.gameControls.setMenuFocus(false, true);
                 selected = null;
                 seletionbox.Visible = false;
             }

@@ -70,6 +70,7 @@ namespace VikingEngine.HUD.RichBox
 
             area.AddXRadius(2);
             area.AddYRadius(-2);
+            area.Round();
             //bgPointer = new Image(SpriteName.WhiteArea_LFtiles, area.Position, area.Size, group.layer + 1);
             createBackground(group, area, group.layer + 1);
 

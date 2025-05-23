@@ -23,8 +23,8 @@ namespace VikingEngine.DSSWars.Players
 
         public AbsDetailUnit darkLordUnit = null;
 
-        public DarkLordPlayer(Faction faction)
-            : base(faction)
+        public DarkLordPlayer(Faction faction, bool newGame)
+            : base(faction, newGame)
         {
             switch (DssRef.difficulty.bossSize)
             {

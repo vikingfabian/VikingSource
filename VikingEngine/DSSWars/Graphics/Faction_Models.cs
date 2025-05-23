@@ -253,6 +253,9 @@ namespace VikingEngine.DSSWars
                     addFlagTexture(faction, copy, ArmyStandStart, true, 0);
                     addFlagTexture(faction, copy, ArmyShipStart, true, 1);
                     break;
+                case VoxelModelName.armystand_detail:
+                    addFlagTexture(faction, copy, ArmyStandStart, true, 0);
+                    break;
                 case VoxelModelName.armybanner:
                     addFlagTexture(faction, copy, ArmyBannerStart, false);
                     break;

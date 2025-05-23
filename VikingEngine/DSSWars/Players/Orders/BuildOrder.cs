@@ -27,7 +27,6 @@ namespace VikingEngine.DSSWars.Players.Orders
             Debug.CrashIfThreaded();
             model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, true, WorldData.SubTileWidth * 1.4f, true, true, false);
             model.Frame = frame;
-            //model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
         }
 
@@ -43,7 +42,6 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override void DeleteMe()
         {
-            //model.DeleteMe();
             DssRef.models.recycle(ref model, true);
             base.DeleteMe();
         }
@@ -66,11 +64,6 @@ namespace VikingEngine.DSSWars.Players.Orders
             this.subTile = subTile;
             this.buildingType = buildingType;
             this.upgrade = upgrade;
-
-            //if (bLocalPlayer)
-            //{
-            //    init();
-            //}
         }
 
         public override void onAdd()
@@ -114,7 +107,6 @@ namespace VikingEngine.DSSWars.Players.Orders
             buildingType = (BuildAndExpandType)r.ReadByte();
 
             onAdd();
-            //init();
         }
 
         override public void DeleteMe()

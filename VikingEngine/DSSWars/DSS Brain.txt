@@ -2,7 +2,6 @@
 -Change Log-
 * Optimized draw models in monogame source
 
-#DSS1 issues#
 
 
 #Free build defences
@@ -12,12 +11,6 @@ Assign men to wall (ballista, har warmashine crew)
 
 -nobel housing (kräver park?)
 (priest housing)
-
-
-#DEMO#
--load map with attackers
--exit on win or looseF
--stats, open stats 
 
 #OPT#
 monogame fork? DrawUserPrimitives opt, titta på OGG filer
@@ -124,11 +117,7 @@ English, Simplified Chinese, Japanese, Russian, Spanish, German
 2. 50 hour playtime
 3. maybe multiplayer
 
--.net installer
 -Select leader type
--Free build of city walls, towers
--Better looking start cities
--Nicer menu
 -Dynamic shadows shader
 -New end boss
 -Story intro
@@ -138,9 +127,6 @@ https://discord.com/verification
 
 -steam stats
 -Min 7K wishlists
--hör av till 300 streamers om demo, lägg screens i mailet
--wishlist länk i spelet måste finnas i alla menyer (använd steam API)
-- https://impress.games/press-kitty
 - kolla steam db releases
 
 

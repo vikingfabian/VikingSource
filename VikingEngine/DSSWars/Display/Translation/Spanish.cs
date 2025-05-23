@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Botón para seleccionar el número de jugadores en multijugador local, 0: número actual de jugadores
         /// </summary>
-        public override string Lobby_LocalMultiplayerEdit => "Multijugador local ({0})";
+        public override string Lobby_LocalMultiplayerEdit => "Multijugador local";
 
         /// <summary>
         /// Título del menú donde se selecciona el número de jugadores en pantalla dividida

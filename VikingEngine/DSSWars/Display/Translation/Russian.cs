@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Кнопка для выбора количества локальных игроков, 0: текущее количество игроков
         /// </summary>
-        public override string Lobby_LocalMultiplayerEdit => "Локальный мультиплеер ({0})";
+        public override string Lobby_LocalMultiplayerEdit => "Локальный мультиплеер";
 
         /// <summary>
         /// Заголовок меню, где выбирается количество игроков в режиме разделенного экрана

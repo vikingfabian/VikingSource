@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         BattleSetupManager setupManager;
         public BattleLabPlayer(Faction faction)
-            : base(faction)
+            : base(faction, true)
         {
             setupManager = new BattleSetupManager();
         }

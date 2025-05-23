@@ -111,7 +111,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool LocalMember
         {
-            get { return faction.Owner.IsLocal; }
+            get { return faction.player.IsLocal; }
         }
 
         //abstract public Faction Faction();

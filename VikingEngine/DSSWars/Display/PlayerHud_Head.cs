@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Display
         {
             var content = new RichBoxContent();
             headMenu(content, false);
-            menu.Refresh(content);
+            menu.Refresh(content, player.gameControls.controllerPointer);
         }
         public void refreshUpdate(LocalPlayer player)
         {
@@ -74,6 +74,9 @@ namespace VikingEngine.DSSWars.Display
             menu.updateMouseInput(ref mouseOver);
             return menu.needRefresh;
         }
+
+        public MenuTab[] factionTabOptions()
+        { return DssRef.storage.runTutorial_1short_2normal == 0 ? Tabs : TutorialTabs; }
 
         public void headMenu(RichBoxContent content, bool prepareLayout)
         {
@@ -164,7 +167,19 @@ namespace VikingEngine.DSSWars.Display
 
             content.newLine();
 
-            MenuTab[] tabOptions = DssRef.storage.runTutorial_1short_2normal == 0 ? Tabs : TutorialTabs;
+            if (player.gameControls.input.inputSource.IsController)
+            {
+                content.Add(new RbImage(player.gameControls.input.ControllerFaction.Icon) { color = player.gameControls.controller_mayUseHeadDisplay()? Color.White : Color.Black });
+                content.space();                
+            }
+            bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Headmenu, out Color focusColor);
+            if (viewControllerTabs)
+            {
+                content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
+                content.space(0.5f);
+            }
+
+            MenuTab[] tabOptions = factionTabOptions();
             for (int i = 0; i < tabOptions.Length; ++i)
             {
                 var tab = tabOptions[i];
@@ -193,9 +208,20 @@ namespace VikingEngine.DSSWars.Display
                     }, new RbAction1Arg<MenuTab>(TabClick, tab), new RbTooltip(TabTip, tab)));
             }
 
+            if (viewControllerTabs)
+            {
+                content.space(0.5f);
+                content.Add(new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor });
+            }
+
             content.space(2);
             {
                 RichBoxContent buttonContent = new RichBoxContent();
+                if (player.gameControls.input.inputSource.IsController)
+                {
+                    buttonContent.Add(new RbImage(player.gameControls.input.NextCity.Icon));
+                    buttonContent.space(0.5f);
+                }
                 buttonContent.Add(new RbImage(SpriteName.WarsCityHall));
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(cityCount.ToString()));
@@ -204,6 +230,11 @@ namespace VikingEngine.DSSWars.Display
             }
             {
                 RichBoxContent buttonContent = new RichBoxContent();
+                if (player.gameControls.input.inputSource.IsController)
+                {
+                    buttonContent.Add(new RbImage(player.gameControls.input.NextArmy.Icon));
+                    buttonContent.space(0.5f);
+                }
                 buttonContent.Add(new RbImage(SpriteName.WarsFlagType_Banner));
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(armyCount.ToString()));
@@ -212,10 +243,10 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        void TabClick(MenuTab tab)
+        public void TabClick(MenuTab tab)
         {
             var player = this.player.GetLocalPlayer();
-            player.gameControls.mapControls.clearSelection();
+            player.gameControls.map.clearSelection();
             if (player.factionTab == tab)
             {
                 player.factionTab = MenuTab.NUM_NONE;

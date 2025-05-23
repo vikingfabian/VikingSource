@@ -43,8 +43,7 @@ namespace VikingEngine.Input
         public static void Init()
         {
             controllers = new List2<XController>(GamePad.MaximumGamePadCount);
-            Update();
-                
+            Update();                
         }
         
         public static void Update()

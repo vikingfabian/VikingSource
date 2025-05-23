@@ -14,6 +14,7 @@ namespace VikingEngine.EngineSpace.Graphics.In3D
         public Plane[] Planes = new Plane[6]; // Left, Right, Top, Bottom, Near, Far
 
         public Vector2 pointerDownPos;
+        public Vector3 pointerDownPosWp;
         public Vector2 currentPointerPos;
         PlayerView pview;
         Vector3[] corners;
@@ -67,16 +68,19 @@ namespace VikingEngine.EngineSpace.Graphics.In3D
 
 
 
-        public void begin(Vector2 mouseDown)
+        public void begin(Vector2 screenPos, Vector3 mouseDownWp)
         {
-            this.pointerDownPos = mouseDown;
-            currentPointerPos = mouseDown;
-            vectorRect = new VectorRect(mouseDown, Vector2.Zero);
+            this.pointerDownPosWp = mouseDownWp;
+            pointerDownPos = screenPos;
+            currentPointerPos = screenPos;
+            vectorRect = new VectorRect(screenPos, Vector2.Zero);
         }
 
         public void update(Vector2 mousePosition)//, GraphicsDevice graphicsDevice, Matrix view, Matrix projection)
         {
             // Step 1: Normalize rectangle
+            pointerDownPos = pview.Camera.From3DToScreenPos(pointerDownPosWp, pview.Viewport);
+
             Rectangle rect = NormalizeRectangle(pointerDownPos, mousePosition);
             currentPointerPos = mousePosition;
             vectorRect.Rectangle = rect;

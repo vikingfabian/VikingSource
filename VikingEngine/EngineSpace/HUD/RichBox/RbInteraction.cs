@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.PJ.Match3;
 
 namespace VikingEngine.HUD.RichBox
@@ -47,12 +49,46 @@ namespace VikingEngine.HUD.RichBox
         }
 
        
+        public bool updateController(RichMenuControllerPointer pointer)
+        {
+            pointer.pointer.position += pointer.accelerateInput(pointer.inputMap.move.direction);
+            pointer.pointer.position = pointer.menu.renderArea.KeepPointInsideBound_Position(pointer.pointer.position);
 
-        //public void inherit(RbInteraction prev)
-        //{
-        //    hover = prev.hover;
-        //    selectionOutline = prev.selectionOutline;
-        //}
+            refreshControllerHover(pointer);
+            return clickUpdate(pointer.menu, true);
+        }
+
+        public void refreshControllerHover(RichMenuControllerPointer pointer)
+        {
+            Vector2 pos = pointer.pointer.position - pointer.menu.renderArea.Position;
+
+            VectorRect area = VectorRect.Zero;
+            AbsRbButton prev = hover;
+            hover = null;
+            float distance = float.MaxValue;
+            foreach (var m in buttons)
+            {
+                area = m.area();
+                float arDist = area.distanceTo(pos);
+                if (arDist <= 0)
+                {
+                    hover = m;
+                    distance = 0;
+                    break;
+                }
+                else
+                {
+                    if (arDist < distance && arDist < pointer.maxInteractDistance)
+                    {
+                        distance = arDist;
+                        hover = m;
+                    }
+                }
+            }
+
+            hoverUpdate(pointer.menu, prev);
+        }
+
 
         /// <returns>Any interaction happened (to avoid multiple)</returns>
         override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool unused1)
@@ -91,37 +127,22 @@ namespace VikingEngine.HUD.RichBox
                     area = m.area();
                     if (area.IntersectPoint(pos))
                     {
-                        //if (Input.Keyboard.Ctrl && m != prev)
-                        //{
-                        //    lib.DoNothing();
-                        //}
                         hover = m;
-                        //area2 = hover.area();
                         break;
                     }
                     ++buttonIndex;
                 }
             }
 
+            hoverUpdate(menu, prev);
+
+            return clickUpdate(menu, useClickInput);
+        }
+
+        void hoverUpdate(RichMenu.RichMenu menu, AbsRbButton prev)
+        { 
             if (hover != prev)
             {
-                
-                //Debug.Log("hover != prev");
-
-                //Debug.Log($"Mouse offset: {mousePosOffSet}");
-                //Debug.Log($"Mouse pos: {Input.Mouse.Position}");
-                //Debug.Log($"First button: {buttons[0].area()}");
-                //Debug.Log($"Menu render pos: {menu.renderList.position}");
-
-                //if (hover == null)
-                //{
-                //    Debug.Log($"Hover: null");
-                //}
-                //else
-                //{
-                //    Debug.Log($"Hover, ix{buttonIndex}: {hover.area()}");
-                //}
-
                 if (prev != null)
                 {
                     prev.clickAnimation(false);
@@ -132,7 +153,10 @@ namespace VikingEngine.HUD.RichBox
                 
                 hover?.onEnter(menu);
             }
+        }
 
+        bool clickUpdate(RichMenu.RichMenu menu, bool useClickInput)
+        {
             if (hover != null)
             {
                 if (clickInput.DownEvent && useClickInput)

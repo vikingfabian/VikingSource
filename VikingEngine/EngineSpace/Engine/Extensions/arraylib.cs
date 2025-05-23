@@ -535,6 +535,19 @@ namespace VikingEngine
             return -1;
         }
 
+        public static int IndexFromValue<T>(List<T> list, T value)
+        {
+            for (int i = 0; i < list.Count; ++i)
+            {
+                if (list[i].Equals(value))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
         public static bool ReplaceValue<T>(List<T> array, T from, T to)
         {
             for (int i = 0; i < array.Count; ++i)

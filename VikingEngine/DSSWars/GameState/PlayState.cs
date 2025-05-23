@@ -33,12 +33,14 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
+
+    //class DropInPlayer
+    //{ 
+    //    public DropInPlayer(lo
+    //}
+
     class PlayState : AbsPlayState
     {
-        //public const int PathThreadCount = 4;
-
-        
-
         public int nextGroupId = 0;
        
        
@@ -103,7 +105,7 @@ namespace VikingEngine.DSSWars
             HudLib.Init();
 
             DssRef.world.factions.Array[0] = new Faction(DssRef.world, FactionType.Player);
-            var local = new Players.LocalPlayer(DssRef.world.factions.Array[0]);
+            var local = new Players.LocalPlayer(DssRef.world.factions.Array[0], false);
             localPlayers = new List<Players.LocalPlayer>(1);
             localPlayers.Add(local);
             local.assignPlayer(0, 1, false);
@@ -174,8 +176,6 @@ namespace VikingEngine.DSSWars
 
         void initPlayers(bool newGame, ObjectPointerCollection pointers)
         {
-            //Players.AiPlayer.EconomyMultiplier = Difficulty.AiEconomyLevel[DssRef.difficulty.aiEconomyLevel] / 100.0;
-
             new Faction(DssRef.world, FactionType.DarkLord);
             new Faction(DssRef.world, FactionType.SouthHara);
             new Faction(DssRef.world, FactionType.Barbarians);
@@ -208,12 +208,12 @@ namespace VikingEngine.DSSWars
                 {
                     case FactionType.DarkLord:
                         {
-                            DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel);
+                            DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel, newGame);
                         }
                         break;
                     case FactionType.Player:
                         {
-                            var local = new Players.LocalPlayer(factionsCounter.sel);
+                            var local = new Players.LocalPlayer(factionsCounter.sel, newGame);
                             //var local = arraylib.PullFirstMember(pointers.localPlayers);//new Players.LocalPlayer(factionsCounter.sel, 
 
                             localPlayers.Add(local);
@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars
                         break;
                     default:
                         {
-                            new Players.AiPlayer(factionsCounter.sel);
+                            new Players.AiPlayer(factionsCounter.sel, newGame);
                         }
                         break;
                 }
@@ -250,20 +250,31 @@ namespace VikingEngine.DSSWars
                     else
                     {
                         startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
-                        local = new Players.LocalPlayer(startFaction);
+                        local = new Players.LocalPlayer(startFaction, newGame);
                         localPlayers.Add(local);
                     }
                     
-                    local.assignPlayer(i, playerCount, newGame);
-                    
+                    local.assignPlayer(i, playerCount, newGame);                  
                     
                 }
             }
             else
-            {
+            {                
+
                 for (var i = 0; i < playerCount; ++i)
                 {
+                    if (localPlayers.Count <= i)
+                    {
+                        //Drop in support
+                        Faction startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
+                        Players.LocalPlayer local = new Players.LocalPlayer(startFaction, newGame) { isDropInPlayer = true };
+                        
+                        localPlayers.Add(local);
+                    }
+
                     localPlayers[i].assignPlayer(i, playerCount, newGame);
+
+                    Debug.Log("Add player " + localPlayers[i].ToString() + ", to " + localPlayers[i].faction.ToString());
                 }
             }
 

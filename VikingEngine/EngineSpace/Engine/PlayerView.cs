@@ -10,6 +10,7 @@ namespace VikingEngine.Engine
 {
     class PlayerView
     {
+        public const float SafeSpaceBetweenPlayers = 8;
         public Graphics.CameraType camType = Graphics.CameraType.TopView;
         public Graphics.AbsCamera Camera, LightCamera;
         public int ScreenIndex = -1;
@@ -191,11 +192,19 @@ namespace VikingEngine.Engine
             DrawAreaF = new VectorRect(DrawArea);
             safeScreenArea = DrawAreaF;
 
-            safeScreenArea.Position += new Vector2(1);
-            safeScreenArea.Width = Bound.Max(safeScreenArea.Width, Engine.Screen.SafeArea.Width);
-            safeScreenArea.Height = Bound.Max(safeScreenArea.Height, Engine.Screen.SafeArea.Height);
+            //safeScreenArea.X//.Position += new Vector2(1);
+            //safeScreenArea.Width = Bound.Max(safeScreenArea.Width, Engine.Screen.SafeArea.Width);
+            //safeScreenArea.Height = Bound.Max(safeScreenArea.Height, Engine.Screen.SafeArea.Height);
 
             safeScreenArea = Engine.Screen.SafeArea.KeepSmallerRectInsideBound_Position(safeScreenArea);
+            if (safeScreenArea.X == DrawAreaF.X)
+            {
+                safeScreenArea.AddToLeftSide( -SafeSpaceBetweenPlayers);
+            }
+            if (safeScreenArea.Right == DrawAreaF.Right)
+            {
+                safeScreenArea.Width -= SafeSpaceBetweenPlayers;
+            }
 
         }
     }

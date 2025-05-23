@@ -57,17 +57,20 @@ namespace VikingEngine.DSSWars.Players
             w.Write(protectedPlayer);
 
         }
-        public override void readGameState(BinaryReader r, int version, ObjectPointerCollection pointers)
+        public override void readGameState(BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, version, pointers);
+            base.readGameState(r, subversion, pointers);
 
-            IsPlayerNeighbor = r.ReadBoolean();
-            aggressionLevel = r.ReadByte();
-            protectedPlayer = r.ReadBoolean();
+            readAiPlayerGameState(r, subversion);
+            //IsPlayerNeighbor = r.ReadBoolean();
+            //aggressionLevel = r.ReadByte();
+            //protectedPlayer = r.ReadBoolean();
         }
 
-        public AiPlayer(Faction faction)
-            : base(faction)
+        
+
+        public AiPlayer(Faction faction, bool newGame)
+            : base(faction, newGame)
         {            
             faction.profile.gameStartInit();
 

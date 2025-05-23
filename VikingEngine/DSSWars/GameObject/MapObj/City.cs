@@ -2188,7 +2188,7 @@ namespace VikingEngine.DSSWars.GameObject
             CityPresentationHud(args, false);
             //base.toHud(args);
             args.content.newLine();
-            if (args.ShowFull)
+            //if (args.ShowFull)
             {
                 if (faction == args.player.faction)
                 {
@@ -2611,9 +2611,9 @@ namespace VikingEngine.DSSWars.GameObject
             foreach (int n in neighborCities)
             {
                 City c = Get(n);
-                if (c.faction != this.faction && c.faction.Owner is Players.AiPlayer)
+                if (c.faction != this.faction && c.faction.player is Players.AiPlayer)
                 {
-                    c.faction.Owner.IsPlayerNeighbor = true;
+                    c.faction.player.IsPlayerNeighbor = true;
                 }
             }
         }
@@ -2623,7 +2623,7 @@ namespace VikingEngine.DSSWars.GameObject
             foreach (int n in neighborCities)
             {
                 City c = Get(n);
-                if (c.faction != this.faction && c.faction.Owner.IsPlayerNeighbor)
+                if (c.faction != this.faction && c.faction.player.IsPlayerNeighbor)
                 {
                     return true;
                 }

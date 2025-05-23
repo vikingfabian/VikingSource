@@ -168,6 +168,11 @@ namespace VikingEngine.DSSWars
         virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             factiontype = (FactionType)r.ReadUInt16();
+            if (player.IsLocalPlayer() && player.GetLocalPlayer().isDropInPlayer)
+            {
+                factiontype = FactionType.Player;
+            }
+
             if (subVersion < 53)
             {
                 int gold = r.ReadInt32();
@@ -244,7 +249,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                new Players.AiPlayer(this);
+                new Players.AiPlayer(this, false);
             }
         }
 
@@ -1015,13 +1020,6 @@ namespace VikingEngine.DSSWars
                 isAlive = false;
                 DssRef.diplomacy.onFactionDeath(this);
 
-                //if (factiontype == FactionType.SouthHara &&
-                //    DssRef.state.events.nextEvent <= EventType.DarkLord &&
-                //    DssRef.difficulty.bossTimeSettings <= BossTimeSettings.Early)
-                //{
-                //    DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
-                //}
-                //else 
                 if (factiontype == FactionType.Player)
                 {
                     DssRef.state.events.onPlayerDeath();
@@ -1036,11 +1034,11 @@ namespace VikingEngine.DSSWars
 
         public override string ToString()
         {
-            if (player is Players.LocalPlayer)
-            {
-                return Owner.Name;
-            }
-            return "Faction " + parentArrayIndex.ToString();
+            //if (player is Players.LocalPlayer)
+            //{
+            //    return Owner.Name;
+            //}
+            return $"Faction ({parentArrayIndex}) - Owner ({player.Name}), Type({factiontype})";
         }
 
         public string PlayerName
@@ -1055,21 +1053,22 @@ namespace VikingEngine.DSSWars
         {
             w.Write((byte)parentArrayIndex);
         }
-        public Players.AbsPlayer Owner
-        {
-            get
-            {
-                return player;
-            }
-            set
-            {
-                if (player != value)
-                {
-                    player = value;
-                    onNewOwner();
-                }
-            }
-        }
+        //public Players.AbsPlayer Owner
+        //{
+        //    get
+        //    {
+        //        return player;
+        //    }
+        //    set
+        //    {
+        //        if (player != value)
+        //        {
+        //            player = value;
+        //            onNewOwner();
+        //        }
+        //    }
+        //}
+
 
         public FactionSize Size()
         {

@@ -10,7 +10,6 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
-using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Display
 {
@@ -69,7 +68,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 var obj = selectHistory[i];
 
-                if (obj.isDeleted)
+                if (obj.IsDeleted())
                 {
                     selectHistory.RemoveAt(i);
                 }
@@ -87,13 +86,13 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
 
-            menu.Refresh(content);
+            menu.Refresh(content, player.gameControls.controllerPointer);
         }
 
         public void refresh(Players.LocalPlayer player, RichBoxContent content)
         {
             //createMenu(player);
-            menu.Refresh(content);
+            menu.Refresh(content, player.gameControls.controllerPointer);
         }
 
         public void refreshDiplomacy(Players.LocalPlayer player, Faction faction, bool selected)
@@ -102,6 +101,14 @@ namespace VikingEngine.DSSWars.Display
             {
                 return;
             }
+
+            if (player.hud.detailLevel == HudDetailLevel.Minimal &&
+                (faction == null || !selected))
+            {
+                deleteMenu();
+                return;
+            }
+
             if (faction == null)
             {
                 historyDisplay(player);
@@ -112,7 +119,7 @@ namespace VikingEngine.DSSWars.Display
 
                 var content = new RichBoxContent();
                 diplomacy.toHud(content, faction, selected);
-                menu.Refresh(content);
+                menu.Refresh(content, player.gameControls.controllerPointer);
             }
         }
 
@@ -123,18 +130,24 @@ namespace VikingEngine.DSSWars.Display
                 return;
             }
 
+            if (player.hud.detailLevel == HudDetailLevel.Minimal && 
+                (obj == null || !selected))
+            {
+                deleteMenu();
+                return;
+            }
+
             if (obj == null)
             {
                 historyDisplay(player);
             }
             else
             {
-
                 createMenu(player);
 
                 var content = new RichBoxContent();
                 obj.toHud(new ObjectHudArgs(content, player, selected));
-                menu.Refresh(content);
+                menu.Refresh(content, player.gameControls.controllerPointer);
             }
 
             if (selected)
