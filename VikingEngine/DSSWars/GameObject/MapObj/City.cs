@@ -29,6 +29,8 @@ using System.ComponentModel;
 using Microsoft.CodeAnalysis.Text;
 using System.Reflection.Metadata;
 using VikingEngine.DebugExtensions;
+using VikingEngine.ToGG.MoonFall;
+using VikingEngine.DSSWars.Display.Translation;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -924,35 +926,7 @@ namespace VikingEngine.DSSWars.GameObject
             return 40000 + HousingCount_Workers * 10;
         }
 
-        //public int releaseWorkForceGain()
-        //{
-        //    return expandWorkForceCost() / 2 - DssConst.ExpandGuardSize * 10;
-        //}
-
-
-        //public bool canIncreaseGuardSize(int count, bool checkIfCapped)
-        //{
-        //    if (checkIfCapped && guardCount + 2 < maxGuardSize)
-        //    {
-        //        return false;
-        //    }
-
-        //    return (maxGuardSize + DssConst.ExpandGuardSize * count) <= HousingCount_Workers;            
-        //}
-
-        //public bool canReleaseGuardSize(int count)
-        //{
-        //    return (maxGuardSize - DssConst.ExpandGuardSize * count) >= DssConst.ExpandGuardSize;
-        //}
-
-        //public void expandWorkForce(int totalAmount)
-        //{
-        //    HousingCount_Workers += totalAmount;
-        //    //refreshCitySize();
-        //    refreshWorkerSubtiles();
-        //}
-
-        //public const int WorkersPerHut = 30;
+      
         const int WorkerHutsPerTile = 4;
         const int WorkerHutsPerTile_MaxLevel = WorkerHutsPerTile * HutMaxLevel;
         public const int WorkersPerTile = DssConst.HousingCount_WorkerHut * WorkerHutsPerTile * HutMaxLevel;
@@ -2253,6 +2227,9 @@ namespace VikingEngine.DSSWars.GameObject
                                 case AutomationFocus.NoFocus:
                                     caption = DssRef.lang.Hud_None;
                                     break;
+                                case AutomationFocus.Food:
+                                    caption = DssRef.lang.Resource_TypeName_Food;
+                                    break;
                                 case AutomationFocus.Grow:
                                     caption = DssRef.lang.Automation_AutomationFocus_Grow;
                                     break;
@@ -2276,20 +2253,85 @@ namespace VikingEngine.DSSWars.GameObject
                                 }, SoundLib.menu), 
                                 new RbTooltip(automationToolTip, focus));
 
-                            //button.setGroupSelectionColor(HudLib.RbSettings, automationFocus == focus);
                             content.Add(button);
-                            //content.space();
+                        }
+
+                        switch (automationFocus)
+                        {
+                            case AutomationFocus.Export:
+                                content.newLine(); 
+                                HudLib.Label(content, DssRef.lang.Automation_AutomationFocus_Export);
+                                content.newLine();
+                                for (ExportAutoType type = 0; type < ExportAutoType.NUM; type++)
+                                {
+
+                                    var optionContent = new List<AbsRichBoxMember>(4);
+                                    if (type == ExportAutoType.Resources)
+                                    {
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Stone));
+                                        optionContent.Add(new RbSpace());
+                                        optionContent.Add(new RbText(DssRef.todoLang.WarsResourceGroup_Resources, HudLib.SubOptionTextColor));
+                                    }
+                                    else
+                                    {
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_PaddedArmor));
+                                        optionContent.Add(new RbSpace());
+                                        optionContent.Add(new RbText(DssRef.todoLang.WarsResourceGroup_Weapons, HudLib.SubOptionTextColor));
+                                    }                                    
+
+                                    var button = new ArtOption(type == exportAutoType,
+                                       optionContent,
+                                       new RbAction(() =>
+                                       {
+                                           exportAutoType = type;
+                                       }, SoundLib.menu),null);
+
+                                    content.Add(button);
+                                }
+                                break;
+                            case AutomationFocus.Military:
+                                content.newLine();
+                                HudLib.Label(content, DssRef.todoLang.CityAutomation_SoldierQuality);
+                                content.newLine();
+                                for (WarAutoQuality quality = 0; quality < WarAutoQuality.NUM; quality++)
+                                {
+                                    string caption;
+                                    switch (quality)
+                                    {
+                                        default:
+                                            caption = DssRef.todoLang.Hud_Low;
+                                            break;
+                                        case WarAutoQuality.Medium:
+                                            caption = DssRef.todoLang.Hud_Medium;
+                                            break;
+                                        case WarAutoQuality.High:
+                                            caption = DssRef.todoLang.Hud_High;
+                                            break;
+                                    }
+
+                                    var button = new ArtOption(quality == warAutoQuality,
+                                       new List<AbsRichBoxMember>
+                                       {
+                                            new RbText(caption, HudLib.SubOptionTextColor),
+                                       },
+                                       new RbAction(() =>
+                                       {
+                                           warAutoQuality = quality;
+                                       }, SoundLib.menu), new RbTooltip(autoWarQualityToolTip, quality));
+
+                                    content.Add(button);
+                                }
+                                break;
                         }
 
                         content.Add(new RbSeperationLine());
                         
                     }
                 }
-
-                //if (damages.HasValue())
-                //{
-                //    content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
-                //}
 
                 HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
                 content.space();
@@ -2418,6 +2460,44 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+            void autoWarQualityToolTip(RichBoxContent content, object tag)
+            {
+                WarAutoQuality quality = (WarAutoQuality)tag;
+                switch (quality)
+                {
+                    case WarAutoQuality.Low:
+                        content.Add(new RbText(DssRef.todoLang.FastProduction, HudLib.InfoYellow_Light));
+                        break;
+                    case WarAutoQuality.Medium:
+                        HudLib.Label(content, DssRef.todoLang.BlocksProduction);
+                        resource(true, ItemResourceType.SlingShot);
+                        resource(true, ItemResourceType.SharpStick);
+                        break;
+                    case WarAutoQuality.High:
+                        HudLib.Label(content, DssRef.todoLang.BlocksProduction);
+                        resource(true, ItemResourceType.SlingShot);
+                        resource(true, ItemResourceType.ThrowingSpear);
+                        resource(true, ItemResourceType.SharpStick);
+                        resource(false, ItemResourceType.NONE);
+                        content.newParagraph();
+                        content.Add(new RbText(DssRef.todoLang.SlowProduction, HudLib.InfoYellow_Light));
+                        break;
+
+                }
+
+                void resource(bool weapon, ItemResourceType resourceType)
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsHudCheckNo));
+                    content.space(0.5f);
+                    content.Add(new RbText((weapon? DssRef.lang.Conscript_WeaponTitle : DssRef.lang.Conscript_ArmorTitle) + ":", HudLib.TitleColor_TypeName));
+                    content.space();
+                    content.Add(new RbImage(ResourceLib.Icon(resourceType)));
+                    content.space();
+                    content.Add(new RbText(LangLib.Item(resourceType), HudLib.NotAvailableColor));
+                }
+            }
+
             void automationToolTip(RichBoxContent content, object tag)
             {
                 AutomationFocus focus = (AutomationFocus)tag;
@@ -2426,6 +2506,41 @@ namespace VikingEngine.DSSWars.GameObject
                     case AutomationFocus.NoFocus:
                         content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_NoFocus_Description, HudLib.InfoYellow_Light));
                         break;
+
+                    case AutomationFocus.Food:
+                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
+                        content.space();
+                        content.Add(new RbText(string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat)));
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_Cook));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_Cook));
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_CoalPit));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_CoalPit));
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsResource_Food));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+                       
+                        break;
+
                     case AutomationFocus.Export:
                         content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
 

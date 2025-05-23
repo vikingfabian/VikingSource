@@ -477,6 +477,8 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.AutomatedItem:
                     return SpriteName.AutomationGearIcon;
 
+                case ItemResourceType.NONE:
+                    return SpriteName.BluePrintSquareFull;
 
                 default:
                     return SpriteName.NO_IMAGE;

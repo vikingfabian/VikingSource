@@ -44,6 +44,7 @@ namespace VikingEngine.DSSWars.Display
         public static readonly AutomationFocus[] AvailableAutomationFocuses =
         {
             AutomationFocus.NoFocus,
+            AutomationFocus.Food,
             AutomationFocus.Grow,
             AutomationFocus.Export,
             AutomationFocus.Military
@@ -1025,58 +1026,7 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
         }
-        //void workTab(RichBoxContent content)
-        //{
-        //    //if (player.tutorial == null)
-        //    //{
-        //        for (WorkSubTab workSubTab = 0; workSubTab < WorkSubTab.NUM; ++workSubTab)
-        //        {
-        //            var tabContent = new RichBoxContent();
-        //            //string text = null;
-        //            switch (workSubTab)
-        //            {
-        //                case WorkSubTab.Priority_Resources:
-        //                    tabContent.Add(new RichBoxText(DssRef.lang.Work_OrderPrioTitle));
-        //                    tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Wood));
-        //                    break;
-
-        //                case WorkSubTab.Priority_Metals:
-        //                    tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Iron));
-        //                    break;
-        //                case WorkSubTab.Priority_Weapons:
-        //                    tabContent.Add(new RichBoxImage(SpriteName.WarsResource_ d));
-        //                    break;
-        //                case WorkSubTab.Priority_Armor:
-        //                    tabContent.Add(new RichBoxImage(SpriteName.WarsResource_IronArmor));
-        //                    break;
-
-        //                //case WorkSubTab.Experience:
-        //                //    tabContent.Add(new RichBoxText(DssRef.lang.Experience_Title));
-        //                //    break;
-        //            }
-        //            var subTab = new RichboxButton(tabContent,
-        //                new RbAction1Arg<WorkSubTab>((WorkSubTab resourcesSubTab) =>
-        //                {
-        //                    player.workSubTab = resourcesSubTab;
-        //                }, workSubTab, SoundLib.menutab));
-        //            subTab.setGroupSelectionColor(HudLib.RbSettings, player.workSubTab == workSubTab);
-        //            content.Add(subTab);
-        //            content.space(workSubTab== WorkSubTab.Priority_Armor ? 2 : 1);
-        //        }
-        //        content.newParagraph();
-        //    //}
-
-        //    switch (player.workSubTab)
-        //    {
-        //        default:
-        //            city.workTemplate.toHud(player, content, player.workSubTab, city.faction, city);
-        //            break;
-        //        case WorkSubTab.Experience:
-        //            experienceTab(content);
-        //            break;
-        //    }
-        //}
-
+      
         void experienceTab(RichBoxContent content)
         {
             HudLib.Label(content, DssRef.lang.Experience_TopExperience);
@@ -1094,7 +1044,7 @@ namespace VikingEngine.DSSWars.Display
             experience(SpriteName.WarsResource_Sword, DssRef.lang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
             experience(SpriteName.WarsResource_Fuel, DssRef.lang.ExperienceType_CraftFuel, city.topskill_CraftFuel);
             experience(SpriteName.WarsBuild_Chemist, DssRef.lang.ExperienceType_Chemist, city.topskill_Chemistry);
-            //experience(SpriteName.WarsResource_GunPowder, DssRef.lang.BuildingType_Gunmaker, city.);
+
             content.newParagraph();
             HudLib.Description(content, string.Format(DssRef.lang.Experience_TimeReductionDescription, MathExt.PercentageInteger(DssConst.XpLevelWorkTimePercReduction)));
 
@@ -1128,13 +1078,9 @@ namespace VikingEngine.DSSWars.Display
                     {
                         city.experenceOrDistance = val;
                     }, prio, SoundLib.menu));
-                //option.setGroupSelectionColor(HudLib.RbSettings, );
                 content.Add(option);
-                //content.space();
             }
             
-        
-
             void experience(SpriteName typeIcon, string typeName, ExperienceLevel level)
             {
                 content.newLine();
@@ -1161,17 +1107,12 @@ namespace VikingEngine.DSSWars.Display
                 var button = new ArtToggle(back == city.tagBack, new List<AbsRichBoxMember> {
                     new RbImage(Data.CityTag.BackSprite(back))
                 }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { city.tagBack = back; }, back));
-                //button.setGroupSelectionColor(HudLib.RbSettings, back == city.tagBack);
                 content.Add(button);
 
                 if (back == CityTagBack.NONE)
                 {
                     content.newLine();
                 }
-                //else
-                //{
-                //    content.space();
-                //}
             }
 
             if (city.tagBack != CityTagBack.NONE)
@@ -1183,7 +1124,6 @@ namespace VikingEngine.DSSWars.Display
                     new RbImage(Data.CityTag.ArtSprite(art))
                     }, new RbAction1Arg<CityTagArt>((CityTagArt art) => { city.tagArt = art; }, art));
                     content.Add(button);
-                    //content.space();
                 }
             }
         }
