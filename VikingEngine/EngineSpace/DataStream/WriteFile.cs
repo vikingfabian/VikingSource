@@ -31,7 +31,7 @@ namespace VikingEngine.DataStream
         public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
-           DataStreamHandler.Write(this.filePath, data);
+           FileToDiskManager.Write(this.filePath, data);
           // return base.quedEvent();
        }    
         public override void onStorageComplete()

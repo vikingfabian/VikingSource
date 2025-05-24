@@ -226,7 +226,7 @@ namespace VikingEngine.DataStream
 
         public void Save(FilePath path)
         {
-            DataStreamHandler.Write(path, s.ToArray());
+            FileToDiskManager.Write(path, s.ToArray());
         }
 
         ulong dataSumValue(byte[] data, int dataLenght)

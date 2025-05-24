@@ -10,7 +10,7 @@ using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.PJ
 {
-    class StartScreen : Engine.GameState//, DataStream.IStreamIOCallback
+    class StartScreen : Engine.GameState//, IStreamIOCallback
     {
         //public static int SignedInPLayer;
         bool isReset;

@@ -352,7 +352,7 @@ namespace VikingEngine.LootFest.Editor
 
             Debug.CrashIfMainThread();
             DataStream.FilePath path = ContentPath(name);
-            System.IO.BinaryReader r = DataStream.DataStreamHandler.ReadBinaryIO(path);
+            System.IO.BinaryReader r = DataStream.FileToDiskManager.ReadBinaryIO(path);
             return GetVoxelObjMaster(r, centerAdjust);
         }
 

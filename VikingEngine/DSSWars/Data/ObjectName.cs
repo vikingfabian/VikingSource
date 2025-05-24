@@ -31,14 +31,14 @@ namespace VikingEngine.DSSWars.Data
 
         public void write(System.IO.BinaryWriter w)
         {
-            SaveLib.WriteString(w, custom ? name : null);
+            StreamLib.WriteString(w, custom ? name : null);
         }
 
         public void read(System.IO.BinaryReader r, int subversion)
         {
             if (subversion >= 48)
             {
-                string readname = SaveLib.ReadString(r);
+                string readname = StreamLib.ReadString(r);
                 if (readname != null)
                 {
                     name = readname;

@@ -70,7 +70,7 @@ namespace VikingEngine.PJ.Bagatelle
 
                 writeId(w);
                 w.Write(fromCannon);
-                SaveLib.WriteDir(startDir, w);
+                StreamLib.WriteDir(startDir, w);
                 writeStatus(w);
             }
 
@@ -88,7 +88,7 @@ namespace VikingEngine.PJ.Bagatelle
             setGamer(gamer);
             this.networkId = ReadId(r);
             bool fromCannon = r.ReadBoolean();
-            int startDir = SaveLib.ReadDir(r);
+            int startDir = StreamLib.ReadDir(r);
 
             init(networkId, state);
             initBall(Vector2.Zero, startDir);

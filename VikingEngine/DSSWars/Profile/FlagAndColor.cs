@@ -2939,11 +2939,11 @@ namespace VikingEngine.DSSWars
             //{
             //    colors[i] = SaveLib.ReadColorStream_3B(r);
             //}
-            col0_Main = SaveLib.ReadColorStream_3B(r);
-            col1_Detail1=SaveLib.ReadColorStream_3B(r);
-            col2_Detail2 = SaveLib.ReadColorStream_3B(r);
-            col3_Skin = SaveLib.ReadColorStream_3B(r);
-            col4_Hair = SaveLib.ReadColorStream_3B(r);
+            col0_Main = StreamLib.ReadColorStream_3B(r);
+            col1_Detail1=StreamLib.ReadColorStream_3B(r);
+            col2_Detail2 = StreamLib.ReadColorStream_3B(r);
+            col3_Skin = StreamLib.ReadColorStream_3B(r);
+            col4_Hair = StreamLib.ReadColorStream_3B(r);
 
             flagDesign.read(r);
         }
@@ -2958,11 +2958,11 @@ namespace VikingEngine.DSSWars
             //{
             //    SaveLib.WriteColorStream_3B(w, colors[i]);
             //}
-            SaveLib.WriteColorStream_3B(w, col0_Main);
-            SaveLib.WriteColorStream_3B(w, col1_Detail1);
-            SaveLib.WriteColorStream_3B(w, col2_Detail2);
-            SaveLib.WriteColorStream_3B(w, col3_Skin);
-            SaveLib.WriteColorStream_3B(w, col4_Hair);
+            StreamLib.WriteColorStream_3B(w, col0_Main);
+            StreamLib.WriteColorStream_3B(w, col1_Detail1);
+            StreamLib.WriteColorStream_3B(w, col2_Detail2);
+            StreamLib.WriteColorStream_3B(w, col3_Skin);
+            StreamLib.WriteColorStream_3B(w, col4_Hair);
 
             flagDesign.write(w);
         }
@@ -2975,11 +2975,11 @@ namespace VikingEngine.DSSWars
             //{
             //    colors[i] = SaveLib.ReadColorStream_3B(r);
             //}
-            col0_Main = SaveLib.ReadColorStream_3B(r);
-            col1_Detail1 = SaveLib.ReadColorStream_3B(r);
-            col2_Detail2 = SaveLib.ReadColorStream_3B(r);
-            col3_Skin = SaveLib.ReadColorStream_3B(r);
-            col4_Hair = SaveLib.ReadColorStream_3B(r);
+            col0_Main = StreamLib.ReadColorStream_3B(r);
+            col1_Detail1 = StreamLib.ReadColorStream_3B(r);
+            col2_Detail2 = StreamLib.ReadColorStream_3B(r);
+            col3_Skin = StreamLib.ReadColorStream_3B(r);
+            col4_Hair = StreamLib.ReadColorStream_3B(r);
 
             //flagDesign.read(r);
             flagDesign = new FlagDesign(r);

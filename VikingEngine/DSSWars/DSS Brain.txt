@@ -1,6 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* 
+* Handles write file crashes
 
 
 

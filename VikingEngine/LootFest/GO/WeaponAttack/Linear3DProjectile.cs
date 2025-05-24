@@ -84,7 +84,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
 
             if (!args.LocalMember)
             {
-                startPos = SaveLib.ReadVector3(args.reader);
+                startPos = StreamLib.ReadVector3(args.reader);
                 Velocity.Read(args.reader);
             }
             linear3DProjectileSetup(args, givesDamage, startPos, target, aimDiffAngle, startSpeed, bound);
@@ -106,7 +106,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
             else
             {
                 CollisionAndDefaultBound = bound;
-                Vector3 pos = SaveLib.ReadVector3(args.reader);//r.ReadVector3();
+                Vector3 pos = StreamLib.ReadVector3(args.reader);//r.ReadVector3();
                 if (autoImageSetup)
                     imageSetup(pos);
                 //image.Position = 
@@ -125,7 +125,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
         public override void netWriteGameObject(System.IO.BinaryWriter w)
         {
             base.netWriteGameObject(w);
-            SaveLib.WriteVector(w, image.position);
+            StreamLib.WriteVector(w, image.position);
             Velocity.Write(w);
             //writer.Write(Speed);
             //writer.Write(heightSpeed);

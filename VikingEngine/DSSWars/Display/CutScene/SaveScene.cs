@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
         }
     }
 
-    class SaveScene : AbsSaveScene, DataStream.IStreamIOCallback
+    class SaveScene : AbsSaveScene, IStreamIOCallback
     {
         public bool ExitGame = false;
         int holdTime = 4;

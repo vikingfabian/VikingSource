@@ -2155,7 +2155,7 @@ namespace VikingEngine.DSSWars
             //exportPath.storageSetup();
             exportPath.import = saveMeta.ExportString();
 
-            var fileName = DataStreamHandler.SearchFilesInStorageDir(saveMeta.Path, false)[0];
+            var fileName = FileToDiskManager.SearchFilesInStorageDir(saveMeta.Path, false)[0];
             File.Copy(fileName, exportPath.Path.CompletePath(true), overwrite: true);
 
             mainMenu2();

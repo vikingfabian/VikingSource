@@ -16,7 +16,7 @@ using VikingEngine.ToGG.ToggEngine.GO;
 
 namespace VikingEngine.DSSWars.GameState.FlagEditor
 {
-    class PaintFlagState : Engine.GameState, DataStream.IStreamIOCallback
+    class PaintFlagState : Engine.GameState, IStreamIOCallback
     {
         InputMap keyboardInput, controllerInput;
         int profileIx;

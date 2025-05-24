@@ -232,7 +232,7 @@ namespace VikingEngine
             }
             if (version >= 4 && version < 9)
             {
-                string screenName = SaveLib.ReadString_safe(r);
+                string screenName = StreamLib.ReadString_safe(r);
             }
             if (version >= 7)
             {

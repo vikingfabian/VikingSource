@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.Map
             }
 
             w.Write(groundY);
-            SaveLib.WriteColorStream_3B(w, color);
+            StreamLib.WriteColorStream_3B(w, color);
         }
 
         public void read(System.IO.BinaryReader r, ref SubTile previous, int version)
@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Map
             }
 
             groundY = r.ReadSingle();
-            color = SaveLib.ReadColorStream_3B(r);
+            color = StreamLib.ReadColorStream_3B(r);
 #if DEBUG
             //if (color == ColorExt.Empty)
             //{

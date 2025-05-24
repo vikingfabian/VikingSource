@@ -69,7 +69,7 @@ namespace VikingEngine.DataStream
                 string dir = CompleteDirectory;
                 if (CompleteDirectory != TextLib.EmptyString)
                     dir += Dir;
-                return dir + FileName + DataStreamHandler.FileTimeMark() + FileEnd;
+                return dir + FileName + FileToDiskManager.FileTimeMark() + FileEnd;
             }
             else
             {
@@ -178,7 +178,7 @@ namespace VikingEngine.DataStream
         {
             if (Storage)
             {
-                return DataStreamHandler.SearchFilesInStorageDir(this, true);
+                return FileToDiskManager.SearchFilesInStorageDir(this, true);
             }
             else
             {
@@ -204,7 +204,7 @@ namespace VikingEngine.DataStream
 
         public bool Exists()
         {
-            return DataStream.DataStreamHandler.FileExists(this);
+            return DataStream.FileToDiskManager.FileExists(this);
         }
 
         public static string SanitizeFileName(string fileName)

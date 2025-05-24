@@ -64,7 +64,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
             }
             else
             {
-                startPos = SaveLib.ReadVector3(args.reader);//r.ReadVector3();//måste skapa image direkt
+                startPos = StreamLib.ReadVector3(args.reader);//r.ReadVector3();//måste skapa image direkt
                 Velocity.Read(args.reader);
 
                 //imageSetup();
@@ -80,8 +80,8 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
         public override void netWriteGameObject(System.IO.BinaryWriter w)
         {
             base.netWriteGameObject(w);
-            SaveLib.WriteVector( w, image.position);
-           SaveLib.WriteVector( w,Velocity.Value);
+            StreamLib.WriteVector( w, image.position);
+           StreamLib.WriteVector( w,Velocity.Value);
             Velocity.Write(w);
             //writer.Write(Yspeed);
         }

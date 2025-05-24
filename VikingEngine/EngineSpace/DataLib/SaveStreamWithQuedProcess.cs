@@ -55,11 +55,11 @@ namespace VikingEngine.DataLib
             //base.runQuedStorageTask();
             if (save)
             {
-                DataStream.DataStreamHandler.Write(path, data);
+                DataStream.FileToDiskManager.Write(path, data);
             }
             else
             {
-                data = DataStream.DataStreamHandler.Read(path);
+                data = DataStream.FileToDiskManager.Read(path);
 
                 if (data == null)
                 {

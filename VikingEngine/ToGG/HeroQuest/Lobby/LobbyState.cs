@@ -13,7 +13,7 @@ using VikingEngine.ToGG.ToggEngine.Display2D;
 
 namespace VikingEngine.ToGG.HeroQuest.Lobby
 {
-    class LobbyState : AbsToggState, DataStream.IStreamIOCallback
+    class LobbyState : AbsToggState, IStreamIOCallback
     {
         HeroSelectScreen selectScreen;
         bool host;
@@ -249,7 +249,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
 
                 if (hqRef.setup.quest == QuestName.Custom)
                 {
-                    SaveLib.WriteString(w, hqRef.setup.customName);
+                    StreamLib.WriteString(w, hqRef.setup.customName);
 
                     filemanager.data.memory.WriteSaveFile(w);
                 }
