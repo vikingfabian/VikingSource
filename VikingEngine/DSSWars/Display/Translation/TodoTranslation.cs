@@ -30,6 +30,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string WarsResourceGroup_Resources => "Resources";
         public string WarsResourceGroup_Weapons => "Weapons";
 
+        public string FactionSettings_Titel => "Faction wide settings";
+        public string FactionSettings_Description => "Will include all your cities";
 
     }
 

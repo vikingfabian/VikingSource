@@ -262,7 +262,11 @@ namespace VikingEngine.DSSWars.Display
         {
             var tab = (MenuTab)tag;
             string name = LangLib.Tab(tab, out string description);
-            content.Add(new RbText(name, HudLib.TitleColor_Label));
+            content.h1(name, HudLib.TitleColor_Head);
+            content.h2(DssRef.todoLang.FactionSettings_Titel);
+            content.newLine();
+            content.Add(new RbText(DssRef.todoLang.FactionSettings_Description, HudLib.InfoYellow_Light));
+            
             //content.newLine();
             //content.Add(new RbText(description, HudLib.InfoYellow_Light));
         }

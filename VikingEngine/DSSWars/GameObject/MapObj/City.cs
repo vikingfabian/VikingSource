@@ -2228,7 +2228,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     caption = DssRef.lang.Hud_None;
                                     break;
                                 case AutomationFocus.Food:
-                                    caption = DssRef.lang.Resource_TypeName_Food;
+                                    caption = TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food);
                                     break;
                                 case AutomationFocus.Grow:
                                     caption = DssRef.lang.Automation_AutomationFocus_Grow;
@@ -2538,7 +2538,13 @@ namespace VikingEngine.DSSWars.GameObject
                         content.Add(new RbImage(SpriteName.WarsResource_Food));
                         content.space();
                         content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
-                       
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_Postal));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_Postal));
                         break;
 
                     case AutomationFocus.Export:
