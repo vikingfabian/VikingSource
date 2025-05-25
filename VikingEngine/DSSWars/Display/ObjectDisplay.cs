@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Display
                         null, true);
                 }
                 endRefresh(pos, selected);
-                viewOutLine(player.gameControls.mapControls.focusedObjectMenuState());
+                viewOutLine(player.gameControls.map.focusedObjectMenuState());
             }
         }
 

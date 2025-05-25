@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.GameObject
         Graphics.Mesh collisionModel;
 #endif
 
-        WalkingPath path = null;
+        public WalkingPath path = null;
         public DetailWalkingPath detailPath = null;
         float waitTime = 0;
         public AbsCommand command = null;
@@ -1810,17 +1810,16 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 groupsInBattle++;
             }
-
+            
             var soldiers_sp = soldiers;        
             if (soldiers_sp != null)
             {
                 var counter = soldiers_sp.counter();
                 while (counter.Next())
                 {
-                    counter.sel.asyncBattleUpdate();
+                    counter.sel.asyncBattleUpdate();                    
                 }
             }
-
             tilePos = WP.ToTilePos(position);
             position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY();
         }

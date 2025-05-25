@@ -21,14 +21,14 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
 
         protected override LocalPlayer createLocalPlayer(Faction faction)
         {
-            return new LocalPlayer(faction);
+            return new LocalPlayer(faction, true);
         }
 
         protected override void initPlayers()
         {
             //base.initPlayers();
             var enemy = new Faction(DssRef.world, FactionType.DarkLord);
-            DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(enemy);
+            DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(enemy, true);
 
             var human = new Faction(DssRef.world, FactionType.Player);
             
@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
             manager.startBattle(false, BattleSetupManager.NoPlayer);
             manager.addTimedAttackFromEnemy(10);
 
-            LocalHost().gameControls.mapControls.cameraFocus = manager.friendlyArmy;
+            LocalHost().gameControls.map.cameraFocus = manager.friendlyArmy;
 
 
 

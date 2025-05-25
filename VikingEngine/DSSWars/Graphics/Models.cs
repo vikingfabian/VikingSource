@@ -58,6 +58,7 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.wars_flag,
                 VoxelModelName.horsebanner,
                 VoxelModelName.armystand,
+                VoxelModelName.armystand_detail,
                 VoxelModelName.cityicon,
                 VoxelModelName.citybanner,
             };

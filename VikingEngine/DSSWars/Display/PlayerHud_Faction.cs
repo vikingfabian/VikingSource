@@ -15,9 +15,9 @@ namespace VikingEngine.DSSWars.Display
 {
     class PlayerHud_Faction
     {
-        RichMenu menu;
+        public RichMenu menu;
         RichBoxContent content;
-        void createMenu(LocalPlayer player)
+        public void createMenu(LocalPlayer player)
         {
             if (menu == null)
             {
@@ -36,6 +36,11 @@ namespace VikingEngine.DSSWars.Display
         {
             menu?.DeleteMe();
             menu = null;
+        }
+
+        public bool IsOpen()
+        {
+            return menu != null;
         }
 
         public void refreshUpdate(LocalPlayer player)
@@ -78,7 +83,7 @@ namespace VikingEngine.DSSWars.Display
                         break;
                 }
 
-                menu.Refresh(content);
+                menu.Refresh(content, player.gameControls.controllerPointer);
 
             }
 

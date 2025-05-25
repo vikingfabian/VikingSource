@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             baseInit();
             initScenario();
 
-            LocalHost().gameControls.mapControls.battleModeCamBound();
+            LocalHost().gameControls.map.battleModeCamBound();
         }
 
         virtual protected void initPlayers()
@@ -49,11 +49,11 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 factionsCounter.sel.initDiplomacy(DssRef.world);
                 if (factionsCounter.sel.factiontype == FactionType.DarkLord)
                 {
-                    DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel);
+                    DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel, true);
                 }
                 else
                 {
-                    new Players.AiPlayer(factionsCounter.sel);
+                    new Players.AiPlayer(factionsCounter.sel, true);
                 }
             }
 

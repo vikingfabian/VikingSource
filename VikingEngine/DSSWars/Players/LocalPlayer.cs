@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Players
         public bool bUnitDetailLayer;
 
         public Rectangle2 cullingTileArea = Rectangle2.ZeroOne;
-        public DiplomacyMap diplomacyMap = null;
+        
         public CityTagMap cityTagMap = null;
 
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
@@ -105,18 +105,32 @@ namespace VikingEngine.DSSWars.Players
         SpottedArray<LocationPin> pins = new SpottedArray<LocationPin>();
 
         List<MessagePosition> battleMessages = new List<MessagePosition>(8);
+        public bool isDropInPlayer = false;
 
-        public LocalPlayer(Faction faction)
-           : base(faction)
+        public LocalPlayer()
         {
-            faction.addGold_factionWide( DssRef.difficulty.PlayerBonusGold);
-            orders = new Orders.Orders();
+            baseInit();
+        }
 
+        public void setPlayerFaction(Faction faction)
+        { 
             faction.factiontype = FactionType.Player;
             faction.availableForPlayer = false;
+        }
 
+        void baseInit()
+        { 
+            orders = new Orders.Orders();
             automation = new Automation(this);
-            
+        }
+
+        public LocalPlayer(Faction faction, bool newGame)
+           : base(faction, newGame)
+        {
+            baseInit();
+            faction.addGold_factionWide( DssRef.difficulty.PlayerBonusGold);
+
+            setPlayerFaction(faction);
 
             faction.technology = new XP.TechnologyTemplate();
             faction.technology.iron = XP.TechnologyTemplate.FactionUnlock;
@@ -278,28 +292,42 @@ namespace VikingEngine.DSSWars.Players
             base.writeGameState(w);
 
             w.Write((short)diplomaticPoints.Int());
+
+            //Debug.WriteCheck(w);//TEMP!
+
             statistics.writeGameState(w);
-            if (toPlayerDiplomacies != null)
+
+            //Debug.WriteCheck(w);//TEMP!
+
+            if (toPlayerDiplomacies == null)
             {
-                foreach (var tp in toPlayerDiplomacies)
+                w.Write(short.MinValue);
+            }
+            else
+            {
+                for (int i = 0; i < toPlayerDiplomacies.Length; ++i)//each (var tp in toPlayerDiplomacies)
                 {
-                    if (tp == null)
+                    var tp = toPlayerDiplomacies[i];
+                    if (tp != null)
                     {
-                        w.Write(false);
-                    }
-                    else
-                    {
-                        w.Write(true);
+                        w.Write((short)i);
                         tp.writeGameState(w);
                     }
                 }
+
+                w.Write(short.MinValue);
             }
+            //Debug.WriteCheck(w);//TEMP!
+
             automation.writeGameState(w);
+
+            //Debug.WriteCheck(w);//TEMP!
 
             w.Write(int.MinValue);//none
 
             tutorial_writeGameState(w);
 
+            //Debug.WriteCheck(w);//TEMP!
             orders.writeGameState(w);
 
             w.Write(viewCityTagsOnMap);
@@ -323,26 +351,68 @@ namespace VikingEngine.DSSWars.Players
         {
             base.readGameState(r, subversion, pointers);
 
-            diplomaticPoints.value = r.ReadInt16();
-            statistics.readGameState(r, subversion);
-            if (toPlayerDiplomacies != null)
+            if (isDropInPlayer)
             {
-                for (int i = 0; i < toPlayerDiplomacies.Length; ++i)
+                readAiPlayerGameState(r, subversion);
+                return;
+            }
+
+            diplomaticPoints.value = r.ReadInt16();
+
+            //Debug.ReadCheck(r);//TEMP!
+
+            statistics.readGameState(r, subversion);
+
+
+            //Debug.ReadCheck(r);//TEMP!
+
+            if (subversion >= 59)
+            {
+                while (true)//if (toPlayerDiplomacies != null)
                 {
-                    if (r.ReadBoolean())
+                    int index = r.ReadInt16();
+                    if (index >= 0)
                     {
                         PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy();
+
                         tp.readGameState(r, subversion);
-                        toPlayerDiplomacies[i] = tp;
+                        if (arraylib.InBound(toPlayerDiplomacies, index))
+                        {
+                            toPlayerDiplomacies[index] = tp;
+                        }
+                        //for (int i = 0; i < toPlayerDiplomacies.Length; ++i)
+                        //{
+
+                        //    if (!DssRef.state.localPlayers[i].isDropInPlayer)
+                        //    {
+                        //        if (r.ReadBoolean())
+                        //        {
+                        //            PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy();
+
+                        //            tp.readGameState(r, subversion);
+                        //            toPlayerDiplomacies[i] = tp;
+                        //        }
+                        //    }
+                        //}
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
+
+           // Debug.ReadCheck(r);//TEMP!
+
             automation.readGameState(r, subversion);
+
+           // Debug.ReadCheck(r);//TEMP!
 
             var  none1 = r.ReadInt32();
             
             tutorial_readGameState(r, subversion);
 
+           // Debug.ReadCheck(r);//TEMP!
             orders.readGameState(r, subversion, pointers);
 
             viewCityTagsOnMap = r.ReadBoolean();
@@ -409,10 +479,10 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
         }
-        public void factionTabClick(int tab)
-        {
-            factionTab = PlayerHud_Head.Tabs[tab];
-        }
+        //public void factionTabClick(int tab)
+        //{
+        //    factionTab = PlayerHud_Head.Tabs[tab];
+        //}
         public void cityTabClick(int tab)
         {
             cityTab = AvailableCityTabs()[tab];
@@ -435,7 +505,7 @@ namespace VikingEngine.DSSWars.Players
         public void createPin()
         {
 #if DEBUG
-            LocationPin pin = new LocationPin(this,gameControls.mapControls.mousePosition);
+            LocationPin pin = new LocationPin(this,gameControls.map.pointerPosWP);
             pin.parentArrayIndex = pins.Add(pin);
             pin.basicInit();
 #endif
@@ -698,7 +768,7 @@ namespace VikingEngine.DSSWars.Players
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.N) && !Input.Keyboard.Ctrl)
                 {
-                    AbsWorldObject obj = gameControls.mapControls.hover.obj as AbsWorldObject;
+                    AbsWorldObject obj = gameControls.map.hover.obj as AbsWorldObject;
                     obj?.AddDebugTag();
                 }
             }
@@ -726,7 +796,7 @@ namespace VikingEngine.DSSWars.Players
             if (Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left))
             {
                 RichBoxContent c = new RichBoxContent();
-                c.text(gameControls.mapControls.tilePosition.ToString());
+                c.text(gameControls.map.tilePosition.ToString());
                 hud.messages.Add(c);
             }
 #endif 
@@ -831,7 +901,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void asyncUserUpdate()
         {
-            diplomacyMap?.asynchUpdate();
+            gameControls.diplomacy?.asynchUpdate();
 
             automation.asyncUpdate();
 
@@ -851,7 +921,7 @@ namespace VikingEngine.DSSWars.Players
 
             faction.updateResourceOverview_async();
 
-            float z = gameControls.mapControls.camera.LookTarget.Z / DssRef.world.Size.Y;
+            float z = gameControls.map.camera.LookTarget.Z / DssRef.world.Size.Y;
             if (z < 0.5)
             {
                 setThemeColor(z / 0.5f, ThemeNorth_Blue, ThemeMid_Yellow);
@@ -875,19 +945,19 @@ namespace VikingEngine.DSSWars.Players
             
             if (drawUnitsView.current.DrawOverview)
             {
-                if (diplomacyMap == null)
+                if (gameControls.diplomacy == null)
                 {
-                    diplomacyMap = new DiplomacyMap(this);
+                    gameControls.diplomacy = new DiplomacyMap(this);
                 }
 
-                diplomacyMap.update();
+                gameControls.diplomacy.update();
             }
             else
             {
-                if (diplomacyMap != null)
+                if (gameControls.diplomacy != null)
                 {
-                    diplomacyMap.DeleteMe();
-                    diplomacyMap = null;
+                    gameControls.diplomacy.DeleteMe();
+                    gameControls.diplomacy = null;
                 }
             }
 
@@ -931,7 +1001,7 @@ namespace VikingEngine.DSSWars.Players
             DssRef.diplomacy.declareWar(faction, enemyFac);
 
 
-            IntVector2 position = gameControls.mapControls.tilePosition;
+            IntVector2 position = gameControls.map.tilePosition;
 
             Army friendlyArmy, enemyArmy;
 
@@ -1038,7 +1108,7 @@ namespace VikingEngine.DSSWars.Players
             DssRef.diplomacy.declareWar(faction, enemyFac);
            
 
-            IntVector2 position = gameControls.mapControls.tilePosition;
+            IntVector2 position = gameControls.map.tilePosition;
 
             Army friendlyArmy, enemyArmy;
 
@@ -1311,7 +1381,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void asyncPlayerPathUpdate(float time)
         {
-            gameControls.armyControls?.asynchUpdate();
+            gameControls.army?.asynchPathUpdate();
 
             //return false;
         }
@@ -1480,6 +1550,11 @@ namespace VikingEngine.DSSWars.Players
             return this;
         }
         public override string Name => playerData.PublicName(LoadedFont.Regular);
+
+        public override string ToString()
+        {
+            return $"Local Player ({playerData.PublicName(LoadedFont.Regular)})";
+        }
     }
 
     struct MessagePosition

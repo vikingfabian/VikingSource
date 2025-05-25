@@ -175,15 +175,15 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RbText(DssRef.lang.Diplomacy_LightSide));//"Is light side ally"));
                 }
 
-                if (player.diplomacyMap.previousFactionsLookedAt.Count > 1)
+                if (player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)
                 {
                     content.newParagraph();
                     content.h2(DssRef.lang.Diplomacy_RelationWithOthers).overrideColor = HudLib.TitleColor_Label;
 
-                    for (int i = 1; i < player.diplomacyMap.previousFactionsLookedAt.Count; i++)
+                    for (int i = 1; i < player.gameControls.diplomacy.previousFactionsLookedAt.Count; i++)
                     {
                         content.newLine();
-                        var thirdPartFaction = player.diplomacyMap.previousFactionsLookedAt[i];
+                        var thirdPartFaction = player.gameControls.diplomacy.previousFactionsLookedAt[i];
                         var relation = DssRef.diplomacy.GetRelationType(otherfaction, thirdPartFaction);
 
                         content.Add(thirdPartFaction.FlagTextureToHud());
@@ -526,7 +526,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 ++player.statistics.ServantFactions;
                 otherfaction.mergeTo(player.faction);
-                player.diplomacyMap.cancel();
+                player.gameControls.diplomacy.cancel();
                 //player.hud.needRefresh = true;
             }
         }

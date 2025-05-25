@@ -859,6 +859,15 @@ namespace VikingEngine
             return val2 > val3 ? val2 : val3;
         }
 
+        public static float LargestValue(float val1, float val2, float val3)
+        {
+            if (val1 > val2)
+            {
+                return val1 > val3 ? val1 : val3;
+            }
+            return val2 > val3 ? val2 : val3;
+        }
+
         public static int SmallestValue(int val1, int val2, int val3)
         {
             if (val1 < val2)

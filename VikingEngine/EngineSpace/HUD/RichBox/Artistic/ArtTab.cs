@@ -12,6 +12,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
     class ArtTabgroup : AbsRichBoxMember
     {
         List<ArtTabMember> members;
+        public List<AbsRichBoxMember> endAttach = null;
         public Image linePointer;
         public ArtTabgroup(List<ArtTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundProfile clickSound = null, RbSoundProfile hoverSound = null)
         {
@@ -27,6 +28,14 @@ namespace VikingEngine.HUD.RichBox.Artistic
             foreach (var m in members)
             {
                 m.Create(group);
+            }
+
+            if (endAttach != null)
+            {
+                foreach (var end in endAttach)
+                {
+                    end.Create(group);
+                }
             }
 
             Vector2 pos = new Vector2(group.area.X - 2, group.position.Y + group.lineSpacingHalf - 2);

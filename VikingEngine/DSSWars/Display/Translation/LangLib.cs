@@ -640,8 +640,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.InputActionName_ControllerCancel;
                 case InputActionType.ControllerMessageClick:
                     return DssRef.lang.InputActionName_ControllerMessageClick;
-                case InputActionType.ControllerSelect:
-                    return DssRef.lang.InputActionName_ControllerSelect;
+                //case InputActionType.ControllerSelect:
+                //    return DssRef.lang.InputActionName_ControllerSelect;
                 case InputActionType.WASD_UP:
                     return DssRef.lang.InputActionName_WASD_UP;
                 case InputActionType.WASD_DOWN:

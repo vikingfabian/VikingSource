@@ -1,5 +1,6 @@
 ﻿using VikingEngine.Input;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace VikingEngine.ToGG
 {
@@ -26,7 +27,7 @@ namespace VikingEngine.ToGG
                 m.inputMap = this;
             }
         }
-
+        public override IButtonMap MenuClick => throw new NotImplementedException();
         override public void keyboardSetup()
         {
             movement = new AlternativeDirectionalMap(arrowKeys, WASD);

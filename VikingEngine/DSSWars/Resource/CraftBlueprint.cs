@@ -249,8 +249,11 @@ namespace VikingEngine.DSSWars.Resource
                 var levelText = new RbText(LangLib.ExperienceLevel(levelRequirement));
                 levelText.overrideColor = HudLib.TitleColor_TypeName;
             
-                content.Add(levelText);  
-                content.newLine();
+                content.Add(levelText);
+                if (newLine)
+                {
+                    content.newLine();
+                }
             }
 
             void addResources(int count, SpriteName sprite, string name, bool available)

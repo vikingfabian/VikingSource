@@ -12,13 +12,8 @@ namespace VikingEngine.Graphics
 
     class Mesh : Point3D
     {
-        /* Constants */
-        //const string World = "world";
         const string WVP = "wvp";
 
-        /* Properties */
-        //public override ObjType Type { get { return ObjType.Mesh; } }
-        
         
         protected override bool drawable { get { return true; } }
         
@@ -44,27 +39,13 @@ namespace VikingEngine.Graphics
         public Mesh()
             : base()
         {
-            //TextureSource = DataLib.SpriteCollection.Get(SpriteName.NO_IMAGE);//new TextureSource(SpriteName.NO_IMAGE);
+            
         }
-        //public Mesh(LoadedMesh mesh, Vector3 pos, TextureEffect textureEffect, float basicScale)
-        //    : this(mesh, pos, textureEffect, VectorExt.V3(basicScale), Vector3.Zero)
-        //{ }
-        //public Mesh(LoadedMesh mesh, Vector3 pos, TextureEffect textureEffect, float basicScale, bool addToRender)
-        //    : this(mesh, pos, textureEffect, VectorExt.V3(basicScale), Vector3.Zero, addToRender)
-        //{ }
-        //public Mesh(LoadedMesh mesh, Vector3 pos, TextureEffect textureEffect, Vector3 scale, Vector3 rotation)
-        //    : this(mesh, pos, textureEffect,  SpriteName.WhiteArea, Color.White, scale, rotation, true)
-        //{ }
-
         public Mesh(LoadedMesh mesh, Vector3 pos, Vector3 scale,
             TextureEffectType effectType, SpriteName sprite, Color col, 
              bool addToRender = true)
             : base(pos, scale, addToRender)
         {
-            //if (mesh == LoadedMesh.cube_repeating)
-            //{
-            //    lib.DoNothing();
-            //}
             LoadedMeshType = mesh;
             colorAndAlpha = col.ToVector4();
             EffectType = effectType;

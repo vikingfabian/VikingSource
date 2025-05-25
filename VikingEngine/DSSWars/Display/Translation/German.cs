@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Lokalen Mehrspielermodus auswählen, 0: aktuelle Spieleranzahl
         /// </summary>
-        public override string Lobby_LocalMultiplayerEdit => "Lokaler Mehrspielermodus ({0})";
+        public override string Lobby_LocalMultiplayerEdit => "Lokaler Mehrspielermodus";
 
         /// <summary>
         /// Titel für Menü zur Auswahl der Split-Screen-Spieleranzahl

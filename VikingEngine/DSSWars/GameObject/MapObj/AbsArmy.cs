@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int goalId = 0;
         public bool walkGoalAsShip = false;
         public int soldiersCount = 0;
+        public int mostCenterGroup = -1;
         protected bool inBattle = false;
 
         public void AddSoldierGroup(SoldierGroup group)
@@ -32,18 +34,28 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void remove(SoldierGroup group)
         {
             Debug.CrashIfThreaded();
-            groups.RemoveAt_EqualSafeCheck(group, group.parentArrayIndex);
-            
+            groups.RemoveAt_EqualSafeCheck(group, group.parentArrayIndex);            
         }
 
         public void asyncBattleUpdate()
         {
+            int mostCenter = -1;
+            float distanctToCenter = float.MaxValue;
+
             int groupsInBattle = 0;
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
                 groupsC.sel.asyncBattleUpdate(ref groupsInBattle);
+                float dist = (groupsC.sel.position - position).Length();
+                if (dist < distanctToCenter)
+                {
+                    distanctToCenter = dist;
+                    mostCenter = groupsC.CurrentIndex;
+                }
             }
+
+            mostCenterGroup = mostCenter;
 
             if (inBattle)
             {

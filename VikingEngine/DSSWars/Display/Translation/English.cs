@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Button to select local mutiplayer count, 0:current player count
         /// </summary>
-        public override string Lobby_LocalMultiplayerEdit => "Local multiplayer ({0})";
+        public override string Lobby_LocalMultiplayerEdit => "Local multiplayer";
 
         /// <summary>
         /// Title for menu where you select split screen player count

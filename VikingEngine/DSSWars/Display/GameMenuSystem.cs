@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Display
 
         void completeMenu(RichBoxContent content)
         {
-            menu.Refresh(content);
+            menu.Refresh(content, null);
             menu.updateHeightFromContent();
             menu.addBackground(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), layer + 2);
         }
@@ -194,17 +194,19 @@ namespace VikingEngine.DSSWars.Display
                     fillWidth = true
                 });
 
-                if (DssRef.state.IsLocalMultiplayer())
-                {
-                    content.newLine();
-                    DssRef.storage.multiplayerGameSpeedToMenu(content, menu);
-                }
+                
 
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
                 {
                     fillWidth = true
                 });
+            }
+
+            if (DssRef.state.IsLocalMultiplayer())
+            {
+                content.newLine();
+                DssRef.storage.multiplayerGameSpeedToMenu(content, menu);
             }
 
 
@@ -360,7 +362,7 @@ namespace VikingEngine.DSSWars.Display
                 //    true, layout);
             }
 
-            menu.Refresh(content);
+            menu.Refresh(content, null);
         }
 
         public static void listMapOptions(RichMenu menu)

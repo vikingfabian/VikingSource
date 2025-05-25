@@ -31,8 +31,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         //Army army;
         //WalkingPath path = null, newpath = null;
-        bool needPath_playerview = false;
-        WalkingPath path = null;
+        //bool needPath_playerview = false;
+        //WalkingPath path = null;
 
         public ArmyObjective objective = ArmyObjective.None;
         public bool waitForRegroup = false;
@@ -151,37 +151,37 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asyncPathUpdate(int pathThreadIndex)
         {
-            if (IdleObjetive())
-            {
-                recyclePath(pathThreadIndex);
+            //if (IdleObjetive())
+            //{
+            //    recyclePath(pathThreadIndex);
 
-            }
-            else if (objective != ArmyObjective.None)
-            {
-                if (needPath_playerview)
-                {
-                    if (path == null)
-                    {
-                        path_calulate(pathThreadIndex);
-                    }
-                    needPath_playerview = false;
-                    var p = faction.player.GetLocalPlayer();
-                    if (p != null)
-                    {
-                        p.hud.needRefresh = true;
-                    }
-                }
+            //}
+            //else if (objective != ArmyObjective.None)
+            //{
+            //    //if (needPath_playerview)
+            //    //{
+            //    //    if (path == null)
+            //    //    {
+            //    //        path_calulate(pathThreadIndex);
+            //    //    }
+            //    //    needPath_playerview = false;
+            //    //    var p = faction.player.GetLocalPlayer();
+            //    //    if (p != null)
+            //    //    {
+            //    //        p.hud.needRefresh = true;
+            //    //    }
+            //    //}
 
-                var path_sp = path;
-                if (path_sp != null)
-                {
-                    path_sp.refreshCurrentNode(tilePos, out bool offTrack);
-                    if (offTrack)
-                    {
-                        path_calulate(pathThreadIndex);
-                    }
-                }
-            }
+            //    var path_sp = path;
+            //    if (path_sp != null)
+            //    {
+            //        path_sp.refreshCurrentNode(tilePos, out bool offTrack);
+            //        if (offTrack)
+            //        {
+            //            path_calulate(pathThreadIndex);
+            //        }
+            //    }
+            //}
 
             var groupsC = groups.counter();
             while (groupsC.Next())
@@ -494,7 +494,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (IdleObjetive())
             {
                 goal = tilePos;
-                needPath_playerview = false;
+                //needPath_playerview = false;
             }
             else if (objective == ArmyObjective.Attack || objective == ArmyObjective.TeleportAttack)
             {
@@ -581,43 +581,48 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (objective != ArmyObjective.None && objective != ArmyObjective.Halt)
             {
-                var path_sp = path;
+                //var path_sp = path;
+                var center = groups.GetIndex_Safe(mostCenterGroup);
+                if (center != null)
+                {
+                    var path_sp = center.path;
 
-                if (path_sp == null)
-                {
-                    needPath_playerview = true;
-                }
-                else
-                {
-                    PathVisuals pv = new PathVisuals(player.playerData.localPlayerIndex);
-                    pv.refresh(path_sp, attackTarget != null, true);
-                    pv.addTo(images);
+                    if (path_sp == null)
+                    {
+                        //needPath_playerview = true;
+                    }
+                    else
+                    {
+                        PathVisuals pv = new PathVisuals(player.playerData.localPlayerIndex);
+                        pv.refresh(path_sp, attackTarget != null, true);
+                        pv.addTo(images);
+                    }
                 }
             }
         }
 
-        void recyclePath(int pathThreadIndex)
-        {
-            //if (path != null)
-            //{
-            //lock (DssRef.state.pathFindingPool)
-            //{
-            DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(path);
-            path = null;
-            //}
-            //}
-        }
+        //void recyclePath(int pathThreadIndex)
+        //{
+        //    //if (path != null)
+        //    //{
+        //    //lock (DssRef.state.pathFindingPool)
+        //    //{
+        //    DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(path);
+        //    path = null;
+        //    //}
+        //    //}
+        //}
 
-        void path_calulate(int pathThreadIndex)
-        {
-            recyclePath(pathThreadIndex);
+        //void path_calulate(int pathThreadIndex)
+        //{
+        //    recyclePath(pathThreadIndex);
 
-            PathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetPf();
-            {
-                path = pf.FindPath(pathThreadIndex, tilePos, conv.ToDir8_INT(rotation), walkGoal, isShip);
-            }
-            DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(pf);
-        }
+        //    PathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetPf();
+        //    {
+        //        path = pf.FindPath(pathThreadIndex, tilePos, conv.ToDir8_INT(rotation), walkGoal, isShip);
+        //    }
+        //    DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(pf);
+        //}
 
         public override void stateDebugText(RichBoxContent content)
         {

@@ -39,7 +39,7 @@ namespace VikingEngine.HUD.RichMenu
 
         float scrollerWidth;
         RichScrollbar scrollBar;
-        ImageLayers layer;
+        public ImageLayers layer;
         public PlayerData playerData;
         RichTooltip tooltip = null;
         public string activeDropDown = null;
@@ -167,6 +167,13 @@ namespace VikingEngine.HUD.RichMenu
             return backgroundTextures;
         }
 
+        public Graphics.Image addBackground_Flat(Color color, float opacity)
+        {
+            Graphics.Image bg = new Image( SpriteName.WhiteArea, backgroundArea.Position, backgroundArea.Size,  layer + 1);
+            bg.ColorAndAlpha(color, opacity);
+            return bg;
+        }
+
         public void OpenMenu(string menuName, StackOption stack)
         {
             if (stack == StackOption.ClearStack)
@@ -184,7 +191,7 @@ namespace VikingEngine.HUD.RichMenu
         public void OpenMenu(RichBoxContent content, string menuName)
         {
             menuStack.Add(menuName);
-            Refresh(content);
+            Refresh(content, null);
         }
 
         public void clearState()
@@ -218,7 +225,7 @@ namespace VikingEngine.HUD.RichMenu
 
         public string CurrentMenuState => menuStack.LastOrDefault();
 
-        public void Refresh(RichBoxContent content)
+        public void Refresh(RichBoxContent content, RichMenuControllerPointer pointer = null)
         {
             //Debug.Log("Rich menu REFRESH");
             deleteContent();
@@ -237,7 +244,7 @@ namespace VikingEngine.HUD.RichMenu
             //updateContentScroll();
             if (interaction == null || interaction.drawContainer != renderList)
             {
-                interaction = new RbInteraction(content, layer, new Input.MouseButtonMap(MouseButton.Left));
+                interaction = new RbInteraction(content, layer, playerData.inputMap== null? new Input.MouseButtonMap(MouseButton.Left): playerData.inputMap.MenuClick);
 
                 interaction.drawContainer = renderList;
             }
@@ -252,21 +259,28 @@ namespace VikingEngine.HUD.RichMenu
 
             if (hadSelection)
             {
-                
+
                 //interaction.inherit(prevInteract);
                 //deleteTooltip();
-                interaction.update(-renderArea.Position, this, false, out _, out _);
-                
+                if (pointer == null)
+                {
+
+                    interaction.update(-renderArea.Position, this, false, out _, out _);
+                }
+                else
+                {
+                    interaction.refreshControllerHover(pointer);
+                }
                 tooltip?.view();
 
                 //interaction.update(-renderArea.Position, this, false, out _);
             }
         }
 
-        public void Queue_Refresh(RichBoxContent content)
-        {
-            Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(Refresh, content));
-        }
+        //public void Queue_Refresh(RichBoxContent content)
+        //{
+        //    Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(Refresh, content));
+        //}
 
         void deleteContent()
         {
@@ -278,7 +292,7 @@ namespace VikingEngine.HUD.RichMenu
         public void DeleteMe()
         {
             renderList.DeleteMe();
-            backgroundTextures.DeleteMe();
+            backgroundTextures?.DeleteMe();
             //Debug.Log("deleteTooltip: del menu");
             deleteTooltip();
             scrollBar.DeleteMe();
@@ -326,6 +340,17 @@ namespace VikingEngine.HUD.RichMenu
             }
         }
 
+        public void updateControllerInput(RichMenuControllerPointer pointer)
+        {
+            if (interaction != null)
+            {
+                if (interaction.updateController(pointer))
+                {
+                    needRefresh = true;
+                }
+            }
+        }
+
         public bool HasToolTip(int id)
         {
             if (Input.Keyboard.Ctrl)
@@ -337,6 +362,10 @@ namespace VikingEngine.HUD.RichMenu
 
         public bool BlockRefresh()
         {
+            if (interaction == null)
+            {
+                return false;
+            }
             return interaction.interactionStack != null;
         }
 
