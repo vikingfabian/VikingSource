@@ -107,7 +107,9 @@ namespace VikingEngine.DSSWars.Map.Path
             }
             
             area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
-            area.SetBounds(DssRef.world.subTileGrid.Area);
+            Rectangle2 subtileLimit = DssRef.world.subTileGrid.Area;
+            subtileLimit.AddRadius(-1);
+            area.SetBounds(subtileLimit);
             //gridOffset = area.pos
             DetailPathNode startNode = new DetailPathNode(center, conv.ToDir8_INT(startDir), startAsShip);
             {
@@ -130,6 +132,7 @@ namespace VikingEngine.DSSWars.Map.Path
                     IntVector2 gridPos = pos - area.pos;
                     if (area.IntersectTilePoint(pos) && !nodeGrid[gridPos.X, gridPos.Y].HasValue)
                     {
+
                         //add a node to open list
                         DetailPathNode node = new DetailPathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
                         open.Add(node);

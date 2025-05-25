@@ -35,6 +35,9 @@ namespace VikingEngine.Graphics
 
         private float opacity = 1;
 
+        static int NextBufferId = 0;
+        public int bufferId = ++NextBufferId;
+
         /* Constructors */
         public AbsVertexAndIndexBuffer(IVerticeData verticeData)
             :base(false)
@@ -93,8 +96,12 @@ namespace VikingEngine.Graphics
         /* Novelty methods */
         public void SetBuffer()
         {
-            Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetVertexBuffer(vertexBuffer_GPU);
-            Engine.Draw.graphicsDeviceManager.GraphicsDevice.Indices = indexBuffer;
+            if (bufferId != Engine.Draw.PreviousVertexBuffer)
+            {
+                Engine.Draw.PreviousVertexBuffer = bufferId;
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetVertexBuffer(vertexBuffer_GPU);
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.Indices = indexBuffer;
+            }
         }
     }
 

@@ -31,6 +31,7 @@ namespace VikingEngine.Engine
 
         /* Static */
         public static string DebugUpdateTimeText = TextLib.EmptyString;
+        public static int PreviousVertexBuffer =-1;
         public static RenderTargetImage RenderTargetImageBuffer;
         public static GraphicsDeviceManager graphicsDeviceManager;
         //public static GraphicsDevice GraphicsDevice;
