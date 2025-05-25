@@ -1,5 +1,6 @@
 ﻿UPDATE
 -Change Log-
+* Optimized draw models in monogame source
 * Handles write file crashes
 * Faster render time
 * Extra options to automated city

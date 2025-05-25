@@ -13,15 +13,15 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);DSS;PCGAME;DEMO</DefineConstants>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);DSS;PCGAME;DEMO</DefineConstants>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);DSS;PCGAME;DEMO</DefineConstants>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -88,14 +88,26 @@
 	</EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.3" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.3" />
-    <PackageReference Include="Sentry" Version="5.5.1" />
+    <PackageReference Include="NVorbis" Version="0.10.5" />
+    <PackageReference Include="Sentry" Version="5.7.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\DSS\Map\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\monogame\MonoGame\MonoGame.Framework\obj\DesktopGL\Release\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <PropertyGroup>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+</PropertyGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
