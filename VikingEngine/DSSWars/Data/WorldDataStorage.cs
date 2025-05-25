@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars
     
 
 
-    class WorldDataStorage: DataStream.IStreamIOCallback
+    class WorldDataStorage: IStreamIOCallback
     {
         public WorldData worldData;
         public bool loadComplete = false;

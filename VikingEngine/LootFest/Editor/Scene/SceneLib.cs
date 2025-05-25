@@ -37,9 +37,9 @@ namespace VikingEngine.LootFest.Editor.Scene
 
         public void IOStream(System.IO.BinaryWriter w, System.IO.BinaryReader r, byte version)
         {
-            SaveLib.ValueIO(ref zoom, w, r);
-            SaveLib.ValueIO(ref position, w, r);
-            SaveLib.ValueIO(ref tilt, w, r);
+            StreamLib.ValueIO(ref zoom, w, r);
+            StreamLib.ValueIO(ref position, w, r);
+            StreamLib.ValueIO(ref tilt, w, r);
         }
 
     }

@@ -31,7 +31,7 @@ namespace VikingEngine.PJ.Bagatelle
             w.Write((ushort)dictionaryId);
             w.Write(networkId);
             state.writePosition(pos, w);
-            SaveLib.WriteDir(dir, w);
+            StreamLib.WriteDir(dir, w);
             w.Write((byte)type);
         }
 
@@ -41,7 +41,7 @@ namespace VikingEngine.PJ.Bagatelle
             dictionaryId = r.ReadUInt16();
             int networkId = r.ReadInt32();
             Vector2 pos = state.readPosition(r);
-            int dir = SaveLib.ReadDir(r);
+            int dir = StreamLib.ReadDir(r);
             GameObjectType type = (GameObjectType)r.ReadByte();
 
             init(networkId, pos, dir, type, state, false);

@@ -50,7 +50,7 @@ namespace VikingEngine.LootFest.GO
 
             slingshot(target, true);
             var w = netWriteSpecialAttack();
-            SaveLib.WriteVector(w, target);
+            StreamLib.WriteVector(w, target);
         }
 
         GO.Bounds.ObjectBound stoneBound = WeaponAttack.GravityArrow.ArrowBound(Rotation1D.D0);
@@ -66,7 +66,7 @@ namespace VikingEngine.LootFest.GO
         public override void netReadSpecAttack(Network.ReceivedPacket packet)
         {
             //base.netReadSpecAttack(packet);
-            Vector3 target = SaveLib.ReadVector3(packet.r);
+            Vector3 target = StreamLib.ReadVector3(packet.r);
             slingshot(target, false);
         }
 

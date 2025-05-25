@@ -105,7 +105,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void Load()
         {
-            DataStream.DataStreamHandler.TryReadBinaryIO(path, read);
+            DataStream.FileToDiskManager.TryReadBinaryIO(path, read);
             if (StartupSettings.Saves)
             {
                 meta.Load();
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Data
             flagStorage.Load();
         }
 
-        public void Save(DataStream.IStreamIOCallback callBack)
+        public void Save(IStreamIOCallback callBack)
         {
             System.IO.Directory.CreateDirectory(path.CompleteDirectory);
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);

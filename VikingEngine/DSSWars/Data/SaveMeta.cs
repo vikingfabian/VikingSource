@@ -46,14 +46,14 @@ namespace VikingEngine.DSSWars.Data
             return list;
         }
 
-        public void Save(DataStream.IStreamIOCallback callBack)
+        public void Save(IStreamIOCallback callBack)
         {
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
 
         public void Load()
         {
-            DataStream.DataStreamHandler.TryReadBinaryIO(path, read);
+            DataStream.FileToDiskManager.TryReadBinaryIO(path, read);
         }
 
         public List<SaveStateMeta> listSaves()

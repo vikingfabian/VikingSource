@@ -592,15 +592,15 @@ namespace VikingEngine.LootFest
         public void write(System.IO.BinaryWriter w)
         {
             w.Write((byte)type);
-            SaveLib.WriteVector(w, scale);
-            SaveLib.WriteVector(w, offset);
+            StreamLib.WriteVector(w, scale);
+            StreamLib.WriteVector(w, offset);
         }
 
         void read(System.IO.BinaryReader r)
         {
             type = (GO.Bounds.BoundShape)r.ReadByte();
-            scale = SaveLib.ReadVector3(r);
-            offset = SaveLib.ReadVector3(r);
+            scale = StreamLib.ReadVector3(r);
+            offset = StreamLib.ReadVector3(r);
         }
     }
 

@@ -11,6 +11,7 @@ using VikingEngine.HUD;
 using VikingEngine.LootFest.Data;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Map.HDvoxel;
+using VikingEngine.EngineSpace.Voxels;
 
 namespace VikingEngine.LootFest.Editor
 {

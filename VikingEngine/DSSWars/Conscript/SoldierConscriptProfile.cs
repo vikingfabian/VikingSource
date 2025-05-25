@@ -27,12 +27,12 @@ namespace VikingEngine.DSSWars.Conscript
         public void writeGameState(System.IO.BinaryWriter w)
         {
             conscript.writeGameState(w);
-            SaveLib.WriteFloatMultiplier(skillBonus, w);
+            StreamLib.WriteFloatMultiplier(skillBonus, w);
         }
         public void readGameState(System.IO.BinaryReader r)
         {
             conscript.readGameState(r);
-            skillBonus = SaveLib.ReadFloatMultiplier(r);
+            skillBonus = StreamLib.ReadFloatMultiplier(r);
         }
 
         public UnitType unitType()

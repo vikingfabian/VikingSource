@@ -39,7 +39,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
                     if (netShare)
                     {
                         System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.Explosion, Network.PacketReliability.Reliable, LfLib.LocalHostIx);
-                        SaveLib.WriteVector(w, position);
+                        StreamLib.WriteVector(w, position);
                         //damage.WriteStream(w);
                         w.Write(radius);
                         w.Write(destroyTerrain);
@@ -49,7 +49,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
             }
             else
             {
-                position = SaveLib.ReadVector3(args.reader);//r.ReadVector3();
+                position = StreamLib.ReadVector3(args.reader);//r.ReadVector3();
                 //givesDamage = DamageData.FromStream(args.reader);
                 radius = args.reader.ReadSingle();
                 destroyTerrain = args.reader.ReadBoolean();

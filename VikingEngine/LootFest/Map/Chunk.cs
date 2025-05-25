@@ -422,7 +422,7 @@ namespace VikingEngine.LootFest.Map
 
         public void CompleteRemoval()
         {
-            DataStream.DataStreamHandler.BeginUserRemoveFile(Path);
+            DataStream.FileToDiskManager.BeginUserRemoveFile(Path);
         }
        
         public static DataStream.FilePath SavePath(IntVector2 index)

@@ -27,9 +27,9 @@ namespace VikingEngine.Voxels
             else
             {
                 if (save)
-                    DataStream.DataStreamHandler.Write(path, WriteBinaryStream);
+                    DataStream.FileToDiskManager.Write(path, WriteBinaryStream);
                 else
-                    DataStream.DataStreamHandler.ReadBinaryIO(path, ReadBinaryStream);
+                    DataStream.FileToDiskManager.ReadBinaryIO(path, ReadBinaryStream);
             }
         }
         public void ReplaceMaterial(List<ByteVector2> findReplace)

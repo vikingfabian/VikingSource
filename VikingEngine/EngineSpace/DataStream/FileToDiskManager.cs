@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DataStream
 {
-    static class DataStreamHandler
+    static class FileToDiskManager
     {
         public static void Write(FilePath file, IBinaryIOobj obj)
         {
@@ -26,6 +26,24 @@ namespace VikingEngine.DataStream
 
         public static void Write(FilePath file, byte[] data)
         {
+            bool success = true;
+
+#if DEBUG
+            TryWrite(file, data);
+#else
+            try
+            {
+                TryWrite(file, data);
+            }
+            catch (Exception ex)
+            {
+                success = false;
+            }
+#endif
+        }
+
+        static void TryWrite(FilePath file, byte[] data)
+        {
 
             /* 1.Find old files and list them
              * 2.Create new file
@@ -41,11 +59,8 @@ namespace VikingEngine.DataStream
             //2.Create new file
             string path = file.CompletePath(true);
             Stream stream = null;
-#if PCGAME
             stream = File.Create(path);
-#else
-           
-#endif
+
             stream.Write(data, 0, data.Length);
             stream.Dispose();
             simulateXboxLoadingTime();

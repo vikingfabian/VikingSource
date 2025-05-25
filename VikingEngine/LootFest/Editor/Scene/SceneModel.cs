@@ -72,8 +72,8 @@ namespace VikingEngine.LootFest.Editor
 
         public void WriteStream(System.IO.BinaryWriter w)
         {
-            SaveLib.WriteString(w, Name);
-            SaveLib.WriteVector(w, Model.position);
+            StreamLib.WriteString(w, Name);
+            StreamLib.WriteVector(w, Model.position);
             Model.Rotation.WriteStream(w);
             w.Write(Model.scale.X);
             w.Write(Model.Visible);
@@ -81,9 +81,9 @@ namespace VikingEngine.LootFest.Editor
 
         public void ReadStream(System.IO.BinaryReader r, byte version)
         {
-            Name = SaveLib.ReadString_safe(r);
+            Name = StreamLib.ReadString_safe(r);
             point = new Graphics.Point3D();
-            point.Position = SaveLib.ReadVector3(r);
+            point.Position = StreamLib.ReadVector3(r);
             point.Rotation.ReadStream(r);
             point.Scale = Vector3.One * r.ReadSingle();
             //if (version > 0)

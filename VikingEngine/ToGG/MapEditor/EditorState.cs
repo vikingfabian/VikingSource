@@ -17,7 +17,7 @@ using VikingEngine.ToGG.Commander.LevelSetup;
 
 namespace VikingEngine.ToGG.ToggEngine.MapEditor
 {
-    partial class EditorState : AbsPlayState, VikingEngine.DataStream.IStreamIOCallback
+    partial class EditorState : AbsPlayState, VikingEngine.IStreamIOCallback
     {
         AbsGenericPlayer player;        
 

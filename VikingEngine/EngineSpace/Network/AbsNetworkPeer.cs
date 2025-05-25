@@ -165,13 +165,13 @@ namespace VikingEngine.Network
         public StoredPeer(System.IO.BinaryReader r)
         {
             fullId = r.ReadUInt64();
-            name = SaveLib.ReadString_safe(r);
+            name = StreamLib.ReadString_safe(r);
         }
 
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(fullId);
-            SaveLib.WriteString(w, name);
+            StreamLib.WriteString(w, name);
         }
 
         public override bool Equals(object obj)

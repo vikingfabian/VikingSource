@@ -29,7 +29,7 @@ namespace VikingEngine.DataStream
             base.runQuedStorageTask();
  	        List<string> oldFiles = null;
             if (filePath.UseTimeMark)
-                oldFiles = DataStreamHandler.GetTimeMarkedStoragePaths(filePath);
+                oldFiles = FileToDiskManager.GetTimeMarkedStoragePaths(filePath);
 
             foreach (string path in oldFiles)
                 SaveLoad.RemoveFile2(path);

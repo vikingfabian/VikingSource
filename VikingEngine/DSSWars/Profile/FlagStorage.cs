@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Profile
         {
             var filePath = path(-1);
 
-            string[] files = DataStream.DataStreamHandler.SearchFilesInStorageDir(filePath, true);
+            string[] files = DataStream.FileToDiskManager.SearchFilesInStorageDir(filePath, true);
             
             foreach (string file in files)
             {
@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.Profile
                 int index = Convert.ToInt32(num) -1;
 
                 filePath.FileName = file;
-                DataStream.DataStreamHandler.TryReadBinaryIO(filePath, flagDesigns[index].read);
+                DataStream.FileToDiskManager.TryReadBinaryIO(filePath, flagDesigns[index].read);
             }
         }
 

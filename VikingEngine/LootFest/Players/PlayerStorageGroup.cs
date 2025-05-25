@@ -22,7 +22,7 @@ namespace VikingEngine.LootFest.Players
             filePath = new DataStream.FilePath(null, "PlayerSaveFiles", ".sav", true, true);
            
 
-            if (DataStream.DataStreamHandler.FileExists(filePath))
+            if (DataStream.FileToDiskManager.FileExists(filePath))
             {
                 DataStream.BeginReadWrite.BinaryIO(false, filePath, WriteStream, TryReadStream,
                     null, false);

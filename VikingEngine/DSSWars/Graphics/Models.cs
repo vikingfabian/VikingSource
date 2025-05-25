@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars
             foreach (var modelName in loadRawModels)
             {
                 DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
-                byte[] data = DataStream.DataStreamHandler.Read(path);
+                byte[] data = DataStream.FileToDiskManager.Read(path);
                 System.IO.MemoryStream s = new System.IO.MemoryStream(data);
                 System.IO.BinaryReader r = new System.IO.BinaryReader(s);
 
@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars
                 float yAdjust = 0;
 
                 DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
-                byte[] data = DataStream.DataStreamHandler.Read(path);
+                byte[] data = DataStream.FileToDiskManager.Read(path);
                 System.IO.MemoryStream s = new System.IO.MemoryStream(data);
                 System.IO.BinaryReader r = new System.IO.BinaryReader(s);
 

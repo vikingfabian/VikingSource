@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.ToGG.Data
 {
-    class FileManager : VikingEngine.DataStream.IStreamIOCallback
+    class FileManager : VikingEngine.IStreamIOCallback
     {
         const string MapFileEnd = ".map";
         const string SaveStateFileEnd = ".sst";
@@ -13,11 +13,11 @@ namespace VikingEngine.ToGG.Data
 
         public bool lockedInSaving = false;
         public string fileName = newMapName();
-        VikingEngine.DataStream.IStreamIOCallback parentCallback;
+        VikingEngine.IStreamIOCallback parentCallback;
         public DataStream.ReadToMemory data;
         //public HeroQuest.Data.QuestSetup quest;
 
-        public FileManager(VikingEngine.DataStream.IStreamIOCallback parentCallback)
+        public FileManager(VikingEngine.IStreamIOCallback parentCallback)
         {
             this.parentCallback = parentCallback;
         }

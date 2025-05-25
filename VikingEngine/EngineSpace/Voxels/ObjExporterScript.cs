@@ -8,8 +8,9 @@ using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Voxels;
 using VikingEngine.Timer;
 using System.IO;
+using VikingEngine.DataStream;
 
-namespace VikingEngine.DataStream
+namespace VikingEngine.EngineSpace.Voxels
 {
     class ObjExporterScript
     {
@@ -110,7 +111,7 @@ namespace VikingEngine.DataStream
                 commaFreeText.Append(c == ',' ? '.' : c);
             }
 
-            DataStream.FilePath path = new FilePath(null, name, ".obj", true, false);
+            FilePath path = new FilePath(null, name, ".obj", true, false);
 
             new AsynchActionTrigger(() =>
             {

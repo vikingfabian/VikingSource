@@ -49,10 +49,10 @@ namespace VikingEngine.DataStream
             else
             {
                 if (save)
-                    DataStreamHandler.Write(filePath, w);
+                    FileToDiskManager.Write(filePath, w);
                 else
                 {
-                    System.IO.BinaryReader br = DataStreamHandler.ReadBinaryIO(filePath);
+                    System.IO.BinaryReader br = FileToDiskManager.ReadBinaryIO(filePath);
                     if (br != null)
                     {
                         r(br);

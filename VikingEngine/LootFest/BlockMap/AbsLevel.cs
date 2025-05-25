@@ -182,7 +182,7 @@ namespace VikingEngine.LootFest.BlockMap
             FilePath filePath = new FilePath(LfLib.ModelsCategoryTerrain, model.ToString(),
                 VikingEngine.Voxels.VoxelLib.VoxelObjByteArrayEnding, false, false);
 
-            if (filePath.Storage && !DataStreamHandler.FileExists(filePath))
+            if (filePath.Storage && !FileToDiskManager.FileExists(filePath))
             {
                 emptyGrid();
             }
