@@ -2,7 +2,7 @@
 -Change Log-
 * Handles write file crashes
 * Faster render time
-
+* Extra options to automated city
 
 
 #Free build defences
@@ -10,8 +10,6 @@
 -representeras av en gubbe tills de strider
 Assign men to wall (ballista, har warmashine crew)
 
--nobel housing (kräver park?)
-(priest housing)
 
 #OPT#
 monogame fork? DrawUserPrimitives opt, titta på OGG filer
