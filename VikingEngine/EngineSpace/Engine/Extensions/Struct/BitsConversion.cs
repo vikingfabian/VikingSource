@@ -210,6 +210,14 @@ namespace VikingEngine
             }
         }
 
+        public void Set_Safe(int index, bool value)
+        {
+            if (index >= 0 && index < indexToBitValue.Length)
+            {
+                Set(index, value);
+            }
+        }
+
         public static bool GetBit(byte bitArray, int index)
         {
             if (index == byte.MaxValue)
