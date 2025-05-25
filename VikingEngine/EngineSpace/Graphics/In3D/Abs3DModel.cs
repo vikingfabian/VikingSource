@@ -73,7 +73,7 @@ namespace VikingEngine.Graphics
         public void setVisibleCamera(int playerIndex)
         {
             inPlayerCamera = EightBit.Zero;
-            inPlayerCamera.Set(playerIndex, true);
+            inPlayerCamera.Set_Safe(playerIndex, true);
         }
 
         public override void UpdateCulling()
