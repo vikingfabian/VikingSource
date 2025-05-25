@@ -27,6 +27,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool automateCity = false;
         public AutomationFocus automationFocus = AutomationFocus.NoFocus;
+        public WarAutoQuality warAutoQuality = WarAutoQuality.Medium;
+        public ExportAutoType exportAutoType = ExportAutoType.Resources;
+
+        public bool autoExport_weapons = false;
         public GameTimeStamp nextAutoConscriptTime = GameTimeStamp.None;
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
@@ -165,12 +169,20 @@ namespace VikingEngine.DSSWars.GameObject
 
             switch (automationFocus)
             {
+                case AutomationFocus.Food:
+                    auto_addBuildingType(BuildAndExpandType.WheatFarm);
+                    auto_addBuildingType(BuildAndExpandType.Cook);
+                    auto_addBuildingType(BuildAndExpandType.CoalPit);
+                    auto_addBuildingType(BuildAndExpandType.Postal);
+                    break;
                 case AutomationFocus.Grow:
                     auto_addBuildingType(BuildAndExpandType.WorkerHut);
                     auto_addBuildingType(BuildAndExpandType.WheatFarm);
+                    auto_addBuildingType(BuildAndExpandType.WorkBench);
                     break;
                 case AutomationFocus.Export:
                     auto_addBuildingType(BuildAndExpandType.Postal);
+                    auto_addBuildingType(BuildAndExpandType.Recruitment);
                     break;
                 case AutomationFocus.Military:
                     auto_addBuildingType(BuildAndExpandType.SoldierBarracks);
@@ -412,7 +424,21 @@ namespace VikingEngine.DSSWars.GameObject
         Grow,
         Export,
         Military,
-        LevelUp,
-        //Random,
+        Food,
+        //LevelUp,
+    }
+    enum WarAutoQuality
+    {
+        Low,
+        Medium,
+        High,
+        NUM
+    }
+    enum ExportAutoType
+    {
+        Resources,
+        //Food,
+        Weapons,
+        NUM
     }
 }
