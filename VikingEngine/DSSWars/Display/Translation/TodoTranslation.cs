@@ -33,6 +33,21 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string FactionSettings_Titel => "Faction wide settings";
         public string FactionSettings_Description => "Will include all your cities";
 
+        public string Conscript_MaxPopulation => "Max population";
+        public string Conscript_MaxPopulation_Description => "Will only recruit when the population is maxed out";
+
+        public string Conscript_FoodAbundance => "Max food stock";
+        public string Conscript_FoodAbundance_Description => "Will only recruit when the food has reached maximum stockpile";
+
+        /// <summary>
+        /// General settings will go through all items in a list and apply to all of them (to their checkbox)
+        /// </summary>
+        public string GeneralSetting_On = "Set to: On";
+        public string GeneralSetting_Off = "Set to: Off";
+        public string GeneralSetting_AllBuildingsDescription => "Will apply to all buildings";
+
+
+
     }
 
 }

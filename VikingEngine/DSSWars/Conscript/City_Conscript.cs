@@ -90,16 +90,22 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
 
                             case ConscriptActiveStatus.CollectingMen:
-                                int needMen = status.menNeeded - status.menCollected;
-                                int collectMen = lib.SmallestValue(workForce.amount, needMen);
-                                workForce.amount -= collectMen;
-                                status.menCollected += collectMen;
 
-                                if (status.menCollected == status.menNeeded &&
-                                    (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= status.menNeeded))
+                                status.followsRequirements(this, out bool populationIsOk, out bool foodIsOk);
+
+                                if (populationIsOk && foodIsOk)
                                 {
-                                    status.active++;
-                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.type)));
+                                    int needMen = status.menNeeded - status.menCollected;
+                                    int collectMen = lib.SmallestValue(workForce.amount, needMen);
+                                    workForce.amount -= collectMen;
+                                    status.menCollected += collectMen;
+
+                                    if (status.menCollected == status.menNeeded &&
+                                        (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= status.menNeeded))
+                                    {
+                                        status.active++;
+                                        status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.type)));
+                                    }
                                 }
                                 break;
 
@@ -108,6 +114,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     if (status.profile.specialization == SpecializationType.CityGuard && AvailableGuardHousing() < status.menNeeded)
                                     {
+                                        //Reset timer when there is no space
                                         status.active = ConscriptActiveStatus.CollectingMen;
                                     }
                                     else
@@ -153,6 +160,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
+
+        
 
         public void toggleConscriptStop()
         {

@@ -31,6 +31,9 @@ namespace VikingEngine.DSSWars.Conscript
         public TrainingLevel maxTrainingLevel;
         public int que;
 
+        public bool requireMaxPopulation;
+        public bool requireMaxFood;
+
         public BarracksStatus(BuildAndExpandType type)
             : this()
         {
@@ -58,7 +61,7 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
             }
-
+            profile.training = TrainingLevel.Basic;
             maxTrainingLevel = TrainingLevel.Skillful;
         }
 
@@ -92,7 +95,27 @@ namespace VikingEngine.DSSWars.Conscript
 
                 active = ConscriptActiveStatus.Idle;
 
-                //city.conscriptBuildings[selectedConscript] = status;
+            }
+        }
+
+        public void followsRequirements(City city, out bool population, out bool food)
+        {
+            if (requireMaxPopulation)
+            {
+                population = city.workForce.amount >= city.workersMax() - 10;
+            }
+            else
+            {
+                population = true;
+            }
+
+            if (requireMaxFood)
+            {
+                food = city.res_food.amount >= city.res_food.goalBuffer - 50;
+            }
+            else
+            {
+                food = true;
             }
         }
 
@@ -122,6 +145,9 @@ namespace VikingEngine.DSSWars.Conscript
             w.Write(idAndPosition);
             w.Write((byte)que);
             w.Write((byte)maxTrainingLevel);
+
+
+            new EightBit(requireMaxPopulation, requireMaxFood).write(w);
         }
 
         public void readGameState(System.IO.BinaryReader r, int subVersion)
@@ -164,7 +190,12 @@ namespace VikingEngine.DSSWars.Conscript
                 //maxTrainingLevel = TrainingLevel.Skillful;
             }
 
-            
+            if (subVersion >= 60)
+            {
+                EightBit bools = EightBit.FromStream(r);
+                requireMaxPopulation = bools.Get(0);
+                requireMaxFood = bools.Get(1);
+            }
         }
         public bool CountDownQue()
         {
@@ -186,10 +217,10 @@ namespace VikingEngine.DSSWars.Conscript
             return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, type));
         }
 
-        public string activeStringOf(ConscriptActiveStatus status, int menCount)
+        public string activeStringOf(ConscriptActiveStatus status, int menCount, out bool collected)
         {
             string result = null;
-
+            collected = false;
 
             switch (status)
             {
@@ -199,6 +230,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case ConscriptActiveStatus.CollectingEquipment:
                     {
+                        collected = equipmentCollected >= menCount;
                         var progress = string.Format(DssRef.lang.Language_CollectProgress, equipmentCollected, menCount);
                         result = string.Format(DssRef.lang.Conscription_Status_CollectingEquipment, progress);
                     }
@@ -206,6 +238,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case ConscriptActiveStatus.CollectingMen:
                     {
+                        collected = menCollected >= menCount;
                         var progress = string.Format(DssRef.lang.Language_CollectProgress, menCollected, menCount);
                         result = string.Format(DssRef.lang.Conscription_Status_CollectingMen, progress);
                     }
@@ -225,7 +258,7 @@ namespace VikingEngine.DSSWars.Conscript
             else
             {
                 int menCostProgress = menNeeded;
-                result = activeStringOf(active, menCostProgress) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
+                result = activeStringOf(active, menCostProgress, out _) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 
             return result;

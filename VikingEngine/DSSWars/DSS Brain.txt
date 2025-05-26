@@ -2,9 +2,15 @@
 -Change Log-
 * Optimized draw models in monogame source
 * Handles write file crashes
-* Faster render time
+* Faster render time by reusing the vertex buffer
 * Extra options to automated city
-
+* Build automation is improved
+* Conscript automation can block low grade unit production and lets the population rebuild.
+* Reduced child growth by 50%, and also added a boost to regrowth of empty cities.
+* TrainingLevel.Basic is now default
+* New soldiers find armies to join further away
+* Conscript: Wait for max population and food options
+* Hud improvements
 
 #Free build defences
  Rock thrower

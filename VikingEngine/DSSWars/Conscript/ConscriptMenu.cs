@@ -328,6 +328,12 @@ namespace VikingEngine.DSSWars.Conscript
                 progress(currentStatus);
                 que.buttonsToHud(player, content, queClick, currentStatus.que, BarracksStatus.MaxQue, true);
 
+                content.newParagraph();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsWorker), new RbSpace(), new RbText(DssRef.todoLang.Conscript_MaxPopulation) },
+                    maxPopulationProperty, new RbTooltip_Text(DssRef.todoLang.Conscript_MaxPopulation_Description)));
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsResource_Food), new RbSpace(), new RbText(DssRef.todoLang.Conscript_FoodAbundance) },
+                    maxFoodProperty, new RbTooltip_Text(DssRef.todoLang.Conscript_FoodAbundance_Description)));
 
                 content.newParagraph();
                 content.Add(new RbImage(player.gameControls.input.Copy.Icon));
@@ -428,28 +434,70 @@ namespace VikingEngine.DSSWars.Conscript
                 if (currentStatus.active != ConscriptActiveStatus.Idle)
                 {
                     int menCostProgress = currentStatus.menNeeded;
+                    currentStatus.followsRequirements(city, out bool hasPopulation, out bool hasFood);
 
                     content.Add(new RbSeperationLine());
+                    if (currentStatus.requireMaxPopulation)
                     {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        var text = new RbText(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment, menCostProgress));
-                        text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingEquipment ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        content.Add(text);
+                        progressPoint(DssRef.todoLang.Conscript_MaxPopulation, true, hasPopulation);
                     }
+                    if (currentStatus.requireMaxFood)
                     {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        var text = new RbText(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingMen, menCostProgress));
-                        text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingMen ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        content.Add(text);
+                        progressPoint(DssRef.todoLang.Conscript_FoodAbundance, true, hasFood);
                     }
+
+                    progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment, menCostProgress, out bool gotEquipment), currentStatus.active > ConscriptActiveStatus.CollectingEquipment, gotEquipment);
+                    progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingMen, menCostProgress, out bool gotMen), currentStatus.active > ConscriptActiveStatus.CollectingMen, gotMen);
+
+
+                    //{
+                    //    content.newLine();
+                    //    HudLib.BulletPoint(content);
+                    //    var text = new RbText(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment, menCostProgress));
+                    //    text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingEquipment ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                    //    content.Add(text);
+                    //}
+                    //{
+                    //    content.newLine();
+                    //    HudLib.BulletPoint(content);
+                    //    var text = new RbText(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingMen, menCostProgress));
+                    //    text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingMen ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                    //    content.Add(text);
+                    //}
 
                     //if (currentStatus.active == ConscriptActiveStatus.Training)
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbText(currentStatus.longTimeProgress(), currentStatus.active == ConscriptActiveStatus.Training? null : HudLib.SecondaryTextColor));
+                    }
+
+                    void progressPoint(string textString, bool active, bool collected)
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        var text = new RbText(textString);
+                        if (active)
+                        {
+                            if (collected)
+                            {
+                                text.overrideColor = HudLib.AvailableColor;
+                                content.Add(new RbImage(HudLib.AvailableIcon));
+                            }
+                            else
+                            {
+                                text.overrideColor = HudLib.NotAvailableColor;
+                                content.Add(new RbImage(HudLib.NotAvailableIcon));
+                            }
+                            content.space();
+                            
+                        }
+                        else
+                        {
+                            text.overrideColor = HudLib.SecondaryTextColor;
+                        }
+                        //text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingEquipment ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        content.Add(text);
                     }
                 }
             }
@@ -461,7 +509,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             resource(content, ItemResourceType.Men, menCostNext, city.workForce.amount);
 
-           
+
             //content.newLine();
             //HudLib.BulletPoint(content);
             //HudLib.ResourceCost(content, ResourceType.Worker, menCostNext, city.workForce.amount);
@@ -517,6 +565,27 @@ namespace VikingEngine.DSSWars.Conscript
 
                 content.Add(new RbText(text, HudLib.ResourceCostColor(available)));
             }
+        }
+
+        bool maxPopulationProperty(int index, bool setValue, bool value)
+        {
+            BarracksStatus currentProfile = get();
+            if (setValue)
+            {
+                currentProfile.requireMaxPopulation = value;
+                set(currentProfile);
+            }
+            return currentProfile.requireMaxPopulation;
+        }
+        bool maxFoodProperty(int index, bool setValue, bool value)
+        {
+            BarracksStatus currentProfile = get();
+            if (setValue)
+            {
+                currentProfile.requireMaxFood = value;
+                set(currentProfile);
+            }
+            return currentProfile.requireMaxFood;
         }
 
         void guardTabClick(bool guard)

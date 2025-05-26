@@ -17,6 +17,8 @@ namespace VikingEngine.DSSWars.Conscript
 
     struct ConscriptProfile
     {
+        public static readonly ConscriptProfile Empty = new ConscriptProfile();
+
         public ItemResourceType weapon;
         public ItemResourceType armorLevel;
         public TrainingLevel training;

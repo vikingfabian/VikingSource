@@ -65,6 +65,12 @@ namespace VikingEngine
             return value;
         }
 
+        public static double Min(double value, double min)
+        {
+            if (value < min) { return min; }
+            return value;
+        }
+
         public static void Min(ref int value, int min)
         {
             if (value < min)

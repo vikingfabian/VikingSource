@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Build
         };
 
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
-        public static void AvailableBuildTypes(List<BuildAndExpandType> list, GameObject.City city)
+        public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city)
         {
             var unlocks = city.technology.GetUnlocks(false);
 

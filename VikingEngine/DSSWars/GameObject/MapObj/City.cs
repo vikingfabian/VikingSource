@@ -1548,7 +1548,7 @@ namespace VikingEngine.DSSWars.GameObject
                 res_food.amount > 0 &&
                 homeUsers() < workersMax())
             {
-                var result = workForce.amount / 400.0 * faction.growthMultiplier;
+                var result = Bound.Min( workForce.amount / 600.0 * faction.growthMultiplier, 0.1);
                 if (Culture == CityCulture.LargeFamilies)
                 {
                     result *= 2;
@@ -2321,7 +2321,7 @@ namespace VikingEngine.DSSWars.GameObject
                                        new RbAction(() =>
                                        {
                                            warAutoQuality = quality;
-                                       }, SoundLib.menu), new RbTooltip(autoWarQualityToolTip, quality));
+                                       }, SoundLib.menu), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
 
                                     content.Add(button);
                                 }
@@ -2460,43 +2460,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            void autoWarQualityToolTip(RichBoxContent content, object tag)
-            {
-                WarAutoQuality quality = (WarAutoQuality)tag;
-                switch (quality)
-                {
-                    case WarAutoQuality.Low:
-                        content.Add(new RbText(DssRef.todoLang.FastProduction, HudLib.InfoYellow_Light));
-                        break;
-                    case WarAutoQuality.Medium:
-                        HudLib.Label(content, DssRef.todoLang.BlocksProduction);
-                        resource(true, ItemResourceType.SlingShot);
-                        resource(true, ItemResourceType.SharpStick);
-                        break;
-                    case WarAutoQuality.High:
-                        HudLib.Label(content, DssRef.todoLang.BlocksProduction);
-                        resource(true, ItemResourceType.SlingShot);
-                        resource(true, ItemResourceType.ThrowingSpear);
-                        resource(true, ItemResourceType.SharpStick);
-                        resource(false, ItemResourceType.NONE);
-                        content.newParagraph();
-                        content.Add(new RbText(DssRef.todoLang.SlowProduction, HudLib.InfoYellow_Light));
-                        break;
-
-                }
-
-                void resource(bool weapon, ItemResourceType resourceType)
-                {
-                    content.newLine();
-                    content.Add(new RbImage(SpriteName.WarsHudCheckNo));
-                    content.space(0.5f);
-                    content.Add(new RbText((weapon? DssRef.lang.Conscript_WeaponTitle : DssRef.lang.Conscript_ArmorTitle) + ":", HudLib.TitleColor_TypeName));
-                    content.space();
-                    content.Add(new RbImage(ResourceLib.Icon(resourceType)));
-                    content.space();
-                    content.Add(new RbText(LangLib.Item(resourceType), HudLib.NotAvailableColor));
-                }
-            }
+            
 
             void automationToolTip(RichBoxContent content, object tag)
             {
@@ -2632,7 +2596,6 @@ namespace VikingEngine.DSSWars.GameObject
         public void childrenTooltip(RichBoxContent content, object tag)
         {
             City city = (City)tag;
-            //RichBoxContent content = new RichBoxContent();
             content.text(string.Format(DssRef.lang.WorkForce_ChildToManTime, 2));
 
             content.newParagraph();
@@ -2644,9 +2607,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsCityHall));
+                content.space();
                 content.Add(new RbText(string.Format(DssRef.lang.CityHall_MaxSupportedWorkers, WorkersMaxLimit), HudLib.ResourceCostColor(homeUsers() < WorkersMaxLimit)));
             }
-            //hud.tooltip.create(this, content, true);
         }
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
@@ -2661,10 +2624,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.newLine();
                 HudLib.Description(content, Display.Translation.LangLib.CityCulture(Culture, false));
             }
-        }
-
-       // void cultureToolTip()
-        
+        }        
 
         public void AddNeighborCity(int nCityIndex)
         {
@@ -2678,50 +2638,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
        
-        //public void GetStartFactionRegion(Map.Generate.Region region, WorldData world)
-        //{
-        //    if (faction == null)
-        //    {
-        //        //faction = new Faction(factions.Count);
-        //        //factions.Add(faction);
-        //        faction.AddCity(this, true);
-                                
-        //        int currentWorkforce = this.maxWorkForce;
-
-        //        List<City> checkCities = new List<City>(8);
-
-        //        int loopCount = 0;
-        //        while (++loopCount < 100)
-        //        {
-        //            checkCities.Clear();
-        //            checkCities.AddRange(faction.cities.toList());
-
-        //            foreach (City check in checkCities)
-        //            {
-        //                foreach (int n in check.neighborCities)
-        //                {
-        //                    //if (!arraylib.InBound(world.cities, n))
-        //                    //{ 
-        //                    //    lib.DoNothing();
-        //                    //}
-        //                    City c = world.cities[n];
-        //                    if (c.faction == null)
-        //                    {
-        //                        faction.AddCity(c, true);
-        //                        currentWorkforce += c.maxWorkForce;
-
-        //                        if (currentWorkforce >= goalWorkForce)
-        //                        {
-        //                            faction.availableForPlayer = true;
-        //                            return;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
         public static City Get(int index)
         {
             return DssRef.world.cities[index];
@@ -2751,19 +2667,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
             return false;
         }
-
-        //public bool HasUnitPurchaseOption(UnitType type)
-        //{
-        //    foreach (var m in cityPurchaseOptions)
-        //    {
-        //        if (m.unitType == type)
-        //        {
-        //            return m.available;
-        //        }
-        //    }
-
-        //    return false;   
-        //}
 
         public override void setFaction(Faction faction)
         {
@@ -2999,7 +2902,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Army recruitToClosestArmy()
         {
-            return faction.ClosestFriendlyArmy(position, 2.6f);
+            return faction.ClosestFriendlyArmy(position, 3.6f);
         }
 
         public override City GetCity()

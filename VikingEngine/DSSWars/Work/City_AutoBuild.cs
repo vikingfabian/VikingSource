@@ -160,7 +160,6 @@ namespace VikingEngine.DSSWars.GameObject
             auto_updateWorkPrio();
 
             AutoBuild_available.Clear();
-            //AutoBuild_available_mustInclude.Clear();
             AutoBuild_RandomBuild.clear();
 
             BuildLib.AvailableBuildTypes(AutoBuild_available, this);
@@ -179,6 +178,7 @@ namespace VikingEngine.DSSWars.GameObject
                     auto_addBuildingType(BuildAndExpandType.WorkerHut);
                     auto_addBuildingType(BuildAndExpandType.WheatFarm);
                     auto_addBuildingType(BuildAndExpandType.WorkBench);
+                    auto_addBuildingType(BuildAndExpandType.ServiceHouse_Small);
                     break;
                 case AutomationFocus.Export:
                     auto_addBuildingType(BuildAndExpandType.Postal);
@@ -188,6 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
                     auto_addBuildingType(BuildAndExpandType.SoldierBarracks);
                     auto_addBuildingType(BuildAndExpandType.ArcherBarracks);
                     auto_addBuildingType(BuildAndExpandType.WarmashineBarracks);
+                    auto_addBuildingType(BuildAndExpandType.GuardHouse_Small);
                     break;
             }
 
@@ -207,6 +208,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         private void auto_addBuildingType(BuildAndExpandType buildType)
         {
+            const int NoMaxLimit = 500;
             bool bBuild = true;
             int chance = 100;
             int maxCount = 4;
@@ -216,11 +218,14 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 switch (buildType)
                 {
+                    case BuildAndExpandType.WorkerHutLarge:
                     case BuildAndExpandType.WorkerHut:
+                        bBuild = WorkersMaxLimit < HousingCount_Workers;
                         maxCount = 100;
                         chance = 200;
                         repeat = 4;
                         break;
+
                     case BuildAndExpandType.SoldierBarracks:
                     case BuildAndExpandType.ArcherBarracks:
                     case BuildAndExpandType.WarmashineBarracks:
@@ -229,6 +234,26 @@ namespace VikingEngine.DSSWars.GameObject
                     case BuildAndExpandType.CannonBarracks:
                         maxCount = 2;
                         chance = automationFocus == AutomationFocus.Military ? 100 : 5;
+                        break;
+
+                    case BuildAndExpandType.GuardHouse_Small:
+                    case BuildAndExpandType.GuardHouse_Large:
+                        chance = automationFocus == AutomationFocus.Military ? 300 : 50;
+                        maxCount = NoMaxLimit;
+                        bBuild = AvailableGuardHousing() < 10;
+                        break;
+
+                    case BuildAndExpandType.ServiceHouse_Small:
+                    case BuildAndExpandType.ServiceHouse_Large:
+                        chance = automationFocus == AutomationFocus.Grow ? 300 : 50;
+                        maxCount = NoMaxLimit;
+                        int goalNumber = 5;
+                        if (cityType < CityType.Capital)
+                        {
+                            canUpgradeCityHall(out _, out _, out int nextUpgradeRequirement, out _);
+                            goalNumber = lib.LargestValue(goalNumber, nextUpgradeRequirement);
+                        }
+                        bBuild = freeServiceMen.amount < goalNumber;
                         break;
 
                     case BuildAndExpandType.CoalPit:
@@ -245,8 +270,10 @@ namespace VikingEngine.DSSWars.GameObject
                         chance = automationFocus == AutomationFocus.Grow ? 300 : 150;
                         maxCount = 24;
                         break;
-                                            
+
                     case BuildAndExpandType.Postal:
+                    case BuildAndExpandType.PostalLevel2:
+                    case BuildAndExpandType.PostalLevel3:
                         if (automationFocus == AutomationFocus.Export)
                         {
                             chance = 60;
@@ -259,6 +286,8 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         break;
                     case BuildAndExpandType.Recruitment:
+                    case BuildAndExpandType.RecruitmentLevel2:
+                    case BuildAndExpandType.RecruitmentLevel3:
                         if (automationFocus == AutomationFocus.Export)
                         {
                             chance = 200;
@@ -347,7 +376,7 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.craft_gunpowder.set(1);
             workTemplate.craft_bullet.set(1);
 
-            workTemplate.craft_sharpstick.set(weaponPrio);
+            workTemplate.craft_sharpstick.set(warAutoQuality >= WarAutoQuality.Medium? 0: weaponPrio);
             workTemplate.craft_bronzesword.set(weaponPrio);
             workTemplate.craft_shortsword.set(weaponPrio);
             workTemplate.craft_sword.set(weaponPrio);
@@ -358,8 +387,8 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.craft_twohandsword.set(weaponPrio);
             workTemplate.craft_knightslance.set(weaponPrio);
 
-            workTemplate.craft_slingshot.set(weaponPrio);
-            workTemplate.craft_throwingspear.set(weaponPrio);
+            workTemplate.craft_slingshot.set(warAutoQuality >= WarAutoQuality.Medium ? 0 : weaponPrio);
+            workTemplate.craft_throwingspear.set(warAutoQuality == WarAutoQuality.High ? 0 : weaponPrio);
             workTemplate.craft_bow.set(weaponPrio);
             workTemplate.craft_longbow.set(weaponPrio);
             workTemplate.craft_crossbow.set(weaponPrio);

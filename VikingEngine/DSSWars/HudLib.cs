@@ -18,6 +18,10 @@ namespace VikingEngine.DSSWars
 {
     static class HudLib
     {
+        public const SpriteName AvailableIcon = SpriteName.unitEmoteThumbUp;
+        public const SpriteName NotAvailableIcon = SpriteName.unitEmoteThumbDown;
+
+
         public const float MenuEdgeSize = 8;
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
