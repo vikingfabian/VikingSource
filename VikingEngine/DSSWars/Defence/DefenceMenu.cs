@@ -26,13 +26,9 @@ namespace VikingEngine.DSSWars.Defence
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Defence_AutoAssign) }, autoAssignProperty, new RbTooltip_Text(DssRef.lang.Defence_AutoAssign_Description)));
 
-
-                //content.newLine();
-                //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Add guard (archer)") },
-                //    new RbAction2Arg<int, bool>(city.debugGuardConscript, currentStatus.idAndPosition, true)));
-                //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Add guard (sword)") },
-                //   new RbAction2Arg<int, bool>(city.debugGuardConscript, currentStatus.idAndPosition, false)));
             }
+
+
         }
 
         DefenceStatus getSelected()

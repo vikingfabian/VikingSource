@@ -125,23 +125,17 @@ namespace VikingEngine.DSSWars.Display
                     tabGroup.endAttach = new List<AbsRichBoxMember> { new RbSpace(0.5f), new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor } };
                 }
                 content.Add(tabGroup);
-                //content.Add(new RbImage(SpriteName.ButtonLB));
                 content.newLine();
 
                 switch (player.cityTab)
                 {
                     case MenuTab.Info:
                         city.CityDetailsHud(false, player, content);
-                        //purchaseOptions(content);
                         break;
 
                     case MenuTab.Tag:
                         tagsToMenu(content);
                         break;
-
-                    //case MenuTab.Work:
-                    //    workTab(content);
-                    //    break;
 
                     case MenuTab.Conscript:
                         conscriptTab(content);
