@@ -13,6 +13,7 @@ using VikingEngine.ToGG.MoonFall;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Conscript;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -28,6 +29,8 @@ namespace VikingEngine.DSSWars.GameObject
         public bool automateCity = false;
         public AutomationFocus automationFocus = AutomationFocus.NoFocus;
         public WarAutoQuality warAutoQuality = WarAutoQuality.Medium;
+        public WarAutoWeaponType warAutoWeaponType = WarAutoWeaponType.Mix;
+
         public ExportAutoType exportAutoType = ExportAutoType.Resources;
 
         public bool autoExport_weapons = false;
@@ -376,7 +379,7 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.craft_gunpowder.set(1);
             workTemplate.craft_bullet.set(1);
 
-            workTemplate.craft_sharpstick.set(warAutoQuality >= WarAutoQuality.Medium? 0: weaponPrio);
+            workTemplate.craft_sharpstick.set(weaponPrio);
             workTemplate.craft_bronzesword.set(weaponPrio);
             workTemplate.craft_shortsword.set(weaponPrio);
             workTemplate.craft_sword.set(weaponPrio);
@@ -387,8 +390,8 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.craft_twohandsword.set(weaponPrio);
             workTemplate.craft_knightslance.set(weaponPrio);
 
-            workTemplate.craft_slingshot.set(warAutoQuality >= WarAutoQuality.Medium ? 0 : weaponPrio);
-            workTemplate.craft_throwingspear.set(warAutoQuality == WarAutoQuality.High ? 0 : weaponPrio);
+            workTemplate.craft_slingshot.set(weaponPrio);
+            workTemplate.craft_throwingspear.set(weaponPrio);
             workTemplate.craft_bow.set(weaponPrio);
             workTemplate.craft_longbow.set(weaponPrio);
             workTemplate.craft_crossbow.set(weaponPrio);
@@ -433,6 +436,8 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.mining_coal.set(1);
 
             workTemplate.autoBuild.set(1);
+
+            AutoConscriptLib.WorkPriority(this, ref workTemplate);
         }
 
         public bool AutomateCityProperty(int index, bool set, bool value)
@@ -463,6 +468,16 @@ namespace VikingEngine.DSSWars.GameObject
         High,
         NUM
     }
+
+    enum WarAutoWeaponType
+    { 
+        Mix,
+        Melee,
+        Ranged,
+        Warmashine,
+        NUM
+    }
+
     enum ExportAutoType
     {
         Resources,

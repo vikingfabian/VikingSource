@@ -1,9 +1,14 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.Resource
 {
@@ -18,101 +23,852 @@ namespace VikingEngine.DSSWars.Resource
         public static void Init()
         {
             items = new ItemProperties[(int)ItemResourceType.NUM];
-                        
-            items[(int)ItemResourceType.HardWood] = new ItemProperties(1f / 20, null, null);
-            items[(int)ItemResourceType.SoftWood] = new ItemProperties(1f / 30, null, null);
-            items[(int)ItemResourceType.DryWood] = new ItemProperties(1f / 60, null, null);
 
-            items[(int)ItemResourceType.Stone_G] = new ItemProperties(1f / CarryStones, null, null);
-            items[(int)ItemResourceType.IronOre_G] = new ItemProperties(1f / 10, null, null);
-            items[(int)ItemResourceType.GoldOre] = new ItemProperties(1f / 10, null, null);
-            //items[(int)ItemResourceType.Iron_G] = new ItemProperties(1f / 5, null, null);
-            items[(int)ItemResourceType.Egg] = new ItemProperties(1f / 60, null, null);
-            items[(int)ItemResourceType.Pig] = new ItemProperties(1f, null, null);
-            items[(int)ItemResourceType.Hen] = new ItemProperties(1f / 4, null, null);
-            items[(int)ItemResourceType.Wheat] = new ItemProperties(1f / 10, null, null);
-            items[(int)ItemResourceType.Linen] = new ItemProperties(1f / 10, null, null);
-            
-            items[(int)ItemResourceType.Fuel_G] = new ItemProperties(DefaultWeight, CraftResourceLib.Fuel1, null);
-            items[(int)ItemResourceType.Coal] = new ItemProperties(DefaultWeight, CraftResourceLib.Charcoal, null);
-            items[(int)ItemResourceType.Food_G] = new ItemProperties(1f / CarryFood, CraftResourceLib.Food1, CraftResourceLib.Food2);
-            items[(int)ItemResourceType.Beer] = new ItemProperties(DefaultWeight, CraftResourceLib.Beer, null);
-            items[(int)ItemResourceType.CoolingFluid] = new ItemProperties(DefaultWeight, CraftResourceLib.CoolingFluid, null);
+            // wood variants
+            new ItemProperties(ItemResourceType.HardWood, 1f / 20, null, null);
+            new ItemProperties(ItemResourceType.SoftWood, 1f / 30, null, null);
+            new ItemProperties(ItemResourceType.DryWood, 1f / 60, null, null);
 
-            items[(int)ItemResourceType.Copper] = new ItemProperties(DefaultWeight, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
-            items[(int)ItemResourceType.Tin] = new ItemProperties(DefaultWeight, CraftResourceLib.Tin, null);
-            items[(int)ItemResourceType.Lead] = new ItemProperties(DefaultWeight, CraftResourceLib.Lead, null);
-            items[(int)ItemResourceType.Iron_G] = new ItemProperties(DefaultWeight, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
-            items[(int)ItemResourceType.Silver] = new ItemProperties(DefaultWeight, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
-            items[(int)ItemResourceType.Bronze] = new ItemProperties(DefaultWeight, CraftResourceLib.Bronze, null);
-            items[(int)ItemResourceType.CastIron] = new ItemProperties(DefaultWeight, CraftResourceLib.CastIron, null);
-            items[(int)ItemResourceType.BloomeryIron] = new ItemProperties(DefaultWeight, CraftResourceLib.BloomeryIron, null);
-            items[(int)ItemResourceType.Steel] = new ItemProperties(DefaultWeight, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
-            items[(int)ItemResourceType.Mithril] = new ItemProperties(DefaultWeight, CraftResourceLib.Mithril, null);
-            
+            // basic resources
+            new ItemProperties(ItemResourceType.Stone_G, 1f / CarryStones, null, null);
+            new ItemProperties(ItemResourceType.IronOre_G, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.GoldOre, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.Egg, 1f / 60, null, null);
+            new ItemProperties(ItemResourceType.Pig, 1f, null, null);
+            new ItemProperties(ItemResourceType.Hen, 1f / 4, null, null);
+            new ItemProperties(ItemResourceType.Wheat, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.Linen, 1f / 10, null, null);
 
-            items[(int)ItemResourceType.PaddedArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.PaddedArmor, null);
-            items[(int)ItemResourceType.HeavyPaddedArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.HeavyPaddedArmor, null);
-            items[(int)ItemResourceType.BronzeArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.BronzeArmor, null);
-            items[(int)ItemResourceType.IronArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.MailArmor, null);
-            items[(int)ItemResourceType.HeavyIronArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.HeavyMailArmor, null);
-            items[(int)ItemResourceType.LightPlateArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.PlateArmor, null);
-            items[(int)ItemResourceType.FullPlateArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.FullPlateArmor, null);
-            items[(int)ItemResourceType.MithrilArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.MithrilArmor, null);
+            // fuel & food
+            new ItemProperties(ItemResourceType.Fuel_G, DefaultWeight, CraftResourceLib.Fuel1, null);
+            new ItemProperties(ItemResourceType.Coal, DefaultWeight, CraftResourceLib.Charcoal, null);
+            new ItemProperties(ItemResourceType.Food_G, 1f / CarryFood, CraftResourceLib.Food1, CraftResourceLib.Food2);
+            new ItemProperties(ItemResourceType.Beer, DefaultWeight, CraftResourceLib.Beer, null);
+            new ItemProperties(ItemResourceType.CoolingFluid, DefaultWeight, CraftResourceLib.CoolingFluid, null);
 
-            items[(int)ItemResourceType.Palisade] = new ItemProperties(DefaultWeight, CraftResourceLib.Palisade, null);
-            items[(int)ItemResourceType.Toolkit] = new ItemProperties(DefaultWeight, CraftResourceLib.Beer, null);
-            items[(int)ItemResourceType.Wagon2Wheel] = new ItemProperties(DefaultWeight, CraftResourceLib.WagonLight, null);
-            items[(int)ItemResourceType.Wagon4Wheel] = new ItemProperties(DefaultWeight, CraftResourceLib.WagonHeavy, null);
-            items[(int)ItemResourceType.BlackPowder] = new ItemProperties(DefaultWeight, CraftResourceLib.BlackPowder, null);
-            items[(int)ItemResourceType.GunPowder] = new ItemProperties(DefaultWeight, CraftResourceLib.GunPowder, null);
-            items[(int)ItemResourceType.LedBullet] = new ItemProperties(DefaultWeight, CraftResourceLib.LedBullets, null);
+            // metals & alloys
+            new ItemProperties(ItemResourceType.Copper, DefaultWeight, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
+            new ItemProperties(ItemResourceType.Tin, DefaultWeight, CraftResourceLib.Tin, null);
+            new ItemProperties(ItemResourceType.Lead, DefaultWeight, CraftResourceLib.Lead, null);
+            new ItemProperties(ItemResourceType.Iron_G, DefaultWeight, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
+            new ItemProperties(ItemResourceType.Silver, DefaultWeight, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
+            new ItemProperties(ItemResourceType.Bronze, DefaultWeight, CraftResourceLib.Bronze, null);
+            new ItemProperties(ItemResourceType.CastIron, DefaultWeight, CraftResourceLib.CastIron, null);
+            new ItemProperties(ItemResourceType.BloomeryIron, DefaultWeight, CraftResourceLib.BloomeryIron, null);
+            new ItemProperties(ItemResourceType.Steel, DefaultWeight, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
+            new ItemProperties(ItemResourceType.Mithril, DefaultWeight, CraftResourceLib.Mithril, null);
 
-            items[(int)ItemResourceType.SharpStick] = new ItemProperties(DefaultWeight, CraftResourceLib.SharpStick, null);
-            items[(int)ItemResourceType.BronzeSword] = new ItemProperties(DefaultWeight, CraftResourceLib.BronzeSword, null);
-            items[(int)ItemResourceType.ShortSword] = new ItemProperties(DefaultWeight, CraftResourceLib.ShortSword, null);
-            items[(int)ItemResourceType.Sword] = new ItemProperties(DefaultWeight, CraftResourceLib.Sword, null);
-            items[(int)ItemResourceType.LongSword] = new ItemProperties(DefaultWeight, CraftResourceLib.LongSword, null);
-            items[(int)ItemResourceType.HandSpear] = new ItemProperties(DefaultWeight, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
-            items[(int)ItemResourceType.MithrilSword] = new ItemProperties(DefaultWeight, CraftResourceLib.MithrilSword, null);
+            // armors
+            new ItemProperties(ItemResourceType.PaddedArmor, DefaultWeight, CraftResourceLib.PaddedArmor, null);
+            new ItemProperties(ItemResourceType.HeavyPaddedArmor, DefaultWeight, CraftResourceLib.HeavyPaddedArmor, null);
+            new ItemProperties(ItemResourceType.BronzeArmor, DefaultWeight, CraftResourceLib.BronzeArmor, null);
+            new ItemProperties(ItemResourceType.IronArmor, DefaultWeight, CraftResourceLib.MailArmor, null);
+            new ItemProperties(ItemResourceType.HeavyIronArmor, DefaultWeight, CraftResourceLib.HeavyMailArmor, null);
+            new ItemProperties(ItemResourceType.LightPlateArmor, DefaultWeight, CraftResourceLib.PlateArmor, null);
+            new ItemProperties(ItemResourceType.FullPlateArmor, DefaultWeight, CraftResourceLib.FullPlateArmor, null);
+            new ItemProperties(ItemResourceType.MithrilArmor, DefaultWeight, CraftResourceLib.MithrilArmor, null);
 
-            items[(int)ItemResourceType.Warhammer] = new ItemProperties(DefaultWeight, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
-            items[(int)ItemResourceType.TwoHandSword] = new ItemProperties(DefaultWeight, CraftResourceLib.TwoHandSword, null);
-            items[(int)ItemResourceType.KnightsLance] = new ItemProperties(DefaultWeight, CraftResourceLib.KnightsLance, null);
+            // buildings & tools
+            new ItemProperties(ItemResourceType.Palisade, DefaultWeight, CraftResourceLib.Palisade, null);
+            new ItemProperties(ItemResourceType.Toolkit, DefaultWeight, CraftResourceLib.Beer, null);
+            new ItemProperties(ItemResourceType.Wagon2Wheel, DefaultWeight, CraftResourceLib.WagonLight, null);
+            new ItemProperties(ItemResourceType.Wagon4Wheel, DefaultWeight, CraftResourceLib.WagonHeavy, null);
 
-            items[(int)ItemResourceType.SlingShot] = new ItemProperties(DefaultWeight, CraftResourceLib.Slingshot, null);
-            items[(int)ItemResourceType.ThrowingSpear] = new ItemProperties(DefaultWeight, CraftResourceLib.ThrowingSpear1, CraftResourceLib.ThrowingSpear2);
-            items[(int)ItemResourceType.Bow] = new ItemProperties(DefaultWeight, CraftResourceLib.Bow, null);
-            items[(int)ItemResourceType.LongBow] = new ItemProperties(DefaultWeight, CraftResourceLib.LongBow, null);
-            items[(int)ItemResourceType.Crossbow] = new ItemProperties(DefaultWeight, CraftResourceLib.CrossBow, null);
-            items[(int)ItemResourceType.MithrilBow] = new ItemProperties(DefaultWeight, CraftResourceLib.MithrilBow, null);
+            // gunpowder & ballistics
+            new ItemProperties(ItemResourceType.BlackPowder, DefaultWeight, CraftResourceLib.BlackPowder, null);
+            new ItemProperties(ItemResourceType.GunPowder, DefaultWeight, CraftResourceLib.GunPowder, null);
+            new ItemProperties(ItemResourceType.LedBullet, DefaultWeight, CraftResourceLib.LedBullets, null);
 
-            items[(int)ItemResourceType.HandCannon] = new ItemProperties(DefaultWeight, CraftResourceLib.BronzeHandCannon, null);
-            items[(int)ItemResourceType.HandCulverin] = new ItemProperties(DefaultWeight, CraftResourceLib.BronzeHandCulverin, null);
-            items[(int)ItemResourceType.Rifle] = new ItemProperties(DefaultWeight, CraftResourceLib.Rifle, null);
-            items[(int)ItemResourceType.Blunderbuss] = new ItemProperties(DefaultWeight, CraftResourceLib.Blunderbus, null);
+            // melee weapons
+            new ItemProperties(ItemResourceType.SharpStick, DefaultWeight, CraftResourceLib.SharpStick, null);
+            new ItemProperties(ItemResourceType.BronzeSword, DefaultWeight, CraftResourceLib.BronzeSword, null);
+            new ItemProperties(ItemResourceType.ShortSword, DefaultWeight, CraftResourceLib.ShortSword, null);
+            new ItemProperties(ItemResourceType.Sword, DefaultWeight, CraftResourceLib.Sword, null);
+            new ItemProperties(ItemResourceType.LongSword, DefaultWeight, CraftResourceLib.LongSword, null);
+            new ItemProperties(ItemResourceType.HandSpear, DefaultWeight, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
+            new ItemProperties(ItemResourceType.MithrilSword, DefaultWeight, CraftResourceLib.MithrilSword, null);
+            new ItemProperties(ItemResourceType.Warhammer, DefaultWeight, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
+            new ItemProperties(ItemResourceType.TwoHandSword, DefaultWeight, CraftResourceLib.TwoHandSword, null);
+            new ItemProperties(ItemResourceType.KnightsLance, DefaultWeight, CraftResourceLib.KnightsLance, null);
 
-            items[(int)ItemResourceType.Ballista] = new ItemProperties(DefaultWeight, CraftResourceLib.Ballista_Iron, CraftResourceLib.Ballista_Bronze);
-            items[(int)ItemResourceType.Manuballista] = new ItemProperties(DefaultWeight, CraftResourceLib.ManuBallista, null);
-            items[(int)ItemResourceType.Catapult] = new ItemProperties(DefaultWeight, CraftResourceLib.Catapult, null);
-            items[(int)ItemResourceType.SiegeCannonBronze] = new ItemProperties(DefaultWeight, CraftResourceLib.SiegeCannonBronze, null);
-            items[(int)ItemResourceType.ManCannonBronze] = new ItemProperties(DefaultWeight, CraftResourceLib.ManCannonBronze, null);
-            items[(int)ItemResourceType.SiegeCannonIron] = new ItemProperties(DefaultWeight, CraftResourceLib.SiegeCannonIron, null);
-            items[(int)ItemResourceType.ManCannonIron] = new ItemProperties(DefaultWeight, CraftResourceLib.ManCannonIron, null);
+            // ranged weapons
+            new ItemProperties(ItemResourceType.SlingShot, DefaultWeight, CraftResourceLib.Slingshot, null);
+            new ItemProperties(ItemResourceType.ThrowingSpear, DefaultWeight, CraftResourceLib.ThrowingSpear1, CraftResourceLib.ThrowingSpear2);
+            new ItemProperties(ItemResourceType.Bow, DefaultWeight, CraftResourceLib.Bow, null);
+            new ItemProperties(ItemResourceType.LongBow, DefaultWeight, CraftResourceLib.LongBow, null);
+            new ItemProperties(ItemResourceType.Crossbow, DefaultWeight, CraftResourceLib.CrossBow, null);
+            new ItemProperties(ItemResourceType.MithrilBow, DefaultWeight, CraftResourceLib.MithrilBow, null);
 
-            items[(int)ItemResourceType.CopperCoin] = new ItemProperties(DefaultWeight, ResourceLib.CupperCoin, null);
-            items[(int)ItemResourceType.BronzeCoin] = new ItemProperties(DefaultWeight, ResourceLib.BronzeCoin, null);
-            items[(int)ItemResourceType.SilverCoin] = new ItemProperties(DefaultWeight, ResourceLib.SilverCoin, null);
-            items[(int)ItemResourceType.ElfCoin] = new ItemProperties(DefaultWeight, ResourceLib.ElfCoin, null);
+            // firearms
+            new ItemProperties(ItemResourceType.HandCannon, DefaultWeight, CraftResourceLib.BronzeHandCannon, null);
+            new ItemProperties(ItemResourceType.HandCulverin, DefaultWeight, CraftResourceLib.BronzeHandCulverin, null);
+            new ItemProperties(ItemResourceType.Rifle, DefaultWeight, CraftResourceLib.Rifle, null);
+            new ItemProperties(ItemResourceType.Blunderbuss, DefaultWeight, CraftResourceLib.Blunderbus, null);
+
+            // siege engines
+            new ItemProperties(ItemResourceType.Ballista, DefaultWeight, CraftResourceLib.Ballista_Iron, CraftResourceLib.Ballista_Bronze);
+            new ItemProperties(ItemResourceType.Manuballista, DefaultWeight, CraftResourceLib.ManuBallista, null);
+            new ItemProperties(ItemResourceType.Catapult, DefaultWeight, CraftResourceLib.Catapult, null);
+            new ItemProperties(ItemResourceType.SiegeCannonBronze, DefaultWeight, CraftResourceLib.SiegeCannonBronze, null);
+            new ItemProperties(ItemResourceType.ManCannonBronze, DefaultWeight, CraftResourceLib.ManCannonBronze, null);
+            new ItemProperties(ItemResourceType.SiegeCannonIron, DefaultWeight, CraftResourceLib.SiegeCannonIron, null);
+            new ItemProperties(ItemResourceType.ManCannonIron, DefaultWeight, CraftResourceLib.ManCannonIron, null);
+
+            // coins
+            new ItemProperties(ItemResourceType.CopperCoin, DefaultWeight, ResourceLib.CupperCoin, null);
+            new ItemProperties(ItemResourceType.BronzeCoin, DefaultWeight, ResourceLib.BronzeCoin, null);
+            new ItemProperties(ItemResourceType.SilverCoin, DefaultWeight, ResourceLib.SilverCoin, null);
+            new ItemProperties(ItemResourceType.ElfCoin, DefaultWeight, ResourceLib.ElfCoin, null);
 
 
             for (int i = 0; i < items.Length; ++i)
             {
                 if (items[i] == null)
-                { 
-                    items[i] = new ItemProperties(DefaultWeight, null, null);
+                {
+                    new ItemProperties((ItemResourceType)i, DefaultWeight, null, null);
                 }
             }
+
+            //Init armor health
+            Get(ItemResourceType.NONE).soldierData.basehealth = DssConst.ArmorHealth_None;
+            Get(ItemResourceType.PaddedArmor).soldierData.basehealth = DssConst.ArmorHealth_Padded;
+            Get(ItemResourceType.HeavyPaddedArmor).soldierData.basehealth = DssConst.ArmorHealth_HeavyPadded;
+            Get(ItemResourceType.BronzeArmor).soldierData.basehealth = DssConst.ArmorHealth_Bronze;
+            Get(ItemResourceType.IronArmor).soldierData.basehealth = DssConst.ArmorHealth_Mail;
+            Get(ItemResourceType.HeavyIronArmor).soldierData.basehealth = DssConst.ArmorHealth_HeavyMail;
+            Get(ItemResourceType.LightPlateArmor).soldierData.basehealth = DssConst.ArmorHealth_Plate;
+            Get(ItemResourceType.FullPlateArmor).soldierData.basehealth = DssConst.ArmorHealth_FullPlate;
+            Get(ItemResourceType.MithrilArmor).soldierData.basehealth = DssConst.ArmorHealth_Mithril;
+
+            //Init weapons
+            {
+                var weapon = Get(ItemResourceType.SharpStick);
+                ref var soldier = ref weapon.soldierData;
+                soldier.attackDamage = DssConst.WeaponDamage_SharpStick;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.03f;
+                soldier.modelName = LootFest.VoxelModelName.war_folkman;
+                soldier.icon = SpriteName.WarsUnitIcon_Folkman;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.BronzeSword);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_BronzeSword;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.03f;
+                soldier.modelName = LootFest.VoxelModelName.wars_soldier;
+                soldier.modelVariationCount = 3;
+                soldier.icon = SpriteName.WarsUnitIcon_Soldier;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.ShortSword);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_ShortSword;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.03f;
+                soldier.modelName = LootFest.VoxelModelName.wars_soldier;
+                soldier.modelVariationCount = 3;
+                soldier.icon = SpriteName.WarsUnitIcon_Soldier;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.Sword);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Sword;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = DssConst.SwordAttackRange;
+                soldier.modelName = LootFest.VoxelModelName.wars_soldier;
+                soldier.modelVariationCount = 3;
+                soldier.icon = SpriteName.WarsUnitIcon_Soldier;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.LongSword);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_LongSword;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.05f;
+                soldier.modelName = LootFest.VoxelModelName.wars_longsword;
+                soldier.icon = SpriteName.WarsUnitIcon_Longsword;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.Pike);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Pike;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.arrowWeakness = true;
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.055f;
+                soldier.modelName = LootFest.VoxelModelName.wars_piker;
+                soldier.modelVariationCount = 1;
+                soldier.modelScale *= 1.6f;
+                soldier.icon = SpriteName.WarsUnitIcon_Pikeman;
+                //soldier.specialization = SpecializationType.AntiCavalry;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.HandSpear);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Handspear;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.arrowWeakness = true;
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.05f;
+                soldier.modelName = LootFest.VoxelModelName.wars_spearman;
+                soldier.modelVariationCount = 1;
+                soldier.modelScale *= 1.0f;
+                soldier.icon = SpriteName.LittleUnitIconSpearman;
+                soldier.basehealth += DssConst.WeaponHealthAdd_Handspear;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.Warhammer);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Warhammer;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.04f;
+                soldier.modelName = LootFest.VoxelModelName.wars_hammer;
+                soldier.modelScale *= 1.14f;
+                soldier.icon = SpriteName.WarsResource_Warhammer;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+
+                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.TwoHandSword);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_TwoHandSword;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.arrowWeakness = true;
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.08f;
+                soldier.modelName = LootFest.VoxelModelName.wars_twohand;
+                soldier.modelVariationCount = 1;
+                soldier.modelScale *= 1.6f;
+                soldier.icon = SpriteName.WarsUnitIcon_TwoHand;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+
+                soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.KnightsLance);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_KnigtsLance;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = Convert.ToInt32(30);// * skillBonus); // special override
+                soldier.attackDamageSea = Convert.ToInt32(20);// * skillBonus);
+
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2.5f;
+                soldier.attackRange = 0.06f;
+                soldier.basehealth *= 3;
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
+
+                soldier.modelName = LootFest.VoxelModelName.war_knight;
+                soldier.modelVariationCount = 3;
+                soldier.modelScale *= 1.5f;
+                soldier.icon = SpriteName.WarsUnitIcon_Knight;
+
+                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 3;
+                soldier.rowWidth = 4;
+                soldier.columnsDepth = 3;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
+                soldier.workForcePerUnit = 2;
+                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                soldier.hasBannerMan = false;
+
+                soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.MithrilSword);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_MithrilSword;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.055f;
+                soldier.modelScale *= 1.5f;
+                soldier.modelName = LootFest.VoxelModelName.wars_mithrilman;
+                soldier.icon = SpriteName.WarsUnitIcon_MithrilMan;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
+
+                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.SlingShot);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Slingshot;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                soldier.mainAttack = AttackType.SlingShot;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.attackRange = 1.8f;
+                soldier.modelName = LootFest.VoxelModelName.wars_slingman;
+                soldier.icon = SpriteName.WarsUnitIcon_Slingshot;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
+                soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+
+            {
+                var weapon = Get(ItemResourceType.ThrowingSpear);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Throwingspear;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.3f;
+                soldier.mainAttack = AttackType.Javelin;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.attackRange = 0.5f;
+                soldier.modelName = LootFest.VoxelModelName.wars_javelin;
+                soldier.icon = SpriteName.WarsUnitIcon_Javelin;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 6f;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.Bow);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Bow;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Arrow;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.attackRange = 1.3f;
+                soldier.modelName = LootFest.VoxelModelName.war_archer;
+                soldier.modelVariationCount = 2;
+                soldier.icon = SpriteName.WarsUnitIcon_Archer;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
+                soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.LongBow);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Longbow;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Arrow;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.attackRange = 1.7f;
+                soldier.modelName = LootFest.VoxelModelName.war_archer;
+                soldier.modelVariationCount = 2;
+                soldier.icon = SpriteName.WarsUnitIcon_Archer;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
+                soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.Crossbow);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_CrossBow;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Bolt;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.attackRange = 1.7f;
+                soldier.modelName = LootFest.VoxelModelName.wars_crossbow;
+                soldier.modelVariationCount = 1;
+                soldier.icon = SpriteName.LittleUnitIconCrossBowman;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 15f;
+
+                soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.MithrilBow);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_MithrilBow;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Arrow;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.attackRange = 2.5f;
+                soldier.modelName = LootFest.VoxelModelName.wars_mithrilarcher;
+                soldier.modelScale *= 1.3f;
+                soldier.icon = SpriteName.WarsUnitIcon_MithrilArcher;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 8f;
+
+                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.HandCannon);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Handcannon;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.GunShot;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.attackRange = 1.2f;
+                soldier.modelName = LootFest.VoxelModelName.wars_handcannon;
+                soldier.modelVariationCount = 1;
+                soldier.icon = SpriteName.WarsUnitIcon_BronzeRifle;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+
+                soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.HandCulverin);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Handculvetin;
+                soldier.attackSplashCount = 7;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.GunBlast;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.attackRange = 0.4f;
+                soldier.modelName = LootFest.VoxelModelName.wars_culvertin;
+                soldier.modelVariationCount = 1;
+                soldier.icon = SpriteName.WarsUnitIcon_BronzeRifle;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+
+                soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.Rifle);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Rifle;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.GunShot;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.attackRange = 1.5f;
+                soldier.modelName = LootFest.VoxelModelName.wars_handcannon;
+                soldier.modelVariationCount = 1;
+                soldier.icon = SpriteName.WarsUnitIcon_BronzeRifle;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+
+                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.Blunderbuss);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Blunderbus;
+                soldier.attackSplashCount = 8;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.GunBlast;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.attackRange = 0.5f;
+                soldier.modelName = LootFest.VoxelModelName.wars_culvertin;
+                soldier.modelVariationCount = 1;
+                soldier.icon = SpriteName.WarsUnitIcon_BronzeRifle;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+
+                soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.Ballista);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Ballista;
+                soldier.attackSplashCount = 1;
+                soldier.attackDamageStructure = Convert.ToInt32(1500); //* skillBonus);
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                soldier.attackRange = WarmashineProfile.BallistaRange;
+                soldier.basehealth = MathExt.MultiplyInt(0.5, soldier.basehealth);
+                soldier.mainAttack = AttackType.Ballista;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 32f;
+                soldier.modelName = LootFest.VoxelModelName.war_ballista;
+                soldier.modelVariationCount = 2;
+                soldier.modelScale = DssConst.Men_StandardModelScale * 2f;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
+                soldier.icon = SpriteName.WarsUnitIcon_Ballista;
+                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.rowWidth = 3;
+                soldier.columnsDepth = 2;
+                soldier.workForcePerUnit = 2;
+                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+                soldier.hasBannerMan = false;
+                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.Manuballista);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_ManuBallista;
+                soldier.attackSplashCount = 1;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                soldier.attackRange = 2f;
+                soldier.basehealth = MathExt.MultiplyInt(0.5, soldier.basehealth);
+                soldier.mainAttack = AttackType.Ballista;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 32f;
+                soldier.modelName = LootFest.VoxelModelName.wars_manuballista;
+                soldier.modelScale = DssConst.Men_StandardModelScale * 1.5f;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.icon = SpriteName.WarsResource_Manuballista;
+                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.rowWidth = 3;
+                soldier.columnsDepth = 2;
+                soldier.workForcePerUnit = 2;
+                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+                soldier.hasBannerMan = false;
+                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                soldier.blockReducingAttack_Inv = DssConst.HeavyBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+            {
+                var weapon = Get(ItemResourceType.Catapult);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Catapult;
+                soldier.attackSplashCount = 3;
+                soldier.attackDamageStructure = Convert.ToInt32(2000); //* skillBonus);
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                soldier.attackRange = 2.6f;
+                soldier.basehealth = MathExt.MultiplyInt(0.5, soldier.basehealth);
+                soldier.mainAttack = AttackType.Catapult;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 32f;
+                soldier.modelName = LootFest.VoxelModelName.wars_catapult;
+                soldier.modelScale = DssConst.Men_StandardModelScale * 2.3f;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
+                soldier.icon = SpriteName.WarsUnitIcon_Catapult;
+                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.rowWidth = 2;
+                soldier.columnsDepth = 2;
+                soldier.workForcePerUnit = 2;
+                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
+                soldier.hasBannerMan = false;
+                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+            {
+                var weapon = Get(ItemResourceType.SiegeCannonBronze);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_SiegeCannonBronze;
+                soldier.attackSplashCount = 12;
+                soldier.attackDamageStructure = Convert.ToInt32(2000); // * skillBonus);
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.3f;
+                soldier.attackRange = 2.4f;
+                soldier.basehealth = MathExt.MultiplyInt(0.5, soldier.basehealth);
+                soldier.mainAttack = AttackType.MassiveCannonball;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 100f;
+                soldier.modelName = LootFest.VoxelModelName.wars_bronzesiegecannon;
+                soldier.modelScale = DssConst.Men_StandardModelScale * 5f;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
+                soldier.icon = SpriteName.WarsUnitIcon_Catapult;
+                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.rowWidth = 1;
+                soldier.columnsDepth = 1;
+                soldier.workForcePerUnit = 6;
+                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
+                soldier.hasBannerMan = false;
+                soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 2.4f);
+                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                soldier.blockReducingAttack_Inv = DssConst.HeavyBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+            {
+                var weapon = Get(ItemResourceType.ManCannonBronze);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_ManCannonBronze;
+                soldier.attackSplashCount = 5;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                soldier.attackRange = 2f;
+                soldier.basehealth = MathExt.MultiplyInt(0.5, soldier.basehealth);
+                soldier.mainAttack = AttackType.Cannonball;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 40f;
+                soldier.modelName = LootFest.VoxelModelName.wars_bronzemancannon;
+                soldier.modelScale = DssConst.Men_StandardModelScale * 2f;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.icon = SpriteName.WarsResource_BronzeManCannon;
+                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.rowWidth = 3;
+                soldier.columnsDepth = 2;
+                soldier.workForcePerUnit = 2;
+                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
+                soldier.hasBannerMan = false;
+                soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 1.1f);
+                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_Wheels;
+                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+            {
+                var weapon = Get(ItemResourceType.SiegeCannonIron);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_SiegeCannonIron;
+                soldier.attackSplashCount = 2;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                soldier.attackRange = 2.2f;
+                soldier.basehealth = MathExt.MultiplyInt(0.5, soldier.basehealth);
+                soldier.mainAttack = AttackType.Haubitz;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 40f;
+                soldier.modelName = LootFest.VoxelModelName.wars_ironsiegecannon;
+                soldier.modelScale = DssConst.Men_StandardModelScale * 1f;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
+                soldier.icon = SpriteName.WarsResource_IronSiegeCannon;
+                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 4;
+                soldier.rowWidth = 3;
+                soldier.columnsDepth = 2;
+                soldier.workForcePerUnit = 2;
+                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+                soldier.hasBannerMan = false;
+                soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 0.3f);
+                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                soldier.blockReducingAttack_Inv = DssConst.HeavyBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.ManCannonIron);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_ManCannonIron;
+                soldier.attackSplashCount = 6;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                soldier.attackRange = 2.4f;
+                soldier.basehealth = MathExt.MultiplyInt(0.5, soldier.basehealth);
+                soldier.mainAttack = AttackType.Cannonball;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 40;
+                soldier.modelName = LootFest.VoxelModelName.wars_ironmancannon;
+                soldier.modelScale = DssConst.Men_StandardModelScale * 1.7f;
+                soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
+                soldier.icon = SpriteName.WarsUnitIcon_IronManCannon;
+                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.rowWidth = 3;
+                soldier.columnsDepth = 2;
+                soldier.workForcePerUnit = 2;
+                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+                soldier.hasBannerMan = false;
+                soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 1f);
+                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_Wheels;
+                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
+                soldier.factionColoredModel = true;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.RoseWarrior_soldier);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_LongSword;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.05f;
+                soldier.modelName = LootFest.VoxelModelName.wars_rosewarrior;
+                soldier.factionColoredModel = false;
+                soldier.icon = SpriteName.MissingImage;
+                soldier.modelScale = DssConst.Men_StandardModelScale * 1.4f;
+                soldier.hasBannerMan = false;
+                soldier.rowWidth = 5;
+                soldier.columnsDepth = 4;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 1.2f;
+                soldier.groupSpacingRndOffset = DssVar.StandardBoundRadius * 1f;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.RoseWarrior_dog);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_Sword;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.05f;
+                soldier.modelName = LootFest.VoxelModelName.wars_rosedog;
+                soldier.factionColoredModel = false;
+                soldier.icon = SpriteName.MissingImage;
+                soldier.modelScale = DssConst.Men_StandardModelScale * 1f;
+                soldier.hasBannerMan = false;
+                soldier.rowWidth = 5;
+                soldier.columnsDepth = 4;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 1.2f;
+                soldier.groupSpacingRndOffset = DssVar.StandardBoundRadius * 1f;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+            }
+
+            {
+                var weapon = Get(ItemResourceType.RoseWarrior_tank);
+                ref var soldier = ref weapon.soldierData;
+
+                soldier.attackDamage = DssConst.WeaponDamage_MithrilSword;
+                soldier.attackSplashCount = 0;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.05f;
+                soldier.modelName = LootFest.VoxelModelName.wars_rosetank;
+                soldier.factionColoredModel = false;
+                soldier.icon = SpriteName.MissingImage;
+                soldier.modelScale = DssConst.Men_StandardModelScale * 2f;
+                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+                soldier.hasBannerMan = false;
+                soldier.rowWidth = 3;
+                soldier.columnsDepth = 2;
+                soldier.groupSpacingRndOffset = DssVar.StandardBoundRadius * 1f;
+                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+            }
+
+
+
+        }
+
+        public static ItemProperties Get(ItemResourceType type)
+        {
+            return items[(int)type];
         }
 
         public static int CarryAmount(ItemResourceType item, float maxWeight = 1f)
@@ -138,11 +894,15 @@ namespace VikingEngine.DSSWars.Resource
         public CraftBlueprint bp1;
         public CraftBlueprint bp2;
 
-        public ItemProperties(float weight, CraftBlueprint bp1, CraftBlueprint bp2)
-        {
+        public SoldierData soldierData = new SoldierData();
+
+        public ItemProperties(ItemResourceType type, float weight, CraftBlueprint bp1, CraftBlueprint bp2)
+        {   
             this.weight = weight;
             this.bp1 = bp1;
             this.bp2 = bp2;
+
+            ItemPropertyColl.items[(int)type] = this;
         }
     }
 }

@@ -55,6 +55,18 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public SoldierData()
         { }
 
+        public void applySkillBonus(float skillBonus)
+        {
+            if (skillBonus <= 0)
+            {
+                skillBonus = 1;
+            }
+
+            attackDamage = Convert.ToInt32(attackDamage * skillBonus);
+            attackDamageStructure = Convert.ToInt32(attackDamageStructure * skillBonus);
+            attackDamageSea = Convert.ToInt32(attackDamageSea * skillBonus);
+        }
+
         public LootFest.VoxelModelName RandomModelName()
         {
             if (modelVariationCount == 1)

@@ -63,43 +63,24 @@ namespace VikingEngine.DSSWars.GameObject
         {
             int count = 0;
             float totalStrength = 0;
+            Intvector2MinMax minMax = new Intvector2MinMax(tilePos);
 
             if (groups.Count > 0)
             {
-                
-                //int dps;
-
                 var groupsC = groups.counter();
 
                 while (groupsC.Next())
                 {
                     count += groupsC.sel.soldierCount;
-
-                    //int health;
-
-                    //if (groupsC.sel.isShip)
-                    //{
-
-                    //    dps = groupsC.sel.soldierData.DPS_sea();
-                    //    health = groupsC.sel.soldierData.basehealth;
-                    //}
-                    //else
-                    //{
-                    //    dps = groupsC.sel.soldierData.DPS_land();
-                    //    health = groupsC.sel.soldierData.basehealth;
-                    //}
-
-                    //totalStrength += (dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
                     totalStrength += AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip);
+
+                    minMax.Next(ref groupsC.sel.tilePos);
                 }
-
-                
-                
-                //strengthValue = 2f * totalStrength / AllUnits.AverageGroupStrength;
             }
-            soldiersCount = count;
-            this.strengthValue = totalStrength;//count;
 
+            soldiersCount = count;
+            this.strengthValue = totalStrength;
+            guardCullingMinMax = minMax;
         }
     }
 }

@@ -25,10 +25,17 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BlocksProduction => "Will not produce";
 
         //public string CityAutomation_WaitForMaxPopulation => "Wait for population to max out";
-
+        public string Automation_AutomationFocus_NoFocus => "All";
         public string CityAutomation_SoldierQuality => "Soldier quality";
+        public string CityAutomation_SoldierWeaponType => "Weapon type";
         public string WarsResourceGroup_Resources => "Resources";
         public string WarsResourceGroup_Weapons => "Weapons";
+
+        public string WarsResourceGroup_AllWeaponTypes => "Mixed";
+        public string WarsResourceGroup_MeleeHandWeapons => "Melee";
+        public string WarsResourceGroup_RangedHandWeapons => "Ranged";
+        public string WarsResourceGroup_Warmashines => "Warmashine";
+
 
         public string FactionSettings_Titel => "Faction wide settings";
         public string FactionSettings_Description => "Will include all your cities";
@@ -46,7 +53,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string GeneralSetting_Off = "Set to: Off";
         public string GeneralSetting_AllBuildingsDescription => "Will apply to all buildings";
 
-
+        public string GeneralSetting_ApplyMessage => "Change applied to {0} buildings";
 
     }
 

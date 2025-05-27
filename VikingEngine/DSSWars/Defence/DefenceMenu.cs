@@ -21,14 +21,43 @@ namespace VikingEngine.DSSWars.Defence
             if (city.defenceBuildings.InBound(city.selectedDefenceBuilding))
             {
                 DefenceStatus currentStatus = getSelected();
-                content.Add(new RbText(DssRef.lang.Defence_GuardPost + " " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_TypeName));
+                content.Add(new RbBeginTitle(1));
+                content.Add(new RbImage(SpriteName.WarsGuardPostIcon));
+                content.space();
+                content.Add(new RbText(DssRef.lang.Defence_GuardPost + " " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_Head));
+                content.space();
+                HudLib.CloseButton(content, new RbAction(() => { city.selectedDefenceBuilding = -1; }, SoundLib.menuBack));
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Defence_AutoAssign) }, autoAssignProperty, new RbTooltip_Text(DssRef.lang.Defence_AutoAssign_Description)));
 
             }
+            else
+            {
+                content.Add(new RbBeginTitle(1));
+                content.Add(new RbImage(SpriteName.WarsGuardPostIcon));
+                content.space();
+                content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.Defence_GuardPost, city.defenceBuildings.Count), HudLib.TitleColor_Head));
 
+                content.newLine();
+                content.Add(new RbText(DssRef.lang.Defence_AutoAssign, HudLib.TitleColor_Label));
+                content.space();
 
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(HudLib.RbSettings.checkOn, 0.8f),
+                    new RbSpace(),
+                    new RbText(DssRef.todoLang.GeneralSetting_On)
+                    }, new RbAction1Arg<bool>(city.setAllDefenceAutoAssign, true), 
+                    new RbTooltip_Text(DssRef.todoLang.GeneralSetting_AllBuildingsDescription)));
+                
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(HudLib.RbSettings.checkOff, 0.8f),
+                    new RbSpace(),
+                    new RbText(DssRef.todoLang.GeneralSetting_Off)
+                    }, new RbAction1Arg<bool>(city.setAllDefenceAutoAssign, false),
+                    new RbTooltip_Text(DssRef.todoLang.GeneralSetting_AllBuildingsDescription)));
+            }
+            
         }
 
         DefenceStatus getSelected()

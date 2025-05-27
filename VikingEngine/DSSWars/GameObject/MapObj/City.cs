@@ -1,15 +1,20 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.Text;
+using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Net.Http.Headers;
-
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
@@ -20,17 +25,11 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest;
-using VikingEngine.ToGG.ToggEngine.Map;
-using VikingEngine.ToGG;
-using VikingEngine.DSSWars.Defence;
-using VikingEngine.PJ.MiniGolf;
 using VikingEngine.LootFest.GO.Gadgets;
-using System.ComponentModel;
-using Microsoft.CodeAnalysis.Text;
-using System.Reflection.Metadata;
-using VikingEngine.DebugExtensions;
+using VikingEngine.PJ.MiniGolf;
+using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -84,7 +83,9 @@ namespace VikingEngine.DSSWars.GameObject
         //bool customName = false;
         ObjectName name = new ObjectName();
 
-        IntVector2 cullingTopLeft, cullingBottomRight;
+
+        Intvector2MinMax workerCullingMinMax, guardCullingMinMax;
+        //IntVector2 cullingTopLeft, cullingBottomRight;
         public int cityTileRadius = 0;
         public CityCulture Culture = CityCulture.NUM_NONE;
 
@@ -470,8 +471,10 @@ namespace VikingEngine.DSSWars.GameObject
 
             Culture = (CityCulture)r.ReadByte();
 
-            cullingTopLeft = tilePos;
-            cullingBottomRight = tilePos;
+            //cullingTopLeft = tilePos;
+            //cullingBottomRight = tilePos;
+            workerCullingMinMax = new Intvector2MinMax(tilePos);
+            guardCullingMinMax = workerCullingMinMax;
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -539,6 +542,8 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(money.copper);
             w.Write(automateCity);
             w.Write((byte)automationFocus);
+            w.Write((byte)warAutoQuality);
+            w.Write((byte)warAutoWeaponType);
 
             name.write(w);
             
@@ -655,8 +660,11 @@ namespace VikingEngine.DSSWars.GameObject
             
             automateCity = r.ReadBoolean();
             automationFocus = (AutomationFocus)r.ReadByte();
-            
-
+            if (subversion >= 60)
+            {
+                warAutoQuality = (WarAutoQuality)r.ReadByte();
+                warAutoWeaponType = (WarAutoWeaponType)r.ReadByte();
+            }
             name.read(r, subversion);
 
             Debug.ReadCheck(r);
@@ -1535,11 +1543,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            //if (inRender_detailLayer)
-            //{
-            //    lib.DoNothing();
-            //}
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
+            Intvector2MinMax minMax = workerCullingMinMax;
+            minMax.Combine(guardCullingMinMax);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref minMax.min, ref minMax.max);
         }
 
         public double childAddPerSec()
@@ -1831,7 +1837,7 @@ namespace VikingEngine.DSSWars.GameObject
             float armyDefence = 0;
             const int DominanceTileRadius = 4;
 
-            DssRef.world.unitCollAreaGrid.collectArmies(faction, tilePos, 1,
+            DssRef.world.unitCollAreaGrid.collectArmies(faction, tilePos, 2,
                 DssRef.world.unitCollAreaGrid.armies_nearUpdate);
 
             foreach (var m in DssRef.world.unitCollAreaGrid.armies_nearUpdate)
@@ -2259,7 +2265,7 @@ namespace VikingEngine.DSSWars.GameObject
                         switch (automationFocus)
                         {
                             case AutomationFocus.Export:
-                                content.newLine(); 
+                                content.newParagraph(); 
                                 HudLib.Label(content, DssRef.lang.Automation_AutomationFocus_Export);
                                 content.newLine();
                                 for (ExportAutoType type = 0; type < ExportAutoType.NUM; type++)
@@ -2294,7 +2300,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 break;
                             case AutomationFocus.Military:
-                                content.newLine();
+                                content.newParagraph();
                                 HudLib.Label(content, DssRef.todoLang.CityAutomation_SoldierQuality);
                                 content.newLine();
                                 for (WarAutoQuality quality = 0; quality < WarAutoQuality.NUM; quality++)
@@ -2318,13 +2324,58 @@ namespace VikingEngine.DSSWars.GameObject
                                        {
                                             new RbText(caption, HudLib.SubOptionTextColor),
                                        },
-                                       new RbAction(() =>
+                                       new RbAction1Arg<WarAutoQuality>((WarAutoQuality quality) =>
                                        {
                                            warAutoQuality = quality;
-                                       }, SoundLib.menu), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
+                                       }, quality, SoundLib.menu), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
 
                                     content.Add(button);
                                 }
+                                content.newParagraph();
+                                HudLib.Label(content, DssRef.todoLang.CityAutomation_SoldierWeaponType);
+                                content.newLine();
+                                for (WarAutoWeaponType weaponType = 0; weaponType < WarAutoWeaponType.NUM; weaponType++)
+                                {
+                                    string caption;
+                                    SpriteName icon;
+                                    switch (weaponType)
+                                    {
+                                        default:
+                                            icon = SpriteName.NO_IMAGE;
+                                            caption = DssRef.todoLang.WarsResourceGroup_AllWeaponTypes;
+                                            break;
+                                        case WarAutoWeaponType.Melee:
+                                            icon = SpriteName.WarsResource_Sword;
+                                            caption = DssRef.todoLang.WarsResourceGroup_MeleeHandWeapons;
+                                            break;
+                                        case WarAutoWeaponType.Ranged:
+                                            icon = SpriteName.WarsResource_Bow;
+                                            caption = DssRef.todoLang.WarsResourceGroup_RangedHandWeapons;
+                                            break;
+                                        case WarAutoWeaponType.Warmashine:
+                                            icon = SpriteName.WarsResource_Ballista;
+                                            caption = DssRef.todoLang.WarsResourceGroup_Warmashines;
+                                            break;
+                                    }
+                                    
+                                    List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(3);
+                                    if (icon != SpriteName.NO_IMAGE)
+                                    {
+                                        buttonContent.Add(new RbImage(icon));
+                                        buttonContent.Add(new RbSpace());
+                                    }
+                                    buttonContent.Add(new RbText(caption, HudLib.SubOptionTextColor));
+                                    
+                                    var button = new ArtOption(weaponType == warAutoWeaponType,
+                                       buttonContent,
+                                       new RbAction1Arg<WarAutoWeaponType>((WarAutoWeaponType weaponType) =>
+                                       {
+                                           warAutoWeaponType = weaponType;
+                                       }, weaponType, SoundLib.menu));
+
+                                    content.Add(button);
+                                }
+
                                 break;
                         }
 

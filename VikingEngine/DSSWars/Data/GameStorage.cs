@@ -42,8 +42,7 @@ namespace VikingEngine.DSSWars.Data
         public float multiplayerGameSpeed = 1;
 
         public MapSettingsStorage mapSettings = MapSettingsStorage.Default;
-        //public bool bCustomSeed = false;
-        //public ushort customSeed = 0;
+        
 
         public GameStorage()
         {

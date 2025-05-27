@@ -11,6 +11,9 @@
 * New soldiers find armies to join further away
 * Conscript: Wait for max population and food options
 * Hud improvements
+* Fixed: guards get camera culled outside of the city
+* Improved defences tab
+
 
 #Free build defences
  Rock thrower

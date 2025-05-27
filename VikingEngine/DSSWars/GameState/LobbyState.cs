@@ -939,8 +939,8 @@ namespace VikingEngine.DSSWars
 
             if (!continueCustomMap)
             {
-                content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapType_GenerateNewMap) }, generateNewMapsProperty, null));
+                //content.newLine();
+                //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapType_GenerateNewMap) }, generateNewMapsProperty, null));
 
                 if (DssRef.storage.generateNewMaps)
                 {
@@ -983,16 +983,16 @@ namespace VikingEngine.DSSWars
                 return DssRef.storage.runTutorial_1short_2normal != 0;
             }
 
-            bool generateNewMapsProperty(int index, bool set, bool value)
-            {
-                if (set && DssRef.storage.generateNewMaps != value)
-                {
-                    DssRef.storage.generateNewMaps = value;
-                    DssRef.storage.Save(null);
-                    restartBackgroundLoading();
-                }
-                return DssRef.storage.generateNewMaps;
-            }
+            //bool generateNewMapsProperty(int index, bool set, bool value)
+            //{
+            //    if (set && DssRef.storage.generateNewMaps != value)
+            //    {
+            //        DssRef.storage.generateNewMaps = value;
+            //        DssRef.storage.Save(null);
+            //        restartBackgroundLoading();
+            //    }
+            //    return DssRef.storage.generateNewMaps;
+            //}
 
             bool bCustomSeedProperty(int index, bool set, bool value)
             {

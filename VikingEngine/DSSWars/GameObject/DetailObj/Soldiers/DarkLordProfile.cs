@@ -21,13 +21,13 @@ namespace VikingEngine.DSSWars.GameObject
             //walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             //rotationSpeed = SoldierGroupStandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
-            data.attackRange = 0.02f;
-            data.basehealth = DssConst.Soldier_DefaultHealth * 4;
-            data.mainAttack = AttackType.Melee;
-            data.attackDamage = 500;
-            data.attackDamageStructure = data.attackDamage;
-            data.attackDamageSea = data.attackDamage;
-            data.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.5f;
+            //data.attackRange = 0.02f;
+            //data.basehealth = DssConst.Soldier_DefaultHealth * 4;
+            //data.mainAttack = AttackType.Melee;
+            //data.attackDamage = 500;
+            //data.attackDamageStructure = data.attackDamage;
+            //data.attackDamageSea = data.attackDamage;
+            //data.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.5f;
             //hasBannerMan = false;
 
             
@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             
 
-            data.modelName = LootFest.VoxelModelName.wars_darklord;
+            //data.modelName = LootFest.VoxelModelName.wars_darklord;
 
             description = DssRef.lang.UnitType_Description_DarkLord;
         }

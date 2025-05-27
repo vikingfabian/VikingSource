@@ -152,6 +152,40 @@ int closestIx = -1;
             return -1;
         }
 
+        public void setAllDefenceAutoAssign(bool toValue)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    int count = 0;
+                    lock (defenceBuildings.array)
+                    {
+                        
+                        for (int i = 0; i < defenceBuildings.Count; ++i)
+                        {
+                            ref var defence = ref defenceBuildings.array[i];
+                            if (defence.autoAssign != toValue)
+                            {
+                                ++count;
+                                defence.autoAssign = toValue;
+                            }
+                        }
+                    }
+
+                    var player = faction.player.GetLocalPlayer();
+                    if (player != null)
+                    {
+                        Ref.update.AddSyncAction(new SyncAction2Arg<bool, int>(player.hud.messages.changedAllBuildings, toValue, count));
+                    }
+                }
+                catch (Exception e)
+                {
+                    BlueScreen.ThreadException = e;
+                }
+            });
+        }
+
         public void defence_assignGuard_toIndex(GuardGroup guard, int index)
         {
             var defence = defenceBuildings[index];

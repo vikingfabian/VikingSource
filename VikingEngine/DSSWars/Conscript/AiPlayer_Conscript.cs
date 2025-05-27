@@ -76,10 +76,14 @@ namespace VikingEngine.DSSWars.Players
 
         int setupConscriptAi_async(City city, out ConscriptProfile profile)
         {
+            if (city.parentArrayIndex == 500)
+            {
+                lib.DoNothing();
+            }
 
             int count = 0;
 
-            if (city.res_food.amount > 20 &&
+            if (AutoConscriptLib.HasEnoughFood(city) &&
                 city.conscriptBuildings.Count > 0)
             {
                 AutoWeaponOption weapon = new AutoWeaponOption(ItemResourceType.NONE, false, BuildAndExpandType.SoldierBarracks);
@@ -88,8 +92,9 @@ namespace VikingEngine.DSSWars.Players
                 foreach (var w in conscriptWeaponPrioOrder)
                 {
                     if (city.GetGroupedResource(w.item).amount >= DssConst.SoldierGroup_DefaultCount &&
-                        city.buildingStructure.getBarracksCount(w.barracks) > 0)
-                    {
+                        city.buildingStructure.getBarracksCount(w.barracks) > 0 &&
+                        AutoConscriptLib.MayUseItemInConscript(city, w.item, true))
+                    {  
                         weapon = w;                        
                         break;
                     }
@@ -107,11 +112,8 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                if (
-                    (AutoConscriptLib.MayUseItemInConscript(city, weapon.item) &&
-                    AutoConscriptLib.MayUseItemInConscript(city, armorLevel))
-                    == false
-                    )
+                if (weapon.item == ItemResourceType.NONE ||
+                    !AutoConscriptLib.MayUseItemInConscript(city, armorLevel, false))                   
                 {
                     //Item is too low quality
                     profile = ConscriptProfile.Empty;
@@ -148,11 +150,6 @@ namespace VikingEngine.DSSWars.Players
 
             return count;
         }
-
-        //int canConscriptCount()
-        //{ 
-
-        //}
 
         virtual protected bool buySoldiers(City city, bool aggresive, bool commit)
         {

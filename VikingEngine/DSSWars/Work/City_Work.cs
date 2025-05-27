@@ -38,8 +38,9 @@ namespace VikingEngine.DSSWars.GameObject
             int workerStatusActiveCount = workerStatuses.Count;
             int deletedCount = 0;
             int idleCount = 0;
-            IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
-            IntVector2 maxpos = minpos;
+            //IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
+            //IntVector2 maxpos = minpos;
+            Intvector2MinMax minMax = new Intvector2MinMax(WP.ToSubTilePos_Centered(tilePos));
 
             for (int i = 0; i < MaxSkill.Length; ++i)
             {
@@ -84,25 +85,25 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
                     
                 }
+                minMax.Next(ref status.subTileEnd);
+                //IntVector2 pos = status.subTileEnd;
+                //if (pos.X < minpos.X)
+                //{
+                //    minpos.X = pos.X;
+                //}
+                //if (pos.X > maxpos.X)
+                //{
+                //    maxpos.X = pos.X;
+                //}
 
-                IntVector2 pos = status.subTileEnd;
-                if (pos.X < minpos.X)
-                {
-                    minpos.X = pos.X;
-                }
-                if (pos.X > maxpos.X)
-                {
-                    maxpos.X = pos.X;
-                }
-
-                if (pos.Y < minpos.Y)
-                {
-                    minpos.Y = pos.Y;
-                }
-                if (pos.Y > maxpos.Y)
-                {
-                    maxpos.Y = pos.Y;
-                }
+                //if (pos.Y < minpos.Y)
+                //{
+                //    minpos.Y = pos.Y;
+                //}
+                //if (pos.Y > maxpos.Y)
+                //{
+                //    maxpos.Y = pos.Y;
+                //}
             }
 
             topskill_Farm = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Farm]);
@@ -119,8 +120,9 @@ namespace VikingEngine.DSSWars.GameObject
             topskill_CraftWeapon = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftWeapon]);
             topskill_CraftFuel = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftFuel]);
 
-            cullingTopLeft = WP.SubtileToTilePos(minpos);
-            cullingBottomRight = WP.SubtileToTilePos(maxpos);
+            //cullingTopLeft = WP.SubtileToTilePos(minMax.min);
+            //cullingBottomRight = WP.SubtileToTilePos(minMax.max);
+            workerCullingMinMax = new Intvector2MinMax(WP.SubtileToTilePos(minMax.min), WP.SubtileToTilePos(minMax.max)); 
 
             int workTeamCount = workForce.amount / WorkTeamSize;
 

@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars.GameObject
             initPart2(typeCurrentData);
 
             soldierCount = soldierData.UnitCount();
-            soldierData = soldierConscript.init(typeCurrentData);
+            soldierData = soldierConscript.init();
 
             initPart3(typeCurrentData);
 
@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.GameObject
             typeSoldierData = DssRef.profile.Get(type);
             typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
 
-            soldierData_soldier = soldierConscript.init(typeSoldierData);
+            soldierData_soldier = soldierConscript.init();
             soldierData = soldierData_soldier;
             typeCurrentData = typeSoldierData;
 
@@ -356,7 +356,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual protected void createAllSoldiers(AbsSoldierProfile typeProfile, int count, bool createModels)
         {
             soldiers = new SpottedArray<AbsSoldierUnit>(count +1);
-            soldierData = soldierConscript.init(typeProfile);
+            soldierData = soldierConscript.init();
 
             if (typeProfile.IsShip())
             {
@@ -440,13 +440,13 @@ namespace VikingEngine.DSSWars.GameObject
                     shipHealth = soldierData_soldier.basehealth * soldierCount;
                     soldierCount = 1;
                     typeCurrentData = typeShipData;
-                    soldierData = soldierConscript.init(typeCurrentData);
+                    soldierData = soldierConscript.init();
                 }
                 else
                 {
                     soldierCount = shipHealth / soldierData_soldier.basehealth;
                     typeCurrentData = typeSoldierData;
-                    soldierData = soldierConscript.init(typeCurrentData);
+                    soldierData = soldierConscript.init();
                 }
 
                 if (soldiers != null)

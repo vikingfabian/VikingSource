@@ -617,7 +617,7 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType weapon = (ItemResourceType)tag;
 
             
-            var data = new SoldierConscriptProfile() { conscript = new ConscriptProfile() { weapon = weapon } }.init(null);
+            var data = new SoldierConscriptProfile() { conscript = new ConscriptProfile() { weapon = weapon } }.init();
 
             content.h1(LangLib.Item(weapon), HudLib.TitleColor_Head);
             content.newLine();

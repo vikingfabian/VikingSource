@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars.Defence
         protected override void createAllSoldiers(AbsSoldierProfile typeProfile, int count, bool createModels)
         {
             soldiers = new SpottedArray<AbsSoldierUnit>(count);
-            soldierData = soldierConscript.init(typeProfile);
+            soldierData = soldierConscript.init();
 
             if (typeProfile.IsShip())
             {

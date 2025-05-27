@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Display
 
         public void armyLowFoodMessage(Army army)
         {
-            if (DssRef.storage.runTutorial_1short_2normal == 0 && 
+            if (DssRef.storage.runTutorial_1short_2normal == 0 &&
                 armyLowFoodMessageCooldown.TimeOut())
             {
                 armyLowFoodMessageCooldown.start();
@@ -121,14 +121,35 @@ namespace VikingEngine.DSSWars.Display
                 content.newParagraph();
 
                 var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                ControllerInputIcons(player,gotoBattleButtonContent);
+                ControllerInputIcons(player, gotoBattleButtonContent);
                 gotoBattleButtonContent.Add(new RbText(army.TypeName()));
 
-                content.Add(new ArtButton( RbButtonStyle.Primary,gotoBattleButtonContent,
+                content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
                     new RbAction1Arg<AbsGameObject>(goToMapObject, army, SoundLib.menu)));
 
                 Add(content);
             }
+        }
+
+
+        //public void changedAllBuildings(bool onOff)
+        //{
+        //    RichBoxContent content = new RichBoxContent();
+        //    content.h2(DssRef.todoLang.GeneralSetting_ApplyMessage, HudLib.TitleColor_Head);
+        //    content.space();
+        //    content.Add(new RbText(onOff ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off, HudLib.InfoYellow_Light));
+
+        //    Add(content);
+        //}
+
+        public void changedAllBuildings(bool onOff, int count)
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.h2(string.Format( DssRef.todoLang.GeneralSetting_ApplyMessage, count), HudLib.TitleColor_Head);
+            content.space();
+            content.Add(new RbText(onOff ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off, HudLib.InfoYellow_Light));
+
+            Add(content);
         }
 
         public void goToMapObject(AbsGameObject city)
