@@ -669,13 +669,20 @@ namespace VikingEngine.DSSWars.Players
 
             void techSetup()
             {
-                faction.technology.advancedBuilding = TechnologyTemplate.SetRandom(faction.technology.advancedBuilding);
-                faction.technology.advancedFarming = TechnologyTemplate.SetRandom(faction.technology.advancedFarming);
-                faction.technology.advancedCasting = TechnologyTemplate.SetRandom(faction.technology.advancedCasting);
-                faction.technology.iron = TechnologyTemplate.FactionUnlock;
-                faction.technology.steel = TechnologyTemplate.SetRandom(faction.technology.steel);
-                faction.technology.catapult = TechnologyTemplate.SetRandom(faction.technology.catapult);
-                faction.technology.blackPowder = TechnologyTemplate.SetRandom(faction.technology.blackPowder);
+                // Initialize techs with appropriate unlocks
+                faction.technology.advancedBuilding = TechnologyTemplate.SetRandom(
+                    faction.technology.advancedBuilding, TechnologyTemplate.AdvancedBuildingUnlock);
+                faction.technology.advancedFarming = TechnologyTemplate.SetRandom(
+                    faction.technology.advancedFarming, TechnologyTemplate.AdvancedFarmingUnlock);
+                faction.technology.advancedCasting = TechnologyTemplate.SetRandom(
+                    faction.technology.advancedCasting, TechnologyTemplate.AdvancedCastingUnlock);
+                faction.technology.iron = TechnologyTemplate.FactionUnlock; // Stays the same
+                faction.technology.steel = TechnologyTemplate.SetRandom(
+                    faction.technology.steel, TechnologyTemplate.SteelUnlock);
+                faction.technology.catapult = TechnologyTemplate.SetRandom(
+                    faction.technology.catapult, TechnologyTemplate.CatapultUnlock);
+                faction.technology.blackPowder = TechnologyTemplate.SetRandom(
+                    faction.technology.blackPowder, TechnologyTemplate.BlackPowderUnlock);
 
                 if (faction.profile.factionFlavorType == FactionFlavorType.City)
                 {
@@ -685,10 +692,10 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedBuilding); //= MathExt.MultiplyInt(faction.technology.steel, 2);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedBuilding, TechnologyTemplate.AdvancedBuildingUnlock);
                     }
                 }
-                
+
                 if (faction.profile.factionFlavorType == FactionFlavorType.Mountain)
                 {
                     if (Ref.rnd.Chance(0.8))
@@ -697,7 +704,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.steel);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.steel, TechnologyTemplate.SteelUnlock);
                     }
 
                     if (Ref.rnd.Chance(0.6))
@@ -706,14 +713,14 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.catapult);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.catapult, TechnologyTemplate.CatapultUnlock);
                     }
                 }
 
                 if (faction.profile.factionFlavorType == FactionFlavorType.People)
                 {
-                    faction.technology.iron = TechnologyTemplate.Start.iron;
-                    faction.technology.steel = TechnologyTemplate.Start.steel;
+                    faction.technology.iron = 0;
+                    faction.technology.steel = 0;
 
                     if (Ref.rnd.Chance(0.6))
                     {
@@ -721,7 +728,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedFarming);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedFarming, TechnologyTemplate.AdvancedFarmingUnlock);
                     }
                 }
 
@@ -733,7 +740,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedCasting);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedCasting, TechnologyTemplate.AdvancedCastingUnlock);
                     }
 
                     if (Ref.rnd.Chance(0.6))
@@ -742,7 +749,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.blackPowder);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.blackPowder, TechnologyTemplate.BlackPowderUnlock);
                     }
 
                     if (Ref.rnd.Chance(0.4))
@@ -751,12 +758,103 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.steel, 0.3);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.steel, TechnologyTemplate.SteelUnlock, 0.3);
                     }
 
-                    faction.technology.advancedFarming = TechnologyTemplate.Start.advancedFarming;
+                    faction.technology.advancedFarming = 0;
                 }
             }
+
+            //void techSetup()
+            //{
+            //    faction.technology.advancedBuilding = TechnologyTemplate.SetRandom(faction.technology.advancedBuilding, TechnologyTemplate.AdvancedBuildingUnlock);
+            //    faction.technology.advancedFarming = TechnologyTemplate.SetRandom(faction.technology.advancedFarming);
+            //    faction.technology.advancedCasting = TechnologyTemplate.SetRandom(faction.technology.advancedCasting);
+            //    faction.technology.iron = TechnologyTemplate.FactionUnlock;
+            //    faction.technology.steel = TechnologyTemplate.SetRandom(faction.technology.steel);
+            //    faction.technology.catapult = TechnologyTemplate.SetRandom(faction.technology.catapult);
+            //    faction.technology.blackPowder = TechnologyTemplate.SetRandom(faction.technology.blackPowder);
+
+            //    if (faction.profile.factionFlavorType == FactionFlavorType.City)
+            //    {
+            //        if (Ref.rnd.Chance(0.8))
+            //        {
+            //            faction.technology.advancedBuilding = TechnologyTemplate.FactionUnlock;
+            //        }
+            //        else
+            //        {
+            //            TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedBuilding); //= MathExt.MultiplyInt(faction.technology.steel, 2);
+            //        }
+            //    }
+
+            //    if (faction.profile.factionFlavorType == FactionFlavorType.Mountain)
+            //    {
+            //        if (Ref.rnd.Chance(0.8))
+            //        {
+            //            faction.technology.steel = TechnologyTemplate.FactionUnlock;
+            //        }
+            //        else
+            //        {
+            //            TechnologyTemplate.MultiplyProgress(ref faction.technology.steel);
+            //        }
+
+            //        if (Ref.rnd.Chance(0.6))
+            //        {
+            //            faction.technology.catapult = TechnologyTemplate.FactionUnlock;
+            //        }
+            //        else
+            //        {
+            //            TechnologyTemplate.MultiplyProgress(ref faction.technology.catapult);
+            //        }
+            //    }
+
+            //    if (faction.profile.factionFlavorType == FactionFlavorType.People)
+            //    {
+            //        faction.technology.iron = TechnologyTemplate.Start.iron;
+            //        faction.technology.steel = TechnologyTemplate.Start.steel;
+
+            //        if (Ref.rnd.Chance(0.6))
+            //        {
+            //            faction.technology.advancedFarming = TechnologyTemplate.FactionUnlock;
+            //        }
+            //        else
+            //        {
+            //            TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedFarming);
+            //        }
+            //    }
+
+            //    if (faction.diplomaticSide == DiplomaticSide.Dark)
+            //    {
+            //        if (Ref.rnd.Chance(0.6))
+            //        {
+            //            faction.technology.advancedCasting = TechnologyTemplate.FactionUnlock;
+            //        }
+            //        else
+            //        {
+            //            TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedCasting);
+            //        }
+
+            //        if (Ref.rnd.Chance(0.6))
+            //        {
+            //            faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
+            //        }
+            //        else
+            //        {
+            //            TechnologyTemplate.MultiplyProgress(ref faction.technology.blackPowder);
+            //        }
+
+            //        if (Ref.rnd.Chance(0.4))
+            //        {
+            //            faction.technology.steel = TechnologyTemplate.FactionUnlock;
+            //        }
+            //        else
+            //        {
+            //            TechnologyTemplate.MultiplyProgress(ref faction.technology.steel, 0.3);
+            //        }
+
+            //        faction.technology.advancedFarming = TechnologyTemplate.Start.advancedFarming;
+            //    }
+            //}
         }
 
         public void refreshAggression()
@@ -1079,7 +1177,7 @@ namespace VikingEngine.DSSWars.Players
                             switch (purchaseOrder)
                             {
                                 case PurchaseOrderType_Army:
-                                    buySoldiers(city, true, true);
+                                    buySoldiers(city, false, true);
                                     break;
                                 //case PurchaseOrderType_CityWorkers:
                                 //    if (city.damages.HasValue())
@@ -1489,7 +1587,7 @@ namespace VikingEngine.DSSWars.Players
         void buyDefenceAtCity(City city)
         {   
             
-                if (buySoldiers(city, true, false))
+                if (buySoldiers(city, false, false))
                 {
                     purchaseOrder = PurchaseOrderType_Army;
                     purchaseOrderFocus = PurchaseOrderFocus_QuickDefend;

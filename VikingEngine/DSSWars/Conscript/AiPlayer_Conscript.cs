@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Players
 
     partial class AbsPlayer
     {
-        static readonly AutoWeaponOption[] conscriptWeaponPrioOrder =
+        static readonly AutoWeaponOption[] ConscriptWeaponPrioOrder =
         {
             new AutoWeaponOption(ItemResourceType.MithrilSword, true, BuildAndExpandType.KnightsBarracks),
             new AutoWeaponOption( ItemResourceType.MithrilBow,false, BuildAndExpandType.KnightsBarracks),
@@ -74,14 +74,31 @@ namespace VikingEngine.DSSWars.Players
 
        
 
-        int setupConscriptAi_async(City city, out ConscriptProfile profile)
+        int setupConscriptAi_async(City city, bool aggresive, out ConscriptProfile profile, out int manCount, out int unitCount)
         {
             if (city.parentArrayIndex == 500)
             {
                 lib.DoNothing();
             }
 
-            int count = 0;
+            bool guard = false;
+            if (!aggresive && city.AvailableGuardHousing() >= DssConst.SoldierGroup_GuardCount)
+            {
+                lock (city.defenceBuildings.array)
+                {
+                    for (int i = 0; i < city.defenceBuildings.Count; i++)
+                    {
+                        if (city.defenceBuildings[i].AvailableForAutoAssign())
+                        {
+                            guard = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            manCount = 0;
+            unitCount = 0;
 
             if (AutoConscriptLib.HasEnoughFood(city) &&
                 city.conscriptBuildings.Count > 0)
@@ -89,9 +106,11 @@ namespace VikingEngine.DSSWars.Players
                 AutoWeaponOption weapon = new AutoWeaponOption(ItemResourceType.NONE, false, BuildAndExpandType.SoldierBarracks);
                 ItemResourceType armorLevel = ItemResourceType.NONE;
 
-                foreach (var w in conscriptWeaponPrioOrder)
+                foreach (var w in ConscriptWeaponPrioOrder)
                 {
-                    if (city.GetGroupedResource(w.item).amount >= DssConst.SoldierGroup_DefaultCount &&
+                    unitCount = ItemPropertyColl.Get(w.item).soldierData.UnitCount(guard);
+
+                    if (city.GetGroupedResource(w.item).amount >= unitCount &&
                         city.buildingStructure.getBarracksCount(w.barracks) > 0 &&
                         AutoConscriptLib.MayUseItemInConscript(city, w.item, true))
                     {  
@@ -100,12 +119,13 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
+                manCount = ItemPropertyColl.Get(weapon.item).soldierData.workForceCount(guard);
+
                 foreach (var a in conscriptArmorPrioOrder)
                 {
-                    //ItemResourceType armorItem = ConscriptProfile.ArmorItem(a);
                     int availableArmor = city.GetGroupedResource(a).amount;
 
-                    if (availableArmor >= DssConst.SoldierGroup_DefaultCount)
+                    if (availableArmor >= unitCount)
                     {
                         armorLevel = a;
                         break;
@@ -125,6 +145,7 @@ namespace VikingEngine.DSSWars.Players
                     weapon = weapon.item,
                     armorLevel = armorLevel,
                     training = TrainingLevel.Basic,
+                    specialization = guard? SpecializationType.CityGuard : SpecializationType.None,
                 };
 
                 
@@ -134,7 +155,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         if (city.conscriptBuildings[i].type == weapon.barracks)
                         {
-                            ++count;
+                            ++manCount;
                             var conscript = city.conscriptBuildings[i];
                             conscript.profile = profile;
                             city.conscriptBuildings[i] = conscript;
@@ -148,17 +169,17 @@ namespace VikingEngine.DSSWars.Players
                 profile = new ConscriptProfile();
             }
 
-            return count;
+            return manCount;
         }
 
         virtual protected bool buySoldiers(City city, bool aggresive, bool commit)
         {
-            if (!aggresive && city.workForce.amount < city.HousingCount_Workers - DssConst.SoldierGroup_DefaultCount)
+            if (!aggresive && !AutoConscriptLib.HasEnoughMen(city))//city.workForce.amount < city.HousingCount_Workers - DssConst.SoldierGroup_DefaultCount)
             {
                 return false;
             }
 
-            int barracksCount = setupConscriptAi_async(city, out ConscriptProfile profile);
+            int barracksCount = setupConscriptAi_async(city, aggresive, out ConscriptProfile profile, out int manCount, out int unitCount);
            
             if (profile.weapon == ItemResourceType.NONE ||
                 barracksCount == 0)
@@ -166,17 +187,17 @@ namespace VikingEngine.DSSWars.Players
                 return false;
             }
 
-            int availableWeapons = city.GetGroupedResource(profile.weapon).amount / DssConst.SoldierGroup_DefaultCount;
-            int availableArmors = city.GetGroupedResource(profile.armorLevel).amount / DssConst.SoldierGroup_DefaultCount;
-            int availableMen = (city.workForce.amount / DssConst.SoldierGroup_DefaultCount) - 1;
+            int availableWeapons = city.GetGroupedResource(profile.weapon).amount / unitCount;
+            int availableArmors = city.GetGroupedResource(profile.armorLevel).amount / unitCount;
+            int availableMen = (city.workForce.amount / manCount) - 1;
 
             int get = lib.SmallestValue(availableArmors, availableWeapons, availableMen, barracksCount);
 
             if (city.nextAutoConscriptTime.TimeOut() && commit && get > 0)
             {
-                city.AddGroupedResource(profile.weapon, -get * DssConst.SoldierGroup_DefaultCount);
-                city.AddGroupedResource(profile.armorLevel, -get * DssConst.SoldierGroup_DefaultCount);
-                city.workForce.amount -= get * DssConst.SoldierGroup_DefaultCount;
+                city.AddGroupedResource(profile.weapon, -get * unitCount);
+                city.AddGroupedResource(profile.armorLevel, -get * unitCount);
+                city.workForce.amount -= get * manCount;
 
                 var aiPlayer = city.faction.player.GetAiPlayer();
 

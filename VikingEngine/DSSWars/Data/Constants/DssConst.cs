@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars
         public static float Soldier_StandardAttackAndCoolDownTime = 1600;
         public static int SoldierGroup_RowWidth = 6;
         public static int SoldierGroup_ColumnsDepth = 5;
+        public static int SoldierGroup_GuardCount = 5;
         public static int SoldierGroup_DefaultCount = SoldierGroup_RowWidth * SoldierGroup_ColumnsDepth;
 
         public static float ShipBuildTimeSec = 5f;
@@ -266,8 +267,8 @@ namespace VikingEngine.DSSWars
         public static int TechnologyGain_GoodRelation_PerMin = 1;
         public static int TechnologyGain_AllyRelation_PerMin = 2;
         public static int TechnologyGain_CitySpread = 4;
-        public static int TechnologyGain_Expert = 2;
-        public static int TechnologyGain_Master = 10;
+        public static int TechnologyGain_Any = 1;
+        public static int TechnologyGain_Master = 5;
 
         public static float Time_SchoolOneXPSec = 4;//50 per level
 

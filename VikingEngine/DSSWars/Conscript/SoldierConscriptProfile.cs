@@ -697,7 +697,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 case SpecializationType.CityGuard:
                     
-                    soldierData.rowWidth = 5;
+                    soldierData.rowWidth = DssConst.SoldierGroup_GuardCount;
                     soldierData.columnsDepth = 1;
                     soldierData.groupSpacing *= 0.5f;
                     soldierData.hasBannerMan = false;

@@ -16,6 +16,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Medium => "Medium";
         public string Hud_High => "High";
 
+        public string Settings_WaterMultiplier => "Water multiplier";
+        public string Settings_WaterMultiplier_Description => "How much water cities produce and store. A high value will lower computer performance.";
+
         public string FastProduction => "Fast production";
         public string SlowProduction => "Slow production";
 
@@ -55,6 +58,11 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string GeneralSetting_ApplyMessage => "Change applied to {0} buildings";
 
+        public string MustTurnOffSteamInput => "To use controllers, you must turn off Steam Input";
+
+        public string Technology_GainTitle => "Ways to gain technology";
+        public string Technology_LevelUp => "Level up";
+        public string Technology_ForEachLevelUp => "When a worker level up, in the technology field: {0}";
     }
 
 }

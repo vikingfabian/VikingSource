@@ -409,7 +409,7 @@ namespace VikingEngine.DSSWars
                     new RbTab(MoreArrowTabbing),
                     moreArrow,
                 },
-                new RbAction(beginDemo), new RbTooltip_Text(string.Format(DssRef.lang.Demo_Description, 60)));
+                new RbAction(beginDemo), new RbTooltip_Text(string.Format(DssRef.lang.Demo_Description, 90)));
                 btn.fillWidth = true;
                 content.Add(btn);
             }
@@ -965,7 +965,14 @@ namespace VikingEngine.DSSWars
             content.Add(new RbText(DssRef.lang.Settings_FoodMultiplier, HudLib.TitleColor_Label));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.5f, 10f, 0.1f), foodMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_FoodMultiplier_Description)));
-            //new GuiTextButton(DssRef.lang.Settings_ResetToDefault, null, resetToDefault, false, layout);
+
+            content.newLine();
+            content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Settings_WaterMultiplier, HudLib.TitleColor_Label));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), waterMultiProperty, true, new RbTooltip_Text(DssRef.todoLang.Settings_WaterMultiplier_Description)));
+
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ResetToDefault) }, new RbAction(resetToDefault)));
@@ -1283,6 +1290,14 @@ namespace VikingEngine.DSSWars
                         new RbAction1Arg<int>(nextScreenIndex, playerNum)));
                 }
             }
+
+            if (DssRef.storage.playerCount > 1 && available.Count == 1)
+            {
+                content.newLine();
+                content.Add(new RbImage(SpriteName.cmdWarningTriangle));
+                content.space();
+                content.Add(new RbText(DssRef.todoLang.MustTurnOffSteamInput, HudLib.InfoYellow_Light));
+            }
         }
 
         void listAndEditFlag(RichBoxContent content, int playerNum, LocalPlayerStorage playerData, bool editor)
@@ -1346,6 +1361,10 @@ namespace VikingEngine.DSSWars
         public float foodMultiProperty(bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_foodMulti, value);
+        }
+        public float waterMultiProperty(bool set, float value)
+        {
+            return GetSet.Do<float>(set, ref DssRef.difficulty.setting_waterMulti, value);
         }
 
         void gameModeText(GameMode mode, out string caption, out string desc)

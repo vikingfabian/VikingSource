@@ -107,13 +107,38 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             return Convert.ToInt32(attackDamageStructure / (attackTimePlusCoolDown / 1000.0));
         }
 
+        
+
         public int UnitCount()
         {
             return rowWidth * columnsDepth;
         }
+        public int UnitCount(bool guard)
+        {
+            if (guard)
+            {
+                return DssConst.SoldierGroup_GuardCount;
+            }
+            else
+            {
+                return rowWidth * columnsDepth;
+            }
+        }
         public int workForceCount()
         {
             return rowWidth * columnsDepth * workForcePerUnit;
+        }
+
+        public int workForceCount(bool guard)
+        {
+            if (guard)
+            {
+                return DssConst.SoldierGroup_GuardCount;
+            }
+            else
+            {
+                return rowWidth * columnsDepth * workForcePerUnit;
+            }
         }
 
         public int Upkeep()

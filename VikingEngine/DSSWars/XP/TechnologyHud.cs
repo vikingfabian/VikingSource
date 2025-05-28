@@ -30,25 +30,20 @@ namespace VikingEngine.DSSWars.XP
             content.Add(new RbImage(SpriteName.WarsTechnology_Unlocked));
             content.space();
 
-            tech(technology.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.lang.Technology_AdvancedBuildings);
+            tech(technology.advancedBuilding, TechnologyTemplate.AdvancedBuildingUnlock, SpriteName.WarsBuild_Nobelhouse, DssRef.lang.Technology_AdvancedBuildings);
+            tech(technology.advancedFarming, TechnologyTemplate.AdvancedFarmingUnlock, SpriteName.WarsWorkFarm, DssRef.lang.Technology_AdvancedFarming);
+            tech(technology.advancedCasting, TechnologyTemplate.AdvancedCastingUnlock, SpriteName.WarsResource_IronManCannon, DssRef.lang.Technology_AdvancedCasting);
 
-            tech(technology.advancedFarming, SpriteName.WarsWorkFarm, DssRef.lang.Technology_AdvancedFarming);
+            tech(technology.iron, TechnologyTemplate.IronUnlock, SpriteName.WarsResource_Iron, DssRef.lang.Resource_TypeName_Iron);
+            tech(technology.steel, TechnologyTemplate.SteelUnlock, SpriteName.WarsResource_Steel, DssRef.lang.Resource_TypeName_Steel);
+            tech(technology.catapult, TechnologyTemplate.CatapultUnlock, SpriteName.WarsResource_Catapult, DssRef.lang.Resource_TypeName_Catapult);
+            tech(technology.blackPowder, TechnologyTemplate.BlackPowderUnlock, SpriteName.WarsResource_BronzeRifle, DssRef.lang.Resource_TypeName_BlackPowder);
+            tech(technology.gunPowder, TechnologyTemplate.GunPowderUnlock, SpriteName.WarsResource_IronRifle, DssRef.lang.Resource_TypeName_GunPowder);
 
-            tech(technology.advancedCasting, SpriteName.WarsResource_IronManCannon, DssRef.lang.Technology_AdvancedCasting);
 
-            tech(technology.iron, SpriteName.WarsResource_Iron, DssRef.lang.Resource_TypeName_Iron);
-
-            tech(technology.steel, SpriteName.WarsResource_Steel, DssRef.lang.Resource_TypeName_Steel);
-
-            tech(technology.catapult, SpriteName.WarsResource_Catapult, DssRef.lang.Resource_TypeName_Catapult);
-
-            tech(technology.blackPowder, SpriteName.WarsResource_BronzeRifle, DssRef.lang.Resource_TypeName_BlackPowder);
-
-            tech(technology.gunPowder, SpriteName.WarsResource_IronRifle, DssRef.lang.Resource_TypeName_GunPowder);
-
-            void tech(int value, SpriteName icon, string caption)
+            void tech(int value, int unlock, SpriteName icon, string caption)
             {
-                bool unlocked = value >= TechnologyTemplate.Unlocked;
+                bool unlocked = value >= unlock;
 
                 if (unlocked)
                 {
@@ -82,18 +77,18 @@ namespace VikingEngine.DSSWars.XP
         {
             bool cityView;
             TechnologyTemplate technology;
-            int unlockValue; //cityView ? TechnologyTemplate.Unlocked : 1;
+            //int unlockValue; //cityView ? TechnologyTemplate.Unlocked : 1;
             if (city != null)
             {
                 technology = city.technology;
                 cityView = true;
-                unlockValue = TechnologyTemplate.Unlocked;
+                //unlockValue = TechnologyTemplate.Unlocked;
             }
             else
             {
                 technology = faction.technology;
                 cityView = false;
-                unlockValue = 1;
+                //unlockValue = 1;
             }
 
             var advBuildingFields = new List<WorkExperienceType>
@@ -131,38 +126,38 @@ namespace VikingEngine.DSSWars.XP
 
 
             Unlocks advBuildingUnlock = new Unlocks(); advBuildingUnlock.UnlockAdvancedBuilding();
-            tech(technology.advancedBuilding, TechnologyTemplate.Start.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.lang.Technology_AdvancedBuildings, advBuildingUnlock, advBuildingFields);
+            tech(technology.advancedBuilding, TechnologyTemplate.AdvancedBuildingUnlock, SpriteName.WarsBuild_Nobelhouse, DssRef.lang.Technology_AdvancedBuildings, advBuildingUnlock, advBuildingFields);
 
             content.newParagraph();
             Unlocks advFarmUnlock = new Unlocks(); advFarmUnlock.UnlockAdvancedFarming();
-            tech(technology.advancedFarming, TechnologyTemplate.Start.advancedFarming, SpriteName.WarsWorkFarm, DssRef.lang.Technology_AdvancedFarming, advFarmUnlock, advFarmingFields);
+            tech(technology.advancedFarming, TechnologyTemplate.AdvancedFarmingUnlock, SpriteName.WarsWorkFarm, DssRef.lang.Technology_AdvancedFarming, advFarmUnlock, advFarmingFields);
 
             content.newParagraph();
             Unlocks advCastingUnlock = new Unlocks(); advCastingUnlock.UnlockAdvancedCasting();
-            tech(technology.advancedCasting, TechnologyTemplate.Start.advancedCasting, SpriteName.WarsResource_IronManCannon, DssRef.lang.Technology_AdvancedCasting, advCastingUnlock, advCastingFields);
+            tech(technology.advancedCasting, TechnologyTemplate.AdvancedCastingUnlock, SpriteName.WarsResource_IronManCannon, DssRef.lang.Technology_AdvancedCasting, advCastingUnlock, advCastingFields);
 
             content.newParagraph();
             Unlocks ironUnlock = new Unlocks(); ironUnlock.UnlockIron();
-            tech(technology.iron, TechnologyTemplate.Start.iron, SpriteName.WarsResource_Iron, DssRef.lang.Resource_TypeName_Iron, ironUnlock, ironSteelFields);
+            tech(technology.iron, TechnologyTemplate.IronUnlock, SpriteName.WarsResource_Iron, DssRef.lang.Resource_TypeName_Iron, ironUnlock, ironSteelFields);
 
             Unlocks steelUnlock = new Unlocks(); steelUnlock.UnlockSteel();
-            tech(technology.steel, TechnologyTemplate.Start.steel, SpriteName.WarsResource_Steel, DssRef.lang.Resource_TypeName_Steel, steelUnlock, ironSteelFields);
+            tech(technology.steel, TechnologyTemplate.SteelUnlock, SpriteName.WarsResource_Steel, DssRef.lang.Resource_TypeName_Steel, steelUnlock, ironSteelFields);
 
             content.newParagraph();
-
             Unlocks catapultUnlock = new Unlocks(); catapultUnlock.UnlockCatapult();
-            tech(technology.catapult, TechnologyTemplate.Start.catapult, SpriteName.WarsResource_Catapult, DssRef.lang.Resource_TypeName_Catapult, catapultUnlock, catapultFields);
+            tech(technology.catapult, TechnologyTemplate.CatapultUnlock, SpriteName.WarsResource_Catapult, DssRef.lang.Resource_TypeName_Catapult, catapultUnlock, catapultFields);
 
             content.newParagraph();
-
             Unlocks blackpowUnlock = new Unlocks(); blackpowUnlock.UnlockBlackPowder();
-            tech(technology.blackPowder, TechnologyTemplate.Start.blackPowder, SpriteName.WarsResource_BronzeRifle, DssRef.lang.Resource_TypeName_BlackPowder, blackpowUnlock, gunPowderFields);
+            tech(technology.blackPowder, TechnologyTemplate.BlackPowderUnlock, SpriteName.WarsResource_BronzeRifle, DssRef.lang.Resource_TypeName_BlackPowder, blackpowUnlock, gunPowderFields);
 
             Unlocks gunpowUnlock = new Unlocks(); gunpowUnlock.UnlockGunPowder();
-            tech(technology.gunPowder, TechnologyTemplate.Start.gunPowder, SpriteName.WarsResource_IronRifle, DssRef.lang.Resource_TypeName_GunPowder, gunpowUnlock, gunPowderFields);
+            tech(technology.gunPowder, TechnologyTemplate.GunPowderUnlock, SpriteName.WarsResource_IronRifle, DssRef.lang.Resource_TypeName_GunPowder, gunpowUnlock, gunPowderFields);
 
 
             content.newParagraph();
+            content.h2(DssRef.todoLang.Technology_GainTitle, HudLib.TitleColor_Label);
+            content.newLine();
             {
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(SpriteName.WarsRelationGood));
@@ -188,8 +183,6 @@ namespace VikingEngine.DSSWars.XP
                     content.Add(info);
                 }
             }
-
-            
 
             content.newLine();
             {
@@ -229,6 +222,23 @@ namespace VikingEngine.DSSWars.XP
             content.newLine();
             {
                 HudLib.BulletPoint(content);
+                content.Add(new RbImage(LangLib.ExperienceLevelIcon(ExperienceLevel.Practitioner_2)));
+                content.Add(new RbText($"{DssRef.todoLang.Technology_LevelUp}: {TextLib.PlusMinus(DssConst.TechnologyGain_Any)}"));
+                content.space();
+                
+                HudLib.InfoButton(content, new RbTooltip(tip));
+
+                void tip(RichBoxContent content, object tag)
+                {
+                    var info = new RbText(string.Format(DssRef.todoLang.Technology_ForEachLevelUp, TextLib.PlusMinus(DssConst.TechnologyGain_Any)));
+                    info.overrideColor = HudLib.InfoYellow_Light;
+                    content.Add(info);
+                }
+            }
+
+            content.newLine();
+            {
+                HudLib.BulletPoint(content);
                 content.Add(new RbImage(LangLib.ExperienceLevelIcon(ExperienceLevel.Master_4)));
                 content.Add(new RbText($"{DssRef.lang.ExperienceLevel_4}: {TextLib.PlusMinus(DssConst.TechnologyGain_Master)}"));
                 content.space();
@@ -251,12 +261,12 @@ namespace VikingEngine.DSSWars.XP
                 content.Add(info);
             }
 
-            void tech(int value, int startValue, SpriteName icon, string caption, Unlocks unlocks, List<WorkExperienceType> experienceField)
+            void tech(int value, int unlock, SpriteName icon, string caption, Unlocks unlocks, List<WorkExperienceType> experienceField)
             {
                 content.newLine();
 
 
-                bool unlocked = value >= unlockValue;
+                bool unlocked = value >= unlock;
 
                 if (!cityView)
                 {
@@ -288,7 +298,7 @@ namespace VikingEngine.DSSWars.XP
                 if (cityView && !unlocked)
                 {
                     content.space(2f);
-                    content.Add(new RbText($"({value - startValue} / {TechnologyTemplate.Unlocked - startValue})"));
+                    content.Add(new RbText($"({value} / {unlock})"));
                 }
             }
         }

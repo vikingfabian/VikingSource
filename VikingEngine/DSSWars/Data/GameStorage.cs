@@ -151,7 +151,7 @@ namespace VikingEngine.DSSWars.Data
         }
         public void write(System.IO.BinaryWriter w, bool gamestate = false)
         {
-            const int Version = 23;
+            const int Version = 24;
 
             w.Write(Version);
 

@@ -396,70 +396,74 @@ namespace VikingEngine.DSSWars.Conscript
         //make these static
         public static int WeaponDamage(ItemResourceType weapon, out int splashCount)
         {
-            splashCount = 0;
-            switch (weapon)
-            {
-                case ItemResourceType.SharpStick: return DssConst.WeaponDamage_SharpStick;
-                case ItemResourceType.BronzeSword: return DssConst.WeaponDamage_BronzeSword;
-                case ItemResourceType.ShortSword: return DssConst.WeaponDamage_ShortSword;
-                case ItemResourceType.Sword: return DssConst.WeaponDamage_Sword;
-                case ItemResourceType.LongSword: return DssConst.WeaponDamage_LongSword;
-                case ItemResourceType.Pike: return DssConst.WeaponDamage_Pike;
-                case ItemResourceType.HandSpear: return DssConst.WeaponDamage_Handspear;
+            var soldierData = ItemPropertyColl.Get(weapon).soldierData;
+            splashCount = soldierData.attackSplashCount;
+            return soldierData.attackDamage;
 
-                case ItemResourceType.Warhammer: return DssConst.WeaponDamage_Warhammer;
-                case ItemResourceType.TwoHandSword: return DssConst.WeaponDamage_TwoHandSword;
-                case ItemResourceType.KnightsLance: return DssConst.WeaponDamage_KnigtsLance;
-                case ItemResourceType.MithrilSword: return DssConst.WeaponDamage_MithrilSword;
+            //splashCount = 0;
+            //switch (weapon)
+            //{
+            //    case ItemResourceType.SharpStick: return DssConst.WeaponDamage_SharpStick;
+            //    case ItemResourceType.BronzeSword: return DssConst.WeaponDamage_BronzeSword;
+            //    case ItemResourceType.ShortSword: return DssConst.WeaponDamage_ShortSword;
+            //    case ItemResourceType.Sword: return DssConst.WeaponDamage_Sword;
+            //    case ItemResourceType.LongSword: return DssConst.WeaponDamage_LongSword;
+            //    case ItemResourceType.Pike: return DssConst.WeaponDamage_Pike;
+            //    case ItemResourceType.HandSpear: return DssConst.WeaponDamage_Handspear;
 
-                case ItemResourceType.SlingShot: return DssConst.WeaponDamage_Slingshot;
-                case ItemResourceType.ThrowingSpear: return DssConst.WeaponDamage_Throwingspear;
-                case ItemResourceType.Bow: return DssConst.WeaponDamage_Bow;
-                case ItemResourceType.LongBow: return DssConst.WeaponDamage_Longbow;
-                case ItemResourceType.Crossbow: return DssConst.WeaponDamage_CrossBow;
-                case ItemResourceType.MithrilBow: return DssConst.WeaponDamage_MithrilBow;
+            //    case ItemResourceType.Warhammer: return DssConst.WeaponDamage_Warhammer;
+            //    case ItemResourceType.TwoHandSword: return DssConst.WeaponDamage_TwoHandSword;
+            //    case ItemResourceType.KnightsLance: return DssConst.WeaponDamage_KnigtsLance;
+            //    case ItemResourceType.MithrilSword: return DssConst.WeaponDamage_MithrilSword;
 
-                case ItemResourceType.HandCannon: return DssConst.WeaponDamage_Handcannon;
-                case ItemResourceType.HandCulverin:
-                    splashCount = 7;
-                    return DssConst.WeaponDamage_Handculvetin;
-                case ItemResourceType.Rifle: return DssConst.WeaponDamage_Rifle;
-                case ItemResourceType.Blunderbuss:
-                    splashCount = 8;
-                    return DssConst.WeaponDamage_Blunderbus;
+            //    case ItemResourceType.SlingShot: return DssConst.WeaponDamage_Slingshot;
+            //    case ItemResourceType.ThrowingSpear: return DssConst.WeaponDamage_Throwingspear;
+            //    case ItemResourceType.Bow: return DssConst.WeaponDamage_Bow;
+            //    case ItemResourceType.LongBow: return DssConst.WeaponDamage_Longbow;
+            //    case ItemResourceType.Crossbow: return DssConst.WeaponDamage_CrossBow;
+            //    case ItemResourceType.MithrilBow: return DssConst.WeaponDamage_MithrilBow;
 
-                case ItemResourceType.Ballista:
-                    splashCount = 1;
-                    return DssConst.WeaponDamage_Ballista;
-                case ItemResourceType.Manuballista:
-                    splashCount = 1;
-                    return DssConst.WeaponDamage_ManuBallista;
-                case ItemResourceType.Catapult:
-                    splashCount = 3; 
-                    return DssConst.WeaponDamage_Catapult;
+            //    case ItemResourceType.HandCannon: return DssConst.WeaponDamage_Handcannon;
+            //    case ItemResourceType.HandCulverin:
+            //        splashCount = 7;
+            //        return DssConst.WeaponDamage_Handculvetin;
+            //    case ItemResourceType.Rifle: return DssConst.WeaponDamage_Rifle;
+            //    case ItemResourceType.Blunderbuss:
+            //        splashCount = 8;
+            //        return DssConst.WeaponDamage_Blunderbus;
 
-                case ItemResourceType.SiegeCannonBronze:
-                    splashCount = 12; 
-                    return DssConst.WeaponDamage_SiegeCannonBronze;
-                case ItemResourceType.ManCannonBronze:
-                    splashCount = 5; return DssConst.WeaponDamage_ManCannonBronze;
-                case ItemResourceType.SiegeCannonIron:
-                    splashCount = 2; return DssConst.WeaponDamage_SiegeCannonIron;
-                case ItemResourceType.ManCannonIron:
-                    splashCount = 6; return DssConst.WeaponDamage_ManCannonIron;
+            //    case ItemResourceType.Ballista:
+            //        splashCount = 1;
+            //        return DssConst.WeaponDamage_Ballista;
+            //    case ItemResourceType.Manuballista:
+            //        splashCount = 1;
+            //        return DssConst.WeaponDamage_ManuBallista;
+            //    case ItemResourceType.Catapult:
+            //        splashCount = 3; 
+            //        return DssConst.WeaponDamage_Catapult;
 
-                case ItemResourceType.RoseWarrior_soldier:
-                    return DssConst.WeaponDamage_LongSword;
+            //    case ItemResourceType.SiegeCannonBronze:
+            //        splashCount = 12; 
+            //        return DssConst.WeaponDamage_SiegeCannonBronze;
+            //    case ItemResourceType.ManCannonBronze:
+            //        splashCount = 5; return DssConst.WeaponDamage_ManCannonBronze;
+            //    case ItemResourceType.SiegeCannonIron:
+            //        splashCount = 2; return DssConst.WeaponDamage_SiegeCannonIron;
+            //    case ItemResourceType.ManCannonIron:
+            //        splashCount = 6; return DssConst.WeaponDamage_ManCannonIron;
 
-                case ItemResourceType.RoseWarrior_tank:
-                    return DssConst.WeaponDamage_MithrilSword;
+            //    case ItemResourceType.RoseWarrior_soldier:
+            //        return DssConst.WeaponDamage_LongSword;
 
-                case ItemResourceType.RoseWarrior_dog:
-                    return DssConst.WeaponDamage_Sword;
+            //    case ItemResourceType.RoseWarrior_tank:
+            //        return DssConst.WeaponDamage_MithrilSword;
+
+            //    case ItemResourceType.RoseWarrior_dog:
+            //        return DssConst.WeaponDamage_Sword;
 
 
-                default: throw new NotImplementedException();
-            }
+            //    default: throw new NotImplementedException();
+            //}
         }
 
         //public static Resource.ItemResourceType WeaponItem(ItemResourceType weapon)
@@ -480,19 +484,20 @@ namespace VikingEngine.DSSWars.Conscript
 
         public static int ArmorHealth(ItemResourceType armorLevel)
         {
-            switch (armorLevel)
-            {
-                case ItemResourceType.NONE: return DssConst.ArmorHealth_None;
-                case ItemResourceType.PaddedArmor: return DssConst.ArmorHealth_Padded;
-                case ItemResourceType.HeavyPaddedArmor: return DssConst.ArmorHealth_HeavyPadded;
-                case ItemResourceType.BronzeArmor: return DssConst.ArmorHealth_Bronze;
-                case ItemResourceType.IronArmor: return DssConst.ArmorHealth_Mail;
-                case ItemResourceType.HeavyIronArmor: return DssConst.ArmorHealth_HeavyMail;
-                case ItemResourceType.LightPlateArmor: return DssConst.ArmorHealth_Plate;
-                case ItemResourceType.FullPlateArmor: return DssConst.ArmorHealth_FullPlate;
-                case ItemResourceType.MithrilArmor: return DssConst.ArmorHealth_Mithril;
-                default: throw new NotImplementedException();
-            }
+            return ItemPropertyColl.Get(armorLevel).soldierData.basehealth;
+            //switch (armorLevel)
+            //{
+            //    case ItemResourceType.NONE: return DssConst.ArmorHealth_None;
+            //    case ItemResourceType.PaddedArmor: return DssConst.ArmorHealth_Padded;
+            //    case ItemResourceType.HeavyPaddedArmor: return DssConst.ArmorHealth_HeavyPadded;
+            //    case ItemResourceType.BronzeArmor: return DssConst.ArmorHealth_Bronze;
+            //    case ItemResourceType.IronArmor: return DssConst.ArmorHealth_Mail;
+            //    case ItemResourceType.HeavyIronArmor: return DssConst.ArmorHealth_HeavyMail;
+            //    case ItemResourceType.LightPlateArmor: return DssConst.ArmorHealth_Plate;
+            //    case ItemResourceType.FullPlateArmor: return DssConst.ArmorHealth_FullPlate;
+            //    case ItemResourceType.MithrilArmor: return DssConst.ArmorHealth_Mithril;
+            //    default: throw new NotImplementedException();
+            //}
         }
 
         //public static Resource.ItemResourceType ArmorItem(ItemResourceType armorLevel)

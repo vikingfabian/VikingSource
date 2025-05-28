@@ -1320,6 +1320,10 @@ namespace VikingEngine.DSSWars.GameObject
                     waterAddPerSec += DssConst.WaterAdd_SmallCity;
                 }
 
+                waterAddPerSec *= DssRef.difficulty.setting_waterMulti;
+                maxWaterBase = Convert.ToInt32( DssConst.Maxwater * DssRef.difficulty.setting_waterMulti);
+                maxWaterTotal = maxWaterBase;
+
                 defaultResourceBuffer();
             }
         }

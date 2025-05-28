@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void onMasterLevel(WorkExperienceType experienceType, int gain)
+        public void onLevelUp(WorkExperienceType experienceType, int gain)
         {
             switch (experienceType)
             {
@@ -137,7 +137,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case WorkExperienceType.Mining:
                 case WorkExperienceType.CraftMetal:
-                    if (technology.iron < TechnologyTemplate.Unlocked)
+                    if (technology.iron < TechnologyTemplate.IronUnlock)
                     {
                         technology.iron += gain;
                     }
@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case WorkExperienceType.CraftFuel:
                 case WorkExperienceType.Chemistry:
-                    if (technology.iron < TechnologyTemplate.Unlocked)
+                    if (technology.blackPowder < TechnologyTemplate.BlackPowderUnlock)
                     {
                         technology.blackPowder += gain;
                     }
