@@ -133,9 +133,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     inputHelpState = InputHelpState.Build;
                     map.cancelRectangleSelect();
                     build.updateBuildMode();
-                    if (input.CancelKey.DownEvent)
+                    if (input.cancelDownEvent())
                     {
-
                         player.hud.needRefresh = true;
                         build.buildMode = SelectTileResult.None;
                         map.selection.subTile.selectTileResult = SelectTileResult.None;
@@ -215,7 +214,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                 }
 
-                if (input.CancelKey.DownEvent)
+                if (input.cancelDownEvent())
                 {
                     setMenuFocus(false, true);
                     clearSelection();

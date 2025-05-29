@@ -304,8 +304,11 @@ namespace VikingEngine.DSSWars.Display
             void cancelInput()
             {
                 content.newLine();
-                content.Add(new RbImage(player.gameControls.input.CancelKey.Icon));
-                content.space(0.5f);
+                foreach (var icon in player.gameControls.input.cancelIcons())
+                {
+                    content.Add(new RbImage(icon));
+                    content.hspace();
+                }
                 content.Add(new RbText(DssRef.lang.Hud_Cancel, HudLib.TitleColor_Action));
             }
         }

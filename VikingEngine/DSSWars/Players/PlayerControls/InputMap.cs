@@ -28,7 +28,8 @@ namespace VikingEngine.DSSWars
         public IButtonMap zoomInKey, zoomOutKey;
 
         //public IButtonMap ControllerSelect;
-        public IButtonMap CancelKey;
+        IButtonMap CancelKey;
+        public IButtonMap QuickSelect;
         public IButtonMap ControllerFocus;
         public IButtonMap ControllerFaction;
         public IButtonMap ControllerMessageClick;
@@ -162,6 +163,8 @@ namespace VikingEngine.DSSWars
             //ControllerSelect = new MouseButtonMap(MouseButton.Left);
             //Execute = new MouseButtonMap(MouseButton.Right);
             CancelKey = new KeyboardButtonMap(Keys.Back);
+            QuickSelect = new KeyboardButtonMap(Keys.Enter);
+
             //DragPan = new MouseButtonMap(MouseButton.Middle);
 
             //Home = new KeyboardButtonMap(Keys.Home);
@@ -238,10 +241,20 @@ namespace VikingEngine.DSSWars
                         case MouseButtonAction.Pan:
                             mousePan = InputLib.CombineButtons(mousePan, button);
                             break;
+                        case MouseButtonAction.PanAndCancel:
+                            mousePan = InputLib.CombineButtons(mousePan, button);
+                            mouseCancel = InputLib.CombineButtons(mouseCancel, button);
+                            break;
                         case MouseButtonAction.PanAndOrder:
                             mousePan = InputLib.CombineButtons(mousePan, button);
                             mouseOrder = InputLib.CombineButtons(mousePan, button);
                             hasPanOrderMix = true;
+                            break;
+                        case MouseButtonAction.PanAndOrderAndCancel:
+                            mousePan = InputLib.CombineButtons(mousePan, button);
+                            mouseOrder = InputLib.CombineButtons(mousePan, button);
+                            hasPanOrderMix = true;
+                            mouseCancel = InputLib.CombineButtons(mouseCancel, button);
                             break;
                         case MouseButtonAction.Order:
                             mouseOrder = InputLib.CombineButtons(mousePan, button);
@@ -300,7 +313,7 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 5;
+            const int InputVersion = 6;
             w.Write(InputVersion);
 
 
@@ -407,7 +420,24 @@ namespace VikingEngine.DSSWars
                 rightMouseAction = (MouseButtonAction)r.ReadByte();
                 middleMouseAction = (MouseButtonAction)r.ReadByte();
                 X1MouseAction = (MouseButtonAction)r.ReadByte();
-                X2MouseAction = (MouseButtonAction)r.ReadByte();                
+                X2MouseAction = (MouseButtonAction)r.ReadByte();
+
+                if (inputVersion < 6)
+                {
+                    checkOld(ref leftMouseAction);
+                    checkOld(ref rightMouseAction);
+                    checkOld(ref middleMouseAction);
+                    checkOld(ref X1MouseAction);
+                    checkOld(ref X2MouseAction);
+                }
+
+                void checkOld(ref MouseButtonAction action)
+                {
+                    if (action == MouseButtonAction.PanAndCancel || action == MouseButtonAction.PanAndOrderAndCancel)
+                    {
+                        action++;
+                    }
+                }
             }
 
             if (inputSource.IsController)
@@ -693,7 +723,23 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        
+        public bool cancelDownEvent()
+        { 
+            return CancelKey.DownEvent || mouseCancel.DownEvent;
+        }
+        public bool cancelDownEvent_anyInstance()
+        {
+            return CancelKey.DownEvent_AnyInstance || mouseCancel.DownEvent;
+        }
+
+        public List<SpriteName> cancelIcons()
+        {
+            List<SpriteName> icons = new List<SpriteName>(2);
+            CancelKey.ListIcons(icons);
+            mouseCancel.ListIcons(icons);
+
+            return icons;
+        }
 
         public override void genericControllerSetup()
         {
@@ -702,7 +748,7 @@ namespace VikingEngine.DSSWars
 
         public bool anyActionKeyDown(bool includeCancel)
         {
-            return mouseSelect.DownEvent || mouseOrder.DownEvent || mouseCancel.DownEvent || (includeCancel && CancelKey.DownEvent);
+            return mouseSelect.DownEvent || mouseOrder.DownEvent || mouseCancel.DownEvent || (includeCancel && cancelDownEvent());
         }
 
 
@@ -774,7 +820,9 @@ namespace VikingEngine.DSSWars
         None,
         Select,
         Pan,
+        PanAndCancel,
         PanAndOrder,
+        PanAndOrderAndCancel,
         Order,
         Cancel,
         NUM

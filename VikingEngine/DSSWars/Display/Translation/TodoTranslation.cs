@@ -10,6 +10,14 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
+        //Option language
+
+        public string MouseButtonAction_PanAndCancel => "Pan and Cancel";
+        public string MouseButtonAction_PanAndOrderAndCancel => "Pan, Order and Cancel";
+
+        //##
+
+
         public string Hud_RemoveFromList => "Remove from list";
 
         public string Hud_Low => "Low";

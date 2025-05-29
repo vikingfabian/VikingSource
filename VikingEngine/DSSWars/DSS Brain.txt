@@ -1,6 +1,8 @@
 ﻿UPDATE
 -Change Log-
-* Child birthrate
+* Child birthrate settings
+* Added suggestion (and repaired mouse cancel option): Make the cancel button default to something other than backspace maybe? To me its natural to use a mouse button like RMB
+* Added two new actions for mouse buttons
 
 #Free build defences
  Rock thrower
@@ -19,7 +21,6 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
-- Make the cancel button default to something other than backspace maybe?  To me its natural to use a mouse button like RMB or Middle Mouse or Mouse
 - The selected city does not change when I build in another province that I own during the tutorial 
 -ai dynamic low to high quality soldiers, and prio ranged units for walls
 -låt inte dread anfalla spelaren

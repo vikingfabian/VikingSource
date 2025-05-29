@@ -277,6 +277,7 @@ namespace VikingEngine.DSSWars.Players
             if (player.gameControls.InBuildOrdersMode())
             {
                 cancelRectangleSelect();
+                updateCitySelectionFromTile();
             }
             else
             {
@@ -294,6 +295,20 @@ namespace VikingEngine.DSSWars.Players
             if (player.gameControls.input.PinAndPing.DownEvent)
             {
                 player.createPin();
+            }
+        }
+
+        void updateCitySelectionFromTile()
+        {
+            if (onNewTile)
+            {
+                var newCity = DssRef.world.tileGrid.Get(tilePosition).City();
+                if (newCity != selection.obj && newCity.faction == player.faction)
+                {
+                    selection.obj = newCity;
+                    player.hud.needRefresh = true;
+                    //SoundLib.select_city.Play();
+                }
             }
         }
 

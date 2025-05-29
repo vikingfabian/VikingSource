@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                 }
 
                 if (XInput.KeyDownEvent(Buttons.Back) ||
-                    controllerInput.CancelKey.DownEvent_AnyInstance ||
+                    controllerInput.cancelDownEvent_anyInstance() ||
                     controllerInput.mouseSelect.DownEvent_AnyInstance ||
                     controllerInput.Controller_FlagDesign_Colorpicker.DownEvent_AnyInstance)
                 {
