@@ -1061,7 +1061,7 @@ namespace VikingEngine.DSSWars.Work
                     timeSec = DssConst.WorkTime_Mine;
                     break;
                 case WorkType.Craft:
-                    timeSec = DssConst.WorkTime_Craft;
+                    timeSec = DssConst.WorkTime_Craft * DssRef.difficulty.setting_craftMulti;
                     break;
 
                 case WorkType.Build:

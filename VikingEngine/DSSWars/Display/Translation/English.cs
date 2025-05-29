@@ -1284,7 +1284,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string BuildingType_ResourceFarm => "{0} farm";
 
-        public override string BuildingType_WorkerHut_DescriptionLimitX => "Expands worker limit with {0}";
+        public override string BuildingType_WorkerHut_DescriptionLimitX => "Expands worker limit by {0}";
         public override string BuildingType_Tavern_Description => "Workers may eat here";
         public override string BuildingType_Tavern_Brewery => "Beer production";
         public override string BuildingType_Postal_Description => "Send resources to other cities";
@@ -1948,15 +1948,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Help_Title => "Help";
         public override string Help_Work_Title => "Work doesn't start";
         public override string Help_Work_Resources => "Buildings need available resources";
-        public override string Help_Work_Skill => "The worker need correct skill level (or higher)";
-        public override string Help_Work_Stockpile => "Collecting resources will be blocked by a full stockpile";
-        public override string Help_Work_Priority => "The work may have low or zero priority";
+        public override string Help_Work_Skill => "The worker needs correct skill level (or higher)";
+        public override string Help_Work_Stockpile => "Resource collection will be blocked by a full stockpile";
+        public override string Help_Work_Priority => "Work may have low or zero priority";
 
 
         public override string Help_Soldiers_Title => "Produce soldiers";
         public override string Help_Soldiers_PlaceBuildingX => "Place building: {0}";
-        public override string Help_Soldiers_Workers => "Available workers to recruit from";
-        public override string Help_Soldiers_Weapon => "A weapon to each soldier";
+        public override string Help_Soldiers_Workers => "Available workers to recruit";
+        public override string Help_Soldiers_Weapon => "A weapon for each soldier";
         public override string Help_Soldiers_StartX => "Start: {0}";
 
 

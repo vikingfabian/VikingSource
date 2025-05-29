@@ -144,7 +144,7 @@ namespace VikingEngine.Input
         
         public void ListIcons(List<SpriteName> list)
         {
-            list.Add(Icon);
+            //list.Add(Icon);
         }
         public string ButtonName { get { return ""; } }
         public bool IsMouse { get { return false; } }

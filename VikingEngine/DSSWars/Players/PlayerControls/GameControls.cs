@@ -147,6 +147,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         mapSelect();
                     }
 
+                    if (input.QuickSelect.DownEvent)
+                    {
+                        selectAreaCity();
+                    }
+
                     if (input.mouseOrder.DownEvent)
                     {
                         mapExecute();
@@ -698,6 +703,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             mapSelect(obj.GetWorldObject());
         }
 
+        public void selectAreaCity()
+        {
+            if (map.selection.obj == null &&
+                DssRef.world.tileGrid.TryGet(map.tilePosition, out var tile))
+            {
+                var city = tile.City();
+                if (city.faction == player.faction)
+                {
+                    mapSelect(city);
+                }
+            }
+        }
 
         void updateObjectTabbing()
         {

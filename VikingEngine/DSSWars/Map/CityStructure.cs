@@ -410,10 +410,12 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
 
                                             case TerrainBuildingType.Tavern:
+                                                ++buildingStructure.Tavern_count;
                                                 FoodSpots_workupdate.Add(subTileLoop.Position);
                                                 buildingPosition.Tavern_pos = subTileLoop.Position;
                                                 break;
                                             case TerrainBuildingType.Storehouse:
+                                                ++buildingStructure.Storehouse_count;
                                                 StoragePoints_workupdate.Add(subTileLoop.Position);
                                                 buildingPosition.Storehouse_pos = subTileLoop.Position;
                                                 break;

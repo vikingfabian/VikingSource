@@ -409,10 +409,8 @@ namespace VikingEngine.DSSWars.Conscript
                             );
                         caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
-                        var info = new RbText(
-                                currentProfile.shortActiveString()
-                            );
-                        info.overrideColor = HudLib.InfoYellow_Dark;
+                        
+                       
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>(){
                         new RbImage(
@@ -421,7 +419,7 @@ namespace VikingEngine.DSSWars.Conscript
                         new RbSpace(),
                         caption,
                         new RbNewLine(),
-                        info,
+                         new RbText(currentProfile.shortActiveString(), HudLib.InfoYellow_Dark),
                     }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 
 

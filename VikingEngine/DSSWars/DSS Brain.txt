@@ -3,6 +3,26 @@
 * Child birthrate settings
 * Added suggestion (and repaired mouse cancel option): Make the cancel button default to something other than backspace maybe? To me its natural to use a mouse button like RMB
 * Added two new actions for mouse buttons
+* craft speed multiplier
+* fixed: "ERR" under Chemist, and Dirt Road
+* Improved text
+- Expands worker limit "by"
+- Resource collection will be blocked by a full stockpile
+- The worker needs correct skill level (or higher)
+- Work may have low or zero priority
+- Available workers to recruit
+- A weapon for each soldier
+
+* Fixed: Negative servicemen after city upgrade
+* Fixed: storehouse and tavern don't show instance count on build tab
+* Fixed: Second logistics upgrade is broken
+* Added Negative and over stock values info
+* Updated resource tab with info buttons
+* Fixed: The selected city does not change when I build in another province that I own during the tutorial 
+* School progress timer
+* Shows area city on history tab
+* Build on input help
+
 
 #Free build defences
  Rock thrower
@@ -21,7 +41,9 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
-- The selected city does not change when I build in another province that I own during the tutorial 
+x Auto upgrade
+x Declaring war needs warning
+
 -ai dynamic low to high quality soldiers, and prio ranged units for walls
 -låt inte dread anfalla spelaren
 -lock camera on army
@@ -136,5 +158,6 @@ Most of what I use can be found here:
 https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping 
 
 #Export
+cd VikingEngine
 dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
 

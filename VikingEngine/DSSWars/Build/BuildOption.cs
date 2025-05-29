@@ -60,6 +60,7 @@ namespace VikingEngine.DSSWars.Build
                 case TerrainMainType.Foil:
                     return DssRef.lang.BuildingType_Farm_Description;
                 case TerrainMainType.Decor:
+                case TerrainMainType.Road:
                     return DssRef.lang.BuildingType_Decor_Description;
                 case TerrainMainType.Wall:
                     switch ((TerrainWallType)subType)

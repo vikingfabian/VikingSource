@@ -1129,7 +1129,7 @@ namespace VikingEngine.DSSWars.Build
                         {                            
                             HudLib.Label(content, DssRef.lang.XP_Upgrade);
                             content.newLine();
-                            CraftBuildingLib.CraftLogistics.toMenu(content, city);
+                            CraftBuildingLib.CraftLogisticsLevel2.toMenu(content, city);
 
                             content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
@@ -1139,22 +1139,23 @@ namespace VikingEngine.DSSWars.Build
                             content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
                             content.newLine();
+                            CraftBuildingLib.CraftLogisticsLevel2.listResources(content, city);
                             content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(city.faction.totalWorkForce));
-
-                            player.hud.tooltip.create(player, content, true);
+                            //player.hud.tooltip.create(player, content, true);
                         }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
                     }
 
 
-
-                    content.newLine();
-                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    if (city.cityType < CityType.Capital)
+                    {
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbImage(SpriteName.WarsCityHall),
                         new RbSpace(),
                         new RbText(DssRef.lang.CityHall_Upgrade)
                         }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
-                            city.CanUpgradeCityHall()));
-
+                                city.CanUpgradeCityHall()));
+                    }
                 }
 
                 void autoBuildButton(string caption, int count)

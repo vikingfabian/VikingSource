@@ -275,6 +275,8 @@ namespace VikingEngine.DSSWars.Display
         }
         void progressTab(RichBoxContent content)
         {
+            //bool foodSafeGuard = false;
+
             for (ProgressSubTab workSubTab = 0; workSubTab < ProgressSubTab.NUM; ++workSubTab)
             {
                 var tabContent = new RichBoxContent();
@@ -1132,8 +1134,6 @@ namespace VikingEngine.DSSWars.Display
                     //string text = null;
                     switch (resourcesSubTab)
                     {
-                        
-
                         case ResourcesSubTab.Overview_Metals:
                         case ResourcesSubTab.Stockpile_Metals:
                         case ResourcesSubTab.Work_Metals:
@@ -1155,6 +1155,7 @@ namespace VikingEngine.DSSWars.Display
                         case ResourcesSubTab.Stockpile_Armor:
                         case ResourcesSubTab.Work_Armor:
                             tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
+
                             break;
 
                         case ResourcesSubTab.Overview_Resources:
@@ -1190,7 +1191,7 @@ namespace VikingEngine.DSSWars.Display
                             tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                             break;
                     }
-                    var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected ,
+                    var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                         tabContent,
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
@@ -1199,11 +1200,61 @@ namespace VikingEngine.DSSWars.Display
                     //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
 
-                    if (resourcesSubTab == ResourcesSubTab.Overview_Armor ||
-                        resourcesSubTab == ResourcesSubTab.Stockpile_Armor)
+                    switch (resourcesSubTab)
                     {
-                        content.newLine();
+                        case ResourcesSubTab.Overview_Armor:
+                            HudLib.InfoButton(content,
+                               new RbTooltip((RichBoxContent content, object tag) =>
+                               {
+                                   GroupedResource.BufferIconInfo(content, false);
+                                   bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+                                   if (foodSafeGuard)
+                                   {
+                                       GroupedResource.BufferIconInfo(content, true);
+                                   }
+                                   ResourceLib.ConvertGoldOre.toMenu(content, city, false, true, false, false);
+                                   {
+                                       content.newLine();
+                                       content.Add(new RbText(1.ToString()));
+                                       content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
+                                       content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+                                       var arrow = new RbImage(SpriteName.pjNumArrowR);
+                                       arrow.color = Color.CornflowerBlue;
+                                       content.Add(arrow);
+                                       content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.difficulty.FoodEnergySett)));
+                                   }
+                                   content.newLine();
+                                   HudLib.BulletPoint(content);
+                                   content.Add(new RbText(DssRef.todoLang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+                               }));
+                            content.newLine();
+                            break;
+                        case ResourcesSubTab.Stockpile_Armor:
+                            HudLib.InfoButton(content,
+                               new RbTooltip((RichBoxContent content, object tag) =>
+                               {
+                                   HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
+                                   GroupedResource.BufferIconInfo(content, false);
+                                   content.newLine();
+                                   HudLib.BulletPoint(content);
+                                   content.Add(new RbText(DssRef.todoLang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+                               }));
+                            content.newLine();
+                            break;
+                        case ResourcesSubTab.Work_Armor:
+                            HudLib.InfoButton(content,
+                               new RbTooltip((RichBoxContent content, object tag) =>
+                               {
+                                   HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
+                               }));
+                            break;
                     }
+                    //if (resourcesSubTab == ResourcesSubTab.Overview_Armor ||
+                    //    resourcesSubTab == ResourcesSubTab.Stockpile_Armor)
+                    //    //resourcesSubTab == ResourcesSubTab.Work_Armor)
+                    //{
+                        
+                    //}
                     //else
                     //{
                     //    content.space();
@@ -1247,7 +1298,7 @@ namespace VikingEngine.DSSWars.Display
                         //player.hud.tooltip.create(player, content, true);
                     }));
 
-                    var foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+                    bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
 
                     city.res_wood.toMenu(content, ItemResourceType.Wood_Group, woodSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
                     city.res_stone.toMenu(content, ItemResourceType.Stone_G, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
@@ -1309,22 +1360,23 @@ namespace VikingEngine.DSSWars.Display
                     blueprintButton(player, content, CraftResourceLib.LedBullets);
 
                     
-                    content.Add(new RbSeperationLine());
-                    GroupedResource.BufferIconInfo(content, false);
-                    if (foodSafeGuard)
-                    {
-                        GroupedResource.BufferIconInfo(content, true);
-                    }
-                    ResourceLib.ConvertGoldOre.toMenu(content, city);
-                    {
-                        content.Add(new RbText(1.ToString()));
-                        content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
-                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
-                        var arrow = new RbImage(SpriteName.pjNumArrowR);
-                        arrow.color = Color.CornflowerBlue;
-                        content.Add(arrow);
-                        content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount,DssRef.difficulty.FoodEnergySett)));
-                    }
+                    //content.Add(new RbSeperationLine());
+                    //GroupedResource.BufferIconInfo(content, false);
+                    //if (foodSafeGuard)
+                    //{
+                    //    GroupedResource.BufferIconInfo(content, true);
+                    //}
+                    //ResourceLib.ConvertGoldOre.toMenu(content, city, false, true, false, false);
+                    //{
+                    //    content.newLine();
+                    //    content.Add(new RbText(1.ToString()));
+                    //    content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
+                    //    content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+                    //    var arrow = new RbImage(SpriteName.pjNumArrowR);
+                    //    arrow.color = Color.CornflowerBlue;
+                    //    content.Add(arrow);
+                    //    content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount,DssRef.difficulty.FoodEnergySett)));
+                    //}
                     break;
 
                 case ResourcesSubTab.Overview_Metals:
@@ -1515,9 +1567,9 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.GunPowder);
                     stockpile(ItemResourceType.LedBullet);
 
-                    content.newParagraph();
-                    HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
-                    GroupedResource.BufferIconInfo(content, false);
+                    //content.newParagraph();
+                    //HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
+                    //GroupedResource.BufferIconInfo(content, false);
                     break;
 
                 case ResourcesSubTab.Stockpile_Metals:

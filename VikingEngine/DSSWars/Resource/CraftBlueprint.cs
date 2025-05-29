@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.Resource
             content.Add(new RbText(name()));
         }
 
-        public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true)
+        public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true, bool includeAvailable = true, bool includeLevel = true)
         {
             if (upgradeFrom != null && !upgradeOnly)
             {
@@ -203,7 +203,6 @@ namespace VikingEngine.DSSWars.Resource
             foreach (var r in resources)
             {
                 available = city.GetGroupedResource(r.type).amount >= r.amount;
-
                 addResources(r.amount, ResourceLib.Icon(r.type), LangLib.Item(r.type), available);
                 first = false;
             }
@@ -218,15 +217,26 @@ namespace VikingEngine.DSSWars.Resource
                 var arrow = new RbImage(SpriteName.pjNumArrowR);
                 arrow.color = Color.CornflowerBlue;
                 content.Add(arrow);
-                content.Add(new RbText(resultAmount.ToString()));
+                if (resultType == CraftResultType.Building)
+                {
+                    if (resultAmount > 1)
+                    {
+                        content.Add(new RbImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + resultAmount - 1)));
+                    }
+                }
+                else
+                {
+                    content.Add(new RbText(resultAmount.ToString()));
+                }
                 content.Add(new RbImage(icon()));
                 content.space();
                 content.Add(new RbText(name()));
             }
-            content.newLine();
+            if (includeLevel)
+            
             //if (levelRequirement > ExperienceLevel.Beginner_1)
             {
-                
+                content.newLine();
                 //var levelReqText = new RbText(DssRef.lang.Hud_PurchaseTitle_Requirement + ":");
                 //levelReqText.overrideColor = HudLib.TitleColor_Label;
                 //content.Add(levelReqText);
@@ -264,18 +274,18 @@ namespace VikingEngine.DSSWars.Resource
                     if (!first)
                     {
                         content.Add(new RbImage(SpriteName.pjNumPlus));
-                        //countString = " + " + countString;
                     }
 
-                    content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
-                    content.space(0.5f);
-
                     var countText = new RbText(count.ToString());
-                    //if (!available)
-                    //{ 
-                    countText.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                    //}
+                    if (includeAvailable)
+                    {
+                        content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+                        content.space(0.5f);
+                        countText.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                    }                       
+                    
                     content.Add(countText);
+                    content.hspace();
                     content.Add(new RbImage(sprite));
                     content.Add(new RbText(name));
                 }

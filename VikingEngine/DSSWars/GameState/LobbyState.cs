@@ -964,14 +964,14 @@ namespace VikingEngine.DSSWars
             content.space();
             content.Add(new RbText(DssRef.lang.Settings_FoodMultiplier, HudLib.TitleColor_Label));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0.5f, 10f, 0.1f), foodMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_FoodMultiplier_Description)));
+            content.Add(new RbDragButton(new DragButtonSettings(0.5f, 10f, 0.1f), FoodMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_FoodMultiplier_Description)));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
             content.space();
             content.Add(new RbText(DssRef.todoLang.Settings_WaterMultiplier, HudLib.TitleColor_Label));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), waterMultiProperty, true, new RbTooltip_Text(DssRef.todoLang.Settings_WaterMultiplier_Description)));
+            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), WaterMultiProperty, true, new RbTooltip_Text(DssRef.todoLang.Settings_WaterMultiplier_Description)));
 
 
             content.newLine();
@@ -979,8 +979,14 @@ namespace VikingEngine.DSSWars
             content.space();
             content.Add(new RbText(DssRef.todoLang.Settings_ChildMultiplier, HudLib.TitleColor_Label));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), childMultiProperty, true));
+            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), ChildMultiProperty, true));
 
+            content.newLine();
+            content.Add(new RbImage(SpriteName.WarsHammer));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Settings_CraftMultiplier, HudLib.TitleColor_Label));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4f, 0.1f), CraftMultiProperty, true, new RbTooltip_Text(DssRef.todoLang.Settings_CraftMultiplier_Description)));
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ResetToDefault) }, new RbAction(resetToDefault)));
@@ -1366,18 +1372,22 @@ namespace VikingEngine.DSSWars
         //    refreshDifficultyLevel();
         //}
 
-        public float foodMultiProperty(bool set, float value)
+        public float FoodMultiProperty(bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_foodMulti, value);
         }
-        public float waterMultiProperty(bool set, float value)
+        public float WaterMultiProperty(bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_waterMulti, value);
         }
 
-        public float childMultiProperty(bool set, float value)
+        public float ChildMultiProperty(bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_childMulti, value);
+        }
+        public float CraftMultiProperty(bool set, float value)
+        {
+            return GetSet.Do<float>(set, ref DssRef.difficulty.setting_craftMulti, value);
         }
 
         void gameModeText(GameMode mode, out string caption, out string desc)

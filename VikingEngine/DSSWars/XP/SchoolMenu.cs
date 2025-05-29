@@ -91,6 +91,16 @@ namespace VikingEngine.DSSWars.XP
                     }
 
                     content.newParagraph();
+                    bool active = city.workerInSchoolCheckup(currentStatus.idAndPosition, out float time);
+                    if (active)
+                    {
+                        content.Add(new RbSeperationLine());
+                        {
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbText(new Data.TimeLength(time - Ref.TotalGameTimeSec).LongString()));
+                        }
+                    }
                     que.toHud(player, content, queClick, currentStatus.que, SchoolStatus.MaxQue, false);
                 }
 
@@ -119,12 +129,15 @@ namespace VikingEngine.DSSWars.XP
                         SchoolStatus currentProfile = city.schoolBuildings[i];
                         LangLib.ExperienceType(currentProfile.learnExperience, out string text, out SpriteName icon);
                         var caption = new RbText(text);
-                        caption.overrideColor = HudLib.TitleColor_Name;
+                        caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
-                        content.Add(new RbButton(new List<AbsRichBoxMember>(){
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>(){
                         new RbImage(icon),
                         new RbSpace(),
                         caption,
+                        new RbNewLine(),
+                         new RbText(currentProfile.shortActiveString(city), HudLib.InfoYellow_Dark),
                         }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 
                     }

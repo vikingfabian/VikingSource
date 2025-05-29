@@ -935,6 +935,24 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public bool workerInSchoolCheckup(int idAndPosition, out float completeTimeSec)
+        {
+            IntVector2 pos = conv.IntToIntVector2(idAndPosition);
+            //Warning! this checkup is badly optimized, only use it for player info
+            for (int i = 0; i < workerStatuses.Count; ++i)
+            {
+                var status = workerStatuses.array[i];
+                if (status.work == WorkType.School &&
+                    status.subTileEnd == pos)
+                {
+                    completeTimeSec = status.processTimeStartStampSec + status.processTimeLengthSec;
+                    return true;
+                }
+            }
+            completeTimeSec = -1;
+            return false;
+        }
+
     }
 
     struct WorkQueMember

@@ -2118,7 +2118,7 @@ namespace VikingEngine.DSSWars.GameObject
             tagToHud(content);
         }
 
-        void CityPresentationHud(ObjectHudArgs args, bool tooltip)
+        public void CityPresentationHud(ObjectHudArgs args, bool tooltip)
         {
             nameToHud(args.content, !tooltip);
 
@@ -2909,10 +2909,6 @@ namespace VikingEngine.DSSWars.GameObject
             content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Label);
             blueprint.toMenu(content, this);
 
-            //content.newLine();
-            //HudLib.ResourceCost(content, ItemResourceType
-            //content.Add(new RbText(string.Format( DssRef.lang.ServicemenCount, HudLib.
-
             content.newParagraph();
 
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain, HudLib.TitleColor_Label);
@@ -2937,6 +2933,11 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.GuardHousingCount, TextLib.PlusMinus(addGuardHousing))));
+
+            content.newParagraph();
+
+            content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn, HudLib.TitleColor_Label);
+            blueprint.listResources(content, this);
         }
 
         public bool CanUpgradeCityHall()
@@ -2972,7 +2973,7 @@ namespace VikingEngine.DSSWars.GameObject
             bool available = canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available);
 
             blueprint.payResources(this);
-            freeServiceMen.amount -= serviceHouses_required;
+            //freeServiceMen.amount -= serviceHouses_required;
             cityType++;
             TerrainBuildingType hall;
             if (cityType == CityType.Town)

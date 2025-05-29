@@ -318,6 +318,10 @@ namespace VikingEngine.DSSWars.Players
             IntVector2 prevTile = tilePosition;
             tilePosition = WP.ToTilePos(pointerPosWP);
             onNewTile = prevTile != tilePosition;
+            if (onNewTile)
+            {
+                player.hud.needRefresh = true;
+            }
         }
 
         public void mapControlsUpdate()

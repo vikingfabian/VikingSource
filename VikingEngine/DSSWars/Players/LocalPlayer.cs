@@ -1533,6 +1533,8 @@ namespace VikingEngine.DSSWars.Players
             return false;
         }
 
+        
+
         public override bool IsLocal => true;
 
         public override bool IsAi()

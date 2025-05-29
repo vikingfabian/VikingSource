@@ -1183,7 +1183,7 @@ namespace VikingEngine.DSSWars.Work
                     autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, faction, city);
                    
 
-                    HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, MaxPrio));
+                    //HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, MaxPrio));
                     break;
 
                 case ResourcesSubTab.Work_Metals:

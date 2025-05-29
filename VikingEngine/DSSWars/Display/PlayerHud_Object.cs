@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,9 +62,37 @@ namespace VikingEngine.DSSWars.Display
             createMenu(player, false);
 
             var content = new RichBoxContent();
-            content.h2(DssRef.lang.Hud_SelectHistory);
 
-            //foreach (var obj in selectHistory)
+            if (DssRef.world.tileGrid.TryGet(player.gameControls.map.tilePosition, out var tile))
+            {
+                var hoverCity = tile.City();
+                hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
+
+                if (hoverCity.faction == player.faction)
+                {
+                    content.newLine();
+                    //RichBoxContent buttonContent = new RichBoxContent();
+                    SpriteName buttonIcon;
+                    if (player.gameControls.input.inputSource.IsController)
+                    {
+                        buttonIcon = player.gameControls.input.mouseSelect.Icon;
+                    }
+                    else
+                    {
+                        buttonIcon = player.gameControls.input.QuickSelect.Icon;
+                    }
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                        new List<AbsRichBoxMember> {
+                            new RbImage(buttonIcon),
+                            new RbSpace(),
+                            new RbText(DssRef.lang.Hud_SelectCity)
+                        }, new RbAction(player.gameControls.selectAreaCity)));
+                }
+                content.Add(new RbSeperationLine());
+            }
+
+            content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);
+
             for (int i = selectHistory.Count - 1; i >= 0; --i)
             {
                 var obj = selectHistory[i];

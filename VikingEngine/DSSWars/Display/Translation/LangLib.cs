@@ -1162,6 +1162,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.BuildingType_Carpenter_Description;
                 case TerrainBuildingType.Armory:
                     return DssRef.lang.BuildingType_Armory_Description;
+                case TerrainBuildingType.Chemist:
+                    return DssRef.lang.BuildingType_Chemist_Description;
 
                 case TerrainBuildingType.Nobelhouse:
                     return DssRef.lang.BuildingType_Nobelhouse_Description;

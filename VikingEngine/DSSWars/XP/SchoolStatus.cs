@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.LootFest.Data;
 using VikingEngine.ToGG.ToggEngine.QueAction;
 
@@ -40,6 +42,27 @@ namespace VikingEngine.DSSWars.XP
         {
             toLevel = ExperienceLevel.Expert_3;
         }
+
+        public string shortActiveString(City city)
+        {
+            string result = null;
+
+            bool active = city.workerInSchoolCheckup(idAndPosition, out float time);
+
+            if (active)
+            {
+                countdown.endTimeSec = time;
+                result = string.Format(DssRef.lang.Conscription_Status_Training, countdown.RemainingLength().ShortString());
+            }
+            else
+            {
+                result = DssRef.lang.Hud_Idle;
+            }
+
+            return result;
+        }
+
+        
         //public string shortActiveString()
         //{ }
     }

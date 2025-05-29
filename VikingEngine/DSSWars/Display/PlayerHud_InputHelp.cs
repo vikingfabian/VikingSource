@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars.Display
                 case InputHelpState.Map:
                     input(map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
                     input(ct ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
+                    input(map.Build.Icon, DssRef.lang.InputActionName_Build);
                     break;
 
                 case InputHelpState.Army:

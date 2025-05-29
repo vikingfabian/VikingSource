@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         //##
 
-
+        public string Work_BadValueDescription => "Resources can go below zero and slightly exceed the stockpile limit. The bounds are only enforced when the work queue is created.";
         public string Hud_RemoveFromList => "Remove from list";
 
         public string Hud_Low => "Low";
@@ -28,6 +28,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Settings_WaterMultiplier_Description => "How much water cities produce and store. A high value will lower computer performance.";
 
         public string Settings_ChildMultiplier => "Child birth multiplier";
+        public string Settings_CraftMultiplier => "Craft speed multiplier";
+        public string Settings_CraftMultiplier_Description => "Low speed will give fast production";
 
         public string FastProduction => "Fast production";
         public string SlowProduction => "Slow production";
