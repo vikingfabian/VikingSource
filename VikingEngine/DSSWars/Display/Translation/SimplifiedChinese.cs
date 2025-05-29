@@ -1431,7 +1431,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Hud_Available => "可用";
 
-        public override string WorkForce_ChildBirthRequirements => "生育条件:";
+        public override string WorkForce_ChildBirthRequirements => "生育条件";
         public override string WorkForce_AvailableHomes => "可用住房: {0}";
         public override string WorkForce_Peace => "和平";
         public override string WorkForce_ChildToManTime => "成年时间: {0} 分钟";

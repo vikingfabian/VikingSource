@@ -1554,7 +1554,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public double childAddPerSec()
         {
-            if (/*battleGroup == null &&*/
+            if (!inBattle &&
                 res_food.amount > 0 &&
                 homeUsers() < workersMax())
             {
@@ -1563,7 +1563,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     result *= 2;
                 }
-                return result;
+                return result * DssRef.difficulty.setting_childMulti;
             }
             return 0;
         }
@@ -2654,16 +2654,51 @@ namespace VikingEngine.DSSWars.GameObject
             content.text(string.Format(DssRef.lang.WorkForce_ChildToManTime, 2));
 
             content.newParagraph();
-            content.h2(DssRef.lang.WorkForce_ChildBirthRequirements);
-            content.text(string.Format(DssRef.lang.WorkForce_AvailableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
-            HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
+            content.h2(DssRef.lang.WorkForce_ChildBirthRequirements, HudLib.TitleColor_Head);
 
+            {
+                bool available = inBattle == false;
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                content.hspace();
+                content.Add(new RbImage(SpriteName.WarsRelationPeace));
+                content.hspace();
+                content.Add(new RbText(DssRef.lang.WorkForce_Peace, HudLib.ResourceCostColor(available)));
+
+            }
+            {
+                bool available = city.homesUnused() > 0;
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                content.hspace();
+                content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.WorkForce_AvailableHomes, city.homesUnused()), HudLib.ResourceCostColor(available)));
+               
+            }
+            {
+                bool available = city.res_food.amount > 0;
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                content.hspace();
+                content.Add(new RbImage(SpriteName.WarsResource_Food));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource_TypeName_Food, city.res_food.amount), HudLib.ResourceCostColor(available)));
+                //HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
+            }
             if (cityType < CityType.Capital)
             {
+                bool available = homeUsers() < WorkersMaxLimit;
                 content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                content.hspace();
                 content.Add(new RbImage(SpriteName.WarsCityHall));
-                content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.CityHall_MaxSupportedWorkers, WorkersMaxLimit), HudLib.ResourceCostColor(homeUsers() < WorkersMaxLimit)));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.CityHall_MaxSupportedWorkers, WorkersMaxLimit), HudLib.ResourceCostColor(available)));
             }
         }
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)

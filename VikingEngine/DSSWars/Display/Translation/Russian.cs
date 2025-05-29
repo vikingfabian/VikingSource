@@ -1430,7 +1430,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Hud_Available => "Доступно";
 
-        public override string WorkForce_ChildBirthRequirements => "Требования к рождению детей:";
+        public override string WorkForce_ChildBirthRequirements => "Требования к рождению детей";
         public override string WorkForce_AvailableHomes => "Доступные дома: {0}";
         public override string WorkForce_Peace => "Мир";
         public override string WorkForce_ChildToManTime => "Возраст совершеннолетия: {0} минут";

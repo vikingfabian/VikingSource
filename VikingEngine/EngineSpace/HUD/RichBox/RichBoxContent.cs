@@ -69,6 +69,10 @@ namespace VikingEngine.HUD.RichBox
         { 
             Add(new RbSpace(spaces));
         }
+        public void hspace()
+        {
+            Add(new RbSpace(0.5f));
+        }
 
         public RbText h1(string textline)
         {

@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars.Data
         public bool setting_allowPauseCommand = true;
         public float setting_foodMulti = 1;
         public float setting_waterMulti = 1;
+        public float setting_childMulti = 1;
         public const GameMode DefaultMode = GameMode.FullStory;
         public GameMode setting_gameMode = DefaultMode;
         public bool runStory = true;
@@ -281,6 +282,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write((byte)setting_gameMode);
             w.Write(setting_foodMulti);
             w.Write(setting_waterMulti);
+            w.Write(setting_childMulti);
             w.Write(difficulty);
         }
 
@@ -303,6 +305,10 @@ namespace VikingEngine.DSSWars.Data
                 if (storageversion >= 24)
                 {
                     setting_waterMulti = r.ReadSingle();
+                }
+                if (storageversion >= 25)
+                {
+                    setting_childMulti = r.ReadSingle();
                 }
             }
             difficulty = r.ReadInt32();

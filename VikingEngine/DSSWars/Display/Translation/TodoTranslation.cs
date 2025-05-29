@@ -19,6 +19,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Settings_WaterMultiplier => "Water multiplier";
         public string Settings_WaterMultiplier_Description => "How much water cities produce and store. A high value will lower computer performance.";
 
+        public string Settings_ChildMultiplier => "Child birth multiplier";
+
         public string FastProduction => "Fast production";
         public string SlowProduction => "Slow production";
 

@@ -974,6 +974,14 @@ namespace VikingEngine.DSSWars
             content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), waterMultiProperty, true, new RbTooltip_Text(DssRef.todoLang.Settings_WaterMultiplier_Description)));
 
 
+            content.newLine();
+            content.Add(new RbImage(SpriteName.WarsWorkerAdd));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Settings_ChildMultiplier, HudLib.TitleColor_Label));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), childMultiProperty, true));
+
+
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ResetToDefault) }, new RbAction(resetToDefault)));
 
@@ -1365,6 +1373,11 @@ namespace VikingEngine.DSSWars
         public float waterMultiProperty(bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_waterMulti, value);
+        }
+
+        public float childMultiProperty(bool set, float value)
+        {
+            return GetSet.Do<float>(set, ref DssRef.difficulty.setting_childMulti, value);
         }
 
         void gameModeText(GameMode mode, out string caption, out string desc)

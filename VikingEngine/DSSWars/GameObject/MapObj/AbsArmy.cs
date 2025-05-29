@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool walkGoalAsShip = false;
         public int soldiersCount = 0;
         public int mostCenterGroup = -1;
-        protected bool inBattle = false;
+        public bool inBattle = false;
 
         public void AddSoldierGroup(SoldierGroup group)
         {
