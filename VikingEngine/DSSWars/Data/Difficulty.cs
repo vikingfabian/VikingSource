@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.Data
 
         static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200 };
         public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150 };
+        public static readonly GameMode[] AvailableModes = [GameMode.Sandbox, GameMode.Peaceful, GameMode.Spectator];
 
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
@@ -75,7 +76,7 @@ namespace VikingEngine.DSSWars.Data
                     string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficultyLvl.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
                     //string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficultyLvl.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficultyLvl.aiEconomyLevel].ToString()) + Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficultyLvl.aiDelayTimeSec).ToString()) + Environment.NewLine +
+                    //string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficultyLvl.aiDelayTimeSec).ToString()) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficultyLvl.diplomacyDifficulty, DiplomacyDifficultyCount)) + Environment.NewLine +
                     //string.Format(DssRef.lang.DifficultyDescription_MercenaryCost, difficulty.MercenaryPurchaseCost_Start.ToString() )+ Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficultyLvl.honorGuard? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No),
@@ -93,11 +94,55 @@ namespace VikingEngine.DSSWars.Data
                 Difficulty difficultyLvl = new Difficulty(i);
                 content.newLine();
                 mapSzOptions.AddOption(options[i].ToString() + "%", DssRef.difficulty.difficulty == i, DefaultOption == i,
-                    new RbAction1Arg<int>(callback, i), null);
+                    new RbAction1Arg<int>(callback, i), new RbTooltip(difficultyToolTip, i));
                 //content.Add(new ArtOption(DssRef.difficulty.difficulty == i, new List<AbsRichBoxMember> { new RbText(options[i].ToString() + "%") }, null));
             }
             mapSzOptions.DropDown(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), menu.OnDropDownClick, menu.activeDropDown);
         }
+
+        static void difficultyToolTip(RichBoxContent content, object tag)
+        {
+            Difficulty difficultyLvl = new Difficulty((int)tag);
+            content.h2(string.Format(DssRef.lang.Settings_DifficultyLevel, difficultyLvl.PercDifficulty), HudLib.TitleColor_Head);
+
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsBattleIcon));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM))));
+            }
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsDarkLordBossIcon));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_BossSize, TextLib.IndexDivition((int)difficultyLvl.bossSize, (int)BossSize.NUM))));
+            }
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.rtsIncome));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficultyLvl.aiEconomyLevel].ToString())));
+            }
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficultyLvl.diplomacyDifficulty, DiplomacyDifficultyCount))));
+            }
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsUnitIcon_Honorguard));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficultyLvl.honorGuard ? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No)));
+            }
+
+        }
+
         public void set(int difficulty)
         {
             this.difficulty = difficulty;

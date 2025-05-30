@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.HandSpear,
             ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance,
             ItemResourceType.IronArmor,
+            ItemResourceType.Toolkit,
         };
 
         public static readonly ItemResourceType[] GunmakerCraftTypes = {

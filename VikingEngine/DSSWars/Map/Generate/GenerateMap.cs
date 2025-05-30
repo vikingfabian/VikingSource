@@ -465,7 +465,10 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
                             {
                                 try
                                 {
-                                    roads.fromCity(world, c);
+                                    if (!abort)
+                                    {
+                                        roads.fromCity(world, c);
+                                    }
                                 }
                                 catch (Exception ex)
                                 {

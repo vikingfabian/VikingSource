@@ -88,7 +88,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
 
             bool hudState = false;
-            bool uiRefresh = false;
+            bool uiRefresh = false; 
+            //bool buildMode = false;
 
             if (input.inputSource.IsController)
             {                
@@ -133,12 +134,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     inputHelpState = InputHelpState.Build;
                     map.cancelRectangleSelect();
                     build.updateBuildMode();
-                    if (input.cancelDownEvent())
-                    {
-                        player.hud.needRefresh = true;
-                        build.buildMode = SelectTileResult.None;
-                        map.selection.subTile.selectTileResult = SelectTileResult.None;
-                    }
+                    
                 }
                 else
                 {
@@ -178,6 +174,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             else
             {
                 updateMapShortCuts();
+            }
+
+            if (input.cancelDownEvent())
+            {
+                if (InBuildOrdersMode(false))
+                {
+                    player.hud.needRefresh = true;
+                    build.buildMode = SelectTileResult.None;
+                    map.selection.subTile.selectTileResult = SelectTileResult.None;
+                }
             }
 
             if (input.inputSource.IsController)
@@ -883,13 +889,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 build.placeBuildingType = type;
             }
         }
-        public bool InBuildOrdersMode()
+        public bool InBuildOrdersMode(bool includeZoomLevel = true)
         {
             return player.cityTab == Display.MenuTab.Build &&
                 map.selection.obj != null &&
                 map.selection.obj.gameobjectType() == GameObjectType.City &&
                 build.buildMode != SelectTileResult.None &&
-                player.drawUnitsView.current.DrawDetailLayer;
+                (!includeZoomLevel || player.drawUnitsView.current.DrawDetailLayer);
         }
     }
 

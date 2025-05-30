@@ -348,6 +348,7 @@ namespace VikingEngine.Engine
                 ++activeRenderCount;
 #endif
             }
+            Engine.Draw.PreviousVertexBuffer = -1;
 #if DEBUG
             ++activeRenderCount;
 #endif

@@ -1196,7 +1196,7 @@ namespace VikingEngine.DSSWars.Display
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, SoundLib.menutab), new RbTooltip_Text("Select item cathegory"));
+                        }, resourcesSubTab, SoundLib.menutab), new RbTooltip_Text(DssRef.todoLang.Work_SelectCategory));
                     //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
 

@@ -140,10 +140,10 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
-        public void execute_async(City city, IntVector2 subPos, ref SubTile subTile, bool upgrade)
+        public bool execute_async(City city, IntVector2 subPos, ref SubTile subTile, bool upgrade)
         {
             //TODO handle upgrades
-            subTile.SetType(mainType, subType, 1);
+            
 
             switch (mainType)
             {
@@ -152,6 +152,12 @@ namespace VikingEngine.DSSWars.Build
                         switch ((TerrainBuildingType)subType)
                         {
                             case TerrainBuildingType.Logistics:
+                                if (city.buildingStructure.buildingLevel_logistics > 0)
+                                {
+                                    //Already built
+                                    return false;
+                                }
+
                                 if (city.CanBuildLogistics(2))
                                 {
                                     subTile.terrainAmount = 2;
@@ -278,6 +284,9 @@ namespace VikingEngine.DSSWars.Build
             {
                 bp.payResources_BuildAndUpgrade(city);
             }
+
+            subTile.SetType(mainType, subType, 1);
+            return true;
         }
 
         public bool availableBlueprintResources(City city)

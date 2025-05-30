@@ -1,27 +1,13 @@
 ﻿UPDATE
 -Change Log-
-* Child birthrate settings
-* Added suggestion (and repaired mouse cancel option): Make the cancel button default to something other than backspace maybe? To me its natural to use a mouse button like RMB
-* Added two new actions for mouse buttons
-* craft speed multiplier
-* fixed: "ERR" under Chemist, and Dirt Road
-* Improved text
-- Expands worker limit "by"
-- Resource collection will be blocked by a full stockpile
-- The worker needs correct skill level (or higher)
-- Work may have low or zero priority
-- Available workers to recruit
-- A weapon for each soldier
+* Fixed a render buffer bug
+* blocked story mode
+* repaired difficult setting tooltip
+* (maybe) fixed file double load crash
+* removed ability to build two logistics
+* Fixed: Mouse input setup doesn't translate to ingame.
+* Fixed toolkits, can be made by the smith.
 
-* Fixed: Negative servicemen after city upgrade
-* Fixed: storehouse and tavern don't show instance count on build tab
-* Fixed: Second logistics upgrade is broken
-* Added Negative and over stock values info
-* Updated resource tab with info buttons
-* Fixed: The selected city does not change when I build in another province that I own during the tutorial 
-* School progress timer
-* Shows area city on history tab
-* Build on input help
 
 
 #Free build defences
@@ -41,15 +27,18 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+x input options in ingame menu are broken
 x Auto upgrade
 x Declaring war needs warning
+x animals don't freeze when saving (game is not paused, just overridden by save state)
 
 -ai dynamic low to high quality soldiers, and prio ranged units for walls
 -låt inte dread anfalla spelaren
 -lock camera on army
 -show all resources option
 -build prio
--new game plus, skip story
+-new game plus, skip story, end me now option
+-list cities
 
 (-house variants)
 +  ports can speed up how much u can send or recieve

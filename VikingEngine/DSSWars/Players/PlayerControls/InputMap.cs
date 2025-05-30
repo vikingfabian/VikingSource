@@ -111,6 +111,9 @@ namespace VikingEngine.DSSWars
                 default:
                     throw new ArgumentOutOfRangeException(nameof(MouseButton), MouseButton, null);
             }
+
+            refreshMouseInput();
+
         }
 
 
@@ -438,6 +441,8 @@ namespace VikingEngine.DSSWars
                         action++;
                     }
                 }
+
+                refreshMouseInput();
             }
 
             if (inputSource.IsController)

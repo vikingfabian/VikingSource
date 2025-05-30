@@ -18,6 +18,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         //##
 
         public string Work_BadValueDescription => "Resources can go below zero and slightly exceed the stockpile limit. The bounds are only enforced when the work queue is created.";
+
+        public string Work_SelectCategory => "Select item category";
         public string Hud_RemoveFromList => "Remove from list";
 
         public string Hud_Low => "Low";

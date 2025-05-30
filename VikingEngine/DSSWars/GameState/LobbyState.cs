@@ -919,11 +919,11 @@ namespace VikingEngine.DSSWars
             }
 
             Difficulty.OptionsRb(content, underMenu, difficultyOptionsLink);
-
+             
 
             DropDownBuilder modeOptions = new DropDownBuilder("mode");
             {
-                for (GameMode mode = 0; mode < GameMode.NUM; ++mode)
+                foreach (var mode in Difficulty.AvailableModes)//for (GameMode mode = 0; mode < GameMode.NUM; ++mode)
                 {
                     gameModeText(mode, out string caption, out string desc);
                     modeOptions.AddOption(caption, mode == DssRef.difficulty.setting_gameMode, mode == Difficulty.DefaultMode,
@@ -1846,11 +1846,7 @@ namespace VikingEngine.DSSWars
 
         void voxeleditor()
         {
-            Ref.music.stop(false);
-            XGuide.LocalHost.inputMap = new LootFest.Players.InputMap(XGuide.LocalHost.localPlayerIndex);
-            XGuide.LocalHost.inputMap.xboxSetup();
-            XGuide.LocalHost.inputMap.menuInput.xboxSetup(XGuide.LocalHost.localPlayerIndex);
-            new LootFest.GameState.VoxelDesignState(XGuide.LocalHostIndex);
+            new StartEditor(0, true, 1);
         }
 
         void mapFileGenerator()
@@ -1863,7 +1859,7 @@ namespace VikingEngine.DSSWars
         {
             int p = -1;
             bool bController = Input.XInput.KeyIsDown(Buttons.A, ref p) || Input.XInput.KeyIsDown(Buttons.X, ref p);
-            new StartEditor(ProfileIx, bController);
+            new StartEditor(ProfileIx, bController, 0);
         }
 
         protected override void createDrawManager()
@@ -1984,37 +1980,14 @@ namespace VikingEngine.DSSWars
                 return;
             }
 
-            //if (saveMeta.localPlayerCount == DssRef.storage.playerCount)
-            //{
-                mapBackgroundLoading?.Abort();
+            
+            mapBackgroundLoading?.Abort();
+            
 
-                //mapBackgroundLoading = new MapBackgroundLoading(save);
-
-                var availableList = availableInput();
-                //if (availableList.Count > 1)
-                //{
-                //    controllerStartGameUpdate = true;
-                //    selectInputMenu(1, true, saveMeta);
-                //}
-                //else
-                //{
-                //    selectController_startGame(availableList[0], saveMeta);
-
-                //}
+            var availableList = availableInput();
+                
             new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
-            //new StartGame(netLobby, save, mapBackgroundLoading);
-            //}
-            //else
-            //{
-            //setPlayerCount(saveMeta.localPlayerCount, false);
-            //GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
-            //{
-            //    new GuiLabel(string.Format(DssRef.lang.GameMenu_Load_PlayerCountError, saveMeta.localPlayerCount), layout);
-            //    new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_OK, null, mainMenu, false, layout);
-            //}
-            //layout.End();
-            //}
-
+          
         }
 
         void startTutorial(bool shorter)

@@ -6,8 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace VikingEngine.ToGG.ToggEngine.BattleEngine
 {
     class SlotMashineWheel
-    {
-       
+    {       
         public static Vector2 Size;
         public static int SpacingX;
         public static void Init()
@@ -15,9 +14,6 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
             Size = new Vector2((int)(Engine.Screen.IconSize * 1.5f));
             SpacingX = (int)(Size.X * 0.1f);
         }
-
-        //BattleDiceResult[] resultList;
-
         Graphics.Image frame, bg;
         Graphics.ImageAdvanced topItem, bottomItem;
 
@@ -32,11 +28,6 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
         {
             this.dice = dice;
             this.index = index;
-
-            //if (AttackType == AttackType.Backstab)
-            //    resultList = BackStabResultList;
-            //else
-            //    resultList = CombatResultList;
 
             bottomItemIndex = Ref.rnd.Int(dice.sides.Count);
 
@@ -67,8 +58,6 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
         }
 
         const float StartScrollSpeed = -0.008f;
-        //const float MinScrollSpeed = 0.0001f;
-        //static readonly float AccelerateScroll = Math.Abs(StartScrollSpeed) * 0.001f;
         float scrollSpeed = StartScrollSpeed;
         float force = 0;
         float goalValue;
@@ -131,12 +120,8 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
                 topItemIndex = 0;
             }
 
-            SpriteName topTile = BattleDice.ResultIcon(dice.sides[topItemIndex].result);//AttackResultToTile[(int)resultList[topItemIndex]];
-            SpriteName bottomTile = BattleDice.ResultIcon(dice.sides[bottomItemIndex].result);//AttackResultToTile[(int)resultList[bottomItemIndex]];
-
-            //DebugLib.Print(PrintCathegoryType.Output, "bottomTile: " + bottomTile.ToString());
-            //DebugLib.Print(PrintCathegoryType.Output, "bottomItemPercSize: " + bottomItemPercSize.ToString());
-
+            SpriteName topTile = BattleDice.ResultIcon(dice.sides[topItemIndex].result);
+            SpriteName bottomTile = BattleDice.ResultIcon(dice.sides[bottomItemIndex].result);
 
             topItem.SetSpriteName(topTile);
             bottomItem.SetSpriteName(bottomTile);

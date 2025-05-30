@@ -258,6 +258,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                 storage.worldData.abortLoad = true;
             }
             tokenSource?.Cancel();
+
+            System.Threading.Thread.Sleep(100);
         }
 
         public string ProgressString()
@@ -294,11 +296,13 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (GenerateNewMap())
                 {
-                    DssRef.world = dataGenerate.world;
+                    if (!abort)
+                    { DssRef.world = dataGenerate.world; }
                 }
                 else
                 {
-                    DssRef.world = storage.worldData;
+                    if (!abort)
+                    { DssRef.world = storage.worldData; }
                 }
                 return true;
             }

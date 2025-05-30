@@ -462,7 +462,7 @@ namespace VikingEngine.LootFest.Editor
 
         public void listTemplates()
         {
-            BeginListTemplatesInCathegory(0);
+            BeginListTemplatesInCategory(0);
             //var layout = new GuiLayout(SpriteName.NO_IMAGE, "Templates", menu, GuiLayoutMode.MultipleColumns);
             //{
             //    listTemplatesBase(layout);
@@ -477,7 +477,7 @@ namespace VikingEngine.LootFest.Editor
                 {
                     SaveCategory cat = (SaveCategory)i;
                     SpriteName id = CategoryIcon(cat);
-                    new GuiIcon(id, cat.ToString(), new GuiActionIndex(BeginListTemplatesInCathegory, i), false, layout);
+                    new GuiIcon(id, cat.ToString(), new GuiActionIndex(BeginListTemplatesInCategory, i), false, layout);
                 }
             }
         }
@@ -580,14 +580,14 @@ namespace VikingEngine.LootFest.Editor
             designer.storage.loadRetailModel(modelName);
         }
 
-        void BeginListTemplatesInCathegory(int cathegory)
+        void BeginListTemplatesInCategory(int cathegory)
         {
-            new Process.AsynchMenuPage<List<string>, int>(ListTemplatesInCathegory_Asynch, cathegory, EndListTemplatesInCathegory, menu);
+            new Process.AsynchMenuPage<List<string>, int>(ListTemplatesInCategory_Asynch, cathegory, EndListTemplatesInCathegory, menu);
         }
 
-        List<string> ListTemplatesInCathegory_Asynch(int cathegory)//int cathegory, int menuId)
+        List<string> ListTemplatesInCategory_Asynch(int category)//int cathegory, int menuId)
         {
-            var path = DesignerStorage.TemplatePath(cathegory, null);
+            var path = DesignerStorage.TemplatePath(category, null);
             List<string> files = DataLib.SaveLoad.FilesInStorageDir(path.LocalDirectoryPath);
             return files;
         }
