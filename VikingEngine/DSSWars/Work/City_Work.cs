@@ -30,6 +30,9 @@ namespace VikingEngine.DSSWars.GameObject
              
         public void async_workUpdate()
         {
+            if (faction == null)
+            { return; }
+
             CityStructure.WorkInstance.newCity = true;
             //WaitingHighSkillJobs.Clear();
 
