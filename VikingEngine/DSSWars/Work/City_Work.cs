@@ -725,10 +725,9 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (DssRef.state.host || faction.player.IsLocalPlayer())
-                {
-                    workAutoBuild(fuelSafeGuard, rawFoodSafeGuard);
-                }
+
+                workAutoBuild(fuelSafeGuard, rawFoodSafeGuard);
+
 
                 void craftBench(IntVector2 pos, int distanceValue, ItemResourceType[] types, int prioAdd = 0)
                 {

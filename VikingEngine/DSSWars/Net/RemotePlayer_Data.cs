@@ -117,10 +117,9 @@ namespace VikingEngine.DSSWars.Players
             while (loop.Next())
             {                
                 var tile = DssRef.world.tileGrid.Get(loop.Position);
-                if (!citiesRecieved[tile.CityIndex])
-                {
+                
                     CitiesInView.Add(tile.CityIndex);
-                }
+                
                 
             }
 
