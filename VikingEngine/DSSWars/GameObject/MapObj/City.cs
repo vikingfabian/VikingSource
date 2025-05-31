@@ -878,8 +878,6 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeNet_map(System.IO.BinaryWriter w)
         {
             writeMapFile(w);
-            //w.Write((ushort)guardCount);
-            //w.Write((ushort)maxGuardSize);
 
             w.Write((ushort)faction.parentArrayIndex);
 
@@ -903,6 +901,25 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 overviewModel.position = position;
             }
+        }
+
+        TimeStamp lastNetUpdate = new TimeStamp();
+
+        public bool net_roundtrip_asyncupdate()
+        {
+            if (lastNetUpdate.secPassed(20))
+            {
+                lastNetUpdate.setNow();
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Unrelyable, out var packet);
+                {
+                    w.Write((ushort)parentArrayIndex);
+                    writeNet_update(w);
+                }
+                packet.EndWrite_Asynch();
+                return true;
+            }
+
+            return false;
         }
 
         public void writeNet_update(System.IO.BinaryWriter w)
@@ -1459,9 +1476,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void createOverViewModel()
         {
-            //if (overviewModelFaction != faction.parentArrayIndex)
-            //{
-            //    overviewModelFaction = faction.parentArrayIndex;
+            //faction.profile.modelColorReplace
 
                 overviewModel?.DeleteMe();
 
@@ -1469,7 +1484,7 @@ namespace VikingEngine.DSSWars.GameObject
                    LootFest.VoxelModelName.cityicon, IconScale());
                 overviewModel.AddToRender(DrawGame.TerrainLayer);
                 overviewModel.position = position;
-            //}
+            
         }
 
         float IconScale()

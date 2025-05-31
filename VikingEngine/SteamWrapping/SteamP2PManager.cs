@@ -13,7 +13,12 @@ namespace VikingEngine.SteamWrapping
     {
         public const int SteamPackageByteLimit = 1200;
 
-        const float NoResponceTimeKickSeconds = 10;
+        const float NoResponceTimeKickSeconds =
+#if DSS
+            40;
+#else
+            10;
+#endif
         public bool autoAcceptSessionRequests = false;
         public int PeerCount { get { return remoteGamers.Count; } }
 

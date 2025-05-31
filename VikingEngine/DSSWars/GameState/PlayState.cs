@@ -574,14 +574,14 @@ namespace VikingEngine.DSSWars
             }
         }
         
-        void shareAllHostedObjects(Network.AbsNetworkPeer sender)
-        {
-            var factionsCounter = DssRef.world.factions.counter();
-            while (factionsCounter.Next())
-            {
-                factionsCounter.sel.shareAllHostedObjects(sender);
-            }
-        }
+        //void shareAllHostedObjects(Network.AbsNetworkPeer sender)
+        //{
+        //    var factionsCounter = DssRef.world.factions.counter();
+        //    while (factionsCounter.Next())
+        //    {
+        //        factionsCounter.sel.shareAllHostedObjects(sender);
+        //    }
+        //}
 
        
 
@@ -743,7 +743,15 @@ namespace VikingEngine.DSSWars
                     var remoteC = remotePlayers.counter();
                     while (remoteC.Next())
                     {
-                        remoteC.sel.Net_HostObjectsUpdate_async();
+                        var cities = remoteC.sel.GetAllCitiesInView();
+                        foreach (var c in cities)
+                        {
+                            if (DssRef.world.cities[c].net_roundtrip_asyncupdate())
+                            {
+                                break;
+                            }
+                        }
+                        //remoteC.sel.Net_HostObjectsUpdate_async();
                     }
                 }
 
@@ -835,6 +843,12 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssCities:
                     DssRef.world.readNet_Cities(packet.r);
+                    break;
+
+                case PacketType.DssCityStatus:
+                    int cityIx = packet.r.ReadUInt16();
+                    var city = DssRef.world.cities[cityIx];
+                    city.readNet_update(packet.r);
                     break;
             }
         }

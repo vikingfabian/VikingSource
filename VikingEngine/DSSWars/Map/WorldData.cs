@@ -444,6 +444,7 @@ namespace VikingEngine.DSSWars
                 this.cities[city].writeNet_map(w);
                 Debug.WriteCheck(w);
 
+                Debug.WriteCheck(w);
                 //
                 remotePlayerC.Reset();
                 while (remotePlayerC.Next())
@@ -469,6 +470,8 @@ namespace VikingEngine.DSSWars
             {
                 int city = r.ReadUInt16();
                 this.cities[city].readNet_map(r);
+                Debug.ReadCheck(r);
+
                 Debug.ReadCheck(r);
             }
 

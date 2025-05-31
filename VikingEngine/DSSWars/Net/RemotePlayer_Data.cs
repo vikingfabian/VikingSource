@@ -107,8 +107,27 @@ namespace VikingEngine.DSSWars.Players
                 tilePos = IntVector2.NegativeOne;
                 return false;
             }
-
         }
+
+        public HashSet<int> GetAllCitiesInView()
+        {
+            CitiesInView.Clear();
+
+            ForXYLoop loop = new ForXYLoop(playerCulling.enterArea);
+            while (loop.Next())
+            {                
+                var tile = DssRef.world.tileGrid.Get(loop.Position);
+                if (!citiesRecieved[tile.CityIndex])
+                {
+                    CitiesInView.Add(tile.CityIndex);
+                }
+                
+            }
+
+            return CitiesInView;
+        }
+
+
 
         public void Net_HostObjectsUpdate_async()
         {
