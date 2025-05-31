@@ -234,6 +234,7 @@ namespace VikingEngine.DSSWars
                 player.GetHumanPlayer().networkPeer.writeNetID(w);
             }
         }
+
         virtual public void readNet(System.IO.BinaryReader r)
         {
             factiontype = (FactionType)r.ReadUInt16();
@@ -301,9 +302,7 @@ namespace VikingEngine.DSSWars
                 citiesC.sel.OnNewOwner();
             }
         }
-
         
-
         public Army NewArmy(IntVector2 startPos)
         {
             //if (DssRef.state.PartyMode)
