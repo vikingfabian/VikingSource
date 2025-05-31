@@ -24,6 +24,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.Input;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.PJ.MiniGolf;
@@ -907,11 +908,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool net_roundtrip_asyncupdate()
         {
-            if (lastNetUpdate.secPassed(20))
+            if (lastNetUpdate.secPassed(10))
             {
                 lastNetUpdate.setNow();
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
-
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Reliable, out var packet);
+                {
+                    w.Write((ushort)parentArrayIndex);
+                    writeNet_update(w);
+                }
+                packet.EndWrite_Asynch();
                 return true;
             }
 
