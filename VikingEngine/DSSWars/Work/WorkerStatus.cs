@@ -94,6 +94,7 @@ namespace VikingEngine.DSSWars.Work
             if (netPacket)
             {
                 w.Write((byte)work);
+                w.Write((byte)workSubType);
                 int secondsPassed = Convert.ToInt32(processTimeStartStampSec - Ref.TotalGameTimeSec);
                 w.Write(Bound.Byte(secondsPassed / TimeNetShareDiv));
                 w.Write(Bound.Byte((int)processTimeLengthSec / TimeNetShareDiv));
@@ -125,6 +126,7 @@ namespace VikingEngine.DSSWars.Work
             if (netPacket)
             {
                 work = (WorkType)r.ReadByte();
+                workSubType= r.ReadByte();
                 int secondsPassed = r.ReadByte() * TimeNetShareDiv;
                 processTimeStartStampSec = Ref.TotalGameTimeSec - secondsPassed;
                 processTimeLengthSec = r.ReadByte() * TimeNetShareDiv;
