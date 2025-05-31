@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Build
         Embassy,
         WaterResovoir,
         ArcherBarracks,
-        WarmashineBarracks,
+        WarmachineBarracks,
         GunBarracks,
         CannonBarracks,
 
@@ -275,7 +275,7 @@ namespace VikingEngine.DSSWars.Build
            
             list.Add(BuildAndExpandType.SoldierBarracks);
             list.Add(BuildAndExpandType.ArcherBarracks);
-            list.Add(BuildAndExpandType.WarmashineBarracks);
+            list.Add(BuildAndExpandType.WarmachineBarracks);
             if (unlocks.building_gunBarrack)
             {
                 list.Add(BuildAndExpandType.GunBarracks);
@@ -421,7 +421,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Embassy, TerrainMainType.Building, (int)TerrainBuildingType.Embassy, SpriteName.WarsBuild_Embassy, CraftBuildingLib.Embassy, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
             new BuildOption(BuildAndExpandType.WaterResovoir, TerrainMainType.Building, (int)TerrainBuildingType.WaterResovoir, SpriteName.WarsBuild_WaterReservoir, CraftBuildingLib.WaterResovoir, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
             new BuildOption(BuildAndExpandType.ArcherBarracks, TerrainMainType.Building, (int)TerrainBuildingType.ArcherBarracks, SpriteName.WarsBuild_ArcherBarracks, CraftBuildingLib.ArcherBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
-            new BuildOption(BuildAndExpandType.WarmashineBarracks, TerrainMainType.Building, (int)TerrainBuildingType.WarmashineBarracks, SpriteName.WarsBuild_WarmashineBarracks, CraftBuildingLib.WarmashineBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
+            new BuildOption(BuildAndExpandType.WarmachineBarracks, TerrainMainType.Building, (int)TerrainBuildingType.WarmachineBarracks, SpriteName.WarsBuild_WarmachineBarracks, CraftBuildingLib.WarmachineBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
             new BuildOption(BuildAndExpandType.GunBarracks, TerrainMainType.Building, (int)TerrainBuildingType.GunBarracks, SpriteName.WarsBuild_GunBarracks, CraftBuildingLib.GunBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             new BuildOption(BuildAndExpandType.CannonBarracks, TerrainMainType.Building, (int)TerrainBuildingType.CannonBarracks, SpriteName.WarsBuild_CannonBarracks, CraftBuildingLib.CannonBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             new BuildOption(BuildAndExpandType.KnightsBarracks, TerrainMainType.Building, (int)TerrainBuildingType.KnightsBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);

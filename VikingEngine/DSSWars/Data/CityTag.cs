@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Data
 
                     case CityTagArt.BuildSoldierBarracks: return SpriteName.WarsBuild_Barracks;
                     case CityTagArt.BuildArcherBarracks: return SpriteName.MissingImage;
-                    case CityTagArt.BuildWarmashineBarracks: return SpriteName.MissingImage;
+                    case CityTagArt.BuildWarmachineBarracks: return SpriteName.MissingImage;
                     case CityTagArt.BuildGunBarracks: return SpriteName.MissingImage;
                     case CityTagArt.BuildCannonBarracks: return SpriteName.MissingImage;
                     case CityTagArt.BuildKnightsBarracks: return SpriteName.MissingImage;
@@ -833,7 +833,7 @@ namespace VikingEngine.DSSWars.Data
 
         BuildSoldierBarracks,
         BuildArcherBarracks,
-        BuildWarmashineBarracks,
+        BuildWarmachineBarracks,
         BuildGunBarracks,
         BuildCannonBarracks,
         BuildKnightsBarracks,

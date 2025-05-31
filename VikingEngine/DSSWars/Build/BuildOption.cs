@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.Build
 
                             case TerrainBuildingType.SoldierBarracks:
                             case TerrainBuildingType.ArcherBarracks:
-                            case TerrainBuildingType.WarmashineBarracks:
+                            case TerrainBuildingType.WarmachineBarracks:
                             case TerrainBuildingType.KnightsBarracks:
                             case TerrainBuildingType.GunBarracks:
                                 city.destroyBarracks(subPos);
@@ -195,8 +195,8 @@ namespace VikingEngine.DSSWars.Build
                             case TerrainBuildingType.ArcherBarracks:
                                 Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.ArcherBarracks));
                                 break;
-                            case TerrainBuildingType.WarmashineBarracks:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.WarmashineBarracks));
+                            case TerrainBuildingType.WarmachineBarracks:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.WarmachineBarracks));
                                 break;
                             case TerrainBuildingType.KnightsBarracks:
                                 Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.KnightsBarracks));

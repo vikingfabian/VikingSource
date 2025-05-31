@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case BuildAndExpandType.ArcherBarracks:
                     profile.weapon = ItemResourceType.SlingShot;
                     break;
-                case BuildAndExpandType.WarmashineBarracks:
+                case BuildAndExpandType.WarmachineBarracks:
                     profile.weapon = ItemResourceType.Ballista;
                     break;
                 case BuildAndExpandType.KnightsBarracks:

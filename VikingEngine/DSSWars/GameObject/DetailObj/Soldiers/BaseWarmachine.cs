@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.GameObject.DetailObj.Warmashines;
+using VikingEngine.DSSWars.GameObject.DetailObj.Warmachines;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 using VikingEngine.ToGG.MoonFall.GO;
@@ -12,13 +12,13 @@ namespace VikingEngine.DSSWars.GameObject
 {
     
 
-    class WarmashineProfile : ConscriptedSoldierProfile
+    class WarmachineProfile : ConscriptedSoldierProfile
     {
         public const float BallistaRange = 3;
-        public WarmashineProfile() 
+        public WarmachineProfile() 
             :base()
         {
-            unitType = UnitType.ConscriptWarmashine;
+            unitType = UnitType.ConscriptWarmachine;
             
             boundRadius = DssVar.StandardBoundRadius * 2.2f;
 
@@ -41,13 +41,13 @@ namespace VikingEngine.DSSWars.GameObject
         public override AbsSoldierUnit CreateUnit()
         {
             
-            return new BaseWarmashine();
+            return new BaseWarmachine();
         }
     }
 
-    class BaseWarmashine : BaseSoldier
+    class BaseWarmachine : BaseSoldier
     {
-        public BaseWarmashine()
+        public BaseWarmachine()
             : base()
         { }
 
@@ -59,15 +59,15 @@ namespace VikingEngine.DSSWars.GameObject
                 default: return new CannonModel(this);
 
                 case Resource.ItemResourceType.Ballista:
-                    return new DetailObj.Warmashines.BallistaModel(this);
+                    return new DetailObj.Warmachines.BallistaModel(this);
                 case Resource.ItemResourceType.Manuballista:
-                    return new DetailObj.Warmashines.ManuballistaModel(this);
+                    return new DetailObj.Warmachines.ManuballistaModel(this);
                 case Resource.ItemResourceType.Catapult:
-                    return new DetailObj.Warmashines.CatapultModel(this);
+                    return new DetailObj.Warmachines.CatapultModel(this);
                 case Resource.ItemResourceType.SiegeCannonBronze:
-                    return new DetailObj.Warmashines.SiegeCannonBronzeModel(this);
+                    return new DetailObj.Warmachines.SiegeCannonBronzeModel(this);
                 case Resource.ItemResourceType.SiegeCannonIron:
-                    return new DetailObj.Warmashines.HaubitzModel(this);
+                    return new DetailObj.Warmachines.HaubitzModel(this);
 
                     //default: throw new NotImplementedException();
             }
@@ -77,13 +77,13 @@ namespace VikingEngine.DSSWars.GameObject
 
    
 
-    class WarmashineWorkerCollection
+    class WarmachineWorkerCollection
     {
-        List<WarmashineWorker> members = new List<WarmashineWorker>(2);
+        List<WarmachineWorker> members = new List<WarmachineWorker>(2);
 
         public void Add(Faction player, float xDiff, float zDiff)
         {
-            members.Add(new WarmashineWorker(player, new Vector3(xDiff, 0, zDiff)));
+            members.Add(new WarmachineWorker(player, new Vector3(xDiff, 0, zDiff)));
         }
 
         public void update(AbsSoldierUnit parent)
@@ -114,13 +114,13 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class WarmashineWorker
+    class WarmachineWorker
     {
         WalkingAnimation walkingAnimation = WalkingAnimation.WorkerWalking;
         Graphics.AbsVoxelObj model;
         Vector3 diff;
 
-        public WarmashineWorker(Faction faction, Vector3 diff)
+        public WarmachineWorker(Faction faction, Vector3 diff)
         {
             this.diff = diff;
             

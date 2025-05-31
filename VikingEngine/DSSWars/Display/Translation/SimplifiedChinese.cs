@@ -2045,7 +2045,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string BuildingType_SoldierBarracks => "士兵兵营";
         public override string BuildingType_ArcherBarracks => "弓兵兵营";
-        public override string BuildingType_WarmashineBarracks => "战争机器兵营";
+        public override string BuildingType_WarmachineBarracks => "战争机器兵营";
         public override string BuildingType_GunBarracks => "火枪兵兵营";
         public override string BuildingType_CannonBarracks => "火炮兵兵营";
         public override string BuildingType_KnightsBarracks => "骑士兵营";

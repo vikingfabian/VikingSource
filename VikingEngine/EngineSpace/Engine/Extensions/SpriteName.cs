@@ -2661,7 +2661,7 @@ namespace VikingEngine
         WarsBuild_Barracks,
         WarsBuild_SoldierBarracks,
         WarsBuild_ArcherBarracks,
-        WarsBuild_WarmashineBarracks,
+        WarsBuild_WarmachineBarracks,
         WarsBuild_GunBarracks,
         WarsBuild_CannonBarracks,
 

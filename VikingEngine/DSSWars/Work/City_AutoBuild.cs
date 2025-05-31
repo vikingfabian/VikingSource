@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case AutomationFocus.Military:
                     auto_addBuildingType(BuildAndExpandType.SoldierBarracks);
                     auto_addBuildingType(BuildAndExpandType.ArcherBarracks);
-                    auto_addBuildingType(BuildAndExpandType.WarmashineBarracks);
+                    auto_addBuildingType(BuildAndExpandType.WarmachineBarracks);
                     auto_addBuildingType(BuildAndExpandType.GuardHouse_Small);
                     break;
             }
@@ -231,7 +231,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     case BuildAndExpandType.SoldierBarracks:
                     case BuildAndExpandType.ArcherBarracks:
-                    case BuildAndExpandType.WarmashineBarracks:
+                    case BuildAndExpandType.WarmachineBarracks:
                     case BuildAndExpandType.KnightsBarracks:
                     case BuildAndExpandType.GunBarracks:
                     case BuildAndExpandType.CannonBarracks:
@@ -474,7 +474,7 @@ namespace VikingEngine.DSSWars.GameObject
         Mix,
         Melee,
         Ranged,
-        Warmashine,
+        Warmachine,
         NUM
     }
 

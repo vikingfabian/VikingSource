@@ -21,7 +21,7 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
         //protected
         public int retreats = 0;
         
-        public SlotMashineWheelStrip attackwheels;
+        public SlotMachineWheelStrip attackwheels;
         public BattleEngine.AbsBattleSetup attacks;
         protected AbsGenericPlayer activePlayer;
 
@@ -86,8 +86,8 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
 
         public static void AttackWheelsSize(out int wheelsWidthCount, out float width)
         {
-            wheelsWidthCount = (int)((Engine.Screen.Height * 0.52f) / (SlotMashineWheel.Size.X + SlotMashineWheel.SpacingX));
-            width = wheelsWidthCount * (SlotMashineWheel.Size.X + SlotMashineWheel.SpacingX) - SlotMashineWheel.SpacingX;
+            wheelsWidthCount = (int)((Engine.Screen.Height * 0.52f) / (SlotMachineWheel.Size.X + SlotMachineWheel.SpacingX));
+            width = wheelsWidthCount * (SlotMachineWheel.Size.X + SlotMachineWheel.SpacingX) - SlotMachineWheel.SpacingX;
         }
 
         virtual protected Vector2 initStartPos(VectorRect screenArea)

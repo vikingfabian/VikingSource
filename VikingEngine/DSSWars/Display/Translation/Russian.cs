@@ -2043,7 +2043,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string BuildingType_SoldierBarracks => "Казарма (пехота)";
         public override string BuildingType_ArcherBarracks => "Казарма (лучники)";
-        public override string BuildingType_WarmashineBarracks => "Казарма (осадные орудия)";
+        public override string BuildingType_WarmachineBarracks => "Казарма (осадные орудия)";
         public override string BuildingType_GunBarracks => "Казарма (стрелки)";
         public override string BuildingType_CannonBarracks => "Казарма (артиллерия)";
         public override string BuildingType_KnightsBarracks => "Казарма (рыцари)";

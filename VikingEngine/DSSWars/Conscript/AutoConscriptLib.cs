@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Conscript
             if (isWeapon && city.warAutoWeaponType != WarAutoWeaponType.Mix)
             {
                 ConscriptProfile profile = new ConscriptProfile() { weapon = item };
-                profile.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
+                profile.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
 
                 switch (city.warAutoWeaponType)
                 {
@@ -74,8 +74,8 @@ namespace VikingEngine.DSSWars.Conscript
                             return false;
                         }
                         break;
-                    case WarAutoWeaponType.Warmashine:
-                        if (!warmashine)
+                    case WarAutoWeaponType.Warmachine:
+                        if (!warmachine)
                         {
                             return false;
                         }
@@ -160,14 +160,14 @@ namespace VikingEngine.DSSWars.Conscript
                         workTemplate.craft_bullet.set(0);
 
                         removeRanged(ref workTemplate);
-                        removeWarmashines(ref workTemplate);
+                        removeWarmachines(ref workTemplate);
                         break;
 
                     case WarAutoWeaponType.Ranged:
                         removeMelee(ref workTemplate);
-                        removeWarmashines(ref workTemplate);
+                        removeWarmachines(ref workTemplate);
                         break;
-                    case WarAutoWeaponType.Warmashine:
+                    case WarAutoWeaponType.Warmachine:
                         removeMelee(ref workTemplate);
                         removeRanged(ref workTemplate);
                         break;
@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars.Conscript
                     workTemplate.craft_blunderbus.set(0);
                 }
 
-                void removeWarmashines(ref WorkTemplate workTemplate)
+                void removeWarmachines(ref WorkTemplate workTemplate)
                 {
                     workTemplate.craft_ballista.set(0);
                     workTemplate.craft_manuballista.set(0);

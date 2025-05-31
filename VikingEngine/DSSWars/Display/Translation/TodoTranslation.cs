@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string WarsResourceGroup_AllWeaponTypes => "Mixed";
         public string WarsResourceGroup_MeleeHandWeapons => "Melee";
         public string WarsResourceGroup_RangedHandWeapons => "Ranged";
-        public string WarsResourceGroup_Warmashines => "Warmashine";
+        public string WarsResourceGroup_Warmachines => "Warmachine";
 
 
         public string FactionSettings_Titel => "Faction wide settings";

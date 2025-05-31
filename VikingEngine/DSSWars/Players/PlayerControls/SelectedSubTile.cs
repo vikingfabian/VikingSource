@@ -118,7 +118,7 @@ namespace VikingEngine.DSSWars.Players
 
                                             case Map.TerrainBuildingType.SoldierBarracks:
                                             case Map.TerrainBuildingType.ArcherBarracks:
-                                            case Map.TerrainBuildingType.WarmashineBarracks:
+                                            case Map.TerrainBuildingType.WarmachineBarracks:
                                             case Map.TerrainBuildingType.KnightsBarracks:
                                             case Map.TerrainBuildingType.GunBarracks:
                                             case Map.TerrainBuildingType.CannonBarracks:

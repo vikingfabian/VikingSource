@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.ToGG.ToggEngine.BattleEngine
 {
-    class SlotMashineWheelStrip
+    class SlotMachineWheelStrip
     {
         int currentAttack = 0;
-        SlotMashineWheel[] attackWheels;
+        SlotMachineWheel[] attackWheels;
         List<BlockHitEffect> blocks = new List<BlockHitEffect>();
         BattleDice[] dice;
 
-        public SlotMashineWheelStrip(ref Vector2 pos, BattleDice[] dice, int wheelsWidthCount)
+        public SlotMachineWheelStrip(ref Vector2 pos, BattleDice[] dice, int wheelsWidthCount)
         {
             this.dice = dice;
-            attackWheels = new SlotMashineWheel[dice.Length];
+            attackWheels = new SlotMachineWheel[dice.Length];
             int rowCount = 0;
             Vector2 wheelPos = pos;
 
@@ -26,14 +26,14 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
                 if (++rowCount > wheelsWidthCount)
                 {
                     rowCount = 1;
-                    wheelPos = new Vector2(pos.X, wheelPos.Y + SlotMashineWheel.Size.Y + SlotMashineWheel.SpacingX);
+                    wheelPos = new Vector2(pos.X, wheelPos.Y + SlotMachineWheel.Size.Y + SlotMachineWheel.SpacingX);
                 }
 
-                attackWheels[i] = new SlotMashineWheel(dice[i], wheelPos, i);
-                wheelPos.X += SlotMashineWheel.Size.X + SlotMashineWheel.SpacingX;
+                attackWheels[i] = new SlotMachineWheel(dice[i], wheelPos, i);
+                wheelPos.X += SlotMachineWheel.Size.X + SlotMachineWheel.SpacingX;
             }
 
-            pos.Y = wheelPos.Y + SlotMashineWheel.Size.Y;
+            pos.Y = wheelPos.Y + SlotMachineWheel.Size.Y;
         }
 
         public void update()

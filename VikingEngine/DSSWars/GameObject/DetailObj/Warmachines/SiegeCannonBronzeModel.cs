@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmashines
+namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
 {
-    class SiegeCannonBronzeModel : AbsWarmashineModel
+    class SiegeCannonBronzeModel : AbsWarmachineModel
     {
         //int loadedFrame = 3;
 
@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmashines
             const float ZdiffCenter = 0f;
             const float ZdiffBack = -0.30f;
 
-            workers = new WarmashineWorkerCollection();
+            workers = new WarmachineWorkerCollection();
 
             float scale = soldier.soldierData.modelScale;
 

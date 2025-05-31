@@ -1,19 +1,16 @@
 ﻿UPDATE
 -Change Log-
-* Fixed a render buffer bug
-* blocked story mode
-* repaired difficult setting tooltip
-* (maybe) fixed file double load crash
-* removed ability to build two logistics
-* Fixed: Mouse input setup doesn't translate to ingame.
-* Fixed toolkits, can be made by the smith.
+* Spelling correction:
+-warmachine
+
+*Fixed player reference bug
 
 
 
 #Free build defences
  Rock thrower
 -representeras av en gubbe tills de strider
-Assign men to wall (ballista, har warmashine crew)
+Assign men to wall (ballista, har warmachine crew)
 
 
 #OPT#

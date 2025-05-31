@@ -198,8 +198,8 @@ namespace VikingEngine.DSSWars.GameObject
                     case Build.BuildAndExpandType.ArcherBarracks:
                         player.archerConscriptCopy = currentStatus.profile;
                         break;
-                    case Build.BuildAndExpandType.WarmashineBarracks:
-                        player.warmashineConscriptCopy = currentStatus.profile;
+                    case Build.BuildAndExpandType.WarmachineBarracks:
+                        player.warmachineConscriptCopy = currentStatus.profile;
                         break;
                     case Build.BuildAndExpandType.KnightsBarracks:
                         player.knightConscriptCopy = currentStatus.profile;
@@ -234,8 +234,8 @@ namespace VikingEngine.DSSWars.GameObject
                     case Build.BuildAndExpandType.ArcherBarracks:
                         currentStatus.profile= player.archerConscriptCopy;
                         break;
-                    case Build.BuildAndExpandType.WarmashineBarracks:
-                        currentStatus.profile=player.warmashineConscriptCopy ;
+                    case Build.BuildAndExpandType.WarmachineBarracks:
+                        currentStatus.profile=player.warmachineConscriptCopy ;
                         break;
                     case Build.BuildAndExpandType.KnightsBarracks:
                         currentStatus.profile=player.knightConscriptCopy;
@@ -315,7 +315,7 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
+            soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
 
 
             switch (Culture)
@@ -346,7 +346,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
                 case CityCulture.SiegeEngineer:
-                    if (warmashine)
+                    if (warmachine)
                     {
                         soldierProfile.skillBonus = 1.2f;
                     }

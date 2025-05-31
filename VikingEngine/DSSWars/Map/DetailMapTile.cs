@@ -624,7 +624,7 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.ArcherBarracks:
                     newFoliage().init(LootFest.VoxelModelName.city_barracks, 2, wp, WorldData.SubTileWidth * 1f);
                     break;
-                case TerrainBuildingType.WarmashineBarracks:
+                case TerrainBuildingType.WarmachineBarracks:
                     newFoliage().init(LootFest.VoxelModelName.city_barracks, 3, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.KnightsBarracks:

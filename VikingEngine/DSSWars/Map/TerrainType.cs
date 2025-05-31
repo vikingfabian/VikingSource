@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.Map
 
         SoldierBarracks,
         ArcherBarracks,
-        WarmashineBarracks,
+        WarmachineBarracks,
         GunBarracks,
         CannonBarracks,
         KnightsBarracks,

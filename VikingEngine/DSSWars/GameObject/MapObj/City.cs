@@ -2093,8 +2093,8 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public override string Name(out bool mayEdit)
-        {
-            mayEdit = faction.player.IsLocalPlayer();
+        {            
+            mayEdit = faction.player != null && faction.player.IsLocalPlayer();
             return name.name;
         }
 
@@ -2356,9 +2356,9 @@ namespace VikingEngine.DSSWars.GameObject
                                             icon = SpriteName.WarsResource_Bow;
                                             caption = DssRef.todoLang.WarsResourceGroup_RangedHandWeapons;
                                             break;
-                                        case WarAutoWeaponType.Warmashine:
+                                        case WarAutoWeaponType.Warmachine:
                                             icon = SpriteName.WarsResource_Ballista;
-                                            caption = DssRef.todoLang.WarsResourceGroup_Warmashines;
+                                            caption = DssRef.todoLang.WarsResourceGroup_Warmachines;
                                             break;
                                     }
                                     

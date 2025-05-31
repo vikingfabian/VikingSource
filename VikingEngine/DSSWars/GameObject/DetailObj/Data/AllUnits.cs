@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
             add(new ConscriptedSoldierProfile());
             add(new ConscriptedWarshipData());
 
-            add(new WarmashineProfile());
+            add(new WarmachineProfile());
             add(new CavalryProfile());
 
             add(new DarkLordProfile());
@@ -273,7 +273,7 @@ namespace VikingEngine.DSSWars.GameObject
         ConscriptWarship = 1,
         BannerMan = 2,
         ConscriptCavalry = 3,
-        ConscriptWarmashine = 4,
+        ConscriptWarmachine = 4,
         DarkLordWarship = 5,
         DarkLord = 6,
 

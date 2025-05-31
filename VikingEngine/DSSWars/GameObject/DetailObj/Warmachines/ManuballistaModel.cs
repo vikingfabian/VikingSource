@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmashines
+namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
 {
-    class CatapultModel: AbsWarmashineModel
+    class ManuballistaModel : AbsWarmachineModel
     {
         int loadedFrame = 3;
 
-        public CatapultModel(AbsSoldierUnit soldier)
+        public ManuballistaModel(AbsSoldierUnit soldier)
            : base(soldier)
         {
             const float Xdiff = 0.2f;
             const float Zdiff = -0.37f;
 
-            workers = new WarmashineWorkerCollection();
+            workers = new WarmachineWorkerCollection();
 
             float scale = soldier.soldierData.modelScale;
 

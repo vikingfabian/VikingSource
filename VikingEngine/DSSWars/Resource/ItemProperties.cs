@@ -584,7 +584,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackDamageSea = soldier.attackDamage;
 
                 soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
-                soldier.attackRange = WarmashineProfile.BallistaRange;
+                soldier.attackRange = WarmachineProfile.BallistaRange;
                 soldier.basehealth = MathExt.MultiplyInt(0.5, soldier.basehealth);
                 soldier.mainAttack = AttackType.Ballista;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 32f;
@@ -600,7 +600,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                 soldier.hasBannerMan = false;
-                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                soldier.rotationSpeed = DssConst.WarmachineRotatingSpeed_NoWheels;
                 soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
@@ -631,7 +631,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                 soldier.hasBannerMan = false;
-                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                soldier.rotationSpeed = DssConst.WarmachineRotatingSpeed_NoWheels;
                 soldier.blockReducingAttack_Inv = DssConst.HeavyBlockReduceAttack_Inv;
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
@@ -661,7 +661,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
                 soldier.hasBannerMan = false;
-                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                soldier.rotationSpeed = DssConst.WarmachineRotatingSpeed_NoWheels;
                 soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
@@ -692,7 +692,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
                 soldier.hasBannerMan = false;
                 soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 2.4f);
-                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                soldier.rotationSpeed = DssConst.WarmachineRotatingSpeed_NoWheels;
                 soldier.blockReducingAttack_Inv = DssConst.HeavyBlockReduceAttack_Inv;
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
@@ -723,7 +723,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
                 soldier.hasBannerMan = false;
                 soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 1.1f);
-                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_Wheels;
+                soldier.rotationSpeed = DssConst.WarmachineRotatingSpeed_Wheels;
                 soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
@@ -754,7 +754,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                 soldier.hasBannerMan = false;
                 soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 0.3f);
-                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_NoWheels;
+                soldier.rotationSpeed = DssConst.WarmachineRotatingSpeed_NoWheels;
                 soldier.blockReducingAttack_Inv = DssConst.HeavyBlockReduceAttack_Inv;
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
@@ -786,7 +786,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                 soldier.hasBannerMan = false;
                 soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 1f);
-                soldier.rotationSpeed = DssConst.WarmashineRotatingSpeed_Wheels;
+                soldier.rotationSpeed = DssConst.WarmachineRotatingSpeed_Wheels;
                 soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;

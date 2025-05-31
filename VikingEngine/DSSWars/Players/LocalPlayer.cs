@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Players
         public BuildCategoryTab buildCategoryTab = 0;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;
-        public ConscriptProfile soldierConscriptCopy, archerConscriptCopy, warmashineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
+        public ConscriptProfile soldierConscriptCopy, archerConscriptCopy, warmachineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();
@@ -245,8 +245,8 @@ namespace VikingEngine.DSSWars.Players
             archerConscriptCopy = new ConscriptProfile();
             archerConscriptCopy.defaultSetup(Build.BuildAndExpandType.ArcherBarracks);
 
-            warmashineConscriptCopy = new ConscriptProfile();
-            warmashineConscriptCopy.defaultSetup(Build.BuildAndExpandType.WarmashineBarracks);
+            warmachineConscriptCopy = new ConscriptProfile();
+            warmachineConscriptCopy.defaultSetup(Build.BuildAndExpandType.WarmachineBarracks);
 
             knightConscriptCopy = new ConscriptProfile();
             knightConscriptCopy.defaultSetup(Build.BuildAndExpandType.KnightsBarracks);

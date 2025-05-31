@@ -2537,7 +2537,7 @@ namespace VikingEngine
 
                     add(SpriteName.WarsBuild_SoldierBarracks, 3, 3);
                     add(SpriteName.WarsBuild_ArcherBarracks, 3, 3);
-                    add(SpriteName.WarsBuild_WarmashineBarracks, 3, 3);
+                    add(SpriteName.WarsBuild_WarmachineBarracks, 3, 3);
                     add(SpriteName.WarsBuild_GunBarracks, 3, 3);
                     add(SpriteName.WarsBuild_CannonBarracks, 3, 3);
 

@@ -1919,7 +1919,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string BuildingType_SoldierBarracks => "Kaserne (Soldaten)";
         public override string BuildingType_ArcherBarracks => "Kaserne (Bogenschützen)";
-        public override string BuildingType_WarmashineBarracks => "Kaserne (Kriegsmaschinen)";
+        public override string BuildingType_WarmachineBarracks => "Kaserne (Kriegsmaschinen)";
         public override string BuildingType_GunBarracks => "Kaserne (Schützen)";
         public override string BuildingType_CannonBarracks => "Kaserne (Kanonen)";
         public override string BuildingType_KnightsBarracks => "Kaserne (Ritter)";

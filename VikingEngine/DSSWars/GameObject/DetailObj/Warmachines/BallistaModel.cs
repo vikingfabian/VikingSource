@@ -3,20 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Graphics;
+using VikingEngine.LootFest;
 
-namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmashines
+namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
 {
-    class ManuballistaModel : AbsWarmashineModel
+    abstract class AbsWarmachineModel : SoldierUnitAdvancedModel
     {
+        protected WarmachineWorkerCollection workers;
+
+        public AbsWarmachineModel(AbsSoldierUnit soldier)
+           : base(soldier)
+        {
+        }
+
+        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
+        {
+            base.onNewModel(name, master, unit);
+
+            workers.onNewModel_asynch(name, master);
+        }
+
+        public override void DeleteMe()
+        {
+            base.DeleteMe();
+            workers.DeleteMe();
+        }
+    }
+
+    class BallistaModel : AbsWarmachineModel
+    {       
         int loadedFrame = 3;
 
-        public ManuballistaModel(AbsSoldierUnit soldier)
+        public BallistaModel(AbsSoldierUnit soldier)
            : base(soldier)
         {
             const float Xdiff = 0.2f;
             const float Zdiff = -0.37f;
 
-            workers = new WarmashineWorkerCollection();
+            workers = new WarmachineWorkerCollection();
 
             float scale = soldier.soldierData.modelScale;
 
@@ -26,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmashines
                 scale * -Xdiff, scale * Zdiff);
         }
 
-
+        
 
         protected override void updateAnimation(AbsSoldierUnit soldier)
         {
@@ -56,5 +81,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmashines
 
             workers.update(soldier);
         }
+
+        
     }
 }

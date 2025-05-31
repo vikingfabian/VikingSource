@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.ToGG.ToggEngine.BattleEngine
 {
-    class SlotMashineWheel
+    class SlotMachineWheel
     {       
         public static Vector2 Size;
         public static int SpacingX;
@@ -24,7 +24,7 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
         int state_waiting0_gotResult1_bounce2 = 0;
         BattleDiceResult result;
 
-        public SlotMashineWheel(BattleDice dice, Vector2 position, int index)
+        public SlotMachineWheel(BattleDice dice, Vector2 position, int index)
         {
             this.dice = dice;
             this.index = index;

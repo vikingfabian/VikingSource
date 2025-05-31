@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.GO.EnvironmentObj;
 
-namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmashines
+namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
 {
-    class HaubitzModel : AbsWarmashineModel
+    class HaubitzModel : AbsWarmachineModel
     {
         Graphics.AbsVoxelObj barrel;
         Vector3 diff;
@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmashines
             float Zdiff = -0.25f;
             
 
-            workers = new WarmashineWorkerCollection();
+            workers = new WarmachineWorkerCollection();
 
             float scale = soldier.soldierData.modelScale;
             diff = new Vector3(0, 0.11f, 0.18f) * scale;

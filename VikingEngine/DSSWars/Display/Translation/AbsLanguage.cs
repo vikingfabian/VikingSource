@@ -1291,7 +1291,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string BuildingType_SoldierBarracks { get; }
         public abstract string BuildingType_ArcherBarracks { get; }
-        public abstract string BuildingType_WarmashineBarracks { get; }
+        public abstract string BuildingType_WarmachineBarracks { get; }
         public abstract string BuildingType_GunBarracks { get; }
         public abstract string BuildingType_CannonBarracks { get; }
         public abstract string BuildingType_KnightsBarracks { get; }

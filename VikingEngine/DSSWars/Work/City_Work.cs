@@ -365,14 +365,14 @@ namespace VikingEngine.DSSWars.GameObject
                 IntVector2 center = WP.ToSubTilePos_Centered(tilePos);
                 workQue.Clear();
 
-                if (debugTagged || parentArrayIndex == 218)
-                {
-                    lib.DoNothing();
-                }
+                //if (debugTagged || parentArrayIndex == 218)
+                //{
+                //    lib.DoNothing();
+                //}
 
                 bool foodSafeGuard = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
                
-                var orders_sp = faction.player.orders;
+                var orders_sp = faction.player?.orders;
 
                 //ORDERS
                 if (orders_sp != null)

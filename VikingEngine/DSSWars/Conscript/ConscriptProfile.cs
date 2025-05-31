@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.Conscript
             return data.workForceCount();
         }
 
-        public void classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine)
+        public void classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine)
         {
             switch (weapon)
             {
@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = false;
                     meleeMan = true;
                     knight = false; 
-                    warmashine = false;
+                    warmachine = false;
                     break;
 
                 case ItemResourceType.SlingShot:
@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = true;
                     meleeMan = false;
                     knight = false;
-                    warmashine = false;
+                    warmachine = false;
                     break;
 
                 case ItemResourceType.Warhammer:
@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = false;
                     meleeMan = true;
                     knight = true;
-                    warmashine = false;
+                    warmachine = false;
                     break;
 
                 case ItemResourceType.MithrilBow:
@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = true;
                     meleeMan = false;
                     knight = true;
-                    warmashine = false;
+                    warmachine = false;
                     break;
 
                 case ItemResourceType.Ballista:
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = false;
                     meleeMan = false;
                     knight = false;
-                    warmashine = true;
+                    warmachine = true;
                     break;
 
                 case ItemResourceType.UN_BatteringRam:
@@ -117,7 +117,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = false;
                     meleeMan = false;
                     knight = false;
-                    warmashine = true;
+                    warmachine = true;
                     break;
 
                 default:
@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case BuildAndExpandType.ArcherBarracks:
                     weapon = ItemResourceType.SlingShot;
                     break;
-                case BuildAndExpandType.WarmashineBarracks:
+                case BuildAndExpandType.WarmachineBarracks:
                     weapon = ItemResourceType.Ballista;
                     break;
                 case BuildAndExpandType.KnightsBarracks:

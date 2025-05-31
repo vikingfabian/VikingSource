@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 Embassy_pos;
         public IntVector2 WaterResovoir_pos;
         public IntVector2 ArcherBarracks_pos;
-        public IntVector2 WarmashineBarracks_pos;
+        public IntVector2 WarmachineBarracks_pos;
         public IntVector2 GunBarracks_pos;
         public IntVector2 CannonBarracks_pos;
         public IntVector2 KnightsBarracks_pos;
@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Embassy: return Embassy_pos;
                 case BuildAndExpandType.WaterResovoir: return WaterResovoir_pos;
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_pos;
-                case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_pos;
+                case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_pos;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_pos;
                 case BuildAndExpandType.CannonBarracks: return CannonBarracks_pos;
                 case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_pos;
@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Build
         public int Embassy_count;
         public int WaterResovoir_count;
         public int ArcherBarracks_count;
-        public int WarmashineBarracks_count;
+        public int WarmachineBarracks_count;
         public int GunBarracks_count;
         public int CannonBarracks_count;
         public int KnightsBarracks_count;
@@ -328,7 +328,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Embassy: return Embassy_count;
                 case BuildAndExpandType.WaterResovoir: return WaterResovoir_count;
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
-                case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_count;
+                case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_count;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_count;
                 case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
                 case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
@@ -404,7 +404,7 @@ namespace VikingEngine.DSSWars.Build
                 
                 case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_count;
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
-                case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_count;
+                case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_count;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_count;
                 case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
                 case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;

@@ -392,9 +392,9 @@ namespace VikingEngine.DSSWars.Map
                                                 ++buildingStructure.ArcherBarracks_count;
                                                 buildingPosition.ArcherBarracks_pos = subTileLoop.Position;
                                                 break;
-                                            case TerrainBuildingType.WarmashineBarracks:
-                                                ++buildingStructure.WarmashineBarracks_count;
-                                                buildingPosition.WarmashineBarracks_pos = subTileLoop.Position;
+                                            case TerrainBuildingType.WarmachineBarracks:
+                                                ++buildingStructure.WarmachineBarracks_count;
+                                                buildingPosition.WarmachineBarracks_pos = subTileLoop.Position;
                                                 break;
                                             case TerrainBuildingType.KnightsBarracks:
                                                 ++buildingStructure.KnightsBarracks_count;

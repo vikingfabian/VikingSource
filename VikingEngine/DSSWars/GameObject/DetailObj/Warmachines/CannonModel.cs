@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.LootFest.GO;
 
-namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmashines
+namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
 {
-    class CannonModel : AbsWarmashineModel
+    class CannonModel : AbsWarmachineModel
     {
         public CannonModel(AbsSoldierUnit soldier)
           : base(soldier)
@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmashines
             //}
 
 
-            workers = new WarmashineWorkerCollection();
+            workers = new WarmachineWorkerCollection();
 
             float scale = soldier.soldierData.modelScale;
 

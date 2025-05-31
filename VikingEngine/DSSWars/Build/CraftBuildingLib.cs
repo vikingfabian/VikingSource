@@ -293,9 +293,9 @@ namespace VikingEngine.DSSWars.Build
                     XP.WorkExperienceType.HouseBuilding
                 );
 
-        public static readonly CraftBlueprint WarmashineBarracks = new CraftBlueprint(
+        public static readonly CraftBlueprint WarmachineBarracks = new CraftBlueprint(
                     CraftResultType.Building,
-                    (int)Build.BuildAndExpandType.WarmashineBarracks,
+                    (int)Build.BuildAndExpandType.WarmachineBarracks,
                     1,
                     new UseResource[]
                     {

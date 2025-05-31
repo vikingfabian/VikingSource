@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Conscript
                         case ItemResourceType.ManCannonBronze:
                         case ItemResourceType.SiegeCannonIron:
                         case ItemResourceType.ManCannonIron:
-                            return UnitType.ConscriptWarmashine;
+                            return UnitType.ConscriptWarmachine;
                         case ItemResourceType.KnightsLance:
                             return UnitType.ConscriptCavalry;
 
@@ -711,7 +711,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case SpecializationType.Viking:
                 case SpecializationType.Sea:
-                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
+                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
 
                     soldierData.attackDamage = MathExt.SubtractPercentage(soldierData.attackDamage, DssConst.Conscript_SpecializePercentage);
                     float seaDamagePerc = conscript.specialization == SpecializationType.Sea ?
@@ -828,7 +828,7 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
                 case SpecializationType.Viking:
-                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
+                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
                     if (!ranged)
                     {
                         soldierData.modelName = LootFest.VoxelModelName.wars_viking_ship;

@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.Crossbow,
         };
 
-        static readonly ItemResourceType[] WarmashineWeapons = {
+        static readonly ItemResourceType[] WarmachineWeapons = {
            
             ItemResourceType.Ballista,
             ItemResourceType.Manuballista,
@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 SoldierWeapons,
                 ArcherWeapons,
-                WarmashineWeapons,
+                WarmachineWeapons,
                 NobelWeapons,
                 GunWeapons,
                 CannonWeapons,
@@ -123,9 +123,9 @@ namespace VikingEngine.DSSWars.Conscript
                         typeName = DssRef.lang.BuildingType_SoldierBarracks;
                         weapons = ArcherWeapons;
                         break;
-                    case Build.BuildAndExpandType.WarmashineBarracks:
+                    case Build.BuildAndExpandType.WarmachineBarracks:
                         typeName = DssRef.lang.BuildingType_SoldierBarracks;
-                        weapons = WarmashineWeapons;
+                        weapons = WarmachineWeapons;
                         break;
                     case Build.BuildAndExpandType.KnightsBarracks:
                         hasGuardOption = false;

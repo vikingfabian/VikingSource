@@ -911,8 +911,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                         
                         case TerrainBuildingType.ArcherBarracks:
                             return DssRef.lang.BuildingType_ArcherBarracks;
-                        case TerrainBuildingType.WarmashineBarracks:
-                            return DssRef.lang.BuildingType_WarmashineBarracks;
+                        case TerrainBuildingType.WarmachineBarracks:
+                            return DssRef.lang.BuildingType_WarmachineBarracks;
                         case TerrainBuildingType.GunBarracks:
                             return DssRef.lang.BuildingType_GunBarracks;
                         case TerrainBuildingType.CannonBarracks:
@@ -1142,7 +1142,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case TerrainBuildingType.SoldierBarracks:
                 case TerrainBuildingType.ArcherBarracks:
-                case TerrainBuildingType.WarmashineBarracks:
+                case TerrainBuildingType.WarmachineBarracks:
                 case TerrainBuildingType.KnightsBarracks:
                 case TerrainBuildingType.GunBarracks:
                 case TerrainBuildingType.CannonBarracks:
