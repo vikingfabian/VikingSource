@@ -33,6 +33,8 @@ namespace VikingEngine.DSSWars.GameObject
             if (faction == null)
             { return; }
 
+            bool fullUpdate = DssRef.state.host || faction.player.IsLocalPlayer();
+
             CityStructure.WorkInstance.newCity = true;
             //WaitingHighSkillJobs.Clear();
 
@@ -415,21 +417,24 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 //PICK UP
-                if (workTemplate.move.HasPrio() || woodSafeGuard )
+                if (fullUpdate)
                 {
-                    foreach (var pos in CityStructure.WorkInstance.ResourceOnGround)
+                    if (workTemplate.move.HasPrio() || woodSafeGuard)
                     {
-                        var subTile = DssRef.world.subTileGrid.Get(pos);
-
-                        if (subTile.collectionPointer >= 0)
+                        foreach (var pos in CityStructure.WorkInstance.ResourceOnGround)
                         {
-                            var chunk = DssRef.state.resources.get(subTile.collectionPointer);
-                            var resource = chunk.peek();
+                            var subTile = DssRef.world.subTileGrid.Get(pos);
 
-                            if (needMore(resource.type, rawFoodSafeGuard, woodSafeGuard, out bool usesSafeGuard) && work_isFreeTile(pos))
+                            if (subTile.collectionPointer >= 0)
                             {
-                                int distanceValue = -center.SideLength(pos);
-                                workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, 0, pos, usesSafeGuard? WorkTemplate.SafeGuardPrio : workTemplate.move.value, 0, distanceValue));
+                                var chunk = DssRef.state.resources.get(subTile.collectionPointer);
+                                var resource = chunk.peek();
+
+                                if (needMore(resource.type, rawFoodSafeGuard, woodSafeGuard, out bool usesSafeGuard) && work_isFreeTile(pos))
+                                {
+                                    int distanceValue = -center.SideLength(pos);
+                                    workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, 0, pos, usesSafeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.move.value, 0, distanceValue));
+                                }
                             }
                         }
                     }
@@ -728,9 +733,10 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-
-                workAutoBuild(fuelSafeGuard, rawFoodSafeGuard);
-
+                if (fullUpdate)
+                {
+                    workAutoBuild(fuelSafeGuard, rawFoodSafeGuard);
+                }
 
                 void craftBench(IntVector2 pos, int distanceValue, ItemResourceType[] types, int prioAdd = 0)
                 {

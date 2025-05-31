@@ -38,6 +38,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
         {
+            
+
             //EMPTY
             if (checkAutoBuildAvailable())
             {

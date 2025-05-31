@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Players
             :base()
         {
             peer.Tag = this;
+            this.networkPeer = peer;
             InitData();
             playerCulling = new PlayerCullingState();
         }

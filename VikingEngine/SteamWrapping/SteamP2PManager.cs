@@ -132,7 +132,6 @@ namespace VikingEngine.SteamWrapping
                         {
                             default:
                                 Ref.NetUpdateReciever().NetworkReadPacket(packet);
-
                                 break;
 
                             case PacketType.Steam_SendRoundtrip:
@@ -148,6 +147,17 @@ namespace VikingEngine.SteamWrapping
                                     float timePassed = TimeExt.SecondsToMS(Ref.TotalTimeSec - timestamp);
                                     packet.sender.roundTripTime = packet.sender.roundTripTime * 0.5f + timePassed * 0.5f;
 
+                                    int packetCount = 2;
+                                    if (packet.sender.roundTripTime < 40)
+                                    {
+                                        packetCount = 32;
+                                    }
+                                    else if(packet.sender.roundTripTime < 140)
+                                    {
+                                        packetCount = 8;
+                                    }
+
+                                    packet.sender.maxPacketCount = Bound.Min(packetCount / remoteGamers.Count, 1);
                                     Ref.NetUpdateReciever().NetEvent_PingReturned(packet.sender);
                                 }
                                 break;

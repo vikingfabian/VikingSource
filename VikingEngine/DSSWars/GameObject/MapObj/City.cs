@@ -910,12 +910,8 @@ namespace VikingEngine.DSSWars.GameObject
             if (lastNetUpdate.secPassed(20))
             {
                 lastNetUpdate.setNow();
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Unrelyable, out var packet);
-                {
-                    w.Write((ushort)parentArrayIndex);
-                    writeNet_update(w);
-                }
-                packet.EndWrite_Asynch();
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
+
                 return true;
             }
 
@@ -1477,15 +1473,14 @@ namespace VikingEngine.DSSWars.GameObject
         void createOverViewModel()
         {
             //faction.profile.modelColorReplace
-            if (faction.profile.modelColorReplace != null)
-            {
+
                 overviewModel?.DeleteMe();
 
                 overviewModel = faction.AutoLoadModelInstance(
                    LootFest.VoxelModelName.cityicon, IconScale());
                 overviewModel.AddToRender(DrawGame.TerrainLayer);
                 overviewModel.position = position;
-            }
+            
         }
 
         float IconScale()

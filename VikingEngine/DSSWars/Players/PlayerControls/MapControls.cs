@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars.Players
 
         void rectangleSelectUpdate()
         {
-            if (player.drawUnitsView.current.DrawOverview)
+            if (player.drawUnitsView.current.DrawFar)
             {
                 cancelRectangleSelect();
                 return;

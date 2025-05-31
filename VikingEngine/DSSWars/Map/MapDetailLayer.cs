@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.Map
         public const float NormalCamAngle = 0.78f;
         const float OverviewCamAngle = 0.65f;
 
-        public bool DrawDetailLayer, DrawNormalAndClose, DrawNormal, DrawOverview, DrawFullOverview;
+        public bool DrawDetailLayer, DrawNormalAndClose, DrawMid, DrawFar, DrawFullOverview;
         //public float CloseUpTransparentsy, NormalAndCloseTransparentsy, NormalTransparentsy, OverviewTransparentsy, OverviewAndFactionsTransparentsy, FactionsTransparentsy;
 
         public float goalCamAngle;
@@ -215,12 +215,12 @@ namespace VikingEngine.DSSWars.Map
 
                 default://case DrawUnitsLevel.Normal:
                     goalCamAngle = NormalCamAngle;
-                    DrawNormal = true;
+                    DrawMid = true;
                     break;
 
                 case MapDetailLayerType.FactionColors3:
                     goalCamAngle = OverviewCamAngle;
-                    DrawOverview = true;
+                    DrawFar = true;
                     DrawFullOverview = false;
                     DrawDetailLayer = false;                  
                     break;
@@ -228,7 +228,7 @@ namespace VikingEngine.DSSWars.Map
                 case MapDetailLayerType.FullOverview4:
                     goalCamAngle = OverviewCamAngle;
                     DrawFullOverview = true;
-                    DrawOverview = true;                   
+                    DrawFar = true;                   
                     break;
             }
         }

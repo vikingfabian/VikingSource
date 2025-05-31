@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     packet.EndWrite_Asynch();
                 }
-                else if (findMissingTile(out IntVector2 subtilePos, true))
+                else if (playerCulling.detailLayer && findMissingTile(out IntVector2 subtilePos, true))
                 {
                     var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, out var packet);
                     {
@@ -80,26 +80,36 @@ namespace VikingEngine.DSSWars.Players
 
             bool findMissingTile(out IntVector2 tilePos, bool subTile)
             {
-                ForXYLoop loop = new ForXYLoop(playerCulling.enterArea);
+                Rectangle2 area = playerCulling.enterArea;
+
+                if (playerCulling.farLayer)
+                {
+                    area.AddRadius(16);
+                }
+
+                ForXYLoop loop = new ForXYLoop(area);
                 while (loop.Next())
                 {
-                    if (!remoteTileGrid.Get(loop.Position).HasTile(subTile))
+                    if (remoteTileGrid.InBounds(loop.Position))
                     {
-                        tilePos = loop.Position;
-                        return true;
-                    }
-                    if (!subTile)
-                    {
-                        var tile = DssRef.world.tileGrid.Get(loop.Position);
-                        if (!citiesRecieved[tile.CityIndex])
+                        if (!remoteTileGrid.Get(loop.Position).HasTile(subTile))
                         {
-                            CitiesInView.Add(tile.CityIndex);
+                            tilePos = loop.Position;
+                            return true;
                         }
-
-                        int faction = tile.City().faction.parentArrayIndex;
-                        if (!factionsRecieved[faction])
+                        if (!subTile)
                         {
-                            FactionsInView.Add(faction);
+                            var tile = DssRef.world.tileGrid.Get(loop.Position);
+                            if (!citiesRecieved[tile.CityIndex])
+                            {
+                                CitiesInView.Add(tile.CityIndex);
+                            }
+
+                            int faction = tile.City().faction.parentArrayIndex;
+                            if (!factionsRecieved[faction])
+                            {
+                                FactionsInView.Add(faction);
+                            }
                         }
                     }
                 }
@@ -107,6 +117,45 @@ namespace VikingEngine.DSSWars.Players
                 tilePos = IntVector2.NegativeOne;
                 return false;
             }
+
+            
+        }
+
+        public bool findMissingWorld_async()
+        {
+            ForXYLoop loop = new ForXYLoop(DssRef.world.Size);
+            while (loop.Next())
+            {
+                if (!remoteTileGrid.Get(loop.Position).HasTile(false))
+                {
+                    var tilePos = loop.Position;
+
+                    int faction = DssRef.world.tileGrid.Get(tilePos).City().faction.parentArrayIndex;
+                    if (!factionsRecieved[faction])
+                    {
+                        FactionsInView.Clear();
+                        FactionsInView.Add(faction);
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactions, Network.PacketReliability.Reliable, out var packet);
+                        {
+                            DssRef.world.writeNet_Factions(w, FactionsInView);
+                        }
+                        packet.EndWrite_Asynch();
+                    }
+                    
+                    {
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
+                        {
+                            DssRef.world.writeNet_Tile(w, tilePos);
+                        }
+                        packet.EndWrite_Asynch();
+                    }
+
+                    return true;
+                }
+            }
+
+            //tilePos = IntVector2.NegativeOne;
+            return false;
         }
 
         public HashSet<int> GetAllCitiesInView()
@@ -118,7 +167,7 @@ namespace VikingEngine.DSSWars.Players
             {                
                 var tile = DssRef.world.tileGrid.Get(loop.Position);
                 
-                    CitiesInView.Add(tile.CityIndex);
+                CitiesInView.Add(tile.CityIndex);
                 
                 
             }

@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars
             var state = bStateA ? players[cameraIx].stateA : players[cameraIx].stateB;
             if (state.enterArea.IntersectPoint(pos))
             {
-                enterRender_overviewLayer = state.overviewLayer;
+                enterRender_overviewLayer = state.midLayer;
                 enterRender_detailLayer = state.detailLayer;
             }
             else
@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars
                 var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
                 if (state.enterArea.IntersectRect(minpos, maxpos))
                 {
-                    overviewLayer |= state.overviewLayer;
+                    overviewLayer |= state.midLayer;
                     detailLayer |= state.detailLayer;
                 }
             }
@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars
                 var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
                 if (state.enterArea.IntersectRect(minpos, maxpos))
                 {
-                    enterRender_overviewLayer = state.overviewLayer;
+                    enterRender_overviewLayer = state.midLayer;
                     enterRender_detailLayer = state.detailLayer;
                     return;
                 }
@@ -260,17 +260,18 @@ namespace VikingEngine.DSSWars
                 Rectangle2 screenArea = Rectangle2.FromTwoTilePoints(new IntVector2(left, top), new IntVector2(right, bottom));
                 DssRef.state.localPlayers[index].cullingTileArea = screenArea;
 
-                if (detailLayer.current.DrawOverview)
+                if (detailLayer.current.DrawFar)
                 {
                     screenArea.SetMaxRadius(120, 100);
                 }
                
                 PlayerCullingState state = bStateA ? stateA : stateB;
                 state.detailLayer = detailLayer.current.DrawDetailLayer;
-                state.overviewLayer = detailLayer.current.DrawNormal;
+                state.midLayer = detailLayer.current.DrawMid;
+                state.farLayer = detailLayer.current.DrawFar;
                 if (detailLayer.prevLayer != null)
                 {
-                    state.overviewLayer |= detailLayer.prevLayer.DrawNormal;
+                    state.midLayer |= detailLayer.prevLayer.DrawMid;
                 }
                 state.async_playerViewToRenderState(bStateA, screenArea, detailLayer.current);
             }
@@ -285,19 +286,24 @@ namespace VikingEngine.DSSWars
         public Rectangle2 exitArea = Rectangle2.Zero;
         public Rectangle2 attensionArea = Rectangle2.Zero;
 
-        public bool overviewLayer = false;
+
         public bool detailLayer = false;
+        public bool midLayer = false;
+        public bool farLayer = false;
 
 
         public void writeNet(System.IO.BinaryWriter w)
         {
             enterArea.writeUshort(w);
-            w.Write(overviewLayer);
+            new EightBit(detailLayer, midLayer, farLayer).write(w);
+            w.Write(midLayer);
         }
         public void readNet(System.IO.BinaryReader r)
         {
             enterArea.readUshort(r);
-            overviewLayer = r.ReadBoolean();
+            EightBit bools = EightBit.FromStream(r);
+            bools.Get(out detailLayer, out midLayer, out farLayer);
+            midLayer = r.ReadBoolean();
         }
 
         public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Map.DetailLayer layer)

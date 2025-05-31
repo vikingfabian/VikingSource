@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameState
         protected Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);
 
         public AbsCutScene cutScene = null;
-        protected bool host = true;
+        public bool host = true;
         public GameMenuSystem menuSystem;
         public SpottedArray<Players.RemotePlayer> remotePlayers = new SpottedArray<Players.RemotePlayer>();
         public List<Players.LocalPlayer> localPlayers;

@@ -946,7 +946,7 @@ namespace VikingEngine.DSSWars.Players
         void updateMapOverlays()
         {
             
-            if (drawUnitsView.current.DrawOverview)
+            if (drawUnitsView.current.DrawFar)
             {
                 if (gameControls.diplomacy == null)
                 {
@@ -964,7 +964,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            if (drawUnitsView.current.DrawNormal)
+            if (drawUnitsView.current.DrawMid)
             {
                 if (cityTagMap == null)
                 { 

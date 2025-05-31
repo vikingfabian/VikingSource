@@ -734,6 +734,8 @@ namespace VikingEngine.DSSWars
 
         bool asynchHostNetUpdate(int id, float time)
         {
+            
+
             if (remotePlayers.Count > 0)
             {
                 if (!sendMap())
@@ -760,10 +762,25 @@ namespace VikingEngine.DSSWars
                     var remoteC = remotePlayers.counter();
                     while (remoteC.Next())
                     {
-                        if (remoteC.sel.Net_HostMapUpdate_async())
+                        var netPeer_sp = remoteC.sel.networkPeer;
+                        if (netPeer_sp != null)
                         {
-                            return true;
+                            int sendPacketCount = remoteC.sel.networkPeer.peer.maxPacketCount;
+
+                            while (remoteC.sel.Net_HostMapUpdate_async())
+                            {
+                                if (--sendPacketCount <= 0)
+                                {
+                                    return true;
+                                }
+                            }
                         }
+                    }
+
+                    remoteC.Reset();
+                    while (remoteC.Next())
+                    {
+                        remoteC.sel.findMissingWorld_async();
                     }
 
                     return false;
