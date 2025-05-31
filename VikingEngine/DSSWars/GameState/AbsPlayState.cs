@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameState
         protected Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);
 
         public AbsCutScene cutScene = null;
-        public bool host = true;
+        protected bool host = true;
         public GameMenuSystem menuSystem;
         public SpottedArray<Players.RemotePlayer> remotePlayers = new SpottedArray<Players.RemotePlayer>();
         public List<Players.LocalPlayer> localPlayers;
@@ -276,8 +276,11 @@ namespace VikingEngine.DSSWars.GameState
             var remotePlayerC = remotePlayers.counter();
             while (remotePlayerC.Next())
             {
-                
-                if (remotePlayerC.sel.networkPeer != null && remotePlayerC.sel.networkPeer.peer == peer)
+                if (remotePlayerC.sel.networkPeer == null)
+                {
+                    remotePlayerC.RemoveAtCurrent();
+                }
+                else if (remotePlayerC.sel.networkPeer.peer == peer)
                 {
                     //TODO return region to AI
                     return remotePlayerC.sel;

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.Network;
@@ -62,7 +63,8 @@ namespace VikingEngine.DSSWars
 
     class StartGame : AbsStartPlayState
     {
-       
+        TimeStamp joinRequestTime;
+        int joinTrials = 0;
         NetworkLobby netLobby;
         WorldDataStorage storage;
         int map_start_process_done = 0;
@@ -193,10 +195,44 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                joinRequest();
+                //if (Ref.netSession.Host() != null)
+                //{
+                //    var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
+                //        Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
+                //}
+            }
+        }
+
+        void joinRequest()
+        {
+            joinRequestTime.setNow();
+            if (Ref.netSession.Host() != null)
+            {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
                     Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
             }
         }
+
+        public override void Time_Update(float time)
+        {
+            base.Time_Update(time);
+            if (!host)
+            {
+                if (joinRequestTime.secPassed(3))
+                {
+                    if (++joinTrials >= 3)
+                    {
+                        new ExitGamePlay();
+                    }
+                    else
+                    {
+                        joinRequest();
+                    }
+                }
+            }
+        }
+
         protected override void onLoadComplete()
         {
             if (state == null)
