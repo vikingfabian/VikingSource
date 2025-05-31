@@ -45,12 +45,17 @@ namespace VikingEngine.DSSWars
                 {
                     try
                     {
+                        if (profile.modelColorReplace == null)
+                        {
+                            return;
+                        }
+
                         int numLoops = 0;
 #if DEBUG
-                        if (!DssRef.models.rawModels.ContainsKey(name))
-                        {
-                            lib.DoNothing();
-                        }
+                        //if (!DssRef.models.rawModels.ContainsKey(name))
+                        //{
+                        //    lib.DoNothing();
+                        //}
 #endif
                         var grid = DssRef.models.rawModels[name];
 

@@ -500,7 +500,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             writeResources(w);
 
-            writeWorkerStatuses(w);
+            writeWorkerStatuses(w, false);
 
             w.Write((ushort)conscriptBuildings.Count);
             foreach (var barracks in conscriptBuildings)
@@ -585,7 +585,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             readResources(r, subversion);
             
-            readWorkerStatuses(r, subversion);
+            readWorkerStatuses(r, false, subversion);
 
             refreshCitySize();
             conscriptBuildings.Clear();
@@ -672,16 +672,16 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.ReadCheck(r);
         }
 
-        private void writeWorkerStatuses(BinaryWriter w)
+        private void writeWorkerStatuses(BinaryWriter w, bool netPacket)
         {
             w.Write((ushort)workerStatuses.Count);
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                workerStatuses[i].writeGameState(w);
+                workerStatuses[i].writeGameState(w, netPacket);
             }
         }
 
-        private void readWorkerStatuses(BinaryReader r, int subversion)
+        private void readWorkerStatuses(BinaryReader r, bool netPacket, int subversion)
         {
             IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
 
@@ -696,7 +696,7 @@ namespace VikingEngine.DSSWars.GameObject
                     subTileStart = startPos,
                 };
 
-                readWorker.readGameState(r, subversion);
+                readWorker.readGameState(r, netPacket, subversion);
 
                 if (i >= workerStatuses.Count)
                 {
@@ -932,7 +932,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             writeResources(w);
 
-            writeWorkerStatuses(w);
+            writeWorkerStatuses(w, true);
         }
         public void readNet_update(System.IO.BinaryReader r)
         {
@@ -940,7 +940,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             readResources(r, int.MaxValue);
 
-            readWorkerStatuses(r, int.MaxValue);
+            readWorkerStatuses(r, true, int.MaxValue);
         }
 
         override public void tagSprites(out SpriteName back, out SpriteName art)

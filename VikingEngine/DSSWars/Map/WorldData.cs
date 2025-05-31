@@ -305,7 +305,9 @@ namespace VikingEngine.DSSWars
             factions = new SpottedArray<Faction>(factionCount);
             for (int i = 0; i < factionCount; ++i)
             {
-                factions.Add(new Faction(i));
+                var faction = new Faction(i);
+                faction.initClient();
+                factions.Add(faction);
             }
         }
 

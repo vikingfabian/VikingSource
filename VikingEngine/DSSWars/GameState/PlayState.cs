@@ -104,8 +104,10 @@ namespace VikingEngine.DSSWars
             new GameTime();
             HudLib.Init();
 
-            DssRef.world.factions.Array[0] = new Faction(DssRef.world, FactionType.Player);
-            var local = new Players.LocalPlayer(DssRef.world.factions.Array[0], false);
+            var playerFaction = new Faction(DssRef.world, FactionType.Player);
+            DssRef.world.factions.Array[0] = playerFaction;
+            playerFaction.initClient();
+            var local = new Players.LocalPlayer(playerFaction, false);
             localPlayers = new List<Players.LocalPlayer>(1);
             localPlayers.Add(local);
             local.assignPlayer(0, 1, false);

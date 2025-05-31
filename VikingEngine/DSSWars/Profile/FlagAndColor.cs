@@ -2950,7 +2950,7 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 2;
+            const int Version = 3;
 
             w.Write(Version);
 
@@ -2963,6 +2963,7 @@ namespace VikingEngine.DSSWars
             StreamLib.WriteColorStream_3B(w, col2_Detail2);
             StreamLib.WriteColorStream_3B(w, col3_Skin);
             StreamLib.WriteColorStream_3B(w, col4_Hair);
+            StreamLib.WriteColorStream_3B(w, col5_AltMain);
 
             flagDesign.write(w);
         }
@@ -2980,6 +2981,10 @@ namespace VikingEngine.DSSWars
             col2_Detail2 = StreamLib.ReadColorStream_3B(r);
             col3_Skin = StreamLib.ReadColorStream_3B(r);
             col4_Hair = StreamLib.ReadColorStream_3B(r);
+            if (version >= 3)
+            { 
+                col5_AltMain = StreamLib.ReadColorStream_3B(r);
+            }
 
             //flagDesign.read(r);
             flagDesign = new FlagDesign(r);

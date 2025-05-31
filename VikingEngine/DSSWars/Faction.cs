@@ -105,6 +105,10 @@ namespace VikingEngine.DSSWars
             armies = new SpottedArray<Army>(16);
         }
 
+        public void initClient()
+        {
+            initDiplomacy(DssRef.world);
+        }
        
         public void onGameStart(bool newGame)
         {
@@ -249,6 +253,8 @@ namespace VikingEngine.DSSWars
 
         virtual public void readNet(System.IO.BinaryReader r)
         {
+            
+
             factiontype = (FactionType)r.ReadUInt16();
             FlagAndColor profile = new FlagAndColor(r);
             SetProfile(profile);
