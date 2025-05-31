@@ -43,9 +43,9 @@ namespace VikingEngine
 
         static readonly bool Debug_PlayMusic = true;
 
-        const bool Debug_StartLiveConnection = true;
+        //const bool Debug_StartLiveConnection = true;
 
-        static readonly bool Debug_AutoJoinNetSession = true;
+        static readonly bool Debug_AutoJoinNetSession = false;
 
         const bool Debug_TravelEverywhere = true;
 
@@ -163,7 +163,7 @@ namespace VikingEngine
         public static readonly bool ViewCollisionBounds =
           DebugLevel != BuildDebugLevel.Dev ? LockedToFalse : Debug_ViewCollisionBounds;
 
-        public static readonly bool OnlineMultiplayer = false;
+        public static readonly bool OnlineMultiplayer = true;
         //public static readonly bool Demo =
         //    DebugLevel == BuildDebugLevel.DebugDemo ||
         //    DebugLevel == BuildDebugLevel.PublicDemo || 
