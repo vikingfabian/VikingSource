@@ -43,6 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void addMissingWorkerUnits()
         {
+            
             for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
             {
                 if (workerStatuses[i].work != WorkType.IsDeleted)

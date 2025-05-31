@@ -1473,14 +1473,15 @@ namespace VikingEngine.DSSWars.GameObject
         void createOverViewModel()
         {
             //faction.profile.modelColorReplace
-
+            if (faction.profile != null)
+            {
                 overviewModel?.DeleteMe();
 
                 overviewModel = faction.AutoLoadModelInstance(
                    LootFest.VoxelModelName.cityicon, IconScale());
                 overviewModel.AddToRender(DrawGame.TerrainLayer);
                 overviewModel.position = position;
-            
+            }
         }
 
         float IconScale()
@@ -2017,6 +2018,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+            if (parentArrayIndex == 30)
+            {
+                lib.DoNothing();
+            }
             setWorkersInRenderState();
 
 

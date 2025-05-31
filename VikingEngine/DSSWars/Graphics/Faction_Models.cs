@@ -287,25 +287,29 @@ namespace VikingEngine.DSSWars
 
         void addFlagTexture(Faction faction, VoxelObjGridDataAnimHD grid, IntVector3 start, bool standing, int frame = 0)
         {
-            var gridData = grid.Frames[frame];
-
-            var flagLoop = faction.profile.flagDesign.LoopInstance();
-            while (flagLoop.Next())
+            if (faction.profile.blockColors != null)
             {
-                byte colId = faction.profile.flagDesign.Get(flagLoop.Position);
-                var blockCol = faction.profile.blockColors[colId];
 
-                IntVector3 gridPos = start;
-                gridPos.X += flagLoop.Position.X;
-                if (standing)
+                var gridData = grid.Frames[frame];
+
+                var flagLoop = faction.profile.flagDesign.LoopInstance();
+                while (flagLoop.Next())
                 {
-                    gridPos.Y -= flagLoop.Position.Y; //inverted
+                    byte colId = faction.profile.flagDesign.Get(flagLoop.Position);
+                    var blockCol = faction.profile.blockColors[colId];
+
+                    IntVector3 gridPos = start;
+                    gridPos.X += flagLoop.Position.X;
+                    if (standing)
+                    {
+                        gridPos.Y -= flagLoop.Position.Y; //inverted
+                    }
+                    else
+                    {
+                        gridPos.Z += flagLoop.Position.Y;
+                    }
+                    gridData.Set(gridPos, blockCol);
                 }
-                else
-                {
-                    gridPos.Z += flagLoop.Position.Y;
-                }
-                gridData.Set(gridPos, blockCol);
             }
         }
     }

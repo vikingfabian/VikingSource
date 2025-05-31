@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject
              
         public void async_workUpdate()
         {
-            if (faction == null)
+            if (faction == null || faction.player == null)
             { return; }
 
             bool fullUpdate = DssRef.state.host || faction.player.IsLocalPlayer();

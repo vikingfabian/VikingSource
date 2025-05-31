@@ -88,7 +88,7 @@ namespace VikingEngine.Voxels
         }
         public void ReplaceMaterial(List<BlockHDPair> findReplace)
         {
-            if (findReplace.Count > 0)
+            if (findReplace != null && findReplace.Count > 0)
             {
                 IntVector3 pos = IntVector3.Zero;
                 IntVector3 sz = Size;
