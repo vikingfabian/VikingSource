@@ -777,11 +777,11 @@ namespace VikingEngine.DSSWars
                         }
                     }
 
-                    remoteC.Reset();
-                    while (remoteC.Next())
-                    {
-                        remoteC.sel.findMissingWorld_async();
-                    }
+                    //remoteC.Reset();
+                    //while (remoteC.Next())
+                    //{
+                    //    remoteC.sel.findMissingWorld_async();
+                    //}
 
                     return false;
                 }

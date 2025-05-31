@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Players
 
                 if (playerCulling.farLayer)
                 {
-                    area.AddRadius(16);
+                    area.AddRadius(32);
                 }
 
                 ForXYLoop loop = new ForXYLoop(area);
