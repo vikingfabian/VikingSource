@@ -2093,7 +2093,12 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public override string Name(out bool mayEdit)
-        {            
+        {
+            if (faction == null)
+            {
+                mayEdit = false;
+                return TextLib.Error;
+            }
             mayEdit = faction.player != null && faction.player.IsLocalPlayer();
             return name.name;
         }
@@ -2120,22 +2125,25 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void CityPresentationHud(ObjectHudArgs args, bool tooltip)
         {
-            nameToHud(args.content, !tooltip);
-
-            args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
-            if (!tagToHud(args.content))
+            if (faction != null)
             {
-                args.content.Add(GetFaction().FlagTextureToHud());
+                nameToHud(args.content, !tooltip);
+
+                args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
+                if (!tagToHud(args.content))
+                {
+                    args.content.Add(faction.FlagTextureToHud());
+                }
+                args.content.space(0.5f);
+                args.content.Add(new RbImage(SpriteName.WarsCityHall));
+                args.content.space(0.5f);
+                args.content.Add(new RbText(DssRef.lang.UnitType_City, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+
+                args.content.space(1);
+                args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+
+                ownerToHud(args, !tooltip);
             }
-            args.content.space(0.5f);
-            args.content.Add(new RbImage(SpriteName.WarsCityHall));
-            args.content.space(0.5f);
-            args.content.Add(new RbText(DssRef.lang.UnitType_City, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
-
-            args.content.space(1);
-            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
-
-            ownerToHud(args, !tooltip);
         }
 
         public override void toTooltip(ObjectHudArgs args)
