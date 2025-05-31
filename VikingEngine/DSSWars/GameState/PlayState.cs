@@ -419,17 +419,14 @@ namespace VikingEngine.DSSWars
                 
                 if (isReady)
                 {
+                    foreach (var m in DssRef.world.cities)
+                    {
+                        m.update();
+                    }
 
                     if (host)
                     {
-                        foreach (var m in DssRef.world.cities)
-                        {
-                            if (m.parentArrayIndex == 75)
-                            {
-                                lib.DoNothing();
-                            }
-                            m.update();
-                        }
+                        
 
                         var factions = DssRef.world.factions.counter();
                         while (factions.Next())
@@ -788,12 +785,6 @@ namespace VikingEngine.DSSWars
             }
             return exitThreads;
         }
-
-        
-
-       
-
-       
 
         bool asynchAiPlayersUpdate(int id, float time)
         {

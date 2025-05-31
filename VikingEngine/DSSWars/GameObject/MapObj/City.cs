@@ -27,6 +27,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.LootFest.Map;
 using VikingEngine.PJ.MiniGolf;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
@@ -902,6 +903,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 overviewModel.position = position;
             }
+
+            DssRef.world.unitCollAreaGrid.add(this);
         }
 
         TimeStamp lastNetUpdate = new TimeStamp();

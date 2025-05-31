@@ -150,15 +150,7 @@ namespace VikingEngine.DSSWars
                 armiesC.sel.writeGameState(w); 
             }
 
-            for (int i = 0; i < diplomaticRelations.Length; ++i)
-            {
-                if (diplomaticRelations[i] != null &&
-                    diplomaticRelations[i].IsFactionOne(this))
-                {
-                    diplomaticRelations[i].write(w);
-                }
-            }
-            w.Write(short.MinValue);
+            writeRelations(w);
 
             player.writeGameState(w);
 
@@ -200,18 +192,7 @@ namespace VikingEngine.DSSWars
                 //armies.Add(army);
             }
 
-            while (true)
-            { 
-                DiplomaticRelation relation = new DiplomaticRelation();
-                if (relation.read(r, subVersion))
-                {
-                    relation.addToFactions();
-                }
-                else
-                {
-                    break;
-                }
-            }
+            readRelations(r, subVersion);
 
             if ((factiontype == FactionType.Player) != player.IsLocalPlayer())
             {
@@ -224,10 +205,41 @@ namespace VikingEngine.DSSWars
             workTemplate.readGameState(r, subVersion, false);
         }
 
+        void writeRelations(System.IO.BinaryWriter w)
+        {
+            for (int i = 0; i < diplomaticRelations.Length; ++i)
+            {
+                if (diplomaticRelations[i] != null &&
+                    diplomaticRelations[i].IsFactionOne(this))
+                {
+                    diplomaticRelations[i].write(w);
+                }
+            }
+            w.Write(short.MinValue);
+        }
+
+        void readRelations(System.IO.BinaryReader r, int subVersion)
+        {
+            while (true)
+            {
+                DiplomaticRelation relation = new DiplomaticRelation();
+                if (relation.read(r, subVersion))
+                {
+                    relation.addToFactions();
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
         virtual public void writeNet(System.IO.BinaryWriter w)
         {
             w.Write((ushort)factiontype);
             this.profile.write(w);
+
+            writeRelations(w);
 
             if (factiontype == FactionType.Player)
             {
@@ -240,6 +252,8 @@ namespace VikingEngine.DSSWars
             factiontype = (FactionType)r.ReadUInt16();
             FlagAndColor profile = new FlagAndColor(r);
             SetProfile(profile);
+
+            readRelations(r, int.MaxValue);
 
             if (factiontype == FactionType.Player)
             {
