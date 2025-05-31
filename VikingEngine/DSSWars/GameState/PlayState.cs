@@ -544,7 +544,27 @@ namespace VikingEngine.DSSWars
             base.OnDestroy();
         }
 
-        
+        public override void NetEvent_GotNetworkId()
+        {
+            //doesnt run
+            base.NetEvent_GotNetworkId();
+            
+        }
+
+        public override void NetworkStatusMessage(NetworkStatusMessage message)
+        {
+            //base.NetworkStatusMessage(message);
+
+            switch (message)
+            {
+                case Network.NetworkStatusMessage.Created_session:
+                    foreach (var p in localPlayers)
+                    {
+                        p.initNetwork();
+                    }
+                    break;
+            }
+        }
         public override void NetEvent_ConnectionLost(string reason)
         {
             base.NetEvent_ConnectionLost(reason);
