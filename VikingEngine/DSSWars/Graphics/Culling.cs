@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars
 
         public PlayerCulling[] players;
         public bool cullingStateA = true;
+        public bool playerInDetailView = false;
 
         public Culling()
         {
@@ -50,9 +51,6 @@ namespace VikingEngine.DSSWars
         {
             asynch_updateTiles();
 
-            //Map objects före optimering: 859
-            //Efter: 25
-
             var factions = DssRef.world.factions.counter();
             while (factions.Next())
             {
@@ -69,6 +67,7 @@ namespace VikingEngine.DSSWars
                 lp.asynchCullingUpdate(time,cullingStateA);
             }
         }
+
         void asynch_updateTiles()
         {
             foreach (var p in players)
@@ -76,10 +75,13 @@ namespace VikingEngine.DSSWars
                 p.asynch_clearupdate(!cullingStateA);
             }
 
+            bool detailview = false;
             foreach (var p in players)
             {
-                p.asynch_update(!cullingStateA);
+                p.asynch_update(!cullingStateA, ref detailview);
+                
             }
+            playerInDetailView = detailview;
 
             cullingStateA = !cullingStateA;
         }
@@ -235,7 +237,7 @@ namespace VikingEngine.DSSWars
             state.asynch_clearupdate(bStateA);
         }
 
-        public void asynch_update(bool bStateA)
+        public void asynch_update(bool bStateA, ref bool detailView)
         {
             Map.MapDetailLayerManager detailLayer = Map.MapDetailLayerManager.CameraIndexToView[index];
             bool hasValue1, hasValue2, hasValue3, hasValue4;
@@ -269,6 +271,7 @@ namespace VikingEngine.DSSWars
                
                 PlayerCullingState state = bStateA ? stateA : stateB;
                 state.detailLayer = detailLayer.current.DrawDetailLayer;
+                detailView |= state.detailLayer;
                 state.midLayer = detailLayer.current.DrawMid;
                 state.farLayer = detailLayer.current.DrawFar;
                 if (detailLayer.prevLayer != null)

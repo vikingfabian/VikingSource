@@ -130,26 +130,49 @@ namespace VikingEngine.DSSWars.GameObject
                 army.init(faction, armyIx);
             }
 
-            army.net_refreshClient();
+            army.net_onUpdate();
         }
                
 
         public void writeNet(System.IO.BinaryWriter w)
         {
             WP.writePosXZ(w, position);
-
+            net_writeGroups(w);
         }
         public void readNet(System.IO.BinaryReader r, bool needInit)
         {
             WP.readPosXZ(r, out position, out tilePos);
-            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();            
+            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();   
+            
+            net_readGroups(r);
         }
 
-        public void net_refreshClient()
+        public void net_onUpdate()
         {
             lastNetUpdate.setNow();
-            inRender_overviewLayer = true;
-            setInRenderState();
+            if (!inRender_overviewLayer)
+            {
+                inRender_overviewLayer = true;
+                setInRenderState();
+            }
+        }
+
+        public void net_updateclient(bool playerDetailView)
+        {
+            if (inRender_overviewLayer)
+            {
+                if (lastNetUpdate.secPassed(30))
+                {
+                    inRender_overviewLayer = false;
+                    setInRenderState();
+                }
+            }
+
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {
+                groupsC.sel.net_updateclient(playerDetailView);
+            }
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -203,7 +226,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        
 
         override public void tagSprites(out SpriteName back, out SpriteName art)
         {

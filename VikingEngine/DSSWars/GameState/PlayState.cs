@@ -58,6 +58,7 @@ namespace VikingEngine.DSSWars
         bool slowMinuteUpdate = true;   
                      
         bool netMapUpdate = false;
+        
 
         public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
             : base()
@@ -428,21 +429,25 @@ namespace VikingEngine.DSSWars
 
                     if (host)
                     {
-                        
-
-                        var factions = DssRef.world.factions.counter();
-                        while (factions.Next())
+                        var factionsC = DssRef.world.factions.counter();
+                        while (factionsC.Next())
                         {
-                            factions.sel.update();
+                            factionsC.sel.update();
 
                             if (DssRef.time.oneSecond)
                             {
-                                factions.sel.oneSecUpdate();
+                                factionsC.sel.oneSecUpdate();
                             }
                         }
                     }
                     else
                     {
+                        var factionsC = DssRef.world.factions.counter();
+                        while (factionsC.Next())
+                        {
+                            factionsC.sel.update_client(culling.playerInDetailView);
+                        }
+
                         foreach (var m in DssRef.world.cities)
                         {
                             m.update_client();
@@ -486,6 +491,7 @@ namespace VikingEngine.DSSWars
 
             if (localPlayers != null)
             {
+                
                 foreach (var local in localPlayers)
                 {
                     local.userUpdate(true);
@@ -493,10 +499,6 @@ namespace VikingEngine.DSSWars
                     {
                         menuSystem.pauseMenu();
                     }
-                    //if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.B) && Keyboard.Ctrl)
-                    //{
-                    //    menuSystem.debugMenu();
-                    //}
                 }
             }
 

@@ -27,6 +27,10 @@ namespace VikingEngine.DSSWars.Defence
             : base(army, r, version, pointers)
         {
         }
+        public GuardGroup(AbsArmy army)
+            : base(army)
+        { }
+
         public override void writeGameState(BinaryWriter w)
         {
             base.writeGameState(w);

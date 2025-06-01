@@ -90,6 +90,7 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierData soldierData;
         public SoldierData soldierData_soldier;
         public bool isShip = false;
+        public TimeStamp lastNetUpdate = new TimeStamp();
 
 #if VISUAL_NODES
         Graphics.Mesh collisionModel;
@@ -162,11 +163,14 @@ namespace VikingEngine.DSSWars.GameObject
             army.AddSoldierGroup(this);
             rotation = army.rotation;
         }
-
+        public SoldierGroup(AbsArmy army)
+        {
+            this.army = army;
+        }
         public SoldierGroup(AbsArmy army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
             this.army = army;
-            readGameState(r, version, pointers);
+            readGameState(r, version, true, pointers);
         }
 
         public void setDetailLevel(bool unitDetailView)
@@ -196,6 +200,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        
         override public SpottedArray<AbsSoldierUnit> Soldiers()
         {
             return soldiers;
@@ -246,6 +251,26 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            writeGameState(w);
+        }
+        public void readNet(System.IO.BinaryReader r, bool needInit)
+        {
+            readGameState(r, int.MaxValue, needInit, null);
+        }
+
+        public void net_onUpdate()
+        {
+            lastNetUpdate.setNow();
+        }
+
+        public void net_updateclient(bool playerDetailView)
+        {
+            bool visible = playerDetailView && !lastNetUpdate.secPassed(30);
+            createSoldierObjects(visible, true);
+        }
+
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
             soldierConscript.writeGameState(w);
@@ -259,11 +284,14 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(shipHealth);
         }
 
-        virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        virtual public void readGameState(System.IO.BinaryReader r, int subVersion, bool needInit, ObjectPointerCollection pointers)
         {
             soldierConscript.readGameState(r);
 
-            initPart1();
+            if (needInit)
+            {
+                initPart1();
+            }
 
             isShip = r.ReadBoolean();
             typeCurrentData = isShip ? typeShipData : typeSoldierData;
@@ -276,9 +304,12 @@ namespace VikingEngine.DSSWars.GameObject
             soldierCount = r.ReadByte();
             shipHealth = r.ReadInt32();
 
-            initPart2(typeCurrentData);
+            if (needInit)
+            {
+                initPart2(typeCurrentData);
 
-            initPart3(typeCurrentData);
+                initPart3(typeCurrentData);
+            }
         }
 
         public void readGameState_old(System.IO.BinaryReader r, int version)
@@ -326,14 +357,8 @@ namespace VikingEngine.DSSWars.GameObject
             initPart3(typeCurrentData);
         }
 
-        public void writeNet(System.IO.BinaryWriter w)
-        {
+        
 
-        }
-        public void readNet(System.IO.BinaryReader r)
-        {
-
-        }
 
         void refreshAttackRadius(AbsSoldierProfile typeData)
         {
