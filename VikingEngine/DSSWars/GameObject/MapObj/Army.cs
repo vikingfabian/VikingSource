@@ -129,16 +129,27 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 army.init(faction, armyIx);
             }
+
+            army.net_refreshClient();
         }
+               
 
         public void writeNet(System.IO.BinaryWriter w)
         {
             WP.writePosXZ(w, position);
+
         }
         public void readNet(System.IO.BinaryReader r, bool needInit)
         {
             WP.readPosXZ(r, out position, out tilePos);
-            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
+            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();            
+        }
+
+        public void net_refreshClient()
+        {
+            lastNetUpdate.setNow();
+            inRender_overviewLayer = true;
+            setInRenderState();
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
