@@ -155,9 +155,8 @@ namespace VikingEngine.DSSWars.Players
                     if (army.lastNetUpdate.secPassed(waitSeconds))
                     {
                         var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
-                        {
-                           
-                            army.writeGameState
+                        {                           
+                            Army.NetWriteArmy(w, army);
                         }
                         packet.EndWrite_Asynch();
                     }

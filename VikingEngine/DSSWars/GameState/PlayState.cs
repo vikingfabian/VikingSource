@@ -861,6 +861,9 @@ namespace VikingEngine.DSSWars
                     int part = packet.r.ReadByte();
                     city.readNet_update(packet.r, part);
                     break;
+                case PacketType.DssArmyStatus:
+                    Army.NetReadArmy(packet.r); 
+                    break;
             }
         }
 
