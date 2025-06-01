@@ -469,7 +469,8 @@ namespace VikingEngine.SteamWrapping
 #if DEBUG
             if (data.Length > SteamPackageByteLimit)
             {
-                throw new Exception("Passed steam package limit");
+                var packet = (PacketType)data[1];
+                throw new Exception("Passed steam package limit: " + packet);
             }
 #endif
             EP2PSend sendType;
