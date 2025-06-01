@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Players
     partial class RemotePlayer : AbsHumanPlayer
     {
         PlayerCullingState playerCulling;
+        public bool gotStatus = false;
 
         public RemotePlayer(Network.NetworkInstancePeer peer)
             :base()
@@ -30,6 +31,7 @@ namespace VikingEngine.DSSWars.Players
         public void Net_readStatus(System.IO.BinaryReader r)
         {
             playerCulling.readNet(r);
+            gotStatus = true;
         }
 
         public override void AutoExpandType(City city, out bool work, out BuildAndExpandType buildType, out bool intelligent)

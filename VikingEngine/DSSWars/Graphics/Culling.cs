@@ -308,10 +308,19 @@ namespace VikingEngine.DSSWars
         public void readNet(System.IO.BinaryReader r)
         {
             //enterArea.readUshort(r);
-            screenAreaRaw.pos.readShort(r);
-            screenAreaRaw.size.readUshort(r);
-            enterArea = screenAreaRaw;
-            PlayerCulling.MaxUpdateArea(ref enterArea);
+            Rectangle2 area = Rectangle2.Zero;
+            area.pos.readShort(r);
+            area.size.readUshort(r);
+
+            Rectangle2 enter = area;
+            PlayerCulling.MaxUpdateArea(ref enter);
+
+            area.SetBounds(DssRef.world.tileBounds);
+            enter.SetBounds(DssRef.world.tileBounds);
+
+            screenAreaRaw = area;
+            enterArea = enter;
+            
             EightBit bools = EightBit.FromStream(r);
             bools.Get(out detailLayer, out midLayer, out farLayer);
             midLayer = r.ReadBoolean();

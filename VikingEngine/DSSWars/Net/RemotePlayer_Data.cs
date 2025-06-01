@@ -94,6 +94,7 @@ namespace VikingEngine.DSSWars.Players
                     area = playerCulling.screenAreaRaw;
                 }
 
+                
                 ForXYLoop loop = new ForXYLoop(area);
                 while (loop.Next())
                 {
@@ -128,11 +129,11 @@ namespace VikingEngine.DSSWars.Players
             
         }
 
-        public void Net_UpdateArmies()
+        public void Net_UpdateArmies(ref int maxPackets)
         {
             if (playerCulling.farLayer == false)
             {
-                int maxUpdates = networkPeer.peer.maxPacketCount;
+                
 
                 DssRef.world.unitCollAreaGrid.net_collectArmies(playerCulling.screenAreaRaw, netCollArmies);
 
