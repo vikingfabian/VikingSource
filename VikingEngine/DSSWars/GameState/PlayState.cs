@@ -733,8 +733,6 @@ namespace VikingEngine.DSSWars
 
         bool asynchHostNetUpdate(int id, float time)
         {
-            
-
             if (remotePlayers.Count > 0)
             {
                 if (!sendMap())
@@ -744,15 +742,25 @@ namespace VikingEngine.DSSWars
                     var remoteC = remotePlayers.counter();
                     while (remoteC.Next())
                     {
-                        var cities = remoteC.sel.GetAllCitiesInView();
-                        foreach (var c in cities)
+                        if (remoteC.sel.gotStatus)
                         {
-                            if (DssRef.world.cities[c].net_roundtrip_asyncupdate())
+                            remoteC.sel.gotStatus = false;
+                            int maxPackets = remoteC.sel.networkPeer.peer.maxPacketCount;
+
+                            var cities = remoteC.sel.GetAllCitiesInView();
+                            foreach (var c in cities)
                             {
-                                break;
+                                if (DssRef.world.cities[c].net_roundtrip_asyncupdate())
+                                {
+                                    if (--maxPackets <= 0)
+                                    {
+                                        break;
+                                    }
+                                }
                             }
+
+                            remoteC.sel.Net_UpdateArmies(ref maxPackets);
                         }
-                        //remoteC.sel.Net_HostObjectsUpdate_async();
                     }
                 }
 
@@ -762,7 +770,7 @@ namespace VikingEngine.DSSWars
                     while (remoteC.Next())
                     {
                         var netPeer_sp = remoteC.sel.networkPeer;
-                        if (netPeer_sp != null)
+                        if (remoteC.sel.gotStatus && netPeer_sp != null)
                         {
                             int sendPacketCount = remoteC.sel.networkPeer.peer.maxPacketCount;
 
@@ -770,6 +778,7 @@ namespace VikingEngine.DSSWars
                             {
                                 if (--sendPacketCount <= 0)
                                 {
+                                    remoteC.sel.gotStatus = false;
                                     return true;
                                 }
                             }
