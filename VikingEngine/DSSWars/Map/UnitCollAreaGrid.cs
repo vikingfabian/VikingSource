@@ -750,6 +750,37 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
+        public void net_collectArmies(Rectangle2 mapTileArea, List<GameObject.Army> armies)
+        {
+            armies.Clear();
+            IntVector2 areaStart = mapTileArea.pos / UnitGridSquareWidth;
+            IntVector2 areaEnd = mapTileArea.BottomRightTile / UnitGridSquareWidth;
+
+            for (int arY = areaStart.Y; arY <= areaEnd.Y; ++arY)
+            {
+                for (int arX = areaStart.X; arX <= areaEnd.X; ++arX)
+                {
+                    if (grid.TryGet(arX, arY, out UnitCollArea area))
+                    {
+                        lock (area.armies)
+                        {
+                            //Todo dont add remote player armies
+                            if (area.armies != null)
+                            {
+                                foreach (var m in area.armies)
+                                {
+                                    if (!armies.Contains(m))
+                                    {
+                                        armies.Add(m);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public void collectArmies(Faction factionFilter, IntVector2 tilePos, int areaRadius,
             List<GameObject.Army> armies)
         {

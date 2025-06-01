@@ -337,9 +337,16 @@ namespace VikingEngine.DSSWars
             //}
         }
 
-        public void AddArmy(Army army)
-        { 
-            army.parentArrayIndex = armies.Add(army);
+        public void AddArmy(Army army, int overrideIx = -1)
+        {
+            if (overrideIx < 0)
+            {
+                army.parentArrayIndex = armies.Add(army);
+            }
+            else
+            {
+                armies.HardSet(army, overrideIx);
+            }
             army.faction = this;
         }
 

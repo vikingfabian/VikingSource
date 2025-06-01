@@ -258,11 +258,13 @@ namespace VikingEngine.DSSWars
                 float bottom = lib.LargestValue(bottomleft.Z, bottomright.Z);
 
                 Rectangle2 screenArea = Rectangle2.FromTwoTilePoints(new IntVector2(left, top), new IntVector2(right, bottom));
+                Rectangle2 screenAreaRaw = screenArea;
                 DssRef.state.localPlayers[index].cullingTileArea = screenArea;
 
                 if (detailLayer.current.DrawFar)
                 {
-                    screenArea.SetMaxRadius(120, 100);
+                    //screenArea.SetMaxRadius(120, 100);
+                    MaxUpdateArea(ref screenArea);
                 }
                
                 PlayerCullingState state = bStateA ? stateA : stateB;
@@ -273,41 +275,48 @@ namespace VikingEngine.DSSWars
                 {
                     state.midLayer |= detailLayer.prevLayer.DrawMid;
                 }
-                state.async_playerViewToRenderState(bStateA, screenArea, detailLayer.current);
+                state.async_playerViewToRenderState(bStateA, screenArea, screenAreaRaw, detailLayer.current);
             }
 
         }
 
+        public static void MaxUpdateArea(ref Rectangle2 area)
+        {
+            area.SetMaxRadius(120, 100);
+        }
     }
 
     class PlayerCullingState
     {
+        public Rectangle2 screenAreaRaw = Rectangle2.Zero;
         public Rectangle2 enterArea = Rectangle2.Zero;
         public Rectangle2 exitArea = Rectangle2.Zero;
         public Rectangle2 attensionArea = Rectangle2.Zero;
-
 
         public bool detailLayer = false;
         public bool midLayer = false;
         public bool farLayer = false;
 
-
         public void writeNet(System.IO.BinaryWriter w)
         {
-            enterArea.writeUshort(w);
+            //enterArea.writeUshort(w);
+            screenAreaRaw.writeUshort(w);
             new EightBit(detailLayer, midLayer, farLayer).write(w);
             w.Write(midLayer);
         }
         public void readNet(System.IO.BinaryReader r)
         {
-            enterArea.readUshort(r);
+            //enterArea.readUshort(r);
+            screenAreaRaw.readUshort(r);
+            PlayerCulling.MaxUpdateArea(ref enterArea);
             EightBit bools = EightBit.FromStream(r);
             bools.Get(out detailLayer, out midLayer, out farLayer);
             midLayer = r.ReadBoolean();
         }
 
-        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Map.DetailLayer layer)
+        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Rectangle2 screenAreaRaw, Map.DetailLayer layer)
         {
+            this.screenAreaRaw = screenAreaRaw;
             enterArea = screenArea;
             enterArea.AddRadius(1);
             enterArea.SetTileBounds(DssRef.world.tileBounds);

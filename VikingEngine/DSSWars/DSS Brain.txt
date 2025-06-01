@@ -4,7 +4,7 @@
 -warmachine
 
 *Fixed player reference bug
-
+*Fixed save flag color bug
 
 
 #Free build defences

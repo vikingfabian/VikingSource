@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int previousWarAgainstFaction = -1;
         public float strengthValue=-1;
         public IntVector2 tilePos;
+        public TimeStamp lastNetUpdate = new TimeStamp();
 
         public AbsMapObject()
         {

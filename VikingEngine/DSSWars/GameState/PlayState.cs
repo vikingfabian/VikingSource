@@ -858,7 +858,8 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssCityStatus:
                     int cityIx = packet.r.ReadUInt16();
                     var city = DssRef.world.cities[cityIx];
-                    city.readNet_update(packet.r);
+                    int part = packet.r.ReadByte();
+                    city.readNet_update(packet.r, part);
                     break;
             }
         }

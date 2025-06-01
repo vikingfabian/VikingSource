@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Players
@@ -10,6 +11,8 @@ namespace VikingEngine.DSSWars.Players
 
     partial class RemotePlayer
     {
+        static List<Army> netCollArmies = new List<Army>(16);
+
         public const int OverviewSendChunkSize = 8;
         static HashSet<int> CitiesInView = new HashSet<int>();
         static HashSet<int> FactionsInView = new HashSet<int>();
@@ -80,11 +83,15 @@ namespace VikingEngine.DSSWars.Players
 
             bool findMissingTile(out IntVector2 tilePos, bool subTile)
             {
-                Rectangle2 area = playerCulling.enterArea;
+                Rectangle2 area;
 
-                if (playerCulling.farLayer)
+                if (subTile)
                 {
-                    area.AddRadius(32);
+                    area = playerCulling.enterArea;
+                }
+                else
+                {
+                    area = playerCulling.screenAreaRaw;
                 }
 
                 ForXYLoop loop = new ForXYLoop(area);
@@ -121,42 +128,79 @@ namespace VikingEngine.DSSWars.Players
             
         }
 
-        public bool findMissingWorld_async()
+        public void Net_UpdateArmies()
         {
-            ForXYLoop loop = new ForXYLoop(DssRef.world.Size);
-            while (loop.Next())
+            if (playerCulling.farLayer == false)
             {
-                if (!remoteTileGrid.Get(loop.Position).HasTile(false))
+                int maxUpdates = networkPeer.peer.maxPacketCount;
+
+                DssRef.world.unitCollAreaGrid.net_collectArmies(playerCulling.screenAreaRaw, netCollArmies);
+
+                int waitSeconds;
+                if ( netCollArmies.Count <= 2)
                 {
-                    var tilePos = loop.Position;
+                    waitSeconds = 5;
+                }
+                else if (netCollArmies.Count <= 10)
+                {
+                    waitSeconds = 10;
+                }
+                else 
+                {
+                    waitSeconds = 20;
+                }
 
-                    int faction = DssRef.world.tileGrid.Get(tilePos).City().faction.parentArrayIndex;
-                    if (!factionsRecieved[faction])
+                foreach (Army army in netCollArmies)
+                {
+                    if (army.lastNetUpdate.secPassed(waitSeconds))
                     {
-                        FactionsInView.Clear();
-                        FactionsInView.Add(faction);
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactions, Network.PacketReliability.Reliable, out var packet);
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
                         {
-                            DssRef.world.writeNet_Factions(w, FactionsInView);
+                           
+                            army.writeGameState
                         }
                         packet.EndWrite_Asynch();
                     }
-                    
-                    {
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
-                        {
-                            DssRef.world.writeNet_Tile(w, tilePos);
-                        }
-                        packet.EndWrite_Asynch();
-                    }
-
-                    return true;
                 }
             }
-
-            //tilePos = IntVector2.NegativeOne;
-            return false;
         }
+
+        //public bool findMissingWorld_async()
+        //{
+        //    ForXYLoop loop = new ForXYLoop(DssRef.world.Size);
+        //    while (loop.Next())
+        //    {
+        //        if (!remoteTileGrid.Get(loop.Position).HasTile(false))
+        //        {
+        //            var tilePos = loop.Position;
+
+        //            int faction = DssRef.world.tileGrid.Get(tilePos).City().faction.parentArrayIndex;
+        //            if (!factionsRecieved[faction])
+        //            {
+        //                FactionsInView.Clear();
+        //                FactionsInView.Add(faction);
+        //                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactions, Network.PacketReliability.Reliable, out var packet);
+        //                {
+        //                    DssRef.world.writeNet_Factions(w, FactionsInView);
+        //                }
+        //                packet.EndWrite_Asynch();
+        //            }
+                    
+        //            {
+        //                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
+        //                {
+        //                    DssRef.world.writeNet_Tile(w, tilePos);
+        //                }
+        //                packet.EndWrite_Asynch();
+        //            }
+
+        //            return true;
+        //        }
+        //    }
+
+        //    //tilePos = IntVector2.NegativeOne;
+        //    return false;
+        //}
 
         public HashSet<int> GetAllCitiesInView()
         {

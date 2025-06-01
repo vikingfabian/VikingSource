@@ -907,40 +907,63 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.world.unitCollAreaGrid.add(this);
         }
 
-        TimeStamp lastNetUpdate = new TimeStamp();
+        
 
         public bool net_roundtrip_asyncupdate()
         {
             if (lastNetUpdate.secPassed(10))
             {
                 lastNetUpdate.setNow();
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Reliable, out var packet);
+                for (int part = 0; part < 2; ++part)
                 {
-                    w.Write((ushort)parentArrayIndex);
-                    writeNet_update(w);
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        w.Write((ushort)parentArrayIndex);
+                        w.Write((byte)part);
+                        writeNet_update(w, part);
+                    }
+                    packet.EndWrite_Asynch();
                 }
-                packet.EndWrite_Asynch();
                 return true;
             }
 
             return false;
         }
 
-        public void writeNet_update(System.IO.BinaryWriter w)
+        public void writeNet_update(System.IO.BinaryWriter w, int part)
         {
-            workTemplate.writeGameState(w, true);
+            switch (part)
+            {
+                case 0:
+                    workTemplate.writeGameState(w, true);
+                    writeResources(w);
+                    break;
 
-            writeResources(w);
+                case 1:
+                    writeWorkerStatuses(w, true);
+                    break;
+            }
+            
 
-            writeWorkerStatuses(w, true);
+           
         }
-        public void readNet_update(System.IO.BinaryReader r)
+        public void readNet_update(System.IO.BinaryReader r, int part)
         {
-            workTemplate.readGameState(r, int.MaxValue, true);
+            switch (part)
+            {
+                case 0:
+                    workTemplate.readGameState(r, int.MaxValue, true);
 
-            readResources(r, int.MaxValue);
+                    readResources(r, int.MaxValue);
+                    break;
 
-            readWorkerStatuses(r, true, int.MaxValue);
+                case 1:
+                    readWorkerStatuses(r, true, int.MaxValue);
+                    break;
+            }
+            
+
+           
         }
 
         override public void tagSprites(out SpriteName back, out SpriteName art)

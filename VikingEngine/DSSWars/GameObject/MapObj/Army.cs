@@ -95,11 +95,50 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void init(Faction faction)
+        void init(Faction faction, int overrideIx = -1)
         {
             bound = new BoundingSphere(Vector3.Zero, 0.5f);
             asynchCullingUpdate(1f, DssRef.state.culling.cullingStateA);
-            faction.AddArmy(this);
+            faction.AddArmy(this, overrideIx);
+        }
+
+        public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
+        {
+            w.Write((ushort)army.faction.parentArrayIndex);
+            w.Write((ushort)army.parentArrayIndex);
+
+            army.writeNet(w);
+        }
+        public static void NetReadArmy(System.IO.BinaryReader r)
+        {
+            int factionIx = r.ReadUInt16();
+            var faction = DssRef.world.factions.Array[factionIx];
+            
+            int armyIx = r.ReadUInt16();
+            Army army = faction.armies.GetIndex_Safe(armyIx);
+            bool needInit = false;
+            if (army == null)
+            { 
+                army = new Army();
+                needInit = true;
+            }
+
+            army.readNet(r, needInit);
+
+            if (needInit)
+            {
+                army.init(faction, armyIx);
+            }
+        }
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            WP.writePosXZ(w, position);
+        }
+        public void readNet(System.IO.BinaryReader r, bool needInit)
+        {
+            WP.readPosXZ(r, out position, out tilePos);
+            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -139,7 +178,6 @@ namespace VikingEngine.DSSWars.GameObject
             readGroups(r, subVersion, pointers);
 
             init(faction);
-
             refreshPositions(true);
             position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
 
@@ -155,15 +193,6 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         
-
-        public void writeNet(System.IO.BinaryWriter w)
-        {
-
-        }
-        public void readNet(System.IO.BinaryReader r)
-        {
-
-        }
 
         override public void tagSprites(out SpriteName back, out SpriteName art)
         {
