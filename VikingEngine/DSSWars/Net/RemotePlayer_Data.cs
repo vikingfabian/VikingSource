@@ -131,10 +131,10 @@ namespace VikingEngine.DSSWars.Players
 
         public void Net_UpdateArmies(ref int maxPackets)
         {
+            const int GroupsPerPacket = 10;
+
             if (playerCulling.farLayer == false)
             {
-                
-
                 DssRef.world.unitCollAreaGrid.net_collectArmies(playerCulling.screenAreaRaw, netCollArmies);
 
                 int waitSeconds;
@@ -155,12 +155,40 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (army.lastNetUpdate.secPassed(waitSeconds))
                     {
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
-                        {                           
-                            Army.NetWriteArmy(w, army);
-                            army.lastNetUpdate.setNow();
+                        {
+                            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
+                            {
+                                Army.NetWriteArmy(w, army);
+                                army.lastNetUpdate.setNow();
+                            }
+                            packet.EndWrite_Asynch();
                         }
-                        packet.EndWrite_Asynch();
+
+                        if (army.groups.Count > 0)
+                        {
+                            var groupC = army.groups.counter();
+
+                            int count = 0;
+
+                            while (groupC.HasMore())
+                            {                                
+                                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
+                                {
+                                    w.Write((ushort)army.faction.parentArrayIndex);
+                                    w.Write((ushort)army.parentArrayIndex);
+
+                                    while (--count < GroupsPerPacket && groupC.Next())
+                                    {
+                                        Army.NetWriteArmy(w, army);
+                                        army.lastNetUpdate.setNow();
+                                    }
+
+                                    w.Write(ushort.MaxValue);
+                                }
+                                packet.EndWrite_Asynch();
+                                
+                            }
+                        }
                     }
                 }
             }

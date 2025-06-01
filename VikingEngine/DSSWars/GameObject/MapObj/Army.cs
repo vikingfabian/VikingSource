@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Xsl;
@@ -10,6 +11,7 @@ using VikingEngine.DebugExtensions;
 
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.EngineSpace.Graphics.In3D;
@@ -134,19 +136,56 @@ namespace VikingEngine.DSSWars.GameObject
 
             army.net_onUpdate();
         }
-               
+
+        public static void NetWriteGroup(System.IO.BinaryWriter w, Army army, SoldierGroup group)
+        {
+            w.Write((ushort)group.parentArrayIndex);
+            group.writeNet(w);
+        }
+
+        public static bool NetReadGroup(System.IO.BinaryReader r, Army army)
+        {
+            int index = r.ReadUInt16();
+            if (index != ushort.MaxValue)
+            {
+                var group = army.groups.GetIndex_Safe(index);
+                bool needInit = false;
+                if (group == null)
+                {
+                    needInit = true;
+                    if (army.IsCity())
+                    {
+                        group = new GuardGroup(army);
+                    }
+                    else
+                    {
+                        group = new SoldierGroup(army);
+                    }
+                    army.groups.HardSet(group, index);
+                }
+
+                group.readNet(r, needInit);
+                group.net_onUpdate();
+                return true;
+            }
+            else
+            { 
+                return false;
+            }
+        }
+
 
         public void writeNet(System.IO.BinaryWriter w)
         {
             WP.writePosXZ(w, position);
-            net_writeGroups(w);
+            //net_writeGroups(w);
         }
         public void readNet(System.IO.BinaryReader r, bool needInit)
         {
             WP.readPosXZ(r, out position, out tilePos);
             position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();   
             
-            net_readGroups(r);
+            //net_readGroups(r);
         }
 
         public void net_onUpdate()

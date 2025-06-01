@@ -158,6 +158,7 @@ namespace VikingEngine.Network
         DssCities,
         DssCityStatus,
         DssArmyStatus,
+        DssSoldierGroupStatus,
 
         LF2_WorldOverview,
         LF2_StartAttack,

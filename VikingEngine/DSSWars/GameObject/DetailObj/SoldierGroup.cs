@@ -251,6 +251,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        
+
         public void writeNet(System.IO.BinaryWriter w)
         {
             writeGameState(w);

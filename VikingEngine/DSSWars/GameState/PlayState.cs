@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
@@ -852,6 +853,24 @@ namespace VikingEngine.DSSWars
                     break;
                 case PacketType.DssArmyStatus:
                     Army.NetReadArmy(packet.r); 
+                    break;
+                case PacketType.DssSoldierGroupStatus:
+                    int factionIx = packet.r.ReadUInt16();
+                    int armyIx = packet.r.ReadUInt16();
+
+                    var faction = DssRef.world.factions.GetIndex_Safe(factionIx);
+                    if (faction != null)
+                    {
+                        var army = faction.armies.GetIndex_Safe(armyIx);
+                        if (army != null)
+                        {
+                            bool more = false;
+                            do
+                            {
+                                more = Army.NetReadGroup(packet.r, army);
+                            } while (more);
+                        }
+                    }
                     break;
             }
         }
