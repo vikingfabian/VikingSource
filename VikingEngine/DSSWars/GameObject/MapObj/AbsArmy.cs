@@ -126,6 +126,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 group.readNet(r, needInit);
+                group.net_onUpdate();
+                group.net_updateclient(DssRef.state.culling.playerInDetailView);
             }
         }
 

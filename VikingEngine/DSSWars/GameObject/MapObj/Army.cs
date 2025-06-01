@@ -120,6 +120,8 @@ namespace VikingEngine.DSSWars.GameObject
             if (army == null)
             { 
                 army = new Army();
+                army.faction = faction;
+                faction.armies.HardSet(army, armyIx);
                 needInit = true;
             }
 
@@ -161,11 +163,15 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (inRender_overviewLayer)
             {
+                updateModelsPosition();
+                overviewBanner.Frame = isShip ? 1 : 0;
+
                 if (lastNetUpdate.secPassed(30))
                 {
                     inRender_overviewLayer = false;
                     setInRenderState();
                 }
+                
             }
 
             var groupsC = groups.counter();

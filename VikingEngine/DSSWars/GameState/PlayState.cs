@@ -787,12 +787,6 @@ namespace VikingEngine.DSSWars
                         }
                     }
 
-                    //remoteC.Reset();
-                    //while (remoteC.Next())
-                    //{
-                    //    remoteC.sel.findMissingWorld_async();
-                    //}
-
                     return false;
                 }
             }
@@ -814,22 +808,6 @@ namespace VikingEngine.DSSWars
         }
 
         
-
-       
-
-        //bool asynchCullingUpdate(int id, float time)
-        //{
-        //    if (cutScene == null)
-        //    {
-        //        //culling.asynch_update(time);
-        //    }
-        //    return exitThreads;
-        //}
-
-        
-
-        
-      
 
         public override void NetworkReadPacket(ReceivedPacket packet)
         {

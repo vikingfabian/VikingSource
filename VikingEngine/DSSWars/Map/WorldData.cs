@@ -793,12 +793,21 @@ namespace VikingEngine.DSSWars
 
         public float SubTileHeight(Vector3 wp)
         {
+
             return subTileGrid.array[
                 Convert.ToInt32(wp.X * TileSubDivitions + 3.5f), 
                 Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)].groundY;                
         }
 
-        
+        public float SubTileHeight(Vector3 wp, out SubTile subTile)
+        {
+
+            subTile = subTileGrid.array[
+                Convert.ToInt32(wp.X * TileSubDivitions + 3.5f),
+                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)];
+            return subTile.groundY;
+        }
+
         public Tile GetTile(Vector2 pos)
         {
             return tileGrid.Get(WP.ToTilePos(pos));

@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Map
                 }
             
                 processFactionCount = Bound.Min(DssRef.world.factions.Count / 10, 1);
-                factions.Reset();
+                factions = DssRef.world.factions.counter();
 
                 processing = true;
             }
@@ -56,6 +56,7 @@ namespace VikingEngine.DSSWars.Map
         {
             if (processing)
             {
+                
                 for (int i = 0; i < processFactionCount; ++i)
                 {
                     if (factions.Next())

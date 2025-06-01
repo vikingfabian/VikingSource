@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars
                 {
                     try
                     {
-                        if (profile.modelColorReplace == null)
+                        if (profile == null || profile.modelColorReplace == null)
                         {
                             return;
                         }
