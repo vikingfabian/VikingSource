@@ -300,14 +300,17 @@ namespace VikingEngine.DSSWars
         public void writeNet(System.IO.BinaryWriter w)
         {
             //enterArea.writeUshort(w);
-            screenAreaRaw.writeUshort(w);
+            screenAreaRaw.pos.writeShort(w);
+            screenAreaRaw.size.writeUshort(w);
             new EightBit(detailLayer, midLayer, farLayer).write(w);
             w.Write(midLayer);
         }
         public void readNet(System.IO.BinaryReader r)
         {
             //enterArea.readUshort(r);
-            screenAreaRaw.readUshort(r);
+            screenAreaRaw.pos.readShort(r);
+            screenAreaRaw.size.readUshort(r);
+            enterArea = screenAreaRaw;
             PlayerCulling.MaxUpdateArea(ref enterArea);
             EightBit bools = EightBit.FromStream(r);
             bools.Get(out detailLayer, out midLayer, out farLayer);

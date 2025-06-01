@@ -207,7 +207,8 @@ namespace VikingEngine.DSSWars.Players
 
             ForXYLoop loop = new ForXYLoop(playerCulling.enterArea);
             while (loop.Next())
-            {                
+            {  
+                
                 var tile = DssRef.world.tileGrid.Get(loop.Position);
                 
                 CitiesInView.Add(tile.CityIndex);
