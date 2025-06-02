@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.GameObject
             army.net_onUpdate();
         }
 
-        public static void NetWriteGroup(System.IO.BinaryWriter w, Army army, SoldierGroup group)
+        public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
         {
             w.Write((ushort)group.parentArrayIndex);
             group.writeNet(w);

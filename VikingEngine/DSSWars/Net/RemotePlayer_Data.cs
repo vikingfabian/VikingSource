@@ -172,14 +172,14 @@ namespace VikingEngine.DSSWars.Players
 
                             while (groupC.HasMore())
                             {                                
-                                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
+                                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, Network.PacketReliability.Unrelyable, out var packet);
                                 {
                                     w.Write((ushort)army.faction.parentArrayIndex);
                                     w.Write((ushort)army.parentArrayIndex);
 
                                     while (--count < GroupsPerPacket && groupC.Next())
                                     {
-                                        Army.NetWriteArmy(w, army);
+                                        Army.NetWriteGroup(w, groupC.sel);
                                         army.lastNetUpdate.setNow();
                                     }
 
