@@ -838,7 +838,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         void gameSpeedInput()
         {
-            if (DssRef.state.IsSinglePlayer())
+            if (DssRef.state.IsSinglePlayer_Local())
             {
                 if (DssRef.difficulty.setting_allowPauseCommand &&
                     input.PauseGame.DownEvent)//IsLocalHost())
@@ -855,7 +855,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void setNextGameSpeed()
         {
-            if (DssRef.state.IsSinglePlayer())
+            if (DssRef.state.IsSinglePlayer_Local())
             {
                 if (Ref.isPaused)
                 {

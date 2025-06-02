@@ -45,8 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool isShip = false;
 
         public float terrainSpeedMultiplier = 1.0f;
-        //public IntVector2 positionBeforeBattle;
-        //string name;
+       
         ObjectName name = new ObjectName();
 
         static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);

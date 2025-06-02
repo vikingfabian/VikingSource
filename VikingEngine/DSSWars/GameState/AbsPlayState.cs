@@ -297,7 +297,12 @@ namespace VikingEngine.DSSWars.GameState
         }
         virtual public void OneMinute_Update()
         { }
-        public bool IsSinglePlayer()
+
+        public bool IsSinglePlayer_LocalAndOnline()
+        { 
+            return DssRef.storage.playerCount == 1 && !Ref.netSession.InMultiplayerSession;
+        }
+        public bool IsSinglePlayer_Local()
         {
             return DssRef.storage.playerCount == 1;
         }

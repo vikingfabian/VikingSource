@@ -194,43 +194,6 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        //public bool findMissingWorld_async()
-        //{
-        //    ForXYLoop loop = new ForXYLoop(DssRef.world.Size);
-        //    while (loop.Next())
-        //    {
-        //        if (!remoteTileGrid.Get(loop.Position).HasTile(false))
-        //        {
-        //            var tilePos = loop.Position;
-
-        //            int faction = DssRef.world.tileGrid.Get(tilePos).City().faction.parentArrayIndex;
-        //            if (!factionsRecieved[faction])
-        //            {
-        //                FactionsInView.Clear();
-        //                FactionsInView.Add(faction);
-        //                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactions, Network.PacketReliability.Reliable, out var packet);
-        //                {
-        //                    DssRef.world.writeNet_Factions(w, FactionsInView);
-        //                }
-        //                packet.EndWrite_Asynch();
-        //            }
-                    
-        //            {
-        //                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
-        //                {
-        //                    DssRef.world.writeNet_Tile(w, tilePos);
-        //                }
-        //                packet.EndWrite_Asynch();
-        //            }
-
-        //            return true;
-        //        }
-        //    }
-
-        //    //tilePos = IntVector2.NegativeOne;
-        //    return false;
-        //}
-
         public HashSet<int> GetAllCitiesInView()
         {
             CitiesInView.Clear();
@@ -248,8 +211,6 @@ namespace VikingEngine.DSSWars.Players
 
             return CitiesInView;
         }
-
-
 
         public void Net_HostObjectsUpdate_async()
         {
