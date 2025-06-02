@@ -675,9 +675,10 @@ namespace VikingEngine.DSSWars.GameObject
         private void writeWorkerStatuses(BinaryWriter w, bool netPacket)
         {
             w.Write((ushort)workerStatuses.Count);
+            cityHallSubtilePos.write(w);
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                workerStatuses[i].writeGameState(w, netPacket);
+                workerStatuses[i].writeGameState(this, w, netPacket);
             }
         }
 
@@ -686,6 +687,7 @@ namespace VikingEngine.DSSWars.GameObject
             IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
 
             int workerStatusesCount = r.ReadUInt16();
+            cityHallSubtilePos.read(r);
             for (int i = 0; i < workerStatusesCount; i++)
             {
                 WorkerStatus readWorker = new WorkerStatus()
@@ -696,7 +698,7 @@ namespace VikingEngine.DSSWars.GameObject
                     subTileStart = startPos,
                 };
 
-                readWorker.readGameState(r, netPacket, subversion);
+                readWorker.readGameState(this, r, netPacket, subversion);
 
                 if (i >= workerStatuses.Count)
                 {

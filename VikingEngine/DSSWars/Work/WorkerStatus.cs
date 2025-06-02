@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Work
 
         const int TimeNetShareDiv = 4;
 
-        public void writeGameState(System.IO.BinaryWriter w, bool netPacket)
+        public void writeGameState(City city, System.IO.BinaryWriter w, bool netPacket)
         {
             w.Write((byte)xpType1);
             w.Write((byte)xpType2);
@@ -98,9 +98,10 @@ namespace VikingEngine.DSSWars.Work
                 int secondsPassed = Convert.ToInt32(processTimeStartStampSec - Ref.TotalGameTimeSec);
                 w.Write(Bound.Byte(secondsPassed / TimeNetShareDiv));
                 w.Write(Bound.Byte((int)processTimeLengthSec / TimeNetShareDiv));
+                (subTileEnd - city.cityHallSubtilePos).writeShort(w);
             }
         }
-        public void readGameState(System.IO.BinaryReader r, bool netPacket, int subversion)
+        public void readGameState(City city, System.IO.BinaryReader r, bool netPacket, int subversion)
         {
             xpType1 = (WorkExperienceType)r.ReadByte();
             xpType2 = (WorkExperienceType)r.ReadByte();
@@ -130,7 +131,8 @@ namespace VikingEngine.DSSWars.Work
                 int secondsPassed = r.ReadByte() * TimeNetShareDiv;
                 processTimeStartStampSec = Ref.TotalGameTimeSec - secondsPassed;
                 processTimeLengthSec = r.ReadByte() * TimeNetShareDiv;
-                
+                subTileEnd = IntVector2.FromReadShort(r) + city.cityHallSubtilePos;
+                subTileStart = subTileEnd;
             }
         }
 
