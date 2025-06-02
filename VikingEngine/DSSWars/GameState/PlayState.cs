@@ -846,9 +846,9 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssPlayerEnterPresentation:
                     {
-                        var player = GetRemotePlayer(packet);
+                        var player = GetOrCreateRemotePlayer(packet.sender, 0);
                         int count = packet.r.ReadByte();
-                        player.profile.read(packet.r);
+                        player.profile = new FlagAndColor(packet.r);
                         player.flagTexture = player.profile.flagDesign.CreateTexture(player.profile);
                     }
                     break;
@@ -903,7 +903,7 @@ namespace VikingEngine.DSSWars
         
         public Players.RemotePlayer GetRemotePlayer(ReceivedPacket packet)
         {
-            return (Players.RemotePlayer)packet.sender.instancePeers[packet.senderLocalIndex].Tag;
+            return packet.sender.instancePeers?[packet.senderLocalIndex].Tag as Players.RemotePlayer;
         }
 
         public override void NetUpdate()
