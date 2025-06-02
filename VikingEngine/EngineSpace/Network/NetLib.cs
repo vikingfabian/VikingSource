@@ -152,6 +152,7 @@ namespace VikingEngine.Network
         DssJoined_WantWorld,
         DssSendWorld,
         DssPlayerStatus,
+        DssPlayerEnterPresentation,
         DssWorldTiles,
         DssWorldSubTiles,
         DssFactions,

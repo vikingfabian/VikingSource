@@ -220,22 +220,12 @@ namespace VikingEngine.DSSWars.GameState
                     while (armiesC.Next())
                     {
                         armiesC.sel.asyncBattleUpdate();
-                        //var groupsC = armiesC.sel.groups.counter();
-                        //while (groupsC.Next())
-                        //{
-                        //    groupsC.sel.asyncBattleUpdate();
-                        //}
                     }
                 }
 
                 foreach (var m in DssRef.world.cities)
                 {
                     m.asyncBattleUpdate();
-                    //var groupsC = m.groups.counter();
-                    //while (groupsC.Next())
-                    //{
-                    //    groupsC.sel.asyncBattleUpdate();
-                    //}
                 }
             }
             return exitThreads;

@@ -1,6 +1,9 @@
 ﻿//#define DEBUG_CLIENT
 
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -9,13 +12,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
-
-
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.GameObject;
@@ -30,6 +28,7 @@ using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.MoonFall;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 //
 
 namespace VikingEngine.DSSWars
@@ -815,17 +814,43 @@ namespace VikingEngine.DSSWars
             switch (packet.type)
             {
                 case PacketType.DssJoined_WantWorld:
-                    var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
-                    var meta = new SaveStateMeta();
-                    meta.netSetup();
-                    var saveGamestate = new SaveGamestate(meta);
-                    saveGamestate.writeNet(w);
-
+                    {
+                        var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
+                        var meta = new SaveStateMeta();
+                        meta.netSetup();
+                        var saveGamestate = new SaveGamestate(meta);
+                        saveGamestate.writeNet(w);
+                    }
                     //new SteamLargePacketWriter(file, SendPacketTo.OneSpecific, packet.sender.fullId, PacketType.DssSendWorld).begin();
                     break;
 
                 case PacketType.DssPlayerStatus:
-                    GetRemotePlayer(packet).Net_readStatus(packet.r);
+                    {
+                        var player = GetRemotePlayer(packet);
+                        player.Net_readStatus(packet.r);
+
+                        if (player.newPlayer)
+                        {
+                            //Present yourself
+                            player.newPlayer = false;
+                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
+                            w.Write((byte)localPlayers.Count);
+                            foreach (var local in localPlayers)
+                            {
+                                int flag = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].flagDesignIndex;
+                                DssRef.storage.flagStorage.flagDesigns[flag].write(w);
+                            }
+                        }
+                    }
+                    break;
+
+                case PacketType.DssPlayerEnterPresentation:
+                    {
+                        var player = GetRemotePlayer(packet);
+                        int count = packet.r.ReadByte();
+                        player.profile.read(packet.r);
+                        player.flagTexture = player.profile.flagDesign.CreateTexture(player.profile);
+                    }
                     break;
 
                 case PacketType.DssWorldTiles:                    

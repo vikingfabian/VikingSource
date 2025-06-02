@@ -2954,10 +2954,6 @@ namespace VikingEngine.DSSWars
 
             w.Write(Version);
 
-            //for (int i = 0; i < ColorCount; ++i)
-            //{
-            //    SaveLib.WriteColorStream_3B(w, colors[i]);
-            //}
             StreamLib.WriteColorStream_3B(w, col0_Main);
             StreamLib.WriteColorStream_3B(w, col1_Detail1);
             StreamLib.WriteColorStream_3B(w, col2_Detail2);
@@ -2972,10 +2968,6 @@ namespace VikingEngine.DSSWars
         {
             int version = r.ReadInt32();
 
-            //for (int i = 0; i < ColorCount; ++i)
-            //{
-            //    colors[i] = SaveLib.ReadColorStream_3B(r);
-            //}
             col0_Main = StreamLib.ReadColorStream_3B(r);
             col1_Detail1 = StreamLib.ReadColorStream_3B(r);
             col2_Detail2 = StreamLib.ReadColorStream_3B(r);
@@ -2986,7 +2978,6 @@ namespace VikingEngine.DSSWars
                 col5_AltMain = StreamLib.ReadColorStream_3B(r);
             }
 
-            //flagDesign.read(r);
             flagDesign = new FlagDesign(r);
         }
 

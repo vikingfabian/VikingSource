@@ -255,18 +255,6 @@ namespace VikingEngine.DSSWars.Display
             //}
         }
 
-        //public bool mouseOver()
-        //{
-        //    foreach (var p in messages)
-        //    {
-        //        if (p.mouseOver())
-        //        {
-        //            return true;
-        //        }
-        //    }
-
-        //    return false;
-        //}
     }
 
     class Message

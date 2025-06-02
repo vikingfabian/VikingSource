@@ -48,6 +48,7 @@ namespace VikingEngine.DSSWars.Work
             checkForGoal(true, mapObject.GetCity());
 
             updateGroudY(true);
+            refreshCarryModel();
         }
 
         public bool update(City city)
