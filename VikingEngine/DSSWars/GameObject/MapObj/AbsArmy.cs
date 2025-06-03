@@ -97,9 +97,10 @@ namespace VikingEngine.DSSWars.GameObject
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
-                groupsC.sel.writeGameState(w);
-               
+                groupsC.sel.writeGameState(w);               
             }
+
+            Debug.WriteCheck(w);
         }
         public void readGroups(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
@@ -120,6 +121,11 @@ namespace VikingEngine.DSSWars.GameObject
                     SoldierGroup group = new SoldierGroup(this, r, subVersion, pointers);
                     
                 }
+            }
+
+            if (subVersion >= 62)
+            {
+                Debug.ReadCheck(r);
             }
         }
         virtual public void asyncNearObjectsUpdate()

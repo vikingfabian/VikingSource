@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Resource
 
             // buildings & tools
             new ItemProperties(ItemResourceType.Palisade, DefaultWeight, CraftResourceLib.Palisade, null);
-            new ItemProperties(ItemResourceType.Toolkit, DefaultWeight, CraftResourceLib.Beer, null);
+            new ItemProperties(ItemResourceType.Toolkit, DefaultWeight, CraftResourceLib.Toolkit, null);
             new ItemProperties(ItemResourceType.Wagon2Wheel, DefaultWeight, CraftResourceLib.WagonLight, null);
             new ItemProperties(ItemResourceType.Wagon4Wheel, DefaultWeight, CraftResourceLib.WagonHeavy, null);
 

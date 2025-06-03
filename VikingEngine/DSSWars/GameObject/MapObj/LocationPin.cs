@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeGameState(System.IO.BinaryWriter w)
         {
             name.write(w);
-            WP.writePosXZ(w, position);
+            WP.WritePosXZPercentU16(w, position);
         }
 
 
@@ -65,7 +65,14 @@ namespace VikingEngine.DSSWars.GameObject
             //    name.name = Data.NameGenerator.ArmyName(id);
             //}
 
-            WP.readPosXZ(r, out position, out tilePos);
+            if (subVersion < 62)
+            {
+                WP.readPosXZ_old(r, out position, out tilePos);
+            }
+            else
+            {
+                WP.ReadPosXZPercentU16(r, out position, out tilePos);
+            }
         }
 
         void createOverViewModel()

@@ -267,7 +267,7 @@ namespace VikingEngine.DSSWars
             w.Write(availableForPlayer);
         }
 
-        public void readMapFile(System.IO.BinaryReader r, int version, WorldData world)
+        public void readMapFile(System.IO.BinaryReader r, int mapVersion, WorldData world)
         {
             int cityCount = r.ReadUInt16();
 

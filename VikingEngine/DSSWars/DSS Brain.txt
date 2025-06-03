@@ -1,11 +1,16 @@
 ﻿UPDATE
 -Change Log-
-* Spelling correction:
--warmachine
+* Spelling corrections:
+"warmachine"
+"Work costs less energy"
 
-*Fixed player reference bug
-
-
+* Fixed player reference bug
+* Added data drift security on armies
+* Improved position data compression
+* Fixed a save corruption bug
+* fixed: smith makes beer
+* fixed negative length save crash
+* fixed city name crash
 
 #Free build defences
  Rock thrower
@@ -24,6 +29,10 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-Diplomacy, timer to reduce relation. Affect others. View relations teo all on select.
+
+
+
 x input options in ingame menu are broken
 x Auto upgrade
 x Declaring war needs warning

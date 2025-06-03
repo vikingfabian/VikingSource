@@ -2094,7 +2094,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string Name(out bool mayEdit)
         {            
-            mayEdit = faction.player != null && faction.player.IsLocalPlayer();
+            mayEdit = faction != null && faction.player != null && faction.player.IsLocalPlayer();
             return name.name;
         }
 
