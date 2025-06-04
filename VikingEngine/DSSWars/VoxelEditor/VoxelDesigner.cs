@@ -1,48 +1,50 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using VikingEngine.Engine;
-using VikingEngine.Graphics;
-using VikingEngine.Voxels;
-//xna
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using VikingEngine.DataStream;
-using VikingEngine.HUD;
-using VikingEngine.LootFest.Data;
-using VikingEngine.Input;
-using VikingEngine.LootFest.Map.HDvoxel;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Voxels;
+using VikingEngine.Graphics;
+using VikingEngine.HUD;
+using VikingEngine.LootFest;
+using VikingEngine.LootFest.Data;
+using VikingEngine.LootFest.Editor;
+using VikingEngine.LootFest.Map.HDvoxel;
+using VikingEngine.Voxels;
 
-namespace VikingEngine.LootFest.Editor
+namespace VikingEngine.DSSWars.VoxelEditor
 {
 
     class VoxelDesigner : Voxels.AbsVoxelDesigner
     {
         public MergeModelsOption mergeModelsOption = new MergeModelsOption().StandardInit();
-        public Players.Player parent = null;
+        //public Players.Player parent = null;
 
-        public bool inGame { get { return parent != null; } }
-
+        
         public static readonly IntVector3 StandardDrawlimit = new IntVector3(
-           Data.Block.NumObjBlocksPerTerrainBlock * 2,
-           Data.Block.NumObjBlocksPerTerrainBlock * 3,
-           Data.Block.NumObjBlocksPerTerrainBlock * 2) - 1;
+           16,
+           24,
+           16) - 1;
         public static readonly IntervalIntV3 StandardDrawLimitRange =
             new IntervalIntV3(IntVector3.Zero, StandardDrawlimit);
-        
+
 
         BlockHD swapMaterialFrom;
         TextG infoText;
-        
+
         //float sphereRadius = 2.5f;
 
         Graphics.Mesh doorOutline;
         bool lockInputFirstFrame = true;
 
-        Display.ColorPicker colorPicker = null;
+        ColorPicker colorPicker = null;
         public bool combineLoading = false;
 
-        DesignMenuSystem menusystem;
+        VoxelEditorMenu2 menusystem;
         public DesignerStorage storage;
 
         Timer.Basic autoSaveTimer = new Timer.Basic(TimeExt.MinutesToMS(1f), true);
@@ -72,21 +74,21 @@ namespace VikingEngine.LootFest.Editor
             }
         }
 
-        public static Map.WorldPosition HeroPosToCreationStartPos(IntVector2 heroScreen)
-        {
-            Map.WorldPosition result = Map.WorldPosition.EmptyPos;
-            result.ChunkGrindex = heroScreen;
-            result.ChunkGrindex -= Editor.VoxelDesigner.CreationChunkWidth / PublicConstants.Twice;
+        //public static Map.WorldPosition HeroPosToCreationStartPos(IntVector2 heroScreen)
+        //{
+        //    Map.WorldPosition result = Map.WorldPosition.EmptyPos;
+        //    result.ChunkGrindex = heroScreen;
+        //    result.ChunkGrindex -= Editor.VoxelDesigner.CreationChunkWidth / PublicConstants.Twice;
 
-            result.LocalBlockGrindex = new IntVector3(1, 0, 1);
-            return result;
-        }
+        //    result.LocalBlockGrindex = new IntVector3(1, 0, 1);
+        //    return result;
+        //}
 
-        public const int CreationChunkWidth = 5;
-        public const int CreationXZSize = Map.WorldPosition.ChunkWidth * CreationChunkWidth - 2;
+        //public const int CreationChunkWidth = 5;
+        //public const int CreationXZSize = Map.WorldPosition.ChunkWidth * CreationChunkWidth - 2;
 
-        public static readonly IntervalIntV3 CreationSizeLimit = new IntervalIntV3(IntVector3.Zero,
-            new IntVector3(CreationXZSize, Map.WorldPosition.ChunkHeight, CreationXZSize) - 1);
+        //public static readonly IntervalIntV3 CreationSizeLimit = new IntervalIntV3(IntVector3.Zero,
+        //    new IntVector3(CreationXZSize, Map.WorldPosition.ChunkHeight, CreationXZSize) - 1);
 
         void storeSelectionAsTemplate(int category)
         {
@@ -94,54 +96,23 @@ namespace VikingEngine.LootFest.Editor
             menusystem.closeMenu();
             //visa save warning
 
-            if (inGame)
-            {
-                parent.Print("Template Saved");
-                //parent.Print(DataLib.AbsSaveToStorage.AbleToSave ?
-                //    "Template Saved" : "Saving Failed");
-            }
         }
 
-        public VoxelDesigner(Map.WorldPosition voxelDesignerStartPos,
-            Graphics.AbsCamera camera, float CamTopViewFOV, VectorRect menuArea, Players.Player parent)
-            : base(CreationSizeLimit,
-            new Vector3(voxelDesignerStartPos.PositionV3.X, 0, voxelDesignerStartPos.PositionV3.Z), 
-            parent.inputMap.editorInput, parent.inputMap.menuInput, parent.PlayerIndex, true, true)
-        { //IN GAME 
-            bUpdateDrawLimits = false;
-            ZoomBounds.Max = 200;
-            this.parent = parent;
-            designerInterface.settings = parent.Storage.voxelDesignerSettings;
-            worldPos = voxelDesignerStartPos;
-            basicInit(menuArea);
-
-            //place the selection in center
-            designerInterface.freePencilGridPos = new Vector3(
-                drawLimits.Max.X * PublicConstants.Half, 
-                parent.hero.HeadPosition.Y,
-                drawLimits.Max.Z * PublicConstants.Half);
-            designerInterface.moveFreePencil(Vector3.Up * 0.1f);
-
-            base.camera.targetZoom = camera.targetZoom;
-            base.camera.Tilt = camera.Tilt;
-            base.camera.FieldOfView = CamTopViewFOV;
-            base.camera.aspectRatio = camera.aspectRatio;
-        }
-
+       
         public VoxelDesigner(int playerIndex)
-            : base(StandardDrawLimitRange, Vector3.Zero, 
+            : base(StandardDrawLimitRange, Vector3.Zero,
                   ((LootFest.Players.InputMap)XGuide.GetPlayer(playerIndex).inputMap).editorInput,
-                  ((LootFest.Players.InputMap)XGuide.GetPlayer(playerIndex).inputMap).menuInput, 
+                  ((LootFest.Players.InputMap)XGuide.GetPlayer(playerIndex).inputMap).menuInput,
                   playerIndex, false, false)
         { //IN EDITOR
-           
+
             basicInit(new VectorRect(
                 Engine.Screen.SafeArea.Position, new Vector2(300, Engine.Screen.SafeArea.Height)));
             Ref.draw.Camera.targetZoom = 40;
         }
-        override protected bool viewDrawLimitGrid { get { return !inGame; } }
-        
-        override protected bool allowSelectAll { get { return !inGame; } }
+        override protected bool viewDrawLimitGrid { get { return true; } }
+
+        override protected bool allowSelectAll { get { return true; } }
 
         public override void UpdateInput()
         {
@@ -176,22 +147,22 @@ namespace VikingEngine.LootFest.Editor
         void basicInit(VectorRect menuArea)
         {
             storage = new DesignerStorage(this);
-            menusystem = new DesignMenuSystem(this);
+            menusystem = new VoxelEditorMenu2(this);
             absMenuSystem = menusystem;
 
             infoText = new TextG(LoadedFont.Regular, new Vector2(menuArea.X, menuArea.Bottom - 30),
                 VectorExt.V2(0.8f), Align.Zero, "info", Color.White, ImageLayers.Background6);
             designerInterface.hudElements.Add(infoText);
-                        
+
             bUpdateDrawLimits = true;
             UpdateDrawLimits();
         }
 
         public void openColorPicker()
         {
-            colorPicker = new Display.ColorPicker(SelectedMaterial, playerIndex);
+            colorPicker = new ColorPicker(SelectedMaterial, playerIndex);
         }
-        
+
         void selectMaterial(BlockHD m)
         {
             SelectedMaterial = m;
@@ -220,46 +191,46 @@ namespace VikingEngine.LootFest.Editor
                 {
                     for (drawPoint.X = volume.Min.X; drawPoint.X <= volume.Max.X; drawPoint.X++)
                     {
-                        SetVoxel(drawPoint , value);
+                        SetVoxel(drawPoint, value);
                     }
                 }
             }
         }
 
-        public override void SetVoxel(IntVector3 drawPoint, ushort material)
-        {
-            if (inGame)
-            {
-                Map.WorldPosition pos = worldPos;
-                pos.WorldGrindex.Add(drawPoint);
-                pos.SetBlock_IfOpen(material);
-            }
-            else
-                base.SetVoxel(drawPoint, material);
-        }
+        //public override void SetVoxel(IntVector3 drawPoint, ushort material)
+        //{
+        //    if (inGame)
+        //    {
+        //        Map.WorldPosition pos = worldPos;
+        //        pos.WorldGrindex.Add(drawPoint);
+        //        pos.SetBlock_IfOpen(material);
+        //    }
+        //    else
+        //        base.SetVoxel(drawPoint, material);
+        //}
 
-        public override void SetVoxel(Map.WorldPosition wp, ushort material)
-        {
-            if (inGame)
-            {
-                wp.SetBlock_IfOpen(material);
-            }
-            else
-                base.SetVoxel(wp, material);
-        }
+        //public override void SetVoxel(Map.WorldPosition wp, ushort material)
+        //{
+        //    if (inGame)
+        //    {
+        //        wp.SetBlock_IfOpen(material);
+        //    }
+        //    else
+        //        base.SetVoxel(wp, material);
+        //}
 
-        public override ushort GetVoxel(IntVector3 drawPoint)
-        {
-            if (inGame)
-            {
-                Map.WorldPosition pos = worldPos;
-                pos.WorldGrindex.Add(drawPoint);
-                return pos.GetBlock();
+        //public override ushort GetVoxel(IntVector3 drawPoint)
+        //{
+        //    if (inGame)
+        //    {
+        //        Map.WorldPosition pos = worldPos;
+        //        pos.WorldGrindex.Add(drawPoint);
+        //        return pos.GetBlock();
 
-            }
-            return base.GetVoxel(drawPoint);
-        }
-        
+        //    }
+        //    return base.GetVoxel(drawPoint);
+        //}
+
         protected override bool selectionCut
         {
             get
@@ -268,26 +239,26 @@ namespace VikingEngine.LootFest.Editor
             }
         }
 
-        protected override void onSelect()
-        {
-            base.onSelect();
-            if (inGame)
-            {
-                parent.beginInputOverview();
-            }
-        }
-        
+        //protected override void onSelect()
+        //{
+        //    base.onSelect();
+        //    if (inGame)
+        //    {
+        //        parent.beginInputOverview();
+        //    }
+        //}
+
         override protected bool resetWhiteLines
         {
             get
             {
-                return !inGame;
+                return true;
             }
         }
-                                
+
         const string DoorPart1Text = "Door (open)";
         const string DoorPart2Text = "Door (closed)";
-        
+
         void newCharacterSizeAdjust()
         {
             drawLimits.Max.AddDimension(Dimensions.X, 2);
@@ -299,10 +270,10 @@ namespace VikingEngine.LootFest.Editor
 
             updateVoxelObj();
         }
-        
-        
+
+
         public bool WaitingForTextInput = false;
-        
+
 
         public void LinkSetLimitsAfterSel()
         {
@@ -319,7 +290,7 @@ namespace VikingEngine.LootFest.Editor
                 updateVoxelObj();
             }
         }
-        
+
         public void LinkStampOnFrames(int frame = -1)
         {
             int current = currentFrame.Value;
@@ -334,7 +305,7 @@ namespace VikingEngine.LootFest.Editor
                     {
                         deleteArea(designerInterface.selectionArea);
                     }
-                    
+
                     stampSelection(false);
                 }
             }
@@ -361,9 +332,9 @@ namespace VikingEngine.LootFest.Editor
                 if (i != current || includeThisFrame)
                 {
                     currentFrame.Value = i;
-                    
-                        deleteArea(designerInterface.selectionArea);
-                    
+
+                    deleteArea(designerInterface.selectionArea);
+
                 }
             }
 
@@ -375,22 +346,22 @@ namespace VikingEngine.LootFest.Editor
             }
             menusystem.closeMenu();
         }
-        
+
         public void LinkSelRotateLieDown()
         {
             templateSent = false;
         }
-        
-       public void LinkAnimUnlockFrame()
-       {
+
+        public void LinkAnimUnlockFrame()
+        {
             lockFirstFrames = 0;
             menusystem.closeMenu();
-       }
-       public void LinkAnimLockFrame()
-       {
-           lockFirstFrames = currentFrame.Value;
-           menusystem.closeMenu();
-       }
+        }
+        public void LinkAnimLockFrame()
+        {
+            lockFirstFrames = currentFrame.Value;
+            menusystem.closeMenu();
+        }
 
         public void LinkAnimAddFrame()
         {
@@ -402,14 +373,15 @@ namespace VikingEngine.LootFest.Editor
             }
             else
             {
-                SoundLib.UnavailableActionSound.PlayFlat();
+                SoundLib.wrong.Play();
+                //SoundLib.UnavailableActionSound.PlayFlat();
             }
         }
         public void LinkHideHUD()
         {
             ShowHUD(false);
             menusystem.closeMenu();
-        }        
+        }
 
         public void setBgCol(Color col)
         {
@@ -422,7 +394,7 @@ namespace VikingEngine.LootFest.Editor
             storage.clearName();
             menusystem.closeMenu();
         }
-        
+
         public void changeCanvasSize(IntVector3 add)
         {
             storeUndoableAction(true);
@@ -453,18 +425,18 @@ namespace VikingEngine.LootFest.Editor
                 storage.saveFileName = result;
             }
         }
-       
+
         public void LinkEXIT()
         {
-            if (inGame)
-                parent.EndCreationMode();
-            else
-            {
-                if (Ref.gamestate.previousGameState == null)
-                    Ref.update.exitApplication = true;
-                else
-                    Engine.StateHandler.PopGamestate();
-            }
+            //if (inGame)
+            //    parent.EndCreationMode();
+            //else
+            //{
+            //    if (Ref.gamestate.previousGameState == null)
+            //        Ref.update.exitApplication = true;
+            //    else
+            //        Engine.StateHandler.PopGamestate();
+            //}
         }
 
         public void linkFLattenArea()
@@ -497,27 +469,18 @@ namespace VikingEngine.LootFest.Editor
         public void LinkTemplateUse(FilePath path)
         {
             loadTemplateFile(path);
-        }               
+        }
 
         override public void LinkSelSaveTemplate()
         {
             storeSelectionAsTemplate(0);
         }
 
-        protected override void exportSelectionAsByteArray()
-        {
-            base.exportSelectionAsByteArray();
-            if (inGame)
-            {
-                parent.Print("Exported");
-            }
-        }
-        
         public static string searchPattern(bool save)
         {
             return "*" + Voxels.VoxelLib.VoxelObjByteArrayEnding;
         }
-        
+
         public void voxelGridToSelection(VoxelObjGridDataHD grid)
         {
             selectedVoxels.Voxels = grid.GetVoxelArray();
@@ -570,35 +533,35 @@ namespace VikingEngine.LootFest.Editor
         {
             this.selectedVoxels = selectedVoxels;
             designerInterface.selectionArea = volume;
-            
+
             refreshSelectionModel();
         }
-        
+
         //void delete
 
-        public override void stampSelection(bool startThread)
-        {
+        //public override void stampSelection(bool startThread)
+        //{
 
-            if (inGame)
-            {
-                if (HasSelection)
-                {
-                    Music.SoundManager.PlayFlatSound(LoadedSound.block_place_1);
-                    storeUndoableAction(false);
-                    foreach (VoxelHD v in selectedVoxels.Voxels)
-                    {
-                        worldPos.GetNeighborPos(v.Position).SetBlock(v.Material);
-                    }
-                    UpdateVoxelObj(selectedVoxels.getMinMax());
-                    //NetworkWriteTemplate();
-                }
-            }
-            else
-            {
-                base.stampSelection(startThread);
-            }
+        //    if (inGame)
+        //    {
+        //        if (HasSelection)
+        //        {
+        //            Music.SoundManager.PlayFlatSound(LoadedSound.block_place_1);
+        //            storeUndoableAction(false);
+        //            foreach (VoxelHD v in selectedVoxels.Voxels)
+        //            {
+        //                worldPos.GetNeighborPos(v.Position).SetBlock(v.Material);
+        //            }
+        //            UpdateVoxelObj(selectedVoxels.getMinMax());
+        //            //NetworkWriteTemplate();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        base.stampSelection(startThread);
+        //    }
 
-        }
+        //}
         List<VoxelModelName> loadableInGameObjects()
         {
             List<VoxelModelName> loadable = new List<VoxelModelName>
@@ -642,29 +605,29 @@ namespace VikingEngine.LootFest.Editor
             return loadable;
         }
 
-        public void LinkTemplateDeleteOK(FilePath path)
-        {
-            if (inGame)
-            {
-                new DataStream.RemoveFile(path, null, false);
-            }
-            parent.Print("Template Deleted");
-            menusystem.listTemplates();
-        }
+        //public void LinkTemplateDeleteOK(FilePath path)
+        //{
+        //    if (inGame)
+        //    {
+        //        new DataStream.RemoveFile(path, null, false);
+        //    }
+        //    parent.Print("Template Deleted");
+        //    menusystem.listTemplates();
+        //}
 
         const string ThrallordPath = LfLib.DataFolder + "Thrallords";
         const string RaceTrackPath = LfLib.DataFolder + "Data\\RaceTracks";
-       
+
         protected override void pickColor()
         {
             base.pickColor();
             if (drawCoordMaterial.HasMaterial())
             {
                 SelectedMaterial = drawCoordMaterial;
-                if (inGame)
-                {
-                    parent.Print("Picked: " + Settings.Material.ToString());
-                }
+                //if (inGame)
+                //{
+                //    parent.Print("Picked: " + Settings.Material.ToString());
+                //}
 
                 Debug.Log("Picked: " + Settings.Material.ToString() + ", blockVal:" + Settings.Material.BlockValue.ToString());
             }
@@ -672,23 +635,16 @@ namespace VikingEngine.LootFest.Editor
 
         override protected ushort Get(IntVector3 pos)
         {
-            if (inGame)
-            {
-                Map.WorldPosition wp = Map.WorldPosition.EmptyPos;
-                wp = worldPos.GetNeighborPos(pos);
-                return wp.GetBlock();
-            }
-            else
-            {
+            
                 return voxels.Get(pos);
-            }
+            
         }
 
         protected override void UpdatePencilInfo()
         {
             if (drawLimits.pointInBounds(designerInterface.drawCoord))
             {
-                Map.WorldPosition wp = Map.WorldPosition.EmptyPos;
+                //Map.WorldPosition wp = Map.WorldPosition.EmptyPos;
                 drawCoordMaterial.BlockValue = Get(designerInterface.drawCoord);
 
                 infoText.TextString = "X" + designerInterface.drawCoord.X.ToString() + " Y" + designerInterface.drawCoord.Y.ToString() + " Z" + designerInterface.drawCoord.Z.ToString();
@@ -709,7 +665,7 @@ namespace VikingEngine.LootFest.Editor
                     base.UpdatePencilInfo();
                 }
 
-                
+
             }
         }
 
@@ -770,7 +726,8 @@ namespace VikingEngine.LootFest.Editor
                 new GuiTextButton("Empty", null, new GuiAction1Arg<BlockHD>(replaceSelectionMaterialsTo, VikingEngine.LootFest.Map.HDvoxel.BlockHD.Empty),
                     true, layout);
                 menusystem.colorPalette(layout, replaceSelectionMaterialsTo);
-            } layout.End();
+            }
+            layout.End();
         }
 
         void replaceSelectionMaterialsTo(BlockHD to)
@@ -809,9 +766,9 @@ namespace VikingEngine.LootFest.Editor
             }
             layout.End();
 
-            
+
         }
-        
+
         void swapMaterials(VoxelObjListDataHD voxelList, ushort swapTo, bool updateImage)
         {
             ushort from = swapMaterialFrom.BlockValue;
@@ -885,7 +842,7 @@ namespace VikingEngine.LootFest.Editor
             if (from == swapTo)
                 return;
             IntVector3 pos = IntVector3.Zero;
-            
+
 
             grid.ReplaceMaterial(from, swapTo, designerInterface.selectionArea);
 
@@ -913,36 +870,6 @@ namespace VikingEngine.LootFest.Editor
             }
         }
 
-        public static Map.WPRange NetworkReadTemplate(System.IO.BinaryReader r, Players.ClientPlayer sender)
-        {
-            if (!r.ReadBoolean())
-            {
-                sender.EditorTemplateSize = IntVector3.FromByteSzStream(r);
-                VoxelObjGridData grid = new VoxelObjGridData(sender.EditorTemplateSize);
-
-                int length = r.ReadInt16();
-                byte[] array = new byte[length];
-                r.Read(array, 0, length);
-                List<byte> list = new List<byte>();
-                list.AddRange(array);
-                grid.FromCompressedData(list);
-
-                sender.EditorTemplate = new VoxelObjListData(grid.GetVoxelArray());
-            }
-            Map.WorldPosition worldPos = Map.WorldPosition.EmptyPos;
-            worldPos.WorldGrindex = IntVector3.FromStream(r);
-            
-            foreach (Voxel v in sender.EditorTemplate.Voxels)
-            {
-                worldPos.GetNeighborPos(v.Position).SetBlock(v.Material);
-            }
-
-            Map.WorldPosition max = worldPos;
-            max.WorldGrindex += sender.EditorTemplateSize;
-            return new Map.WPRange(worldPos, max);
-        }
-        
-
         public override void print(string text)
         {
             if (inGame)
@@ -950,45 +877,14 @@ namespace VikingEngine.LootFest.Editor
                 parent.Print(text);
             }
         }
-        
-        public override void updateVoxelObj(IntervalIntV3 updateArea)
-        {
-            if (inGame)
-            {
-                updateArea.AddRadius(1);
-                Map.WorldPosition minScreen = worldPos;
-                minScreen.WorldGrindex.Add(updateArea.Min);
-                Map.WorldPosition maxScreen = worldPos;
-                maxScreen.WorldGrindex.Add(updateArea.Max);
 
-                UpdateMapArea(minScreen, maxScreen);
-            }
-            else
-            {
-                base.updateVoxelObj(updateArea);
-            }
 
-        }
-
-        public static void UpdateMapArea(Map.WorldPosition worldPos, IntVector3 size)
-        {
-            Map.WorldPosition maxScreen = worldPos;
-            maxScreen.WorldGrindex += size;
-
-            UpdateMapArea(worldPos, maxScreen);
-        }
-
-        public static void UpdateMapArea(Map.WorldPosition minScreen, Map.WorldPosition maxScreen)
-        {
-            Map.World.ReloadChunkMesh(minScreen, maxScreen, true);
-            
-        }
 
         public void exportObjModel()
         {
             var frame = animationFrames.Frames[currentFrame.Value];
             ObjExporterScript.Export(frame, storage.saveFileName + " (" + TextLib.IndexToString(currentFrame.Value) + ")");
-             menusystem.mainMenu();
+            menusystem.mainMenu();
         }
 
         public override void DeleteMe()
@@ -1038,5 +934,4 @@ namespace VikingEngine.LootFest.Editor
         Joints,
         NUM
     }
-
 }

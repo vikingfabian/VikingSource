@@ -40,9 +40,9 @@ namespace VikingEngine.LootFest.Editor
         }
 
         public string saveFileName = randomName();
-        VoxelDesigner designer;
+        AbsVoxelDesigner designer;
         
-        public DesignerStorage(VoxelDesigner designer)
+        public DesignerStorage(AbsVoxelDesigner designer)
         {
             this.designer = designer;
         }
@@ -59,15 +59,15 @@ namespace VikingEngine.LootFest.Editor
 
         void modelLoaded(VoxelObjGridDataAnimHD model)
         {
-            if (designer.inGame)
-            {
-                designer.voxelGridToSelection(model.Frames[0]);
-            }
-            else
-            {
+            //if (designer.inGame)
+            //{
+            //    designer.voxelGridToSelection(model.Frames[0]);
+            //}
+            //else
+            //{
                 designer.addLoadedModel(model, designer.combineLoading);
                 //updateVoxelObj();
-            }
+            //}
         }
 
 

@@ -8,7 +8,20 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Voxels
 {
-    class AbsDesignMenuSystem
+    abstract class AbsDesignMenuSystem_Base
+    {
+        abstract public void closeMenu();
+        abstract public bool InMenu { get; }
+
+        /// <returns>Exit</returns>
+        abstract public bool Update();
+
+        virtual public void openMenu() { throw new NotImplementedException(); }
+
+        abstract public void selectionMenu();
+    }
+
+    class AbsDesignMenuSystem : AbsDesignMenuSystem_Base
     {
         public HUD.Gui menu;
         AbsVoxelDesigner designer;
@@ -18,19 +31,19 @@ namespace VikingEngine.Voxels
             this.designer = designer;
         }
 
-        public bool Update()
+        override public bool Update()
         {
             return menu.Update();
         }
 
-        virtual public void openMenu() { throw new NotImplementedException(); }
+       
         //virtual protected DrawTool drawTool
         //{
         //    get { return designer.tool; }
         //    set { designer.tool = value; }
         //}
 
-        virtual public void selectionMenu()
+        override public void selectionMenu()
         {
 
             // HUD.File file = new HUD.File();
@@ -116,7 +129,7 @@ namespace VikingEngine.Voxels
             } layout.End();
         }
 
-        virtual public void closeMenu()
+        override public void closeMenu()
         {
             if (menu != null)
             {
@@ -128,7 +141,7 @@ namespace VikingEngine.Voxels
                 //designer.inputMap.SetGameStateLayout(ControllerActionSetType.EditorControls);
             }
         }
-        public bool InMenu
+        override public bool InMenu
         {
             get { return menu != null && menu.Visible; }
         }

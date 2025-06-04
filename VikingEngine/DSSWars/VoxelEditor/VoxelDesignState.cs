@@ -1,23 +1,23 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using VikingEngine.Engine;
-using VikingEngine.Graphics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace VikingEngine.LootFest.GameState
+namespace VikingEngine.DSSWars.VoxelEditor
 {
     class VoxelDesignState : Voxels.AbsVoxelDesignerState
     {
-        Editor.VoxelDesigner vDesigner;
+        VoxelDesigner vDesigner;
         public VoxelDesignState(int player)
             : base(true)
         {
-            vDesigner = new Editor.VoxelDesigner(player);
+            vDesigner = new VoxelDesigner(player);
             init(vDesigner);
         }
 
-        void init(Editor.VoxelDesigner vDesigner)
+        void init(VoxelDesigner vDesigner)
         {
             Input.Mouse.Visible = false;
             desinger = vDesigner;

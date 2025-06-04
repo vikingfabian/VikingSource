@@ -63,7 +63,7 @@ namespace VikingEngine.Voxels
         public VoxelObjListDataHD selectedVoxels = new VoxelObjListDataHD(new List<VoxelHD>());
         
         protected bool templateSent = false;
-        protected AbsDesignMenuSystem absMenuSystem;
+        protected AbsDesignMenuSystem_Base absMenuSystem;
         public bool inGameEditor;
 
         public void ResetTemplateSent()
@@ -239,6 +239,9 @@ namespace VikingEngine.Voxels
             animationFrames.Frames = new List<VoxelObjGridDataHD> { animationFrames.Frames[currentFrame.Value] };
             updateFrameInfo();
         }
+
+        abstract public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel);
+       
         public void AddFrame()
         {
             animationFrames.Frames.Insert(currentFrame.Value, animationFrames.Frames[currentFrame.Value].Clone());
