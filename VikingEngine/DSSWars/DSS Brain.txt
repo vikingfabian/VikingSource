@@ -30,8 +30,7 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 
 #Todo#
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select.
-
-
+-mod av Storage location
 
 x input options in ingame menu are broken
 x Auto upgrade

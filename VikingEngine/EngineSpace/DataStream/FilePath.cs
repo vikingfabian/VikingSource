@@ -16,7 +16,7 @@ namespace VikingEngine.DataStream
 #elif CCG
                 "PickHero";
 #elif DSS
-                "DSS_warparty"; 
+                "DSS_war_storage"; //"DSS_warparty"; 
 #elif TOGG
                 "TowardsGoldAndGlory"; 
 #else
@@ -119,19 +119,19 @@ namespace VikingEngine.DataStream
 
         
 
-        static string PcStoragePath = null;
+        
 
         public static string StorageDirectory()
         {
 #if PCGAME
             if (PlatformSettings.ReleaseBuild && PlatformSettings.PC_platform)
             {
-                if (PcStoragePath == null)
-                {
-                    PcStoragePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + 
-                        "\\My Games\\" +
-                        StorageFolderName;
-                }
+                //if (Config.PcStoragePath == null)
+                //{
+                //    PcStoragePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + 
+                //        "\\My Games\\" +
+                //        StorageFolderName;
+                //}
 //#if PJ
 //                "PartyJousting";}
 //#elif CCG
@@ -143,7 +143,7 @@ namespace VikingEngine.DataStream
 //#else
 //                "Lootfest";}
 //#endif
-                return PcStoragePath;
+                return Config.PcStoragePath;
             }
             else
             {
