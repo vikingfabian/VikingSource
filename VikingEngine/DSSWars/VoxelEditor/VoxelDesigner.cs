@@ -10,6 +10,8 @@ using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Voxels;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.Editor;
@@ -171,7 +173,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
         void selectSecondaryMaterial(BlockHD m)
         {
             SecondaryMaterial = m;
-            menusystem.menu.PopLayout();
+            menusystem.menu.menuBack();//.menu.PopLayout();
         }
 
 
@@ -721,6 +723,12 @@ namespace VikingEngine.DSSWars.VoxelEditor
         {
             swapMaterialFrom = new BlockHD(from);
 
+            RichBoxContent content = new RichBoxContent();
+            content.h1("Swap Material To", HudLib.TitleColor_Head);
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Empty") }, new RbAction1Arg<BlockHD>(replaceSelectionMaterialsTo, VikingEngine.LootFest.Map.HDvoxel.BlockHD.Empty)));
+
+            menusystem.Refresh(content);
+
             GuiLayout layout = new GuiLayout("Swap Material To", menusystem.menu, GuiLayoutMode.MultipleColumns, null);
             {
                 new GuiTextButton("Empty", null, new GuiAction1Arg<BlockHD>(replaceSelectionMaterialsTo, VikingEngine.LootFest.Map.HDvoxel.BlockHD.Empty),
@@ -739,7 +747,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
             {
                 swapMaterials(selectedVoxels, swapTo, true);
 
-                if (!inGame && repeateOnAllFrames)
+                if (repeateOnAllFrames)
                 {
                     for (int i = 0; i < animationFrames.Frames.Count; i++)
                     {
@@ -864,18 +872,18 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
         protected override void LargeSelectionWarning()
         {
-            if (inGame)
-            {
-                parent.Print("Large selection!");
-            }
+            //if (inGame)
+            //{
+            //    parent.Print("Large selection!");
+            //}
         }
 
         public override void print(string text)
         {
-            if (inGame)
-            {
-                parent.Print(text);
-            }
+            //if (inGame)
+            //{
+            //    parent.Print(text);
+            //}
         }
 
 
