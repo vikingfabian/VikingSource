@@ -1,16 +1,9 @@
 ﻿UPDATE
 -Change Log-
-* Spelling corrections:
-"warmachine"
-"Work costs less energy"
+* Added a config file next to the EXE, to edit save location
+* Started on a game manual
+https://docs.google.com/document/d/1_wUekNjufj6ghsvAcmFxgC0iqzqsAJ3mqFknUujOQy8/edit?usp=sharing
 
-* Fixed player reference bug
-* Added data drift security on armies
-* Improved position data compression
-* Fixed a save corruption bug
-* fixed: smith makes beer
-* fixed negative length save crash
-* fixed city name crash
 
 #Free build defences
  Rock thrower
