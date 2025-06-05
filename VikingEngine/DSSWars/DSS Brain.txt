@@ -1,16 +1,10 @@
 ﻿UPDATE
 -Change Log-
-* Spelling corrections:
-"warmachine"
-"Work costs less energy"
+* Added a config file next to the EXE, to edit save location
+* Started on a game manual
+https://docs.google.com/document/d/1_wUekNjufj6ghsvAcmFxgC0iqzqsAJ3mqFknUujOQy8/edit?usp=sharing
+* fixed: input options in ingame menu are broken
 
-* Fixed player reference bug
-* Added data drift security on armies
-* Improved position data compression
-* Fixed a save corruption bug
-* fixed: smith makes beer
-* fixed negative length save crash
-* fixed city name crash
 
 #Voxel editor#
 
@@ -41,6 +35,7 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 
 #Todo#
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select.
+-mod av Storage location
 
 x input options in ingame menu are broken
 x Auto upgrade
