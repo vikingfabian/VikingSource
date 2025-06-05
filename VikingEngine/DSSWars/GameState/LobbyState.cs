@@ -1055,15 +1055,18 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case GameMenuSystem.UnderMenu_Options_Mouse:
-                    GameMenuSystem.mouseOptions(underMenu);
-                    break;
-
                 case GameMenuSystem.UnderMenu_Options_Keyboard:
-                    GameMenuSystem.keyboardOptions(underMenu);
-                    break;
-
                 case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
-                    GameMenuSystem.listMapOptions(underMenu);
+                    GameMenuSystem.refreshPage(underMenu);
+                    //    GameMenuSystem.mouseOptions(underMenu);
+                    //    break;
+
+                    //case GameMenuSystem.UnderMenu_Options_Keyboard:
+                    //    GameMenuSystem.keyboardOptions(underMenu);
+                    //    break;
+
+                    //case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
+                    //    GameMenuSystem.listMapOptions(underMenu);
                     break;
 
                 case UnderMenu_Options_Language:

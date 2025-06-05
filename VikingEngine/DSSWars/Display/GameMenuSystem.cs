@@ -19,6 +19,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.LootFest.Players;
+using VikingEngine.PJ.Display;
 
 namespace VikingEngine.DSSWars.Display
 {
@@ -75,7 +76,10 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (menu.needRefresh)
                 {
-                    pauseMenu();
+                    if (refreshPage(menu) == false)
+                    {
+                        pauseMenu();
+                    }
                 }
                 menu.updateMouseInput(ref mouseOver);
                 
@@ -90,6 +94,28 @@ namespace VikingEngine.DSSWars.Display
             return false;
         }
 
+        public static bool refreshPage(RichMenu menu)
+        {
+            switch (menu.menuStack.LastOrDefault())
+            {
+                default:
+                    return false;
+                
+                case UnderMenu_Options_Mouse:
+                    mouseOptions(menu);
+                    break;
+
+                case UnderMenu_Options_Keyboard:
+                    keyboardOptions(menu);
+                    break;
+
+                case UnderMenu_Options_Keyboard_Key:
+                    listMapOptions(menu);
+                    break;
+            }
+
+            return true;
+        }
         void completeMenu(RichBoxContent content)
         {
             menu.Refresh(content, null);
@@ -335,6 +361,7 @@ namespace VikingEngine.DSSWars.Display
         public static void keyboardOptions(RichMenu menu)
         {
             RichBoxContent content = new RichBoxContent();
+            returnButton(content, menu);
 
             content.h1(Ref.langOpt.KeyboardSettings_Title, HudLib.TitleColor_Head);
 
@@ -348,18 +375,13 @@ namespace VikingEngine.DSSWars.Display
                 content.newLine();
                 content.Add(new RbText(LangLib.InputActionName(input), HudLib.TitleColor_Label));
                 content.space();
-                //List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>();
+
                 content.Add(new ArtButton(RbButtonStyle.Primary, KeyTypeButtonContent(button.ButtonName, button.Icon), 
                     new RbAction1Arg<InputActionType>(
                     (InputActionType action) => {
                         CurrentEditInput = action;
                         menu.OpenMenu(UnderMenu_Options_Keyboard_Key,  StackOption.Stack);
                     }, input)));
-
-                //RichBoxContent.ButtonMap(button, buttonContent);
-                //new GuiRichButton(HudLib.RbOnGuiSettings, buttonContent, null,
-                //    new GuiAction2Arg<bool, InputActionType>(listMapOptions, keyboard, input),
-                //    true, layout);
             }
 
             menu.Refresh(content, null);
@@ -369,6 +391,7 @@ namespace VikingEngine.DSSWars.Display
         {
 
             RichBoxContent content = new RichBoxContent();
+            returnButton(content, menu);
 
             content.h1(LangLib.InputActionName(CurrentEditInput), HudLib.TitleColor_Head);
 
@@ -420,6 +443,8 @@ namespace VikingEngine.DSSWars.Display
         {
             RichBoxContent content = new RichBoxContent();
 
+            returnButton(content, menu);
+
             content.h1(Ref.langOpt.MouseSettings_Title, HudLib.TitleColor_Head);
 
             // Map of available actions and their display names
@@ -469,6 +494,16 @@ namespace VikingEngine.DSSWars.Display
             AddMouseButtonDropdown(MouseButton.X2, SpriteName.MouseButtonX2, Ref.langOpt.MouseButton_X2);
 
             menu.Refresh(content);
+        }
+
+        static void returnButton(RichBoxContent content, RichMenu menu)
+        {
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                new RbImage( SpriteName.MenuIconResume),
+                new RbSpace(),
+                new RbText(DssRef.todoLang.Hud_ReturnToPrevious)
+            }, new RbAction(menu.menuBack)));
+            content.newParagraph();
         }
 
         void endTutorial()

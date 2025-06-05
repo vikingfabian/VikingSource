@@ -22,6 +22,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Work_SelectCategory => "Select item category";
         public string Hud_RemoveFromList => "Remove from list";
 
+        
+        public string Hud_ReturnToPrevious => "Return";
+
         public string Hud_Low => "Low";
         public string Hud_Medium => "Medium";
         public string Hud_High => "High";
