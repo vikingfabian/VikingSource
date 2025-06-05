@@ -76,22 +76,6 @@ namespace VikingEngine.DSSWars.VoxelEditor
             }
         }
 
-        //public static Map.WorldPosition HeroPosToCreationStartPos(IntVector2 heroScreen)
-        //{
-        //    Map.WorldPosition result = Map.WorldPosition.EmptyPos;
-        //    result.ChunkGrindex = heroScreen;
-        //    result.ChunkGrindex -= Editor.VoxelDesigner.CreationChunkWidth / PublicConstants.Twice;
-
-        //    result.LocalBlockGrindex = new IntVector3(1, 0, 1);
-        //    return result;
-        //}
-
-        //public const int CreationChunkWidth = 5;
-        //public const int CreationXZSize = Map.WorldPosition.ChunkWidth * CreationChunkWidth - 2;
-
-        //public static readonly IntervalIntV3 CreationSizeLimit = new IntervalIntV3(IntVector3.Zero,
-        //    new IntVector3(CreationXZSize, Map.WorldPosition.ChunkHeight, CreationXZSize) - 1);
-
         void storeSelectionAsTemplate(int category)
         {
             storage.beginStoreSelectionAsTemplate(category);
@@ -103,10 +87,10 @@ namespace VikingEngine.DSSWars.VoxelEditor
        
         public VoxelDesigner(int playerIndex)
             : base(StandardDrawLimitRange, Vector3.Zero,
-                  ((LootFest.Players.InputMap)XGuide.GetPlayer(playerIndex).inputMap).editorInput,
-                  ((LootFest.Players.InputMap)XGuide.GetPlayer(playerIndex).inputMap).menuInput,
-                  playerIndex, false, false)
-        { //IN EDITOR
+                 XGuide.LocalHost.inputMap.VoxelEditorInput(),
+                 XGuide.LocalHost.inputMap.menuInput,
+                 playerIndex, false, false)
+        { 
 
             basicInit(new VectorRect(
                 Engine.Screen.SafeArea.Position, new Vector2(300, Engine.Screen.SafeArea.Height)));
@@ -684,7 +668,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
                 else
                 {
 
-                    menusystem.mergeOptions(loadedModel);
+                    //menusystem.mergeOptions(loadedModel);
                 }
             }
             else
@@ -729,13 +713,13 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
             menusystem.Refresh(content);
 
-            GuiLayout layout = new GuiLayout("Swap Material To", menusystem.menu, GuiLayoutMode.MultipleColumns, null);
-            {
-                new GuiTextButton("Empty", null, new GuiAction1Arg<BlockHD>(replaceSelectionMaterialsTo, VikingEngine.LootFest.Map.HDvoxel.BlockHD.Empty),
-                    true, layout);
-                menusystem.colorPalette(layout, replaceSelectionMaterialsTo);
-            }
-            layout.End();
+            //GuiLayout layout = new GuiLayout("Swap Material To", menusystem.menu, GuiLayoutMode.MultipleColumns, null);
+            //{
+            //    new GuiTextButton("Empty", null, new GuiAction1Arg<BlockHD>(replaceSelectionMaterialsTo, VikingEngine.LootFest.Map.HDvoxel.BlockHD.Empty),
+            //        true, layout);
+            //    menusystem.colorPalette(layout, replaceSelectionMaterialsTo);
+            //}
+            //layout.End();
         }
 
         void replaceSelectionMaterialsTo(BlockHD to)

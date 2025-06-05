@@ -241,8 +241,11 @@ namespace VikingEngine.Voxels
         }
 
         abstract public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel);
-       
         public void AddFrame()
+        { 
+        
+        }
+        public void AddFrame(bool copy)
         {
             animationFrames.Frames.Insert(currentFrame.Value, animationFrames.Frames[currentFrame.Value].Clone());
             int frame = currentFrame.Value;
@@ -266,6 +269,14 @@ namespace VikingEngine.Voxels
             updateFrameInfo();
             updateVoxelObj();//startUpdateVoxelObj(false);
         }
+        public void setFrame(int frame)
+        {
+            currentFrame.Value = frame;
+
+            updateFrameInfo();
+            updateVoxelObj();//startUpdateVoxelObj(false);
+        }
+
         public bool haveAnimation
         {
             get { return currentFrame.Max > 0; }
@@ -1159,6 +1170,7 @@ namespace VikingEngine.Voxels
     enum PaintToolType
     {
         Rectangle,
+        Bucket,
         Cylinder,
         Sphere,
 

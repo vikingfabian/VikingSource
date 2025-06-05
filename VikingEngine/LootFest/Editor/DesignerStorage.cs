@@ -59,15 +59,9 @@ namespace VikingEngine.LootFest.Editor
 
         void modelLoaded(VoxelObjGridDataAnimHD model)
         {
-            //if (designer.inGame)
-            //{
-            //    designer.voxelGridToSelection(model.Frames[0]);
-            //}
-            //else
-            //{
-                designer.addLoadedModel(model, designer.combineLoading);
-                //updateVoxelObj();
-            //}
+            
+            designer.addLoadedModel(model);
+            
         }
 
 

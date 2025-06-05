@@ -261,17 +261,6 @@ namespace VikingEngine.HUD.RichBox
         public void buttonMap(IButtonMap buttonMap)
         {
             ButtonMap(buttonMap, this);
-            //List<SpriteName> sprites = new List<SpriteName>(2);
-            //buttonMap.ListIcons(sprites);
-
-            //for (int i = 0; i < sprites.Count; i++)
-            //{
-            //    Add(new RichBoxImage(sprites[i]));
-            //    if (i < sprites.Count - 1)
-            //    {
-            //        Add(new RichBoxText("+"));
-            //    }
-            //}
         }
         public static void ButtonMap(IButtonMap buttonMap, List<AbsRichBoxMember> content )
         { 
@@ -288,6 +277,12 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
+        public static List<AbsRichBoxMember> NextArrow(List<AbsRichBoxMember> content)
+        {
+            content.Add(new RbSpace(2));
+            content.Add(new RbImage(SpriteName.LfMenuMoreMenusArrow, 0.4f));
+            return content;
+        }
         //public void DropDown(string label, List<AbsRichBoxMember> menuCaption, List<List<AbsRichBoxMember>> options, 
         //    int selectedIx, int defaultIx, AbsRbAction openClose, RbAction1Arg<int> onSelect, List<AbsRbAction> optionsTooltip, bool isDown)
         //{ 

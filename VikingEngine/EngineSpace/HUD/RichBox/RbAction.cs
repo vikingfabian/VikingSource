@@ -77,7 +77,7 @@ namespace VikingEngine.HUD.RichBox
             sound?.onActionTrigger(enabled);
             if (enabled)
             {
-                action.Invoke();
+                action?.Invoke();
             }
         }
     }

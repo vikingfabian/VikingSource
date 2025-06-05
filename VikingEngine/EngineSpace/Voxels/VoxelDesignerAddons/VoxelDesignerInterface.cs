@@ -325,8 +325,6 @@ namespace VikingEngine.Voxels
                     backCopy.Move(backStartPos + new Vector3(x * AbsVoxelDesigner.BlockScale, y * AbsVoxelDesigner.BlockScale, 0));
                     gridPolys.Add(new Graphics.PolygonColor(
                         backCopy, gridTexture, gridColorX));
-
-
                 }
                 for (int z = 0; z < gidSize.Z; z++)
                 {
@@ -389,6 +387,7 @@ namespace VikingEngine.Voxels
                 case PaintToolType.Road: return SpriteName.EditorToolRoad;
                 case PaintToolType.Sphere: return SpriteName.EditorToolSphere;
                 case PaintToolType.Triangle: return SpriteName.EditorToolWedge;
+                case PaintToolType.Bucket: return SpriteName.MissingImage;
             }
 
             return SpriteName.MissingImage;

@@ -163,9 +163,6 @@ namespace VikingEngine.LootFest.Editor
                     new GuiTextButton("Select All", null, designer.selectAll, false, layout);
                     new GuiTextButton("Canvas size", "Change the draw limits", LinkCanvasSize, true, layout);
 
-                    //if (PlatformSettings.RunningWindows)
-                    //new GuiTextButton("Expand Draw Limits", null, LinkExpandLimits, true, layout);
-
                     new GuiTextButton("Rotate/Flip", "Rotate or flip the whole model", LinkRotateFlip, true, layout);
                     new GuiTextButton("Move everything", null, MoveAllMenu, true, layout);
 

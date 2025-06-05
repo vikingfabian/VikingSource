@@ -12,6 +12,17 @@
 * fixed negative length save crash
 * fixed city name crash
 
+#Voxel editor#
+
+#Pics
+-Paint bucket
+-coords
+-flip/rotate
+-Add framme copy, empty frame
+-Next frame, frame lock
+-move frame
+
+
 #Free build defences
  Rock thrower
 -representeras av en gubbe tills de strider
@@ -30,8 +41,6 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 
 #Todo#
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select.
-
-
 
 x input options in ingame menu are broken
 x Auto upgrade
