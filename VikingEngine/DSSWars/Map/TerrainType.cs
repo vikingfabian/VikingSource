@@ -120,6 +120,7 @@ namespace VikingEngine.DSSWars.Map
         Chemist,
         Gunmaker,
         School,
+        ImmigrationTent,
         
         NUM_NONE
     }

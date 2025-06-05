@@ -124,6 +124,7 @@ namespace VikingEngine.DSSWars.Build
         FlagPole_Triangle,
 
         Palisade,
+        ImmigrationTent,
 
         NUM_NONE,
     }
@@ -184,6 +185,7 @@ namespace VikingEngine.DSSWars.Build
                StartupSettings.UnlockAllProgress)
             {
                 list.Add(BuildAndExpandType.GuardHouse_Large);
+                list.Add(BuildAndExpandType.ImmigrationTent);
             }
 
             list.Add(BuildAndExpandType.WheatFarm);
@@ -371,6 +373,9 @@ namespace VikingEngine.DSSWars.Build
 
             new BuildOption(BuildAndExpandType.GuardHouse_Small, TerrainMainType.Building, (int)TerrainBuildingType.GuardHouse_Small, SpriteName.WarsBuild_GuardOffice, CraftBuildingLib.GuardHouse_Small, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             new BuildOption(BuildAndExpandType.GuardHouse_Large, TerrainMainType.Building, (int)TerrainBuildingType.GuardHouse_Large, SpriteName.WarsBuild_GuardOfficeLarge, CraftBuildingLib.GuardHouse_Large, false, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.ImmigrationTent, TerrainMainType.Building, (int)TerrainBuildingType.ImmigrationTent, SpriteName.MissingImage, CraftBuildingLib, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
 
             new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             new BuildOption(BuildAndExpandType.PostalLevel2, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel2, SpriteName.WarsBuild_PostalLevel2, CraftBuildingLib.Postal_Level2, false, BuildCategoryTab.Updgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);

@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 Postal_pos;
         public IntVector2 Recruitment_pos;
         public IntVector2 SoldierBarracks_pos;
+        public IntVector2 ImmigrationTent_pos;
         public IntVector2 Nobelhouse_pos;
         public IntVector2 Tavern_pos;
         public IntVector2 Storehouse_pos;
@@ -137,6 +138,8 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Gunmaker: return Gunmaker_pos;
                 case BuildAndExpandType.School: return School_pos;
 
+                case BuildAndExpandType.ImmigrationTent: return ImmigrationTent_pos;
+
                 default:
                     throw new NotImplementedException($"getPos() not implemented for {type}");
             }
@@ -230,7 +233,7 @@ namespace VikingEngine.DSSWars.Build
         public int ServiceMenHouse_Large_count;
         public int GuardOffice_count;
         public int GuardOffice_Large_count;
-
+        public int ImmigrationTent_count;
 
 
         public int Postal_count;
@@ -338,6 +341,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Chemist: return Chemist_count;
                 case BuildAndExpandType.Gunmaker: return Gunmaker_count;
                 case BuildAndExpandType.School: return School_count;
+                case BuildAndExpandType.ImmigrationTent: return ImmigrationTent_count;
 
                 default: return 0; // NUM_NONE or any untracked type
             }

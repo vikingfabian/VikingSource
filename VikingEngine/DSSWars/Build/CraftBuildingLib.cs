@@ -1265,5 +1265,17 @@ namespace VikingEngine.DSSWars.Build
                },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
            );
+
+        public static readonly CraftBlueprint ImmigrationTent = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.ImmigrationTent,
+           1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.SkinLinen_Group, 80),
+                new UseResource(ItemResourceType.Wood_Group, 60)
+            },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+           );
     }
 }

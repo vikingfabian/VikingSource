@@ -384,6 +384,11 @@ namespace VikingEngine.DSSWars.Map
                                                 buildingPosition.Recruitment_pos = subTileLoop.Position;
                                                 break;
 
+                                            case TerrainBuildingType.ImmigrationTent:
+                                                ++buildingStructure.ImmigrationTent_count;
+                                                buildingPosition.ImmigrationTent_pos = subTileLoop.Position;
+                                                break;
+
                                             case TerrainBuildingType.SoldierBarracks:
                                                 ++buildingStructure.SoldierBarracks_count;
                                                 buildingPosition.SoldierBarracks_pos = subTileLoop.Position;
