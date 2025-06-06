@@ -678,9 +678,7 @@ namespace VikingEngine.LootFest.Editor
                 new GuiTextButton("Hide HUD", "View only the model, great for screen capture", designer.LinkHideHUD, false, layout);
             } layout.End();
         }
-
-        
-
+                
         void selectColorMenu()
         {
             GuiLayout layout = new GuiLayout("Color Options", menu, GuiLayoutMode.MultipleColumns, null);

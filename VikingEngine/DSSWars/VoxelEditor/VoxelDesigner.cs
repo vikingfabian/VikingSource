@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Voxels;
 using VikingEngine.Graphics;
@@ -44,7 +45,9 @@ namespace VikingEngine.DSSWars.VoxelEditor
         bool lockInputFirstFrame = true;
 
         ColorPicker colorPicker = null;
-        public bool combineLoading = false;
+        //public bool loadOption_fromStorage = true;
+        public bool loadOption_combine = false;
+        public bool loadOption_preview = false;
 
         VoxelEditorMenu2 menusystem;
         public DesignerStorage storage;
@@ -414,6 +417,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
         public void LinkEXIT()
         {
+            new ExitGamePlay();
             //if (inGame)
             //    parent.EndCreationMode();
             //else
@@ -657,9 +661,17 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
         override public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel/*, bool combineLoading*/)
         {
+            if (loadedModel.Frames == null)
+            {
+#if DEBUG
+                throw new Exception();
+#endif
+                return;
+            }
+
             storeUndoableAction(true);
 
-            if (combineLoading)
+            if (loadOption_combine)
             {
                 if (loadedModel.Frames.Count == 1 && animationFrames.Frames.Count == 1)
                 {
@@ -870,13 +882,23 @@ namespace VikingEngine.DSSWars.VoxelEditor
             //}
         }
 
+        
 
+        string exportName()
+        {
+            return storage.saveFileName + TextLib.Parentheses(TextLib.IndexToString(currentFrame.Value));
+        }
 
         public void exportObjModel()
         {
             var frame = animationFrames.Frames[currentFrame.Value];
-            ObjExporterScript.Export(frame, storage.saveFileName + " (" + TextLib.IndexToString(currentFrame.Value) + ")");
+            ObjExporterScript.Export(frame, exportName());
             menusystem.mainMenu();
+        }
+
+        public FilePath ExportPath()
+        {
+            return ObjExporterScript.ExportPath(exportName());
         }
 
         public override void DeleteMe()

@@ -154,6 +154,34 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
+    class RbAction4Arg<Arg1, Arg2, Arg3, Arg4> : AbsRbAction
+    {
+        public Action<Arg1, Arg2, Arg3, Arg4> action;
+        Arg1 arg1;
+        Arg2 arg2;
+        Arg3 arg3;
+        Arg4 arg4;
+        public RbAction4Arg(Action<Arg1, Arg2, Arg3, Arg4> action, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, RbSoundProfile sound = null)
+        {
+            this.action = action;
+            this.arg1 = arg1;
+            this.arg2 = arg2;
+            this.arg3 = arg3;
+            this.arg4 = arg4;
+            this.sound = sound;
+        }
+
+        public override void actionTrigger()
+        {
+            sound?.onActionTrigger(enabled);
+            if (enabled)
+            {
+                action.Invoke(arg1, arg2, arg3, arg4);
+            }
+        }
+    }
+
+
     class RbAction_ChangeInt : AbsRbAction
     {
         Action refreshCAllback;

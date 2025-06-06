@@ -9,12 +9,16 @@ https://docs.google.com/document/d/1_wUekNjufj6ghsvAcmFxgC0iqzqsAJ3mqFknUujOQy8/
 #Voxel editor#
 
 #Pics
+-Save
+-color cube
 -Paint bucket
 -coords
 -flip/rotate
+-Frames, selected, locked
 -Add framme copy, empty frame
 -Next frame, frame lock
 -move frame
+-filter name/date
 
 
 #Free build defences

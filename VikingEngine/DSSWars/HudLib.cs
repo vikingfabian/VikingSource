@@ -2,17 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using Valve.Steamworks;
 using VikingEngine.DataLib;
-using VikingEngine.DSSWars.GameObject;
-using VikingEngine.HUD.RichBox;
-using VikingEngine.Input;
-using VikingEngine.ToGG.MoonFall;
-using VikingEngine.LootFest.Players;
 using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using Valve.Steamworks;
+using VikingEngine.HUD.RichMenu;
+using VikingEngine.Input;
+using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
@@ -290,6 +291,16 @@ namespace VikingEngine.DSSWars
             return content.text(text);
         }
 
+        public static void returnButton(RichBoxContent content, RichMenu menu)
+        {
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                new RbImage( SpriteName.MenuIconResume),
+                new RbSpace(),
+                new RbText(DssRef.todoLang.Hud_ReturnToPrevious)
+            }, new RbAction(menu.menuBack)));
+            content.newParagraph();
+        }
+
         public static void Experience(RichBoxContent content, XP.WorkExperienceType exp, XP.ExperienceLevel level)
         {
             LangLib.ExperienceType(exp, out string expName, out SpriteName expIcon);
@@ -458,6 +469,13 @@ namespace VikingEngine.DSSWars
             button.overrideBgColor = Color.DarkRed;
 
             content.Add(button);
+        }
+
+        public static List<AbsRichBoxMember> NextArrow(List<AbsRichBoxMember> content)
+        {
+            content.Add(new RbSpace(2));
+            content.Add(new RbImage(SpriteName.LfMenuMoreMenusArrow, 0.4f, 0, 0, MenuMoreOptionsArrowCol));
+            return content;
         }
 
         public static RbImage BulletPoint(RichBoxContent content)

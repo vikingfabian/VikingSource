@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.ToGG.MoonFall.GO;
 using VikingEngine.Voxels;
 
 namespace VikingEngine.LootFest.Editor
@@ -239,6 +240,13 @@ namespace VikingEngine.LootFest.Editor
             }
             return result;
         }
+
+        public static DataStream.FilePath ContentPath(string name)
+        {
+            return new DataStream.FilePath(LfLib.ModelsCategoryWars, name,
+                Voxels.VoxelLib.VoxelObjByteArrayEnding, false);
+        }
+
         public static DataStream.FilePath ContentPath(VoxelModelName name)
         {
             if (name == VoxelModelName.NUM_NON)
@@ -303,11 +311,18 @@ namespace VikingEngine.LootFest.Editor
         /// <summary>
         /// Load a player custom made animated obj 
         /// </summary>
-        public static List<VoxelObjGridData> LoadVoxelObjGrid(string name)
+        public static List<VoxelObjGridData> LoadVoxelObjGrid_FromStorage(string name)
         {
             VoxelObjGridDataAnim result = new VoxelObjGridDataAnim();
             result.Save(false, Editor.DesignerStorage.CustomVoxelObjPath(name));
 
+            return result.Frames;
+        }
+
+        public static List<VoxelObjGridDataHD> LoadVoxelObjGrid(string name)
+        {
+            VoxelObjGridDataAnimHD result = new VoxelObjGridDataAnimHD();
+            result.Save(false, ContentPath(name));
             return result.Frames;
         }
         public static List<VoxelObjGridData> LoadVoxelObjGrid(System.IO.BinaryReader r)
@@ -388,6 +403,8 @@ namespace VikingEngine.LootFest.Editor
             result.Save(false, ContentPath(name));
             return result.Frames;
         }
+
+        
         public static List<VoxelObjGridDataHD> LoadVoxelObjGridHD(VoxelModelName name)
         {
             if (name == VoxelModelName.NUM_NON)

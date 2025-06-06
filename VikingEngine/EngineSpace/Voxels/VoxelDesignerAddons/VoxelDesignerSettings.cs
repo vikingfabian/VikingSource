@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using VikingEngine.LootFest.Map.HDvoxel;
 using Microsoft.Xna.Framework;
+using VikingEngine.DataLib;
 
 namespace VikingEngine.Voxels
 {
@@ -23,6 +24,8 @@ namespace VikingEngine.Voxels
         public int RoadUpwardClear = 4;
         public int RoadBelowFill = 2;
         public float pencilMoveSpeed = 1;
+
+        public FileSortSettings SortSettings = new FileSortSettings();
 
         public void WriteStream(System.IO.BinaryWriter w)
         {

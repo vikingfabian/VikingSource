@@ -39,6 +39,11 @@ namespace VikingEngine.LootFest.Editor
             return new DataStream.FilePath(UserVoxelObjFolder, name, Voxels.VoxelLib.VoxelObjByteArrayEnding);
         }
 
+        public static DataStream.FilePath InGameVoxelObjPath(string name)
+        {
+            return new DataStream.FilePath(LfLib.ModelsCategoryWars, name, Voxels.VoxelLib.VoxelObjByteArrayEnding, false);
+        }
+
         public string saveFileName = randomName();
         AbsVoxelDesigner designer;
         
@@ -57,13 +62,20 @@ namespace VikingEngine.LootFest.Editor
             Debug.Log("Loading vox model: " + modelName.ToString());
         }
 
-        void modelLoaded(VoxelObjGridDataAnimHD model)
+        public void loadRetailModel(string modelName)
         {
-            
-            designer.addLoadedModel(model);
-            
+            var model = VoxelObjDataLoader.LoadVoxelObjGrid(modelName);
+            modelLoaded(new VoxelObjGridDataAnimHD(model));
+
+            saveFileName = modelName;
+
+            Debug.Log("Loading vox model: " + modelName.ToString());
         }
 
+        void modelLoaded(VoxelObjGridDataAnimHD model)
+        {            
+            designer.addLoadedModel(model);            
+        }
 
         public void loadUserModel(string name)
         {
@@ -71,13 +83,17 @@ namespace VikingEngine.LootFest.Editor
             new LoadCreatorImage(CustomVoxelObjPath(saveFileName), modelLoaded);
         }
 
+        public FilePath SavePath()
+        {
+            return new DataStream.FilePath(UserVoxelObjFolder, saveFileName, Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false);
+        }
+
         public void save()
         {
             designer.print("Saving...");
 
-            new DataStream.WriteBinaryIO(new DataStream.FilePath(UserVoxelObjFolder, saveFileName, Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false),
+            new DataStream.WriteBinaryIO(SavePath(),
                 designer.animationFrames.WriteBinaryStream, null);
-
         }
 
         int backupId = 0;

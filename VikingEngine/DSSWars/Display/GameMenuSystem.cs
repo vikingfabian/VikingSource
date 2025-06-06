@@ -361,7 +361,7 @@ namespace VikingEngine.DSSWars.Display
         public static void keyboardOptions(RichMenu menu)
         {
             RichBoxContent content = new RichBoxContent();
-            returnButton(content, menu);
+            HudLib.returnButton(content, menu);
 
             content.h1(Ref.langOpt.KeyboardSettings_Title, HudLib.TitleColor_Head);
 
@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars.Display
         {
 
             RichBoxContent content = new RichBoxContent();
-            returnButton(content, menu);
+            HudLib.returnButton(content, menu);
 
             content.h1(LangLib.InputActionName(CurrentEditInput), HudLib.TitleColor_Head);
 
@@ -443,7 +443,7 @@ namespace VikingEngine.DSSWars.Display
         {
             RichBoxContent content = new RichBoxContent();
 
-            returnButton(content, menu);
+            HudLib.returnButton(content, menu);
 
             content.h1(Ref.langOpt.MouseSettings_Title, HudLib.TitleColor_Head);
 
@@ -496,15 +496,7 @@ namespace VikingEngine.DSSWars.Display
             menu.Refresh(content);
         }
 
-        static void returnButton(RichBoxContent content, RichMenu menu)
-        {
-            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
-                new RbImage( SpriteName.MenuIconResume),
-                new RbSpace(),
-                new RbText(DssRef.todoLang.Hud_ReturnToPrevious)
-            }, new RbAction(menu.menuBack)));
-            content.newParagraph();
-        }
+       
 
         void endTutorial()
         {
