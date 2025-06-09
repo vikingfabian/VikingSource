@@ -125,10 +125,10 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        public void pauseAction()
-        {
-            Ref.SetPause(!Ref.isPaused);
-        }
+        //public void pauseAction()
+        //{
+        //    Ref.SetPause(!Ref.isPaused);
+        //}
 
         void gameSpeedClick(int toSpeed)
         {

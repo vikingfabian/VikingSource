@@ -4,7 +4,8 @@
 * Started on a game manual
 https://docs.google.com/document/d/1_wUekNjufj6ghsvAcmFxgC0iqzqsAJ3mqFknUujOQy8/edit?usp=sharing
 * fixed: input options in ingame menu are broken
-
+* subtiles out of bounnds fix
+* pause crash fix
 
 #Free build defences
  Rock thrower

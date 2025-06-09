@@ -371,7 +371,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case ControllerTabFocus.Pause:
                     if (dir < 0)
                     {
-                        player.hud.headOptions.pauseAction();
+                        Ref.TogglePause();
                     }
                     else
                     {
