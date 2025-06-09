@@ -122,9 +122,7 @@ namespace VikingEngine.DSSWars
             }
 
             refreshMouseInput();
-
         }
-
 
         public InputMap(bool keyboard)
         {

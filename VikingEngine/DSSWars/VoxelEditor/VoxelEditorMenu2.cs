@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using VikingEngine.DataLib;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
@@ -33,8 +35,10 @@ namespace VikingEngine.DSSWars.VoxelEditor
     {
         const string Page_Canvas = "canvas";
         const string Page_Settings = "sett";
+        const string Page_Color = "color";
         const string Page_Loading = "loading";
         const string Page_ListFiles = "listfiles";
+        const string Page_Selection = "selection";
         bool listUserModels;
 
         const float DefaultIconScale = 0.8f;
@@ -82,11 +86,17 @@ namespace VikingEngine.DSSWars.VoxelEditor
                 case Page_Canvas:
                     LinkCanvasSize();
                     break;
+                case Page_Color:
+                    selectColorMenu();
+                    break;
                 case Page_Settings:
                     pageSettings();
                     break;
                 case Page_ListFiles:
                     listFilesMenu();
+                    break;
+                case Page_Selection:
+                    selectionOptionsMenu();
                     break;
             }
         }
@@ -98,20 +108,29 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
             RichBoxContent content = new RichBoxContent();
 
-            //content.h1("Main Menu", HudLib.TitleColor_Head);
-            
+            HudLib.returnButton(content, menu, false, closeMenu);
+
+            if (designer.HasSelection)
+            {
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.IconBuildSelection),
+                    new RbSpace(),
+                    new RbText(DssRef.todoLang.Editor_SelectOptinsMenu) }),
+                    new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Selection, StackOption.Stack)));
+            }
+
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 HudLib.NextArrow(
                 new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.WhiteArea, 1, 0, 0, designer.SelectedMaterial.color),
+                    new RbImage(SpriteName.VoxelEditorColorCube, 1, designer.SelectedMaterial.color),
                     new RbSpace(),
-                    new RbText( "Color")
-                })
-                , new RbAction(/*selectColorMenu*/null)));
+                    new RbText(DssRef.todoLang.Editor_Color)
+                }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Color, StackOption.Stack)));
 
             content.newLine();
-            HudLib.Label(content, "Tool");
+            HudLib.Label(content, DssRef.todoLang.Editor_Tool);
             content.newLine();
             for (PaintToolType tool = 0; tool < PaintToolType.NUM; ++tool)
             {
@@ -124,42 +143,46 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
             switch (sett.DrawTool)
             {
+                case PaintToolType.Bucket:
+                        
+                    break;
+
                 case PaintToolType.Pencil:
                 case PaintToolType.Road:
                 case PaintToolType.ReColor:
 
                     content.newLine();
-                    content.Add(new RbText("Pencil size" + ":", HudLib.TitleColor_Label));
+                    content.Add(new RbText(DssRef.todoLang.Editor_Tool_PencilSize + ":", HudLib.TitleColor_Label));
                     content.Add(new RbTab(TabLength));
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, new DragButtonSettings(1, 17, 1), pencilSizeProperty);
 
                     content.newLine();
-                    content.Add(new RbText("Size tolerance" + ":", HudLib.TitleColor_Label));
+                    content.Add(new RbText(DssRef.todoLang.Editor_Tool_SizeTolerance + ":", HudLib.TitleColor_Label));
                     content.Add(new RbTab(TabLength));
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.5f }, new DragButtonSettings(-0.5f, 0.5f, 0.1f), radiusToleranceProperty);
 
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Round pencil") }, bRoundPencilProperty));
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Tool_RoundPencil) }, bRoundPencilProperty));
 
                     if (sett.DrawTool == PaintToolType.Road)
                     {
                         content.newLine();
-                        content.Add(new RbText("Edge size" + ":", HudLib.TitleColor_Label));
+                        content.Add(new RbText(DssRef.todoLang.Editor_Tool_EdgeSize + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
                         RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, new DragButtonSettings(0, 5, 1), RoadEdgeSizeProperty);
 
                         content.newLine();
-                        content.Add(new RbText("Percent Fill" + ":", HudLib.TitleColor_Label));
+                        content.Add(new RbText(DssRef.todoLang.Editor_Tool_PercentFill + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
                         RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 20 }, new DragButtonSettings(1, 100, 1), RoadPercentFillProperty);
 
                         content.newLine();
-                        content.Add(new RbText("Clear above" + ":", HudLib.TitleColor_Label));
+                        content.Add(new RbText(DssRef.todoLang.Editor_Tool_ClearAbove + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
                         RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10 }, new DragButtonSettings(0, 32, 1), RoadUpwardClearProperty);
 
                         content.newLine();
-                        content.Add(new RbText("Fill below" + ":", HudLib.TitleColor_Label));
+                        content.Add(new RbText(DssRef.todoLang.Editor_Tool_FillBelow + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
                         RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10 }, new DragButtonSettings(0, 32, 1), RoadBelowFillProperty);
 
@@ -172,7 +195,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
             if (designer.copiedVoxels != null)
             {
                 content.newLine();
-                content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Paste") }, new RbAction( designer.Paste)));
+                content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Paste) }, new RbAction( designer.Paste)));
             }
 
             if (designer.drawCoordMaterial.HasMaterial())
@@ -185,14 +208,14 @@ namespace VikingEngine.DSSWars.VoxelEditor
             content.Add(new ArtButton(RbButtonStyle.Primary, 
                 HudLib.NextArrow( new List<AbsRichBoxMember> { 
                     new RbImage(SpriteName.WarsHudIconOpen, DefaultIconScale), new RbSpace(), 
-                    new RbText("User models") }), 
-                new RbAction1Arg<bool>(beginListModelsPage, true), new RbTooltip_Text("Browse models you saved")));
+                    new RbText(DssRef.todoLang.Editor_UserModels) }), 
+                new RbAction1Arg<bool>(beginListModelsPage, true), new RbTooltip_Text(DssRef.todoLang.Editor_UserModels_Description)));
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 HudLib.NextArrow(new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconOpen, DefaultIconScale), new RbSpace(),
-                    new RbText("Retail models") }),
-                new RbAction1Arg<bool>(beginListModelsPage, false), new RbTooltip_Text("Load models from the game")));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("T") }, new RbAction(/*loadOptionsMenu*/null), new RbTooltip_Text("Templates for modding"), false));
+                    new RbText(DssRef.todoLang.Editor_RetailModels) }),
+                new RbAction1Arg<bool>(beginListModelsPage, false), new RbTooltip_Text(DssRef.todoLang.Editor_RetailModels_Description)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsBluePrint) }, new RbAction(/*loadOptionsMenu*/null), new RbTooltip_Text("Templates for modding"), false));
 
 
             content.newLine();
@@ -202,62 +225,76 @@ namespace VikingEngine.DSSWars.VoxelEditor
             content.Add(new RbText(designer.storage.saveFileName, Color.LightYellow));
             content.space();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
-                new RbImage(SpriteName.LFSaveIcon, DefaultIconScale), new RbSpace(), 
-                new RbText("Save") }, new RbAction(designer.storage.save), 
+                new RbImage(SpriteName.WarsHudIconSave, DefaultIconScale), new RbSpace(), 
+                new RbText(DssRef.lang.Hud_Save) }, new RbAction(designer.storage.save), 
                new RbTooltip_Text(LoadContent.CheckCharsSafety(designer.storage.SavePath().CompletePath(true), LoadedFont.Regular))));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
                 new RbImage(SpriteName.WarsHudIconExport, DefaultIconScale), new RbSpace(), 
                 new RbText("OBJ") }, new RbAction(designer.exportObjModel), 
                 new RbTooltip((RichBoxContent content, object tag)=> 
             {
-                content.h2("Export as .OBJ", HudLib.TitleColor_Head);
+                content.h2(DssRef.todoLang.Editor_ExportAsOBJ, HudLib.TitleColor_Head);
                 content.Add(new RbText(LoadContent.CheckCharsSafety(designer.ExportPath().CompletePath(true), LoadedFont.Regular), HudLib.InfoYellow_Light));
             })));
 
             content.Add(new RbSeperationLine());
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Select All") }, new RbAction(designer.selectAll)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_SelectAll) }, new RbAction(designer.selectAll)));
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> { new RbText("Canvas") }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Canvas, StackOption.Stack)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Canvas_Title) }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Canvas, StackOption.Stack)));
 
             content.newParagraph();
-            HudLib.Label(content, "Animation");
+            HudLib.Label(content, DssRef.todoLang.Editor_Animation);
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("-"), new RbImage(SpriteName.MissingImage) }, new RbAction(designer.RemoveCurrentFrame), new RbTooltip_Text("Remove current frame"), designer.haveAnimation));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+C"), new RbImage(SpriteName.MissingImage) }, new RbAction1Arg<bool>(designer.AddFrame, true), new RbTooltip_Text("Add frame as copy")));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+E"), new RbImage(SpriteName.MissingImage) }, new RbAction1Arg<bool>(designer.AddFrame, false), new RbTooltip_Text("Add empty frame")));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemove) }, new RbAction(designer.RemoveCurrentFrame), new RbTooltip_Text(DssRef.todoLang.Editor_Animation_RemoveCurrentFrame), designer.haveAnimation));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameAddCopy) }, new RbAction1Arg<bool>(designer.AddFrame, true), new RbTooltip_Text(DssRef.todoLang.Editor_Animation_AddFrameCopy)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameAddEmpty) }, new RbAction1Arg<bool>(designer.AddFrame, false), new RbTooltip_Text(DssRef.todoLang.Editor_Animation_AddEmptyFrame)));
             
             if (designer.haveAnimation)
             {
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("<") }, new RbAction1Arg<bool>(designer.nextFrame, false)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFramePrevious) }, new RbAction1Arg<bool>(designer.nextFrame, false)));
                 for (int frame = 0; frame <= designer.currentFrame.Max; frame++)
                 {
-                    content.Add(new ArtButton(frame == designer.currentFrame.Value ? RbButtonStyle.OptionSelected : RbButtonStyle.OptionNotSelected,
-                        new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(frame)) }, new RbAction1Arg<int>(designer.setFrame, frame)));
+                    SpriteName frameicon;
+                    RbButtonStyle buttonStyle;
+                    if (frame == designer.currentFrame.Value)
+                    {
+                        buttonStyle = RbButtonStyle.OptionSelected;
+                        frameicon = SpriteName.VoxelEditorFrameSelected;
+                    }
+                    else
+                    {
+                        buttonStyle = RbButtonStyle.OptionNotSelected;
+                        frameicon = SpriteName.VoxelEditorFrame;
+                    }
+
+                    content.Add(new ArtButton(buttonStyle,
+                        new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(frame)), new RbImage(frameicon) }, new RbAction1Arg<int>(designer.setFrame, frame)));
                 }
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(">") }, new RbAction1Arg<bool>(designer.nextFrame, true)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameNext) }, new RbAction1Arg<bool>(designer.nextFrame, true)));
 
                 content.newLine();
+                const float MoveFrameIconSz = 1.4f;
                 //HudLib.Label(content, "Move current frame");
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("|<<") }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.ToStart)));
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("|<") }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Back)));
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(">|") }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Forward)));
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(">>|") }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.ToEnd)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameToEndL, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.ToStart), new RbTooltip_Text(DssRef.todoLang.Editor_Animation_MoveDescription)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameL, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Back)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameR, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Forward)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameToEndR, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.ToEnd)));
             }
 
             content.Add(new RbSeperationLine());
 
 
             content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> {
-                 new RbImage(SpriteName.WarsHudIconSettings, DefaultIconScale), new RbSpace(), new RbText("Settings") }),
+                 new RbImage(SpriteName.WarsHudIconSettings, DefaultIconScale), new RbSpace(), new RbText( DssRef.todoLang.Editor_SettingsMenu) }),
                 new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Settings, StackOption.Stack)));
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                 new RbImage(SpriteName.WarsHudIconExit, DefaultIconScale), new RbSpace(), new RbText("Exit") },
+                 new RbImage(SpriteName.WarsHudIconExit, DefaultIconScale), new RbSpace(), new RbText(DssRef.todoLang.Hud_Exit) },
                 new RbAction(designer.LinkEXIT)));
            
             Refresh(content);
@@ -277,21 +314,22 @@ namespace VikingEngine.DSSWars.VoxelEditor
         {
             RichBoxContent content = new RichBoxContent();
 
-            HudLib.returnButton(content, menu);
+            HudLib.returnButton(content, menu, true, closeMenu);
 
-            content.h1("Canvas", HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.Editor_Canvas_Title, HudLib.TitleColor_Head);
 
-            content.h2("Size", HudLib.TitleColor_Label);
-            sizeOptions("X", IntVector3.PlusX);
-            sizeOptions("Y", IntVector3.PlusY);
-            sizeOptions("Z", IntVector3.PlusZ);
+            content.h2(DssRef.todoLang.Editor_Canvas_Size, HudLib.TitleColor_Label);
+            sizeOptions(DssRef.todoLang.Editor_Canvas_Dimension_X, SpriteName.width, IntVector3.PlusX);
+            sizeOptions(DssRef.todoLang.Editor_Canvas_Dimension_Y, SpriteName.height, IntVector3.PlusY);
+            sizeOptions(DssRef.todoLang.Editor_Canvas_Dimension_Z, SpriteName.length, IntVector3.PlusZ);
 
-            void sizeOptions(string dimention, IntVector3 plusOne)
+            void sizeOptions(string dimention, SpriteName dimIcon, IntVector3 plusOne)
             {
                 content.newLine();
                 button(-2);
                 button(-1);
-                content.space(2);
+                content.Add(new RbImage(dimIcon));
+                content.space();
                 button(1);
                 button(2);
 
@@ -321,53 +359,134 @@ namespace VikingEngine.DSSWars.VoxelEditor
                         new RbAction1Arg<IntVector3>(designer.setCanvasSize, lim), null);
                 }
             }
-            sizePresets.Build(content, SpriteName.NO_IMAGE, "Size presets", menu);
+            sizePresets.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Editor_Canvas_SizePresets, menu);
 
             content.newParagraph();
-            content.h2("Move", HudLib.TitleColor_Label);
+            content.h2(DssRef.todoLang.Editor_Canvas_Move, HudLib.TitleColor_Label);
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+" + "X") }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.PlusX, true)));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("-" + "X") }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.NegativeX, true)));
-            content.space(2);
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Up") }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.PlusY, true)));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Down") }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.NegativeY, true)));
-            content.space(2);
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+" + "Z") }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.PlusZ, true)));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("-" + "Z") }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.NegativeZ, true)));
+            content.Add(new RbImage(SpriteName.Xdir));
+            content.space();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+" + DssRef.todoLang.Editor_Canvas_Dimension_X) }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.PlusX, true)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("-" + DssRef.todoLang.Editor_Canvas_Dimension_X) }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.NegativeX, true)));
+            content.space();
+            //content.newLine();
+            content.Add(new RbImage(SpriteName.Ydir));
+            content.space();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Canvas_Move_Up) }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.PlusY, true)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Canvas_Move_Down) }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.NegativeY, true)));
+            content.space();
+            //content.newLine();
+            content.Add(new RbImage(SpriteName.Zdir));
+            content.space();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+" + DssRef.todoLang.Editor_Canvas_Dimension_Z) }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.PlusZ, true)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("-" + DssRef.todoLang.Editor_Canvas_Dimension_Z) }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.NegativeZ, true)));
 
             content.newParagraph();
-            content.h2("Rotate/Flip", HudLib.TitleColor_Label);
+            content.h2(DssRef.todoLang.Editor_Canvas_RotateFlip_Title, HudLib.TitleColor_Label);
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCW), new RbText("C") }, new RbAction(designer.LinkSelRotateC), new RbTooltip_Text("Rotate clockwise")));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("CC") }, new RbAction(designer.LinkSelRotateCC), new RbTooltip_Text("Rotate counter clockwise")));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCW) }, new RbAction(designer.LinkSelRotateC), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_RotateClockwise)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCCW) }, new RbAction(designer.LinkSelRotateCC), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_RotateCounterClockwise)));
             content.space(2);
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.FlipHori) }, new RbAction(designer.mirrorSelection), new RbTooltip_Text("Mirror")));
-            content.space(2);
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.FlipVerti)}, new RbAction(designer.LinkSelFlipY), new RbTooltip_Text("Flip up and down")));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MissingImage) }, new RbAction(designer.flipLyingToStanding), new RbTooltip_Text("Flip lying/standing")));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.FlipHori) }, new RbAction(designer.mirrorSelection), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_Mirror)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.FlipVerti)}, new RbAction(designer.LinkSelFlipY), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_FlipVertical)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFlipLyingStanding) }, new RbAction(designer.flipLyingToStanding), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_FlipOrientation)));
         
             content.newParagraph();
-            content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Clear") }, new RbAction(designer.LinkClearAll), new RbTooltip_Text( "Removes all blocks and all frames")));
+            content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Canvas_Clear) }, new RbAction(designer.LinkClearAll), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_ClearAll_Description)));
 
 
             Refresh(content);
         }
 
-        public void colorPalette(GuiLayout layout, Action<BlockHD> link)
+        public override void selectionMenu()
         {
+            menu.OpenMenu(Page_Selection, StackOption.Stack);
+        }
+
+        void selectionOptionsMenu()
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            HudLib.returnButton(content, menu, true, closeMenu);
+
+            content.h1(DssRef.todoLang.Editor_SelectOptinsMenu, HudLib.TitleColor_Head);
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.IconBuildRemove), new RbText(DssRef.todoLang.Editor_Canvas_Clear) }, new RbAction(designer.clearSelectedArea)));
+
+            if (designer.animationFrames != null && designer.animationFrames.Frames.Count > 1)
+            {
+                content.newLine();
+                HudLib.Label(content, DssRef.todoLang.Editor_StampOtherFrames);
+                for (int frame = 0; frame <= designer.currentFrame.Max; frame++)
+                {
+                    SpriteName frameicon;
+                    RbButtonStyle buttonStyle;
+                    bool enabled = true;
+                    if (frame == designer.currentFrame.Value)
+                    {
+                        buttonStyle = RbButtonStyle.OptionSelected;
+                        frameicon = SpriteName.VoxelEditorFrameSelected;
+                        enabled = false;
+                    }
+                    else
+                    {
+                        buttonStyle = RbButtonStyle.OptionNotSelected;
+                        frameicon = SpriteName.VoxelEditorFrame;
+                    }
+
+                    content.Add(new ArtButton(buttonStyle,
+                        new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(frame)), new RbImage(frameicon) }, new RbAction1Arg<int>(designer.LinkStampOnFrames, frame), new RbTooltip_Text(DssRef.todoLang.Editor_StampOtherFrames_Description), enabled));
+                }
+
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.IconBuildRemove), new RbText(DssRef.todoLang.Editor_ClearAllFrames) }, new RbAction1Arg<bool>(designer.ClearSelectedAreaOnFrames, true)));
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.IconBuildRemove), new RbText(DssRef.todoLang.Editor_ClearOtherFrames) }, new RbAction1Arg<bool>(designer.ClearSelectedAreaOnFrames, false)));
+
+            }
+
+            Refresh(content);
+        }
+
+        //void stampFramesOptions()
+        //{
+        //    GuiLayout layout = new GuiLayout("Stamp options", menu);
+        //    {
+        //        new GuiCheckbox("Include empty", null, designer.bStampEmptyProperty, layout);
+        //        new GuiTextButton("All frames", null, new GuiAction1Arg<int>(designer.LinkStampOnFrames, -1), false, layout);
+        //        for (int i = 0; i < designer.animationFrames.Frames.Count; i++)
+        //        {
+        //            if (i != designer.currentFrame.Value)
+        //            {
+        //                new GuiTextButton("Frame " + TextLib.IndexToString(i), null, new GuiAction1Arg<int>(designer.LinkStampOnFrames, i), false, layout);
+        //            }
+        //        }
+        //    }
+        //    layout.End();
+        //}
+
+        public void colorPalette(RichBoxContent content, Action<BlockHD> link)
+        {
+
             var inUse = designer.materialsInUse(true, out ushort selected);
 
-            if (selected != 0)
-            {
-                ColorButton(BlockHD.ToColor(selected), layout, link, true);
-                new GuiSectionSeparator(layout);
-            }
+            //if (selected != 0)
+            //{
+            //    ColorButton(BlockHD.ToColor(selected), layout, link, true);
+            //    new GuiSectionSeparator(layout);
+            //}
+            content.newLine();
+            HudLib.Label(content, DssRef.todoLang.Editor_ColorsInUseLabel);
+            content.newLine();
             foreach (var m in inUse)
             {
-                ColorButton(BlockHD.ToColor(m), layout, link);
+                ColorButton(BlockHD.ToColor(m), content, link);
             }
 
-            new GuiSectionSeparator(layout);
+            content.Add(new RbSeperationLine());
 
             Color[] MainColors = new Color[]
                 {
@@ -388,20 +507,20 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
             foreach (var m in MainColors)
             {
-                ColorButton(VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(m), layout, link);
+                ColorButton(VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(m), content, link);
             }
 
-            new GuiSectionSeparator(layout);
+            //new GuiSectionSeparator(layout);
 
             //DSSSoldierPalette(layout, link);
-               
-            new GuiSectionSeparator(layout);
 
+            //new GuiSectionSeparator(layout);
+            content.Add(new RbSeperationLine());
 
             const int HueCount = 16;
             const int LightnessCount = 16;
 
-            double[] Saturations = new double[] { 0.5, 0.25 };
+            double[] Saturations = new double[] { 1, 0.75, 0.5, 0.25 };
 
             foreach (var saturate in Saturations)
             {
@@ -411,7 +530,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
                     {
                         Color col = lib.HSL2RGB((double)hue / HueCount, saturate, (double)light / LightnessCount);
                         col = VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(col);
-                        ColorButton(col, layout, link);
+                        ColorButton(col, content, link);
                     }
                 }
             }
@@ -419,43 +538,119 @@ namespace VikingEngine.DSSWars.VoxelEditor
         void pageSettings()
         {
             RichBoxContent content = new RichBoxContent();
-            HudLib.returnButton(content, menu);
+            HudLib.returnButton(content, menu, true, closeMenu);
 
             content.newLine();
-            content.Add(new RbText("Move speed" + ":", HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.todoLang.Editor_Settings_MoveSpeed + ":", HudLib.TitleColor_Label));
             content.Add(new RbSpace());
             RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 1 }, new DragButtonSettings(0.1f, 4f, 0.1f), designer.Settings.moveSpeedProperty);
 
             content.newLine();
-            content.Add(new RbText("Background color" + ":", HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.todoLang.Editor_Settings_BackgroundColor + ":", HudLib.TitleColor_Label));
             content.Add(new RbSpace());
             List<Color> bgcolors = new List<Color>() { Color.White, Color.CornflowerBlue, Color.Black };
             foreach (Color color in bgcolors)
             {
-                content.Add(new ArtOption(color == Ref.draw.ClrColor, new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 0.8f, 0, 0, color) },
+                content.Add(new ArtOption(color == Ref.draw.ClrColor, new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 0.8f, color) },
                     new RbAction1Arg<Color>((Color col) => { Ref.draw.ClrColor = col; }, color)));
             }
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Hide HUD") },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Settings_HideHUD) },
                 new RbAction(designer.LinkHideHUD)));
 
             Refresh(content);
         }
 
-        static void ColorButton(Color col, GuiLayout layout, Action<BlockHD> link, bool bigIcon = false)
+        void selectColorMenu()
         {
-            GuiIcon icon;
+            Color current = VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(designer.SelectedMaterial.color);
 
-            if (bigIcon)
+            RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, menu, true, closeMenu);
+
+            content.Add(new RbBeginTitle(1));
+            content.Add(new RbImage(SpriteName.VoxelEditorColorCube,1, current));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Editor_Color, HudLib.TitleColor_Head));
+
+            content.newLine();
+            HudLib.Label(content, DssRef.todoLang.Editor_Color_Tint); content.newLine();
+            
+            Color brighter = ColorExt.ChangeColor(current, BlockHD.ColorStep, BlockHD.ColorStep, BlockHD.ColorStep);
+            Color darker = ColorExt.ChangeColor(current, -BlockHD.ColorStep, -BlockHD.ColorStep, -BlockHD.ColorStep);
+            Color brighter2 = ColorExt.ChangeColor(current, BlockHD.ColorStep * 2, BlockHD.ColorStep * 2, BlockHD.ColorStep * 2);
+            Color darker2 = ColorExt.ChangeColor(current, -BlockHD.ColorStep * 2, -BlockHD.ColorStep * 2, -BlockHD.ColorStep * 2);
+            Color redTint = ColorExt.ChangeColor(current, BlockHD.ColorStep, -BlockHD.ColorStep, -BlockHD.ColorStep);
+            Color greenTint = ColorExt.ChangeColor(current, -BlockHD.ColorStep, BlockHD.ColorStep, -BlockHD.ColorStep);
+            Color blueTint = ColorExt.ChangeColor(current, -BlockHD.ColorStep, -BlockHD.ColorStep, BlockHD.ColorStep);
+            Color yellowTint = ColorExt.ChangeColor(current, BlockHD.ColorStep, BlockHD.ColorStep, -BlockHD.ColorStep);
+            Color purpleTint = ColorExt.ChangeColor(current, BlockHD.ColorStep, -BlockHD.ColorStep, BlockHD.ColorStep);
+
+            
+
+
+
+            colorTintButton(brighter2, Color.White, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_BrighterPlus, content, designer.pickColorLink);
+            colorTintButton(brighter, Color.White, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_Brighter, content, designer.pickColorLink);
+
+            //colorTintButton(current, curr, true, SpriteName.MissingImage, "Current", content, designer.pickColorLink);
+
+            colorTintButton(darker, Color.Black, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_Darker, content, designer.pickColorLink);
+            colorTintButton(darker2, Color.Black, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_DarkerPlus, content, designer.pickColorLink);
+
+            colorTintButton(redTint, Color.Red, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_RedTint, content, designer.pickColorLink);
+            colorTintButton(greenTint, Color.Green, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_GreenTint, content, designer.pickColorLink);
+            colorTintButton(blueTint, Color.Blue, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_BlueTint, content, designer.pickColorLink);
+            colorTintButton(yellowTint, Color.Yellow, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_YellowTint, content, designer.pickColorLink);
+            colorTintButton(purpleTint, Color.Purple, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_PurpleTint, content, designer.pickColorLink);
+
+
+            //new GuiTextButton("Pick Hue", null, designer.openColorPicker, false, layout);
+
+            //new GuiIntSlider(SpriteName.NO_IMAGE, "R", redProperty, RGBrange, false, layout);
+            //new GuiIntSlider(SpriteName.NO_IMAGE, "G", greenProperty, RGBrange, false, layout);
+            //new GuiIntSlider(SpriteName.NO_IMAGE, "B", blueProperty, RGBrange, false, layout);
+            //new GuiSectionSeparator(layout);
+
+            colorPalette(content, designer.pickColorLink);
+
+            Refresh(content);
+        }
+
+        void colorTintButton(Color col, Color tint, bool currentCol, SpriteName icon, string text, RichBoxContent content, Action<BlockHD> link)
+        {
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>
             {
-                icon = new GuiIcon(SpriteName.WhiteArea, col.ToString(), new GuiAction1Arg<BlockHD>(link, new BlockHD(col)), false, layout);
-            }
-            else
-            {
-                icon = new GuiSmallIcon(SpriteName.WhiteArea, col.ToString(), new GuiAction1Arg<BlockHD>(link, new BlockHD(col)), false, layout);
-            }
-            icon.iconImage.Color = col;
+                 new RbImage(SpriteName.VoxelEditorTint, 1, tint),new RbImage(SpriteName.VoxelEditorColorCube, 1, col)
+            }, new RbAction1Arg<BlockHD>(link, new BlockHD(col)), new RbTooltip_Text(text)));
+        }
+
+        static void ColorButton(Color col, RichBoxContent content, Action<BlockHD> link, bool bigIcon = false)
+        {
+            //if (bigIcon)
+            //{
+                content.Add(new ArtImageButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 1, col) },
+                    new RbAction1Arg<BlockHD>(link, new BlockHD(col)))
+                { SpaceAfter = 0, });
+            //}
+            //else
+            //{
+            //    content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 1, col) },
+            //            new RbAction1Arg<BlockHD>(link, new BlockHD(col))));
+            //}
+                //GuiIcon icon;
+
+            //if (bigIcon)
+            //{
+            //    icon = new GuiIcon(SpriteName.WhiteArea, col.ToString(), new GuiAction1Arg<BlockHD>(link, new BlockHD(col)), false, layout);
+            //}
+            //else
+            //{
+            //    icon = new GuiSmallIcon(SpriteName.WhiteArea, col.ToString(), new GuiAction1Arg<BlockHD>(link, new BlockHD(col)), false, layout);
+            //}
+
+            //icon.iconImage.Color = col;
         }
 
         override public void closeMenu() 
@@ -491,7 +686,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
         {
             RichBoxContent content = new RichBoxContent();
 
-            HudLib.returnButton(content, menu);
+            HudLib.returnButton(content, menu, true, closeMenu);
             content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
             menu.OpenMenu(content, Page_Loading);
 
@@ -577,7 +772,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
         {
             RichBoxContent content = new RichBoxContent();
 
-            HudLib.returnButton(content, menu);
+            HudLib.returnButton(content, menu, true, closeMenu);
 
             content.Add(new RichBoxScale(1.2f));
 
@@ -606,12 +801,12 @@ namespace VikingEngine.DSSWars.VoxelEditor
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.cmdSpyglass),
                         }, new RbAction4Arg<string, bool, bool, bool>(loadUserModelLink, file.Name, listUserModels, true, false),
-                new RbTooltip_Text("Preview")));
+                new RbTooltip_Text(DssRef.todoLang.Editor_Preview)));
 
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.cmdPlus),
                         }, new RbAction4Arg<string, bool, bool, bool>(loadUserModelLink, file.Name, listUserModels, false, true),
-                new RbTooltip_Text("Combine with current model"), false));
+                new RbTooltip_Text(DssRef.todoLang.Editor_CombineWithCurrent), false));
             }
 
             menu.menuStack.Clear();
@@ -748,10 +943,6 @@ namespace VikingEngine.DSSWars.VoxelEditor
             return designer.mergeModelsOption.NewBlocksReplaceOld;
         }
 
-        override public void selectionMenu()
-        { 
-        
-        }
 
         public void DeleteMe()
         {

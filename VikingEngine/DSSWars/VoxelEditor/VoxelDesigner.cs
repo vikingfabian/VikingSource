@@ -13,10 +13,12 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.Input;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.Editor;
 using VikingEngine.LootFest.Map.HDvoxel;
+using VikingEngine.PJ;
 using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars.VoxelEditor
@@ -50,9 +52,11 @@ namespace VikingEngine.DSSWars.VoxelEditor
         public bool loadOption_preview = false;
 
         VoxelEditorMenu2 menusystem;
+        VoxelEditorInputHelp inputHelp;
         public DesignerStorage storage;
 
         Timer.Basic autoSaveTimer = new Timer.Basic(TimeExt.MinutesToMS(1f), true);
+        public InputMap dssInput;
 
         public void pickColorLink(BlockHD col)
         {
@@ -88,7 +92,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
         }
 
        
-        public VoxelDesigner(int playerIndex)
+        public VoxelDesigner(bool controller, int playerIndex)
             : base(StandardDrawLimitRange, Vector3.Zero,
                  XGuide.LocalHost.inputMap.VoxelEditorInput(),
                  XGuide.LocalHost.inputMap.menuInput,
@@ -98,7 +102,39 @@ namespace VikingEngine.DSSWars.VoxelEditor
             basicInit(new VectorRect(
                 Engine.Screen.SafeArea.Position, new Vector2(300, Engine.Screen.SafeArea.Height)));
             Ref.draw.Camera.targetZoom = 40;
+
+            inputHelp = new VoxelEditorInputHelp();
+
+            setupNewInput(controller, playerIndex);
         }
+
+        void setupNewInput(bool controller, int playerIndex)
+        {
+            if (dssInput == null || dssInput.inputSource.IsController != controller)
+            {
+                dssInput = new InputMap(playerIndex);
+                dssInput.setInputSource(controller? InputSourceType.XController : InputSourceType.KeyboardMouse, playerIndex);
+                if (controller)
+                {
+                    dssInput.copyDataFrom(Ref.gamesett.controllerMap);
+                }
+                else
+                {
+                    dssInput.copyDataFrom(Ref.gamesett.keyboardMap);
+                }
+
+                inputMap = dssInput.VoxelEditorInput();
+                if (menusystem.menu != null)
+                {
+                    menusystem.menu.needRefresh = true;
+                }
+                if (inputHelp.menu != null)
+                {
+                    inputHelp.menu.needRefresh = true;
+                }
+            }
+        }
+
         override protected bool viewDrawLimitGrid { get { return true; } }
 
         override protected bool allowSelectAll { get { return true; } }
@@ -130,6 +166,15 @@ namespace VikingEngine.DSSWars.VoxelEditor
             if (autoSaveTimer.Update())
             {
                 storage.saveBackUp();
+            }
+
+            if (Input.XInput.AnyActivationKey_DownEvent(out int playerIx))
+            {
+                setupNewInput(true, playerIx);
+            }
+            if (Keyboard.AnyActivationKey_DownEvent())
+            {
+                setupNewInput(false, 0);
             }
         }
 

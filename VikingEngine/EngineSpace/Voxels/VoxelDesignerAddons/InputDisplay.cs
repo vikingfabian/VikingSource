@@ -107,7 +107,7 @@ namespace VikingEngine.Voxels
 
             if (input.useMouseInput)
             {
-                mouseTool.toolImage.SetSpriteName(MouseToolHUD.ToolIcon(input.mouseTool));
+                mouseTool?.toolImage.SetSpriteName(MouseToolHUD.ToolIcon(input.mouseTool));
             }
         }
 

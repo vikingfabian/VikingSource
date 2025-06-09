@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.GameState
                         //XGuide.LocalHost.inputMap = new LootFest.Players.InputMap(XGuide.LocalHost.localPlayerIndex);
                         //XGuide.LocalHost.inputMap.xboxSetup();
                         //XGuide.LocalHost.inputMap.menuInput.xboxSetup(XGuide.LocalHost.localPlayerIndex);
-                        new VoxelEditor.VoxelDesignState(XGuide.LocalHostIndex);
+                        new VoxelEditor.VoxelDesignState(false, XGuide.LocalHostIndex);
                         break;
                 }
             }

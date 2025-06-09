@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars.Display
                 }
 
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_SaveState) }, new RbAction(saveGameState),
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Save) }, new RbAction(saveGameState),
                     new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
                 {
                     fillWidth = true
@@ -361,7 +361,7 @@ namespace VikingEngine.DSSWars.Display
         public static void keyboardOptions(RichMenu menu)
         {
             RichBoxContent content = new RichBoxContent();
-            HudLib.returnButton(content, menu);
+            HudLib.returnButton(content, menu, true, null);
 
             content.h1(Ref.langOpt.KeyboardSettings_Title, HudLib.TitleColor_Head);
 
@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars.Display
         {
 
             RichBoxContent content = new RichBoxContent();
-            HudLib.returnButton(content, menu);
+            HudLib.returnButton(content, menu, true, null);
 
             content.h1(LangLib.InputActionName(CurrentEditInput), HudLib.TitleColor_Head);
 
@@ -443,7 +443,7 @@ namespace VikingEngine.DSSWars.Display
         {
             RichBoxContent content = new RichBoxContent();
 
-            HudLib.returnButton(content, menu);
+            HudLib.returnButton(content, menu, true, null);
 
             content.h1(Ref.langOpt.MouseSettings_Title, HudLib.TitleColor_Head);
 

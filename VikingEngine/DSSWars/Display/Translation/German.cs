@@ -1008,7 +1008,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string GameMenu_ExitGame => "Spiel verlassen";
 
-        public override string GameMenu_SaveState => "Speichern";
+        public override string Hud_Save => "Speichern";
         public override string GameMenu_SaveStateWarnings => "Warnung! Spielstände gehen verloren, wenn das Spiel aktualisiert wird.";
         public override string GameMenu_LoadState => "Laden";
         public override string GameMenu_ContinueFromSave => "Vom Speicherstand fortsetzen";

@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Data
 
         public string TitleString()
         { 
-            return (autosave? DssRef.lang.GameMenu_AutoSave : DssRef.lang.GameMenu_SaveState) + " " + index.ToString();
+            return (autosave? DssRef.lang.GameMenu_AutoSave : DssRef.lang.Hud_Save) + " " + index.ToString();
         }
         public string InfoString()
         {

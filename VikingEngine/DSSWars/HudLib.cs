@@ -291,13 +291,24 @@ namespace VikingEngine.DSSWars
             return content.text(text);
         }
 
-        public static void returnButton(RichBoxContent content, RichMenu menu)
+        public static void returnButton(RichBoxContent content, RichMenu menu, bool bReturn, Action close)
         {
-            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
-                new RbImage( SpriteName.MenuIconResume),
-                new RbSpace(),
-                new RbText(DssRef.todoLang.Hud_ReturnToPrevious)
-            }, new RbAction(menu.menuBack)));
+            if (bReturn)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                    new RbImage( SpriteName.MenuIconResume),
+                    new RbSpace(),
+                    new RbText(DssRef.todoLang.Hud_ReturnToPrevious)
+                    }, new RbAction(menu.menuBack)));
+            }
+            if (close != null)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                    new RbImage( SpriteName.WarsHudIconExit, 0.8f),
+                    new RbSpace(),
+                    new RbText(DssRef.todoLang.Hud_Close)
+                    }, new RbAction(close)));
+            }
             content.newParagraph();
         }
 
@@ -474,20 +485,20 @@ namespace VikingEngine.DSSWars
         public static List<AbsRichBoxMember> NextArrow(List<AbsRichBoxMember> content)
         {
             content.Add(new RbSpace(2));
-            content.Add(new RbImage(SpriteName.LfMenuMoreMenusArrow, 0.4f, 0, 0, MenuMoreOptionsArrowCol));
+            content.Add(new RbImage(SpriteName.LfMenuMoreMenusArrow, 0.4f, MenuMoreOptionsArrowCol));
             return content;
         }
 
         public static RbImage BulletPoint(RichBoxContent content)
         {
-            var dot = new RbImage(SpriteName.warsBulletPoint, 0.8f, 0f, 0.3f);
+            var dot = new RbImage(SpriteName.warsBulletPoint, 0.8f, null, 0f, 0.3f);
             //dot.color = Color.DarkGray;
             content.Add(dot);
             return dot;
         }
         public static RbImage BulletSeperationPoint(RichBoxContent content)
         {
-            var dot = new RbImage(SpriteName.warsBulletSeperationPoint, 0.8f, 0f, 0f);
+            var dot = new RbImage(SpriteName.warsBulletSeperationPoint, 0.8f);
             //dot.color = Color.DarkGray;
             content.Add(dot);
             return dot;

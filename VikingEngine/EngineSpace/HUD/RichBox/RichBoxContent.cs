@@ -199,7 +199,7 @@ namespace VikingEngine.HUD.RichBox
 
         public RbImage BulletPoint()
         {
-            var dot =new  RbImage(SpriteName.WhiteArea, 0.4f, 1f, 2f);
+            var dot =new  RbImage(SpriteName.WhiteArea, 0.4f, null, 1f, 2f);
             dot.color = Color.DarkGray;
             Add(dot);
             return dot;

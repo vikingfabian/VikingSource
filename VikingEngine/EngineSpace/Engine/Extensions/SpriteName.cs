@@ -722,7 +722,31 @@ namespace VikingEngine
         PrevFrame,
         NextFrame,
         Undo,
-        
+
+        VoxelEditorColorCube,
+        VoxelEditorTint,
+        VoxelEditorBucket,
+        VoxelEditorSortTime,
+        VoxelEditorSortName,
+        VoxelEditorSortUp,
+        VoxelEditorSortDown,
+        VoxelEditorMoveFrameToEndL,
+        VoxelEditorMoveFrameL,
+        VoxelEditorMoveFrameToEndR,
+        VoxelEditorMoveFrameR,
+        VoxelEditorFrameSelected,
+        VoxelEditorFrame,
+        VoxelEditorFrameLocked,
+        VoxelEditorFrameToFirst,
+        VoxelEditorFramePrevious,
+        VoxelEditorFrameNext,
+        VoxelEditorFrameToLast,
+        VoxelEditorFrameAddEmpty,
+        VoxelEditorFrameAddCopy,
+        VoxelEditorFrameRemove,
+        VoxelEditorFlipLyingStanding,
+
+
 
         #region Commander
 
@@ -2483,6 +2507,9 @@ namespace VikingEngine
         WarsHudIconChildArrow,
         WarsHudIconExtraModes,
         WarsHudIconCollection,
+        WarsHudIconReturn,
+        WarsHudIconSave,
+
         DSS2MainMenu,
         SteamIcon,
 

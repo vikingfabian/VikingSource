@@ -251,7 +251,7 @@ namespace VikingEngine.HUD.RichBox
         public Color? color;
         public Image pointer;
 
-        public RbImage(SpriteName sprite, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0, Color? color = null)
+        public RbImage(SpriteName sprite, float scale = 1f, Color? color = null, float addLeftSpace = 0, float addRightSpace = 0)
             : base(scale, addLeftSpace, addRightSpace)
         {
             this.sprite = sprite;

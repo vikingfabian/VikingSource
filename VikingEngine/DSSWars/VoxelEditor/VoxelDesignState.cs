@@ -10,10 +10,10 @@ namespace VikingEngine.DSSWars.VoxelEditor
     class VoxelDesignState : Voxels.AbsVoxelDesignerState
     {
         VoxelDesigner vDesigner;
-        public VoxelDesignState(int player)
+        public VoxelDesignState(bool controller, int player)
             : base(true)
         {
-            vDesigner = new VoxelDesigner(player);
+            vDesigner = new VoxelDesigner(controller, player);
             init(vDesigner);
         }
 

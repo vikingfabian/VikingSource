@@ -22,8 +22,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Work_SelectCategory => "Select item category";
         public string Hud_RemoveFromList => "Remove from list";
 
-        
+
         public string Hud_ReturnToPrevious => "Return";
+        public string Hud_Close => "Close";
 
         public string Hud_Low => "Low";
         public string Hud_Medium => "Medium";
@@ -80,6 +81,96 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Technology_GainTitle => "Ways to gain technology";
         public string Technology_LevelUp => "Level up";
         public string Technology_ForEachLevelUp => "When a worker level up, in the technology field: {0}";
+
+
+        
+        public string Editor_Tool = "Tool";
+        public string Editor_SelectOptinsMenu = "Selection options";
+        public string Editor_Continous => "Continous";
+        public string Editor_Tool_PencilSize => "Pencil size";
+        public string Editor_Tool_SizeTolerance => "Size tolerance";
+        public string Editor_Tool_RoundPencil => "Round pencil";
+        public string Editor_Tool_EdgeSize => "Edge size";
+        public string Editor_Tool_PercentFill => "Percent fill";
+        public string Editor_Tool_ClearAbove => "Clear above";
+        public string Editor_Tool_FillBelow => "Fill below";
+        public string Editor_Tool_ => "Fill below";
+        public string Editor_UserModels => "User models";
+        public string Editor_UserModels_Description => "Browse models you saved";
+
+        public string Editor_RetailModels => "Retail models";
+        public string Editor_RetailModels_Description => "Load models from the game";
+
+        public string Editor_ModTemplates => "Templates for modding";
+        public string Editor_ExportAsOBJ => "Export as .OBJ";
+        public string Editor_SelectAll => "Select All";
+
+        public string Editor_Canvas_Title => "Canvas";
+        public string Editor_Canvas_Size => "Size";
+        public string Editor_Canvas_Dimension_X => "X"; //done
+        public string Editor_Canvas_Dimension_Y => "Y"; //done
+        public string Editor_Canvas_Dimension_Z => "Z"; //done
+        public string Editor_Canvas_SizePresets => "Size presets";
+        public string Editor_Canvas_Move => "Move";
+        public string Editor_Canvas_Move_Up => "Up";
+        public string Editor_Canvas_Move_Down => "Down";
+        public string Editor_Canvas_RotateClockwise => "Rotate clockwise";
+        public string Editor_Canvas_RotateCounterClockwise => "Rotate counter clockwise";
+        public string Editor_Canvas_Mirror => "Mirror";
+
+        public string Editor_Canvas_RotateFlip_Title => "Rotate/Flip";
+        public string Editor_Canvas_FlipVertical => "Flip up and down";
+        public string Editor_Canvas_FlipOrientation => "Flip lying/standing";
+        public string Editor_Canvas_ClearAll_Description => "Removes all blocks and all frames";
+
+
+        public string Editor_Animation => "Animation";
+        public string Editor_Animation_RemoveCurrentFrame => "Remove current frame";
+        public string Editor_Animation_AddFrameCopy => "Add frame as copy";
+        public string Editor_Animation_AddEmptyFrame => "Add empty frame";
+        public string Editor_Animation_MoveDescription => "Change frame position";
+
+        public string Editor_SettingsMenu => "Settings";
+        public string Hud_Exit => "Exit";
+        public string Editor_Canvas_Clear => "Clear";
+
+        public string Editor_StampOtherFrames => "Stamp in other frames";
+        public string Editor_StampOtherFrames_Description => "Paste the voxels in this frames";
+        public string Editor_PasteToFrame => "Paste the voxels in this frame";
+        public string Editor_ClearAllFrames => "Clear in All frames";
+        public string Editor_ClearOtherFrames => "Clear Other Frames";
+
+
+        public string Editor_Settings_MoveSpeed => "Move speed";
+        public string Editor_Settings_BackgroundColor => "Background color";
+        public string Editor_Settings_HideHUD => "Hide HUD";
+
+
+        public string Editor_Color = "Color";
+        public string Editor_ColorsInUseLabel => "In use";
+        public string Editor_Color_BrighterPlus => "Brighter +";
+        public string Editor_Color_Brighter => "Brighter";
+        public string Editor_Color_Darker => "Darker";
+        public string Editor_Color_DarkerPlus => "Darker +";
+        public string Editor_Color_RedTint => "Red tint";
+        public string Editor_Color_Tint = "Tint";
+        public string Editor_Color_GreenTint => "Green tint";
+        public string Editor_Color_BlueTint => "Blue tint";
+        public string Editor_Color_YellowTint => "Yellow tint";
+        public string Editor_Color_PurpleTint => "Purple tint";
+
+
+        public string Editor_Preview => "Preview";
+        public string Editor_CombineWithCurrent => "Combine with current model";
+
+        //public string Editor_ => "";
+        //public string Editor_ => "";
+        //public string Editor_ => "";
+        //public string Editor_ => "";
+        //public string Editor_ => "";
+        //public string Editor_ => "";
+
+
     }
 
 }

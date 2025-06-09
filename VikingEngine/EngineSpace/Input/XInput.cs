@@ -83,7 +83,7 @@ namespace VikingEngine.Input
             return false;
         }
 
-        static public bool AnyActivationKey_DownEvent(ref int player)
+        static public bool AnyActivationKey_DownEvent(out int player)
         {
             for (int i = 0; i < controllers.Count; i++)
             {
@@ -93,6 +93,7 @@ namespace VikingEngine.Input
                     return true;
                 }
             }
+            player = -1;
             return false;
         }
 

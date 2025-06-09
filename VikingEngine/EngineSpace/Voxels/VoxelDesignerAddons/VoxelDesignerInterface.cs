@@ -387,7 +387,7 @@ namespace VikingEngine.Voxels
                 case PaintToolType.Road: return SpriteName.EditorToolRoad;
                 case PaintToolType.Sphere: return SpriteName.EditorToolSphere;
                 case PaintToolType.Triangle: return SpriteName.EditorToolWedge;
-                case PaintToolType.Bucket: return SpriteName.MissingImage;
+                case PaintToolType.Bucket: return SpriteName.VoxelEditorBucket;
             }
 
             return SpriteName.MissingImage;

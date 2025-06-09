@@ -229,7 +229,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
                     content.newLine();
                     content.Add(new ArtButton(RbButtonStyle.Primary,
-                    new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_SaveState) }, new RbAction(state.saveMap), null, DssRef.world != null));
+                    new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Save) }, new RbAction(state.saveMap), null, DssRef.world != null));
 
                     break;
 
