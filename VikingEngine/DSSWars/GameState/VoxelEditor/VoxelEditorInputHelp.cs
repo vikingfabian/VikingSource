@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,9 @@ using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG.HeroQuest.Display;
 
-namespace VikingEngine.DSSWars.VoxelEditor
+namespace VikingEngine.DSSWars.GameState.VoxelEditor
 {
     class VoxelEditorInputHelp
     {
@@ -22,10 +24,10 @@ namespace VikingEngine.DSSWars.VoxelEditor
         {
             if (menu == null)
             {
-                var objectMenuArea = new VectorRect(0, 0,
-                    HudLib.HeadDisplayWidth * 0.6f, HudLib.HeadDisplayWidth * 0.5f);
-                objectMenuArea.X = Engine.Screen.SafeArea.Right - objectMenuArea.Width;
-                objectMenuArea.Y = Engine.Screen.SafeArea.Bottom - objectMenuArea.Height;
+                var objectMenuArea = new VectorRect(0, Screen.SafeArea.Y,
+                    HudLib.HeadDisplayWidth * 0.6f, Screen.SafeArea.Height);
+                objectMenuArea.X = Screen.SafeArea.Right - objectMenuArea.Width;
+                //objectMenuArea.Y = Screen.SafeArea.Bottom - objectMenuArea.Height;
 
                 menu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(0), RichMenu.DefaultRenderEdge, HudLib.GUILayer, XGuide.LocalHost);
                 bgTex = menu.addBackground_Flat(new Color(20, 37, 65), 0.4f);
@@ -40,7 +42,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
             menu = null;
         }
 
-        public void refreshUpdate(VoxelEditorInputState inputState, InputMap map)
+        public void refreshUpdate(VoxelDesigner designer, VoxelEditorInputState inputState, InputMap map)
         {
             if (inputState == VoxelEditorInputState.HideHud)
             {
@@ -55,7 +57,42 @@ namespace VikingEngine.DSSWars.VoxelEditor
                 switch (inputState)
                 {
                     case VoxelEditorInputState.Editor:
+                        input(map.Menu.Icon, SpriteName.WarsHudHeadBarMenuIcon);
+                        input(map.editorInput.draw.Icon, SpriteName.IconBuildAdd);
+                        input(map.editorInput.erase.Icon, SpriteName.IconBuildRemove);
+                        input(map.editorInput.select.Icon, SpriteName.IconBuildSelection);
+                        input(map.editorInput.colorPick.Icon, SpriteName.IconColorPick);
+                        input(map.editorInput.undo.Icon, SpriteName.Undo);
+                        input(map.editorInput.colorPick.Icon, SpriteName.IconColorPick);
+                        input(map.editorInput.toggleCameraMode.Icon, SpriteName.InterfaceIconCamera);
 
+                        if (designer.haveAnimation)
+                        {
+                            input(map.editorInput.next.Icon, SpriteName.VoxelEditorFrameNext);
+                            input(map.editorInput.previous.Icon, SpriteName.VoxelEditorFramePrevious);
+                        }
+                        break;
+                    case VoxelEditorInputState.Selection:
+                        content.newLine();
+                        content.Add(new RbImage(map.Menu.Icon));
+                        content.space();
+                        content.Add(new RbText(DssRef.todoLang.Editor_SelectOptionsMenu));
+                            
+                        input(map.editorInput.draw.Icon, SpriteName.IconBuildStamp);
+                        input(map.editorInput.mirrorX.Icon, SpriteName.FlipHori);
+                        input(map.editorInput.mirrorY.Icon, SpriteName.FlipVerti);
+                        input(map.editorInput.previous.Icon, SpriteName.RotateCCW);
+                        input(map.editorInput.next.Icon, SpriteName.RotateCW);
+                        input(map.inputSource.HasMouse ? SpriteName.MouseButtonRight : map.editorInput.cancel.Icon, SpriteName.WarsHudIconExit);
+                        break;
+
+                    case VoxelEditorInputState.Camera:
+                        input(map.inputSource.HasMouse ? SpriteName.MouseAllDir : map.editorInput.cameraXMoveY.Icon, SpriteName.CamAngleY);
+                        input(map.inputSource.HasMouse ? SpriteName.MouseScroll : map.editorInput.moveXZ.Icon, SpriteName.CamZoom);
+                        break;
+
+                    case VoxelEditorInputState.Menu:
+                        input(map.Menu.Icon, SpriteName.WarsHudIconExit);
                         break;
                 }
 
@@ -127,8 +164,10 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
     enum VoxelEditorInputState
     { 
+        NONE,
         HideHud,
         Editor,
+        Camera,
         Selection,
         Menu,
     }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.DSSWars.VoxelEditor
+namespace VikingEngine.DSSWars.GameState.VoxelEditor
 {
     class VoxelDesignState : Voxels.AbsVoxelDesignerState
     {

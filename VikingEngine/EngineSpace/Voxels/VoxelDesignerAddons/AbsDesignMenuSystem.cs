@@ -95,10 +95,9 @@ namespace VikingEngine.Voxels
             new HUD.GuiTextButton("Flip lying/standing", null, designer.flipLyingToStanding, false, layout);
         }
 
-        void linkFindReplaceSelectionMaterials()//HUD.File file, Action<Data.MaterialType> callBack, bool showMoreMenusArrow)
+        void linkFindReplaceSelectionMaterials()
         {
-            //bool[] haveMaterial = selectedVoxels.ContainMaterials();
-
+            
             var used = designer.materialsInSelection();
 
 
@@ -107,15 +106,7 @@ namespace VikingEngine.Voxels
             {
                 new GuiTextButton("Empty", null, new GuiAction1Arg<ushort>(designer.linkReplaceSelectionMaterials, VikingEngine.LootFest.Map.HDvoxel.BlockHD.EmptyBlock),
                     true, layout);
-                //for (MaterialType type = (MaterialType)1; type < MaterialType.NUM; type++)
-                //{
-                //    if (haveMaterial[(int)type])
-                //    {
-                //        new GuiIcon(BlockTextures.MaterialTile(type), TextLib.EnumName(type.ToString()),
-                //            new GuiAction1Arg<MaterialType>(linkReplaceSelectionMaterials, type), false, layout);
-                //    }
-                //}
-
+                
                 foreach (var m in used)
                 {
                     Color col = VikingEngine.LootFest.Map.HDvoxel.BlockHD.ToColor(m);

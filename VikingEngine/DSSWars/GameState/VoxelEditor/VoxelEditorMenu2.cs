@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using VikingEngine.DataLib;
 using VikingEngine.DataStream;
-using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
@@ -29,7 +28,7 @@ using VikingEngine.LootFest.Players;
 using VikingEngine.PJ;
 using VikingEngine.Voxels;
 
-namespace VikingEngine.DSSWars.VoxelEditor
+namespace VikingEngine.DSSWars.GameState.VoxelEditor
 {
     class VoxelEditorMenu2 : AbsDesignMenuSystem_Base
     {
@@ -39,6 +38,8 @@ namespace VikingEngine.DSSWars.VoxelEditor
         const string Page_Loading = "loading";
         const string Page_ListFiles = "listfiles";
         const string Page_Selection = "selection";
+        const string Page_Recolor = "recolor";
+        const string Page_RecolorTo = "recolor_to";
         bool listUserModels;
 
         const float DefaultIconScale = 0.8f;
@@ -56,7 +57,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
             if (menu == null)
             {
 
-                var objectMenuArea = Engine.Screen.SafeArea;
+                var objectMenuArea = Screen.SafeArea;
                 objectMenuArea.Width = HudLib.HeadDisplayWidth;
 
                 menu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, XGuide.LocalHost);
@@ -98,8 +99,17 @@ namespace VikingEngine.DSSWars.VoxelEditor
                 case Page_Selection:
                     selectionOptionsMenu();
                     break;
+
+                case Page_Recolor:
+                    linkFindReplaceSelectionMaterials();
+                    break;
+                case Page_RecolorTo:
+                    reColorToMenu();
+                    break;
             }
         }
+
+
 
         public void mainMenu()
         {
@@ -116,7 +126,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
                 content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.IconBuildSelection),
                     new RbSpace(),
-                    new RbText(DssRef.todoLang.Editor_SelectOptinsMenu) }),
+                    new RbText(DssRef.todoLang.Editor_SelectOptionsMenu) }),
                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Selection, StackOption.Stack)));
             }
 
@@ -136,7 +146,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
             {
                 content.Add(new ArtOption(tool == sett.DrawTool,
                     new List<AbsRichBoxMember> { new RbImage(VoxelDesignerInterface.ToolIcon(tool)) },
-                    new RbAction1Arg<PaintToolType>((PaintToolType toolType) => { designer.Settings.DrawTool = toolType; }, tool)));
+                    new RbAction1Arg<PaintToolType>((toolType) => { designer.Settings.DrawTool = toolType; }, tool)));
             }
 
             const float TabLength = 0.3f;
@@ -202,7 +212,9 @@ namespace VikingEngine.DSSWars.VoxelEditor
             {
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
-                    new RbImage(SpriteName.IconColorPick), new RbSpace(), new RbText(designer.drawCoordMaterial.ToString()) }, new RbAction(designer.linkPickMaterial)));
+                    new RbImage(SpriteName.IconColorPick), new RbSpace(),
+                    new RbImage(SpriteName.VoxelEditorColorCube, 1, designer.drawCoordMaterial.color), new RbSpace(), 
+                    new RbText(designer.drawCoordMaterial.ToString()) }, new RbAction(designer.linkPickMaterial)));
             }
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, 
@@ -226,12 +238,12 @@ namespace VikingEngine.DSSWars.VoxelEditor
             content.space();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
                 new RbImage(SpriteName.WarsHudIconSave, DefaultIconScale), new RbSpace(), 
-                new RbText(DssRef.lang.Hud_Save) }, new RbAction(designer.storage.save), 
+                new RbText(DssRef.lang.Hud_Save) }, new RbAction(((Action)designer.storage.save) + closeMenu), 
                new RbTooltip_Text(LoadContent.CheckCharsSafety(designer.storage.SavePath().CompletePath(true), LoadedFont.Regular))));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
                 new RbImage(SpriteName.WarsHudIconExport, DefaultIconScale), new RbSpace(), 
-                new RbText("OBJ") }, new RbAction(designer.exportObjModel), 
-                new RbTooltip((RichBoxContent content, object tag)=> 
+                new RbText("OBJ") }, new RbAction(((Action)designer.exportObjModel) + closeMenu), 
+                new RbTooltip((content, tag)=> 
             {
                 content.h2(DssRef.todoLang.Editor_ExportAsOBJ, HudLib.TitleColor_Head);
                 content.Add(new RbText(LoadContent.CheckCharsSafety(designer.ExportPath().CompletePath(true), LoadedFont.Regular), HudLib.InfoYellow_Light));
@@ -384,13 +396,14 @@ namespace VikingEngine.DSSWars.VoxelEditor
             content.newParagraph();
             content.h2(DssRef.todoLang.Editor_Canvas_RotateFlip_Title, HudLib.TitleColor_Label);
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCW) }, new RbAction(designer.LinkSelRotateC), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_RotateClockwise)));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCCW) }, new RbAction(designer.LinkSelRotateCC), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_RotateCounterClockwise)));
-            content.space(2);
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.FlipHori) }, new RbAction(designer.mirrorSelection), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_Mirror)));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.FlipVerti)}, new RbAction(designer.LinkSelFlipY), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_FlipVertical)));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFlipLyingStanding) }, new RbAction(designer.flipLyingToStanding), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_FlipOrientation)));
-        
+            rotateFlipToHud(content);
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCW) }, new RbAction(designer.LinkSelRotateC), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_RotateClockwise)));
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCCW) }, new RbAction(designer.LinkSelRotateCC), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_RotateCounterClockwise)));
+            //content.space(2);
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.FlipHori) }, new RbAction(designer.mirrorSelection), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_Mirror)));
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.FlipVerti)}, new RbAction(designer.LinkSelFlipY), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_FlipVertical)));
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFlipLyingStanding) }, new RbAction(designer.flipLyingToStanding), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_FlipOrientation)));
+
             content.newParagraph();
             content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Canvas_Clear) }, new RbAction(designer.LinkClearAll), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_ClearAll_Description)));
 
@@ -398,8 +411,127 @@ namespace VikingEngine.DSSWars.VoxelEditor
             Refresh(content);
         }
 
+        void linkFindReplaceSelectionMaterials()
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            HudLib.returnButton(content, menu, false, closeMenu);
+            var used = designer.materialsInSelection();
+
+            content.h1(DssRef.todoLang.Editor_Color_Recolor, HudLib.TitleColor_Head);
+            
+            content.newLine();
+            HudLib.Label(content,DssRef.todoLang.Editor_ColorsInUseLabel);
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.VoxelEditorEmptyCube), new RbSpace(), new RbText(DssRef.todoLang.Editor_NoColor)},
+                new RbAction1Arg<ushort>(designer.linkReplaceSelectionMaterials, BlockHD.EmptyBlock)));
+
+            content.newLine();
+            foreach (var m in used)
+            {
+                Color col = VikingEngine.LootFest.Map.HDvoxel.BlockHD.ToColor(m);
+
+                content.Add(new ArtImageButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 1, col) },
+                    new RbAction1Arg<ushort>(designer.linkReplaceSelectionMaterials, m)));
+            }
+
+            content.newParagraph();
+            allFramesChkBox(content);
+
+            Refresh(content);
+            //var layout = new GuiLayout(SpriteName.NO_IMAGE, "Model materials", menu, HUD.GuiLayoutMode.MultipleColumns);
+            //{
+            //    new GuiTextButton("Empty", null, new GuiAction1Arg<ushort>(designer.linkReplaceSelectionMaterials, VikingEngine.LootFest.Map.HDvoxel.BlockHD.EmptyBlock),
+            //        true, layout);
+
+            //    foreach (var m in used)
+            //    {
+            //        Color col = VikingEngine.LootFest.Map.HDvoxel.BlockHD.ToColor(m);
+
+            //        var icon = new GuiIcon(SpriteName.WhiteArea, col.ToString(),
+            //            new GuiAction1Arg<ushort>(designer.linkReplaceSelectionMaterials, m), false, layout);
+            //        icon.iconImage.Color = col;
+            //    }
+
+            //    allFramesChkBox(layout);
+            //}
+            //layout.End();
+        }
+
+        public void openReColorTo()
+        {
+            menu.OpenMenu(Page_RecolorTo, StackOption.Stack);
+        }
+
+        public void reColorToMenu()
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            HudLib.returnButton(content, menu, false, closeMenu);
+            var from = designer.swapMaterialFrom;
+
+            content.Add(new RbBeginTitle());
+            if (from.IsEmpty())
+            {
+                content.Add(new RbImage(SpriteName.VoxelEditorEmptyCube));
+            }
+            else
+            {
+                content.Add(new RbImage(SpriteName.VoxelEditorColorCube, 1, from.color));
+            }
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Editor_Color_RecolorTo, HudLib.TitleColor_Head));
+
+            if (from.HasMaterial())
+            {
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.VoxelEditorEmptyCube), new RbSpace(), new RbText(DssRef.todoLang.Editor_NoColor)},
+                    new RbAction1Arg<BlockHD>(designer.replaceSelectionMaterialsTo, BlockHD.Empty)));
+            }
+
+            content.newLine();
+            colorPalette(content, designer.replaceSelectionMaterialsTo);
+
+            Refresh(content);
+
+            //RichBoxContent content = new RichBoxContent();
+            //content.h1("Swap Material To", HudLib.TitleColor_Head);
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Empty") }, new RbAction1Arg<BlockHD>(replaceSelectionMaterialsTo, BlockHD.Empty)));
+
+
+
+            //GuiLayout layout = new GuiLayout("Swap Material To", menusystem.menu, GuiLayoutMode.MultipleColumns, null);
+            //{
+            //    new GuiTextButton("Empty", null, new GuiAction1Arg<BlockHD>(replaceSelectionMaterialsTo, VikingEngine.LootFest.Map.HDvoxel.BlockHD.Empty),
+            //        true, layout);
+            //    menusystem.colorPalette(layout, replaceSelectionMaterialsTo);
+            //}
+            //layout.End();
+        }
+
+        void allFramesChkBox(RichBoxContent content)
+        {
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.VoxelEditorAllFrames), new RbSpace(),
+                new RbText(DssRef.todoLang.Editor_Animation_AllFrames) },
+                designer.bRepeateOnAllFramesProperty, new RbTooltip_Text(DssRef.todoLang.Editor_Animation_AllFrames_ActionDescription)));
+        }
+
+        void rotateFlipToHud(RichBoxContent content)
+        {
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCW) }, new RbAction(designer.LinkSelRotateC), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_RotateClockwise)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCCW) }, new RbAction(designer.LinkSelRotateCC), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_RotateCounterClockwise)));
+            content.space(2);
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.FlipHori) }, new RbAction(designer.mirrorSelection), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_Mirror)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.FlipVerti) }, new RbAction(designer.LinkSelFlipY), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_FlipVertical)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFlipLyingStanding) }, new RbAction(designer.flipLyingToStanding), new RbTooltip_Text(DssRef.todoLang.Editor_Canvas_FlipOrientation)));
+        }
+
         public override void selectionMenu()
         {
+            openMenu();
             menu.OpenMenu(Page_Selection, StackOption.Stack);
         }
 
@@ -409,8 +541,34 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
             HudLib.returnButton(content, menu, true, closeMenu);
 
-            content.h1(DssRef.todoLang.Editor_SelectOptinsMenu, HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.Editor_SelectOptionsMenu, HudLib.TitleColor_Head);
 
+            content.newLine();
+            Color current = BlockHD.FilterColor(designer.SelectedMaterial.color);
+            content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.VoxelEditorColorCube, 1f, current), new RbSpace(),
+                new RbText(DssRef.todoLang.Editor_Color_Recolor)
+            }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Recolor, StackOption.Stack)));
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.VoxelEditorMaterialCube), new RbSpace(),
+                new RbText(DssRef.todoLang.Editor_Material_Set)
+            }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Recolor, StackOption.Stack), null, false));
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconCut) }, new RbAction1Arg<bool>(designer.copySelectedVoxels, true),
+                new RbTooltip_Text(DssRef.todoLang.Hud_Cut)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconCopy) }, new RbAction1Arg<bool>(designer.copySelectedVoxels, false),
+                new RbTooltip_Text(DssRef.todoLang.Hud_Copy)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.IconBuildStamp) }, new RbAction1Arg<bool>(designer.stampSelection, true),
+                new RbTooltip_Text(DssRef.todoLang.Editor_Stamp)));
+            content.space();
+            rotateFlipToHud(content);
+                        
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.IconBuildRemove), new RbText(DssRef.todoLang.Editor_Canvas_Clear) }, new RbAction(designer.clearSelectedArea)));
 
@@ -507,7 +665,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
             foreach (var m in MainColors)
             {
-                ColorButton(VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(m), content, link);
+                ColorButton(BlockHD.FilterColor(m), content, link);
             }
 
             //new GuiSectionSeparator(layout);
@@ -529,7 +687,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
                     for (int light = LightnessCount - 1; light >= 1; --light)
                     {
                         Color col = lib.HSL2RGB((double)hue / HueCount, saturate, (double)light / LightnessCount);
-                        col = VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(col);
+                        col = BlockHD.FilterColor(col);
                         ColorButton(col, content, link);
                     }
                 }
@@ -552,7 +710,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
             foreach (Color color in bgcolors)
             {
                 content.Add(new ArtOption(color == Ref.draw.ClrColor, new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 0.8f, color) },
-                    new RbAction1Arg<Color>((Color col) => { Ref.draw.ClrColor = col; }, color)));
+                    new RbAction1Arg<Color>((col) => { Ref.draw.ClrColor = col; }, color)));
             }
 
             content.newLine();
@@ -564,7 +722,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
         void selectColorMenu()
         {
-            Color current = VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(designer.SelectedMaterial.color);
+            Color current = BlockHD.FilterColor(designer.SelectedMaterial.color);
 
             RichBoxContent content = new RichBoxContent();
             HudLib.returnButton(content, menu, true, closeMenu);
@@ -586,10 +744,6 @@ namespace VikingEngine.DSSWars.VoxelEditor
             Color blueTint = ColorExt.ChangeColor(current, -BlockHD.ColorStep, -BlockHD.ColorStep, BlockHD.ColorStep);
             Color yellowTint = ColorExt.ChangeColor(current, BlockHD.ColorStep, BlockHD.ColorStep, -BlockHD.ColorStep);
             Color purpleTint = ColorExt.ChangeColor(current, BlockHD.ColorStep, -BlockHD.ColorStep, BlockHD.ColorStep);
-
-            
-
-
 
             colorTintButton(brighter2, Color.White, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_BrighterPlus, content, designer.pickColorLink);
             colorTintButton(brighter, Color.White, false, SpriteName.MissingImage, DssRef.todoLang.Editor_Color_Brighter, content, designer.pickColorLink);
@@ -628,29 +782,10 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
         static void ColorButton(Color col, RichBoxContent content, Action<BlockHD> link, bool bigIcon = false)
         {
-            //if (bigIcon)
-            //{
-                content.Add(new ArtImageButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 1, col) },
-                    new RbAction1Arg<BlockHD>(link, new BlockHD(col)))
+            content.Add(new ArtImageButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 1, col) },
+                new RbAction1Arg<BlockHD>(link, new BlockHD(col)))
                 { SpaceAfter = 0, });
-            //}
-            //else
-            //{
-            //    content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 1, col) },
-            //            new RbAction1Arg<BlockHD>(link, new BlockHD(col))));
-            //}
-                //GuiIcon icon;
-
-            //if (bigIcon)
-            //{
-            //    icon = new GuiIcon(SpriteName.WhiteArea, col.ToString(), new GuiAction1Arg<BlockHD>(link, new BlockHD(col)), false, layout);
-            //}
-            //else
-            //{
-            //    icon = new GuiSmallIcon(SpriteName.WhiteArea, col.ToString(), new GuiAction1Arg<BlockHD>(link, new BlockHD(col)), false, layout);
-            //}
-
-            //icon.iconImage.Color = col;
+            
         }
 
         override public void closeMenu() 
@@ -674,7 +809,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
                     menu.needRefresh = false;
                 }
 
-                if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape))
+                if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape))
                 {
                     closeMenu();
                 }
@@ -695,22 +830,25 @@ namespace VikingEngine.DSSWars.VoxelEditor
                 fileIndex = new FileIndex(userModels? DesignerStorage.UserVoxelObjFolder : LfLib.ModelsCategoryWars, 
                     VoxelDesigner.searchPattern(false), userModels, designer.Settings.SortSettings);
                 
-                Ref.update.AddSyncAction(new SyncAction1Arg<bool>((bool userModels) =>
+                Ref.update.AddSyncAction(new SyncAction1Arg<bool>((userModels) =>
                 {
                     listUserModels = userModels;
                     listFilesMenu();
                 }, userModels));
 
-                Graphics.TopViewCamera modelView = null;
+                TopViewCamera modelView = null;
 
                 FileIndex fileIndex_sp = fileIndex;
-                if (fileIndex_sp != null)
+                var menu_sp = menu;
+                if (fileIndex_sp != null &&
+                 menu_sp != null)
                 {
                     //Generate all icons
                     foreach (var file in fileIndex_sp.Files)
                     {
-                        if (menu.CurrentMenuState == Page_ListFiles ||
-                            menu.CurrentMenuState == Page_Loading)
+                        if (menu != null &&
+                            (menu_sp.CurrentMenuState == Page_ListFiles || menu_sp.CurrentMenuState == Page_Loading)
+                            )
                         {
                             FilePath path;
                             if (userModels)
@@ -722,10 +860,10 @@ namespace VikingEngine.DSSWars.VoxelEditor
                                 path = DesignerStorage.InGameVoxelObjPath(file.Name);
                             }
                             VoxelObjGridDataAnimHD animationFrames = new VoxelObjGridDataAnimHD();
-                            DataStream.BeginReadWrite.BinaryIO(false, path, null, animationFrames.ReadBinaryStream, null, false);
+                            BeginReadWrite.BinaryIO(false, path, null, animationFrames.ReadBinaryStream, null, false);
                             if (animationFrames.Frames != null)
                             {
-                                Graphics.VoxelModel voxelObj = LootFest.Editor.VoxelObjBuilder.BuildModelHD(animationFrames.Frames, Vector3.Zero);
+                                VoxelModel voxelObj = VoxelObjBuilder.BuildModelHD(animationFrames.Frames, Vector3.Zero);
                                 Vector3 modelGridSz = animationFrames.Frames[0].Size.Vec;
 
                                 new Timer.Action0ArgTrigger(renderModel);
@@ -738,7 +876,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
                                     RenderTargetImage target = new RenderTargetImage(Vector2.Zero, new Vector2(Size), ImageLayers.Foreground4, false);
                                     if (modelView == null)
                                     {
-                                        modelView = new Graphics.TopViewCamera(22, new Vector2(MathHelper.PiOver2 - 0.8f, MathHelper.PiOver4 + 0.12f),
+                                        modelView = new TopViewCamera(22, new Vector2(MathHelper.PiOver2 - 0.8f, MathHelper.PiOver4 + 0.12f),
                                             Size, Size);
                                     }
                                     modelView.LookTarget = modelGridSz * 0.5f;
@@ -750,10 +888,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
                                     file.Tag = target.renderTarget;
 
-                                    menu.needRefresh = true;
-                                    //iconImg.Texture = target.renderTarget;
-                                    //iconImg.SetFullTextureSource();
-
+                                    menu_sp.needRefresh = true;
                                 }
                             }
                         }

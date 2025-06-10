@@ -30,6 +30,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Medium => "Medium";
         public string Hud_High => "High";
 
+        public string Hud_Copy => "Copy";
+        public string Hud_Paste => "Paste";
+        public string Hud_Cut => "Cut";
+
         public string Settings_WaterMultiplier => "Water multiplier";
         public string Settings_WaterMultiplier_Description => "How much water cities produce and store. A high value will lower computer performance.";
 
@@ -85,7 +89,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         
         public string Editor_Tool = "Tool";
-        public string Editor_SelectOptinsMenu = "Selection options";
+        public string Editor_SelectOptionsMenu = "Selection options";
         public string Editor_Continous => "Continous";
         public string Editor_Tool_PencilSize => "Pencil size";
         public string Editor_Tool_SizeTolerance => "Size tolerance";
@@ -129,11 +133,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Editor_Animation_AddFrameCopy => "Add frame as copy";
         public string Editor_Animation_AddEmptyFrame => "Add empty frame";
         public string Editor_Animation_MoveDescription => "Change frame position";
+        public string Editor_Animation_AllFrames => "All frames";
+        public string Editor_Animation_AllFrames_ActionDescription => "Make the same action on all frames";
+
 
         public string Editor_SettingsMenu => "Settings";
         public string Hud_Exit => "Exit";
         public string Editor_Canvas_Clear => "Clear";
 
+        public string Editor_Stamp => "Stamp";
         public string Editor_StampOtherFrames => "Stamp in other frames";
         public string Editor_StampOtherFrames_Description => "Paste the voxels in this frames";
         public string Editor_PasteToFrame => "Paste the voxels in this frame";
@@ -147,7 +155,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
 
         public string Editor_Color = "Color";
-        public string Editor_ColorsInUseLabel => "In use";
+        public string Editor_ColorsInUseLabel => "Colors in use";
         public string Editor_Color_BrighterPlus => "Brighter +";
         public string Editor_Color_Brighter => "Brighter";
         public string Editor_Color_Darker => "Darker";
@@ -158,7 +166,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Editor_Color_BlueTint => "Blue tint";
         public string Editor_Color_YellowTint => "Yellow tint";
         public string Editor_Color_PurpleTint => "Purple tint";
+        public string Editor_NoColor => "Empty";
 
+        /// <summary>
+        /// User may change one color to another, across the model
+        /// </summary>
+        public string Editor_Color_Recolor => "Recolor";
+        public string Editor_Color_RecolorTo => "Recolor to";
+
+        public string Editor_Material_Set => "Set material";
 
         public string Editor_Preview => "Preview";
         public string Editor_CombineWithCurrent => "Combine with current model";

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.LootFest.Map.HDvoxel;
 
-namespace VikingEngine.DSSWars.VoxelEditor
+namespace VikingEngine.DSSWars.GameState.VoxelEditor
 {
     class ColorPicker
     {

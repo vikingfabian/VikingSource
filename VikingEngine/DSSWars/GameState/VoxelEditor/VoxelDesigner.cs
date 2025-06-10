@@ -21,10 +21,10 @@ using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.PJ;
 using VikingEngine.Voxels;
 
-namespace VikingEngine.DSSWars.VoxelEditor
+namespace VikingEngine.DSSWars.GameState.VoxelEditor
 {
 
-    class VoxelDesigner : Voxels.AbsVoxelDesigner
+    class VoxelDesigner : AbsVoxelDesigner
     {
         public MergeModelsOption mergeModelsOption = new MergeModelsOption().StandardInit();
         //public Players.Player parent = null;
@@ -38,12 +38,12 @@ namespace VikingEngine.DSSWars.VoxelEditor
             new IntervalIntV3(IntVector3.Zero, StandardDrawlimit);
 
 
-        BlockHD swapMaterialFrom;
+        public BlockHD swapMaterialFrom;
         TextG infoText;
 
         //float sphereRadius = 2.5f;
 
-        Graphics.Mesh doorOutline;
+        Mesh doorOutline;
         bool lockInputFirstFrame = true;
 
         ColorPicker colorPicker = null;
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
         { 
 
             basicInit(new VectorRect(
-                Engine.Screen.SafeArea.Position, new Vector2(300, Engine.Screen.SafeArea.Height)));
+                Screen.SafeArea.Position, new Vector2(300, Screen.SafeArea.Height)));
             Ref.draw.Camera.targetZoom = 40;
 
             inputHelp = new VoxelEditorInputHelp();
@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
                 storage.saveBackUp();
             }
 
-            if (Input.XInput.AnyActivationKey_DownEvent(out int playerIx))
+            if (XInput.AnyActivationKey_DownEvent(out int playerIx))
             {
                 setupNewInput(true, playerIx);
             }
@@ -176,6 +176,12 @@ namespace VikingEngine.DSSWars.VoxelEditor
             {
                 setupNewInput(false, 0);
             }
+        }
+
+        protected override void OnNewInputState(VoxelEditorInputState inputState)
+        {
+            base.OnNewInputState(inputState);
+            inputHelp.refreshUpdate(this, inputState, dssInput);
         }
 
         void basicInit(VectorRect menuArea)
@@ -415,6 +421,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
         {
             ShowHUD(false);
             menusystem.closeMenu();
+            inputHelp.deleteMenu();
         }
 
         public void setBgCol(Color col)
@@ -424,7 +431,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
         public void LinkClearAll()
         {
-            this.NewCanvas();
+            NewCanvas();
             storage.clearName();
             menusystem.closeMenu();
         }
@@ -513,7 +520,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
 
         public static string searchPattern(bool save)
         {
-            return "*" + Voxels.VoxelLib.VoxelObjByteArrayEnding;
+            return "*" + VoxelLib.VoxelObjByteArrayEnding;
         }
 
         public void voxelGridToSelection(VoxelObjGridDataHD grid)
@@ -531,7 +538,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
         }
 
 
-        void loadTemplateFile(DataStream.FilePath path)
+        void loadTemplateFile(FilePath path)
         {
             templateSent = false;
             storage.beginLoadTemplate(path);
@@ -740,7 +747,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
         public void selectMergeOption(MergeFramesOptions opt, VoxelObjGridDataAnimHD loadedModel)
         {
             mergeModelsOption.MergeFramesOptions = opt;
-            this.animationFrames.Merge(loadedModel, mergeModelsOption);
+            animationFrames.Merge(loadedModel, mergeModelsOption);
             EventTriggerCallBack();
         }
 
@@ -763,12 +770,12 @@ namespace VikingEngine.DSSWars.VoxelEditor
         override public void linkReplaceSelectionMaterials(ushort from)
         {
             swapMaterialFrom = new BlockHD(from);
+            menusystem.openReColorTo();
+            //RichBoxContent content = new RichBoxContent();
+            //content.h1("Swap Material To", HudLib.TitleColor_Head);
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Empty") }, new RbAction1Arg<BlockHD>(replaceSelectionMaterialsTo, BlockHD.Empty)));
 
-            RichBoxContent content = new RichBoxContent();
-            content.h1("Swap Material To", HudLib.TitleColor_Head);
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Empty") }, new RbAction1Arg<BlockHD>(replaceSelectionMaterialsTo, VikingEngine.LootFest.Map.HDvoxel.BlockHD.Empty)));
-
-            menusystem.Refresh(content);
+            //menusystem.Refresh(content);
 
             //GuiLayout layout = new GuiLayout("Swap Material To", menusystem.menu, GuiLayoutMode.MultipleColumns, null);
             //{
@@ -779,7 +786,7 @@ namespace VikingEngine.DSSWars.VoxelEditor
             //layout.End();
         }
 
-        void replaceSelectionMaterialsTo(BlockHD to)
+        public void replaceSelectionMaterialsTo(BlockHD to)
         {
             storeUndoableAction(repeateOnAllFrames);
 
@@ -807,9 +814,9 @@ namespace VikingEngine.DSSWars.VoxelEditor
             absMenuSystem.closeMenu();
         }
 
-        public static void listMaterials(HUD.Gui menu, Action<BlockHD> callback, bool includeEmptySpace)
+        public static void listMaterials(Gui menu, Action<BlockHD> callback, bool includeEmptySpace)
         {
-            VikingEngine.HUD.GuiLayout layout = new HUD.GuiLayout(SpriteName.NO_IMAGE, "Select Color", menu, HUD.GuiLayoutMode.MultipleColumns);
+            GuiLayout layout = new GuiLayout(SpriteName.NO_IMAGE, "Select Color", menu, GuiLayoutMode.MultipleColumns);
             {
                 DesignMenuSystem.BigPalette(layout, callback);
             }

@@ -2192,6 +2192,12 @@ namespace VikingEngine
                 add(SpriteName.VoxelEditorFlipLyingStanding);
                 add(SpriteName.VoxelEditorMoveFrameToEndL);
                 add(SpriteName.VoxelEditorMoveFrameToEndR);
+                add(SpriteName.WarsHudIconPaste);
+                add(SpriteName.WarsHudIconCopy);
+                add(SpriteName.VoxelEditorMaterialCube);
+                add(SpriteName.WarsHudIconCut);
+                add(SpriteName.VoxelEditorAllFrames);
+                add(SpriteName.VoxelEditorEmptyCube);
             }
 
             currentIndex = numTilesWidth * 87;
