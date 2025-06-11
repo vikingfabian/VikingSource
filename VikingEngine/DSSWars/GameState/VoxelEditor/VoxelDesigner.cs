@@ -182,6 +182,24 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
         }
 
+        protected override bool openMenuInput()
+        {
+            if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape))
+            {
+                setupNewInput(false, 0);
+                return true;
+            }
+
+            int playerIx;
+            if (XInput.KeyDownEvent(Microsoft.Xna.Framework.Input.Buttons.Start, out playerIx))
+            {
+                setupNewInput(true, playerIx);
+                return true;
+            }
+
+            return false;
+        }
+
         protected override void OnNewInputState(VoxelEditorInputState inputState)
         {
             base.OnNewInputState(inputState);

@@ -519,13 +519,11 @@ namespace VikingEngine.Voxels
                     {
                         undolist.Undo(this);
                     }
-                    else if (menuInput.openCloseInputEvent())
+                    else if (openMenuInput())
                     {
                         absMenuSystem.openMenu();
                     }
-                }
-
-                
+                }                
             }
 
             if (designerInterface.pencilShadow.visible &&
@@ -534,6 +532,12 @@ namespace VikingEngine.Voxels
                 OnNewInputState(inputState);
                 prevInputState = inputState;
             }
+        }
+
+
+        virtual protected bool openMenuInput()
+        {
+            return menuInput.openCloseInputEvent();
         }
 
         virtual protected void OnNewInputState(VoxelEditorInputState inputState)

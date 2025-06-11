@@ -299,8 +299,7 @@ namespace VikingEngine.HUD.RichMenu
         }
 
         public void updateMouseInput(ref bool mouseOver)
-        {           
-
+        {     
             if (interaction != null)
             {      
                 if (backgroundArea.IntersectPoint(Input.Mouse.Position)

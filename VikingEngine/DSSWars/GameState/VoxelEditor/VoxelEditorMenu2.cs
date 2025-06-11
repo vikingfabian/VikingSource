@@ -68,6 +68,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
                 mainMenu();
                 designer.ShowHUD(true);
+
+                updateMouseVisible();
             }
         }
 
@@ -793,7 +795,15 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             fileIndex = null;
             menu?.DeleteMe();
             menu = null;
+
+            updateMouseVisible();
         }
+
+        void updateMouseVisible()
+        {
+            Input.Mouse.Visible = menu != null;
+        }
+
         override public bool InMenu { get { return menu != null; } }
 
         /// <returns>Exit</returns>
