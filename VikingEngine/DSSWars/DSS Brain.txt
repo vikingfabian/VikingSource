@@ -9,8 +9,9 @@ https://docs.google.com/document/d/1_wUekNjufj6ghsvAcmFxgC0iqzqsAJ3mqFknUujOQy8/
 * Cleaned up some resource icons
 
 Voxel editor 2
-* localization
+* localization preparations
 * new menu hud
+* new input helper
 * dynamic controller/mouse support
 * improved file explorer
 * animation display

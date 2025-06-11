@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Display
 
                 content.Add(new ArtButton(RbButtonStyle.Primary,
                     new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
-                    new RbAction(pauseAction), new RbTooltip((RichBoxContent content, object tag) =>
+                    new RbAction(Ref.TogglePause), new RbTooltip((RichBoxContent content, object tag) =>
                     {
                         content.Add(new RbImage(player.gameControls.input.PauseGame.Icon));
                         content.Add(new RbSpace(0.5f));
