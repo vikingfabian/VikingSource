@@ -172,9 +172,13 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             {
                 setupNewInput(true, playerIx);
             }
-            if (Keyboard.AnyActivationKey_DownEvent())
+            else if (Keyboard.AnyActivationKey_DownEvent())
             {
                 setupNewInput(false, 0);
+            }
+            else if (inputHelp.menu.needRefresh)
+            {
+                inputHelp.refreshUpdate(this, prevInputState, dssInput);
             }
         }
 

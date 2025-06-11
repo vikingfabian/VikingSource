@@ -86,8 +86,7 @@ namespace VikingEngine.Voxels
             }
             float HelpLineWidth = FreePencilWidth * 0.4f;
 
-            //inputDisplay = new InputDisplay(input, Engine.XGuide.GetPlayer(playerIx).inputMap.menuInput);
-
+            
             this.offSet = offset;
             useDrawLimits = drawLimits != null;
             this.parent = parent;
@@ -99,8 +98,7 @@ namespace VikingEngine.Voxels
             freePencil = new Graphics.Mesh(LoadedMesh.sphere,
                 startPos, new Vector3(FreePencilWidth),
                 TextureEffectType.Flat, SpriteName.WhiteArea, Color.White);
-            //    new Graphics.TextureEffect(TextureEffectType.Flat, SpriteName.WhiteArea), FreePencilWidth);
-            //freePencil.Color = Color.White;
+            
             freePencil.Opacity = helpLinesTransparentsy;
 
             pencilCube = new Graphics.Mesh(LoadedMesh.cube_repeating, Vector3.Zero, new Vector3(1.16f),

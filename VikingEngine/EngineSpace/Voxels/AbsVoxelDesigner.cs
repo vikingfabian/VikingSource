@@ -422,9 +422,9 @@ namespace VikingEngine.Voxels
             if (keyDown)
                 WASD += vdir;
             else
-                WASD -= vdir;
-            
+                WASD -= vdir;            
         }
+
         virtual protected void NewCanvas()
         {
             animationFrames.Frames = new List<VoxelObjGridDataHD> { new VoxelObjGridDataHD(drawLimits.Size) };
@@ -444,7 +444,7 @@ namespace VikingEngine.Voxels
             Ref.draw.Camera.Time_Update(time);
         }
 
-        VoxelEditorInputState prevInputState = VoxelEditorInputState.NONE;
+        protected VoxelEditorInputState prevInputState = VoxelEditorInputState.NONE;
 
         virtual public void UpdateInput()
         {
@@ -460,18 +460,6 @@ namespace VikingEngine.Voxels
                     absMenuSystem.closeMenu();
                 }
             }
-            //else if (mouseToolHUD != null)
-            //{
-            //    if (mouseToolHUD.update() || inputMap.mouseToolMenu.DownEvent)
-            //    {
-            //        if (mouseToolHUD.selected != null)
-            //        {
-            //            inputMap.mouseTool = mouseToolHUD.selected.Value;
-            //        }
-            //        mouseToolHUD.DeleteMe();
-            //        mouseToolHUD = null;
-            //    }
-            //}
             else
             {
                 
@@ -529,21 +517,12 @@ namespace VikingEngine.Voxels
                     }
                     else if (inputMap.undo.DownEvent)
                     {
-                        //undo();
                         undolist.Undo(this);
                     }
                     else if (menuInput.openCloseInputEvent())
                     {
                         absMenuSystem.openMenu();
                     }
-
-                    //if (inputMap.useMouseInput)
-                    //{
-                    //    if (inputMap.mouseToolMenu.DownEvent)
-                    //    {
-                    //        mouseToolHUD = new MouseToolHUD();
-                    //    }
-                    //}
                 }
 
                 
