@@ -10,8 +10,8 @@ namespace VikingEngine.Voxels
 {
     class VoxelDesignerSettings
     {
-        public BlockHD Material = new BlockHD(Color.LightBlue, MaterialProperty.Unknown);//new BlockHD(Color.Red);
-        public BlockHD SecondaryMaterial = new BlockHD(Color.Yellow, MaterialProperty.Unknown);//new BlockHD(Color.Yellow);
+        public BlockHD Material = new BlockHD(Color.LightBlue, MaterialProperty.Default);//new BlockHD(Color.Red);
+        public BlockHD SecondaryMaterial = new BlockHD(Color.Yellow, MaterialProperty.Default);//new BlockHD(Color.Yellow);
         public bool SelectionCut = true;
         public bool ShowDrawCoord = true;
         public bool DrawFilled = true;//N

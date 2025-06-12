@@ -35,6 +35,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         const string Page_Canvas = "canvas";
         const string Page_Settings = "sett";
         const string Page_Color = "color";
+        const string Page_material = "material";
         const string Page_Loading = "loading";
         const string Page_ListFiles = "listfiles";
         const string Page_Selection = "selection";
@@ -92,6 +93,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 case Page_Color:
                     selectColorMenu();
                     break;
+                case Page_material:
+                    selectMaterialMenu();
+                    break;
                 case Page_Settings:
                     pageSettings();
                     break;
@@ -140,6 +144,16 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                     new RbSpace(),
                     new RbText(DssRef.todoLang.Editor_Color)
                 }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Color, StackOption.Stack)));
+
+            content.Add(new ArtButton(RbButtonStyle.Primary,
+                HudLib.NextArrow(
+                new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.VoxelEditorMaterialCube),
+                    new RbSpace(),
+                    new RbText(DssRef.todoLang.Editor_Material),
+                    new RbSpace(),
+                    new RbText(TextLib.Parentheses(designer.SelectedMaterial.material.ToString()), HudLib.TitleColor_TypeName_Dark)
+                }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_material, StackOption.Stack)));
 
             content.newLine();
             HudLib.Label(content, DssRef.todoLang.Editor_Tool);
@@ -292,7 +306,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
                 content.newLine();
                 const float MoveFrameIconSz = 1.4f;
-                //HudLib.Label(content, "Move current frame");
+
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameToEndL, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.ToStart), new RbTooltip_Text(DssRef.todoLang.Editor_Animation_MoveDescription)));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameL, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Back)));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameR, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Forward)));
@@ -770,6 +784,29 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             //new GuiSectionSeparator(layout);
 
             colorPalette(content, designer.pickColorLink);
+
+            Refresh(content);
+        }
+
+        void selectMaterialMenu()
+        {
+            //Color current = BlockHD.FilterColor(designer.SelectedMaterial.ma);
+
+            RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, menu, true, closeMenu);
+
+            content.Add(new RbBeginTitle(1));
+            content.Add(new RbImage(SpriteName.VoxelEditorMaterialCube));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Editor_Material, HudLib.TitleColor_Head));
+
+            for (MaterialProperty material = MaterialProperty.Default; material <= MaterialProperty.Layer_BelowAll; material++)
+            {
+                content.newLine();
+                content.Add(new ArtOption(material == designer.SelectedMaterial.material,
+                    new List<AbsRichBoxMember> { new RbText(material.ToString()) }, new RbAction1Arg<MaterialProperty>(designer.pickMaterialLink, material)));
+
+            }
 
             Refresh(content);
         }

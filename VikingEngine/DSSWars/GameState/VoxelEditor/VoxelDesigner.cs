@@ -69,6 +69,12 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             menusystem.closeMenu();
         }
 
+        public void pickMaterialLink(MaterialProperty material)
+        {
+            Settings.Material.material = material;
+            menusystem.closeMenu();
+        }
+
         override public BlockHD SelectedMaterial
         {
             get { return Settings.Material; }

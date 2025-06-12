@@ -169,6 +169,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Editor_Color_PurpleTint => "Purple tint";
         public string Editor_NoColor => "Empty";
 
+        public string Editor_Material = "Material";
+
         /// <summary>
         /// User may change one color to another, across the model
         /// </summary>

@@ -3,11 +3,7 @@
 * 
 
 Voxel editor 2
-* voxel modding help in the manual
-* popup messages
-* fixed: still says requires xbox controller on the description
-* fixed: "hide hud" crash
-* fixed: two alt colour picker eyedrops
+* 
 
 X need bucket tool and better color seletion, and color adjust options
 X (maybe) import / export for MagicaVoxel
