@@ -12,6 +12,7 @@ using VikingEngine.Input;
 using VikingEngine.LootFest.Map.HDvoxel;
 using System.ComponentModel.Design;
 using VikingEngine.DSSWars.GameState.VoxelEditor;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.Voxels
 {
@@ -128,7 +129,7 @@ namespace VikingEngine.Voxels
             {
                 animationFrames.Frames.RemoveAt(currentFrame.Value);
                 startUpdateVoxelObj(false);
-                print("Removed Frame"); 
+                //print("Removed Frame"); 
             }
         }
 
@@ -253,7 +254,7 @@ namespace VikingEngine.Voxels
             updateFrameInfo();
             currentFrame.Value = frame + 1;
             updateFrameInfo();
-            print("Frame Added");
+            //print("Frame Added");
         }
 
         public void nextFrame(bool forward)
@@ -581,6 +582,10 @@ namespace VikingEngine.Voxels
 
         virtual public void print(string text)
         { }
+
+        virtual public void print(RichBoxContent content)
+        { }
+
         protected void Rotate(bool clockWise)
         {
             byte dir = (byte)(clockWise ? 1 : 3);

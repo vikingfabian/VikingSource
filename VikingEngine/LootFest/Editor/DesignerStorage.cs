@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using VikingEngine.Voxels;
 using VikingEngine.DataStream;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.Engine;
+using VikingEngine.DSSWars;
 
 namespace VikingEngine.LootFest.Editor
 {
-    class DesignerStorage
+    class DesignerStorage : IStreamIOCallback
     {
         public const string UserVoxelObjFolder = "VoxelObjSave";
         public static bool[] HasChatergory;
@@ -90,10 +93,26 @@ namespace VikingEngine.LootFest.Editor
 
         public void save()
         {
-            designer.print("Saving...");
+            //designer.print("Saving...");
 
             new DataStream.WriteBinaryIO(SavePath(),
-                designer.animationFrames.WriteBinaryStream, null);
+                designer.animationFrames.WriteBinaryStream, this);
+        }
+
+        public void SaveComplete(bool save, int player, bool completed, byte[] value)
+        {
+            if (save && completed)
+            {
+                RichBoxContent content = new RichBoxContent();
+                content.h2(LoadContent.CheckCharsSafety(saveFileName, LoadedFont.Regular), DSSWars.HudLib.TitleColor_Name);
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsHudIconSave));
+                content.space();
+                content.Add(new RbText(DssRef.todoLang.Hud_SaveCompleted));
+
+                designer.print(content);
+            }
         }
 
         int backupId = 0;

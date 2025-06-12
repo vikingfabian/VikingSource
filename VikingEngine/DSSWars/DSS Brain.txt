@@ -1,21 +1,13 @@
 ﻿UPDATE
 -Change Log-
-* Added a config file next to the EXE, to edit save location
-* Started on a game manual
-https://docs.google.com/document/d/1_wUekNjufj6ghsvAcmFxgC0iqzqsAJ3mqFknUujOQy8/edit?usp=sharing
-* fixed: input options in ingame menu are broken
-* subtiles out of bounnds fix
-* pause crash fix
-* Cleaned up some resource icons
+* 
 
 Voxel editor 2
-* localization preparations
-* new menu hud
-* new input helper
-* dynamic controller/mouse support
-* improved file explorer
-* animation display
-* New icons
+* voxel modding help in the manual
+* popup messages
+* fixed: still says requires xbox controller on the description
+* fixed: "hide hud" crash
+* fixed: two alt colour picker eyedrops
 
 X need bucket tool and better color seletion, and color adjust options
 X (maybe) import / export for MagicaVoxel
@@ -23,9 +15,13 @@ X layers
 X project file that saves layers and history
 X templates for modding
 X material select and replace
-X popup messages
+
 X highlight system to show affected voxels, and draw preview
 X coordinate arrows
+
+X "are you sure you want to override this file"
+
+
 
 
 #Voxel editor#

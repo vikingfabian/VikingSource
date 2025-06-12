@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Voxels;
@@ -58,6 +59,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         Timer.Basic autoSaveTimer = new Timer.Basic(TimeExt.MinutesToMS(1f), true);
         public InputMap dssInput;
 
+        MessageGroup_Editor messages;
+
         public void pickColorLink(BlockHD col)
         {
             col.material = SelectedMaterial.material;
@@ -97,7 +100,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                  XGuide.LocalHost.inputMap.VoxelEditorInput(),
                  XGuide.LocalHost.inputMap.menuInput,
                  playerIndex, false, false)
-        { 
+        {
+
+            messages = new MessageGroup_Editor();
 
             basicInit(new VectorRect(
                 Screen.SafeArea.Position, new Vector2(300, Screen.SafeArea.Height)));
@@ -176,7 +181,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             {
                 setupNewInput(false, 0);
             }
-            else if (inputHelp.menu.needRefresh)
+            else if (inputHelp.menu != null && inputHelp.menu.needRefresh)
             {
                 inputHelp.refreshUpdate(this, prevInputState, dssInput);
             }
@@ -692,8 +697,21 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 //{
                 //    parent.Print("Picked: " + Settings.Material.ToString());
                 //}
+                //Debug.Log("Picked: " + Settings.Material.ToString() + ", blockVal:" + Settings.Material.BlockValue.ToString());
 
-                Debug.Log("Picked: " + Settings.Material.ToString() + ", blockVal:" + Settings.Material.BlockValue.ToString());
+                RichBoxContent content = new RichBoxContent();
+                HudLib.Label(content, DssRef.todoLang.Editor_PickedColor);
+                content.newLine();
+                content.Add(new RbImage(SpriteName.VoxelEditorColorCube, 1f, Settings.Material.color));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.todoLang.Editor_ColorRGBvalues, Settings.Material.color.R, Settings.Material.color.G, Settings.Material.color.B)));
+
+                content.space(2);
+                content.Add(new RbImage(SpriteName.VoxelEditorMaterialCube));
+                content.hspace();
+                content.Add(new RbText(Settings.Material.material.ToString()));
+
+                print(content);
             }
         }
 
@@ -954,6 +972,11 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             //{
             //    parent.Print(text);
             //}
+            messages.Add(text);
+        }
+        public override void print(RichBoxContent content)
+        {
+            messages.Add(content);
         }
 
         

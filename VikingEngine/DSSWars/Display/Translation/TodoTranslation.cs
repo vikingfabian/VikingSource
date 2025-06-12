@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Copy => "Copy";
         public string Hud_Paste => "Paste";
         public string Hud_Cut => "Cut";
-
+        public string Hud_SaveCompleted => "Save completed";
         public string Settings_WaterMultiplier => "Water multiplier";
         public string Settings_WaterMultiplier_Description => "How much water cities produce and store. A high value will lower computer performance.";
 
@@ -86,8 +86,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Technology_LevelUp => "Level up";
         public string Technology_ForEachLevelUp => "When a worker level up, in the technology field: {0}";
 
+        public string VoxelEditor_Description => "Create blocky models";
 
-        
+
         public string Editor_Tool = "Tool";
         public string Editor_SelectOptionsMenu = "Selection options";
         public string Editor_Continous => "Continous";
@@ -179,6 +180,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Editor_Preview => "Preview";
         public string Editor_CombineWithCurrent => "Combine with current model";
 
+        public string Editor_PickedColor => "Picked";
+        public string Editor_ColorRGBvalues => "R:{0} G:{1} B:{2}";
         //public string Editor_ => "";
         //public string Editor_ => "";
         //public string Editor_ => "";
