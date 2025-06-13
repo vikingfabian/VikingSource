@@ -108,8 +108,8 @@ namespace VikingEngine.DSSWars
             //Display.AbsBubbleMessage.Init();
 
             DataStream.FilePath.CreateStorageFolder(LootFest.Editor.DesignerStorage.UserVoxelObjFolder);
-            DataStream.FilePath.CreateStorageFolder(UserGeneratedContent.UGClib.UGCFolder);
-
+            UserGeneratedContent.UGClib.GameInit();
+            
 
             loadingContentComplete = true;
             //new Timer.Action0ArgTrigger(createStartButton);

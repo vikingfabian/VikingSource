@@ -255,7 +255,7 @@ namespace VikingEngine.LootFest.Editor
             }
 
             string fileName = name.ToString();
-            DataStream.FilePath userMadePath = new DataStream.FilePath(LfLib.OverrideModelsFolder, fileName,
+            DataStream.FilePath userMadePath = new DataStream.FilePath(DSSWars.UserGeneratedContent.UGClib.ModelReplaceFolder, fileName,
                 Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false);
             if (userMadePath.Exists())
             {
