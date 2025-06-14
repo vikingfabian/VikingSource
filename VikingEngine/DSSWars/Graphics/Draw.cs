@@ -39,29 +39,31 @@ namespace VikingEngine.DSSWars
     class DrawGame : Engine.Draw
     {
         RenderTarget2D overviewMapTarget;
-        RenderTarget2D shadowMapRenderTarget;
+        
         public const int UnitDetailLayer = 0;
         public const int TerrainLayer = 1;
         public const int MinimapLayer = 2;
 
-        static Effect depthWriter, shadowEffect;
+        
         Graphics.ImageAdvanced viewDepth=null;
+        EffectVertexColorShadow shadowEffect;
         public DrawGame()
             : base()
         {
             overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
+            shadowEffect = new EffectVertexColorShadow();
             //TODO SurfaceFormat.Single
-            shadowMapRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 2048, 2048, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
+            //shadowMapRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 2048, 2048, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
         }
 
-        public static void LoadContent()
-        {
-            depthWriter = Engine.LoadContent.LoadShader("DeferredRenderer\\DepthWriter");
-            depthWriter.CurrentTechnique = depthWriter.Techniques[0];
+        //public static void LoadContent()
+        //{
+        //    depthWriter = Engine.LoadContent.LoadShader("DeferredRenderer\\DepthWriter");
+        //    depthWriter.CurrentTechnique = depthWriter.Techniques[0];
 
-            shadowEffect = Engine.LoadContent.LoadShader("VoxelShadows");
-        }
+        //    //shadowEffect = Engine.LoadContent.LoadShader("VoxelShadows");
+        //}
 
         protected override void drawEvent()
         {
@@ -87,7 +89,6 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            //SWADOW
             DrawShadowMap(0);
 
 
@@ -154,6 +155,11 @@ namespace VikingEngine.DSSWars
         void drawDetailLayer(int cameraIndex, Map.DetailLayer lay)
         {
             Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
+
+            if (lay.type == Map.MapDetailLayerType.UnitDetail1)
+            {
+                //DrawShadowMap(cameraIndex);
+            }
             Camera = p.view.Camera;
             graphicsDeviceManager.GraphicsDevice.Viewport = p.view.Viewport;
 
@@ -162,11 +168,13 @@ namespace VikingEngine.DSSWars
                 case Map.MapDetailLayerType.UnitDetail1:
                     
                     DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
+
+                    //SWADOW
                     
-                    
-                    DrawGenerated(UnitDetailLayer, cameraIndex);
-                    
-                    
+                    //DrawGenerated(UnitDetailLayer, cameraIndex);
+                    DrawGenerated_Shadows(UnitDetailLayer, cameraIndex);
+
+
                     Draw3d(UnitDetailLayer, cameraIndex);
                     Engine.ParticleHandler.Draw(p.view.Camera);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -186,50 +194,53 @@ namespace VikingEngine.DSSWars
 
         public void DrawShadowMap(int cameraIndex)
         {
-            //GraphicsDevice device
-            graphicsDeviceManager.GraphicsDevice.SetRenderTarget(shadowMapRenderTarget);
-            graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            //graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
-            graphicsDeviceManager.GraphicsDevice.Clear(Color.Transparent);
-
-            Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
-            Camera = p.view.LightCamera;
-            //Camera.position = p.view.Camera.position;
-            Camera.LookTarget = p.view.Camera.LookTarget;
-            Camera.CurrentZoom = 50;
-            Camera.instantMoveToTarget();
-            Camera.RecalculateMatrices();
 
 
-            //Vector3 lightPos = Camera.LookTarget + new Vector3(0, 20, 0);
-            //Matrix lightView = Matrix.CreateLookAt(Camera.LookTarget,
-            //            lightPos,
-            //            Vector3.Up);
+            //    //GraphicsDevice device
+            //    graphicsDeviceManager.GraphicsDevice.SetRenderTarget(shadowMapRenderTarget);
+            //    graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            //    //graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
+            //    graphicsDeviceManager.GraphicsDevice.Clear(Color.Transparent);
 
-            //Matrix lightProjection = Matrix.CreateOrthographic(20, 20, 0.1f, 40);
-            //Matrix lightViewProjection = lightView * lightProjection;
+                Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
+            //    //Camera = p.view.LightCamera;
+            //    ////Camera.position = p.view.Camera.position;
+            //    //Camera.LookTarget = p.view.Camera.LookTarget;
+            //    //Camera.CurrentZoom = 50;
+            //    //Camera.instantMoveToTarget();
+            //    //Camera.RecalculateMatrices();
 
-            //depthWriter.Parameters["View"].SetValue(lightView);//Camera.ViewMatrix);
-            //depthWriter.Parameters["Projection"].SetValue(lightProjection);//Camera.Projection);
 
-            //depthWriter.Parameters["LightPosition"].SetValue(Camera.position);
+            //    Vector3 lightPos = p.view.Camera.LookTarget + new Vector3(0, 5, 0);
 
-            depthWriter.Parameters["View"].SetValue(Camera.ViewMatrix);
-            depthWriter.Parameters["Projection"].SetValue(Camera.Projection);
-            depthWriter.Parameters["LightPosition"].SetValue(Camera.position);
-            depthWriter.Parameters["FloatingPointPrecisionModifier"].SetValue(1f);
+            //    //Matrix lightViewProjection = lightView * lightProjection;
+            //    Matrix lightView = Matrix.CreateLookAt(lightPos, Camera.LookTarget, Vector3.Forward);
+            //    float orthoSize = 8f;
+            //    float zNear = 4f;
+            //    float zFar = 6f;
+            //    Matrix lightProjection = Matrix.CreateOrthographic(orthoSize, orthoSize, zNear, zFar);
 
-            //DrawGenerated(UnitDetailLayer, cameraIndex);
-            DrawRenderListMembersDepthOnly(depthWriter, UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
+            //    depthWriter.Parameters["View"].SetValue(lightView);
+            //    depthWriter.Parameters["Projection"].SetValue(lightProjection);
+            //    //depthWriter.Parameters["LightPosition"].SetValue(lightPos);
+            //    depthWriter.Parameters["ZNear"].SetValue(zNear);
+            //    depthWriter.Parameters["ZFar"].SetValue(zFar);
+            //    depthWriter.Parameters["FloatingPointPrecisionModifier"].SetValue(1f);
+
+            //    //DrawGenerated(UnitDetailLayer, cameraIndex);
+            shadowEffect.DrawShadowMap(p, cameraIndex);
+
+            DrawRenderListMembersDepthOnly(EffectVertexColorShadow.depthWriter, UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
 
 
             if (viewDepth == null)
             {
                 viewDepth = new ImageAdvanced(SpriteName.WhiteArea, Engine.Screen.CenterScreen, Engine.Screen.Area.Size * VectorExt.V2Half, ImageLayers.Top0, false);
-                viewDepth.Texture = shadowMapRenderTarget;
+                viewDepth.Texture = shadowEffect.shadowMapRenderTarget;
                 viewDepth.SetFullTextureSource();
             }
-            //DrawModels(device, depthWriter);
+            //    //DrawModels(device, depthWriter);
+            //}
         }
 
         public void DrawRenderListMembersDepthOnly(Effect shader, int layer, DrawObjType objType, int cameraIndex)
@@ -256,6 +267,25 @@ namespace VikingEngine.DSSWars
         //    }
 
         //}
+        public void DrawGenerated_Shadows(int layer, int cameraIndex)
+        {
+            shadowEffect.BeginDrawShadow();
+
+            graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+            SpottedArrayCounter<AbsDraw> drawList = new SpottedArrayCounter<AbsDraw>(renderList[layer].GetList(Graphics.DrawObjType.MeshGenerated));
+            while (drawList.Next())
+            {
+                if (drawList.CurrentIndex == 92)
+                {
+                    lib.DoNothing();
+                }
+                drawList.sel.DrawShadow(cameraIndex, shadowEffect);
+                //drawList.sel.Draw(cameraIndex);
+            }
+            Engine.Draw.PreviousVertexBuffer = -1;
+
+        }
 
         protected override int renderLayerCount
         {

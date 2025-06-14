@@ -50,13 +50,6 @@ namespace VikingEngine.Graphics
             basicEffect = new Microsoft.Xna.Framework.Graphics.BasicEffect(Engine.Draw.graphicsDeviceManager.GraphicsDevice);
             basicEffect.TextureEnabled = true;
 
-            //if (PlatformSettings.RunProgram == StartProgram.TableTop)
-            //{
-            //    basicEffect.VertexColorEnabled = true;
-            //    basicEffect.Texture = Engine.LoadContent.Texture(LoadedTexture.LF3Tiles);
-            //}
-            //else
-            //{
             if (PlatformSettings.RunProgram == StartProgram.DSS)
             {
                 AmbientCol = new Vector3(0.9f);
@@ -141,6 +134,8 @@ namespace VikingEngine.Graphics
             basicEffect.DirectionalLight1.Direction = new Vector3(-0.1f, 0.8f, -0.8f);
             basicEffect.DirectionalLight1.DiffuseColor = new Vector3(0.25f, 0.25f, 0); //theme color tint
 
+            
+
             if (light)
             {
                 basicEffect.AmbientLightColor = new Vector3(0.7f);
@@ -168,20 +163,6 @@ namespace VikingEngine.Graphics
                 Singleton = new EffectBasicVertexColor();
                 Singleton.ObjectShader();
             }
-
-            //bool on = !Input.Keyboard.Ctrl;
-            //Singleton.basicEffect.LightingEnabled = on; // Enable lighting calculations
-            //Singleton.basicEffect.DirectionalLight0.Enabled = on;
-            //Singleton.basicEffect.DirectionalLight0.Direction = new Vector3(0.1f, -0.8f, -0.8f); 
-            //Singleton.basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.3f); // White light
-
-            //Singleton.basicEffect.DirectionalLight1.Enabled = on;
-            //Singleton.basicEffect.DirectionalLight1.Direction = new Vector3(-0.1f, 0.8f, -0.8f);
-            //Singleton.basicEffect.DirectionalLight1.DiffuseColor = new Vector3(0.25f, 0.25f, 0); //theme color tint
-
-            //Singleton.basicEffect.AmbientLightColor = new Vector3(0.7f);
-
-
             return Singleton;
         }
     }

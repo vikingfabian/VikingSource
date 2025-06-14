@@ -37,7 +37,7 @@ namespace VikingEngine.Engine
         //public static GraphicsDevice GraphicsDevice;
         public static Viewport defaultViewport;
         public static bool horizontalSplit = true;
-        public static Effect effectBR, effectFlag, effectSeaNoise;
+        public static Effect effectBR, effectFlag;//effectSeaNoise;
         //public static Effect PixelShader;
         public static Graphics.CustomEffect[] TextureEffects;
         static protected RenderTarget2D MainRenderTarget;
@@ -64,7 +64,8 @@ namespace VikingEngine.Engine
 
             effectBR = LoadContent.LoadShader("Effect");
             effectFlag = LoadContent.LoadShader("FlagWaveEffect");
-            effectSeaNoise = LoadContent.LoadShader("SeaNoiseEffect");
+            
+            //effectSeaNoise = LoadContent.LoadShader("SeaNoiseEffect");
 
             TextureEffects = new VikingEngine.Graphics.CustomEffect[(int)Graphics.TextureEffectType.NUM_NON];
 
@@ -353,6 +354,8 @@ namespace VikingEngine.Engine
             ++activeRenderCount;
 #endif
         }
+
+        
 
         protected void Draw3d(int layer, int cameraIndex)
         {

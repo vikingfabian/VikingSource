@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.Graphics
 {
@@ -45,6 +46,18 @@ namespace VikingEngine.Graphics
         {
             Effect.DrawVB(Frame, this, VB);
         }
+        public override void DrawShadow(int cameraIndex, AbsEffect shader)
+        {
+            if (Effect == MapLayer_Detail.ModelEffect)
+            {
+                Draw();
+            }
+            else
+            {
+                shader.DrawVB(Frame, this, VB);
+            }
+        }
+       
 
         public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
         {

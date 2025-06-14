@@ -60,6 +60,7 @@ namespace VikingEngine.Graphics
         /* Methods */
         public abstract AbsDraw CloneMe();
         public abstract void Draw(int cameraIndex);
+        public virtual void DrawShadow(int cameraIndex, AbsEffect shader) { }
         public abstract void UpdateCulling();
 
         public virtual void DrawInDynamicCam(Vector2 camPos)

@@ -47,6 +47,15 @@ namespace VikingEngine.Graphics
                 base.Draw(cameraIndex);
             }
         }
+
+        public override void DrawShadow(int cameraIndex, AbsEffect shader)
+        {
+            if (master != null)
+            {
+                master.Frame = this.Frame;
+                base.DrawShadow(cameraIndex,  shader);
+            }
+        }
         public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
         {
             master.Frame = this.Frame;
