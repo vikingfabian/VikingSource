@@ -166,37 +166,6 @@ namespace VikingEngine.DSSWars.GameObject
 
 
 
-                    //    var advBuildingFields = new List<WorkExperienceType>
-                    //{
-                    //    WorkExperienceType.HouseBuilding,
-                    //    WorkExperienceType.StoneCutter,
-                    //};
-                    //var advFarmingFields = new List<WorkExperienceType>
-                    //{
-                    //    WorkExperienceType.,
-                    //    WorkExperienceType.AnimalCare,
-                    //};
-                    //var advCastingFields = new List<WorkExperienceType>
-                    //{
-                    //    WorkExperienceType.Smelting,
-                    //    WorkExperienceType.CastMetal,
-                    //};
-                    //var ironSteelFields = new List<WorkExperienceType>
-                    //{
-                    //    WorkExperienceType.Mining,
-                    //    WorkExperienceType.CraftMetal,
-                    //};
-                    //var catapultFields = new List<WorkExperienceType>
-                    //{
-                    //    WorkExperienceType.WoodCutter,
-                    //    WorkExperienceType.Fletcher,
-                    //};
-
-                    //var gunPowderFields = new List<WorkExperienceType>
-                    //{
-                    //    WorkExperienceType.CraftFuel,
-                    //    WorkExperienceType.Chemistry,
-                    //};
             }
         }
     }

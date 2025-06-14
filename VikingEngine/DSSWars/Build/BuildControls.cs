@@ -504,7 +504,7 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.ExpandAndCraft,
                 BuildCategoryTab.Military,
                 BuildCategoryTab.Decor,
-                BuildCategoryTab.Updgrade,
+                BuildCategoryTab.Upgrade,
             };
 
             if (city.buildingStructure.buildingLevel_logistics > 0)
@@ -526,7 +526,7 @@ namespace VikingEngine.DSSWars.Build
                     case BuildCategoryTab.Decor:
                         tabIcon = SpriteName.warsBuildCategoryDecorTree;
                         break;
-                    case BuildCategoryTab.Updgrade:
+                    case BuildCategoryTab.Upgrade:
                         tabIcon = SpriteName.warsBuildCategoryUpgrades;
                         break;
                     default:
@@ -603,19 +603,11 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(new RichBoxScale(2.1f));
                 content.newLine();
 
-                List<BuildAndExpandType> available = availableBuildOptions(city);//= new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-
-                //if (player.tutorial == null)
-                //{ BuildLib.AvailableBuildTypes(available, city); }
-                //else
-                //{ available = player.tutorial.AvailableBuildTypes(); }
+                List<BuildAndExpandType> available = availableBuildOptions(city);
 
                 foreach (var opt in available)
                 {
                     var build = BuildLib.BuildOptions[(int)opt];
-
-                    //if (build.buildCategory == player.buildCategoryTab)
-                    //{
 
                     var buildCount = city.buildingStructure.getCount(opt);
 
@@ -631,7 +623,6 @@ namespace VikingEngine.DSSWars.Build
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
                         BuildAndExpandType type = (BuildAndExpandType)tag;
-                        //RichBoxContent content = new RichBoxContent();
 
                         var build = BuildLib.BuildOptions[(int)type];
                         content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
@@ -653,6 +644,26 @@ namespace VikingEngine.DSSWars.Build
                         content.newLine();
                         switch (type)
                         {
+                            case BuildAndExpandType.ResearchCenter:
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
+                                content.space();
+                                content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter)));
+                                content.newParagraph();
+                                content.Add(new RbText(LangLib.TechnologyExample(), HudLib.InfoYellow_Light));
+                                break;
+
+                            case BuildAndExpandType.BookPress:
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
+                                content.space();
+                                content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_Bookpress_Description, DssRef.todoLang.BuildingType_ReseachCenter)));
+                                content.newParagraph();
+                                content.Add(new RbText(LangLib.TechnologyExample(), HudLib.InfoYellow_Light));
+                                break;
+
+
+
                             case BuildAndExpandType.WaterResovoir:
                                 HudLib.BulletPoint(content);
                                 content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
@@ -1113,7 +1124,7 @@ namespace VikingEngine.DSSWars.Build
                 content.newLine();
                 content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
 
-                if (player.buildCategoryTab == BuildCategoryTab.Updgrade)
+                if (player.buildCategoryTab == BuildCategoryTab.Upgrade)
                 {
 
                     if (city.buildingStructure.buildingLevel_logistics == 1)

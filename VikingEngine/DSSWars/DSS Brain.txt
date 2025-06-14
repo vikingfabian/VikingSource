@@ -4,10 +4,10 @@
 * Started on a game manual
 https://docs.google.com/document/d/1_wUekNjufj6ghsvAcmFxgC0iqzqsAJ3mqFknUujOQy8/edit?usp=sharing
 * fixed: input options in ingame menu are broken
-
+* new buildings: immigration tent, resarch center and book press
 
 #Free build defences
- Rock thrower
+Rock thrower
 -representeras av en gubbe tills de strider
 Assign men to wall (ballista, har warmachine crew)
 
@@ -25,7 +25,6 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 #Todo#
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select.
 -mod av Storage location
-
 
 x Auto upgrade
 x Declaring war needs warning

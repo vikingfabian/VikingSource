@@ -509,6 +509,14 @@ namespace VikingEngine.DSSWars.Map
                                                 ++buildingStructure.School_count;
                                                 buildingPosition.School_pos = subTileLoop.Position;
                                                 break;
+                                            case TerrainBuildingType.ResearchCenter:
+                                                ++buildingStructure.ResearchCenter_count;
+                                                buildingPosition.ResearchCenter_pos = subTileLoop.Position;
+                                                break;
+                                            case TerrainBuildingType.BookPress:
+                                                ++buildingStructure.BookPress_count;
+                                                buildingPosition.BookPress_pos = subTileLoop.Position;
+                                                break;
                                             case TerrainBuildingType.Logistics:
                                                 buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                                 break;

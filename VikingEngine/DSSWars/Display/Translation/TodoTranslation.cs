@@ -80,6 +80,24 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Technology_GainTitle => "Ways to gain technology";
         public string Technology_LevelUp => "Level up";
         public string Technology_ForEachLevelUp => "When a worker level up, in the technology field: {0}";
+
+        public string BuildingType_ImmigrationTent => "Immigration tent";
+        public string BuildingType_ImmigrationTent_Description => "Stores {0} immigrants";
+        public string BuildingType_ReseachCenter => "Research center";
+        public string BuildingType_Bookpress => "Book press";
+        public string BuildingType_Bookpress_Description => "In one research field; all points gained will be shared with all {0} in your other cities.";
+
+
+        /// <summary>
+        /// 0: beer, 1: chemistry, 2: gun powder
+        /// </summary>
+        public string Technology_ReseachExample => "Example: When a worker produces {0}, he will increase in his {1} skill. When leveling up, it will add points towards the {2} technology - since they share the {1} field.";
+
+        public string BuildingType_Research_BaseDescription => "Increases technology research.";
+
+        public string BuildingType_ResearchCenter_Description => "Adds {0} extra technology research points, when a worker level up in the same field.";
+
+        
     }
 
 }

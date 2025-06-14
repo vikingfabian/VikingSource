@@ -59,6 +59,8 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 Chemist_pos;
         public IntVector2 Gunmaker_pos;
         public IntVector2 School_pos;
+        public IntVector2 ResearchCenter_pos;
+        public IntVector2 BookPress_pos;
 
         public IntVector2 getPos(BuildAndExpandType type)
         {
@@ -275,6 +277,9 @@ namespace VikingEngine.DSSWars.Build
         public int Chemist_count;
         public int Gunmaker_count;
         public int School_count;
+        public int ResearchCenter_count;
+        public int BookPress_count;
+        
 
         public int getCount(BuildAndExpandType type)
         {

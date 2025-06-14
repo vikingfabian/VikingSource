@@ -1193,7 +1193,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.School:
                     return DssRef.lang.BuildingType_School_Description;
 
-                
+                case TerrainBuildingType.BookPress:
+                case TerrainBuildingType.ResearchCenter:
+                    return DssRef.todoLang.BuildingType_Research_BaseDescription;
 
 
                 default:
@@ -1201,6 +1203,14 @@ namespace VikingEngine.DSSWars.Display.Translation
             }
         }
 
+        public static string TechnologyExample()
+        {
+            // 0: beer, 1: chemistry, 2: gun powder
+            return string.Format(DssRef.todoLang.Technology_ReseachExample,
+                DssRef.lang.Resource_TypeName_Beer,
+                DssRef.lang.ExperienceType_Chemist,
+                XpLib.TechnologyName_BlackPowder());
+        }
 
         public static string Item(ItemResourceType item)
         {
