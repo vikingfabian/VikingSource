@@ -39,11 +39,11 @@ namespace VikingEngine.DSSWars.GameState
                         new PaintFlagState(ProfileIx, controller);
                         break;
                     case 1:
-                        
-                        XGuide.LocalHost.inputMap = new LootFest.Players.InputMap(XGuide.LocalHost.localPlayerIndex);
-                        XGuide.LocalHost.inputMap.xboxSetup();
-                        XGuide.LocalHost.inputMap.menuInput.xboxSetup(XGuide.LocalHost.localPlayerIndex);
-                        new LootFest.GameState.VoxelDesignState(XGuide.LocalHostIndex);
+                        XGuide.LocalHost.inputMap = new InputMap(false);
+                        //XGuide.LocalHost.inputMap = new LootFest.Players.InputMap(XGuide.LocalHost.localPlayerIndex);
+                        //XGuide.LocalHost.inputMap.xboxSetup();
+                        //XGuide.LocalHost.inputMap.menuInput.xboxSetup(XGuide.LocalHost.localPlayerIndex);
+                        new VoxelEditor.VoxelDesignState(false, XGuide.LocalHostIndex);
                         break;
                 }
             }

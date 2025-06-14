@@ -8,10 +8,12 @@ using System.Linq;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.Engine;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
 using VikingEngine.ToGG;
 
@@ -20,20 +22,108 @@ namespace VikingEngine.DSSWars.Display
     class MessageGroup
     {
         public RichboxGuiSettings settings;
+        protected PlayerData playerData;
 
-        List<Message> messages = new List<Message>();
+        protected List<Message> messages = new List<Message>();
+        protected float screenAreaBottom;
+
+        public MessageGroup(RichboxGuiSettings settings, PlayerData playerData)
+        {
+            this.settings = settings;
+            this.playerData = playerData;
+        }
+
+        public static void Title(RichBoxContent content, string title)
+        {
+            content.Add(new RbBeginTitle(2));
+            content.Add(new RbImage(SpriteName.cmdWarningTriangle));
+            content.space();
+            content.Add(new RbText(title, Color.Yellow));
+            content.newLine();
+        }
+
+
+        virtual protected Vector2 position()
+        {
+            Vector2 result = new Vector2(Engine.Screen.SafeArea.Right - (RichMenu.DefaultRenderEdge.X + HudLib.MessageDisplayWidth),
+              Engine.Screen.SafeArea.Y);
+
+            return result;
+        }
+        void UpdatePositions()
+        {
+            Vector2 currentPos = position();
+            foreach (var message in messages)
+            {
+                currentPos = message.UpdatePositions(currentPos, screenAreaBottom);
+
+                currentPos.Y += settings.edgeWidth * 2f;
+            }
+        }
+
+        protected void add(RichBoxContent content)
+        {
+            messages.Insert(0, new Message(playerData, content, position().X, settings));
+            UpdatePositions();
+        }
+
+        public bool freeSpace()
+        {
+            return messages.Count < 3;
+        }
+
+        public void Update(ref bool mouseOver)
+        {
+
+            if (messages.Count > 0)
+            {
+                foreach (var message in messages)
+                {
+                    message.update(ref mouseOver);
+                }
+
+                if (messages.Last().time.secPassed(20))
+                {
+                    arraylib.PullLastMember(messages).DeleteMe();
+                }
+            }
+        }
+    }
+
+    class MessageGroup_Editor : MessageGroup
+    {
+        public MessageGroup_Editor()
+            : base(HudLib.richboxGui, XGuide.LocalHost)
+        { }
+
+        public void Add(string message)
+        {
+            RichBoxContent content = new RichBoxContent();
+            
+            content.text(message);
+
+            Add(content);
+        }
+
+        public void Add(RichBoxContent content)
+        {
+            add(content);
+        }
+    }
+
+    class MessageGroup_Ingame : MessageGroup
+    {        
         LocalPlayer player;
 
         static readonly TimeLength FoodWarningTimeout = new TimeLength(120);
 
         TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
         TimeInGameCountdown armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
-        float screenAreaBottom;
-        public MessageGroup(LocalPlayer player, int numPlayers, RichboxGuiSettings settings)
+        
+        public MessageGroup_Ingame(LocalPlayer player, int numPlayers, RichboxGuiSettings settings)
+            :base(settings, player.playerData)
         {
-            this.player = player;   
-            this.settings = settings;
-
+            this.player = player;
         }
         public void blockFoodWarning(bool block)
         {
@@ -62,17 +152,10 @@ namespace VikingEngine.DSSWars.Display
 
         public void onGameStart()
         { 
-         screenAreaBottom = player.playerData.view.DrawArea.Bottom + Engine.Screen.SmallIconSize;
+            screenAreaBottom = player.playerData.view.DrawArea.Bottom + Engine.Screen.SmallIconSize;
         }
 
-        public static void Title(RichBoxContent content, string title)
-        {
-            content.Add(new RbBeginTitle(2));
-            content.Add(new RbImage(SpriteName.cmdWarningTriangle));
-            content.space();
-            content.Add(new RbText(title, Color.Yellow));
-            content.newLine();
-        }
+        
 
         public static void ControllerInputIcons(LocalPlayer player, List<AbsRichBoxMember> button)
         {
@@ -97,7 +180,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newParagraph();
 
                 var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                MessageGroup.ControllerInputIcons(player,gotoBattleButtonContent);
+                MessageGroup_Ingame.ControllerInputIcons(player,gotoBattleButtonContent);
                 gotoBattleButtonContent.Add(new RbText(city.TypeName()));
 
                 content.Add(new ArtButton( RbButtonStyle.Primary,gotoBattleButtonContent,
@@ -131,17 +214,6 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-
-        //public void changedAllBuildings(bool onOff)
-        //{
-        //    RichBoxContent content = new RichBoxContent();
-        //    content.h2(DssRef.todoLang.GeneralSetting_ApplyMessage, HudLib.TitleColor_Head);
-        //    content.space();
-        //    content.Add(new RbText(onOff ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off, HudLib.InfoYellow_Light));
-
-        //    Add(content);
-        //}
-
         public void changedAllBuildings(bool onOff, int count)
         {
             RichBoxContent content = new RichBoxContent();
@@ -150,13 +222,6 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RbText(onOff ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off, HudLib.InfoYellow_Light));
 
             Add(content);
-        }
-
-        public void goToMapObject(AbsGameObject city)
-        {
-            player.gameControls.map.selection.obj = city;
-            player.gameControls.map.cameraFocus = city;
-            player.hud.needRefresh = true;
         }
 
         public void Add(string title, string text)
@@ -190,48 +255,21 @@ namespace VikingEngine.DSSWars.Display
                 content = compact;
             }
 
-            messages.Insert(0, new Message(player, content, position().X, settings));
-            UpdatePositions();
+            add(content);
         }
 
-        public bool freeSpace()
-        { 
-            return messages.Count < 3;
-        }
-
-        public void Update(/*Vector2 position, */ref bool mouseOver)
+        public void goToMapObject(AbsGameObject city)
         {
-            //if (this.position != position)
-            //{ 
-            //    this.position = position;
-            //    UpdatePositions();
-            //}
-
-            if (messages.Count > 0)
-            {
-                foreach (var message in messages)
-                {
-                    message.update(ref mouseOver);
-                }
-
-                if (messages.Last().time.secPassed(20))
-                {
-                    arraylib.PullLastMember(messages).DeleteMe();
-                } 
-            }
+            player.gameControls.map.selection.obj = city;
+            player.gameControls.map.cameraFocus = city;
+            player.hud.needRefresh = true;
         }
 
-        Vector2 position()
+        
+
+        override protected Vector2 position()
         {
-            //Vector2 result;
-            //if (player.hud.headOptions != null)
-            //{
             Vector2 result = player.hud.MessageStart;
-            //}
-            //else
-            //{
-            //    result = player.playerData.view.safeScreenArea.RightTop;
-            //}
 
             if (player.tutorial != null)
             {
@@ -240,68 +278,25 @@ namespace VikingEngine.DSSWars.Display
 
             return result;
         }
-        void UpdatePositions()
-        {
-            Vector2 currentPos = position();
-            //if (messages.Count > 0)
-            //{                
-            foreach (var message in messages)
-            {
-                   
-                currentPos = message.UpdatePositions(currentPos, screenAreaBottom);
+        
 
-                currentPos.Y += settings.edgeWidth * 2f;
-            }
-            //}
-        }
-
-        //public bool mouseOver()
-        //{
-        //    foreach (var p in messages)
-        //    {
-        //        if (p.mouseOver())
-        //        {
-        //            return true;
-        //        }
-        //    }
-
-        //    return false;
-        //}
     }
 
     class Message
     {
         public RichMenu menu;
-        //public RichBoxGroup richBox;
         protected RichBoxContent content = new RichBoxContent();
-        //protected Graphics.Image bg;
-        //NineSplitAreaTexture bg;
-        //public VectorRect area;
         public TimeStamp time;
-        //Vector2 contentOffset;
-        //RbInteraction interaction;
 
-        public Message(LocalPlayer player, RichBoxContent content, float startX, RichboxGuiSettings settings)
+        public Message(PlayerData player, RichBoxContent content, float startX, RichboxGuiSettings settings)
         {
             menu = new RichMenu(HudLib.RbSettings, new VectorRect(VectorExt.V2FromX(startX), new Vector2(HudLib.MessageDisplayWidth, 500)),
-                new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
+                new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player);
 
             menu.Refresh(content);
             menu.updateHeightFromContent();
             menu.addBackground(HudLib.MessageBackground, HudLib.GUILayer + 2);
-            //richBox = new RichBoxGroup(Vector2.Zero, HudLib.MessageDisplayWidth, settings.contentLayer, 
-            //    settings.RbSettings, content, true, true, false);
-            //area = richBox.area;
-
-            //bg = new Graphics.Image(SpriteName.WhiteArea, Vector2.Zero, Vector2.Zero, settings.bglayer);
-            //bg.ColorAndAlpha(settings.bgCol, settings.bgAlpha);
-
-            //contentOffset = new Vector2(settings.edgeWidth);
-
-            //area.AddRadius(settings.edgeWidth);
             time = TimeStamp.Now();
-            //interaction = new RbInteraction(content, settings.contentLayer,
-            //        player.input.RichboxGuiSelect);
         }
 
         public bool onControllerClick()
@@ -320,14 +315,6 @@ namespace VikingEngine.DSSWars.Display
 
         public Vector2 UpdatePositions(Vector2 position, float screenAreaBottom)
         {
-            //area.Position = position;
-            //bg.Area = area;
-            //richBox.SetOffset(area.Position + contentOffset);
-
-            //bool visible = bg.Bottom <= screenAreaBottom;
-
-            //bg.Visible = visible;
-            //richBox.SetVisible(visible);
             menu.moveToY(position.Y);
 
             return menu.backgroundArea.LeftBottom;
@@ -336,28 +323,11 @@ namespace VikingEngine.DSSWars.Display
         public void update(ref bool mouseOver)
         {
             menu.updateMouseInput(ref mouseOver);
-            //if (bg.Visible)
-            //{
-            //    interaction.update(Vector2.Zero, null, out _);
-            //}
         }
-
-        //public bool mouseOver()
-        //{
-        //    //if (bg.Visible)
-        //    //{
-        //    //    return bg.Area.IntersectPoint(Input.Mouse.Position);
-        //    //}
-        //    return false;
-        //}
 
         public void DeleteMe()
         {
             menu.DeleteMe();
-            //interaction.DeleteMe();
-            //bg.DeleteMe();
-            //richBox.DeleteAll();
-
         }
     }
 }

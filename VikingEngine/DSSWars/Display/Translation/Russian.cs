@@ -1128,7 +1128,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string GameMenu_ExitGame => "Выйти из игры";
 
-        public override string GameMenu_SaveState => "Сохранить";
+        public override string Hud_Save => "Сохранить";
         public override string GameMenu_SaveStateWarnings => "Внимание! Файлы сохранения будут утеряны при обновлении игры.";
         public override string GameMenu_LoadState => "Загрузить";
         public override string GameMenu_ContinueFromSave => "Продолжить с сохранения";

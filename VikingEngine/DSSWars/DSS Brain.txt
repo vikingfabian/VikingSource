@@ -1,11 +1,30 @@
 ﻿UPDATE
 -Change Log-
-* Added a config file next to the EXE, to edit save location
-* Started on a game manual
-https://docs.google.com/document/d/1_wUekNjufj6ghsvAcmFxgC0iqzqsAJ3mqFknUujOQy8/edit?usp=sharing
-* fixed: input options in ingame menu are broken
-* subtiles out of bounnds fix
-* pause crash fix
+* Added a folder for overriding ingame models
+
+
+Voxel editor 2
+* 
+
+X need bucket tool and better color seletion, and color adjust options
+X (maybe) import / export for MagicaVoxel
+X layers
+X project file that saves layers and history
+X templates for modding
+X material select and replace
+
+X highlight system to show affected voxels, and draw preview
+X coordinate arrows
+
+X "are you sure you want to override this file"
+
+
+
+
+#Voxel editor#
+
+#Pics
+
 
 #Free build defences
  Rock thrower
@@ -27,7 +46,8 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select.
 -mod av Storage location
 
-
+x beer example in the help menu
+x input options in ingame menu are broken
 x Auto upgrade
 x Declaring war needs warning
 x animals don't freeze when saving (game is not paused, just overridden by save state)

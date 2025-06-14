@@ -713,7 +713,7 @@ namespace VikingEngine.LootFest.Editor
             }
         }
 
-        public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel, bool combineLoading)
+        override public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel/*, bool combineLoading*/)
         {
             storeUndoableAction(true);
 

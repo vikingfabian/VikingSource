@@ -2167,6 +2167,37 @@ namespace VikingEngine
             {
                 add(SpriteName.WarsHudPopUpButton);
                 add(SpriteName.warsBuildCategoryUpgrades);
+
+                add(SpriteName.WarsHudIconReturn);
+                add(SpriteName.VoxelEditorColorCube);
+                add(SpriteName.VoxelEditorTint);
+                add(SpriteName.VoxelEditorBucket);
+                add(SpriteName.VoxelEditorSortTime);
+                add(SpriteName.VoxelEditorSortName);
+                add(SpriteName.VoxelEditorSortUp);
+                add(SpriteName.VoxelEditorSortDown);
+                add(SpriteName.VoxelEditorMoveFrameL);
+                add(SpriteName.VoxelEditorMoveFrameR);
+                add(SpriteName.VoxelEditorFrameSelected);
+                add(SpriteName.VoxelEditorFrame);
+                add(SpriteName.VoxelEditorFrameLocked);
+                add(SpriteName.VoxelEditorFrameToFirst);
+                add(SpriteName.VoxelEditorFramePrevious);
+                add(SpriteName.VoxelEditorFrameNext);
+                add(SpriteName.VoxelEditorFrameToLast);
+                add(SpriteName.WarsHudIconSave);
+                add(SpriteName.VoxelEditorFrameAddEmpty);
+                add(SpriteName.VoxelEditorFrameAddCopy);
+                add(SpriteName.VoxelEditorFrameRemove);
+                add(SpriteName.VoxelEditorFlipLyingStanding);
+                add(SpriteName.VoxelEditorMoveFrameToEndL);
+                add(SpriteName.VoxelEditorMoveFrameToEndR);
+                add(SpriteName.WarsHudIconPaste);
+                add(SpriteName.WarsHudIconCopy);
+                add(SpriteName.VoxelEditorMaterialCube);
+                add(SpriteName.WarsHudIconCut);
+                add(SpriteName.VoxelEditorAllFrames);
+                add(SpriteName.VoxelEditorEmptyCube);
             }
 
             currentIndex = numTilesWidth * 87;

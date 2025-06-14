@@ -2,17 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using Valve.Steamworks;
 using VikingEngine.DataLib;
-using VikingEngine.DSSWars.GameObject;
-using VikingEngine.HUD.RichBox;
-using VikingEngine.Input;
-using VikingEngine.ToGG.MoonFall;
-using VikingEngine.LootFest.Players;
 using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using Valve.Steamworks;
+using VikingEngine.HUD.RichMenu;
+using VikingEngine.Input;
+using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
@@ -31,6 +32,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Attack = Color.Red;
         public static readonly Color TitleColor_Name = Color.LightYellow;
         public static readonly Color TitleColor_TypeName = Color.LightGray;
+        public static readonly Color TitleColor_TypeName_Dark = new Color(50, 50, 50);
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);
         public static readonly Color TitleColor_Label_Dark = new Color(0, 63, 76);
         public static readonly Color AvailableColor = Color.LightGreen;
@@ -290,6 +292,27 @@ namespace VikingEngine.DSSWars
             return content.text(text);
         }
 
+        public static void returnButton(RichBoxContent content, RichMenu menu, bool bReturn, Action close)
+        {
+            if (bReturn)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                    new RbImage( SpriteName.MenuIconResume),
+                    new RbSpace(),
+                    new RbText(DssRef.todoLang.Hud_ReturnToPrevious)
+                    }, new RbAction(menu.menuBack)));
+            }
+            if (close != null)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                    new RbImage( SpriteName.WarsHudIconExit, 0.8f),
+                    new RbSpace(),
+                    new RbText(DssRef.todoLang.Hud_Close)
+                    }, new RbAction(close)));
+            }
+            content.newParagraph();
+        }
+
         public static void Experience(RichBoxContent content, XP.WorkExperienceType exp, XP.ExperienceLevel level)
         {
             LangLib.ExperienceType(exp, out string expName, out SpriteName expIcon);
@@ -460,16 +483,23 @@ namespace VikingEngine.DSSWars
             content.Add(button);
         }
 
+        public static List<AbsRichBoxMember> NextArrow(List<AbsRichBoxMember> content)
+        {
+            content.Add(new RbSpace(2));
+            content.Add(new RbImage(SpriteName.LfMenuMoreMenusArrow, 0.4f, MenuMoreOptionsArrowCol));
+            return content;
+        }
+
         public static RbImage BulletPoint(RichBoxContent content)
         {
-            var dot = new RbImage(SpriteName.warsBulletPoint, 0.8f, 0f, 0.3f);
+            var dot = new RbImage(SpriteName.warsBulletPoint, 0.8f, null, 0f, 0.3f);
             //dot.color = Color.DarkGray;
             content.Add(dot);
             return dot;
         }
         public static RbImage BulletSeperationPoint(RichBoxContent content)
         {
-            var dot = new RbImage(SpriteName.warsBulletSeperationPoint, 0.8f, 0f, 0f);
+            var dot = new RbImage(SpriteName.warsBulletSeperationPoint, 0.8f);
             //dot.color = Color.DarkGray;
             content.Add(dot);
             return dot;

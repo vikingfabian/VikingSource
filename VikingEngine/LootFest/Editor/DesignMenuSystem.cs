@@ -163,9 +163,6 @@ namespace VikingEngine.LootFest.Editor
                     new GuiTextButton("Select All", null, designer.selectAll, false, layout);
                     new GuiTextButton("Canvas size", "Change the draw limits", LinkCanvasSize, true, layout);
 
-                    //if (PlatformSettings.RunningWindows)
-                    //new GuiTextButton("Expand Draw Limits", null, LinkExpandLimits, true, layout);
-
                     new GuiTextButton("Rotate/Flip", "Rotate or flip the whole model", LinkRotateFlip, true, layout);
                     new GuiTextButton("Move everything", null, MoveAllMenu, true, layout);
 
@@ -681,9 +678,7 @@ namespace VikingEngine.LootFest.Editor
                 new GuiTextButton("Hide HUD", "View only the model, great for screen capture", designer.LinkHideHUD, false, layout);
             } layout.End();
         }
-
-        
-
+                
         void selectColorMenu()
         {
             GuiLayout layout = new GuiLayout("Color Options", menu, GuiLayoutMode.MultipleColumns, null);

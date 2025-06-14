@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using VikingEngine.Voxels;
 using VikingEngine.DataStream;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.Engine;
+using VikingEngine.DSSWars;
 
 namespace VikingEngine.LootFest.Editor
 {
-    class DesignerStorage
+    class DesignerStorage : IStreamIOCallback
     {
         public const string UserVoxelObjFolder = "VoxelObjSave";
         public static bool[] HasChatergory;
@@ -39,10 +42,15 @@ namespace VikingEngine.LootFest.Editor
             return new DataStream.FilePath(UserVoxelObjFolder, name, Voxels.VoxelLib.VoxelObjByteArrayEnding);
         }
 
+        public static DataStream.FilePath InGameVoxelObjPath(string name)
+        {
+            return new DataStream.FilePath(LfLib.ModelsCategoryWars, name, Voxels.VoxelLib.VoxelObjByteArrayEnding, false);
+        }
+
         public string saveFileName = randomName();
-        VoxelDesigner designer;
+        AbsVoxelDesigner designer;
         
-        public DesignerStorage(VoxelDesigner designer)
+        public DesignerStorage(AbsVoxelDesigner designer)
         {
             this.designer = designer;
         }
@@ -57,19 +65,20 @@ namespace VikingEngine.LootFest.Editor
             Debug.Log("Loading vox model: " + modelName.ToString());
         }
 
-        void modelLoaded(VoxelObjGridDataAnimHD model)
+        public void loadRetailModel(string modelName)
         {
-            if (designer.inGame)
-            {
-                designer.voxelGridToSelection(model.Frames[0]);
-            }
-            else
-            {
-                designer.addLoadedModel(model, designer.combineLoading);
-                //updateVoxelObj();
-            }
+            var model = VoxelObjDataLoader.LoadVoxelObjGrid(modelName);
+            modelLoaded(new VoxelObjGridDataAnimHD(model));
+
+            saveFileName = modelName;
+
+            Debug.Log("Loading vox model: " + modelName.ToString());
         }
 
+        void modelLoaded(VoxelObjGridDataAnimHD model)
+        {            
+            designer.addLoadedModel(model);            
+        }
 
         public void loadUserModel(string name)
         {
@@ -77,13 +86,33 @@ namespace VikingEngine.LootFest.Editor
             new LoadCreatorImage(CustomVoxelObjPath(saveFileName), modelLoaded);
         }
 
+        public FilePath SavePath()
+        {
+            return new DataStream.FilePath(UserVoxelObjFolder, saveFileName, Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false);
+        }
+
         public void save()
         {
-            designer.print("Saving...");
+            //designer.print("Saving...");
 
-            new DataStream.WriteBinaryIO(new DataStream.FilePath(UserVoxelObjFolder, saveFileName, Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false),
-                designer.animationFrames.WriteBinaryStream, null);
+            new DataStream.WriteBinaryIO(SavePath(),
+                designer.animationFrames.WriteBinaryStream, this);
+        }
 
+        public void SaveComplete(bool save, int player, bool completed, byte[] value)
+        {
+            if (save && completed)
+            {
+                RichBoxContent content = new RichBoxContent();
+                content.h2(LoadContent.CheckCharsSafety(saveFileName, LoadedFont.Regular), DSSWars.HudLib.TitleColor_Name);
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsHudIconSave));
+                content.space();
+                content.Add(new RbText(DssRef.todoLang.Hud_SaveCompleted));
+
+                designer.print(content);
+            }
         }
 
         int backupId = 0;
