@@ -201,23 +201,33 @@ namespace VikingEngine.DSSWars
 
             if (instance != null)
             {
-                //int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
-                //if (!instance.InRenderList && instance.inRenderLayer != lay )
-                //{
-                //    lib.DoNothing();
-                //}
-                if (allowRecycle)
+                if (detailLayer)
                 {
-                    instance.Visible = false;
-                    instance.Rotation = RotationQuarterion.Identity;
-                    DssRef.state.modelPool(detailLayer).Push(instance);
+                    //if (allowRecycle)
+                    //{
+                    //    instance.Visible = false;
+                    //    instance.Rotation = RotationQuarterion.Identity;
+                    //    DssRef.state.modelPool(detailLayer).Push(instance);
+                    //}
+                    
+                    instance.SetInRender(false);
                 }
                 else
-                { 
-                    instance.DeleteMe();
+                {
+
+                    if (allowRecycle)
+                    {
+                        instance.Visible = false;
+                        instance.Rotation = RotationQuarterion.Identity;
+                        DssRef.state.modelPool(detailLayer).Push(instance);
+                    }
+                    else
+                    {
+                        instance.DeleteMe();
+                    }
                 }
             }
-
+            
             instance = null;
         }
 
@@ -244,16 +254,19 @@ namespace VikingEngine.DSSWars
             {
                 instance = new Graphics.VoxelModelInstance(null, false);
                 if (addToRender)
-                {
-                    int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
+                {                    
+                    if (!detailLayer)
+                    {
+                        int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
 
-                    if (async)
-                    {
-                        Ref.update.AddSyncAction(new SyncAction1Arg<int>(instance.AddToRender, lay));
-                    }
-                    else
-                    {
-                        instance.AddToRender(lay);
+                        if (async)
+                        {
+                            Ref.update.AddSyncAction(new SyncAction1Arg<int>(instance.AddToRender, lay));
+                        }
+                        else
+                        {
+                            instance.AddToRender(lay);
+                        }
                     }
                 }
             }
@@ -267,6 +280,20 @@ namespace VikingEngine.DSSWars
             if (scale > 0)
             {
                 instance.scale = VectorExt.V3(instance.SizeToScale * scale);
+            }
+
+            if (addToRender && detailLayer)
+            {
+                if (async)
+                {
+                    Ref.update.AddSyncAction(new SyncAction(() => {
+                        Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);
+                    }));
+                }
+                else
+                {
+                    Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);
+                }
             }
 
             return instance;

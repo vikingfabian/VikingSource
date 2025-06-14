@@ -115,6 +115,11 @@ namespace VikingEngine.Graphics
             Ref.draw.CurrentRenderLayer = storeLay;
         }
 
+        public void SetInRender(bool inRender)
+        {
+            inRenderList = inRender;            
+        }
+
         virtual public void settingsChangedRefresh() { }
 
         public abstract void copyAllDataFrom(AbsDraw master);

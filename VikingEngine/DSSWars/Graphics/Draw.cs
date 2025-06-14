@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars
             //TODO SurfaceFormat.Single
             shadowMapRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 2048, 2048, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
 
-            
+            drawBatch = new DrawBatchCollection();
         }
 
         //public static void LoadContent()
@@ -164,11 +164,11 @@ namespace VikingEngine.DSSWars
                 case Map.MapDetailLayerType.UnitDetail1:
                     
                     DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
-                    
+
                     
                     DrawGenerated(UnitDetailLayer, cameraIndex);
-                    
-                    
+                    drawBatch.RemoveAndDraw(cameraIndex);
+
                     Draw3d(UnitDetailLayer, cameraIndex);
                     Engine.ParticleHandler.Draw(p.view.Camera);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;

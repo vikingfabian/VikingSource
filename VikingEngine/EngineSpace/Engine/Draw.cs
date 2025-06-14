@@ -46,6 +46,8 @@ namespace VikingEngine.Engine
         static IntVector2 targetSize;
         public static int MaxScreenSplit = 4;
 
+        public DrawBatchCollection drawBatch;
+
         public static void Init()
         {
             //Set the technique names
