@@ -89,6 +89,8 @@ namespace VikingEngine.DSSWars
                 }
             }
 
+
+
             DrawShadowMap(0);
 
 

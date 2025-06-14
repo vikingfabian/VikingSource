@@ -128,6 +128,7 @@ namespace VikingEngine.DSSWars.Map
                 if (render == Culling.NoRender || oneSecondUpdate)
                 {
                     tile.hasTileInRender = false;
+                    
                     tile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec; 
                     DssRef.world.tileGrid.Set(tilePos, tile);
                     //tiles[i].add = false;

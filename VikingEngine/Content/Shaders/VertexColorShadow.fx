@@ -86,3 +86,46 @@ technique Default
         PixelShader = compile PS_SHADERMODEL PS();
     }
 }
+
+
+
+
+VSO VS_ShadowDebug(VSI input)
+{
+    VSO output;
+
+    float4 worldPos = mul(input.Position, World);
+    float4 viewPos = mul(worldPos, View);
+    output.Position = mul(viewPos, Projection);
+    output.WorldPos = worldPos.xyz;
+    
+    output.Color = input.Color;
+    
+    float4 lightView = mul(worldPos, LightView);
+    float4 lightProj = mul(lightView, LightProjection);
+    output.ShadowCoord = lightProj / lightProj.w;
+    output.ShadowCoord.xy = output.ShadowCoord.xy * 0.5f + 0.5f;
+
+    return output;
+}
+
+float4 PS_ShadowDebug(VSO input) : COLOR0
+{
+    float2 uv = input.ShadowCoord.xy;
+    float currentDepth = input.ShadowCoord.z;
+    float shadowDepth = tex2D(ShadowSampler, uv).r;
+
+    float shadow = (currentDepth > shadowDepth) ? 0.2 : 1.0;
+
+    float3 finalColor = shadow;
+    return float4(finalColor, input.Color.a);
+}
+
+technique ShadowDebug
+{
+    pass P0
+    {
+        VertexShader = compile VS_SHADERMODEL VS_ShadowDebug();
+        PixelShader = compile PS_SHADERMODEL PS_ShadowDebug();
+    }
+}

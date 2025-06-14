@@ -63,8 +63,24 @@ namespace VikingEngine.Graphics
 
         }
 
+        bool debug = false;
+
         public void BeginDrawShadow()
         {
+            if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.LeftControl))
+            {
+                debug = !debug;
+
+                if (debug)
+                {
+                    TechniqueName = "ShadowDebug";
+                }
+                else
+                {
+                    TechniqueName = "Default";
+                }
+            }
+
             shadowEffect.Parameters["LightView"].SetValue(lightView);
             shadowEffect.Parameters["LightProjection"].SetValue(lightProjection);
 
@@ -75,6 +91,7 @@ namespace VikingEngine.Graphics
 
         public override void DrawVB(int frame, AbsVoxelObj obj, AbsVertexAndIndexBuffer VB)
         {
+            shadowEffect.Parameters["ShadowMap"].SetValue(shadowMapRenderTarget);
             base.DrawVB(frame, obj, VB);
         }
 

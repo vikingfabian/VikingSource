@@ -1074,6 +1074,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void synchToRender()
         {
+            model.Visible = false;
             if (verticeData != null)
             {
                 model.BuildFromVerticeData(verticeData,
