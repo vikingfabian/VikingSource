@@ -1,16 +1,30 @@
 ﻿UPDATE
 -Change Log-
-* Spelling corrections:
-"warmachine"
-"Work costs less energy"
+* Added a folder for overriding ingame models
 
-* Fixed player reference bug
-* Added data drift security on armies
-* Improved position data compression
-* Fixed a save corruption bug
-* fixed: smith makes beer
-* fixed negative length save crash
-* fixed city name crash
+
+Voxel editor 2
+* 
+
+X need bucket tool and better color seletion, and color adjust options
+X (maybe) import / export for MagicaVoxel
+X layers
+X project file that saves layers and history
+X templates for modding
+X material select and replace
+
+X highlight system to show affected voxels, and draw preview
+X coordinate arrows
+
+X "are you sure you want to override this file"
+
+
+
+
+#Voxel editor#
+
+#Pics
+
 
 ! I think there is one data drift I havent found, make a habit to check if the files are working from time to time
 
@@ -32,9 +46,9 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 
 #Todo#
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select.
+-mod av Storage location
 
-
-
+x beer example in the help menu
 x input options in ingame menu are broken
 x Auto upgrade
 x Declaring war needs warning

@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.Voxels;
@@ -47,7 +48,7 @@ namespace VikingEngine.Voxels
                 //    EditorDrawTools.NetWriteVoxelEdit(undo.selectionArea);
                 //}
 
-                designer.print("Undo " + undoActions.Count.ToString());
+                designer.print(DssRef.lang.Hud_Undo + " " + undoActions.Count.ToString());
                 return true;
             }
             else

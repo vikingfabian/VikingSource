@@ -251,10 +251,11 @@ namespace VikingEngine.HUD.RichBox
         public Color? color;
         public Image pointer;
 
-        public RbImage(SpriteName sprite, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
+        public RbImage(SpriteName sprite, float scale = 1f, Color? color = null, float addLeftSpace = 0, float addRightSpace = 0)
             : base(scale, addLeftSpace, addRightSpace)
         {
             this.sprite = sprite;
+            this.color = color;
         }
 
         override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)

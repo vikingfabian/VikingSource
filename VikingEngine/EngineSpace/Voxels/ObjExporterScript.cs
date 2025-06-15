@@ -25,6 +25,11 @@ namespace VikingEngine.EngineSpace.Voxels
         //    StartIndex = 0;
         //}
 
+        public static FilePath ExportPath(string name)
+        {
+            return new FilePath(null, name, ".obj", true, false);
+        }
+
         public static void Export(VoxelObjGridDataHD gridData, string name)
         {
             StringBuilder sbVertices = new StringBuilder();
@@ -111,7 +116,7 @@ namespace VikingEngine.EngineSpace.Voxels
                 commaFreeText.Append(c == ',' ? '.' : c);
             }
 
-            FilePath path = new FilePath(null, name, ".obj", true, false);
+            FilePath path = ExportPath(name);//new FilePath(null, name, ".obj", true, false);
 
             new AsynchActionTrigger(() =>
             {

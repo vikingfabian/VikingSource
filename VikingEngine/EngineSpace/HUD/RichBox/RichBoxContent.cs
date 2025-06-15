@@ -199,7 +199,7 @@ namespace VikingEngine.HUD.RichBox
 
         public RbImage BulletPoint()
         {
-            var dot =new  RbImage(SpriteName.WhiteArea, 0.4f, 1f, 2f);
+            var dot =new  RbImage(SpriteName.WhiteArea, 0.4f, null, 1f, 2f);
             dot.color = Color.DarkGray;
             Add(dot);
             return dot;
@@ -261,17 +261,6 @@ namespace VikingEngine.HUD.RichBox
         public void buttonMap(IButtonMap buttonMap)
         {
             ButtonMap(buttonMap, this);
-            //List<SpriteName> sprites = new List<SpriteName>(2);
-            //buttonMap.ListIcons(sprites);
-
-            //for (int i = 0; i < sprites.Count; i++)
-            //{
-            //    Add(new RichBoxImage(sprites[i]));
-            //    if (i < sprites.Count - 1)
-            //    {
-            //        Add(new RichBoxText("+"));
-            //    }
-            //}
         }
         public static void ButtonMap(IButtonMap buttonMap, List<AbsRichBoxMember> content )
         { 
@@ -288,6 +277,7 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
+       
         //public void DropDown(string label, List<AbsRichBoxMember> menuCaption, List<List<AbsRichBoxMember>> options, 
         //    int selectedIx, int defaultIx, AbsRbAction openClose, RbAction1Arg<int> onSelect, List<AbsRbAction> optionsTooltip, bool isDown)
         //{ 

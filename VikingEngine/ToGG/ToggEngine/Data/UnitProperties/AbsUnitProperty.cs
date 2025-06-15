@@ -440,7 +440,7 @@ namespace VikingEngine.ToGG.Data.Property
             var display = new List<AbsRichBoxMember>(surgeOption.surgeCost + 3);
             for (int i = 0; i < surgeOption.surgeCost; ++i)
             {
-                display.Add(new RbImage(SpriteName.cmdIconSurgeSmall, 1f, -0.2f, -0.2f));
+                display.Add(new RbImage(SpriteName.cmdIconSurgeSmall, 1f, null, -0.2f, -0.2f));
             }
 
             display.Add(new RbImage(SpriteName.cmdConvertArrow, 0.6f));
