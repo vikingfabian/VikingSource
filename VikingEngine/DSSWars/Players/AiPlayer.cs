@@ -427,12 +427,12 @@ namespace VikingEngine.DSSWars.Players
                     faction.displayInFullOverview = true;
 
                     techSetup();
-                    faction.technology.advancedBuilding = TechnologyTemplate.FactionUnlock;
-                    faction.technology.advancedCasting = TechnologyTemplate.FactionUnlock;
-                    faction.technology.iron = TechnologyTemplate.FactionUnlock;
-                    faction.technology.steel = TechnologyTemplate.FactionUnlock;
-                    faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
-                    faction.technology.gunPowder = TechnologyTemplate.FactionUnlock;
+                    faction.technology.advancedBuilding.points = TechnologyTemplate.FactionUnlock;
+                    faction.technology.advancedCasting.points = TechnologyTemplate.FactionUnlock;
+                    faction.technology.iron.points = TechnologyTemplate.FactionUnlock;
+                    faction.technology.steel.points = TechnologyTemplate.FactionUnlock;
+                    faction.technology.blackPowder.points = TechnologyTemplate.FactionUnlock;
+                    faction.technology.gunPowder.points = TechnologyTemplate.FactionUnlock;
 
                     break;
 
@@ -447,7 +447,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
 
                     techSetup();
-                    faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
+                    faction.technology.blackPowder.points = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.Barbarians:
@@ -473,8 +473,8 @@ namespace VikingEngine.DSSWars.Players
                     
                     techSetup();
                     techSetup();
-                    faction.technology.advancedBuilding = TechnologyTemplate.FactionUnlock;
-                    faction.technology.steel = TechnologyTemplate.FactionUnlock;
+                    faction.technology.advancedBuilding.points = TechnologyTemplate.FactionUnlock;
+                    faction.technology.steel.points = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.GreenWood:
@@ -488,7 +488,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.profile.factionFlavorType = FactionFlavorType.Forest;
 
                     techSetup();
-                    faction.technology.steel = TechnologyTemplate.FactionUnlock;
+                    faction.technology.steel.points = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.EasternEmpire:
@@ -496,7 +496,7 @@ namespace VikingEngine.DSSWars.Players
                     name = DssRef.lang.FactionName_EasternEmpire;
 
                     techSetup();
-                    faction.technology.advancedBuilding = TechnologyTemplate.FactionUnlock;
+                    faction.technology.advancedBuilding.points = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.NordicRealm:
@@ -543,7 +543,7 @@ namespace VikingEngine.DSSWars.Players
                     name = DssRef.lang.FactionName_Dragonslayer;
                     //addStartCitiesBuyOption(UnitType.CrossBow);
                     techSetup();
-                    faction.technology.catapult = TechnologyTemplate.FactionUnlock;
+                    faction.technology.catapult.points = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.SouthHara:
@@ -559,8 +559,8 @@ namespace VikingEngine.DSSWars.Players
                     faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 5);
 
                     techSetup();
-                    faction.technology.catapult = TechnologyTemplate.FactionUnlock;
-                    faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
+                    faction.technology.catapult.points = TechnologyTemplate.FactionUnlock;
+                    faction.technology.blackPowder.points = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.DyingMonger:
@@ -670,29 +670,29 @@ namespace VikingEngine.DSSWars.Players
             void techSetup()
             {
                 // Initialize techs with appropriate unlocks
-                faction.technology.advancedBuilding = TechnologyTemplate.SetRandom(
-                    faction.technology.advancedBuilding, TechnologyTemplate.AdvancedBuildingUnlock);
-                faction.technology.advancedFarming = TechnologyTemplate.SetRandom(
-                    faction.technology.advancedFarming, TechnologyTemplate.AdvancedFarmingUnlock);
-                faction.technology.advancedCasting = TechnologyTemplate.SetRandom(
-                    faction.technology.advancedCasting, TechnologyTemplate.AdvancedCastingUnlock);
-                faction.technology.iron = TechnologyTemplate.FactionUnlock; // Stays the same
-                faction.technology.steel = TechnologyTemplate.SetRandom(
-                    faction.technology.steel, TechnologyTemplate.SteelUnlock);
-                faction.technology.catapult = TechnologyTemplate.SetRandom(
-                    faction.technology.catapult, TechnologyTemplate.CatapultUnlock);
-                faction.technology.blackPowder = TechnologyTemplate.SetRandom(
-                    faction.technology.blackPowder, TechnologyTemplate.BlackPowderUnlock);
+                faction.technology.advancedBuilding.points = TechnologyTemplate.SetRandom(
+                    faction.technology.advancedBuilding.points, TechnologyTemplate.AdvancedBuildingUnlock);
+                faction.technology.advancedFarming.points = TechnologyTemplate.SetRandom(
+                    faction.technology.advancedFarming.points, TechnologyTemplate.AdvancedFarmingUnlock);
+                faction.technology.advancedCasting.points = TechnologyTemplate.SetRandom(
+                    faction.technology.advancedCasting.points, TechnologyTemplate.AdvancedCastingUnlock);
+                faction.technology.iron.points = TechnologyTemplate.FactionUnlock; // Stays the same
+                faction.technology.steel.points = TechnologyTemplate.SetRandom(
+                    faction.technology.steel.points, TechnologyTemplate.SteelUnlock);
+                faction.technology.catapult.points = TechnologyTemplate.SetRandom(
+                    faction.technology.catapult.points, TechnologyTemplate.CatapultUnlock);
+                faction.technology.blackPowder.points = TechnologyTemplate.SetRandom(
+                    faction.technology.blackPowder.points, TechnologyTemplate.BlackPowderUnlock);
 
                 if (faction.profile.factionFlavorType == FactionFlavorType.City)
                 {
                     if (Ref.rnd.Chance(0.8))
                     {
-                        faction.technology.advancedBuilding = TechnologyTemplate.FactionUnlock;
+                        faction.technology.advancedBuilding.points = TechnologyTemplate.FactionUnlock;
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedBuilding, TechnologyTemplate.AdvancedBuildingUnlock);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedBuilding.points, TechnologyTemplate.AdvancedBuildingUnlock);
                     }
                 }
 
@@ -700,35 +700,35 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (Ref.rnd.Chance(0.8))
                     {
-                        faction.technology.steel = TechnologyTemplate.FactionUnlock;
+                        faction.technology.steel.points = TechnologyTemplate.FactionUnlock;
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.steel, TechnologyTemplate.SteelUnlock);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.steel.points, TechnologyTemplate.SteelUnlock);
                     }
 
                     if (Ref.rnd.Chance(0.6))
                     {
-                        faction.technology.catapult = TechnologyTemplate.FactionUnlock;
+                        faction.technology.catapult.points = TechnologyTemplate.FactionUnlock;
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.catapult, TechnologyTemplate.CatapultUnlock);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.catapult.points, TechnologyTemplate.CatapultUnlock);
                     }
                 }
 
                 if (faction.profile.factionFlavorType == FactionFlavorType.People)
                 {
-                    faction.technology.iron = 0;
-                    faction.technology.steel = 0;
+                    faction.technology.iron.points = 0;
+                    faction.technology.steel.points = 0;
 
                     if (Ref.rnd.Chance(0.6))
                     {
-                        faction.technology.advancedFarming = TechnologyTemplate.FactionUnlock;
+                        faction.technology.advancedFarming.points = TechnologyTemplate.FactionUnlock;
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedFarming, TechnologyTemplate.AdvancedFarmingUnlock);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedFarming.points, TechnologyTemplate.AdvancedFarmingUnlock);
                     }
                 }
 
@@ -736,32 +736,32 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (Ref.rnd.Chance(0.6))
                     {
-                        faction.technology.advancedCasting = TechnologyTemplate.FactionUnlock;
+                        faction.technology.advancedCasting.points = TechnologyTemplate.FactionUnlock;
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedCasting, TechnologyTemplate.AdvancedCastingUnlock);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedCasting.points, TechnologyTemplate.AdvancedCastingUnlock);
                     }
 
                     if (Ref.rnd.Chance(0.6))
                     {
-                        faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
+                        faction.technology.blackPowder.points  = TechnologyTemplate.FactionUnlock;
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.blackPowder, TechnologyTemplate.BlackPowderUnlock);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.blackPowder.points, TechnologyTemplate.BlackPowderUnlock);
                     }
 
                     if (Ref.rnd.Chance(0.4))
                     {
-                        faction.technology.steel = TechnologyTemplate.FactionUnlock;
+                        faction.technology.steel.points = TechnologyTemplate.FactionUnlock;
                     }
                     else
                     {
-                        TechnologyTemplate.MultiplyProgress(ref faction.technology.steel, TechnologyTemplate.SteelUnlock, 0.3);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.steel.points, TechnologyTemplate.SteelUnlock, 0.3);
                     }
 
-                    faction.technology.advancedFarming = 0;
+                    faction.technology.advancedFarming.points = 0;
                 }
             }
 

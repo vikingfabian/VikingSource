@@ -626,7 +626,9 @@ namespace VikingEngine.DSSWars.Build
 
                         var build = BuildLib.BuildOptions[(int)type];
                         content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
-                        build.blueprint.toMenu(content, city, false, false);
+
+                        //content.newLine();
+                        build.blueprint.toMenu(content, city, false, true, true);
                         if (build.altBlueprint != null)
                         {
                             content.Add(new RbSeperationLine(HudLib.TitleColor_Head, 0.2f));

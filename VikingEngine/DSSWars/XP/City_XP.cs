@@ -122,45 +122,45 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 case WorkExperienceType.HouseBuilding:
                 case WorkExperienceType.StoneCutter:
-                    technology.advancedBuilding += gain;
+                    technology.advancedBuilding.points += gain;
                     break;
 
                 case WorkExperienceType.Farm:
                 case WorkExperienceType.AnimalCare:
-                    technology.advancedFarming += gain;
+                    technology.advancedFarming.points += gain;
                     break;
 
                 case WorkExperienceType.Smelting:
                 case WorkExperienceType.CastMetal:
-                    technology.advancedCasting += gain;
+                    technology.advancedCasting.points += gain;
                     break;
 
                 case WorkExperienceType.Mining:
                 case WorkExperienceType.CraftMetal:
-                    if (technology.iron < TechnologyTemplate.IronUnlock)
+                    if (technology.iron.points < TechnologyTemplate.IronUnlock)
                     {
-                        technology.iron += gain;
+                        technology.iron.points += gain;
                     }
                     else
                     {
-                        technology.steel += gain;
+                        technology.steel.points += gain;
                     }
                     break;
 
                 case WorkExperienceType.WoodWork:
                 case WorkExperienceType.Fletcher:
-                    technology.catapult += gain;
+                    technology.catapult.points += gain;
                     break;
 
                 case WorkExperienceType.CraftFuel:
                 case WorkExperienceType.Chemistry:
-                    if (technology.blackPowder < TechnologyTemplate.BlackPowderUnlock)
+                    if (technology.blackPowder.points < TechnologyTemplate.BlackPowderUnlock)
                     {
-                        technology.blackPowder += gain;
+                        technology.blackPowder.points += gain;
                     }
                     else
                     {
-                        technology.gunPowder += gain;
+                        technology.gunPowder.points += gain;
                     }
                     break;
 

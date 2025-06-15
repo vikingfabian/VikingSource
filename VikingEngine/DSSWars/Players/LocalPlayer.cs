@@ -133,7 +133,7 @@ namespace VikingEngine.DSSWars.Players
             setPlayerFaction(faction);
 
             faction.technology = new XP.TechnologyTemplate();
-            faction.technology.iron = XP.TechnologyTemplate.FactionUnlock;
+            faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
 
             faction.addGold_factionWide(10000);
         }

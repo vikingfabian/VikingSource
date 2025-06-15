@@ -1289,7 +1289,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Wood_Group, 100),
                 new UseResource(ItemResourceType.Stone_G, 300)
            },
-           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
         );
         
         public static readonly CraftBlueprint BookPress = new CraftBlueprint(
@@ -1304,7 +1304,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Wood_Group, 100),
            
             },
-            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
 
     }

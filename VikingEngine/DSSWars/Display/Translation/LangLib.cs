@@ -862,6 +862,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.BuildingType_HenPen;
                         case TerrainBuildingType.Nobelhouse:
                             return DssRef.lang.Building_NobleHouse;
+                        case TerrainBuildingType.ImmigrationTent:
+                            return DssRef.todoLang.BuildingType_ImmigrationTent;
                         case TerrainBuildingType.PigPen:
                             return DssRef.lang.BuildingType_PigPen;
 
@@ -892,6 +894,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainBuildingType.Work_Bench:
                             return DssRef.lang.BuildingType_WorkBench;
                         case TerrainBuildingType.WorkerHut:
+                        case TerrainBuildingType.WorkerHutLarge:
                             return DssRef.lang.BuildingType_WorkerHut;
 
                         case TerrainBuildingType.Smelter:
@@ -929,7 +932,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.BuildingType_Gunmaker;
                         case TerrainBuildingType.School:
                             return DssRef.lang.BuildingType_School;
-                                                    
+                        case TerrainBuildingType.ResearchCenter:
+                            return DssRef.todoLang.BuildingType_ReseachCenter;
+                        case TerrainBuildingType.BookPress:
+                            return DssRef.todoLang.BuildingType_Bookpress;
+
                         case TerrainBuildingType.ServiceMenHouse_small:
                         case TerrainBuildingType.ServiceMenHouse_Large:
                             return DssRef.lang.BuildingType_ServiceHouse;
@@ -1197,6 +1204,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.ResearchCenter:
                     return DssRef.todoLang.BuildingType_Research_BaseDescription;
 
+                case TerrainBuildingType.ImmigrationTent:
+                    return string.Format(DssRef.todoLang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity);
 
                 default:
                     return TextLib.Error;

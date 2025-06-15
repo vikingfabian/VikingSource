@@ -5,9 +5,56 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars.XP
 {
+    struct ResearchProgress
+    {
+        public int points = 0;
+        public int bookpress_IdAndPos = -1;
+        public int researchCenter_IdAndPos = -1;
+
+        public ResearchProgress()
+        { }
+
+        public void writeGameState(System.IO.BinaryWriter w, int unlock, bool faction)
+        {
+            w.Write((byte)Bound.Max(points, unlock));
+            if (!faction)
+            {
+                new EightBit(bookpress_IdAndPos >= 0, researchCenter_IdAndPos >= 0).write(w);
+
+                if (bookpress_IdAndPos >= 0)
+                {
+                    w.Write(bookpress_IdAndPos);
+                }
+                if (researchCenter_IdAndPos >= 0)
+                {
+                    w.Write(researchCenter_IdAndPos);
+                }
+            }
+        }
+
+        public void readGameState(System.IO.BinaryReader r, int subversion, bool faction)
+        {
+            points = r.ReadByte();
+            if (!faction)
+            {
+                EightBit bools = EightBit.FromStream(r);
+                if (bools.Get(0))
+                {
+                    bookpress_IdAndPos = r.ReadInt32();
+                }
+                if (bools.Get(1))
+                {
+                    researchCenter_IdAndPos = r.ReadInt32();
+                }
+            }
+        }
+    
+    }
+
     struct TechnologyTemplate
     {
         //public static readonly TechnologyTemplate Start = new TechnologyTemplate();
@@ -23,37 +70,37 @@ namespace VikingEngine.DSSWars.XP
         public const int BlackPowderUnlock = 180;
         public const int GunPowderUnlock = 200;
 
-        public int advancedBuilding;
-        public int advancedFarming;
-        public int advancedCasting;
-        public int iron;
-        public int steel;
-        public int catapult;
-        public int blackPowder;
-        public int gunPowder;
+        public ResearchProgress advancedBuilding;
+        public ResearchProgress advancedFarming;
+        public ResearchProgress advancedCasting;
+        public ResearchProgress iron;
+        public ResearchProgress steel;
+        public ResearchProgress catapult;
+        public ResearchProgress blackPowder;
+        public ResearchProgress gunPowder;
 
         public TechnologyTemplate()
         {
-            advancedBuilding = 0;
-            advancedFarming = 0;
-            advancedCasting = 0;
-            iron = 0;
-            steel = 0;
-            catapult = 0;
-            blackPowder = 0;
-            gunPowder = 0;
+            advancedBuilding =  new ResearchProgress();
+            advancedFarming = new ResearchProgress();
+            advancedCasting = new ResearchProgress();
+            iron = new ResearchProgress();
+            steel = new ResearchProgress();
+            catapult = new ResearchProgress();
+            blackPowder = new ResearchProgress();
+            gunPowder = new ResearchProgress();
         }
 
         public void zero()
         {
-            advancedBuilding = 0;
-            advancedFarming = 0;
-            advancedCasting = 0;
-            iron = 0;
-            steel = 0;
-            catapult = 0;
-            blackPowder = 0;
-            gunPowder = 0;
+            advancedBuilding.points = 0;
+            advancedFarming.points = 0;
+            advancedCasting.points = 0;
+            iron.points = 0;
+            steel.points = 0;
+            catapult.points = 0;
+            blackPowder.points = 0;
+            gunPowder.points = 0;
         }
 
         public static int SetRandom(int startValue, int unlock, double percentageAdd = 0.5)
@@ -74,46 +121,71 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
-        public void writeGameState(System.IO.BinaryWriter w)
+        public void writeGameState(System.IO.BinaryWriter w, bool faction)
         {
-            w.Write((byte)Bound.Max(advancedBuilding, AdvancedBuildingUnlock));
-            w.Write((byte)Bound.Max(advancedFarming, AdvancedFarmingUnlock));
-            w.Write((byte)Bound.Max(advancedCasting, AdvancedCastingUnlock));
-            w.Write((byte)Bound.Max(iron, IronUnlock));
-            w.Write((byte)Bound.Max(steel, SteelUnlock));
-            w.Write((byte)Bound.Max(catapult, CatapultUnlock));
-            w.Write((byte)Bound.Max(blackPowder, BlackPowderUnlock));
-            w.Write((byte)Bound.Max(gunPowder, GunPowderUnlock));
+            //new
+            advancedBuilding.writeGameState(w, AdvancedBuildingUnlock, faction);
+            advancedFarming.writeGameState(w, AdvancedFarmingUnlock, faction);
+            advancedCasting.writeGameState(w, AdvancedCastingUnlock, faction);
+            iron.writeGameState(w, IronUnlock, faction);
+            steel.writeGameState(w, SteelUnlock, faction);
+            catapult.writeGameState(w, CatapultUnlock, faction);
+            blackPowder.writeGameState(w, BlackPowderUnlock, faction);
+            gunPowder.writeGameState(w, GunPowderUnlock, faction);
+
+            //old
+            //w.Write((byte)Bound.Max(advancedBuilding, AdvancedBuildingUnlock));
+            //w.Write((byte)Bound.Max(advancedFarming, AdvancedFarmingUnlock));
+            //w.Write((byte)Bound.Max(advancedCasting, AdvancedCastingUnlock));
+            //w.Write((byte)Bound.Max(iron, IronUnlock));
+            //w.Write((byte)Bound.Max(steel, SteelUnlock));
+            //w.Write((byte)Bound.Max(catapult, CatapultUnlock));
+            //w.Write((byte)Bound.Max(blackPowder, BlackPowderUnlock));
+            //w.Write((byte)Bound.Max(gunPowder, GunPowderUnlock));
         }
 
-        public void readGameState(System.IO.BinaryReader r, int subversion)
+        public void readGameState(System.IO.BinaryReader r, int subversion, bool faction)
         {
             if (subversion < 61)
-            { 
+            {
                 readGameState_old(r);
-                return;
             }
-            advancedBuilding = r.ReadByte();
-            advancedFarming = r.ReadByte();
-            advancedCasting = r.ReadByte();
-            iron = r.ReadByte();
-            steel = r.ReadByte();
-            catapult = r.ReadByte();
-            blackPowder = r.ReadByte();
-            gunPowder = r.ReadByte();
+            else if (subversion < 64)
+            {
+                advancedBuilding.points = r.ReadByte();
+                advancedFarming.points = r.ReadByte();
+                advancedCasting.points = r.ReadByte();
+                iron.points = r.ReadByte();
+                steel.points = r.ReadByte();
+                catapult.points = r.ReadByte();
+                blackPowder.points = r.ReadByte();
+                gunPowder.points = r.ReadByte();
+            }
+            else //new
+            {
+                advancedBuilding.readGameState(r, subversion, faction);
+                advancedFarming.readGameState(r, subversion, faction);
+                advancedCasting.readGameState(r, subversion, faction);
+                iron.readGameState(r, subversion, faction);
+                steel.readGameState(r, subversion, faction);
+                catapult.readGameState(r, subversion, faction);
+                blackPowder.readGameState(r, subversion, faction);
+                gunPowder.readGameState(r, subversion, faction);
+
+            }
         }
         public void readGameState_old(System.IO.BinaryReader r)
         {
             int oldUnlocked = 200; // The old unlock constant
 
-            advancedBuilding = adjust(r.ReadByte(), AdvancedBuildingUnlock, oldUnlocked);
-            advancedFarming = adjust(r.ReadByte(), AdvancedFarmingUnlock, oldUnlocked);
-            advancedCasting = adjust(r.ReadByte(), AdvancedCastingUnlock, oldUnlocked);
-            iron = adjust(r.ReadByte(), IronUnlock, oldUnlocked);
-            steel = adjust(r.ReadByte(), SteelUnlock, oldUnlocked);
-            catapult = adjust(r.ReadByte(), CatapultUnlock, oldUnlocked);
-            blackPowder = adjust(r.ReadByte(), BlackPowderUnlock, oldUnlocked);
-            gunPowder = adjust(r.ReadByte(), GunPowderUnlock, oldUnlocked);
+            advancedBuilding.points = adjust(r.ReadByte(), AdvancedBuildingUnlock, oldUnlocked);
+            advancedFarming.points = adjust(r.ReadByte(), AdvancedFarmingUnlock, oldUnlocked);
+            advancedCasting.points = adjust(r.ReadByte(), AdvancedCastingUnlock, oldUnlocked);
+            iron.points = adjust(r.ReadByte(), IronUnlock, oldUnlocked);
+            steel.points = adjust(r.ReadByte(), SteelUnlock, oldUnlocked);
+            catapult.points = adjust(r.ReadByte(), CatapultUnlock, oldUnlocked);
+            blackPowder.points = adjust(r.ReadByte(), BlackPowderUnlock, oldUnlocked);
+            gunPowder.points = adjust(r.ReadByte(), GunPowderUnlock, oldUnlocked);
 
             int adjust(int value, int newUnlock, int oldUnlock)
             {
@@ -125,28 +197,28 @@ namespace VikingEngine.DSSWars.XP
         {
             Unlocks unlocks = new Unlocks();
 
-            if (advancedBuilding >= (factionView ? 1 : AdvancedBuildingUnlock))
+            if (advancedBuilding.points >= (factionView ? 1 : AdvancedBuildingUnlock))
                 unlocks.UnlockAdvancedBuilding();
 
-            if (advancedFarming >= (factionView ? 1 : AdvancedFarmingUnlock))
+            if (advancedFarming.points >= (factionView ? 1 : AdvancedFarmingUnlock))
                 unlocks.UnlockAdvancedFarming();
 
-            if (advancedCasting >= (factionView ? 1 : AdvancedCastingUnlock))
+            if (advancedCasting.points >= (factionView ? 1 : AdvancedCastingUnlock))
                 unlocks.UnlockAdvancedCasting();
 
-            if (iron >= (factionView ? 1 : IronUnlock))
+            if (iron.points >= (factionView ? 1 : IronUnlock))
                 unlocks.UnlockIron();
 
-            if (steel >= (factionView ? 1 : SteelUnlock))
+            if (steel.points >= (factionView ? 1 : SteelUnlock))
                 unlocks.UnlockSteel();
 
-            if (catapult >= (factionView ? 1 : CatapultUnlock))
+            if (catapult.points >= (factionView ? 1 : CatapultUnlock))
                 unlocks.UnlockCatapult();
 
-            if (blackPowder >= (factionView ? 1 : BlackPowderUnlock))
+            if (blackPowder.points >= (factionView ? 1 : BlackPowderUnlock))
                 unlocks.UnlockBlackPowder();
 
-            if (gunPowder >= (factionView ? 1 : GunPowderUnlock))
+            if (gunPowder.points >= (factionView ? 1 : GunPowderUnlock))
                 unlocks.UnlockGunPowder();
 
             return unlocks;
@@ -154,14 +226,14 @@ namespace VikingEngine.DSSWars.XP
 
         public void destroyTechOnTakeOver()
         {
-            tech(ref advancedBuilding);
-            tech(ref advancedFarming);
-            tech(ref advancedCasting);
-            tech(ref iron);
-            tech(ref steel);
-            tech(ref catapult);
-            tech(ref blackPowder);
-            tech(ref gunPowder);
+            tech(ref advancedBuilding.points);
+            tech(ref advancedFarming.points);
+            tech(ref advancedCasting.points);
+            tech(ref iron.points);
+            tech(ref steel.points);
+            tech(ref catapult.points);
+            tech(ref blackPowder.points);
+            tech(ref gunPowder.points);
 
             void tech(ref int thisTech)
             {
@@ -184,16 +256,16 @@ namespace VikingEngine.DSSWars.XP
                 throw new Exception();
 #endif
 
-            tech(ref advancedBuilding, from.advancedBuilding, AdvancedBuildingUnlock);
-            tech(ref advancedFarming, from.advancedFarming, AdvancedFarmingUnlock);
-            tech(ref advancedCasting, from.advancedCasting, AdvancedCastingUnlock);
-            tech(ref iron, from.iron, IronUnlock);
-            if (iron >= IronUnlock)
-                tech(ref steel, from.steel, SteelUnlock);
-            tech(ref catapult, from.catapult, CatapultUnlock);
-            tech(ref blackPowder, from.blackPowder, BlackPowderUnlock);
-            if (blackPowder >= BlackPowderUnlock)
-                tech(ref gunPowder, from.gunPowder, GunPowderUnlock);
+            tech(ref advancedBuilding.points, from.advancedBuilding.points, AdvancedBuildingUnlock);
+            tech(ref advancedFarming.points, from.advancedFarming.points, AdvancedFarmingUnlock);
+            tech(ref advancedCasting.points, from.advancedCasting.points, AdvancedCastingUnlock);
+            tech(ref iron.points, from.iron.points, IronUnlock);
+            if (iron.points >= IronUnlock)
+                tech(ref steel.points, from.steel.points, SteelUnlock);
+            tech(ref catapult.points, from.catapult.points, CatapultUnlock);
+            tech(ref blackPowder.points, from.blackPowder.points, BlackPowderUnlock);
+            if (blackPowder.points >= BlackPowderUnlock)
+                tech(ref gunPowder.points, from.gunPowder.points, GunPowderUnlock);
 
             void tech(ref int thisTech, int otherTech, int unlock)
             {
@@ -206,14 +278,14 @@ namespace VikingEngine.DSSWars.XP
 
         public void addFactionUnlocked(TechnologyTemplate from, bool toCity, bool includeProgress)
         {
-            tech(ref advancedBuilding, from.advancedBuilding, AdvancedBuildingUnlock);
-            tech(ref advancedFarming, from.advancedFarming, AdvancedFarmingUnlock);
-            tech(ref advancedCasting, from.advancedCasting, AdvancedCastingUnlock);
-            tech(ref iron, from.iron, IronUnlock);
-            tech(ref steel, from.steel, SteelUnlock);
-            tech(ref catapult, from.catapult, CatapultUnlock);
-            tech(ref blackPowder, from.blackPowder, BlackPowderUnlock);
-            tech(ref gunPowder, from.gunPowder, GunPowderUnlock);
+            tech(ref advancedBuilding.points, from.advancedBuilding.points, AdvancedBuildingUnlock);
+            tech(ref advancedFarming.points, from.advancedFarming.points, AdvancedFarmingUnlock);
+            tech(ref advancedCasting.points, from.advancedCasting.points, AdvancedCastingUnlock);
+            tech(ref iron.points, from.iron.points, IronUnlock);
+            tech(ref steel.points, from.steel.points, SteelUnlock);
+            tech(ref catapult.points, from.catapult.points, CatapultUnlock);
+            tech(ref blackPowder.points, from.blackPowder.points, BlackPowderUnlock);
+            tech(ref gunPowder.points, from.gunPowder.points, GunPowderUnlock);
 
             void tech(ref int thisTech, int otherTech, int unlock)
             {
@@ -230,14 +302,14 @@ namespace VikingEngine.DSSWars.XP
 
         public void checkCityCount(int cityCount)
         {
-            tech(ref advancedBuilding, AdvancedBuildingUnlock);
-            tech(ref advancedFarming, AdvancedFarmingUnlock);
-            tech(ref advancedCasting, AdvancedCastingUnlock);
-            tech(ref iron, IronUnlock);
-            tech(ref steel, SteelUnlock);
-            tech(ref catapult, CatapultUnlock);
-            tech(ref blackPowder, BlackPowderUnlock);
-            tech(ref gunPowder, GunPowderUnlock);
+            tech(ref advancedBuilding.points, AdvancedBuildingUnlock);
+            tech(ref advancedFarming.points, AdvancedFarmingUnlock);
+            tech(ref advancedCasting.points, AdvancedCastingUnlock);
+            tech(ref iron.points, IronUnlock);
+            tech(ref steel.points, SteelUnlock);
+            tech(ref catapult.points, CatapultUnlock);
+            tech(ref blackPowder.points, BlackPowderUnlock);
+            tech(ref gunPowder.points, GunPowderUnlock);
 
             void tech(ref int thisTech, int unlock)
             {
@@ -250,14 +322,14 @@ namespace VikingEngine.DSSWars.XP
 
         public void countUnlocks(TechnologyTemplate city)
         {
-            tech(ref advancedBuilding, AdvancedBuildingUnlock, city.advancedBuilding);
-            tech(ref advancedFarming, AdvancedFarmingUnlock, city.advancedFarming);
-            tech(ref advancedCasting, AdvancedCastingUnlock, city.advancedCasting);
-            tech(ref iron, IronUnlock, city.iron);
-            tech(ref steel, SteelUnlock, city.steel);
-            tech(ref catapult, CatapultUnlock, city.catapult);
-            tech(ref blackPowder, BlackPowderUnlock, city.blackPowder);
-            tech(ref gunPowder, GunPowderUnlock, city.gunPowder);
+            tech(ref advancedBuilding.points, AdvancedBuildingUnlock, city.advancedBuilding.points);
+            tech(ref advancedFarming.points, AdvancedFarmingUnlock, city.advancedFarming.points);
+            tech(ref advancedCasting.points, AdvancedCastingUnlock, city.advancedCasting.points);
+            tech(ref iron.points, IronUnlock, city.iron.points);
+            tech(ref steel.points, SteelUnlock, city.steel.points);
+            tech(ref catapult.points, CatapultUnlock, city.catapult.points);
+            tech(ref blackPowder.points, BlackPowderUnlock, city.blackPowder.points);
+            tech(ref gunPowder.points, GunPowderUnlock, city.gunPowder.points);
 
             void tech(ref int thisTech, int unlock, int cityTech)
             {

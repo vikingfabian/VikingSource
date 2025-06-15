@@ -178,6 +178,10 @@ namespace VikingEngine.DSSWars
         public static int TownHall_RequiredStaff = 20;
         public static int CapitalHall_RequiredStaff = 80;
 
+        public const double ImmigrantsRemovePerSec = 0.1;
+        public const int ImmigrantsTransfereSpeed = 5;
+        public const int ImmigrantionTent_TransfereSpeedBonus = 2;
+        public const int ImmigrantionTent_Capacity = 60;
         //DEFENCE
         public static float GuardPostDefenceChance_Palisade = 0.4f;
         public static float GuardPostDefenceChance_Dirt = 0.5f;

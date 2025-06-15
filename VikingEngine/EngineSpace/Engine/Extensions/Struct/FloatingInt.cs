@@ -57,6 +57,16 @@ namespace VikingEngine
             { value = 0; }
         }
 
+        public void reduceTowardsMinValue(double reduce, double min)
+        {
+            if (value > min)
+            {
+                value -= reduce;
+                if (value < min)
+                { value = min; }
+            }
+        }
+
         public bool HasValue()
         {  return value >= 1.0; }
 
