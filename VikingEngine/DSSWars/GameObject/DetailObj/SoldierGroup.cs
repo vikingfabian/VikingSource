@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(isShip);
 
             armyGridPlacement2.writeShort(w);
-            WP.writePosXZ(w, position);
+            WP.WritePosXZPercentU16(w, position);
             w.Write(rotation.ByteDir);
 
             w.Write((byte)soldierCount);
@@ -310,7 +310,14 @@ namespace VikingEngine.DSSWars.GameObject
 
             armyGridPlacement2.readShort(r);
 
-            WP.readPosXZ(r, out position, out tilePos);
+            if (subVersion < 62)
+            {
+                WP.readPosXZ_old(r, out position, out tilePos);
+            }
+            else
+            { 
+                WP.ReadPosXZPercentU16(r, out position, out tilePos);
+            }
             rotation.ByteDir = r.ReadByte();
 
             soldierCount = r.ReadByte();
@@ -345,7 +352,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                WP.readPosXZ(r, out position, out tilePos);
+                WP.readPosXZ_old(r, out position, out tilePos);
                 rotation.ByteDir = r.ReadByte();
             }
 

@@ -2148,7 +2148,7 @@ namespace VikingEngine.DSSWars.GameObject
                 mayEdit = false;
                 return TextLib.Error;
             }
-            mayEdit = faction.player != null && faction.player.IsLocalPlayer();
+            mayEdit = faction != null && faction.player != null && faction.player.IsLocalPlayer();
             return name.name;
         }
 

@@ -653,7 +653,7 @@ namespace VikingEngine
 
         public List<T> toList()
         {
-            List<T> list = new List<T>(this.Count);
+            List<T> list = new List<T>(Math.Clamp(this.Count, 0, Array.Length));
             SpottedArrayCounter<T> counter = new SpottedArrayCounter<T>(this);
             while (counter.Next())
             {

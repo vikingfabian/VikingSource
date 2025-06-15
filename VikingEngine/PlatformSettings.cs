@@ -39,7 +39,7 @@ namespace VikingEngine
 
         public static readonly bool Debug_AllowDisconnect = false;
 
-        public const bool Debug_HideMouse = false;
+        public const bool Debug_HideMouse = true;
 
         static readonly bool Debug_PlayMusic = true;
 

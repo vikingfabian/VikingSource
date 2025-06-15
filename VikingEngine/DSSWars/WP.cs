@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -159,16 +160,31 @@ namespace VikingEngine.DSSWars
             return result;
         }
 
-        public static void writePosXZ(System.IO.BinaryWriter w, Vector3 position)
-        {
-            w.Write((Half)position.X);
-            w.Write((Half)position.Z);
-        }
-        public static void readPosXZ(System.IO.BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        //public static void writePosXZ(System.IO.BinaryWriter w, Vector3 position)
+        //{
+        //    w.Write((Half)position.X);
+        //    w.Write((Half)position.Z);
+        //}
+        public static void readPosXZ_old(System.IO.BinaryReader r, out Vector3 position, out IntVector2 tilePos)
         {
             position = Vector3.Zero;
             position.X = (float)r.ReadHalf();
             position.Z = (float)r.ReadHalf();
+
+            tilePos = new IntVector2(position.X, position.Z);
+        }
+
+        public static void WritePosXZPercentU16(BinaryWriter w, Vector3 position)
+        {
+            StreamLib.WriteFloatAsPercentU16(w, position.X, DssRef.world.Size.X);
+            StreamLib.WriteFloatAsPercentU16(w, position.Z, DssRef.world.Size.Y);
+        }
+
+        public static void ReadPosXZPercentU16(BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        {
+            position = Vector3.Zero;
+            position.X = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.X);
+            position.Z = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.Y);
 
             tilePos = new IntVector2(position.X, position.Z);
         }

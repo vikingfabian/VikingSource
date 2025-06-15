@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Maths;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine
 {
@@ -100,7 +101,10 @@ namespace VikingEngine
         {
             System.GC.Collect();
         }
-
+        public static void TogglePause()
+        {
+            SetPause(!isPaused);
+        }
         public static void SetPause(bool pause)
         {
             isPaused = pause;

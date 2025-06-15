@@ -1139,7 +1139,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string GameMenu_ExitGame => "Exit game";
 
-        public override string GameMenu_SaveState => "Save";
+        public override string Hud_Save => "Save";
         public override string GameMenu_SaveStateWarnings => "Warning! Save files will be lost when the game is updated.";
         public override string GameMenu_LoadState => "Load";
         public override string GameMenu_ContinueFromSave => "Continue from save";
@@ -1497,7 +1497,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string CityCulture_Miners_Description => "Mines more ore";
         public override string CityCulture_Woodcutters_Description => "Trees give more wood";
         public override string CityCulture_Builders_Description => "Fast at building";
-        public override string CityCulture_CrabMentality_Description => "Work cost less energy. Cannot produce high-skill soldiers.";
+        public override string CityCulture_CrabMentality_Description => "Work costs less energy. Cannot produce high-skill soldiers.";
         public override string CityCulture_DeepWell_Description => "Water replenishes faster";
         public override string CityCulture_Networker_Description => "Efficient postal service";
         public override string CityCulture_PitMasters_Description => "Higher fuel production";

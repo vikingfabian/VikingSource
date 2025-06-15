@@ -225,6 +225,7 @@ namespace VikingEngine.DSSWars
 
             Debug.WriteCheck(w);
 
+            w.Write((ushort)factions.Array.Length);
             foreach (var faction in factions.Array)
             {
                 if (faction != null && faction.isAlive)
@@ -267,7 +268,20 @@ namespace VikingEngine.DSSWars
 
             Debug.ReadCheck(r);
 
-            for (int i = 0; i < factions.Array.Length; i++)
+            int factionLegth = factions.Array.Length;
+            if (subversion >= 63)
+            {
+                factionLegth = r.ReadUInt16();
+            }
+//            else
+//            {
+//#if DEBUG
+//                factionLegth *= 2;
+//                factions = new SpottedArray<Faction>(factionLegth);
+//#endif
+//            }
+
+            for (int i = 0; i < factionLegth; i++)
             {
                 if (r.ReadBoolean())
                 {
@@ -531,32 +545,6 @@ namespace VikingEngine.DSSWars
 
                 for (int i = 0; i < factions.Array.Length; ++i)
                 {
-
-
-                    //w.Write(factions.Array.Length);
-                    //foreach (var f in factions.Array)
-                    //{
-                    //    if (f != null)
-                    //    {
-                    //        w.Write(true);
-                    //        w.Write((byte)f.factiontype);
-                    //        f.writeMapFile(w);
-                    //    }
-                    //    else
-                    //    {
-                    //        w.Write(false);
-                    //    }
-                    //}
-                    //var factionsCount = factions.counter();
-                    //w.Write(factions.Count);
-                    //while (factionsCount.Next())
-                    //{
-                    //    w.Write((byte)factionsCount.sel.factiontype);
-                    //    factionsCount.sel.writeMapFile(w);
-                    //}
-
-
-
                     if (factions.Array[i] != null)
                     {
                         w.Write(true);

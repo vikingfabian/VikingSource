@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using VikingEngine.LootFest.Map.HDvoxel;
 using Microsoft.Xna.Framework;
+using VikingEngine.DataLib;
 
 namespace VikingEngine.Voxels
 {
     class VoxelDesignerSettings
     {
-        public BlockHD Material = new BlockHD(Color.LightBlue, MaterialProperty.Unknown);//new BlockHD(Color.Red);
-        public BlockHD SecondaryMaterial = new BlockHD(Color.Yellow, MaterialProperty.Unknown);//new BlockHD(Color.Yellow);
+        public BlockHD Material = new BlockHD(Color.LightBlue, MaterialProperty.Default);//new BlockHD(Color.Red);
+        public BlockHD SecondaryMaterial = new BlockHD(Color.Yellow, MaterialProperty.Default);//new BlockHD(Color.Yellow);
         public bool SelectionCut = true;
         public bool ShowDrawCoord = true;
         public bool DrawFilled = true;//N
@@ -23,6 +24,8 @@ namespace VikingEngine.Voxels
         public int RoadUpwardClear = 4;
         public int RoadBelowFill = 2;
         public float pencilMoveSpeed = 1;
+
+        public FileSortSettings SortSettings = new FileSortSettings();
 
         public void WriteStream(System.IO.BinaryWriter w)
         {

@@ -44,8 +44,8 @@ namespace VikingEngine.Voxels
         public IntVector3 keyDownDrawCoord = IntVector3.Zero;
         public IntVector3 drawSize = IntVector3.One;
 
-        public InputDisplay inputDisplay;
-        Image crossHair;
+        public InputDisplay inputDisplay = null;
+        Image crossHair, crossHairColor;
         /// <summary>
         /// Where the grid origo starts
         /// </summary>
@@ -86,8 +86,7 @@ namespace VikingEngine.Voxels
             }
             float HelpLineWidth = FreePencilWidth * 0.4f;
 
-            inputDisplay = new InputDisplay(input, Engine.XGuide.GetPlayer(playerIx).inputMap.menuInput);
-
+            
             this.offSet = offset;
             useDrawLimits = drawLimits != null;
             this.parent = parent;
@@ -99,8 +98,7 @@ namespace VikingEngine.Voxels
             freePencil = new Graphics.Mesh(LoadedMesh.sphere,
                 startPos, new Vector3(FreePencilWidth),
                 TextureEffectType.Flat, SpriteName.WhiteArea, Color.White);
-            //    new Graphics.TextureEffect(TextureEffectType.Flat, SpriteName.WhiteArea), FreePencilWidth);
-            //freePencil.Color = Color.White;
+            
             freePencil.Opacity = helpLinesTransparentsy;
 
             pencilCube = new Graphics.Mesh(LoadedMesh.cube_repeating, Vector3.Zero, new Vector3(1.16f),
@@ -128,24 +126,31 @@ namespace VikingEngine.Voxels
                 Engine.Screen.CenterScreen + new Vector2(Engine.Screen.BorderWidth),
                 Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer);
 
+            crossHairColor = new Image(SpriteName.VoxelEditorColorCube,
+                crossHair.position + Engine.Screen.IconSizeV2 * 0.2f,
+                Engine.Screen.SmallIconSizeV2, ImageLayers.AbsoluteTopLayer);
+
             createdObjects = new List<IDeleteable>{
                 freePencil, pencilCube,
-                xline, zline, crossHair };
+                xline, zline, crossHair, crossHairColor };
 
             hudElements = new ImageGroup(8);
 
             hudElements.Add(crossHair);
+            hudElements.Add(crossHairColor);
             hudElements.Add(freePencil);
             hudElements.Add(pencilCube);
             hudElements.Add(xline);
             hudElements.Add(zline);
         }
         
-        public void Update(bool hasSelection, EditorDrawTools drawTools, bool cameraMode)
+        public void Update(bool hasSelection, EditorDrawTools drawTools, bool cameraMode, Color materialColor)
         {
             pData.view.Camera.LookTarget = freePencil.Position;
 
             SpriteName icon = SpriteName.IconBuildArrow;
+
+            crossHairColor.Visible = false;
 
             if (cameraMode)
             {
@@ -169,6 +174,11 @@ namespace VikingEngine.Voxels
                         icon = SpriteName.IconBuildSelection;
                         break;
                 }
+            }
+            else if (pencilShadow.visible)
+            {
+                crossHairColor.Visible = true;
+                crossHairColor.Color = materialColor;
             }
 
             crossHair.SetSpriteName(icon);
@@ -325,8 +335,6 @@ namespace VikingEngine.Voxels
                     backCopy.Move(backStartPos + new Vector3(x * AbsVoxelDesigner.BlockScale, y * AbsVoxelDesigner.BlockScale, 0));
                     gridPolys.Add(new Graphics.PolygonColor(
                         backCopy, gridTexture, gridColorX));
-
-
                 }
                 for (int z = 0; z < gidSize.Z; z++)
                 {
@@ -389,6 +397,7 @@ namespace VikingEngine.Voxels
                 case PaintToolType.Road: return SpriteName.EditorToolRoad;
                 case PaintToolType.Sphere: return SpriteName.EditorToolSphere;
                 case PaintToolType.Triangle: return SpriteName.EditorToolWedge;
+                case PaintToolType.Bucket: return SpriteName.VoxelEditorBucket;
             }
 
             return SpriteName.MissingImage;
@@ -398,11 +407,11 @@ namespace VikingEngine.Voxels
         public void ShowHUD(bool show)
         {
             hudElements.SetVisible(show);
-            //if (!show)
-            //{
+            
             pencilShadow.visible = show;
             pencilShadow.hide();
-            //}
+            
+            
             if (grid != null)
             {
                 grid.Visible = show;
@@ -419,7 +428,7 @@ namespace VikingEngine.Voxels
             }
             hudElements.DeleteAll();
             pencilShadow.DeleteMe();
-            inputDisplay.DeleteMe();
+            //inputDisplay.DeleteMe();
 
             if (grid != null)
             {

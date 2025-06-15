@@ -13,6 +13,8 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.DataStream;
 using VikingEngine.EngineSpace.HUD.RichBox;
+using Valve.Steamworks;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
 {
@@ -70,6 +72,13 @@ namespace VikingEngine.DSSWars
         public IButtonMap Controller_FlagDesign_Colorpicker;
         public IButtonMap Controller_TabLeft, Controller_TabRight;
 
+        public Voxels.EditorInputMap editorInput = new Voxels.EditorInputMap();
+        //public InputMap()
+        //    : base()
+        //{
+        //    menuInput = new HUD.MenuInputMap();
+        //}
+
         public MouseButtonAction GetMouseAction(MouseButton MouseButton)
         {
             switch (MouseButton)
@@ -113,12 +122,11 @@ namespace VikingEngine.DSSWars
             }
 
             refreshMouseInput();
-
         }
-
 
         public InputMap(bool keyboard)
         {
+            menuInput = new HUD.MenuInputMap();
             if (keyboard)
             {
                 keyboardSetup();
@@ -198,6 +206,9 @@ namespace VikingEngine.DSSWars
             menuInput?.keyboardSetup();
             refreshMouseInput();
             refreshKeyBoardInput();
+
+            menuInput.keyboardSetup();
+            editorInput.keyboardSetup();
         }
         void refreshKeyBoardInput()
         {
@@ -312,6 +323,9 @@ namespace VikingEngine.DSSWars
             Controller_FlagDesign_Colorpicker = new XboxButtonMap(Buttons.Y, inputSource.controllerIndex);
             FlagDesign_PaintBucket = new XboxButtonMap(Buttons.X, inputSource.controllerIndex);
             refreshMouseInput();
+
+            menuInput.xboxSetup(inputSource.controllerIndex);
+            editorInput.xboxSetup(inputSource.controllerIndex, move, cameraTiltZoom);
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -780,6 +794,11 @@ namespace VikingEngine.DSSWars
         public IButtonMap RichboxGuiSelect => mouseSelect;
         public IntVector2 RichboxGuiMove() { return move.stepping + dpadMove.stepping; }
         public bool RichboxGuiUseMove => inputSource.IsController;
+
+        public override EditorInputMap VoxelEditorInput()
+        {
+            return editorInput;
+        }
     }
 
     enum InputActionType

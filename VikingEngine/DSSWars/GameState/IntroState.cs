@@ -73,6 +73,8 @@ namespace VikingEngine.DSSWars
         
         void asynchContentLoading()
         {
+            Config.OnStartUp();
+
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
             Engine.LoadContent.LoadTextures(new List<LoadedTexture> {
                     LoadedTexture.particle3,
@@ -106,7 +108,8 @@ namespace VikingEngine.DSSWars
             //Display.AbsBubbleMessage.Init();
 
             DataStream.FilePath.CreateStorageFolder(LootFest.Editor.DesignerStorage.UserVoxelObjFolder);
-
+            UserGeneratedContent.UGClib.GameInit();
+            
 
             loadingContentComplete = true;
             //new Timer.Action0ArgTrigger(createStartButton);

@@ -15,6 +15,19 @@ namespace VikingEngine
     {
         public const string BackUpName = "_bak";
 
+        public static void WriteFloatAsPercentU16(BinaryWriter w, float value, float max)
+        {
+            value = Math.Clamp(value, 0f, max);
+            ushort encoded = (ushort)(value / max * ushort.MaxValue);
+            w.Write(encoded);
+        }
+
+        public static float ReadFloatFromPercentU16(BinaryReader r, float max)
+        {
+            ushort encoded = r.ReadUInt16();
+            return (float)encoded / ushort.MaxValue * max;
+        }
+
         /// <summary>
         /// Writes as 3 bytes
         /// </summary>

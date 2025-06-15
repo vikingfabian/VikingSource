@@ -109,9 +109,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.Add(editButton);
                     content.space();
                 }
-                var nameText = new RbText(name);
-                nameText.overrideColor = Color.LightYellow;
-                content.Add(nameText);
+                content.Add(new RbText(name, Color.LightYellow));
                 content.newLine();
             }
         }

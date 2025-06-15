@@ -27,28 +27,40 @@ namespace VikingEngine.Voxels
         {
             bool keydown;
 
-            if (inputMap.useMouseInput)
+            PaintFillType drawAction = PaintFillType.Fill;
+
+            
+
+            if(inputMap.useMouseInput)
             {
-                if (InputLib.ChangedEvent(inputMap.mouseUseButton, out keydown))
+                if (Keyboard.Ctrl)
                 {
-                    drawKeyDown(keydown, inputMap.mouseTool);
+                    drawAction = PaintFillType.Select;
                 }
+                //if (InputLib.ChangedEvent(inputMap.mouseUseButton, out keydown))
+                //{
+                //    drawKeyDown(keydown, inputMap.mouseTool);
+                //}
+
             }
             else
             {
-                if (InputLib.ChangedEvent(inputMap.draw, out keydown))
-                {
-                    drawKeyDown(keydown, PaintFillType.Fill);
-                }
-                else if (InputLib.ChangedEvent(inputMap.erase, out keydown))
-                {
-                    drawKeyDown(keydown, PaintFillType.Delete);
-                }
-                else if (InputLib.ChangedEvent(inputMap.select, out keydown))
+                if (InputLib.ChangedEvent(inputMap.select, out keydown))
                 {
                     drawKeyDown(keydown, PaintFillType.Select);
                 }
             }
+
+            if (InputLib.ChangedEvent(inputMap.draw, out keydown))
+            {
+                drawKeyDown(keydown, drawAction);
+            }
+            if (InputLib.ChangedEvent(inputMap.erase, out keydown))
+            {
+                drawKeyDown(keydown, PaintFillType.Delete);
+            }
+
+            
         }
 
         public void beginStampSelection(bool drop)
@@ -183,6 +195,7 @@ namespace VikingEngine.Voxels
                 pos.SetBlock_IfOpen(block);
             }
         }
+
 
         protected void drawKeyDown(bool keyDown, PaintFillType fillType)
         {

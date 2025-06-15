@@ -136,7 +136,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
                             null, LoadedFont.Bold));
                     }
 
-                    rbMembers.Add(new RbImage(items.items.sel.Icon, 1.5f, 0, 0.1f));
+                    rbMembers.Add(new RbImage(items.items.sel.Icon, 1.5f, null, 0, 0.1f));
                     rbMembers.Add(new RbText(items.items.sel.Name));
                     
                 }

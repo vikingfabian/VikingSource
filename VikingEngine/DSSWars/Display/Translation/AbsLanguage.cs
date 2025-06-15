@@ -369,7 +369,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string GameMenu_ExitGame { get; }
 
-        public abstract string GameMenu_SaveState { get; }
+        public abstract string Hud_Save { get; }
         public abstract string GameMenu_SaveStateWarnings { get; }
         public abstract string GameMenu_LoadState { get; }
         public abstract string GameMenu_ContinueFromSave { get; }

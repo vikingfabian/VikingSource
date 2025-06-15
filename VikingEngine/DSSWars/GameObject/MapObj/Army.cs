@@ -176,12 +176,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeNet(System.IO.BinaryWriter w)
         {
-            WP.writePosXZ(w, position);
+            WP.WritePosXZPercentU16(w, position);
+            //WP.writePosXZ(w, position);
             //net_writeGroups(w);
         }
         public void readNet(System.IO.BinaryReader r, bool needInit)
         {
-            WP.readPosXZ(r, out position, out tilePos);
+            WP.ReadPosXZPercentU16(r, out position, out tilePos);
+            //WP.readPosXZ(r, out position, out tilePos);
             position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();   
             
             //net_readGroups(r);
@@ -223,7 +225,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             w.Write(Debug.Ushort_OrCrash(id));
             name.write(w);
-            WP.writePosXZ(w, position);
+            WP.WritePosXZPercentU16(w, position);
 
             writeGroups(w);
 
@@ -237,12 +239,19 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 w.Write((ushort)tagArt);
             }
+
+            Debug.WriteCheck(w);
         }
 
         
         public void readGameState(Faction faction, System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             this.faction = faction;
+
+            //if (faction.player.IsLocalPlayer())
+            //{
+            //    lib.DoNothing();
+            //}
 
             id = r.ReadUInt16();
             name.read(r, subVersion);
@@ -251,7 +260,14 @@ namespace VikingEngine.DSSWars.GameObject
                 name.name = Data.NameGenerator.ArmyName(id);
             }
 
-            WP.readPosXZ(r, out position, out tilePos);
+            if (subVersion < 62)
+            {
+                WP.readPosXZ_old(r, out position, out tilePos);
+            }
+            else
+            {
+                WP.ReadPosXZPercentU16(r, out position, out tilePos);
+            }
 
             readGroups(r, subVersion, pointers);
 
@@ -267,6 +283,11 @@ namespace VikingEngine.DSSWars.GameObject
             if (tagBack != CityTagBack.NONE)
             {
                 tagArt = (ArmyTagArt)r.ReadUInt16();
+            }
+
+            if (subVersion >= 62)
+            { 
+                Debug.ReadCheck(r);
             }
         }
 

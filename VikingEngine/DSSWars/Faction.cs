@@ -288,7 +288,7 @@ namespace VikingEngine.DSSWars
             w.Write(availableForPlayer);
         }
 
-        public void readMapFile(System.IO.BinaryReader r, int version, WorldData world)
+        public void readMapFile(System.IO.BinaryReader r, int mapVersion, WorldData world)
         {
             int cityCount = r.ReadUInt16();
 
@@ -619,10 +619,10 @@ namespace VikingEngine.DSSWars
                     var localplayer = player.GetLocalPlayer();
                     if (localplayer.battleMessageCheck(city.tilePos))
                     {
-                        MessageGroup.Title(content, DssRef.lang.Message_LostCity);
+                        MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);
 
                         var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                        MessageGroup.ControllerInputIcons(localplayer, gotoBattleButtonContent);
+                        MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
                         gotoBattleButtonContent.Add(new RbText(city.TypeName()));
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,

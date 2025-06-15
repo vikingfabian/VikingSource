@@ -75,10 +75,10 @@ namespace VikingEngine.DSSWars.GameObject
                         if (localplayer.battleMessageCheck(tilePos))
                         {
                             RichBoxContent content = new RichBoxContent();
-                            MessageGroup.Title(content, DssRef.lang.Hud_Battle);
+                            MessageGroup_Ingame.Title(content, DssRef.lang.Hud_Battle);
 
                             var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                            MessageGroup.ControllerInputIcons(localplayer, gotoBattleButtonContent);
+                            MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
                             gotoBattleButtonContent.Add(new RbText(TypeName()));
 
                             content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
@@ -139,6 +139,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 groupsC.sel.writeGameState(w);               
             }
+
+            Debug.WriteCheck(w);
         }
         public void readGroups(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
@@ -159,6 +161,11 @@ namespace VikingEngine.DSSWars.GameObject
                     SoldierGroup group = new SoldierGroup(this, r, subVersion, pointers);
                     
                 }
+            }
+
+            if (subVersion >= 62)
+            {
+                Debug.ReadCheck(r);
             }
         }
 

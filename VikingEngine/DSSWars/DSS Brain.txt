@@ -1,10 +1,30 @@
 ﻿UPDATE
 -Change Log-
-* Spelling correction:
--warmachine
+* Added a folder for overriding ingame models
 
-*Fixed player reference bug
 *Fixed save flag color bug
+
+Voxel editor 2
+* 
+
+X need bucket tool and better color seletion, and color adjust options
+X (maybe) import / export for MagicaVoxel
+X layers
+X project file that saves layers and history
+X templates for modding
+X material select and replace
+
+X highlight system to show affected voxels, and draw preview
+X coordinate arrows
+
+X "are you sure you want to override this file"
+
+
+
+
+#Voxel editor#
+
+#Pics
 
 
 #Free build defences
@@ -24,6 +44,10 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-Diplomacy, timer to reduce relation. Affect others. View relations teo all on select.
+-mod av Storage location
+
+x beer example in the help menu
 x input options in ingame menu are broken
 x Auto upgrade
 x Declaring war needs warning

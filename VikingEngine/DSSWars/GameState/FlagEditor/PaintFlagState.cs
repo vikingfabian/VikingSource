@@ -163,8 +163,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             }
             else
             {
-                int p = -1;
-                if (XInput.AnyActivationKey_DownEvent(ref p))
+                if (XInput.AnyActivationKey_DownEvent(out int p))
                 {
                     setControllerMode(true);
                     hud.refresh();
