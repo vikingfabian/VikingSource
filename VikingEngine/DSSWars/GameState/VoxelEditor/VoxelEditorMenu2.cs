@@ -270,7 +270,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_SelectAll) }, new RbAction(designer.selectAll)));
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Canvas_Title) }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Canvas, StackOption.Stack)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> { 
+                new RbText(DssRef.todoLang.Editor_Canvas_Title),  new RbSpace(),  new RbText(designer.drawLimits.Size.ToString("*")),
+            }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Canvas, StackOption.Stack)));
 
             content.newParagraph();
             HudLib.Label(content, DssRef.todoLang.Editor_Animation);
@@ -347,6 +349,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.h1(DssRef.todoLang.Editor_Canvas_Title, HudLib.TitleColor_Head);
 
             content.h2(DssRef.todoLang.Editor_Canvas_Size, HudLib.TitleColor_Label);
+            content.text(designer.drawLimits.Size.ToString("*"));
             sizeOptions(DssRef.todoLang.Editor_Canvas_Dimension_X, SpriteName.width, IntVector3.PlusX);
             sizeOptions(DssRef.todoLang.Editor_Canvas_Dimension_Y, SpriteName.height, IntVector3.PlusY);
             sizeOptions(DssRef.todoLang.Editor_Canvas_Dimension_Z, SpriteName.length, IntVector3.PlusZ);
