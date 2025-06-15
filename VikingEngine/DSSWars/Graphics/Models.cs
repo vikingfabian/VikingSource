@@ -231,6 +231,47 @@ namespace VikingEngine.DSSWars
             instance = null;
         }
 
+        public VoxelModelInstance_Pooled ModelInstance_drawbatch(
+            VoxelModelName name,
+            float scale = 1f,
+            bool allowRecycle = true,
+            bool addToRender = true)
+        {
+            VoxelModelInstance_Pooled instance;
+            if (allowRecycle && addToRender &&
+                DssRef.state.voxelModelInstancesPooled.TryPop(out instance))
+            {
+                //instance.Visible = true;
+                //instance.Frame = 0;
+                //instance.SpottedArrayMemberIndex = -1;
+                //instance.inPlayerCamera = EightBit.AllTrue;
+                instance.Pool_Reset();
+            }
+            else
+            {
+                instance = new VoxelModelInstance_Pooled(allowRecycle);                
+            }
+
+#if DEBUG
+            instance.DebugName = name.ToString();
+#endif
+
+            Graphics.VoxelModel master = voxelModels[name];
+            instance.SetMaster(master);
+            if (scale > 0)
+            {
+                instance.scale = VectorExt.V3(instance.SizeToScale * scale);
+            }
+
+            if (addToRender)
+            {
+                Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);               
+            }
+
+            return instance;
+        
+        }
+
         public Graphics.VoxelModelInstance ModelInstance(            
             VoxelModelName name,
             bool detailLayer,

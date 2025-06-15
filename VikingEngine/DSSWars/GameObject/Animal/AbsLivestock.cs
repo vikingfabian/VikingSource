@@ -115,6 +115,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             }
         }
     }
+
     class Hen : AbsLivestock
     {
         public Hen(IntVector2 tilepos, Vector3 topCenterWp)

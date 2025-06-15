@@ -46,12 +46,12 @@ namespace VikingEngine.DSSWars
                     try
                     {
                         int numLoops = 0;
-#if DEBUG
-                        if (!DssRef.models.rawModels.ContainsKey(name))
-                        {
-                            lib.DoNothing();
-                        }
-#endif
+//#if DEBUG
+//                        if (!DssRef.models.rawModels.ContainsKey(name))
+//                        {
+//                            lib.DoNothing();
+//                        }
+//#endif
                         var grid = DssRef.models.rawModels[name];
 
 
@@ -61,15 +61,16 @@ namespace VikingEngine.DSSWars
                         {
                             if (++numLoops > 1000)
                             {
-                                lib.DoNothing();
+                                //lib.DoNothing();
+                                BlueScreen.ThreadException = new EndlessLoopException("Load faction master " + name);
                             }
                             await Task.Delay(100);
                         }
 
-                        if (master == null)
-                        {
-                            lib.DoNothing();
-                        }
+                        //if (master == null)
+                        //{
+                        //    lib.DoNothing();
+                        //}
                         setMaster(instance, master);
                     }
                     catch (Exception ex)

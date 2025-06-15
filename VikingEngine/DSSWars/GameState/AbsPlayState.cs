@@ -31,6 +31,9 @@ namespace VikingEngine.DSSWars.GameState
         public PathUpdateThread[] pathUpdates;
         protected ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_detail = new ConcurrentStack<VoxelModelInstance>();
         protected ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_overview = new ConcurrentStack<VoxelModelInstance>();
+
+        public ConcurrentStack<VoxelModelInstance_Pooled> voxelModelInstancesPooled = new ConcurrentStack<VoxelModelInstance_Pooled>();
+
         public bool exitThreads = false;
         protected Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);
 

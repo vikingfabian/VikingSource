@@ -25,7 +25,7 @@ namespace VikingEngine.Graphics
                 batches.Add(masterId, new DrawBatch(model));
             }
 
-            model.SetInRender(true);
+            model.OnDrawBatchAdd();//SetInRender(true);
 
         }
 
@@ -71,6 +71,8 @@ namespace VikingEngine.Graphics
                         {
                             list.RemoveAt(i);
                         }
+
+                        model.OnDrawBatchRemove();
                     }
                 }
             }
