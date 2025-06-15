@@ -11,6 +11,8 @@ using VikingEngine.LootFest.Data;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Map.HDvoxel;
 using System.ComponentModel.Design;
+using VikingEngine.DSSWars.GameState.VoxelEditor;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.Voxels
 {
@@ -41,7 +43,7 @@ namespace VikingEngine.Voxels
         protected EditorInputMap inputMap;
         public HUD.MenuInputMap menuInput;
 
-        MouseToolHUD mouseToolHUD = null;
+        //MouseToolHUD mouseToolHUD = null;
         protected EditorDrawTools drawTools;
         public LootFest.Map.WorldPosition worldPos = LootFest.Map.WorldPosition.EmptyPos;
         public IntervalIntV3 drawLimits;
@@ -63,7 +65,7 @@ namespace VikingEngine.Voxels
         public VoxelObjListDataHD selectedVoxels = new VoxelObjListDataHD(new List<VoxelHD>());
         
         protected bool templateSent = false;
-        protected AbsDesignMenuSystem absMenuSystem;
+        protected AbsDesignMenuSystem_Base absMenuSystem;
         public bool inGameEditor;
 
         public void ResetTemplateSent()
@@ -127,7 +129,7 @@ namespace VikingEngine.Voxels
             {
                 animationFrames.Frames.RemoveAt(currentFrame.Value);
                 startUpdateVoxelObj(false);
-                print("Removed Frame"); 
+                //print("Removed Frame"); 
             }
         }
 
@@ -239,14 +241,20 @@ namespace VikingEngine.Voxels
             animationFrames.Frames = new List<VoxelObjGridDataHD> { animationFrames.Frames[currentFrame.Value] };
             updateFrameInfo();
         }
+
+        abstract public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel);
         public void AddFrame()
+        { 
+        
+        }
+        public void AddFrame(bool copy)
         {
             animationFrames.Frames.Insert(currentFrame.Value, animationFrames.Frames[currentFrame.Value].Clone());
             int frame = currentFrame.Value;
             updateFrameInfo();
             currentFrame.Value = frame + 1;
             updateFrameInfo();
-            print("Frame Added");
+            //print("Frame Added");
         }
 
         public void nextFrame(bool forward)
@@ -263,6 +271,14 @@ namespace VikingEngine.Voxels
             updateFrameInfo();
             updateVoxelObj();//startUpdateVoxelObj(false);
         }
+        public void setFrame(int frame)
+        {
+            currentFrame.Value = frame;
+
+            updateFrameInfo();
+            updateVoxelObj();//startUpdateVoxelObj(false);
+        }
+
         public bool haveAnimation
         {
             get { return currentFrame.Max > 0; }
@@ -379,7 +395,6 @@ namespace VikingEngine.Voxels
         public void ShowHUD(bool show)
         {
             designerInterface.ShowHUD(show);
-            //HUDelements.SetVisible(show);
             frameInfo.Visible = show && currentFrame.Max > 0;
         }
 
@@ -408,9 +423,9 @@ namespace VikingEngine.Voxels
             if (keyDown)
                 WASD += vdir;
             else
-                WASD -= vdir;
-            
+                WASD -= vdir;            
         }
+
         virtual protected void NewCanvas()
         {
             animationFrames.Frames = new List<VoxelObjGridDataHD> { new VoxelObjGridDataHD(drawLimits.Size) };
@@ -424,38 +439,32 @@ namespace VikingEngine.Voxels
             UpdateInput();
 
             selectionModel.update();
-            designerInterface.Update(HasSelection, drawTools, inputMap.toggleCameraMode.IsDown);
-            designerInterface.inputDisplay.update(HasSelection, undolist.Count, drawCoordMaterial.HasMaterial(), inputMap);
+            designerInterface.Update(HasSelection, drawTools, inputMap.toggleCameraMode.IsDown, SelectedMaterial.color);
+            //designerInterface.inputDisplay.update(HasSelection, undolist.Count, drawCoordMaterial.HasMaterial(), inputMap);
 
             Ref.draw.Camera.Time_Update(time);
         }
 
+        protected VoxelEditorInputState prevInputState = VoxelEditorInputState.NONE;
+
         virtual public void UpdateInput()
         {
+            VoxelEditorInputState inputState = VoxelEditorInputState.NONE;
             rotateCameraUpdate(inputMap.cameraRotation(absMenuSystem.InMenu, playerIndex));
 
 
             if (absMenuSystem.InMenu)
             {
+                inputState = VoxelEditorInputState.Menu;
                 if (absMenuSystem.Update() || menuInput.openCloseInputEvent())
                 {
                     absMenuSystem.closeMenu();
                 }
             }
-            else if (mouseToolHUD != null)
-            {
-                if (mouseToolHUD.update() || inputMap.mouseToolMenu.DownEvent)
-                {
-                    if (mouseToolHUD.selected != null)
-                    {
-                        inputMap.mouseTool = mouseToolHUD.selected.Value;
-                    }
-                    mouseToolHUD.DeleteMe();
-                    mouseToolHUD = null;
-                }
-            }
             else
             {
+                
+
                 cameraZoom(inputMap.zoom());
                 designerInterface.moveFreePencil(inputMap.pencilMovement(playerIndex, Settings.pencilMoveSpeed));
                 
@@ -467,6 +476,7 @@ namespace VikingEngine.Voxels
                 //Buttons
                 if (HasSelection)
                 {
+                    inputState = VoxelEditorInputState.Selection;
                     if (inputMap.stampSelection())
                     {
                         drawTools.beginStampSelection(false);
@@ -499,6 +509,7 @@ namespace VikingEngine.Voxels
                 }
                 else //No selection
                 {
+                    inputState = inputMap.toggleCameraMode.IsDown? VoxelEditorInputState.Camera : VoxelEditorInputState.Editor;
                     drawTools.UpdateInput(inputMap);
 
                     if (inputMap.colorPick.DownEvent)
@@ -507,26 +518,31 @@ namespace VikingEngine.Voxels
                     }
                     else if (inputMap.undo.DownEvent)
                     {
-                        //undo();
                         undolist.Undo(this);
                     }
-                    else if (menuInput.openCloseInputEvent())
+                    else if (openMenuInput())
                     {
                         absMenuSystem.openMenu();
                     }
+                }                
+            }
 
-                    if (inputMap.useMouseInput)
-                    {
-                        if (inputMap.mouseToolMenu.DownEvent)
-                        {
-                            mouseToolHUD = new MouseToolHUD();
-                        }
-                    }
-                }
-
-                
+            if (designerInterface.pencilShadow.visible &&
+                inputState != prevInputState)
+            { 
+                OnNewInputState(inputState);
+                prevInputState = inputState;
             }
         }
+
+
+        virtual protected bool openMenuInput()
+        {
+            return menuInput.openCloseInputEvent();
+        }
+
+        virtual protected void OnNewInputState(VoxelEditorInputState inputState)
+        { }
 
         public void selectAll()
         {
@@ -566,6 +582,10 @@ namespace VikingEngine.Voxels
 
         virtual public void print(string text)
         { }
+
+        virtual public void print(RichBoxContent content)
+        { }
+
         protected void Rotate(bool clockWise)
         {
             byte dir = (byte)(clockWise ? 1 : 3);
@@ -1156,6 +1176,7 @@ namespace VikingEngine.Voxels
     enum PaintToolType
     {
         Rectangle,
+        Bucket,
         Cylinder,
         Sphere,
 

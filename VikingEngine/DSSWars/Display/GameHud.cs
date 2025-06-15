@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Display
 
         //public GameHudDisplays displays;
         //public GameHudMenu hudmenu;
-        public MessageGroup messages;
+        public MessageGroup_Ingame messages;
         public bool menuFocus = false;
 
         public PlayerHud_Head head;
@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars.Display
             inputHelp = new PlayerHud_InputHelp(player);
 
             //hudmenu = new GameHudMenu(player);
-            messages = new MessageGroup(player, numPlayers, HudLib.richboxGui);
+            messages = new MessageGroup_Ingame(player, numPlayers, HudLib.richboxGui);
             tooltip = new Tooltip();
 
             

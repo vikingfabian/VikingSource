@@ -1139,7 +1139,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string GameMenu_ExitGame => "Exit game";
 
-        public override string GameMenu_SaveState => "Save";
+        public override string Hud_Save => "Save";
         public override string GameMenu_SaveStateWarnings => "Warning! Save files will be lost when the game is updated.";
         public override string GameMenu_LoadState => "Load";
         public override string GameMenu_ContinueFromSave => "Continue from save";

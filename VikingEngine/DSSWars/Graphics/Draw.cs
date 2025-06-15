@@ -162,9 +162,8 @@ namespace VikingEngine.DSSWars
             switch (lay.type)
             {
                 case Map.MapDetailLayerType.UnitDetail1:
-                    
-                    DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
-
+                    DebugExtensions.TimeMeasure time = new DebugExtensions.TimeMeasure();
+                    DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;                   
                     
                     DrawGenerated(UnitDetailLayer, cameraIndex);
                     drawBatch.RemoveAndDraw(cameraIndex);
@@ -172,6 +171,7 @@ namespace VikingEngine.DSSWars
                     Draw3d(UnitDetailLayer, cameraIndex);
                     Engine.ParticleHandler.Draw(p.view.Camera);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                    time.EndMeasure();
                     break;
 
                 case Map.MapDetailLayerType.TerrainOverview2:

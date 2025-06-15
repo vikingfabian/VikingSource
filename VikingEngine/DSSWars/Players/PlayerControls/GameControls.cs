@@ -371,7 +371,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case ControllerTabFocus.Pause:
                     if (dir < 0)
                     {
-                        player.hud.headOptions.pauseAction();
+                        Ref.TogglePause();
                     }
                     else
                     {
@@ -841,9 +841,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (DssRef.state.IsSinglePlayer())
             {
                 if (DssRef.difficulty.setting_allowPauseCommand &&
-                    input.PauseGame.DownEvent)//IsLocalHost())
+                    input.PauseGame.DownEvent)
                 {
-                    player.hud.headOptions.pauseAction();
+                    Ref.TogglePause();
                 }
 
                 if (input.GameSpeed.DownEvent)

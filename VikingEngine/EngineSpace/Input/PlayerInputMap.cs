@@ -20,18 +20,10 @@ namespace VikingEngine.Input
 
         /* Fields */
         public int playerIndex;
-        public Input.InputSource inputSource;//int controllerIndex;
-        //public InputSourceType inputSource;
+        public Input.InputSource inputSource;
 
         public HUD.MenuInputMap menuInput;
 
-        /* Constructors */
-        //public PlayerInputMap(System.IO.BinaryReader r, int version)
-        //{
-        //    init();
-        //    keyboardSetup();
-        //    //read(r, version);
-        //}
         public PlayerInputMap()
         { }
 
@@ -65,16 +57,6 @@ namespace VikingEngine.Input
                 case InputSourceType.XController:
                     xboxSetup();
                     break;
-                //case PlayerInputSource.GenericController:
-                //    if (SharpDXInput.controllers[controllerIndex].type == ControllerType.PS4)
-                //    {
-                //        ps4Setup();
-                //    }
-                //    else
-                //    {
-                //        genericControllerSetup();
-                //    }
-                //    break;
             }
         }
 
@@ -92,13 +74,6 @@ namespace VikingEngine.Input
         //abstract public void ps4Setup();
         abstract public void genericControllerSetup();
 
-        
-
-        //Timer.Basic steamVibratePulse = new Timer.Basic(50, true);
-        //float vibrationTime = 0;
-        //float currentVibrationStrength = 0;
-        //float vibrateLeft, vibrateRight;
-
         /// <summary>
         /// Run the controller vibration 
         /// </summary>
@@ -113,43 +88,22 @@ namespace VikingEngine.Input
             }
         }
 
-        //public static void StopAllVibration()
-        //{
-        //    for (PlayerIndex ix = PlayerIndex.One; ix <= PlayerIndex.Four; ix++)
-        //    {
-        //        GamePad.SetVibration(ix, 0, 0);
-        //    }
-        //}
-
-        //public void update()
-        //{
-        //    if (vibrationTime > 0)
-        //    {
-        //        vibrationTime -= Ref.DeltaTimeMs;
-        //        if (vibrationTime <= 0)
-        //        {
-        //            GamePad.SetVibration((PlayerIndex)inputSource.controllerIndex, 0, 0);
-        //        }
-        //    }
-        //}
-
-        //public bool HasMouse()
-        //{ 
-        //    return inputSource.HasKeyBoard == 
-        //}
-
         public bool Connected
         {
             get {
                 switch (inputSource.sourceType)
                 {
                     default: return true;
+
                     case InputSourceType.XController:
                         return Input.XInput.Instance(inputSource.controllerIndex).Connected;
                 }
             }
         }
 
-        
+        virtual public Voxels.EditorInputMap VoxelEditorInput()
+        {
+            return null;
+        }
     }
 }

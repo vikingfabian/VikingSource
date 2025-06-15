@@ -24,7 +24,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         public BlockHD(Color color)
         {
             this.color = color;
-            this.material = MaterialProperty.Unknown;
+            this.material = MaterialProperty.Default;
         }
 
         public BlockHD(ushort blockValue)
@@ -47,7 +47,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
             this.color = col;
             if (material == MaterialProperty.BlockPattern)
             {
-                material = MaterialProperty.Unknown;
+                material = MaterialProperty.Default;
             }
         }
 
@@ -159,7 +159,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         public const byte EmptyBlockMaterial = 0;
         public const byte BlockPatternMaterial = 15;
         public const byte EndBlockMaterial = BlockPatternMaterial - 1;
-        public static readonly byte UnknownMaterial = (byte)MaterialProperty.Unknown;
+        public static readonly byte UnknownMaterial = (byte)MaterialProperty.Default;
         public static readonly byte AntiMaterial = (byte)MaterialProperty.AntiBlock;
 
         public const ushort EmptyBlock = 0;

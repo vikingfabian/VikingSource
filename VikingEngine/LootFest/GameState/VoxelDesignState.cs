@@ -17,21 +17,11 @@ namespace VikingEngine.LootFest.GameState
             init(vDesigner);
         }
 
-        //public VoxelDesignState(int player, LootFest.Map.Terrain.HandMadeTerrainMaster editTerrain)
-        //    : base(false)
-        //{
-        //    vDesigner = new Editor.VoxelDesigner(player, editTerrain);
-        //    init(vDesigner);
-        //}
-
         void init(Editor.VoxelDesigner vDesigner)
         {
             Input.Mouse.Visible = false;
             desinger = vDesigner;
             Ref.draw.ClrColor = Color.CornflowerBlue;
         }
-
-
-        
     }
 }

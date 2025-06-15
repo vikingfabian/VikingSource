@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Map.Path
             area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
             Rectangle2 subtileLimit = DssRef.world.subTileGrid.Area;
             subtileLimit.AddRadius(-1);
-            area.SetBounds(subtileLimit);
+            area.SetTileBounds(subtileLimit);
             //gridOffset = area.pos
             DetailPathNode startNode = new DetailPathNode(center, conv.ToDir8_INT(startDir), startAsShip);
             {

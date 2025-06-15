@@ -35,7 +35,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         public AppearanceMaterial(Color color)
             :this()
         {
-            BlockHD baseBlock = new BlockHD(color, MaterialProperty.Unknown);
+            BlockHD baseBlock = new BlockHD(color, MaterialProperty.Default);
 
             setupTints(baseBlock);
         }
