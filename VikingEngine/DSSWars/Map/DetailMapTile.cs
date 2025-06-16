@@ -760,6 +760,17 @@ namespace VikingEngine.DSSWars.Map
                     newFoliage().init(LootFest.VoxelModelName.city_postal, 8, wp, WorldData.SubTileWidth * 0.9f);
                     break;
 
+                case TerrainBuildingType.ImmigrationTent:
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 4, wp, WorldData.SubTileWidth * 0.4f);
+                    break;
+                case TerrainBuildingType.ResearchCenter:
+                    newFoliage().init(LootFest.VoxelModelName.city_bank, 0, wp, WorldData.SubTileWidth * 0.4f);
+                    break;
+                case TerrainBuildingType.BookPress:
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 5, wp, WorldData.SubTileWidth * 0.4f);
+                    break;
+
+
                 default:
                     throw new NotImplementedException();
             }
