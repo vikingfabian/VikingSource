@@ -173,6 +173,8 @@ namespace VikingEngine.DSSWars.Conscript
 
             SoldierData soldierData = ItemPropertyColl.Get(conscript.weapon).soldierData;
             soldierData.applySkillBonus(skillBonus);
+
+
             //if (profile != null)
             //{
             //    soldierData = profile.data;
@@ -181,8 +183,10 @@ namespace VikingEngine.DSSWars.Conscript
             //{
             //    soldierData = new SoldierData();
             //}
+            var armorData = ItemPropertyColl.Get(conscript.armorLevel).soldierData;
+            soldierData.basehealth = armorData.basehealth;//ConscriptProfile.ArmorHealth(conscript.armorLevel);
+            soldierData.modelData.armor = armorData.modelData.armor;
 
-            soldierData.basehealth = ItemPropertyColl.Get(conscript.armorLevel).soldierData.basehealth;//ConscriptProfile.ArmorHealth(conscript.armorLevel);
 
             //soldierData.attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(conscript.weapon, out soldierData.attackSplashCount) * skillBonus);
             //soldierData.attackDamageStructure = soldierData.attackDamage;

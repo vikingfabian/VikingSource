@@ -70,8 +70,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (soldier.soldierData.factionColoredModel)
             {
-                model = soldier.group.army.faction.AutoLoadModelInstance_batched(
-                    soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale);
+                model = soldier.group.army.faction.AutoLoadModelInstance_character(
+                    soldier.soldierData.modelData, soldier.soldierData.modelScale);
+                    //soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale);
             }
             else
             {

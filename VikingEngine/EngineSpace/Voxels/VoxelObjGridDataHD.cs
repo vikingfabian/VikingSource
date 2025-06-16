@@ -29,7 +29,19 @@ namespace VikingEngine.Voxels
 
         public ushort[, ,] MaterialGrid;
         public List<ushort> special = null;
+
+        //public VoxelObjGridDataHD(IntVector3 size)
+        //{
+        //    newGrid(size);
+        //}
         
+        public VoxelObjGridDataHD()
+        { }
+        public VoxelObjGridDataHD(IntVector3 size)
+        {
+            MaterialGrid = new ushort[size.X, size.Y, size.Z];
+        }
+
         public VoxelObjGridDataHD(IntVector3 size, List<VoxelHD> voxels)
         {
             newGrid(size);
@@ -46,6 +58,11 @@ namespace VikingEngine.Voxels
                 v = voxels[i];
                 MaterialGrid[v.Position.X + offset.X, v.Position.Y + offset.Y, v.Position.Z + offset.Z] = v.Material;
             }
+        }
+
+        public VoxelObjGridDataHD(ushort[,,] materialGrid)
+        {
+            MaterialGrid = materialGrid;
         }
 
         public void ReplaceMaterial(ushort from1, ushort to1, IntervalIntV3 inVolume)
@@ -243,16 +260,7 @@ namespace VikingEngine.Voxels
             MaterialGrid = new ushort[size.X, size.Y, size.Z];
         }
 
-        public VoxelObjGridDataHD(ushort[, ,] materialGrid)
-        {
-            MaterialGrid = materialGrid;
-        }
-        public VoxelObjGridDataHD()
-        { }
-        public VoxelObjGridDataHD(IntVector3 size)
-        {
-            MaterialGrid = new ushort[size.X, size.Y, size.Z];
-        }
+        
         public VoxelObjGridDataHD Clone()
         {
             ushort[, ,] cloneGrid = (ushort[, ,])MaterialGrid.Clone();

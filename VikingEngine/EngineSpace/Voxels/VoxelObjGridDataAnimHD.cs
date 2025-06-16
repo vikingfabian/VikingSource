@@ -126,6 +126,16 @@ namespace VikingEngine.Voxels
     {
         public VoxelObjGridDataAnimHD()
         { }
+
+        public VoxelObjGridDataAnimHD(IntVector3 size, int frameCount)
+        {
+            this.Frames = new List<VoxelObjGridDataHD>(frameCount);
+            for (int i = 0; i < frameCount; i++)
+            {
+                this.Frames.Add(new VoxelObjGridDataHD(size));
+            }
+        }
+
         public VoxelObjGridDataAnimHD(List<VoxelObjGridDataHD> grids)
         {
             this.Frames = grids;
@@ -140,62 +150,5 @@ namespace VikingEngine.Voxels
             }
             return new VoxelObjGridDataAnimHD(frames);
         }
-
-        //override public byte[] ByteArraySaveData
-        //{
-        //    get
-        //    {
-        //        IntVector3 limits = Frames[0].Limits;
-        //        const byte SaveVersion = 2;
-        //        List<byte> data = new List<byte> { SaveVersion, (byte)Frames.Count, 
-        //            (byte)limits.X, (byte)limits.Y, (byte)limits.Z};
-
-        //        for (int frame = 0; frame < Frames.Count; frame++)
-        //        {
-        //            data.AddRange(Frames[frame].ToCompressedData());
-        //        }
-        //        return data.ToArray();
-        //    }
-
-        //    set
-        //    {
-        //        if (value.Length <= 4)
-        //        {
-        //            //Err corrupt file
-        //            Frames = null;
-        //            return;
-        //        }
-
-        //        if (Frames == null)
-        //        {
-        //            Frames = new List<VoxelObjGridDataHD>();
-        //        }
-        //        else
-        //            Frames.Clear();
-        //        byte version = value[0];
-        //        byte numFrames = value[1];
-        //        IntVector3 limits = new IntVector3(value[2], value[3], value[4]);
-                
-
-        //        List<byte> data = new List<byte>();
-        //        data.AddRange(value);
-        //        data.RemoveRange(0, 5);
-
-        //        for (int frame = 0; frame < numFrames; frame++)
-        //        {
-        //            VoxelObjGridDataHD grid = new VoxelObjGridDataHD(limits);
-        //            int pos = byteArrayToGrid(data, grid);//grid.FromCompressedData(data);
-        //            Frames.Add(grid);
-        //            data.RemoveRange(0, pos);
-        //        }
-
-        //        LoadComplete();
-        //    }
-
-        //}
-        //virtual protected int byteArrayToGrid(List<byte> data, VoxelObjGridDataHD grid)
-        //{
-        //    return grid.FromCompressedData(data);
-        //}
     }
 }

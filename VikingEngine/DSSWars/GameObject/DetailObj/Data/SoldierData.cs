@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 
         public bool factionColoredModel = true;
         public LootFest.VoxelModelName modelName = 0;
+        public SoldierModelData modelData;
         public int modelVariationCount = 1;
         public SpriteName icon = SpriteName.MissingImage;
         public bool hasBannerMan = true;
@@ -54,6 +55,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 
         public SoldierData()
         { }
+
 
         public void applySkillBonus(float skillBonus)
         {
