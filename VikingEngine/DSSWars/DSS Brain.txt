@@ -1,7 +1,7 @@
 ﻿UPDATE
 -Change Log-
 * Added a folder for overriding ingame models
-
+* Sorting all the models, improving memory batching during draw calls.
 
 Voxel editor 2
 * 

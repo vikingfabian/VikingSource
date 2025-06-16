@@ -231,27 +231,26 @@ namespace VikingEngine.DSSWars
             instance = null;
         }
 
-        public VoxelModelInstance_Pooled ModelInstance_drawbatch(
-            VoxelModelName name,
-            float scale = 1f,
-            bool allowRecycle = true,
-            bool addToRender = true)
+        public VoxelModelInstance_Pooled NextInstance_Pooled()
         {
             VoxelModelInstance_Pooled instance;
-            if (allowRecycle && addToRender &&
-                DssRef.state.voxelModelInstancesPooled.TryPop(out instance))
+            if (DssRef.state.voxelModelInstancesPooled.TryPop(out instance))
             {
-                //instance.Visible = true;
-                //instance.Frame = 0;
-                //instance.SpottedArrayMemberIndex = -1;
-                //instance.inPlayerCamera = EightBit.AllTrue;
                 instance.Pool_Reset();
             }
             else
             {
-                instance = new VoxelModelInstance_Pooled(allowRecycle);                
+                instance = new VoxelModelInstance_Pooled(true);
             }
+            return instance;
+        }
 
+        public VoxelModelInstance_Pooled ModelInstance_drawbatch(
+            VoxelModelName name,
+            float scale = 1f)
+        {
+            VoxelModelInstance_Pooled instance = NextInstance_Pooled();
+           
 #if DEBUG
             instance.DebugName = name.ToString();
 #endif
@@ -263,13 +262,9 @@ namespace VikingEngine.DSSWars
                 instance.scale = VectorExt.V3(instance.SizeToScale * scale);
             }
 
-            if (addToRender)
-            {
-                Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);               
-            }
-
-            return instance;
-        
+            Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);               
+            
+            return instance;        
         }
 
         public Graphics.VoxelModelInstance ModelInstance(            

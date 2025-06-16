@@ -63,9 +63,9 @@ namespace VikingEngine.DSSWars.Players
                     if (detailBanner == null)
                     {
 
-                        detailBanner = player.faction.AutoLoadModelInstance(
+                        detailBanner = player.faction.AutoLoadModelInstance_batched(
                              LootFest.VoxelModelName.armystand_detail, 0.3f);
-                        detailBanner.AddToRender(DrawGame.UnitDetailLayer);
+                        //detailBanner.AddToRender(DrawGame.UnitDetailLayer);
                     }
 
                     detailBanner.position = army.position;

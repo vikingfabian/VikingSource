@@ -55,14 +55,14 @@ namespace VikingEngine.DSSWars.GameObject
 
             float crewScale = DssConst.Men_StandardModelScale * 1.6f;
 
-            captain = soldier.group.army.faction.AutoLoadModelInstance(
-                LootFest.VoxelModelName.wars_captain, DssConst.Men_StandardModelScale * 0.7f, true);
+            captain = soldier.group.army.faction.AutoLoadModelInstance_batched(
+                LootFest.VoxelModelName.wars_captain, DssConst.Men_StandardModelScale * 0.7f);
 
-            leftcrew = soldier.group.army.faction.AutoLoadModelInstance(
-                LootFest.VoxelModelName.wars_shipcrew, crewScale, true);
+            leftcrew = soldier.group.army.faction.AutoLoadModelInstance_batched(
+                LootFest.VoxelModelName.wars_shipcrew, crewScale);
 
-            rightcrew = soldier.group.army.faction.AutoLoadModelInstance(
-                LootFest.VoxelModelName.wars_shipcrew, crewScale, true);
+            rightcrew = soldier.group.army.faction.AutoLoadModelInstance_batched(
+                LootFest.VoxelModelName.wars_shipcrew, crewScale);
 
            
         }

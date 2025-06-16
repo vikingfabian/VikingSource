@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,27 @@ namespace VikingEngine.Graphics
 {
     class DrawBatchCollection
     {
-        
+        Queue<AbsVoxelModelInstance> loadingQueue = new Queue<AbsVoxelModelInstance>();
         Dictionary<int, DrawBatch> batches = new Dictionary<int, DrawBatch>(128);
 
-        public void Add(int masterId, AbsDraw model)
+
+        public void Add(AbsVoxelModelInstance instance)
         {
-           
+            Debug.CrashIfThreaded();
+
+            if (instance.master == null)
+            {
+                instance.OnDrawBatchAdd();
+                loadingQueue.Enqueue(instance);
+            }
+            else
+            {
+                Add(instance.master.modelIndex, instance);
+            }
+        }
+
+        public void Add(int masterId, AbsDraw model)
+        {           
             DrawBatch batch;
             if (batches.TryGetValue(masterId, out batch))
             {
@@ -25,22 +41,34 @@ namespace VikingEngine.Graphics
                 batches.Add(masterId, new DrawBatch(model));
             }
 
-            model.OnDrawBatchAdd();//SetInRender(true);
-
+            model.OnDrawBatchAdd();
         }
 
-        public void PreRemove(int masterId, AbsDraw model)
-        {
-            model.SetInRender(false);
-            if (batches.TryGetValue(masterId, out var batch))
-            {
-                batch.preremoved++;
-            }
-        }
+        //public void PreRemove(int masterId, AbsDraw model)
+        //{
+        //    model.SetInRender(false);
+        //    if (batches.TryGetValue(masterId, out var batch))
+        //    {
+        //        batch.preremoved++;
+        //    }
+        //}
 
         public void RemoveAndDraw(int cameraIndex)
         {
-            Span<int> removeStack = stackalloc int[16]; // Use stackalloc for fast temporary storage
+            while (loadingQueue.TryPeek(out var model)
+                && model.master != null)
+            {
+                if (model.InRenderList)
+                {
+                    Add(model.master.modelIndex, loadingQueue.Dequeue());
+                }
+                else
+                {
+                    loadingQueue.Dequeue().OnDrawBatchRemove();
+                }
+            }
+
+            Span<int> removeStack = stackalloc int[16];
             int removeCount = 0;
 
             foreach (var kv in batches)
@@ -62,10 +90,6 @@ namespace VikingEngine.Graphics
                             {
                                 removeStack[removeCount++] = kv.Key;
                             }
-                            //else
-                            //{
-                            //    throw new Exception();
-                            //}
                         }
                         else
                         {
@@ -82,7 +106,6 @@ namespace VikingEngine.Graphics
                 batches.Remove(removeStack[i]);
             }
         }
-
 
         public void Remove(int masterId, AbsDraw model)
         {

@@ -40,8 +40,8 @@ namespace VikingEngine.DSSWars.Work
             parentMapObject = mapObject;
             this.status = status;
             parentArrayIndex = statusIndex;
-            model = mapObject.GetFaction().AutoLoadModelInstance(
-                 DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f, true);
+            model = mapObject.GetFaction().AutoLoadModelInstance_batched(
+                 DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
@@ -541,7 +541,7 @@ namespace VikingEngine.DSSWars.Work
 
         public void DeleteMe()
         {
-            model.DeleteMe();
+            model.preRemoveFromDrawBatch();//.DeleteMe();
             resourceModel?.DeleteMe();
         }
 

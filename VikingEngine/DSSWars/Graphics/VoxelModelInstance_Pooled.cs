@@ -35,5 +35,11 @@ namespace VikingEngine.DSSWars
             master = null;
             Rotation = RotationQuarterion.Identity;
         }
+
+        public override void DeleteMe()
+        {
+            //base.DeleteMe();
+            preRemoveFromDrawBatch();
+        }
     }
 }

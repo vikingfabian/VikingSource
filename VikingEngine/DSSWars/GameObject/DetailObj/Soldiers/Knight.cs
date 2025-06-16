@@ -218,8 +218,8 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public HorseBanner(Faction faction, float soldierScale)
         {
-            model = faction.AutoLoadModelInstance(
-               modelName(), soldierScale * 1f, true);
+            model = faction.AutoLoadModelInstance_batched(
+               modelName(), soldierScale * 1f);
             diff = new Vector3(-0.12f, 0.15f, -0.05f) * soldierScale;
         }
 

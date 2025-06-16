@@ -124,8 +124,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.diff = diff;
             
-            model = faction.AutoLoadModelInstance(
-               DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f, true);
+            model = faction.AutoLoadModelInstance_batched(
+               DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
         }
 
         public void onNewModel_asynch(LootFest.VoxelModelName name, Graphics.VoxelModel master)
