@@ -8,7 +8,7 @@ namespace VikingEngine.LootFest.GO.Characters.HumanionEnemy
     class ElfWardancer : AbsElf
     {
         public ElfWardancer(GoArgs args)
-            : base(args, VoxelModelName.elf_wardancer, ElfScaleRange)
+            : base(args, VoxelModelName.NUM_NON, ElfScaleRange)
         {
             aggresivity = HumanoidEnemyAgressivity.Berserk_4;
             attackRate.Seconds = 0.5f;

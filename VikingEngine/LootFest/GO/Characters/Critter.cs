@@ -64,7 +64,7 @@ namespace VikingEngine.LootFest.GO.Characters
             else if (critterType == GameObjectType.CritterHen || critterType == GameObjectType.CritterWhiteHen)
             {
                 animSettings = new Graphics.AnimationsSettings(5, 1.6f, 1);
-                imageName =critterType == GameObjectType.CritterHen? VoxelModelName.Hen : VoxelModelName.white_hen;
+                imageName =critterType == GameObjectType.CritterHen? VoxelModelName.Hen : VoxelModelName.NUM_NON;
                 modelScale = HenScaleRange.GetRandom();
 
                 CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickCylinderBound(0.26f * modelScale, 0.42f * modelScale, new Vector3(0, 0.24f * modelScale, 0.1f * modelScale));
@@ -72,7 +72,7 @@ namespace VikingEngine.LootFest.GO.Characters
             else if (critterType == GameObjectType.CritterSheep)
             {
                 animSettings = new Graphics.AnimationsSettings(3, 1f);
-                imageName = VoxelModelName.sheep;
+                imageName = VoxelModelName.NUM_NON;
                 modelScale = SheepScaleRange.GetRandom();
                // Health = 3;
 
@@ -83,7 +83,7 @@ namespace VikingEngine.LootFest.GO.Characters
             else if (critterType == GameObjectType.CritterMiningPig)
             {
                 animSettings = new Graphics.AnimationsSettings(5, 1f);
-                imageName = VoxelModelName.miner_pig;
+                imageName = VoxelModelName.NUM_NON;
                 modelScale = MinigPigScaleRange.GetRandom();
 
                 CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickRectangleRotated(Vector3.One,
@@ -93,7 +93,7 @@ namespace VikingEngine.LootFest.GO.Characters
             else if (critterType == GameObjectType.CritterMiningCow)
             {
                 animSettings = new Graphics.AnimationsSettings(5, 1f);
-                imageName = VoxelModelName.miner_cow;
+                imageName = VoxelModelName.NUM_NON;
                 modelScale = CowScaleRange.GetRandom();
 
                 CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickRectangleRotated(Vector3.One,

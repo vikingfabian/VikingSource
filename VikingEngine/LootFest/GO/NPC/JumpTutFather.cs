@@ -11,7 +11,7 @@ namespace VikingEngine.LootFest.GO.NPC
             : base(args)
         {
             //loadImage();
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.father, 0f, 1f);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0f, 1f);
             postImageSetup();
 
             if (args.LocalMember)

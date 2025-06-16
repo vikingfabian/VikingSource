@@ -23,7 +23,7 @@ namespace VikingEngine.LootFest.GO.NPC
 
             WorldPos = args.startWp;
             modelScale = 4f;
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.checkpoint_npc, modelScale);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, modelScale);
             image.position = args.startPos;
 
             Vector3 boundSz = VectorExt.V3FromWidthAndHeight(modelScale * 0.2f, modelScale * 0.3f);

@@ -46,12 +46,12 @@ namespace VikingEngine.DSSWars
                     try
                     {
                         int numLoops = 0;
-#if DEBUG
-                        if (!DssRef.models.rawModels.ContainsKey(name))
-                        {
-                            lib.DoNothing();
-                        }
-#endif
+//#if DEBUG
+//                        if (!DssRef.models.rawModels.ContainsKey(name))
+//                        {
+//                            lib.DoNothing();
+//                        }
+//#endif
                         var grid = DssRef.models.rawModels[name];
 
 
@@ -112,7 +112,6 @@ namespace VikingEngine.DSSWars
 
             if (process)
             {
-                //new FactionModelBuilder(this, name, grid);
                 var model = new FactionModelBuilder().buildModel(this, name, grid);
                 lock (models_loaded)
                 {
@@ -123,29 +122,6 @@ namespace VikingEngine.DSSWars
                 }
             }
         }
-
-        //public void onNewModel(VoxelModelName name, Graphics.VoxelModel model)
-        //{
-        //    lock (models_loaded)
-        //    {
-        //        if (!models_loaded.ContainsKey(name))
-        //        {
-        //            models_loaded.Add(name, model);
-        //        }
-        //    }
-
-        //    //var armies = player.faction.armies.counter();
-        //    //while (armies.Next())
-        //    //{
-        //    //    armies.sel.onNewModel(name, model);
-        //    //}
-
-        //    //var cities = player.faction.cities.counter();
-        //    //while (cities.Next())
-        //    //{
-        //    //    cities.sel.onNewModel(name, model);
-        //    //}
-        //}
 
         public static void SetNewMaster(LootFest.VoxelModelName newModelName, LootFest.VoxelModelName myModelName, 
             Graphics.AbsVoxelObj model, Graphics.VoxelModel master)
@@ -174,56 +150,13 @@ namespace VikingEngine.DSSWars
         static readonly IntVector3 ArmyShipStart = new IntVector3(8, 25, 8);
         static readonly IntVector3 CityIconStart = new IntVector3(3, 2, 3);
 
-        //Faction faction;
-        //VoxelModelName name;
-
-        //public FactionModelBuilder(Faction faction, VoxelModelName name, VoxelObjGridDataAnimHD grid)
-        //   : base()
-        //{
-        //    this.faction = faction;
-        //    this.name = name;
-
-        //    VoxelObjGridDataAnimHD copy = grid.Clone();
-        //    copy.ReplaceMaterial(faction.profile.modelColorReplace);
-
-        //    switch (name)
-        //    {
-        //        case VoxelModelName.banner:
-        //            addFlagTexture(copy, TroopBannerStart, true);
-        //            break;
-        //        case VoxelModelName.horsebanner:
-        //            addFlagTexture(copy, HorseBannerStart, true);
-        //            break;
-        //        case VoxelModelName.citybanner:
-        //            addFlagTexture(copy, CityBannerStart, true);
-        //            break;
-        //        case VoxelModelName.armystand:
-        //            addFlagTexture(copy, ArmyStandStart, true);
-        //            break;
-        //        case VoxelModelName.armybanner:
-        //            addFlagTexture(copy, ArmyBannerStart, false);
-        //            break;
-        //        case VoxelModelName.cityicon:
-        //            addFlagTexture(copy, CityIconStart, false);
-        //            break;
-        //    }
-
-        //    var centerAdjust = grid.Frames[0].BottomCenterAdj();
-
-
-        //    buildVerticeDataHD(copy.Frames, centerAdjust);
-
-
-        //    new Timer.Action0ArgTrigger(synchedUpdate);            
-        //}
-
         public Graphics.VoxelModel buildModel(Faction faction, VoxelModelName name, VoxelObjGridDataAnimHD grid)
         {
             //this.faction = faction;
             //this.name = name;
 
             VoxelObjGridDataAnimHD copy = grid.Clone();
-            copy.ReplaceMaterial(faction.profile.modelColorReplace);
+            copy.ReplaceMaterial(faction.flagProfile.modelColorReplace);
             
 
             switch (name)
@@ -278,22 +211,16 @@ namespace VikingEngine.DSSWars
 
             return model;
         }
-        //void synchedUpdate()
-        //{
-        //    Graphics.VoxelModel model = modelFromVertices();
-
-        //    faction.onNewModel(name, model);
-        //}
 
         void addFlagTexture(Faction faction, VoxelObjGridDataAnimHD grid, IntVector3 start, bool standing, int frame = 0)
         {
             var gridData = grid.Frames[frame];
 
-            var flagLoop = faction.profile.flagDesign.LoopInstance();
+            var flagLoop = faction.flagProfile.flagDesign.LoopInstance();
             while (flagLoop.Next())
             {
-                byte colId = faction.profile.flagDesign.Get(flagLoop.Position);
-                var blockCol = faction.profile.blockColors[colId];
+                byte colId = faction.flagProfile.flagDesign.Get(flagLoop.Position);
+                var blockCol = faction.flagProfile.blockColors[colId];
 
                 IntVector3 gridPos = start;
                 gridPos.X += flagLoop.Position.X;

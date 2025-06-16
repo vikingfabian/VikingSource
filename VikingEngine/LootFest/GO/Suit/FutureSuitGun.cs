@@ -32,7 +32,7 @@ namespace VikingEngine.LootFest.GO
         public SmallSideArm(Players.AbsPlayer player)
         {
             sound = LoadedSound.deathpop;
-            gunModel = new Gadgets.GunModel(VoxelModelName.gunmodel_sidearm, 3.5f, new Vector3(0.8f, 0.5f, 0.5f), player.hero);
+            gunModel = new Gadgets.GunModel(VoxelModelName.NUM_NON, 3.5f, new Vector3(0.8f, 0.5f, 0.5f), player.hero);
             attackRate = 600;
             usesAmmo = false;
             icon = SpriteName.LfGunSideArm;
@@ -50,7 +50,7 @@ namespace VikingEngine.LootFest.GO
         public MashineGun(Players.AbsPlayer player)
         {
             sound = LoadedSound.deathpop;
-            gunModel = new Gadgets.GunModel(VoxelModelName.gunmodel_mashine, 3.5f, new Vector3(0.8f, 0.5f, 0.5f), player.hero);
+            gunModel = new Gadgets.GunModel(VoxelModelName.NUM_NON, 3.5f, new Vector3(0.8f, 0.5f, 0.5f), player.hero);
             attackRate = 200;
             Ammo = 200;
             MaxAmmo = 200;

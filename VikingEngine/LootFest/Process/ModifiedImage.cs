@@ -60,7 +60,7 @@ namespace VikingEngine.LootFest.Process
             this.baseImage = baseImage;
 
             this.addItems = addItems;
-            bool updateThread = baseImage == VoxelModelName.npc_male || baseImage == VoxelModelName.npc_female;
+            bool updateThread = baseImage == VoxelModelName.NUM_NON || baseImage == VoxelModelName.NUM_NON;
            
             bool storage = !(updateThread && (addItems == null||  addItems.Count == 0));
 
@@ -76,8 +76,8 @@ namespace VikingEngine.LootFest.Process
 
         public static void Init()
         {
-            npcMale = new VoxelObjGridDataAnimHD( Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.npc_male));
-            npcFemale = new VoxelObjGridDataAnimHD(Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.npc_female));
+            npcMale = new VoxelObjGridDataAnimHD( Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.NUM_NON));
+            npcFemale = new VoxelObjGridDataAnimHD(Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.NUM_NON));
         }
 
         //protected override void SynchedEvent()
@@ -113,12 +113,12 @@ namespace VikingEngine.LootFest.Process
             {
                 switch (baseImage)
                 {
-                    case VoxelModelName.npc_male:
+                    case VoxelModelName.NUM_NON:
                         frames = npcMale.Clone().Frames;
                         break;
-                    case VoxelModelName.npc_female:
-                        frames = npcFemale.Clone().Frames;
-                        break;
+                    //case VoxelModelName.NUM_NON:
+                    //    frames = npcFemale.Clone().Frames;
+                    //    break;
 
                 }
 

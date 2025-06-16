@@ -12,8 +12,8 @@ namespace VikingEngine.LootFest.BlockMap.Level
 
         static readonly VoxelModelName[] TerrainModels = new VoxelModelName[]
         { 
-            VoxelModelName.BirchTree1,
-            VoxelModelName.BirchTree2,
+            //VoxelModelName.BirchTree1,
+            //VoxelModelName.BirchTree2,
         };
 
         const int GuardLockGroupId = 2;
@@ -29,16 +29,16 @@ namespace VikingEngine.LootFest.BlockMap.Level
         {
             var result = new List<VoxelModelName>
             {
-                VoxelModelName.HomeHouse1,
-                VoxelModelName.TutTargetHanger1,
-                VoxelModelName.TutTargetHanger2,
-                VoxelModelName.TutShootPlatform,
-                VoxelModelName.TutJumpToTeleport2,
-                VoxelModelName.DoorToLobby,
-                VoxelModelName.DoorToFirstLevel,
-                VoxelModelName.TownHouse2,
-                VoxelModelName.TownHouse3,
-                VoxelModelName.TownLamp,
+                //VoxelModelName.HomeHouse1,
+                //VoxelModelName.TutTargetHanger1,
+                //VoxelModelName.TutTargetHanger2,
+                //VoxelModelName.TutShootPlatform,
+                //VoxelModelName.TutJumpToTeleport2,
+                //VoxelModelName.DoorToLobby,
+                //VoxelModelName.DoorToFirstLevel,
+                //VoxelModelName.TownHouse2,
+                //VoxelModelName.TownHouse3,
+                //VoxelModelName.TownLamp,
             };
             result.AddRange(NormalDefaultModels);
 
@@ -47,7 +47,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
 
         protected override void generateMapAsynch()
         {
-            loadedModels[VoxelModelName.DoorToLobby].Rotate(1, true);
+            loadedModels[VoxelModelName.NUM_NON].Rotate(1, true);
 
             //PcgRandom rnd = new PcgRandom(0);
             IntVector2 pos = startPos(new Microsoft.Xna.Framework.Vector2(0.2f, 0.5f));//new IntVector2(10);//standardStartPos();
@@ -67,7 +67,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 {
                     addTerrainModel(m.position, TerrainModels, rnd);
                 }
-                addModel(VoxelModelName.HomeHouse1, 0, pointer.specialModels[0].position, IntVector3.Zero, true, true);
+                addModel(VoxelModelName.NUM_NON, 0, pointer.specialModels[0].position, IntVector3.Zero, true, true);
                 foreach (var m in pointer.spawnPositions)
                 {
                     switch (m.square.specialIndex)
@@ -100,7 +100,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 //createLockSpawn(pointer, Dir4.E, createProjTutLock, -1, 0);
 
                 var targetPos = pointer.specialPoints[0].position;
-                addModel(VoxelModelName.TutTargetHanger1, 0, targetPos, IntVector3.NegativeY, false, false);
+                addModel(VoxelModelName.NUM_NON, 0, targetPos, IntVector3.NegativeY, false, false);
 
                 Map.WorldPosition targetWp = xzToHeightMapPos(toWorldXZ(targetPos), 3);
                 targetWp.X += 3;
@@ -127,10 +127,10 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 }
 
                 IntVector2 platformPos = pointer.specialPoints[0].position;
-                addModel(VoxelModelName.TutShootPlatform, 0, platformPos, IntVector3.Zero, true, true);
+                addModel(VoxelModelName.NUM_NON, 0, platformPos, IntVector3.Zero, true, true);
 
                 platformPos.X += 2;
-                addModel(VoxelModelName.TutTargetHanger2, 0, platformPos, IntVector3.NegativeY, false, false);
+                addModel(VoxelModelName.NUM_NON, 0, platformPos, IntVector3.NegativeY, false, false);
 
                 Map.WorldPosition targetWp = xzToHeightMapPos(toWorldXZ(platformPos), 12);
                 targetWp.Z += 2;
@@ -153,8 +153,8 @@ namespace VikingEngine.LootFest.BlockMap.Level
                     addTerrainModel(m.position, TerrainModels, rnd);
                 }
 
-                var jumpPlatform = loadedModels[VoxelModelName.TutJumpToTeleport2];
-                addModel(VoxelModelName.TutJumpToTeleport2, 0, pointer.getEntranceSqPos(Dir4.E, 0),
+                var jumpPlatform = loadedModels[VoxelModelName.NUM_NON];
+                addModel(VoxelModelName.NUM_NON, 0, pointer.getEntranceSqPos(Dir4.E, 0),
                     new IntVector3(-jumpPlatform.Size.X + BlockMapLib.SquareBlockWidth - 3, -1, -jumpPlatform.Size.Z / 2 + BlockMapLib.SquareHalfWidth),
                     false, true);
 
@@ -239,17 +239,17 @@ namespace VikingEngine.LootFest.BlockMap.Level
                     switch (m.square.specialIndex)
                     {
                         case HouseIx:
-                            addModel(rnd.Chance(0.7) ? VoxelModelName.TownHouse2 : VoxelModelName.TownHouse3, 0,
+                            addModel(rnd.Chance(0.7) ? VoxelModelName.NUM_NON : VoxelModelName.NUM_NON, 0,
                                 m.position, IntVector3.NegativeY, false, true);
                             break;
                         case LampIx:
-                            addModel(VoxelModelName.TownLamp, 0, m.position, IntVector3.NegativeY, false, true);
+                            addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.NegativeY, false, true);
                             break;
                     }
                 }
 
                 IntVector2 caveToFirstLevel = pointer.getEntranceSqPos(Dir4.W, 0);
-                teleport(caveToFirstLevel, TeleportLocationId.FirstLevel, Dir4.W, VoxelModelName.DoorToFirstLevel);
+                teleport(caveToFirstLevel, TeleportLocationId.FirstLevel, Dir4.W, VoxelModelName.NUM_NON);
                 caveToFirstLevel.X += 2;
                 setTeleportLocation(TeleportLocationId.CaveToIntroLevel, toWorldXZ(caveToFirstLevel));
 
@@ -278,13 +278,13 @@ namespace VikingEngine.LootFest.BlockMap.Level
         void createAttackTutLock(GoArgs goArgs)
         {
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, SecondAreaLockId, GO.EnvironmentObj.AreaUnLockType.Key,
-                goArgs.characterLevel, null, VoxelModelName.locklvl1, Dir4.N);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.N);
         }
 
         void createProjTutLock(GoArgs goArgs)
         {
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, ThirdAreaLockId, GO.EnvironmentObj.AreaUnLockType.Key,
-                goArgs.characterLevel, null, VoxelModelName.locklvl1, Dir4.W);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.W);
         }
 
         void createGuardLock(VikingEngine.LootFest.GO.GoArgs goArgs)
@@ -292,7 +292,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, FourthAreaLockId, GO.EnvironmentObj.AreaUnLockType.ConnectedEnemies,
-                goArgs.characterLevel, onOpenGuardLock, VoxelModelName.locklvl2, Dir4.S);
+                goArgs.characterLevel, onOpenGuardLock, VoxelModelName.NUM_NON, Dir4.S);
         }
 
         void onOpenGuardLock()

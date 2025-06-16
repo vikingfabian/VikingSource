@@ -10,7 +10,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
         new const float Scale = 4;
 
         public GoblinKing(GoArgs args, BlockMap.AbsLevel level)
-            : base(args, VoxelModelName.goblin_king, Scale * 0.07f, VoxelModelName.goblin_king_shield, Scale * 0.5f, new Effects.BouncingBlockColors(
+            : base(args, VoxelModelName.NUM_NON, Scale * 0.07f, VoxelModelName.NUM_NON, Scale * 0.5f, new Effects.BouncingBlockColors(
                     Data.MaterialType.dark_red,
                     Data.MaterialType.light_yellow_orange,
                     Data.MaterialType.pure_yellow_orange))

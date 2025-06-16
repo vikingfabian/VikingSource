@@ -15,7 +15,7 @@ namespace VikingEngine.LootFest.GO
         WeaponAttack.DamageData stoneDamage;
 
         public BasicSuit(Players.AbsPlayer user)
-            : base(user, VoxelModelName.stick)
+            : base(user, VoxelModelName.NUM_NON)
         {
             primaryWeaponAttack = new WeaponAttack.HandWeaponAttackSettings(
                 GameObjectType.BasicSuitAttack, HandWeaponAttackSettings.SwordStartScalePerc,
@@ -60,7 +60,7 @@ namespace VikingEngine.LootFest.GO
                 stoneBound);
             attack.bCollisionCheck = local;
 
-            ViewVisualBow(SlingReloadTime, VoxelModelName.slingshot);
+            ViewVisualBow(SlingReloadTime, VoxelModelName.NUM_NON);
         }
 
         public override void netReadSpecAttack(Network.ReceivedPacket packet)

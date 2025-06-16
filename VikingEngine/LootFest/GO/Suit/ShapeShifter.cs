@@ -22,7 +22,7 @@ namespace VikingEngine.LootFest.GO
 
 
         public ShapeShifter(Players.AbsPlayer user)
-            : base(user, VoxelModelName.shapeshifter_spear)
+            : base(user, VoxelModelName.NUM_NON)
         {
             Vector3 spearBound =  new Vector3(1.8f, HandWeaponAttackSettings.SwordBoundScaleH, 8.5f);
             Vector3 spearOffset = new Vector3(3f, 1.4f, 4f);

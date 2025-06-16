@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.GameObject
                         SoundLib.throwblade.Play(start);
                     }
                     //warsRef.sound.javelin.Play(start);
-                    modelName = LootFest.VoxelModelName.ThrowingSpear;
+                    modelName = LootFest.VoxelModelName.NUM_NON;
                     scale = 1.5f;
                     linear = true;
                     break;

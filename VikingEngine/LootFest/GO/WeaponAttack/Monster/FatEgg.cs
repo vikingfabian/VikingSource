@@ -19,7 +19,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
 
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.fat_egg; }
+            get { return VoxelModelName.NUM_NON; }
         }
 
         public override void HandleColl3D(GO.Bounds.BoundCollisionResult collData, AbsUpdateObj ObjCollision)

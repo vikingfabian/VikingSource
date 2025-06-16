@@ -16,7 +16,7 @@ namespace VikingEngine.LootFest.GO
         WeaponAttack.DamageData arrowDamage;
 
         public ArcherSuit(Players.AbsPlayer user)
-            : base(user, VoxelModelName.sword_base)
+            : base(user, VoxelModelName.NUM_NON)
         {
             primaryWeaponAttack = new WeaponAttack.HandWeaponAttackSettings(
                 GameObjectType.ArcherAttack, HandWeaponAttackSettings.SwordStartScalePerc,
@@ -48,7 +48,7 @@ namespace VikingEngine.LootFest.GO
             new GO.WeaponAttack.GravityArrow(arrowDamage, player.hero.BowFirePos(), player.hero.GetBowTarget(),
                             arrowBound, player.hero.player);
 
-            ViewVisualBow(BowReloadTime, VoxelModelName.ironbow);
+            ViewVisualBow(BowReloadTime, VoxelModelName.NUM_NON);
         }
 
         public override SuitType Type

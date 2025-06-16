@@ -77,7 +77,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
         {
             modelScale = 10 - 2 * splitLevel;
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.statueboss,
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                 modelScale, 1f, false);
 
             WorldPos.SetAtClosestFreeY(1);

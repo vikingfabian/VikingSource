@@ -166,7 +166,7 @@ namespace VikingEngine.LootFest.GO.Characters.CastleEnemy
 
         protected override VoxelModelName imageName
         {
-            get { return VoxelModelName.ghost; }
+            get { return VoxelModelName.NUM_NON; }
         }
         protected override Graphics.AnimationsSettings animSettings
         {

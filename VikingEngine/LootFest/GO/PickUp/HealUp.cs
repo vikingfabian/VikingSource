@@ -33,7 +33,7 @@ namespace VikingEngine.LootFest.GO.PickUp
         
         protected override VoxelModelName imageType
         {
-            get { return VoxelModelName.healup_effect; }
+            get { return VoxelModelName.NUM_NON; }
         }
         //protected override Data.TempBlockReplacementSett tempImage
         //{

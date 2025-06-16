@@ -794,7 +794,7 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
             //else
             //    suitAppear = new Players.SuitAppearance();
 
-            new HeroAppearance(VoxelModelName.CharacterHD, true, HeroImagePosAdj, storage, suitAppear, setModel, this.Type);
+            new HeroAppearance(VoxelModelName.NUM_NON, true, HeroImagePosAdj, storage, suitAppear, setModel, this.Type);
             //new Process.ModifiedImage(this, VoxelModelName.Character,
             //    ImageColorReplace(), ImageAddOns(true), HeroImagePosAdj);
             damageColors = new Effects.BouncingBlockColors((Data.MaterialType)storage.ClothColor, (Data.MaterialType)storage.SkinColor, 
@@ -895,41 +895,41 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
 
             switch (lastExpression)
             {
-                case VoxelModelName.express_anger:
-                    sound = LoadedSound.express_anger;
-                    const int NumSmokeParticles = 8;
-                    List<ParticleInitData> smoke = new List<ParticleInitData>();
-                    for (int i = 0; i < NumSmokeParticles; i++)
-                    {
-                        smoke.Add(new ParticleInitData(Ref.rnd.Vector3_Sq(startPos, 1)));
-                    }
-                    Engine.ParticleHandler.AddParticles(ParticleSystemType.Smoke, smoke);
-                    break;
-                case VoxelModelName.express_thumbup:
-                    sound = LoadedSound.express_thumbup1;
-                    const int NumShinyParticles = 8;
-                    List<ParticleInitData> shiny = new List<ParticleInitData>();
-                    Vector3 startSpeed = Vector3.Up * 2;
-                    for (int i = 0; i < NumShinyParticles; i++)
-                    {
-                        shiny.Add(new ParticleInitData(Ref.rnd.Vector3_Sq(startPos, 1), Ref.rnd.Vector3_Sq(startSpeed, 1)));
-                    }
-                    Engine.ParticleHandler.AddParticles(ParticleSystemType.GoldenSparkle, shiny);
-                    break;
-                case VoxelModelName.express_hi:
-                    sound = LoadedSound.express_hi1;
-                    break;
-                case VoxelModelName.express_laugh:
-                    sound = LoadedSound.express_laugh;
-                    break;
-                case VoxelModelName.express_teasing:
-                    sound = LoadedSound.express_teasing1;
-                    break;
-                case VoxelModelName.express_loot:
-                    sound = LoadedSound.NON;
-                    new Effects.CoinExpression(this);
-                    //sound = LoadedSound.express_teasing1;
-                    break;
+                //case VoxelModelName.express_anger:
+                //    sound = LoadedSound.express_anger;
+                //    const int NumSmokeParticles = 8;
+                //    List<ParticleInitData> smoke = new List<ParticleInitData>();
+                //    for (int i = 0; i < NumSmokeParticles; i++)
+                //    {
+                //        smoke.Add(new ParticleInitData(Ref.rnd.Vector3_Sq(startPos, 1)));
+                //    }
+                //    Engine.ParticleHandler.AddParticles(ParticleSystemType.Smoke, smoke);
+                //    break;
+                //case VoxelModelName.express_thumbup:
+                //    sound = LoadedSound.express_thumbup1;
+                //    const int NumShinyParticles = 8;
+                //    List<ParticleInitData> shiny = new List<ParticleInitData>();
+                //    Vector3 startSpeed = Vector3.Up * 2;
+                //    for (int i = 0; i < NumShinyParticles; i++)
+                //    {
+                //        shiny.Add(new ParticleInitData(Ref.rnd.Vector3_Sq(startPos, 1), Ref.rnd.Vector3_Sq(startSpeed, 1)));
+                //    }
+                //    Engine.ParticleHandler.AddParticles(ParticleSystemType.GoldenSparkle, shiny);
+                //    break;
+                //case VoxelModelName.NUM_NON:
+                //    sound = LoadedSound.express_hi1;
+                //    break;
+                //case VoxelModelName.NUM_NON:
+                //    sound = LoadedSound.express_laugh;
+                //    break;
+                //case VoxelModelName.NUM_NON:
+                //    sound = LoadedSound.express_teasing1;
+                //    break;
+                //case VoxelModelName.NUM_NON:
+                //    sound = LoadedSound.NON;
+                //    new Effects.CoinExpression(this);
+                //    //sound = LoadedSound.express_teasing1;
+                //    break;
 
             }
 

@@ -26,7 +26,7 @@ namespace VikingEngine.LootFest.GO.Characters
         {
             animSettings =  new Graphics.AnimationsSettings(4, 0.8f, false);
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.pet_pig,
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                 Scale, 1, false);
             CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickBoundingBox(Scale);
 

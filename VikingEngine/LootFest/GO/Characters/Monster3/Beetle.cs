@@ -19,13 +19,13 @@ namespace VikingEngine.LootFest.GO.Characters.Monster3
             VoxelModelName model;
             if (args.characterLevel == 0)
             {
-                model = VoxelModelName.beetle1;
+                model = VoxelModelName.NUM_NON;
                 modelScale = Ref.rnd.Float(2f, 2.5f);
                 fallDownForAttackDist = 10;
             }
             else
             {
-                model = VoxelModelName.beetle2;
+                model = VoxelModelName.NUM_NON;
                 modelScale = 8f;//Ref.rnd.Float(2f, 2.5f);
                 fallDownForAttackDist = 15;
                 Health = 2;

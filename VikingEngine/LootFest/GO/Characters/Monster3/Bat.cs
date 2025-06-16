@@ -19,13 +19,13 @@ namespace VikingEngine.LootFest.GO.Characters
             if (characterLevel == 0)
             {
                 modelScale = Ref.rnd.Float(2f, 2.5f);
-                modelName = VoxelModelName.bat1;
+                modelName = VoxelModelName.NUM_NON;
                 flySpeed = 0.016f;
             }
             else
             {
                 modelScale = Ref.rnd.Float(4f, 4.5f);
-                modelName = VoxelModelName.bat2;
+                modelName = VoxelModelName.NUM_NON;
                 flySpeed = 0.01f;
                 projectileRate.Seconds = 4f;
                 Health = LfLib.LargeEnemyHealth;

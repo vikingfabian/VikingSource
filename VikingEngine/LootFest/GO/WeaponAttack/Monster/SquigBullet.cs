@@ -37,7 +37,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
         
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.EnemyProjectile; }
+            get { return VoxelModelName.NUM_NON; }
         }
         public override WeaponUserType WeaponTargetType
         {

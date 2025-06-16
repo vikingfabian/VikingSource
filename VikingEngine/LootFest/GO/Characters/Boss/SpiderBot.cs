@@ -39,7 +39,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
         {
             WorldPos = args.startWp;
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.spiderbot_mid, 
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 
                 BodySize, 0, false);
             image.position = WorldPos.PositionV3;
 
@@ -335,7 +335,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
         {
             this.dir = dir;
             this.parent = parent;
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.spiderbot_leg,
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                 SpiderBot.BodySize * 1.4f, 0, true);
 
             RelRotation.X = dir.Radians +MathHelper.Pi;
@@ -453,7 +453,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
     {
         public SpiderbotGoblin()
         {
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.spiderbot_goblin,
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                2f, 0, false);
             posOffset = new Vector3(0, 1.6f, 1f);
 
@@ -465,7 +465,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
     {
         public SpiderbotBaby()
         {
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.baby,
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                2.2f, 0, false);
             posOffset = new Vector3(0, 2.0f, -2.3f);
 

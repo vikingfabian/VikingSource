@@ -43,30 +43,30 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
 
             switch (pStorage.shieldType)
             {
-                case Players.ShieldType.Round1:
-                    model = VoxelModelName.shield_round1;
-                    break;
-                case Players.ShieldType.Round2:
-                    model = VoxelModelName.shield_round2;
-                    break;
-                case Players.ShieldType.Round3:
-                    model = VoxelModelName.shield_round3;
-                    break;
-                case Players.ShieldType.Round4:
-                    model = VoxelModelName.shield_round4;
-                    break;
-                case Players.ShieldType.Spartan1:
-                    model = VoxelModelName.shield_spartan1;
-                    break;
-                case Players.ShieldType.Spartan2:
-                    model = VoxelModelName.shield_spartan2;
-                    break;
-                case Players.ShieldType.Spartan3:
-                    model = VoxelModelName.shield_spartan3;
-                    break;
-                case Players.ShieldType.Keit1:
-                    model = VoxelModelName.shield_keit1;
-                    break;
+                //case Players.ShieldType.Round1:
+                //    model = VoxelModelName.shield_round1;
+                //    break;
+                //case Players.ShieldType.Round2:
+                //    model = VoxelModelName.shield_round2;
+                //    break;
+                //case Players.ShieldType.Round3:
+                //    model = VoxelModelName.shield_round3;
+                //    break;
+                //case Players.ShieldType.Round4:
+                //    model = VoxelModelName.shield_round4;
+                //    break;
+                //case Players.ShieldType.Spartan1:
+                //    model = VoxelModelName.shield_spartan1;
+                //    break;
+                //case Players.ShieldType.Spartan2:
+                //    model = VoxelModelName.shield_spartan2;
+                //    break;
+                //case Players.ShieldType.Spartan3:
+                //    model = VoxelModelName.shield_spartan3;
+                //    break;
+                //case Players.ShieldType.Keit1:
+                //    model = VoxelModelName.shield_keit1;
+                //    break;
 
             }
 

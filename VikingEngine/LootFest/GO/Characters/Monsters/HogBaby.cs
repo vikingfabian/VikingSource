@@ -8,7 +8,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monsters
     class HogBaby : Hog3
     {
         public HogBaby(GoArgs args)
-            : base(args, VoxelModelName.hog_baby, ScaleRange)
+            : base(args, VoxelModelName.NUM_NON, ScaleRange)
         {
             //setHealth(1);
             Health = 1;

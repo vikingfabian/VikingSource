@@ -187,7 +187,7 @@ namespace VikingEngine.LootFest.Editor
             } layout.End();
         }
 
-        VoxelModelName currentConvert = VoxelModelName.CATEGORY_WARS_6 + 1;
+        VoxelModelName currentConvert = VoxelModelName.CATEGORY_WARS_1 + 1;
         void quickConvertAll()
         {
             if (currentConvert < VoxelModelName.NUM_NON)
@@ -421,32 +421,32 @@ namespace VikingEngine.LootFest.Editor
             switch (cat)
             {
                 case ModelCategory.Wars:
-                    start = VoxelModelName.CATEGORY_WARS_6 + 1;
+                    start = VoxelModelName.CATEGORY_WARS_1 + 1;
                     end = VoxelModelName.NUM_NON;
                     break;
-                case ModelCategory.Other:
-                    start = VoxelModelName.CATEGORY_OTHER_5 + 1;
-                    end = VoxelModelName.CATEGORY_WARS_6;
-                    break;
-                case ModelCategory.BlockPattern:
-                    start = VoxelModelName.CATEGORY_BLOCKPATTERN_4 + 1;
-                    end = VoxelModelName.CATEGORY_OTHER_5;
-                    break;
-                case ModelCategory.Terrain:
-                    start = VoxelModelName.CATEGORY_TERRAIN_3 + 1;
-                    end = VoxelModelName.CATEGORY_BLOCKPATTERN_4;
-                    break;
-                case ModelCategory.Appearance:
-                    start = VoxelModelName.CATEGORY_APPEARANCE_2 + 1;
-                    end = VoxelModelName.CATEGORY_TERRAIN_3;
-                    break;
-                case ModelCategory.Weapon:
-                    start = VoxelModelName.CATEGORY_WEAPON_1 + 1;
-                    end = VoxelModelName.CATEGORY_APPEARANCE_2;
-                    break;
+                //case ModelCategory.Other:
+                //    start = VoxelModelName.CATEGORY_OTHER_5 + 1;
+                //    end = VoxelModelName.CATEGORY_WARS_6;
+                //    break;
+                //case ModelCategory.BlockPattern:
+                //    start = VoxelModelName.CATEGORY_BLOCKPATTERN_4 + 1;
+                //    end = VoxelModelName.CATEGORY_OTHER_5;
+                //    break;
+                //case ModelCategory.Terrain:
+                //    start = VoxelModelName.CATEGORY_TERRAIN_3 + 1;
+                //    end = VoxelModelName.CATEGORY_BLOCKPATTERN_4;
+                //    break;
+                //case ModelCategory.Appearance:
+                //    start = VoxelModelName.CATEGORY_APPEARANCE_2 + 1;
+                //    end = VoxelModelName.CATEGORY_TERRAIN_3;
+                //    break;
+                //case ModelCategory.Weapon:
+                //    start = VoxelModelName.CATEGORY_WEAPON_1 + 1;
+                //    end = VoxelModelName.CATEGORY_APPEARANCE_2;
+                //    break;
                 case ModelCategory.Character:
                     start = VoxelModelName.CATEGORY_CHARACTER_0 + 1;
-                    end = VoxelModelName.CATEGORY_WEAPON_1;
+                    end = VoxelModelName.CATEGORY_WARS_1;
                     break;
                 default:
                     start = 0;
@@ -539,11 +539,11 @@ namespace VikingEngine.LootFest.Editor
             for (VoxelModelName v = start; v < end; ++v)
             {
                 if (v != VoxelModelName.CATEGORY_CHARACTER_0 &&
-                    v != VoxelModelName.CATEGORY_WEAPON_1 &&
-                    v != VoxelModelName.CATEGORY_APPEARANCE_2 &&
-                    v != VoxelModelName.CATEGORY_TERRAIN_3 &&
-                    v != VoxelModelName.CATEGORY_OTHER_5 &&
-                    v != VoxelModelName.CATEGORY_WARS_6)
+                    //v != VoxelModelName.CATEGORY_WEAPON_1 &&
+                    //v != VoxelModelName.CATEGORY_APPEARANCE_2 &&
+                    //v != VoxelModelName.CATEGORY_TERRAIN_3 &&
+                    //v != VoxelModelName.CATEGORY_OTHER_5 &&
+                    v != VoxelModelName.CATEGORY_WARS_1)
                 {
                     models.Add(new ComparableKeys<string, VoxelModelName>(v.ToString(), v));
                 }

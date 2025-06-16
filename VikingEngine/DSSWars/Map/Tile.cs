@@ -335,7 +335,7 @@ namespace VikingEngine.DSSWars.Map
             var c = DssRef.world.cities[CityIndex];
             if (c.faction != null)
             {
-                return c.faction.profile.col0_Main;
+                return c.faction.flagProfile.col0_Main;
             }
             else
             {

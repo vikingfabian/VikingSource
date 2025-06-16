@@ -101,11 +101,11 @@ namespace VikingEngine.LootFest.Data
         public void LoadStandardVobjects()
         {
             //StandardModel_TempBlock = Editor.VoxelObjDataLoader.GetVoxelObjMaster(VoxelModelName.temp_block, Vector3.Zero);
-            StandardModel_UsingMenu = Editor.VoxelObjDataLoader.GetVoxelObjMaster(VoxelModelName.using_menu, Vector3.Zero);
-            StandardModel_Sword = Editor.VoxelObjDataLoader.GetVoxelObjMaster(VoxelModelName.Sword1, Vector3.Zero);
+            StandardModel_UsingMenu = Editor.VoxelObjDataLoader.GetVoxelObjMaster(VoxelModelName.NUM_NON, Vector3.Zero);
+            StandardModel_Sword = Editor.VoxelObjDataLoader.GetVoxelObjMaster(VoxelModelName.NUM_NON, Vector3.Zero);
 
-            StandardModel_Character = (Graphics.VoxelModel)Editor.VoxelObjDataLoader.GetVoxelObjMaster(VoxelModelName.temp_hero, Vector3.Zero);
-            StandardModel_TempBlockAnimated = (Graphics.VoxelModel)Editor.VoxelObjDataLoader.GetVoxelObjMaster(VoxelModelName.temp_block_animated, Vector3.Zero);
+            StandardModel_Character = (Graphics.VoxelModel)Editor.VoxelObjDataLoader.GetVoxelObjMaster(VoxelModelName.NUM_NON, Vector3.Zero);
+            StandardModel_TempBlockAnimated = (Graphics.VoxelModel)Editor.VoxelObjDataLoader.GetVoxelObjMaster(VoxelModelName.NUM_NON, Vector3.Zero);
         }
 
         //public Graphics.VoxelModelInstance getInstance_TempblockAnim()

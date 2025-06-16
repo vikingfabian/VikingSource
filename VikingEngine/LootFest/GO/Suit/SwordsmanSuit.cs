@@ -11,7 +11,7 @@ namespace VikingEngine.LootFest.GO
         const float SwordScale = 0.15f;
 
         public SwordsmanSuit(Players.AbsPlayer player)
-            : base(player, VoxelModelName.sword_base)
+            : base(player, VoxelModelName.NUM_NON)
         {
             shield = new WeaponAttack.Shield(player.hero, player.Storage);
             primaryWeaponAttack = new WeaponAttack.HandWeaponAttackSettings(

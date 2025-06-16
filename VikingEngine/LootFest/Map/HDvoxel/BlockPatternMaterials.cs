@@ -14,9 +14,9 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         {
             MaterialColors = new ColorGrid[(int)BlockPatternMaterial.NUM];
 
-            LoadPattern(VoxelModelName.grassmaterial, BlockPatternMaterial.Grass);
-            LoadPattern(VoxelModelName.sandmaterial, BlockPatternMaterial.Sand);
-            LoadPattern(VoxelModelName.dirtmaterial, BlockPatternMaterial.Dirt);
+            LoadPattern(VoxelModelName.NUM_NON, BlockPatternMaterial.Grass);
+            LoadPattern(VoxelModelName.NUM_NON, BlockPatternMaterial.Sand);
+            LoadPattern(VoxelModelName.NUM_NON, BlockPatternMaterial.Dirt);
         }
 
         static void LoadPattern(VoxelModelName modelName, BlockPatternMaterial material)

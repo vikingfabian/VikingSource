@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars
     {
         //public int index;
         public Players.AbsPlayer player = null;
-        public FlagAndColor profile;
+        public FlagAndColor flagProfile;
 
         public GameObject.City mainCity;
         public Vector3 SelectionCenter { get; private set; }
@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars
 
         public void SetProfile(FlagAndColor profile)
         {
-            this.profile = profile;
+            this.flagProfile = profile;
             flagTexture = profile.flagDesign.CreateTexture(profile);
         }
 
@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars
         virtual public void writeNet(System.IO.BinaryWriter w)
         {
             w.Write((ushort)factiontype);
-            this.profile.write(w);
+            this.flagProfile.write(w);
 
             if (factiontype == FactionType.Player)
             {
@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars
         void onNewOwner()
         {
             if (!textureLoaded)
-                FlagTexture.ColorAndAlpha = profile.col0_Main.ToVector4();
+                FlagTexture.ColorAndAlpha = flagProfile.col0_Main.ToVector4();
 
             var citiesC = cities.counter();
             while (citiesC.Next())
@@ -1105,7 +1105,7 @@ namespace VikingEngine.DSSWars
         {
                 if (player == null)
                     return tempColor;
-                return player.faction.profile.col0_Main;
+                return player.faction.flagProfile.col0_Main;
             
         }
 

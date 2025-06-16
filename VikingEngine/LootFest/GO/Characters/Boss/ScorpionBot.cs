@@ -27,7 +27,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
         {
             nextRangedAttackTimer = new Time(4, TimeUnit.Seconds);
             modelScale = BodySize;
-            createImage(VoxelModelName.scorpionbot, modelScale, 0, new Graphics.AnimationsSettings(5, 0.8f, 1));
+            createImage(VoxelModelName.NUM_NON, modelScale, 0, new Graphics.AnimationsSettings(5, 0.8f, 1));
             Health = 1f;
             loadBounds();
 
@@ -369,7 +369,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
             float modelScale = ScorpionBot.BodySize * 0.15f;
 
             model = LfRef.modelLoad.AutoLoadModelInstance(
-                VoxelModelName.scorpionbot_arm_yellow,
+                VoxelModelName.NUM_NON,
                modelScale, 0f, true);
             model.Visible = false;
 
@@ -413,7 +413,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
             this.parent = parent;
             float modelScale =  ScorpionBot.BodySize * 0.8f;
             model = LfRef.modelLoad.AutoLoadModelInstance(
-                left? VoxelModelName.scorpionbot_arm_knife_l : VoxelModelName.scorpionbot_arm_knife_r, 
+                left? VoxelModelName.NUM_NON : VoxelModelName.NUM_NON, 
                 modelScale, 0f, true);
 
             damageBound = AbsBound.CreateBound(BoundShape.Box1axisRotation, Vector3.Zero, 
@@ -535,7 +535,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
     {
         public ScorpionbotGoblin(Graphics.AbsVoxelObj parentModel)
         {
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.spiderbot_goblin,
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                 parentModel.Size1D * 0.18f, 0, false);
             posOffset = new Vector3(0, 4.7f, 0f);
         }
@@ -545,7 +545,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
     {
         public ScorpionbotNosePoint(Graphics.AbsVoxelObj parentModel)
         {
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.scorpionbot_arm_yellow,
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                 parentModel.Size1D * 0.1f, 0, true);
             posOffset = new Vector3(0, 2f, 5.5f);
         }

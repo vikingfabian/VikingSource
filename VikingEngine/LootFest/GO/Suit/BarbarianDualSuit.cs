@@ -29,7 +29,7 @@ namespace VikingEngine.LootFest.GO
         public const float WhirrWindMoveSpeed = 0.018f;
 
         public BarbarianDualSuit(Players.AbsPlayer user)
-            : base(user, VoxelModelName.barbariandualaxe_r_base)
+            : base(user, VoxelModelName.NUM_NON)
         {
             const float SwingStartAngle = -1.0f;
             Vector3 ScaleToPosDiff = new Vector3(1.2f, 0.4f, 2.0f);
@@ -37,7 +37,7 @@ namespace VikingEngine.LootFest.GO
             WeaponAttack.DamageData attDamage = new WeaponAttack.DamageData(LfLib.HeroNormalAttack, WeaponAttack.WeaponUserType.Player,
                      user.hero.ObjOwnerAndId);
             
-            loadWeaponModel(1, VoxelModelName.barbariandualaxe_l_base);
+            loadWeaponModel(1, VoxelModelName.NUM_NON);
 
             rightAttack = new WeaponAttack.HandWeaponAttackSettings(
                GameObjectType.DualAxeAttack, HandWeaponAttackSettings.SwordStartScalePerc,

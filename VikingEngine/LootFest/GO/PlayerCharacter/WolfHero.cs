@@ -40,7 +40,7 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
             //        new ByteVector2((byte)Data.MaterialType.pale_skin, appear.HatDetailColor), //sec col
             //    };
 
-            new HeroAppearance(VoxelModelName.herowolf, true, Vector3.Up * ModelYadj, storage, player.SuitAppearance, setModel, this.Type);
+            new HeroAppearance(VoxelModelName.NUM_NON, true, Vector3.Up * ModelYadj, storage, player.SuitAppearance, setModel, this.Type);
             //new Process.ModifiedImage(this, VoxelModelName.herowolf,
             //   colorReplace, null, posAdj);
 

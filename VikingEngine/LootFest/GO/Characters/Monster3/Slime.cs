@@ -18,19 +18,19 @@ namespace VikingEngine.LootFest.GO.Characters
                 default:// case 0:
                     Health = LfLib.SuperWeakEnemyHealth;
                     modelScale = Ref.rnd.Float(0.6f, 0.7f);
-                    modelName = VoxelModelName.green_slime_small;
+                    modelName = VoxelModelName.NUM_NON;
                     attackRate.Seconds = 1f;
                     bigModelBound = false;
                     break;
                 case 1:
                     modelScale = Ref.rnd.Float(2, 2.2f);
-                    modelName = VoxelModelName.green_slime;
+                    modelName = VoxelModelName.NUM_NON;
                     attackRate.Seconds = 1.6f;
                     bigModelBound = true;
                     break;
                 case 2:
                     modelScale = Ref.rnd.Float(4, 4.2f);
-                    modelName = VoxelModelName.green_slime;
+                    modelName = VoxelModelName.NUM_NON;
                     attackRate.Seconds = 3f;
                     bigModelBound = true;
                     break;

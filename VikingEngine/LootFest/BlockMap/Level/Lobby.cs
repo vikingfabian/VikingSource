@@ -11,28 +11,28 @@ namespace VikingEngine.LootFest.BlockMap.Level
     {
         static readonly VoxelModelName[] EmoForestModels = new VoxelModelName[]
         { 
-            VoxelModelName.ForestTree1,
-            VoxelModelName.ForestTree2,
-            VoxelModelName.ForestTree3,
-            VoxelModelName.ForestTree4,
-            VoxelModelName.ForestTree5,
+//            VoxelModelName.ForestTree1,
+//            VoxelModelName.ForestTree2,
+//            VoxelModelName.ForestTree3,
+//            VoxelModelName.ForestTree4,
+//            VoxelModelName.ForestTree5,
 
-            VoxelModelName.ForestStone1,
-//            VoxelModelName.ForestStone2,
-            VoxelModelName.ForestStone3,
+//            VoxelModelName.ForestStone1,
+////            VoxelModelName.ForestStone2,
+//            VoxelModelName.ForestStone3,
         };
 
         static readonly VoxelModelName[] EmoOpenAreaModels = new VoxelModelName[]
         { 
-            VoxelModelName.ForestTree1,
-            VoxelModelName.ForestTree2,
-            VoxelModelName.ForestStone1,
+            //VoxelModelName.ForestTree1,
+            //VoxelModelName.ForestTree2,
+            //VoxelModelName.ForestStone1,
 
-            VoxelModelName.ForestBurnedTree1,
-            VoxelModelName.ForestBurnedTree2,
-            VoxelModelName.TrollRuin1,
-            VoxelModelName.TrollRuin2,
-            VoxelModelName.TrollRuin3,
+            //VoxelModelName.ForestBurnedTree1,
+            //VoxelModelName.ForestBurnedTree2,
+            //VoxelModelName.TrollRuin1,
+            //VoxelModelName.TrollRuin2,
+            //VoxelModelName.TrollRuin3,
         };
 
         MapSegmentPointer pointer;
@@ -90,7 +90,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                     {
                         case 0:
                             {
-                                addModel(VoxelModelName.GoblinGate2, 0,
+                                addModel(VoxelModelName.NUM_NON, 0,
                                     m.position, IntVector3.NegativeY, true, true);
 
                                 IntVector2 guardPos = m.position + new IntVector2(1, -2);
@@ -251,7 +251,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, HogBossAreaLockId, GO.EnvironmentObj.AreaUnLockType.ConnectedEnemies,
-                goArgs.characterLevel, startHogBossFight, VoxelModelName.locklvl2, Dir4.W);
+                goArgs.characterLevel, startHogBossFight, VoxelModelName.NUM_NON, Dir4.W);
         }
 
         void startHogBossFight()
@@ -322,7 +322,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, ElfBossAreaLockId, GO.EnvironmentObj.AreaUnLockType.ConnectedEnemies,
-                goArgs.characterLevel, startElfBossFight, VoxelModelName.locklvl2, Dir4.N);
+                goArgs.characterLevel, startElfBossFight, VoxelModelName.NUM_NON, Dir4.N);
         }
 
         void startElfBossFight()
@@ -465,17 +465,17 @@ namespace VikingEngine.LootFest.BlockMap.Level
                     switch (m.square.specialIndex)
                     {
                         case 0:
-                            addModel(rnd.Chance(0.6) ? VoxelModelName.MinerTree1 : VoxelModelName.MinerTree2, 0,
+                            addModel(rnd.Chance(0.6) ? VoxelModelName.NUM_NON : VoxelModelName.NUM_NON, 0,
                                 m.position, IntVector3.NegativeY, true, true);
                             break;
                         case 1:
-                            addModel(VoxelModelName.MinerHouse, 0, m.position, IntVector3.Zero, false, true);
+                            addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.Zero, false, true);
                             break;
                         case 2:
-                            addModel(VoxelModelName.minerFence, 0, m.position, IntVector3.NegativeY, false, false);
+                            addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.NegativeY, false, false);
                             break;
                         case 3:
-                            spiderBossWp = addModel(VoxelModelName.MinerMine, 0, m.position, IntVector3.Zero, false, true);
+                            spiderBossWp = addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.Zero, false, true);
                             break;
                     }
                 }
@@ -492,7 +492,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                     new SegmentHeader(SegmentHeadType.Normal, 1, 0, 1, 0), rnd);
                 var pointer = placeSegment(segment, minerAreaFork.getEntranceSqPos(Dir4.S, 0), Dir4.N, 0, OpenAreaLockId);
                 addTerrainModels(pointer.terrainModels, EmoForestModels, rnd);
-                addModel(VoxelModelName.TrollWarningSign, 0, pointer.landMarkIx0, IntVector3.NegativeY, false, false);
+                addModel(VoxelModelName.NUM_NON, 0, pointer.landMarkIx0, IntVector3.NegativeY, false, false);
 
                 spawnPoints.Add(new SpawnPointDelegate(toWorldXZ(pointer.spawnPositions[0].position), createEmoLockGuard, SpawnPointData.Empty, SpawnImportance.Must_0, true));
                 createLockSpawn(pointer, Dir4.S, createEmoLock, EmoFirstLockGroup);
@@ -556,9 +556,9 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 placeMonsterSpawns(pointer, goblinsSpawn, 2);
 
                 //LANDMARKS
-                addModel(VoxelModelName.troll_stoneship, 0, pointer.landMarkIx0, IntVector3.NegativeY, true, true);
-                addModel(VoxelModelName.troll_damagedtower, 0, pointer.landMarkIx1, IntVector3.NegativeY, true, true);
-                addModel(VoxelModelName.Troll_SpiderCave, 0, pointer.landMarkIx2, IntVector3.NegativeY, true, true);
+                addModel(VoxelModelName.NUM_NON, 0, pointer.landMarkIx0, IntVector3.NegativeY, true, true);
+                addModel(VoxelModelName.NUM_NON, 0, pointer.landMarkIx1, IntVector3.NegativeY, true, true);
+                addModel(VoxelModelName.NUM_NON, 0, pointer.landMarkIx2, IntVector3.NegativeY, true, true);
 
                 largeCenterArea = pointer;
             }
@@ -602,7 +602,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 var pointer = placeSegment(segment, largeCenterArea.getEntranceSqPos(Dir4.S, 1), Dir4.N, 0, SecondAreaLockId);
 
                 IntVector2 smithPos = pointer.specialPoints[0].position;
-                addModel(VoxelModelName.weaponsmith_station, 0, smithPos, IntVector3.NegativeY, true, true);
+                addModel(VoxelModelName.NUM_NON, 0, smithPos, IntVector3.NegativeY, true, true);
 
                 smithPos.Y -= 1;
 
@@ -725,9 +725,9 @@ namespace VikingEngine.LootFest.BlockMap.Level
                     if (m.square.specialIndex == 0)
                     {
                         //Key = joint9
-                        var modelWp = addModel(VoxelModelName.GoblinKeyGuard2, 0, m.position, IntVector3.Zero, true, true);
+                        var modelWp = addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.Zero, true, true);
 
-                        var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.GoblinKeyGuard2, modelWp, true, new Range(0, 3)));
+                        var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.NUM_NON, modelWp, true, new Range(0, 3)));
 
                         {//Guard 1
                             VikingEngine.LootFest.GO.Characters.AI.PatrolRoute patrol = new GO.Characters.AI.PatrolRoute(route, true, 0);
@@ -888,7 +888,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, HorseAreaId2, GO.EnvironmentObj.AreaUnLockType.ConnectedEnemies,
-                goArgs.characterLevel, null, VoxelModelName.groupLock, Dir4.N);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.N);
         }
 
         void createHorseLock2(GoArgs goArgs)
@@ -896,7 +896,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, HorseAreaId3, GO.EnvironmentObj.AreaUnLockType.ThreeKeys,
-                goArgs.characterLevel, null, VoxelModelName.threelock, Dir4.N);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.N);
         }
 
         void createHorseLock3(GoArgs goArgs)
@@ -904,7 +904,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, HorseAreaId4, GO.EnvironmentObj.AreaUnLockType.ConnectedEnemies,
-                goArgs.characterLevel, null, VoxelModelName.groupLock, Dir4.N);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.N);
         }
 
         protected void createHorseBoss(GoArgs goArgs)
@@ -979,7 +979,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, BarrelsAreaId2, GO.EnvironmentObj.AreaUnLockType.ThreeKeys,
-                0, null, VoxelModelName.threelock, Dir4.E);
+                0, null, VoxelModelName.NUM_NON, Dir4.E);
         }
 
         void doorToBarrelBoss(VikingEngine.LootFest.GO.GoArgs goArgs)
@@ -987,7 +987,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, BarrelsAreaId3, GO.EnvironmentObj.AreaUnLockType.ThreeKeys,
-                0, startBarrelBossFight, VoxelModelName.threelock, Dir4.E);
+                0, startBarrelBossFight, VoxelModelName.NUM_NON, Dir4.E);
         }
 
         void startBarrelBossFight()
@@ -1027,11 +1027,11 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 {
                     if (m.square.specialIndex == 0)
                     {
-                        addModel(VoxelModelName.farmhouse1, 0, m.position, IntVector3.NegativeY, false, true);
+                        addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.NegativeY, false, true);
                     }
                     else if (m.square.specialIndex == 1)
                     {
-                        addModel(VoxelModelName.FenceYardWide, 0, m.position, IntVector3.NegativeY, false, false);
+                        addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.NegativeY, false, false);
 
                         addSpawn(new SpawnPointDelegate(toCenterWorldXZ(m.position), null,
                             new SpawnPointData(GameObjectType.CritterPig), SpawnImportance.LowSuggest_3, true, 3, false));
@@ -1062,7 +1062,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 {
                     if (m.square.specialIndex == 0)
                     {
-                        addModel(VoxelModelName.FarmTownHouse1, 0, m.position, IntVector3.Zero, false, true);
+                        addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.Zero, false, true);
                     }
                 }
 
@@ -1103,31 +1103,31 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 switch (m.square.specialIndex)
                 {
                     default://0
-                        addModel(VoxelModelName.townwall_wall, m.square.specialDir, m.position,
+                        addModel(VoxelModelName.NUM_NON, m.square.specialDir, m.position,
                             IntVector3.NegativeY, false, true);
                         break;
                     case 1:
-                        addModel(VoxelModelName.townwall_corner, m.square.specialDir, m.position,
+                        addModel(VoxelModelName.NUM_NON, m.square.specialDir, m.position,
                             IntVector3.NegativeY, true, true);
                         break;
                     case 2:
-                        addModel(VoxelModelName.townwall_walltower, m.square.specialDir, m.position,
+                        addModel(VoxelModelName.NUM_NON, m.square.specialDir, m.position,
                             IntVector3.NegativeY, true, true);
                         break;
                     case 3:
-                        addModel(VoxelModelName.townwall_gate, m.square.specialDir, m.position,
+                        addModel(VoxelModelName.NUM_NON, m.square.specialDir, m.position,
                             IntVector3.NegativeY, true, true);
                         break;
 
                     case 10:
-                        addModel(rnd.Chance(0.7) ? VoxelModelName.TownHouse2 : VoxelModelName.TownHouse3, 0,
+                        addModel(rnd.Chance(0.7) ? VoxelModelName.NUM_NON : VoxelModelName.NUM_NON, 0,
                             m.position, IntVector3.NegativeY, false, true);
                         break;
                     case 11:
-                        addModel(VoxelModelName.TownLamp, 0, m.position, IntVector3.NegativeY, false, true);
+                        addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.NegativeY, false, true);
                         break;
                     case 12:
-                        addModel(VoxelModelName.TownStatue, 0, m.position, IntVector3.NegativeY, true, true);
+                        addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.NegativeY, true, true);
                         break;
                 }
 
@@ -1160,7 +1160,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             }
 
             IntVector2 bossEntrance = pointer.getEntranceSqPos(Dir4.W);
-            teleport(bossEntrance, TeleportLocationId.BossCastle, Dir4.W, VoxelModelName.DoorToFinalLevel2);
+            teleport(bossEntrance, TeleportLocationId.BossCastle, Dir4.W, VoxelModelName.NUM_NON);
             bossEntrance.X += 2;
             //LfLib.Location(TeleportLocationId.DoorToBossCastle).wp = new Map.WorldPosition(new Vector2toV3(toWorldXZ(bossEntrance)));
             setTeleportLocation(TeleportLocationId.DoorToBossCastle, toWorldXZ(bossEntrance));
@@ -1306,8 +1306,8 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 {
                     if (m.square.specialIndex == 0)
                     {
-                        var modelWp = addModel(VoxelModelName.GoblinPatrolWall1, 0, m.position, IntVector3.NegativeY, false, true);
-                        var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.GoblinPatrolWall1, modelWp, false, new Range(0, 1)));
+                        var modelWp = addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.NegativeY, false, true);
+                        var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.NUM_NON, modelWp, false, new Range(0, 1)));
                         VikingEngine.LootFest.GO.Characters.AI.PatrolRoute patrol = new GO.Characters.AI.PatrolRoute(route, false, 0);
 
                         SpawnPointDelegate spawn = new SpawnPointDelegate(jointsSorted[0].wp, null,
@@ -1318,7 +1318,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                     }
                     else
                     {
-                        var modelWp = addModel(VoxelModelName.GoblinPost1, 0, m.position, IntVector3.NegativeY, true, false);
+                        var modelWp = addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.NegativeY, true, false);
                         modelWp.Z -= 4;
                         var spawn = new SpawnPointDelegate(modelWp, null,
                             new SpawnPointData(GameObjectType.GoblinBerserk), SpawnImportance.LowSuggest_3, true);
@@ -1359,7 +1359,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 var pointer = placeSegment(segment, goblinGuardWalls.getEntranceSqPos(Dir4.E, 0), Dir4.W, 0, OpenAreaLockId);
 
                 addTerrainModels(pointer.terrainModels, NormalDefaultModels, rnd);
-                addModel(VoxelModelName.GoblinDogHouse1, 0, pointer.landMarkIx0, IntVector3.NegativeY, false, false);
+                addModel(VoxelModelName.NUM_NON, 0, pointer.landMarkIx0, IntVector3.NegativeY, false, false);
                 placeMonsterSpawns(pointer, spawns);
 
 
@@ -1375,9 +1375,9 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 var pointer = placeSegment(segment, dogPark.getEntranceSqPos(Dir4.S, 0), Dir4.N, 0, OpenAreaLockId);
 
                 //Key = joint9
-                var modelWp = addModel(VoxelModelName.GoblinKeyGuard1, 0, pointer.spawnPositions[0].position, IntVector3.Zero, true, true);
+                var modelWp = addModel(VoxelModelName.NUM_NON, 0, pointer.spawnPositions[0].position, IntVector3.Zero, true, true);
 
-                var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.GoblinKeyGuard1, modelWp, true, new Range(0, 3)));
+                var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.NUM_NON, modelWp, true, new Range(0, 3)));
 
                 {//Guard 1
                     VikingEngine.LootFest.GO.Characters.AI.PatrolRoute patrol = new GO.Characters.AI.PatrolRoute(route, true, 0);
@@ -1412,18 +1412,18 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 //0: boss
                 //1: ground troops
                 //2: tower troops
-                var fortWp = addModel(VoxelModelName.GoblinEndFortress1, 0, pointer.specialPoints[0].position, IntVector3.NegativeY, true, true);
+                var fortWp = addModel(VoxelModelName.NUM_NON, 0, pointer.specialPoints[0].position, IntVector3.NegativeY, true, true);
 
-                getModelJoints(VoxelModelName.GoblinEndFortress1, fortWp, true, 0);
+                getModelJoints(VoxelModelName.NUM_NON, fortWp, true, 0);
                 spawnPoints.Add(new SpawnPointDelegate(joints[0].wp, createGoblinBoss, SpawnPointData.Empty, SpawnImportance.Must_0, true, 1, true));
 
-                getModelJoints(VoxelModelName.GoblinEndFortress1, fortWp, true, 1);
+                getModelJoints(VoxelModelName.NUM_NON, fortWp, true, 1);
                 foreach (var m in joints)
                 {
                     spawnPoints.Add(new SpawnPointDelegate(m.wp, null, new SpawnPointData(GameObjectType.GoblinLineman), SpawnImportance.HighSuggest_2, true, 1, true));
                 }
 
-                getModelJoints(VoxelModelName.GoblinEndFortress1, fortWp, true, 2);
+                getModelJoints(VoxelModelName.NUM_NON, fortWp, true, 2);
                 foreach (var m in joints)
                 {
                     spawnPoints.Add(new SpawnPointDelegate(m.wp, null, new SpawnPointData(GameObjectType.GoblinScout), SpawnImportance.LowSuggest_3, true, 1, true));
@@ -1467,7 +1467,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, GoblinsBossAreaLockId, GO.EnvironmentObj.AreaUnLockType.Key,
-                goArgs.characterLevel, null, VoxelModelName.locklvl2, Dir4.W);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.W);
         }
 
         void createGoblinBoss(GoArgs goArgs)
@@ -1514,7 +1514,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, SecondAreaLockId, GO.EnvironmentObj.AreaUnLockType.ConnectedEnemies,
-                goArgs.characterLevel, null, VoxelModelName.groupLock, Dir4.N);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.N);
         }
 
         void createEmoBoss(GoArgs goArgs)
@@ -1544,7 +1544,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
         void placeMiningSpot(IntVector2 xz, bool minerNPC)
         {
             // mining_pileground
-            addModelOnWorldXZ(VoxelModelName.mining_pileground, 0, xz, IntVector3.NegativeY, true, true);
+            addModelOnWorldXZ(VoxelModelName.NUM_NON, 0, xz, IntVector3.NegativeY, true, true);
 
             var spawn = new SpawnPointDelegate(xz, createMiningSpot,
                 new SpawnPointData(GameObjectType.MiningSpot, lib.BoolToInt01(minerNPC)), SpawnImportance.Must_0, true, 1, true);
@@ -1575,17 +1575,17 @@ namespace VikingEngine.LootFest.BlockMap.Level
         {
             var result = new List<VoxelModelName>
                 {
-                    VoxelModelName.TownHouse2,
-                    VoxelModelName.TownHouse3,
+                    //VoxelModelName.TownHouse2,
+                    //VoxelModelName.TownHouse3,
 
-                    VoxelModelName.TownStatue,
-                    VoxelModelName.TownLamp,
+                    //VoxelModelName.TownStatue,
+                    //VoxelModelName.TownLamp,
 
-                    VoxelModelName.townwall_corner,
-                    VoxelModelName.townwall_gate,
-                    VoxelModelName.townwall_wall,
-                    VoxelModelName.townwall_walltower,
-                    //VoxelModelName.DoorToLevelGoblins,
+                    //VoxelModelName.townwall_corner,
+                    //VoxelModelName.townwall_gate,
+                    //VoxelModelName.townwall_wall,
+                    //VoxelModelName.townwall_walltower,
+                    ////VoxelModelName.DoorToLevelGoblins,
                     //VoxelModelName.DoorToLevelMount,
                     //VoxelModelName.DoorToLevelTroll,
                     //VoxelModelName.DoorToLevelWolf,
@@ -1596,57 +1596,57 @@ namespace VikingEngine.LootFest.BlockMap.Level
                     //VoxelModelName.DoorToLevelElf,
                     //VoxelModelName.DoorToLevelSkeletonDungeon,
                     //VoxelModelName.DoorToLevelSpider,
-                    VoxelModelName.DoorToFinalLevel2,
-                    //VoxelModelName.DoorToChallengeZombies,
-                    //VoxelModelName.DoorToChallengeFuture,
+                    //VoxelModelName.DoorToFinalLevel2,
+                    ////VoxelModelName.DoorToChallengeZombies,
+                    ////VoxelModelName.DoorToChallengeFuture,
 
-                    //VoxelModelName.DoorToLobby,
-                    VoxelModelName.GoblinGate1,
-                    VoxelModelName.GoblinGate2,
-                    VoxelModelName.GoblinPatrolWall1,
-                    VoxelModelName.GoblinFortress1,
-                    VoxelModelName.GoblinEndFortress1,
-                    VoxelModelName.GoblinTent,
-                    VoxelModelName.GoblinKeyGuard1,
-                    VoxelModelName.GoblinKeyGuard2,
-                    VoxelModelName.GoblinPost1,
-                    VoxelModelName.goblin_hut,
-                    VoxelModelName.GoblinDogHouse1,
+                    ////VoxelModelName.DoorToLobby,
+                    //VoxelModelName.GoblinGate1,
+                    //VoxelModelName.GoblinGate2,
+                    //VoxelModelName.GoblinPatrolWall1,
+                    //VoxelModelName.GoblinFortress1,
+                    //VoxelModelName.GoblinEndFortress1,
+                    //VoxelModelName.GoblinTent,
+                    //VoxelModelName.GoblinKeyGuard1,
+                    //VoxelModelName.GoblinKeyGuard2,
+                    //VoxelModelName.GoblinPost1,
+                    //VoxelModelName.goblin_hut,
+                    //VoxelModelName.GoblinDogHouse1,
                 
-                    VoxelModelName.weaponsmith_station,
-                    VoxelModelName.MinerHouse,
-                    VoxelModelName.MinerMine,
-                    VoxelModelName.MinerTree1,
-                    VoxelModelName.MinerTree2,
-                    VoxelModelName.minerFence,
-                    VoxelModelName.TrollWarningSign,
+                    //VoxelModelName.weaponsmith_station,
+                    //VoxelModelName.MinerHouse,
+                    //VoxelModelName.MinerMine,
+                    //VoxelModelName.MinerTree1,
+                    //VoxelModelName.MinerTree2,
+                    //VoxelModelName.minerFence,
+                    //VoxelModelName.TrollWarningSign,
 
-                    VoxelModelName.ForestTree1,
-                    VoxelModelName.ForestTree2,
-                    VoxelModelName.ForestTree3,
-                    VoxelModelName.ForestTree4,
-                    VoxelModelName.ForestTree5,
+                    //VoxelModelName.ForestTree1,
+                    //VoxelModelName.ForestTree2,
+                    //VoxelModelName.ForestTree3,
+                    //VoxelModelName.ForestTree4,
+                    //VoxelModelName.ForestTree5,
 
-                    VoxelModelName.ForestStone1,
-                    VoxelModelName.ForestStone2,
-                    VoxelModelName.ForestStone3,
+                    //VoxelModelName.ForestStone1,
+                    //VoxelModelName.ForestStone2,
+                    //VoxelModelName.ForestStone3,
 
-                    VoxelModelName.ForestBurnedTree1,
-                    VoxelModelName.ForestBurnedTree2,
-                    VoxelModelName.TrollRuin1,
-                    VoxelModelName.TrollRuin2,
-                    VoxelModelName.TrollRuin3,
-                    VoxelModelName.troll_damagedtower,
-                    VoxelModelName.Troll_SpiderCave,
-                    VoxelModelName.troll_stoneship,
-                    VoxelModelName.mining_pileground,
+                    //VoxelModelName.ForestBurnedTree1,
+                    //VoxelModelName.ForestBurnedTree2,
+                    //VoxelModelName.TrollRuin1,
+                    //VoxelModelName.TrollRuin2,
+                    //VoxelModelName.TrollRuin3,
+                    //VoxelModelName.troll_damagedtower,
+                    //VoxelModelName.Troll_SpiderCave,
+                    //VoxelModelName.troll_stoneship,
+                    //VoxelModelName.mining_pileground,
 
-                    //VoxelModelName.DoorToLobby,
-                    VoxelModelName.uppath,
-                    VoxelModelName.downpath,
-                    VoxelModelName.farmhouse1,
-                    VoxelModelName.FarmTownHouse1,
-                    VoxelModelName.FenceYardWide,
+                    ////VoxelModelName.DoorToLobby,
+                    //VoxelModelName.uppath,
+                    //VoxelModelName.downpath,
+                    //VoxelModelName.farmhouse1,
+                    //VoxelModelName.FarmTownHouse1,
+                    //VoxelModelName.FenceYardWide,
 
                 };
             result.AddRange(NormalDefaultModels);

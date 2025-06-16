@@ -37,9 +37,9 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
             if (VoxelObjName != VoxelModelName.NUM_NON)
             {
                 bool center = false;
-                if (VoxelObjName == VoxelModelName.throw_axe || 
-                    VoxelObjName == VoxelModelName.enemy_projectile_green || 
-                    VoxelObjName == VoxelModelName.EnemyProjectile)
+                if (VoxelObjName == VoxelModelName.NUM_NON || 
+                    VoxelObjName == VoxelModelName.NUM_NON || 
+                    VoxelObjName == VoxelModelName.NUM_NON)
                 {
                     center = true;
                 }

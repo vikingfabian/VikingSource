@@ -186,7 +186,7 @@ namespace VikingEngine.DSSWars.Players
             }
             
 
-            faction.profile.gameStartInit();
+            faction.flagProfile.gameStartInit();
             faction.displayInFullOverview = true;
 
             playerData = Engine.XGuide.GetPlayer(playerindex);

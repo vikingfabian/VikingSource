@@ -36,13 +36,13 @@ namespace VikingEngine.LootFest.Map
 
         public BackgroundScenery()
         {
-            bgVoxModel = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.scenery_test3, 
+            bgVoxModel = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 
                 2900, 0, false, false); 
             bgVoxModel.UseCameraCulling = false; 
 
             if (Ref.rnd.Chance(0.01f))
             {
-                angel = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.angel_watch,
+                angel = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                     6f, 0, false, true);
             }
 

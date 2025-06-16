@@ -11,7 +11,7 @@ namespace VikingEngine.LootFest.GO.Characters
     class GoblinBerserk : AbsGoblin
     {
         public GoblinBerserk(GoArgs args)
-            : base(args, VoxelModelName.goblin_berserk)
+            : base(args, VoxelModelName.NUM_NON)
         {
             goblinBoneSword();
             aggresivity = HumanoidEnemyAgressivity.Berserk_4;

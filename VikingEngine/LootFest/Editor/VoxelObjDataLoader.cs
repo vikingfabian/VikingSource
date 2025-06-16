@@ -264,30 +264,30 @@ namespace VikingEngine.LootFest.Editor
 
             string folder;
 
-            if (name > VoxelModelName.CATEGORY_WARS_6)
+            if (name > VoxelModelName.CATEGORY_WARS_1)
             {
                 folder = LfLib.ModelsCategoryWars;
             }
-            else if (name > VoxelModelName.CATEGORY_OTHER_5)
-            {
-                folder = LfLib.ModelsCategoryOther;
-            }
-            else if (name > VoxelModelName.CATEGORY_BLOCKPATTERN_4)
-            {
-                folder = LfLib.ModelsCategoryBlockpattern;
-            }
-            else if (name > VoxelModelName.CATEGORY_TERRAIN_3)
-            {
-                folder = LfLib.ModelsCategoryTerrain;
-            }
-            else if (name > VoxelModelName.CATEGORY_APPEARANCE_2)
-            {
-                folder = LfLib.ModelsCategoryAppearance;
-            }
-            else if (name > VoxelModelName.CATEGORY_WEAPON_1)
-            {
-                folder = LfLib.ModelsCategoryWeapon;
-            }
+            //else if (name > VoxelModelName.CATEGORY_OTHER_5)
+            //{
+            //    folder = LfLib.ModelsCategoryOther;
+            //}
+            //else if (name > VoxelModelName.CATEGORY_BLOCKPATTERN_4)
+            //{
+            //    folder = LfLib.ModelsCategoryBlockpattern;
+            //}
+            //else if (name > VoxelModelName.CATEGORY_TERRAIN_3)
+            //{
+            //    folder = LfLib.ModelsCategoryTerrain;
+            //}
+            //else if (name > VoxelModelName.CATEGORY_APPEARANCE_2)
+            //{
+            //    folder = LfLib.ModelsCategoryAppearance;
+            //}
+            //else if (name > VoxelModelName.CATEGORY_WEAPON_1)
+            //{
+            //    folder = LfLib.ModelsCategoryWeapon;
+            //}
             else
             {
                 folder = LfLib.ModelsCategoryCharacter;

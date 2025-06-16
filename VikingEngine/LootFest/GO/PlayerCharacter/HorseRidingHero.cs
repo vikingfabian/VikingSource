@@ -35,9 +35,9 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
 
             currentWalkingFrame = new CirkleCounterUp(WalkingFramesCount - 1);
 
-            new HeroAppearance(VoxelModelName.horse, true, Vector3.Up * -1.5f, storage, player.SuitAppearance, setModel, this.Type);
+            new HeroAppearance(VoxelModelName.NUM_NON, true, Vector3.Up * -1.5f, storage, player.SuitAppearance, setModel, this.Type);
 
-            new HeroAppearance(VoxelModelName.riding_hero2, true, Vector3.Zero, storage, player.SuitAppearance, ridingHeroModel.SetModel, GameObjectType.Hero);
+            new HeroAppearance(VoxelModelName.NUM_NON, true, Vector3.Zero, storage, player.SuitAppearance, ridingHeroModel.SetModel, GameObjectType.Hero);
             
         }
 

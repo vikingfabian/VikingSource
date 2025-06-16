@@ -24,7 +24,7 @@ namespace VikingEngine.LootFest.GO.NPC
             if (lobby != null && lobby.friend)
             {
                 //damageColors  
-                modelName = VoxelModelName.lobby_character_friend;
+                modelName = VoxelModelName.NUM_NON;
                 
                 damageColors = new Effects.BouncingBlockColors(
                     Data.MaterialType.pastel_magenta, 
@@ -33,7 +33,7 @@ namespace VikingEngine.LootFest.GO.NPC
             }
             else
             {
-                modelName = VoxelModelName.lobby_character;
+                modelName = VoxelModelName.NUM_NON;
 
                 damageColors = new Effects.BouncingBlockColors(
                     Data.MaterialType.dark_cyan_blue,
