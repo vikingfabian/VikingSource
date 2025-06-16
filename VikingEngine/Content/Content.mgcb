@@ -2062,6 +2062,18 @@
 #begin Version Number.txt
 /copy:Version Number.txt
 
+#begin VoxelModel/Character/modsoldier_body1.vox
+/copy:VoxelModel/Character/modsoldier_body1.vox
+
+#begin VoxelModel/Character/modsoldier_debug.vox
+/copy:VoxelModel/Character/modsoldier_debug.vox
+
+#begin VoxelModel/Character/modsoldier_face1.vox
+/copy:VoxelModel/Character/modsoldier_face1.vox
+
+#begin VoxelModel/Character/modsoldier_leg1.vox
+/copy:VoxelModel/Character/modsoldier_leg1.vox
+
 #begin VoxelModel/LfWars/armybanner.vox
 /copy:VoxelModel/LfWars/armybanner.vox
 

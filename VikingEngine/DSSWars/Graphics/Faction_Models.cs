@@ -14,8 +14,8 @@ namespace VikingEngine.DSSWars
 {
     partial class Faction
     {
-        Dictionary<VoxelModelName, Graphics.VoxelModel> models_loaded =
-           new Dictionary<VoxelModelName, Graphics.VoxelModel>();
+        Dictionary<int, Graphics.VoxelModel> models_loaded =
+           new Dictionary<int, Graphics.VoxelModel>();
 
         List<VoxelModelName> processStarted = new List<VoxelModelName>(8);
 
@@ -52,11 +52,29 @@ namespace VikingEngine.DSSWars
             return instance;
         }
 
+        public VoxelModelInstance_Pooled AutoLoadModelInstance_character(SoldierModelData modelData,
+          float scale = 1f)
+        {
+
+            VoxelModelInstance_Pooled instance = DssRef.models.NextInstance_Pooled();
+#if DEBUG
+            instance.DebugName = modelData.ToString() + ", fac" + parentArrayIndex.ToString();
+#endif
+            instance.scale.X = scale;
+            instance.scale.Y = 0;
+
+            //getOrCreateMaster(modelData.GetHashCode(), instance);
+
+            Ref.draw.drawBatch.Add(instance);
+
+            return instance;
+        }
+
         private void getOrCreateMaster(VoxelModelName name, VoxelModelInstance instance)
         {
             Graphics.VoxelModel master = null;
 
-            models_loaded.TryGetValue(name, out master);
+            models_loaded.TryGetValue((int)name, out master);
 
             if (master != null)
             {
@@ -80,7 +98,7 @@ namespace VikingEngine.DSSWars
 
                         generateFromGrid_asynch(name, grid);
 
-                        while (!models_loaded.TryGetValue(name, out master))
+                        while (!models_loaded.TryGetValue((int)name, out master))
                         {
                             if (++numLoops > 1000)
                             {
@@ -134,9 +152,9 @@ namespace VikingEngine.DSSWars
                 var model = new FactionModelBuilder().buildModel(this, name, grid);
                 lock (models_loaded)
                 {
-                    if (!models_loaded.ContainsKey(name))
+                    if (!models_loaded.ContainsKey((int)name))
                     {
-                        models_loaded.Add(name, model);
+                        models_loaded.Add((int)name, model);
                     }
                 }
             }

@@ -61,6 +61,11 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.armystand_detail,
                 VoxelModelName.cityicon,
                 VoxelModelName.citybanner,
+
+                VoxelModelName.modsoldier_debug,
+                VoxelModelName.modsoldier_body1,
+                VoxelModelName.modsoldier_face1,
+                VoxelModelName.modsoldier_leg1,
             };
 
             var units = new AllUnits();

@@ -31,15 +31,19 @@ namespace VikingEngine.LootFest
     {
         //--
         CATEGORY_CHARACTER_0,
-#region CHARACTER
-        
-#endregion
+        #region CHARACTER
+        modsoldier_debug,
+        modsoldier_body1,
+        modsoldier_face1,
+        modsoldier_leg1,
 
-//        //--
-//        CATEGORY_WEAPON_1,
-//#region WEAPON
+        #endregion
 
-//#endregion
+        //        //--
+        //        CATEGORY_WEAPON_1,
+        //#region WEAPON
+
+        //#endregion
 
 
         //--

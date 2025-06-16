@@ -95,7 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\DSS\Map\" />
-    <Folder Include="Content\VoxelModel\Character\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />
