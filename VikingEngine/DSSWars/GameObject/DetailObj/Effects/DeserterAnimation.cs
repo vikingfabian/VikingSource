@@ -21,9 +21,8 @@ namespace VikingEngine.DSSWars.GameObject
             walkingAnimation = WalkingAnimation.Standard;
             walkingAnimation.randomStartFrame();
             this.movedir = movedir;
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_deserter, true,
-                DssConst.Men_StandardModelScale,
-                true);
+            model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_deserter,
+                DssConst.Men_StandardModelScale);
 
             model.position = soldier.position;
             model.Rotation = rotation;

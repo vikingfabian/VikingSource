@@ -103,8 +103,8 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         {
             walkingAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Pig, true,
-                DssConst.Men_StandardModelScale * 0.5f, true);
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.Pig,
+                DssConst.Men_StandardModelScale * 0.5f);
         }
 
         protected override void sound()
@@ -115,6 +115,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             }
         }
     }
+
     class Hen : AbsLivestock
     {
         public Hen(IntVector2 tilepos, Vector3 topCenterWp)
@@ -124,8 +125,8 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         {
             walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Hen, true,
-                DssConst.Men_StandardModelScale * 0.3f, true);
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.Hen,
+                DssConst.Men_StandardModelScale * 0.3f);
         }
 
         protected override void sound()
@@ -146,8 +147,8 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         {
             walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Pheasant, true,
-                DssConst.Men_StandardModelScale * 0.6f, true);
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.Pheasant,
+                DssConst.Men_StandardModelScale * 0.6f);
         }
 
         protected override void sound()

@@ -191,8 +191,8 @@ namespace VikingEngine.DSSWars.Map
 
             void addStick(Vector3 pos, int frame)
             {
-                var stick = DssRef.models.ModelInstance(VoxelModelName.wars_borderstick,true,
-                    DssConst.Men_StandardModelScale * 1.5f, true, true, true);
+                var stick = DssRef.models.ModelInstance_drawbatch(VoxelModelName.wars_borderstick,
+                    DssConst.Men_StandardModelScale * 1.5f);
                 stick.position = pos;
                 stick.Frame = frame;
                 imageGroup.Add(stick);

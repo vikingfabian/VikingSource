@@ -20,24 +20,47 @@ namespace VikingEngine.DSSWars
         List<VoxelModelName> processStarted = new List<VoxelModelName>(8);
 
         public Graphics.VoxelModelInstance AutoLoadModelInstance(VoxelModelName name,
-           float scale = 1f,          
-           bool addToRender = false)
+           float scale = 1f, bool addToRender = false)
         {
-            
+
             Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
-            
+
             instance.scale.X = scale;
             instance.scale.Y = 0;
 #if DEBUG
             instance.DebugName = name.ToString();
 #endif
+            getOrCreateMaster(name, instance);
+            return instance;
+        }
+
+        public VoxelModelInstance_Pooled AutoLoadModelInstance_batched(VoxelModelName name,
+           float scale = 1f)
+        {
+
+            VoxelModelInstance_Pooled instance = DssRef.models.NextInstance_Pooled();
+#if DEBUG
+            instance.DebugName = name.ToString() + ", fac" + parentArrayIndex.ToString();
+#endif
+            instance.scale.X = scale;
+            instance.scale.Y = 0;
+
+            getOrCreateMaster(name, instance);
+
+            Ref.draw.drawBatch.Add(instance);
+
+            return instance;
+        }
+
+        private void getOrCreateMaster(VoxelModelName name, VoxelModelInstance instance)
+        {
             Graphics.VoxelModel master = null;
 
             models_loaded.TryGetValue(name, out master);
 
             if (master != null)
             {
-                setMaster(instance, master);    
+                setMaster(instance, master);
             }
             else
             {
@@ -61,26 +84,22 @@ namespace VikingEngine.DSSWars
                         {
                             if (++numLoops > 1000)
                             {
-                                lib.DoNothing();
+                                //lib.DoNothing();
+                                BlueScreen.ThreadException = new EndlessLoopException("Load faction master " + name);
                             }
                             await Task.Delay(100);
                         }
 
-                        if (master == null)
-                        {
-                            lib.DoNothing();
-                        }
                         setMaster(instance, master);
                     }
                     catch (Exception ex)
                     {
                         BlueScreen.ThreadException = ex;
                     }
-                   
+
                 });
 
             }
-            return instance;
         }
 
         void setMaster(Graphics.VoxelModelInstance instance, Graphics.VoxelModel master)

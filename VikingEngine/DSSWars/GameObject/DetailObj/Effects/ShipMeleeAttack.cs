@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             posDiff = ship.soldierData.modelScale * offset;
 
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipmelee, true, DssConst.Men_StandardModelScale * 2f, true);
+            model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_shipmelee, DssConst.Men_StandardModelScale * 2f);
             model.Frame = frame;
             model.AddToRender(DrawGame.UnitDetailLayer);
 

@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.GameObject
            : base(soldier)
         {
           
-           horsemodel = DssRef.models.ModelInstance(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, true, DssConst.Men_StandardModelScale * 1.5f,true);
+           horsemodel = DssRef.models.ModelInstance_drawbatch(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.5f);
            //horsemodel.AddToRender(DrawGame.UnitDetailLayer);
 
            walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames*2f);
@@ -218,8 +218,8 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public HorseBanner(Faction faction, float soldierScale)
         {
-            model = faction.AutoLoadModelInstance(
-               modelName(), soldierScale * 1f, true);
+            model = faction.AutoLoadModelInstance_batched(
+               modelName(), soldierScale * 1f);
             diff = new Vector3(-0.12f, 0.15f, -0.05f) * soldierScale;
         }
 

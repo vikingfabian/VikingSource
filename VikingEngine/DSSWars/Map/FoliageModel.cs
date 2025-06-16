@@ -22,15 +22,15 @@ namespace VikingEngine.DSSWars.Map
 
         public override void addToRender()
         {
-            model = faction.AutoLoadModelInstance(
-                LootFest.VoxelModelName.wars_flag, scale, true);
+            model = faction.AutoLoadModelInstance_batched(
+                LootFest.VoxelModelName.wars_flag, scale);
             model.position = pos;
             model.Frame = setFrame;
         }
 
         public override void DeleteMe()
         {
-            model?.DeleteMe();
+            model?.preRemoveFromDrawBatch();
         }
     }
 
@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Map
 
         virtual public void addToRender()
         {
-            model = DssRef.models.ModelInstance( modelName, true, scale, true);
+            model = DssRef.models.ModelInstance_drawbatch(modelName, scale);
 
             if (setFrame < 0)
             {
@@ -80,8 +80,9 @@ namespace VikingEngine.DSSWars.Map
         {
             if (model != null)
             {
+                model.preRemoveFromDrawBatch();
                 //model.Visible = false;//.DeleteMe();
-                DssRef.models.recycle(ref model, true);
+                //DssRef.models.recycle(ref model, true);
             }
         }
     }

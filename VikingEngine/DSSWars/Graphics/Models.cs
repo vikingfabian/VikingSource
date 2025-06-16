@@ -201,24 +201,70 @@ namespace VikingEngine.DSSWars
 
             if (instance != null)
             {
-                //int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
-                //if (!instance.InRenderList && instance.inRenderLayer != lay )
-                //{
-                //    lib.DoNothing();
-                //}
-                if (allowRecycle)
+                if (detailLayer)
                 {
-                    instance.Visible = false;
-                    instance.Rotation = RotationQuarterion.Identity;
-                    DssRef.state.modelPool(detailLayer).Push(instance);
+                    //if (allowRecycle)
+                    //{
+                    //    instance.Visible = false;
+                    //    instance.Rotation = RotationQuarterion.Identity;
+                    //    DssRef.state.modelPool(detailLayer).Push(instance);
+                    //}
+                    
+                    instance.SetInRender(false);
                 }
                 else
-                { 
-                    instance.DeleteMe();
+                {
+
+                    if (allowRecycle)
+                    {
+                        instance.Visible = false;
+                        instance.Rotation = RotationQuarterion.Identity;
+                        DssRef.state.modelPool(detailLayer).Push(instance);
+                    }
+                    else
+                    {
+                        instance.DeleteMe();
+                    }
                 }
             }
-
+            
             instance = null;
+        }
+
+        public VoxelModelInstance_Pooled NextInstance_Pooled()
+        {
+            VoxelModelInstance_Pooled instance;
+            if (DssRef.state.voxelModelInstancesPooled.TryPop(out instance))
+            {
+                instance.Pool_Reset();
+            }
+            else
+            {
+                instance = new VoxelModelInstance_Pooled(true);
+            }
+            return instance;
+        }
+
+        public VoxelModelInstance_Pooled ModelInstance_drawbatch(
+            VoxelModelName name,
+            float scale = 1f)
+        {
+            VoxelModelInstance_Pooled instance = NextInstance_Pooled();
+           
+#if DEBUG
+            instance.DebugName = name.ToString();
+#endif
+
+            Graphics.VoxelModel master = voxelModels[name];
+            instance.SetMaster(master);
+            if (scale > 0)
+            {
+                instance.scale = VectorExt.V3(instance.SizeToScale * scale);
+            }
+
+            Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);               
+            
+            return instance;        
         }
 
         public Graphics.VoxelModelInstance ModelInstance(            
@@ -244,16 +290,19 @@ namespace VikingEngine.DSSWars
             {
                 instance = new Graphics.VoxelModelInstance(null, false);
                 if (addToRender)
-                {
-                    int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
+                {                    
+                    if (!detailLayer)
+                    {
+                        int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
 
-                    if (async)
-                    {
-                        Ref.update.AddSyncAction(new SyncAction1Arg<int>(instance.AddToRender, lay));
-                    }
-                    else
-                    {
-                        instance.AddToRender(lay);
+                        if (async)
+                        {
+                            Ref.update.AddSyncAction(new SyncAction1Arg<int>(instance.AddToRender, lay));
+                        }
+                        else
+                        {
+                            instance.AddToRender(lay);
+                        }
                     }
                 }
             }
@@ -267,6 +316,20 @@ namespace VikingEngine.DSSWars
             if (scale > 0)
             {
                 instance.scale = VectorExt.V3(instance.SizeToScale * scale);
+            }
+
+            if (addToRender && detailLayer)
+            {
+                if (async)
+                {
+                    Ref.update.AddSyncAction(new SyncAction(() => {
+                        Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);
+                    }));
+                }
+                else
+                {
+                    Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);
+                }
             }
 
             return instance;

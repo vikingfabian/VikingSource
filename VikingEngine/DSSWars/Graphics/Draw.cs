@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars
             //TODO SurfaceFormat.Single
             shadowMapRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 2048, 2048, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
 
-            
+            drawBatch = new DrawBatchCollection();
         }
 
         //public static void LoadContent()
@@ -162,16 +162,16 @@ namespace VikingEngine.DSSWars
             switch (lay.type)
             {
                 case Map.MapDetailLayerType.UnitDetail1:
-                    DebugExtensions.TimeMeasure time = new DebugExtensions.TimeMeasure();
+                    //DebugExtensions.TimeMeasure time = new DebugExtensions.TimeMeasure();
                     DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;                   
                     
                     DrawGenerated(UnitDetailLayer, cameraIndex);
-                    
-                    
+                    drawBatch.RemoveAndDraw(cameraIndex);
+
                     Draw3d(UnitDetailLayer, cameraIndex);
                     Engine.ParticleHandler.Draw(p.view.Camera);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-                    time.EndMeasure();
+                    //time.EndMeasure();
                     break;
 
                 case Map.MapDetailLayerType.TerrainOverview2:
