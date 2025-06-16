@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
             }
 
-            model = DssRef.models.ModelInstance(modelName, true, scale, true, true);
+            model = DssRef.models.ModelInstance_drawbatch(modelName, scale);
             //model.AddToRender(DrawGame.UnitDetailLayer);
             model.Frame = frame;
             linearPosition = start;
