@@ -18,9 +18,11 @@ namespace VikingEngine.DSSWars
         public Graphics.VoxelModel buildModel(Faction faction, SoldierModelData modelData)
         {
             VoxelObjGridDataAnimHD grid = new VoxelObjGridDataAnimHD(GridSize, FrameCount);
-            
 
             var debug = DssRef.models.rawModels[VoxelModelName.modsoldier_debug];
+            var face = DssRef.models.rawModels[VoxelModelName.modsoldier_face1];
+            var body = DssRef.models.rawModels[VoxelModelName.modsoldier_body1];
+
 
             var firstFrame = debug.Frames[0].GetVoxelArray();
             for (int frame = 0; frame < 2; frame++)
@@ -31,6 +33,15 @@ namespace VikingEngine.DSSWars
             {
                 var voxels = debug.Frames[frame-1].GetVoxelArray();
                 grid.Frames[frame].AddVoxels(voxels);
+            }
+
+
+            var bodyVoxels = body.Frames[0].GetVoxelArray();
+            var faceVoxels = face.Frames[0].GetVoxelArray(new IntVector3(2, 5, 30));
+            for (int frame = 0; frame < FrameCount; frame++)
+            {                
+                grid.Frames[frame].AddVoxels(bodyVoxels);
+                grid.Frames[frame].AddVoxels(faceVoxels);
             }
 
             var centerAdjust = grid.Frames[0].BottomCenterAdj();

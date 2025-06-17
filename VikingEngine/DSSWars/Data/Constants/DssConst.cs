@@ -45,7 +45,8 @@ namespace VikingEngine.DSSWars
         public static float WarmachineRotatingSpeed_Wheels = SoldierGroupStandardRotatingSpeed * 0.2f;
         public static float ShipRotatingSpeed = SoldierGroupStandardRotatingSpeed * 0.4f;
 
-        public static float Men_StandardModelScale = 0.5f;//0.06f;
+        public static float Men_StandardModelScale = 0.06f;
+        public static float Men_ModCharacterScale = Men_StandardModelScale * 1.7f;
         public static float Men_StandardWalkingSpeed = 0.00018f;
         public static float Men_StandardShipSpeed = Men_StandardWalkingSpeed * 2f;
 

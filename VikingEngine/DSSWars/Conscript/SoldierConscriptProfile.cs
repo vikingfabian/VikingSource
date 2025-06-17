@@ -793,7 +793,7 @@ namespace VikingEngine.DSSWars.Conscript
 
         public SoldierData bannermanSetup(SoldierData soldierData)
         {
-            soldierData.modelScale = DssConst.Men_StandardModelScale;
+            //soldierData.modelScale = DssConst.Men_StandardModelScale;
             soldierData.attackDamage /= 2;
             soldierData.attackDamageStructure /= 2;
 

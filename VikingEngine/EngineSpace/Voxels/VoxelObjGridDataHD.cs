@@ -342,7 +342,8 @@ namespace VikingEngine.Voxels
                     {
                         for (pos.X = 0; pos.X < sz.X; ++pos.X)
                         {
-                            if (MaterialGrid[pos.X, pos.Y, pos.Z] != BlockHD.EmptyBlock)
+                            ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
+                            if (value != BlockHD.EmptyBlock)
                             {
                                 result.Add(new VoxelHD(pos, MaterialGrid[pos.X, pos.Y, pos.Z]));
                             }
@@ -352,7 +353,33 @@ namespace VikingEngine.Voxels
             }
             return result;
         }
-        
+
+        public List<VoxelHD> GetVoxelArray(IntVector3 offset)
+        {
+            List<VoxelHD> result = new List<VoxelHD>();
+            if (MaterialGrid != null)
+            {
+                IntVector3 pos = IntVector3.Zero;
+                IntVector3 sz = Size;
+
+                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+                {
+                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                    {
+                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                        {
+                            ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
+                            if (value != BlockHD.EmptyBlock)
+                            {
+                                result.Add(new VoxelHD(pos + offset, value));
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
         public List<VoxelHD> GetVoxelArrayCentered() //only centers X and Z
         {
             IntVector3 limits = this.Limits;

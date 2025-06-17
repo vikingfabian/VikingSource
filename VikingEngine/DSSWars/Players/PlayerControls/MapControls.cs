@@ -1113,7 +1113,7 @@ namespace VikingEngine.DSSWars.Players
             float zoominput = player.gameControls.input.ZoomValue();
 
             targetZoom = VikingEngine.Bound.Set(
-                targetZoom + zoominput * 0.005f * targetZoom, ZoomRange);
+                targetZoom + zoominput * 0.005f * Bound.Min(targetZoom, 0.5f), ZoomRange);
 
             if (targetZoom != camera.CurrentZoom)
             {
