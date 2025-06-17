@@ -1294,19 +1294,7 @@ namespace VikingEngine
         {
             return (Dir4)(((int)dir + 2) % 4);
         }
-        public static CubeFace GetOppositeDirection(CubeFace facing)
-        {
-            switch (facing)
-            {
-                case CubeFace.Xnegative: return CubeFace.Xpositive;
-                case CubeFace.Xpositive: return CubeFace.Xnegative;
-                case CubeFace.Ynegative: return CubeFace.Ypositive;
-                case CubeFace.Ypositive: return CubeFace.Ynegative;
-                case CubeFace.Znegative: return CubeFace.Zpositive;
-                case CubeFace.Zpositive: return CubeFace.Znegative;
-                default: throw new NotImplementedException("Bad call, please give a valid facing");
-            }
-        }
+        
         public static bool IsDirAlongAxisZ_NS(Dir4 dir)
         {
             if (dir == Dir4.N || dir == Dir4.S)

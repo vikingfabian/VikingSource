@@ -9,7 +9,7 @@ namespace VikingEngine.Voxels
     {
         public ushort material1, material2; 
         public PaintFillType fill; 
-        public PaintToolType shape; 
+        //public PaintToolType shape; 
         public Dimensions toolDir;
         public IntVector3 mostRecentMoveXZ;
         public IntervalIntV3 volume;
@@ -17,9 +17,10 @@ namespace VikingEngine.Voxels
         public int frame;
         public DrawQueType type;
         public bool dropSelection;
-        public float radiusTolerance;
-        public int pencilSize, roadEdge, roadPercentFill, roadBelowFill, roadAboveClear;
-        public bool roundPencil;
+        public PaintSettings paintSettings;
+        public bool allFrames;
+        //public int pencilSize, roadEdge, roadPercentFill, roadBelowFill, roadAboveClear;
+        //public bool roundPencil;
 
         public DrawQueAction(DrawQueType type)
         {
@@ -39,7 +40,7 @@ namespace VikingEngine.Voxels
             this.frame = frame;
             this.material1 = material;
             this.fill = fill;
-            this.shape = tool;
+            this.paintSettings.drawTool = tool;
             
             this.keyDownDrawCoord = keyDownDrawCoord;
             
@@ -54,32 +55,22 @@ namespace VikingEngine.Voxels
             this.mostRecentMoveXZ = mostRecentMoveXZ;
         }
 
-        public DrawQueAction(ushort material1, ushort material2, PaintFillType fill, IntVector3 pos, PaintToolType tool, 
-            int pencilSize, float radiusTolerance, int roadEdge,
-            bool roundPencil, int roadPercentFill, int roadBelowFill, int roadAboveClear)
+        public DrawQueAction(ushort material1, ushort material2, PaintFillType fill, IntVector3 pos, PaintSettings paintSettings, bool allFrames)
         {
             this.fill = fill;
             this.material1 = material1;
             this.material2 = material2;
             keyDownDrawCoord = pos;
-            this.shape = tool;
+            this.paintSettings = paintSettings;
+            this.allFrames = allFrames;
 
-            this.pencilSize = pencilSize;
-            this.radiusTolerance = radiusTolerance;
-            this.roadEdge = roadEdge;
-            this.roundPencil = roundPencil;
-            this.roadPercentFill = roadPercentFill;
-            this.roadBelowFill = roadBelowFill;
-            this.roadAboveClear = roadAboveClear;
-
-            this.type = DrawQueType.Dot;
+            this.type = paintSettings.drawTool == PaintToolType.Bucket? DrawQueType.Bucket : DrawQueType.Dot;
         }
 
         public void fillArea(AbsVoxelDesigner designer)
         {
             EditorDrawTools.FillArea(this, designer.selectedVoxels, designer.Settings.SelectionCut, designer); 
-                //material1, fill, toolDir, tool, volume,
-                //keyDownDrawCoord, designer.selectedVoxels, designer.Settings.SelectionCut, designer); 
+              
         }
     }
 
@@ -89,5 +80,6 @@ namespace VikingEngine.Voxels
         StampSelection,
         Dot,
         EndDot,
+        Bucket,
     }
 }

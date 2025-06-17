@@ -63,18 +63,15 @@ namespace VikingEngine.Voxels
 
     class UndoAction
     {
-        //List<ushort> gridCompressed;
-        //public IntervalIntV3 selectionArea;
         public int frame;
         VoxelObjGridDataAnimHD allFrames = null;
         VoxelObjGridDataHD oneFrame = null;
 
         public UndoAction()
         { }
-        public UndoAction(/*IntervalIntV3 selectionArea, */AbsVoxelDesigner designer, int frame)
+        public UndoAction(AbsVoxelDesigner designer, int frame)
         {
             this.frame = frame;
-            //this.selectionArea = selectionArea;
 
             if (frame < 0)
             {
@@ -84,34 +81,16 @@ namespace VikingEngine.Voxels
             {
                 oneFrame = designer.animationFrames.Frames[frame].Clone();
             }
-            
-
-            //var grid = new VoxelObjGridDataHD(selectionArea.Size);
-
-            //ForXYZLoop loop = new ForXYZLoop(grid.Size);
-            //while (loop.Next())
-            //{
-            //    grid.Set(loop.Position, designer.GetVoxel(loop.Position + selectionArea.Min));
-            //}
-
-            //gridCompressed = new List<ushort>();
-            //VoxelLib.CompressToList(grid.MaterialGrid, gridCompressed);
         }
 
         public UndoAction(VoxelObjGridDataHD grid, int frame)
         {
             this.frame = frame;
             oneFrame = grid.Clone();
-            //this.selectionArea = selectionArea;
-
-            //gridCompressed = new List<ushort>();
-            //VoxelLib.CompressToList(grid.MaterialGrid, gridCompressed);
         }
 
         public void Undo(AbsVoxelDesigner designer)
         {
-           
-
             if (oneFrame != null)
             {
                 designer.animationFrames.Frames[frame] = oneFrame;
@@ -123,15 +102,6 @@ namespace VikingEngine.Voxels
             }
 
             designer.currentFrame.Value = frame;
-
-            //var grid = new VoxelObjGridDataHD(selectionArea.Size);
-            //VoxelLib.DeCompressList(gridCompressed, grid.MaterialGrid);
-
-            //ForXYZLoop loop = new ForXYZLoop(grid.Size);
-            //while (loop.Next())
-            //{
-            //    designer.SetVoxel(loop.Position + selectionArea.Min, grid.Get(loop.Position));
-            //}
         }
         
     }

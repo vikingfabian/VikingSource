@@ -75,7 +75,7 @@ namespace VikingEngine.LootFest.Editor
 
         void pickTool(PaintToolType tool)
         {
-            designer.Settings.DrawTool = tool;
+            designer.Settings.paintSettings.drawTool = tool;
             menu.PopAllLayouts();
             mainMenu();
         }
@@ -102,14 +102,14 @@ namespace VikingEngine.LootFest.Editor
                 //    toolsOptList.Add(new GuiOption<PaintToolType>(tool.ToString(), tool));
                 //}
                 //new GuiOptionsList<PaintToolType>("Tool", toolsOptList, toolProperty, layout);
-                new GuiIconTextButton(VoxelDesignerInterface.ToolIcon(designer.Settings.DrawTool), "Tool", null, selectTool, true, layout);
+                new GuiIconTextButton(VoxelDesignerInterface.ToolIcon(designer.Settings.paintSettings.drawTool), "Tool", null, selectTool, true, layout);
 
-                if (sett.DrawTool == PaintToolType.Pencil || sett.DrawTool == PaintToolType.Road || sett.DrawTool == PaintToolType.ReColor)
+                if (sett.paintSettings.drawTool == PaintToolType.Pencil || sett.paintSettings.drawTool == PaintToolType.Road || sett.paintSettings.drawTool == PaintToolType.ReColor)
                 {
                     new GuiIntSlider(SpriteName.NO_IMAGE, "Pencil size", pencilSizeProperty, new IntervalF(1, 17), false, layout);
                     new GuiFloatSlider(SpriteName.NO_IMAGE, "Size tolerance", radiusToleranceProperty, new IntervalF(-0.5f, 0.5f), false, layout);
                     new GuiCheckbox("Round pencil", null, bRoundPencilProperty, layout);
-                    if (sett.DrawTool == PaintToolType.Road)
+                    if (sett.paintSettings.drawTool == PaintToolType.Road)
                     {
                         new GuiIntSlider(SpriteName.NO_IMAGE, "Edge size", RoadEdgeSizeProperty, new IntervalF(0, 5), false, layout);
                         //new GuiIconTextButton(Data.BlockTextures.MaterialTile(secondaryMaterial), "Edge Material", 
@@ -1026,35 +1026,35 @@ namespace VikingEngine.LootFest.Editor
 
         int pencilSizeProperty(bool set, int value)
         {
-            if (set) { designer.Settings.PencilSize = value; }
-            return designer.Settings.PencilSize;
+            if (set) { designer.Settings.paintSettings.pencilSize = value; }
+            return designer.Settings.paintSettings.pencilSize;
         }
 
         float radiusToleranceProperty(bool set, float value)
         {
-            if (set) { designer.Settings.RadiusTolerance = value; }
-            return designer.Settings.RadiusTolerance;
+            if (set) { designer.Settings.paintSettings.radiusTolerance = value; }
+            return designer.Settings.paintSettings.radiusTolerance;
         }
 
         int RoadUpwardClearProperty(bool set, int value)
         {
-            if (set) { designer.Settings.RoadUpwardClear = value; }
-            return designer.Settings.RoadUpwardClear;
+            if (set) { designer.Settings.paintSettings.roadUpwardClear = value; }
+            return designer.Settings.paintSettings.roadUpwardClear;
         }
         int RoadBelowFillProperty(bool set, int value)
         {
-            if (set) { designer.Settings.RoadBelowFill = value; }
-            return designer.Settings.RoadBelowFill;
+            if (set) { designer.Settings.paintSettings.roadBelowFill = value; }
+            return designer.Settings.paintSettings.roadBelowFill;
         }
         int RoadEdgeSizeProperty(bool set, int value)
         {
-            if (set) { designer.Settings.RoadEdgeSize = value; }
-            return designer.Settings.RoadEdgeSize;
+            if (set) { designer.Settings.paintSettings.roadEdgeSize = value; }
+            return designer.Settings.paintSettings.pencilSize;
         }
         int RoadPercentFillProperty(bool set, int value)
         {
-            if (set) { designer.Settings.RoadPercentFill = value; }
-            return designer.Settings.RoadPercentFill;
+            if (set) { designer.Settings.paintSettings.pencilSize = value; }
+            return designer.Settings.paintSettings.pencilSize;
         }
 
         bool bSelectionCutProperty(int index, bool set, bool value)
@@ -1064,8 +1064,8 @@ namespace VikingEngine.LootFest.Editor
         }
         bool bRoundPencilProperty(int index, bool set, bool value)
         {
-            if (set) { designer.Settings.RoundPencil = value; }
-            return designer.Settings.RoundPencil;
+            if (set) { designer.Settings.paintSettings.roundPencil = value; }
+            return designer.Settings.paintSettings.roundPencil;
         }
         bool bCombineLoadedModelProperty(int index, bool set, bool value)
         {

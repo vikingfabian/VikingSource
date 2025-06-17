@@ -160,17 +160,21 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.newLine();
             for (PaintToolType tool = 0; tool < PaintToolType.NUM; ++tool)
             {
-                content.Add(new ArtOption(tool == sett.DrawTool,
+                content.Add(new ArtOption(tool == sett.paintSettings.drawTool,
                     new List<AbsRichBoxMember> { new RbImage(VoxelDesignerInterface.ToolIcon(tool)) },
-                    new RbAction1Arg<PaintToolType>((toolType) => { designer.Settings.DrawTool = toolType; }, tool)));
+                    new RbAction1Arg<PaintToolType>((toolType) => { designer.Settings.paintSettings.drawTool = toolType; }, tool)));
             }
 
             const float TabLength = 0.3f;
 
-            switch (sett.DrawTool)
+            switch (sett.paintSettings.drawTool)
             {
                 case PaintToolType.Bucket:
-                        
+                    allFramesChkBox(content);
+
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                        new RbText(DssRef.todoLang.Editor_Continous) }, bContiniousProperty));
                     break;
 
                 case PaintToolType.Pencil:
@@ -190,7 +194,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                     content.newLine();
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Tool_RoundPencil) }, bRoundPencilProperty));
 
-                    if (sett.DrawTool == PaintToolType.Road)
+                    if (sett.paintSettings.drawTool == PaintToolType.Road)
                     {
                         content.newLine();
                         content.Add(new RbText(DssRef.todoLang.Editor_Tool_EdgeSize + ":", HudLib.TitleColor_Label));
@@ -1068,35 +1072,35 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         int pencilSizeProperty(bool set, int value)
         {
-            if (set) { designer.Settings.PencilSize = value; }
-            return designer.Settings.PencilSize;
+            if (set) { designer.Settings.paintSettings.pencilSize = value; }
+            return designer.Settings.paintSettings.pencilSize;
         }
 
         float radiusToleranceProperty(bool set, float value)
         {
-            if (set) { designer.Settings.RadiusTolerance = value; }
-            return designer.Settings.RadiusTolerance;
+            if (set) { designer.Settings.paintSettings.radiusTolerance = value; }
+            return designer.Settings.paintSettings.radiusTolerance;
         }
 
         int RoadUpwardClearProperty(bool set, int value)
         {
-            if (set) { designer.Settings.RoadUpwardClear = value; }
-            return designer.Settings.RoadUpwardClear;
+            if (set) { designer.Settings.paintSettings.roadUpwardClear = value; }
+            return designer.Settings.paintSettings.roadUpwardClear;
         }
         int RoadBelowFillProperty(bool set, int value)
         {
-            if (set) { designer.Settings.RoadBelowFill = value; }
-            return designer.Settings.RoadBelowFill;
+            if (set) { designer.Settings.paintSettings.roadBelowFill = value; }
+            return designer.Settings.paintSettings.roadBelowFill;
         }
         int RoadEdgeSizeProperty(bool set, int value)
         {
-            if (set) { designer.Settings.RoadEdgeSize = value; }
-            return designer.Settings.RoadEdgeSize;
+            if (set) { designer.Settings.paintSettings.roadEdgeSize = value; }
+            return designer.Settings.paintSettings.roadEdgeSize;
         }
         int RoadPercentFillProperty(bool set, int value)
         {
-            if (set) { designer.Settings.RoadPercentFill = value; }
-            return designer.Settings.RoadPercentFill;
+            if (set) { designer.Settings.paintSettings.roadPercentFill = value; }
+            return designer.Settings.paintSettings.roadPercentFill;
         }
 
         bool bSelectionCutProperty(int index, bool set, bool value)
@@ -1106,8 +1110,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         }
         bool bRoundPencilProperty(int index, bool set, bool value)
         {
-            if (set) { designer.Settings.RoundPencil = value; }
-            return designer.Settings.RoundPencil;
+            if (set) { designer.Settings.paintSettings.roundPencil = value; }
+            return designer.Settings.paintSettings.roundPencil;
         }
         bool bCombineLoadedModelProperty(int index, bool set, bool value)
         {
@@ -1123,6 +1127,12 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             if (set) { designer.mergeModelsOption.NewBlocksReplaceOld = value; }
             return designer.mergeModelsOption.NewBlocksReplaceOld;
+        }
+
+        bool bContiniousProperty(int index, bool set, bool value)
+        {
+            if (set) { designer.Settings.paintSettings.continiousFill = value; }
+            return designer.Settings.paintSettings.continiousFill;
         }
 
 
