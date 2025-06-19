@@ -2,7 +2,7 @@
 -Change Log-
 * Added a folder for overriding ingame models
 * Sorting all the models, improving memory batching during draw calls.
-
+* Can zoom closer to the ground, and added minimum zoom speed
 
 Voxel editor 2
 * 
