@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars.Map
         public int BorderCount;
         public int BorderRegion_North, BorderRegion_East, BorderRegion_South, BorderRegion_West;
         public int seaDistanceHeatMap = int.MinValue;
+        //public int prevFoliageCount = 32;
         //--
 
         //public int WorkerCount = 0;

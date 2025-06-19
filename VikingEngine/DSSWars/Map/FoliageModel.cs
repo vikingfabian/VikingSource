@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Map
 
     struct FoliageModel
     {
-        public Graphics.VoxelModelInstance model;
+        public Graphics.VoxelModelInstance model; //object type
         public LootFest.VoxelModelName modelName;
         public Vector3 pos;
         public float scale;
@@ -62,19 +62,26 @@ namespace VikingEngine.DSSWars.Map
 
         public void addToRender()
         {
-            model = DssRef.models.ModelInstance_drawbatch(modelName, scale);
-
-            if (setFrame < 0)
+            if (faction == null)
             {
-                model.Frame = (int)(randomFrame * model.NumFrames);
+                model = DssRef.models.ModelInstance_drawbatch(modelName, scale);
+
+                if (setFrame < 0)
+                {
+                    model.Frame = (int)(randomFrame * model.NumFrames);
+                }
+                else
+                {
+                    model.Frame = setFrame;
+                }
+
+                //model.AddToRender(DrawGame.UnitDetailLayer);
+                model.position = pos;
             }
             else
             {
-                model.Frame = setFrame;
+                addToRender_flag();
             }
-
-            //model.AddToRender(DrawGame.UnitDetailLayer);
-            model.position = pos;
         }
 
         public void addToRender_flag()

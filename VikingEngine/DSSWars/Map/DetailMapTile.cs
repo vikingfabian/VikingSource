@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.EngineSpace;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map.Terrain;
 
@@ -64,8 +65,8 @@ namespace VikingEngine.DSSWars.Map
         public IntVector2 pos;
         VerticeDataColorTexture verticeData;
         Graphics.VoxelModel model = new Graphics.VoxelModel(false);
-        List<FoliageModel> foliageModels = new List<FoliageModel>(8);
-        List<FoliageModel> flagModels = new List<FoliageModel>(2);
+        StructList<FoliageModel> foliageModels = new StructList<FoliageModel>(32);
+        //StructList<FoliageModel> flagModels = new StructList<FoliageModel>(2);
         List<AnimalData> animalData;
         bool hasPolygons;
 
@@ -82,6 +83,7 @@ namespace VikingEngine.DSSWars.Map
         public void generateModel_async(IntVector2 pos, Tile tile)
         {
             this.pos = pos;
+            //foliageModels.Init(DssRef.world.tileGrid.Get(pos).prevFoliageCount);
             hasPolygons = tile.heightLevel != Height.DeepWaterHeight;
 
             if (hasPolygons)
@@ -576,7 +578,7 @@ namespace VikingEngine.DSSWars.Map
                         if (faction != null)
                         {
                             var flag = new FoliageModel(faction, 7, wp + new Vector3(WorldData.SubTileWidth * 0.22f, 0.002f, -0.004f), WorldData.SubTileWidth * 0.8f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -589,7 +591,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 7, wp + new Vector3(WorldData.SubTileWidth * 0.22f, 0.002f, -0.004f), WorldData.SubTileWidth * 0.8f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -645,7 +647,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 8, wp + new Vector3(0.013f, -0.020f, 0.07f), WorldData.SubTileWidth * 1.1f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -658,7 +660,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 8, wp + new Vector3(0.013f, -0.025f, 0.07f), WorldData.SubTileWidth * 1.2f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -671,7 +673,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 8, wp + new Vector3(0.012f, 0.002f, 0.07f), WorldData.SubTileWidth * 1.2f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -884,7 +886,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 0, wp + new Vector3(0.011f, 0.009f, -0.032f), WorldData.SubTileWidth * 1f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         } 
                     }
                     break;
@@ -897,7 +899,7 @@ namespace VikingEngine.DSSWars.Map
                         if (faction != null)
                         {
                             var flag = new FoliageModel( faction, 1, wp + new Vector3(0.011f, 0.009f, -0.032f), WorldData.SubTileWidth * 1f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -911,7 +913,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 2, wp + new Vector3(0.011f, 0.009f, -0.032f), WorldData.SubTileWidth * 1f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -925,7 +927,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 3, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -939,7 +941,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 4, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -953,7 +955,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 5, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -967,7 +969,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 6, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -981,7 +983,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             var flag = new FoliageModel(
                             faction, 7, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
-                            flagModels.Add(flag);
+                            foliageModels.Add(flag);
                         }
                     }
                     break;
@@ -1098,15 +1100,20 @@ namespace VikingEngine.DSSWars.Map
             }
 
             for (int i = 0; i < foliageModels.Count; ++i)
-            foreach (var m in foliageModels)
             {
+                ref var m = ref foliageModels.array[i];
                 m.addToRender();
             }
+            //foreach (var m in foliageModels)
+            //{
+            //    m.addToRender();
+            //}
 
-            foreach (var m in flagModels)
-            {
-                m.addToRender_flag();
-            }
+            //for (int i = 0; i < flagModels.Count; ++i)
+            //{
+            //    ref var m = ref flagModels.array[i];
+            //    m.addToRender_flag();
+            //}
 
             if (animalData != null)
             {
@@ -1129,18 +1136,19 @@ namespace VikingEngine.DSSWars.Map
         public void DeleteMe()
         {
             model.Visible = false;
-            
-            foreach (var m in foliageModels)
+
+            //DssRef.world.tileGrid.GetRef(pos).prevFoliageCount = foliageModels.Count;
+            for (int i = 0; i < foliageModels.Count; ++i)
             {
-                m.DeleteMe();
+                foliageModels[i].DeleteMe();
             }
             foliageModels.Clear();
 
-            foreach (var m in flagModels)
-            {
-                m.DeleteMe();
-            }
-            flagModels.Clear();
+            //foreach (var m in flagModels)
+            //{
+            //    m.DeleteMe();
+            //}
+            //flagModels.Clear();
 
             animalData?.Clear();
         }
