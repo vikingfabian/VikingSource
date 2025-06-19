@@ -4,7 +4,7 @@
 * Started on a game manual
 https://docs.google.com/document/d/1_wUekNjufj6ghsvAcmFxgC0iqzqsAJ3mqFknUujOQy8/edit?usp=sharing
 * fixed: input options in ingame menu are broken
-* new buildings: immigration tent, research center and book press
+* new buildings: immigration tent, research center and book press (currently hidden)
 
 * repaired: childbirth will stop at war
 

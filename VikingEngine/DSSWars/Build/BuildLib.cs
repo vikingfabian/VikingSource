@@ -166,8 +166,10 @@ namespace VikingEngine.DSSWars.Build
                 StartupSettings.UnlockAllProgress)
             {
                 list.Add(BuildAndExpandType.School);
+#if DEBUG
                 list.Add(BuildAndExpandType.ResearchCenter);
                 list.Add(BuildAndExpandType.BookPress);
+#endif
             }
 
             list.Add(BuildAndExpandType.WorkerHut);
@@ -189,7 +191,9 @@ namespace VikingEngine.DSSWars.Build
                StartupSettings.UnlockAllProgress)
             {
                 list.Add(BuildAndExpandType.GuardHouse_Large);
+#if DEBUG
                 list.Add(BuildAndExpandType.ImmigrationTent);
+#endif
             }
 
             list.Add(BuildAndExpandType.WheatFarm);
