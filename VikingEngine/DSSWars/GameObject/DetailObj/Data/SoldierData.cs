@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public float walkingSpeed = DssConst.Men_StandardWalkingSpeed;
         public bool canAttackCharacters = true;
         public bool canAttackStructure = true;
-        public float modelScale = DssConst.Men_ModCharacterScale;
+        public float modelScale = DssConst.Men_StandardModelScale;//Men_ModCharacterScale;
 
         public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
         public int workForcePerUnit = 1;

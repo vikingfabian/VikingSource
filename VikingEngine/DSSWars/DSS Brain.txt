@@ -5,7 +5,8 @@
 * Can zoom closer to the ground, and added minimum zoom speed
 
 Voxel editor 2
-* 
+* Bucket delete
+* Improved canvas hud
 
 X need bucket tool and better color seletion, and color adjust options
 X (maybe) import / export for MagicaVoxel
