@@ -125,7 +125,7 @@ namespace VikingEngine.Voxels
                         case DrawQueType.Bucket:
                             designer.undolist.add(new UndoAction(designer, action.allFrames? -1 : action.frame));
 
-                            designer.animationFrames.BucketFill(action.keyDownDrawCoord, action.frame, action.material1, action.paintSettings.continiousFill, action.allFrames);
+                            designer.animationFrames.BucketFill(action.keyDownDrawCoord, action.frame, action.fill == PaintFillType.Delete? BlockHD.EmptyBlock : action.material1, action.paintSettings.continiousFill, action.allFrames);
                             //action.fillArea(designer);
                             designer.startUpdateVoxelObj(true);
                             designer.refreshSelectionModel();
