@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Display
         {
             //content.Add(new RichBoxScale(1.6f));
 
-            if (DssRef.state.IsSinglePlayer())
+            if (DssRef.state.IsSinglePlayer_LocalAndOnline())
             {
 
                 bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause, out Color focusColor);

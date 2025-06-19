@@ -72,7 +72,11 @@ namespace VikingEngine.DSSWars.Resource
 
         public ResourceChunk get(int index)
         {
-            return resourceRegister.Array[index];
+            if (index < resourceRegister.Array.Length)
+            {
+                return resourceRegister.Array[index];
+            }
+            return ResourceChunk.Empty;
         }
 
         public void update(int index, ref ResourceChunk resourceChunk)

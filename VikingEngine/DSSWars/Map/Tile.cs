@@ -333,7 +333,7 @@ namespace VikingEngine.DSSWars.Map
         public Color FactionColor()
         {
             var c = DssRef.world.cities[CityIndex];
-            if (c.faction != null)
+            if (c.faction != null && c.faction.profile != null)
             {
                 return c.faction.flagProfile.col0_Main;
             }

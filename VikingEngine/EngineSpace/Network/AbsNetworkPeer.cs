@@ -51,6 +51,7 @@ namespace VikingEngine.Network
         public ulong fullId;
 
         public float roundTripTime = 0;
+        public int maxPacketCount = 1;
         public int localGamersCount = 1;
         public float lastHeardFrom;// = Ref.TotalTimeSec;
 

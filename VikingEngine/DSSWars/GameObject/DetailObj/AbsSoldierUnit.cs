@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.HUD.RichBox;
@@ -376,7 +377,10 @@ namespace VikingEngine.DSSWars.GameObject
             state.idle = !walking;
             model?.update(this);
         }
-
+        public void update_client()
+        {
+            updateGroudY(false);
+        }
         public void update2(float time, bool fullUpdate)
         {
             if (state2 == SoldierState2.wakeup)
@@ -557,7 +561,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (UnitType == UnitType.CityGuard)
             {
-
                 var guards = group.GetGuardGroup();
                 if (guards.assignedToPost_IdAndPosition > 0)
                 {
@@ -568,7 +571,13 @@ namespace VikingEngine.DSSWars.GameObject
             
             if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))//position.X > 0 && position.Z>0)
             {
-                float y = DssRef.world.SubTileHeight(position) + ModelGroundYAdj;
+                float y = DssRef.world.SubTileHeight(position, out SubTile subTile) + ModelGroundYAdj;
+
+                if (subTile.groundY == 0)
+                {
+                    position.Y = DssRef.world.tileGrid.Get(tilePos).ModelGroundY();
+                    return;
+                }
 
                 if (y < Map.Tile.UnitMinY)
                 {

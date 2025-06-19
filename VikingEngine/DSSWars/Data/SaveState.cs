@@ -80,6 +80,8 @@ namespace VikingEngine.DSSWars.Data
         {
             meta.worldmeta.writeNet(w);
             DssRef.world.writeNet(w);
+
+            w.Write(Ref.TotalGameTimeSec);
         }
         public void readNet(System.IO.BinaryReader r)
         {
@@ -89,6 +91,8 @@ namespace VikingEngine.DSSWars.Data
             worldData.readNet(r);
             worldData.metaData = meta.worldmeta;
             DssRef.world = worldData;
+
+            Ref.TotalGameTimeSec = r.ReadSingle();
         }
 
         public void writeGameState(System.IO.BinaryWriter w)

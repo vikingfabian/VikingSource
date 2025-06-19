@@ -91,6 +91,18 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new RbSeperationLine());
             }
 
+            if (DssRef.state.remotePlayers.Count > 0)
+            {
+                content.h2("Net session", HudLib.TitleColor_Head);
+                var remoteC = DssRef.state.remotePlayers.counter();
+                while(remoteC.Next())
+                {
+                    content.newLine();
+                    remoteC.sel.RemoteToHud(content);
+                }
+                content.Add(new RbSeperationLine());
+            }
+
             content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);
 
             for (int i = selectHistory.Count - 1; i >= 0; --i)

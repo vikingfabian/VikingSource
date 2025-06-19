@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Players
@@ -10,6 +11,8 @@ namespace VikingEngine.DSSWars.Players
 
     partial class RemotePlayer
     {
+        static List<Army> netCollArmies = new List<Army>(16);
+
         public const int OverviewSendChunkSize = 8;
         static HashSet<int> CitiesInView = new HashSet<int>();
         static HashSet<int> FactionsInView = new HashSet<int>();
@@ -58,7 +61,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     packet.EndWrite_Asynch();
                 }
-                else if (findMissingTile(out IntVector2 subtilePos, true))
+                else if (playerCulling.detailLayer && findMissingTile(out IntVector2 subtilePos, true))
                 {
                     var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, out var packet);
                     {
@@ -80,26 +83,41 @@ namespace VikingEngine.DSSWars.Players
 
             bool findMissingTile(out IntVector2 tilePos, bool subTile)
             {
-                ForXYLoop loop = new ForXYLoop(playerCulling.enterArea);
+                Rectangle2 area;
+
+                if (subTile)
+                {
+                    area = playerCulling.enterArea;
+                }
+                else
+                {
+                    area = playerCulling.screenAreaRaw;
+                }
+
+                
+                ForXYLoop loop = new ForXYLoop(area);
                 while (loop.Next())
                 {
-                    if (!remoteTileGrid.Get(loop.Position).HasTile(subTile))
+                    if (remoteTileGrid.InBounds(loop.Position))
                     {
-                        tilePos = loop.Position;
-                        return true;
-                    }
-                    if (!subTile)
-                    {
-                        var tile = DssRef.world.tileGrid.Get(loop.Position);
-                        if (!citiesRecieved[tile.CityIndex])
+                        if (!remoteTileGrid.Get(loop.Position).HasTile(subTile))
                         {
-                            CitiesInView.Add(tile.CityIndex);
+                            tilePos = loop.Position;
+                            return true;
                         }
-
-                        int faction = tile.City().faction.parentArrayIndex;
-                        if (!factionsRecieved[faction])
+                        if (!subTile)
                         {
-                            FactionsInView.Add(faction);
+                            var tile = DssRef.world.tileGrid.Get(loop.Position);
+                            if (!citiesRecieved[tile.CityIndex])
+                            {
+                                CitiesInView.Add(tile.CityIndex);
+                            }
+
+                            int faction = tile.City().faction.parentArrayIndex;
+                            if (!factionsRecieved[faction])
+                            {
+                                FactionsInView.Add(faction);
+                            }
                         }
                     }
                 }
@@ -108,6 +126,90 @@ namespace VikingEngine.DSSWars.Players
                 return false;
             }
 
+            
+        }
+
+        public void Net_UpdateArmies(ref int maxPackets)
+        {
+            const int GroupsPerPacket = 10;
+
+            if (playerCulling.farLayer == false)
+            {
+                DssRef.world.unitCollAreaGrid.net_collectArmies(playerCulling.screenAreaRaw, netCollArmies);
+
+                int waitSeconds;
+                if ( netCollArmies.Count <= 2)
+                {
+                    waitSeconds = 5;
+                }
+                else if (netCollArmies.Count <= 10)
+                {
+                    waitSeconds = 10;
+                }
+                else 
+                {
+                    waitSeconds = 20;
+                }
+
+                foreach (Army army in netCollArmies)
+                {
+                    if (army.lastNetUpdate.secPassed(waitSeconds))
+                    {
+                        {
+                            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
+                            {
+                                Army.NetWriteArmy(w, army);
+                                army.lastNetUpdate.setNow();
+                            }
+                            packet.EndWrite_Asynch();
+                        }
+
+                        if (army.groups.Count > 0)
+                        {
+                            var groupC = army.groups.counter();
+
+                            int count = 0;
+
+                            while (groupC.HasMore())
+                            {                                
+                                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, Network.PacketReliability.Unrelyable, out var packet);
+                                {
+                                    w.Write((ushort)army.faction.parentArrayIndex);
+                                    w.Write((ushort)army.parentArrayIndex);
+
+                                    while (--count < GroupsPerPacket && groupC.Next())
+                                    {
+                                        Army.NetWriteGroup(w, groupC.sel);
+                                        army.lastNetUpdate.setNow();
+                                    }
+
+                                    w.Write(ushort.MaxValue);
+                                }
+                                packet.EndWrite_Asynch();
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public HashSet<int> GetAllCitiesInView()
+        {
+            CitiesInView.Clear();
+
+            ForXYLoop loop = new ForXYLoop(playerCulling.enterArea);
+            while (loop.Next())
+            {  
+                
+                var tile = DssRef.world.tileGrid.Get(loop.Position);
+                
+                CitiesInView.Add(tile.CityIndex);
+                
+                
+            }
+
+            return CitiesInView;
         }
 
         public void Net_HostObjectsUpdate_async()

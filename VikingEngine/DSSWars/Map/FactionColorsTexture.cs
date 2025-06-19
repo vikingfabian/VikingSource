@@ -13,18 +13,19 @@ namespace VikingEngine.DSSWars.Map
         Graphics.Mesh model;
         public Graphics.PixelTexture texture;
 
-        public FactionColorsTexture(Vector3 pos, Vector3 scale)
+        public FactionColorsTexture(/*Vector3 pos, Vector3 scale*/)
             :base(Vector3.Zero, Vector3.Zero, false)
         {
-            initTexture();
+            //initTexture();
             Sprite source = new Sprite();
             source.SourceF = VectorRect.ZeroOne;
 
             source.SourceF.AddXRadius(-0.007f);
             source.SourceF.AddYRadius(-0.007f);
-            model = new Graphics.Mesh(LoadedMesh.plane, VectorExt.SetY(pos, DssLib.OverviewMapYpos), scale, 
+            model = new Graphics.Mesh(LoadedMesh.plane, VectorExt.SetY(Vector3.Zero, DssLib.OverviewMapYpos), Vector3.One, 
                 TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White, false);
-            model.texture = texture;
+            //model.texture = texture;
+            refreshScale();
             model.TextureSource = source;
 
             Ref.draw.CurrentRenderLayer = DrawGame.MinimapLayer;
@@ -41,10 +42,19 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public FactionColorsTexture()
-          : base()
-        {             
+        public void refreshScale()
+        {
+            initTexture();
+            var vol = MapLayer_Overview.WaterModelVolume();
+            model.position = vol.Position;
+            model.scale = vol.Scale;
+            model.texture = texture;
         }
+
+        //public FactionColorsTexture()
+        //  : base()
+        //{             
+        //}
 
         public void initTexture()
         {

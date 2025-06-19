@@ -23,9 +23,12 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 var city = GetCity();
-                foreach (var w in workerUnits)
+                for (int i = workerUnits.Count -1; i>=0;--i)//each (var w in workerUnits)
                 {
-                    w.update(city);
+                    if (workerUnits[i].update(city))
+                    { 
+                        workerUnits.RemoveAt(i);
+                    }
                 }
             }
         }
@@ -43,6 +46,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void addMissingWorkerUnits()
         {
+            
             for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
             {
                 if (workerStatuses[i].work != WorkType.IsDeleted)

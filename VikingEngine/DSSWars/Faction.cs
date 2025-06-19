@@ -105,6 +105,10 @@ namespace VikingEngine.DSSWars
             armies = new SpottedArray<Army>(16);
         }
 
+        public void initClient()
+        {
+            initDiplomacy(DssRef.world);
+        }
        
         public void onGameStart(bool newGame)
         {
@@ -150,15 +154,7 @@ namespace VikingEngine.DSSWars
                 armiesC.sel.writeGameState(w); 
             }
 
-            for (int i = 0; i < diplomaticRelations.Length; ++i)
-            {
-                if (diplomaticRelations[i] != null &&
-                    diplomaticRelations[i].IsFactionOne(this))
-                {
-                    diplomaticRelations[i].write(w);
-                }
-            }
-            w.Write(short.MinValue);
+            writeRelations(w);
 
             player.writeGameState(w);
 
@@ -200,18 +196,7 @@ namespace VikingEngine.DSSWars
                 //armies.Add(army);
             }
 
-            while (true)
-            { 
-                DiplomaticRelation relation = new DiplomaticRelation();
-                if (relation.read(r, subVersion))
-                {
-                    relation.addToFactions();
-                }
-                else
-                {
-                    break;
-                }
-            }
+            readRelations(r, subVersion);
 
             if ((factiontype == FactionType.Player) != player.IsLocalPlayer())
             {
@@ -224,21 +209,57 @@ namespace VikingEngine.DSSWars
             workTemplate.readGameState(r, subVersion, false);
         }
 
+        void writeRelations(System.IO.BinaryWriter w)
+        {
+            for (int i = 0; i < diplomaticRelations.Length; ++i)
+            {
+                if (diplomaticRelations[i] != null &&
+                    diplomaticRelations[i].IsFactionOne(this))
+                {
+                    diplomaticRelations[i].write(w);
+                }
+            }
+            w.Write(short.MinValue);
+        }
+
+        void readRelations(System.IO.BinaryReader r, int subVersion)
+        {
+            while (true)
+            {
+                DiplomaticRelation relation = new DiplomaticRelation();
+                if (relation.read(r, subVersion))
+                {
+                    relation.addToFactions();
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
         virtual public void writeNet(System.IO.BinaryWriter w)
         {
             w.Write((ushort)factiontype);
             this.flagProfile.write(w);
+
+            writeRelations(w);
 
             if (factiontype == FactionType.Player)
             {
                 player.GetHumanPlayer().networkPeer.writeNetID(w);
             }
         }
+
         virtual public void readNet(System.IO.BinaryReader r)
         {
+            
+
             factiontype = (FactionType)r.ReadUInt16();
             FlagAndColor profile = new FlagAndColor(r);
             SetProfile(profile);
+
+            readRelations(r, int.MaxValue);
 
             if (factiontype == FactionType.Player)
             {
@@ -301,9 +322,7 @@ namespace VikingEngine.DSSWars
                 citiesC.sel.OnNewOwner();
             }
         }
-
         
-
         public Army NewArmy(IntVector2 startPos)
         {
             //if (DssRef.state.PartyMode)
@@ -318,9 +337,16 @@ namespace VikingEngine.DSSWars
             //}
         }
 
-        public void AddArmy(Army army)
-        { 
-            army.parentArrayIndex = armies.Add(army);
+        public void AddArmy(Army army, int overrideIx = -1)
+        {
+            if (overrideIx < 0)
+            {
+                army.parentArrayIndex = armies.Add(army);
+            }
+            else
+            {
+                armies.HardSet(army, overrideIx);
+            }
             army.faction = this;
         }
 
@@ -398,6 +424,16 @@ namespace VikingEngine.DSSWars
             player?.Update();
         }
 
+        public void update_client(bool playerDetailView)
+        {
+            var armiesCounter = armies.counter();
+
+            while (armiesCounter.Next())
+            {
+                armiesCounter.sel.net_updateclient(playerDetailView);
+            }
+        }
+
         public void PauseUpdate()
         {
             var armiesCounter = armies.counter();
@@ -409,52 +445,6 @@ namespace VikingEngine.DSSWars
         }
 
 
-        //public void resources_oneSecUpdate()
-        //{
-
-        //    //CityTradeImport = CityTradeImportCounting;
-        //    //CityTradeExport = CityTradeExportCounting;
-        //    //CityTradeImportCounting -= CityTradeImport;
-        //    //CityTradeExportCounting -= CityTradeExport;
-
-        //    ////double tax = citiesEconomy.tax(null);
-        //    //double incomeMultiplier = 1;
-        //    //if (player.IsAi())
-        //    //{
-        //    //    if (DssRef.settings.AiDelay)
-        //    //    {
-        //    //        incomeMultiplier = 0.05;
-        //    //    }
-        //    //    else if (player.aggressionLevel > AbsPlayer.AggressionLevel0_Passive)
-        //    //    {
-        //    //        incomeMultiplier = DssRef.difficulty.aiEconomyMultiplier;
-        //    //    }
-        //    //}
-
-        //    //double income = 0;
-        //    //int citiesTotalGold = 0;
-        //    var citiesC = cities.counter();
-        //    while (citiesC.Next())
-        //    {
-        //        //income += citiesC.sel.income_oneSecUpdate(incomeMultiplier);
-        //        //citiesTotalGold += citiesC.sel.gold;
-        //    }
-
-        //    //if (DssRef.storage.centralGold)
-        //    //{
-        //    //    gold += Convert.ToInt32(income);
-        //    //}
-        //    //else
-        //    //{
-        //    //    gold = citiesTotalGold;
-        //    //}
-
-        //    ////int income = Convert.ToInt32(tax - citiesEconomy.cityGuardUpkeep - DssLib.NobleHouseUpkeep * nobelHouseCount);            
-        //    ////gold += income;
-
-        //    //previuosGold = storeGold;
-        //    //storeGold = gold;
-        //}
         public void oneSecUpdate()
         {
             CityTradeImport = CityTradeImportCounting;

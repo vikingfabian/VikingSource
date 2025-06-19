@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.GameState
         protected Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);
 
         public AbsCutScene cutScene = null;
-        protected bool host = true;
+        public bool host = true;
         public GameMenuSystem menuSystem;
         public SpottedArray<Players.RemotePlayer> remotePlayers = new SpottedArray<Players.RemotePlayer>();
         public List<Players.LocalPlayer> localPlayers;
@@ -223,22 +223,12 @@ namespace VikingEngine.DSSWars.GameState
                     while (armiesC.Next())
                     {
                         armiesC.sel.asyncBattleUpdate();
-                        //var groupsC = armiesC.sel.groups.counter();
-                        //while (groupsC.Next())
-                        //{
-                        //    groupsC.sel.asyncBattleUpdate();
-                        //}
                     }
                 }
 
                 foreach (var m in DssRef.world.cities)
                 {
                     m.asyncBattleUpdate();
-                    //var groupsC = m.groups.counter();
-                    //while (groupsC.Next())
-                    //{
-                    //    groupsC.sel.asyncBattleUpdate();
-                    //}
                 }
             }
             return exitThreads;
@@ -279,7 +269,11 @@ namespace VikingEngine.DSSWars.GameState
             var remotePlayerC = remotePlayers.counter();
             while (remotePlayerC.Next())
             {
-                if (remotePlayerC.sel.networkPeer.peer == peer)
+                if (remotePlayerC.sel.networkPeer == null)
+                {
+                    remotePlayerC.RemoveAtCurrent();
+                }
+                else if (remotePlayerC.sel.networkPeer.peer == peer)
                 {
                     //TODO return region to AI
                     return remotePlayerC.sel;
@@ -296,7 +290,12 @@ namespace VikingEngine.DSSWars.GameState
         }
         virtual public void OneMinute_Update()
         { }
-        public bool IsSinglePlayer()
+
+        public bool IsSinglePlayer_LocalAndOnline()
+        { 
+            return DssRef.storage.playerCount == 1 && !Ref.netSession.InMultiplayerSession;
+        }
+        public bool IsSinglePlayer_Local()
         {
             return DssRef.storage.playerCount == 1;
         }

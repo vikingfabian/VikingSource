@@ -156,6 +156,15 @@ namespace VikingEngine.DSSWars.Players
             return true;
         }
 
+        public void initNetwork()
+        {
+            var peer = Ref.netSession.LocalPeer();
+            if (peer != null)
+            {
+                networkPeer = new Network.NetworkInstancePeer(peer, playerData.localPlayerIndex);
+            }
+        }
+
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
@@ -175,23 +184,17 @@ namespace VikingEngine.DSSWars.Players
 
             inputConnected = input.Connected;
 
-
-            if (Ref.netSession.HasInternet)
-            {
-                var peer = Ref.netSession.LocalPeer();
-                if (peer != null)
-                {
-                    networkPeer = new Network.NetworkInstancePeer(peer,playerindex);
-                }
-            }
-            
-
             faction.flagProfile.gameStartInit();
             faction.displayInFullOverview = true;
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
             playerData.Tag = this;
             playerData.view.SetDrawArea(numPlayers, pStorage.screenIndex, false, null);
+
+            if (Ref.netSession.HasInternet)
+            {
+                initNetwork();
+            }
 
             if (!Bound.IsWithin(playerData.view.ScreenIndex, 0, 3))
             {
@@ -214,21 +217,21 @@ namespace VikingEngine.DSSWars.Players
                 toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
             }
 
-            if (StartupSettings.EndlessResources)
-            {
-                foreach (var c in faction.cities.Array)
-                {
-                    if (c != null)
-                    {
-                        //foreach (var type in City.MovableCityResourceTypes)
-                        //{
-                        //    var res = c.GetGroupedResource(type);
-                        //    res.amount += 1000;
-                        //    c.SetGroupedResource(type, res);
-                        //}
-                    }
-                }
-            }
+            //if (StartupSettings.EndlessResources)
+            //{
+            //    foreach (var c in faction.cities.Array)
+            //    {
+            //        if (c != null)
+            //        {
+            //            //foreach (var type in City.MovableCityResourceTypes)
+            //            //{
+            //            //    var res = c.GetGroupedResource(type);
+            //            //    res.amount += 1000;
+            //            //    c.SetGroupedResource(type, res);
+            //            //}
+            //        }
+            //    }
+            //}
 
             menDeliveryCopy = new DeliveryStatus();
             menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
@@ -943,7 +946,7 @@ namespace VikingEngine.DSSWars.Players
         void updateMapOverlays()
         {
             
-            if (drawUnitsView.current.DrawOverview)
+            if (drawUnitsView.current.DrawFar)
             {
                 if (gameControls.diplomacy == null)
                 {
@@ -961,7 +964,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            if (drawUnitsView.current.DrawNormal)
+            if (drawUnitsView.current.DrawMid)
             {
                 if (cityTagMap == null)
                 { 

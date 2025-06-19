@@ -404,6 +404,14 @@ namespace VikingEngine.HUD.RichBox
             this.tex = tex;
         }
 
+        public override void Create(RichBoxGroup group)
+        {
+            if (tex != null)
+            {
+                base.Create(group);
+            }
+        }
+
         override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)
         {
             pointer = new ImageAdvanced(SpriteName.NO_IMAGE, center, sz, group.layer, true, group.addToRender);

@@ -90,6 +90,7 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierData soldierData;
         public SoldierData soldierData_soldier;
         public bool isShip = false;
+        public TimeStamp lastNetUpdate = new TimeStamp();
 
 #if VISUAL_NODES
         Graphics.Mesh collisionModel;
@@ -162,11 +163,14 @@ namespace VikingEngine.DSSWars.GameObject
             army.AddSoldierGroup(this);
             rotation = army.rotation;
         }
-
+        public SoldierGroup(AbsArmy army)
+        {
+            this.army = army;
+        }
         public SoldierGroup(AbsArmy army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
             this.army = army;
-            readGameState(r, version, pointers);
+            readGameState(r, version, true, pointers);
         }
 
         public void setDetailLevel(bool unitDetailView)
@@ -196,6 +200,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        
         override public SpottedArray<AbsSoldierUnit> Soldiers()
         {
             return soldiers;
@@ -246,6 +251,38 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            writeGameState(w);
+        }
+        public void readNet(System.IO.BinaryReader r, bool needInit)
+        {
+            readGameState(r, int.MaxValue, needInit, null);
+            setGroundY();
+        }
+
+        public void net_onUpdate()
+        {
+            lastNetUpdate.setNow();
+        }
+
+        public void net_updateclient(bool playerDetailView)
+        {
+            bool visible = playerDetailView && !lastNetUpdate.secPassed(30);
+            createSoldierObjects(visible, true);
+
+            if (soldiers != null)
+            {
+                var soldiersC = soldiers.counter();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.update_client();
+                }
+            }
+        }
+
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
             soldierConscript.writeGameState(w);
@@ -259,11 +296,14 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(shipHealth);
         }
 
-        virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        virtual public void readGameState(System.IO.BinaryReader r, int subVersion, bool needInit, ObjectPointerCollection pointers)
         {
             soldierConscript.readGameState(r);
 
-            initPart1();
+            if (needInit)
+            {
+                initPart1();
+            }
 
             isShip = r.ReadBoolean();
             typeCurrentData = isShip ? typeShipData : typeSoldierData;
@@ -283,9 +323,12 @@ namespace VikingEngine.DSSWars.GameObject
             soldierCount = r.ReadByte();
             shipHealth = r.ReadInt32();
 
-            initPart2(typeCurrentData);
+            if (needInit)
+            {
+                initPart2(typeCurrentData);
 
-            initPart3(typeCurrentData);
+                initPart3(typeCurrentData);
+            }
         }
 
         public void readGameState_old(System.IO.BinaryReader r, int version)
@@ -333,14 +376,8 @@ namespace VikingEngine.DSSWars.GameObject
             initPart3(typeCurrentData);
         }
 
-        public void writeNet(System.IO.BinaryWriter w)
-        {
+        
 
-        }
-        public void readNet(System.IO.BinaryReader r)
-        {
-
-        }
 
         void refreshAttackRadius(AbsSoldierProfile typeData)
         {
@@ -743,6 +780,19 @@ namespace VikingEngine.DSSWars.GameObject
         const float CaptureCheckMulti = (float)(1 / CaptureCheckChance);
         const float CaptureAddPerMs = 0.1f * CaptureCheckMulti;
         const float CaptureDistance = 0.4f;
+
+        //public void update_client()
+        //{
+        //    if (soldiers != null)
+        //    {
+        //        var soldiersC = soldiers.counter();
+        //        while (soldiersC.Next())
+        //        {
+        //            soldiersC.sel.update_client();
+        //        }
+        //    }
+        //}
+
         virtual public void update(float time, bool fullUpdate)
         {
             if (debugTagged)
@@ -956,194 +1006,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            //return;
-
-            ////OLD
-            //if (debugTagged)//groupId == 1611)
-            //{
-            //    lib.DoNothing();
-            //}
-
-            //if (soldiers.Count > 0)
-            //{
-            //    if (!lockMovement)
-            //    {
-            //        var battleGroup_sp = army.battleGroup;
-            //        if (battleGroup_sp != null &&
-            //            battleGroup_sp.battleState != Battle.BattleState.Battle)
-            //        {
-            //            update_battlePreparations(time, fullUpdate);
-            //            return;
-            //        }
-
-
-            //        //UPDATE OBJECTIVE
-            //        {
-            //            bool newIdleGroup = false;
-
-            //            int newObjective = groupObjective;
-            //            bool newAttackState = false;
-            //            bool induvidualUpdate;
-            //            bool walking = false;
-            //            if (groupObjective == GroupObjective_IsSplit)
-            //            {
-            //                induvidualUpdate = true;
-
-            //                if (//attacking_soldierGroupOrCity == null &&
-            //                    army.battleGroup == null)//dont regroup in battle (start spinning)
-            //                {
-            //                    refreshGroupPositions();
-
-            //                    if (fullUpdate)
-            //                    {
-            //                        var soldiersC = soldiers.counter();
-            //                        while (soldiersC.Next())
-            //                        {
-            //                            soldiersC.sel.setReGroupState();
-            //                        }
-
-            //                        newObjective = GroupObjective_ReGrouping;
-            //                    }
-            //                    else
-            //                    {
-            //                        induvidualUpdate = false;
-            //                        newObjective = GroupObjective_FindArmyPlacement;
-            //                    }
-            //                }
-            //            }
-            //            else if (groupObjective == GroupObjective_ReGrouping)
-            //            {
-            //                if (fullUpdate)
-            //                {
-            //                    induvidualUpdate = true;
-
-            //                    if (allInduvidualsAreIdle)
-            //                    {
-            //                        //LOCK in place
-            //                        newObjective = GroupObjective_FindArmyPlacement;
-
-            //                        var soldiersC = soldiers.counter();
-            //                        while (soldiersC.Next())
-            //                        {
-            //                            soldiersC.sel.clearAttack();
-            //                            soldiersC.sel.aiState = SoldierAiState.GroupLock;
-            //                        }
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    induvidualUpdate = false;
-            //                    newObjective = GroupObjective_FindArmyPlacement;
-            //                }
-            //            }
-            //            else
-            //            { //Moving like a group
-
-            //                induvidualUpdate = false;
-            //                var closest_sp = attacking_soldierGroupOrCity;
-            //                if (closest_sp != null)
-            //                {
-            //                    if (groupCollisionDistance(closest_sp) < 0.02f)
-            //                    {
-            //                        //SPLIT GROUP
-            //                        newObjective = GroupObjective_IsSplit;
-            //                        newAttackState = true;
-
-            //                        var soldiersC = soldiers.counter();
-            //                        while (soldiersC.Next())
-            //                        {
-            //                            soldiersC.sel.setAttackState();
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        //Group attack move
-            //                        walking = !updateWalking(goalWp, false, Rotation1D.D0, time);
-            //                    }
-            //                }
-            //                else if (army.battleGroup != null)
-            //                {
-            //                    walking = !updateWalking(goalWp, false, Rotation1D.D0, time);
-            //                }
-            //                else if (groupObjective == GroupObjective_FindArmyPlacement)
-            //                {
-            //                    if (updateWalking(goalWp, true, army.rotation, time))
-            //                    {
-            //                        newObjective = GroupObjective_FollowArmyObjective;
-            //                        newIdleGroup = true;
-            //                    }
-            //                    else
-            //                    {
-            //                        walking = true;
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    if (army.objective == ArmyObjective.MoveTo ||
-            //                        army.objective == ArmyObjective.Attack)
-            //                    {
-            //                        if (updateWalking(goalWp, true, army.rotation, time))
-            //                        {
-            //                            newIdleGroup = true;
-            //                        }
-            //                        else
-            //                        {
-            //                            walking = true;
-            //                        }
-            //                        newObjective = GroupObjective_FindArmyPlacement;
-            //                    }
-            //                    else
-            //                    {
-            //                        lib.DoNothing();
-            //                    }
-            //                    //Follow army
-
-            //                }
-
-            //            }
-
-            //            if (induvidualUpdate)
-            //            {
-            //                var soldiersC = soldiers.counter();
-            //                while (soldiersC.Next())
-            //                {
-            //                    soldiersC.sel.update(time, fullUpdate);
-            //                }
-            //            }
-            //            else
-            //            {
-            //                var soldiersC = soldiers.counter();
-            //                while (soldiersC.Next())
-            //                {
-            //                    soldiersC.sel.update_GroupLocked(walking);
-            //                }
-            //            }
-
-            //            groupIsIdle = newIdleGroup;
-
-            //            if (newObjective != groupObjective)
-            //            {
-            //                groupObjective = newObjective;
-            //            }
-            //            attackState = newAttackState;
-            //        }
-            //    }
-
-            //}
-            //else
-            //{
-            //    if (!inShipTransform)
-            //    {
-            //        if (fullUpdate)
-            //        {
-            //            DeleteMe(DeleteReason.EmptyGroup, true);
-            //        }
-            //        else
-            //        {
-            //            Ref.update.AddSyncAction(new SyncAction2Arg<DeleteReason, bool>(DeleteMe, DeleteReason.EmptyGroup, true));
-            //        }
-            //    }
-            //}
         }
 
 

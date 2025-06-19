@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Xsl;
@@ -10,6 +11,7 @@ using VikingEngine.DebugExtensions;
 
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.EngineSpace.Graphics.In3D;
@@ -43,8 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool isShip = false;
 
         public float terrainSpeedMultiplier = 1.0f;
-        //public IntVector2 positionBeforeBattle;
-        //string name;
+       
         ObjectName name = new ObjectName();
 
         static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);
@@ -95,11 +96,129 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void init(Faction faction)
+        void init(Faction faction, int overrideIx = -1)
         {
             bound = new BoundingSphere(Vector3.Zero, 0.5f);
             asynchCullingUpdate(1f, DssRef.state.culling.cullingStateA);
-            faction.AddArmy(this);
+            faction.AddArmy(this, overrideIx);
+        }
+
+        public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
+        {
+            w.Write((ushort)army.faction.parentArrayIndex);
+            w.Write((ushort)army.parentArrayIndex);
+
+            army.writeNet(w);
+        }
+        public static void NetReadArmy(System.IO.BinaryReader r)
+        {
+            int factionIx = r.ReadUInt16();
+            var faction = DssRef.world.factions.Array[factionIx];
+            
+            int armyIx = r.ReadUInt16();
+            Army army = faction.armies.GetIndex_Safe(armyIx);
+            bool needInit = false;
+            if (army == null)
+            { 
+                army = new Army();
+                army.faction = faction;
+                faction.armies.HardSet(army, armyIx);
+                needInit = true;
+            }
+
+            army.readNet(r, needInit);
+
+            if (needInit)
+            {
+                army.init(faction, armyIx);
+            }
+
+            army.net_onUpdate();
+        }
+
+        public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
+        {
+            w.Write((ushort)group.parentArrayIndex);
+            group.writeNet(w);
+        }
+
+        public static bool NetReadGroup(System.IO.BinaryReader r, Army army)
+        {
+            int index = r.ReadUInt16();
+            if (index != ushort.MaxValue)
+            {
+                var group = army.groups.GetIndex_Safe(index);
+                bool needInit = false;
+                if (group == null)
+                {
+                    needInit = true;
+                    if (army.IsCity())
+                    {
+                        group = new GuardGroup(army);
+                    }
+                    else
+                    {
+                        group = new SoldierGroup(army);
+                    }
+                    army.groups.HardSet(group, index);
+                }
+
+                group.readNet(r, needInit);
+                group.net_onUpdate();
+                return true;
+            }
+            else
+            { 
+                return false;
+            }
+        }
+
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            WP.WritePosXZPercentU16(w, position);
+            //WP.writePosXZ(w, position);
+            //net_writeGroups(w);
+        }
+        public void readNet(System.IO.BinaryReader r, bool needInit)
+        {
+            WP.ReadPosXZPercentU16(r, out position, out tilePos);
+            //WP.readPosXZ(r, out position, out tilePos);
+            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();   
+            
+            //net_readGroups(r);
+        }
+
+        public void net_onUpdate()
+        {
+            lastNetUpdate.setNow();
+            if (!inRender_overviewLayer)
+            {
+                inRender_overviewLayer = true;
+                setInRenderState();
+            }
+        }
+
+        public void net_updateclient(bool playerDetailView)
+        {
+            if (inRender_overviewLayer)
+            {
+                updateModelsPosition();
+                overviewBanner.Frame = isShip ? 1 : 0;
+
+                if (lastNetUpdate.secPassed(30))
+                {
+                    inRender_overviewLayer = false;
+                    setInRenderState();
+                }
+                
+            }
+
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {
+                groupsC.sel.net_updateclient(playerDetailView);
+            }
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -153,7 +272,6 @@ namespace VikingEngine.DSSWars.GameObject
             readGroups(r, subVersion, pointers);
 
             init(faction);
-
             refreshPositions(true);
             position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
 
@@ -173,16 +291,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        
-
-        public void writeNet(System.IO.BinaryWriter w)
-        {
-
-        }
-        public void readNet(System.IO.BinaryReader r)
-        {
-
-        }
 
         override public void tagSprites(out SpriteName back, out SpriteName art)
         {

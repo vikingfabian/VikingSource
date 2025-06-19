@@ -24,8 +24,10 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.Input;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.LootFest.Map;
 using VikingEngine.PJ.MiniGolf;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
@@ -498,7 +500,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             writeResources(w);
 
-            writeWorkerStatuses(w);
+            writeWorkerStatuses(w, false);
 
             w.Write((ushort)conscriptBuildings.Count);
             foreach (var barracks in conscriptBuildings)
@@ -583,7 +585,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             readResources(r, subversion);
             
-            readWorkerStatuses(r, subversion);
+            readWorkerStatuses(r, false, subversion);
 
             refreshCitySize();
             conscriptBuildings.Clear();
@@ -670,20 +672,22 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.ReadCheck(r);
         }
 
-        private void writeWorkerStatuses(BinaryWriter w)
+        private void writeWorkerStatuses(BinaryWriter w, bool netPacket)
         {
             w.Write((ushort)workerStatuses.Count);
+            cityHallSubtilePos.write(w);
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                workerStatuses[i].writeGameState(w);
+                workerStatuses[i].writeGameState(this, w, netPacket);
             }
         }
 
-        private void readWorkerStatuses(BinaryReader r, int subversion)
+        private void readWorkerStatuses(BinaryReader r, bool netPacket, int subversion)
         {
             IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
 
             int workerStatusesCount = r.ReadUInt16();
+            cityHallSubtilePos.read(r);
             for (int i = 0; i < workerStatusesCount; i++)
             {
                 WorkerStatus readWorker = new WorkerStatus()
@@ -694,7 +698,7 @@ namespace VikingEngine.DSSWars.GameObject
                     subTileStart = startPos,
                 };
 
-                readWorker.readGameState(r, subversion);
+                readWorker.readGameState(this, r, netPacket, subversion);
 
                 if (i >= workerStatuses.Count)
                 {
@@ -878,8 +882,6 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeNet_map(System.IO.BinaryWriter w)
         {
             writeMapFile(w);
-            //w.Write((ushort)guardCount);
-            //w.Write((ushort)maxGuardSize);
 
             w.Write((ushort)faction.parentArrayIndex);
 
@@ -903,23 +905,67 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 overviewModel.position = position;
             }
+
+            DssRef.world.unitCollAreaGrid.add(this);
         }
 
-        public void writeNet_update(System.IO.BinaryWriter w)
+        
+
+        public bool net_roundtrip_asyncupdate()
         {
-            workTemplate.writeGameState(w, true);
+            if (lastNetUpdate.secPassed(10))
+            {
+                lastNetUpdate.setNow();
+                for (int part = 0; part < 2; ++part)
+                {
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        w.Write((ushort)parentArrayIndex);
+                        w.Write((byte)part);
+                        writeNet_update(w, part);
+                    }
+                    packet.EndWrite_Asynch();
+                }
+                return true;
+            }
 
-            writeResources(w);
-
-            writeWorkerStatuses(w);
+            return false;
         }
-        public void readNet_update(System.IO.BinaryReader r)
+
+        public void writeNet_update(System.IO.BinaryWriter w, int part)
         {
-            workTemplate.readGameState(r, int.MaxValue, true);
+            switch (part)
+            {
+                case 0:
+                    workTemplate.writeGameState(w, true);
+                    writeResources(w);
+                    break;
 
-            readResources(r, int.MaxValue);
+                case 1:
+                    writeWorkerStatuses(w, true);
+                    break;
+            }
+            
 
-            readWorkerStatuses(r, int.MaxValue);
+           
+        }
+        public void readNet_update(System.IO.BinaryReader r, int part)
+        {
+            switch (part)
+            {
+                case 0:
+                    workTemplate.readGameState(r, int.MaxValue, true);
+
+                    readResources(r, int.MaxValue);
+                    break;
+
+                case 1:
+                    readWorkerStatuses(r, true, int.MaxValue);
+                    break;
+            }
+            
+
+           
         }
 
         override public void tagSprites(out SpriteName back, out SpriteName art)
@@ -1459,17 +1505,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         void createOverViewModel()
         {
-            //if (overviewModelFaction != faction.parentArrayIndex)
-            //{
-            //    overviewModelFaction = faction.parentArrayIndex;
-
+            //faction.profile.modelColorReplace
+            if (faction.profile != null)
+            {
                 overviewModel?.DeleteMe();
 
                 overviewModel = faction.AutoLoadModelInstance(
                    LootFest.VoxelModelName.cityicon, IconScale());
                 overviewModel.AddToRender(DrawGame.TerrainLayer);
                 overviewModel.position = position;
-            //}
+            }
         }
 
         float IconScale()
@@ -2007,6 +2052,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+            if (parentArrayIndex == 30)
+            {
+                lib.DoNothing();
+            }
             setWorkersInRenderState();
 
 
@@ -2094,7 +2143,12 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public override string Name(out bool mayEdit)
-        {            
+        {
+            if (faction == null)
+            {
+                mayEdit = false;
+                return TextLib.Error;
+            }
             mayEdit = faction != null && faction.player != null && faction.player.IsLocalPlayer();
             return name.name;
         }
@@ -2121,22 +2175,25 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void CityPresentationHud(ObjectHudArgs args, bool tooltip)
         {
-            nameToHud(args.content, !tooltip);
-
-            args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
-            if (!tagToHud(args.content))
+            if (faction != null)
             {
-                args.content.Add(GetFaction().FlagTextureToHud());
+                nameToHud(args.content, !tooltip);
+
+                args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
+                if (!tagToHud(args.content))
+                {
+                    args.content.Add(faction.FlagTextureToHud());
+                }
+                args.content.space(0.5f);
+                args.content.Add(new RbImage(SpriteName.WarsCityHall));
+                args.content.space(0.5f);
+                args.content.Add(new RbText(DssRef.lang.UnitType_City, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+
+                args.content.space(1);
+                args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+
+                ownerToHud(args, !tooltip);
             }
-            args.content.space(0.5f);
-            args.content.Add(new RbImage(SpriteName.WarsCityHall));
-            args.content.space(0.5f);
-            args.content.Add(new RbText(DssRef.lang.UnitType_City, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
-
-            args.content.space(1);
-            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
-
-            ownerToHud(args, !tooltip);
         }
 
         public override void toTooltip(ObjectHudArgs args)

@@ -5,6 +5,8 @@
 * Can zoom closer to the ground, and added minimum zoom/pan speed
 * new buildings: immigration tent, research center and book press (currently hidden)
 
+*Fixed save flag color bug
+
 * repaired: childbirth will stop at war
 Voxel editor 2
 * Bucket delete

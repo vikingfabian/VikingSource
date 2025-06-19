@@ -688,7 +688,12 @@ namespace VikingEngine
             result.readByte(r);
             return result;
         }
-
+        public static IntVector2 FromReadShort(System.IO.BinaryReader r)
+        {
+            IntVector2 result = IntVector2.Zero;
+            result.readShort(r);
+            return result;
+        }
         public static IntVector2 FromReadUshort(System.IO.BinaryReader r)
         {
             IntVector2 result = IntVector2.Zero;

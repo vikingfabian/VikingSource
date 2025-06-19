@@ -319,7 +319,9 @@ namespace VikingEngine.DSSWars
             factions = new SpottedArray<Faction>(factionCount);
             for (int i = 0; i < factionCount; ++i)
             {
-                factions.Add(new Faction(i));
+                var faction = new Faction(i);
+                faction.initClient();
+                factions.Add(faction);
             }
         }
 
@@ -458,6 +460,7 @@ namespace VikingEngine.DSSWars
                 this.cities[city].writeNet_map(w);
                 Debug.WriteCheck(w);
 
+                Debug.WriteCheck(w);
                 //
                 remotePlayerC.Reset();
                 while (remotePlayerC.Next())
@@ -483,6 +486,8 @@ namespace VikingEngine.DSSWars
             {
                 int city = r.ReadUInt16();
                 this.cities[city].readNet_map(r);
+                Debug.ReadCheck(r);
+
                 Debug.ReadCheck(r);
             }
 
@@ -776,12 +781,21 @@ namespace VikingEngine.DSSWars
 
         public float SubTileHeight(Vector3 wp)
         {
+
             return subTileGrid.array[
                 Convert.ToInt32(wp.X * TileSubDivitions + 3.5f), 
                 Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)].groundY;                
         }
 
-        
+        public float SubTileHeight(Vector3 wp, out SubTile subTile)
+        {
+
+            subTile = subTileGrid.array[
+                Convert.ToInt32(wp.X * TileSubDivitions + 3.5f),
+                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)];
+            return subTile.groundY;
+        }
+
         public Tile GetTile(Vector2 pos)
         {
             return tileGrid.Get(WP.ToTilePos(pos));

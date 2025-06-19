@@ -48,9 +48,10 @@ namespace VikingEngine.DSSWars.Work
             checkForGoal(true, mapObject.GetCity());
 
             updateGroudY(true);
+            refreshCarryModel();
         }
 
-        public void update(City city)
+        public bool update(City city)
         {
             if (parentArrayIndex == 6)
             {
@@ -271,6 +272,8 @@ namespace VikingEngine.DSSWars.Work
                     checkForGoal(false, city);
                     break;
             }
+
+            return model.IsDeleted;
         }
 
         bool workAnimation_soundframe()

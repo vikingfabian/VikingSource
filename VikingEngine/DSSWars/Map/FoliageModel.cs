@@ -22,10 +22,14 @@ namespace VikingEngine.DSSWars.Map
 
         public override void addToRender()
         {
-            model = faction.AutoLoadModelInstance_batched(
+            if (faction.profile != null)
+            {
+                model = faction.AutoLoadModelInstance_batched(
                 LootFest.VoxelModelName.wars_flag, scale);
             model.position = pos;
             model.Frame = setFrame;
+            }
+           
         }
 
         public override void DeleteMe()
