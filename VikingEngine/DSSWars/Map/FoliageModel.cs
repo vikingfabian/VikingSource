@@ -9,10 +9,34 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Map
 {
-    class FlagModel : FoliageModel
+    //struct FlagModel //: FoliageModel
+    //{
+    //    FoliageModel modelData;
+        
+        
+
+        
+
+    //    public override void DeleteMe()
+    //    {
+    //        model?.preRemoveFromDrawBatch();
+    //    }
+    //}
+
+    struct FoliageModel
     {
-        Faction faction;
-        public void init(Faction faction, int frame, Vector3 pos, float scale)
+        public Graphics.VoxelModelInstance model;
+        public LootFest.VoxelModelName modelName;
+        public Vector3 pos;
+        public float scale;
+        public int setFrame = -1;
+        double randomFrame = -1;
+        public Faction faction = null;
+
+        /// <summary>
+        /// For flags
+        /// </summary>
+        public FoliageModel(Faction faction, int frame, Vector3 pos, float scale)
         {
             this.faction = faction;
             this.pos = pos;
@@ -20,34 +44,7 @@ namespace VikingEngine.DSSWars.Map
             this.setFrame = frame;
         }
 
-        public override void addToRender()
-        {
-            if (faction.flagProfile != null)
-            {
-                model = faction.AutoLoadModelInstance_batched(
-                LootFest.VoxelModelName.wars_flag, scale);
-            model.position = pos;
-            model.Frame = setFrame;
-            }
-           
-        }
-
-        public override void DeleteMe()
-        {
-            model?.preRemoveFromDrawBatch();
-        }
-    }
-
-    class FoliageModel
-    {
-        protected Graphics.VoxelModelInstance model;
-        LootFest.VoxelModelName modelName;
-        protected Vector3 pos;
-        protected float scale;
-        protected int setFrame = -1;
-        double randomFrame = -1;
-
-        public void init(LootFest.VoxelModelName modelName, PcgRandom rnd, Vector3 pos, float scale)
+        public FoliageModel(LootFest.VoxelModelName modelName, PcgRandom rnd, Vector3 pos, float scale)
         {
             this.modelName = modelName;
             this.pos = pos;
@@ -55,7 +52,7 @@ namespace VikingEngine.DSSWars.Map
             this.randomFrame = Math.Min(rnd.Double(), rnd.Double());
         }
 
-        public void init(LootFest.VoxelModelName modelName, int frame, Vector3 pos, float scale)
+        public FoliageModel(LootFest.VoxelModelName modelName, int frame, Vector3 pos, float scale)
         {
             this.modelName = modelName;
             this.pos = pos;
@@ -63,7 +60,7 @@ namespace VikingEngine.DSSWars.Map
             this.setFrame = frame;
         }
 
-        virtual public void addToRender()
+        public void addToRender()
         {
             model = DssRef.models.ModelInstance_drawbatch(modelName, scale);
 
@@ -80,13 +77,23 @@ namespace VikingEngine.DSSWars.Map
             model.position = pos;
         }
 
-        virtual public void DeleteMe()
+        public void addToRender_flag()
+        {
+            if (faction.flagProfile != null)
+            {
+                model = faction.AutoLoadModelInstance_batched(
+                    LootFest.VoxelModelName.wars_flag, scale);
+                model.position = pos;
+                model.Frame = setFrame;
+            }
+
+        }
+
+        public void DeleteMe()
         {
             if (model != null)
             {
                 model.preRemoveFromDrawBatch();
-                //model.Visible = false;//.DeleteMe();
-                //DssRef.models.recycle(ref model, true);
             }
         }
     }

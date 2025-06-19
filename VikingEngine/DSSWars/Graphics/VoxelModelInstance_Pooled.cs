@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars
                 DssRef.state.voxelModelInstancesPooled.Push(this);
             }
         }
-
+        
         public void Pool_Reset()
         {
             visible = true;

@@ -103,6 +103,12 @@ namespace VikingEngine.Graphics
 
         public void AddToRender()
         {
+#if DEBUG
+            if (this.GetType() == typeof(DSSWars.VoxelModelInstance_Pooled))
+            {
+                throw new Exception();
+            }
+#endif
             Ref.draw.AddToRenderList(this);
             inRenderList = true;
         }
