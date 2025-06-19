@@ -1506,7 +1506,7 @@ namespace VikingEngine.DSSWars.GameObject
         void createOverViewModel()
         {
             //faction.profile.modelColorReplace
-            if (faction.profile != null)
+            if (faction.flagProfile != null)
             {
                 overviewModel?.DeleteMe();
 
