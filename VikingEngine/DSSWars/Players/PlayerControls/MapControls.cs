@@ -1234,13 +1234,15 @@ namespace VikingEngine.DSSWars.Players
 
         float PanSpeed()
         {
+            const float MinZoomAffect = 1.5f;
+
             if (controllerInput)
             {
-                return 0.0003f * camera.targetZoom;
+                return 0.0003f * Bound.Min(targetZoom, MinZoomAffect);
             }
             else
             {
-                return 0.0006f * camera.targetZoom;
+                return 0.0006f * Bound.Min(targetZoom, MinZoomAffect);
             }
         }
 

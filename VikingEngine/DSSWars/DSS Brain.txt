@@ -1,8 +1,8 @@
 ﻿UPDATE
 -Change Log-
-* Added a folder for overriding ingame models
+* Added a folder for overriding ingame models (see manual)
 * Sorting all the models, improving memory batching during draw calls.
-* Can zoom closer to the ground, and added minimum zoom speed
+* Can zoom closer to the ground, and added minimum zoom/pan speed
 
 Voxel editor 2
 * Bucket delete
