@@ -197,11 +197,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_ImmigrationTent_Description => "Stores {0} immigrants";
         public string BuildingType_ReseachCenter => "Research center";
         public string BuildingType_Bookpress => "Book press";
-
-        /// <summary>
-        /// 0: research center
-        /// </summary>
-        public string BuildingType_Bookpress_Description => "In one research field; all points gained will be shared with all your other cities, if they have a {0} in the same field.";
+        public string BuildingType_Bookpress_Description => "In one research field; all points gained will be shared with all {0} in your other cities.";
 
 
         /// <summary>

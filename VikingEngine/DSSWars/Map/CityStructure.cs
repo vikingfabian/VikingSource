@@ -384,6 +384,11 @@ namespace VikingEngine.DSSWars.Map
                                                 buildingPosition.Recruitment_pos = subTileLoop.Position;
                                                 break;
 
+                                            case TerrainBuildingType.ImmigrationTent:
+                                                ++buildingStructure.ImmigrationTent_count;
+                                                buildingPosition.ImmigrationTent_pos = subTileLoop.Position;
+                                                break;
+
                                             case TerrainBuildingType.SoldierBarracks:
                                                 ++buildingStructure.SoldierBarracks_count;
                                                 buildingPosition.SoldierBarracks_pos = subTileLoop.Position;
@@ -503,6 +508,14 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.School:
                                                 ++buildingStructure.School_count;
                                                 buildingPosition.School_pos = subTileLoop.Position;
+                                                break;
+                                            case TerrainBuildingType.ResearchCenter:
+                                                ++buildingStructure.ResearchCenter_count;
+                                                buildingPosition.ResearchCenter_pos = subTileLoop.Position;
+                                                break;
+                                            case TerrainBuildingType.BookPress:
+                                                ++buildingStructure.BookPress_count;
+                                                buildingPosition.BookPress_pos = subTileLoop.Position;
                                                 break;
                                             case TerrainBuildingType.Logistics:
                                                 buildingStructure.buildingLevel_logistics = subTile.terrainAmount;

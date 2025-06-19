@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         //public FloatingInt damages = new FloatingInt();
         public FloatingInt immigrants = new FloatingInt();
-        const double ImmigrantsRemovePerSec = 0.1;
+        
         public int workHutStyle = 0;
         public int mercenaries = 0;
 
@@ -538,7 +538,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write(res_food_safeguard);
 
-            technology.writeGameState(w);
+            technology.writeGameState(w, false);
             w.Write(money.copper);
             w.Write(automateCity);
             w.Write((byte)automationFocus);
@@ -644,7 +644,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             res_food_safeguard = r.ReadBoolean();
 
-            technology.readGameState(r, subversion);
+            technology.readGameState(r, subversion, false);
 
 
             if (subversion < 53)
@@ -1610,24 +1610,25 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 addWorkers = childrenAge1;
                 childrenAge1 = childrenAge0.pull();
-
+                
                 if (workForce.amount < MinWorkforce)
                 {
                     addWorkers += MinWorkforce - workForce.amount;
                 }
             }
 
-            //if (battleGroup == null)
+            if (!inBattle)
             {
                 if (immigrants.HasValue())
                 {
-                    var immigrantsToWork = immigrants.pull(5);
-                    addWorkers += immigrantsToWork;
+                    if (workForce.amount + addWorkers < HousingCount_Workers)
+                    {
+                        var immigrantsToWork = immigrants.pull(DssConst.ImmigrantsTransfereSpeed + DssConst.ImmigrantionTent_TransfereSpeedBonus * buildingStructure.ImmigrationTent_count);
+                        addWorkers += immigrantsToWork;
+                    }
 
-                    immigrants.reduceTowardsZero(ImmigrantsRemovePerSec);
+                    immigrants.reduceTowardsMinValue(DssConst.ImmigrantsRemovePerSec, DssConst.ImmigrantionTent_Capacity * buildingStructure.ImmigrationTent_count);
                 }
-
-                //detailObj.oneSecondUpdate();
             }
 
             workForce.amount = Bound.Max(workForce.amount + addWorkers, HousingCount_Workers);

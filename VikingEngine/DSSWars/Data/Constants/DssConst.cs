@@ -179,6 +179,10 @@ namespace VikingEngine.DSSWars
         public static int TownHall_RequiredStaff = 20;
         public static int CapitalHall_RequiredStaff = 80;
 
+        public const double ImmigrantsRemovePerSec = 0.1;
+        public const int ImmigrantsTransfereSpeed = 5;
+        public const int ImmigrantionTent_TransfereSpeedBonus = 2;
+        public const int ImmigrantionTent_Capacity = 60;
         //DEFENCE
         public static float GuardPostDefenceChance_Palisade = 0.4f;
         public static float GuardPostDefenceChance_Dirt = 0.5f;
@@ -270,6 +274,7 @@ namespace VikingEngine.DSSWars
         public static int TechnologyGain_CitySpread = 4;
         public static int TechnologyGain_Any = 1;
         public static int TechnologyGain_Master = 5;
+        public static int TechnologyGain_ResearchCenter = 1;
 
         public static float Time_SchoolOneXPSec = 4;//50 per level
 
