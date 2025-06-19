@@ -12,27 +12,26 @@ namespace VikingEngine.Voxels
 
         public IntVector3 Size { get { return Frames[0].Size; } }
 
-        //DataLib.ISaveTostorageCallback callBackObj;
         public void Save(bool save, DataStream.FilePath path, bool startThread = false)
         {
-        //    this.Save(save, path, false, null);
-        //}
-        //public void Save(bool save, DataStream.FilePath path, bool threaded, DataLib.ISaveTostorageCallback callBackObj)
-        //{
-
-            //this.callBackObj = callBackObj;
-            //if (startThread)
-            //{
-                DataStream.BeginReadWrite.BinaryIO(save, path, WriteBinaryStream, ReadBinaryStream, null, startThread);//ByteArray(save, path, this);
-            //}
-            //else
-            //{
-            //    if (save)
-            //        DataStream.DataStreamHandler.Write(path, WriteBinaryStream);
-            //    else
-            //        DataStream.DataStreamHandler.ReadBinaryIO(path, ReadBinaryStream);
-            //}
+            DataStream.BeginReadWrite.BinaryIO(save, path, WriteBinaryStream, ReadBinaryStream, null, startThread);           
         }
+        public void BucketFill(IntVector3 pos, int frame, ushort replace, bool continious, bool allFrames)
+        {
+            ushort find = Frames[frame].Get(pos);
+            if (allFrames)
+            {
+                foreach (VoxelObjGridDataHD grid in Frames)
+                {
+                    grid.BucketFill(pos, find, replace, continious);
+                }
+            }
+            else
+            {
+                Frames[frame].BucketFill(pos, find, replace, continious);
+            }
+        }
+
         public void ReplaceMaterial(List<BlockHDPair> findReplace)
         {
             foreach (VoxelObjGridDataHD grid in Frames)
@@ -40,51 +39,22 @@ namespace VikingEngine.Voxels
                 grid.ReplaceMaterial(findReplace);
             }
         }
-        //protected void LoadComplete()
-        //{
-        //    if (callBackObj != null)
-        //        callBackObj.SaveComplete(false, -1, null, false);
-        //}
-        //abstract public byte[] ByteArraySaveData { get; set; }
 
         public void WriteBinaryStream(System.IO.BinaryWriter w)
         {
             Voxels.VoxelLib.WriteVoxelObjAnimHD(w, Frames);
         }
-        //    List<BlockHD[, ,]> data = new List<BlockHD[, ,]>(Frames.Count);
-        //    foreach (VoxelObjGridDataHD f in Frames)
-        //    {
-        //        data.Add(f.MaterialGrid);
-        //    }
-        //    Voxels.VoxelLib.WriteVoxelObjAnimHD(w, data);
-        //}
         public void ReadBinaryStream(System.IO.BinaryReader r)
         {
             Frames = Voxels.VoxelLib.ReadVoxelObjectAnimHD(r);
 
         }
-        //    if (data == null)
-        //    {
-        //        byte[] dataArray = r.ReadBytes((int)(r.BaseStream.Length - r.BaseStream.Position));
-        //        ByteArraySaveData = dataArray;
-        //    }
-        //    else
-        //    {
-        //        Frames = new List<VoxelObjGridDataHD>(data.Count);
-        //        for (int i = 0; i < data.Count; i++)
-        //        {
-        //            Frames.Add(new VoxelObjGridDataHD(data[i]));
-        //        }
-        //    }
-        //}
 
         public void Merge(VoxelObjGridDataAnimHD other, MergeModelsOption options)
         {
             switch (options.MergeFramesOptions)
             {
                 case MergeFramesOptions.NewFirstOnOldFrames:
-                    //List<Voxel> add = other.Frames[0].GetVoxelArray();
-                    //the original should keeps its size and frames, the other should override its appearance
 
                     foreach (VoxelObjGridDataHD frame in Frames)
                     {
@@ -150,5 +120,6 @@ namespace VikingEngine.Voxels
             }
             return new VoxelObjGridDataAnimHD(frames);
         }
+
     }
 }
