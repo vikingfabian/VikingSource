@@ -395,8 +395,6 @@ namespace VikingEngine.Engine
         {
             Ref.draw.AddToContainer = null;
 
-
-
             spriteBatch.GraphicsDevice.Clear(ClrColor);
 
             if (spriteBatch.IsDisposed)
@@ -447,6 +445,10 @@ namespace VikingEngine.Engine
                 spriteBatch.Begin();
                 spriteBatch.Draw(MainRenderTarget, Screen.MonitorTargetRect, Color.White);
                 spriteBatch.End();
+            }
+            else
+            {
+                graphicsDeviceManager.GraphicsDevice.Clear(ClrColor);
             }
         }
 

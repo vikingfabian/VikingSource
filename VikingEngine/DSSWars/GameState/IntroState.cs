@@ -15,6 +15,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState;
+using VikingEngine.Engine;
 
 namespace VikingEngine.DSSWars
 {
@@ -24,7 +25,7 @@ namespace VikingEngine.DSSWars
     class IntroState : Engine.GameState
     {        
         bool isReset;
-        Graphics.TextG pressStartText;
+        //Graphics.TextG pressStartText;
 
         bool loadingContentComplete = false;
         bool loadingDataComplete = false;
@@ -38,9 +39,9 @@ namespace VikingEngine.DSSWars
 
             Ref.draw.ClrColor = Color.Black;
 
-            pressStartText = new Graphics.TextG(
-                LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
-                Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
+            //pressStartText = new Graphics.TextG(
+            //    LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
+            //    Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
                         
             DssVar.UpdateConstants();
 
@@ -160,5 +161,10 @@ namespace VikingEngine.DSSWars
             }
         }
 
+
+        protected override void createDrawManager()
+        {
+            draw =new Draw2D();
+        }
     }
 }

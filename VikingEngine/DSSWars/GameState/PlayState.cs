@@ -486,7 +486,7 @@ namespace VikingEngine.DSSWars
                 overviewMap.bRefreshTimer = true;
             }
 
-            detailMap.update();
+            //detailMap.update();
             overviewMap.update();
 
             if (localPlayers != null)
