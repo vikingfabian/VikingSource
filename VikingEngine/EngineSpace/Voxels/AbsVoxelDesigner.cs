@@ -466,7 +466,7 @@ namespace VikingEngine.Voxels
                 
 
                 cameraZoom(inputMap.zoom());
-                designerInterface.moveFreePencil(inputMap.pencilMovement(playerIndex, Settings.pencilMoveSpeed));
+                designerInterface.moveFreePencil(inputMap.pencilMovement(playerIndex, Settings.pencilMoveSpeed, out bool yMoveToggle), yMoveToggle);
                 
                 if (inputMap.previous.DownEvent)
                 { prevAndNextInput(false); }

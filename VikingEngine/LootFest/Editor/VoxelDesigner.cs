@@ -120,7 +120,7 @@ namespace VikingEngine.LootFest.Editor
                 drawLimits.Max.X * PublicConstants.Half, 
                 parent.hero.HeadPosition.Y,
                 drawLimits.Max.Z * PublicConstants.Half);
-            designerInterface.moveFreePencil(Vector3.Up * 0.1f);
+            designerInterface.moveFreePencil(Vector3.Up * 0.1f, false);
 
             base.camera.targetZoom = camera.targetZoom;
             base.camera.Tilt = camera.Tilt;
@@ -708,8 +708,6 @@ namespace VikingEngine.LootFest.Editor
                 {
                     base.UpdatePencilInfo();
                 }
-
-                
             }
         }
 

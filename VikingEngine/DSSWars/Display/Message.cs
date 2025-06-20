@@ -26,11 +26,13 @@ namespace VikingEngine.DSSWars.Display
 
         protected List<Message> messages = new List<Message>();
         protected float screenAreaBottom;
+        protected float viewMessageSeconds;
 
-        public MessageGroup(RichboxGuiSettings settings, PlayerData playerData)
+        public MessageGroup(RichboxGuiSettings settings, PlayerData playerData, float viewMessageSeconds)
         {
             this.settings = settings;
             this.playerData = playerData;
+            this.viewMessageSeconds = viewMessageSeconds;
         }
 
         public static void Title(RichBoxContent content, string title)
@@ -82,7 +84,7 @@ namespace VikingEngine.DSSWars.Display
                     message.update(ref mouseOver);
                 }
 
-                if (messages.Last().time.secPassed(20))
+                if (messages.Last().time.secPassed(viewMessageSeconds))
                 {
                     arraylib.PullLastMember(messages).DeleteMe();
                 }
@@ -93,8 +95,10 @@ namespace VikingEngine.DSSWars.Display
     class MessageGroup_Editor : MessageGroup
     {
         public MessageGroup_Editor()
-            : base(HudLib.richboxGui, XGuide.LocalHost)
-        { }
+            : base(HudLib.richboxGui, XGuide.LocalHost, 3)
+        {
+            
+        }
 
         public void Add(string message)
         {
@@ -121,7 +125,7 @@ namespace VikingEngine.DSSWars.Display
         TimeInGameCountdown armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
         
         public MessageGroup_Ingame(LocalPlayer player, int numPlayers, RichboxGuiSettings settings)
-            :base(settings, player.playerData)
+            :base(settings, player.playerData, 20)
         {
             this.player = player;
         }
@@ -277,8 +281,7 @@ namespace VikingEngine.DSSWars.Display
             }
 
             return result;
-        }
-        
+        }       
 
     }
 
@@ -297,6 +300,7 @@ namespace VikingEngine.DSSWars.Display
             menu.updateHeightFromContent();
             menu.addBackground(HudLib.MessageBackground, HudLib.GUILayer + 2);
             time = TimeStamp.Now();
+            
         }
 
         public bool onControllerClick()

@@ -105,7 +105,6 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 case Page_Selection:
                     selectionOptionsMenu();
                     break;
-
                 case Page_Recolor:
                     linkFindReplaceSelectionMaterials();
                     break;

@@ -246,6 +246,24 @@ namespace VikingEngine
             }
         }
 
+        public void snapToNearest90Degrees()
+        {
+            radians = SnapToNearest90Degrees(radians);
+        }
+
+        public static float SnapToNearest90Degrees(float radians)
+        {
+            // Normalize the angle to [0, 2π)
+            radians = radians % MathHelper.TwoPi;
+            if (radians < 0)
+                radians += MathHelper.TwoPi;
+
+            // Round to the nearest multiple of 90 degrees (π/2 radians)
+            int nearestMultiple = (int)MathF.Round(radians / MathHelper.PiOver2);
+
+            return nearestMultiple * MathHelper.PiOver2;
+        }
+
         public static Rotation1D FromDir4(Dir4 dir)
         {
             switch(dir)

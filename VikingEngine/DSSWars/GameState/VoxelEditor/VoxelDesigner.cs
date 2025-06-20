@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -191,6 +192,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             {
                 inputHelp.refreshUpdate(this, prevInputState, dssInput);
             }
+
+            bool mouseOverHud = false;
+            messages.Update(ref mouseOverHud);
         }
 
         protected override bool openMenuInput()
@@ -786,6 +790,11 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 animationFrames = loadedModel;
                 drawLimits.Max = animationFrames.Frames[0].Limits;
                 EventTriggerCallBack();
+            }
+
+            if (!loadOption_preview)
+            {
+                menusystem.closeMenu();
             }
         }
 
