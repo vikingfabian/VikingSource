@@ -710,11 +710,11 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 //Debug.Log("Picked: " + Settings.Material.ToString() + ", blockVal:" + Settings.Material.BlockValue.ToString());
 
                 RichBoxContent content = new RichBoxContent();
-                HudLib.Label(content, DssRef.todoLang.Editor_PickedColor);
+                HudLib.Label(content, DssRef.lang.Editor_PickedColor);
                 content.newLine();
                 content.Add(new RbImage(SpriteName.VoxelEditorColorCube, 1f, Settings.Material.color));
                 content.hspace();
-                content.Add(new RbText(string.Format(DssRef.todoLang.Editor_ColorRGBvalues, Settings.Material.color.R, Settings.Material.color.G, Settings.Material.color.B)));
+                content.Add(new RbText(string.Format(DssRef.lang.Editor_ColorRGBvalues, Settings.Material.color.R, Settings.Material.color.G, Settings.Material.color.B)));
 
                 content.space(2);
                 content.Add(new RbImage(SpriteName.VoxelEditorMaterialCube));

@@ -2340,7 +2340,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         optionContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                                         optionContent.Add(new RbImage(SpriteName.WarsResource_Stone));
                                         optionContent.Add(new RbSpace());
-                                        optionContent.Add(new RbText(DssRef.todoLang.WarsResourceGroup_Resources, HudLib.SubOptionTextColor));
+                                        optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Resources, HudLib.SubOptionTextColor));
                                     }
                                     else
                                     {
@@ -2348,7 +2348,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         optionContent.Add(new RbImage(SpriteName.WarsResource_Sword));
                                         optionContent.Add(new RbImage(SpriteName.WarsResource_PaddedArmor));
                                         optionContent.Add(new RbSpace());
-                                        optionContent.Add(new RbText(DssRef.todoLang.WarsResourceGroup_Weapons, HudLib.SubOptionTextColor));
+                                        optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Weapons, HudLib.SubOptionTextColor));
                                     }                                    
 
                                     var button = new ArtOption(type == exportAutoType,
@@ -2363,7 +2363,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                             case AutomationFocus.Military:
                                 content.newParagraph();
-                                HudLib.Label(content, DssRef.todoLang.CityAutomation_SoldierQuality);
+                                HudLib.Label(content, DssRef.lang.CityAutomation_SoldierQuality);
                                 content.newLine();
                                 for (WarAutoQuality quality = 0; quality < WarAutoQuality.NUM; quality++)
                                 {
@@ -2371,13 +2371,13 @@ namespace VikingEngine.DSSWars.GameObject
                                     switch (quality)
                                     {
                                         default:
-                                            caption = DssRef.todoLang.Hud_Low;
+                                            caption = DssRef.lang.Hud_Low;
                                             break;
                                         case WarAutoQuality.Medium:
-                                            caption = DssRef.todoLang.Hud_Medium;
+                                            caption = DssRef.lang.Hud_Medium;
                                             break;
                                         case WarAutoQuality.High:
-                                            caption = DssRef.todoLang.Hud_High;
+                                            caption = DssRef.lang.Hud_High;
                                             break;
                                     }
 
@@ -2394,7 +2394,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     content.Add(button);
                                 }
                                 content.newParagraph();
-                                HudLib.Label(content, DssRef.todoLang.CityAutomation_SoldierWeaponType);
+                                HudLib.Label(content, DssRef.lang.CityAutomation_SoldierWeaponType);
                                 content.newLine();
                                 for (WarAutoWeaponType weaponType = 0; weaponType < WarAutoWeaponType.NUM; weaponType++)
                                 {
@@ -2404,19 +2404,19 @@ namespace VikingEngine.DSSWars.GameObject
                                     {
                                         default:
                                             icon = SpriteName.NO_IMAGE;
-                                            caption = DssRef.todoLang.WarsResourceGroup_AllWeaponTypes;
+                                            caption = DssRef.lang.WarsResourceGroup_AllWeaponTypes;
                                             break;
                                         case WarAutoWeaponType.Melee:
                                             icon = SpriteName.WarsResource_Sword;
-                                            caption = DssRef.todoLang.WarsResourceGroup_MeleeHandWeapons;
+                                            caption = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
                                             break;
                                         case WarAutoWeaponType.Ranged:
                                             icon = SpriteName.WarsResource_Bow;
-                                            caption = DssRef.todoLang.WarsResourceGroup_RangedHandWeapons;
+                                            caption = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
                                             break;
                                         case WarAutoWeaponType.Warmachine:
                                             icon = SpriteName.WarsResource_Ballista;
-                                            caption = DssRef.todoLang.WarsResourceGroup_Warmachines;
+                                            caption = DssRef.lang.WarsResourceGroup_Warmachines;
                                             break;
                                     }
                                     

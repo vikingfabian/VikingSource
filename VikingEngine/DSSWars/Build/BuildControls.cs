@@ -650,7 +650,7 @@ namespace VikingEngine.DSSWars.Build
                                 HudLib.BulletPoint(content);
                                 content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
                                 content.space();
-                                content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter)));
+                                content.Add(new RbText(string.Format(DssRef.lang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter)));
                                 content.newParagraph();
                                 content.Add(new RbText(LangLib.TechnologyExample(), HudLib.InfoYellow_Light));
                                 break;
@@ -659,7 +659,7 @@ namespace VikingEngine.DSSWars.Build
                                 HudLib.BulletPoint(content);
                                 content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
                                 content.space();
-                                content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_Bookpress_Description, DssRef.todoLang.BuildingType_ReseachCenter)));
+                                content.Add(new RbText(string.Format(DssRef.lang.BuildingType_Bookpress_Description, DssRef.lang.BuildingType_ReseachCenter)));
                                 content.newParagraph();
                                 content.Add(new RbText(LangLib.TechnologyExample(), HudLib.InfoYellow_Light));
                                 break;

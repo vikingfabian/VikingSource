@@ -1381,5 +1381,180 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Experience_Required { get; }
         public abstract string InputActionName_ToggleMenu { get; }
 
+        //DEMO PATCH 4
+        public abstract string Work_BadValueDescription { get; }
+        public abstract string Work_SelectCategory { get; }
+
+        public abstract string Hud_RemoveFromList { get; }
+        public abstract string Hud_ReturnToPrevious { get; }
+        public abstract string Hud_Close { get; }
+
+        public abstract string Hud_Low { get; }
+        public abstract string Hud_Medium { get; }
+        public abstract string Hud_High { get; }
+
+        public abstract string Hud_Copy { get; }
+        //public abstract string Hud_Paste { get; }
+        public abstract string Hud_Cut { get; }
+        public abstract string Hud_SaveCompleted { get; }
+
+        public abstract string Settings_WaterMultiplier { get; }
+        public abstract string Settings_WaterMultiplier_Description { get; }
+
+        public abstract string Settings_ChildMultiplier { get; }
+        public abstract string Settings_CraftMultiplier { get; }
+        public abstract string Settings_CraftMultiplier_Description { get; }
+
+        public abstract string FastProduction { get; }
+        public abstract string SlowProduction { get; }
+
+        /// <summary>
+        /// Label for a list of items blocked from production
+        /// </summary>
+        public abstract string BlocksProduction { get; }
+
+        public abstract string Automation_AutomationFocus_NoFocus { get; }
+        public abstract string CityAutomation_SoldierQuality { get; }
+        public abstract string CityAutomation_SoldierWeaponType { get; }
+
+        public abstract string WarsResourceGroup_Resources { get; }
+        public abstract string WarsResourceGroup_Weapons { get; }
+        public abstract string WarsResourceGroup_AllWeaponTypes { get; }
+        public abstract string WarsResourceGroup_MeleeHandWeapons { get; }
+        public abstract string WarsResourceGroup_RangedHandWeapons { get; }
+        public abstract string WarsResourceGroup_Warmachines { get; }
+
+        public abstract string FactionSettings_Titel { get; }
+        public abstract string FactionSettings_Description { get; }
+
+        public abstract string Conscript_MaxPopulation { get; }
+        public abstract string Conscript_MaxPopulation_Description { get; }
+
+        public abstract string Conscript_FoodAbundance { get; }
+        public abstract string Conscript_FoodAbundance_Description { get; }
+
+        /// <summary>
+        /// General settings will go through all items in a list and apply to all of them (to their checkbox)
+        /// </summary>
+        public abstract string GeneralSetting_On { get; }
+        public abstract string GeneralSetting_Off { get; }
+        public abstract string GeneralSetting_AllBuildingsDescription { get; }
+        public abstract string GeneralSetting_ApplyMessage { get; }
+
+        public abstract string MustTurnOffSteamInput { get; }
+
+        public abstract string Technology_GainTitle { get; }
+        public abstract string Technology_LevelUp { get; }
+        public abstract string Technology_ForEachLevelUp { get; }
+
+        public abstract string VoxelEditor_Description { get; }
+
+        public abstract string Editor_Tool { get; }
+        public abstract string Editor_SelectOptionsMenu { get; }
+        public abstract string Editor_Continous { get; } // "Continuous"
+
+        public abstract string Editor_Tool_PencilSize { get; }
+        public abstract string Editor_Tool_SizeTolerance { get; }
+        public abstract string Editor_Tool_RoundPencil { get; }
+        public abstract string Editor_Tool_EdgeSize { get; }
+        public abstract string Editor_Tool_PercentFill { get; }
+        public abstract string Editor_Tool_ClearAbove { get; }
+        public abstract string Editor_Tool_FillBelow { get; }
+
+        public abstract string Editor_UserModels { get; }
+        public abstract string Editor_UserModels_Description { get; }
+
+        public abstract string Editor_RetailModels { get; }
+        public abstract string Editor_RetailModels_Description { get; }
+
+        public abstract string Editor_ModTemplates { get; }
+        public abstract string Editor_ExportAsOBJ { get; }
+        public abstract string Editor_SelectAll { get; }
+
+        public abstract string Editor_Canvas_Title { get; }
+        public abstract string Editor_Canvas_Size { get; }
+        public abstract string Editor_Canvas_Dimension_X { get; }
+        public abstract string Editor_Canvas_Dimension_Y { get; }
+        public abstract string Editor_Canvas_Dimension_Z { get; }
+        public abstract string Editor_Canvas_SizePresets { get; }
+        public abstract string Editor_Canvas_Move { get; }
+        public abstract string Editor_Canvas_Move_Up { get; }
+        public abstract string Editor_Canvas_Move_Down { get; }
+        public abstract string Editor_Canvas_RotateClockwise { get; }
+        public abstract string Editor_Canvas_RotateCounterClockwise { get; }
+        public abstract string Editor_Canvas_Mirror { get; }
+
+        public abstract string Editor_Canvas_RotateFlip_Title { get; }
+        public abstract string Editor_Canvas_FlipVertical { get; }
+        public abstract string Editor_Canvas_FlipOrientation { get; }
+        public abstract string Editor_Canvas_ClearAll_Description { get; }
+
+        public abstract string Editor_Animation { get; }
+        public abstract string Editor_Animation_RemoveCurrentFrame { get; }
+        public abstract string Editor_Animation_AddFrameCopy { get; }
+        public abstract string Editor_Animation_AddEmptyFrame { get; }
+        public abstract string Editor_Animation_MoveDescription { get; }
+        public abstract string Editor_Animation_AllFrames { get; }
+        public abstract string Editor_Animation_AllFrames_ActionDescription { get; }
+
+        public abstract string Editor_SettingsMenu { get; }
+        public abstract string Hud_Exit { get; }
+        public abstract string Editor_Canvas_Clear { get; }
+
+        public abstract string Editor_Stamp { get; }
+        public abstract string Editor_StampOtherFrames { get; }
+        public abstract string Editor_StampOtherFrames_Description { get; }
+        public abstract string Editor_PasteToFrame { get; }
+        public abstract string Editor_ClearAllFrames { get; }
+        public abstract string Editor_ClearOtherFrames { get; }
+
+        public abstract string Editor_Settings_MoveSpeed { get; }
+        public abstract string Editor_Settings_BackgroundColor { get; }
+        public abstract string Editor_Settings_HideHUD { get; }
+
+        public abstract string Editor_Color { get; }
+        public abstract string Editor_ColorsInUseLabel { get; }
+        public abstract string Editor_Color_BrighterPlus { get; }
+        public abstract string Editor_Color_Brighter { get; }
+        public abstract string Editor_Color_Darker { get; }
+        public abstract string Editor_Color_DarkerPlus { get; }
+        public abstract string Editor_Color_RedTint { get; }
+        public abstract string Editor_Color_Tint { get; }
+        public abstract string Editor_Color_GreenTint { get; }
+        public abstract string Editor_Color_BlueTint { get; }
+        public abstract string Editor_Color_YellowTint { get; }
+        public abstract string Editor_Color_PurpleTint { get; }
+        public abstract string Editor_NoColor { get; }
+
+        public abstract string Editor_Material { get; }
+
+        /// <summary>
+        /// User may change one color to another across the model
+        /// </summary>
+        public abstract string Editor_Color_Recolor { get; }
+        public abstract string Editor_Color_RecolorTo { get; }
+
+        public abstract string Editor_Material_Set { get; }
+
+        public abstract string Editor_Preview { get; }
+        public abstract string Editor_CombineWithCurrent { get; }
+
+        public abstract string Editor_PickedColor { get; }
+        public abstract string Editor_ColorRGBvalues { get; }
+
+        public abstract string BuildingType_ImmigrationTent { get; }
+        public abstract string BuildingType_ImmigrationTent_Description { get; }
+        public abstract string BuildingType_ReseachCenter { get; } // spelling kept to match original usage
+        public abstract string BuildingType_Bookpress { get; }
+        public abstract string BuildingType_Bookpress_Description { get; }
+
+        /// <summary>
+        /// 0: beer, 1: chemistry, 2: gun powder
+        /// </summary>
+        public abstract string Technology_ReseachExample { get; }
+
+        public abstract string BuildingType_Research_BaseDescription { get; }
+        public abstract string BuildingType_ResearchCenter_Description { get; }
+
     }
 }

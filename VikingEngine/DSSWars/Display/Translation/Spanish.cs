@@ -2207,5 +2207,182 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string InputActionName_ToggleMenu => "Alternar menú";
 
+        //DEMO PATCH 4
+        public override string Work_BadValueDescription => "Los recursos pueden bajar de cero y superar ligeramente el límite de almacenamiento. Los límites solo se aplican al crear la cola de trabajo.";
+
+        public override string Work_SelectCategory => "Seleccionar categoría de ítems";
+        public override string Hud_RemoveFromList => "Eliminar de la lista";
+
+        public override string Hud_ReturnToPrevious => "Volver";
+        public override string Hud_Close => "Cerrar";
+
+        public override string Hud_Low => "Bajo";
+        public override string Hud_Medium => "Medio";
+        public override string Hud_High => "Alto";
+
+        public override string Hud_Copy => "Copiar";
+        //public override string Hud_Paste => "Pegar";
+        public override string Hud_Cut => "Cortar";
+        public override string Hud_SaveCompleted => "Guardado completado";
+
+        public override string Settings_WaterMultiplier => "Multiplicador de agua";
+        public override string Settings_WaterMultiplier_Description => "Determina cuánta agua producen y almacenan las ciudades. Un valor alto reduce el rendimiento del ordenador.";
+
+        public override string Settings_ChildMultiplier => "Multiplicador de natalidad";
+        public override string Settings_CraftMultiplier => "Multiplicador de velocidad de producción";
+        public override string Settings_CraftMultiplier_Description => "Valores bajos producen más rápido.";
+
+        public override string FastProduction => "Producción rápida";
+        public override string SlowProduction => "Producción lenta";
+
+        /// <summary>
+        /// Label for a list of items blocked from production
+        /// </summary>
+        public override string BlocksProduction => "No se producirá";
+
+        public override string Automation_AutomationFocus_NoFocus => "Todo";
+        public override string CityAutomation_SoldierQuality => "Calidad del soldado";
+        public override string CityAutomation_SoldierWeaponType => "Tipo de arma";
+
+        public override string WarsResourceGroup_Resources => "Recursos";
+        public override string WarsResourceGroup_Weapons => "Armas";
+
+        public override string WarsResourceGroup_AllWeaponTypes => "Mixto";
+        public override string WarsResourceGroup_MeleeHandWeapons => "Cuerpo a cuerpo";
+        public override string WarsResourceGroup_RangedHandWeapons => "A distancia";
+        public override string WarsResourceGroup_Warmachines => "Máquinas de guerra";
+
+        public override string FactionSettings_Titel => "Configuración de facción";
+        public override string FactionSettings_Description => "Se aplica a todas tus ciudades";
+
+        public override string Conscript_MaxPopulation => "Población máxima";
+        public override string Conscript_MaxPopulation_Description => "Solo recluta cuando la población esté al máximo";
+
+        public override string Conscript_FoodAbundance => "Máximo de comida";
+        public override string Conscript_FoodAbundance_Description => "Solo recluta cuando la comida alcance el límite de almacenamiento";
+
+        /// <summary>
+        /// General settings will go through all items in a list and apply to all of them (to their checkbox)
+        /// </summary>
+        public override string GeneralSetting_On => "Establecer en: Activado";
+        public override string GeneralSetting_Off => "Establecer en: Desactivado";
+        public override string GeneralSetting_AllBuildingsDescription => "Se aplicará a todos los edificios";
+
+        public override string GeneralSetting_ApplyMessage => "Cambio aplicado a {0} edificios";
+
+        public override string MustTurnOffSteamInput => "Para usar controles, debes desactivar Steam Input.";
+
+        public override string Technology_GainTitle => "Formas de obtener tecnología";
+        public override string Technology_LevelUp => "Subir de nivel";
+        public override string Technology_ForEachLevelUp => "Cuando un trabajador sube de nivel en el área de tecnología: {0}";
+
+        public override string VoxelEditor_Description => "Crear modelos con bloques";
+
+        public override string Editor_Tool => "Herramienta";
+        public override string Editor_SelectOptionsMenu => "Opciones de selección";
+        public override string Editor_Continous => "Continuo";
+
+        public override string Editor_Tool_PencilSize => "Tamaño del lápiz";
+        public override string Editor_Tool_SizeTolerance => "Tolerancia de tamaño";
+        public override string Editor_Tool_RoundPencil => "Lápiz redondo";
+        public override string Editor_Tool_EdgeSize => "Tamaño del borde";
+        public override string Editor_Tool_PercentFill => "Porcentaje de relleno";
+        public override string Editor_Tool_ClearAbove => "Limpiar por encima";
+        public override string Editor_Tool_FillBelow => "Rellenar por debajo";
+
+        public override string Editor_UserModels => "Modelos del usuario";
+        public override string Editor_UserModels_Description => "Explora los modelos que has guardado";
+
+        public override string Editor_RetailModels => "Modelos del juego";
+        public override string Editor_RetailModels_Description => "Cargar modelos desde el juego";
+
+        public override string Editor_ModTemplates => "Plantillas para mods";
+        public override string Editor_ExportAsOBJ => "Exportar como .OBJ";
+        public override string Editor_SelectAll => "Seleccionar todo";
+
+        public override string Editor_Canvas_Title => "Lienzo";
+        public override string Editor_Canvas_Size => "Tamaño";
+        public override string Editor_Canvas_Dimension_X => "X";
+        public override string Editor_Canvas_Dimension_Y => "Y";
+        public override string Editor_Canvas_Dimension_Z => "Z";
+        public override string Editor_Canvas_SizePresets => "Preajustes de tamaño";
+        public override string Editor_Canvas_Move => "Mover";
+        public override string Editor_Canvas_Move_Up => "Arriba";
+        public override string Editor_Canvas_Move_Down => "Abajo";
+        public override string Editor_Canvas_RotateClockwise => "Girar en sentido horario";
+        public override string Editor_Canvas_RotateCounterClockwise => "Girar en sentido antihorario";
+        public override string Editor_Canvas_Mirror => "Reflejar";
+
+        public override string Editor_Canvas_RotateFlip_Title => "Girar/Reflejar";
+        public override string Editor_Canvas_FlipVertical => "Reflejar verticalmente";
+        public override string Editor_Canvas_FlipOrientation => "Cambiar horizontal/vertical";
+        public override string Editor_Canvas_ClearAll_Description => "Elimina todos los bloques y fotogramas";
+
+        public override string Editor_Animation => "Animación";
+        public override string Editor_Animation_RemoveCurrentFrame => "Eliminar fotograma actual";
+        public override string Editor_Animation_AddFrameCopy => "Añadir fotograma como copia";
+        public override string Editor_Animation_AddEmptyFrame => "Añadir fotograma vacío";
+        public override string Editor_Animation_MoveDescription => "Cambiar posición del fotograma";
+        public override string Editor_Animation_AllFrames => "Todos los fotogramas";
+        public override string Editor_Animation_AllFrames_ActionDescription => "Realizar la misma acción en todos los fotogramas";
+
+        public override string Editor_SettingsMenu => "Configuración";
+        public override string Hud_Exit => "Salir";
+        public override string Editor_Canvas_Clear => "Limpiar";
+
+        public override string Editor_Stamp => "Sello";
+        public override string Editor_StampOtherFrames => "Sellar en otros fotogramas";
+        public override string Editor_StampOtherFrames_Description => "Pegar los vóxeles en esos fotogramas";
+        public override string Editor_PasteToFrame => "Pegar los vóxeles en este fotograma";
+        public override string Editor_ClearAllFrames => "Limpiar en todos los fotogramas";
+        public override string Editor_ClearOtherFrames => "Limpiar otros fotogramas";
+
+        public override string Editor_Settings_MoveSpeed => "Velocidad de movimiento";
+        public override string Editor_Settings_BackgroundColor => "Color de fondo";
+        public override string Editor_Settings_HideHUD => "Ocultar HUD";
+
+        public override string Editor_Color => "Color";
+        public override string Editor_ColorsInUseLabel => "Colores en uso";
+        public override string Editor_Color_BrighterPlus => "Más brillante +";
+        public override string Editor_Color_Brighter => "Más brillante";
+        public override string Editor_Color_Darker => "Más oscuro";
+        public override string Editor_Color_DarkerPlus => "Más oscuro +";
+        public override string Editor_Color_RedTint => "Tinte rojo";
+        public override string Editor_Color_Tint => "Tinte";
+        public override string Editor_Color_GreenTint => "Tinte verde";
+        public override string Editor_Color_BlueTint => "Tinte azul";
+        public override string Editor_Color_YellowTint => "Tinte amarillo";
+        public override string Editor_Color_PurpleTint => "Tinte morado";
+        public override string Editor_NoColor => "Vacío";
+
+        public override string Editor_Material => "Material";
+
+        /// <summary>
+        /// User may change one color to another across the model
+        /// </summary>
+        public override string Editor_Color_Recolor => "Recolorear";
+        public override string Editor_Color_RecolorTo => "Recolorear a";
+
+        public override string Editor_Material_Set => "Establecer material";
+
+        public override string Editor_Preview => "Vista previa";
+        public override string Editor_CombineWithCurrent => "Combinar con modelo actual";
+
+        public override string Editor_PickedColor => "Seleccionado";
+        public override string Editor_ColorRGBvalues => "R:{0} G:{1} B:{2}";
+
+        public override string BuildingType_ImmigrationTent => "Tienda de inmigración";
+        public override string BuildingType_ImmigrationTent_Description => "Almacena a {0} inmigrantes";
+        public override string BuildingType_ReseachCenter => "Centro de investigación";
+        public override string BuildingType_Bookpress => "Imprenta";
+        public override string BuildingType_Bookpress_Description => "En un campo de investigación, todos los puntos ganados se compartirán con todas las {0} de tus otras ciudades.";
+
+        public override string Technology_ReseachExample => "Ejemplo: cuando un trabajador produce {0}, mejora su habilidad de {1}. Al subir de nivel, se añadirán puntos a la tecnología {2}, ya que comparten el campo {1}.";
+
+        public override string BuildingType_Research_BaseDescription => "Aumenta la investigación tecnológica.";
+
+        public override string BuildingType_ResearchCenter_Description => "Añade {0} puntos adicionales de investigación tecnológica cuando un trabajador sube de nivel en el mismo campo.";
+
+
     }
 }

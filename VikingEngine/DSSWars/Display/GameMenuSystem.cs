@@ -454,9 +454,9 @@ namespace VikingEngine.DSSWars.Display
                 { MouseButtonAction.Select, Ref.langOpt.MouseButtonAction_Select },
                 { MouseButtonAction.Cancel, Ref.langOpt.MouseButtonAction_Cancel },
                 { MouseButtonAction.Pan, Ref.langOpt.MouseButtonAction_Pan },
-                { MouseButtonAction.PanAndCancel, DssRef.todoLang.MouseButtonAction_PanAndCancel },
+                { MouseButtonAction.PanAndCancel, Ref.langOpt.MouseButtonAction_PanAndCancel },
                 { MouseButtonAction.PanAndOrder, Ref.langOpt.MouseButtonAction_PanAndOrder },
-                { MouseButtonAction.PanAndOrderAndCancel, DssRef.todoLang.MouseButtonAction_PanAndOrderAndCancel },
+                { MouseButtonAction.PanAndOrderAndCancel, Ref.langOpt.MouseButtonAction_PanAndOrderAndCancel },
                 { MouseButtonAction.Order, Ref.langOpt.MouseButtonAction_Order },
             };
 

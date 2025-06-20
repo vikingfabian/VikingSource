@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new ArtButton(RbButtonStyle.Outline,
                     new List<AbsRichBoxMember> { new RbImage(SpriteName.ButtonDisabledCross) { color = HudLib.NotAvailableColor } },
                     new RbAction1Arg<AbsMapObject>(removeClick, obj),
-                    new RbTooltip_Text(DssRef.todoLang.Hud_RemoveFromList)));
+                    new RbTooltip_Text(DssRef.lang.Hud_RemoveFromList)));
 
                 args.content.Add(new ArtButton(RbButtonStyle.Outline,
                     new List<AbsRichBoxMember> { new RbImage(SpriteName.ClickCirkleEffect) { color = HudLib.AvailableColor } },

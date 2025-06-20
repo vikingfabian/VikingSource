@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.XP
 
 
             content.newParagraph();
-            content.h2(DssRef.todoLang.Technology_GainTitle, HudLib.TitleColor_Label);
+            content.h2(DssRef.lang.Technology_GainTitle, HudLib.TitleColor_Label);
             content.newLine();
             {
                 HudLib.BulletPoint(content);
@@ -223,14 +223,14 @@ namespace VikingEngine.DSSWars.XP
             {
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(LangLib.ExperienceLevelIcon(ExperienceLevel.Practitioner_2)));
-                content.Add(new RbText($"{DssRef.todoLang.Technology_LevelUp}: {TextLib.PlusMinus(DssConst.TechnologyGain_Any)}"));
+                content.Add(new RbText($"{DssRef.lang.Technology_LevelUp}: {TextLib.PlusMinus(DssConst.TechnologyGain_Any)}"));
                 content.space();
                 
                 HudLib.InfoButton(content, new RbTooltip(tip));
 
                 void tip(RichBoxContent content, object tag)
                 {
-                    var info = new RbText(string.Format(DssRef.todoLang.Technology_ForEachLevelUp, TextLib.PlusMinus(DssConst.TechnologyGain_Any)));
+                    var info = new RbText(string.Format(DssRef.lang.Technology_ForEachLevelUp, TextLib.PlusMinus(DssConst.TechnologyGain_Any)));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
                 }

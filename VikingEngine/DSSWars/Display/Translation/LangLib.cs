@@ -863,7 +863,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainBuildingType.Nobelhouse:
                             return DssRef.lang.Building_NobleHouse;
                         case TerrainBuildingType.ImmigrationTent:
-                            return DssRef.todoLang.BuildingType_ImmigrationTent;
+                            return DssRef.lang.BuildingType_ImmigrationTent;
                         case TerrainBuildingType.PigPen:
                             return DssRef.lang.BuildingType_PigPen;
 
@@ -933,9 +933,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainBuildingType.School:
                             return DssRef.lang.BuildingType_School;
                         case TerrainBuildingType.ResearchCenter:
-                            return DssRef.todoLang.BuildingType_ReseachCenter;
+                            return DssRef.lang.BuildingType_ReseachCenter;
                         case TerrainBuildingType.BookPress:
-                            return DssRef.todoLang.BuildingType_Bookpress;
+                            return DssRef.lang.BuildingType_Bookpress;
 
                         case TerrainBuildingType.ServiceMenHouse_small:
                         case TerrainBuildingType.ServiceMenHouse_Large:
@@ -1202,10 +1202,10 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case TerrainBuildingType.BookPress:
                 case TerrainBuildingType.ResearchCenter:
-                    return DssRef.todoLang.BuildingType_Research_BaseDescription;
+                    return DssRef.lang.BuildingType_Research_BaseDescription;
 
                 case TerrainBuildingType.ImmigrationTent:
-                    return string.Format(DssRef.todoLang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity);
+                    return string.Format(DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity);
 
                 default:
                     return TextLib.Error;
@@ -1215,7 +1215,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public static string TechnologyExample()
         {
             // 0: beer, 1: chemistry, 2: gun powder
-            return string.Format(DssRef.todoLang.Technology_ReseachExample,
+            return string.Format(DssRef.lang.Technology_ReseachExample,
                 DssRef.lang.Resource_TypeName_Beer,
                 DssRef.lang.ExperienceType_Chemist,
                 XpLib.TechnologyName_BlackPowder());

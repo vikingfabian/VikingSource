@@ -20,21 +20,21 @@ namespace VikingEngine.DSSWars.Conscript
             switch (quality)
             {
                 case WarAutoQuality.Low:
-                    content.Add(new RbText(DssRef.todoLang.FastProduction, HudLib.InfoYellow_Light));
+                    content.Add(new RbText(DssRef.lang.FastProduction, HudLib.InfoYellow_Light));
                     break;
                 case WarAutoQuality.Medium:
-                    HudLib.Label(content, DssRef.todoLang.BlocksProduction);
+                    HudLib.Label(content, DssRef.lang.BlocksProduction);
                     resource(true, ItemResourceType.SlingShot);
                     resource(true, ItemResourceType.SharpStick);
                     break;
                 case WarAutoQuality.High:
-                    HudLib.Label(content, DssRef.todoLang.BlocksProduction);
+                    HudLib.Label(content, DssRef.lang.BlocksProduction);
                     resource(true, ItemResourceType.SlingShot);
                     resource(true, ItemResourceType.ThrowingSpear);
                     resource(true, ItemResourceType.SharpStick);
                     resource(false, ItemResourceType.NONE);
                     content.newParagraph();
-                    content.Add(new RbText(DssRef.todoLang.SlowProduction, HudLib.InfoYellow_Light));
+                    content.Add(new RbText(DssRef.lang.SlowProduction, HudLib.InfoYellow_Light));
                     break;
 
             }

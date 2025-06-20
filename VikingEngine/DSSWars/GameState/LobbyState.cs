@@ -969,24 +969,24 @@ namespace VikingEngine.DSSWars
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Settings_WaterMultiplier, HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.lang.Settings_WaterMultiplier, HudLib.TitleColor_Label));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), WaterMultiProperty, true, new RbTooltip_Text(DssRef.todoLang.Settings_WaterMultiplier_Description)));
+            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), WaterMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_WaterMultiplier_Description)));
 
 
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsWorkerAdd));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Settings_ChildMultiplier, HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.lang.Settings_ChildMultiplier, HudLib.TitleColor_Label));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), ChildMultiProperty, true));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsHammer));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Settings_CraftMultiplier, HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.lang.Settings_CraftMultiplier, HudLib.TitleColor_Label));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4f, 0.1f), CraftMultiProperty, true, new RbTooltip_Text(DssRef.todoLang.Settings_CraftMultiplier_Description)));
+            content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4f, 0.1f), CraftMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_CraftMultiplier_Description)));
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ResetToDefault) }, new RbAction(resetToDefault)));
@@ -1099,7 +1099,7 @@ namespace VikingEngine.DSSWars
                             new RbImage(SpriteName.VoxelEditorColorCube, 0.9f),
                             new RbSpace(),
                             new RbText(DssRef.lang.Lobby_Editor_VoxelEditor) }),
-                            new RbAction(voxeleditor), new RbTooltip_Text(DssRef.todoLang.VoxelEditor_Description), !PlatformSettings.STEAM_DEMO));
+                            new RbAction(voxeleditor), new RbTooltip_Text(DssRef.lang.VoxelEditor_Description), !PlatformSettings.STEAM_DEMO));
 
                         content.newParagraph();
                         var playerData = DssRef.storage.localPlayers.First();
@@ -1319,7 +1319,7 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 content.Add(new RbImage(SpriteName.cmdWarningTriangle));
                 content.space();
-                content.Add(new RbText(DssRef.todoLang.MustTurnOffSteamInput, HudLib.InfoYellow_Light));
+                content.Add(new RbText(DssRef.lang.MustTurnOffSteamInput, HudLib.InfoYellow_Light));
             }
         }
 

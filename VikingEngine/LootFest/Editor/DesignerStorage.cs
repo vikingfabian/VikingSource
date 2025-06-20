@@ -109,7 +109,7 @@ namespace VikingEngine.LootFest.Editor
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsHudIconSave));
                 content.space();
-                content.Add(new RbText(DssRef.todoLang.Hud_SaveCompleted));
+                content.Add(new RbText(DssRef.lang.Hud_SaveCompleted));
 
                 designer.print(content);
             }

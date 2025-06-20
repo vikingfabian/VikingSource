@@ -116,5 +116,15 @@ namespace VikingEngine.HUD
         public override string MouseButton_X1 => "Кнопка мыши X1";
         public override string MouseButton_X2 => "Кнопка мыши X2";
 
+        //DEMO PATCH 4
+        public override string MouseButtonAction_PanAndCancel => "Панорамирование и отмена";
+        public override string MouseButtonAction_PanAndOrderAndCancel => "Панорамирование, приказ и отмена";
+
+        public override string GraphicsOption_Shadows => "Тени";
+        public override string GraphicsOption_ShadowType_ModelsToGround => "Тени от моделей на землю";
+        public override string GraphicsOption_ShadowType_ModelsToModels => "Тени от моделей на модели";
+
+        public override string GraphicsOption_Shadow_MapResolution => "Разрешение карты теней";
+
     }
 }

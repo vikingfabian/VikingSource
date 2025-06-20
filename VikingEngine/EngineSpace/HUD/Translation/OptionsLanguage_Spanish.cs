@@ -116,5 +116,15 @@ namespace VikingEngine.HUD
         public override string MouseButton_X1 => "Botón X1 del ratón";
         public override string MouseButton_X2 => "Botón X2 del ratón";
 
+        //DEMO PATCH 4
+        public override string MouseButtonAction_PanAndCancel => "Desplazar y cancelar";
+        public override string MouseButtonAction_PanAndOrderAndCancel => "Desplazar, ordenar y cancelar";
+
+        public override string GraphicsOption_Shadows => "Sombras";
+        public override string GraphicsOption_ShadowType_ModelsToGround => "Modelos al suelo";
+        public override string GraphicsOption_ShadowType_ModelsToModels => "Modelos a modelos";
+
+        public override string GraphicsOption_Shadow_MapResolution => "Resolución del mapa de sombras";
+
     }
 }

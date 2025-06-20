@@ -299,7 +299,7 @@ namespace VikingEngine.DSSWars
                 content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
                     new RbImage( SpriteName.MenuIconResume),
                     new RbSpace(),
-                    new RbText(DssRef.todoLang.Hud_ReturnToPrevious)
+                    new RbText(DssRef.lang.Hud_ReturnToPrevious)
                     }, new RbAction(menu.menuBack)));
             }
             if (close != null)
@@ -307,7 +307,7 @@ namespace VikingEngine.DSSWars
                 content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
                     new RbImage( SpriteName.WarsHudIconExit, 0.8f),
                     new RbSpace(),
-                    new RbText(DssRef.todoLang.Hud_Close)
+                    new RbText(DssRef.lang.Hud_Close)
                     }, new RbAction(close)));
             }
             content.newParagraph();

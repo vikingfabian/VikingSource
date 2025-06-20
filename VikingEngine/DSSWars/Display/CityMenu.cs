@@ -1196,7 +1196,7 @@ namespace VikingEngine.DSSWars.Display
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, SoundLib.menutab), new RbTooltip_Text(DssRef.todoLang.Work_SelectCategory));
+                        }, resourcesSubTab, SoundLib.menutab), new RbTooltip_Text(DssRef.lang.Work_SelectCategory));
                     //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
 
@@ -1225,7 +1225,7 @@ namespace VikingEngine.DSSWars.Display
                                    }
                                    content.newLine();
                                    HudLib.BulletPoint(content);
-                                   content.Add(new RbText(DssRef.todoLang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+                                   content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
                                }));
                             content.newLine();
                             break;
@@ -1237,7 +1237,7 @@ namespace VikingEngine.DSSWars.Display
                                    GroupedResource.BufferIconInfo(content, false);
                                    content.newLine();
                                    HudLib.BulletPoint(content);
-                                   content.Add(new RbText(DssRef.todoLang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+                                   content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
                                }));
                             content.newLine();
                             break;

@@ -117,5 +117,15 @@ namespace VikingEngine.HUD
         public override string MouseButton_X1 => "鼠标 X1 键";
         public override string MouseButton_X2 => "鼠标 X2 键";
 
+        //DEMO PATCH 4
+        public override string MouseButtonAction_PanAndCancel => "平移并取消";
+        public override string MouseButtonAction_PanAndOrderAndCancel => "平移、下达指令并取消";
+
+        public override string GraphicsOption_Shadows => "阴影";
+        public override string GraphicsOption_ShadowType_ModelsToGround => "模型投射到地面";
+        public override string GraphicsOption_ShadowType_ModelsToModels => "模型投射到模型";
+
+        public override string GraphicsOption_Shadow_MapResolution => "阴影贴图分辨率";
+
     }
 }

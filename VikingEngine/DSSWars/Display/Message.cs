@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Display
         public void changedAllBuildings(bool onOff, int count)
         {
             RichBoxContent content = new RichBoxContent();
-            content.h2(string.Format( DssRef.todoLang.GeneralSetting_ApplyMessage, count), HudLib.TitleColor_Head);
+            content.h2(string.Format( DssRef.lang.GeneralSetting_ApplyMessage, count), HudLib.TitleColor_Head);
             content.space();
             content.Add(new RbText(onOff ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off, HudLib.InfoYellow_Light));
 

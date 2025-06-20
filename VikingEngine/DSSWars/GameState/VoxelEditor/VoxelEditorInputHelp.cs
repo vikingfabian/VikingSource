@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         content.newLine();
                         content.Add(new RbImage(map.Menu.Icon));
                         content.space();
-                        content.Add(new RbText(DssRef.todoLang.Editor_SelectOptionsMenu));
+                        content.Add(new RbText(DssRef.lang.Editor_SelectOptionsMenu));
                             
                         input(map.editorInput.draw.Icon, SpriteName.IconBuildStamp);
                         input(map.editorInput.mirrorX.Icon, SpriteName.FlipHori);

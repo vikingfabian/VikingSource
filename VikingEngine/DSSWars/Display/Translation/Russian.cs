@@ -2202,6 +2202,183 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string InputActionName_ToggleMenu => "Переключить меню";
 
+        //DEMO PATCH 4
+        public override string Work_BadValueDescription => "Ресурсы могут уходить в минус и немного превышать лимит склада. Ограничения применяются только при создании очереди задач.";
+
+        public override string Work_SelectCategory => "Выберите категорию предметов";
+        public override string Hud_RemoveFromList => "Удалить из списка";
+
+        public override string Hud_ReturnToPrevious => "Назад";
+        public override string Hud_Close => "Закрыть";
+
+        public override string Hud_Low => "Низкий";
+        public override string Hud_Medium => "Средний";
+        public override string Hud_High => "Высокий";
+
+        public override string Hud_Copy => "Копировать";
+        //public override string Hud_Paste => "Вставить";
+        public override string Hud_Cut => "Вырезать";
+        public override string Hud_SaveCompleted => "Сохранение завершено";
+
+        public override string Settings_WaterMultiplier => "Коэффициент воды";
+        public override string Settings_WaterMultiplier_Description => "Определяет, сколько воды производят и хранят города. Более высокие значения снижают производительность.";
+
+        public override string Settings_ChildMultiplier => "Коэффициент рождаемости";
+        public override string Settings_CraftMultiplier => "Коэффициент скорости производства";
+        public override string Settings_CraftMultiplier_Description => "Меньшие значения ускоряют производство.";
+
+        public override string FastProduction => "Быстрое производство";
+        public override string SlowProduction => "Медленное производство";
+
+        /// <summary>
+        /// Label for a list of items blocked from production
+        /// </summary>
+        public override string BlocksProduction => "Не будет производиться";
+
+        //public override string CityAutomation_WaitForMaxPopulation => "Ожидать достижения максимального населения";
+        public override string Automation_AutomationFocus_NoFocus => "Все";
+        public override string CityAutomation_SoldierQuality => "Качество солдат";
+        public override string CityAutomation_SoldierWeaponType => "Тип оружия";
+
+        public override string WarsResourceGroup_Resources => "Ресурсы";
+        public override string WarsResourceGroup_Weapons => "Оружие";
+
+        public override string WarsResourceGroup_AllWeaponTypes => "Смешанное";
+        public override string WarsResourceGroup_MeleeHandWeapons => "Ближний бой";
+        public override string WarsResourceGroup_RangedHandWeapons => "Дальний бой";
+        public override string WarsResourceGroup_Warmachines => "Военные машины";
+
+        public override string FactionSettings_Titel => "Настройки фракции";
+        public override string FactionSettings_Description => "Применяется ко всем вашим городам";
+
+        public override string Conscript_MaxPopulation => "Максимальное население";
+        public override string Conscript_MaxPopulation_Description => "Призыв осуществляется только при достижении максимального населения";
+
+        public override string Conscript_FoodAbundance => "Максимальный запас еды";
+        public override string Conscript_FoodAbundance_Description => "Призыв осуществляется только при максимальных запасах еды";
+
+        /// <summary>
+        /// General settings will go through all items in a list and apply to all of them (to their checkbox)
+        /// </summary>
+        public override string GeneralSetting_On => "Установлено: Вкл.";
+        public override string GeneralSetting_Off => "Установлено: Выкл.";
+        public override string GeneralSetting_AllBuildingsDescription => "Будет применено ко всем зданиям";
+
+        public override string GeneralSetting_ApplyMessage => "Изменение применено к {0} зданиям";
+
+        public override string MustTurnOffSteamInput => "Чтобы использовать контроллеры, необходимо отключить Steam Input.";
+
+        public override string Technology_GainTitle => "Способы получения технологий";
+        public override string Technology_LevelUp => "Повышение уровня";
+        public override string Technology_ForEachLevelUp => "Когда работник повышает уровень в области технологий: {0}";
+
+        public override string VoxelEditor_Description => "Создание блочных моделей";
+
+        public override string Editor_Tool => "Инструмент";
+        public override string Editor_SelectOptionsMenu => "Параметры выбора";
+        public override string Editor_Continous => "Непрерывно";
+
+        public override string Editor_Tool_PencilSize => "Размер кисти";
+        public override string Editor_Tool_SizeTolerance => "Допуск размера";
+        public override string Editor_Tool_RoundPencil => "Круглая кисть";
+        public override string Editor_Tool_EdgeSize => "Размер края";
+        public override string Editor_Tool_PercentFill => "Процент заполнения";
+        public override string Editor_Tool_ClearAbove => "Очистить сверху";
+        public override string Editor_Tool_FillBelow => "Заполнить снизу";
+
+        public override string Editor_UserModels => "Модели пользователя";
+        public override string Editor_UserModels_Description => "Просмотр сохранённых моделей";
+
+        public override string Editor_RetailModels => "Игровые модели";
+        public override string Editor_RetailModels_Description => "Загрузка моделей из игры";
+
+        public override string Editor_ModTemplates => "Шаблоны для моддинга";
+        public override string Editor_ExportAsOBJ => "Экспортировать как .OBJ";
+        public override string Editor_SelectAll => "Выделить всё";
+
+        public override string Editor_Canvas_Title => "Холст";
+        public override string Editor_Canvas_Size => "Размер";
+        public override string Editor_Canvas_Dimension_X => "X";
+        public override string Editor_Canvas_Dimension_Y => "Y";
+        public override string Editor_Canvas_Dimension_Z => "Z";
+        public override string Editor_Canvas_SizePresets => "Пресеты размера";
+        public override string Editor_Canvas_Move => "Переместить";
+        public override string Editor_Canvas_Move_Up => "Вверх";
+        public override string Editor_Canvas_Move_Down => "Вниз";
+        public override string Editor_Canvas_RotateClockwise => "Повернуть по часовой";
+        public override string Editor_Canvas_RotateCounterClockwise => "Повернуть против часовой";
+        public override string Editor_Canvas_Mirror => "Отразить";
+
+        public override string Editor_Canvas_RotateFlip_Title => "Повернуть/Отразить";
+        public override string Editor_Canvas_FlipVertical => "Отразить по вертикали";
+        public override string Editor_Canvas_FlipOrientation => "Перевернуть (вертик./гориз.)";
+        public override string Editor_Canvas_ClearAll_Description => "Удаляет все блоки и кадры";
+
+        public override string Editor_Animation => "Анимация";
+        public override string Editor_Animation_RemoveCurrentFrame => "Удалить текущий кадр";
+        public override string Editor_Animation_AddFrameCopy => "Добавить копию кадра";
+        public override string Editor_Animation_AddEmptyFrame => "Добавить пустой кадр";
+        public override string Editor_Animation_MoveDescription => "Изменить позицию кадра";
+        public override string Editor_Animation_AllFrames => "Все кадры";
+        public override string Editor_Animation_AllFrames_ActionDescription => "Выполнить действие для всех кадров";
+
+        public override string Editor_SettingsMenu => "Настройки";
+        public override string Hud_Exit => "Выход";
+        public override string Editor_Canvas_Clear => "Очистить";
+
+        public override string Editor_Stamp => "Штамп";
+        public override string Editor_StampOtherFrames => "Штамповать в другие кадры";
+        public override string Editor_StampOtherFrames_Description => "Вставить воксели в эти кадры";
+        public override string Editor_PasteToFrame => "Вставить в текущий кадр";
+        public override string Editor_ClearAllFrames => "Очистить во всех кадрах";
+        public override string Editor_ClearOtherFrames => "Очистить другие кадры";
+
+        public override string Editor_Settings_MoveSpeed => "Скорость перемещения";
+        public override string Editor_Settings_BackgroundColor => "Цвет фона";
+        public override string Editor_Settings_HideHUD => "Скрыть HUD";
+
+        public override string Editor_Color => "Цвет";
+        public override string Editor_ColorsInUseLabel => "Используемые цвета";
+        public override string Editor_Color_BrighterPlus => "Ярче +";
+        public override string Editor_Color_Brighter => "Ярче";
+        public override string Editor_Color_Darker => "Темнее";
+        public override string Editor_Color_DarkerPlus => "Темнее +";
+        public override string Editor_Color_RedTint => "Красный оттенок";
+        public override string Editor_Color_Tint => "Оттенок";
+        public override string Editor_Color_GreenTint => "Зелёный оттенок";
+        public override string Editor_Color_BlueTint => "Синий оттенок";
+        public override string Editor_Color_YellowTint => "Жёлтый оттенок";
+        public override string Editor_Color_PurpleTint => "Фиолетовый оттенок";
+        public override string Editor_NoColor => "Пусто";
+
+        public override string Editor_Material => "Материал";
+
+        /// <summary>
+        /// User may change one color to another across the model
+        /// </summary>
+        public override string Editor_Color_Recolor => "Перекрасить";
+        public override string Editor_Color_RecolorTo => "Перекрасить в";
+
+        public override string Editor_Material_Set => "Назначить материал";
+
+        public override string Editor_Preview => "Превью";
+        public override string Editor_CombineWithCurrent => "Объединить с текущей моделью";
+
+        public override string Editor_PickedColor => "Выбранный";
+        public override string Editor_ColorRGBvalues => "R:{0} G:{1} B:{2}";
+
+        public override string BuildingType_ImmigrationTent => "Палатка иммиграции";
+        public override string BuildingType_ImmigrationTent_Description => "Вмещает {0} иммигрантов";
+        public override string BuildingType_ReseachCenter => "Научный центр";
+        public override string BuildingType_Bookpress => "Печатный станок";
+        public override string BuildingType_Bookpress_Description => "В одной исследовательской области все полученные очки делятся между всеми {0} в других ваших городах.";
+
+        public override string Technology_ReseachExample => "Пример: когда рабочий производит {0}, улучшается его навык {1}. При повышении уровня добавляются очки к технологии {2}, так как они используют одно и то же направление.";
+
+        public override string BuildingType_Research_BaseDescription => "Увеличивает исследование технологий.";
+
+        public override string BuildingType_ResearchCenter_Description => "Добавляет {0} дополнительных очков технологии, когда рабочий повышает уровень в той же области.";
+
 
     }
 }

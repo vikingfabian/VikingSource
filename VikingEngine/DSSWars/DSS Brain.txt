@@ -1,11 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Optimized: removed objects in map generation
 
-Voxel editor 2
-* Fixed the stuck messages
-* Open model will close the menu
-* Holding shift will lock the X movement in one plane
 
 
 Voxel editor 2

@@ -2207,5 +2207,186 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string InputActionName_ToggleMenu => "メニューの切り替え";
 
+        //DEMO PATCH 4
+        public override string Work_BadValueDescription => "資源はゼロ未満になったり、備蓄上限をわずかに超えたりすることがあります。制限は作業キューが作成されるときにのみ適用されます。";
+
+        public override string Work_SelectCategory => "アイテムカテゴリを選択";
+        public override string Hud_RemoveFromList => "リストから削除";
+
+        public override string Hud_ReturnToPrevious => "戻る";
+        public override string Hud_Close => "閉じる";
+
+        public override string Hud_Low => "低";
+        public override string Hud_Medium => "中";
+        public override string Hud_High => "高";
+
+        public override string Hud_Copy => "コピー";
+        //public override string Hud_Paste => "貼り付け";
+        public override string Hud_Cut => "切り取り";
+        public override string Hud_SaveCompleted => "保存完了";
+
+        public override string Settings_WaterMultiplier => "水の倍率";
+        public override string Settings_WaterMultiplier_Description => "都市が生産・貯蔵する水の量を決定します。値が高いとパフォーマンスが低下します。";
+
+        public override string Settings_ChildMultiplier => "出生倍率";
+        public override string Settings_CraftMultiplier => "生産速度倍率";
+        public override string Settings_CraftMultiplier_Description => "値が低いほど生産が速くなります。";
+
+        public override string FastProduction => "高速生産";
+        public override string SlowProduction => "低速生産";
+
+        /// <summary>
+        /// Label for a list of items blocked from production
+        /// </summary>
+        public override string BlocksProduction => "生産不可";
+
+        //public override string CityAutomation_WaitForMaxPopulation => "人口が最大になるまで待機";
+        public override string Automation_AutomationFocus_NoFocus => "すべて";
+        public override string CityAutomation_SoldierQuality => "兵士の質";
+        public override string CityAutomation_SoldierWeaponType => "武器の種類";
+
+        public override string WarsResourceGroup_Resources => "資源";
+        public override string WarsResourceGroup_Weapons => "武器";
+
+        public override string WarsResourceGroup_AllWeaponTypes => "混合";
+        public override string WarsResourceGroup_MeleeHandWeapons => "近接";
+        public override string WarsResourceGroup_RangedHandWeapons => "遠距離";
+        public override string WarsResourceGroup_Warmachines => "攻城兵器";
+
+        public override string FactionSettings_Titel => "派閥全体の設定";
+        public override string FactionSettings_Description => "すべての都市に適用されます";
+
+        public override string Conscript_MaxPopulation => "最大人口";
+        public override string Conscript_MaxPopulation_Description => "人口が最大のときのみ徴兵されます";
+
+        public override string Conscript_FoodAbundance => "食料が最大のとき";
+        public override string Conscript_FoodAbundance_Description => "食料が最大備蓄に達したときのみ徴兵されます";
+
+        /// <summary>
+        /// General settings will go through all items in a list and apply to all of them (to their checkbox)
+        /// </summary>
+        public override string GeneralSetting_On => "設定：オン";
+        public override string GeneralSetting_Off => "設定：オフ";
+        public override string GeneralSetting_AllBuildingsDescription => "すべての建物に適用されます";
+
+        public override string GeneralSetting_ApplyMessage => "{0} 件の建物に変更を適用しました";
+
+        public override string MustTurnOffSteamInput => "コントローラーを使用するには、Steam Input を無効にしてください。";
+
+        public override string Technology_GainTitle => "技術を習得する方法";
+        public override string Technology_LevelUp => "レベルアップ";
+        public override string Technology_ForEachLevelUp => "作業者が技術分野でレベルアップしたとき：{0}";
+
+        public override string VoxelEditor_Description => "ブロック状のモデルを作成";
+
+        public override string Editor_Tool => "ツール";
+        public override string Editor_SelectOptionsMenu => "選択オプション";
+        public override string Editor_Continous => "連続";
+
+        public override string Editor_Tool_PencilSize => "ペンのサイズ";
+        public override string Editor_Tool_SizeTolerance => "サイズ許容範囲";
+        public override string Editor_Tool_RoundPencil => "丸ペン";
+        public override string Editor_Tool_EdgeSize => "境界サイズ";
+        public override string Editor_Tool_PercentFill => "塗りつぶし率";
+        public override string Editor_Tool_ClearAbove => "上をクリア";
+        public override string Editor_Tool_FillBelow => "下を塗りつぶし";
+
+        public override string Editor_UserModels => "ユーザーモデル";
+        public override string Editor_UserModels_Description => "保存したモデルを表示";
+
+        public override string Editor_RetailModels => "ゲーム内モデル";
+        public override string Editor_RetailModels_Description => "ゲームからモデルを読み込む";
+
+        public override string Editor_ModTemplates => "MOD用テンプレート";
+        public override string Editor_ExportAsOBJ => ".OBJ 形式でエクスポート";
+        public override string Editor_SelectAll => "すべて選択";
+
+        public override string Editor_Canvas_Title => "キャンバス";
+        public override string Editor_Canvas_Size => "サイズ";
+        public override string Editor_Canvas_Dimension_X => "X";
+        public override string Editor_Canvas_Dimension_Y => "Y";
+        public override string Editor_Canvas_Dimension_Z => "Z";
+        public override string Editor_Canvas_SizePresets => "サイズプリセット";
+        public override string Editor_Canvas_Move => "移動";
+        public override string Editor_Canvas_Move_Up => "上へ";
+        public override string Editor_Canvas_Move_Down => "下へ";
+        public override string Editor_Canvas_RotateClockwise => "時計回りに回転";
+        public override string Editor_Canvas_RotateCounterClockwise => "反時計回りに回転";
+        public override string Editor_Canvas_Mirror => "反転";
+
+        public override string Editor_Canvas_RotateFlip_Title => "回転／反転";
+        public override string Editor_Canvas_FlipVertical => "上下反転";
+        public override string Editor_Canvas_FlipOrientation => "横向き／縦向きを切替";
+        public override string Editor_Canvas_ClearAll_Description => "すべてのブロックとフレームを削除";
+
+        public override string Editor_Animation => "アニメーション";
+        public override string Editor_Animation_RemoveCurrentFrame => "現在のフレームを削除";
+        public override string Editor_Animation_AddFrameCopy => "コピーとしてフレームを追加";
+        public override string Editor_Animation_AddEmptyFrame => "空のフレームを追加";
+        public override string Editor_Animation_MoveDescription => "フレーム位置の変更";
+        public override string Editor_Animation_AllFrames => "すべてのフレーム";
+        public override string Editor_Animation_AllFrames_ActionDescription => "すべてのフレームに同じ操作を実行";
+
+        public override string Editor_SettingsMenu => "設定";
+        public override string Hud_Exit => "終了";
+        public override string Editor_Canvas_Clear => "クリア";
+
+        public override string Editor_Stamp => "スタンプ";
+        public override string Editor_StampOtherFrames => "他のフレームにスタンプ";
+        public override string Editor_StampOtherFrames_Description => "このボクセルを他のフレームに貼り付け";
+        public override string Editor_PasteToFrame => "このフレームに貼り付け";
+        public override string Editor_ClearAllFrames => "すべてのフレームをクリア";
+        public override string Editor_ClearOtherFrames => "他のフレームをクリア";
+
+        public override string Editor_Settings_MoveSpeed => "移動速度";
+        public override string Editor_Settings_BackgroundColor => "背景色";
+        public override string Editor_Settings_HideHUD => "HUDを非表示";
+
+        public override string Editor_Color => "色";
+        public override string Editor_ColorsInUseLabel => "使用中の色";
+        public override string Editor_Color_BrighterPlus => "もっと明るく";
+        public override string Editor_Color_Brighter => "明るく";
+        public override string Editor_Color_Darker => "暗く";
+        public override string Editor_Color_DarkerPlus => "もっと暗く";
+        public override string Editor_Color_RedTint => "赤み";
+        public override string Editor_Color_Tint => "色合い";
+        public override string Editor_Color_GreenTint => "緑み";
+        public override string Editor_Color_BlueTint => "青み";
+        public override string Editor_Color_YellowTint => "黄み";
+        public override string Editor_Color_PurpleTint => "紫み";
+        public override string Editor_NoColor => "なし";
+
+        public override string Editor_Material => "素材";
+
+        /// <summary>
+        /// User may change one color to another across the model
+        /// </summary>
+        public override string Editor_Color_Recolor => "色を変更";
+        public override string Editor_Color_RecolorTo => "次の色に変更";
+
+        public override string Editor_Material_Set => "素材を設定";
+
+        public override string Editor_Preview => "プレビュー";
+        public override string Editor_CombineWithCurrent => "現在のモデルと結合";
+
+        public override string Editor_PickedColor => "選択色";
+        public override string Editor_ColorRGBvalues => "R:{0} G:{1} B:{2}";
+
+        public override string BuildingType_ImmigrationTent => "移民テント";
+        public override string BuildingType_ImmigrationTent_Description => "{0} 人の移民を収容";
+        public override string BuildingType_ReseachCenter => "研究センター";
+        public override string BuildingType_Bookpress => "印刷所";
+        public override string BuildingType_Bookpress_Description => "1つの研究分野で得られたポイントは、他の都市にあるすべての {0} に共有されます。";
+
+        /// <summary>
+        /// 0: beer, 1: chemistry, 2: gun powder
+        /// </summary>
+        public override string Technology_ReseachExample => "例：作業者が {0} を生産すると、{1} スキルが上昇します。レベルアップ時に {2} 技術にポイントが加算されます（同じ分野を共有しているため）。";
+
+        public override string BuildingType_Research_BaseDescription => "技術研究を強化します。";
+
+        public override string BuildingType_ResearchCenter_Description => "同じ分野で作業者がレベルアップすると、技術研究ポイントが {0} 増加します。";
+
+
     }
 }

@@ -2080,5 +2080,186 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string InputActionName_ToggleMenu => "Menü umschalten";
 
+        //DEMO PATCH 4
+        public override string Work_BadValueDescription => "Ressourcen können unter null fallen und leicht das Lagerlimit überschreiten. Die Grenzen werden nur beim Erstellen der Arbeitswarteschlange überprüft.";
+
+        public override string Work_SelectCategory => "Kategorie auswählen";
+        public override string Hud_RemoveFromList => "Aus der Liste entfernen";
+
+        public override string Hud_ReturnToPrevious => "Zurück";
+        public override string Hud_Close => "Schließen";
+
+        public override string Hud_Low => "Niedrig";
+        public override string Hud_Medium => "Mittel";
+        public override string Hud_High => "Hoch";
+
+        public override string Hud_Copy => "Kopieren";
+        //public override string Hud_Paste => "Einfügen";
+        public override string Hud_Cut => "Ausschneiden";
+        public override string Hud_SaveCompleted => "Speichern abgeschlossen";
+
+        public override string Settings_WaterMultiplier => "Wasser-Multiplikator";
+        public override string Settings_WaterMultiplier_Description => "Bestimmt, wie viel Wasser Städte produzieren und speichern. Höhere Werte verringern die Leistung des Computers.";
+
+        public override string Settings_ChildMultiplier => "Geburtenrate-Multiplikator";
+        public override string Settings_CraftMultiplier => "Produktionsgeschwindigkeit-Multiplikator";
+        public override string Settings_CraftMultiplier_Description => "Niedrigere Werte führen zu schnellerer Produktion.";
+
+        public override string FastProduction => "Schnelle Produktion";
+        public override string SlowProduction => "Langsame Produktion";
+
+        /// <summary>
+        /// Label for a list of items blocked from production
+        /// </summary>
+        public override string BlocksProduction => "Wird nicht produziert";
+
+        //public override string CityAutomation_WaitForMaxPopulation => "Warten, bis maximale Bevölkerung erreicht ist";
+        public override string Automation_AutomationFocus_NoFocus => "Alle";
+        public override string CityAutomation_SoldierQuality => "Soldatenqualität";
+        public override string CityAutomation_SoldierWeaponType => "Waffentyp";
+
+        public override string WarsResourceGroup_Resources => "Ressourcen";
+        public override string WarsResourceGroup_Weapons => "Waffen";
+
+        public override string WarsResourceGroup_AllWeaponTypes => "Gemischt";
+        public override string WarsResourceGroup_MeleeHandWeapons => "Nahkampf";
+        public override string WarsResourceGroup_RangedHandWeapons => "Fernkampf";
+        public override string WarsResourceGroup_Warmachines => "Kriegsmaschinen";
+
+        public override string FactionSettings_Titel => "Fraktionsweite Einstellungen";
+        public override string FactionSettings_Description => "Gilt für alle deine Städte";
+
+        public override string Conscript_MaxPopulation => "Maximale Bevölkerung";
+        public override string Conscript_MaxPopulation_Description => "Rekrutiert nur, wenn die Bevölkerung das Maximum erreicht hat";
+
+        public override string Conscript_FoodAbundance => "Maximale Lebensmittelvorräte";
+        public override string Conscript_FoodAbundance_Description => "Rekrutiert nur, wenn die Nahrungsmittel das maximale Lager erreicht haben";
+
+        /// <summary>
+        /// General settings will go through all items in a list and apply to all of them (to their checkbox)
+        /// </summary>
+        public override string GeneralSetting_On => "Setzen auf: Ein";
+        public override string GeneralSetting_Off => "Setzen auf: Aus";
+        public override string GeneralSetting_AllBuildingsDescription => "Wird auf alle Gebäude angewendet";
+
+        public override string GeneralSetting_ApplyMessage => "Änderung auf {0} Gebäude angewendet";
+
+        public override string MustTurnOffSteamInput => "Um Controller zu verwenden, musst du Steam Input deaktivieren.";
+
+        public override string Technology_GainTitle => "Möglichkeiten, Technologie zu erlangen";
+        public override string Technology_LevelUp => "Levelaufstieg";
+        public override string Technology_ForEachLevelUp => "Wenn ein Arbeiter im Technologiebereich aufsteigt: {0}";
+
+        public override string VoxelEditor_Description => "Erstelle klotzige Modelle";
+
+
+        public override string Editor_Tool => "Werkzeug";
+        public override string Editor_SelectOptionsMenu => "Auswahloptionen";
+        public override string Editor_Continous => "Kontinuierlich";
+
+        public override string Editor_Tool_PencilSize => "Stiftgröße";
+        public override string Editor_Tool_SizeTolerance => "Größentoleranz";
+        public override string Editor_Tool_RoundPencil => "Runder Stift";
+        public override string Editor_Tool_EdgeSize => "Kantengröße";
+        public override string Editor_Tool_PercentFill => "Prozentfüllung";
+        public override string Editor_Tool_ClearAbove => "Darüber löschen";
+        public override string Editor_Tool_FillBelow => "Darunter füllen";
+
+        public override string Editor_UserModels => "Benutzermodelle";
+        public override string Editor_UserModels_Description => "Durchsuche gespeicherte Modelle";
+
+        public override string Editor_RetailModels => "Spielmodelle";
+        public override string Editor_RetailModels_Description => "Lade Modelle aus dem Spiel";
+
+        public override string Editor_ModTemplates => "Modding-Vorlagen";
+        public override string Editor_ExportAsOBJ => "Als .OBJ exportieren";
+        public override string Editor_SelectAll => "Alle auswählen";
+
+        public override string Editor_Canvas_Title => "Leinwand";
+        public override string Editor_Canvas_Size => "Größe";
+        public override string Editor_Canvas_Dimension_X => "X";
+        public override string Editor_Canvas_Dimension_Y => "Y";
+        public override string Editor_Canvas_Dimension_Z => "Z";
+        public override string Editor_Canvas_SizePresets => "Größenvoreinstellungen";
+        public override string Editor_Canvas_Move => "Bewegen";
+        public override string Editor_Canvas_Move_Up => "Nach oben";
+        public override string Editor_Canvas_Move_Down => "Nach unten";
+        public override string Editor_Canvas_RotateClockwise => "Im Uhrzeigersinn drehen";
+        public override string Editor_Canvas_RotateCounterClockwise => "Gegen den Uhrzeigersinn drehen";
+        public override string Editor_Canvas_Mirror => "Spiegeln";
+
+        public override string Editor_Canvas_RotateFlip_Title => "Drehen/Spiegeln";
+        public override string Editor_Canvas_FlipVertical => "Vertikal spiegeln";
+        public override string Editor_Canvas_FlipOrientation => "Liegend/Stehend umkehren";
+        public override string Editor_Canvas_ClearAll_Description => "Entfernt alle Blöcke und Frames";
+
+        public override string Editor_Animation => "Animation";
+        public override string Editor_Animation_RemoveCurrentFrame => "Aktuellen Frame entfernen";
+        public override string Editor_Animation_AddFrameCopy => "Frame als Kopie hinzufügen";
+        public override string Editor_Animation_AddEmptyFrame => "Leeren Frame hinzufügen";
+        public override string Editor_Animation_MoveDescription => "Frame-Position ändern";
+        public override string Editor_Animation_AllFrames => "Alle Frames";
+        public override string Editor_Animation_AllFrames_ActionDescription => "Aktion auf alle Frames anwenden";
+
+        public override string Editor_SettingsMenu => "Einstellungen";
+        public override string Hud_Exit => "Beenden";
+        public override string Editor_Canvas_Clear => "Leeren";
+
+        public override string Editor_Stamp => "Stempel";
+        public override string Editor_StampOtherFrames => "In andere Frames stempeln";
+        public override string Editor_StampOtherFrames_Description => "Fügt die Voxel in diesen Frames ein";
+        public override string Editor_PasteToFrame => "Fügt die Voxel in diesen Frame ein";
+        public override string Editor_ClearAllFrames => "In allen Frames leeren";
+        public override string Editor_ClearOtherFrames => "Andere Frames leeren";
+
+        public override string Editor_Settings_MoveSpeed => "Bewegungsgeschwindigkeit";
+        public override string Editor_Settings_BackgroundColor => "Hintergrundfarbe";
+        public override string Editor_Settings_HideHUD => "HUD ausblenden";
+
+        public override string Editor_Color => "Farbe";
+        public override string Editor_ColorsInUseLabel => "Verwendete Farben";
+        public override string Editor_Color_BrighterPlus => "Heller +";
+        public override string Editor_Color_Brighter => "Heller";
+        public override string Editor_Color_Darker => "Dunkler";
+        public override string Editor_Color_DarkerPlus => "Dunkler +";
+        public override string Editor_Color_RedTint => "Roter Farbton";
+        public override string Editor_Color_Tint => "Farbton";
+        public override string Editor_Color_GreenTint => "Grüner Farbton";
+        public override string Editor_Color_BlueTint => "Blauer Farbton";
+        public override string Editor_Color_YellowTint => "Gelber Farbton";
+        public override string Editor_Color_PurpleTint => "Lila Farbton";
+        public override string Editor_NoColor => "Leer";
+
+        public override string Editor_Material => "Material";
+
+        /// <summary>
+        /// User may change one color to another across the model
+        /// </summary>
+        public override string Editor_Color_Recolor => "Umfärben";
+        public override string Editor_Color_RecolorTo => "Umfärben in";
+
+        public override string Editor_Material_Set => "Material festlegen";
+
+        public override string Editor_Preview => "Vorschau";
+        public override string Editor_CombineWithCurrent => "Mit aktuellem Modell kombinieren";
+
+        public override string Editor_PickedColor => "Ausgewählt";
+        public override string Editor_ColorRGBvalues => "R:{0} G:{1} B:{2}";
+
+        public override string BuildingType_ImmigrationTent => "Einwanderungszelt";
+        public override string BuildingType_ImmigrationTent_Description => "Speichert {0} Einwanderer";
+        public override string BuildingType_ReseachCenter => "Forschungszentrum";
+        public override string BuildingType_Bookpress => "Buchpresse";
+        public override string BuildingType_Bookpress_Description => "In einem Forschungsgebiet werden alle gesammelten Punkte mit allen {0} in deinen anderen Städten geteilt.";
+
+        /// <summary>
+        /// 0: beer, 1: chemistry, 2: gun powder
+        /// </summary>
+        public override string Technology_ReseachExample => "Beispiel: Wenn ein Arbeiter {0} produziert, verbessert er seine {1}-Fähigkeit. Beim Stufenaufstieg werden Punkte der {2}-Technologie gutgeschrieben, da sie dasselbe Gebiet teilen.";
+
+        public override string BuildingType_Research_BaseDescription => "Erhöht die Technologieforschung.";
+
+        public override string BuildingType_ResearchCenter_Description => "Fügt {0} zusätzliche Forschungspunkte hinzu, wenn ein Arbeiter im selben Bereich aufsteigt.";
+
     }
 }

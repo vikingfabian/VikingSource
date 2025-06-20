@@ -2203,6 +2203,182 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string InputActionName_ToggleMenu => "切换菜单";
 
+        //DEMO PATCH 4
+        public override string Work_BadValueDescription => "资源可能会低于零，并略微超过库存上限。这些限制仅在创建工作队列时生效。";
+
+        public override string Work_SelectCategory => "选择物品类别";
+        public override string Hud_RemoveFromList => "从列表中移除";
+
+        public override string Hud_ReturnToPrevious => "返回";
+        public override string Hud_Close => "关闭";
+
+        public override string Hud_Low => "低";
+        public override string Hud_Medium => "中";
+        public override string Hud_High => "高";
+
+        public override string Hud_Copy => "复制";
+        //public override string Hud_Paste => "粘贴";
+        public override string Hud_Cut => "剪切";
+        public override string Hud_SaveCompleted => "保存完成";
+
+        public override string Settings_WaterMultiplier => "水量倍率";
+        public override string Settings_WaterMultiplier_Description => "决定城市生产和储存水的数量。数值越高，性能越差。";
+
+        public override string Settings_ChildMultiplier => "生育倍率";
+        public override string Settings_CraftMultiplier => "制作速度倍率";
+        public override string Settings_CraftMultiplier_Description => "数值越低，生产越快。";
+
+        public override string FastProduction => "快速生产";
+        public override string SlowProduction => "缓慢生产";
+
+        /// <summary>
+        /// Label for a list of items blocked from production
+        /// </summary>
+        public override string BlocksProduction => "不生产";
+
+        public override string Automation_AutomationFocus_NoFocus => "全部";
+        public override string CityAutomation_SoldierQuality => "士兵质量";
+        public override string CityAutomation_SoldierWeaponType => "武器类型";
+
+        public override string WarsResourceGroup_Resources => "资源";
+        public override string WarsResourceGroup_Weapons => "武器";
+
+        public override string WarsResourceGroup_AllWeaponTypes => "混合";
+        public override string WarsResourceGroup_MeleeHandWeapons => "近战";
+        public override string WarsResourceGroup_RangedHandWeapons => "远程";
+        public override string WarsResourceGroup_Warmachines => "战争机器";
+
+        public override string FactionSettings_Titel => "阵营设置";
+        public override string FactionSettings_Description => "适用于你所有的城市";
+
+        public override string Conscript_MaxPopulation => "最大人口";
+        public override string Conscript_MaxPopulation_Description => "仅当人口达到上限时征兵";
+
+        public override string Conscript_FoodAbundance => "最大食物储量";
+        public override string Conscript_FoodAbundance_Description => "仅当食物达到最大库存时征兵";
+
+        /// <summary>
+        /// General settings will go through all items in a list and apply to all of them (to their checkbox)
+        /// </summary>
+        public override string GeneralSetting_On => "设置为：开";
+        public override string GeneralSetting_Off => "设置为：关";
+        public override string GeneralSetting_AllBuildingsDescription => "将应用于所有建筑";
+
+        public override string GeneralSetting_ApplyMessage => "更改已应用于 {0} 个建筑";
+
+        public override string MustTurnOffSteamInput => "要使用控制器，必须关闭 Steam Input。";
+
+        public override string Technology_GainTitle => "获取科技的方式";
+        public override string Technology_LevelUp => "升级";
+        public override string Technology_ForEachLevelUp => "当工人在科技领域升级时：{0}";
+
+        public override string VoxelEditor_Description => "创建像素风模型";
+
+        public override string Editor_Tool => "工具";
+        public override string Editor_SelectOptionsMenu => "选择选项";
+        public override string Editor_Continous => "连续";
+
+        public override string Editor_Tool_PencilSize => "画笔大小";
+        public override string Editor_Tool_SizeTolerance => "尺寸容差";
+        public override string Editor_Tool_RoundPencil => "圆形画笔";
+        public override string Editor_Tool_EdgeSize => "边缘大小";
+        public override string Editor_Tool_PercentFill => "填充百分比";
+        public override string Editor_Tool_ClearAbove => "清除上方";
+        public override string Editor_Tool_FillBelow => "填充下方";
+
+        public override string Editor_UserModels => "用户模型";
+        public override string Editor_UserModels_Description => "浏览你保存的模型";
+
+        public override string Editor_RetailModels => "游戏模型";
+        public override string Editor_RetailModels_Description => "从游戏中加载模型";
+
+        public override string Editor_ModTemplates => "Mod 模板";
+        public override string Editor_ExportAsOBJ => "导出为 .OBJ";
+        public override string Editor_SelectAll => "全选";
+
+        public override string Editor_Canvas_Title => "画布";
+        public override string Editor_Canvas_Size => "尺寸";
+        public override string Editor_Canvas_Dimension_X => "X";
+        public override string Editor_Canvas_Dimension_Y => "Y";
+        public override string Editor_Canvas_Dimension_Z => "Z";
+        public override string Editor_Canvas_SizePresets => "尺寸预设";
+        public override string Editor_Canvas_Move => "移动";
+        public override string Editor_Canvas_Move_Up => "上移";
+        public override string Editor_Canvas_Move_Down => "下移";
+        public override string Editor_Canvas_RotateClockwise => "顺时针旋转";
+        public override string Editor_Canvas_RotateCounterClockwise => "逆时针旋转";
+        public override string Editor_Canvas_Mirror => "镜像";
+
+        public override string Editor_Canvas_RotateFlip_Title => "旋转/翻转";
+        public override string Editor_Canvas_FlipVertical => "上下翻转";
+        public override string Editor_Canvas_FlipOrientation => "切换横/竖方向";
+        public override string Editor_Canvas_ClearAll_Description => "清除所有方块和帧";
+
+        public override string Editor_Animation => "动画";
+        public override string Editor_Animation_RemoveCurrentFrame => "删除当前帧";
+        public override string Editor_Animation_AddFrameCopy => "添加帧副本";
+        public override string Editor_Animation_AddEmptyFrame => "添加空帧";
+        public override string Editor_Animation_MoveDescription => "更改帧位置";
+        public override string Editor_Animation_AllFrames => "全部帧";
+        public override string Editor_Animation_AllFrames_ActionDescription => "对所有帧执行相同操作";
+
+        public override string Editor_SettingsMenu => "设置";
+        public override string Hud_Exit => "退出";
+        public override string Editor_Canvas_Clear => "清空";
+
+        public override string Editor_Stamp => "图章";
+        public override string Editor_StampOtherFrames => "应用于其他帧";
+        public override string Editor_StampOtherFrames_Description => "将体素粘贴到其他帧中";
+        public override string Editor_PasteToFrame => "粘贴到当前帧";
+        public override string Editor_ClearAllFrames => "清除所有帧";
+        public override string Editor_ClearOtherFrames => "清除其他帧";
+
+        public override string Editor_Settings_MoveSpeed => "移动速度";
+        public override string Editor_Settings_BackgroundColor => "背景颜色";
+        public override string Editor_Settings_HideHUD => "隐藏 HUD";
+
+        public override string Editor_Color => "颜色";
+        public override string Editor_ColorsInUseLabel => "正在使用的颜色";
+        public override string Editor_Color_BrighterPlus => "更亮 +";
+        public override string Editor_Color_Brighter => "更亮";
+        public override string Editor_Color_Darker => "更暗";
+        public override string Editor_Color_DarkerPlus => "更暗 +";
+        public override string Editor_Color_RedTint => "红色色调";
+        public override string Editor_Color_Tint => "色调";
+        public override string Editor_Color_GreenTint => "绿色色调";
+        public override string Editor_Color_BlueTint => "蓝色色调";
+        public override string Editor_Color_YellowTint => "黄色色调";
+        public override string Editor_Color_PurpleTint => "紫色色调";
+        public override string Editor_NoColor => "空";
+
+        public override string Editor_Material => "材质";
+
+        /// <summary>
+        /// User may change one color to another across the model
+        /// </summary>
+        public override string Editor_Color_Recolor => "重新上色";
+        public override string Editor_Color_RecolorTo => "替换为";
+
+        public override string Editor_Material_Set => "设置材质";
+
+        public override string Editor_Preview => "预览";
+        public override string Editor_CombineWithCurrent => "与当前模型合并";
+
+        public override string Editor_PickedColor => "已选颜色";
+        public override string Editor_ColorRGBvalues => "R:{0} G:{1} B:{2}";
+
+        public override string BuildingType_ImmigrationTent => "移民帐篷";
+        public override string BuildingType_ImmigrationTent_Description => "可容纳 {0} 名移民";
+        public override string BuildingType_ReseachCenter => "研究中心";
+        public override string BuildingType_Bookpress => "印刷机";
+        public override string BuildingType_Bookpress_Description => "在一个研究领域中获得的所有点数将与你其他城市中的所有 {0} 建筑共享。";
+
+        public override string Technology_ReseachExample => "示例：当工人生产 {0} 时，他们的 {1} 技能将提升。升级时将为 {2} 技术添加点数，因为它们共享 {1} 领域。";
+
+        public override string BuildingType_Research_BaseDescription => "提高科技研究速度。";
+
+        public override string BuildingType_ResearchCenter_Description => "当工人在同一领域升级时，额外增加 {0} 点科技研究值。";
+
 
     }
 }
