@@ -1,18 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* all new text is localized
-* Cleaned up map tile render for less glitches and more control
-* Fixed: Bad flickering on startup
-
-Voxel editor 2
-X (maybe) import / export for MagicaVoxel
-X layers
-X project file that saves layers and history
-X templates for modding
-X material select and replace
-X highlight system to show affected voxels, and draw preview
-X coordinate arrows
-X "are you sure you want to override this file"
+* 
 
 
 

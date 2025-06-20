@@ -54,10 +54,10 @@ namespace VikingEngine.DSSWars.Map
                     MaxSychToRenderCount = 40;
                     break;
                 default:
-                    MaxSychToRenderCount = 200;
+                    MaxSychToRenderCount = 300;
                     break;
                 case ThreeOptions.High:
-                    MaxSychToRenderCount = 600;
+                    MaxSychToRenderCount = 800;
                     break;
 
             }
