@@ -163,10 +163,12 @@ namespace VikingEngine.DSSWars
             {
                 case Map.MapDetailLayerType.UnitDetail1:
                     //DebugExtensions.TimeMeasure time = new DebugExtensions.TimeMeasure();
-                    DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;                   
-                    
+                    DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
+
+                   
                     DrawGenerated(UnitDetailLayer, cameraIndex);
-                    drawBatch.RemoveAndDraw(cameraIndex);
+                    DssRef.state.detailMap.updateAndDraw(cameraIndex);
+                   drawBatch.RemoveAndDraw(cameraIndex);
 
                     Draw3d(UnitDetailLayer, cameraIndex);
                     Engine.ParticleHandler.Draw(p.view.Camera);

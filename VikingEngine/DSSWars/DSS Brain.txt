@@ -1,8 +1,8 @@
 ﻿UPDATE
 -Change Log-
 * Optimized: removed objects in map generation
-
-
+* Cleaned up map tile render for less glitches and more control
+* Fixed: Bad flickering on startup
 
 Voxel editor 2
 X (maybe) import / export for MagicaVoxel

@@ -525,6 +525,8 @@ namespace VikingEngine
                             MapLoadingSpeed = value;
                             settingsHasChanged = true;
                             menu.CloseDropDown();
+
+                            DssRef.state?.detailMap?.refreshLoadSpeed();
                         }, opt), null);
                 }
                 mapLoadingDropDown.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_MapLoadSpeed, menu);

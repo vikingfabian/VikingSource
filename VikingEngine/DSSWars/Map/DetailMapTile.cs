@@ -64,17 +64,16 @@ namespace VikingEngine.DSSWars.Map
            
         public IntVector2 pos;
         VerticeDataColorTexture verticeData;
-        Graphics.VoxelModel model = new Graphics.VoxelModel(false);
+        public Graphics.VoxelModel model = new Graphics.VoxelModel(false);
         StructList<FoliageModel> foliageModels = new StructList<FoliageModel>(32);
-        //StructList<FoliageModel> flagModels = new StructList<FoliageModel>(2);
         List<AnimalData> animalData;
         bool hasPolygons;
 
-        //public bool add = true;
         static PcgRandom rnd = new PcgRandom();
-        //public bool isDeleted = false;
 
-        public DetailMapTile()//IntVector2 pos, Tile tile)
+        public DetailMapTileState renderState = DetailMapTileState.None;
+        public DetailMapTileExitState exitRender =  DetailMapTileExitState.None;
+        public DetailMapTile()
         {            
             model.Effect = MapLayer_Detail.ModelEffect;
             model.Visible = false;            
@@ -83,7 +82,6 @@ namespace VikingEngine.DSSWars.Map
         public void generateModel_async(IntVector2 pos, Tile tile)
         {
             this.pos = pos;
-            //foliageModels.Init(DssRef.world.tileGrid.Get(pos).prevFoliageCount);
             hasPolygons = tile.heightLevel != Height.DeepWaterHeight;
 
             if (hasPolygons)
@@ -1091,10 +1089,10 @@ namespace VikingEngine.DSSWars.Map
                     new List<int> { verticeData.DrawData.numTriangles / 2 },
                     Texture);
                 
-                if (!model.InRenderList)
-                {
-                    model.AddToRender(DrawGame.UnitDetailLayer);
-                }
+                //if (!model.InRenderList)
+                //{
+                //    model.AddToRender(DrawGame.UnitDetailLayer);
+                //}
                 PolygonLib.VerticeDataPool.Push(verticeData);
                 verticeData = null;
             }
@@ -1125,6 +1123,7 @@ namespace VikingEngine.DSSWars.Map
 
             model.Visible = true;
 
+            renderState = DetailMapTileState.InRender;
             //return add;
         }
         public void recycle()
@@ -1137,20 +1136,31 @@ namespace VikingEngine.DSSWars.Map
         {
             model.Visible = false;
 
-            //DssRef.world.tileGrid.GetRef(pos).prevFoliageCount = foliageModels.Count;
             for (int i = 0; i < foliageModels.Count; ++i)
             {
                 foliageModels[i].DeleteMe();
             }
             foliageModels.Clear();
 
-            //foreach (var m in flagModels)
-            //{
-            //    m.DeleteMe();
-            //}
-            //flagModels.Clear();
-
             animalData?.Clear();
+
+            exitRender =  DetailMapTileExitState.None;
+            renderState = DetailMapTileState.None;
         }
+    }
+
+    enum DetailMapTileState
+    { 
+        None,
+        AddToRender,
+        InRender,
+        //ExitRender,
+    }
+
+    enum DetailMapTileExitState
+    { 
+        None,
+        Prepare,
+        ExitRender,
     }
 }
