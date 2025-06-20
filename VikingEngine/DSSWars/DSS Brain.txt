@@ -1,6 +1,6 @@
 ﻿UPDATE
 -Change Log-
-
+* all new text is localized
 
 
 Voxel editor 2
