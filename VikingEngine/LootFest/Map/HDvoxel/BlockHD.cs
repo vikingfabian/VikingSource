@@ -8,9 +8,21 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 {
     struct BlockHD
     {
+        public const byte EmptyBlockMaterial = 0;
+        public const byte DefaultBlockMaterial = 1;
+        //public const byte ProfileBlockMaterial = 2;
+        public const byte BlockPatternMaterial = 15;
+        public const byte EndBlockMaterial = BlockPatternMaterial - 1;
+        public static readonly byte UnknownMaterial = (byte)MaterialProperty.Default;
+        public static readonly byte AntiMaterial = (byte)MaterialProperty.AntiBlock;
+
+        public const ushort EmptyBlock = 0;
+
+        public static readonly BlockHD Empty = new BlockHD(EmptyBlock);
+
         public const int ColorStep = 16;
         const int StartColor = ColorStep / 2;
-        const int ColorStepCount = (byte.MaxValue - StartColor) / ColorStep;
+        //const int ColorStepCount = (byte.MaxValue - StartColor) / ColorStep;
 
         public Color color;
         public MaterialProperty material;
@@ -151,20 +163,18 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         {
             return (MaterialProperty)(blockValue & 15);
         }
+
+        //public static bool IsProfileMaterial(ushort blockValue)
+        //{
+        //    return (blockValue & 15) == ProfileBlockMaterial;
+        //}
+
         public static int ToMaterialValue(ushort blockValue)
         {
             return blockValue & 15;
         }
 
-        public const byte EmptyBlockMaterial = 0;
-        public const byte BlockPatternMaterial = 15;
-        public const byte EndBlockMaterial = BlockPatternMaterial - 1;
-        public static readonly byte UnknownMaterial = (byte)MaterialProperty.Default;
-        public static readonly byte AntiMaterial = (byte)MaterialProperty.AntiBlock;
-
-        public const ushort EmptyBlock = 0;
-
-        public static readonly BlockHD Empty = new BlockHD(EmptyBlock);
+        
 
         public static Color FaceColorTinted(ushort blockValue, int addR, int addG, int addB)
         {

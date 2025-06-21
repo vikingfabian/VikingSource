@@ -21,22 +21,31 @@ namespace VikingEngine.DSSWars
         public static readonly ColorRange AiColorRange = new ColorRange(new Color(new Vector3(0.1f)), new Color(new Vector3(0.9f)));
 
         public static AppearanceMaterial
-            SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2;
+            SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2, TunicCol, PantsCol, LeaderCol;
+
+        public static ushort JointUp, JointForward, JointBack;
 
         public static void Init()
         {
             //Detta är färgerna som ersätts
 
-            SkinCol = new AppearanceMaterial(Color.Gray);
-            HairCol = new AppearanceMaterial(Color.Brown);
+            SkinCol = new AppearanceMaterial(Color.Gray, true);
+            HairCol = new AppearanceMaterial(Color.Brown, false);
 
-            MainCol = new AppearanceMaterial(new Color(65, 74, 129)); //Blå
-            AltMainCol = new AppearanceMaterial(new Color(25, 54, 109)); //Mörk Blå
+            MainCol = new AppearanceMaterial(new Color(65, 74, 129), false); //Blå
+            AltMainCol = new AppearanceMaterial(new Color(25, 54, 109), false); //Mörk Blå
 
-            DetailCol1 = new AppearanceMaterial(new Color(133, 78, 65));//Röd
-            DetailCol2 = new AppearanceMaterial(new Color(65, 133, 69));//Grön
+            DetailCol1 = new AppearanceMaterial(new Color(133, 78, 65), false);//Röd
+            DetailCol2 = new AppearanceMaterial(new Color(65, 133, 69), false);//Grön
+
+            TunicCol = new AppearanceMaterial(Color.Yellow, false);
+            PantsCol = new AppearanceMaterial(Color.GreenYellow, false);
+            LeaderCol = new AppearanceMaterial(new Color(50, 25, 0), false); //Dark brown
 
 
+            JointUp = BlockHD.ToBlockValue(new Color(128, 0, 128), BlockHD.DefaultBlockMaterial); //purple
+            JointForward = BlockHD.ToBlockValue(new Color(170, 0, 128), BlockHD.DefaultBlockMaterial); //red purple
+            JointBack = BlockHD.ToBlockValue(new Color(128, 0, 170), BlockHD.DefaultBlockMaterial); //blue purple
         }
 
         int index;
@@ -48,10 +57,11 @@ namespace VikingEngine.DSSWars
         public Color col4_Hair;
         public Color col5_AltMain;
 
-        //public Color[] colors = new Color[ColorCount];
-        public ushort[] blockColors;
+        public Color col6_Tunic = Color.LightGreen;
+        public Color col7_Pants = Color.Beige;
+        public Color col8_Leader = Color.SaddleBrown;
+
         public FlagDesign flagDesign;
-        public List<BlockHDPair> modelColorReplace;
         public FactionFlavorType factionFlavorType = FactionFlavorType.Other;
 
 
@@ -2771,9 +2781,9 @@ namespace VikingEngine.DSSWars
                 col2_Detail2 = col2_Detail2,
                 col3_Skin = col3_Skin,
                 col4_Hair = col4_Hair,
-                blockColors = this.blockColors != null ? (ushort[])this.blockColors.Clone() : null,
+                //blockColors = this.blockColors != null ? (ushort[])this.blockColors.Clone() : null,
                 flagDesign = this.flagDesign != null ? this.flagDesign.CloneFlag() : null,
-                modelColorReplace = this.modelColorReplace != null ? new List<BlockHDPair>(this.modelColorReplace) : null
+                //modelColorReplace = this.modelColorReplace != null ? new List<BlockHDPair>(this.modelColorReplace) : null
             };
 
             return clonedData;
@@ -2782,64 +2792,137 @@ namespace VikingEngine.DSSWars
         public void gameStartInit()
         {           
 
-            blockColors = new ushort[ColorCount];
-            //for (int i = 0; i < blockColors.Length; ++i)
-            //{
-            //    blockColors[i] = BlockHD.ToBlockValue(colors[i], BlockHD.UnknownMaterial);
-            //}
-            blockColors[0] = BlockHD.ToBlockValue(col0_Main, BlockHD.UnknownMaterial);
-            blockColors[1] = BlockHD.ToBlockValue(col1_Detail1, BlockHD.UnknownMaterial);
-            blockColors[2] = BlockHD.ToBlockValue(col2_Detail2, BlockHD.UnknownMaterial);
-            blockColors[3] = BlockHD.ToBlockValue(col3_Skin, BlockHD.UnknownMaterial);
-            blockColors[4] = BlockHD.ToBlockValue(col4_Hair, BlockHD.UnknownMaterial);
+            //blockColors = new ushort[ColorCount];
+            
+            //blockColors[0] = BlockHD.ToBlockValue(col0_Main, BlockHD.UnknownMaterial);
+            //blockColors[1] = BlockHD.ToBlockValue(col1_Detail1, BlockHD.UnknownMaterial);
+            //blockColors[2] = BlockHD.ToBlockValue(col2_Detail2, BlockHD.UnknownMaterial);
+            //blockColors[3] = BlockHD.ToBlockValue(col3_Skin, BlockHD.UnknownMaterial);
+            //blockColors[4] = BlockHD.ToBlockValue(col4_Hair, BlockHD.UnknownMaterial);
 
 
             //var mainCol = getColor(ProfileColorType.Main);
 
-            BlockHD main = new BlockHD(col0_Main);
-            BlockHD darkMain = main;
-            darkMain.tintSteps(-1, -1, -1);
+            //BlockHD main = new BlockHD(col0_Main);
+            //BlockHD darkMain = main;
+            //darkMain.tintSteps(-1, -1, -1);
 
-            //Color altCol;
-            //if (ColorExt.GetBrightNess(col0_Main) >= 0.3f)
+            //BlockHD mainAlt = new BlockHD(col5_AltMain);
+
+            ////var skinCol = getColor(ProfileColorType.Skin);
+            //BlockHD skin = new BlockHD(col3_Skin);
+            //BlockHD redskin = skin;
+            //redskin.tintSteps(1, 0, 0);
+
+            //BlockHD darkskin = skin;
+            //darkskin.tintSteps(-1, -1, -1);
+
+            //modelColorReplace = new List<BlockHDPair>
             //{
-            //    altCol = ColorExt.ChangeBrighness( col0_Main, -30);
-            //}
-            //else
-            //{
-            //    altCol = ColorExt.ChangeBrighness(col0_Main, 30);
-            //}
-            BlockHD mainAlt = new BlockHD(col5_AltMain);
+            //    new BlockHDPair(MainCol.baseColor, main.BlockValue),
+            //    new BlockHDPair(MainCol.darker, darkMain.BlockValue),
 
-            //var skinCol = getColor(ProfileColorType.Skin);
-            BlockHD skin = new BlockHD(col3_Skin);
-            BlockHD redskin = skin;
-            redskin.tintSteps(1, 0, 0);
+            //    new BlockHDPair(AltMainCol.baseColor, mainAlt.BlockValue),
 
-            BlockHD darkskin = skin;
-            darkskin.tintSteps(-1, -1, -1);
+            //     new BlockHDPair(DetailCol1.baseColor, BlockHD.ToBlockValue(
+            //         col1_Detail1, BlockHD.UnknownMaterial)),
 
-            modelColorReplace = new List<BlockHDPair>
-            {
-                new BlockHDPair(MainCol.baseColor, main.BlockValue),
-                new BlockHDPair(MainCol.darker, darkMain.BlockValue),
+            //    new BlockHDPair(DetailCol2.baseColor, BlockHD.ToBlockValue(
+            //         col2_Detail2, BlockHD.UnknownMaterial)),
 
-                new BlockHDPair(AltMainCol.baseColor, mainAlt.BlockValue),
+            //    new BlockHDPair(SkinCol.baseColor, skin.BlockValue),
+            //    new BlockHDPair(SkinCol.darker, darkskin.BlockValue),
+            //    new BlockHDPair(SkinCol.redTint, redskin.BlockValue),
 
-                 new BlockHDPair(DetailCol1.baseColor, BlockHD.ToBlockValue(
-                     col1_Detail1, BlockHD.UnknownMaterial)),
-
-                new BlockHDPair(DetailCol2.baseColor, BlockHD.ToBlockValue(
-                     col2_Detail2, BlockHD.UnknownMaterial)),
-
-                new BlockHDPair(SkinCol.baseColor, skin.BlockValue),
-                new BlockHDPair(SkinCol.darker, darkskin.BlockValue),
-                new BlockHDPair(SkinCol.redTint, redskin.BlockValue),
-
-                new BlockHDPair(HairCol.baseColor, BlockHD.ToBlockValue(
-                     col4_Hair, BlockHD.UnknownMaterial)),
-            };
+            //    new BlockHDPair(HairCol.baseColor, BlockHD.ToBlockValue(
+            //         col4_Hair, BlockHD.UnknownMaterial)),
+            //};
             
+        }
+
+        //public ushort[] BlockColors()
+        //{
+        //    var blockColors = new ushort[ColorCount];
+
+        //    blockColors[0] = BlockHD.ToBlockValue(col0_Main, BlockHD.UnknownMaterial);
+        //    blockColors[1] = BlockHD.ToBlockValue(col1_Detail1, BlockHD.UnknownMaterial);
+        //    blockColors[2] = BlockHD.ToBlockValue(col2_Detail2, BlockHD.UnknownMaterial);
+        //    blockColors[3] = BlockHD.ToBlockValue(col3_Skin, BlockHD.UnknownMaterial);
+        //    blockColors[4] = BlockHD.ToBlockValue(col4_Hair, BlockHD.UnknownMaterial);
+
+        //    return blockColors;
+        //}
+        public void FillBlockColors(Span<ushort> buffer)
+        {
+            buffer[0] = BlockHD.ToBlockValue(col0_Main, BlockHD.UnknownMaterial);
+            buffer[1] = BlockHD.ToBlockValue(col1_Detail1, BlockHD.UnknownMaterial);
+            buffer[2] = BlockHD.ToBlockValue(col2_Detail2, BlockHD.UnknownMaterial);
+            buffer[3] = BlockHD.ToBlockValue(col3_Skin, BlockHD.UnknownMaterial);
+            buffer[4] = BlockHD.ToBlockValue(col4_Hair, BlockHD.UnknownMaterial);
+        }
+
+
+        public Dictionary<ushort, ushort> GetColorReplaceTable()
+        {
+            Dictionary<ushort, ushort> result = new Dictionary<ushort, ushort>(32);
+
+            ColorReplaceTable(result);
+
+            return result;
+        }
+        public void ColorReplaceTable(Dictionary<ushort, ushort> findReplace)
+        {
+            //BlockHD main = new BlockHD(col0_Main);
+            //BlockHD darkMain = main;
+            //darkMain.tintSteps(-1, -1, -1);
+
+            //BlockHD mainAlt = new BlockHD(col5_AltMain);
+
+            ////var skinCol = getColor(ProfileColorType.Skin);
+            //BlockHD skin = new BlockHD(col3_Skin);
+            //BlockHD redskin = skin;
+            //redskin.tintSteps(1, 0, 0);
+
+            //BlockHD darkskin = skin;
+            //darkskin.tintSteps(-1, -1, -1);
+
+            //findReplace.Add(MainCol.baseColor, main.BlockValue);
+            //findReplace.Add(MainCol.darker, darkMain.BlockValue);
+
+            //findReplace.Add(AltMainCol.baseColor, mainAlt.BlockValue);
+            //findReplace.Add(DetailCol1.baseColor, BlockHD.ToBlockValue(
+            //        col1_Detail1, BlockHD.UnknownMaterial));
+
+            addColor(ref MainCol, ref col0_Main);
+            addColor(ref DetailCol1, ref col1_Detail1);
+            addColor(ref DetailCol2, ref col2_Detail2);
+            addColor(ref SkinCol, ref col3_Skin);
+            addColor(ref HairCol, ref col4_Hair);
+            addColor(ref AltMainCol, ref col5_AltMain);
+            addColor(ref TunicCol, ref col6_Tunic);
+            addColor(ref PantsCol, ref col7_Pants);
+            addColor(ref LeaderCol, ref col8_Leader);
+
+            void addColor(ref AppearanceMaterial material, ref Color color)
+            {
+                BlockHD baseCol = new BlockHD(color);
+                BlockHD dark = baseCol;
+                dark.tintSteps(-1, -1, -1);
+                BlockHD bright = baseCol;
+                bright.tintSteps(1, 1, 1);
+
+                findReplace.Add(material.baseColor, baseCol.BlockValue);
+                findReplace.Add(material.darker, dark.BlockValue);
+                findReplace.Add(material.brighter, bright.BlockValue);
+
+                if (material.redTint != BlockHD.EmptyBlock)
+                {
+                    BlockHD red = baseCol;
+                    red.tintSteps(1, 0, 0);
+
+                    findReplace.Add(material.redTint, red.BlockValue);
+                }
+            }
         }
 
         public void PrintFlagColors()

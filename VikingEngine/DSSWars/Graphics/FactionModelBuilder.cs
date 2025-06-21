@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars
             //this.name = name;
 
             VoxelObjGridDataAnimHD copy = grid.Clone();
-            copy.ReplaceMaterial(faction.flagProfile.modelColorReplace);
+            copy.ReplaceMaterial(faction.flagProfile.GetColorReplaceTable());
 
 
             switch (name)
@@ -84,29 +84,32 @@ namespace VikingEngine.DSSWars
 
         void addFlagTexture(Faction faction, VoxelObjGridDataAnimHD grid, IntVector3 start, bool standing, int frame = 0)
         {
-            if (faction.flagProfile.blockColors != null)
+            //if (faction.flagProfile.blockColors != null)
+            //{
+            Span<ushort> blockColors = stackalloc ushort[5];
+            faction.flagProfile.FillBlockColors(blockColors);
+            //var blockColors = faction.flagProfile.BlockColors();
+            var gridData = grid.Frames[frame];
+
+            var flagLoop = faction.flagProfile.flagDesign.LoopInstance();
+            while (flagLoop.Next())
             {
-                var gridData = grid.Frames[frame];
+                byte colId = faction.flagProfile.flagDesign.Get(flagLoop.Position);
+                ushort blockCol = blockColors[colId];
 
-                var flagLoop = faction.flagProfile.flagDesign.LoopInstance();
-                while (flagLoop.Next())
+                IntVector3 gridPos = start;
+                gridPos.X += flagLoop.Position.X;
+                if (standing)
                 {
-                    byte colId = faction.flagProfile.flagDesign.Get(flagLoop.Position);
-                    var blockCol = faction.flagProfile.blockColors[colId];
-
-                    IntVector3 gridPos = start;
-                    gridPos.X += flagLoop.Position.X;
-                    if (standing)
-                    {
-                        gridPos.Y -= flagLoop.Position.Y; //inverted
-                    }
-                    else
-                    {
-                        gridPos.Z += flagLoop.Position.Y;
-                    }
-                    gridData.Set(gridPos, blockCol);
+                    gridPos.Y -= flagLoop.Position.Y; //inverted
                 }
+                else
+                {
+                    gridPos.Z += flagLoop.Position.Y;
+                }
+                gridData.Set(gridPos, blockCol);
             }
+            //}
         }
     }
 }

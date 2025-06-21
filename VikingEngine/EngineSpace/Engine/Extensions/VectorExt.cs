@@ -117,6 +117,12 @@ namespace VikingEngine
             return value;
         }
 
+        public static IntVector3 AddX(IntVector3 value, int add)
+        {
+            value.X += add;
+            return value;
+        }
+
         public static IntVector2 AddY(IntVector2 value, int add)
         {
             value.Y += add;

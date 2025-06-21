@@ -66,6 +66,8 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_body1,
                 VoxelModelName.modsoldier_face1,
                 VoxelModelName.modsoldier_leg1,
+                VoxelModelName.modsoldier_larm_empty1,
+                VoxelModelName.modsoldier_rarm_sword1,
             };
 
             var units = new AllUnits();

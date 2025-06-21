@@ -172,10 +172,6 @@ namespace VikingEngine.Voxels
 
             if (includePaintCol)
             {
-                //if (!inUse[SelectedMaterial.BlockValue])
-                //{
-                //    result.Add(SelectedMaterial.BlockValue);
-                //}
                 selected = SelectedMaterial.BlockValue;
 
                 if (!inUse[SecondaryMaterial.BlockValue])
@@ -249,11 +245,23 @@ namespace VikingEngine.Voxels
         }
         public void AddFrame(bool copy)
         {
-            animationFrames.Frames.Insert(currentFrame.Value, animationFrames.Frames[currentFrame.Value].Clone());
-            int frame = currentFrame.Value;
+            VoxelObjGridDataHD newFrame;
+            if (copy)
+            {
+                newFrame = animationFrames.Frames[currentFrame.Value].Clone();
+            }
+            else
+            {
+                newFrame = new VoxelObjGridDataHD(animationFrames.Size);
+            }
+            int frame = currentFrame.Value + 1;
+            animationFrames.Frames.Insert(frame, newFrame);
+
             updateFrameInfo();
-            currentFrame.Value = frame + 1;
+            
+            currentFrame.Value = frame;
             updateFrameInfo();
+            updateVoxelObj();
             //print("Frame Added");
         }
 
@@ -269,14 +277,14 @@ namespace VikingEngine.Voxels
                 currentFrame.Next(lib.BoolToLeftRight(forward));
             } while (currentFrame.Value < lockFirstFrames);
             updateFrameInfo();
-            updateVoxelObj();//startUpdateVoxelObj(false);
+            updateVoxelObj();
         }
         public void setFrame(int frame)
         {
             currentFrame.Value = frame;
 
             updateFrameInfo();
-            updateVoxelObj();//startUpdateVoxelObj(false);
+            updateVoxelObj();
         }
 
         public bool haveAnimation
@@ -390,6 +398,11 @@ namespace VikingEngine.Voxels
                 selectedVoxels.Voxels.Clear();
                 refreshSelectionModel();
             }
+
+            RichBoxContent content = new RichBoxContent();
+            content.h2(cut ? DSSWars.DssRef.lang.Hud_Cut : DSSWars.DssRef.lang.Hud_Copy, DSSWars.HudLib.TitleColor_Head);
+            content.text(string.Format(DSSWars.DssRef.todoLang.Editor_VoxelCount, selectedVoxels.Voxels.Count));
+            print(content);
         }
 
         public void ShowHUD(bool show)

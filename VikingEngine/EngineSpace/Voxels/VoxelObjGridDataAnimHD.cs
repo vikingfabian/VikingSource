@@ -40,6 +40,14 @@ namespace VikingEngine.Voxels
             }
         }
 
+        public void ReplaceMaterial(Dictionary<ushort, ushort> findReplace)
+        {
+            foreach (VoxelObjGridDataHD grid in Frames)
+            {
+                grid.ReplaceMaterial(findReplace);
+            }
+        }
+
         public void WriteBinaryStream(System.IO.BinaryWriter w)
         {
             Voxels.VoxelLib.WriteVoxelObjAnimHD(w, Frames);

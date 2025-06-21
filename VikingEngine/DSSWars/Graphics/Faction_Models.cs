@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars
                 {
                     try
                     {
-                        if (flagProfile == null || flagProfile.modelColorReplace == null)
+                        if (flagProfile == null)
                         {
                             return;
                         }

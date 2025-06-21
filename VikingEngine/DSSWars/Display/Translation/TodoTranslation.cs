@@ -12,12 +12,20 @@ namespace VikingEngine.DSSWars.Display.Translation
     {
         //Option language
 
-        
+
 
         //##
 
-        
+        public string Editor_CropSelection => "Crop to selection";
 
+        public string Editor_VoxelCount => "{0} voxels";
+
+        public string ProfileEditor_ReplaceMaterial => "Profile color: {0}";
+
+        public string ProfileEditor_ProfileColors_Label => "Profile colors";
+        public string ProfileEditor_TunicColor => "Tunic color";
+        public string ProfileEditor_PantsColor => "Pants color";
+        public string ProfileEditor_LeaderColor => "Leader color";
 
 
     }

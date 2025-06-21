@@ -2071,8 +2071,14 @@
 #begin VoxelModel/Character/modsoldier_face1.vox
 /copy:VoxelModel/Character/modsoldier_face1.vox
 
+#begin VoxelModel/Character/modsoldier_larm_empty1.vox
+/copy:VoxelModel/Character/modsoldier_larm_empty1.vox
+
 #begin VoxelModel/Character/modsoldier_leg1.vox
 /copy:VoxelModel/Character/modsoldier_leg1.vox
+
+#begin VoxelModel/Character/modsoldier_rarm_sword1.vox
+/copy:VoxelModel/Character/modsoldier_rarm_sword1.vox
 
 #begin VoxelModel/LfWars/armybanner.vox
 /copy:VoxelModel/LfWars/armybanner.vox

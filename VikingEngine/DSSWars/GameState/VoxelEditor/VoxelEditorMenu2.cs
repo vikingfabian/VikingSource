@@ -598,6 +598,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             {
                 content.newLine();
                 HudLib.Label(content, DssRef.lang.Editor_StampOtherFrames);
+                content.newLine();
                 for (int frame = 0; frame <= designer.currentFrame.Max; frame++)
                 {
                     SpriteName frameicon;
@@ -628,6 +629,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             }
 
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MissingImage), new RbText(DssRef.todoLang.Editor_CropSelection) }, new RbAction(designer.LinkSetLimitsAfterSel)));
+            
             Refresh(content);
         }
 
@@ -692,7 +696,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             //new GuiSectionSeparator(layout);
 
-            //DSSSoldierPalette(layout, link);
+            DSSSoldierPalette(content, link);
 
             //new GuiSectionSeparator(layout);
             content.Add(new RbSeperationLine());
@@ -715,6 +719,42 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 }
             }
         }
+
+        public void DSSSoldierPalette(RichBoxContent content, Action<BlockHD> link)
+        {
+            if (PlatformSettings.RunProgram == StartProgram.DSS)
+            {
+                content.newLine();
+                HudLib.Label(content, DssRef.todoLang.ProfileEditor_ProfileColors_Label);
+                content.newLine();
+                //new GuiTitle("DSS soldier color mapping", layout);
+                //SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2;
+                appearanceMaterials(FlagAndColor.SkinCol, DssRef.lang.ProfileEditor_SkinColor, content, link);
+                appearanceMaterials(FlagAndColor.HairCol, DssRef.lang.ProfileEditor_HairColor, content, link);
+                appearanceMaterials(FlagAndColor.MainCol, DssRef.lang.ProfileEditor_MainColor, content, link);
+                appearanceMaterials(FlagAndColor.AltMainCol, DssRef.lang.ProfileEditor_AltMain, content, link);
+                appearanceMaterials(FlagAndColor.DetailCol1, DssRef.lang.ProfileEditor_Detail1Color, content, link);
+                appearanceMaterials(FlagAndColor.DetailCol2, DssRef.lang.ProfileEditor_Detail2Color, content, link);
+
+                appearanceMaterials(FlagAndColor.TunicCol, DssRef.todoLang.ProfileEditor_TunicColor, content, link);
+                appearanceMaterials(FlagAndColor.PantsCol, DssRef.todoLang.ProfileEditor_PantsColor, content, link);
+                appearanceMaterials(FlagAndColor.LeaderCol, DssRef.todoLang.ProfileEditor_LeaderColor, content, link);
+
+            }
+        }
+        void appearanceMaterials(AppearanceMaterial mat, string type, RichBoxContent content, Action<BlockHD> link)
+        {
+            string materialName = string.Format(DssRef.todoLang.ProfileEditor_ReplaceMaterial, type);
+            appearanceMaterialsButton(true, mat.baseColor,  materialName, content, link);
+            appearanceMaterialsButton(false, mat.brighter, materialName + ", " + DssRef.lang.Editor_Color_Brighter, content, link);
+            appearanceMaterialsButton(false, mat.darker, materialName + ", " + DssRef.lang.Editor_Color_Darker, content, link);
+            if (mat.redTint != BlockHD.EmptyBlockMaterial)
+            {
+                appearanceMaterialsButton(false, mat.redTint, materialName + ", " + DssRef.lang.Editor_Color_RedTint, content, link);
+            }
+        }
+
+
         void pageSettings()
         {
             RichBoxContent content = new RichBoxContent();
@@ -831,6 +871,23 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 new RbAction1Arg<BlockHD>(link, new BlockHD(col)))
                 { SpaceAfter = 0, });
             
+        }
+
+        void appearanceMaterialsButton(bool bigButton, ushort col, string name, RichBoxContent content, Action<BlockHD> link)
+        {
+            BlockHD color = new BlockHD(col);
+            //GuiIcon icon;
+            //icon = new GuiIcon(SpriteName.WhiteArea, name, new GuiAction1Arg<BlockHD>(link, color), false, layout);
+
+            //icon.iconImage.Color = color.color;
+            //if (!bigIcon)
+            //{
+            //    icon.iconImage.Size *= 0.7f;
+            //}
+
+            content.Add(new ArtImageButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, bigButton? 1 : 0.8f, color.color) },
+               new RbAction1Arg<BlockHD>(link, color), new RbTooltip_Text(name))
+            { SpaceAfter = 0, });
         }
 
         override public void closeMenu() 

@@ -8,16 +8,16 @@ namespace VikingEngine.LootFest.Map.HDvoxel
     enum MaterialProperty
     {
         Empty = BlockHD.EmptyBlockMaterial,
-        Default,
+        Default = BlockHD.DefaultBlockMaterial,
+        //Profile = BlockHD.ProfileBlockMaterial,
         AntiBlock,
-
+        
         Layer_AboveAll,
         Layer_Above1,
         Layer_Below1,
         Layer_BelowAll,
 
-        //JointUp,
-        //JointForward,
+        Joint,
 
         Terrain,
         TerrainWontBurt,

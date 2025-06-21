@@ -1,6 +1,7 @@
 ﻿UPDATE
 -Change Log-
-* 
+* Voxel editor: added profile colors
+* Optimized: reduced objects in profile color
 
 
 
@@ -8,6 +9,7 @@
 #Voxel editor#
 
 #Pics
+Crop
 
 
 ! I think there is one data drift I havent found, make a habit to check if the files are working from time to time
