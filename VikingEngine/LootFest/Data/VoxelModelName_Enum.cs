@@ -38,6 +38,7 @@ namespace VikingEngine.LootFest
         modsoldier_leg1,
         modsoldier_larm_empty1,
         modsoldier_rarm_sword1,
+        modweapon_sword1,
         #endregion
 
         //        //--

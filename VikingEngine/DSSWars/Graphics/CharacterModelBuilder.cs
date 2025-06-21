@@ -12,6 +12,8 @@ namespace VikingEngine.DSSWars
     {
         static readonly IntVector3 GridSize = new IntVector3(26, 48, 78);
         const int FrameCount = 7;
+        //const int SwordAttackFrame = 1;
+        //const int SwordForwardFrame = 0;
 
         //26*48*78
 
@@ -30,6 +32,10 @@ namespace VikingEngine.DSSWars
 
             var leftArm = DssRef.models.rawModels[VoxelModelName.modsoldier_larm_empty1];
             var rightArm = DssRef.models.rawModels[VoxelModelName.modsoldier_rarm_sword1];
+
+            var sword = DssRef.models.weaponModels[VoxelModelName.modweapon_sword1];
+            //var swordForward = sword.Frames[SwordForwardFrame].GetVoxelArray(out ushort swordForward_jointResult, out IntVector3 swordForward_jointPos);
+            //var swordAttack = sword.Frames[SwordForwardFrame].GetVoxelArray(out ushort swordAttack_jointResult, out IntVector3 swordAttack_jointPos);
 
             var profileColors = faction.flagProfile.GetColorReplaceTable();
 
@@ -58,16 +64,31 @@ namespace VikingEngine.DSSWars
             }
 
             var larmIdle = leftArm.Frames[0].GetVoxelArray(lArmOffset, profileColors);
-            var rarmIdle = rightArm.Frames[0].GetVoxelArray(rArmOffSet, profileColors);
+            var rarmIdle = rightArm.Frames[0].GetVoxelArray(rArmOffSet, profileColors, out ushort rarm_jointResult, out IntVector3 rarm_jointPos);
+            rarm_jointPos.Z -= 1;
+
             for (int frame = 0; frame < 2; frame++)
             {
                 grid.Frames[frame].AddVoxels(larmIdle);
                 grid.Frames[frame].AddVoxels(rarmIdle);
+
+                sword.addToGrid(grid.Frames[frame], ref rarm_jointPos, false);
+                //grid.Frames[frame].AddVoxels(swordForward, rarm_jointPos - swordForward_jointPos);
             }
             for (int frame = 2; frame < FrameCount; frame++)
             {
                 grid.Frames[frame].AddVoxels(leftArm.Frames[frame - 1].GetVoxelArray(lArmOffset, profileColors));
-                grid.Frames[frame].AddVoxels(rightArm.Frames[frame - 1].GetVoxelArray(rArmOffSet, profileColors));
+                grid.Frames[frame].AddVoxels(rightArm.Frames[frame - 1].GetVoxelArray(rArmOffSet, profileColors, out rarm_jointResult, out rarm_jointPos));
+                rarm_jointPos.Z -= 1;
+                               
+                sword.addToGrid(grid.Frames[frame], ref rarm_jointPos, frame == 2);
+                //    //grid.Frames[frame].AddVoxels(swordAttack, rarm_jointPos - swordAttack_jointPos);
+                //}
+                //else
+                //{
+                //    sword.addToGrid(grid.Frames[frame], ref rarm_jointPos, false);
+                //    //grid.Frames[frame].AddVoxels(swordForward, rarm_jointPos - swordForward_jointPos);
+                //}
             }
 
             var centerAdjust = grid.Frames[0].BottomCenterAdj();

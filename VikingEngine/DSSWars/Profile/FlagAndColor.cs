@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars
         public static AppearanceMaterial
             SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2, TunicCol, PantsCol, LeaderCol;
 
-        public static ushort JointUp, JointForward, JointBack;
+        
 
         public static void Init()
         {
@@ -43,9 +43,9 @@ namespace VikingEngine.DSSWars
             LeaderCol = new AppearanceMaterial(new Color(50, 25, 0), false); //Dark brown
 
 
-            JointUp = BlockHD.ToBlockValue(new Color(128, 0, 128), BlockHD.DefaultBlockMaterial); //purple
-            JointForward = BlockHD.ToBlockValue(new Color(170, 0, 128), BlockHD.DefaultBlockMaterial); //red purple
-            JointBack = BlockHD.ToBlockValue(new Color(128, 0, 170), BlockHD.DefaultBlockMaterial); //blue purple
+            BlockHD.JointUp = BlockHD.ToBlockValue(new Color(128, 0, 128), BlockHD.DefaultBlockMaterial); //purple
+            BlockHD.JointForward = BlockHD.ToBlockValue(new Color(170, 0, 128), BlockHD.DefaultBlockMaterial); //red purple
+            BlockHD.JointBack = BlockHD.ToBlockValue(new Color(128, 0, 170), BlockHD.DefaultBlockMaterial); //blue purple
         }
 
         int index;

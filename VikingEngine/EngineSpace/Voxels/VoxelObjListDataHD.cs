@@ -21,15 +21,6 @@ namespace VikingEngine.Voxels
             Voxels = voxels;
         }
 
-        //public VoxelObjListData(byte[] compressedData)
-        //{
-        //    //List<byte> list = new List<byte>(compressedData);
-        //    VoxelObjGridData grid = VoxelObjGridData.FromByteArray(compressedData);
-        //    //grid.FromCompressedData(list);
-        //    Voxels = grid.GetVoxelArray();
-        //    Size = grid.Limits + 1;
-        //}
-
         public IntervalIntV3 getMinMax()
         {
             IntervalIntV3 blockRange = IntervalIntV3.Zero;

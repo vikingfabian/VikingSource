@@ -722,25 +722,27 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void DSSSoldierPalette(RichBoxContent content, Action<BlockHD> link)
         {
-            if (PlatformSettings.RunProgram == StartProgram.DSS)
-            {
-                content.newLine();
-                HudLib.Label(content, DssRef.todoLang.ProfileEditor_ProfileColors_Label);
-                content.newLine();
-                //new GuiTitle("DSS soldier color mapping", layout);
-                //SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2;
-                appearanceMaterials(FlagAndColor.SkinCol, DssRef.lang.ProfileEditor_SkinColor, content, link);
-                appearanceMaterials(FlagAndColor.HairCol, DssRef.lang.ProfileEditor_HairColor, content, link);
-                appearanceMaterials(FlagAndColor.MainCol, DssRef.lang.ProfileEditor_MainColor, content, link);
-                appearanceMaterials(FlagAndColor.AltMainCol, DssRef.lang.ProfileEditor_AltMain, content, link);
-                appearanceMaterials(FlagAndColor.DetailCol1, DssRef.lang.ProfileEditor_Detail1Color, content, link);
-                appearanceMaterials(FlagAndColor.DetailCol2, DssRef.lang.ProfileEditor_Detail2Color, content, link);
+            
+            content.newLine();
+            HudLib.Label(content, DssRef.todoLang.ProfileEditor_ProfileColors_Label);
+            content.newLine();
+            //new GuiTitle("DSS soldier color mapping", layout);
+            //SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2;
+            appearanceMaterials(FlagAndColor.SkinCol, DssRef.lang.ProfileEditor_SkinColor, content, link);
+            appearanceMaterials(FlagAndColor.HairCol, DssRef.lang.ProfileEditor_HairColor, content, link);
+            appearanceMaterials(FlagAndColor.MainCol, DssRef.lang.ProfileEditor_MainColor, content, link);
+            appearanceMaterials(FlagAndColor.AltMainCol, DssRef.lang.ProfileEditor_AltMain, content, link);
+            appearanceMaterials(FlagAndColor.DetailCol1, DssRef.lang.ProfileEditor_Detail1Color, content, link);
+            appearanceMaterials(FlagAndColor.DetailCol2, DssRef.lang.ProfileEditor_Detail2Color, content, link);
 
-                appearanceMaterials(FlagAndColor.TunicCol, DssRef.todoLang.ProfileEditor_TunicColor, content, link);
-                appearanceMaterials(FlagAndColor.PantsCol, DssRef.todoLang.ProfileEditor_PantsColor, content, link);
-                appearanceMaterials(FlagAndColor.LeaderCol, DssRef.todoLang.ProfileEditor_LeaderColor, content, link);
+            appearanceMaterials(FlagAndColor.TunicCol, DssRef.todoLang.ProfileEditor_TunicColor, content, link);
+            appearanceMaterials(FlagAndColor.PantsCol, DssRef.todoLang.ProfileEditor_PantsColor, content, link);
+            appearanceMaterials(FlagAndColor.LeaderCol, DssRef.todoLang.ProfileEditor_LeaderColor, content, link);
+                
+            content.newLine();
+            appearanceMaterialsButton(true, BlockHD.JointUp, "Joint up", content, link);
+            appearanceMaterialsButton(true, BlockHD.JointForward, "Joint forward", content, link);
 
-            }
         }
         void appearanceMaterials(AppearanceMaterial mat, string type, RichBoxContent content, Action<BlockHD> link)
         {

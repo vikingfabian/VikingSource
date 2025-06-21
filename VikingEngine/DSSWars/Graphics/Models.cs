@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
@@ -19,9 +21,11 @@ namespace VikingEngine.DSSWars
     class Models
     {
         
-        public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>();
+        public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels;
         Dictionary<VoxelModelName, Graphics.VoxelModel> voxelModels = new Dictionary<VoxelModelName, Graphics.VoxelModel>();
-        
+
+        public Dictionary<VoxelModelName, WeaponModel> weaponModels;
+
         List<VoxelModelData> loadedData = new List<VoxelModelData>();
         bool asycTaskComplete = false;
 
@@ -68,7 +72,16 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_leg1,
                 VoxelModelName.modsoldier_larm_empty1,
                 VoxelModelName.modsoldier_rarm_sword1,
+                
             };
+            rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>(loadRawModels.Count);
+
+            List<VoxelModelName> loadWeaponModels = new List<VoxelModelName>
+            {
+                VoxelModelName.modweapon_sword1,
+            };
+
+            weaponModels = new Dictionary<VoxelModelName, WeaponModel>(loadWeaponModels.Count);
 
             var units = new AllUnits();
             units.AddRawModelsToLoad(loadRawModels);
@@ -82,13 +95,31 @@ namespace VikingEngine.DSSWars
             {
                 DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
                 byte[] data = DataStream.FileToDiskManager.Read(path);
-                System.IO.MemoryStream s = new System.IO.MemoryStream(data);
-                System.IO.BinaryReader r = new System.IO.BinaryReader(s);
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        System.IO.MemoryStream s = new System.IO.MemoryStream(data);
+                        System.IO.BinaryReader r = new System.IO.BinaryReader(s);
 
-                var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
-                var result = new VoxelObjGridDataAnimHD(grids);
+                        var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+                        var result = new VoxelObjGridDataAnimHD(grids);
 
-                rawModels.Add(modelName, result);
+                        lock (rawModels)
+                        {
+                            rawModels.Add(modelName, result);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                });
+            }
+
+            foreach (var weaponName in loadWeaponModels)
+            {
+                weaponModels.Add(weaponName, new WeaponModel(weaponName));
             }
 
 

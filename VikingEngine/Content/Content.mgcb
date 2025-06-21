@@ -2080,6 +2080,9 @@
 #begin VoxelModel/Character/modsoldier_rarm_sword1.vox
 /copy:VoxelModel/Character/modsoldier_rarm_sword1.vox
 
+#begin VoxelModel/Character/modweapon_sword1.vox
+/copy:VoxelModel/Character/modweapon_sword1.vox
+
 #begin VoxelModel/LfWars/armybanner.vox
 /copy:VoxelModel/LfWars/armybanner.vox
 

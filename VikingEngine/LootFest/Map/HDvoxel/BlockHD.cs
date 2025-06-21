@@ -26,6 +26,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 
         public Color color;
         public MaterialProperty material;
+        public static ushort JointUp, JointForward, JointBack;
 
         public BlockHD(Color color, MaterialProperty material)
         {
