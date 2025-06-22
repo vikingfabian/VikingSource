@@ -259,7 +259,8 @@ namespace VikingEngine.Voxels
         {
             currentDrawAction = new DrawQueAction(designer.SelectedMaterial.BlockValue, designer.SecondaryMaterial.BlockValue, fill,
                 pos, designer.Settings.paintSettings, designer.bRepeateOnAllFramesProperty(0, false, false));
-            
+            currentDrawAction.frame = designer.currentFrame.Value;
+
             drawQue.Enqueue(currentDrawAction);
             
         }
