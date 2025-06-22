@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Voxels;
 using VikingEngine.LootFest.Map.HDvoxel;
 
+
 namespace VikingEngine.LootFest.Process
 {
     interface ILoadImage
@@ -76,8 +77,8 @@ namespace VikingEngine.LootFest.Process
 
         public static void Init()
         {
-            npcMale = new VoxelObjGridDataAnimHD( Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.NUM_NON));
-            npcFemale = new VoxelObjGridDataAnimHD(Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.NUM_NON));
+            npcMale = new VoxelObjGridDataAnimHD( VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.NUM_NON));
+            npcFemale = new VoxelObjGridDataAnimHD(VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.NUM_NON));
         }
 
         //protected override void SynchedEvent()
@@ -96,7 +97,7 @@ namespace VikingEngine.LootFest.Process
             if (threadType == MultiThreadType.Storage)
             {
                 if (frames == null)
-                    frames = Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(baseImage);
+                    frames = VoxelObjDataLoader.LoadVoxelObjGridHD(baseImage);
                 if (addItems != null)
                 {
                     foreach (AddImageToCustom add in addItems)
@@ -194,7 +195,7 @@ namespace VikingEngine.LootFest.Process
             //}
             //else
             //{
-                originalMesh = Editor.VoxelObjBuilder.BuildModelHD(frames, posAdj);//BuildAnimatedFromVoxelGrid_Old(frames, posAdj);
+                originalMesh = VoxelObjBuilder.BuildModelHD(frames, posAdj);//BuildAnimatedFromVoxelGrid_Old(frames, posAdj);
            // }
             return originalMesh;
         }
@@ -245,7 +246,7 @@ namespace VikingEngine.LootFest.Process
 
         public void ReadData()
         {
-            result = Editor.VoxelObjDataLoader.LoadVoxelObjGrid(obj)[0];
+            result = VoxelObjDataLoader.LoadVoxelObjGrid(obj)[0];
         }
 
         public VoxelObjGridDataHD Generate()
@@ -257,7 +258,7 @@ namespace VikingEngine.LootFest.Process
 
         public VoxelObjGridDataAnimHD GenerateAnimated()
         {
-            var result = new VoxelObjGridDataAnimHD(Editor.VoxelObjDataLoader.LoadVoxelObjGrid(obj));
+            var result = new VoxelObjGridDataAnimHD(VoxelObjDataLoader.LoadVoxelObjGrid(obj));
             //result.ReplaceMaterial(findReplace);
             return result;
         }

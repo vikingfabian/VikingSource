@@ -8,25 +8,28 @@ using VikingEngine.Voxels;
 //xna
 using VikingEngine.DataStream;
 using VikingEngine.HUD;
-using VikingEngine.LootFest.Data;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Map.HDvoxel;
-using VikingEngine.EngineSpace.Voxels;
 
-namespace VikingEngine.LootFest.Editor
+using VikingEngine.LootFest;
+using VikingEngine.LootFest.Players;
+using VikingEngine.LootFest.Map;
+using VikingEngine.LootFest.Music;
+
+namespace VikingEngine.Voxels
 {
 
     class VoxelDesigner : Voxels.AbsVoxelDesigner
     {
         public MergeModelsOption mergeModelsOption = new MergeModelsOption().StandardInit();
-        public Players.Player parent = null;
+        public Player parent = null;
 
         public bool inGame { get { return parent != null; } }
 
         public static readonly IntVector3 StandardDrawlimit = new IntVector3(
-           Data.Block.NumObjBlocksPerTerrainBlock * 2,
-           Data.Block.NumObjBlocksPerTerrainBlock * 3,
-           Data.Block.NumObjBlocksPerTerrainBlock * 2) - 1;
+           Block.NumObjBlocksPerTerrainBlock * 2,
+           Block.NumObjBlocksPerTerrainBlock * 3,
+           Block.NumObjBlocksPerTerrainBlock * 2) - 1;
         public static readonly IntervalIntV3 StandardDrawLimitRange =
             new IntervalIntV3(IntVector3.Zero, StandardDrawlimit);
         
@@ -39,7 +42,7 @@ namespace VikingEngine.LootFest.Editor
         Graphics.Mesh doorOutline;
         bool lockInputFirstFrame = true;
 
-        Display.ColorPicker colorPicker = null;
+        ColorPicker colorPicker = null;
         public bool combineLoading = false;
 
         DesignMenuSystem menusystem;
@@ -72,21 +75,21 @@ namespace VikingEngine.LootFest.Editor
             }
         }
 
-        public static Map.WorldPosition HeroPosToCreationStartPos(IntVector2 heroScreen)
+        public static WorldPosition HeroPosToCreationStartPos(IntVector2 heroScreen)
         {
-            Map.WorldPosition result = Map.WorldPosition.EmptyPos;
+            WorldPosition result = WorldPosition.EmptyPos;
             result.ChunkGrindex = heroScreen;
-            result.ChunkGrindex -= Editor.VoxelDesigner.CreationChunkWidth / PublicConstants.Twice;
+            result.ChunkGrindex -= CreationChunkWidth / PublicConstants.Twice;
 
             result.LocalBlockGrindex = new IntVector3(1, 0, 1);
             return result;
         }
 
         public const int CreationChunkWidth = 5;
-        public const int CreationXZSize = Map.WorldPosition.ChunkWidth * CreationChunkWidth - 2;
+        public const int CreationXZSize = WorldPosition.ChunkWidth * CreationChunkWidth - 2;
 
         public static readonly IntervalIntV3 CreationSizeLimit = new IntervalIntV3(IntVector3.Zero,
-            new IntVector3(CreationXZSize, Map.WorldPosition.ChunkHeight, CreationXZSize) - 1);
+            new IntVector3(CreationXZSize, WorldPosition.ChunkHeight, CreationXZSize) - 1);
 
         void storeSelectionAsTemplate(int category)
         {
@@ -102,8 +105,8 @@ namespace VikingEngine.LootFest.Editor
             }
         }
 
-        public VoxelDesigner(Map.WorldPosition voxelDesignerStartPos,
-            Graphics.AbsCamera camera, float CamTopViewFOV, VectorRect menuArea, Players.Player parent)
+        public VoxelDesigner(WorldPosition voxelDesignerStartPos,
+            Graphics.AbsCamera camera, float CamTopViewFOV, VectorRect menuArea, Player parent)
             : base(CreationSizeLimit,
             new Vector3(voxelDesignerStartPos.PositionV3.X, 0, voxelDesignerStartPos.PositionV3.Z), 
             parent.inputMap.editorInput, parent.inputMap.menuInput, parent.PlayerIndex, true, true)
@@ -136,7 +139,7 @@ namespace VikingEngine.LootFest.Editor
         { //IN EDITOR
            
             basicInit(new VectorRect(
-                Engine.Screen.SafeArea.Position, new Vector2(300, Engine.Screen.SafeArea.Height)));
+                Screen.SafeArea.Position, new Vector2(300, Screen.SafeArea.Height)));
             Ref.draw.Camera.targetZoom = 40;
         }
         override protected bool viewDrawLimitGrid { get { return !inGame; } }
@@ -189,7 +192,7 @@ namespace VikingEngine.LootFest.Editor
 
         public void openColorPicker()
         {
-            colorPicker = new Display.ColorPicker(SelectedMaterial, playerIndex);
+            colorPicker = new ColorPicker(SelectedMaterial, playerIndex);
         }
         
         void selectMaterial(BlockHD m)
@@ -230,7 +233,7 @@ namespace VikingEngine.LootFest.Editor
         {
             if (inGame)
             {
-                Map.WorldPosition pos = worldPos;
+                WorldPosition pos = worldPos;
                 pos.WorldGrindex.Add(drawPoint);
                 pos.SetBlock_IfOpen(material);
             }
@@ -238,7 +241,7 @@ namespace VikingEngine.LootFest.Editor
                 base.SetVoxel(drawPoint, material);
         }
 
-        public override void SetVoxel(Map.WorldPosition wp, ushort material)
+        public override void SetVoxel(WorldPosition wp, ushort material)
         {
             if (inGame)
             {
@@ -252,7 +255,7 @@ namespace VikingEngine.LootFest.Editor
         {
             if (inGame)
             {
-                Map.WorldPosition pos = worldPos;
+                WorldPosition pos = worldPos;
                 pos.WorldGrindex.Add(drawPoint);
                 return pos.GetBlock();
 
@@ -463,7 +466,7 @@ namespace VikingEngine.LootFest.Editor
                 if (Ref.gamestate.previousGameState == null)
                     Ref.update.exitApplication = true;
                 else
-                    Engine.StateHandler.PopGamestate();
+                    StateHandler.PopGamestate();
             }
         }
 
@@ -533,7 +536,7 @@ namespace VikingEngine.LootFest.Editor
         }
 
 
-        void loadTemplateFile(DataStream.FilePath path)
+        void loadTemplateFile(FilePath path)
         {
             templateSent = false;
             storage.beginLoadTemplate(path);
@@ -583,7 +586,7 @@ namespace VikingEngine.LootFest.Editor
             {
                 if (HasSelection)
                 {
-                    Music.SoundManager.PlayFlatSound(LoadedSound.block_place_1);
+                    SoundManager.PlayFlatSound(LoadedSound.block_place_1);
                     storeUndoableAction(false);
                     foreach (VoxelHD v in selectedVoxels.Voxels)
                     {
@@ -646,7 +649,7 @@ namespace VikingEngine.LootFest.Editor
         {
             if (inGame)
             {
-                new DataStream.RemoveFile(path, null, false);
+                new RemoveFile(path, null, false);
             }
             parent.Print("Template Deleted");
             menusystem.listTemplates();
@@ -674,13 +677,13 @@ namespace VikingEngine.LootFest.Editor
         {
             if (inGame)
             {
-                Map.WorldPosition wp = Map.WorldPosition.EmptyPos;
+                WorldPosition wp = WorldPosition.EmptyPos;
                 wp = worldPos.GetNeighborPos(pos);
                 return wp.GetBlock();
             }
             else
             {
-                return voxels.Get(pos);
+                return curretVoxelGrid.Get(pos);
             }
         }
 
@@ -688,7 +691,7 @@ namespace VikingEngine.LootFest.Editor
         {
             if (drawLimits.pointInBounds(designerInterface.drawCoord))
             {
-                Map.WorldPosition wp = Map.WorldPosition.EmptyPos;
+                WorldPosition wp = WorldPosition.EmptyPos;
                 drawCoordMaterial.BlockValue = Get(designerInterface.drawCoord);
 
                 infoText.TextString = "X" + designerInterface.drawCoord.X.ToString() + " Y" + designerInterface.drawCoord.Y.ToString() + " Z" + designerInterface.drawCoord.Z.ToString();
@@ -746,7 +749,7 @@ namespace VikingEngine.LootFest.Editor
         void FlipSelection(Dimensions dir)
         {
             menusystem.closeMenu();
-            voxels.FlipDir(dir, drawLimits, true);
+            curretVoxelGrid.FlipDir(dir, drawLimits, true);
             updateVoxelObj();
 
         }
@@ -765,7 +768,7 @@ namespace VikingEngine.LootFest.Editor
 
             GuiLayout layout = new GuiLayout("Swap Material To", menusystem.menu, GuiLayoutMode.MultipleColumns, null);
             {
-                new GuiTextButton("Empty", null, new GuiAction1Arg<BlockHD>(replaceSelectionMaterialsTo, VikingEngine.LootFest.Map.HDvoxel.BlockHD.Empty),
+                new GuiTextButton("Empty", null, new GuiAction1Arg<BlockHD>(replaceSelectionMaterialsTo, BlockHD.Empty),
                     true, layout);
                 menusystem.colorPalette(layout, replaceSelectionMaterialsTo);
             } layout.End();
@@ -793,7 +796,7 @@ namespace VikingEngine.LootFest.Editor
             }
             else
             {
-                swapMaterials(voxels, swapTo);
+                swapMaterials(curretVoxelGrid, swapTo);
             }
             templateSent = false;
             absMenuSystem.closeMenu();
@@ -801,7 +804,7 @@ namespace VikingEngine.LootFest.Editor
 
         public static void listMaterials(HUD.Gui menu, Action<BlockHD> callback, bool includeEmptySpace)
         {
-            VikingEngine.HUD.GuiLayout layout = new HUD.GuiLayout(SpriteName.NO_IMAGE, "Select Color", menu, HUD.GuiLayoutMode.MultipleColumns);
+            GuiLayout layout = new HUD.GuiLayout(SpriteName.NO_IMAGE, "Select Color", menu, HUD.GuiLayoutMode.MultipleColumns);
             {
                 DesignMenuSystem.BigPalette(layout, callback);
             }
@@ -871,9 +874,9 @@ namespace VikingEngine.LootFest.Editor
         {
             swapMaterialFrom.BlockValue = from;
             designerInterface.selectionArea.Min = IntVector3.Zero;
-            designerInterface.selectionArea.Max = voxels.Size - 1;
+            designerInterface.selectionArea.Max = curretVoxelGrid.Size - 1;
 
-            swapMaterials(voxels, to);
+            swapMaterials(curretVoxelGrid, to);
         }
 
         void swapMaterials(VoxelObjGridDataHD grid, ushort swapTo)
@@ -911,7 +914,7 @@ namespace VikingEngine.LootFest.Editor
             }
         }
 
-        public static Map.WPRange NetworkReadTemplate(System.IO.BinaryReader r, Players.ClientPlayer sender)
+        public static WPRange NetworkReadTemplate(System.IO.BinaryReader r, ClientPlayer sender)
         {
             if (!r.ReadBoolean())
             {
@@ -927,7 +930,7 @@ namespace VikingEngine.LootFest.Editor
 
                 sender.EditorTemplate = new VoxelObjListData(grid.GetVoxelArray());
             }
-            Map.WorldPosition worldPos = Map.WorldPosition.EmptyPos;
+            WorldPosition worldPos = WorldPosition.EmptyPos;
             worldPos.WorldGrindex = IntVector3.FromStream(r);
             
             foreach (Voxel v in sender.EditorTemplate.Voxels)
@@ -935,9 +938,9 @@ namespace VikingEngine.LootFest.Editor
                 worldPos.GetNeighborPos(v.Position).SetBlock(v.Material);
             }
 
-            Map.WorldPosition max = worldPos;
+            WorldPosition max = worldPos;
             max.WorldGrindex += sender.EditorTemplateSize;
-            return new Map.WPRange(worldPos, max);
+            return new WPRange(worldPos, max);
         }
         
 
@@ -954,9 +957,9 @@ namespace VikingEngine.LootFest.Editor
             if (inGame)
             {
                 updateArea.AddRadius(1);
-                Map.WorldPosition minScreen = worldPos;
+                WorldPosition minScreen = worldPos;
                 minScreen.WorldGrindex.Add(updateArea.Min);
-                Map.WorldPosition maxScreen = worldPos;
+                WorldPosition maxScreen = worldPos;
                 maxScreen.WorldGrindex.Add(updateArea.Max);
 
                 UpdateMapArea(minScreen, maxScreen);
@@ -968,17 +971,17 @@ namespace VikingEngine.LootFest.Editor
 
         }
 
-        public static void UpdateMapArea(Map.WorldPosition worldPos, IntVector3 size)
+        public static void UpdateMapArea(WorldPosition worldPos, IntVector3 size)
         {
-            Map.WorldPosition maxScreen = worldPos;
+            WorldPosition maxScreen = worldPos;
             maxScreen.WorldGrindex += size;
 
             UpdateMapArea(worldPos, maxScreen);
         }
 
-        public static void UpdateMapArea(Map.WorldPosition minScreen, Map.WorldPosition maxScreen)
+        public static void UpdateMapArea(WorldPosition minScreen, WorldPosition maxScreen)
         {
-            Map.World.ReloadChunkMesh(minScreen, maxScreen, true);
+            World.ReloadChunkMesh(minScreen, maxScreen, true);
             
         }
 

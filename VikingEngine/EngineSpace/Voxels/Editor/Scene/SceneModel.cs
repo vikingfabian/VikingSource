@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.LootFest;
 
-namespace VikingEngine.LootFest.Editor
+namespace VikingEngine.Voxels
 {
     class SceneModel 
     {
@@ -13,37 +14,37 @@ namespace VikingEngine.LootFest.Editor
         
         public void SetLodadModel(Graphics.VoxelModel model, Vector3 pencilPos)
         {
-            this.Model = model;
+            Model = model;
             if (point == null)
             {
-                this.Model.position = pencilPos;
+                Model.position = pencilPos;
             }
             else
             {
-                this.Model.position = point.Position;
-                this.Model.scale = point.Scale;
-                this.Model.Rotation = point.Rotation;
-                this.Model.Visible = point.Visible;
+                Model.position = point.Position;
+                Model.scale = point.Scale;
+                Model.Rotation = point.Rotation;
+                Model.Visible = point.Visible;
                 point = null;
             }
         }
 
-        public SceneModel(string name, Scene.SceneCollection gamestate, bool fromStorage)
+        public SceneModel(string name, SceneCollection gamestate, bool fromStorage)
         {
-            this.Name = name;
+            Name = name;
             loadModel(gamestate, fromStorage);
         }
 
-        public SceneModel(SceneModel original, Scene.SceneCollection gamestate)
+        public SceneModel(SceneModel original, SceneCollection gamestate)
         {
-            this.Name = original.Name;
+            Name = original.Name;
             point = new Graphics.Point3D(original.Model.position, original.Model.scale, true);
             point.Rotation = original.Model.Rotation;
            
             loadModel(gamestate, true);
         }
 
-        public SceneModel(System.IO.BinaryReader r, Scene.SceneCollection gamestate, byte version, bool fromStorage)
+        public SceneModel(System.IO.BinaryReader r, SceneCollection gamestate, byte version, bool fromStorage)
         {
             ReadStream(r, version);
             loadModel(gamestate, fromStorage);
@@ -59,7 +60,7 @@ namespace VikingEngine.LootFest.Editor
             }
         }
 
-        void loadModel(Scene.SceneCollection gamestate, bool fromStorage)
+        void loadModel(SceneCollection gamestate, bool fromStorage)
         {
             DataStream.FilePath path = DesignerStorage.CustomVoxelObjPath(Name);
             path.Storage = fromStorage;
@@ -105,9 +106,9 @@ namespace VikingEngine.LootFest.Editor
     {
         Graphics.VoxelModel model;
         SceneModel callback;
-        Scene.SceneCollection gamestate;
+        SceneCollection gamestate;
 
-        public SceneModelLoader(SceneModel callback, DataStream.FilePath path, Scene.SceneCollection gamestate)
+        public SceneModelLoader(SceneModel callback, DataStream.FilePath path, SceneCollection gamestate)
             :base(false, path, true)
         {
             runSynchTrigger = true;
@@ -120,7 +121,7 @@ namespace VikingEngine.LootFest.Editor
 
         public override void ReadStream(System.IO.BinaryReader r)
         {
- 	         model = Editor.VoxelObjDataLoader.GetVoxelObjMaster(r, Vector3.Zero);
+ 	         model = VoxelObjDataLoader.GetVoxelObjMaster(r, Vector3.Zero);
         }
 
         public override void runSyncAction()

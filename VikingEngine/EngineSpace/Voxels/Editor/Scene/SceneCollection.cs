@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using VikingEngine.DataStream;
+using VikingEngine.LootFest;
 
-namespace VikingEngine.LootFest.Editor.Scene
+namespace VikingEngine.Voxels
 {
     class SceneCollection : IBinaryIOobj, SceneModelsParent
     {
@@ -93,7 +94,7 @@ namespace VikingEngine.LootFest.Editor.Scene
             else
                 folder = LfLib.SceneFolder;
 
-            DataStream.BeginReadWrite.BinaryIO(save, new DataStream.FilePath(folder, currentFileName, FileEnd, storage, false), this, ioCallBack, true);
+            BeginReadWrite.BinaryIO(save, new FilePath(folder, currentFileName, FileEnd, storage, false), this, ioCallBack, true);
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -106,7 +107,7 @@ namespace VikingEngine.LootFest.Editor.Scene
             //w.Write(camera.TiltX);
             //w.Write(camera.TiltY);
             CameraView view = new CameraView();
-            view.Store(this.parent.SceneCenterPos);//freePencil.Position);
+            view.Store(parent.SceneCenterPos);//freePencil.Position);
             view.IOStream(w, null, 0);
 
             w.Write((ushort)members.Count);
@@ -127,7 +128,7 @@ namespace VikingEngine.LootFest.Editor.Scene
             CameraView view = new CameraView();
             //view.Store(CenterPos);//freePencil.Position);
             view.IOStream(null, r, 0);
-            this.parent.SceneCenterPos = view.Load();
+            parent.SceneCenterPos = view.Load();
 
             int numMembers = r.ReadUInt16();
             for (int i = 0; i < numMembers; i++)

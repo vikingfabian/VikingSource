@@ -7,8 +7,12 @@ using VikingEngine.Graphics;
 
 using VikingEngine.Voxels;
 using VikingEngine.LootFest.Map.HDvoxel;
+using VikingEngine.LootFest;
+using VikingEngine.LootFest.Data;
+using VikingEngine.LootFest.Map;
 
-namespace VikingEngine.LootFest.Editor
+
+namespace VikingEngine.Voxels
 {
     static class VoxelObjBuilder
     {
@@ -195,7 +199,7 @@ namespace VikingEngine.LootFest.Editor
             IntVector3 size = materialGrid.Size;
             IntVector3 limits = materialGrid.Limits;
             IntVector3 gridPos = IntVector3.Zero;
-            UInt16 totalVerticeIx = 0;
+            ushort totalVerticeIx = 0;
             int startVerticeIndex = vertices.Count;
             int tileIx;
 
@@ -228,18 +232,18 @@ namespace VikingEngine.LootFest.Editor
                             //BOTTOM
                             if (notCheckBottom || materialGrid.MaterialGrid[gridPos.X, gridPos.Y + 1, gridPos.Z] == 0)//FACE, set dir and limit
                             {
-                                tileIx = Data.BlockTextures.Materials[material].TopTiles.GetRandomTile(gridPos);
-                                Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                tileIx = BlockTextures.Materials[material].TopTiles.GetRandomTile(gridPos);
+                                Graphics.Sprite file = LfRef.Images.TileIxToImgeFile[tileIx];
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Ypositive);
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner3, data.Normal, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner1, data.Normal, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner4, data.Normal, file.SourcePolygonLowRight));
@@ -250,18 +254,18 @@ namespace VikingEngine.LootFest.Editor
                             //TOP
                             if (notCheckTop || materialGrid.MaterialGrid[gridPos.X, gridPos.Y - 1, gridPos.Z] == byte.MinValue)//FACE, set dir and limit
                             {
-                                tileIx = Data.BlockTextures.Materials[material].SideTiles.GetRandomTile(gridPos);
-                                Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                tileIx = BlockTextures.Materials[material].SideTiles.GetRandomTile(gridPos);
+                                Graphics.Sprite file = LfRef.Images.TileIxToImgeFile[tileIx];
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Ynegative);
                                
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner3, data.Normal, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner1, data.Normal, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner4, data.Normal, file.SourcePolygonLowRight));
@@ -273,18 +277,18 @@ namespace VikingEngine.LootFest.Editor
                             if (notCheckFront || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z + 1] == byte.MinValue)
                             {
                                
-                                tileIx = Data.BlockTextures.Materials[material].SideTiles.GetRandomTile(gridPos);
-                                Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                tileIx = BlockTextures.Materials[material].SideTiles.GetRandomTile(gridPos);
+                                Graphics.Sprite file = LfRef.Images.TileIxToImgeFile[tileIx];
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Zpositive);
                                 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner3, data.Normal, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner1, data.Normal, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner4, data.Normal, file.SourcePolygonLowRight));
@@ -296,18 +300,18 @@ namespace VikingEngine.LootFest.Editor
                             if (notCheckBack || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z - 1] == byte.MinValue)
                             {
                                
-                                tileIx = Data.BlockTextures.Materials[material].SideTiles.GetRandomTile(gridPos);
-                                Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                tileIx = BlockTextures.Materials[material].SideTiles.GetRandomTile(gridPos);
+                                Graphics.Sprite file = LfRef.Images.TileIxToImgeFile[tileIx];
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Znegative);
                                 //static readonly int[] BasicIndexDrawOrder = new int[] { 0, 1, 2, 2, 1, 3 };
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner3, data.Normal, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner1, data.Normal, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner4, data.Normal, file.SourcePolygonLowRight));
@@ -319,18 +323,18 @@ namespace VikingEngine.LootFest.Editor
                             if (notCheckRight || materialGrid.MaterialGrid[gridPos.X - 1, gridPos.Y, gridPos.Z] == byte.MinValue)
                             {
                                
-                                tileIx = Data.BlockTextures.Materials[material].SideTiles.GetRandomTile(gridPos);
-                                Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                tileIx = BlockTextures.Materials[material].SideTiles.GetRandomTile(gridPos);
+                                Graphics.Sprite file = LfRef.Images.TileIxToImgeFile[tileIx];
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Xnegative);
                                 //static readonly int[] BasicIndexDrawOrder = new int[] { 0, 1, 2, 2, 1, 3 };
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner3, data.Normal, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner1, data.Normal, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner4, data.Normal, file.SourcePolygonLowRight));
@@ -342,18 +346,18 @@ namespace VikingEngine.LootFest.Editor
                             if (notCheckLeft || materialGrid.MaterialGrid[gridPos.X + 1, gridPos.Y, gridPos.Z] == byte.MinValue)
                             {
                                
-                                tileIx = Data.BlockTextures.Materials[material].SideTiles.GetRandomTile(gridPos);
-                                Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                tileIx = BlockTextures.Materials[material].SideTiles.GetRandomTile(gridPos);
+                                Graphics.Sprite file = LfRef.Images.TileIxToImgeFile[tileIx];
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Xpositive);
                                 //static readonly int[] BasicIndexDrawOrder = new int[] { 0, 1, 2, 2, 1, 3 };
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner3, data.Normal, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner1, data.Normal, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionNormalTexture(data.Corner4, data.Normal, file.SourcePolygonLowRight));
@@ -381,7 +385,7 @@ namespace VikingEngine.LootFest.Editor
             IntVector3 size = materialGrid.Size;
             IntVector3 limits = materialGrid.Limits;
             IntVector3 gridPos = IntVector3.Zero;
-            UInt16 totalVerticeIx = 0;
+            ushort totalVerticeIx = 0;
             int startVerticeIndex = vertices.Count;
             //int tileIx;
 
@@ -417,18 +421,18 @@ namespace VikingEngine.LootFest.Editor
                             //TOP
                             if (notCheckBottom || materialGrid.MaterialGrid[gridPos.X, gridPos.Y + 1, gridPos.Z] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Ypositive);
 
                                 faceColor = BlockHD.YellowTintCol(material);//material.YellowTintCol();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.Up));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.Up));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.Up));
@@ -439,18 +443,18 @@ namespace VikingEngine.LootFest.Editor
                             //BOTTOM
                             if (notCheckTop || materialGrid.MaterialGrid[gridPos.X, gridPos.Y - 1, gridPos.Z] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Ynegative);
 
                                 faceColor = BlockHD.DarkTintCol(material);// material.DarkTintCol();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.Down));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.Down));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.Down));
@@ -461,18 +465,18 @@ namespace VikingEngine.LootFest.Editor
                             //FRONT
                             if (notCheckFront || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z + 1] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Zpositive);
 
                                 faceColor = BlockHD.ToColor(material);//material.GetColor();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.UnitZ));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.UnitZ));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.UnitZ));
@@ -483,18 +487,18 @@ namespace VikingEngine.LootFest.Editor
                             //BACK
                             if (notCheckBack || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z - 1] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Znegative);
 
                                 faceColor = BlockHD.ToColor(material);//material.GetColor();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.Forward));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.Forward));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.Forward));
@@ -505,18 +509,18 @@ namespace VikingEngine.LootFest.Editor
                             //RIGHT
                             if (notCheckRight || materialGrid.MaterialGrid[gridPos.X - 1, gridPos.Y, gridPos.Z] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Xnegative);
 
                                 faceColor = BlockHD.BlueTintCol(material);//material.BlueTintCol();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.Left));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.Left));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.Left));
@@ -527,18 +531,18 @@ namespace VikingEngine.LootFest.Editor
                             //LEFT
                             if (notCheckLeft || materialGrid.MaterialGrid[gridPos.X + 1, gridPos.Y, gridPos.Z] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Xpositive);
 
                                 faceColor = BlockHD.BlueTintCol(material);//material.BlueTintCol();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.Right));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.Right));
                                 vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.Right));
@@ -566,7 +570,7 @@ namespace VikingEngine.LootFest.Editor
             IntVector3 size = materialGrid.Size;
             IntVector3 limits = materialGrid.Limits;
             IntVector3 gridPos = IntVector3.Zero;
-            UInt16 totalVerticeIx = 0;
+            ushort totalVerticeIx = 0;
             int startVerticeIndex = vertices.Count;
             //int tileIx;
 
@@ -602,18 +606,18 @@ namespace VikingEngine.LootFest.Editor
                             //TOP
                             if (notCheckBottom || materialGrid.MaterialGrid[gridPos.X, gridPos.Y + 1, gridPos.Z] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Ypositive);
 
                                 faceColor = BlockHD.YellowTintCol(material);//material.YellowTintCol();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorTexture(data.Corner3, faceColor, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner1, faceColor, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner4, faceColor, file.SourcePolygonLowRight));
@@ -624,18 +628,18 @@ namespace VikingEngine.LootFest.Editor
                             //BOTTOM
                             if (notCheckTop || materialGrid.MaterialGrid[gridPos.X, gridPos.Y - 1, gridPos.Z] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Ynegative);
 
                                 faceColor = BlockHD.DarkTintCol(material);// material.DarkTintCol();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorTexture(data.Corner3, faceColor, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner1, faceColor, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner4, faceColor, file.SourcePolygonLowRight));
@@ -646,18 +650,18 @@ namespace VikingEngine.LootFest.Editor
                             //FRONT
                             if (notCheckFront || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z + 1] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Zpositive);
 
                                 faceColor = BlockHD.ToColor(material);//material.GetColor();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorTexture(data.Corner3, faceColor, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner1, faceColor, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner4, faceColor, file.SourcePolygonLowRight));
@@ -668,18 +672,18 @@ namespace VikingEngine.LootFest.Editor
                             //BACK
                             if (notCheckBack || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z - 1] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Znegative);
 
                                 faceColor = BlockHD.ToColor(material);//material.GetColor();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorTexture(data.Corner3, faceColor, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner1, faceColor, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner4, faceColor, file.SourcePolygonLowRight));
@@ -690,18 +694,18 @@ namespace VikingEngine.LootFest.Editor
                             //RIGHT
                             if (notCheckRight || materialGrid.MaterialGrid[gridPos.X - 1, gridPos.Y, gridPos.Z] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Xnegative);
 
                                 faceColor = BlockHD.BlueTintCol(material);//material.BlueTintCol();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorTexture(data.Corner3, faceColor, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner1, faceColor, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner4, faceColor, file.SourcePolygonLowRight));
@@ -712,18 +716,18 @@ namespace VikingEngine.LootFest.Editor
                             //LEFT
                             if (notCheckLeft || materialGrid.MaterialGrid[gridPos.X + 1, gridPos.Y, gridPos.Z] == BlockHD.EmptyBlock)
                             {
-                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
                                     CubeFace.Xpositive);
 
                                 faceColor = BlockHD.BlueTintCol(material);//material.BlueTintCol();
 
                                 indexDrawOrder.Add(vertices.Count);
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 2));
-                                indexDrawOrder.Add((vertices.Count + 1));
-                                indexDrawOrder.Add((vertices.Count + 3));
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 2);
+                                indexDrawOrder.Add(vertices.Count + 1);
+                                indexDrawOrder.Add(vertices.Count + 3);
                                 vertices.Add(new VertexPositionColorTexture(data.Corner3, faceColor, file.SourcePolygonLowLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner1, faceColor, file.SourcePolygonTopLeft));
                                 vertices.Add(new VertexPositionColorTexture(data.Corner4, faceColor, file.SourcePolygonLowRight));
@@ -761,53 +765,53 @@ namespace VikingEngine.LootFest.Editor
                         byte material = materialGrid.Get(pos);
                         if (material != 0)
                         {
-                            List<Map.PreparedFace> faces = new List<Map.PreparedFace>();
+                            List<PreparedFace> faces = new List<PreparedFace>();
                             //TOP
                             IntVector3 checkPos = pos;
-                            checkPos.Y += Data.Block.FaceTopDir;
+                            checkPos.Y += Block.FaceTopDir;
                             if (materialGrid.GetSafe(checkPos) == 0)
                             {
-                                faces.Add(new Map.PreparedFace(CubeFace.Ypositive, material, pos));
+                                faces.Add(new PreparedFace(CubeFace.Ypositive, material, pos));
                             }
                             //BOTTOM
                             checkPos = pos;
-                            checkPos.Y -= Data.Block.FaceTopDir;
+                            checkPos.Y -= Block.FaceTopDir;
                             if (materialGrid.GetSafe(checkPos) == 0)
                             {
-                                faces.Add(new Map.PreparedFace(CubeFace.Ynegative, material, pos));
+                                faces.Add(new PreparedFace(CubeFace.Ynegative, material, pos));
                             }
 
                             //FRONT
                             checkPos = pos;
-                            checkPos.Z += Data.Block.FaceFrontDir;
+                            checkPos.Z += Block.FaceFrontDir;
                             if (materialGrid.GetSafe(checkPos) == 0)
                             {
-                                faces.Add(new Map.PreparedFace(CubeFace.Zpositive, material, pos));
+                                faces.Add(new PreparedFace(CubeFace.Zpositive, material, pos));
                             }
                             //BACK
                             checkPos = pos;
-                            checkPos.Z -= Data.Block.FaceFrontDir;
+                            checkPos.Z -= Block.FaceFrontDir;
                             if (materialGrid.GetSafe(checkPos) == 0)
                             {
-                                faces.Add(new Map.PreparedFace(CubeFace.Znegative, material, pos));
+                                faces.Add(new PreparedFace(CubeFace.Znegative, material, pos));
                             }
                             //RIGHT
                             checkPos = pos;
-                            checkPos.X += Data.Block.FaceRightDir;
+                            checkPos.X += Block.FaceRightDir;
                             if (materialGrid.GetSafe(checkPos) == 0)
                             {
-                                faces.Add(new Map.PreparedFace(CubeFace.Xnegative, material, pos));
+                                faces.Add(new PreparedFace(CubeFace.Xnegative, material, pos));
                             }
                             //LEFT
                             checkPos = pos;
-                            checkPos.X -= Data.Block.FaceRightDir;
+                            checkPos.X -= Block.FaceRightDir;
                             if (materialGrid.GetSafe(checkPos) == 0)
                             {
-                                faces.Add(new Map.PreparedFace(CubeFace.Xpositive, material, pos));
+                                faces.Add(new PreparedFace(CubeFace.Xpositive, material, pos));
                             }
                             if (faces.Count > 0)
                             {
-                                foreach (Map.PreparedFace face in faces)
+                                foreach (PreparedFace face in faces)
                                 {
                                     Vector3 setpos = posAdjust;
                                     setpos.X += pos.X;
@@ -836,54 +840,54 @@ namespace VikingEngine.LootFest.Editor
             {//build polygons
                 Voxel v = voxels[i];
 
-                List<Map.PreparedFace> faces = new List<Map.PreparedFace>();
+                List<PreparedFace> faces = new List<PreparedFace>();
                 //TOP
                 IntVector3 checkPos = v.Position;
-                checkPos.Y += Data.Block.FaceTopDir;
+                checkPos.Y += Block.FaceTopDir;
                 if (VoxelLib.emptyBlock(materialGrid, drawLimits, checkPos))
                 {
-                    faces.Add(new Map.PreparedFace(CubeFace.Ypositive, v.Material, v.Position));
+                    faces.Add(new PreparedFace(CubeFace.Ypositive, v.Material, v.Position));
                 }
 
                 //BOTTOM
                 checkPos = v.Position;
-                checkPos.Y -= Data.Block.FaceTopDir;
+                checkPos.Y -= Block.FaceTopDir;
                 if (VoxelLib.emptyBlock(materialGrid, drawLimits, checkPos))
                 {
-                    faces.Add(new Map.PreparedFace(CubeFace.Ynegative, v.Material, v.Position));
+                    faces.Add(new PreparedFace(CubeFace.Ynegative, v.Material, v.Position));
                 }
 
                 //FRONT
                 checkPos = v.Position;
-                checkPos.Z += Data.Block.FaceFrontDir;
+                checkPos.Z += Block.FaceFrontDir;
                 if (VoxelLib.emptyBlock(materialGrid, drawLimits, checkPos))
                 {
-                    faces.Add(new Map.PreparedFace(CubeFace.Zpositive, v.Material, v.Position));
+                    faces.Add(new PreparedFace(CubeFace.Zpositive, v.Material, v.Position));
                 }
                 //BACK
                 checkPos = v.Position;
-                checkPos.Z -= Data.Block.FaceFrontDir;
+                checkPos.Z -= Block.FaceFrontDir;
                 if (VoxelLib.emptyBlock(materialGrid, drawLimits, checkPos))
                 {
-                    faces.Add(new Map.PreparedFace(CubeFace.Znegative, v.Material, v.Position));
+                    faces.Add(new PreparedFace(CubeFace.Znegative, v.Material, v.Position));
                 }
                 //RIGHT
                 checkPos = v.Position;
-                checkPos.X += Data.Block.FaceRightDir;
+                checkPos.X += Block.FaceRightDir;
                 if (VoxelLib.emptyBlock(materialGrid, drawLimits, checkPos))
                 {
-                    faces.Add(new Map.PreparedFace(CubeFace.Xnegative, v.Material, v.Position));
+                    faces.Add(new PreparedFace(CubeFace.Xnegative, v.Material, v.Position));
                 }
                 //LEFT
                 checkPos = v.Position;
-                checkPos.X -= Data.Block.FaceRightDir;
+                checkPos.X -= Block.FaceRightDir;
                 if (VoxelLib.emptyBlock(materialGrid, drawLimits, checkPos))
                 {
-                    faces.Add(new Map.PreparedFace(CubeFace.Xpositive, v.Material, v.Position));
+                    faces.Add(new PreparedFace(CubeFace.Xpositive, v.Material, v.Position));
                 }
                 if (faces.Count > 0)
                 {
-                    foreach (Map.PreparedFace face in faces)
+                    foreach (PreparedFace face in faces)
                     {
                         Vector3 pos = posAdjust;
                         pos.X += v.Position.X;

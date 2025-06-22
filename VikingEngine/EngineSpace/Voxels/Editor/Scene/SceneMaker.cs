@@ -5,15 +5,14 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.HUD;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.Engine;
-using VikingEngine.LootFest.Editor.Scene;
 using VikingEngine.DataStream;
 using VikingEngine.Input;
 
 
-namespace VikingEngine.LootFest.Editor
+namespace VikingEngine.Voxels
 {
 
-    class SceneMaker : Engine.GameState, SceneModelsParent
+    class SceneMaker : GameState, SceneModelsParent
     {
         SceneCollection collection;
 
@@ -49,7 +48,7 @@ namespace VikingEngine.LootFest.Editor
             camera = new Graphics.TopViewCamera(120, new Vector2(MathHelper.PiOver2 - 0.14f, MathHelper.PiOver4));
             Ref.draw.Camera = camera;
             messageHandler = new HUD.MessageHandler(3, SpriteName.WhiteArea, 5000);
-            VectorRect menuArea = Engine.Screen.SafeArea; menuArea.Width = 400;
+            VectorRect menuArea = Screen.SafeArea; menuArea.Width = 400;
            // menu = new Menu(menuArea, VectorRect.ZeroOne, ImageLayers.Lay2, int.Player1);
             
 
@@ -72,7 +71,7 @@ namespace VikingEngine.LootFest.Editor
             //    Graphics.TextureEffectType.Flat, SpriteName.WhiteArea), 0.2f);
             //centerMark.Color = Color.DarkGray;
 
-            infoText = new Graphics.TextG(LoadedFont.Regular, Engine.Screen.SafeArea.LeftBottom, Vector2.One * 0.6f, new Graphics.Align(Dir8.SW),
+            infoText = new Graphics.TextG(LoadedFont.Regular, Screen.SafeArea.LeftBottom, Vector2.One * 0.6f, new Graphics.Align(Dir8.SW),
                 "", Color.Black, ImageLayers.Background4);
 
 
@@ -81,7 +80,7 @@ namespace VikingEngine.LootFest.Editor
             collection.randomFileName();
 
             openPage(MenuPage.Main);
-            DataStream.FilePath.CreateStorageFolder(SceneCollection.Folder);
+            FilePath.CreateStorageFolder(SceneCollection.Folder);
         }
 
 
@@ -94,7 +93,7 @@ namespace VikingEngine.LootFest.Editor
 
         void openPage(int page)
         {
-            this.openPage((MenuPage)page);
+            openPage((MenuPage)page);
         }
         void openPage(MenuPage page)
         {
@@ -376,8 +375,8 @@ namespace VikingEngine.LootFest.Editor
                     List<HUD.ButtonDescriptionData> data = buttonDescription(out modeTitle);
                     if (data != null)
                     {
-                        buttonLayout = new ButtonLayout(data, Engine.Screen.Area,
-                          Engine.Screen.SafeArea, modeTitle, null);
+                        buttonLayout = new ButtonLayout(data, Screen.Area,
+                          Screen.SafeArea, modeTitle, null);
                     }
                 }
                 else

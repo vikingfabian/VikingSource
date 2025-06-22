@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+
 //xna
 using VikingEngine.Input;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.LootFest.Players
 {
@@ -225,7 +228,7 @@ namespace VikingEngine.LootFest.Players
                 CloseMenu();
                 //mode = PlayerMode.Creation;
                 //pick the area the player is standing at and send it to the designer
-                voxelDesignerStartPos = Editor.VoxelDesigner.HeroPosToCreationStartPos(chunkCenterPos);
+                voxelDesignerStartPos = VoxelDesigner.HeroPosToCreationStartPos(chunkCenterPos);
 
                 System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.ClientStartingEditing,
                     Network.PacketReliability.Reliable, PlayerIndex);
@@ -233,7 +236,7 @@ namespace VikingEngine.LootFest.Players
 
 
                 storedCamera = localPData.view.Camera;
-                voxelDesigner = new Editor.VoxelDesigner(
+                voxelDesigner = new VoxelDesigner(
                     voxelDesignerStartPos, localPData.view.Camera, Storage.CamTopViewFOV, menuArea(), this);
                 localPData.view.Camera.TiltX = storedCamera.TiltX;
 

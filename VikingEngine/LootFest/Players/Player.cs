@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
 using VikingEngine.LootFest.GO;
 using VikingEngine.Input;
+using VikingEngine.Voxels;
+
 
 namespace VikingEngine.LootFest.Players 
 {
@@ -30,7 +32,7 @@ namespace VikingEngine.LootFest.Players
         List<GamerName> gamerNames = new List<GamerName>();
         HUD.ButtonLayout buttonLayOut;
 
-        Editor.VoxelDesigner voxelDesigner = null;
+        VoxelDesigner voxelDesigner = null;
         Map.WorldPosition voxelDesignerStartPos;
         float controlLock = 0;
 

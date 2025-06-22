@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Graphics;
+using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map.HDvoxel;
 
-namespace VikingEngine.LootFest.Editor.Display
+namespace VikingEngine.Voxels
 {
     class ColorPicker
     {
         const int Width = 10;
-        Graphics.PixelImage pickSurface;
-        Graphics.PixelImage hueBar;
-        Graphics.Image hueBarSlider, pickSlider;
-        Graphics.Image currentColor, prevColor;
+        PixelImage pickSurface;
+        PixelImage hueBar;
+        Image hueBarSlider, pickSlider;
+        Image currentColor, prevColor;
         Vector3 hls;
 
         VectorRect pickArea, barArea;
@@ -63,13 +65,13 @@ namespace VikingEngine.LootFest.Editor.Display
             okButton = new HUD.IconButton(SpriteName.LfCheckYes, 
                 buttonArea,
                 ImageLayers.Foreground8,
-                LootFest.LfLib.ButtonGuiSettings);
+                LfLib.ButtonGuiSettings);
             
             buttonArea.Y = prevColor.Ypos;
             cancelButton = new HUD.IconButton(SpriteName.LfCheckNo, 
                 buttonArea,
                 ImageLayers.Foreground8,
-                LootFest.LfLib.ButtonGuiSettings);
+                LfLib.ButtonGuiSettings);
 
             var map = Engine.XGuide.GetPlayer(player).inputMap as LootFest.Players.InputMap;
             Input.IButtonMap okMap;

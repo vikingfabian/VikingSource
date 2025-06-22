@@ -10,7 +10,8 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
-using VikingEngine.EngineSpace.Voxels;
+
+
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -18,7 +19,6 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.Editor;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.PJ;
 using VikingEngine.Voxels;
@@ -728,7 +728,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         override protected ushort Get(IntVector3 pos)
         {
             
-                return voxels.Get(pos);
+                return curretVoxelGrid.Get(pos);
             
         }
 
@@ -809,7 +809,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         void FlipSelection(Dimensions dir)
         {
             menusystem.closeMenu();
-            voxels.FlipDir(dir, drawLimits, true);
+            curretVoxelGrid.FlipDir(dir, drawLimits, true);
             updateVoxelObj();
 
         }
@@ -863,7 +863,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
             else
             {
-                swapMaterials(voxels, swapTo);
+                swapMaterials(curretVoxelGrid, swapTo);
             }
             templateSent = false;
             absMenuSystem.closeMenu();
@@ -941,9 +941,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             swapMaterialFrom.BlockValue = from;
             designerInterface.selectionArea.Min = IntVector3.Zero;
-            designerInterface.selectionArea.Max = voxels.Size - 1;
+            designerInterface.selectionArea.Max = curretVoxelGrid.Size - 1;
 
-            swapMaterials(voxels, to);
+            swapMaterials(curretVoxelGrid, to);
         }
 
         void swapMaterials(VoxelObjGridDataHD grid, ushort swapTo)

@@ -1,9 +1,13 @@
 ﻿UPDATE
 -Change Log-
-* Voxel editor: added profile colors
-* Voxel editor: bucket fill bug fix
 * Optimized: reduced objects in profile color
 * Optimized: voxel model loading
+
+Voxel editor: 
+* added profile colors
+* bucket fill bug fix
+
+
 
 
 

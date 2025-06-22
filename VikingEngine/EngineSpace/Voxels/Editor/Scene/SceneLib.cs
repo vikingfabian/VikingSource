@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace VikingEngine.LootFest.Editor.Scene
+namespace VikingEngine.Voxels
 {
     interface SceneModelsParent
     {
@@ -23,15 +23,15 @@ namespace VikingEngine.LootFest.Editor.Scene
 
         public void Store(Vector3 selectionPos)
         {
-            zoom = VikingEngine.Ref.draw.Camera.targetZoom;
+            zoom = Ref.draw.Camera.targetZoom;
             position = selectionPos;// VikingEngine.Ref.draw.Camera.Target;
-            tilt = VikingEngine.Ref.draw.Camera.Tilt;
+            tilt = Ref.draw.Camera.Tilt;
         }
         public Vector3 Load()
         {
-            VikingEngine.Ref.draw.Camera.targetZoom = zoom;
+            Ref.draw.Camera.targetZoom = zoom;
             // VikingEngine.Ref.draw.Camera.Target = position;
-            VikingEngine.Ref.draw.Camera.Tilt = tilt;
+            Ref.draw.Camera.Tilt = tilt;
             return position;
         }
 

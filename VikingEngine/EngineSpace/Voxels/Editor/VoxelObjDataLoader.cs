@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest;
 using VikingEngine.ToGG.MoonFall.GO;
 using VikingEngine.Voxels;
 
-namespace VikingEngine.LootFest.Editor
+namespace VikingEngine.Voxels
 {
     static class VoxelObjDataLoader
     {
@@ -154,7 +155,7 @@ namespace VikingEngine.LootFest.Editor
             {
                 throw new Exception();
             }
-            return new VoxelObjListDataHD(Editor.VoxelObjDataLoader.LoadVoxelObjGrid(name)[0].GetVoxelArray());
+            return new VoxelObjListDataHD(LoadVoxelObjGrid(name)[0].GetVoxelArray());
 
         }
         //public static VoxelObjListDataAnim VoxelObjListDataAnimated(VoxelObjName name)
@@ -314,7 +315,7 @@ namespace VikingEngine.LootFest.Editor
         public static List<VoxelObjGridData> LoadVoxelObjGrid_FromStorage(string name)
         {
             VoxelObjGridDataAnim result = new VoxelObjGridDataAnim();
-            result.Save(false, Editor.DesignerStorage.CustomVoxelObjPath(name));
+            result.Save(false, DesignerStorage.CustomVoxelObjPath(name));
 
             return result.Frames;
         }

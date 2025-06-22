@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Input;
 //xna
 using VikingEngine.EngineSpace.Graphics.DeferredRendering;
 using VikingEngine.SteamWrapping;
+using VikingEngine.Voxels;
+
 
 namespace VikingEngine.LootFest
 {
@@ -1078,7 +1080,7 @@ namespace VikingEngine.LootFest
 
                 case Network.PacketType.VoxelEdit:
                     //Voxels.EditorDrawTools.NetReadVoxelEdit(packet);
-                    new Editor.EditorPacket(packet);
+                    new EditorPacket(packet);
                     break;
                 //case Network.PacketType.TextBlocks:
                 //    clientPlayer = GetClientPlayer(sender);
@@ -1221,10 +1223,10 @@ namespace VikingEngine.LootFest
                         if (Ref.netSession.IsHost)
                         {
 
-                            Map.WorldPosition minWp = Editor.VoxelDesigner.HeroPosToCreationStartPos(clientPlayer.BuildingPos);
+                            Map.WorldPosition minWp = VoxelDesigner.HeroPosToCreationStartPos(clientPlayer.BuildingPos);
                             //min//wp.UpdateWorldGridPos();
                             Map.WorldPosition maxWp = minWp;
-                            maxWp.WorldGrindex += Editor.VoxelDesigner.CreationSizeLimit.Max;
+                            maxWp.WorldGrindex += VoxelDesigner.CreationSizeLimit.Max;
 
                             //min//wp.UpdateChunkPos(); max//wp.UpdateChunkPos();
 

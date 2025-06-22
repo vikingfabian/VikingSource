@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using VikingEngine.Graphics;
 using VikingEngine.Voxels;
 
@@ -35,7 +36,7 @@ namespace VikingEngine.HUD
         {
             VoxelObjGridDataAnimHD animationFrames = new VoxelObjGridDataAnimHD();
             DataStream.BeginReadWrite.BinaryIO(false, voxelModelPath, null, animationFrames.ReadBinaryStream, null, false);
-            voxelObj = LootFest.Editor.VoxelObjBuilder.BuildModelHD(animationFrames.Frames, Vector3.Zero);
+            voxelObj = VoxelObjBuilder.BuildModelHD(animationFrames.Frames, Vector3.Zero);
             modelGridSz = animationFrames.Frames[0].Size.Vec;
             new Timer.Action0ArgTrigger(renderModel);
         }

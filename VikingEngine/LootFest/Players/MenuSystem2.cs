@@ -20,6 +20,8 @@ using VikingEngine.EngineSpace.Maths;
 //using SharpDX.DirectInput;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Network;
+using VikingEngine.Voxels;
+
 
 namespace VikingEngine.LootFest
 {
@@ -1245,7 +1247,7 @@ namespace VikingEngine.LootFest
         }
         void startSceneMaker()
         {
-            new Editor.SceneMaker(player.PlayerIndex);
+            new Voxels.SceneMaker(player.PlayerIndex);
         }
 
         //void HandMadeTerrainPage()
@@ -1939,7 +1941,7 @@ namespace VikingEngine.LootFest
 
         void listMaterials(Action<BlockHD> link)
         {
-            Editor.VoxelDesigner.listMaterials(menu, link, false);//mFile, (int)d, false, Storage, (int)Link.ShowHideMaterialNames, 0);
+            VoxelDesigner.listMaterials(menu, link, false);//mFile, (int)d, false, Storage, (int)Link.ShowHideMaterialNames, 0);
         }
 
         void refreshShield()

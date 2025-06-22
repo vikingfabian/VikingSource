@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 
-namespace VikingEngine.LootFest.Data
+namespace VikingEngine.Voxels
 {
     static class Block
     {

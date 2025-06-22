@@ -7,6 +7,9 @@ using VikingEngine.Graphics;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Input;
+using VikingEngine.Voxels;
+
+
 ////xna
 
 
@@ -116,7 +119,7 @@ namespace VikingEngine.LootFest.GameState
 
             LfRef.Images.Init();//mt
             Data.BlockTextures.InitMaterials();
-            Data.Block.Init();//mt
+            Block.Init();//mt
             VikingEngine.LootFest.Map.HDvoxel.BlockPatternMaterialsLib.Init();
             LfLib.Init();
             LfRef.Images.LoadStandardVobjects();
@@ -146,7 +149,7 @@ namespace VikingEngine.LootFest.GameState
         void createFolderStructure()
         {
             DataStream.FilePath.CreateStorageFolder(LfLib.OverrideModelsFolder);
-            DataStream.FilePath.CreateStorageFolder(Editor.DesignerStorage.UserVoxelObjFolder);
+            DataStream.FilePath.CreateStorageFolder(DesignerStorage.UserVoxelObjFolder);
 
             for (int i = 0; i < VikingEngine.LootFest.Players.PlayerStorageGroup.FilesCount; ++i)
             {
@@ -154,7 +157,7 @@ namespace VikingEngine.LootFest.GameState
             }
             DataStream.FilePath.CreateStorageFolder(VikingEngine.LootFest.Players.PlayerStorageGroup.FileFolderName(0, false));
 
-            LootFest.Editor.DesignerStorage.InitFolderStructure();
+            DesignerStorage.InitFolderStructure();
         }
 
         void loadingThreadException(Exception e)

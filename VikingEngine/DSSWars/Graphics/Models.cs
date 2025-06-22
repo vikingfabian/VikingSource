@@ -12,7 +12,6 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.Editor;
 using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
@@ -206,7 +205,7 @@ namespace VikingEngine.DSSWars
 
                 Vector3 centerAdjust = new Vector3(0, yAdjust, 0);
 
-                List<VoxelObjGridDataHD> loadedFrames = LootFest.Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+                List<VoxelObjGridDataHD> loadedFrames = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
 
                 if (centerY)
                     centerAdjust += loadedFrames[0].CenterAdj();

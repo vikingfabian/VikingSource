@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.LootFest;
 
-namespace VikingEngine.LootFest.Editor
+namespace VikingEngine.Voxels
 {
     class EditorPacket
     {
         Network.ReceivedPacket packet;
         IntervalIntV3 volume;
-        public Map.WorldPosition minWp, maxWp;
+        public LootFest.Map.WorldPosition minWp, maxWp;
 
         public EditorPacket(Network.ReceivedPacket packet)
         {

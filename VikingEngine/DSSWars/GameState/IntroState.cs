@@ -16,6 +16,7 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
 {
@@ -81,7 +82,7 @@ namespace VikingEngine.DSSWars
                     LoadedTexture.particle3,
                     });
             new SpriteSheet();
-            LootFest.Data.Block.Init();
+            Block.Init();
             FlagAndColor.Init();
             ItemPropertyColl.Init();
             WorkLib.Init();
@@ -108,7 +109,7 @@ namespace VikingEngine.DSSWars
 
             //Display.AbsBubbleMessage.Init();
 
-            DataStream.FilePath.CreateStorageFolder(LootFest.Editor.DesignerStorage.UserVoxelObjFolder);
+            DataStream.FilePath.CreateStorageFolder(DesignerStorage.UserVoxelObjFolder);
             UserGeneratedContent.UGClib.GameInit();
             
 

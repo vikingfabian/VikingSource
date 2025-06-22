@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
+
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
-using VikingEngine.LootFest.Editor;
 using VikingEngine.LootFest.Map;
 using VikingEngine.Voxels;
 

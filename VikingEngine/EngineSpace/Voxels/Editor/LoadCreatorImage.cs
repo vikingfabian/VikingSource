@@ -5,7 +5,7 @@ using System.Text;
 using VikingEngine.DataStream;
 using VikingEngine.Voxels;
 
-namespace VikingEngine.LootFest.Editor
+namespace VikingEngine.Voxels
 {
     delegate void CreatorImageLoaded(VoxelObjGridDataAnimHD animationFrames);
 
@@ -18,7 +18,7 @@ namespace VikingEngine.LootFest.Editor
         {
             this.callBack = callBack;
             animationFrames = new VoxelObjGridDataAnimHD();
-            new DataStream.ReadBinaryIO(path, animationFrames.ReadBinaryStream,  this);
+            new ReadBinaryIO(path, animationFrames.ReadBinaryStream,  this);
         }
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)

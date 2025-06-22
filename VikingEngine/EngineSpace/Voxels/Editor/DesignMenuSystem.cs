@@ -8,8 +8,10 @@ using VikingEngine.Voxels;
 using VikingEngine.Input;
 using VikingEngine.DataStream;
 using VikingEngine.LootFest.Map.HDvoxel;
+using VikingEngine.LootFest;
+using VikingEngine.LootFest.Process;
 
-namespace VikingEngine.LootFest.Editor
+namespace VikingEngine.Voxels
 {
     class DesignMenuSystem : Voxels.AbsDesignMenuSystem
     {
@@ -36,10 +38,10 @@ namespace VikingEngine.LootFest.Editor
                 }
                 else
                 {
-                    menu = new Gui(LootFest.MenuSystem2.GuiStyle(), Engine.Screen.SafeArea, 0, ImageLayers.Foreground5,
-                        Input.InputSource.DefaultPC);
+                    menu = new Gui(MenuSystem2.GuiStyle(), Engine.Screen.SafeArea, 0, ImageLayers.Foreground5,
+                        InputSource.DefaultPC);
                     menu.inputmap = designer.menuInput;
-                    Input.Mouse.Visible = true;
+                    Mouse.Visible = true;
                 }
 
 
@@ -310,7 +312,7 @@ namespace VikingEngine.LootFest.Editor
 
         void beginListUserModelsPage()
         {
-            new Process.AsynchMenuPage<List<string>, int>(asynchListUserModelsPage, int.MinValue, endListUserModelsPage, menu);
+            new AsynchMenuPage<List<string>, int>(asynchListUserModelsPage, int.MinValue, endListUserModelsPage, menu);
         }
 
         List<string> asynchListUserModelsPage(int none)
@@ -535,7 +537,7 @@ namespace VikingEngine.LootFest.Editor
 
         void listRetailModels(VoxelModelName start, VoxelModelName end)
         {
-            List<ComparableKeys<string, VoxelModelName>> models = new List<ComparableKeys<string, VoxelModelName>>((int)(end - start));
+            List<ComparableKeys<string, VoxelModelName>> models = new List<ComparableKeys<string, VoxelModelName>>(end - start);
             for (VoxelModelName v = start; v < end; ++v)
             {
                 if (v != VoxelModelName.CATEGORY_CHARACTER_0 &&
@@ -579,7 +581,7 @@ namespace VikingEngine.LootFest.Editor
 
         void BeginListTemplatesInCategory(int cathegory)
         {
-            new Process.AsynchMenuPage<List<string>, int>(ListTemplatesInCategory_Asynch, cathegory, EndListTemplatesInCathegory, menu);
+            new AsynchMenuPage<List<string>, int>(ListTemplatesInCategory_Asynch, cathegory, EndListTemplatesInCathegory, menu);
         }
 
         List<string> ListTemplatesInCategory_Asynch(int category)//int cathegory, int menuId)
@@ -597,7 +599,7 @@ namespace VikingEngine.LootFest.Editor
                 {
                     path.FileName = files[i];
                     new GuiVoxelModelIcon(SpriteName.IconSandGlass, path, "Load template",
-                        new GuiAction1Arg<VikingEngine.DataStream.FilePath>(LinkSelectTemplateFile_dialogue, path), layout);
+                        new GuiAction1Arg<FilePath>(LinkSelectTemplateFile_dialogue, path), layout);
                 }
 
             } layout.End();
@@ -683,7 +685,7 @@ namespace VikingEngine.LootFest.Editor
         {
             GuiLayout layout = new GuiLayout("Color Options", menu, GuiLayoutMode.MultipleColumns, null);
             {
-                Color current = VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(designer.SelectedMaterial.color);
+                Color current = BlockHD.FilterColor(designer.SelectedMaterial.color);
                 Color brighter = ColorExt.ChangeColor(current, BlockHD.ColorStep, BlockHD.ColorStep, BlockHD.ColorStep);
                 Color darker = ColorExt.ChangeColor(current, -BlockHD.ColorStep, -BlockHD.ColorStep, -BlockHD.ColorStep);
                 Color brighter2 = ColorExt.ChangeColor(current, BlockHD.ColorStep * 2, BlockHD.ColorStep * 2, BlockHD.ColorStep * 2);
@@ -757,7 +759,7 @@ namespace VikingEngine.LootFest.Editor
 
             foreach (var m in MainColors)
             {
-                ColorButton(VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(m), layout, link);
+                ColorButton(BlockHD.FilterColor(m), layout, link);
             }
 
             new GuiSectionSeparator(layout);
@@ -797,7 +799,7 @@ namespace VikingEngine.LootFest.Editor
                     for (int light = LightnessCount - 1; light >= 1; --light)
                     {
                         Color col = lib.HSL2RGB((double)hue / HueCount, saturate, (double)light / LightnessCount);
-                        col = VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(col);
+                        col = BlockHD.FilterColor(col);
                         ColorButton(col, layout, link);
                     }
                 }
@@ -810,12 +812,12 @@ namespace VikingEngine.LootFest.Editor
             {
                 new GuiTitle("DSS soldier color mapping", layout);
                 //SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2;
-                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.SkinCol, "skin", layout, link);
-                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.HairCol, "hair", layout, link);
-                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.MainCol, "main 1", layout, link);
-                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.AltMainCol, "main 2", layout, link);
-                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.DetailCol1, "detail 1", layout, link);
-                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.DetailCol2, "detail 2", layout, link);
+                appearanceMaterials(DSSWars.FlagAndColor.SkinCol, "skin", layout, link);
+                appearanceMaterials(DSSWars.FlagAndColor.HairCol, "hair", layout, link);
+                appearanceMaterials(DSSWars.FlagAndColor.MainCol, "main 1", layout, link);
+                appearanceMaterials(DSSWars.FlagAndColor.AltMainCol, "main 2", layout, link);
+                appearanceMaterials(DSSWars.FlagAndColor.DetailCol1, "detail 1", layout, link);
+                appearanceMaterials(DSSWars.FlagAndColor.DetailCol2, "detail 2", layout, link);
 
             }
         }
@@ -837,7 +839,7 @@ namespace VikingEngine.LootFest.Editor
                     for (int light = LightnessCount - 1; light >= 1; --light)
                     {
                         Color col = lib.HSL2RGB((double)hue / HueCount, saturate, (double)light / LightnessCount);
-                        col = VikingEngine.LootFest.Map.HDvoxel.BlockHD.FilterColor(col);
+                        col = BlockHD.FilterColor(col);
                         ColorButton(col, layout, link);
                     }
                 }

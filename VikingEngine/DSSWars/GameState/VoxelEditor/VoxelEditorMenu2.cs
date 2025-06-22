@@ -21,7 +21,6 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
-using VikingEngine.LootFest.Editor;
 using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.LootFest.Players;

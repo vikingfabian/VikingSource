@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
+
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.ToggEngine.Map;
+using VikingEngine.Voxels;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
@@ -124,7 +126,7 @@ namespace VikingEngine.Graphics
         {
 
             Graphics.Sprite file = DataLib.SpriteCollection.Get(sprite);// LootFest.LootfestLib.Images.TileIxToImgeFile[tileIx];
-            Face data = LootFest.Data.Block.GetVoxelObjFace(blockPos, facetype);
+            Face data = Block.GetVoxelObjFace(blockPos, facetype);
 
             V0sw = new VertexPositionColorTexture(data.Corner3, color, file.SourcePolygonLowLeft);
             V1nw = new VertexPositionColorTexture(data.Corner1, color, file.SourcePolygonTopLeft);
@@ -152,7 +154,7 @@ namespace VikingEngine.Graphics
 
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
 
-            Face data = LootFest.Data.Block.GetTerrainFace(blockPos, (CubeFace)facetype);
+            Face data = Block.GetTerrainFace(blockPos, (CubeFace)facetype);
 
             //VerticeData = new VertexPositionColorTexture[NumCorners]
             //{ 
@@ -170,7 +172,7 @@ namespace VikingEngine.Graphics
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
 
             //opta bort förflyttning av blockpos
-            Face data = LootFest.Data.Block.GetTerrainFace(blockPos, (CubeFace)facetype);
+            Face data = Block.GetTerrainFace(blockPos, (CubeFace)facetype);
             //VerticeData = new VertexPositionColorTexture[NumCorners]
             //{ 
             V0sw= new VertexPositionColorTexture(data.Corner3, 
@@ -213,7 +215,7 @@ namespace VikingEngine.Graphics
         public void ComplementPositionAndTileIx(IntVector3 blockPos, int tileIx, int facetype)
         {
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
-            Face data = LootFest.Data.Block.GetTerrainFace(blockPos, (CubeFace)facetype);
+            Face data = Block.GetTerrainFace(blockPos, (CubeFace)facetype);
 
              V0sw.TextureCoordinate = file.SourcePolygonLowLeft;
             V1nw.TextureCoordinate = file.SourcePolygonTopLeft;

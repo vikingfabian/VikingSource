@@ -7,8 +7,9 @@ using VikingEngine.DataStream;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Engine;
 using VikingEngine.DSSWars;
+using VikingEngine.LootFest;
 
-namespace VikingEngine.LootFest.Editor
+namespace VikingEngine.Voxels
 {
     class DesignerStorage : IStreamIOCallback
     {
@@ -28,7 +29,7 @@ namespace VikingEngine.LootFest.Editor
                 }
                 else
                 {
-                    DataStream.FilePath.CreateStorageFolder(Editor.DesignerStorage.TemplateFolder(i));
+                    FilePath.CreateStorageFolder(TemplateFolder(i));
                 }
             }
         }
@@ -37,14 +38,14 @@ namespace VikingEngine.LootFest.Editor
         {
             return "VX" + Ref.rnd.Int(9999).ToString();
         }
-        public static DataStream.FilePath CustomVoxelObjPath(string name)
+        public static FilePath CustomVoxelObjPath(string name)
         {
-            return new DataStream.FilePath(UserVoxelObjFolder, name, Voxels.VoxelLib.VoxelObjByteArrayEnding);
+            return new FilePath(UserVoxelObjFolder, name, Voxels.VoxelLib.VoxelObjByteArrayEnding);
         }
 
-        public static DataStream.FilePath InGameVoxelObjPath(string name)
+        public static FilePath InGameVoxelObjPath(string name)
         {
-            return new DataStream.FilePath(LfLib.ModelsCategoryWars, name, Voxels.VoxelLib.VoxelObjByteArrayEnding, false);
+            return new FilePath(LfLib.ModelsCategoryWars, name, Voxels.VoxelLib.VoxelObjByteArrayEnding, false);
         }
 
         public string saveFileName = randomName();
@@ -88,14 +89,14 @@ namespace VikingEngine.LootFest.Editor
 
         public FilePath SavePath()
         {
-            return new DataStream.FilePath(UserVoxelObjFolder, saveFileName, Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false);
+            return new FilePath(UserVoxelObjFolder, saveFileName, Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false);
         }
 
         public void save()
         {
             //designer.print("Saving...");
 
-            new DataStream.WriteBinaryIO(SavePath(),
+            new WriteBinaryIO(SavePath(),
                 designer.animationFrames.WriteBinaryStream, this);
         }
 
@@ -104,7 +105,7 @@ namespace VikingEngine.LootFest.Editor
             if (save && completed)
             {
                 RichBoxContent content = new RichBoxContent();
-                content.h2(LoadContent.CheckCharsSafety(saveFileName, LoadedFont.Regular), DSSWars.HudLib.TitleColor_Name);
+                content.h2(LoadContent.CheckCharsSafety(saveFileName, LoadedFont.Regular), HudLib.TitleColor_Name);
 
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsHudIconSave));
@@ -118,7 +119,7 @@ namespace VikingEngine.LootFest.Editor
         int backupId = 0;
         public void saveBackUp()
         {
-            new DataStream.WriteBinaryIO(new DataStream.FilePath(UserVoxelObjFolder, "backup_save" + backupId.ToString(), 
+            new WriteBinaryIO(new FilePath(UserVoxelObjFolder, "backup_save" + backupId.ToString(), 
                 Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false),
                 designer.animationFrames.WriteBinaryStream, null);
 
@@ -150,13 +151,13 @@ namespace VikingEngine.LootFest.Editor
 
             //DataStream.FilePath.CreateStorageFolder(path.DirectoryPath);
 
-            DataStream.BeginReadWrite.BinaryIO(true, path, writeSelection, null, null);
+            BeginReadWrite.BinaryIO(true, path, writeSelection, null, null);
             //new Timer.Asynch2ArgTrigger<VoxelObjGridDataHD, int>(storeSelectionAsTemplateAsynch, designer.SelectionToGrid(), category, true);
         }
 
         public void beginLoadTemplate(FilePath path)
         {
-            DataStream.BeginReadWrite.BinaryIO(false, path, null, readSelection, null);
+            BeginReadWrite.BinaryIO(false, path, null, readSelection, null);
         }
         
 
