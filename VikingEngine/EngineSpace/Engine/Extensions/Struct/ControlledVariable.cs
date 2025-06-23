@@ -515,7 +515,7 @@ namespace VikingEngine
         {
             min = minValue;
             max = maxValue;
-            value = 0;
+            value = Bound.SetRollover(startVal, min, max);
         }
         public int Next(int dir)
         {

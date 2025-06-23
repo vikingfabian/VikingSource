@@ -64,16 +64,23 @@ namespace VikingEngine.Voxels
     class UndoAction
     {
         public int frame;
+        public int layer;
         VoxelObjGridDataAnimHD allFrames = null;
         VoxelObjGridDataHD oneFrame = null;
+        ListWithSelection<VoxLayer> layers = null;
 
         public UndoAction()
         { }
-        public UndoAction(AbsVoxelDesigner designer, int frame)
+        public UndoAction(AbsVoxelDesigner designer, int frame, int layer)
         {
             this.frame = frame;
+            this.layer = layer;
 
-            if (frame < 0)
+            if (layer < 0)
+            {
+                allFrames = designer.animationFrames.Clone();
+            }
+            else if (frame < 0)
             {
                 allFrames = designer.animationFrames.Clone();
             }

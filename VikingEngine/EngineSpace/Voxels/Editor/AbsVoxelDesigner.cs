@@ -229,21 +229,22 @@ namespace VikingEngine.Voxels
         }
         public void AddFrame(bool copy)
         {
-            VoxelObjGridDataHD newFrame;
-            if (copy)
-            {
-                newFrame = animationFrames.Frames[currentFrame.Value].Clone();
-            }
-            else
-            {
-                newFrame = new VoxelObjGridDataHD(animationFrames.Size);
-            }
-            int frame = currentFrame.Value + 1;
-            animationFrames.Frames.Insert(frame, newFrame);
+            //VoxelObjGridDataHD newFrame;
+            //if (copy)
+            //{
+            //    newFrame = animationFrames.Frames[currentFrame.Value].Clone();
+            //}
+            //else
+            //{
+            //    newFrame = new VoxelObjGridDataHD(animationFrames.Size);
+            //}
+            //int frame = currentFrame.Value + 1;
+            //animationFrames.Frames.Insert(frame, newFrame);
 
-            updateFrameInfo();
+            //updateFrameInfo();
             
-            currentFrame.Value = frame;
+            //currentFrame.Value = frame;
+            voxelProject.AddFrame(copy);
             updateFrameInfo();
             updateVoxelObj();
             //print("Frame Added");
@@ -251,21 +252,21 @@ namespace VikingEngine.Voxels
 
         public void nextFrame(bool forward)
         {
-            if (lockFirstFrames > currentFrame.Max)
+            if (voxelProject.lockFirstFrames > voxelProject.currentFrame.Max)
             {
-                lockFirstFrames = 0;
+                voxelProject.lockFirstFrames = 0;
             }
 
             do
             {
-                currentFrame.Next(lib.BoolToLeftRight(forward));
-            } while (currentFrame.Value < lockFirstFrames);
+                voxelProject.currentFrame.Next(lib.BoolToLeftRight(forward));
+            } while (voxelProject.currentFrame.Value < voxelProject.lockFirstFrames);
             updateFrameInfo();
             updateVoxelObj();
         }
         public void setFrame(int frame)
         {
-            currentFrame.Value = frame;
+            voxelProject.currentFrame.Value = frame;
 
             updateFrameInfo();
             updateVoxelObj();
@@ -278,37 +279,41 @@ namespace VikingEngine.Voxels
         }
         public void updateFrameInfo()
         {
-            if (animationFrames != null)
-            {
-                if (currentFrame.Max != animationFrames.Frames.Count - 1)
-                {
-                    currentFrame = new CirkleCounter(currentFrame.Value, 0, animationFrames.Frames.Count - 1);
-                    currentFrame.Next(1);
-                    currentFrame.Next(-1);
-                }
+            //if (animationFrames != null)
+            //{
+            //if (currentFrame.Max != animationFrames.Frames.Count - 1)
+            //{
+            //    currentFrame = new CirkleCounter(currentFrame.Value, 0, animationFrames.Frames.Count - 1);
+            //    currentFrame.Next(1);
+            //    currentFrame.Next(-1);
+            //}
+            voxelProject.refreshFrameCount();
 
-                frameInfo.Visible = HaveAnimation;
-                frameInfo.TextString = "Frame:" + (currentFrame.Value + 1).ToString() + "/" + (currentFrame.Max + 1).ToString();
-            }
+            frameInfo.Visible = voxelProject.HaveAnimation;
+            frameInfo.TextString = "Frame:" + (voxelProject.currentFrame.Value + 1).ToString() + "/" + (voxelProject.currentFrame.Max + 1).ToString();
+            //}
         }
-        protected void ExpandDrawLimits(Dimensions dir, int add)
+        protected void ExpandDrawLimits(Dimensions dimention, int add)
         {
             storeUndoableAction(true);
 
-            switch (dir)
-            {
-                case Dimensions.X:
-                    drawLimits.Max.X += add;
-                    break;
-                case Dimensions.Y:
-                    drawLimits.Max.Y += add;
-                    break;
-                case Dimensions.Z:
-                    drawLimits.Max.Z += add;
-                    break;
+            var drawLimits = voxelProject.drawLimits;
+            drawLimits.Max.AddDimension(dimention, add);
+            //switch (dimention)
+            //{
+            //    case Dimensions.X:
+            //        drawLimits.Max.X += add;
+            //        break;
+            //    case Dimensions.Y:
+            //        drawLimits.Max.Y += add;
+            //        break;
+            //    case Dimensions.Z:
+            //        drawLimits.Max.Z += add;
+            //        break;
 
-            }
-            UpdateDrawLimits();
+            //}
+            //UpdateDrawLimits();
+            setDrawLimit(drawLimits);
         }
 
         abstract protected bool viewDrawLimitGrid { get; } 
@@ -319,9 +324,8 @@ namespace VikingEngine.Voxels
         /// <returns>got a new size</returns>
         protected bool setDrawLimit(IntervalIntV3 newLimit)
         {
-            if (newLimit != drawLimits)
+            if (voxelProject.setDrawLimit(newLimit))
             {
-                drawLimits = newLimit;
                 UpdateDrawLimits();
                 updateVoxelObj();
                 return true;
@@ -331,42 +335,40 @@ namespace VikingEngine.Voxels
 
         public void setUndoDrawLimit(IntVector3 size)
         {
-            if (size != drawLimits.Size)
+            if (voxelProject.setSize(size))//size != voxelProject.drawLimits.Size)
             {
-                drawLimits.Size = size;
-                animationFrames = null;
                 UpdateDrawLimits();
             }
         }
 
-        /// <summary>
-        /// Make sure the limits are the same size as the vox model
-        /// </summary>
-        /// <returns>got a new size</returns>
-        protected bool setDrawLimitFromModel()
-        {
-            return setDrawLimit(new IntervalIntV3(drawLimits.Min, drawLimits.Min + animationFrames.Frames[0].Limits));
-        }
+        ///// <summary>
+        ///// Make sure the limits are the same size as the vox model
+        ///// </summary>
+        ///// <returns>got a new size</returns>
+        //protected bool setDrawLimitFromModel()
+        //{
+        //    return setDrawLimit(new IntervalIntV3(drawLimits.Min, drawLimits.Min + animationFrames.Frames[0].Limits));
+        //}
 
         protected void UpdateDrawLimits()
         {
             if (bUpdateDrawLimits)
             {
-                designerInterface.SetDrawLimits(drawLimits, resetWhiteLines);
+                designerInterface.SetDrawLimits(voxelProject.drawLimits, resetWhiteLines);
 
                 if (viewDrawLimitGrid)
                 {
-                    designerInterface.createGrid(drawLimits);
+                    designerInterface.createGrid(voxelProject.drawLimits);
                 }
             }
 
-            if (animationFrames != null)
-            {
-                foreach (VoxelObjGridDataHD frame in animationFrames.Frames)
-                {
-                    frame.Resize(drawLimits.Max + 1);
-                }
-            }
+            //if (animationFrames != null)
+            //{
+            //    foreach (VoxelObjGridDataHD frame in animationFrames.Frames)
+            //    {
+            //        frame.Resize(drawLimits.Max + 1);
+            //    }
+            //}
         }
 
         public void copySelectedVoxels(bool cut)
@@ -389,7 +391,7 @@ namespace VikingEngine.Voxels
         public void ShowHUD(bool show)
         {
             designerInterface.ShowHUD(show);
-            frameInfo.Visible = show && currentFrame.Max > 0;
+            frameInfo.Visible = show; //&& currentFrame.Max > 0;
         }
 
         
@@ -422,8 +424,9 @@ namespace VikingEngine.Voxels
 
         virtual protected void NewCanvas()
         {
-            animationFrames.Frames = new List<VoxelObjGridDataHD> { new VoxelObjGridDataHD(drawLimits.Size) };
-            currentFrame = new CirkleCounter(0);
+            voxelProject = new VoxelProject(voxelProject.drawLimits);
+            //animationFrames.Frames = new List<VoxelObjGridDataHD> { new VoxelObjGridDataHD(drawLimits.Size) };
+            //currentFrame = new CirkleCounter(0);
             updateVoxelObj();
         }
         
@@ -571,7 +574,7 @@ namespace VikingEngine.Voxels
 
         virtual protected void storeUndoableAction(bool allFrames)
         {
-            this.undolist.add(new UndoAction(this, allFrames? -1 : currentFrame.Value));
+            this.undolist.add(new UndoAction(this, allFrames? -1 :  currentFrame.Value));
         }
 
         virtual public void print(string text)

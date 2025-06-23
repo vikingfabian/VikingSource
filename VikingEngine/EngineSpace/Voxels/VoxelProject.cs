@@ -46,7 +46,7 @@ namespace VikingEngine.Voxels
 
         public void addLayer(bool animatedLayer)
         { 
-            layers.Add(new VoxLayer(drawLimits.Max, true, currentFrame.Length), animatedLayer);
+            layers.Add(new VoxLayer(drawLimits.Size, true, currentFrame.Length), animatedLayer);
         }
 
         public bool RemoveCurrentFrame()
@@ -108,9 +108,9 @@ namespace VikingEngine.Voxels
             //    newFrame = new VoxelObjGridDataHD(animationFrames.Size);
             //}
             int frame = currentFrame.Value + 1;
-            
 
-            updateFrameInfo();
+            refreshFrameCount();
+            //updateFrameInfo();
 
             currentFrame.Value = frame;
             //print("Frame Added");
@@ -128,11 +128,9 @@ namespace VikingEngine.Voxels
                 }
             }
 
-            if (currentFrame.Max != animationFrames.Frames.Count - 1)
+            if (currentFrame.Length != length)
             {
-                currentFrame = new CirkleCounter(currentFrame.Value, 0, animationFrames.Frames.Count - 1);
-                currentFrame.Next(1);
-                currentFrame.Next(-1);
+                currentFrame = new CirkleCounter(currentFrame.Value, 0, length - 1);
             }
         }
 
@@ -142,6 +140,28 @@ namespace VikingEngine.Voxels
             {
                 layer.RemoveAllFramesButThis(currentFrame.Value);
             }
+        }
+
+        public bool setSize(IntVector3 size)
+        {
+            var limits = drawLimits;
+            limits.Size = size;
+            return setDrawLimit(limits);
+        }
+
+        public bool setDrawLimit(IntervalIntV3 newLimit)
+        {
+            if (newLimit != drawLimits)
+            {
+                drawLimits = newLimit;
+                var sz = drawLimits.Size;
+                foreach (var layer in layers.list)
+                {
+                    layer.Resize(sz);
+                }
+                return true;
+            }
+            return false;
         }
 
         public bool HaveAnimation
@@ -205,6 +225,27 @@ namespace VikingEngine.Voxels
                 animationFrames.Frames.Clear();
                 animationFrames.Frames.Add(keep);
             }
+        }
+
+        public void Resize(IntVector3 size)
+        {
+            //if (bUpdateDrawLimits)
+            //{
+            //    designerInterface.SetDrawLimits(drawLimits, resetWhiteLines);
+
+            //    if (viewDrawLimitGrid)
+            //    {
+            //        designerInterface.createGrid(drawLimits);
+            //    }
+            //}
+
+            //if (animationFrames != null)
+            //{
+                foreach (VoxelObjGridDataHD frame in animationFrames.Frames)
+                {
+                    frame.Resize(size);
+                }
+            //}
         }
     }
 }
