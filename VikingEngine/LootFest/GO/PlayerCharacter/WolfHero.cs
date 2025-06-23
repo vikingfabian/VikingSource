@@ -29,7 +29,7 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
             JumpFrame = 1;
             WalkingFramesCount = 5;
 
-            currentWalkingFrame = new CirkleCounterUp(WalkingFramesCount - 1);
+            currentWalkingFrame = new CircleCounterUp(WalkingFramesCount - 1);
 
             //Vector3 posAdj = Vector3.Up * ModelYadj;
 

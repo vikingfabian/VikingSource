@@ -322,5 +322,6 @@ namespace VikingEngine.DSSWars.GameState
         Play,
         BattleLab,
         BattleTrials,
+        MapEditor,
     }
 }

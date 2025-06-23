@@ -11,8 +11,8 @@ namespace VikingEngine.PJ.Bagatelle
         static readonly Vector2 ShadowScaleUp = new Vector2(1.1f);
         public bool localMember = true;
 
-        static CirkleCounterUp NextMovingItemLayer = new CirkleCounterUp(0, 127);
-        static CirkleCounterUp NextPickupLayer = new CirkleCounterUp(0, 127);
+        static CircleCounterUp NextMovingItemLayer = new CircleCounterUp(0, 127);
+        static CircleCounterUp NextPickupLayer = new CircleCounterUp(0, 127);
         protected BagatellePlayState state;
 
         protected Graphics.Image boundImage;

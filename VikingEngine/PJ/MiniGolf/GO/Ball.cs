@@ -49,7 +49,7 @@ namespace VikingEngine.PJ.MiniGolf
         {
             Color.Magenta, Color.Blue, Color.Green, Color.Yellow, new Color(237, 28, 36)
         };
-        CirkleCounterUp rainbowColor;
+        CircleCounterUp rainbowColor;
         Sound.SoundSettings bounceSound = new Sound.SoundSettings(LoadedSound.bass_pluck, 0.4f);
         Sound.SoundSettings pointSound;
         int flagCountInOneStrike = 0;
@@ -68,7 +68,7 @@ namespace VikingEngine.PJ.MiniGolf
                 }
                 else if (gamer.animalSetup.theme == AnimalTheme.Rainbow)
                 {
-                    rainbowColor = new CirkleCounterUp(0, RainBowColors.Length - 1);
+                    rainbowColor = new CircleCounterUp(0, RainBowColors.Length - 1);
                 }
             }
 

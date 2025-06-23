@@ -28,6 +28,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ProfileEditor_LeaderColor => "Leader color";
 
 
+        public string MapStartAs_Water => "Water";
+        public string MapStartAs_Land => "Land";
+        public string MapStartAs_Circle => "Circle";
+
     }
 
 }

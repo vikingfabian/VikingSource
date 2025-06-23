@@ -1,13 +1,15 @@
 ﻿UPDATE
 -Change Log-
+* Added localizations
+* Spell fix: "circle"
 * Optimized: reduced objects in profile color
 * Optimized: voxel model loading
 
+* fixed: map editor crash
+x Running clear pass doesnt clear previous nations
 Voxel editor: 
 * added profile colors
 * bucket fill bug fix
-
-
 
 
 

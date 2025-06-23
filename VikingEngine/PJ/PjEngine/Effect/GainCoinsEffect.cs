@@ -13,7 +13,7 @@ namespace VikingEngine.PJ.PjEngine.Effect
         float speedY, gravity;
         Graphics.Image coinImage;
         Timer.Basic nextFrameTimer = new Timer.Basic(45, true);
-        CirkleCounterUp frame = new CirkleCounterUp(0, 5);
+        CircleCounterUp frame = new CircleCounterUp(0, 5);
         SpriteText numberText = null;
 
         public GainCoinsEffect(Vector2 objCenterTop, int value, ImageLayers lay)
