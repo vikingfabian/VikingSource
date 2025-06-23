@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     }
                     break;
 
-                case MapStartAs.Cirkle:
+                case MapStartAs.Circle:
                     {
                         int centerX = world.Size.X / 2;
                         int centerY = world.Size.Y / 2;

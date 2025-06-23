@@ -22,7 +22,7 @@ namespace VikingEngine.LootFest.GameState
         const int LoadingAnimationDotCount = 7;
         Time startLoadingAnimation = new Time(1f, TimeUnit.Seconds);
         Time nextBumpTimer;
-        CirkleCounterUp currentLoadingAnimationBump = new CirkleCounterUp(0, LoadingAnimationDotCount - 1);
+        CircleCounterUp currentLoadingAnimationBump = new CircleCounterUp(0, LoadingAnimationDotCount - 1);
         Graphics.Image[] loadingAnimation = null;
 
         public IntroScene(bool isReset)

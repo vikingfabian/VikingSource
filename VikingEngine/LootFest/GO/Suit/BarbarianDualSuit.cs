@@ -13,7 +13,7 @@ namespace VikingEngine.LootFest.GO
         /// <summary>
         /// Will attack left, right, both and repeate
         /// </summary>
-        CirkleCounterUp attackIndex = new CirkleCounterUp(2, 2);
+        CircleCounterUp attackIndex = new CircleCounterUp(2, 2);
         Time timeSinceLastAttack = 0;
 
         const float AttackTime = 300;

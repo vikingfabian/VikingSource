@@ -24,7 +24,6 @@ namespace VikingEngine.DSSWars
         public AbsStartPlayState()
             :base(false)
         {
-
             loadingStatusText = new Graphics.TextG(LoadedFont.Regular,
                new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
                new Vector2(Engine.Screen.TextSize * 2f),
@@ -76,9 +75,8 @@ namespace VikingEngine.DSSWars
         public StartGame(bool host, NetworkLobby netLobby, SaveStateMeta loadMeta, MapBackgroundLoading loading)
             :base()
         {
+            DssRef.settings.playType = PlayStateType.Play;
             this.host = host;
-           
-
             this.loadMeta = loadMeta;
             
             

@@ -33,7 +33,7 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
             JumpFrame = 1;
             WalkingFramesCount = 5;
 
-            currentWalkingFrame = new CirkleCounterUp(WalkingFramesCount - 1);
+            currentWalkingFrame = new CircleCounterUp(WalkingFramesCount - 1);
 
             new HeroAppearance(VoxelModelName.NUM_NON, true, Vector3.Up * -1.5f, storage, player.SuitAppearance, setModel, this.Type);
 

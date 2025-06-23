@@ -12,13 +12,16 @@ namespace VikingEngine.DSSWars.Display.Translation
     {
         //Option language
 
-        
+
 
         //##
 
-        
 
 
+
+        public string MapStartAs_Water => "Water";
+        public string MapStartAs_Land => "Land";
+        public string MapStartAs_Circle => "Circle";
 
     }
 

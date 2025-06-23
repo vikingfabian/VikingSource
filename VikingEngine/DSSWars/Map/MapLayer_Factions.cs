@@ -15,8 +15,8 @@ namespace VikingEngine.DSSWars.Map
         public MapLayer_Factions()
         {
            mapsz = DssRef.world.Size;
-           
-           factionColorsTex = new FactionColorsTexture(/*vol.Position, vol.Scale*/);
+
+            factionColorsTex = new FactionColorsTexture(true);/*vol.Position, vol.Scale*/
         }
 
         public void asyncTask()

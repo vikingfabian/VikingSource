@@ -110,6 +110,20 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     {
                         for (MapStartAs mapStartAs = 0; mapStartAs < MapStartAs.NUM; ++mapStartAs)
                         {
+                            string caption = null;
+                            switch (mapStartAs)
+                            {
+                                case MapStartAs.Water:
+                                    caption = DssRef.todoLang.MapStartAs_Water;
+                                    break;
+                                case MapStartAs.Land:
+                                    caption = DssRef.todoLang.MapStartAs_Land;
+                                    break;
+                                case MapStartAs.Circle:
+                                    caption = DssRef.todoLang.MapStartAs_Circle;
+                                    break;
+                            }
+
                             startAs.AddOption(mapStartAs.ToString(), mapStartAs == Sett.StartAs, mapStartAs == 0,
                                 new RbAction1Arg<MapStartAs>((MapStartAs value) =>
                                 {

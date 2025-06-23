@@ -224,7 +224,7 @@ namespace VikingEngine //AreaVolyme
             return Math.Abs(diff.X) < HalfSize.X && Math.Abs(diff.Y) < HalfSize.Y;
         }
 
-        public bool IntersectCirkle(Circle cirkle)
+        public bool IntersectCircle(Circle cirkle)
         {
             Vector2 diff = cirkle.Center - Center;
             float l = Bound.Min(diff.Length() - cirkle.Radius, 0);
@@ -232,7 +232,7 @@ namespace VikingEngine //AreaVolyme
             diff *= l;
             return Math.Abs(diff.X) < HalfSize.X && Math.Abs(diff.Y) < HalfSize.Y;
         }
-        public IntersectDetails2D IntersectCirkleDepth(Circle adjustedCirkle, float rotation, Circle originalCirkle)
+        public IntersectDetails2D IntersectCircleDepth(Circle adjustedCirkle, float rotation, Circle originalCirkle)
         {
             IntersectDetails2D result = new IntersectDetails2D();
             Vector2 diff = adjustedCirkle.Center - Center;

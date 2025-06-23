@@ -54,7 +54,7 @@ namespace VikingEngine.Voxels
         TextG frameInfo;
 
         public int lockFirstFrames = 0; 
-        public CirkleCounter currentFrame = new CirkleCounter(0);
+        public CircleCounter currentFrame = new CircleCounter(0);
         public VoxelObjGridDataAnimHD animationFrames;
         public VoxelObjGridDataHD voxels
         {
@@ -293,7 +293,7 @@ namespace VikingEngine.Voxels
             {
                 if (currentFrame.Max != animationFrames.Frames.Count - 1)
                 {
-                    currentFrame = new CirkleCounter(currentFrame.Value, 0, animationFrames.Frames.Count - 1);
+                    currentFrame = new CircleCounter(currentFrame.Value, 0, animationFrames.Frames.Count - 1);
                     currentFrame.Next(1);
                     currentFrame.Next(-1);
                 }
@@ -429,7 +429,7 @@ namespace VikingEngine.Voxels
         virtual protected void NewCanvas()
         {
             animationFrames.Frames = new List<VoxelObjGridDataHD> { new VoxelObjGridDataHD(drawLimits.Size) };
-            currentFrame = new CirkleCounter(0);
+            currentFrame = new CircleCounter(0);
             updateVoxelObj();
         }
         

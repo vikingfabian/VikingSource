@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Map
         Graphics.Mesh model;
         public Graphics.PixelTexture texture;
 
-        public FactionColorsTexture(/*Vector3 pos, Vector3 scale*/)
+        public FactionColorsTexture(bool init)
             :base(Vector3.Zero, Vector3.Zero, false)
         {
             //initTexture();
@@ -25,22 +25,31 @@ namespace VikingEngine.DSSWars.Map
             model = new Graphics.Mesh(LoadedMesh.plane, VectorExt.SetY(Vector3.Zero, DssLib.OverviewMapYpos), Vector3.One, 
                 TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White, false);
             //model.texture = texture;
-            refreshScale();
+
             model.TextureSource = source;
 
             Ref.draw.CurrentRenderLayer = DrawGame.MinimapLayer;
             Ref.draw.AddToRenderList(this);
             Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
 
-            if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+            if (init)
             {
-                RefreshWorld_FactionCol();
-            }
-            else
-            {
-                RefreshWorld_TerrainCol();
+                refreshScale();
+                
+
+                if (DssRef.settings.playType == GameState.PlayStateType.Play ||
+                    DssRef.settings.playType == GameState.PlayStateType.MapEditor)
+                {
+                    RefreshWorld_FactionCol();
+                }
+                else
+                {
+                    RefreshWorld_TerrainCol();
+                }
             }
         }
+
+        
 
         public void refreshScale()
         {

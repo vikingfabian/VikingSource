@@ -43,9 +43,9 @@ namespace VikingEngine.Physics
             {
                 flatCirkle.Center = lib.RotatePointAroundCenter(flatRect.Center, flatCirkle.Center, -rect.Rotation);
             }
-            if (flatRect.IntersectCirkle(flatCirkle))
+            if (flatRect.IntersectCircle(flatCirkle))
             {
-                return new Collision3D(myBound, otherBound, flatRect.IntersectCirkleDepth(flatCirkle, rect.Rotation, cylinder.InnerCirkle.PlaneCirkle()));
+                return new Collision3D(myBound, otherBound, flatRect.IntersectCircleDepth(flatCirkle, rect.Rotation, cylinder.InnerCirkle.PlaneCirkle()));
             }
             return null;
         }

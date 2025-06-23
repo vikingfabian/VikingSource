@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -31,7 +32,9 @@ namespace VikingEngine.DSSWars
         public int AiArmyPurchase_IncomeMin_Aggresive;
 
         int aiDelayTimeSec = 0;
-      
+
+        public PlayStateType playType = PlayStateType.Play;
+
         //public bool AiDelay = true;
 
         public PlaySettings() 
