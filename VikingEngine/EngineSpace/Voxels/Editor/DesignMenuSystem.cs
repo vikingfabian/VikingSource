@@ -936,7 +936,7 @@ namespace VikingEngine.Voxels
             {
                 new GuiTextButton("Add frame", "Add another frame to the animation", designer.LinkAnimAddFrame, false, layout);
 
-                if (designer.haveAnimation)
+                if (designer.HaveAnimation)
                 {
                     new GuiTextButton("Prev frame", null, new GuiAction1Arg<bool>(designer.nextFrame, false), false, layout);
                     new GuiTextButton("Next frame", null, new GuiAction1Arg<bool>(designer.nextFrame, true), false, layout);

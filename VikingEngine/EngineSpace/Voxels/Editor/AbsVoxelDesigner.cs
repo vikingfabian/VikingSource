@@ -46,27 +46,27 @@ namespace VikingEngine.Voxels
         //MouseToolHUD mouseToolHUD = null;
         protected EditorDrawTools drawTools;
         public LootFest.Map.WorldPosition worldPos = LootFest.Map.WorldPosition.EmptyPos;
-        public IntervalIntV3 drawLimits;
+        
         public const float BlockScale = 1f;
         protected Graphics.TopViewCamera camera;
         
         
         TextG frameInfo;
 
-        public int lockFirstFrames = 0; 
-        public CirkleCounter currentFrame = new CirkleCounter(0);
-        public VoxelObjGridDataAnimHD animationFrames;
-        public VoxelObjGridDataHD curretVoxelGrid
-        {
-            get { return animationFrames.Frames[currentFrame.Value]; }
-            set { animationFrames.Frames[currentFrame.Value] = value; }
-        }
+       
+        //public VoxelObjGridDataHD curretVoxelGrid
+        //{
+        //    get { return animationFrames.Frames[currentFrame.Value]; }
+        //    set { animationFrames.Frames[currentFrame.Value] = value; }
+        //}
         public VoxelObjListDataHD copiedVoxels = null;
         public VoxelObjListDataHD selectedVoxels = new VoxelObjListDataHD(new List<VoxelHD>());
         
         protected bool templateSent = false;
         protected AbsDesignMenuSystem_Base absMenuSystem;
         public bool inGameEditor;
+
+        VoxelProject voxelProject;
 
         public void ResetTemplateSent()
         {
@@ -96,12 +96,13 @@ namespace VikingEngine.Voxels
             this.menuInput = menuInput;
             this.playerIndex = playerIndex;
 
-            if (ingameEditor == false)
-            {
-                animationFrames = new VoxelObjGridDataAnimHD();
-                animationFrames.Frames = new List<VoxelObjGridDataHD> { new VoxelObjGridDataHD(drawLimits.Max) };
-            }
-            this.drawLimits = drawLimits;
+            voxelProject = new VoxelProject(drawLimits);
+            //if (ingameEditor == false)
+            //{
+            //    animationFrames = new VoxelObjGridDataAnimHD();
+            //    animationFrames.Frames = new List<VoxelObjGridDataHD> { new VoxelObjGridDataHD(drawLimits.Max) };
+            //}
+            //this.drawLimits = drawLimits;
 
             camera = new Graphics.TopViewCamera(40, new Vector2(MathHelper.PiOver2 - 0.14f, MathHelper.PiOver4));
             camera.UseTerrainCollisions = false;
@@ -125,9 +126,9 @@ namespace VikingEngine.Voxels
 
         public void RemoveCurrentFrame()
         {
-            if (haveAnimation)
+            if (voxelProject.RemoveCurrentFrame())
             {
-                animationFrames.Frames.RemoveAt(currentFrame.Value);
+                //animationFrames.Frames.RemoveAt(currentFrame.Value);
                 startUpdateVoxelObj(false);
                 //print("Removed Frame"); 
             }
@@ -152,9 +153,9 @@ namespace VikingEngine.Voxels
             List<ushort> result = new List<ushort>();
             bool[] inUse = new bool[ushort.MaxValue];
 
-            if (animationFrames != null)
-            {
-                foreach (var m in animationFrames.Frames)
+            //if (animationFrames != null)
+            //{
+                foreach (var m in voxelProject.AnimationFrames.Frames)
                 {
                     var loop = new ForXYZLoop(m.Size);
                     while (loop.Next())
@@ -168,7 +169,7 @@ namespace VikingEngine.Voxels
                         }
                     }
                 }
-            }
+            //}
 
             if (includePaintCol)
             {
@@ -210,31 +211,14 @@ namespace VikingEngine.Voxels
 
         public void moveFrame(MoveFrameType type)
         {
-            VoxelObjGridDataHD current = animationFrames.Frames[currentFrame.Value];
-            animationFrames.Frames.RemoveAt(currentFrame.Value);
-
-            switch (type)
-            {
-                case MoveFrameType.Forward:
-                    currentFrame.Next(1);
-                    break;
-                case MoveFrameType.Back:
-                    currentFrame.Next(-1);
-                    break;
-                case MoveFrameType.ToStart:
-                    currentFrame.Value = 0;
-                    break;
-                case MoveFrameType.ToEnd:
-                    currentFrame.Value = currentFrame.Max;
-                    break;
-            }
-            animationFrames.Frames.Insert(currentFrame.Value, current);
+            voxelProject.moveFrame(type);
             updateFrameInfo();
         }
 
         public void RemoveAllFramesButThis()
         {
-            animationFrames.Frames = new List<VoxelObjGridDataHD> { animationFrames.Frames[currentFrame.Value] };
+            voxelProject.RemoveAllFramesButThis();
+            //animationFrames.Frames = new List<VoxelObjGridDataHD> { animationFrames.Frames[currentFrame.Value] };
             updateFrameInfo();
         }
 
@@ -287,10 +271,7 @@ namespace VikingEngine.Voxels
             updateVoxelObj();
         }
 
-        public bool haveAnimation
-        {
-            get { return currentFrame.Max > 0; }
-        }
+        
         public bool HasSelection
         {
             get { return selectedVoxels.Voxels.Count > 0; }
@@ -306,7 +287,7 @@ namespace VikingEngine.Voxels
                     currentFrame.Next(-1);
                 }
 
-                frameInfo.Visible = haveAnimation;
+                frameInfo.Visible = HaveAnimation;
                 frameInfo.TextString = "Frame:" + (currentFrame.Value + 1).ToString() + "/" + (currentFrame.Max + 1).ToString();
             }
         }
