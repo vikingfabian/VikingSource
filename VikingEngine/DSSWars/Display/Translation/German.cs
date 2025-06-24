@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_SoldierGroupsCount => "Gruppenanzahl: {0}";
         public override string Hud_StrengthRating => "Stärkewertung: {0}";
         public override string Hud_TotalStrengthRating => "Militärische Stärke: {0}";
-        public override string Hud_Immigrants => "Einwanderer: {0}";
+        public override string Hud_Immigrants => "Einwanderer";
         public override string Hud_CityCount => "Stadtanzahl: {0}";
         public override string Hud_ArmyCount => "Armeeanzahl: {0}";
 

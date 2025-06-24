@@ -92,4 +92,12 @@ namespace VikingEngine.DSSWars.XP
         Experience,
         NUM
     }
+
+    enum  TechnologyGainReason
+    {
+        WorkerLevel,
+        CityToCitySpread,
+        FactionToFactionSpread,
+        BookPress,
+    }
 }

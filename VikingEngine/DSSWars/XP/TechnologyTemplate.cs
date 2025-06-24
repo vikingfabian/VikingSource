@@ -18,6 +18,16 @@ namespace VikingEngine.DSSWars.XP
         public ResearchProgress()
         { }
 
+        public void workerLevelUp(ref int gainPoints)
+        {
+            if (researchCenter_IdAndPos >= 0)
+            {
+                gainPoints += DssConst.TechnologyGain_ResearchCenter;
+            }
+
+            points += gainPoints;
+        }
+
         public void writeGameState(System.IO.BinaryWriter w, int unlock, bool faction)
         {
             w.Write((byte)Bound.Max(points, unlock));

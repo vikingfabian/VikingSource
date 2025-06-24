@@ -122,49 +122,54 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 case WorkExperienceType.HouseBuilding:
                 case WorkExperienceType.StoneCutter:
-                    technology.advancedBuilding.points += gain;
+                    technology.advancedBuilding.workerLevelUp(ref gain);
                     break;
 
                 case WorkExperienceType.Farm:
                 case WorkExperienceType.AnimalCare:
-                    technology.advancedFarming.points += gain;
+                    technology.advancedFarming.workerLevelUp(ref gain);
                     break;
 
                 case WorkExperienceType.Smelting:
                 case WorkExperienceType.CastMetal:
-                    technology.advancedCasting.points += gain;
+                    technology.advancedCasting.workerLevelUp(ref gain);
                     break;
 
                 case WorkExperienceType.Mining:
                 case WorkExperienceType.CraftMetal:
                     if (technology.iron.points < TechnologyTemplate.IronUnlock)
                     {
-                        technology.iron.points += gain;
+                        technology.iron.workerLevelUp(ref gain);
                     }
                     else
                     {
-                        technology.steel.points += gain;
+                        technology.steel.workerLevelUp(ref gain);
                     }
                     break;
 
                 case WorkExperienceType.WoodWork:
                 case WorkExperienceType.Fletcher:
-                    technology.catapult.points += gain;
+                    technology.catapult.workerLevelUp(ref gain);
                     break;
 
                 case WorkExperienceType.CraftFuel:
                 case WorkExperienceType.Chemistry:
                     if (technology.blackPowder.points < TechnologyTemplate.BlackPowderUnlock)
                     {
-                        technology.blackPowder.points += gain;
+                        technology.blackPowder.workerLevelUp(ref gain);
                     }
                     else
                     {
-                        technology.gunPowder.points += gain;
+                        technology.gunPowder.workerLevelUp(ref gain);
                     }
                     break;
+            }
+        }
 
-
+        void onTechnologyGain(WorkExperienceType experienceType, int gained, TechnologyGainReason reason)
+        {
+            if (reason != TechnologyGainReason.BookPress)
+            {
 
             }
         }
