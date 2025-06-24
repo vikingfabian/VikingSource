@@ -15,10 +15,12 @@ namespace VikingEngine.Voxels
         public IntervalIntV3 volume;
         public IntVector3 keyDownDrawCoord;
         public int frame;
+        public int layer;
         public DrawQueType type;
         public bool dropSelection;
         public PaintSettings paintSettings;
         public bool allFrames;
+        public bool allLayers;
         //public int pencilSize, roadEdge, roadPercentFill, roadBelowFill, roadAboveClear;
         //public bool roundPencil;
 
@@ -35,9 +37,10 @@ namespace VikingEngine.Voxels
         }
 
         public DrawQueAction(ushort material, PaintFillType fill, PaintToolType tool, 
-             IntVector3 keyDownDrawCoord, int frame)
+             IntVector3 keyDownDrawCoord, int frame, int layer)
         {
             this.frame = frame;
+            this.layer = layer;
             this.material1 = material;
             this.fill = fill;
             this.paintSettings.drawTool = tool;
@@ -55,7 +58,7 @@ namespace VikingEngine.Voxels
             this.mostRecentMoveXZ = mostRecentMoveXZ;
         }
 
-        public DrawQueAction(ushort material1, ushort material2, PaintFillType fill, IntVector3 pos, PaintSettings paintSettings, bool allFrames)
+        public DrawQueAction(ushort material1, ushort material2, PaintFillType fill, IntVector3 pos, PaintSettings paintSettings, bool allFrames, int frame, int layer)
         {
             this.fill = fill;
             this.material1 = material1;
@@ -63,6 +66,8 @@ namespace VikingEngine.Voxels
             keyDownDrawCoord = pos;
             this.paintSettings = paintSettings;
             this.allFrames = allFrames;
+            this.frame = frame;
+            this.layer = layer;
 
             this.type = paintSettings.drawTool == PaintToolType.Bucket? DrawQueType.Bucket : DrawQueType.Dot;
         }

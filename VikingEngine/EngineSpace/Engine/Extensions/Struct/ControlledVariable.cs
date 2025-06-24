@@ -507,7 +507,6 @@ namespace VikingEngine
 
         public int Length => max - min + 1;
 
-        public CirkleCounter(int maxValue)
         public CircleCounter(int maxValue)
             : this(0, 0, maxValue)
         {

@@ -32,7 +32,7 @@ namespace VikingEngine.LootFest.Players
         List<GamerName> gamerNames = new List<GamerName>();
         HUD.ButtonLayout buttonLayOut;
 
-        VoxelDesigner voxelDesigner = null;
+        //VoxelDesigner voxelDesigner = null;
         Map.WorldPosition voxelDesignerStartPos;
         float controlLock = 0;
 
@@ -613,13 +613,13 @@ namespace VikingEngine.LootFest.Players
         
         public bool inMenu { get { return menuSystem != null; } }
 
-        public bool inEditor { get { return voxelDesigner != null; } }
+        public bool inEditor { get { return false; } }//voxelDesigner != null; } }
 
         public bool inGamePlay
         {
             get
             {
-                return menuSystem == null && voxelDesigner == null && cinematicMode.MilliSeconds <= 0;
+                return menuSystem == null && /*voxelDesigner == null &&*/ cinematicMode.MilliSeconds <= 0;
             }
         }
 
@@ -630,7 +630,7 @@ namespace VikingEngine.LootFest.Players
 
         public override bool IsPausing
         {
-            get { return inMenu && voxelDesigner == null; }
+            get { return inMenu /*&& voxelDesigner == null*/; }
         }
 
         public void Save()
@@ -707,8 +707,8 @@ namespace VikingEngine.LootFest.Players
             
             CloseMenu();
 
-            if (voxelDesigner != null)
-                EndCreationMode();
+            //if (voxelDesigner != null)
+            //    EndCreationMode();
 
         }
         
@@ -752,7 +752,7 @@ namespace VikingEngine.LootFest.Players
 
         public void Update(float time, PlayState gamestate)
         {
-            if (voxelDesigner == null)
+            //if (voxelDesigner == null)
                 updateInput();
 
             if (!inMenu)
@@ -761,10 +761,10 @@ namespace VikingEngine.LootFest.Players
             }
 
             //localPData.inputMap.update();
-            if (inEditor)
-            {
-                voxelDesigner.Time_Update(time);
-            }
+            //if (inEditor)
+            //{
+            //    voxelDesigner.Time_Update(time);
+            //}
 
             localPData.view.Camera.Time_Update(time);
             foreach (GamerName gn in gamerNames)

@@ -18,16 +18,17 @@ namespace VikingEngine.Voxels
 {
     interface IVoxelDesigner
     {
-        void SetVoxel(IntVector3 drawPoint, ushort material);
-        ushort GetVoxel(IntVector3 drawPoint);
+        void SetVoxel(int frame, IntVector3 drawPoint, ushort material);
+        ushort GetVoxel(int frame, IntVector3 drawPoint);
     }
 
     abstract class AbsVoxelDesigner : VikingEngine.AbsInput, IVoxelDesigner, IVoxelDesignerInterfaceParent
     {
         protected const float PencilMoveSpeedNomal = 0.01f;
         public VoxelDesignerInterface designerInterface;
-       
+
         protected bool repeateOnAllFrames = true;
+        protected bool repeateOnAllLayers = false;
         protected bool stampEmpty = false;
         abstract public BlockHD SelectedMaterial { get; set; }
         abstract public BlockHD SecondaryMaterial { get; set; }
@@ -66,7 +67,7 @@ namespace VikingEngine.Voxels
         protected AbsDesignMenuSystem_Base absMenuSystem;
         public bool inGameEditor;
 
-        VoxelProject voxelProject;
+        public VoxelProject voxelProject;
 
         public void ResetTemplateSent()
         {
@@ -223,10 +224,10 @@ namespace VikingEngine.Voxels
         }
 
         abstract public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel);
-        public void AddFrame()
-        { 
+        //public void AddFrame()
+        //{ 
         
-        }
+        //}
         public void AddFrame(bool copy)
         {
             //VoxelObjGridDataHD newFrame;
@@ -295,7 +296,7 @@ namespace VikingEngine.Voxels
         }
         protected void ExpandDrawLimits(Dimensions dimention, int add)
         {
-            storeUndoableAction(true);
+            storeUndoableAction(true, true);
 
             var drawLimits = voxelProject.drawLimits;
             drawLimits.Max.AddDimension(dimention, add);
@@ -400,7 +401,7 @@ namespace VikingEngine.Voxels
            // bool right = dir > 0;
             if (HasSelection && !inputMap.toggleCameraMode.IsDown)
             {
-                Rotate(next);
+                Rotate(next, false, false);
             }
             else
             {
@@ -572,9 +573,9 @@ namespace VikingEngine.Voxels
             }
         }
 
-        virtual protected void storeUndoableAction(bool allFrames)
+        virtual protected void storeUndoableAction(bool allFrames, bool allLayers)
         {
-            this.undolist.add(new UndoAction(this, allFrames? -1 :  currentFrame.Value));
+            this.undolist.add(new UndoAction(this, allFrames? -1 : voxelProject.currentFrame.Value, allLayers? -1 : voxelProject.layers.selectedIndex));
         }
 
         virtual public void print(string text)
@@ -583,9 +584,9 @@ namespace VikingEngine.Voxels
         virtual public void print(RichBoxContent content)
         { }
 
-        protected void Rotate(bool clockWise)
+        protected void Rotate(bool clockWise, bool allFrames, bool allLayers)
         {
-            byte dir = (byte)(clockWise ? 1 : 3);
+            int dir = clockWise ? 1 : 3;
             
             if (HasSelection)
             {
@@ -605,7 +606,8 @@ namespace VikingEngine.Voxels
             }
             else
             {
-                curretVoxelGrid.Rotate(dir, drawLimits, true);
+                //curretVoxelGrid.Rotate(dir, drawLimits, true);
+                voxelProject.Rotate(dir, allFrames, allLayers);
 
                 UpdateVoxelObj();
             }
@@ -621,8 +623,9 @@ namespace VikingEngine.Voxels
             }
             else
             {
-                VoxelObjGridDataHD v = curretVoxelGrid;
-                v.FlipDir(dir, drawLimits, true);
+                //VoxelObjGridDataHD v = curretVoxelGrid;
+                //v.FlipDir(dir, drawLimits, true);
+                voxelProject.flip(dir, repeateOnAllFrames, repeateOnAllFrames);
 
                 UpdateVoxelObj();
             }
@@ -653,9 +656,12 @@ namespace VikingEngine.Voxels
             }
             templateSent = false;
         }
-        
 
         public void moveAll(IntVector3 dir, bool storeUndo)
+        {
+            moveAll(dir, storeUndo, repeateOnAllFrames, repeateOnAllLayers);
+        }
+        public void moveAll(IntVector3 dir, bool storeUndo, bool allFrames, bool allLayers)
         {
             if (dir != IntVector3.Zero)
             {
@@ -670,21 +676,22 @@ namespace VikingEngine.Voxels
                 {
                     if (storeUndo)
                     {
-                        storeUndoableAction(repeateOnAllFrames);
+                        storeUndoableAction(allFrames, allLayers);
                     }
-                    if (repeateOnAllFrames)
-                    {
-                        for (int i = 0; i < animationFrames.Frames.Count; i++)
-                        {
-                            curretVoxelGrid.Move(dir, drawLimits);
-                            nextFrame(true);
-                        }
-                    }
-                    else
-                    {
+                    //if (repeateOnAllFrames)
+                    //{
+                    //    for (int i = 0; i < animationFrames.Frames.Count; i++)
+                    //    {
+                    //        curretVoxelGrid.Move(dir, drawLimits);
+                    //        nextFrame(true);
+                    //    }
+                    //}
+                    //else
+                    //{
                         
-                        curretVoxelGrid.Move(dir, drawLimits);
-                    }
+                    //    curretVoxelGrid.Move(dir, drawLimits);
+                    //}
+                    voxelProject.moveAll(dir, allFrames, allLayers);
 
                     UpdateVoxelObj();
                 }
@@ -810,29 +817,35 @@ namespace VikingEngine.Voxels
         //    }
         //}
 
-        virtual public ushort GetVoxel(IntVector3 drawPoint)
+        virtual public ushort GetVoxel(int frame, IntVector3 drawPoint)
         {
-            return curretVoxelGrid.Get(drawPoint);
+            return voxelProject.CurretVoxelGrid.Get(drawPoint);
         }
-        virtual public void SetVoxel(IntVector3 drawPoint, ushort material)
+
+        public ushort Get(IntVector3 drawPoint)
         {
-            curretVoxelGrid.Set(drawPoint, material);
+            return voxelProject.layers.Selected().animationFrames.Frames[voxelProject.currentFrame.Value].Get(drawPoint);
+        }
+
+        virtual public void SetVoxel(int frame, IntVector3 drawPoint, ushort material)
+        {
+            voxelProject.CurretVoxelGrid.Set(drawPoint, material);
         }
 
         virtual public ushort GetVoxel(LootFest.Map.WorldPosition wp)
         {
-            return curretVoxelGrid.Get(wp.WorldGrindex);
+            return voxelProject.CurretVoxelGrid.Get(wp.WorldGrindex);
         }
         virtual public void SetVoxel(LootFest.Map.WorldPosition wp, ushort material)
         {
-            curretVoxelGrid.Set(wp.WorldGrindex, material);
+            voxelProject.CurretVoxelGrid.Set(wp.WorldGrindex, material);
         }
         
         public bool removeBlock(IntVector3 pos)
         {
-            if (curretVoxelGrid.Get(pos) != BlockHD.EmptyBlock)
+            if (voxelProject.CurretVoxelGrid.Get(pos) != BlockHD.EmptyBlock)
             {
-                curretVoxelGrid.Set(pos, BlockHD.EmptyBlock);
+                voxelProject.CurretVoxelGrid.Set(pos, BlockHD.EmptyBlock);
                 return true;
             }
             
@@ -842,9 +855,9 @@ namespace VikingEngine.Voxels
         
         public void SetPencilBounds(ref Vector3 freePencilGridPos)
         {
-            freePencilGridPos.X = Bound.Set(freePencilGridPos.X, drawLimits.Min.X, drawLimits.Max.X);
-            freePencilGridPos.Y = Bound.Set(freePencilGridPos.Y, drawLimits.Min.Y, drawLimits.Max.Y);
-            freePencilGridPos.Z = Bound.Set(freePencilGridPos.Z, drawLimits.Min.Z, drawLimits.Max.Z);
+            freePencilGridPos.X = Bound.Set(freePencilGridPos.X, voxelProject.drawLimits.Min.X, voxelProject.drawLimits.Max.X);
+            freePencilGridPos.Y = Bound.Set(freePencilGridPos.Y, voxelProject.drawLimits.Min.Y, voxelProject.drawLimits.Max.Y);
+            freePencilGridPos.Z = Bound.Set(freePencilGridPos.Z, voxelProject.drawLimits.Min.Z, voxelProject.drawLimits.Max.Z);
         }
         
         virtual protected bool roundPencil { get { return true; } }
@@ -854,14 +867,17 @@ namespace VikingEngine.Voxels
         { }
 
        public BlockHD drawCoordMaterial = new BlockHD();
-       abstract protected ushort Get(IntVector3 pos);
-
+        //abstract protected ushort Get(int frame, IntVector3 pos);
+        //protected ushort Get(IntVector3 pos)
+        //{ 
+        //    return voxelProject.CurretVoxelGrid.Get(pos);
+        //}
         virtual protected void UpdatePencilInfo()
         {
             int state_empty0_contact1_inside2 = 0;
 
             //update color
-            if (drawLimits.pointInBounds(designerInterface.drawCoord))
+            if (voxelProject.drawLimits.pointInBounds(designerInterface.drawCoord))
             {
                 //GetVoxel(
 
@@ -935,8 +951,8 @@ namespace VikingEngine.Voxels
                     npos.AddDimension(d, lib.BoolToLeftRight(dir == 0));
 
                     //bool nMateriel = GetVoxel(npos) != BlockHD.EmptyBlock;
-                    if (drawLimits.pointInBounds(npos) &&
-                        GetVoxel(npos) != BlockHD.EmptyBlock)//wp.GetNeighborPos(pos).BlockHasMaterial())
+                    if (voxelProject.drawLimits.pointInBounds(npos) &&
+                        GetVoxel(CurrentFrame, npos) != BlockHD.EmptyBlock)//wp.GetNeighborPos(pos).BlockHasMaterial())
                     {
 
                         return true;
@@ -1002,7 +1018,7 @@ namespace VikingEngine.Voxels
                Ref.draw.RemoveFromRenderList(voxelObj);
            }
 
-           voxelObj = VoxelObjBuilder.BuildModelHD(new List<VoxelObjGridDataHD>{ animationFrames.Frames[currentFrame.Value] }, Vector3.Zero);
+           voxelObj = VoxelObjBuilder.BuildModelHD(new List<VoxelObjGridDataHD>{ voxelProject.CurretVoxelGrid }, Vector3.Zero);
            if (voxelObj != null)
            {
                Ref.draw.AddToRenderList(voxelObj);
@@ -1027,7 +1043,7 @@ namespace VikingEngine.Voxels
 
                 designerInterface.refreshVolumeGui();
                //designerInterface.refreshSelectionGui();
-               selectionModel.refresh(selectedVoxels, drawLimits.Size, designerInterface.offSet);
+               selectionModel.refresh(selectedVoxels, voxelProject.drawLimits.Size, designerInterface.offSet);
            }
            else
            {
@@ -1044,9 +1060,9 @@ namespace VikingEngine.Voxels
        {
             for (int i = 0; i < selectedVoxels.Voxels.Count; ++i)
             {
-                if (drawLimits.pointInBounds(selectedVoxels.Voxels[i].Position))
+                if (voxelProject.drawLimits.pointInBounds(selectedVoxels.Voxels[i].Position))
                 {
-                    SetVoxel(selectedVoxels.Voxels[i].Position, selectedVoxels.Voxels[i].Material);
+                    SetVoxel(voxelProject.currentFrame.Value, selectedVoxels.Voxels[i].Position, selectedVoxels.Voxels[i].Material);
                 }
             }
        }
@@ -1055,7 +1071,7 @@ namespace VikingEngine.Voxels
         {
             if (HasSelection)
             {
-                storeUndoableAction(false);
+                storeUndoableAction(false, false);
 
                 if (startThread)
                     new ThreadedTemplateStamp(this, selectedVoxels.Clone());
@@ -1066,7 +1082,7 @@ namespace VikingEngine.Voxels
 
         public void MakeThreadedStamp(VoxelObjListDataHD selectedVoxels, IntervalIntV3 updateArea)
         {
-            curretVoxelGrid.SafeAddVoxels(selectedVoxels.Voxels);
+            voxelProject.CurretVoxelGrid.SafeAddVoxels(selectedVoxels.Voxels);
         }
 
         virtual public void linkReplaceSelectionMaterials(ushort from)
@@ -1101,18 +1117,18 @@ namespace VikingEngine.Voxels
         }
         public void rotateHeader(bool clockwise)
         {
-            if (repeateOnAllFrames)
-            {
-                for (int i = 0; i < animationFrames.Frames.Count; i++)
-                {
-                    Rotate(clockwise);
-                    nextFrame(true);
-                }
-            }
-            else
-            {
-                Rotate(clockwise);
-            }
+            //if (repeateOnAllFrames)
+            //{
+            //    for (int i = 0; i < animationFrames.Frames.Count; i++)
+            //    {
+            //        Rotate(clockwise);
+            //        nextFrame(true);
+            //    }
+            //}
+            //else
+            //{
+                Rotate(clockwise, repeateOnAllFrames, repeateOnAllLayers);
+            //}
         }
         public void LinkSelFlipY()
         {
@@ -1147,6 +1163,12 @@ namespace VikingEngine.Voxels
             return repeateOnAllFrames;
         }
 
+        public bool bRepeateOnAllLayersProperty(int index, bool set, bool value)
+        {
+            if (set) { repeateOnAllLayers = value; }
+            return repeateOnAllLayers;
+        }
+
         public bool bStampEmptyProperty(int index, bool set, bool value)
         {
             if (set) { stampEmpty = value; }
@@ -1156,6 +1178,9 @@ namespace VikingEngine.Voxels
         {
             get { return copiedVoxels != null && copiedVoxels.Voxels.Count > 0; }
         }
+
+        public int CurrentFrame => voxelProject.currentFrame.Value;
+        public int CurrentLayer => voxelProject.layers.selectedIndex;
 
         public VikingEngine.Voxels.VoxelDesignerSettings Settings
         {

@@ -97,7 +97,7 @@ namespace VikingEngine.Voxels
             //designer.print("Saving...");
 
             new WriteBinaryIO(SavePath(),
-                designer.animationFrames.WriteBinaryStream, this);
+                designer.voxelProject.AnimationFrames.WriteBinaryStream, this);
         }
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
@@ -121,7 +121,7 @@ namespace VikingEngine.Voxels
         {
             new WriteBinaryIO(new FilePath(UserVoxelObjFolder, "backup_save" + backupId.ToString(), 
                 Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false),
-                designer.animationFrames.WriteBinaryStream, null);
+                designer.voxelProject.AnimationFrames.WriteBinaryStream, null);
 
             backupId++;
             if (backupId >= 10)

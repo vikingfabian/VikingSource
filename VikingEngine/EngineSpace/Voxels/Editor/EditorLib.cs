@@ -18,13 +18,13 @@ namespace VikingEngine.Voxels
             this.worldPos = worldPos;
         }
 
-        public void SetVoxel(IntVector3 drawPoint, ushort material)
+        public void SetVoxel(int layer ,IntVector3 drawPoint, ushort material)
         {
             WorldPosition pos = worldPos;
             pos.WorldGrindex.Add(drawPoint);
             pos.SetBlock(material);
         }
-        public ushort GetVoxel(IntVector3 drawPoint)
+        public ushort GetVoxel(int layer, IntVector3 drawPoint)
         {
             
             WorldPosition pos = worldPos;

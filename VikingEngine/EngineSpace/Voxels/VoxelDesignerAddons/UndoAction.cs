@@ -78,15 +78,15 @@ namespace VikingEngine.Voxels
 
             if (layer < 0)
             {
-                allFrames = designer.animationFrames.Clone();
+                layers = designer.voxelProject.CloneLayers();
             }
             else if (frame < 0)
             {
-                allFrames = designer.animationFrames.Clone();
+                allFrames = designer.voxelProject.AnimationFrames.Clone();
             }
             else
             {
-                oneFrame = designer.animationFrames.Frames[frame].Clone();
+                oneFrame = designer.voxelProject.AnimationFrames.Frames[frame].Clone();
             }
         }
 
@@ -98,17 +98,21 @@ namespace VikingEngine.Voxels
 
         public void Undo(AbsVoxelDesigner designer)
         {
-            if (oneFrame != null)
+            if (layers != null)
             {
-                designer.animationFrames.Frames[frame] = oneFrame;
+                designer.voxelProject.layers = layers;
+            }
+            else if (oneFrame != null)
+            {
+                designer.voxelProject.AnimationFrames.Frames[frame] = oneFrame;
             }
             else
             {
                 designer.setUndoDrawLimit(allFrames.Frames.First().Size);
-                designer.animationFrames = allFrames;
+                designer.voxelProject.layers.list[layer].animationFrames = allFrames;
             }
 
-            designer.currentFrame.Value = frame;
+            designer.voxelProject.currentFrame.Value = frame;
         }
         
     }

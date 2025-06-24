@@ -273,26 +273,26 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_SelectAll) }, new RbAction(designer.selectAll)));
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> { 
-                new RbText(DssRef.lang.Editor_Canvas_Title),  new RbSpace(),  new RbText(designer.drawLimits.Size.ToString("*")),
+                new RbText(DssRef.lang.Editor_Canvas_Title),  new RbSpace(),  new RbText(designer.voxelProject.drawLimits.Size.ToString("*")),
             }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Canvas, StackOption.Stack)));
 
             content.newParagraph();
             HudLib.Label(content, DssRef.lang.Editor_Animation);
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemove) }, new RbAction(designer.RemoveCurrentFrame), new RbTooltip_Text(DssRef.lang.Editor_Animation_RemoveCurrentFrame), designer.HaveAnimation));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemove) }, new RbAction(designer.RemoveCurrentFrame), new RbTooltip_Text(DssRef.lang.Editor_Animation_RemoveCurrentFrame), designer.voxelProject.HaveAnimation));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameAddCopy) }, new RbAction1Arg<bool>(designer.AddFrame, true), new RbTooltip_Text(DssRef.lang.Editor_Animation_AddFrameCopy)));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameAddEmpty) }, new RbAction1Arg<bool>(designer.AddFrame, false), new RbTooltip_Text(DssRef.lang.Editor_Animation_AddEmptyFrame)));
             
-            if (designer.HaveAnimation)
+            if (designer.voxelProject.HaveAnimation)
             {
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFramePrevious) }, new RbAction1Arg<bool>(designer.nextFrame, false)));
-                for (int frame = 0; frame <= designer.currentFrame.Max; frame++)
+                for (int frame = 0; frame <= designer.voxelProject.currentFrame.Max; frame++)
                 {
                     SpriteName frameicon;
                     RbButtonStyle buttonStyle;
-                    if (frame == designer.currentFrame.Value)
+                    if (frame == designer.voxelProject.currentFrame.Value)
                     {
                         buttonStyle = RbButtonStyle.OptionSelected;
                         frameicon = SpriteName.VoxelEditorFrameSelected;
@@ -351,7 +351,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.h1(DssRef.lang.Editor_Canvas_Title, HudLib.TitleColor_Head);
 
             content.h2(DssRef.lang.Editor_Canvas_Size, HudLib.TitleColor_Label);
-            content.text(designer.drawLimits.Size.ToString("*"));
+            content.text(designer.voxelProject.drawLimits.Size.ToString("*"));
             sizeOptions(DssRef.lang.Editor_Canvas_Dimension_X, SpriteName.width, IntVector3.PlusX);
             sizeOptions(DssRef.lang.Editor_Canvas_Dimension_Y, SpriteName.height, IntVector3.PlusY);
             sizeOptions(DssRef.lang.Editor_Canvas_Dimension_Z, SpriteName.length, IntVector3.PlusZ);
@@ -388,7 +388,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             {
                 foreach (IntVector3 lim in suggestedDrawLimits)
                 {
-                    sizePresets.AddOption(lim.ToString("*"), lim == designer.drawLimits.Size, false,
+                    sizePresets.AddOption(lim.ToString("*"), lim == designer.voxelProject.drawLimits.Size, false,
                         new RbAction1Arg<IntVector3>(designer.setCanvasSize, lim), null);
                 }
             }
@@ -593,17 +593,17 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.IconBuildRemove), new RbText(DssRef.lang.Editor_Canvas_Clear) }, new RbAction(designer.clearSelectedArea)));
 
-            if (designer.animationFrames != null && designer.animationFrames.Frames.Count > 1)
+            if (designer.voxelProject.currentFrame.Length > 1)
             {
                 content.newLine();
                 HudLib.Label(content, DssRef.lang.Editor_StampOtherFrames);
                 content.newLine();
-                for (int frame = 0; frame <= designer.currentFrame.Max; frame++)
+                for (int frame = 0; frame <= designer.voxelProject.currentFrame.Max; frame++)
                 {
                     SpriteName frameicon;
                     RbButtonStyle buttonStyle;
                     bool enabled = true;
-                    if (frame == designer.currentFrame.Value)
+                    if (frame == designer.voxelProject.currentFrame.Value)
                     {
                         buttonStyle = RbButtonStyle.OptionSelected;
                         frameicon = SpriteName.VoxelEditorFrameSelected;

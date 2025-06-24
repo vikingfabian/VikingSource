@@ -245,10 +245,10 @@ namespace VikingEngine.LootFest.GameState
                     {
                         new VikingEngine.LootFest.BlockMap.EditorState();
                     }
-                    else
-                    {
-                        new GameState.VoxelDesignState(XGuide.LocalHostIndex);
-                    }
+                    //else
+                    //{
+                    //    new GameState.VoxelDesignState(XGuide.LocalHostIndex);
+                    //}
                 }
                 else
                 {

@@ -22,7 +22,8 @@ namespace VikingEngine.DSSWars.GameState
             this.controller = controller;
             draw.ClrColor = Color.Black;
             Ref.lobby?.disconnect(null);
-            DssRef.settings.playType = PlayStateType.MapEditor;
+            
+            //DssRef.settings.playType = PlayStateType.MapEditor;
             this.editor_flag_vox = editor_flag_vox;
         }
 

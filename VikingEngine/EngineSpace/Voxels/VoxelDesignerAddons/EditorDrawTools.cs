@@ -100,7 +100,7 @@ namespace VikingEngine.Voxels
                     switch (action.type)
                     {
                         case DrawQueType.FillVolume:
-                            designer.undolist.add(new UndoAction(designer, action.frame));
+                            designer.undolist.add(new UndoAction(designer, action.frame, action.layer));
                             action.fillArea(designer);
                             designer.startUpdateVoxelObj(true);
                             designer.refreshSelectionModel();
@@ -108,7 +108,7 @@ namespace VikingEngine.Voxels
 
                         case DrawQueType.Dot:
                             float radius, edgeRadius;
-                            volume = PaintDotVolume(action.keyDownDrawCoord, designer.drawLimits, action.paintSettings.drawTool,
+                            volume = PaintDotVolume(action.keyDownDrawCoord, designer.voxelProject.drawLimits, action.paintSettings.drawTool,
                                 action.material1 != BlockHD.EmptyBlock, action.paintSettings.pencilSize, action.paintSettings.roadEdgeSize, out radius, out edgeRadius);
 
                             if (drawStroke == null)
@@ -117,15 +117,17 @@ namespace VikingEngine.Voxels
                             }
                             drawStroke.add(volume, designer);
 
-                            PaintDot(designer, action.keyDownDrawCoord, designer.drawLimits,
+                            PaintDot(designer, action.keyDownDrawCoord, designer.voxelProject.drawLimits,
                                 action.fill == PaintFillType.Fill, action.material1, action.material2, action.paintSettings);
                             designer.startUpdateVoxelObj(true, volume);
                             break;
 
                         case DrawQueType.Bucket:
-                            designer.undolist.add(new UndoAction(designer, action.allFrames? -1 : action.frame));
+                            designer.undolist.add(new UndoAction(designer, action.allFrames? -1 : action.frame, action.layer));
 
-                            designer.animationFrames.BucketFill(action.keyDownDrawCoord, action.frame, action.fill == PaintFillType.Delete? BlockHD.EmptyBlock : action.material1, action.paintSettings.continiousFill, action.allFrames);
+                            //designer.animationFrames.BucketFill(action.keyDownDrawCoord, action.frame, action.fill == PaintFillType.Delete ? BlockHD.EmptyBlock : action.material1, action.paintSettings.continiousFill, action.allFrames, );
+                            designer.voxelProject.BucketFill(action.keyDownDrawCoord, action.fill == PaintFillType.Delete ? BlockHD.EmptyBlock : action.material1,
+                                action.paintSettings.continiousFill, action.allFrames, action.frame, action.allLayers, action.layer);
                             //action.fillArea(designer);
                             designer.startUpdateVoxelObj(true);
                             designer.refreshSelectionModel();
@@ -139,8 +141,8 @@ namespace VikingEngine.Voxels
 
                         case DrawQueType.StampSelection:
                             volume = designer.selectedVoxels.getMinMax();
-                            volume = designer.drawLimits.keepValueInMyBounds(volume);
-                            designer.undolist.add(new UndoAction(designer, action.frame));
+                            volume = designer.voxelProject.drawLimits.keepValueInMyBounds(volume);
+                            designer.undolist.add(new UndoAction(designer, action.frame, action.layer));
                             designer.stampSelection_Raw();
                             designer.startUpdateVoxelObj(true);
                             if (action.dropSelection)
@@ -222,7 +224,7 @@ namespace VikingEngine.Voxels
                         fillType,
                         designer.Settings.paintSettings.drawTool,
                         designer.designerInterface.keyDownDrawCoord,
-                        designer.currentFrame.Value);
+                        designer.CurrentFrame, designer.CurrentLayer);
                 }
             }
             else if (currentDrawAction != null) //Key UP
@@ -235,7 +237,7 @@ namespace VikingEngine.Voxels
                     if (designer.Settings.paintSettings.drawTool != PaintToolType.Bucket)
                     {
                         currentDrawAction = new DrawQueAction(DrawQueType.EndDot);
-                        currentDrawAction.frame = designer.currentFrame.Value;
+                        currentDrawAction.frame = designer.CurrentFrame;
 
                         drawQue.Enqueue(currentDrawAction);
                     }
@@ -258,8 +260,9 @@ namespace VikingEngine.Voxels
         void beginPaintDot(IntVector3 pos, PaintFillType fill)
         {
             currentDrawAction = new DrawQueAction(designer.SelectedMaterial.BlockValue, designer.SecondaryMaterial.BlockValue, fill,
-                pos, designer.Settings.paintSettings, designer.bRepeateOnAllFramesProperty(0, false, false));
-            currentDrawAction.frame = designer.currentFrame.Value;
+                pos, designer.Settings.paintSettings, designer.bRepeateOnAllFramesProperty(0, false, false), 
+                designer.CurrentFrame, designer.CurrentLayer);
+            //currentDrawAction.frame = designer.currentFrame.Value;
 
             drawQue.Enqueue(currentDrawAction);
             
@@ -320,12 +323,12 @@ namespace VikingEngine.Voxels
                         //see if there already exists one block
                         if (drawAction.fill == PaintFillType.Select)
                         {
-                            ushort m = parent.GetVoxel(drawPoint);
+                            ushort m = parent.GetVoxel(drawAction.frame, drawPoint);
                             if (m != BlockHD.EmptyBlock)
                             {
                                 selectedVoxels.Voxels.Add(new VoxelHD(drawPoint, m));
                                 if (selectionCut)
-                                    parent.SetVoxel(drawPoint, BlockHD.EmptyBlock);
+                                    parent.SetVoxel(drawAction.frame, drawPoint, BlockHD.EmptyBlock);
                             }
                         }
                         else
@@ -387,7 +390,7 @@ namespace VikingEngine.Voxels
 #if LOOTFEST
                                 ++LootFest.LfRef.stats.editorBlocksPlaced.value;
 #endif
-                                parent.SetVoxel(drawPoint, blockValue);
+                                parent.SetVoxel(drawAction.frame, drawPoint, blockValue);
                             }
                         }
                         //}
@@ -410,7 +413,7 @@ namespace VikingEngine.Voxels
             return selectionArea;
         }
 
-        public static IntervalIntV3 PaintDot(AbsVoxelDesigner voxels,
+        public static IntervalIntV3 PaintDot(AbsVoxelDesigner designer,
             IntVector3 center, IntervalIntV3 drawLimits, 
             bool add, ushort material1, ushort material2, PaintSettings paintSettings)
         {
@@ -452,7 +455,7 @@ namespace VikingEngine.Voxels
                         { }
                         else if (length <= edgeRadius) //<= CirkleRadi)
                         {
-                            draw = drawRoadEdge(voxels, material1, notBottom, pos);
+                            draw = drawRoadEdge(designer, material1, notBottom, pos);
                             material = material2;
                         }
                         else
@@ -465,7 +468,7 @@ namespace VikingEngine.Voxels
                         int length = (intPlaneCenter - planePos).SideLength();
                         if (length >= edgeRadius)
                         {
-                            draw = drawRoadEdge(voxels, material1, notBottom, pos);
+                            draw = drawRoadEdge(designer, material1, notBottom, pos);
                             material = material2;
                         }
                     }
@@ -481,14 +484,14 @@ namespace VikingEngine.Voxels
                             {
                                 //wpCopy = wp;
                                 //wpCopy.WorldGrindex += pos;
-                                voxels.SetVoxel(pos, material);
+                                designer.SetVoxel(designer.CurrentFrame, pos, material);
                             }
                         }
                         for (pos.Y = Bound.Max(center.Y + paintSettings.roadUpwardClear, drawLimits.Max.Y); pos.Y > selectionArea.Max.Y; pos.Y--)
                         {
                             //wpCopy = wp;
                             //wpCopy.WorldGrindex += pos;
-                            voxels.SetVoxel(pos, BlockHD.EmptyBlock);
+                            designer.SetVoxel(designer.CurrentFrame, pos, BlockHD.EmptyBlock);
                         }
                     }
                 }
@@ -508,9 +511,9 @@ namespace VikingEngine.Voxels
                         //wpCopy = wp;
                         //wpCopy.WorldGrindex += pos;
                         if (paintSettings.drawTool == PaintToolType.Pencil ||
-                            voxels.GetVoxel(pos) != BlockHD.EmptyBlock)//.HasMaterial)
+                            designer.GetVoxel(designer.CurrentFrame, pos) != BlockHD.EmptyBlock)//.HasMaterial)
                         {
-                            voxels.SetVoxel(pos, material);
+                            designer.SetVoxel(designer.CurrentFrame, pos, material);
                         }
                     }
                 }
@@ -523,13 +526,13 @@ namespace VikingEngine.Voxels
         //    dottedLineMovement.Clear();
         //}
 
-        static bool drawRoadEdge(AbsVoxelDesigner voxels, ushort selectedMaterial, bool notBottom, IntVector3 pos)
+        static bool drawRoadEdge(AbsVoxelDesigner designer, ushort selectedMaterial, bool notBottom, IntVector3 pos)
         {
-            bool draw = voxels.GetVoxel(pos) != selectedMaterial;
+            bool draw = designer.GetVoxel(designer.CurrentFrame, pos) != selectedMaterial;
             if (notBottom)
             {
                 pos.Y--;
-                draw = draw && voxels.GetVoxel(pos) != selectedMaterial;
+                draw = draw && designer.GetVoxel(designer.CurrentFrame, pos) != selectedMaterial;
             }
             return draw;
         }
@@ -549,7 +552,7 @@ namespace VikingEngine.Voxels
 
         public void selectAll()
         {
-            designer.designerInterface.selectionArea = designer.drawLimits;
+            designer.designerInterface.selectionArea = designer.voxelProject.drawLimits;
             designer.designerInterface.UpdateMultiSelectionPencil(IntVector3.Zero);
             //select all
             DrawQueAction selectAction = new DrawQueAction(
@@ -557,9 +560,9 @@ namespace VikingEngine.Voxels
                         PaintFillType.Select,
                         PaintToolType.Rectangle,
                         IntVector3.Zero,
-                        designer.currentFrame.Value);
+                        designer.CurrentFrame, designer.CurrentLayer);
            
-            selectAction.endDraw(designer.drawLimits,Dimensions.NON, IntVector3.Zero);
+            selectAction.endDraw(designer.voxelProject.drawLimits,Dimensions.NON, IntVector3.Zero);
 
             drawQue.Enqueue(selectAction);
             

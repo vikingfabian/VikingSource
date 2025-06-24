@@ -77,11 +77,11 @@ namespace VikingEngine.Voxels
 
         protected void allFramesChkBox(HUD.GuiLayout layout)
         {
-            if (designer is VoxelDesigner)
-            {
-                if (((VoxelDesigner)designer).inGame)
-                    return;
-            }
+            //if (designer is VoxelDesigner)
+            //{
+            //    if (((VoxelDesigner)designer).inGame)
+            //        return;
+            //}
             new GuiCheckbox("All frames", "Make the same action on all frames", designer.bRepeateOnAllFramesProperty, layout);
         }
 

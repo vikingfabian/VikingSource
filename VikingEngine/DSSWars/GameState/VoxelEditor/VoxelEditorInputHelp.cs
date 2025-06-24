@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         input(map.editorInput.undo.Icon, SpriteName.Undo);
                         input(map.editorInput.toggleCameraMode.Icon, SpriteName.InterfaceIconCamera);
 
-                        if (designer.HaveAnimation)
+                        if (designer.voxelProject.HaveAnimation)
                         {
                             input(map.editorInput.next.Icon, SpriteName.VoxelEditorFrameNext);
                             input(map.editorInput.previous.Icon, SpriteName.VoxelEditorFramePrevious);

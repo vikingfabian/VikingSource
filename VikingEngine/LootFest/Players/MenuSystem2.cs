@@ -1243,7 +1243,7 @@ namespace VikingEngine.LootFest
 
         void startVoxelEditor()
         {
-            new GameState.VoxelDesignState(player.PlayerIndex);
+            //new GameState.VoxelDesignState(player.PlayerIndex);
         }
         void startSceneMaker()
         {
@@ -1941,7 +1941,7 @@ namespace VikingEngine.LootFest
 
         void listMaterials(Action<BlockHD> link)
         {
-            VoxelDesigner.listMaterials(menu, link, false);//mFile, (int)d, false, Storage, (int)Link.ShowHideMaterialNames, 0);
+            //VoxelDesigner.listMaterials(menu, link, false);//mFile, (int)d, false, Storage, (int)Link.ShowHideMaterialNames, 0);
         }
 
         void refreshShield()
