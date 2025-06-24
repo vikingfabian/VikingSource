@@ -20,6 +20,16 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Editor_VoxelCount => "{0} voxels";
 
+        public string Editor_Layers_Titel => "Layers";
+        public string Editor_LayerNumber => "Layer {0}";
+
+        public string Editor_Layer_AddEmpty => "Add empty layer";
+        public string Editor_Layer_AddCopy => "Duplicate layer";
+        public string Editor_Layer_Remove => "Remove layer";
+        public string Editor_Layer_MergeDown => "Merge down";
+        public string Editor_IsAnimated => "Animated";
+        public string Editor_ToggleVisible => "Toggle visible";
+
         public string ProfileEditor_ReplaceMaterial => "Profile color: {0}";
 
         public string ProfileEditor_ProfileColors_Label => "Profile colors";

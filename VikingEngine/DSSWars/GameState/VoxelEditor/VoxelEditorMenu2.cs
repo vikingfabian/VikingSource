@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         const string Page_Selection = "selection";
         const string Page_Recolor = "recolor";
         const string Page_RecolorTo = "recolor_to";
+        const string Page_Layers = "layers";
         bool listUserModels;
 
         const float DefaultIconScale = 0.8f;
@@ -109,6 +110,10 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                     break;
                 case Page_RecolorTo:
                     reColorToMenu();
+                    break;
+
+                case Page_Layers:
+                    layersMenu();
                     break;
             }
         }
@@ -317,8 +322,19 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameToEndR, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.ToEnd)));
             }
 
-            content.Add(new RbSeperationLine());
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Layers_Titel, HudLib.TitleColor_Label) },
+                 new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Layers, StackOption.Stack)));
 
+            content.newLine();
+            for (int layerIx = 0; layerIx < designer.voxelProject.layers.list.Count; ++layerIx)
+            {
+                content.Add(new ArtToggle(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
+                    new RbText(TextLib.IndexToString(layerIx)) },
+                    new RbAction1Arg<int>(selectLayer, layerIx)));
+            }
+
+            content.Add(new RbSeperationLine());
 
             content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> {
                  new RbImage(SpriteName.WarsHudIconSettings, DefaultIconScale), new RbSpace(), new RbText( DssRef.lang.Editor_SettingsMenu) }),
@@ -480,6 +496,63 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             //layout.End();
         }
 
+        public void layersMenu()
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            HudLib.returnButton(content, menu, false, closeMenu);
+            content.h1(DssRef.todoLang.Editor_Layers_Titel, HudLib.TitleColor_Head);
+
+            for (int layerIx = 0; layerIx < designer.voxelProject.layers.list.Count; ++layerIx)
+            {
+                content.newLine();
+                var layer = designer.voxelProject.layers.list[layerIx];
+                content.Add(new ArtToggle(layer.visible, new List<AbsRichBoxMember> { new RbImage(SpriteName.lineofsightEye) },
+                     new RbAction1Arg<int>(toggleLayerVisible, layerIx), new RbTooltip_Text(DssRef.todoLang.Editor_ToggleVisible)));
+                content.Add(new ArtOption(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
+                    new RbText(string.Format( DssRef.todoLang.Editor_LayerNumber, TextLib.IndexToString(layerIx))) },
+                    new RbAction1Arg<int>(selectLayer, layerIx)));
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.pjNumPlus) },
+                    new RbAction1Arg<int>(layerMergeDown, layerIx),new RbTooltip_Text(DssRef.todoLang.Editor_Layer_MergeDown)));
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsIncreaseArrowUp) },
+                    new RbAction2Arg<int, bool>(moveLayer, layerIx, false),
+                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Up))));
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsDecreaseArrowDown) },
+                    new RbAction2Arg<int, bool>(moveLayer, layerIx, true), 
+                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Down))));
+            }
+
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Layer_AddCopy) },
+                new RbAction1Arg<bool>(addLayer, true)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Layer_AddEmpty) },
+                new RbAction1Arg<bool>(addLayer, false)));
+
+            Refresh(content);
+        }
+
+        void toggleLayerVisible(int layer)
+        {
+            lib.Invert(ref designer.voxelProject.layers.list[layer].visible);
+        }
+        void selectLayer(int layer)
+        { 
+            designer.voxelProject.layers.selectedIndex = layer;
+        }
+        void moveLayer(int layer, bool down)
+        {
+            //designer.voxelProject.layers.selectedIndex = layer;
+        }
+        void layerMergeDown(int layer)
+        {
+
+        }
+
+        void addLayer(bool copy)
+        { 
+        
+        }
+        
         public void openReColorTo()
         {
             menu.OpenMenu(Page_RecolorTo, StackOption.Stack);
