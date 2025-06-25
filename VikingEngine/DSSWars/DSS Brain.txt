@@ -7,11 +7,14 @@
 
 * fixed: map editor crash
 x Running clear pass doesnt clear previous nations
+
 Voxel editor: 
 * added profile colors
 * bucket fill bug fix
+* layers
+* saving project file
 
-
+! VoxelObjSave has been renamed to "Voxel Model"
 
 #Voxel editor#
 

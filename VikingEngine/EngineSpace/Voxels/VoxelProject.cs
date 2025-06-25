@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map.HDvoxel;
 
@@ -21,13 +22,15 @@ namespace VikingEngine.Voxels
         public int lockFirstFrames = 0;
         public int lockEndFrames = 0;
         public CircleCounter currentFrame = new CircleCounter(0);
+        public string name = "VoxProj" + Ref.rnd.Int(9999).ToString();
+        //public VoxelObjGridDataAnimHD mergedLayers = null;
 
         /// <summary>
         /// Low index = top layer = override bottom layers
         /// </summary>
         public ListWithSelection<VoxLayer> layers = new ListWithSelection<VoxLayer>(); 
 
-        public VoxelObjGridDataHD CurretVoxelGrid
+        public VoxelObjGridDataHD CurrentVoxelGrid
         {
             get { return layers.Selected().animationFrames.Frames[currentFrame.Value]; }
             //set { layers.Selected().animationFrames.Frames[currentFrame.Value] = value; }
@@ -38,11 +41,14 @@ namespace VikingEngine.Voxels
             get { return layers.Selected().animationFrames; }
         }
 
+        public VoxelProject()
+        { }
+
         public VoxelProject(IntervalIntV3 drawLimits)
         {
             this.drawLimits = drawLimits;
             layers = new ListWithSelection<VoxLayer>();
-            addLayer(true);
+            addLayer(true, false);
             //animationFrames = new VoxelObjGridDataAnimHD();
             //animationFrames.Frames = new List<VoxelObjGridDataHD> { new VoxelObjGridDataHD(drawLimits.Max) };
         }
@@ -54,14 +60,98 @@ namespace VikingEngine.Voxels
             addLayer(loadedModel);
         }
 
-        public void addLayer(bool animatedLayer)
+       
+
+        public List<VoxLayer> LayersCopy()
         { 
-            layers.Add(new VoxLayer(drawLimits.Size, animatedLayer, currentFrame.Length), true);
+             var layersCopy = new List<VoxLayer>(layers.Count);
+            lock (layers.list)
+            {
+                layersCopy.AddRange(layers.list);
+            }
+
+            return layersCopy;
+        }
+
+        public VoxelObjGridDataAnimHD refreshMerged(bool allFrames)
+        {
+            //TODO try catch
+            MergeModelsOption mergeOpt = new MergeModelsOption()
+            {
+                KeepOldGridSize = true,
+                NewBlocksReplaceOld = true,
+                MergeFramesOptions = MergeFramesOptions.FrameByFrame,
+            };
+
+            int frame = currentFrame.Value;
+            var layersCopy = LayersCopy();
+            //bool firstVisibleLayer = true;
+            VoxelObjGridDataAnimHD result = null;
+
+            for (int i = layersCopy.Count - 1; i >= 0; i--)
+            {
+                var layer = layersCopy[i];
+                if (layer.visible)
+                {
+                    if (result == null)
+                    {
+                        if (allFrames)
+                        {
+                            result = layer.animationFrames.Clone();
+                        }
+                        else
+                        {
+                            result = new VoxelObjGridDataAnimHD(new List<VoxelObjGridDataHD> { layer.GetFrame(frame).Clone() });
+                        }
+                    }
+                    else
+                    {
+                        if (allFrames)
+                        {
+                            result.Merge(layer.animationFrames, mergeOpt);
+                        }
+                        else
+                        {
+                            result.Merge(new VoxelObjGridDataAnimHD(new List<VoxelObjGridDataHD> { layer.GetFrame(frame) }), mergeOpt);
+                        }
+                    }
+                }
+            }
+
+            if (result == null)
+            {
+                result = new VoxelObjGridDataAnimHD(drawLimits.Size, 1);
+            }
+
+            //mergedLayers = result;
+            return result;
+        }
+
+        public void addLayer(bool animatedLayer, bool copy)
+        {
+            lock (layers.list)
+            {
+                var layer = new VoxLayer(drawLimits.Size, animatedLayer, currentFrame.Length);
+
+                if (layers.Count == 0)
+                {
+                    layers.Add(layer, true);
+                }
+                else
+                {
+                    layers.list.Insert(currentFrame.Value, layer);
+                }
+            }
+
+            refreshFrameCount();
         }
 
         public void addLayer(VoxelObjGridDataAnimHD loadedModel)
         {
-            layers.Add(new VoxLayer(loadedModel), true);
+            lock (layers.list)
+            {
+                layers.Add(new VoxLayer(loadedModel), true);
+            }
         }
 
         public void LockAnimation(bool start)
@@ -252,7 +342,7 @@ namespace VikingEngine.Voxels
 
         public void BucketFill(IntVector3 pos, ushort toColor, bool continous, bool allFrames, int frame, bool allLayers, int layerIx)
         {
-            ushort fromColor = CurretVoxelGrid.Get(pos);
+            ushort fromColor = CurrentVoxelGrid.Get(pos);
             if (allLayers)
             {
                 foreach (var layer in layers.list)
@@ -274,154 +364,42 @@ namespace VikingEngine.Voxels
         {
             get { return currentFrame.Max > 0; }
         }
+
+       
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            const int Version = 1;
+            w.Write(Version);
+            w.Write(layers.Count);
+            foreach (var layer in layers.list)
+            { 
+                layer.write(w);
+            }
+
+            w.Write(layers.selectedIndex);
+            w.Write(currentFrame.Value);
+        }
+
+        public void read(System.IO.BinaryReader r)
+        {
+            int version = r.ReadInt32();
+            int layerCount = r.ReadInt32();
+            for (int i = 0; i < layerCount; i++)
+            {
+                VoxLayer layer = new VoxLayer();
+                layer.read(r, version);
+                layers.list.Add(layer);
+            }
+            
+            layers.selectedIndex = r.ReadInt32();
+            refreshFrameCount();
+            currentFrame.Value = r.ReadInt32();
+
+            drawLimits.Size = CurrentVoxelGrid.Size;
+        }
     }
 
-    class VoxLayer
-    {
-        public bool visible = true;
-        public bool animatedLayer = true;
-        public VoxelObjGridDataAnimHD animationFrames;
-
-        public VoxLayer()
-        { }
-
-        public VoxLayer(IntVector3 size, bool animatedLayer, int frameCount)
-        {
-            this.animatedLayer = animatedLayer;
-            animationFrames = new VoxelObjGridDataAnimHD(size, animatedLayer? frameCount : 1);
-        }
-
-        public VoxLayer(VoxelObjGridDataAnimHD loadedModel)
-        {
-            animationFrames = loadedModel;
-        }
-
-        public VoxLayer Clone()
-        {
-            var clone = new VoxLayer()
-            {
-                animatedLayer = animatedLayer,
-                visible = visible,
-                animationFrames = animationFrames.Clone()
-            };
-
-            return clone;
-        }
-
-        public void RemoveCurrentFrame(int index)
-        {
-            if (animatedLayer)
-            {
-                animationFrames.Frames.RemoveAt(index);
-            }
-        }
-
-        public void moveFrame(int fromIx, int toIx)
-        {
-            if (animatedLayer)
-            {
-                VoxelObjGridDataHD current = arraylib.Pull(animationFrames.Frames, fromIx);
-                animationFrames.Frames.Insert(toIx, current);
-            }
-        }
-
-        public void AddFrame(int currentFrame, bool copy)
-        {
-            if (animatedLayer)
-            {
-                VoxelObjGridDataHD newFrame;
-                if (copy)
-                {
-                    newFrame = animationFrames.Frames[currentFrame].Clone();
-                }
-                else
-                {
-                    newFrame = new VoxelObjGridDataHD(animationFrames.Size);
-                }
-
-                animationFrames.Frames.Insert(currentFrame + 1, newFrame);
-            }
-            //print("Frame Added");
-        }
-
-        public void RemoveAllFramesButThis(int keepIx)
-        {
-            if (animatedLayer)
-            {
-                var keep = animationFrames.Frames[keepIx];
-                animationFrames.Frames.Clear();
-                animationFrames.Frames.Add(keep);
-            }
-        }
-
-        public void Resize(IntVector3 size)
-        {            
-            foreach (VoxelObjGridDataHD frame in animationFrames.Frames)
-            {
-                frame.Resize(size);
-            }            
-        }
-
-        public void Rotate(int rotationSteps, bool allFrames, int currentFrame)
-        {
-            if (!animatedLayer || allFrames)
-            {
-                foreach (var frame in animationFrames.Frames)
-                {
-                    frame.Rotate(rotationSteps, true);
-                }
-            }
-            else
-            {
-                animationFrames.Frames[currentFrame].Rotate(rotationSteps, true);
-            }
-        }
-
-        public void flip(Dimensions dimention, IntervalIntV3 drawLimits, bool allFrames, int currentFrame)
-        {
-            if (!animatedLayer || allFrames)
-            {
-                foreach (var frame in animationFrames.Frames)
-                {
-                    frame.FlipDir(dimention, drawLimits, true);
-                }
-            }
-            else
-            {
-                animationFrames.Frames[currentFrame].FlipDir(dimention, drawLimits, true);
-            }
-        }
-
-        public void moveAll(IntVector3 dir, IntervalIntV3 drawLimits, bool allFrames, int currentFrame)
-        {
-            if (!animatedLayer || allFrames)
-            {
-                foreach (var frame in animationFrames.Frames)
-                {
-                    frame.Move(dir, drawLimits);
-                }
-            }
-            else
-            {
-                animationFrames.Frames[currentFrame].Move(dir, drawLimits);
-            }
-        }
-
-        public void BucketFill(IntVector3 pos, ushort fromColor, ushort toColor, bool continous, bool allFrames, int currentFrame)
-        {
-            if (!animatedLayer || allFrames)
-            {
-                foreach (var frame in animationFrames.Frames)
-                {
-                    frame.BucketFill(pos, fromColor, toColor, continous);
-                }
-            }
-            else
-            {
-                animationFrames.Frames[currentFrame].BucketFill(pos, fromColor, toColor, continous);
-            }
-            //animationFrames.BucketFill(action.keyDownDrawCoord, action.frame, action.fill == PaintFillType.Delete ? BlockHD.EmptyBlock : action.material1, action.paintSettings.continiousFill, action.allFrames, );
-        }
-    }
+    
 
 }

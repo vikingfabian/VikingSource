@@ -109,7 +109,8 @@ namespace VikingEngine.DSSWars
 
             //Display.AbsBubbleMessage.Init();
 
-            DataStream.FilePath.CreateStorageFolder(DesignerStorage.UserVoxelObjFolder);
+            DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
+            DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
             UserGeneratedContent.UGClib.GameInit();
             
 

@@ -808,6 +808,12 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
         }
 
+        public override void addLoadedProject(VoxelProject project)
+        {
+            voxelProject = project;
+            EventTriggerCallBack();
+        }
+
 
         //public void selectMergeOption(MergeFramesOptions opt, VoxelObjGridDataAnimHD loadedModel)
         //{
@@ -873,7 +879,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
             else
             {
-                swapMaterials(voxelProject.CurretVoxelGrid, swapTo);
+                swapMaterials(voxelProject.CurrentVoxelGrid, swapTo);
             }
             templateSent = false;
             absMenuSystem.closeMenu();
@@ -951,9 +957,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             swapMaterialFrom.BlockValue = from;
             designerInterface.selectionArea.Min = IntVector3.Zero;
-            designerInterface.selectionArea.Max = voxelProject.CurretVoxelGrid.Size - 1;
+            designerInterface.selectionArea.Max = voxelProject.CurrentVoxelGrid.Size - 1;
 
-            swapMaterials(voxelProject.CurretVoxelGrid, to);
+            swapMaterials(voxelProject.CurrentVoxelGrid, to);
         }
 
         void swapMaterials(VoxelObjGridDataHD grid, ushort swapTo)

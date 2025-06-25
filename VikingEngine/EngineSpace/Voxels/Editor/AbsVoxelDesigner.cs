@@ -13,6 +13,7 @@ using VikingEngine.LootFest.Map.HDvoxel;
 using System.ComponentModel.Design;
 using VikingEngine.DSSWars.GameState.VoxelEditor;
 using VikingEngine.HUD.RichBox;
+using System.Threading.Tasks;
 
 namespace VikingEngine.Voxels
 {
@@ -37,7 +38,7 @@ namespace VikingEngine.Voxels
         public UndoList undolist = new UndoList();
 
         protected IntervalF ZoomBounds = new IntervalF(4, 600);
-        protected Graphics.AbsDraw voxelObj = null;
+        public Graphics.AbsDraw voxelObj = null;
         SelectionModel selectionModel = new SelectionModel();
 
         protected int playerIndex;
@@ -54,12 +55,6 @@ namespace VikingEngine.Voxels
         
         TextG frameInfo;
 
-       
-        //public VoxelObjGridDataHD curretVoxelGrid
-        //{
-        //    get { return animationFrames.Frames[currentFrame.Value]; }
-        //    set { animationFrames.Frames[currentFrame.Value] = value; }
-        //}
         public VoxelObjListDataHD copiedVoxels = null;
         public VoxelObjListDataHD selectedVoxels = new VoxelObjListDataHD(new List<VoxelHD>());
         
@@ -224,9 +219,10 @@ namespace VikingEngine.Voxels
         }
 
         abstract public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel);
+        abstract public void addLoadedProject(VoxelProject project);
         //public void AddFrame()
         //{ 
-        
+
         //}
         public void AddFrame(bool copy)
         {
@@ -819,7 +815,7 @@ namespace VikingEngine.Voxels
 
         virtual public ushort GetVoxel(int frame, IntVector3 drawPoint)
         {
-            return voxelProject.CurretVoxelGrid.Get(drawPoint);
+            return voxelProject.CurrentVoxelGrid.Get(drawPoint);
         }
 
         public ushort Get(IntVector3 drawPoint)
@@ -829,23 +825,23 @@ namespace VikingEngine.Voxels
 
         virtual public void SetVoxel(int frame, IntVector3 drawPoint, ushort material)
         {
-            voxelProject.CurretVoxelGrid.Set(drawPoint, material);
+            voxelProject.CurrentVoxelGrid.Set(drawPoint, material);
         }
 
         virtual public ushort GetVoxel(LootFest.Map.WorldPosition wp)
         {
-            return voxelProject.CurretVoxelGrid.Get(wp.WorldGrindex);
+            return voxelProject.CurrentVoxelGrid.Get(wp.WorldGrindex);
         }
         virtual public void SetVoxel(LootFest.Map.WorldPosition wp, ushort material)
         {
-            voxelProject.CurretVoxelGrid.Set(wp.WorldGrindex, material);
+            voxelProject.CurrentVoxelGrid.Set(wp.WorldGrindex, material);
         }
         
         public bool removeBlock(IntVector3 pos)
         {
-            if (voxelProject.CurretVoxelGrid.Get(pos) != BlockHD.EmptyBlock)
+            if (voxelProject.CurrentVoxelGrid.Get(pos) != BlockHD.EmptyBlock)
             {
-                voxelProject.CurretVoxelGrid.Set(pos, BlockHD.EmptyBlock);
+                voxelProject.CurrentVoxelGrid.Set(pos, BlockHD.EmptyBlock);
                 return true;
             }
             
@@ -1007,22 +1003,30 @@ namespace VikingEngine.Voxels
             updateVoxelObj(updateArea);
        }
 
-       protected void updateVoxelObj()
+       public void updateVoxelObj()
        {
            this.updateVoxelObj(designerInterface.selectionArea);
        }
        virtual public void updateVoxelObj(IntervalIntV3 updateArea)
        {
-           if (voxelObj != null)
-           {
-               Ref.draw.RemoveFromRenderList(voxelObj);
-           }
+            Task.Run(() =>
+            {
+                VoxelObjGridDataAnimHD data = voxelProject.refreshMerged(false);
 
-           voxelObj = VoxelObjBuilder.BuildModelHD(new List<VoxelObjGridDataHD>{ voxelProject.CurretVoxelGrid }, Vector3.Zero);
-           if (voxelObj != null)
-           {
-               Ref.draw.AddToRenderList(voxelObj);
-           }
+                Ref.update.AddSyncAction(new SyncAction( () =>
+                {
+                    if (voxelObj != null)
+                    {
+                        Ref.draw.RemoveFromRenderList(voxelObj);
+                    }
+                    voxelObj = VoxelObjBuilder.BuildModelHD(data.Frames, Vector3.Zero);//new List<VoxelObjGridDataHD> { voxelProject.CurrentVoxelGrid }, Vector3.Zero);
+                    
+                    if (voxelObj != null)
+                    {
+                        Ref.draw.AddToRenderList(voxelObj);
+                    }
+                }));
+            });
        }
 
 
@@ -1082,7 +1086,7 @@ namespace VikingEngine.Voxels
 
         public void MakeThreadedStamp(VoxelObjListDataHD selectedVoxels, IntervalIntV3 updateArea)
         {
-            voxelProject.CurretVoxelGrid.SafeAddVoxels(selectedVoxels.Voxels);
+            voxelProject.CurrentVoxelGrid.SafeAddVoxels(selectedVoxels.Voxels);
         }
 
         virtual public void linkReplaceSelectionMaterials(ushort from)

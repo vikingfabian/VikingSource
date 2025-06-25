@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Editor_Layer_MergeDown => "Merge down";
         public string Editor_IsAnimated => "Animated";
         public string Editor_ToggleVisible => "Toggle visible";
-
+        public string Editor_Projects => "Project files";
         public string ProfileEditor_ReplaceMaterial => "Profile color: {0}";
 
         public string ProfileEditor_ProfileColors_Label => "Profile colors";

@@ -1,19 +1,25 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using VikingEngine.Voxels;
+using System.Threading.Tasks;
 using VikingEngine.DataStream;
-using VikingEngine.HUD.RichBox;
-using VikingEngine.Engine;
 using VikingEngine.DSSWars;
+using VikingEngine.Engine;
+using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.Voxels
 {
     class DesignerStorage : IStreamIOCallback
     {
-        public const string UserVoxelObjFolder = "VoxelObjSave";
+        public const string VoxelModelFolder = "Voxel Model";
+        public const string VoxelProjectFolder = "Voxel Project";
         public static bool[] HasChatergory;
 
         public static void InitFolderStructure()
@@ -40,7 +46,12 @@ namespace VikingEngine.Voxels
         }
         public static FilePath CustomVoxelObjPath(string name)
         {
-            return new FilePath(UserVoxelObjFolder, name, Voxels.VoxelLib.VoxelObjByteArrayEnding);
+            return new FilePath(VoxelModelFolder, name, Voxels.VoxelLib.VoxelObjByteArrayEnding);
+        }
+
+        public static FilePath VoxelProjectPath(string name)
+        {
+            return new FilePath(VoxelProjectFolder, name, Voxels.VoxelLib.VoxelProjectEnding);
         }
 
         public static FilePath InGameVoxelObjPath(string name)
@@ -81,23 +92,128 @@ namespace VikingEngine.Voxels
             designer.addLoadedModel(model);            
         }
 
+        void projectLoaded(VoxelProject project)
+        {
+            designer.addLoadedProject(project);
+        }
+
         public void loadUserModel(string name)
         {
             saveFileName = name;
             new LoadCreatorImage(CustomVoxelObjPath(saveFileName), modelLoaded);
         }
 
-        public FilePath SavePath()
+        public void loadProject(string name)
         {
-            return new FilePath(UserVoxelObjFolder, saveFileName, Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false);
+            saveFileName = name;
+            new LoadVoxelProject(VoxelProjectPath(saveFileName), projectLoaded);
         }
 
+        public FilePath SavePath()
+        {
+            return new FilePath(VoxelModelFolder, saveFileName, Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false);
+        }
+
+        //public async Task save()
+        //public void save()
+        //{
+        //    //designer.print("Saving...");
+
+        //    FilePath voxpath = SavePath();
+        //    var projectPath = voxpath;
+        //    projectPath.FileEnd = VoxelLib.VoxelProjectArrayEnding;
+
+        //    VoxelObjGridDataAnimHD allMergedData = null;
+        //    var mergeTask = Task.Run(() =>
+        //    {
+        //        allMergedData = designer.voxelProject.refreshMerged(true);
+        //    });
+
+        //    new WriteBinaryIO(projectPath,
+        //        designer.voxelProject.write, this);
+
+        //    if (designer.voxelProject.currentFrame.Length > 1)
+        //    {
+        //       var layers = designer.voxelProject.LayersCopy();
+        //        for (int i = 0; i < layers.Count; ++i)
+        //        {
+        //            var layerPath = voxpath;
+        //            layerPath.FileName += "_" + layers[i].Name(i);
+        //            new WriteBinaryIO(layerPath,
+        //               layers[i].animationFrames.WriteBinaryStream, this);
+        //        }
+        //    }
+
+        //    await mergeTask; //how do my main thread waih for this task?
+
+        //    new WriteBinaryIO(voxpath,
+        //        allMergedData.WriteBinaryStream, this);
+
+        //}
         public void save()
         {
-            //designer.print("Saving...");
+            FilePath voxpath = SavePath();
+            var projectPath = voxpath;
 
-            new WriteBinaryIO(SavePath(),
-                designer.voxelProject.AnimationFrames.WriteBinaryStream, this);
+            projectPath.LocalDirectoryPath = VoxelProjectFolder;
+            projectPath.FileEnd = VoxelLib.VoxelProjectEnding;
+
+            // Start the merge task
+            var mergeTask = Task.Run(() =>
+            {
+                return designer.voxelProject.refreshMerged(true);
+            });
+
+            // Write project data
+            new WriteBinaryIO(projectPath,
+                designer.voxelProject.write, null);
+
+            // Save each layer
+           
+            var layers = designer.voxelProject.LayersCopy();
+            if (layers.Count > 1)
+            {
+                for (int i = 0; i < layers.Count; ++i)
+                {
+                    var layerPath = voxpath;
+                    layerPath.FileName += "_" + layers[i].Name(i);
+                    new WriteBinaryIO(layerPath,
+                        layers[i].animationFrames.WriteBinaryStream, null);
+                }
+            }
+
+            // Wait for merge task to complete (synchronously)
+            VoxelObjGridDataAnimHD allMergedData = mergeTask.GetAwaiter().GetResult();
+
+            // Save merged data
+            new WriteBinaryIO(voxpath,
+                allMergedData.WriteBinaryStream, this);
+
+            FilePath iconPath = projectPath;
+            iconPath.FileEnd = ".png";
+
+
+            const int Size = 64;
+            using (FileStream stream = new FileStream(iconPath.CompleteLocalPath(true), FileMode.Create))
+            {
+                renderModel().SaveAsPng(stream, Size, Size);
+            }
+
+            RenderTarget2D renderModel()
+            {
+                RenderTargetImage target = new RenderTargetImage(Vector2.Zero, new Vector2(Size), ImageLayers.Foreground4, false);
+                TopViewCamera modelView = new TopViewCamera(22, new Vector2(MathHelper.PiOver2 - 0.8f, MathHelper.PiOver4 + 0.12f),
+                        Size, Size);
+
+                Vector3 modelGridSz = designer.voxelProject.drawLimits.Size.Vec;
+                modelView.LookTarget = modelGridSz * 0.5f;
+                modelView.Time_Update(0);
+                modelView.RecalculateMatrices();
+
+                target.Camera = modelView;
+                target.DrawImagesToTarget(null, new List<AbsDraw> { designer.voxelObj }, true, 0);
+                return target.renderTarget;
+            }
         }
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
@@ -119,7 +235,7 @@ namespace VikingEngine.Voxels
         int backupId = 0;
         public void saveBackUp()
         {
-            new WriteBinaryIO(new FilePath(UserVoxelObjFolder, "backup_save" + backupId.ToString(), 
+            new WriteBinaryIO(new FilePath(VoxelModelFolder, "backup_save" + backupId.ToString(), 
                 Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false),
                 designer.voxelProject.AnimationFrames.WriteBinaryStream, null);
 
@@ -128,7 +244,6 @@ namespace VikingEngine.Voxels
             {
                 backupId = 0;
             }
-
         }
 
         public static FilePath TemplatePath(int category, string name)

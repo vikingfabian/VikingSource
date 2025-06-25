@@ -149,7 +149,7 @@ namespace VikingEngine.LootFest.GameState
         void createFolderStructure()
         {
             DataStream.FilePath.CreateStorageFolder(LfLib.OverrideModelsFolder);
-            DataStream.FilePath.CreateStorageFolder(DesignerStorage.UserVoxelObjFolder);
+            DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
 
             for (int i = 0; i < VikingEngine.LootFest.Players.PlayerStorageGroup.FilesCount; ++i)
             {

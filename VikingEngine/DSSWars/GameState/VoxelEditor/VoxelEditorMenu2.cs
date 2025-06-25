@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -41,7 +42,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         const string Page_Recolor = "recolor";
         const string Page_RecolorTo = "recolor_to";
         const string Page_Layers = "layers";
-        bool listUserModels;
+        int listModels_0proj_1user_2retail;
 
         const float DefaultIconScale = 0.8f;
         RichMenuControllerPointer controllerPointer = null;
@@ -240,6 +241,11 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                     new RbText(designer.drawCoordMaterial.ToString()) }, new RbAction(designer.linkPickMaterial)));
             }
             content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary,
+               HudLib.NextArrow(new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsHudIconOpen, DefaultIconScale), new RbSpace(),
+                    new RbText(DssRef.todoLang.Editor_Projects) }),
+               new RbAction(beginListProjectFiles), new RbTooltip_Text(DssRef.lang.Editor_UserModels_Description)));
             content.Add(new ArtButton(RbButtonStyle.Primary, 
                 HudLib.NextArrow( new List<AbsRichBoxMember> { 
                     new RbImage(SpriteName.WarsHudIconOpen, DefaultIconScale), new RbSpace(), 
@@ -500,7 +506,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             RichBoxContent content = new RichBoxContent();
 
-            HudLib.returnButton(content, menu, false, closeMenu);
+            HudLib.returnButton(content, menu, true, closeMenu);
             content.h1(DssRef.todoLang.Editor_Layers_Titel, HudLib.TitleColor_Head);
 
             for (int layerIx = 0; layerIx < designer.voxelProject.layers.list.Count; ++layerIx)
@@ -512,17 +518,20 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 content.Add(new ArtOption(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
                     new RbText(string.Format( DssRef.todoLang.Editor_LayerNumber, TextLib.IndexToString(layerIx))) },
                     new RbAction1Arg<int>(selectLayer, layerIx)));
-                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.pjNumPlus) },
-                    new RbAction1Arg<int>(layerMergeDown, layerIx),new RbTooltip_Text(DssRef.todoLang.Editor_Layer_MergeDown)));
-                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsIncreaseArrowUp) },
-                    new RbAction2Arg<int, bool>(moveLayer, layerIx, false),
-                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Up))));
-                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsDecreaseArrowDown) },
-                    new RbAction2Arg<int, bool>(moveLayer, layerIx, true), 
-                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Down))));
+                
             }
 
             content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.pjNumPlus) },
+                    new RbAction(layerMergeDown), new RbTooltip_Text(DssRef.todoLang.Editor_Layer_MergeDown)));
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsIncreaseArrowUp) },
+                new RbAction1Arg<bool>(moveLayer, false),
+                new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Up))));
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsDecreaseArrowDown) },
+                new RbAction1Arg<bool>(moveLayer, true),
+                new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Down))));
+
+            content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Layer_AddCopy) },
                 new RbAction1Arg<bool>(addLayer, true)));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Layer_AddEmpty) },
@@ -534,23 +543,24 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         void toggleLayerVisible(int layer)
         {
             lib.Invert(ref designer.voxelProject.layers.list[layer].visible);
+            designer.updateVoxelObj();
         }
         void selectLayer(int layer)
         { 
             designer.voxelProject.layers.selectedIndex = layer;
         }
-        void moveLayer(int layer, bool down)
+        void moveLayer(bool down)
         {
             //designer.voxelProject.layers.selectedIndex = layer;
         }
-        void layerMergeDown(int layer)
+        void layerMergeDown()
         {
 
         }
 
         void addLayer(bool copy)
-        { 
-        
+        {
+            designer.voxelProject.addLayer(false, copy);
         }
         
         public void openReColorTo()
@@ -1001,6 +1011,99 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             return menu == null;
         }
 
+        void beginListProjectFiles()
+        {
+
+            RichBoxContent content = new RichBoxContent();
+
+            HudLib.returnButton(content, menu, true, closeMenu);
+            content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
+            menu.OpenMenu(content, Page_Loading);
+
+            //--
+            new Timer.AsynchActionTrigger(() => {
+                fileIndex = new FileIndex(DesignerStorage.VoxelProjectFolder,
+                    "*" + VoxelLib.VoxelProjectEnding, true, designer.Settings.SortSettings)
+                { 
+                    projectType = true,
+                };
+
+                Ref.update.AddSyncAction(new SyncAction(() =>
+                {
+                    listModels_0proj_1user_2retail = 0;
+                    listFilesMenu();
+                }));
+
+                //TopViewCamera modelView = null;
+
+                FileIndex fileIndex_sp = fileIndex;
+                var menu_sp = menu;
+                if (fileIndex_sp != null &&
+                    menu_sp != null)
+                {
+                    //Generate all icons
+                    foreach (var file in fileIndex_sp.Files)
+                    {
+                        if (menu != null &&
+                            (menu_sp.CurrentMenuState == Page_ListFiles || menu_sp.CurrentMenuState == Page_Loading)
+                            )
+                        {
+                            FilePath path  = DesignerStorage.VoxelProjectPath(file.Name);
+                            path.FileEnd = ".png";
+
+                            if (path.Exists())
+                            {
+                                using (FileStream stream = new FileStream(path.CompleteLocalPath(false), FileMode.Open))
+                                {
+                                    var texture = Texture2D.FromStream(Draw.graphicsDeviceManager.GraphicsDevice, stream);
+                                    file.Tag = texture;
+
+                                    menu_sp.needRefresh = true;
+                                }
+                            }
+                            //VoxelObjGridDataAnimHD animationFrames = new VoxelObjGridDataAnimHD();
+                            //BeginReadWrite.BinaryIO(false, path, null, animationFrames.ReadBinaryStream, null, false);
+                            //if (animationFrames.Frames != null)
+                            //{
+                            //    VoxelModel voxelObj = VoxelObjBuilder.BuildModelHD(animationFrames.Frames, Vector3.Zero);
+                            //    Vector3 modelGridSz = animationFrames.Frames[0].Size.Vec;
+
+                            //    new Timer.Action0ArgTrigger(renderModel);
+
+
+                            //    void renderModel()
+                            //    {
+                            //        const int Size = 32;
+
+                            //        RenderTargetImage target = new RenderTargetImage(Vector2.Zero, new Vector2(Size), ImageLayers.Foreground4, false);
+                            //        if (modelView == null)
+                            //        {
+                            //            modelView = new TopViewCamera(22, new Vector2(MathHelper.PiOver2 - 0.8f, MathHelper.PiOver4 + 0.12f),
+                            //                Size, Size);
+                            //        }
+                            //        modelView.LookTarget = modelGridSz * 0.5f;
+                            //        modelView.Time_Update(0);
+                            //        modelView.RecalculateMatrices();
+
+                            //        target.Camera = modelView;
+                            //        target.DrawImagesToTarget(null, new List<AbsDraw> { voxelObj }, true, 0);
+
+                            //        file.Tag = target.renderTarget;
+
+                            //        menu_sp.needRefresh = true;
+                            //    }
+                            //}
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                }
+
+            }, true);
+        }
+
         void beginListModelsPage(bool userModels)
         {
             RichBoxContent content = new RichBoxContent();
@@ -1011,12 +1114,12 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             //--
             new Timer.AsynchActionTrigger(()=> {
-                fileIndex = new FileIndex(userModels? DesignerStorage.UserVoxelObjFolder : LfLib.ModelsCategoryWars, 
+                fileIndex = new FileIndex(userModels? DesignerStorage.VoxelModelFolder : LfLib.ModelsCategoryWars, 
                     VoxelDesigner.searchPattern(false), userModels, designer.Settings.SortSettings);
                 
                 Ref.update.AddSyncAction(new SyncAction1Arg<bool>((userModels) =>
                 {
-                    listUserModels = userModels;
+                    listModels_0proj_1user_2retail = userModels? 1 : 2;
                     listFilesMenu();
                 }, userModels));
 
@@ -1107,24 +1210,24 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 }
                 else
                 { 
-                    previewImage = new RbTexture((RenderTarget2D)file.Tag);
+                    previewImage = new RbTexture((Texture2D)file.Tag);
                 }
 
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                             previewImage,
                             new RbSpace(),
                             new RbText(file.Name)
-                        }, new RbAction4Arg<string, bool, bool, bool>(loadUserModelLink, file.Name, listUserModels, false, false),
+                        }, new RbAction4Arg<string, int, bool, bool>(loadUserModelLink, file.Name, listModels_0proj_1user_2retail, false, false),
                 new RbTooltip_Text(LoadContent.CheckCharsSafety(file.Date.ToString(), LoadedFont.Regular))));
 
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.cmdSpyglass),
-                        }, new RbAction4Arg<string, bool, bool, bool>(loadUserModelLink, file.Name, listUserModels, true, false),
+                        }, new RbAction4Arg<string, int, bool, bool>(loadUserModelLink, file.Name, listModels_0proj_1user_2retail, true, false),
                 new RbTooltip_Text(DssRef.lang.Editor_Preview)));
 
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.cmdPlus),
-                        }, new RbAction4Arg<string, bool, bool, bool>(loadUserModelLink, file.Name, listUserModels, false, true),
+                        }, new RbAction4Arg<string, int, bool, bool>(loadUserModelLink, file.Name, listModels_0proj_1user_2retail, false, true),
                 new RbTooltip_Text(DssRef.lang.Editor_CombineWithCurrent), false));
             }
 
@@ -1164,19 +1267,29 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         //    layout.End();
         //}
 
-        void loadUserModelLink(string name, bool userModel, bool preview, bool combine)
+        void loadUserModelLink(string name, int type_0proj_1user_2retail, bool preview, bool combine)
         {
             //designer.loadOption_fromStorage = userModel;
             designer.loadOption_combine = combine;
             designer.loadOption_preview = preview;
 
-            if (userModel)
+            switch (type_0proj_1user_2retail)
             {
-                designer.storage.loadUserModel(name);
-            }
-            else
-            {
-                designer.storage.loadRetailModel(name);
+                case 0:
+                    {
+                        designer.storage.loadProject(name);
+                    }
+                    break;
+                case 1:
+                    {
+                        designer.storage.loadUserModel(name);
+                    }
+                    break;
+                case 2:
+                    {
+                        designer.storage.loadRetailModel(name);
+                    }
+                    break;
             }
         }
 

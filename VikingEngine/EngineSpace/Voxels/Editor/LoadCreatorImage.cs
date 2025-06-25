@@ -9,6 +9,8 @@ namespace VikingEngine.Voxels
 {
     delegate void CreatorImageLoaded(VoxelObjGridDataAnimHD animationFrames);
 
+    
+
     class LoadCreatorImage : IStreamIOCallback
     {
         VoxelObjGridDataAnimHD animationFrames;
@@ -24,6 +26,26 @@ namespace VikingEngine.Voxels
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         {
             callBack(animationFrames);
+        }
+    }
+
+    delegate void VoxelProjectLoaded(VoxelProject project);
+
+    class LoadVoxelProject : IStreamIOCallback
+    {
+        VoxelProject project;
+        VoxelProjectLoaded callBack;
+
+        public LoadVoxelProject(FilePath path, VoxelProjectLoaded callBack)
+        {
+            this.callBack = callBack;
+            project = new VoxelProject();
+            new ReadBinaryIO(path, project.read, this);
+        }
+
+        public void SaveComplete(bool save, int player, bool completed, byte[] value)
+        {
+            callBack(project);
         }
     }
 }
