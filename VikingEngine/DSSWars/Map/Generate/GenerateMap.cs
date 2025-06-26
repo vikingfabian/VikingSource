@@ -75,6 +75,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 switch (pass)
                 {
                     case GenerateMapPass.Clear:
+                        clearCityData();
                         generate_clearpass(worldMeta, generateSettings);
                         break;
 
@@ -983,6 +984,8 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
 
         void clearCityData()
         {
+            world.factions.Clear();
+
             if (world.cities != null)
             {
                 world.cities = null;

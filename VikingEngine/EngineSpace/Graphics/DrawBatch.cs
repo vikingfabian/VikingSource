@@ -30,7 +30,9 @@ namespace VikingEngine.Graphics
         }
 
         public void Add(int masterId, AbsDraw model)
-        {           
+        {
+            Debug.CrashIfThreaded();
+
             DrawBatch batch;
             if (batches.TryGetValue(masterId, out batch))
             {
@@ -109,6 +111,7 @@ namespace VikingEngine.Graphics
 
         public void Remove(int masterId, AbsDraw model)
         {
+            Debug.CrashIfThreaded();
             DrawBatch batch;
             if (batches.TryGetValue(masterId, out batch))
             {
