@@ -1,13 +1,10 @@
 ﻿UPDATE
 -Change Log-
-* Added localizations
-* Spell fix: "circle"
+* 
 * Optimized: reduced flag objects
 * Optimized: voxel model loading
 
-* fixed: map editor crash
-x Running clear pass doesnt clear previous nations
-
+X tech too fast
 Voxel editor: 
 * added profile colors
 * bucket fill bug fix
