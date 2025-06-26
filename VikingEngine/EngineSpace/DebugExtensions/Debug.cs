@@ -84,7 +84,7 @@ namespace VikingEngine
             viewOutput = true;
             OutputWindow = new OutputWindow();
         }
-        static CirkleCounterUp errorIndex = new CirkleCounterUp(0, 9);
+        static CircleCounterUp errorIndex = new CircleCounterUp(0, 9);
 
 
         //public static void LogThreadStart(System.Threading.Thread thread)

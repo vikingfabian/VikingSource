@@ -22,7 +22,7 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
 
         public int rotationType_0non_1idle_2full = 0;
         DiceRoll rnd = new DiceRoll();
-        CirkleCounterUp currentHiddenFace;
+        CircleCounterUp currentHiddenFace;
         int facesBeforeResult = 4;
         float rotationAdd;
         float fullRotationSpeed = 17f;
@@ -235,7 +235,7 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
             {
                 nextDiceSide(modelFace);
             }
-            currentHiddenFace = new CirkleCounterUp(0, 3);
+            currentHiddenFace = new CircleCounterUp(0, 3);
 
             model.refreshModel();
         }

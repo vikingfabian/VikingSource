@@ -16,7 +16,7 @@ namespace VikingEngine.LootFest.GO
         const float ReloadTime = 180;
         //const int ThrowJavelinAttackIndex = 2;
 
-        CirkleCounterUp attackIndex = new CirkleCounterUp(1, 1);
+        CircleCounterUp attackIndex = new CircleCounterUp(1, 1);
         WeaponAttack.HandWeaponAttackSettings spearStab, spearSwing;
 
 

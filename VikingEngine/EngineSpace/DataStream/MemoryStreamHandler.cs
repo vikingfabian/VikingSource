@@ -232,7 +232,7 @@ namespace VikingEngine.DataStream
         ulong dataSumValue(byte[] data, int dataLenght)
         {
             ulong sum = 0;
-            CirkleCounterUp primIx = new CirkleCounterUp(0, Primes.Length - 1);
+            CircleCounterUp primIx = new CircleCounterUp(0, Primes.Length - 1);
             for (int i = 0; i < dataLenght; ++i)
             {
                 sum += (ulong)(data[i] * Primes[primIx.Next()]);

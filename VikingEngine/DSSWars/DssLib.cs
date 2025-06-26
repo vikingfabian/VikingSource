@@ -265,7 +265,7 @@ namespace VikingEngine.DSSWars
     { 
         Water,
         Land,
-        Cirkle,
+        Circle,
         NUM
     }
 

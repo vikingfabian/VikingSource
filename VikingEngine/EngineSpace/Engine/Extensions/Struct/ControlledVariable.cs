@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine
 {
-    interface ICirkleCounter
+    interface ICircleCounter
     {
         int Value { get; }
         int Max { get; }
@@ -486,7 +486,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CirkleCounter
+    public struct CircleCounter
     {
         int value;
         public int Value
@@ -505,11 +505,11 @@ namespace VikingEngine
         public int Min
         { get { return min; } }
 
-        public CirkleCounter(int maxValue)
+        public CircleCounter(int maxValue)
             : this(0, 0, maxValue)
         {
         }
-        public CirkleCounter(int startVal,int minValue, int maxValue)
+        public CircleCounter(int startVal,int minValue, int maxValue)
         {
             min = minValue;
             max = maxValue;
@@ -530,7 +530,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CirkleCounterUp : ICirkleCounter
+    public struct CircleCounterUp : ICircleCounter
     {
         public int value;
         public int Value
@@ -539,16 +539,16 @@ namespace VikingEngine
         public int Max
         { get { return max; } }
 
-        public CirkleCounterUp(int maxValue)
+        public CircleCounterUp(int maxValue)
             : this(0, maxValue)
         {
         }
-        public CirkleCounterUp(int startVal, int maxValue)
+        public CircleCounterUp(int startVal, int maxValue)
         {
             max = maxValue;
             value = startVal;
         }
-        public static CirkleCounterUp operator ++(CirkleCounterUp val)
+        public static CircleCounterUp operator ++(CircleCounterUp val)
         {
             val.Next();
             return val;
@@ -581,7 +581,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CirkleCounterDown : ICirkleCounter
+    public struct CircleCounterDown : ICircleCounter
     {
         public int value;
         public int Value
@@ -590,7 +590,7 @@ namespace VikingEngine
         public int Max
         { get { return max; } }
 
-        public CirkleCounterDown(int maxValue)
+        public CircleCounterDown(int maxValue)
         {
             max = maxValue;
             value = maxValue;

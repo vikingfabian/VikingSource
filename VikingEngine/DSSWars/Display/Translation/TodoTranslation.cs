@@ -22,7 +22,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Immigrants_UnhousedAreLost => "Immigrants, without a living space, will dissapear after some time";
 
 
-
+        public string MapStartAs_Water => "Water";
+        public string MapStartAs_Land => "Land";
+        public string MapStartAs_Circle => "Circle";
 
     }
 

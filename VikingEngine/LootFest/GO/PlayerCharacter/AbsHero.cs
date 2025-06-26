@@ -67,7 +67,7 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
         protected int WalkingFramesCount = 6;
 
         float animationTime = 0;
-        protected CirkleCounterUp currentWalkingFrame;
+        protected CircleCounterUp currentWalkingFrame;
         Image redBorder = null;
 
         public bool DebugMode = false;
@@ -786,7 +786,7 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
 
         virtual public void UpdateAppearance(bool netShare)
         {
-            currentWalkingFrame = new CirkleCounterUp(WalkingFramesCount - 1);
+            currentWalkingFrame = new CircleCounterUp(WalkingFramesCount - 1);
 
             Players.SuitAppearance suitAppear;
             //if (localMember)

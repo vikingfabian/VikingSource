@@ -223,7 +223,7 @@ namespace VikingEngine.LootFest.Players
         Vector2 camGoalAngle;
         float camGoalAngleLength;
         const int AngleSamplesCount = 24;
-        CirkleCounterUp currentAngleSample = new CirkleCounterUp(AngleSamplesCount - 1);
+        CircleCounterUp currentAngleSample = new CircleCounterUp(AngleSamplesCount - 1);
         struct CameraSampleValue
         {
             public Vector2 direction;
