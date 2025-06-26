@@ -5,6 +5,7 @@
 * Optimized: voxel model loading
 
 X tech too fast
+
 Voxel editor: 
 * added profile colors
 * bucket fill bug fix
@@ -14,6 +15,7 @@ Voxel editor:
 X remove layer
 X merge layer
 X shift description
+X load retail character models
 
 ! VoxelObjSave has been renamed to "Voxel Model"
 
