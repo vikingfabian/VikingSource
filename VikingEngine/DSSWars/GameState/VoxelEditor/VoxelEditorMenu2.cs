@@ -552,10 +552,13 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         void moveLayer(bool down)
         {
             //designer.voxelProject.layers.selectedIndex = layer;
+            designer.voxelProject.moveLayer(down);
+            designer.updateVoxelObj();
         }
         void layerMergeDown()
         {
-
+            designer.voxelProject.layerMergeDown();
+            designer.updateVoxelObj();
         }
 
         void addLayer(bool copy)

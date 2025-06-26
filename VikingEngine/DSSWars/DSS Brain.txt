@@ -2,7 +2,7 @@
 -Change Log-
 * Added localizations
 * Spell fix: "circle"
-* Optimized: reduced objects in profile color
+* Optimized: reduced flag objects
 * Optimized: voxel model loading
 
 * fixed: map editor crash
@@ -13,6 +13,10 @@ Voxel editor:
 * bucket fill bug fix
 * layers
 * saving project file
+
+X remove layer
+X merge layer
+X shift description
 
 ! VoxelObjSave has been renamed to "Voxel Model"
 

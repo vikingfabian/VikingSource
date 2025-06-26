@@ -131,7 +131,17 @@ namespace VikingEngine.Voxels
         {
             lock (layers.list)
             {
-                var layer = new VoxLayer(drawLimits.Size, animatedLayer, currentFrame.Length);
+
+                VoxLayer layer;
+
+                if (copy && arraylib.HasMembers(layers.list))
+                {
+                    layer = layers.Selected().Clone();
+                }
+                else
+                {
+                    layer = new VoxLayer(drawLimits.Size, animatedLayer, currentFrame.Length);
+                }
 
                 if (layers.Count == 0)
                 {
@@ -365,7 +375,15 @@ namespace VikingEngine.Voxels
             get { return currentFrame.Max > 0; }
         }
 
-       
+        public void moveLayer(bool down)
+        {
+            //designer.voxelProject.layers.selectedIndex = layer;
+            layers.MoveSelected(lib.BoolToLeftRight(down));
+        }
+        public void layerMergeDown()
+        {
+
+        }
 
         public void write(System.IO.BinaryWriter w)
         {

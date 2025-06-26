@@ -45,6 +45,8 @@ namespace VikingEngine.Voxels
             animationFrames = loadedModel;
         }
 
+        
+
         public VoxLayer Clone()
         {
             var clone = new VoxLayer()
@@ -53,6 +55,11 @@ namespace VikingEngine.Voxels
                 visible = visible,
                 animationFrames = animationFrames.Clone()
             };
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                clone.name = name + "_c";
+            }
 
             return clone;
         }

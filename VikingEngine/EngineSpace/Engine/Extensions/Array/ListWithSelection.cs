@@ -179,6 +179,10 @@ namespace VikingEngine
             selectedIndex = Ref.rnd.Int(list.Count);
         }
 
+        public void MoveSelected(int move)
+        {
+            selectedIndex = arraylib.MoveElement(list, selectedIndex, move);
+        }
         public int Count
         {
             get
