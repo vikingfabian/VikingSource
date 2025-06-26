@@ -253,7 +253,6 @@ namespace VikingEngine.Voxels
                 if (layer.animationFrames.Frames.Count > length)
                 {
                     length = layer.animationFrames.Frames.Count;
-                    break;
                 }
             }
 
@@ -303,6 +302,16 @@ namespace VikingEngine.Voxels
                 return true;
             }
             return false;
+        }
+
+        public void convertAnimationToLayers()
+        {
+            var animation = layers.Pull();
+            foreach (var frame in animation.animationFrames.Frames)
+            {
+                layers.AddAfter(new VoxLayer(frame), true);
+            }
+            refreshFrameCount();
         }
 
         public void Rotate(int rotationSteps, bool allFrames, bool allLayers)

@@ -569,7 +569,7 @@ namespace VikingEngine.Voxels
             }
         }
 
-        virtual protected void storeUndoableAction(bool allFrames, bool allLayers)
+        virtual public void storeUndoableAction(bool allFrames, bool allLayers)
         {
             this.undolist.add(new UndoAction(this, allFrames? -1 : voxelProject.currentFrame.Value, allLayers? -1 : voxelProject.layers.selectedIndex));
         }

@@ -40,6 +40,11 @@ namespace VikingEngine.Voxels
             animationFrames = new VoxelObjGridDataAnimHD(size, animatedLayer ? frameCount : 1);
         }
 
+        public VoxLayer(VoxelObjGridDataHD loadedModel)
+        {
+            animationFrames = new VoxelObjGridDataAnimHD(new List<VoxelObjGridDataHD> { loadedModel });
+        }
+
         public VoxLayer(VoxelObjGridDataAnimHD loadedModel)
         {
             animationFrames = loadedModel;

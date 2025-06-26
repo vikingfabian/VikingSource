@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                     mainMenu();
                     break;
                 case Page_Canvas:
-                    LinkCanvasSize();
+                    CanvasMenu();
                     break;
                 case Page_Color:
                     selectColorMenu();
@@ -326,6 +326,11 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameL, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Back)));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameR, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Forward)));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameToEndR, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.ToEnd)));
+
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Convert animation to layers") },
+                    new RbAction(convertAnimationToLayers)));
             }
 
             content.newParagraph();
@@ -354,6 +359,13 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             Refresh(content);
         }
 
+        void convertAnimationToLayers()
+        { 
+            designer.storeUndoableAction(true, true);
+            designer.voxelProject.convertAnimationToLayers();
+            designer.updateVoxelObj();
+        }
+
         public void beginEditName()
         {
             new TextInput(designer.storage.saveFileName, NameEditEvent, null);
@@ -364,7 +376,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             menu.needRefresh = true;
         }
 
-        public void LinkCanvasSize()
+        public void CanvasMenu()
         {
             RichBoxContent content = new RichBoxContent();
 
@@ -518,7 +530,10 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 content.Add(new ArtOption(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
                     new RbText(string.Format( DssRef.todoLang.Editor_LayerNumber, TextLib.IndexToString(layerIx))) },
                     new RbAction1Arg<int>(selectLayer, layerIx)));
-                
+                content.Add(new ArtToggle(layer.animatedLayer, new List<AbsRichBoxMember> {  
+                    new RbText(layer.animationFrames.Frames.Count.ToString()),
+                    new RbImage(layer.animatedLayer? SpriteName.VoxelEditorAllFrames : SpriteName.VoxelEditorFrameLocked) },
+                    new RbAction1Arg<int>(toggleLayerAnimated, layerIx), new RbTooltip_Text(DssRef.todoLang.Editor_ToggleAnimatedLayer)));
             }
 
             content.newParagraph();
@@ -545,6 +560,12 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             lib.Invert(ref designer.voxelProject.layers.list[layer].visible);
             designer.updateVoxelObj();
         }
+        void toggleLayerAnimated(int layer)
+        {
+            lib.Invert(ref designer.voxelProject.layers.list[layer].animatedLayer);
+            designer.updateVoxelObj();
+        }
+
         void selectLayer(int layer)
         { 
             designer.voxelProject.layers.selectedIndex = layer;

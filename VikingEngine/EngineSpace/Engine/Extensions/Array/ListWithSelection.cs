@@ -43,11 +43,25 @@ namespace VikingEngine
         //    }
         //}
 
-        public void Add(T newMember, bool selectNewMember)
+        public void Add(T newMember, bool selectNewMember = false)
         {
             list.Add(newMember);
             if (selectNewMember)
                 selectedIndex = list.Count - 1;
+        }
+
+        public void AddAfter(T newMember, bool selectNewMember = false)
+        {
+            int atIndex = 0;
+            if (list.Count > 0) {
+                atIndex = selectedIndex + 1;
+            }
+            list.Insert(atIndex, newMember);
+
+            if (selectNewMember)
+            {
+                selectedIndex = atIndex;
+            }
         }
 
         public T Selected()
@@ -146,6 +160,14 @@ namespace VikingEngine
         {
             list.RemoveAt(selectedIndex);
             selectedIndex = Bound.Set(selectedIndex, 0, list.Count - 1);
+        }
+
+        public T Pull()
+        {
+            var result = list[selectedIndex];
+            list.RemoveAt(selectedIndex);
+            selectedIndex = Bound.Set(selectedIndex, 0, list.Count - 1);
+            return result;
         }
 
         public void RemoveAndUnselect()
