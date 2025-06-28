@@ -69,11 +69,24 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             SelectedMaterial = col;
             menusystem.closeMenu();
         }
+        public void replaceAllMaterials()
+        {
+            storeUndoableAction(repeateOnAllFrames, repeateOnAllLayers);
+            voxelProject.replaceAllMaterialProperties(SelectedMaterial.material, repeateOnAllFrames, repeateOnAllLayers);
+            menusystem.closeMenu();
+        }
+        public void pickColorAndMaterialLink(BlockHD col)
+        {
+            //col.material = SelectedMaterial.material;
+
+            SelectedMaterial = col;
+            menusystem.closeMenu();
+        }
 
         public void pickMaterialLink(MaterialProperty material)
         {
             Settings.Material.material = material;
-            menusystem.closeMenu();
+            //menusystem.closeMenu();
         }
 
         override public BlockHD SelectedMaterial

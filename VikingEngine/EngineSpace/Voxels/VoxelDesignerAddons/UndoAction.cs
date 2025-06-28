@@ -86,7 +86,7 @@ namespace VikingEngine.Voxels
             }
             else
             {
-                oneFrame = designer.voxelProject.AnimationFrames.Frames[frame].Clone();
+                oneFrame = designer.voxelProject.layers.Selected().GetFrame(frame).Clone();
             }
         }
 
@@ -104,7 +104,7 @@ namespace VikingEngine.Voxels
             }
             else if (oneFrame != null)
             {
-                designer.voxelProject.AnimationFrames.Frames[frame] = oneFrame;
+                designer.voxelProject.layers.Selected().SetFrame(frame, oneFrame);
             }
             else
             {

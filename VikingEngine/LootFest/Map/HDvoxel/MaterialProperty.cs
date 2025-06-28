@@ -10,8 +10,9 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         Empty = BlockHD.EmptyBlockMaterial,
         Default = BlockHD.DefaultBlockMaterial,
         //Profile = BlockHD.ProfileBlockMaterial,
-        AntiBlock,
-        
+        //AntiBlock,
+        Replaceable, //black is anti block
+
         Layer_AboveAll,
         Layer_Above1,
         Layer_Below1,

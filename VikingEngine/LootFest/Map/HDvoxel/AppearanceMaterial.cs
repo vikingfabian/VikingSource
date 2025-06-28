@@ -21,7 +21,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
     {
         public static AppearanceMaterial Material1, Material2, Material3, Material4, Material5;
 
-        public static void Init()
+        public static void Init() //Lootfest only!
         {
             Material1 = new AppearanceMaterial(Color.Gray, true);
             Material2 = new AppearanceMaterial(new Color(65,74,129), false); //Blå
@@ -35,7 +35,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         public AppearanceMaterial(Color color, bool red)
             :this()
         {
-            BlockHD baseBlock = new BlockHD(color, MaterialProperty.Default);
+            BlockHD baseBlock = new BlockHD(color, MaterialProperty.Replaceable);
             setupTints(baseBlock, red);
         }
 

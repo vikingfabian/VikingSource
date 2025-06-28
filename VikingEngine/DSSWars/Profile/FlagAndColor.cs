@@ -43,9 +43,9 @@ namespace VikingEngine.DSSWars
             LeaderCol = new AppearanceMaterial(new Color(50, 25, 0), false); //Dark brown
 
 
-            BlockHD.JointUp = BlockHD.ToBlockValue(new Color(128, 0, 128), BlockHD.DefaultBlockMaterial); //purple
-            BlockHD.JointForward = BlockHD.ToBlockValue(new Color(170, 0, 128), BlockHD.DefaultBlockMaterial); //red purple
-            BlockHD.JointBack = BlockHD.ToBlockValue(new Color(128, 0, 170), BlockHD.DefaultBlockMaterial); //blue purple
+            BlockHD.JointUp = BlockHD.ToBlockValue(new Color(128, 0, 128), BlockHD.ReplaceMaterial); //purple
+            BlockHD.JointForward = BlockHD.ToBlockValue(new Color(170, 0, 128), BlockHD.ReplaceMaterial); //red purple
+            BlockHD.JointBack = BlockHD.ToBlockValue(new Color(128, 0, 170), BlockHD.ReplaceMaterial); //blue purple
         }
 
         int index;
@@ -2854,11 +2854,11 @@ namespace VikingEngine.DSSWars
         //}
         public void FillBlockColors(Span<ushort> buffer)
         {
-            buffer[0] = BlockHD.ToBlockValue(col0_Main, BlockHD.UnknownMaterial);
-            buffer[1] = BlockHD.ToBlockValue(col1_Detail1, BlockHD.UnknownMaterial);
-            buffer[2] = BlockHD.ToBlockValue(col2_Detail2, BlockHD.UnknownMaterial);
-            buffer[3] = BlockHD.ToBlockValue(col3_Skin, BlockHD.UnknownMaterial);
-            buffer[4] = BlockHD.ToBlockValue(col4_Hair, BlockHD.UnknownMaterial);
+            buffer[0] = BlockHD.ToBlockValue(col0_Main, BlockHD.DefaultMaterial);
+            buffer[1] = BlockHD.ToBlockValue(col1_Detail1, BlockHD.DefaultMaterial);
+            buffer[2] = BlockHD.ToBlockValue(col2_Detail2, BlockHD.DefaultMaterial);
+            buffer[3] = BlockHD.ToBlockValue(col3_Skin, BlockHD.DefaultMaterial);
+            buffer[4] = BlockHD.ToBlockValue(col4_Hair, BlockHD.DefaultMaterial);
         }
 
 

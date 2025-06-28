@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Editor_VoxelCount => "{0} voxels";
 
         public string Editor_Layers_Titel => "Layers";
+        public string Editor_Layers_All => "All layers";
         public string Editor_LayerNumber => "Layer {0}";
 
         public string Editor_Layer_AddEmpty => "Add empty layer";

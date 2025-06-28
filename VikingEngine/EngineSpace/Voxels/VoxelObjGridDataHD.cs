@@ -86,6 +86,28 @@ namespace VikingEngine.Voxels
                 }
             }
         }
+
+        public void SetMaterialProperty(MaterialProperty toMaterial)
+        {
+            IntVector3 pos = IntVector3.Zero;
+            IntVector3 sz = Size;
+
+            for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+            {
+                for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                {
+                    for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                    {
+                        ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
+                        if (value != BlockHD.EmptyBlock)
+                        {
+                            MaterialGrid[pos.X, pos.Y, pos.Z] = BlockHD.SetMaterialProperty(value, toMaterial);
+                        }
+                    }
+                }
+            }
+        }
+
         public void ReplaceMaterial(Dictionary<ushort, ushort> findReplace, IntervalIntV3 inVolume)
         {
             IntVector3 pos = IntVector3.Zero;
@@ -751,10 +773,10 @@ namespace VikingEngine.Voxels
                         material = Get(pos);
                         if (material != BlockHD.EmptyBlock)
                         {
-                            if (BlockHD.ToMaterialValue(material) == BlockHD.AntiMaterial)
-                            {
-                                material = BlockHD.EmptyBlock;
-                            }
+                            //if (BlockHD.ToMaterialValue(material) == BlockHD.AntiMaterial)
+                            //{
+                            //    material = BlockHD.EmptyBlock;
+                            //}
 
                             origo.GetNeighborPos(pos).SetBlock_IfOpen(material);//LootFest.LfRef.chunks.SetIfOpen(origo.GetNeighborPos(pos), material);
                         }

@@ -32,7 +32,7 @@ namespace VikingEngine.Voxels
 
         public VoxelObjGridDataHD CurrentVoxelGrid
         {
-            get { return layers.Selected().animationFrames.Frames[currentFrame.Value]; }
+            get { return layers.Selected().GetFrame(currentFrame.Value); }
             //set { layers.Selected().animationFrames.Frames[currentFrame.Value] = value; }
         }
 
@@ -60,8 +60,21 @@ namespace VikingEngine.Voxels
             addLayer(loadedModel);
         }
 
-       
-
+        public void replaceAllMaterialProperties(MaterialProperty toMaterial, bool allFrames, bool allLayers)
+        {
+            if (allLayers)
+            {
+                foreach (var layer in layers.list)
+                {
+                    layer.replaceAllMaterials(toMaterial, allFrames, currentFrame.Value);
+                }
+            }
+            else
+            {
+                layers.Selected().replaceAllMaterials(toMaterial, allFrames, currentFrame.Value);
+            }
+        }
+        
         public List<VoxLayer> LayersCopy()
         { 
              var layersCopy = new List<VoxLayer>(layers.Count);
@@ -149,7 +162,7 @@ namespace VikingEngine.Voxels
                 }
                 else
                 {
-                    layers.list.Insert(currentFrame.Value, layer);
+                    layers.AddBefore(layer, true);
                 }
             }
 
@@ -393,6 +406,8 @@ namespace VikingEngine.Voxels
         {
 
         }
+
+
 
         public void write(System.IO.BinaryWriter w)
         {

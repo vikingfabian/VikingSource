@@ -119,8 +119,6 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
         }
 
-
-
         public void mainMenu()
         {
             fileIndex = null;
@@ -538,7 +536,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.pjNumPlus) },
-                    new RbAction(layerMergeDown), new RbTooltip_Text(DssRef.todoLang.Editor_Layer_MergeDown)));
+                new RbAction(layerMergeDown), new RbTooltip_Text(DssRef.todoLang.Editor_Layer_MergeDown)));
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsIncreaseArrowUp) },
                 new RbAction1Arg<bool>(moveLayer, false),
                 new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Up))));
@@ -620,7 +618,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
 
             content.newLine();
-            colorPalette(content, designer.replaceSelectionMaterialsTo);
+            colorPalette(content, designer.replaceSelectionMaterialsTo, designer.pickColorAndMaterialLink);
 
             Refresh(content);
 
@@ -645,6 +643,14 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 new RbImage(SpriteName.VoxelEditorAllFrames), new RbSpace(),
                 new RbText(DssRef.lang.Editor_Animation_AllFrames) },
                 designer.bRepeateOnAllFramesProperty, new RbTooltip_Text(DssRef.lang.Editor_Animation_AllFrames_ActionDescription)));
+        }
+
+        void allLayersChkBox(RichBoxContent content)
+        {
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.MissingImage), new RbSpace(),
+                new RbText(DssRef.todoLang.Editor_Layers_All) },
+                designer.bRepeateOnAllLayersProperty));
         }
 
         void rotateFlipToHud(RichBoxContent content)
@@ -758,7 +764,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         //    layout.End();
         //}
 
-        public void colorPalette(RichBoxContent content, Action<BlockHD> link)
+        public void colorPalette(RichBoxContent content, Action<BlockHD> link, Action<BlockHD> replaceLink)
         {
 
             var inUse = designer.materialsInUse(true, out ushort selected);
@@ -802,7 +808,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             //new GuiSectionSeparator(layout);
 
-            DSSSoldierPalette(content, link);
+            DSSSoldierPalette(content, replaceLink);
 
             //new GuiSectionSeparator(layout);
             content.Add(new RbSeperationLine());
@@ -846,8 +852,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             appearanceMaterials(FlagAndColor.LeaderCol, DssRef.todoLang.ProfileEditor_LeaderColor, content, link);
                 
             content.newLine();
-            appearanceMaterialsButton(true, BlockHD.JointUp, "Joint up", content, link);
-            appearanceMaterialsButton(true, BlockHD.JointForward, "Joint forward", content, link);
+            appearanceMaterialsButton(true, BlockHD.JointUp, ".Joint up", content, link);
+            appearanceMaterialsButton(true, BlockHD.JointForward, ".Joint forward", content, link);
 
         }
         void appearanceMaterials(AppearanceMaterial mat, string type, RichBoxContent content, Action<BlockHD> link)
@@ -937,7 +943,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             //new GuiIntSlider(SpriteName.NO_IMAGE, "B", blueProperty, RGBrange, false, layout);
             //new GuiSectionSeparator(layout);
 
-            colorPalette(content, designer.pickColorLink);
+            colorPalette(content, designer.pickColorLink, designer.pickColorAndMaterialLink);
 
             Refresh(content);
         }
@@ -962,8 +968,17 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             }
 
+            content.newParagraph();
+            allFramesChkBox(content);
+            content.newLine();
+            allLayersChkBox(content);
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Replace all") }, new RbAction(designer.replaceAllMaterials)));
+
             Refresh(content);
         }
+
+        
 
         void colorTintButton(Color col, Color tint, bool currentCol, SpriteName icon, string text, RichBoxContent content, Action<BlockHD> link)
         {

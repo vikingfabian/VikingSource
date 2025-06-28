@@ -58,8 +58,11 @@
     <Optimize>True</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Content\DSS\Map\**" />
     <Compile Remove="LF2\**" />
+    <EmbeddedResource Remove="Content\DSS\Map\**" />
     <EmbeddedResource Remove="LF2\**" />
+    <None Remove="Content\DSS\Map\**" />
     <None Remove="LF2\**" />
   </ItemGroup>
   <ItemGroup>
@@ -92,9 +95,6 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.3" />
     <PackageReference Include="NVorbis" Version="0.10.5" />
     <PackageReference Include="Sentry" Version="5.7.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\DSS\Map\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />

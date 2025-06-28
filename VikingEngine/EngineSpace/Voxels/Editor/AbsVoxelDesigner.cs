@@ -820,7 +820,7 @@ namespace VikingEngine.Voxels
 
         public ushort Get(IntVector3 drawPoint)
         {
-            return voxelProject.layers.Selected().animationFrames.Frames[voxelProject.currentFrame.Value].Get(drawPoint);
+            return voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).Get(drawPoint);
         }
 
         virtual public void SetVoxel(int frame, IntVector3 drawPoint, ushort material)
@@ -996,10 +996,10 @@ namespace VikingEngine.Voxels
        protected void UpdateVoxelObj(IntervalIntV3 updateArea)
        {
             updateFrameInfo();
-            if (voxelObj != null)
-            {
-                voxelObj.DeleteMe();
-            }
+            //if (voxelObj != null)
+            //{
+            //    voxelObj.DeleteMe();
+            //}
             updateVoxelObj(updateArea);
        }
 
@@ -1015,15 +1015,17 @@ namespace VikingEngine.Voxels
 
                 Ref.update.AddSyncAction(new SyncAction( () =>
                 {
-                    if (voxelObj != null)
-                    {
-                        Ref.draw.RemoveFromRenderList(voxelObj);
-                    }
-                    voxelObj = VoxelObjBuilder.BuildModelHD(data.Frames, Vector3.Zero);//new List<VoxelObjGridDataHD> { voxelProject.CurrentVoxelGrid }, Vector3.Zero);
+                    var prev = voxelObj;
+                    
+                    voxelObj = VoxelObjBuilder.BuildModelHD(data.Frames, Vector3.Zero);
                     
                     if (voxelObj != null)
                     {
                         Ref.draw.AddToRenderList(voxelObj);
+                    }
+                    if (prev != null)
+                    {
+                        Ref.draw.RemoveFromRenderList(prev);
                     }
                 }));
             });
@@ -1107,8 +1109,9 @@ namespace VikingEngine.Voxels
             return grid;
         }
 
-       
         
+
+
         public void LinkSelRotateC()
         {
             rotateHeader(true);

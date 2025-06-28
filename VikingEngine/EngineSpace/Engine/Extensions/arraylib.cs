@@ -74,22 +74,19 @@ namespace VikingEngine
             if (index < 0 || index >= list.Count)
                 throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
             if (move == 0 || list.Count < 2)
-                return 0;
+                return index;
 
             int newIndex = index + move;
             newIndex = Math.Max(0, Math.Min(newIndex, list.Count - 1)); // clamp to list bounds
 
             if (newIndex == index)
-                return newIndex;
+                return index;
 
-            T item = list[index];
-            list.RemoveAt(index);
+            // Swap elements
+            T temp = list[index];
+            list[index] = list[newIndex];
+            list[newIndex] = temp;
 
-            // If moving forward in the list, the target index shifts down by 1 after removal
-            if (newIndex > index)
-                newIndex--;
-
-            list.Insert(newIndex, item);
             return newIndex;
         }
 

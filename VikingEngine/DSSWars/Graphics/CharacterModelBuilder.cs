@@ -10,6 +10,25 @@ namespace VikingEngine.DSSWars
 {
     class CharacterModelBuilder : Voxels.ModelBuilder
     {
+        //modsoldier_hat_allclasses
+        /*Hats
+         * 0 soldier
+         * 1 archer
+         * 2 slinger
+         * 3 javelin
+         * 4 bannerman
+         * 5 hirdman
+         * 6 hammer
+         * 7 pike
+         * 8 longsword
+         * 9 viking
+         * 10 crossbow
+         * 11 gun far
+         * 12 gun near
+         * 13 farmer
+         */
+
+
         static readonly IntVector3 GridSize = new IntVector3(26, 48, 78);
         const int FrameCount = 7;
         //const int SwordAttackFrame = 1;

@@ -26,28 +26,30 @@ namespace VikingEngine
             this.list = list;
         }
 
-        //public void AddAfterSeleted(T newMember, bool selectNewMember)
-        //{
-        //    if (list.Count == 0)
-        //    {
-        //        list.Add(newMember);
-        //        selectedIndex = 0;
-        //    }
-        //    else
-        //    {
-        //        list.Insert(selectedIndex + 1, newMember);
-        //        if (selectNewMember)
-        //        {
-        //            ++selectedIndex;
-        //        }
-        //    }
-        //}
-
         public void Add(T newMember, bool selectNewMember = false)
         {
             list.Add(newMember);
             if (selectNewMember)
                 selectedIndex = list.Count - 1;
+        }
+        public void AddBefore(T newMember, bool selectNewMember = false)
+        {
+            int atIndex = 0;
+            if (list.Count > 0)
+            {
+                atIndex = Math.Max(0, selectedIndex);
+            }
+            list.Insert(atIndex, newMember);
+
+            if (selectNewMember)
+            {
+                selectedIndex = atIndex;
+            }
+            else if (atIndex <= selectedIndex)
+            {
+                // Shift selection to maintain selection on original item
+                selectedIndex++;
+            }
         }
 
         public void AddAfter(T newMember, bool selectNewMember = false)

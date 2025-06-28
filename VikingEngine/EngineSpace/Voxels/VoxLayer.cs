@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
+using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Voxels;
 
 namespace VikingEngine.Voxels
@@ -50,7 +51,20 @@ namespace VikingEngine.Voxels
             animationFrames = loadedModel;
         }
 
-        
+        public void replaceAllMaterials(MaterialProperty toMaterial, bool allFrames, int currentFrame)
+        {
+            if (!animatedLayer || allFrames)
+            {
+                foreach (var frame in animationFrames.Frames)
+                {
+                    frame.SetMaterialProperty(toMaterial);
+                }
+            }
+            else
+            {
+                animationFrames.Frames[currentFrame].SetMaterialProperty(toMaterial);
+            }
+        }
 
         public VoxLayer Clone()
         {
@@ -90,6 +104,18 @@ namespace VikingEngine.Voxels
             else
             {
                 return animationFrames.Frames.First();
+            }
+        }
+
+        public void SetFrame(int frame, VoxelObjGridDataHD grid)
+        {
+            if (animatedLayer)
+            {
+                animationFrames.Frames[frame] = grid;
+            }
+            else
+            {
+                animationFrames.Frames[0] = grid;
             }
         }
 

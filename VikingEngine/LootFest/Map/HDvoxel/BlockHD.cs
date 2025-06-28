@@ -13,8 +13,8 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         //public const byte ProfileBlockMaterial = 2;
         public const byte BlockPatternMaterial = 15;
         public const byte EndBlockMaterial = BlockPatternMaterial - 1;
-        public static readonly byte UnknownMaterial = (byte)MaterialProperty.Default;
-        public static readonly byte AntiMaterial = (byte)MaterialProperty.AntiBlock;
+        public static readonly byte DefaultMaterial = (byte)MaterialProperty.Default;
+        public static readonly byte ReplaceMaterial = (byte)MaterialProperty.Replaceable;
 
         public const ushort EmptyBlock = 0;
 
@@ -152,7 +152,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 
         public static Color FilterColor(Color col)
         {
-            return ToColor(ToBlockValue(col, UnknownMaterial));
+            return ToColor(ToBlockValue(col, DefaultMaterial));
         }
 
         public void tintSteps(int addR, int addG, int addB)
@@ -165,17 +165,26 @@ namespace VikingEngine.LootFest.Map.HDvoxel
             return (MaterialProperty)(blockValue & 15);
         }
 
-        //public static bool IsProfileMaterial(ushort blockValue)
-        //{
-        //    return (blockValue & 15) == ProfileBlockMaterial;
-        //}
-
         public static int ToMaterialValue(ushort blockValue)
         {
             return blockValue & 15;
         }
 
         
+        public static ushort SetMaterialProperty(ushort blockValue, MaterialProperty toMaterial)
+        {
+            // Clear the lower 4 bits (material)
+            // mask to preserve the top 12 bits (RGB) and clear the bottom 4 (material)
+            ushort rgbPart = (ushort)(blockValue & ~0b1111);
+
+            // Set the new material
+            ushort result = (ushort)(rgbPart | ((int)toMaterial & 0b1111));
+
+            return result;
+        }
+        
+
+
 
         public static Color FaceColorTinted(ushort blockValue, int addR, int addG, int addB)
         {
