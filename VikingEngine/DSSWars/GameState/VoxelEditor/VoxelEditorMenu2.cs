@@ -56,6 +56,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         override public void openMenu()
         {
+            designer.setupNewInput(false, 0);
+
             if (menu == null)
             {
 
@@ -290,6 +292,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemove) }, new RbAction(designer.RemoveCurrentFrame), new RbTooltip_Text(DssRef.lang.Editor_Animation_RemoveCurrentFrame), designer.voxelProject.HaveAnimation));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemove), new RbImage(SpriteName.VoxelEditorFrameRemove) }, new RbAction(designer.RemoveAllFramesButThis), new RbTooltip_Text(".remove all other frames"), designer.voxelProject.HaveAnimation));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameAddCopy) }, new RbAction1Arg<bool>(designer.AddFrame, true), new RbTooltip_Text(DssRef.lang.Editor_Animation_AddFrameCopy)));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameAddEmpty) }, new RbAction1Arg<bool>(designer.AddFrame, false), new RbTooltip_Text(DssRef.lang.Editor_Animation_AddEmptyFrame)));
             
@@ -698,7 +701,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 new RbImage(SpriteName.WarsHudIconCopy) }, new RbAction1Arg<bool>(designer.copySelectedVoxels, false),
                 new RbTooltip_Text(DssRef.lang.Hud_Copy)));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.IconBuildStamp) }, new RbAction1Arg<bool>(designer.stampSelection, true),
+                new RbImage(SpriteName.IconBuildStamp) }, new RbAction2Arg<bool, int>(designer.stampSelection, true, -1),
                 new RbTooltip_Text(DssRef.lang.Editor_Stamp)));
             content.space();
             rotateFlipToHud(content);
@@ -718,18 +721,18 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                     bool enabled = true;
                     if (frame == designer.voxelProject.currentFrame.Value)
                     {
-                        buttonStyle = RbButtonStyle.OptionSelected;
+                        buttonStyle = RbButtonStyle.Primary;
                         frameicon = SpriteName.VoxelEditorFrameSelected;
                         enabled = false;
                     }
                     else
                     {
-                        buttonStyle = RbButtonStyle.OptionNotSelected;
+                        buttonStyle = RbButtonStyle.Secondary;
                         frameicon = SpriteName.VoxelEditorFrame;
                     }
 
                     content.Add(new ArtButton(buttonStyle,
-                        new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(frame)), new RbImage(frameicon) }, new RbAction1Arg<int>(designer.LinkStampOnFrames, frame), new RbTooltip_Text(DssRef.lang.Editor_StampOtherFrames_Description), enabled));
+                        new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(frame)), new RbImage(SpriteName.IconBuildStamp), new RbSpace(0.5f), new RbImage(frameicon) }, new RbAction1Arg<int>(designer.LinkStampOnFrames, frame), new RbTooltip_Text(DssRef.lang.Editor_StampOtherFrames_Description), enabled));
                 }
 
 

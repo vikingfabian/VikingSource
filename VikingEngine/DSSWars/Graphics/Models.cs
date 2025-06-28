@@ -71,13 +71,36 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_leg1,
                 VoxelModelName.modsoldier_larm_empty1,
                 VoxelModelName.modsoldier_rarm_sword1,
-                
+                VoxelModelName.modsoldier_hat_allclasses,
+
             };
             rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>(loadRawModels.Count);
 
             List<VoxelModelName> loadWeaponModels = new List<VoxelModelName>
             {
                 VoxelModelName.modweapon_sword1,
+                VoxelModelName.modshield_javelin,
+                VoxelModelName.modshield_roman,        
+                VoxelModelName.modsoldier_larm_shield1,
+                VoxelModelName.modweapon_blunderbuss,
+                VoxelModelName.modweapon_crossbow,
+                VoxelModelName.modweapon_culvertin,
+                VoxelModelName.modweapon_hammer,
+                VoxelModelName.modweapon_handcannon,
+                VoxelModelName.modweapon_javelin,
+                VoxelModelName.modweapon_longbow,
+                VoxelModelName.modweapon_mithrilbow,
+                VoxelModelName.modweapon_mithrilsword,
+                VoxelModelName.modweapon_rifle,
+                VoxelModelName.modweapon_sharpstick,
+                VoxelModelName.modweapon_shortbow,
+                VoxelModelName.modweapon_sling,
+                VoxelModelName.modweapon_spear,
+                VoxelModelName.modweapon_twohand,
+
+                VoxelModelName.modweapon_shortsword,
+                VoxelModelName.modweapon_longsword,
+                VoxelModelName.modweapon_bronzesword,
             };
 
             weaponModels = new Dictionary<VoxelModelName, WeaponModel>(loadWeaponModels.Count);

@@ -696,7 +696,7 @@ namespace VikingEngine.Voxels
 
         protected void dropSelection(bool threaded)
         {
-            stampSelection(threaded);
+            stampSelection(threaded, -1);
             removeSelection();
         }
 
@@ -815,7 +815,7 @@ namespace VikingEngine.Voxels
 
         virtual public ushort GetVoxel(int frame, IntVector3 drawPoint)
         {
-            return voxelProject.CurrentVoxelGrid.Get(drawPoint);
+            return voxelProject.layers.Selected().GetFrame(frame).Get(drawPoint);
         }
 
         public ushort Get(IntVector3 drawPoint)
@@ -825,7 +825,7 @@ namespace VikingEngine.Voxels
 
         virtual public void SetVoxel(int frame, IntVector3 drawPoint, ushort material)
         {
-            voxelProject.CurrentVoxelGrid.Set(drawPoint, material);
+            voxelProject.layers.Selected().GetFrame(frame).SetSafe(drawPoint, material);
         }
 
         virtual public ushort GetVoxel(LootFest.Map.WorldPosition wp)
@@ -1073,22 +1073,27 @@ namespace VikingEngine.Voxels
             }
        }
 
-       virtual public void stampSelection(bool startThread)
+       virtual public void stampSelection(bool startThread, int frame)
         {
+            if (frame < 0)
+            {
+                frame = CurrentFrame;
+            }
+
             if (HasSelection)
             {
                 storeUndoableAction(false, false);
 
                 if (startThread)
-                    new ThreadedTemplateStamp(this, selectedVoxels.Clone());
+                    new ThreadedTemplateStamp(this, selectedVoxels.Clone(), frame);
                 else
-                    MakeThreadedStamp(selectedVoxels, designerInterface.selectionArea);
+                    MakeThreadedStamp(selectedVoxels, designerInterface.selectionArea, frame);
             }
         }
 
-        public void MakeThreadedStamp(VoxelObjListDataHD selectedVoxels, IntervalIntV3 updateArea)
+        public void MakeThreadedStamp(VoxelObjListDataHD selectedVoxels, IntervalIntV3 updateArea, int frame)
         {
-            voxelProject.CurrentVoxelGrid.SafeAddVoxels(selectedVoxels.Voxels);
+            voxelProject.layers.Selected().GetFrame(frame).SafeAddVoxels(selectedVoxels.Voxels);
         }
 
         virtual public void linkReplaceSelectionMaterials(ushort from)

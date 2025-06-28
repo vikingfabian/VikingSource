@@ -26,8 +26,15 @@ namespace VikingEngine.DSSWars
          * 11 gun far
          * 12 gun near
          * 13 farmer
+         * 14 zweihander
          */
 
+
+        /*Weapon animation
+         * 0 idle
+         * 1 attack
+         * 2 move
+         */
 
         static readonly IntVector3 GridSize = new IntVector3(26, 48, 78);
         const int FrameCount = 7;
@@ -38,6 +45,81 @@ namespace VikingEngine.DSSWars
 
         public Graphics.VoxelModel buildModel(Faction faction, SoldierModelData modelData)
         {
+            VoxelModelName weaponModel;
+            int hatFrame;
+
+            switch (modelData.weapon)
+            {
+                case Resource.ItemResourceType.SharpStick:
+                    weaponModel = VoxelModelName.modweapon_sharpstick;
+                    hatFrame = 13;
+                    break;
+                case Resource.ItemResourceType.BronzeSword:
+                    weaponModel = VoxelModelName.modweapon_bronzesword;
+                    hatFrame = 0;
+                    break;
+                case Resource.ItemResourceType.ShortSword:
+                    weaponModel = VoxelModelName.modweapon_sharpstick;
+                    hatFrame = 0;
+                    break;
+                case Resource.ItemResourceType.Sword:
+                    weaponModel = VoxelModelName.modweapon_sword1;
+                    hatFrame = 0;
+                    break;
+                case Resource.ItemResourceType.LongSword:
+                    weaponModel = VoxelModelName.modweapon_longsword;
+                    hatFrame = 8;
+                    break;
+                case Resource.ItemResourceType.HandSpear:
+                    weaponModel = VoxelModelName.modweapon_longsword;
+                    hatFrame = 0;//missing
+                    break;
+
+                case Resource.ItemResourceType.SlingShot:
+                    weaponModel = VoxelModelName.modweapon_sling;
+                    hatFrame = 2;
+                    break;
+                case Resource.ItemResourceType.ThrowingSpear:
+                    weaponModel = VoxelModelName.modweapon_javelin;
+                    hatFrame = 3;
+                    break;
+                case Resource.ItemResourceType.Bow:
+                    weaponModel = VoxelModelName.modweapon_shortbow;
+                    hatFrame = 1;
+                    break;
+                case Resource.ItemResourceType.LongBow:
+                    weaponModel = VoxelModelName.modweapon_longbow;
+                    hatFrame = 1;
+                    break;
+                case Resource.ItemResourceType.Crossbow:
+                    weaponModel = VoxelModelName.modweapon_crossbow;
+                    hatFrame = 10;
+                    break;
+
+                case Resource.ItemResourceType.HandCannon:
+                    weaponModel = VoxelModelName.modweapon_handcannon;
+                    hatFrame = 11;
+                    break;
+                case Resource.ItemResourceType.HandCulverin:
+                    weaponModel = VoxelModelName.modweapon_culvertin;
+                    hatFrame = 12;
+                    break;
+                case Resource.ItemResourceType.Rifle:
+                    weaponModel = VoxelModelName.modweapon_rifle;
+                    hatFrame = 11;
+                    break;
+                case Resource.ItemResourceType.Blunderbuss:
+                    weaponModel = VoxelModelName.modweapon_blunderbuss;
+                    hatFrame = 12;
+                    break;
+
+                default:
+                    weaponModel = VoxelModelName.modweapon_sword1;
+                    hatFrame = 0;
+                    break;
+            }
+
+
             IntVector3 legOffSet = new IntVector3(5, 0, 32);
             IntVector3 rArmOffSet = new IntVector3(4, 0, 30);
             IntVector3 lArmOffset = VectorExt.AddX(rArmOffSet, 10);
@@ -53,23 +135,17 @@ namespace VikingEngine.DSSWars
             var rightArm = DssRef.models.rawModels[VoxelModelName.modsoldier_rarm_sword1];
 
             var sword = DssRef.models.weaponModels[VoxelModelName.modweapon_sword1];
-            //var swordForward = sword.Frames[SwordForwardFrame].GetVoxelArray(out ushort swordForward_jointResult, out IntVector3 swordForward_jointPos);
-            //var swordAttack = sword.Frames[SwordForwardFrame].GetVoxelArray(out ushort swordAttack_jointResult, out IntVector3 swordAttack_jointPos);
-
+            
             var profileColors = faction.flagProfile.GetColorReplaceTable();
 
-            //var firstFrame = debug.Frames[0].GetVoxelArray();
             var legsIdle = leg.Frames[0].GetVoxelArray(legOffSet, profileColors);
             for (int frame = 0; frame < 2; frame++)
             {                
-                //grid.Frames[frame].AddVoxels(firstFrame);
                 grid.Frames[frame].AddVoxels(legsIdle);
 
             }
             for (int frame = 2; frame < FrameCount; frame++)
             {
-                //var voxels = debug.Frames[frame-1].GetVoxelArray();
-                //grid.Frames[frame].AddVoxels(voxels);
                 grid.Frames[frame].AddVoxels(leg.Frames[frame - 1].GetVoxelArray(legOffSet, profileColors));
             }
 
@@ -92,7 +168,6 @@ namespace VikingEngine.DSSWars
                 grid.Frames[frame].AddVoxels(rarmIdle);
 
                 sword.addToGrid(grid.Frames[frame], ref rarm_jointPos, false);
-                //grid.Frames[frame].AddVoxels(swordForward, rarm_jointPos - swordForward_jointPos);
             }
             for (int frame = 2; frame < FrameCount; frame++)
             {
@@ -101,13 +176,6 @@ namespace VikingEngine.DSSWars
                 rarm_jointPos.Z -= 1;
                                
                 sword.addToGrid(grid.Frames[frame], ref rarm_jointPos, frame == 2);
-                //    //grid.Frames[frame].AddVoxels(swordAttack, rarm_jointPos - swordAttack_jointPos);
-                //}
-                //else
-                //{
-                //    sword.addToGrid(grid.Frames[frame], ref rarm_jointPos, false);
-                //    //grid.Frames[frame].AddVoxels(swordForward, rarm_jointPos - swordForward_jointPos);
-                //}
             }
 
             var centerAdjust = grid.Frames[0].BottomCenterAdj();

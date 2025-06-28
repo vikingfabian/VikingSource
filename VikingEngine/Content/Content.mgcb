@@ -2062,6 +2062,12 @@
 #begin Version Number.txt
 /copy:Version Number.txt
 
+#begin VoxelModel/Character/modshield_javelin.vox
+/copy:VoxelModel/Character/modshield_javelin.vox
+
+#begin VoxelModel/Character/modshield_roman.vox
+/copy:VoxelModel/Character/modshield_roman.vox
+
 #begin VoxelModel/Character/modsoldier_body1.vox
 /copy:VoxelModel/Character/modsoldier_body1.vox
 
@@ -2071,8 +2077,17 @@
 #begin VoxelModel/Character/modsoldier_face1.vox
 /copy:VoxelModel/Character/modsoldier_face1.vox
 
+#begin VoxelModel/Character/modsoldier_hat_allclasses.vox
+/copy:VoxelModel/Character/modsoldier_hat_allclasses.vox
+
+#begin VoxelModel/Character/modsoldier_hat_soldier_all.vox
+/copy:VoxelModel/Character/modsoldier_hat_soldier_all.vox
+
 #begin VoxelModel/Character/modsoldier_larm_empty1.vox
 /copy:VoxelModel/Character/modsoldier_larm_empty1.vox
+
+#begin VoxelModel/Character/modsoldier_larm_shield1.vox
+/copy:VoxelModel/Character/modsoldier_larm_shield1.vox
 
 #begin VoxelModel/Character/modsoldier_leg1.vox
 /copy:VoxelModel/Character/modsoldier_leg1.vox
@@ -2080,8 +2095,65 @@
 #begin VoxelModel/Character/modsoldier_rarm_sword1.vox
 /copy:VoxelModel/Character/modsoldier_rarm_sword1.vox
 
+#begin VoxelModel/Character/modweapon_blunderbuss.vox
+/copy:VoxelModel/Character/modweapon_blunderbuss.vox
+
+#begin VoxelModel/Character/modweapon_bronzesword.vox
+/copy:VoxelModel/Character/modweapon_bronzesword.vox
+
+#begin VoxelModel/Character/modweapon_crossbow.vox
+/copy:VoxelModel/Character/modweapon_crossbow.vox
+
+#begin VoxelModel/Character/modweapon_culvertin.vox
+/copy:VoxelModel/Character/modweapon_culvertin.vox
+
+#begin VoxelModel/Character/modweapon_guns.vox
+/copy:VoxelModel/Character/modweapon_guns.vox
+
+#begin VoxelModel/Character/modweapon_hammer.vox
+/copy:VoxelModel/Character/modweapon_hammer.vox
+
+#begin VoxelModel/Character/modweapon_handcannon.vox
+/copy:VoxelModel/Character/modweapon_handcannon.vox
+
+#begin VoxelModel/Character/modweapon_javelin.vox
+/copy:VoxelModel/Character/modweapon_javelin.vox
+
+#begin VoxelModel/Character/modweapon_longbow.vox
+/copy:VoxelModel/Character/modweapon_longbow.vox
+
+#begin VoxelModel/Character/modweapon_longsword.vox
+/copy:VoxelModel/Character/modweapon_longsword.vox
+
+#begin VoxelModel/Character/modweapon_mithrilbow.vox
+/copy:VoxelModel/Character/modweapon_mithrilbow.vox
+
+#begin VoxelModel/Character/modweapon_mithrilsword.vox
+/copy:VoxelModel/Character/modweapon_mithrilsword.vox
+
+#begin VoxelModel/Character/modweapon_rifle.vox
+/copy:VoxelModel/Character/modweapon_rifle.vox
+
+#begin VoxelModel/Character/modweapon_sharpstick.vox
+/copy:VoxelModel/Character/modweapon_sharpstick.vox
+
+#begin VoxelModel/Character/modweapon_shortbow.vox
+/copy:VoxelModel/Character/modweapon_shortbow.vox
+
+#begin VoxelModel/Character/modweapon_shortsword.vox
+/copy:VoxelModel/Character/modweapon_shortsword.vox
+
+#begin VoxelModel/Character/modweapon_sling.vox
+/copy:VoxelModel/Character/modweapon_sling.vox
+
+#begin VoxelModel/Character/modweapon_spear.vox
+/copy:VoxelModel/Character/modweapon_spear.vox
+
 #begin VoxelModel/Character/modweapon_sword1.vox
 /copy:VoxelModel/Character/modweapon_sword1.vox
+
+#begin VoxelModel/Character/modweapon_twohand.vox
+/copy:VoxelModel/Character/modweapon_twohand.vox
 
 #begin VoxelModel/LfWars/armybanner.vox
 /copy:VoxelModel/LfWars/armybanner.vox

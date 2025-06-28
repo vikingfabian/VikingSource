@@ -133,7 +133,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             setupNewInput(controller, playerIndex);
         }
 
-        void setupNewInput(bool controller, int playerIndex)
+        public void setupNewInput(bool controller, int playerIndex)
         {
             if (dssInput == null || dssInput.inputSource.IsController != controller)
             {
@@ -214,14 +214,14 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
-                setupNewInput(false, 0);
+                //setupNewInput(false, 0);
                 return true;
             }
 
             int playerIx;
             if (XInput.KeyDownEvent(Microsoft.Xna.Framework.Input.Buttons.Start, out playerIx))
             {
-                setupNewInput(true, playerIx);
+                //setupNewInput(true, playerIx);
                 return true;
             }
 
@@ -346,8 +346,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
         }
 
-        const string DoorPart1Text = "Door (open)";
-        const string DoorPart2Text = "Door (closed)";
+        //const string DoorPart1Text = "Door (open)";
+        //const string DoorPart2Text = "Door (closed)";
 
         //void newCharacterSizeAdjust()
         //{
@@ -399,7 +399,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         deleteArea(i, designerInterface.selectionArea);
                     }
 
-                    stampSelection(false);
+                    stampSelection(false, frame);
                 }
             }
             else
@@ -409,7 +409,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 {
                     deleteArea(frame, designerInterface.selectionArea);
                 }
-                stampSelection(false);
+                stampSelection(false, frame);
             }
 
             //currentFrame.Value = current;

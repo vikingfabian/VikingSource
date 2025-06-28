@@ -14,10 +14,11 @@ namespace VikingEngine.DSSWars
 {
     class WeaponModel
     {
-        const int ForwardFrame = 0;
+        const int IdleFrame = 0;
         const int AttackFrame = 1;
-        
-        List<VoxelHD> forward, attack;
+        const int MoveFrame = 2;
+
+        List<VoxelHD> idle, attack, move;
         IntVector3 forward_jointPos, attack_jointPos;
 
         public WeaponModel(VoxelModelName modelName)
@@ -34,11 +35,18 @@ namespace VikingEngine.DSSWars
 
                     var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
 
-                    forward = grids[ForwardFrame].GetVoxelArray(out ushort swordForward_jointResult, out forward_jointPos);
-                    attack = grids[AttackFrame].GetVoxelArray(out ushort swordAttack_jointResult, out attack_jointPos);
+                    idle = grids[IdleFrame].GetVoxelArray(out ushort swordForward_jointResult, out forward_jointPos);
+                    if (grids.Count > AttackFrame)
+                    {
+                        attack = grids[AttackFrame].GetVoxelArray(out ushort swordAttack_jointResult, out attack_jointPos);
+                    }
+                    if (grids.Count > MoveFrame)
+                    {
+                        move = grids[MoveFrame].GetVoxelArray(out ushort swordAttack_jointResult, out attack_jointPos);
+                    }
                 }
                 catch (Exception ex)
-                {
+                {                    
                     BlueScreen.ThreadException = ex;
                 }
             });
@@ -53,7 +61,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                grid.AddVoxels(forward, armJointPos - forward_jointPos);
+                grid.AddVoxels(idle, armJointPos - forward_jointPos);
             }
         }
     }

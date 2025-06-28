@@ -10,7 +10,12 @@ Voxel editor:
 * added profile colors
 * bucket fill bug fix
 * layers
-* saving project file
+* save/load project files
+* changed all player colors to be of replaceable material
+* added a replace all materials option
+* crop crash fix
+* repaired: delete animation
+* repaired: select and clear
 
 X remove layer
 X merge layer

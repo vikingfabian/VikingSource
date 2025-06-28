@@ -35,10 +35,35 @@ namespace VikingEngine.LootFest
         modsoldier_debug,
         modsoldier_body1,
         modsoldier_face1,
+        modsoldier_hat_allclasses,
         modsoldier_leg1,
         modsoldier_larm_empty1,
         modsoldier_rarm_sword1,
         modweapon_sword1,
+
+        modshield_javelin,
+        modshield_roman,
+        modsoldier_larm_shield1,
+        modweapon_blunderbuss,
+        modweapon_crossbow,
+        modweapon_culvertin,
+        modweapon_hammer,
+        modweapon_handcannon,
+        modweapon_javelin,
+        modweapon_longbow,
+        modweapon_mithrilbow,
+        modweapon_mithrilsword,
+        modweapon_rifle,
+        modweapon_sharpstick,
+        modweapon_shortbow,
+        modweapon_sling,
+        modweapon_spear,
+        modweapon_twohand,
+
+        modweapon_shortsword,
+        modweapon_longsword,
+        modweapon_bronzesword,
+
         #endregion
 
         //        //--
