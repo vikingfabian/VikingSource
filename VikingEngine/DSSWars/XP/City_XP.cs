@@ -41,6 +41,9 @@ namespace VikingEngine.DSSWars.GameObject
         public int selectedSchool = -1;
         public List<SchoolStatus> schoolBuildings = new List<SchoolStatus>();
 
+        public int selectedResearchBuilding = -1;
+        public List<ResearchBuilding> researchBuildings = null;
+
         public void onSchoolComplete_async(IntVector2 subPos)
         {
             Ref.update.AddSyncAction(new SyncAction(() =>
@@ -116,62 +119,64 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void onLevelUp(WorkExperienceType experienceType, int gain)
+        public void addTechPoints(WorkExperienceType experienceType, int gain, TechnologyGainReason reason)
         {
-            switch (experienceType)
+            TechnologyTreeType techType = technology.ExperienceToTechField(experienceType);
+            if (techType != TechnologyTreeType.NUM_NONE)
             {
-                case WorkExperienceType.HouseBuilding:
-                case WorkExperienceType.StoneCutter:
-                    technology.advancedBuilding.workerLevelUp(ref gain);
-                    break;
-
-                case WorkExperienceType.Farm:
-                case WorkExperienceType.AnimalCare:
-                    technology.advancedFarming.workerLevelUp(ref gain);
-                    break;
-
-                case WorkExperienceType.Smelting:
-                case WorkExperienceType.CastMetal:
-                    technology.advancedCasting.workerLevelUp(ref gain);
-                    break;
-
-                case WorkExperienceType.Mining:
-                case WorkExperienceType.CraftMetal:
-                    if (technology.iron.points < TechnologyTemplate.IronUnlock)
-                    {
-                        technology.iron.workerLevelUp(ref gain);
-                    }
-                    else
-                    {
-                        technology.steel.workerLevelUp(ref gain);
-                    }
-                    break;
-
-                case WorkExperienceType.WoodWork:
-                case WorkExperienceType.Fletcher:
-                    technology.catapult.workerLevelUp(ref gain);
-                    break;
-
-                case WorkExperienceType.CraftFuel:
-                case WorkExperienceType.Chemistry:
-                    if (technology.blackPowder.points < TechnologyTemplate.BlackPowderUnlock)
-                    {
-                        technology.blackPowder.workerLevelUp(ref gain);
-                    }
-                    else
-                    {
-                        technology.gunPowder.workerLevelUp(ref gain);
-                    }
-                    break;
+                addTechPoints(techType, gain, reason);
             }
         }
+        public void addTechPoints(TechnologyTreeType techType, int gain, TechnologyGainReason reason)
+        {
+            ref var progress = ref TechnologyTemplate.GetResearchProgressRef(ref technology, techType);
 
-        void onTechnologyGain(WorkExperienceType experienceType, int gained, TechnologyGainReason reason)
+            if (reason == TechnologyGainReason.WorkerLevel)
+            {
+                progress.workerLevelUp(ref gain);
+            }
+            else
+            {
+                progress.points += gain;
+            }
+
+            onTechnologyGain(techType, gain, reason, progress);
+
+            //onTechnologyGain(experienceType, gain, reason);
+        }
+
+        public void onTechnologyGain(TechnologyTreeType techType, int gain, TechnologyGainReason reason)
+        {
+            ResearchProgress progress = TechnologyTemplate.GetResearchProgressRef(ref technology, techType);
+
+            onTechnologyGain(techType, gain, reason, progress);
+        }
+
+        void onTechnologyGain(TechnologyTreeType techType, int gain, TechnologyGainReason reason, ResearchProgress progress)
         {
             if (reason != TechnologyGainReason.BookPress)
             {
-
+                if (progress.bookpress_IdAndPos > 0)
+                {
+                    //Spread 
+                    var citiesC = faction.cities.counter();
+                    while (citiesC.Next())
+                    {
+                        if (citiesC.sel != this && citiesC.sel.technology.progress(techType).researchCenter_IdAndPos > 0)
+                        {
+                            citiesC.sel.addTechPoints(techType, gain, TechnologyGainReason.BookPress);
+                        }
+                    }
+                }
             }
         }
+
+        //void onTechnologyGain(TechnologyTreeType techType, int gained, TechnologyGainReason reason)
+        //{
+        //    if (reason != TechnologyGainReason.BookPress)
+        //    {
+
+        //    }
+        //}
     }
 }

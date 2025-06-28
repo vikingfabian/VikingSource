@@ -331,6 +331,9 @@ namespace VikingEngine.DSSWars.Display
                 case ProgressSubTab.Schools:
                     new SchoolMenu().ToHud(city, player, content);
                     break;
+                case ProgressSubTab.Research:
+
+                    break;
             }
             
         }
@@ -2407,6 +2410,7 @@ namespace VikingEngine.DSSWars.Display
         Technology,
         Experience,
         Schools,
+        Research,
         NUM
     }
 }

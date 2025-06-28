@@ -223,14 +223,14 @@ namespace VikingEngine.DSSWars.XP
             {
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(LangLib.ExperienceLevelIcon(ExperienceLevel.Practitioner_2)));
-                content.Add(new RbText($"{DssRef.lang.Technology_LevelUp}: {TextLib.PlusMinus(DssConst.TechnologyGain_Any)}"));
+                content.Add(new RbText($"{DssRef.lang.Technology_LevelUp}: {TextLib.PlusMinus(DssConst.TechnologyGain_AnyLevelUp)}"));
                 content.space();
                 
                 HudLib.InfoButton(content, new RbTooltip(tip));
 
                 void tip(RichBoxContent content, object tag)
                 {
-                    var info = new RbText(string.Format(DssRef.lang.Technology_ForEachLevelUp, TextLib.PlusMinus(DssConst.TechnologyGain_Any)));
+                    var info = new RbText(string.Format(DssRef.lang.Technology_ForEachLevelUp, TextLib.PlusMinus(DssConst.TechnologyGain_AnyLevelUp)));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
                 }
@@ -240,14 +240,14 @@ namespace VikingEngine.DSSWars.XP
             {
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(LangLib.ExperienceLevelIcon(ExperienceLevel.Master_4)));
-                content.Add(new RbText($"{DssRef.lang.ExperienceLevel_4}: {TextLib.PlusMinus(DssConst.TechnologyGain_Master)}"));
+                content.Add(new RbText($"{DssRef.lang.ExperienceLevel_4}: {TextLib.PlusMinus(DssConst.TechnologyGain_MasterLevelUp)}"));
                 content.space();
 
                 HudLib.InfoButton(content, new RbTooltip(tip));
 
                 void tip(RichBoxContent content, object tag)
                 {
-                    var info = new RbText(string.Format(DssRef.lang.Technology_ForEachMaster, DssRef.lang.ResourceType_Workers, DssRef.lang.ExperienceLevel_4, TextLib.PlusMinus(DssConst.TechnologyGain_Master)));
+                    var info = new RbText(string.Format(DssRef.lang.Technology_ForEachMaster, DssRef.lang.ResourceType_Workers, DssRef.lang.ExperienceLevel_4, TextLib.PlusMinus(DssConst.TechnologyGain_MasterLevelUp)));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
                 }

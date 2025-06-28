@@ -797,7 +797,9 @@ namespace VikingEngine.DSSWars.Work
                 if (nextlevel > level)
                 {
                     //Level up
-                    city.onLevelUp(type, level>= ExperienceLevel.Master_4 ? DssConst.TechnologyGain_Master : DssConst.TechnologyGain_Any);
+                    city.addTechPoints(type, 
+                        level>= ExperienceLevel.Master_4 ? DssConst.TechnologyGain_MasterLevelUp : DssConst.TechnologyGain_AnyLevelUp, 
+                        TechnologyGainReason.WorkerLevel);
                 }
                 //if (xp >= DssConst.WorkLevel_Expert &&
                 //    !expert)

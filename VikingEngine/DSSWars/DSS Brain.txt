@@ -1,8 +1,8 @@
 ﻿UPDATE
 -Change Log-
 * Immigrants to hud
+* All tech costs 3 times more 
 
-X tech too fast
 #Voxel editor#
 
 #Pics
