@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.DSSWars;
 using VikingEngine.LootFest.Map.HDvoxel;
-using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Voxels
 {
@@ -433,7 +434,23 @@ namespace VikingEngine.Voxels
             }
         }
 
-        
+        public void SafeAddVoxels(List<VoxelHD> voxels, IntVector3 offset)
+        {
+            IntVector3 sz = Size;
+            foreach (var v in voxels)
+            {
+                var pos = v.Position + offset;
+                if (pos.X >= 0 && pos.X < sz.X &&
+                    pos.Y >= 0 && pos.Y < sz.Y &&
+                    pos.Z >= 0 && pos.Z < sz.Z)
+                {
+                    MaterialGrid[pos.X, pos.Y, pos.Z] = v.Material;
+                }
+                //SetSafe(v.Position, v.Material);
+            }
+        }
+
+
 
         public List<VoxelHD> GetVoxelArray()
         {
@@ -515,7 +532,7 @@ namespace VikingEngine.Voxels
                                 {
                                     result.Add(new VoxelHD(pos + offset, toColor));
                                 }
-                                else if (value == BlockHD.JointForward || value == BlockHD.JointForward)
+                                else if (value == BlockHD.JointForward || value == BlockHD.JointUp)
                                 {
                                     jointResult = value;
                                     jointPos = pos + offset;
@@ -532,9 +549,9 @@ namespace VikingEngine.Voxels
             return result;
         }
 
-        public List<VoxelHD> GetVoxelArray(out ushort jointResult, out IntVector3 jointPos)
+        public List<VoxelHD> GetVoxelArray(IntVector3 offset, Dictionary<ushort, ushort> findReplace, ushort findjoint, out IntVector3 jointPos)
         {
-            jointResult = BlockHD.EmptyBlock;
+            
             jointPos = IntVector3.NegativeOne;
 
             List<VoxelHD> result = new List<VoxelHD>();
@@ -552,10 +569,51 @@ namespace VikingEngine.Voxels
                             ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
                             if (value != BlockHD.EmptyBlock)
                             {
-                                if (value == BlockHD.JointForward || value == BlockHD.JointForward)
+                                if (findReplace.TryGetValue(value, out ushort toColor))
                                 {
-                                    jointResult = value;
-                                    jointPos = pos;
+                                    result.Add(new VoxelHD(pos + offset, toColor));
+                                }
+                                else if (value == BlockHD.JointForward || value == BlockHD.JointUp)
+                                {
+                                    if (value == findjoint)
+                                    {
+                                        jointPos = pos + offset;
+                                    }
+                                }
+                                else
+                                {
+                                    result.Add(new VoxelHD(pos + offset, value));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        public List<VoxelHD> GetVoxelArray(out VoxelJoint joint)
+        {
+            joint = VoxelJoint.Empty;
+
+            List<VoxelHD> result = new List<VoxelHD>();
+            if (MaterialGrid != null)
+            {
+                IntVector3 pos = IntVector3.Zero;
+                IntVector3 sz = Size;
+
+                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+                {
+                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                    {
+                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                        {
+                            ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
+                            if (value != BlockHD.EmptyBlock)
+                            {
+                                if (value == BlockHD.JointForward || value == BlockHD.JointUp)
+                                {
+                                    joint = new VoxelJoint(pos, value);
                                 }
                                 else
                                 {
@@ -566,6 +624,14 @@ namespace VikingEngine.Voxels
                     }
                 }
             }
+
+#if DEBUG
+            //if (joint.value == BlockHD.EmptyBlock)
+            //{
+            //    lib.DoNothing();
+            //}
+#endif
+
             return result;
         }
 

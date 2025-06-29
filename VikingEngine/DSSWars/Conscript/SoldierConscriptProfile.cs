@@ -187,7 +187,7 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.basehealth = armorData.basehealth;//ConscriptProfile.ArmorHealth(conscript.armorLevel);
             soldierData.modelData.armor = armorData.modelData.armor;
 
-
+            soldierData.modelData.specialization = conscript.specialization;
             //soldierData.attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(conscript.weapon, out soldierData.attackSplashCount) * skillBonus);
             //soldierData.attackDamageStructure = soldierData.attackDamage;
             //soldierData.attackDamageSea = soldierData.attackDamage;

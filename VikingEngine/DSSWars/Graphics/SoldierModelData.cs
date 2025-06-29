@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.LootFest;
 
@@ -15,12 +16,14 @@ namespace VikingEngine.DSSWars
         public ArmorLevel armor;
         public ItemResourceType weapon; //value range 0 - 150
         public VisualExperience experience;
+        public SpecializationType specialization;
         public int randomVariant; //max 3
         public int profileVariant; //max 3
 
         public SoldierModelData(
            ArmorLevel armor,
            ItemResourceType weapon,
+           SpecializationType specialization,
            VisualExperience experience,
            int randomVariant,
            int profileVariant)
@@ -37,6 +40,7 @@ namespace VikingEngine.DSSWars
             int result = HashCode.Combine(
                 armor,
                 weapon,
+                specialization,
                 experience,
                 randomVariant,
                 profileVariant

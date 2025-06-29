@@ -2092,6 +2092,9 @@
 #begin VoxelModel/Character/modsoldier_leg1.vox
 /copy:VoxelModel/Character/modsoldier_leg1.vox
 
+#begin VoxelModel/Character/modsoldier_rarm_bow1.vox
+/copy:VoxelModel/Character/modsoldier_rarm_bow1.vox
+
 #begin VoxelModel/Character/modsoldier_rarm_sword1.vox
 /copy:VoxelModel/Character/modsoldier_rarm_sword1.vox
 

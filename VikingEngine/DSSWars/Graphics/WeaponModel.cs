@@ -8,24 +8,40 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
+using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
 {
+    struct VoxelJoint
+    {
+        public static readonly VoxelJoint Empty = new VoxelJoint(IntVector3.NegativeOne, BlockHD.EmptyBlock);
+
+        public IntVector3 pos;
+        public ushort value;
+
+        public VoxelJoint(IntVector3 pos, ushort value)
+        {
+            this.pos = pos;
+            this.value = value;
+        }
+    }
+
     class WeaponModel
     {
-        const int IdleFrame = 0;
-        const int AttackFrame = 1;
-        const int MoveFrame = 2;
+        public const int IdleFrame = 0;
+        public const int AttackFrame = 1;
+        public const int MoveFrame = 2;
 
         List<VoxelHD> idle, attack, move;
-        IntVector3 forward_jointPos, attack_jointPos;
+        public VoxelJoint idle_jointPos, attack_jointPos, move_jointPos;
+        //ushort idleJoint, attack
 
         public WeaponModel(VoxelModelName modelName)
         {
             DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
             byte[] data = DataStream.FileToDiskManager.Read(path);
-            
+
             Task.Run(() =>
             {
                 try
@@ -35,33 +51,43 @@ namespace VikingEngine.DSSWars
 
                     var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
 
-                    idle = grids[IdleFrame].GetVoxelArray(out ushort swordForward_jointResult, out forward_jointPos);
+                    idle = grids[IdleFrame].GetVoxelArray(out idle_jointPos);
                     if (grids.Count > AttackFrame)
                     {
-                        attack = grids[AttackFrame].GetVoxelArray(out ushort swordAttack_jointResult, out attack_jointPos);
+                        attack = grids[AttackFrame].GetVoxelArray(out attack_jointPos);
                     }
                     if (grids.Count > MoveFrame)
                     {
-                        move = grids[MoveFrame].GetVoxelArray(out ushort swordAttack_jointResult, out attack_jointPos);
+                        move = grids[MoveFrame].GetVoxelArray(out move_jointPos);
                     }
+
+                    //if (modelName == VoxelModelName.modweapon_shortbow)
+                    //{ 
+                    //    lib.DoNothing();
+                    //}
                 }
                 catch (Exception ex)
-                {                    
+                {
                     BlueScreen.ThreadException = ex;
                 }
             });
-            
+
         }
 
-        public void addToGrid(VoxelObjGridDataHD grid, ref IntVector3 armJointPos, bool bAttack)
+        public void addToGrid(VoxelObjGridDataHD grid, IntVector3 armJointPos, int state)
         {
-            if (bAttack)
+            switch (state)
             {
-                grid.AddVoxels(attack, armJointPos - attack_jointPos);
-            }
-            else
-            {
-                grid.AddVoxels(idle, armJointPos - forward_jointPos);
+                default:
+                    grid.SafeAddVoxels(idle, armJointPos - idle_jointPos.pos);
+                    break;
+                case AttackFrame:
+                    grid.SafeAddVoxels(attack, armJointPos - attack_jointPos.pos);
+                    break;
+                case MoveFrame:
+                    grid.SafeAddVoxels(move, armJointPos - move_jointPos.pos);
+                    break;
+
             }
         }
     }
