@@ -2,6 +2,9 @@
 -Change Log-
 * Immigrants to hud
 * All tech costs 3 times more 
+* New buildings: research center and bookpress
+* A new progress page in city menu 
+
 
 #Voxel editor#
 

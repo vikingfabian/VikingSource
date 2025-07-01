@@ -15,6 +15,7 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
@@ -477,7 +478,19 @@ namespace VikingEngine.DSSWars.Display.Translation
 
             return TextLib.Error;
         }
-
+        public static void ResearchType(bool isResearchCenter ,out string name, out SpriteName icon)
+        {
+            if (isResearchCenter)
+            {
+                icon = SpriteName.MissingImage;
+                name = DssRef.lang.BuildingType_ReseachCenter;
+            }
+            else
+            {
+                icon = SpriteName.MissingImage;
+                name = DssRef.lang.BuildingType_Bookpress;
+            }
+        }
         public static void ExperienceType(WorkExperienceType type, out string name, out SpriteName icon)
         {
             switch (type)
@@ -1219,6 +1232,62 @@ namespace VikingEngine.DSSWars.Display.Translation
                 DssRef.lang.Resource_TypeName_Beer,
                 DssRef.lang.ExperienceType_Chemist,
                 XpLib.TechnologyName_BlackPowder());
+        }
+
+        public static void Technology(TechnologyTreeType type, out SpriteName icon, out string name)
+        {
+            switch (type)
+            {
+                case TechnologyTreeType.advancedBuilding:
+                    icon = SpriteName.WarsBuild_Nobelhouse;
+                    name = DssRef.lang.Technology_AdvancedBuildings;
+                    break;
+                case TechnologyTreeType.advancedCasting:
+                    icon = SpriteName.WarsResource_IronManCannon;
+                    name = DssRef.lang.Technology_AdvancedCasting;
+                    break;
+                case TechnologyTreeType.advancedFarming:
+                    icon = SpriteName.WarsWorkFarm;
+                    name = DssRef.lang.Technology_AdvancedFarming;
+                    break;
+                case TechnologyTreeType.iron:
+                    icon = SpriteName.WarsResource_Iron;
+                    name = DssRef.lang.Resource_TypeName_Iron;
+                    break;
+                case TechnologyTreeType.steel:
+                    icon = SpriteName.WarsResource_Steel;
+                    name = DssRef.lang.Resource_TypeName_Steel;
+                    break;
+                case TechnologyTreeType.blackPowder:
+                    icon = SpriteName.WarsResource_BlackPowder;
+                    name = XpLib.TechnologyName_BlackPowder();
+                    break;
+                case TechnologyTreeType.gunPowder:
+                    icon = SpriteName.WarsResource_GunPowder;
+                    name = DssRef.lang.Resource_TypeName_GunPowder;
+                    break;
+                case TechnologyTreeType.catapult:
+                    icon = SpriteName.WarsResource_Catapult;
+                    name = DssRef.lang.Resource_TypeName_Catapult;
+                    break;
+
+                default:
+                    name = TextLib.Error;
+                    icon = SpriteName.MissingImage;
+                    break;
+
+
+            }
+
+            //tech(technology.advancedBuilding.points, TechnologyTemplate.AdvancedBuildingUnlock, SpriteName.WarsBuild_Nobelhouse, DssRef.lang.Technology_AdvancedBuildings);
+            //tech(technology.advancedFarming.points, TechnologyTemplate.AdvancedFarmingUnlock, SpriteName.WarsWorkFarm, DssRef.lang.Technology_AdvancedFarming);
+            //tech(technology.advancedCasting.points, TechnologyTemplate.AdvancedCastingUnlock, SpriteName.WarsResource_IronManCannon, DssRef.lang.Technology_AdvancedCasting);
+
+            //tech(technology.iron.points, TechnologyTemplate.IronUnlock, SpriteName.WarsResource_Iron, DssRef.lang.Resource_TypeName_Iron);
+            //tech(technology.steel.points, TechnologyTemplate.SteelUnlock, SpriteName.WarsResource_Steel, DssRef.lang.Resource_TypeName_Steel);
+            //tech(technology.catapult.points, TechnologyTemplate.CatapultUnlock, SpriteName.WarsResource_Catapult, DssRef.lang.Resource_TypeName_Catapult);
+            //tech(technology.blackPowder.points, TechnologyTemplate.BlackPowderUnlock, SpriteName.WarsResource_BronzeRifle, XpLib.TechnologyName_BlackPowder());
+            //tech(technology.gunPowder.points, TechnologyTemplate.GunPowderUnlock, SpriteName.WarsResource_IronRifle, DssRef.lang.Resource_TypeName_GunPowder);
         }
 
         public static string Item(ItemResourceType item)

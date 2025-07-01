@@ -80,12 +80,47 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void addResearchBuilding(IntVector2 subPos, bool isResearchCenter)
+        {
+            ResearchBuilding newBuilding = new ResearchBuilding()
+            {
+                idAndPosition = conv.IntVector2ToInt(subPos),
+                isResearchCenter  = isResearchCenter
+            };
+
+            lock (researchBuildings)
+            {
+                researchBuildings.Add(newBuilding);
+            }
+        }
+        public void destroyResearchBuilding(IntVector2 subPos)
+        {
+            lock (researchBuildings)
+            {
+                int index = ResearchIxFromSubTile(subPos);
+                researchBuildings.RemoveAt(index);
+            }
+        }
+
         public int SchoolIxFromSubTile(IntVector2 subTilePos)
         {
             int id = conv.IntVector2ToInt(subTilePos);
             for (int i = 0; i < schoolBuildings.Count; ++i)
             {
                 if (schoolBuildings[i].idAndPosition == id)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+        public int ResearchIxFromSubTile(IntVector2 subTilePos)
+        {
+            int id = conv.IntVector2ToInt(subTilePos);
+            for (int i = 0; i < researchBuildings.Count; ++i)
+            {
+                if (researchBuildings[i].idAndPosition == id)
                 {
                     return i;
                 }
@@ -133,7 +168,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (reason == TechnologyGainReason.WorkerLevel)
             {
-                progress.workerLevelUp(ref gain);
+                int buildingCount = researchBuildingCount(true, techType);
+                progress.workerLevelUp(buildingCount, ref gain);
             }
             else
             {
@@ -141,8 +177,26 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             onTechnologyGain(techType, gain, reason, progress);
+        }
 
-            //onTechnologyGain(experienceType, gain, reason);
+        int researchBuildingCount(bool isResearchCenter, TechnologyTreeType techType)
+        {
+            int buildingCount = 0;
+            if (researchBuildings != null)
+            {
+                lock (researchBuildings)
+                {
+                    foreach (var m in researchBuildings)
+                    {
+                        if (m.isResearchCenter == isResearchCenter && m.assignedTech == techType)
+                        {
+                            buildingCount++;
+                        }
+                    }
+                }
+            }
+
+            return buildingCount;
         }
 
         public void onTechnologyGain(TechnologyTreeType techType, int gain, TechnologyGainReason reason)
@@ -156,13 +210,14 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (reason != TechnologyGainReason.BookPress)
             {
-                if (progress.bookpress_IdAndPos > 0)
+                int buildingCount = researchBuildingCount(false, techType);
+                if (buildingCount > 0)
                 {
                     //Spread 
                     var citiesC = faction.cities.counter();
                     while (citiesC.Next())
                     {
-                        if (citiesC.sel != this && citiesC.sel.technology.progress(techType).researchCenter_IdAndPos > 0)
+                        if (citiesC.sel != this && citiesC.sel.researchBuildingCount(true, techType) > 0)
                         {
                             citiesC.sel.addTechPoints(techType, gain, TechnologyGainReason.BookPress);
                         }

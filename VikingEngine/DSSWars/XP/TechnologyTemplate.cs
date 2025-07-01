@@ -13,38 +13,35 @@ namespace VikingEngine.DSSWars.XP
     struct ResearchProgress
     {
         public int points = 0;
-        public int bookpress_IdAndPos = -1;
-        public int researchCenter_IdAndPos = -1;
+        //public int bookpressCount = 0;
+        //public int researchCenterCount = 0;
 
         public ResearchProgress()
         { }
 
-        public void workerLevelUp(ref int gainPoints)
+        public void workerLevelUp(int researchCenterCount, ref int gainPoints)
         {
-            if (researchCenter_IdAndPos >= 0)
-            {
-                gainPoints += DssConst.TechnologyGain_ResearchCenter;
-            }
-
+            gainPoints += researchCenterCount * DssConst.TechnologyGain_ResearchCenter;
+            
             points += gainPoints;
         }
 
         public void writeGameState(System.IO.BinaryWriter w, int unlock, bool faction)
         {
             w.Write((ushort)Bound.Max(points, unlock));
-            if (!faction)
-            {
-                new EightBit(bookpress_IdAndPos >= 0, researchCenter_IdAndPos >= 0).write(w);
+            //if (!faction)
+            //{
+            //    new EightBit(researchCenterCount > 0, bookpressCount >= 0).write(w);
 
-                if (bookpress_IdAndPos >= 0)
-                {
-                    w.Write(bookpress_IdAndPos);
-                }
-                if (researchCenter_IdAndPos >= 0)
-                {
-                    w.Write(researchCenter_IdAndPos);
-                }
-            }
+            //    if (researchCenterCount >= 0)
+            //    {
+            //        w.Write((ushort)researchCenterCount);
+            //    }
+            //    if (bookpressCount > 0)
+            //    {
+            //        w.Write((ushort)bookpressCount);
+            //    }
+            //}
         }
 
         public void readGameState(System.IO.BinaryReader r, int subversion, bool faction)
@@ -58,20 +55,19 @@ namespace VikingEngine.DSSWars.XP
                 points = r.ReadUInt16();
             }
 
-            if (!faction)
-            {
-                EightBit bools = EightBit.FromStream(r);
-                if (bools.Get(0))
-                {
-                    bookpress_IdAndPos = r.ReadInt32();
-                }
-                if (bools.Get(1))
-                {
-                    researchCenter_IdAndPos = r.ReadInt32();
-                }
-            }
-        }
-    
+            //if (!faction)
+            //{
+            //    EightBit bools = EightBit.FromStream(r);
+            //    //if (bools.Get(0))
+            //    //{
+            //    //    researchCenterCount = r.ReadUInt16();
+            //    //}
+            //    //if (bools.Get(1))
+            //    //{
+            //    //    bookpressCount = r.ReadUInt16();
+            //    //}
+            //}
+        }    
     }
 
     
@@ -342,6 +338,32 @@ namespace VikingEngine.DSSWars.XP
                 {
                     thisTech = Bound.Max(thisTech + gainSpeed, unlock);
                     city.onTechnologyGain(type, gainSpeed, reason);
+                }
+            }
+        }
+
+        public List<TechnologyTreeType> availableTech()
+        {
+            List <TechnologyTreeType> result = new List <TechnologyTreeType>(8);
+
+            tech(TechnologyTreeType.advancedBuilding, advancedBuilding.points, AdvancedBuildingUnlock);
+            tech(TechnologyTreeType.advancedFarming, advancedFarming.points, AdvancedFarmingUnlock);
+            tech(TechnologyTreeType.advancedCasting, advancedCasting.points, AdvancedCastingUnlock);
+            tech(TechnologyTreeType.iron, iron.points, IronUnlock);
+            if (iron.points >= IronUnlock)
+                tech(TechnologyTreeType.steel, steel.points, SteelUnlock);
+            tech(TechnologyTreeType.catapult,   catapult.points, CatapultUnlock);
+            tech(TechnologyTreeType.blackPowder, blackPowder.points, BlackPowderUnlock);
+            if (blackPowder.points >= BlackPowderUnlock)
+                tech(TechnologyTreeType.gunPowder, gunPowder.points, GunPowderUnlock);
+            
+            return result;
+
+            void tech(TechnologyTreeType type, int thisTech, int unlock)
+            {
+                if (thisTech < unlock)
+                { 
+                    result.Add(type);
                 }
             }
         }

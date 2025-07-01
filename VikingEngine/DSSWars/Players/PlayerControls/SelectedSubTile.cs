@@ -128,6 +128,12 @@ namespace VikingEngine.DSSWars.Players
                                             case Map.TerrainBuildingType.School:
                                                 selectTileResult = SelectTileResult.School;
                                                 break;
+                                            case Map.TerrainBuildingType.ResearchCenter:
+                                                selectTileResult = SelectTileResult.ResearchCenter;
+                                                break;
+                                            case Map.TerrainBuildingType.BookPress:
+                                                selectTileResult = SelectTileResult.BookPress;
+                                                break;
                                         }
 
                                         hasSelection = selectTileResult != SelectTileResult.None;
@@ -320,6 +326,8 @@ namespace VikingEngine.DSSWars.Players
         Recruitment,
         Conscript,
         School,
+        ResearchCenter,
+        BookPress,
         Wall,
         //Resources,
         

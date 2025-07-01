@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Display.Translation;
 
 namespace VikingEngine.DSSWars.XP
 {
@@ -12,6 +13,19 @@ namespace VikingEngine.DSSWars.XP
         public TechnologyTreeType assignedTech;
         public bool isResearchCenter;
 
+
+        public string assignmentString()
+        {
+            if (assignedTech == TechnologyTreeType.NUM_NONE)
+            {
+                return DssRef.todoLang.Hud_NeedToBeAssigned;
+            }
+            else
+            {
+                LangLib.Technology(assignedTech, out SpriteName icon, out string name);
+                return name;
+            }
+        }
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write(idAndPosition);

@@ -83,6 +83,7 @@ namespace VikingEngine.DSSWars.Players
         public WorkPriorityType mixWorkType = WorkPriorityType.NUM_NONE;
         public ItemResourceType mixTabItem = ItemResourceType.NONE;
         public BuildCategoryTab buildCategoryTab = 0;
+        public XP.TechnologyTreeType selectedTech = 0;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;
         public ConscriptProfile soldierConscriptCopy, archerConscriptCopy, warmachineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
