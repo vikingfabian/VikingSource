@@ -277,6 +277,10 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
+        public FlagAndColor HostProfile()
+        {
+            return flagStorage.flagDesigns[localPlayers[0].flagDesignIndex];
+        }
         
     }
 

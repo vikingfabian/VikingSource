@@ -2068,17 +2068,29 @@
 #begin VoxelModel/Character/modshield_roman.vox
 /copy:VoxelModel/Character/modshield_roman.vox
 
+#begin VoxelModel/Character/modsoldier_addons.vox
+/copy:VoxelModel/Character/modsoldier_addons.vox
+
 #begin VoxelModel/Character/modsoldier_body1.vox
 /copy:VoxelModel/Character/modsoldier_body1.vox
 
 #begin VoxelModel/Character/modsoldier_debug.vox
 /copy:VoxelModel/Character/modsoldier_debug.vox
 
+#begin VoxelModel/Character/modsoldier_face_orc.vox
+/copy:VoxelModel/Character/modsoldier_face_orc.vox
+
+#begin VoxelModel/Character/modsoldier_face_skull.vox
+/copy:VoxelModel/Character/modsoldier_face_skull.vox
+
 #begin VoxelModel/Character/modsoldier_face1.vox
 /copy:VoxelModel/Character/modsoldier_face1.vox
 
 #begin VoxelModel/Character/modsoldier_hat_allclasses.vox
 /copy:VoxelModel/Character/modsoldier_hat_allclasses.vox
+
+#begin VoxelModel/Character/modsoldier_hat_custom_all.vox
+/copy:VoxelModel/Character/modsoldier_hat_custom_all.vox
 
 #begin VoxelModel/Character/modsoldier_hat_soldier_all.vox
 /copy:VoxelModel/Character/modsoldier_hat_soldier_all.vox

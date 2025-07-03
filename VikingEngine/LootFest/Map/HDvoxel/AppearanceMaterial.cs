@@ -44,6 +44,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         {
             BlockHD baseBlock = new BlockHD();
             baseBlock.BlockValue = color;
+            baseBlock.material = MaterialProperty.Replaceable;
 
             setupTints(baseBlock, true);
         }

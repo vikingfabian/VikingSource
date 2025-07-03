@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars
     {
         
         public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels;
-        Dictionary<VoxelModelName, Graphics.VoxelModel> voxelModels = new Dictionary<VoxelModelName, Graphics.VoxelModel>();
+        public Dictionary<VoxelModelName, Graphics.VoxelModel> voxelModels = new Dictionary<VoxelModelName, Graphics.VoxelModel>();
 
         public Dictionary<VoxelModelName, WeaponModel> weaponModels;
 
@@ -68,11 +68,15 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_debug,
                 VoxelModelName.modsoldier_body1,
                 VoxelModelName.modsoldier_face1,
+                VoxelModelName.modsoldier_face_orc,
+                VoxelModelName.modsoldier_face_skull,
+         
                 VoxelModelName.modsoldier_leg1,
                 VoxelModelName.modsoldier_larm_empty1,
                 VoxelModelName.modsoldier_rarm_sword1,
                 VoxelModelName.modsoldier_rarm_bow1,
                 VoxelModelName.modsoldier_hat_allclasses,
+                VoxelModelName.modsoldier_hat_custom_all,
 
             };
             rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>(loadRawModels.Count);

@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using Valve.Steamworks;
 using VikingEngine.DataLib;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -376,6 +378,39 @@ namespace VikingEngine.DSSWars
                     return "-";
             }
         }
+
+        //public static void listAndEditFlag(RichBoxContent content, int playerNum, LocalPlayerStorage playerData, bool editor, RichMenu menu)
+        //{
+        //    DropDownBuilder flagOptions = new DropDownBuilder("listflags" + playerNum.ToString());
+        //    {
+        //        for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
+        //        {
+        //            flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == playerData.flagDesignIndex, false, new RbAction2Arg<int, int>(selectProfileLink, playerNum, i), null);
+        //        }
+        //        flagOptions.menuCaption = DssRef.storage.flagStorage.flagDesigns[playerData.flagDesignIndex].RbButton();
+        //        flagOptions.injectAfter = new List<AbsRichBoxMember>() {
+        //                            new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+        //                                new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, playerData.flagDesignIndex), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
+        //                        };
+        //        flagOptions.Build(content, SpriteName.NO_IMAGE, null, menu);
+        //    }
+        //}
+        //static void selectProfileLink(int playerNumber, int profile)
+        //{
+        //    int ix = playerNumber - 1;
+        //    LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
+        //    //playerData.inputSource = InputSource.DefaultPC;
+        //    //DssRef.storage.checkPlayerDoublettes(playerNumber - 1);
+
+        //    playerData.flagDesignIndex = profile;
+
+        //    DssRef.storage.checkPlayerDoublettes(ix);
+
+        //    DssRef.storage.Save(null);
+        //    refreshSplitScreen();
+
+        //    underMenu.CloseDropDown();
+        //}
         public static void FollowFactionButton(bool followFaction, double currentFactionValue, AbsRbAction action, Players.LocalPlayer player, RichBoxContent content)
         {
             SpriteName sprite;

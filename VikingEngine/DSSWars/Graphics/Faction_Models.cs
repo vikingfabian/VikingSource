@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars
 
                             if (process)
                             {
-                                var model = new CharacterModelBuilder().buildModel(this, modelData);
+                                var model = new CharacterModelBuilder().buildModel(this.flagProfile, modelData);
                                 lock (models_loaded)
                                 {
                                     if (!models_loaded.ContainsKey(id))

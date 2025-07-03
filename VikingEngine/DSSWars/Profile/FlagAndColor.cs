@@ -21,9 +21,7 @@ namespace VikingEngine.DSSWars
         public static readonly ColorRange AiColorRange = new ColorRange(new Color(new Vector3(0.1f)), new Color(new Vector3(0.9f)));
 
         public static AppearanceMaterial
-            SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2, TunicCol, PantsCol, LeaderCol;
-
-        
+            SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2, TunicCol, PantsCol, LeaderCol;        
 
         public static void Init()
         {
@@ -63,6 +61,8 @@ namespace VikingEngine.DSSWars
 
         public FlagDesign flagDesign;
         public FactionFlavorType factionFlavorType = FactionFlavorType.Other;
+
+        public CharacterProfile character = new CharacterProfile();
 
 
         public void autoAltColor()
@@ -2927,11 +2927,6 @@ namespace VikingEngine.DSSWars
 
         public void PrintFlagColors()
         {
-            //ProfileColorType[] colors = { ProfileColorType.Main, ProfileColorType.Detail1, ProfileColorType.Detail2 };
-            //foreach (var col in colors)
-            //{
-            //    System.Diagnostics.Debug.WriteLine(col.ToString() + ": " + getColor(col).ToString());
-            //}
             System.Diagnostics.Debug.WriteLine($"col0_Main = new Color({col0_Main.R}, {col0_Main.G}, {col0_Main.B});");
             System.Diagnostics.Debug.WriteLine($"col1_Detail1 = new Color({col1_Detail1.R}, {col1_Detail1.G}, {col1_Detail1.B});");
             System.Diagnostics.Debug.WriteLine($"col2_Detail2 = new Color({col2_Detail2.R}, {col2_Detail2.G}, {col2_Detail2.B});");

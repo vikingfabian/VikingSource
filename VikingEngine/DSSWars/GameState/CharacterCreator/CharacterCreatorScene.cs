@@ -1,17 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
+using VikingEngine.PJ;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.GameState.CharacterCreator
 {
@@ -22,8 +27,10 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
         const float DefaultIconScale = 0.8f;
 
+        const string Page_Accessory = "accessories";
         public RichMenu menu;
-        RichBoxSettings rbSettings;
+        //RichBoxSettings rbSettings;
+        CharacterPreview soldierPreview, animalPreview;
         public CharacterCreatorScene() 
             :base()
         {
@@ -31,6 +38,16 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             mainMenu();
 
             new Display.EditorBackground();
+
+            float backWidth = Engine.Screen.SafeArea.Width - menu.backgroundArea.Width;
+            Vector2 previewSz = new Vector2(backWidth * 0.4f);
+            Vector2 pos = new Vector2(menu.backgroundArea.Right + Engine.Screen.IconSize, Engine.Screen.SafeArea.Center.Y - previewSz.Y * 0.5f);
+
+            VectorRect previewArea = new VectorRect(pos, previewSz);
+            soldierPreview = new CharacterPreview(previewArea, CharacterPreviewType.Soldier);
+
+            previewArea.nextAreaX(1, Engine.Screen.IconSize);
+            animalPreview = new CharacterPreview(previewArea, CharacterPreviewType.RideAnimal);
         }
 
         public override void Time_Update(float time)
@@ -38,6 +55,27 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             base.Time_Update(time);
             bool mouseOver = false;
             menu.updateMouseInput(ref mouseOver);
+
+            if (menu.needRefresh)
+            {
+                refreshPage();
+                menu.needRefresh = false;
+            }
+
+            soldierPreview.update();
+            animalPreview.update();
+        }
+        void refreshPage()
+        {
+            switch (menu.menuStack.LastOrDefault())
+            {
+                default:
+                    mainMenu();
+                    break;
+                case Page_Accessory:
+                    accessoriesPage();
+                    break;
+            }
         }
 
         void openMenu()
@@ -61,7 +99,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             menu.Refresh(content);
         }
 
-        int faceOption = 0;
+        //int faceOption = 0;
         int bodyOption = 0;
         float scale = 1f;
         CharacterCreatorTab tab = 0;
@@ -69,10 +107,16 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         // int faceOption = 0;
 
         void mainMenu()
-        { 
+        {
+           var profile =  DssRef.storage.HostProfile();
+
             RichBoxContent content = new RichBoxContent();
             content.h1("Character creator", HudLib.TitleColor_Head);
 
+            content.newLine();
+            listAndEditFlag(content, 1, DssRef.storage.localPlayers.First(), true);
+
+                 content.newParagraph();
             List<CharacterCreatorTab> availableTabs = new List<CharacterCreatorTab> {
                 CharacterCreatorTab.Soldiers,
                 CharacterCreatorTab.Workers,
@@ -80,24 +124,11 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             };
 
             var tabs = new List<ArtTabMember>(availableTabs.Count);
-
-            
+                        
             for (int i = 0; i < availableTabs.Count; ++i)
             {
                 var text = new RbText(availableTabs[i].ToString());
                 text.overrideColor = HudLib.RbSettings.tabSelected.Color;
-
-                //AbsRbAction enter = null;
-                //if (description != null)
-                //{
-                //    enter = new RbAction(() =>
-                //    {
-                //        RichBoxContent content = new RichBoxContent();
-                //        content.text(description).overrideColor = HudLib.InfoYellow_Light;
-
-                //        player.hud.tooltip.create(player, content, true);
-                //    });
-                //}
 
                 tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
                 { text }));
@@ -105,7 +136,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             var tabGroup = new ArtTabgroup(tabs, arraylib.IndexFromValue(availableTabs, tab), 
                 (int tabIx)=> { tab = availableTabs[tabIx]; }, null, SoundLib.menutab, null);
 
-
+            content.Add(tabGroup);
 
             content.h2("Default setup", HudLib.TitleColor_TypeName);
 
@@ -114,10 +145,45 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, new DragButtonSettings(MinScale, MaxScale, 0.1f), ScaleProperty);
             content.newParagraph();
+            
+            DropDownBuilder hatGenreDropdown = new DropDownBuilder("hat genre");
+            {
+                hatGenreDropdown.AddOption("Follow weapon", profile.character.hatGenre == CharacterHatGenre.FollowWeapon,
+                    true, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.FollowWeapon), null);
+                hatGenreDropdown.AddOption("Follow armor", profile.character.hatGenre == CharacterHatGenre.FollowArmor,
+                    false, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.FollowArmor), null);
+                hatGenreDropdown.AddOption("Uniform", profile.character.hatGenre == CharacterHatGenre.Uniform,
+                    false, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.Uniform), null);
+            }
+            hatGenreDropdown.Build(content, SpriteName.NO_IMAGE, "Hat", menu);
+
+            if (profile.character.hatGenre == CharacterHatGenre.Uniform)
+            {
+                content.newLine();
+                for (int i = 0; i < 4; i++)
+                {
+                    content.Add(new ArtOption(i == profile.character.hat, new List<AbsRichBoxMember> { new RbText("Hat " + TextLib.IndexToString(i)) },
+                        new RbAction1Arg<int>((int hat) => { 
+                            profile.character.hat = hat; 
+                            soldierPreview.refresh();
+                        }, i)));
+                }
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconOpen),
+                new RbSpace(),
+                new RbText("Import model")
+                }, null));
+            }
+
+            content.newParagraph();
             for (int i = 0; i < 4; i++)
             {
-                content.Add(new ArtOption(i == faceOption, new List<AbsRichBoxMember> { new RbText("Face " + TextLib.IndexToString(i)) },
-                    null));
+                content.Add(new ArtOption(i == profile.character.face, new List<AbsRichBoxMember> { new RbText("Face " + TextLib.IndexToString(i)) },
+                    new RbAction1Arg<int>((int face)=> { 
+                        profile.character.face = face;
+                        soldierPreview.refresh();
+                    }, i)));
             }
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
@@ -144,7 +210,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 new RbImage(SpriteName.pjNumPlus, 1, Color.Green),
                 new RbSpace(),
                 new RbText("Add accessory")
-            }, null));
+            }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Accessory, StackOption.Stack)));
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -155,12 +221,99 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             Refresh(content);
         }
 
+        void listAndEditFlag(RichBoxContent content, int playerNum, LocalPlayerStorage playerData, bool editor)
+        {
+            DropDownBuilder flagOptions = new DropDownBuilder("listflags" + playerNum.ToString());
+            {
+                for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
+                {
+                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == playerData.flagDesignIndex, false, new RbAction2Arg<int, int>(selectProfileLink, playerNum, i), null);
+                }
+                flagOptions.menuCaption = DssRef.storage.flagStorage.flagDesigns[playerData.flagDesignIndex].RbButton();
+                flagOptions.injectAfter = new List<AbsRichBoxMember>() {
+                                    new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, playerData.flagDesignIndex), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
+                                };
+                flagOptions.Build(content, SpriteName.NO_IMAGE, null, menu);
+            }
+        }
+
+        void selectProfileLink(int playerNumber, int profile)
+        {
+            int ix = playerNumber - 1;
+            LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
+            //playerData.inputSource = InputSource.DefaultPC;
+            //DssRef.storage.checkPlayerDoublettes(playerNumber - 1);
+
+            playerData.flagDesignIndex = profile;
+
+            DssRef.storage.checkPlayerDoublettes(ix);
+
+            DssRef.storage.Save(null);
+            //refreshSplitScreen();
+
+            //underMenu.CloseDropDown();
+            soldierPreview.refresh();
+        }
+
+        void openProfileEditor(int ProfileIx)
+        {
+            int p = -1;
+            bool bController = Input.XInput.KeyIsDown(Buttons.A, ref p) || Input.XInput.KeyIsDown(Buttons.X, ref p);
+            new StartEditor(ProfileIx, bController, 0);
+        }
+
+        void setHatGenre(CharacterHatGenre genre)
+        {
+            DssRef.storage.HostProfile().character.hatGenre = genre;
+            soldierPreview.refresh();
+            menu.CloseDropDown();
+        }
+
+        void accessoriesPage()
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.h1("Add accessory", HudLib.TitleColor_Head);
+
+            content.newLine();
+            for (int i = 0; i < 8; i++)
+            {
+                content.Add(new ArtOption(i == bodyOption, new List<AbsRichBoxMember> { new RbText("Accessory " + TextLib.IndexToString(i)) },
+                    new RbAction1Arg<int>((int index)=>{
+                        var profile = DssRef.storage.HostProfile();
+                        profile.character.accessory1 = index;
+                        soldierPreview.refresh();
+                    }, i)));
+            }
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconOpen),
+                new RbSpace(),
+                new RbText("Import model")
+            }, null));
+
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.pjNumPlus),
+                new RbSpace(),
+                new RbText("Add")
+            }, new RbAction(menu.clearState)));
+
+            Refresh(content);
+        }
+
 
         float ScaleProperty(bool set, float value)
         {
             if (set) { scale = value; }
             return scale;
         }
+
+        //bool overrideHatProperty(int index, bool set, bool value)
+        //{
+        //    if (set) { DssRef.storage.HostProfile().character.overrideHat = value; }
+        //    return DssRef.storage.HostProfile().character.overrideHat;
+        //}
     }
 
     enum CharacterCreatorTab
