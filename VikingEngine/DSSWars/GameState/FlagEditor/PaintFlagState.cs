@@ -42,8 +42,6 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
         public PaintFlagState(int profileIx, bool bController)
             : base(false)
         {
-            
-
             XGuide.UnjoinAll();
             int player = 0;
             XGuide.LocalHostIndex = player;

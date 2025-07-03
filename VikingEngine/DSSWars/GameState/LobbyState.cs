@@ -356,6 +356,7 @@ namespace VikingEngine.DSSWars
             }
             content.Button("start", new RbAction(startGame), null, true);
             content.Button("map editor", new RbAction(openMapEditor), null, true);
+            content.Button("char creator", new RbAction(characterCreator), null, true);
             content.Button("battle lab", new RbAction(startBattleLab), null, true);
             content.Button("trial", new RbAction(startTrial), null, true);
             content.Button("cresh reports", new RbAction(Ref.steam.downloadCrashReports), null, true);
@@ -1856,6 +1857,11 @@ namespace VikingEngine.DSSWars
         void voxeleditor()
         {
             new StartEditor(0, true, 1);
+        }
+
+        void characterCreator()
+        {
+            new StartEditor(0, false, 2);
         }
 
         void mapFileGenerator()
