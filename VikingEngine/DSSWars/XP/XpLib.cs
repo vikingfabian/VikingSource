@@ -72,7 +72,18 @@ namespace VikingEngine.DSSWars.XP
         Chemistry,
         NUM
     }
-
+    enum TechnologyTreeType
+    {
+        advancedBuilding,
+        advancedFarming,
+        advancedCasting,
+        iron,
+        steel,
+        catapult,
+        blackPowder,
+        gunPowder,
+        NUM_NONE
+    }
     enum ExperienceLevel
     {
         Beginner_1,
@@ -91,5 +102,13 @@ namespace VikingEngine.DSSWars.XP
         Mix,
         Experience,
         NUM
+    }
+
+    enum  TechnologyGainReason
+    {
+        WorkerLevel,
+        CityToCitySpread,
+        FactionToFactionSpread,
+        BookPress,
     }
 }

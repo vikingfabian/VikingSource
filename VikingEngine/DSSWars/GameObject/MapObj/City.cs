@@ -518,6 +518,19 @@ namespace VikingEngine.DSSWars.GameObject
             foreach (var school in schoolBuildings)
             { school.writeGameState(w); }
 
+            if (arraylib.HasMembers(researchBuildings))
+            {
+                w.Write((ushort)researchBuildings.Count);
+                foreach (var research in researchBuildings)
+                { 
+                    research.writeGameState(w);
+                }
+            }
+            else
+            { 
+                w.Write(ushort.MinValue);
+            }
+            
       
             writeGroups(w);
   
@@ -618,6 +631,19 @@ namespace VikingEngine.DSSWars.GameObject
                 XP.SchoolStatus status = new XP.SchoolStatus();
                 status.readGameState(r, subversion);
                 schoolBuildings.Add(status);
+            }
+
+            researchBuildings = null;
+            int researchBuildingsCount = r.ReadUInt16();
+            if (researchBuildingsCount > 0)
+            {
+                researchBuildings = new List<XP.ResearchBuilding>(8);
+                for (int i = 0; i < researchBuildingsCount; i++)
+                {
+                    var building = new XP.ResearchBuilding();
+                    building.readGameState(r,subversion);
+                    researchBuildings.Add(building);
+                }
             }
 
             readGroups(r, subversion, pointers);
@@ -2454,6 +2480,22 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 content.newLine();
+                content.Add(new RbImage(SpriteName.MissingImage));
+                content.space();
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
+                content.Add(new RbTab(0.4f));
+                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                content.space();
+                content.Add(new RbImage(SpriteName.MissingImage));
+                content.space();
+                content.Add(new RbText(buildingStructure.ImmigrationTent_count.ToString()));
+                content.space();
+                if (interactive)
+                {
+                    HudLib.InfoButton(content, new RbTooltip(immigrantsTooltip, this));
+                }
+
+                content.newLine();
                 content.Add(new RbImage(SpriteName.WarsWorker));
                 content.space();
                 content.Add(new RbText( string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce.amount)));
@@ -2705,7 +2747,39 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
+        public void immigrantsTooltip(RichBoxContent content, object tag)
+        {
+            content.h2(DssRef.lang.Hud_Immigrants, HudLib.TitleColor_Head);
 
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.space();
+            content.Add(new RbImage(SpriteName.WarsUnitIcon_Soldier));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Immigrants_DisbandedSoldiers));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.space();
+            content.Add(new RbImage(SpriteName.WarsWorkerAdd));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Immigrants_RefillWorkers));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.space();
+            content.Add(new RbImage(SpriteName.MissingImage));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Immigrants_UnhousedAreLost));
+
+            content.newParagraph();
+            content.Add(new RbImage(SpriteName.MissingImage));
+            content.space();
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.BuildingType_ImmigrationTent, buildingStructure.ImmigrationTent_count)));
+            content.newLine();
+            content.Add(new RbText(string.Format( DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity), HudLib.InfoYellow_Light));
+
+        }
         public void childrenTooltip(RichBoxContent content, object tag)
         {
             City city = (City)tag;

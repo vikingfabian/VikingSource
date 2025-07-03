@@ -1,10 +1,13 @@
 ﻿UPDATE
 -Change Log-
-* 
+* Immigrants to hud
+* All tech costs 3 times more 
+* New buildings: research center and bookpress
+* A new progress page in city menu 
 * Optimized: reduced flag objects
 * Optimized: voxel model loading
 
-X tech too fast
+
 
 Voxel editor: 
 * added profile colors
@@ -27,6 +30,7 @@ X load retail character models
 #Voxel editor#
 
 #Pics
+immigrant icon, och remove/time
 Crop
 Layer
 Animated

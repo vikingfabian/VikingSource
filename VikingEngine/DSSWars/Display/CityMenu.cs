@@ -305,6 +305,12 @@ namespace VikingEngine.DSSWars.Display
                         description = DssRef.lang.BuildingType_School_Description + Environment.NewLine +
                              DssRef.lang.Building_ListDescription;
                         break;
+                    case ProgressSubTab.Research:
+                        tabContent.Add(new RbImage(SpriteName.MissingImage));
+                        tabContent.space(0.6f);
+                        tabContent.Add(new RbText(DssRef.todoLang.Research_Tab));
+                        description = DssRef.lang.Building_ListDescription;
+                        break;
                 }
             
                 var subTab = new ArtButton(player.progressSubTab == workSubTab? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
@@ -330,6 +336,10 @@ namespace VikingEngine.DSSWars.Display
 
                 case ProgressSubTab.Schools:
                     new SchoolMenu().ToHud(city, player, content);
+                    break;
+
+                case ProgressSubTab.Research:
+                    new ResearchMenu().ToHud(city, player, content);
                     break;
             }
             
@@ -2407,6 +2417,7 @@ namespace VikingEngine.DSSWars.Display
         Technology,
         Experience,
         Schools,
+        Research,
         NUM
     }
 }

@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
@@ -269,14 +270,18 @@ namespace VikingEngine.DSSWars.Display
                         {
                             title = new RbText(DssRef.lang.BuildingType_School);
                             content.Add(title);
-
                             content.newLine();
-                            //if (subTile.city.GetDelivery(subTile.subTilePos, out DeliveryStatus status))
-                            //{
-                            //    status.tooltip(player, subTile.city, content);
-                            //}
                         }
                         break;
+
+                    case SelectTileResult.ResearchCenter:
+                        content.Add(new RbText(DssRef.lang.BuildingType_ReseachCenter));
+                        break;
+
+                    case SelectTileResult.BookPress:
+                        content.Add(new RbText(DssRef.lang.BuildingType_Bookpress));
+                        break;
+
                     case Players.SelectTileResult.Conscript:
                         {
                             title = new RbText(DssRef.lang.Conscription_Title);

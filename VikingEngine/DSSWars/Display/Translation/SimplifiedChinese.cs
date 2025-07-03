@@ -284,7 +284,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// 游戏内显示。来自城邦外的额外人员。
         /// </summary>
-        public override string Hud_Immigrants => "移民: {0}";
+        public override string Hud_Immigrants => "移民";
 
         public override string Hud_CityCount => "城市数量: {0}";
         public override string Hud_ArmyCount => "军队数量: {0}";

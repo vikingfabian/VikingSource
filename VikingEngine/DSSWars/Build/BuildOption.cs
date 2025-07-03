@@ -106,8 +106,6 @@ namespace VikingEngine.DSSWars.Build
                                 city.onGuardHouseBuild(false, true);
                                 break;
 
-
-
                             case TerrainBuildingType.SoldierBarracks:
                             case TerrainBuildingType.ArcherBarracks:
                             case TerrainBuildingType.WarmachineBarracks:
@@ -130,6 +128,10 @@ namespace VikingEngine.DSSWars.Build
 
                             case TerrainBuildingType.School:
                                 city.destroySchool(subPos);
+                                break;
+                            case TerrainBuildingType.ResearchCenter:
+                            case TerrainBuildingType.BookPress:
+                                city.destroyResearchBuilding(subPos);
                                 break;
                         }
                     }
@@ -242,6 +244,14 @@ namespace VikingEngine.DSSWars.Build
                             case TerrainBuildingType.School:
                                 Ref.update.AddSyncAction(new SyncAction1Arg<IntVector2>(city.addSchool, subPos));
                                 break;
+
+                            case TerrainBuildingType.ResearchCenter:
+                                city.addResearchBuilding(subPos, true);
+                                break;
+                            case TerrainBuildingType.BookPress:
+                                city.addResearchBuilding(subPos, false);
+                                break;
+
                         }
                     }
                     break;

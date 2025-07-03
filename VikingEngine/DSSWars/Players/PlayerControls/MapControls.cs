@@ -976,7 +976,15 @@ namespace VikingEngine.DSSWars.Players
                         player.cityTab = Display.MenuTab.Progress;
                         player.progressSubTab = Display.ProgressSubTab.Schools;
                         selectedSubTile.city.selectedSchool = selectedSubTile.city.SchoolIxFromSubTile(selectedSubTile.subTilePos);
+                    }
+                    break;
 
+                case SelectTileResult.ResearchCenter:
+                case SelectTileResult.BookPress:
+                    {
+                        player.cityTab = Display.MenuTab.Progress;
+                        player.progressSubTab = Display.ProgressSubTab.Research;
+                        selectedSubTile.city.selectedResearchBuilding = selectedSubTile.city.ResearchIxFromSubTile(selectedSubTile.subTilePos);
                     }
                     break;
             }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.ToGG.Commander.UnitsData;
 
@@ -12,63 +13,78 @@ namespace VikingEngine.DSSWars.XP
     struct ResearchProgress
     {
         public int points = 0;
-        public int bookpress_IdAndPos = -1;
-        public int researchCenter_IdAndPos = -1;
+        //public int bookpressCount = 0;
+        //public int researchCenterCount = 0;
 
         public ResearchProgress()
         { }
 
+        public void workerLevelUp(int researchCenterCount, ref int gainPoints)
+        {
+            gainPoints += researchCenterCount * DssConst.TechnologyGain_ResearchCenter;
+            
+            points += gainPoints;
+        }
+
         public void writeGameState(System.IO.BinaryWriter w, int unlock, bool faction)
         {
-            w.Write((byte)Bound.Max(points, unlock));
-            if (!faction)
-            {
-                new EightBit(bookpress_IdAndPos >= 0, researchCenter_IdAndPos >= 0).write(w);
+            w.Write((ushort)Bound.Max(points, unlock));
+            //if (!faction)
+            //{
+            //    new EightBit(researchCenterCount > 0, bookpressCount >= 0).write(w);
 
-                if (bookpress_IdAndPos >= 0)
-                {
-                    w.Write(bookpress_IdAndPos);
-                }
-                if (researchCenter_IdAndPos >= 0)
-                {
-                    w.Write(researchCenter_IdAndPos);
-                }
-            }
+            //    if (researchCenterCount >= 0)
+            //    {
+            //        w.Write((ushort)researchCenterCount);
+            //    }
+            //    if (bookpressCount > 0)
+            //    {
+            //        w.Write((ushort)bookpressCount);
+            //    }
+            //}
         }
 
         public void readGameState(System.IO.BinaryReader r, int subversion, bool faction)
         {
-            points = r.ReadByte();
-            if (!faction)
+            if (subversion < 65)
             {
-                EightBit bools = EightBit.FromStream(r);
-                if (bools.Get(0))
-                {
-                    bookpress_IdAndPos = r.ReadInt32();
-                }
-                if (bools.Get(1))
-                {
-                    researchCenter_IdAndPos = r.ReadInt32();
-                }
+                points = r.ReadByte();
             }
-        }
-    
+            else
+            { 
+                points = r.ReadUInt16();
+            }
+
+            //if (!faction)
+            //{
+            //    EightBit bools = EightBit.FromStream(r);
+            //    //if (bools.Get(0))
+            //    //{
+            //    //    researchCenterCount = r.ReadUInt16();
+            //    //}
+            //    //if (bools.Get(1))
+            //    //{
+            //    //    bookpressCount = r.ReadUInt16();
+            //    //}
+            //}
+        }    
     }
 
+    
     struct TechnologyTemplate
     {
         //public static readonly TechnologyTemplate Start = new TechnologyTemplate();
 
         public const int FactionUnlock = 100000;
 
-        public const int AdvancedBuildingUnlock = 20;
-        public const int AdvancedFarmingUnlock = 50;
-        public const int AdvancedCastingUnlock = 150;
-        public const int IronUnlock = 100;
-        public const int SteelUnlock = 150;
-        public const int CatapultUnlock = 120;
-        public const int BlackPowderUnlock = 180;
-        public const int GunPowderUnlock = 200;
+        public const int AdvancedBuildingUnlock = 60;
+        public const int AdvancedFarmingUnlock = 150;
+        public const int AdvancedCastingUnlock = 400;
+        public const int IronUnlock = 300;
+        public const int SteelUnlock = 500;
+        public const int CatapultUnlock = 200;
+        public const int BlackPowderUnlock = 500;
+        public const int GunPowderUnlock = 600;
 
         public ResearchProgress advancedBuilding;
         public ResearchProgress advancedFarming;
@@ -118,6 +134,56 @@ namespace VikingEngine.DSSWars.XP
             if (gap > 0)
             {
                 value = value + (int)(gap * reduceGap);
+            }
+        }
+
+        public static ref ResearchProgress GetResearchProgressRef(ref TechnologyTemplate template, TechnologyTreeType techType)
+        {
+            switch (techType)
+            {
+                case TechnologyTreeType.advancedBuilding:
+                    return ref template.advancedBuilding;
+                case TechnologyTreeType.advancedFarming:
+                    return ref template.advancedFarming;
+                case TechnologyTreeType.advancedCasting:
+                    return ref template.advancedCasting;
+                case TechnologyTreeType.iron:
+                    return ref template.iron;
+                case TechnologyTreeType.steel:
+                    return ref template.steel;
+                case TechnologyTreeType.catapult:
+                    return ref template.catapult;
+                case TechnologyTreeType.blackPowder:
+                    return ref template.blackPowder;
+                case TechnologyTreeType.gunPowder:
+                    return ref template.gunPowder;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(techType), $"Invalid TechnologyTreeType: {techType}");
+            }
+        }
+
+        public ResearchProgress progress(TechnologyTreeType techType)
+        {
+            switch (techType)
+            {
+                case TechnologyTreeType.advancedBuilding:
+                    return advancedBuilding;
+                case TechnologyTreeType.advancedFarming:
+                    return advancedFarming;
+                case TechnologyTreeType.advancedCasting:
+                    return advancedCasting;
+                case TechnologyTreeType.iron:
+                    return iron;
+                case TechnologyTreeType.steel:
+                    return steel;
+                case TechnologyTreeType.catapult:
+                    return catapult;
+                case TechnologyTreeType.blackPowder:
+                    return blackPowder;
+                case TechnologyTreeType.gunPowder:
+                    return gunPowder;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(techType), $"Invalid TechnologyTreeType: {techType}");
             }
         }
 
@@ -249,32 +315,84 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
-        public void gainTechSpread(TechnologyTemplate from, int gainSpeed)
+        public static void GainTechSpread(City city, TechnologyTemplate from, int gainSpeed, TechnologyGainReason reason)
         {
 #if DEBUG
             if (gainSpeed < 0)
                 throw new Exception();
 #endif
+            tech(TechnologyTreeType.advancedBuilding, ref city.technology.advancedBuilding.points, from.advancedBuilding.points, AdvancedBuildingUnlock);
+            tech(TechnologyTreeType.advancedFarming, ref city.technology.advancedFarming.points, from.advancedFarming.points, AdvancedFarmingUnlock);
+            tech(TechnologyTreeType.advancedCasting, ref city.technology.advancedCasting.points, from.advancedCasting.points, AdvancedCastingUnlock);
+            tech(TechnologyTreeType.iron, ref city.technology.iron.points, from.iron.points, IronUnlock);
+            if (city.technology.iron.points >= IronUnlock)
+                tech(TechnologyTreeType.steel, ref city.technology.steel.points, from.steel.points, SteelUnlock);
+            tech(TechnologyTreeType.catapult, ref city.technology.catapult.points, from.catapult.points, CatapultUnlock);
+            tech(TechnologyTreeType.blackPowder, ref city.technology.blackPowder.points, from.blackPowder.points, BlackPowderUnlock);
+            if (city.technology.blackPowder.points >= BlackPowderUnlock)
+                tech(TechnologyTreeType.gunPowder, ref city.technology.gunPowder.points, from.gunPowder.points, GunPowderUnlock);
 
-            tech(ref advancedBuilding.points, from.advancedBuilding.points, AdvancedBuildingUnlock);
-            tech(ref advancedFarming.points, from.advancedFarming.points, AdvancedFarmingUnlock);
-            tech(ref advancedCasting.points, from.advancedCasting.points, AdvancedCastingUnlock);
-            tech(ref iron.points, from.iron.points, IronUnlock);
-            if (iron.points >= IronUnlock)
-                tech(ref steel.points, from.steel.points, SteelUnlock);
-            tech(ref catapult.points, from.catapult.points, CatapultUnlock);
-            tech(ref blackPowder.points, from.blackPowder.points, BlackPowderUnlock);
-            if (blackPowder.points >= BlackPowderUnlock)
-                tech(ref gunPowder.points, from.gunPowder.points, GunPowderUnlock);
-
-            void tech(ref int thisTech, int otherTech, int unlock)
+            void tech(TechnologyTreeType type, ref int thisTech, int otherTech, int unlock)
             {
                 if (otherTech >= unlock && thisTech < unlock)
                 {
                     thisTech = Bound.Max(thisTech + gainSpeed, unlock);
+                    city.onTechnologyGain(type, gainSpeed, reason);
                 }
             }
         }
+
+        public List<TechnologyTreeType> availableTech()
+        {
+            List <TechnologyTreeType> result = new List <TechnologyTreeType>(8);
+
+            tech(TechnologyTreeType.advancedBuilding, advancedBuilding.points, AdvancedBuildingUnlock);
+            tech(TechnologyTreeType.advancedFarming, advancedFarming.points, AdvancedFarmingUnlock);
+            tech(TechnologyTreeType.advancedCasting, advancedCasting.points, AdvancedCastingUnlock);
+            tech(TechnologyTreeType.iron, iron.points, IronUnlock);
+            if (iron.points >= IronUnlock)
+                tech(TechnologyTreeType.steel, steel.points, SteelUnlock);
+            tech(TechnologyTreeType.catapult,   catapult.points, CatapultUnlock);
+            tech(TechnologyTreeType.blackPowder, blackPowder.points, BlackPowderUnlock);
+            if (blackPowder.points >= BlackPowderUnlock)
+                tech(TechnologyTreeType.gunPowder, gunPowder.points, GunPowderUnlock);
+            
+            return result;
+
+            void tech(TechnologyTreeType type, int thisTech, int unlock)
+            {
+                if (thisTech < unlock)
+                { 
+                    result.Add(type);
+                }
+            }
+        }
+//        public void gainTechSpread(TechnologyTemplate from, int gainSpeed)
+//        {
+//#if DEBUG
+//            if (gainSpeed < 0)
+//                throw new Exception();
+//#endif
+
+//            tech(ref advancedBuilding.points, from.advancedBuilding.points, AdvancedBuildingUnlock);
+//            tech(ref advancedFarming.points, from.advancedFarming.points, AdvancedFarmingUnlock);
+//            tech(ref advancedCasting.points, from.advancedCasting.points, AdvancedCastingUnlock);
+//            tech(ref iron.points, from.iron.points, IronUnlock);
+//            if (iron.points >= IronUnlock)
+//                tech(ref steel.points, from.steel.points, SteelUnlock);
+//            tech(ref catapult.points, from.catapult.points, CatapultUnlock);
+//            tech(ref blackPowder.points, from.blackPowder.points, BlackPowderUnlock);
+//            if (blackPowder.points >= BlackPowderUnlock)
+//                tech(ref gunPowder.points, from.gunPowder.points, GunPowderUnlock);
+
+//            void tech(ref int thisTech, int otherTech, int unlock)
+//            {
+//                if (otherTech >= unlock && thisTech < unlock)
+//                {
+//                    thisTech = Bound.Max(thisTech + gainSpeed, unlock);
+//                }
+//            }
+//        }
 
         public void addFactionUnlocked(TechnologyTemplate from, bool toCity, bool includeProgress)
         {
@@ -339,6 +457,45 @@ namespace VikingEngine.DSSWars.XP
                 }
             }
         }
+
+        public TechnologyTreeType ExperienceToTechField(WorkExperienceType experienceType)
+        {
+            switch (experienceType)
+            {
+                case WorkExperienceType.HouseBuilding:
+                case WorkExperienceType.StoneCutter:
+                    return TechnologyTreeType.advancedBuilding;
+
+                case WorkExperienceType.Farm:
+                case WorkExperienceType.AnimalCare:
+                    return TechnologyTreeType.advancedFarming;
+
+                case WorkExperienceType.Smelting:
+                case WorkExperienceType.CastMetal:
+                    return TechnologyTreeType.advancedCasting;
+
+                case WorkExperienceType.Mining:
+                case WorkExperienceType.CraftMetal:
+                    return (iron.points < IronUnlock)
+                        ? TechnologyTreeType.iron
+                        : TechnologyTreeType.steel;
+
+                case WorkExperienceType.WoodWork:
+                case WorkExperienceType.Fletcher:
+                    return TechnologyTreeType.catapult;
+
+                case WorkExperienceType.CraftFuel:
+                case WorkExperienceType.Chemistry:
+                    return (blackPowder.points < BlackPowderUnlock)
+                        ? TechnologyTreeType.blackPowder
+                        : TechnologyTreeType.gunPowder;
+
+                default:
+                    return TechnologyTreeType.NUM_NONE;
+                    //throw new ArgumentOutOfRangeException(nameof(experienceType), $"Unhandled experience type: {experienceType}");
+            }
+        }
+
 
         public static int PercentProgress(int value)
         {

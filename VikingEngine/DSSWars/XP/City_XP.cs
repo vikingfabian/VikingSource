@@ -41,6 +41,9 @@ namespace VikingEngine.DSSWars.GameObject
         public int selectedSchool = -1;
         public List<SchoolStatus> schoolBuildings = new List<SchoolStatus>();
 
+        public int selectedResearchBuilding = -1;
+        public List<ResearchBuilding> researchBuildings = null;
+
         public void onSchoolComplete_async(IntVector2 subPos)
         {
             Ref.update.AddSyncAction(new SyncAction(() =>
@@ -77,12 +80,47 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void addResearchBuilding(IntVector2 subPos, bool isResearchCenter)
+        {
+            ResearchBuilding newBuilding = new ResearchBuilding()
+            {
+                idAndPosition = conv.IntVector2ToInt(subPos),
+                isResearchCenter  = isResearchCenter
+            };
+
+            lock (researchBuildings)
+            {
+                researchBuildings.Add(newBuilding);
+            }
+        }
+        public void destroyResearchBuilding(IntVector2 subPos)
+        {
+            lock (researchBuildings)
+            {
+                int index = ResearchIxFromSubTile(subPos);
+                researchBuildings.RemoveAt(index);
+            }
+        }
+
         public int SchoolIxFromSubTile(IntVector2 subTilePos)
         {
             int id = conv.IntVector2ToInt(subTilePos);
             for (int i = 0; i < schoolBuildings.Count; ++i)
             {
                 if (schoolBuildings[i].idAndPosition == id)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+        public int ResearchIxFromSubTile(IntVector2 subTilePos)
+        {
+            int id = conv.IntVector2ToInt(subTilePos);
+            for (int i = 0; i < researchBuildings.Count; ++i)
+            {
+                if (researchBuildings[i].idAndPosition == id)
                 {
                     return i;
                 }
@@ -116,57 +154,84 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void onLevelUp(WorkExperienceType experienceType, int gain)
+        public void addTechPoints(WorkExperienceType experienceType, int gain, TechnologyGainReason reason)
         {
-            switch (experienceType)
+            TechnologyTreeType techType = technology.ExperienceToTechField(experienceType);
+            if (techType != TechnologyTreeType.NUM_NONE)
             {
-                case WorkExperienceType.HouseBuilding:
-                case WorkExperienceType.StoneCutter:
-                    technology.advancedBuilding.points += gain;
-                    break;
-
-                case WorkExperienceType.Farm:
-                case WorkExperienceType.AnimalCare:
-                    technology.advancedFarming.points += gain;
-                    break;
-
-                case WorkExperienceType.Smelting:
-                case WorkExperienceType.CastMetal:
-                    technology.advancedCasting.points += gain;
-                    break;
-
-                case WorkExperienceType.Mining:
-                case WorkExperienceType.CraftMetal:
-                    if (technology.iron.points < TechnologyTemplate.IronUnlock)
-                    {
-                        technology.iron.points += gain;
-                    }
-                    else
-                    {
-                        technology.steel.points += gain;
-                    }
-                    break;
-
-                case WorkExperienceType.WoodWork:
-                case WorkExperienceType.Fletcher:
-                    technology.catapult.points += gain;
-                    break;
-
-                case WorkExperienceType.CraftFuel:
-                case WorkExperienceType.Chemistry:
-                    if (technology.blackPowder.points < TechnologyTemplate.BlackPowderUnlock)
-                    {
-                        technology.blackPowder.points += gain;
-                    }
-                    else
-                    {
-                        technology.gunPowder.points += gain;
-                    }
-                    break;
-
-
-
+                addTechPoints(techType, gain, reason);
             }
         }
+        public void addTechPoints(TechnologyTreeType techType, int gain, TechnologyGainReason reason)
+        {
+            ref var progress = ref TechnologyTemplate.GetResearchProgressRef(ref technology, techType);
+
+            if (reason == TechnologyGainReason.WorkerLevel)
+            {
+                int buildingCount = researchBuildingCount(true, techType);
+                progress.workerLevelUp(buildingCount, ref gain);
+            }
+            else
+            {
+                progress.points += gain;
+            }
+
+            onTechnologyGain(techType, gain, reason, progress);
+        }
+
+        int researchBuildingCount(bool isResearchCenter, TechnologyTreeType techType)
+        {
+            int buildingCount = 0;
+            if (researchBuildings != null)
+            {
+                lock (researchBuildings)
+                {
+                    foreach (var m in researchBuildings)
+                    {
+                        if (m.isResearchCenter == isResearchCenter && m.assignedTech == techType)
+                        {
+                            buildingCount++;
+                        }
+                    }
+                }
+            }
+
+            return buildingCount;
+        }
+
+        public void onTechnologyGain(TechnologyTreeType techType, int gain, TechnologyGainReason reason)
+        {
+            ResearchProgress progress = TechnologyTemplate.GetResearchProgressRef(ref technology, techType);
+
+            onTechnologyGain(techType, gain, reason, progress);
+        }
+
+        void onTechnologyGain(TechnologyTreeType techType, int gain, TechnologyGainReason reason, ResearchProgress progress)
+        {
+            if (reason != TechnologyGainReason.BookPress)
+            {
+                int buildingCount = researchBuildingCount(false, techType);
+                if (buildingCount > 0)
+                {
+                    //Spread 
+                    var citiesC = faction.cities.counter();
+                    while (citiesC.Next())
+                    {
+                        if (citiesC.sel != this && citiesC.sel.researchBuildingCount(true, techType) > 0)
+                        {
+                            citiesC.sel.addTechPoints(techType, gain, TechnologyGainReason.BookPress);
+                        }
+                    }
+                }
+            }
+        }
+
+        //void onTechnologyGain(TechnologyTreeType techType, int gained, TechnologyGainReason reason)
+        //{
+        //    if (reason != TechnologyGainReason.BookPress)
+        //    {
+
+        //    }
+        //}
     }
 }
