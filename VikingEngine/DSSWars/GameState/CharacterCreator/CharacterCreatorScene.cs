@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         void mainMenu()
         { 
             RichBoxContent content = new RichBoxContent();
-            content.h1("Character creator");
+            content.h1("Character creator", HudLib.TitleColor_Head);
 
             List<CharacterCreatorTab> availableTabs = new List<CharacterCreatorTab> {
                 CharacterCreatorTab.Soldiers,
@@ -107,10 +107,11 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
 
 
-            content.h2("Default setup");
+            content.h2("Default setup", HudLib.TitleColor_TypeName);
 
             content.newLine();
             HudLib.Label(content, "Scale");
+            content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, new DragButtonSettings(MinScale, MaxScale, 0.1f), ScaleProperty);
             content.newParagraph();
             for (int i = 0; i < 4; i++)
