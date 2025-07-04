@@ -478,7 +478,7 @@ namespace VikingEngine.Voxels
             return result;
         }
 
-        public List<VoxelHD> GetVoxelArray(IntVector3 offset, Dictionary<ushort, ushort> findReplace)
+        public List<VoxelHD> GetVoxelArray(IntVector3 offset, Dictionary<ushort, ushort> findReplace, IntVector3 bounds)
         {
             List<VoxelHD> result = new List<VoxelHD>();
             if (MaterialGrid != null)
@@ -495,11 +495,17 @@ namespace VikingEngine.Voxels
                             ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
                             if (value != BlockHD.EmptyBlock)
                             {
-                                if (findReplace.TryGetValue(value, out ushort toColor))
+                                IntVector3 vpos = pos + offset;
+                                if (vpos.X >= 0 && vpos.X < bounds.X &&
+                                    vpos.Y >= 0 && vpos.Y < bounds.Y &&
+                                    vpos.Z >= 0 && vpos.Z < bounds.Z)
                                 {
-                                    value = toColor;
+                                    if (findReplace.TryGetValue(value, out ushort toColor))
+                                    {
+                                        value = toColor;
+                                    }
+                                    result.Add(new VoxelHD(vpos, value));
                                 }
-                                result.Add(new VoxelHD(pos + offset, value));
                             }
                         }
                     }

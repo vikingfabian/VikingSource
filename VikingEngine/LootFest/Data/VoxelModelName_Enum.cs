@@ -37,7 +37,7 @@ namespace VikingEngine.LootFest
         modsoldier_face1,
         modsoldier_face_skull,
         modsoldier_face_orc,
-        modsoldier_hat_allclasses,
+        modsoldier_hat_soldier_all,
         modsoldier_hat_custom_all,
         modsoldier_leg1,
         modsoldier_larm_empty1,
@@ -48,6 +48,7 @@ namespace VikingEngine.LootFest
 
         modshield_javelin,
         modshield_roman,
+        modshield_knightsmallside,
         modsoldier_larm_shield1,
         modweapon_blunderbuss,
         modweapon_crossbow,

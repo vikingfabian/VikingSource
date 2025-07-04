@@ -2065,6 +2065,9 @@
 #begin VoxelModel/Character/modshield_javelin.vox
 /copy:VoxelModel/Character/modshield_javelin.vox
 
+#begin VoxelModel/Character/modshield_knightsmallside.vox
+/copy:VoxelModel/Character/modshield_knightsmallside.vox
+
 #begin VoxelModel/Character/modshield_roman.vox
 /copy:VoxelModel/Character/modshield_roman.vox
 
@@ -2085,9 +2088,6 @@
 
 #begin VoxelModel/Character/modsoldier_face1.vox
 /copy:VoxelModel/Character/modsoldier_face1.vox
-
-#begin VoxelModel/Character/modsoldier_hat_allclasses.vox
-/copy:VoxelModel/Character/modsoldier_hat_allclasses.vox
 
 #begin VoxelModel/Character/modsoldier_hat_custom_all.vox
 /copy:VoxelModel/Character/modsoldier_hat_custom_all.vox

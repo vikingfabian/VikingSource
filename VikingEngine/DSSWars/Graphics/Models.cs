@@ -73,10 +73,11 @@ namespace VikingEngine.DSSWars
          
                 VoxelModelName.modsoldier_leg1,
                 VoxelModelName.modsoldier_larm_empty1,
+                VoxelModelName.modsoldier_larm_shield1,
                 VoxelModelName.modsoldier_rarm_sword1,
                 VoxelModelName.modsoldier_rarm_bow1,
                 VoxelModelName.modsoldier_addons,
-                VoxelModelName.modsoldier_hat_allclasses,
+                VoxelModelName.modsoldier_hat_soldier_all,
                 VoxelModelName.modsoldier_hat_custom_all,
 
             };
@@ -85,9 +86,8 @@ namespace VikingEngine.DSSWars
             List<VoxelModelName> loadWeaponModels = new List<VoxelModelName>
             {
                 VoxelModelName.modweapon_sword1,
-                VoxelModelName.modshield_javelin,
-                VoxelModelName.modshield_roman,        
-                VoxelModelName.modsoldier_larm_shield1,
+                
+                
                 VoxelModelName.modweapon_blunderbuss,
                 VoxelModelName.modweapon_crossbow,
                 VoxelModelName.modweapon_culvertin,
@@ -107,6 +107,10 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modweapon_shortsword,
                 VoxelModelName.modweapon_longsword,
                 VoxelModelName.modweapon_bronzesword,
+
+                VoxelModelName.modshield_javelin,
+                VoxelModelName.modshield_roman,
+                VoxelModelName.modshield_knightsmallside,
             };
 
             weaponModels = new Dictionary<VoxelModelName, WeaponModel>(loadWeaponModels.Count);

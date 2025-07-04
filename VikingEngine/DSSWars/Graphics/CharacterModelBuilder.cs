@@ -46,13 +46,16 @@ namespace VikingEngine.DSSWars
 
         public Graphics.VoxelModel buildModel(FlagAndColor profile, SoldierModelData modelData)
         {
-            IntVector3 hatOffset = new IntVector3(2, 9, 30);
+            IntVector3 hatOffset = new IntVector3(2, 6, 30);
             VoxelModelName weaponModel;
             int weaponHatFrame;
             int hatFrame = profile.character.hat;
             
             int faceFrame = 0;
             VoxelModelName rightArmType = VoxelModelName.modsoldier_rarm_sword1;
+            VoxelModelName leftArmType = VoxelModelName.modsoldier_larm_empty1;
+            VoxelModelName shield = VoxelModelName.NUM_NON;
+
 
             switch (modelData.weapon)
             {
@@ -78,8 +81,10 @@ namespace VikingEngine.DSSWars
                     weaponHatFrame = 8;
                     break;
                 case Resource.ItemResourceType.HandSpear:
-                    weaponModel = VoxelModelName.modweapon_longsword;
+                    weaponModel = VoxelModelName.modweapon_spear;
                     weaponHatFrame = 0;//missing
+                    shield = VoxelModelName.modshield_roman;
+                    leftArmType = VoxelModelName.modsoldier_larm_shield1;
                     break;
 
                 case Resource.ItemResourceType.SlingShot:
@@ -90,7 +95,34 @@ namespace VikingEngine.DSSWars
                 case Resource.ItemResourceType.ThrowingSpear:
                     weaponModel = VoxelModelName.modweapon_javelin;
                     weaponHatFrame = 3;
+
+                    shield = VoxelModelName.modshield_javelin;
+
+                    leftArmType = VoxelModelName.modsoldier_larm_shield1;
                     break;
+
+                case Resource.ItemResourceType.TwoHandSword:
+                    weaponModel = VoxelModelName.modweapon_twohand;
+                    weaponHatFrame = 14;
+                    break;
+                case Resource.ItemResourceType.Warhammer:
+                    weaponModel = VoxelModelName.modweapon_hammer;
+                    rightArmType = VoxelModelName.modsoldier_rarm_bow1;
+                    shield = VoxelModelName.modshield_knightsmallside;
+                    
+                    weaponHatFrame = 6;
+                    break;
+                case Resource.ItemResourceType.MithrilBow:
+                    weaponModel = VoxelModelName.modweapon_mithrilbow;
+                    rightArmType = VoxelModelName.modsoldier_rarm_bow1;
+                    weaponHatFrame = 5;
+                    break;
+                case Resource.ItemResourceType.MithrilSword:
+                    weaponModel = VoxelModelName.modweapon_mithrilsword;
+                    rightArmType = VoxelModelName.modsoldier_rarm_bow1;
+                    weaponHatFrame = 5;
+                    break;
+
                 case Resource.ItemResourceType.Bow:
                     weaponModel = VoxelModelName.modweapon_shortbow;
                     rightArmType = VoxelModelName.modsoldier_rarm_bow1;
@@ -138,7 +170,7 @@ namespace VikingEngine.DSSWars
             switch (profile.character.hatGenre)
             { 
                 default:
-                    hatmodel = VoxelModelName.modsoldier_hat_allclasses;
+                    hatmodel = VoxelModelName.modsoldier_hat_soldier_all;
                     hatFrame = weaponHatFrame;
                     break;
                 case CharacterHatGenre.Uniform:
@@ -151,6 +183,9 @@ namespace VikingEngine.DSSWars
             {
                 case Conscript.SpecializationType.HonorGuard:
                     weaponHatFrame = 5;
+                    shield = VoxelModelName.modshield_roman;
+
+                    leftArmType = VoxelModelName.modsoldier_larm_shield1;
                     break;
                 case Conscript.SpecializationType.Viking:
                     weaponHatFrame = 9;
@@ -186,14 +221,15 @@ namespace VikingEngine.DSSWars
             var body = DssRef.models.rawModels[VoxelModelName.modsoldier_body1];
             var leg = DssRef.models.rawModels[VoxelModelName.modsoldier_leg1];
 
-            var leftArm = DssRef.models.rawModels[VoxelModelName.modsoldier_larm_empty1];
+           
+            var leftArm = DssRef.models.rawModels[leftArmType];
             var rightArm = DssRef.models.rawModels[rightArmType];
 
             var rightHandItem = DssRef.models.weaponModels[weaponModel];
             
             var profileColors = profile.GetColorReplaceTable();
 
-            var legsIdle = leg.Frames[0].GetVoxelArray(legOffSet, profileColors);
+            var legsIdle = leg.Frames[0].GetVoxelArray(legOffSet, profileColors, GridSize);
             for (int frame = 0; frame < 2; frame++)
             {                
                 grid.Frames[frame].AddVoxels(legsIdle);
@@ -201,14 +237,24 @@ namespace VikingEngine.DSSWars
             }
             for (int frame = 2; frame < FrameCount; frame++)
             {
-                grid.Frames[frame].AddVoxels(leg.Frames[frame - 1].GetVoxelArray(legOffSet, profileColors));
+                grid.Frames[frame].AddVoxels(leg.Frames[frame - 1].GetVoxelArray(legOffSet, profileColors, GridSize));
             }
 
-            var bodyVoxels = body.Frames[0].GetVoxelArray(new IntVector3(6, 0, 33), profileColors);
-            var faceVoxels = face.Frames[faceFrame].GetVoxelArray(faceOffset, profileColors);
-            var faceBlinkVoxels = face.Frames[faceFrame +1].GetVoxelArray(faceOffset, profileColors);
+            var bodyVoxels = body.Frames[0].GetVoxelArray(new IntVector3(6, 0, 33), profileColors, GridSize);
+            var faceVoxels = face.Frames[faceFrame].GetVoxelArray(faceOffset, profileColors, GridSize);
+            var faceBlinkVoxels = face.Frames[faceFrame +1].GetVoxelArray(faceOffset, profileColors, GridSize);
 
-            var hatVoxels = hat.Frames[hatFrame].GetVoxelArray(hatOffset, profileColors);
+            var hatVoxels = hat.Frames[hatFrame].GetVoxelArray(hatOffset, profileColors, GridSize);
+
+            WeaponModel leftHandItemVoxels = null;
+            ushort leftHandItemJointValue = 0;
+            if (shield != VoxelModelName.NUM_NON)
+            {
+                leftHandItemVoxels = DssRef.models.weaponModels[shield].recolor(profileColors);
+                leftHandItemJointValue = leftHandItemVoxels.idle_jointPos.value;
+                //var shieldVoxels = shieldModel.Frames[0].GetVoxelArray(new IntVector3(6, 0, 33), profileColors, GridSize);
+            }
+
             for (int frame = 0; frame < FrameCount; frame++)
             {
                 grid.Frames[frame].AddVoxels(bodyVoxels);
@@ -218,7 +264,7 @@ namespace VikingEngine.DSSWars
 
             
 
-            var larmIdle = leftArm.Frames[0].GetVoxelArray(lArmOffset, profileColors);
+            var larmIdle = leftArm.Frames[0].GetVoxelArray(lArmOffset, profileColors, leftHandItemJointValue, out IntVector3 larm_jointPos);
             var rarmIdle = rightArm.Frames[0].GetVoxelArray(rArmOffSet, profileColors, rightHandItem.idle_jointPos.value, out IntVector3 rarm_jointPos);
             
             for (int frame = 0; frame < 2; frame++)
@@ -226,6 +272,10 @@ namespace VikingEngine.DSSWars
                 grid.Frames[frame].AddVoxels(larmIdle);
                 grid.Frames[frame].AddVoxels(rarmIdle);
 
+                if (leftHandItemVoxels != null)
+                { 
+                    leftHandItemVoxels.addToGrid(grid.Frames[frame], adjustJointPos(leftHandItemVoxels.idle_jointPos, larm_jointPos), WeaponModel.IdleFrame);
+                }
                 rightHandItem.addToGrid(grid.Frames[frame], adjustJointPos(rightHandItem.idle_jointPos, rarm_jointPos)/*rarm_jointPos*/, WeaponModel.IdleFrame);
             }
 
@@ -233,19 +283,25 @@ namespace VikingEngine.DSSWars
             {
                 bool attackFrame = frame == 2;
 
-                grid.Frames[frame].AddVoxels(leftArm.Frames[frame - 1].GetVoxelArray(lArmOffset, profileColors));
+                grid.Frames[frame].AddVoxels(leftArm.Frames[frame - 1].GetVoxelArray(lArmOffset, profileColors, out _, out larm_jointPos));
 
                 VoxelJoint rightHandJointValue = attackFrame ? rightHandItem.attack_jointPos : rightHandItem.move_jointPos;
                 grid.Frames[frame].AddVoxels(rightArm.Frames[frame - 1].GetVoxelArray(rArmOffSet, profileColors,
                     rightHandJointValue.value, out rarm_jointPos));
-                                              
+
+                if (leftHandItemVoxels != null)
+                {
+                    leftHandItemVoxels.addToGrid(grid.Frames[frame], adjustJointPos(leftHandItemVoxels.idle_jointPos, larm_jointPos), WeaponModel.IdleFrame);
+                }
                 rightHandItem.addToGrid(grid.Frames[frame], adjustJointPos(rightHandJointValue, rarm_jointPos)/*rarm_jointPos*/, attackFrame ? WeaponModel.AttackFrame : WeaponModel.MoveFrame);
             }
+
+            
 
             if (profile.character.accessory1 >= 0 && profile.character.accessory1 < 3)
             {
                 var access = DssRef.models.rawModels[VoxelModelName.modsoldier_addons];
-                var accessVoxels = access.Frames[profile.character.accessory1].GetVoxelArray(IntVector3.Zero, profileColors);
+                var accessVoxels = access.Frames[profile.character.accessory1].GetVoxelArray(IntVector3.Zero, profileColors, GridSize);
                 for (int frame = 0; frame < FrameCount; frame++)
                 {
                     grid.Frames[frame].AddVoxels(accessVoxels);

@@ -36,7 +36,9 @@ namespace VikingEngine.DSSWars
         List<VoxelHD> idle, attack, move;
         public VoxelJoint idle_jointPos, attack_jointPos, move_jointPos;
         //ushort idleJoint, attack
-
+        public WeaponModel()
+        { 
+        }
         public WeaponModel(VoxelModelName modelName)
         {
             DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
@@ -88,6 +90,41 @@ namespace VikingEngine.DSSWars
                     grid.SafeAddVoxels(move, armJointPos - move_jointPos.pos);
                     break;
 
+            }
+        }
+
+        public WeaponModel recolor(Dictionary<ushort, ushort> findReplace)
+        {
+            WeaponModel clone = new WeaponModel();
+
+            clone.idle = cloneVoxels(idle);
+            clone.attack = cloneVoxels(attack);
+            clone.move = cloneVoxels(move);
+
+            clone.idle_jointPos = idle_jointPos;
+            clone.attack_jointPos = attack_jointPos;
+            clone.move_jointPos = move_jointPos;
+
+            return clone;
+
+            List<VoxelHD> cloneVoxels(List<VoxelHD> voxels)
+            {
+                if (voxels != null)
+                {
+                    List<VoxelHD> result = new List<VoxelHD>(voxels.Count);
+                    foreach (VoxelHD v in voxels)
+                    {
+                        VoxelHD copy = v;
+                        if (findReplace.TryGetValue(v.Material, out ushort toColor))
+                        {
+                            copy.Material = toColor;
+                        }
+                        result.Add(copy);
+                    }
+
+                    return result;
+                }
+                return null;
             }
         }
     }

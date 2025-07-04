@@ -632,17 +632,19 @@ namespace VikingEngine.DSSWars.GameObject
                 status.readGameState(r, subversion);
                 schoolBuildings.Add(status);
             }
-
-            researchBuildings = null;
-            int researchBuildingsCount = r.ReadUInt16();
-            if (researchBuildingsCount > 0)
+            if (subversion >= 65)
             {
-                researchBuildings = new List<XP.ResearchBuilding>(8);
-                for (int i = 0; i < researchBuildingsCount; i++)
+                researchBuildings = null;
+                int researchBuildingsCount = r.ReadUInt16();
+                if (researchBuildingsCount > 0)
                 {
-                    var building = new XP.ResearchBuilding();
-                    building.readGameState(r,subversion);
-                    researchBuildings.Add(building);
+                    researchBuildings = new List<XP.ResearchBuilding>(8);
+                    for (int i = 0; i < researchBuildingsCount; i++)
+                    {
+                        var building = new XP.ResearchBuilding();
+                        building.readGameState(r, subversion);
+                        researchBuildings.Add(building);
+                    }
                 }
             }
 

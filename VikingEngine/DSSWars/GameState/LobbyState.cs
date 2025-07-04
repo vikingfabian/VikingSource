@@ -356,7 +356,7 @@ namespace VikingEngine.DSSWars
             }
             content.Button("start", new RbAction(startGame), null, true);
             content.Button("map editor", new RbAction(openMapEditor), null, true);
-            content.Button("char creator", new RbAction(characterCreator), null, true);
+            
             content.Button("battle lab", new RbAction(startBattleLab), null, true);
             content.Button("trial", new RbAction(startTrial), null, true);
             content.Button("cresh reports", new RbAction(Ref.steam.downloadCrashReports), null, true);
@@ -499,7 +499,7 @@ namespace VikingEngine.DSSWars
                 var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
                 moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { 
+                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconOpen), new RbTab(ButtonTextTabbing), new RbText(DssRef.lang.GameMenu_LoadState),
                     new RbTab(MoreArrowTabbing),
                     moreArrow,
@@ -507,6 +507,8 @@ namespace VikingEngine.DSSWars
                 btn.fillWidth = true;
                 content.Add(btn);
             }
+            content.newLine();
+            content.Button("Character creator prototype", new RbAction(characterCreator), null, true);
 #endif
             content.newParagraph();
             {

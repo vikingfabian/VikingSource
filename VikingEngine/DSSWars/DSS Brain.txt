@@ -1,11 +1,15 @@
 ﻿UPDATE
 -Change Log-
+* New modular soldier models
+* Character creator prototype
 * Immigrants to hud
 * All tech costs 3 times more 
 * New buildings: research center and bookpress
 * A new progress page in city menu 
 * Optimized: reduced flag objects
 * Optimized: voxel model loading
+* Fixed: battle lab startup crash
+* Write error handling on config file
 
 x wtf does "save and exit" do in the battle lab
 

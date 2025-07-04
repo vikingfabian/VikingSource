@@ -219,6 +219,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
 
                 soldier.modelData.weapon = ItemResourceType.SharpStick;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -238,6 +239,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.BronzeSword;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -257,6 +259,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ShortSword;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -276,6 +279,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Sword;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -294,6 +298,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.LongSword;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -310,12 +315,13 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackRange = 0.055f;
                 soldier.modelName = LootFest.VoxelModelName.wars_piker;
                 soldier.modelVariationCount = 1;
-                soldier.modelScale *= 1.6f;
+                //soldier.modelScale *= 1.6f;
                 soldier.icon = SpriteName.WarsUnitIcon_Pikeman;
                 //soldier.specialization = SpecializationType.AntiCavalry;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Pike;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -332,12 +338,13 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackRange = 0.05f;
                 soldier.modelName = LootFest.VoxelModelName.wars_spearman;
                 soldier.modelVariationCount = 1;
-                soldier.modelScale *= 1.0f;
+                //soldier.modelScale *= 1.0f;
                 soldier.icon = SpriteName.LittleUnitIconSpearman;
                 soldier.basehealth += DssConst.WeaponHealthAdd_Handspear;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.HandSpear;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -359,6 +366,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Warhammer;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -375,7 +383,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackRange = 0.08f;
                 soldier.modelName = LootFest.VoxelModelName.wars_twohand;
                 soldier.modelVariationCount = 1;
-                soldier.modelScale *= 1.6f;
+                soldier.modelScale *= 1.2f;
                 soldier.icon = SpriteName.WarsUnitIcon_TwoHand;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
 
@@ -383,6 +391,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.TwoHandSword;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -402,7 +411,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 soldier.modelName = LootFest.VoxelModelName.war_knight;
                 soldier.modelVariationCount = 3;
-                soldier.modelScale *= 1.5f;
+                soldier.modelScale *= 1.1f;
                 soldier.icon = SpriteName.WarsUnitIcon_Knight;
 
                 soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 3;
@@ -416,6 +425,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.KnightsLance;
+                soldier.modelData.modelType = ModelType.Riding;
             }
 
             {
@@ -429,7 +439,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 soldier.mainAttack = AttackType.Melee;
                 soldier.attackRange = 0.055f;
-                soldier.modelScale *= 1.5f;
+                soldier.modelScale *= 1.15f;
                 soldier.modelName = LootFest.VoxelModelName.wars_mithrilman;
                 soldier.icon = SpriteName.WarsUnitIcon_MithrilMan;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
@@ -437,6 +447,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.MithrilSword;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -458,6 +469,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.SlingShot;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
 
@@ -479,6 +491,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 6f;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ThrowingSpear;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -500,6 +513,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Bow;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -521,6 +535,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.LongBow;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -544,6 +559,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Crossbow;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -559,7 +575,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
                 soldier.attackRange = 2.5f;
                 soldier.modelName = LootFest.VoxelModelName.wars_mithrilarcher;
-                soldier.modelScale *= 1.3f;
+                soldier.modelScale *= 1.12f;
                 soldier.icon = SpriteName.WarsUnitIcon_MithrilArcher;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 8f;
 
@@ -567,6 +583,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.MithrilBow;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -590,6 +607,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.HandCannon;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -612,6 +630,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.HandCulverin;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -635,6 +654,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Rifle;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -657,6 +677,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Blunderbuss;
+                soldier.modelData.modelType = ModelType.Soldier;
             }
 
             {
@@ -690,6 +711,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Ballista;
+                soldier.modelData.modelType = ModelType.Warmashine;
             }
 
             {
@@ -722,6 +744,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Manuballista;
+                soldier.modelData.modelType = ModelType.Warmashine;
             }
             {
                 var weapon = Get(ItemResourceType.Catapult);
@@ -753,6 +776,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Catapult;
+                soldier.modelData.modelType = ModelType.Warmashine;
             }
             {
                 var weapon = Get(ItemResourceType.SiegeCannonBronze);
@@ -785,6 +809,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.SiegeCannonBronze;
+                soldier.modelData.modelType = ModelType.Warmashine;
             }
             {
                 var weapon = Get(ItemResourceType.ManCannonBronze);
@@ -817,6 +842,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ManCannonBronze;
+                soldier.modelData.modelType = ModelType.Warmashine;
             }
             {
                 var weapon = Get(ItemResourceType.SiegeCannonIron);
@@ -849,6 +875,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.SiegeCannonIron;
+                soldier.modelData.modelType = ModelType.Warmashine;
             }
 
             {
@@ -882,6 +909,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ManCannonIron;
+                soldier.modelData.modelType = ModelType.Warmashine;
             }
 
             {
@@ -906,6 +934,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.groupSpacingRndOffset = DssVar.StandardBoundRadius * 1f;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
                 soldier.modelData.weapon = ItemResourceType.RoseWarrior_soldier;
+                soldier.modelData.modelType = ModelType.Custom;
             }
 
             {
@@ -930,6 +959,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.groupSpacingRndOffset = DssVar.StandardBoundRadius * 1f;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
                 soldier.modelData.weapon = ItemResourceType.RoseWarrior_dog;
+                soldier.modelData.modelType = ModelType.Custom;
             }
 
             {
@@ -955,6 +985,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
                 soldier.modelData.weapon = ItemResourceType.RoseWarrior_tank;
+                soldier.modelData.modelType = ModelType.Custom;
             }
 
 

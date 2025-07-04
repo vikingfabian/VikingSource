@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars
         public SpecializationType specialization;
         public int randomVariant; //max 3
         public int profileVariant; //max 3
+        public ModelType modelType;
 
         public SoldierModelData(
            ArmorLevel armor,
@@ -81,5 +82,13 @@ namespace VikingEngine.DSSWars
         Experienced,
         Scarred,
         Broken,
+    }
+
+    enum ModelType
+    { 
+        Soldier,
+        Custom,
+        Warmashine,
+        Riding,
     }
 }

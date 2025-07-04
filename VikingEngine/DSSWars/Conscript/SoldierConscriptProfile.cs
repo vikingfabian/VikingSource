@@ -738,7 +738,7 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
                 case SpecializationType.HonorGuard:
-                    soldierData.modelScale = DssConst.Men_StandardModelScale * 1.2f;
+                    soldierData.modelScale = DssConst.Men_ModCharacterScale * 1.2f;
                     soldierData.energyPerSoldier = 0;
                     soldierData.modelName = LootFest.VoxelModelName.little_hirdman;
                     soldierData.modelVariationCount = 1;
@@ -758,7 +758,7 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
                 case SpecializationType.DarkLord:
-                    soldierData.modelScale = DssConst.Men_StandardModelScale;
+                    //soldierData.modelScale = DssConst.Men_StandardModelScale;
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed;
                     soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
                     soldierData.basehealth = DssConst.Soldier_DefaultHealth * 4;
