@@ -75,6 +75,7 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_larm_empty1,
                 VoxelModelName.modsoldier_rarm_sword1,
                 VoxelModelName.modsoldier_rarm_bow1,
+                VoxelModelName.modsoldier_addons,
                 VoxelModelName.modsoldier_hat_allclasses,
                 VoxelModelName.modsoldier_hat_custom_all,
 

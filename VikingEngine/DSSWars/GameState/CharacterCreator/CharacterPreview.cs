@@ -19,16 +19,22 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         List<AbsDraw> drawList;
 
         CharacterPreviewType previewType;
+        VectorRect area;
+
+        bool mouseDown = false;
         public CharacterPreview(VectorRect screenArea, CharacterPreviewType previewType) 
         {
             this.previewType = previewType;
             screenArea.Round();
+            this.area = screenArea;
             characterModelBuilder = new CharacterModelBuilder();
             var model = buildModel(out float zoom);
             target = new RenderTargetImage(screenArea.Position, screenArea.Size, ImageLayers.Background0, true);
             camera = new TopViewCamera(zoom, new Vector2(MathHelper.PiOver2 - 0.6f, MathHelper.PiOver4 + 0.3f),
                     screenArea.Size.X, screenArea.Size.Y);
             camera.FieldOfView = 20f;
+            camera.FarPlane = 400;
+            camera.NearPlane = 0.01f;
             
 
             //camera.LookTarget = model.GridSize.Vec * 0.5f;
@@ -74,6 +80,22 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         {
             camera.Time_Update(Ref.DeltaTimeMs);
             target.DrawImagesToTarget(null, drawList, true, 0);
+
+            if (mouseDown)
+            {
+                camera.TiltX += Input.Mouse.MoveDistance.X * 0.01f;
+                camera.RecalculateMatrices();
+
+                if (!Input.Mouse.IsButtonDown(MouseButton.Left))
+                {
+                    mouseDown = false;
+                }
+            }
+            else if (Input.Mouse.ButtonDownEvent(MouseButton.Left) && 
+                area.IntersectPoint(Input.Mouse.Position))
+            {
+                mouseDown = true;
+            }
         }
     }
 

@@ -98,9 +98,9 @@ namespace VikingEngine.DSSWars.GameObject
         public Banner(Faction faction, float soldierScale, int skill)
         {
             model = faction.AutoLoadModelInstance_batched(
-               modelName(), soldierScale * 2f);
+               modelName(), soldierScale * 2f / 1.76f);
             model.Frame = skill;
-            diff = new Vector3(0.17f, 0, 0.12f) * soldierScale;
+            diff = new Vector3(0.17f, 0, 0.12f) * soldierScale / 1.76f;
         }
         protected override VoxelModelName modelName()
         {

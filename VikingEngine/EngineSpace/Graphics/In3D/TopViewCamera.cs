@@ -112,7 +112,7 @@ namespace VikingEngine.Graphics
         public override void positionFromRotation()
         {
 
-            Vector3 cameraOffsetDir = new Vector3(MathExt.Cosf(Tilt.X), MathExt.Cosf(Tilt.Y), MathExt.Sinf(Tilt.X));
+            Vector3 cameraOffsetDir = new Vector3(MathExt.Cosf(tilt.X), MathExt.Cosf(tilt.Y), MathExt.Sinf(tilt.X));
 
             // rotate
             //{
@@ -181,8 +181,6 @@ namespace VikingEngine.Graphics
                     }
                 }
 
-                //if (targetZoom < currentZoom)
-                //{
                 for (int i = 0; i < Ref.GameTimePassed16ms; ++i)
                 {
                     currentZoom += (targetZoom - currentZoom) * zoomChaseLengthPercentage;
@@ -199,21 +197,6 @@ namespace VikingEngine.Graphics
                 {
                     currentZoom = targetZoom;
                 }
-
-                //if (InstantZoomIn && targetZoom < currentZoom)
-                //{ currentZoom = targetZoom; }
-                //else if (InstantZoomOut && )
-                //{ currentZoom = targetZoom; }
-                //else
-                //{ currentZoom += (targetZoom - currentZoom) * ZoomChasePercSpeed; }
-                //}
-                //else
-                //{
-                //    if (InstantZoomOut)
-                //        currentZoom = targetZoom;
-                //    else
-                //        currentZoom += (targetZoom - currentZoom) * ZoomChasePercSpeed;
-                //}
 
                 usedZoomVariable = currentZoom;
             }

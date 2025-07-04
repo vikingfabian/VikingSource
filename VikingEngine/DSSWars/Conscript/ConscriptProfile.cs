@@ -12,9 +12,6 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Conscript
 {
-    
-
-
     struct ConscriptProfile
     {
         public static readonly ConscriptProfile Empty = new ConscriptProfile();
@@ -560,33 +557,6 @@ namespace VikingEngine.DSSWars.Conscript
         }
     }
 
-    //enum ArmorLevel
-    //{
-    //    None,
-    //    PaddedArmor,
-    //    HeavyPaddedArmor,
-    //    Mail,
-    //    HeavyMail,
-    //    Plate,
-    //    FullPlate,
-    //    Mithril,
-    //    NUM
-    //}
-
-    //enum MainWeapon
-    //{
-    //    SharpStick,
-    //    Sword,
-    //    Pike,
-    //    Bow,
-    //    CrossBow,
-    //    TwoHandSword,
-    //    KnightsLance,
-    //    Ballista,
-    //    Longbow,
-    //    NUM
-    //}
-
     enum TrainingLevel
     {
         Minimal,
@@ -622,13 +592,4 @@ namespace VikingEngine.DSSWars.Conscript
         Training,
     }
 
-    //enum BarracksType
-    //{ 
-    //    Soldier,
-    //    Archer,
-    //    Warmashine,
-    //    Knight,
-    //    Gun,
-    //    Cannon,
-    //}
 }

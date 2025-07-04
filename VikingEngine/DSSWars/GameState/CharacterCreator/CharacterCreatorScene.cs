@@ -29,7 +29,6 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
         const string Page_Accessory = "accessories";
         public RichMenu menu;
-        //RichBoxSettings rbSettings;
         CharacterPreview soldierPreview, animalPreview;
         public CharacterCreatorScene() 
             :base()
@@ -272,15 +271,17 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
         void accessoriesPage()
         {
+            var profile = DssRef.storage.HostProfile();
+
             RichBoxContent content = new RichBoxContent();
             content.h1("Add accessory", HudLib.TitleColor_Head);
 
             content.newLine();
             for (int i = 0; i < 8; i++)
             {
-                content.Add(new ArtOption(i == bodyOption, new List<AbsRichBoxMember> { new RbText("Accessory " + TextLib.IndexToString(i)) },
+                content.Add(new ArtOption(i == profile.character.accessory1, new List<AbsRichBoxMember> { new RbText("Accessory " + TextLib.IndexToString(i)) },
                     new RbAction1Arg<int>((int index)=>{
-                        var profile = DssRef.storage.HostProfile();
+                        
                         profile.character.accessory1 = index;
                         soldierPreview.refresh();
                     }, i)));

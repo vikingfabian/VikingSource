@@ -216,6 +216,8 @@ namespace VikingEngine.DSSWars
                 grid.Frames[frame].AddVoxels(hatVoxels);
             }
 
+            
+
             var larmIdle = leftArm.Frames[0].GetVoxelArray(lArmOffset, profileColors);
             var rarmIdle = rightArm.Frames[0].GetVoxelArray(rArmOffSet, profileColors, rightHandItem.idle_jointPos.value, out IntVector3 rarm_jointPos);
             
@@ -236,9 +238,18 @@ namespace VikingEngine.DSSWars
                 VoxelJoint rightHandJointValue = attackFrame ? rightHandItem.attack_jointPos : rightHandItem.move_jointPos;
                 grid.Frames[frame].AddVoxels(rightArm.Frames[frame - 1].GetVoxelArray(rArmOffSet, profileColors,
                     rightHandJointValue.value, out rarm_jointPos));
-                //rarm_jointPos.Z -= 1;
-                               
+                                              
                 rightHandItem.addToGrid(grid.Frames[frame], adjustJointPos(rightHandJointValue, rarm_jointPos)/*rarm_jointPos*/, attackFrame ? WeaponModel.AttackFrame : WeaponModel.MoveFrame);
+            }
+
+            if (profile.character.accessory1 >= 0 && profile.character.accessory1 < 3)
+            {
+                var access = DssRef.models.rawModels[VoxelModelName.modsoldier_addons];
+                var accessVoxels = access.Frames[profile.character.accessory1].GetVoxelArray(IntVector3.Zero, profileColors);
+                for (int frame = 0; frame < FrameCount; frame++)
+                {
+                    grid.Frames[frame].AddVoxels(accessVoxels);
+                }
             }
 
             var centerAdjust = grid.Frames[0].BottomCenterAdj();

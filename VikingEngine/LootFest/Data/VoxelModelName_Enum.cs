@@ -43,6 +43,7 @@ namespace VikingEngine.LootFest
         modsoldier_larm_empty1,
         modsoldier_rarm_sword1,
         modsoldier_rarm_bow1,
+        modsoldier_addons,
         modweapon_sword1,
 
         modshield_javelin,
