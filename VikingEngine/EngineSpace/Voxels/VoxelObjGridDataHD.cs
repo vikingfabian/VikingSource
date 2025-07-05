@@ -59,7 +59,14 @@ namespace VikingEngine.Voxels
             for (int i = 0; i < voxels.Count; ++i)
             {
                 v = voxels[i];
-                MaterialGrid[v.Position.X + offset.X, v.Position.Y + offset.Y, v.Position.Z + offset.Z] = v.Material;
+
+                IntVector3 vpos = v.Position + offset;
+                if (vpos.X >= 0 && vpos.X < size.X &&
+                    vpos.Y >= 0 && vpos.Y < size.Y &&
+                    vpos.Z >= 0 && vpos.Z < size.Z)
+                {
+                    MaterialGrid[vpos.X, vpos.Y, vpos.Z] = v.Material;
+                }
             }
         }
 

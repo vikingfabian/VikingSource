@@ -2245,6 +2245,9 @@
 #begin VoxelModel/LfWars/city_quarry.vox
 /copy:VoxelModel/LfWars/city_quarry.vox
 
+#begin VoxelModel/LfWars/city_research.vox
+/copy:VoxelModel/LfWars/city_research.vox
+
 #begin VoxelModel/LfWars/city_smallhouse.vox
 /copy:VoxelModel/LfWars/city_smallhouse.vox
 
@@ -2265,6 +2268,9 @@
 
 #begin VoxelModel/LfWars/city_tavern.vox
 /copy:VoxelModel/LfWars/city_tavern.vox
+
+#begin VoxelModel/LfWars/city_tent.vox
+/copy:VoxelModel/LfWars/city_tent.vox
 
 #begin VoxelModel/LfWars/city_tower24.vox
 /copy:VoxelModel/LfWars/city_tower24.vox

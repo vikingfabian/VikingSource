@@ -275,11 +275,13 @@ namespace VikingEngine.DSSWars.Display
                         break;
 
                     case SelectTileResult.ResearchCenter:
-                        content.Add(new RbText(DssRef.lang.BuildingType_ReseachCenter));
+                        title = new RbText(DssRef.lang.BuildingType_ReseachCenter);
+                        content.Add(title);
                         break;
 
                     case SelectTileResult.BookPress:
-                        content.Add(new RbText(DssRef.lang.BuildingType_Bookpress));
+                        title = new RbText(DssRef.lang.BuildingType_Bookpress);
+                        content.Add(title);
                         break;
 
                     case Players.SelectTileResult.Conscript:

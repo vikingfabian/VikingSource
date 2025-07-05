@@ -84,9 +84,15 @@ namespace VikingEngine.DSSWars.GameObject
         {
             ResearchBuilding newBuilding = new ResearchBuilding()
             {
+                assignedTech = TechnologyTreeType.NUM_NONE,
                 idAndPosition = conv.IntVector2ToInt(subPos),
                 isResearchCenter  = isResearchCenter
             };
+
+            if (researchBuildings == null)
+            {
+                researchBuildings = new List<ResearchBuilding>(4);
+            }
 
             lock (researchBuildings)
             {

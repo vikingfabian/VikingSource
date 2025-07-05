@@ -36,15 +36,15 @@ namespace VikingEngine.DSSWars.XP
                 title.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(title);
                 content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedSchool = -1; }, SoundLib.menuBack));
+                HudLib.CloseButton(content, new RbAction(() => { city.selectedResearchBuilding = -1; }, SoundLib.menuBack));
 
                 content.newParagraph();
                 HudLib.BulletPoint(content);
-                string desc = building.isResearchCenter ? DssRef.lang.BuildingType_ResearchCenter_Description : DssRef.lang.BuildingType_Bookpress_Description;
+                string desc = building.isResearchCenter ? string.Format( DssRef.lang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter) : DssRef.lang.BuildingType_Bookpress_Description;
                 content.Add(new RbText( desc, HudLib.InfoYellow_Light));
 
 
-
+                content.newParagraph();
                 if (building.assignedTech == TechnologyTreeType.NUM_NONE)
                 {
                     var available = city.technology.availableTech();
@@ -140,13 +140,13 @@ namespace VikingEngine.DSSWars.XP
                     content.newParagraph();
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();
-                    content.Add(new RbImage(SpriteName.MissingImage));
+                    content.Add(new RbImage(SpriteName.WarsBuild_ResearchCenter));
                     content.space();
                     content.Add(new RbText(DssRef.lang.BuildingType_ReseachCenter));
                     content.newLine();
                     content.text(DssRef.lang.Hud_RequirementOr);
                     content.newLine();
-                    content.Add(new RbImage(SpriteName.MissingImage));
+                    content.Add(new RbImage(SpriteName.WarsBuild_Bookpress));
                     content.space();
                     content.Add(new RbText(DssRef.lang.BuildingType_Bookpress));
                 }

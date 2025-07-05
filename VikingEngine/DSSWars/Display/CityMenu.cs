@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.Display
                              DssRef.lang.Building_ListDescription;
                         break;
                     case ProgressSubTab.Research:
-                        tabContent.Add(new RbImage(SpriteName.MissingImage));
+                        tabContent.Add(new RbImage(SpriteName.WarsBuild_ResearchCenter));
                         tabContent.space(0.6f);
                         tabContent.Add(new RbText(DssRef.todoLang.Research_Tab));
                         description = DssRef.lang.Building_ListDescription;

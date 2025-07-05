@@ -760,13 +760,13 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
                 case TerrainBuildingType.ImmigrationTent:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_postal, 4, wp, WorldData.SubTileWidth * 0.4f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_tent, 0, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.ResearchCenter:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_bank, 0, wp, WorldData.SubTileWidth * 0.4f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_research, 1, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.BookPress:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_postal, 5, wp, WorldData.SubTileWidth * 0.4f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_research, 0, wp, WorldData.SubTileWidth * 0.9f));
                     break;
 
 

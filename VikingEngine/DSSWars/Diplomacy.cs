@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars
                 case RelationType.RelationType2_Good: return SpriteName.WarsRelationGood;
                 case RelationType.RelationType1_Peace: return SpriteName.WarsRelationPeace;
                 case RelationType.RelationType0_Neutral: return SpriteName.WarsRelationNeutral;
-                case RelationType.RelationTypeN1_Enemies: return SpriteName.MissingImage;
+                case RelationType.RelationTypeN1_Enemies: return SpriteName.WarsRelationEnemy;
                 case RelationType.RelationTypeN2_Truce: return SpriteName.WarsRelationTruce;
                 case RelationType.RelationTypeN3_War: return SpriteName.WarsRelationWar;
                 case RelationType.RelationTypeN4_TotalWar: return SpriteName.WarsRelationTotalWar;

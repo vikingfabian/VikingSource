@@ -193,7 +193,9 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_logistic, false);
             loadVoxelModel(VoxelModelName.city_quarry, false);
             loadVoxelModel(VoxelModelName.city_water, false);
-
+            loadVoxelModel(VoxelModelName.city_tent, false);
+            loadVoxelModel(VoxelModelName.city_research, false);
+           
             loadVoxelModel(VoxelModelName.decor_statue, false);
             loadVoxelModel(VoxelModelName.city_flagpole, false);
             loadVoxelModel(VoxelModelName.city_pavement, false);

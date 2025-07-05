@@ -21,8 +21,11 @@ namespace VikingEngine.DSSWars
         public static readonly ColorRange AiColorRange = new ColorRange(new Color(new Vector3(0.1f)), new Color(new Vector3(0.9f)));
 
         public static AppearanceMaterial
-            SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2, TunicCol, PantsCol, LeaderCol;        
+            SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2, TunicCol, PantsCol, LeaderCol;
 
+        static readonly Color AiGraySkin = new Color(206, 162, 126);
+        static readonly Color AiGrayHair = new Color(103, 81, 63);
+        static readonly Color DefaultPlayerSkin = new Color(224, 168, 123);
         public static void Init()
         {
             //Detta är färgerna som ersätts
@@ -96,8 +99,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = color2;
                         col2_Detail2 = Color.Gray;
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = arraylib.RandomListMember(FlagDesign.AiBanner, worldMeta.objRnd);
                     }
@@ -173,7 +176,7 @@ namespace VikingEngine.DSSWars
                                 break;
                         }
 
-                        col3_Skin = Color.Beige;
+                        col3_Skin = DefaultPlayerSkin;
                         col4_Hair = Color.Brown;
 
                         if (flagDesign == null)
@@ -188,8 +191,8 @@ namespace VikingEngine.DSSWars
                     col1_Detail1 = new Color(120, 72, 8);
                     col2_Detail2 = new Color(120, 40, 8);
 
-                    col3_Skin = Color.LightGray;
-                    col4_Hair = Color.DarkGray;
+                    col3_Skin = AiGraySkin;
+                    col4_Hair = AiGrayHair;
 
                     flagDesign = new FlagDesign(new byte[]
                     {
@@ -279,8 +282,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(248, 200, 24);
                         col2_Detail2 = new Color(168, 216, 24);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -309,8 +312,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(248, 184, 8);
                         col2_Detail2 = new Color(248, 248, 152);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -339,7 +342,7 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(8, 120, 184);
                         col2_Detail2 = new Color(232, 232, 120);
 
-                        col3_Skin = Color.LightGray;
+                        col3_Skin = AiGraySkin;;
                         col4_Hair = Color.OrangeRed;
 
                         flagDesign = new FlagDesign(new byte[]
@@ -370,7 +373,7 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(8, 56, 120);
                         col2_Detail2 = new Color(232,232, 120);
 
-                        col3_Skin = Color.LightGray;
+                        col3_Skin = AiGraySkin;;
                         col4_Hair = Color.OrangeRed;
 
                         flagDesign = new FlagDesign(new byte[]
@@ -400,7 +403,7 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(56, 40, 8);
                         col2_Detail2 = new Color(232, 232, 120);
 
-                        col3_Skin = Color.LightGray;
+                        col3_Skin = AiGraySkin;;
                         col4_Hair = Color.OrangeRed;
 
                         flagDesign = new FlagDesign(new byte[]
@@ -430,7 +433,7 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(152, 184, 248);
                         col2_Detail2 = new Color(8, 8, 56);
 
-                        col3_Skin = Color.LightGray;
+                        col3_Skin = AiGraySkin;;
                         col4_Hair = Color.OrangeRed;
 
                         flagDesign = new FlagDesign(new byte[]
@@ -461,8 +464,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(248, 184, 8);
                         col2_Detail2 = new Color(248, 248, 152);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -491,8 +494,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(248, 184, 8);
                         col2_Detail2 = new Color(248, 248, 152);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -521,8 +524,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(248, 184, 8);
                         col2_Detail2 = new Color(248, 248, 152);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -552,8 +555,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(216, 8, 88);
                         col2_Detail2 = new Color(8, 24, 56);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -645,8 +648,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(84, 80, 236);
                         col2_Detail2 = new Color(19, 3, 120);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -677,8 +680,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(151, 97, 43);
                         col2_Detail2 = new Color(163, 199, 220);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -710,8 +713,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(49, 16, 148);
                         col2_Detail2 = new Color(237, 194, 18);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -742,8 +745,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(109, 60, 7);
                         col2_Detail2 = new Color(208, 221, 218);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -774,8 +777,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(8, 38, 7);
                         col2_Detail2 = new Color(68, 15, 247);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -806,8 +809,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(241, 241, 168);
                         col2_Detail2 = new Color(63, 34, 25);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -838,8 +841,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(48, 46, 73);
                         col2_Detail2 = new Color(236, 236, 18);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -870,8 +873,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(208, 193, 196);
                         col2_Detail2 = new Color(131, 148, 232);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -902,8 +905,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(110, 107, 213);
                         col2_Detail2 = new Color(222, 165, 35);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -934,8 +937,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(211, 231, 237);
                         col2_Detail2 = new Color(116, 54, 11);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -966,8 +969,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(43, 23, 85);
                         col2_Detail2 = new Color(44, 13, 187);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -998,8 +1001,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(245, 111, 8);
                         col2_Detail2 = new Color(32, 30, 57);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1030,8 +1033,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(11, 69, 107);
                         col2_Detail2 = new Color(114, 247, 167);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1062,8 +1065,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(150, 191, 250);
                         col2_Detail2 = new Color(192, 154, 131);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1094,8 +1097,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(221, 149, 63);
                         col2_Detail2 = new Color(255, 255, 255);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1126,8 +1129,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(13, 74, 10);
                         col2_Detail2 = new Color(246, 175, 41);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1158,8 +1161,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(40, 23, 69);
                         col2_Detail2 = new Color(125, 248, 54);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1190,8 +1193,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(79, 109, 220);
                         col2_Detail2 = new Color(229, 179, 230);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1222,8 +1225,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(132, 46, 28);
                         col2_Detail2 = new Color(225, 235, 87);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1254,8 +1257,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(206, 133, 207);
                         col2_Detail2 = new Color(176, 56, 157);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1286,8 +1289,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(226, 145, 17);
                         col2_Detail2 = new Color(208, 221, 218);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1318,8 +1321,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(9, 78, 186);
                         col2_Detail2 = new Color(173, 189, 214);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1350,8 +1353,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(226, 117, 8);
                         col2_Detail2 = new Color(15, 65, 214);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1382,8 +1385,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(84, 53, 30);
                         col2_Detail2 = new Color(206, 249, 251);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1414,8 +1417,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(251, 194, 47);
                         col2_Detail2 = new Color(215, 193, 212);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1446,8 +1449,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(163, 65, 31);
                         col2_Detail2 = new Color(243, 207, 9);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1478,8 +1481,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(195, 191, 144);
                         col2_Detail2 = new Color(38, 51, 58);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1512,8 +1515,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(241, 246, 37);
                         col2_Detail2 = new Color(158, 253, 13);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1546,8 +1549,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(150, 80, 16);
                         col2_Detail2 = new Color(69, 97, 176);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1579,8 +1582,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(113, 73, 4);
                         col2_Detail2 = new Color(13, 79, 29);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1611,8 +1614,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(195, 219, 214);
                         col2_Detail2 = new Color(34, 8, 167);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1644,8 +1647,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(89, 105, 111);
                         col2_Detail2 = new Color(206, 239, 240);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1677,8 +1680,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(41, 23, 4);
                         col2_Detail2 = new Color(211, 222, 233);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1710,8 +1713,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(245, 157, 52);
                         col2_Detail2 = new Color(233, 233, 174);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1743,8 +1746,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(247, 232, 15);
                         col2_Detail2 = new Color(56, 193, 2);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1775,8 +1778,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(35, 29, 42);
                         col2_Detail2 = new Color(119, 189, 217);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1807,8 +1810,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(3, 107, 49);
                         col2_Detail2 = new Color(252, 239, 34);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1839,8 +1842,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(41, 23, 4);
                         col2_Detail2 = new Color(195, 249, 196);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1871,8 +1874,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(34, 41, 48);
                         col2_Detail2 = new Color(230, 43, 25);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1903,8 +1906,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(60, 17, 166);
                         col2_Detail2 = new Color(179, 200, 206);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1935,8 +1938,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(0, 0, 0);
                         col2_Detail2 = new Color(71, 78, 13);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1967,8 +1970,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(252, 250, 151);
                         col2_Detail2 = new Color(16, 23, 42);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -1999,8 +2002,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(198, 0, 0);
                         col2_Detail2 = new Color(20, 12, 61);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2031,8 +2034,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(150, 217, 205);
                         col2_Detail2 = new Color(175, 235, 98);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2063,8 +2066,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(180, 221, 177);
                         col2_Detail2 = new Color(220, 213, 222);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2095,8 +2098,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(185, 184, 222);
                         col2_Detail2 = new Color(224, 241, 172);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2127,8 +2130,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(0, 0, 0);
                         col2_Detail2 = new Color(75, 112, 247);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2159,8 +2162,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(19, 74, 8);
                         col2_Detail2 = new Color(138, 199, 213);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2191,8 +2194,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(66, 82, 105);
                         col2_Detail2 = new Color(192, 221, 219);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2223,8 +2226,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(245, 111, 8);
                         col2_Detail2 = new Color(233, 0, 2);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2255,8 +2258,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(17, 189, 137);
                         col2_Detail2 = new Color(191, 246, 252);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2287,8 +2290,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(182, 246, 244);
                         col2_Detail2 = new Color(194, 165, 134);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2319,8 +2322,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(122, 1, 18);
                         col2_Detail2 = new Color(235, 246, 38);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2351,8 +2354,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(248, 247, 224);
                         col2_Detail2 = new Color(42, 0, 0);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2383,8 +2386,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(15, 177, 191);
                         col2_Detail2 = new Color(61, 20, 68);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2415,8 +2418,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(228, 47, 4);
                         col2_Detail2 = new Color(210, 189, 145);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2447,8 +2450,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(158, 162, 247);
                         col2_Detail2 = new Color(225, 228, 217);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2479,8 +2482,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(97, 88, 30);
                         col2_Detail2 = new Color(160, 160, 199);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2511,8 +2514,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(47, 46, 69);
                         col2_Detail2 = new Color(192, 221, 219);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2543,8 +2546,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(49, 43, 108);
                         col2_Detail2 = new Color(114, 141, 206);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2575,8 +2578,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(219, 87, 53);
                         col2_Detail2 = new Color(206, 125, 44);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2607,8 +2610,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(238, 75, 23);
                         col2_Detail2 = new Color(216, 111, 8);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2639,8 +2642,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(20, 2, 71);
                         col2_Detail2 = new Color(70, 196, 251);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2671,8 +2674,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(122, 215, 144);
                         col2_Detail2 = new Color(255, 255, 255);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2703,8 +2706,8 @@ namespace VikingEngine.DSSWars
                         col1_Detail1 = new Color(193, 137, 56);
                         col2_Detail2 = new Color(202, 166, 132);
 
-                        col3_Skin = Color.LightGray;
-                        col4_Hair = Color.DarkGray;
+                        col3_Skin = AiGraySkin;;
+                        col4_Hair = AiGrayHair;
 
                         flagDesign = new FlagDesign(new byte[]
                         {
@@ -2735,8 +2738,8 @@ namespace VikingEngine.DSSWars
                     //        col1_Detail1 = new Color(84, 80, 236);
                     //        col2_Detail2 = new Color(19, 3, 120);
 
-                    //        col3_Skin = Color.LightGray;
-                    //        col4_Hair = Color.DarkGray;
+                    //        col3_Skin = AiGraySkin;;
+                    //        col4_Hair = AiGrayHair;
 
                     //        flagDesign = new FlagDesign(new byte[]
                     //        {

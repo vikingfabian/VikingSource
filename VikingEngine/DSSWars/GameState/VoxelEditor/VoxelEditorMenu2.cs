@@ -651,7 +651,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         void allLayersChkBox(RichBoxContent content)
         {
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.MissingImage), new RbSpace(),
+                new RbImage(SpriteName.EditorAllLayer), new RbSpace(),
                 new RbText(DssRef.todoLang.Editor_Layers_All) },
                 designer.bRepeateOnAllLayersProperty));
         }
@@ -745,7 +745,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MissingImage), new RbText(DssRef.todoLang.Editor_CropSelection) }, new RbAction(designer.LinkSetLimitsAfterSel)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconCrop), new RbText(DssRef.todoLang.Editor_CropSelection) }, new RbAction(designer.LinkSetLimitsAfterSel)));
             
             Refresh(content);
         }

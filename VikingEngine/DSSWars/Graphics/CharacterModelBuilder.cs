@@ -166,6 +166,18 @@ namespace VikingEngine.DSSWars
                     break;
             }
 
+            switch (modelData.specialization)
+            {
+                case Conscript.SpecializationType.HonorGuard:
+                    weaponHatFrame = 5;
+                    shield = VoxelModelName.modshield_roman;
+                    leftArmType = VoxelModelName.modsoldier_larm_shield1;
+                    break;
+                case Conscript.SpecializationType.Viking:
+                    weaponHatFrame = 9;
+                    break;
+            }
+
             VoxelModelName hatmodel;
             switch (profile.character.hatGenre)
             { 
@@ -179,18 +191,7 @@ namespace VikingEngine.DSSWars
                     break;
             }
 
-            switch (modelData.specialization)
-            {
-                case Conscript.SpecializationType.HonorGuard:
-                    weaponHatFrame = 5;
-                    shield = VoxelModelName.modshield_roman;
-
-                    leftArmType = VoxelModelName.modsoldier_larm_shield1;
-                    break;
-                case Conscript.SpecializationType.Viking:
-                    weaponHatFrame = 9;
-                    break;
-            }
+            
 
             VoxelModelName faceModel;
 

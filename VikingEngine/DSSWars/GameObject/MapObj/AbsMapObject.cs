@@ -100,10 +100,16 @@ namespace VikingEngine.DSSWars.GameObject
             tagSprites(out SpriteName back, out SpriteName art);
             if (back != CityTag.NoBackSprite)
             {
-                content.Add(new RbOverlapImage(
-                    new RbImage(back),
-                    art, Vector2.Zero, 0.8f));
-
+                if (art == CityTag.NoBackSprite)
+                {
+                    content.Add(new RbImage(back));
+                }
+                else
+                {
+                    content.Add(new RbOverlapImage(
+                        new RbImage(back),
+                        art, Vector2.Zero, 0.8f));
+                }
                 return true;
             }
 

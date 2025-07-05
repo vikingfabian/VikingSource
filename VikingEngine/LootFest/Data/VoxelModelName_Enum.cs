@@ -239,6 +239,8 @@ namespace VikingEngine.LootFest
         city_workstation,
         city_carpenter,
         city_nobelhouse,
+        city_tent,
+        city_research,
 
         horse_white, horse_brown,
         

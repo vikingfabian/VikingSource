@@ -747,7 +747,15 @@ namespace VikingEngine
         VoxelEditorFrameAddEmpty,
         VoxelEditorFrameAddCopy,
         VoxelEditorFrameRemove,
+        VoxelEditorFrameRemoveAll,
         VoxelEditorFlipLyingStanding,
+
+        EditorLayer,
+        EditorAllLayer,
+        EditorLayerAdd,
+        EditorLayerRemove,
+        EditorLayerMergeDown,
+
 
 
 
@@ -2515,6 +2523,10 @@ namespace VikingEngine
         WarsHudIconPaste,
         WarsHudIconCopy,
         WarsHudIconCut,
+        WarsHudIconCrop,
+        WarsHudIconSaveProject,
+        WarsHudIconOpenProject,
+
 
         DSS2MainMenu,
         SteamIcon,
@@ -2582,6 +2594,7 @@ namespace VikingEngine
         WarsRelationPeace,
         WarsRelationNeutral,
         WarsRelationTruce,
+        WarsRelationEnemy,
         WarsRelationWar,
         WarsRelationTotalWar,
         WarsRelationFlagOutline,
@@ -2656,6 +2669,9 @@ namespace VikingEngine
         WarsUnitIcon_Viking,
         WarsUnitIcon_Greensoldier,
         WarsUnitIcon_Folkman,
+        WarsUnitIcon_Immigrant,
+        WarsUnitIcon_Immigrant_RemoveTime,
+
 
         WarsUnitIcon_Hammerknight,
         WarsUnitIcon_Javelin,
@@ -2767,6 +2783,9 @@ namespace VikingEngine
         WarsBuild_GuardOffice,
         WarsBuild_GuardOfficeLarge,
 
+        WarsBuild_Tent,
+        WarsBuild_ResearchCenter,
+        WarsBuild_Bookpress,
 
         WarsFlagType_LongBanner,
         WarsFlagType_Banner,

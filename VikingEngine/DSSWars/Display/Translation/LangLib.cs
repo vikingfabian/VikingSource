@@ -482,12 +482,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         {
             if (isResearchCenter)
             {
-                icon = SpriteName.MissingImage;
+                icon = SpriteName.WarsBuild_ResearchCenter;
                 name = DssRef.lang.BuildingType_ReseachCenter;
             }
             else
             {
-                icon = SpriteName.MissingImage;
+                icon = SpriteName.WarsBuild_Bookpress;
                 name = DssRef.lang.BuildingType_Bookpress;
             }
         }

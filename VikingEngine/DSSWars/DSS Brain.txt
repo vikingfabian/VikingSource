@@ -4,14 +4,17 @@
 * Character creator prototype
 * Immigrants to hud
 * All tech costs 3 times more 
-* New buildings: research center and bookpress
+* New buildings: immigration tent, research center and bookpress
 * A new progress page in city menu 
 * Optimized: reduced flag objects
 * Optimized: voxel model loading
 * Fixed: battle lab startup crash
 * Write error handling on config file
+* Improved ai skin colors
+* Added some new icons
 
 x wtf does "save and exit" do in the battle lab
+x Could be your save files are messed up, I should start checking if the version is newer than current
 
 
 Voxel editor: 
@@ -35,12 +38,9 @@ X load retail character models
 #Voxel editor#
 
 #Pics
-immigrant icon, och remove/time
-Crop
-Layer
+enemy relation
 Animated
 Move up down
-Merge down
 
 
 ! I think there is one data drift I havent found, make a habit to check if the files are working from time to time

@@ -793,12 +793,8 @@ namespace VikingEngine.DSSWars.Conscript
 
         public SoldierData bannermanSetup(SoldierData soldierData)
         {
-            //soldierData.modelScale = DssConst.Men_StandardModelScale;
             soldierData.attackDamage /= 2;
             soldierData.attackDamageStructure /= 2;
-
-            //soldierData.canAttackCharacters = true;
-            //soldierData.canAttackStructure = true;
 
             soldierData.factionColoredModel = true;
             soldierData.modelName = LootFest.VoxelModelName.war_bannerman;
@@ -821,8 +817,8 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.rowWidth = 1;
             soldierData.columnsDepth = 1;
             soldierData.rotationSpeed = DssConst.ShipRotatingSpeed;
+            soldierData.modelData.modelType = ModelType.Ship;
 
-            
 
             switch (conscript.specialization)
             {

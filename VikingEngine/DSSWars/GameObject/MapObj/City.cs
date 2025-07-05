@@ -715,7 +715,12 @@ namespace VikingEngine.DSSWars.GameObject
             IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
 
             int workerStatusesCount = r.ReadUInt16();
-            cityHallSubtilePos.read(r);
+
+            if (subversion >= 65)
+            {
+                cityHallSubtilePos.read(r);
+            }
+
             for (int i = 0; i < workerStatusesCount; i++)
             {
                 WorkerStatus readWorker = new WorkerStatus()
@@ -2482,13 +2487,13 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 content.newLine();
-                content.Add(new RbImage(SpriteName.MissingImage));
+                content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant));
                 content.space();
                 content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
                 content.Add(new RbTab(0.4f));
                 content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
                 content.space();
-                content.Add(new RbImage(SpriteName.MissingImage));
+                content.Add(new RbImage(SpriteName.WarsBuild_Tent));
                 content.space();
                 content.Add(new RbText(buildingStructure.ImmigrationTent_count.ToString()));
                 content.space();
@@ -2770,14 +2775,14 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
             HudLib.BulletPoint(content);
             content.space();
-            content.Add(new RbImage(SpriteName.MissingImage));
+            content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant_RemoveTime));
             content.space();
             content.Add(new RbText(DssRef.todoLang.Immigrants_UnhousedAreLost));
 
             content.newParagraph();
-            content.Add(new RbImage(SpriteName.MissingImage));
+            content.Add(new RbImage(SpriteName.WarsBuild_Tent));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.BuildingType_ImmigrationTent, buildingStructure.ImmigrationTent_count)));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.BuildingType_ImmigrationTent, buildingStructure.ImmigrationTent_count), HudLib.TitleColor_TypeName));
             content.newLine();
             content.Add(new RbText(string.Format( DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity), HudLib.InfoYellow_Light));
 

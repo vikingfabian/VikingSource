@@ -90,5 +90,6 @@ namespace VikingEngine.DSSWars
         Custom,
         Warmashine,
         Riding,
+        Ship,
     }
 }

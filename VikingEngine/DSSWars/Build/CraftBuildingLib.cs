@@ -1285,8 +1285,7 @@ namespace VikingEngine.DSSWars.Build
            new UseResource[]
            {
                new UseResource(ItemResourceType.ServiceMen, 4),
-               new UseResource(ItemResourceType.SkinLinen_Group, 100),
-                new UseResource(ItemResourceType.Wood_Group, 100),
+               new UseResource(ItemResourceType.Bronze, 40),
                 new UseResource(ItemResourceType.Stone_G, 300)
            },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
@@ -1299,8 +1298,7 @@ namespace VikingEngine.DSSWars.Build
             new UseResource[]
             {
                 new UseResource(ItemResourceType.ServiceMen, 4),
-                new UseResource(ItemResourceType.Bronze, 40),
-                new UseResource(ItemResourceType.Iron_G, 20),
+                new UseResource(ItemResourceType.Bronze, 50),
                 new UseResource(ItemResourceType.Wood_Group, 100),
            
             },
