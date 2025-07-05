@@ -1,33 +1,11 @@
 ﻿UPDATE
 -Change Log-
-* New modular soldier models
-* Character creator prototype
-* Immigrants to hud
-* All tech costs 3 times more 
-* New buildings: immigration tent, research center and bookpress
-* A new progress page in city menu 
-* Optimized: reduced flag objects
-* Optimized: voxel model loading
-* Fixed: battle lab startup crash
-* Write error handling on config file
-* Improved ai skin colors
-* Added some new icons
-
+* 
 x wtf does "save and exit" do in the battle lab
 x Could be your save files are messed up, I should start checking if the version is newer than current
 
 
 Voxel editor: 
-* added profile colors
-* bucket fill bug fix
-* layers
-* save/load project files
-* changed all player colors to be of replaceable material
-* added a replace all materials option
-* crop crash fix
-* repaired: delete animation
-* repaired: select and clear
-
 X remove layer
 X merge layer
 X shift description
@@ -62,14 +40,8 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
--Diplomacy, timer to reduce relation. Affect others. View relations teo all on select.
--mod av Storage location
-
-x beer example in the help menu
-x input options in ingame menu are broken
-x Auto upgrade
+-Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning
-x animals don't freeze when saving (game is not paused, just overridden by save state)
 
 -ai dynamic low to high quality soldiers, and prio ranged units for walls
 -låt inte dread anfalla spelaren
@@ -84,17 +56,14 @@ x animals don't freeze when saving (game is not paused, just overridden by save 
 * annoyed by the deliveries being inefficient
 -Embassy expansion för att unlocka diplomacy
 * soldier level
-* Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
 * wall crusher
 * diplomat, med politic / spy upgrade
 * horse farm
 * ox farm, also incread farming area
 * go legendary, bonus building
  farm - apple tree
-* refugee tent, samlar på invandrare (60) half food cost, auto build homes?
-* vetskap kan sparas i pergament och sparas, kopieras, trade, sprida med messenger > papyrus/läder pergament
--kanske en som delar sin progress med alla kopplade
-* faction resources per second current/produced/consumed 
+
+* fire lance weapon
 
 #Todo (xmas patch)#
 krig varning på ally
