@@ -238,7 +238,28 @@ namespace VikingEngine.DSSWars.Display
 
             content.newLine();
             SettingsToMenu(content, menu, false);
-            //Ref.gamesett.volumeOptions(content);
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.InterfaceIconCamera),
+                new RbSpace(),
+                new RbText(".Store camera position")
+            }, new RbAction(() => { DssRef.state.LocalHost().storedCameraPos = XGuide.LocalHost.view.Camera.GetStoredPosition(); })));
+
+            if (DssRef.state.LocalHost().storedCameraPos.hasValue)
+            {
+                //content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.InterfaceIconCamera),
+                new RbSpace(),
+                new RbText(".Load position")
+                }, new RbAction(() => {
+                    closeMenu();
+                    XGuide.LocalHost.view.Camera.ResetToPosition(DssRef.state.LocalHost().storedCameraPos);
+                    DssRef.state.LocalHost().gameControls.map.loadCamPos();
+
+                })));
+            }
             content.newParagraph();
             content.Add(new RbSeperationLine());
 

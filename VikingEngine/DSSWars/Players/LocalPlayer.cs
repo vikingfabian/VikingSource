@@ -33,6 +33,7 @@ using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.Input;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.DebugExtensions;
+using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -107,6 +108,8 @@ namespace VikingEngine.DSSWars.Players
 
         List<MessagePosition> battleMessages = new List<MessagePosition>(8);
         public bool isDropInPlayer = false;
+
+        public StoredCameraPos storedCameraPos;
 
         public LocalPlayer()
         {
@@ -348,6 +351,8 @@ namespace VikingEngine.DSSWars.Players
                 pinsC.sel.writeGameState(w);
             }
 
+            storedCameraPos.writeGameState(w);
+
             Debug.WriteCheck(w);
         }
 
@@ -434,6 +439,11 @@ namespace VikingEngine.DSSWars.Players
                     pin.parentArrayIndex = pins.Add(pin);
                     pin.basicInit();
                 }
+            }
+
+            if (subversion >= 66)
+            {
+                storedCameraPos.readGameState(r, subversion);
             }
 
             Debug.ReadCheck(r);

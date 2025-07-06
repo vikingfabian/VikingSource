@@ -1368,6 +1368,12 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public void loadCamPos()
+        {
+            playerPointerPos = camera.LookTarget;
+            camRotation.Value = camera.TiltX;
+        }
+
         bool hasMouseMapPanInput()
         {
             return player.gameControls.input.inputSource.HasMouse &&

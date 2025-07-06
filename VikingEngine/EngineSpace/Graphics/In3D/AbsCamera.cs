@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using VikingEngine.LootFest.Map;
-using VikingEngine.LootFest;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.EngineSpace.Graphics.DeferredRendering;
 using VikingEngine.EngineSpace.Graphics.DeferredRendering.Lights;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.EngineSpace.Maths;
+using VikingEngine.LootFest;
+using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.Graphics
 {
@@ -309,6 +311,27 @@ namespace VikingEngine.Graphics
             ViewMatrix = Matrix.CreateLookAt(pos, target, Vector3.Up);
             ViewProjection = ViewMatrix * Projection;
             Frustum.Matrix = ViewProjection;
+        }
+
+        public StoredCameraPos GetStoredPosition()
+        {
+            return new StoredCameraPos()
+            { 
+                hasValue = true,
+                Position = Position,
+                lookTarget = lookTarget,
+                tilt = tilt,
+                targetZoom = targetZoom,
+            };
+        }
+
+        public void ResetToPosition(StoredCameraPos storedCameraPos)
+        {
+            this.position = storedCameraPos.Position;
+            lookTarget = storedCameraPos.lookTarget;
+            this.tilt = storedCameraPos.tilt;
+            this.targetZoom = storedCameraPos.targetZoom;
+            clearGoalTarget();
         }
 
         public Vector3 lookDir()
