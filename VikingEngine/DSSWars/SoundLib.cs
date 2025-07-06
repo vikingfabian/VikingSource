@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars
                 SoundDir + "footstep (9)",
                 SoundDir + "footstep (10)"
             ], 0.26f, 0.4f);
-            ship_knirr = new SoundContainerMultiple([SoundDir + "ship_knirr1", SoundDir + "ship_knirr2"], 2f, 0.4f);
+            ship_knirr = new SoundContainerMultiple([SoundDir + "ship_knirr1", SoundDir + "ship_knirr2"], 1.3f, 0.4f);
             //Attacks
             bow = new SoundContainerMultiple([SoundDir + "bow1", SoundDir + "bow2"], 0.5f, 0.4f);
             crossbow = new SoundContainerMultiple([SoundDir + "CrossBow1", SoundDir + "CrossBow2"], 0.5f, 0.4f);

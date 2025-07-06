@@ -231,6 +231,9 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                         new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_NewGame) }, new RbAction(state.startNewGame), null, DssRef.world != null && DssRef.world.generatePassCompleted >= GenerateMapPass.Countries));
 
+#if DEBUG
+                    content.text("Finns inget sätt att ladda!");
+
                     content.newParagraph();
                     var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
                        new RbAction(beginEditName), null);
@@ -241,10 +244,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     nameText.overrideColor = Color.LightYellow;
                     content.Add(nameText);
 
+
                     content.newLine();
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                     new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Save) }, new RbAction(state.saveMap), null, DssRef.world != null));
-
+#endif
                     break;
 
             }

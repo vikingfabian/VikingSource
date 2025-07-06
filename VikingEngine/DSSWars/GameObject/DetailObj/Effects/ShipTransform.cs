@@ -80,8 +80,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
 
-            DssRef.models.recycle(ref transformModel, true);
-            DssRef.models.recycle(ref loadingModel, true);
+            transformModel?.preRemoveFromDrawBatch();
+            loadingModel?.preRemoveFromDrawBatch();
+            //DssRef.models.recycle(ref transformModel, true);
+            //DssRef.models.recycle(ref loadingModel, true);
 
             completeTransform();
         }

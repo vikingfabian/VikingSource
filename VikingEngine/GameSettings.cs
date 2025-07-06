@@ -253,6 +253,18 @@ namespace VikingEngine
             return Engine.Screen.PcTargetFullScreen;
         }
 
+        public bool AddSomePixelsProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                Engine.Screen.bRecordingPresetAddPixels = value;
+                Engine.Screen.ApplyScreenSettings();
+                graphicsHasChanged = true;
+                settingsHasChanged = true;
+            }
+            return Engine.Screen.bRecordingPresetAddPixels;
+        }
+
         public void setRecordingPreset(RecordingPresets rp)
         {
             Engine.Screen.UseRecordingPreset = rp;
@@ -492,6 +504,16 @@ namespace VikingEngine
                     }
                 }
                 RecordPreset.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_RecordingPresets, menu);
+            }
+
+            if (Engine.Screen.UseRecordingPreset != RecordingPresets.NumNon)
+            {
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    new RbText(Ref.langOpt.GraphicsOption_RecordingPresets + ":", HudLib.TitleColor_Label_Dark),
+                    new RbSpace(0.5f),
+                    new RbText(string.Format( DssRef.todoLang.GraphicsOption_RecordingPresets_AddXPixels, Screen.RecordingPresetAddPixelsCount))
+                    }, AddSomePixelsProperty));
             }
 
             content.newLine();

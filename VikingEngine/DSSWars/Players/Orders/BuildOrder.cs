@@ -42,7 +42,8 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override void DeleteMe()
         {
-            DssRef.models.recycle(ref model, true);
+            //DssRef.models.recycle(ref model, true);
+            model.preRemoveFromDrawBatch();
             base.DeleteMe();
         }
     }

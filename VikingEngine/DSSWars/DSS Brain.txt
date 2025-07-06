@@ -2,13 +2,17 @@
 -Change Log-
 * Save camera position
 * Made bucket fill safe from stack overflow
-
+* Map editor save is hidden
+* Fixed the glitching models
 
 x wtf does "save and exit" do in the battle lab
 x Could be your save files are messed up, I should start checking if the version is newer than current
 
 
 Voxel editor: 
+* fixed resize render issue
+
+
 X remove layer
 X merge layer
 X shift description
@@ -45,6 +49,7 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 #Todo#
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning
+x save custom map, cant load, should save in user content folder
 
 -ai dynamic low to high quality soldiers, and prio ranged units for walls
 -låt inte dread anfalla spelaren

@@ -344,7 +344,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
             //model.DeleteMe();
-            DssRef.models.recycle(ref model, true, true);
+            //DssRef.models.recycle(ref model, true, true);
+            model.preRemoveFromDrawBatch();
         }
     }
 }

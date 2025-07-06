@@ -496,8 +496,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             var limits = voxelProject.drawLimits;
             limits.Max += add;
             voxelProject.setDrawLimit(limits);
-            UpdateDrawLimits();
-            updateVoxelObj();
+           
 
             if (add.LargestSideLength_Abs() > 1)
             {
@@ -507,6 +506,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
                 repeateOnAllFrames = storeRepeateOnAllFrames;
             }
+
+            UpdateDrawLimits();
+            updateVoxelObj();
         }
         public void setCanvasSize(IntVector3 size)
         {

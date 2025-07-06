@@ -176,7 +176,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
             //horsemodel.DeleteMe();
-            DssRef.models.recycle(ref horsemodel, true);
+            //DssRef.models.recycle(ref horsemodel, true);
+            horsemodel.preRemoveFromDrawBatch();
         }
     }
 

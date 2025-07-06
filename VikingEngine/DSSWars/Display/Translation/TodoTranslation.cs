@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Display.Translation
     class TodoTranslation
     {
         //Option language
-
+        public string GraphicsOption_RecordingPresets_AddXPixels => "Add {0} pixels";
 
 
         //##
