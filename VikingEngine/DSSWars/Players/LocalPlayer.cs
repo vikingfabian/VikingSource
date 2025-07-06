@@ -65,20 +65,17 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
-       
-
-        //public int mercenaryCost = DssRef.difficulty.MercenaryPurchaseCost_Start;
 
         const int MercenaryMarketSoftLock1 = DssLib.MercenaryPurchaseCount * 5;
         const double MercenaryMarketAddPerSec_Speed1 = 0.5;
         const double MercenaryMarketAddPerSec_Speed2 = 0.3;
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
-        public MenuTab factionTab = MenuTab.NUM_NONE;//HeadDisplay.Tabs[0];
+        public MenuTab factionTab = MenuTab.NUM_NONE;
         public MenuTab cityTab = CityMenu.Tabs[0];
         public MenuTab armyTab = ArmyMenu.Tabs[0];
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
-        //public WorkSubTab workSubTab = WorkSubTab.Priority_Resources;
+
         public ProgressSubTab progressSubTab = 0;
         public MixTabEditType mixTabEditType = MixTabEditType.None;
         public WorkPriorityType mixWorkType = WorkPriorityType.NUM_NONE;

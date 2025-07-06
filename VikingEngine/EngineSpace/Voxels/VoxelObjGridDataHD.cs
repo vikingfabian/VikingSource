@@ -135,6 +135,36 @@ namespace VikingEngine.Voxels
                 }
             }
         }
+        //public void BucketFill(IntVector3 pos, ushort find, ushort replace, bool continious)
+        //{
+        //    if (continious)
+        //    {
+        //        ReplaceMaterial(find, replace);
+        //    }
+        //    else
+        //    {
+        //        recursiveFill(pos, CubeFace.NUM);
+
+        //        void recursiveFill(IntVector3 pos, CubeFace fromdir)
+        //        {
+        //            if (MaterialGrid[pos.X, pos.Y, pos.Z] == find)
+        //            {
+        //                MaterialGrid[pos.X, pos.Y, pos.Z] = replace;
+        //                for (CubeFace face = 0; face < CubeFace.NUM; ++face)
+        //                {
+        //                    if (face != fromdir)
+        //                    {
+        //                        IntVector3 adj = new IntVector3(face) + pos;
+        //                        if (InBounds(adj))
+        //                        {
+        //                            recursiveFill(adj, conv.Invert(face));
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
         public void BucketFill(IntVector3 pos, ushort find, ushort replace, bool continious)
         {
             if (continious)
@@ -143,30 +173,30 @@ namespace VikingEngine.Voxels
             }
             else
             {
-                recursiveFill(pos, CubeFace.NUM);
+                if (!InBounds(pos)) return;
+                if (MaterialGrid[pos.X, pos.Y, pos.Z] != find || find == replace) return;
 
-                void recursiveFill(IntVector3 pos, CubeFace fromdir)
+                Queue<IntVector3> queue = new Queue<IntVector3>();
+                queue.Enqueue(pos);
+
+                while (queue.Count > 0)
                 {
-                    if (MaterialGrid[pos.X, pos.Y, pos.Z] == find)
+                    IntVector3 current = queue.Dequeue();
+
+                    if (!InBounds(current)) continue;
+                    if (MaterialGrid[current.X, current.Y, current.Z] != find) continue;
+
+                    MaterialGrid[current.X, current.Y, current.Z] = replace;
+
+                    for (CubeFace face = 0; face < CubeFace.NUM; ++face)
                     {
-                        MaterialGrid[pos.X, pos.Y, pos.Z] = replace;
-                        for (CubeFace face = 0; face < CubeFace.NUM; ++face)
-                        {
-                            if (face != fromdir)
-                            {
-                                IntVector3 adj = new IntVector3(face) + pos;
-                                if (InBounds(adj))
-                                {
-                                    recursiveFill(adj, conv.Invert(face));
-                                }
-                            }
-                        }
+                        IntVector3 adjacent = new IntVector3(face) + current;
+                        queue.Enqueue(adjacent);
                     }
                 }
             }
         }
 
-        
 
         public void ReplaceMaterial(ushort from1, ushort to1)
         {

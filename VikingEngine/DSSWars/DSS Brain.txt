@@ -1,6 +1,9 @@
 ﻿UPDATE
 -Change Log-
-* 
+* Save camera position
+* Made bucket fill safe from stack overflow
+
+
 x wtf does "save and exit" do in the battle lab
 x Could be your save files are messed up, I should start checking if the version is newer than current
 
