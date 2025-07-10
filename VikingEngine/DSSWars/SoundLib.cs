@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.EngineSpace.HUD.RichBox;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;

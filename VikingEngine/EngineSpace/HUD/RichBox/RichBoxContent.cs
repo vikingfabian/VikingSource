@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox.Artistic;

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         public override bool updateObjectDisplay()
         {
-            if (hud.detailLevel == Display.HudDetailLevel.Normal)
+            if (hud.detailLevel == Interface.HudDetailLevel.Normal)
             {
 
                 hud.objMenu.createMenu(this);

@@ -6,10 +6,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Delivery;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
 

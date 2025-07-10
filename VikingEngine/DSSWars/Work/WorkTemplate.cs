@@ -7,7 +7,7 @@ using System.Net;
 using System.Reflection.Metadata;
 using System.Security.AccessControl;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;

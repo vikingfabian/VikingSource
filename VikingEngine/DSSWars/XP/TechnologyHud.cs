@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.ToGG.MoonFall;
@@ -325,7 +325,7 @@ namespace VikingEngine.DSSWars.XP
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(Resource.ResourceLib.Icon(item)));
                 content.space();
-                content.Add(new RbText(Display.Translation.LangLib.Item(item)));
+                content.Add(new RbText(LangLib.Item(item)));
             }
 
             foreach (var item in buildings)

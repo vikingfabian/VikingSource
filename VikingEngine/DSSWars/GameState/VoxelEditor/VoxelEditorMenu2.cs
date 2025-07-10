@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using VikingEngine.DataLib;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.Graphics;

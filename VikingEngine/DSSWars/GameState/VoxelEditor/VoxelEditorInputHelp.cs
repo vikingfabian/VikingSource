@@ -5,7 +5,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;

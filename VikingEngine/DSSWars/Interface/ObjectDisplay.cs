@@ -1,0 +1,67 @@
+﻿using Microsoft.Xna.Framework;
+using VikingEngine.HUD.RichBox;
+
+namespace VikingEngine.DSSWars.Interface
+{
+    class ObjectDisplay : RichboxGuiPart
+    {
+        public ObjectDisplay(RichboxGui gui)
+            : base(gui)
+        { }
+
+        public void refresh(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected, Vector2 pos)
+        {
+            interaction?.DeleteMe();
+            interaction = null;
+
+            setVisible(obj != null);
+
+            if (obj != null)
+            {
+                beginRefresh();
+                if (obj.CanMenuFocus() && player.gameControls.input.inputSource.IsController)
+                {
+                    content.Add(new HUD.RichBox.RbImage(player.gameControls.input.ControllerFocus.Icon));
+                    content.Add(new HUD.RichBox.RbText(":"));
+                    content.newLine();
+                }
+
+                obj.toHud(new ObjectHudArgs(content, player, selected));
+                if (gui.menuState.Count > 0) 
+                {
+                    content.newLine();
+                    content.Button(Ref.langOpt.Hud_Back, new RbAction(gui.menuBack, SoundLib.menuBack), 
+                        null, true);
+                }
+                endRefresh(pos, selected);
+                viewOutLine(player.gameControls.map.focusedObjectMenuState());
+            }
+        }
+
+    }
+
+    struct ObjectHudArgs
+    {
+        public HUD.RichBox.RichBoxContent content;
+        public Players.LocalPlayer player;
+        public bool selected;
+        //public HUD.RichBox.RichboxGui gui;
+        public ObjectHudArgs(HUD.RichBox.RichBoxContent content, Players.LocalPlayer player, bool selected)
+        {
+            //this.gui = gui; 
+            this.content = content;
+            this.player = player;
+            this.selected = selected;
+        }
+
+        public ObjectHudArgs(HUD.RichBox.RichBoxContent content)
+        {
+            //this.gui = gui; 
+            this.content = content;
+            this.player = null;
+            this.selected = false;
+        }
+
+        public bool ShowFull => player.hud.detailLevel == HudDetailLevel.Normal;
+    }
+}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Voxels;

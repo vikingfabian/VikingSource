@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;

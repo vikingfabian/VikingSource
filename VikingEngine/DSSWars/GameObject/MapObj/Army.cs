@@ -12,7 +12,7 @@ using VikingEngine.DebugExtensions;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
@@ -397,7 +397,7 @@ namespace VikingEngine.DSSWars.GameObject
             //{
                     if (faction == args.player.faction)
                     {
-                        new Display.ArmyMenu(args.player, this, args.content);
+                        new Interface.ArmyMenu(args.player, this, args.content);
                     }
                     else
                     {

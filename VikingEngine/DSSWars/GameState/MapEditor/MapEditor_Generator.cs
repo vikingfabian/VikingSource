@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             userStorage = new MapEditorUserStorage();
             GenerateSettings = new Map.Generate.MapGenerateSettings();
             display = new MapGeneratorDisplay(this);
-            new Display.EditorBackground();
+            new Interface.EditorBackground();
             map = new GeneratorMap(display.topRight);
         }
 

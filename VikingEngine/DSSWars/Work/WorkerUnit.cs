@@ -5,12 +5,12 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Timer;
 

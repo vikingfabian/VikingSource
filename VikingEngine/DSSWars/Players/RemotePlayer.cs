@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Net;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Network;
 using VikingEngine.ToGG;

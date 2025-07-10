@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Reflection.Metadata.Ecma335;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
@@ -950,14 +950,14 @@ namespace VikingEngine.DSSWars.Players
             {
                 case SelectTileResult.Conscript:
                     {
-                        player.cityTab = Display.MenuTab.Conscript;
+                        player.cityTab = Interface.MenuTab.Conscript;
                         selectedSubTile.city.selectedConscript = selectedSubTile.city.conscriptIxFromSubTile(selectedSubTile.subTilePos);
 
                     }
                     break;
                 case SelectTileResult.Wall:
                     {
-                        player.cityTab = Display.MenuTab.Defence;
+                        player.cityTab = Interface.MenuTab.Defence;
                         selectedSubTile.city.selectedDefenceBuilding = selectedSubTile.city.defenceIxFromSubTile(selectedSubTile.subTilePos);
 
                     }
@@ -965,7 +965,7 @@ namespace VikingEngine.DSSWars.Players
                 case SelectTileResult.Recruitment:
                 case SelectTileResult.Postal:
                     {
-                        player.cityTab = Display.MenuTab.Delivery;
+                        player.cityTab = Interface.MenuTab.Delivery;
                         selectedSubTile.city.selectedDelivery = selectedSubTile.city.deliveryIxFromSubTile(selectedSubTile.subTilePos);
 
                     }
@@ -973,8 +973,8 @@ namespace VikingEngine.DSSWars.Players
 
                 case SelectTileResult.School:
                     {
-                        player.cityTab = Display.MenuTab.Progress;
-                        player.progressSubTab = Display.ProgressSubTab.Schools;
+                        player.cityTab = Interface.MenuTab.Progress;
+                        player.progressSubTab = Interface.ProgressSubTab.Schools;
                         selectedSubTile.city.selectedSchool = selectedSubTile.city.SchoolIxFromSubTile(selectedSubTile.subTilePos);
                     }
                     break;
@@ -982,8 +982,8 @@ namespace VikingEngine.DSSWars.Players
                 case SelectTileResult.ResearchCenter:
                 case SelectTileResult.BookPress:
                     {
-                        player.cityTab = Display.MenuTab.Progress;
-                        player.progressSubTab = Display.ProgressSubTab.Research;
+                        player.cityTab = Interface.MenuTab.Progress;
+                        player.progressSubTab = Interface.ProgressSubTab.Research;
                         selectedSubTile.city.selectedResearchBuilding = selectedSubTile.city.ResearchIxFromSubTile(selectedSubTile.subTilePos);
                     }
                     break;

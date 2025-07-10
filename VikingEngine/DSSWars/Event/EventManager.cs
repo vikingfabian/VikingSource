@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.CutScene;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;

@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;

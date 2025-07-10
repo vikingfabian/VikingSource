@@ -17,6 +17,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
 using VikingEngine.Voxels;
+using VikingEngine.DSSWars.Players.Profile;
 
 namespace VikingEngine.DSSWars
 {
@@ -127,7 +128,7 @@ namespace VikingEngine.DSSWars
 
             DssRef.storage.meta.CreateImportFolders();
             Ref.gamesett.Load();
-            new Display.Translation.Translation().setupLanguage(true);
+            new Presentation.Translation().setupLanguage(true);
 
             loadingDataComplete = true;
         }

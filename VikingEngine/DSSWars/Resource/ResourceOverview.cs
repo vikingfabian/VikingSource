@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Resource

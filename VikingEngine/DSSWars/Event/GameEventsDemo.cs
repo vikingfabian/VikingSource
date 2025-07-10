@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display.CutScene;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 

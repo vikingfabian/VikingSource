@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.newLine();
             }
         }
-        protected void ownerToHud(Display.ObjectHudArgs args, bool divider)
+        protected void ownerToHud(Interface.ObjectHudArgs args, bool divider)
         {
             if (args.player != null && GetFaction() != args.player.faction)
             {
@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-        virtual public void toHud(Display.ObjectHudArgs args)
+        virtual public void toHud(Interface.ObjectHudArgs args)
         {
             nameToHud(args.content, true);
             args.content.Add(new RbBeginTitle());

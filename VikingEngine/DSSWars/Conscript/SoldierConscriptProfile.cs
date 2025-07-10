@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;

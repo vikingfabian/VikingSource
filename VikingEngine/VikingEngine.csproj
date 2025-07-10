@@ -66,7 +66,7 @@
     <None Remove="LF2\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="DSSWars\Display\Translation\Swedish.cs" />
+    <Compile Remove="DSSWars\Presentation\Swedish.cs" />
     <Compile Remove="EngineSpace\HUD\Translation\OptionsLanguage_Swedish.cs" />
   </ItemGroup>
   <ItemGroup>

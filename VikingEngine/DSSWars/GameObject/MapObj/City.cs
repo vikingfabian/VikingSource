@@ -13,14 +13,14 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Delivery;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -2268,7 +2268,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (faction == args.player.faction)
                 {
                     CityDetailsHud(true, args.player, args.content);
-                    new Display.CityMenu(args.player, this, args.content);
+                    new Interface.CityMenu(args.player, this, args.content);
                 }
                 else
                 {
@@ -2842,16 +2842,16 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
-            content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
+            content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, LangLib.CityCulture(Culture, true)));
             if (interactive)
             {
                 content.space();
-                HudLib.InfoButton(content, new RbTooltip_Text(Display.Translation.LangLib.CityCulture(Culture, false)));
+                HudLib.InfoButton(content, new RbTooltip_Text(LangLib.CityCulture(Culture, false)));
             }
             else
             {
                 content.newLine();
-                HudLib.Description(content, Display.Translation.LangLib.CityCulture(Culture, false));
+                HudLib.Description(content, LangLib.CityCulture(Culture, false));
             }
         }        
 

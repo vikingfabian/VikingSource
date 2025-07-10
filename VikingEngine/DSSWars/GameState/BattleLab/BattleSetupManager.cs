@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -14,9 +13,10 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.HUD.RichMenu;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Timer;
+using VikingEngine.DSSWars.Presentation;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab
 {

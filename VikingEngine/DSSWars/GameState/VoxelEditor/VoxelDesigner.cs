@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
 

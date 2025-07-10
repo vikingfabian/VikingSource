@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Map

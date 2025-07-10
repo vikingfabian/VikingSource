@@ -14,8 +14,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.CutScene;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
@@ -29,6 +29,7 @@ using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.MoonFall;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using VikingEngine.DSSWars.Players.Profile;
 //
 
 namespace VikingEngine.DSSWars

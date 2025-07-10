@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 

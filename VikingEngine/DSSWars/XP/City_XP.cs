@@ -9,7 +9,7 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
 using System.Reflection.Metadata;
 using VikingEngine.DSSWars.Delivery;
 

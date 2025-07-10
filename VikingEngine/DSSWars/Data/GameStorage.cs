@@ -7,7 +7,7 @@ using System.Text;
 using System.Xml.Schema;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.DSSWars.Profile;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.Data
         public bool longerBuildQueue = false;
 
         public LocalPlayerStorage[] localPlayers = null;
-        public Profile.FlagStorage flagStorage;
+        public FlagStorage flagStorage;
         public SaveMeta meta = null;
         public float multiplayerGameSpeed = 1;
 

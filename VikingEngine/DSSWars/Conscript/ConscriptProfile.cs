@@ -2,10 +2,10 @@
 using System;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ;
 using static System.Runtime.InteropServices.JavaScript.JSType;

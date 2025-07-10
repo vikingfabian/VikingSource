@@ -20,7 +20,7 @@ using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DebugExtensions;
 using System.ComponentModel.Design;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.HUD.RichBox;
 using System.Linq;
@@ -33,7 +33,7 @@ using System.Reflection.Metadata;
 using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.DSSWars.GameState.BattleLab;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.LootFest.GO.WeaponAttack;
 using Valve.Steamworks;
 using VikingEngine.Sound;
@@ -43,14 +43,14 @@ namespace VikingEngine.DSSWars
 {
     class LobbyState : AbsDssState
     {    
-        Display.MenuSystem menuSystem;
+        Interface.MenuSystem menuSystem;
         MapBackgroundLoading mapBackgroundLoading;
         NetworkLobby netLobby = new NetworkLobby();
         GameTimer emitTimer = new GameTimer(0.1f);
 
         Texture2D bgTex;
         Graphics.ImageAdvanced bgImage = null;
-        Display.SplitScreenDisplay splitScreenDisplay = new Display.SplitScreenDisplay();
+        Interface.SplitScreenDisplay splitScreenDisplay = new Interface.SplitScreenDisplay();
         XInputJoinHandler joinHandler = new XInputJoinHandler();
         bool controllerStartGameUpdate = false;
         Graphics.TextG maploading;
@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars
 
             Ref.draw.ClrColor = new Color(11, 30, 34);
 
-            menuSystem = new Display.MenuSystem(new InputMap(Engine.XGuide.LocalHostIndex), Display.MenuType.Lobby);
+            menuSystem = new Interface.MenuSystem(new InputMap(Engine.XGuide.LocalHostIndex), Interface.MenuType.Lobby);
             DssRef.storage.checkConnected();
            
             Graphics.TextG version = new Graphics.TextG(LoadedFont.Console, Screen.SafeArea.RightBottom,
@@ -821,7 +821,7 @@ namespace VikingEngine.DSSWars
 
             RichBoxContent content = new RichBoxContent();
 
-            Translation translate = new Translation();
+            Presentation.Translation translate = new Presentation.Translation();
             var options = translate.available();
             //GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
             //{
@@ -1788,7 +1788,7 @@ namespace VikingEngine.DSSWars
         { 
             RichBoxContent content = new RichBoxContent();
 
-            var btn = new RbButton(new List<AbsRichBoxMember> { new RbImage(new Translation().sprite(Ref.gamesett.language)) },
+            var btn = new RbButton(new List<AbsRichBoxMember> { new RbImage(new Presentation.Translation().sprite(Ref.gamesett.language)) },
                 new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_Options_Language, StackOption.Stack));
             btn.overrideBgColor = ColorExt.VeryDarkGray;
             content.Add(btn);

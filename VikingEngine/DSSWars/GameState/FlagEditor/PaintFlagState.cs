@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.ToGG.ToggEngine.GO;
+using VikingEngine.DSSWars.Players.Profile;
 
 
 namespace VikingEngine.DSSWars.GameState.FlagEditor
@@ -28,7 +29,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
         public VectorRect paintArea;
         float squareWidth;
         Vector2 squareSz;
-        Display.MenuSystem menuSystem;
+        Interface.MenuSystem menuSystem;
         PaintFlagHud hud;
         bool isExiting = false;
         public bool controllerMode;
@@ -91,12 +92,12 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
 
             //HUD
             HudLib.Init();
-            menuSystem = new Display.MenuSystem(keyboardInput, Display.MenuType.Editor);
+            menuSystem = new Interface.MenuSystem(keyboardInput, Interface.MenuType.Editor);
 
             hud = new PaintFlagHud(XGuide.GetPlayer(player), keyboardInput, this);
             setColorType(ProfileColorType.Main);
             //new Timer.AsynchActionTrigger(load_asynch, true);
-            new Display.EditorBackground();
+            new Interface.EditorBackground();
         }
         
         void setControllerMode(bool value)

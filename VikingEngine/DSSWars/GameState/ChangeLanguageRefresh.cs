@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
 
 namespace VikingEngine.DSSWars.GameState
 {
@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             base.Time_Update(time);
 
-            new Translation().setupLanguage(false);
+            new Presentation.Translation().setupLanguage(false);
             Ref.gamesett.Save();
             new LobbyState();
         }

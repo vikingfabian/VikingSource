@@ -1,28 +1,15 @@
 ﻿UPDATE
 -Change Log-
-* Fixed the model glitches (finally!)
-* can hide battle lab hud
-* pan speed option
-* added forward version security on all files
-* removed prologue
-* hidden "next song"
-* removed save button in battle lab
-* moved pause menu options to a undermenu
+* 
 
 
-
-x Pen stroke size on map editor
 
 Voxel editor: 
 *
-
-
 X remove layer
 X merge layer
 X shift description
 X load retail character models
-
-! VoxelObjSave has been renamed to "Voxel Model"
 
 #Voxel editor#
 
@@ -48,6 +35,8 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+x small map editor size crash
+x Pen stroke size on map editor
 x Guards are never clearing move orders
 x Battles off camera sometimes get stuck
 x There are permance issues on large battles, still 

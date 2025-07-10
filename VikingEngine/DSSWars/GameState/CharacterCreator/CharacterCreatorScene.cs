@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
@@ -36,7 +37,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             openMenu();
             mainMenu();
 
-            new Display.EditorBackground();
+            new Interface.EditorBackground();
 
             float backWidth = Engine.Screen.SafeArea.Width - menu.backgroundArea.Width;
             Vector2 previewSz = new Vector2(backWidth * 0.4f);

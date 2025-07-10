@@ -8,7 +8,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using static System.Net.Mime.MediaTypeNames;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
 
 namespace VikingEngine.DSSWars.XP
 {

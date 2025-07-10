@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.Translation;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
@@ -19,6 +19,7 @@ using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Event;
+using VikingEngine.DSSWars.Players.Profile;
 
 namespace VikingEngine.DSSWars
 {
