@@ -1,6 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* Fixed some model glitches (still some left)
+* Fixed the model glitches (finally!)
 * can hide battle lab hud
 * pan speed option
 * added forward version security on all files

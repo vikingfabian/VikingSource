@@ -31,11 +31,24 @@ namespace VikingEngine.Graphics
 
         public void Add(int masterId, AbsDraw model)
         {
+#if DEBUG
             Debug.CrashIfThreaded();
+            //model.InDrawBatchCount++;
+            //if (model.InDrawBatchCount != 1)
+            //{
+            //    lib.DoNothing();
+            //}
+#endif
 
             DrawBatch batch;
             if (batches.TryGetValue(masterId, out batch))
             {
+//#if DEBUG
+//                if (batch.Contains(model))
+//                {
+//                    throw new Exception();
+//                }
+//#endif
                 batch.Add(model);
             }
             else
@@ -91,6 +104,10 @@ namespace VikingEngine.Graphics
                             if (removeCount < removeStack.Length)
                             {
                                 removeStack[removeCount++] = kv.Key;
+                            }
+                            else
+                            {
+                                list.Clear();
                             }
                         }
                         else

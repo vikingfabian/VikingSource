@@ -151,6 +151,7 @@ namespace VikingEngine.DSSWars.Map
                                     topCenter(ref subTile, ref subTopLeft), ref surfaceColor);
                                 break;
                             case TerrainMainType.Mine:
+                                bSurfacePolygonTexture = false;
                                 createMine((TerrainMineType)subTile.subTerrain,
                                     topCenter(ref subTile, ref subTopLeft));
                                 break;
@@ -690,7 +691,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
                 case TerrainBuildingType.Work_CoalPit:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workstation, 4, wp, WorldData.SubTileWidth * 1.1f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workstation, 4, wp, WorldData.SubTileWidth * 0.9f));
                     break;
 
                 case TerrainBuildingType.Work_Smith:

@@ -84,6 +84,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
             banner.DeleteMe();
+            banner = null;
         }
 
         public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)

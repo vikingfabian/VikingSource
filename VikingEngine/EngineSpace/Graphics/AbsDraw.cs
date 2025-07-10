@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.Graphics
 {
     abstract class AbsDraw : IDeleteable, IPosition, ISpottedArrayMember
     {
         /* Properties */
+        //public int InDrawBatchCount = 0;
+
         public abstract DrawObjType DrawType { get; }
 
         public Color pureColor = Color.White;
@@ -126,12 +129,15 @@ namespace VikingEngine.Graphics
             inRenderList = inRender;            
         }
 
-        public void preRemoveFromDrawBatch()
+        virtual public void preRemoveFromDrawBatch()
         {
+//#if DEBUG
+//            Debug.CrashIfThreaded();
+//#endif
             inRenderList = false;
         }
 
-        virtual public void OnDrawBatchAdd()
+        public void OnDrawBatchAdd()
         {
             inRenderList = true;
         }
