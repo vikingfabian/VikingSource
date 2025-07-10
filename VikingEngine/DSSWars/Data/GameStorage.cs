@@ -149,9 +149,11 @@ namespace VikingEngine.DSSWars.Data
         {
             write(w, false);
         }
+
+        const int Version = 25;
         public void write(System.IO.BinaryWriter w, bool gamestate = false)
         {
-            const int Version = 25;
+           
 
             w.Write(Version);
 
@@ -187,7 +189,7 @@ namespace VikingEngine.DSSWars.Data
         public void read(System.IO.BinaryReader r, bool gamestate)
         {
             int version = r.ReadInt32();
-            if (version <= 4)
+            if (version > Version || version <= 4)
             {
                 return;
             }

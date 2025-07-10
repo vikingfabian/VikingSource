@@ -159,6 +159,15 @@ namespace VikingEngine.HUD.RichMenu
             backgroundArea.Height = richBox.area.Size.Y + edgeThickness * 3;
         }
 
+        public void updateHeightFromContent(float maxBottom, bool resetFirst = true)
+        {
+            updateHeightFromContent(resetFirst);
+            if (backgroundArea.Bottom > maxBottom)
+            {
+                backgroundArea.SetBottom(maxBottom, true);
+            }
+        }
+
 
         public NineSplitAreaTexture addBackground(NineSplitSettings texture, ImageLayers layer)
         {

@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class HorseBanner : AbsModelAttachment
+    class HorseBanner : AbsModelAttachment_Batched
     {
         public HorseBanner(Faction faction, float soldierScale)
         {

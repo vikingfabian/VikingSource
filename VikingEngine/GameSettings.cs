@@ -21,7 +21,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 21;
+        const int Version = 22;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -51,6 +51,7 @@ namespace VikingEngine
 
         public float scrollWheelSensitivity_menu = 1;
         public float scrollWheelSensitivity_game = 1;
+        public float keyPanSpeed = 1f;
 
 
         float MasterVolume = 0.5f;
@@ -115,6 +116,7 @@ namespace VikingEngine
             w.Write(controlLayout);
             w.Write(scrollWheelSensitivity_menu);
             w.Write(scrollWheelSensitivity_game);
+            w.Write(keyPanSpeed);
             w.Write(BattleMelodyVolume);
             w.Write(ParticlesEffect);
 
@@ -129,6 +131,8 @@ namespace VikingEngine
 
         public void readSettings(System.IO.BinaryReader r, int version)
         {
+            if (version > Version) return;
+
             Engine.Screen.RenderScalePerc = r.ReadInt32();
             Engine.Screen.PcTargetResolution.read(r);
             Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
@@ -165,6 +169,10 @@ namespace VikingEngine
             controlLayout = r.ReadInt32();
             scrollWheelSensitivity_menu = r.ReadSingle();
             scrollWheelSensitivity_game = r.ReadSingle();
+            if (version >= 22)
+            {
+                keyPanSpeed = r.ReadSingle();
+            }
 
             
             BattleMelodyVolume = r.ReadSingle();
@@ -726,6 +734,15 @@ namespace VikingEngine
                 settingsHasChanged = true;
             }
             return scrollWheelSensitivity_game;
+        }
+        public float panSpeedProperty(bool set, float value)
+        {
+            if (set)
+            {
+                keyPanSpeed = value;
+                settingsHasChanged = true;
+            }
+            return keyPanSpeed;
         }
 
         public float musicVolProperty(bool set, float value)

@@ -29,12 +29,17 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         public override bool updateObjectDisplay()
         {
-            hud.objMenu.createMenu(this);
-            RichBoxContent content = new RichBoxContent();
-            var result = setupManager.updateObjectDisplay(content, hud.objMenu.menu);
-            hud.objMenu.refresh(this, content);
+            if (hud.detailLevel == Display.HudDetailLevel.Normal)
+            {
 
-            return result;
+                hud.objMenu.createMenu(this);
+                RichBoxContent content = new RichBoxContent();
+                var result = setupManager.updateObjectDisplay(content, hud.objMenu.menu);
+                hud.objMenu.refresh(this, content);
+
+                return result;
+            }
+            return false;
         }
 
 

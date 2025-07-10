@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_shipmelee, DssConst.Men_StandardModelScale * 2f);
             model.Frame = frame;
-            model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
 
             Time_Update(0);
         }

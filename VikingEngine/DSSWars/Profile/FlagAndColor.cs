@@ -3029,9 +3029,10 @@ namespace VikingEngine.DSSWars
             flagDesign.read(r);
         }
 
+        const int Version = 3;
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 3;
+            
 
             w.Write(Version);
 
@@ -3048,6 +3049,7 @@ namespace VikingEngine.DSSWars
         public void read(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
+            if (version > Version) { return; }
 
             col0_Main = StreamLib.ReadColorStream_3B(r);
             col1_Detail1 = StreamLib.ReadColorStream_3B(r);

@@ -383,7 +383,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackRange = 0.08f;
                 soldier.modelName = LootFest.VoxelModelName.wars_twohand;
                 soldier.modelVariationCount = 1;
-                soldier.modelScale *= 1.2f;
+                soldier.modelScale *= 1.1f;
                 soldier.icon = SpriteName.WarsUnitIcon_TwoHand;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
 
@@ -411,7 +411,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 soldier.modelName = LootFest.VoxelModelName.war_knight;
                 soldier.modelVariationCount = 3;
-                soldier.modelScale *= 1.1f;
+                soldier.modelScale *= 1.06f;
                 soldier.icon = SpriteName.WarsUnitIcon_Knight;
 
                 soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 3;
@@ -439,7 +439,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 soldier.mainAttack = AttackType.Melee;
                 soldier.attackRange = 0.055f;
-                soldier.modelScale *= 1.15f;
+                soldier.modelScale *= 1.1f;
                 soldier.modelName = LootFest.VoxelModelName.wars_mithrilman;
                 soldier.icon = SpriteName.WarsUnitIcon_MithrilMan;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
@@ -575,7 +575,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
                 soldier.attackRange = 2.5f;
                 soldier.modelName = LootFest.VoxelModelName.wars_mithrilarcher;
-                soldier.modelScale *= 1.12f;
+                soldier.modelScale *= 1.08f;
                 soldier.icon = SpriteName.WarsUnitIcon_MithrilArcher;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 8f;
 

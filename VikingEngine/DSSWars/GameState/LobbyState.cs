@@ -1060,7 +1060,7 @@ namespace VikingEngine.DSSWars
                 case GameMenuSystem.UnderMenu_Options_Mouse:
                 case GameMenuSystem.UnderMenu_Options_Keyboard:
                 case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
-                    GameMenuSystem.refreshPage(underMenu);
+                    GameMenuSystem.refreshPage(underMenu, true);
                     //    GameMenuSystem.mouseOptions(underMenu);
                     //    break;
 
@@ -1793,6 +1793,7 @@ namespace VikingEngine.DSSWars
             btn.overrideBgColor = ColorExt.VeryDarkGray;
             content.Add(btn);
 
+            Ref.gamesett.volumeOptions(content);
             GameMenuSystem.SettingsToMenu(content, underMenu, true);
             
             underMenu.Refresh(content);

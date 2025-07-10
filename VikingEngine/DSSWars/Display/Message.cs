@@ -239,6 +239,9 @@ namespace VikingEngine.DSSWars.Display
 
         public void Add(RichBoxContent content)
         {
+            if (StartupSettings.BlockMessages)
+                return;
+
             SoundLib.message.Play(Pan.Right);
 
             if (player.hud.detailLevel == HudDetailLevel.Minimal)

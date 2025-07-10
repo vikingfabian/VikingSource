@@ -12,8 +12,9 @@ namespace VikingEngine.DSSWars.Display.Translation
     {
         //Option language
         public string GraphicsOption_RecordingPresets_AddXPixels => "Add {0} pixels";
-
-
+        public string Settings_KeyMapPanSpeed => "Pan speed";
+        public string Settings_StoreCameraPosition => "Store camera position";
+        public string Settings_LoadCameraPosition => "Load position";
         //##
 
         public string Editor_CropSelection => "Crop to selection";
@@ -52,6 +53,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Technology_NoAvailableResearch => "No available research";
 
         public string Research_Tab => "Research";
+
+
 
     }
 

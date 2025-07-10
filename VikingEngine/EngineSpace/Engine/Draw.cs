@@ -233,6 +233,11 @@ namespace VikingEngine.Engine
             if (obj == null)
                 throw new Exception("Draw object is null");
 
+#if DEBUG
+            if (obj is DSSWars.VoxelModelInstance_Pooled)
+                throw new Exception();
+#endif
+
             if (AddToContainer == null)
             {
                 obj.inRenderLayer = CurrentRenderLayer;

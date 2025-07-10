@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class Banner : AbsModelAttachment
+    class Banner : AbsModelAttachment_Batched
     {
         public Banner(Faction faction, float soldierScale, int skill)
         {

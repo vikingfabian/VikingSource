@@ -125,6 +125,8 @@ namespace VikingEngine.LootFest.Players
         {
             int version = r.ReadInt32();
 
+            if (version > FileSaveVersion) { return; }
+
             if (version < 11)
             {
                 earlyAdopterGeneration = 1;

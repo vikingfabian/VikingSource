@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
+using VikingEngine.Network;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.Data
@@ -102,6 +103,7 @@ namespace VikingEngine.DSSWars.Data
         public void read(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
+            if (version > Version) { return; }
 
             if (version == 1)
             {
@@ -295,6 +297,8 @@ namespace VikingEngine.DSSWars.Data
         {
             
             metaVersion = r.ReadInt32();
+            if (metaVersion > Version) { return; }
+            
             stateVersion = r.ReadInt32();
 
             if (metaVersion == 1)

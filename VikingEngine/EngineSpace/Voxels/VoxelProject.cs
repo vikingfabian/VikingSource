@@ -408,10 +408,9 @@ namespace VikingEngine.Voxels
         }
 
 
-
+        const int Version = 1;
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 1;
             w.Write(Version);
             w.Write(layers.Count);
             foreach (var layer in layers.list)
@@ -426,6 +425,8 @@ namespace VikingEngine.Voxels
         public void read(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
+            if (version > Version) { return; }
+
             int layerCount = r.ReadInt32();
             for (int i = 0; i < layerCount; i++)
             {

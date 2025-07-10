@@ -1246,11 +1246,11 @@ namespace VikingEngine.DSSWars.Players
 
             if (controllerInput)
             {
-                return 0.0003f * Bound.Min(targetZoom, MinZoomAffect);
+                return Ref.gamesett.keyPanSpeed * 0.0003f * Bound.Min(targetZoom, MinZoomAffect);
             }
             else
             {
-                return 0.0006f * Bound.Min(targetZoom, MinZoomAffect);
+                return Ref.gamesett.keyPanSpeed * 0.0006f * Bound.Min(targetZoom, MinZoomAffect);
             }
         }
 

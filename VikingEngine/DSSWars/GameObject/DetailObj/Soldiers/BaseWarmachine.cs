@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void DeleteMe()
         {
-            model.DeleteMe();
+            model.preRemoveFromDrawBatch();//.DeleteMe();
         }
     }
 }

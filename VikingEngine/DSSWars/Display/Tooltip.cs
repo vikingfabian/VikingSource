@@ -166,6 +166,8 @@ namespace VikingEngine.DSSWars.Display
 
         void hoverTip(Players.LocalPlayer player, Players.SelectedSubTile subTile)
         {
+            if (StartupSettings.BlockTooltip) return;
+
             RichBoxContent content = new RichBoxContent();
             if (subTile.selectTileResult != Players.SelectTileResult.None)
             {
@@ -322,6 +324,8 @@ namespace VikingEngine.DSSWars.Display
 
         void hoverTip(Players.LocalPlayer player, GameObject.AbsGameObject obj)
         {
+            if (StartupSettings.BlockTooltip) return;
+
             RichBoxContent content = new RichBoxContent();
 
             bool attackTarget = player.gameControls.army != null &&
