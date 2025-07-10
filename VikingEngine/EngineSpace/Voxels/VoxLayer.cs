@@ -87,7 +87,7 @@ namespace VikingEngine.Voxels
         {
             if (string.IsNullOrEmpty(name))
             {
-                return string.Format(DssRef.todoLang.Editor_LayerNumber, TextLib.IndexToString(layerIx));
+                return string.Format(DssRef.lang.Editor_LayerNumber, TextLib.IndexToString(layerIx));
             }
             else
             {

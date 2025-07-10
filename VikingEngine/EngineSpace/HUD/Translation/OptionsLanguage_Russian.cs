@@ -126,5 +126,10 @@ namespace VikingEngine.HUD
 
         public override string GraphicsOption_Shadow_MapResolution => "Разрешение карты теней";
 
+        //DEMO PATCH 5
+        public override string GraphicsOption_RecordingPresets_AddXPixels => "Добавить {0} пикселей";
+        public override string Settings_KeyMapPanSpeed => "Скорость панорамирования";
+        public override string Settings_StoreCameraPosition => "Сохранить позицию камеры";
+        public override string Settings_LoadCameraPosition => "Загрузить позицию";
     }
 }

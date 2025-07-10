@@ -1556,5 +1556,44 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string BuildingType_Research_BaseDescription { get; }
         public abstract string BuildingType_ResearchCenter_Description { get; }
 
+
+        //DEMO PATCH 5
+       
+
+        public abstract string Editor_CropSelection { get; }
+
+        public abstract string Immigrants_DisbandedSoldiers { get; }
+        public abstract string Immigrants_RefillWorkers { get; }
+        public abstract string Immigrants_UnhousedAreLost { get; }
+        public abstract string Editor_VoxelCount { get; }
+
+        public abstract string Editor_Layers_Titel { get; }
+        public abstract string Editor_Layers_All { get; }
+        public abstract string Editor_LayerNumber { get; }
+
+        public abstract string Editor_Layer_AddEmpty { get; }
+        public abstract string Editor_Layer_AddCopy { get; }
+        public abstract string Editor_Layer_Remove { get; }
+        public abstract string Editor_Layer_MergeDown { get; }
+        public abstract string Editor_IsAnimated { get; }
+        public abstract string Editor_ToggleVisible { get; }
+        public abstract string Editor_ToggleAnimatedLayer { get; }
+        public abstract string Editor_Projects { get; }
+        public abstract string ProfileEditor_ReplaceMaterial { get; }
+
+        public abstract string ProfileEditor_ProfileColors_Label { get; }
+        public abstract string ProfileEditor_TunicColor { get; }
+        public abstract string ProfileEditor_PantsColor { get; }
+        public abstract string ProfileEditor_LeaderColor { get; }
+
+        public abstract string MapStartAs_Water { get; }
+        public abstract string MapStartAs_Land { get; }
+        public abstract string MapStartAs_Circle { get; }
+
+        public abstract string Hud_NeedToBeAssigned { get; }
+        public abstract string Hud_CommitAssignment { get; }
+        public abstract string Technology_NoAvailableResearch { get; }
+
+        public abstract string Research_Tab { get; }
     }
 }

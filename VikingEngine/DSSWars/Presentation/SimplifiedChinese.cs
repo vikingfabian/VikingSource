@@ -2380,5 +2380,43 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildingType_ResearchCenter_Description => "当工人在同一领域升级时，额外增加 {0} 点科技研究值。";
 
 
+        //DEMO PATCH 5
+        public override string Editor_CropSelection => "裁剪到选区";
+
+        public override string Immigrants_DisbandedSoldiers => "解散的士兵将会移民";
+        public override string Immigrants_RefillWorkers => "快速补充劳动力";
+        public override string Immigrants_UnhousedAreLost => "没有住所的移民将在一段时间后消失";
+        public override string Editor_VoxelCount => "{0} 体素";
+
+        public override string Editor_Layers_Titel => "图层";
+        public override string Editor_Layers_All => "所有图层";
+        public override string Editor_LayerNumber => "图层 {0}";
+
+        public override string Editor_Layer_AddEmpty => "添加空图层";
+        public override string Editor_Layer_AddCopy => "复制图层";
+        public override string Editor_Layer_Remove => "删除图层";
+        public override string Editor_Layer_MergeDown => "向下合并";
+        public override string Editor_IsAnimated => "已动画化";
+        public override string Editor_ToggleVisible => "切换可见性";
+        public override string Editor_ToggleAnimatedLayer => "切换动画图层";
+        public override string Editor_Projects => "项目文件";
+        public override string ProfileEditor_ReplaceMaterial => "轮廓颜色：{0}";
+
+        public override string ProfileEditor_ProfileColors_Label => "轮廓颜色";
+        public override string ProfileEditor_TunicColor => "上衣颜色";
+        public override string ProfileEditor_PantsColor => "裤子颜色";
+        public override string ProfileEditor_LeaderColor => "领袖颜色";
+
+        public override string MapStartAs_Water => "水域";
+        public override string MapStartAs_Land => "陆地";
+        public override string MapStartAs_Circle => "圆形";
+
+        public override string Hud_NeedToBeAssigned => "需要分配";
+        public override string Hud_CommitAssignment => "分配";
+        public override string Technology_NoAvailableResearch => "没有可用的研究";
+
+        public override string Research_Tab => "研究";
+
+
     }
 }

@@ -381,7 +381,7 @@ namespace VikingEngine.Voxels
 
             RichBoxContent content = new RichBoxContent();
             content.h2(cut ? DSSWars.DssRef.lang.Hud_Cut : DSSWars.DssRef.lang.Hud_Copy, DSSWars.HudLib.TitleColor_Head);
-            content.text(string.Format(DSSWars.DssRef.todoLang.Editor_VoxelCount, selectedVoxels.Voxels.Count));
+            content.text(string.Format(DSSWars.DssRef.lang.Editor_VoxelCount, selectedVoxels.Voxels.Count));
             print(content);
         }
 

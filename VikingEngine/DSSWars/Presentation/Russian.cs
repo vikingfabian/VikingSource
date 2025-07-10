@@ -2380,5 +2380,44 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildingType_ResearchCenter_Description => "Добавляет {0} дополнительных очков технологии, когда рабочий повышает уровень в той же области.";
 
 
+        //DEMO PATCH 5
+        public override string Editor_CropSelection => "Обрезать по выделению";
+
+        public override string Immigrants_DisbandedSoldiers => "Распущенные солдаты будут иммигрировать";
+        public override string Immigrants_RefillWorkers => "Быстро восполняет рабочую силу";
+        public override string Immigrants_UnhousedAreLost => "Иммигранты без жилья со временем исчезнут";
+        public override string Editor_VoxelCount => "{0} вокселей";
+
+        public override string Editor_Layers_Titel => "Слои";
+        public override string Editor_Layers_All => "Все слои";
+        public override string Editor_LayerNumber => "Слой {0}";
+
+        public override string Editor_Layer_AddEmpty => "Добавить пустой слой";
+        public override string Editor_Layer_AddCopy => "Дублировать слой";
+        public override string Editor_Layer_Remove => "Удалить слой";
+        public override string Editor_Layer_MergeDown => "Объединить с нижним";
+        public override string Editor_IsAnimated => "Анимированный";
+        public override string Editor_ToggleVisible => "Переключить видимость";
+        public override string Editor_ToggleAnimatedLayer => "Переключить анимированный слой";
+        public override string Editor_Projects => "Файлы проектов";
+        public override string ProfileEditor_ReplaceMaterial => "Цвет профиля: {0}";
+
+        public override string ProfileEditor_ProfileColors_Label => "Цвета профиля";
+        public override string ProfileEditor_TunicColor => "Цвет туники";
+        public override string ProfileEditor_PantsColor => "Цвет штанов";
+        public override string ProfileEditor_LeaderColor => "Цвет лидера";
+
+        public override string MapStartAs_Water => "Вода";
+        public override string MapStartAs_Land => "Земля";
+        public override string MapStartAs_Circle => "Круг";
+
+        public override string Hud_NeedToBeAssigned => "Требуется назначение";
+        public override string Hud_CommitAssignment => "Назначить";
+        public override string Technology_NoAvailableResearch => "Нет доступных исследований";
+
+        public override string Research_Tab => "Исследования";
+
+
+
     }
 }

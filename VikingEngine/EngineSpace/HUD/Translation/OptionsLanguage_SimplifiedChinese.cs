@@ -127,5 +127,11 @@ namespace VikingEngine.HUD
 
         public override string GraphicsOption_Shadow_MapResolution => "阴影贴图分辨率";
 
+        //DEMO PATCH 5
+        public override string GraphicsOption_RecordingPresets_AddXPixels => "添加 {0} 像素";
+        public override string Settings_KeyMapPanSpeed => "平移速度";
+        public override string Settings_StoreCameraPosition => "保存摄像机位置";
+        public override string Settings_LoadCameraPosition => "加载位置";
+
     }
 }

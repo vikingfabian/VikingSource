@@ -71,6 +71,12 @@ namespace VikingEngine.HUD
 
         public abstract string GraphicsOption_Shadow_MapResolution { get; }
 
+        //DEMO PATCH 5
+        public abstract string GraphicsOption_RecordingPresets_AddXPixels { get; }
+        public abstract string Settings_KeyMapPanSpeed { get; }
+        public abstract string Settings_StoreCameraPosition { get; }
+        public abstract string Settings_LoadCameraPosition { get; }
+
 
         public string ThreeOption(ThreeOptions option)
         {

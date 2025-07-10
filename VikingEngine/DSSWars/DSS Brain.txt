@@ -1,6 +1,6 @@
 ﻿UPDATE
 -Change Log-
-* 
+* Localized all new options
 
 
 
@@ -49,6 +49,7 @@ x Soldiers update their target too often (shaking)
 x Ballistas should not animate on move
 x Still have models drifting
 x main menu goes off screen
+x start from nothing option
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning

@@ -114,13 +114,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                             switch (mapStartAs)
                             {
                                 case MapStartAs.Water:
-                                    caption = DssRef.todoLang.MapStartAs_Water;
+                                    caption = DssRef.lang.MapStartAs_Water;
                                     break;
                                 case MapStartAs.Land:
-                                    caption = DssRef.todoLang.MapStartAs_Land;
+                                    caption = DssRef.lang.MapStartAs_Land;
                                     break;
                                 case MapStartAs.Circle:
-                                    caption = DssRef.todoLang.MapStartAs_Circle;
+                                    caption = DssRef.lang.MapStartAs_Circle;
                                     break;
                             }
 

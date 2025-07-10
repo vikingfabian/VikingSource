@@ -520,7 +520,7 @@ namespace VikingEngine
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                     new RbText(Ref.langOpt.GraphicsOption_RecordingPresets + ":", HudLib.TitleColor_Label_Dark),
                     new RbSpace(0.5f),
-                    new RbText(string.Format( DssRef.todoLang.GraphicsOption_RecordingPresets_AddXPixels, Screen.RecordingPresetAddPixelsCount))
+                    new RbText(string.Format( Ref.langOpt.GraphicsOption_RecordingPresets_AddXPixels, Screen.RecordingPresetAddPixelsCount))
                     }, AddSomePixelsProperty));
             }
 

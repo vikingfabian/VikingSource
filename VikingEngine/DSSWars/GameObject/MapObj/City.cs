@@ -2763,21 +2763,21 @@ namespace VikingEngine.DSSWars.GameObject
             content.space();
             content.Add(new RbImage(SpriteName.WarsUnitIcon_Soldier));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Immigrants_DisbandedSoldiers));
+            content.Add(new RbText(DssRef.lang.Immigrants_DisbandedSoldiers));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.space();
             content.Add(new RbImage(SpriteName.WarsWorkerAdd));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Immigrants_RefillWorkers));
+            content.Add(new RbText(DssRef.lang.Immigrants_RefillWorkers));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.space();
             content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant_RemoveTime));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Immigrants_UnhousedAreLost));
+            content.Add(new RbText(DssRef.lang.Immigrants_UnhousedAreLost));
 
             content.newParagraph();
             content.Add(new RbImage(SpriteName.WarsBuild_Tent));

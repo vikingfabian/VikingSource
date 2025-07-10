@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.InterfaceIconCamera),
                 new RbSpace(),
-                new RbText(DssRef.todoLang.Settings_StoreCameraPosition)
+                new RbText(Ref.langOpt.Settings_StoreCameraPosition)
             }, new RbAction(() => { DssRef.state.LocalHost().storedCameraPos = XGuide.LocalHost.view.Camera.GetStoredPosition(); })));
 
             if (DssRef.state.LocalHost().storedCameraPos.hasValue)
@@ -271,7 +271,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.InterfaceIconCamera),
                 new RbSpace(),
-                new RbText(DssRef.todoLang.Settings_LoadCameraPosition)
+                new RbText(Ref.langOpt.Settings_LoadCameraPosition)
                 }, new RbAction(() => {
                     closeMenu();
                     XGuide.LocalHost.view.Camera.ResetToPosition(DssRef.state.LocalHost().storedCameraPos);
@@ -343,7 +343,7 @@ namespace VikingEngine.DSSWars.Interface
             content.newLine();
             content.Add(new RbImage(SpriteName.ArrowKeys));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Settings_KeyMapPanSpeed));
+            content.Add(new RbText(Ref.langOpt.Settings_KeyMapPanSpeed));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4, 0.1f), Ref.gamesett.panSpeedProperty, true));
 

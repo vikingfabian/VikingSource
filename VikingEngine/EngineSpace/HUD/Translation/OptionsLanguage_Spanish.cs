@@ -126,5 +126,11 @@ namespace VikingEngine.HUD
 
         public override string GraphicsOption_Shadow_MapResolution => "Resolución del mapa de sombras";
 
+        //DEMO PATCH 5
+        public override string GraphicsOption_RecordingPresets_AddXPixels => "Agregar {0} píxeles";
+        public override string Settings_KeyMapPanSpeed => "Velocidad de desplazamiento";
+        public override string Settings_StoreCameraPosition => "Guardar posición de la cámara";
+        public override string Settings_LoadCameraPosition => "Cargar posición";
+
     }
 }

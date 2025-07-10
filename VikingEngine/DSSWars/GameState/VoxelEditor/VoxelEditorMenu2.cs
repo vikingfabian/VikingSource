@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.Add(new ArtButton(RbButtonStyle.Primary,
                HudLib.NextArrow(new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconOpen, DefaultIconScale), new RbSpace(),
-                    new RbText(DssRef.todoLang.Editor_Projects) }),
+                    new RbText(DssRef.lang.Editor_Projects) }),
                new RbAction(beginListProjectFiles), new RbTooltip_Text(DssRef.lang.Editor_UserModels_Description)));
             content.Add(new ArtButton(RbButtonStyle.Primary, 
                 HudLib.NextArrow( new List<AbsRichBoxMember> { 
@@ -336,7 +336,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
 
             content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Layers_Titel, HudLib.TitleColor_Label) },
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Layers_Titel, HudLib.TitleColor_Label) },
                  new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Layers, StackOption.Stack)));
 
             content.newLine();
@@ -521,26 +521,26 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             RichBoxContent content = new RichBoxContent();
 
             HudLib.returnButton(content, menu, true, closeMenu);
-            content.h1(DssRef.todoLang.Editor_Layers_Titel, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Editor_Layers_Titel, HudLib.TitleColor_Head);
 
             for (int layerIx = 0; layerIx < designer.voxelProject.layers.list.Count; ++layerIx)
             {
                 content.newLine();
                 var layer = designer.voxelProject.layers.list[layerIx];
                 content.Add(new ArtToggle(layer.visible, new List<AbsRichBoxMember> { new RbImage(SpriteName.lineofsightEye) },
-                     new RbAction1Arg<int>(toggleLayerVisible, layerIx), new RbTooltip_Text(DssRef.todoLang.Editor_ToggleVisible)));
+                     new RbAction1Arg<int>(toggleLayerVisible, layerIx), new RbTooltip_Text(DssRef.lang.Editor_ToggleVisible)));
                 content.Add(new ArtOption(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
-                    new RbText(string.Format( DssRef.todoLang.Editor_LayerNumber, TextLib.IndexToString(layerIx))) },
+                    new RbText(string.Format( DssRef.lang.Editor_LayerNumber, TextLib.IndexToString(layerIx))) },
                     new RbAction1Arg<int>(selectLayer, layerIx)));
                 content.Add(new ArtToggle(layer.animatedLayer, new List<AbsRichBoxMember> {  
                     new RbText(layer.animationFrames.Frames.Count.ToString()),
                     new RbImage(layer.animatedLayer? SpriteName.VoxelEditorAllFrames : SpriteName.VoxelEditorFrameLocked) },
-                    new RbAction1Arg<int>(toggleLayerAnimated, layerIx), new RbTooltip_Text(DssRef.todoLang.Editor_ToggleAnimatedLayer)));
+                    new RbAction1Arg<int>(toggleLayerAnimated, layerIx), new RbTooltip_Text(DssRef.lang.Editor_ToggleAnimatedLayer)));
             }
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.pjNumPlus) },
-                new RbAction(layerMergeDown), new RbTooltip_Text(DssRef.todoLang.Editor_Layer_MergeDown)));
+                new RbAction(layerMergeDown), new RbTooltip_Text(DssRef.lang.Editor_Layer_MergeDown)));
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsIncreaseArrowUp) },
                 new RbAction1Arg<bool>(moveLayer, false),
                 new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Up))));
@@ -549,9 +549,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Down))));
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Layer_AddCopy) },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Layer_AddCopy) },
                 new RbAction1Arg<bool>(addLayer, true)));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_Layer_AddEmpty) },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Layer_AddEmpty) },
                 new RbAction1Arg<bool>(addLayer, false)));
 
             Refresh(content);
@@ -653,7 +653,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.EditorAllLayer), new RbSpace(),
-                new RbText(DssRef.todoLang.Editor_Layers_All) },
+                new RbText(DssRef.lang.Editor_Layers_All) },
                 designer.bRepeateOnAllLayersProperty));
         }
 
@@ -746,7 +746,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconCrop), new RbText(DssRef.todoLang.Editor_CropSelection) }, new RbAction(designer.LinkSetLimitsAfterSel)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconCrop), new RbText(DssRef.lang.Editor_CropSelection) }, new RbAction(designer.LinkSetLimitsAfterSel)));
             
             Refresh(content);
         }
@@ -840,7 +840,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             
             content.newLine();
-            HudLib.Label(content, DssRef.todoLang.ProfileEditor_ProfileColors_Label);
+            HudLib.Label(content, DssRef.lang.ProfileEditor_ProfileColors_Label);
             content.newLine();
             //new GuiTitle("DSS soldier color mapping", layout);
             //SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2;
@@ -851,9 +851,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             appearanceMaterials(FlagAndColor.DetailCol1, DssRef.lang.ProfileEditor_Detail1Color, content, link);
             appearanceMaterials(FlagAndColor.DetailCol2, DssRef.lang.ProfileEditor_Detail2Color, content, link);
 
-            appearanceMaterials(FlagAndColor.TunicCol, DssRef.todoLang.ProfileEditor_TunicColor, content, link);
-            appearanceMaterials(FlagAndColor.PantsCol, DssRef.todoLang.ProfileEditor_PantsColor, content, link);
-            appearanceMaterials(FlagAndColor.LeaderCol, DssRef.todoLang.ProfileEditor_LeaderColor, content, link);
+            appearanceMaterials(FlagAndColor.TunicCol, DssRef.lang.ProfileEditor_TunicColor, content, link);
+            appearanceMaterials(FlagAndColor.PantsCol, DssRef.lang.ProfileEditor_PantsColor, content, link);
+            appearanceMaterials(FlagAndColor.LeaderCol, DssRef.lang.ProfileEditor_LeaderColor, content, link);
                 
             content.newLine();
             appearanceMaterialsButton(true, BlockHD.JointUp, ".Joint up", content, link);
@@ -862,7 +862,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         }
         void appearanceMaterials(AppearanceMaterial mat, string type, RichBoxContent content, Action<BlockHD> link)
         {
-            string materialName = string.Format(DssRef.todoLang.ProfileEditor_ReplaceMaterial, type);
+            string materialName = string.Format(DssRef.lang.ProfileEditor_ReplaceMaterial, type);
             appearanceMaterialsButton(true, mat.baseColor,  materialName, content, link);
             appearanceMaterialsButton(false, mat.brighter, materialName + ", " + DssRef.lang.Editor_Color_Brighter, content, link);
             appearanceMaterialsButton(false, mat.darker, materialName + ", " + DssRef.lang.Editor_Color_Darker, content, link);

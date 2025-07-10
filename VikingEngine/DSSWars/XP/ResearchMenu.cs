@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.XP
                     if (available.Count == 0)
                     {
                         content.newLine();
-                        content.Add(new RbText(DssRef.todoLang.Technology_NoAvailableResearch, HudLib.NotAvailableColor));
+                        content.Add(new RbText(DssRef.lang.Technology_NoAvailableResearch, HudLib.NotAvailableColor));
                     }
                     else
                     {
@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.XP
                         }
 
                         content.newLine();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Hud_CommitAssignment) }, new RbAction(() =>
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_CommitAssignment) }, new RbAction(() =>
                         {
                             //Assign selected tech
                             var building = city.researchBuildings[city.selectedResearchBuilding];

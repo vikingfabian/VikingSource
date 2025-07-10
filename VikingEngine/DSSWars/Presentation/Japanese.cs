@@ -2388,5 +2388,46 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildingType_ResearchCenter_Description => "同じ分野で作業者がレベルアップすると、技術研究ポイントが {0} 増加します。";
 
 
+        //DEMO PATCH 5
+       
+
+        public override string Editor_CropSelection => "選択範囲でトリミング";
+
+        public override string Immigrants_DisbandedSoldiers => "解散された兵士は移住してきます";
+        public override string Immigrants_RefillWorkers => "労働力をすばやく補充します";
+        public override string Immigrants_UnhousedAreLost => "住居のない移民はしばらくすると消えます";
+        public override string Editor_VoxelCount => "{0} ボクセル";
+
+        public override string Editor_Layers_Titel => "レイヤー";
+        public override string Editor_Layers_All => "すべてのレイヤー";
+        public override string Editor_LayerNumber => "レイヤー {0}";
+
+        public override string Editor_Layer_AddEmpty => "空のレイヤーを追加";
+        public override string Editor_Layer_AddCopy => "レイヤーを複製";
+        public override string Editor_Layer_Remove => "レイヤーを削除";
+        public override string Editor_Layer_MergeDown => "下のレイヤーと結合";
+        public override string Editor_IsAnimated => "アニメーションあり";
+        public override string Editor_ToggleVisible => "表示を切り替え";
+        public override string Editor_ToggleAnimatedLayer => "アニメーションレイヤーを切り替え";
+        public override string Editor_Projects => "プロジェクトファイル";
+        public override string ProfileEditor_ReplaceMaterial => "プロフィールカラー: {0}";
+
+        public override string ProfileEditor_ProfileColors_Label => "プロフィールカラー";
+        public override string ProfileEditor_TunicColor => "チュニックの色";
+        public override string ProfileEditor_PantsColor => "ズボンの色";
+        public override string ProfileEditor_LeaderColor => "リーダーの色";
+
+        public override string MapStartAs_Water => "水";
+        public override string MapStartAs_Land => "陸";
+        public override string MapStartAs_Circle => "円形";
+
+        public override string Hud_NeedToBeAssigned => "割り当てが必要です";
+        public override string Hud_CommitAssignment => "割り当てる";
+        public override string Technology_NoAvailableResearch => "利用可能な研究がありません";
+
+        public override string Research_Tab => "研究";
+
+
+
     }
 }

@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.XP
         {
             if (assignedTech == TechnologyTreeType.NUM_NONE)
             {
-                return DssRef.todoLang.Hud_NeedToBeAssigned;
+                return DssRef.lang.Hud_NeedToBeAssigned;
             }
             else
             {

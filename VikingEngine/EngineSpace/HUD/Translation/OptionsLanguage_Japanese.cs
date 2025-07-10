@@ -127,5 +127,11 @@ namespace VikingEngine.HUD
 
         public override string GraphicsOption_Shadow_MapResolution => "シャドウマップ解像度";
 
+        //DEMO PATCH 5
+        public override string GraphicsOption_RecordingPresets_AddXPixels => "{0} ピクセル追加";
+        public override string Settings_KeyMapPanSpeed => "パン速度";
+        public override string Settings_StoreCameraPosition => "カメラ位置を保存";
+        public override string Settings_LoadCameraPosition => "位置を読み込む";
+
     }
 }

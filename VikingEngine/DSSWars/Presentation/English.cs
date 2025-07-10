@@ -2423,5 +2423,43 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildingType_Research_BaseDescription => "Increases technology research.";
 
         public override string BuildingType_ResearchCenter_Description => "Adds {0} extra technology research points when a worker levels up in the same field.";
+
+        //DEMO PATCH 5
+        
+         public override string Editor_CropSelection => "Crop to selection";
+
+         public override string Immigrants_DisbandedSoldiers => "Disbanded soldiers will immigrate";
+         public override string Immigrants_RefillWorkers => "Quickly refills the workforce";
+         public override string Immigrants_UnhousedAreLost => "Immigrants without housing will disappear after some time";
+         public override string Editor_VoxelCount => "{0} voxels";
+
+         public override string Editor_Layers_Titel => "Layers";
+         public override string Editor_Layers_All => "All layers";
+         public override string Editor_LayerNumber => "Layer {0}";
+
+         public override string Editor_Layer_AddEmpty => "Add empty layer";
+         public override string Editor_Layer_AddCopy => "Duplicate layer";
+         public override string Editor_Layer_Remove => "Remove layer";
+         public override string Editor_Layer_MergeDown => "Merge down";
+         public override string Editor_IsAnimated => "Animated";
+         public override string Editor_ToggleVisible => "Toggle visibility";
+         public override string Editor_ToggleAnimatedLayer => "Toggle animated layer";
+         public override string Editor_Projects => "Project files";
+         public override string ProfileEditor_ReplaceMaterial => "Profile color: {0}";
+
+         public override string ProfileEditor_ProfileColors_Label => "Profile colors";
+         public override string ProfileEditor_TunicColor => "Tunic color";
+         public override string ProfileEditor_PantsColor => "Pants color";
+         public override string ProfileEditor_LeaderColor => "Leader color";
+
+         public override string MapStartAs_Water => "Water";
+         public override string MapStartAs_Land => "Land";
+         public override string MapStartAs_Circle => "Circle";
+
+         public override string Hud_NeedToBeAssigned => "Needs assignment";
+         public override string Hud_CommitAssignment => "Assign";
+         public override string Technology_NoAvailableResearch => "No available research";
+
+         public override string Research_Tab => "Research";
     }
 }

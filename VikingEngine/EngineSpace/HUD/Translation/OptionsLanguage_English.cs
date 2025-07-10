@@ -128,5 +128,12 @@ namespace VikingEngine.HUD
         public override string GraphicsOption_ShadowType_ModelsToModels => "Models to Models";
 
         public override string GraphicsOption_Shadow_MapResolution => "Shadow Map Resolution";
+
+        //DEMO PATCH 5
+        public override string GraphicsOption_RecordingPresets_AddXPixels => "Add {0} pixels";
+        public override string Settings_KeyMapPanSpeed => "Pan speed";
+        public override string Settings_StoreCameraPosition => "Store camera position";
+        public override string Settings_LoadCameraPosition => "Load position";
+
     }
 }

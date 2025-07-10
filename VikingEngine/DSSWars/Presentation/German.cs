@@ -2261,5 +2261,46 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_ResearchCenter_Description => "Fügt {0} zusätzliche Forschungspunkte hinzu, wenn ein Arbeiter im selben Bereich aufsteigt.";
 
+
+        //DEMO PATCH 5
+       
+
+        public override string Editor_CropSelection => "Auf Auswahl zuschneiden";
+
+        public override string Immigrants_DisbandedSoldiers => "Entlassene Soldaten werden einwandern";
+        public override string Immigrants_RefillWorkers => "Füllt die Arbeitskraft schnell auf";
+        public override string Immigrants_UnhousedAreLost => "Einwanderer ohne Unterkunft verschwinden nach einiger Zeit";
+        public override string Editor_VoxelCount => "{0} Voxel";
+
+        public override string Editor_Layers_Titel => "Ebenen";
+        public override string Editor_Layers_All => "Alle Ebenen";
+        public override string Editor_LayerNumber => "Ebene {0}";
+
+        public override string Editor_Layer_AddEmpty => "Leere Ebene hinzufügen";
+        public override string Editor_Layer_AddCopy => "Ebene duplizieren";
+        public override string Editor_Layer_Remove => "Ebene entfernen";
+        public override string Editor_Layer_MergeDown => "Nach unten zusammenführen";
+        public override string Editor_IsAnimated => "Animiert";
+        public override string Editor_ToggleVisible => "Sichtbarkeit umschalten";
+        public override string Editor_ToggleAnimatedLayer => "Animierte Ebene umschalten";
+        public override string Editor_Projects => "Projektdateien";
+        public override string ProfileEditor_ReplaceMaterial => "Profilfarbe: {0}";
+
+        public override string ProfileEditor_ProfileColors_Label => "Profilfarben";
+        public override string ProfileEditor_TunicColor => "Tunika-Farbe";
+        public override string ProfileEditor_PantsColor => "Hosenfarbe";
+        public override string ProfileEditor_LeaderColor => "Führerfarbe";
+
+        public override string MapStartAs_Water => "Wasser";
+        public override string MapStartAs_Land => "Land";
+        public override string MapStartAs_Circle => "Kreis";
+
+        public override string Hud_NeedToBeAssigned => "Zuweisung erforderlich";
+        public override string Hud_CommitAssignment => "Zuweisen";
+        public override string Technology_NoAvailableResearch => "Keine verfügbare Forschung";
+
+        public override string Research_Tab => "Forschung";
+
+
     }
 }
