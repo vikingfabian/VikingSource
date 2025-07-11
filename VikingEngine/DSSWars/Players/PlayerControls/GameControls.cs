@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.Engine;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
@@ -67,6 +68,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             else
             {
                 GameSpeedOptions = new int[] { 1, 2 };
+            }
+        }
+
+        public void refreshInput()
+        {
+            if (input.inputSource.HasMouse)
+            {
+                input.copyDataFrom(Ref.gamesett.keyboardMap);
             }
         }
 

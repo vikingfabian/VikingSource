@@ -1595,5 +1595,13 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Technology_NoAvailableResearch { get; }
 
         public abstract string Research_Tab { get; }
+
+        //5.2
+        public abstract string BuildCategory_General { get; }
+        public abstract string BuildCategory_Military { get; }
+        public abstract string BuildCategory_Decoration { get; }
+        public abstract string BuildCategory_Upgrade { get; }
+
+        public abstract string Work_NoMines { get; }
     }
 }

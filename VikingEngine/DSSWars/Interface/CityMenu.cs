@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Linq;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Build;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
@@ -12,8 +13,8 @@ using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
@@ -1391,11 +1392,24 @@ namespace VikingEngine.DSSWars.Interface
 
                 case ResourcesSubTab.Overview_Metals:
 
+                    int totalMines = 0;
+
                     city.res_ironore.toMenu(content, ItemResourceType.IronOre_G, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_bogIron, ItemResourceType.BogIron, ref totalMines);
+                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_iron, ItemResourceType.Iron_G, ref totalMines);
+
                     city.res_TinOre.toMenu(content, ItemResourceType.TinOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    city.res_CupperOre.toMenu(content, ItemResourceType.CopperOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_tin, ItemResourceType.Tin, ref totalMines);
+
+                    city.res_CupperOre.toMenu(content, ItemResourceType.CopperOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals); 
+                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_copper, ItemResourceType.Copper, ref totalMines);
+
                     city.res_LeadOre.toMenu(content, ItemResourceType.LeadOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_lead, ItemResourceType.Lead, ref totalMines);
+
                     city.res_SilverOre.toMenu(content, ItemResourceType.SilverOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_silver, ItemResourceType.Silver, ref totalMines);
+
                     content.newParagraph();
 
 
@@ -1415,6 +1429,10 @@ namespace VikingEngine.DSSWars.Interface
                     blueprintButton(player, content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
 
                     city.res_RawMithril.toMenu(content, ItemResourceType.RawMithril, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_mithril, ItemResourceType.Mithril, ref totalMines);
+
+                    city.res_Sulfur.toMenu(content, ItemResourceType.Sulfur, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_sulfur, ItemResourceType.Sulfur, ref totalMines);
                     content.newParagraph();
 
 
@@ -1589,7 +1607,7 @@ namespace VikingEngine.DSSWars.Interface
                     stockpile(ItemResourceType.TinOre);
                     stockpile(ItemResourceType.CopperOre);
                     stockpile(ItemResourceType.LeadOre);
-                    stockpile(ItemResourceType.SilverOre);
+                    stockpile(ItemResourceType.SilverOre);                    
                     content.newParagraph();
 
                     stockpile(ItemResourceType.Iron_G);
@@ -1598,6 +1616,7 @@ namespace VikingEngine.DSSWars.Interface
                     stockpile(ItemResourceType.Lead);
                     stockpile(ItemResourceType.Silver);
                     stockpile(ItemResourceType.RawMithril);
+                    stockpile(ItemResourceType.Sulfur);
                     content.newParagraph();
 
                     stockpile(ItemResourceType.Bronze);

@@ -2461,5 +2461,12 @@ namespace VikingEngine.DSSWars.Presentation
          public override string Technology_NoAvailableResearch => "No available research";
 
          public override string Research_Tab => "Research";
+
+        //5.2
+        public override string BuildCategory_General => "General";
+        public override string BuildCategory_Military => "Military";
+        public override string BuildCategory_Decoration => "Decoration";
+        public override string BuildCategory_Upgrade => "Upgrade";
+        public override string Work_NoMines => "No mines";
     }
 }

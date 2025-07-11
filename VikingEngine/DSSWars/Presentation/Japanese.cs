@@ -2427,6 +2427,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Research_Tab => "研究";
 
+        //5.2
+        public override string BuildCategory_General => "一般";
+        public override string BuildCategory_Military => "軍事";
+        public override string BuildCategory_Decoration => "装飾";
+        public override string BuildCategory_Upgrade => "アップグレード";
+        public override string Work_NoMines => "鉱山がありません";
+
+
 
 
     }

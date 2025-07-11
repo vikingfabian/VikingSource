@@ -2595,7 +2595,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
                 }
 
-                terrainStructure.miningOverviewHud(content, player);
+                terrainStructure.miningOverviewHud(content);
                 new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
                 //technologyOverviewHud(content, player);
 #if DEBUG

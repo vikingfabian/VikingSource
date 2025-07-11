@@ -3,12 +3,13 @@ using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -162,7 +163,7 @@ namespace VikingEngine.DSSWars.Build
         public int mineCount_sulfur;
         public int mineCount_coal;
 
-        public void miningOverviewHud(RichBoxContent content, LocalPlayer player)
+        public void miningOverviewHud(RichBoxContent content)
         {
             content.newLine();
 
@@ -171,45 +172,46 @@ namespace VikingEngine.DSSWars.Build
 
             int totalCount = 0;
 
-            mine(mineCount_coal, ItemResourceType.Coal);
-            mine(mineCount_bogIron, ItemResourceType.BogIron);
-            mine(mineCount_iron, ItemResourceType.Iron_G);
-            mine(mineCount_tin, ItemResourceType.Tin);
-            mine(mineCount_copper, ItemResourceType.Copper);
-            mine(mineCount_lead, ItemResourceType.Lead);
-            mine(mineCount_silver, ItemResourceType.Silver);
-            mine(mineCount_gold, ItemResourceType.Gold);
-            mine(mineCount_mithril, ItemResourceType.Mithril);
-            mine(mineCount_sulfur, ItemResourceType.Sulfur);
+            mine(content, mineCount_coal, ItemResourceType.Coal, ref totalCount);
+            mine(content, mineCount_bogIron, ItemResourceType.BogIron, ref totalCount);
+            mine(content, mineCount_iron, ItemResourceType.Iron_G, ref totalCount);
+            mine(content, mineCount_tin, ItemResourceType.Tin, ref totalCount);
+            mine(content, mineCount_copper, ItemResourceType.Copper, ref totalCount);
+            mine(content, mineCount_lead, ItemResourceType.Lead, ref totalCount);
+            mine(content, mineCount_silver, ItemResourceType.Silver, ref totalCount);
+            mine(content, mineCount_gold, ItemResourceType.Gold, ref totalCount);
+            mine(content, mineCount_mithril, ItemResourceType.Mithril, ref totalCount);
+            mine(content, mineCount_sulfur, ItemResourceType.Sulfur, ref totalCount);
 
 
             if (totalCount == 0)
             {
                 content.Add(new RbText(DssRef.lang.Hud_EmptyList));
             }
+            
+        }
 
-
-            void mine(int count, ItemResourceType resource)
+        public void mine(RichBoxContent content, int count, ItemResourceType resource, ref int totalCount)
+        {
+            totalCount += count;
+            if (count > 0)
             {
-                totalCount += count;
-                if (count > 0)
-                {
-                    SpriteName icon = ResourceLib.Icon(resource);
-                    string resourceName = LangLib.Item(resource);
-                    var infoContent = new RichBoxContent();
+                SpriteName icon = ResourceLib.Icon(resource);
+                string resourceName = LangLib.Item(resource);
+                var infoContent = new RichBoxContent();
 
-                    infoContent.Add(new RbImage(icon));
-                    infoContent.space();
-                    var countText = new RbText(count.ToString());
-                    countText.overrideColor = Color.White;
-                    infoContent.Add(countText);
+                infoContent.Add(new RbOverlapImage(new RbImage(icon), SpriteName.WarsWorkMine, VectorExt.V2FromX(-0.2f), 0.8f));
+                infoContent.space();
+                var countText = new RbText(count.ToString());
+                countText.overrideColor = Color.White;
+                infoContent.Add(countText);
 
-                    var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null,
-                        new RbTooltip((RichBoxContent content, object tag) =>
+                var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null,
+                    new RbTooltip((RichBoxContent content, object tag) =>
                     {
                         //RichBoxContent content = new RichBoxContent();
-
-                        content.Add(new RbImage(icon));
+                        content.Add(new RbOverlapImage(new RbImage(icon), SpriteName.WarsWorkMine, Vector2.Zero, 0.8f));
+                        //content.Add(new RbImage(icon));
                         content.space();
                         var mineString = string.Format(DssRef.lang.BuildingType_ResourceMine, resourceName);
                         content.Add(new RbText(TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
@@ -218,10 +220,9 @@ namespace VikingEngine.DSSWars.Build
                         //player.hud.tooltip.create(player, content, true);
                     }));
 
-                    //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
-                    content.Add(infoButton);
-                    //content.space();
-                }
+                //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+                content.Add(infoButton);
+                //content.space();
             }
         }
     }

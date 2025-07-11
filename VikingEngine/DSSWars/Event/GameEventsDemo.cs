@@ -11,7 +11,11 @@ namespace VikingEngine.DSSWars.Event
 {
     class GameEventsDemo : EventManager
     {
+//#if DEBUG
+//        Time maxDemoTime = new Time(1f, TimeUnit.Minutes);
+//#else
         Time maxDemoTime = new Time(90f, TimeUnit.Minutes);
+//#endif
         City defendingCity;
         int demoState_1start_2end = 0;
         List<Army> attackerArmies;
@@ -90,7 +94,10 @@ namespace VikingEngine.DSSWars.Event
             if (maxDemoTime.CountDownGameTime_IfActive())
             {
                
-                Ref.update.AddSyncAction(new SyncAction(endPreWarningMessage));
+                Ref.update.AddSyncAction(new SyncAction(()=>
+                {
+                    viewEndScreen(GameEndReason.TimesUp);
+                }));
             }
 
             if (!endPreWarning && maxDemoTime.MilliSeconds < endPreWarningTime)

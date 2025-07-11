@@ -514,29 +514,36 @@ namespace VikingEngine.DSSWars.Build
 
             foreach (var tab in buildCategories)
             {
+                string category;
                 SpriteName tabIcon;
                 switch (tab)
                 {
                     case BuildCategoryTab.ExpandAndCraft:
                         tabIcon = SpriteName.warsBuildCategoryHouse;
+                        category = DssRef.lang.BuildCategory_General;
                         break;
                     case BuildCategoryTab.Military:
                         tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
+                        category = DssRef.lang.BuildCategory_Military;
                         break;
                     case BuildCategoryTab.Decor:
                         tabIcon = SpriteName.warsBuildCategoryDecorTree;
+                        category = DssRef.lang.BuildCategory_Decoration;
                         break;
                     case BuildCategoryTab.Upgrade:
                         tabIcon = SpriteName.warsBuildCategoryUpgrades;
+                        category = DssRef.lang.BuildCategory_Upgrade;
                         break;
                     default:
                         tabIcon = SpriteName.warsBuildCategoryAutomation;
+                        category = DssRef.lang.Automation_Title;
                         break;
 
                 }
                 var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                     new List<AbsRichBoxMember> { new RbImage(tabIcon) },
-                    new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, SoundLib.menutab));
+                    new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, SoundLib.menutab),
+                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_category, category)));
                 content.Add(tabButton);
             }
 

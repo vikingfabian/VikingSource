@@ -1,8 +1,9 @@
 ﻿UPDATE
 -Change Log-
-* Localized all new options
-
-
+* added mines to work tab
+* build category tooltip
+* fixed the broken timeout
+* fixed: updating mouse/keys in runtime dont work
 
 Voxel editor: 
 *
@@ -35,6 +36,7 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+x gun maker missing tooltip info
 x small map editor size crash
 x Pen stroke size on map editor
 x Guards are never clearing move orders
@@ -50,6 +52,10 @@ x Ballistas should not animate on move
 x Still have models drifting
 x main menu goes off screen
 x start from nothing option
+x all schools/postals should have "set all to", and next/previous buttons 
+x B C D all were the same pavement 
+x show connected research, next to experience overview types
+x describe work group count
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning

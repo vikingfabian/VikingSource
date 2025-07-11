@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars
         public static bool RunAI = PlatformSettings.DevBuild ? true :
            true;//DO NOT CHANGE
 
-        public static bool EndlessResources = PlatformSettings.DevBuild ? true : 
+        public static bool EndlessResources = PlatformSettings.DevBuild ? false : 
             false;//DO NOT CHANGE    
 
         public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? false :
@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars
         public static bool BlockMessages = PlatformSettings.DevBuild ? true :
            false;//DO NOT CHANGE
 
-        public static bool BlockTooltip = PlatformSettings.DevBuild ? true :
+        public static bool BlockTooltip = PlatformSettings.DevBuild ? false :
           false;//DO NOT CHANGE
 
         //public const bool Trailer = true;
