@@ -21,7 +21,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 22;
+        const int Version = 23;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -59,6 +59,7 @@ namespace VikingEngine
         float SoundVolume = Engine.Sound.SoundStandardVolume;
         float AmbientVolume = Engine.Sound.SoundStandardVolume;
         float BattleMelodyVolume = 1f;
+        bool lowLatencyGarbageCollecting = true;
         public float SoundVol() { return SoundVolume * MasterVolume; }
         public float AmbientVol() { return AmbientVolume * MasterVolume; }
         public float BattleMelodyVol() { return BattleMelodyVolume; }
@@ -120,6 +121,7 @@ namespace VikingEngine
             w.Write(BattleMelodyVolume);
             w.Write(ParticlesEffect);
 
+            w.Write(lowLatencyGarbageCollecting);
             Debug.WriteCheck(w);
         }
 
@@ -178,7 +180,13 @@ namespace VikingEngine
             BattleMelodyVolume = r.ReadSingle();
             
             ParticlesEffect = r.ReadBoolean();
-            
+
+
+            if (version >= 23)
+            { 
+                lowLatencyGarbageCollecting = r.ReadBoolean();
+            }
+
             Debug.ReadCheck(r);
 
             MusicMasterVolume = 0;
@@ -826,6 +834,17 @@ namespace VikingEngine
             return panOnZoom;
         }
 
+        public bool lowGCProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                lowLatencyGarbageCollecting = value;
+                settingsHasChanged = true;
+
+                Ref.gamestate.refreshGcLatency();
+            }
+            return lowLatencyGarbageCollecting;
+        }
         //string SongTitleProperty(bool set, string value)
         //{
         //    return "Playing: \n" + Ref.music.GetSongName();

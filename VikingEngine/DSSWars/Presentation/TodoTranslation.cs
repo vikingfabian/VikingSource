@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Presentation
     {
         //Option language
 
-        
+        //public string 
 
     }
 

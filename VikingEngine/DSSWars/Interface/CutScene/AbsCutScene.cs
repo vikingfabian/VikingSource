@@ -20,6 +20,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         virtual public void Close()
         {
             DssRef.state.cutScene = null;
+            GC.Collect();
         }
 
         abstract public void Time_Update(float time);

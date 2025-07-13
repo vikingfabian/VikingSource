@@ -151,6 +151,8 @@ namespace VikingEngine.DSSWars.Interface
                 blackFade = null;
                 menu.DeleteMe();
                 menu = null;
+
+                GC.Collect();
             }
         }
 
@@ -360,18 +362,21 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newParagraph();
             content.h2(DssRef.lang.Settings_Title_Gameplay, HudLib.TitleColor_Head);
-            if (lobby)
+
+            if (!PlatformSettings.STEAM_DEMO)
             {
-                if (!PlatformSettings.STEAM_DEMO)
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
+                if (lobby)
                 {
-                    content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
                     content.newLine();
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
                     content.newLine();
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
                 }
             }
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Low memory garbarge collecting") }, Ref.gamesett.lowGCProperty));
             content.newLine();
             content.Add(new RbText(DssRef.lang.Settings_Blood + ":", HudLib.TitleColor_Label));
             content.space();

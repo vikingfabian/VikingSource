@@ -2,12 +2,13 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
-using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Path;
@@ -52,7 +53,8 @@ namespace VikingEngine.DSSWars.GameState
             :base() 
         {
             DssRef.state = this;
-           
+            
+
         }
 
         public void stepFrames(int frameCount)
@@ -312,6 +314,10 @@ namespace VikingEngine.DSSWars.GameState
             throw new NotImplementedException();
         }
 
+        public override bool MayUseLowLatencyGC()
+        {
+            return true;
+        }
         abstract public PlayStateType PlayType();
 
         abstract public int PathThreadCount();
