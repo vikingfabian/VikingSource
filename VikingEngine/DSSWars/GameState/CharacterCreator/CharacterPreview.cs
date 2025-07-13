@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,25 +21,44 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         CharacterPreviewType previewType;
         VectorRect area;
 
+        int flagIndex;
+        int characterIndex;
         bool mouseDown = false;
         public CharacterPreview(VectorRect screenArea, CharacterPreviewType previewType) 
         {
+            characterIndex = DssRef.storage.characterStorage.selected;
             this.previewType = previewType;
             screenArea.Round();
             this.area = screenArea;
+
+            Init(screenArea.Size, true);
+            target.position = screenArea.Position;
+            Graphics.RectangleLines rectangle = new RectangleLines(screenArea, 2f, 1f, ImageLayers.Lay9);
+        }
+
+        public CharacterPreview(int characterIndex, int flagIndex, Vector2 size)
+        {
+            this.characterIndex = characterIndex;
+            this.previewType = CharacterPreviewType.Soldier;
+            size.Round();
+            Init(size, false);
+            target.ClearColor = Color.Black;
+            target.ClearColor.A =10;
+            camera.CurrentZoom *= 0.4f;
+        }
+
+        public void Init(Vector2 size, bool toRender)
+        {
             characterModelBuilder = new CharacterModelBuilder();
             var model = buildModel(out float zoom);
-            target = new RenderTargetImage(screenArea.Position, screenArea.Size, ImageLayers.Background0, true);
+            target = new RenderTargetImage(Vector2.Zero, size, ImageLayers.Background0, toRender);
             camera = new TopViewCamera(zoom, new Vector2(MathHelper.PiOver2 - 0.6f, MathHelper.PiOver4 + 0.3f),
-                    screenArea.Size.X, screenArea.Size.Y);
+                    size.X, size.Y);
             camera.FieldOfView = 20f;
             camera.FarPlane = 400;
             camera.NearPlane = 0.01f;
-            
 
-            //camera.LookTarget = model.GridSize.Vec * 0.5f;
-            camera.LookTarget = new Vector3(0, 14f, 0) + model.scale *0.5f;
-
+            camera.LookTarget = new Vector3(0, 14f, 0) + model.scale * 0.5f;
 
             camera.instantMoveToTarget();
             camera.Time_Update(0);
@@ -47,8 +66,6 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             target.Camera = camera;
             drawList = new List<AbsDraw> { model };
-
-            Graphics.RectangleLines rectangle = new RectangleLines(screenArea, 2f, 1f, ImageLayers.Lay9);
         }
 
         AbsVoxelObj buildModel(out float zoom)
@@ -57,13 +74,12 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             {
                 case CharacterPreviewType.Soldier:
                     zoom = 140;
-                    return characterModelBuilder.buildModel(DssRef.storage.HostProfile(),
-                        new SoldierModelData(ArmorLevel.None, Resource.ItemResourceType.Sword, Conscript.SpecializationType.None, VisualExperience.Experienced, 0, 0));
+                    return characterModelBuilder.buildModel(new Players.Profile.PlayerProfile(characterIndex, flagIndex),
+                    new SoldierModelData(ArmorLevel.None, Resource.ItemResourceType.Sword, Conscript.SpecializationType.None, VisualExperience.Experienced, 0, 0));
 
                 case CharacterPreviewType.RideAnimal:
                     zoom = 80;
                     return  new Graphics.VoxelModelInstance( DssRef.models.voxelModels[LootFest.VoxelModelName.horse_brown], false);
-
             }
 
             zoom = 0;
@@ -76,10 +92,16 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             drawList = new List<AbsDraw> { model };
         }
 
+        public void rotationUpdate()
+        {
+            camera.TiltX += 1f * Ref.DeltaGameTimeSec;
+            camera.RecalculateMatrices();
+            drawUpdate();
+        }
+
         public void update()
         {
-            camera.Time_Update(Ref.DeltaTimeMs);
-            target.DrawImagesToTarget(null, drawList, true, 0);
+            drawUpdate();
 
             if (mouseDown)
             {
@@ -96,6 +118,17 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             {
                 mouseDown = true;
             }
+        }
+
+        void drawUpdate()
+        {
+            camera.Time_Update(Ref.DeltaTimeMs);
+            target.DrawImagesToTarget(null, drawList, true, 0);
+        }
+
+        public Texture2D Texture()
+        { 
+            return target.renderTarget;
         }
     }
 

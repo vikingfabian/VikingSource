@@ -11,18 +11,24 @@ namespace VikingEngine.DSSWars.Players.Profile
 {
     class FlagStorage
     {
-        const int ProfilesCount = 16;
         public List<FlagAndColor> flagDesigns;
-       
+
+        public int selected;
 
         public FlagStorage()
         {
-            flagDesigns = new List2<FlagAndColor>(ProfilesCount);
+            const int StartCount = 8;
+            flagDesigns = new List2<FlagAndColor>(StartCount);
 
-            for (int i = 0; i < ProfilesCount; ++i)
+            for (int i = 0; i < StartCount; ++i)
             {
                 flagDesigns.Add(new FlagAndColor(FactionType.Player, i, null));
             }
+        }
+
+        public FlagAndColor Selected()
+        {
+            return flagDesigns[selected];
         }
 
         public void Load()
@@ -37,6 +43,12 @@ namespace VikingEngine.DSSWars.Players.Profile
                 int index = Convert.ToInt32(num) -1;
 
                 filePath.FileName = file;
+
+                while (index >= flagDesigns.Count)
+                {
+                    flagDesigns.Add(new FlagAndColor(FactionType.Player, flagDesigns.Count, null));
+                }
+
                 FileToDiskManager.TryReadBinaryIO(filePath, flagDesigns[index].read);
             }
         }
@@ -48,13 +60,13 @@ namespace VikingEngine.DSSWars.Players.Profile
             BeginReadWrite.BinaryIO(true, filePath, flagDesigns[index].write, null, null, true);
         }
 
-        public void old_read(System.IO.BinaryReader r)
-        {
-            for (int i = 0; i < ProfilesCount; ++i)
-            {
-                flagDesigns[i].read_old(r);
-            }
-        }
+        //public void old_read(System.IO.BinaryReader r)
+        //{
+        //    for (int i = 0; i < 16; ++i)
+        //    {
+        //        flagDesigns[i].read_old(r);
+        //    }
+        //}
 
         FilePath path(int index)
         {

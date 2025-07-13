@@ -86,13 +86,13 @@ namespace VikingEngine.DSSWars
                 // new game
                 switch (DssRef.difficulty.setting_gameMode)
                 {
-                    case GameMode.FullStory:
+                    case GameModeMainType.FullStory:
                         DssRef.stats.startNewStory.addOne();
                         break;
-                    case GameMode.Sandbox:
+                    case GameModeMainType.Sandbox:
                         DssRef.stats.startNewSandbox.addOne();
                         break;
-                    case GameMode.Peaceful:
+                    case GameModeMainType.Peaceful:
                         DssRef.stats.startNewPeaceful.addOne();
                         break;
                 }

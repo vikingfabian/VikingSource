@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.Interface
             menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
             flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 6));
             flag = new ImageAdvanced(SpriteName.NO_IMAGE, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer, false);
-            flag.Texture = player.faction.flagTexture;
+            flag.Texture = player.flagTexture;
             flag.SetFullTextureSource();
 
             var headBgTex = menu.addBackground(new NineSplitSettings(SpriteName.WarsHudHeadBarBg, 1, 16, 1f, true, true), HudLib.GUILayer + 4);

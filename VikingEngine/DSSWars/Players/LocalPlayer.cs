@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars.Players
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
-            faction.SetProfile(DssRef.storage.flagStorage.flagDesigns[pStorage.flagDesignIndex]);
+            SetProfile(DssRef.storage.profileStorage.profiles[pStorage.profileIndex]);
             faction.diplomaticSide = DiplomaticSide.Light;
 
             InputMap input = new InputMap(playerindex);
@@ -181,7 +181,7 @@ namespace VikingEngine.DSSWars.Players
 
             inputConnected = input.Connected;
 
-            faction.flagProfile.gameStartInit();
+            profile.flag.gameStartInit();
             faction.displayInFullOverview = true;
 
             playerData = Engine.XGuide.GetPlayer(playerindex);

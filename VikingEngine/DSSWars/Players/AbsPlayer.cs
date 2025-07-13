@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players
@@ -27,8 +29,18 @@ namespace VikingEngine.DSSWars.Players
         public Orders.Orders orders;
         abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
 
+        public PlayerProfile profile;
+        public Texture2D flagTexture;
+
         public AbsPlayer()
         { }
+
+        public void SetProfile(PlayerProfile profile)
+        {
+            this.profile = profile;
+            flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+        }
+
         public AbsPlayer(Faction faction, bool newGame)
         {
             this.faction = faction;

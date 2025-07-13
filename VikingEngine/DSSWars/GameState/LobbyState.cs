@@ -1,43 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.IO;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Threading;
+using System.Xml.Linq;
+using Valve.Steamworks;
+using VikingEngine.DataStream;
+using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameState;
+using VikingEngine.DSSWars.GameState.BattleLab;
+using VikingEngine.DSSWars.GameState.MapEditor;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
+using VikingEngine.Engine;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.Graphics;
 //
 using VikingEngine.HUD;
-using VikingEngine.Engine;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
+using VikingEngine.Input;
+using VikingEngine.LootFest;
+using VikingEngine.LootFest.GO.WeaponAttack;
 using VikingEngine.Network;
-using System.Threading;
 using VikingEngine.PJ;
 using VikingEngine.PJ.CarBall;
 using VikingEngine.PJ.Strategy;
-using Microsoft.Xna.Framework.Content;
-using VikingEngine.Graphics;
-using VikingEngine.Timer;
-using VikingEngine.LootFest;
-using VikingEngine.Input;
-using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.DebugExtensions;
-using System.ComponentModel.Design;
-using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Presentation;
-using VikingEngine.DSSWars.GameState;
-using VikingEngine.HUD.RichBox;
-using System.Linq;
-using VikingEngine.DSSWars.Players;
-using System.IO;
-using VikingEngine.DataStream;
-using VikingEngine.HUD.RichMenu;
-using VikingEngine.HUD.RichBox.Artistic;
-using System.Reflection.Metadata;
-using VikingEngine.DSSWars.GameState.MapEditor;
-using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
-using VikingEngine.DSSWars.GameState.BattleLab;
-using VikingEngine.DSSWars.Interface;
-using VikingEngine.LootFest.GO.WeaponAttack;
-using Valve.Steamworks;
 using VikingEngine.Sound;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars
 {
@@ -80,6 +81,7 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_ListExtra = "extra";
         const string UnderMenu_ListMusic= "music list";
         const string UnderMenu_PlayerSetup = "playersett";
+        const string UnderMenu_PlayerProfile = "playerprofile";
         const string UnderMenu_ListSaves = "saves";
         const string UnderMenu_ListSavesForExport = "exportsaves";
         const string UnderMenu_Options = "options";
@@ -137,6 +139,278 @@ namespace VikingEngine.DSSWars
             //new TimedAction0ArgTrigger(collectReports, 600);
             
 #endif
+        }
+        void refreshUnderMenu()
+        {
+            switch (underMenu.menuStack.LastOrDefault())
+            {
+                case UnderMenu_NewGame:
+                    loadGame = null;
+                    newGameSettings2();
+                    break;
+
+                case UnderMenu_Options:
+                    optionsMenu2();
+                    break;
+
+                case GameMenuSystem.UnderMenu_Options_Mouse:
+                case GameMenuSystem.UnderMenu_Options_Keyboard:
+                case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
+                    GameMenuSystem.refreshPage(underMenu, true);
+                    //    GameMenuSystem.mouseOptions(underMenu);
+                    //    break;
+
+                    //case GameMenuSystem.UnderMenu_Options_Keyboard:
+                    //    GameMenuSystem.keyboardOptions(underMenu);
+                    //    break;
+
+                    //case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
+                    //    GameMenuSystem.listMapOptions(underMenu);
+                    break;
+
+                case UnderMenu_Options_Language:
+                    selectLanguageMenu();
+                    break;
+
+                case UnderMenu_ListSaves:
+                    listSaves2();
+                    break;
+                case UnderMenu_ListSavesForExport:
+                    exportSave_listsaves2();
+                    break;
+
+
+                case UnderMenu_ListEditors:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+
+                        content.h1(DssRef.lang.Lobby_Category_Editor, HudLib.TitleColor_Head);
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() {
+                            new RbImage(SpriteName.WarsMapIcon, 0.9f),
+                            new RbSpace(),
+                            new RbText(DssRef.lang.Lobby_Editor_MapEditor) }),
+                            new RbAction(openMapEditor), null, !PlatformSettings.STEAM_DEMO));
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() {
+                            new RbImage(SpriteName.VoxelEditorColorCube, 0.9f),
+                            new RbSpace(),
+                            new RbText(DssRef.lang.Lobby_Editor_VoxelEditor) }),
+                            new RbAction(voxeleditor), new RbTooltip_Text(DssRef.lang.VoxelEditor_Description), !PlatformSettings.STEAM_DEMO));
+
+                        content.newParagraph();
+                        var playerData = DssRef.storage.localPlayers.First();
+                        //listAndEditFlag(content, 1, playerData, true);
+
+                        underMenu.Refresh(content);
+                    }
+                    break;
+
+                case UnderMenu_ListExtra:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+
+                        content.h1(DssRef.lang.Lobby_Category_ExtraModes, HudLib.TitleColor_Head);
+
+                        content.newLine();
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Mode_BattleLab) }),
+                            new RbAction(startBattleLab), new RbTooltip_Text(DssRef.lang.Lobby_Mode_BattleLab_Description), !PlatformSettings.STEAM_DEMO));
+
+                        content.newLine();
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Mode_Commander) }),
+                            new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text(DssRef.lang.Lobby_Mode_Commander_Description), !PlatformSettings.STEAM_DEMO));
+
+                        content.newLine();
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_MusicPlayList) }),
+                            new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListMusic, StackOption.ClearStack), null, !PlatformSettings.STEAM_DEMO));
+
+#if DEBUG
+                        if (Ref.steam.isInitialized)
+                        {
+                            content.newLine();
+                            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Initialize steam stats") }, new RbAction(Ref.steam.stats.initializeAllStatsOnSteam)));
+                            content.newLine();
+                            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Load global steam stats") }, new RbAction(Ref.steam.stats.beginRequestGlobalStats)));
+                        }
+#endif
+
+                        //                    if (Ref.steam.statsInitialized)
+                        //                    {
+                        //                        new GuiTextButton("Initialize steam stats", null, Ref.steam.stats.initializeAllStatsOnSteam, false, layout);
+                        //                        new GuiTextButton("Load global steam stats", null, Ref.steam.stats.beginRequestGlobalStats, false, layout);
+                        //                    }
+
+                        underMenu.Refresh(content);
+                    }
+                    break;
+
+                case UnderMenu_PlayerSetup:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+
+                        //bool startTutorialDisplay = false;
+
+                        var title = content.h1(string.Empty, HudLib.TitleColor_Head);
+                        content.newLine();
+
+                        bool startAvailable = checkAllPlayersHasControls();
+
+                        switch (startGameMode)
+                        {
+                            case StartGameMode.Play:
+                                {
+                                    title.text = PlatformSettings.STEAM_DEMO ? DssRef.lang.LobbyDemoMode_Demo : DssRef.lang.Settings_NewGame;
+
+                                    var start = new ArtButton(RbButtonStyle.Primary,
+                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
+                                      new RbAction(startGame), null, startAvailable);
+                                    content.Add(start);
+                                }
+                                break;
+
+                            case StartGameMode.Tutorial:
+                                {
+                                    title.text = DssRef.lang.Lobby_Tutorial;
+
+                                    var startlong = new ArtButton(RbButtonStyle.Primary,
+                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_LongTutorial) },
+                                      new RbAction1Arg<bool>(startTutorial, false), null, startAvailable);
+                                    content.Add(startlong);
+                                    content.newLine();
+                                    var startshort = new ArtButton(RbButtonStyle.Secondary,
+                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_ShortTutorial) },
+                                      new RbAction1Arg<bool>(startTutorial, true), null, startAvailable);
+                                    //start.fillWidth = false;
+                                    content.Add(startshort);
+                                }
+                                break;
+                            case StartGameMode.BattleTrials:
+                                {
+                                    title.text = DssRef.lang.BattleTrials_Title;
+
+                                    content.newLine();
+                                    var start = new ArtButton(RbButtonStyle.Primary,
+                                          new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
+                                          new RbAction(startTrial), null, startAvailable);
+                                    content.Add(start);
+                                }
+                                break;
+                        }
+
+                        if (!startAvailable)
+                        {
+                            content.newLine();
+                            content.Add(new RbText(DssRef.lang.Lobby_PlayerWithoutInputWarning, HudLib.NotAvailableColor));
+                        }
+
+                        content.newParagraph();
+
+                        playerSetupToMenu(content);
+
+                        const bool ViewMultiplayer = true;
+                        if (ViewMultiplayer)
+                        {
+                            content.newParagraph();
+
+                            DropDownBuilder mpOptions = new DropDownBuilder("local_mp");
+                            {
+                                for (int i = 1; i <= GameStorage.MaxLocalPlayerCount; ++i)
+                                {
+                                    mpOptions.AddOption(i.ToString(), i == DssRef.storage.playerCount, i == 1, new RbAction2Arg<int, bool>(setPlayerCount, i, true), null);
+                                }
+                                mpOptions.injectAfter = new List<AbsRichBoxMember>(2) { new RbSpace() };
+                                HudLib.InfoButton(mpOptions.injectAfter, new RbTooltip_Text(DssRef.lang.Lobby_LocalMultiplayerControllerRequired));
+                                mpOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_LocalMultiplayerEdit, underMenu);
+                            }
+                        }
+
+                        underMenu.Refresh(content);
+
+                    }
+                    break;
+
+                case UnderMenu_PlayerProfile:
+                    {
+                        var profile = DssRef.storage.profileStorage.Selected();
+
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, underMenu, true, null);
+
+                        content.h1(DssRef.todoLang.Lobby_PlayerProfileEdit, HudLib.TitleColor_Head);
+
+                        content.newLine();
+                        HudLib.Label(content, DssRef.todoLang.HUD_DisplayName);
+                        content.newLine();
+                        var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
+                                new RbAction(beginEditPlayerName), null);
+                            content.Add(editButton);
+                            content.space();
+                        
+                        content.Add(new RbText(profile.DisplayName(), Color.LightYellow));
+                        
+                        content.newParagraph();
+
+                        listAndEditFlag(content, DssRef.storage.localPlayers[DssRef.storage.selectedPlayer], false);
+
+                        listAndEditCharacter(content, DssRef.storage.profileStorage.selected, false);
+
+                        underMenu.Refresh(content);
+                    }
+                    break;
+
+                case UnderMenu_ListMusic:
+                    {
+
+                        RichBoxContent content = new RichBoxContent();
+
+                        List<Sound.SongData> list = Music.PlayList();
+                        foreach (var m in list)
+                        {
+                            content.newLine();
+                            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                                new RbImage(SpriteName.MenuPixelIconMusicVol),
+                                new RbSpace(),
+                                new RbText(m.name) },
+                                new RbAction1Arg<Sound.SongData>(Ref.music.PlaySong, m)));
+                        }
+
+                        content.newParagraph();
+
+                        List<Sound.SongData> other = Music.OtherSongs();
+                        foreach (var m in other)
+                        {
+                            content.newLine();
+                            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                                new RbImage(SpriteName.MenuPixelIconMusicVol),
+                                new RbSpace(),
+                                new RbText(m.name) },
+                                new RbAction1Arg<Sound.SongData>(Ref.music.PlaySong, m)));
+                        }
+
+                        underMenu.Refresh(content);
+                    }
+                    break;
+            }
+        }
+
+        void beginEditPlayerName()
+        {
+            var profile = DssRef.storage.profileStorage.Selected();
+            new TextInput(profile.DisplayName(), PlayerNameEditEvent, null);
+        }
+        void PlayerNameEditEvent(string result, object tag)
+        {
+            var profile = DssRef.storage.profileStorage.Selected();
+            { 
+                profile.name = result;
+            }
+            DssRef.storage.profileStorage.SetSelected(profile);
+            underMenu.needRefresh = true;
         }
 
         public void playOnCustomMap(MapBackgroundLoading map)
@@ -857,7 +1131,7 @@ namespace VikingEngine.DSSWars
         }
 
         
-        void gameModeClick(GameMode mode)
+        void gameModeClick(GameModeMainType mode)
         {
             DssRef.difficulty.setting_gameMode = mode;
             DssRef.storage.Save(null);
@@ -930,7 +1204,7 @@ namespace VikingEngine.DSSWars
                 {
                     gameModeText(mode, out string caption, out string desc);
                     modeOptions.AddOption(caption, mode == DssRef.difficulty.setting_gameMode, mode == Difficulty.DefaultMode,
-                        new RbAction1Arg<GameMode>(gameModeClick, mode), new RbTooltip_Text(desc));
+                        new RbAction1Arg<GameModeMainType>(gameModeClick, mode), new RbTooltip_Text(desc));
                 }
                 modeOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_GameMode, underMenu);
             }
@@ -1044,234 +1318,7 @@ namespace VikingEngine.DSSWars
             }
         }
                
-        void refreshUnderMenu()
-        {
-            switch (underMenu.menuStack.LastOrDefault())
-            {
-                case UnderMenu_NewGame:
-                    loadGame = null;
-                    newGameSettings2();
-                    break;
-
-                case UnderMenu_Options:
-                    optionsMenu2();
-                    break;
-
-                case GameMenuSystem.UnderMenu_Options_Mouse:
-                case GameMenuSystem.UnderMenu_Options_Keyboard:
-                case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
-                    GameMenuSystem.refreshPage(underMenu, true);
-                    //    GameMenuSystem.mouseOptions(underMenu);
-                    //    break;
-
-                    //case GameMenuSystem.UnderMenu_Options_Keyboard:
-                    //    GameMenuSystem.keyboardOptions(underMenu);
-                    //    break;
-
-                    //case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
-                    //    GameMenuSystem.listMapOptions(underMenu);
-                    break;
-
-                case UnderMenu_Options_Language:
-                    selectLanguageMenu();
-                    break;
-
-                case UnderMenu_ListSaves:
-                    listSaves2();
-                    break;
-                case UnderMenu_ListSavesForExport:
-                    exportSave_listsaves2();
-                    break;
-
-
-                case UnderMenu_ListEditors:
-                    {
-                        RichBoxContent content = new RichBoxContent();
-
-                        content.h1(DssRef.lang.Lobby_Category_Editor, HudLib.TitleColor_Head);
-
-                        content.newLine();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() {
-                            new RbImage(SpriteName.WarsMapIcon, 0.9f),
-                            new RbSpace(),
-                            new RbText(DssRef.lang.Lobby_Editor_MapEditor) }),
-                            new RbAction(openMapEditor), null, !PlatformSettings.STEAM_DEMO));
-
-                        content.newLine();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { 
-                            new RbImage(SpriteName.VoxelEditorColorCube, 0.9f),
-                            new RbSpace(),
-                            new RbText(DssRef.lang.Lobby_Editor_VoxelEditor) }),
-                            new RbAction(voxeleditor), new RbTooltip_Text(DssRef.lang.VoxelEditor_Description), !PlatformSettings.STEAM_DEMO));
-
-                        content.newParagraph();
-                        var playerData = DssRef.storage.localPlayers.First();
-                        listAndEditFlag(content, 1, playerData, true);
-
-                        underMenu.Refresh(content);
-                    }
-                    break;
-
-                case UnderMenu_ListExtra:
-                    {
-                        RichBoxContent content = new RichBoxContent();
-
-                        content.h1(DssRef.lang.Lobby_Category_ExtraModes, HudLib.TitleColor_Head);
-
-                        content.newLine();
-
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Mode_BattleLab) }),
-                            new RbAction(startBattleLab), new RbTooltip_Text(DssRef.lang.Lobby_Mode_BattleLab_Description), !PlatformSettings.STEAM_DEMO));
-
-                        content.newLine();
-
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Mode_Commander) }),
-                            new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text(DssRef.lang.Lobby_Mode_Commander_Description), !PlatformSettings.STEAM_DEMO));
-
-                        content.newLine();
-
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_MusicPlayList) }),
-                            new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListMusic, StackOption.ClearStack),null, !PlatformSettings.STEAM_DEMO));
-
-#if DEBUG
-                        if (Ref.steam.isInitialized)
-                        {
-                            content.newLine();
-                            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Initialize steam stats") }, new RbAction(Ref.steam.stats.initializeAllStatsOnSteam)));
-                            content.newLine();
-                            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Load global steam stats") }, new RbAction(Ref.steam.stats.beginRequestGlobalStats)));
-                        }
-#endif
-
-                        //                    if (Ref.steam.statsInitialized)
-                        //                    {
-                        //                        new GuiTextButton("Initialize steam stats", null, Ref.steam.stats.initializeAllStatsOnSteam, false, layout);
-                        //                        new GuiTextButton("Load global steam stats", null, Ref.steam.stats.beginRequestGlobalStats, false, layout);
-                        //                    }
-
-                        underMenu.Refresh(content);
-                    }
-                    break;
-
-                case UnderMenu_PlayerSetup:
-                    {
-                        RichBoxContent content = new RichBoxContent();
-
-                        //bool startTutorialDisplay = false;
-
-                        var title = content.h1(string.Empty, HudLib.TitleColor_Head);
-                        content.newLine();
-
-                        bool startAvailable = checkAllPlayersHasControls();
-
-                        switch (startGameMode)
-                        {
-                            case StartGameMode.Play:
-                                {
-                                    title.text = PlatformSettings.STEAM_DEMO ? DssRef.lang.LobbyDemoMode_Demo : DssRef.lang.Settings_NewGame;
-
-                                    var start = new ArtButton(RbButtonStyle.Primary,
-                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
-                                      new RbAction(startGame), null, startAvailable);
-                                    content.Add(start);
-                                }
-                                break;
-
-                            case StartGameMode.Tutorial:
-                                {
-                                    title.text = DssRef.lang.Lobby_Tutorial;
-
-                                    var startlong = new ArtButton(RbButtonStyle.Primary,
-                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_LongTutorial) },
-                                      new RbAction1Arg<bool>(startTutorial, false), null, startAvailable);
-                                    content.Add(startlong);
-                                    content.newLine();
-                                    var startshort = new ArtButton(RbButtonStyle.Secondary,
-                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_ShortTutorial) },
-                                      new RbAction1Arg<bool>(startTutorial, true), null, startAvailable);
-                                    //start.fillWidth = false;
-                                    content.Add(startshort);
-                                }
-                                break;
-                            case StartGameMode.BattleTrials:
-                                {
-                                    title.text = DssRef.lang.BattleTrials_Title;
-
-                                    content.newLine();
-                                    var start = new ArtButton(RbButtonStyle.Primary,
-                                          new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
-                                          new RbAction(startTrial), null, startAvailable);
-                                    content.Add(start);
-                                }
-                                break;
-                        }
-
-                        if (!startAvailable)
-                        {
-                            content.newLine();
-                            content.Add(new RbText(DssRef.lang.Lobby_PlayerWithoutInputWarning, HudLib.NotAvailableColor));
-                        }
-
-                        content.newParagraph();
-
-                        playerSetupToMenu(content);
-
-                        const bool ViewMultiplayer = true;
-                        if (ViewMultiplayer)
-                        {
-                            content.newParagraph();
-
-                            DropDownBuilder mpOptions = new DropDownBuilder("local_mp");
-                            {
-                                for (int i = 1; i <= GameStorage.MaxLocalPlayerCount; ++i)
-                                {
-                                    mpOptions.AddOption(i.ToString(), i == DssRef.storage.playerCount, i == 1, new RbAction2Arg<int, bool>(setPlayerCount, i, true), null);
-                                }
-                                mpOptions.injectAfter = new List<AbsRichBoxMember>(2) { new RbSpace() };
-                                HudLib.InfoButton(mpOptions.injectAfter, new RbTooltip_Text(DssRef.lang.Lobby_LocalMultiplayerControllerRequired));
-                                mpOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_LocalMultiplayerEdit, underMenu);
-                            }
-                        }
-
-                        underMenu.Refresh(content);
-
-                    }
-                    break;
-
-                case UnderMenu_ListMusic:
-                    {
-                        
-                        RichBoxContent content = new RichBoxContent();
-
-                        List<Sound.SongData> list = Music.PlayList();
-                        foreach (var m in list)
-                        {
-                            content.newLine();
-                            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { 
-                                new RbImage(SpriteName.MenuPixelIconMusicVol), 
-                                new RbSpace(),
-                                new RbText(m.name) },
-                                new RbAction1Arg<Sound.SongData>(Ref.music.PlaySong, m)));
-                        }
-
-                        content.newParagraph();
-
-                        List<Sound.SongData> other = Music.OtherSongs();
-                        foreach (var m in other)
-                        {
-                            content.newLine();
-                            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
-                                new RbImage(SpriteName.MenuPixelIconMusicVol),
-                                new RbSpace(),
-                                new RbText(m.name) },
-                                new RbAction1Arg<Sound.SongData>(Ref.music.PlaySong, m)));
-                        }
-
-                        underMenu.Refresh(content);
-                    }
-                    break;
-            }
-        }
+      
 
         private void playerSetupToMenu(RichBoxContent content)
         {
@@ -1307,7 +1354,7 @@ namespace VikingEngine.DSSWars
 
                     
                 }
-                listAndEditFlag(content, playerNum, playerData, false);
+                listAndEditProfile(content, playerNum, playerData, false);
                 if (DssRef.storage.playerCount > 1)
                 {
                     content.newLine();
@@ -1326,21 +1373,132 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        void listAndEditFlag(RichBoxContent content, int playerNum, LocalPlayerStorage playerData, bool editor)
+        void listAndEditProfile(RichBoxContent content, int playerNum, LocalPlayerStorage playerData, bool editor)
         {
-            DropDownBuilder flagOptions = new DropDownBuilder("listflags" + playerNum.ToString());
+            DssRef.storage.profileStorage.refreshProfiles();
+
+            DropDownBuilder options = new DropDownBuilder("listprofiles" + playerNum.ToString());
             {
-                for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
+                for (int i = 0; i < DssRef.storage.profileStorage.profiles.Count; ++i)
                 {
-                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == playerData.flagDesignIndex, false, new RbAction2Arg<int, int>(selectProfileLink, playerNum, i), null);
+                    options.AddSubOption(DssRef.storage.profileStorage.profiles[i].RbButton(), i == playerData.profileIndex, false, new RbAction2Arg<int, int>(selectProfileLink, playerNum, i), null);
                 }
-                flagOptions.menuCaption = DssRef.storage.flagStorage.flagDesigns[playerData.flagDesignIndex].RbButton();
+                options.menuCaption = playerData.Profile().RbButton();
+                options.injectAfter = new List<AbsRichBoxMember>() {
+                                    new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction2Arg<int, int>(openProfileEditor, playerNum -1, playerData.profileIndex), new RbTooltip_Text(DssRef.todoLang.Lobby_PlayerProfileEdit))
+                                };
+                options.Build(content, SpriteName.NO_IMAGE, null, underMenu);
+            }
+        }
+        void selectProfileLink(int playerNumber, int profile)
+        {
+            int ix = playerNumber - 1;
+            LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
+
+            //TODO
+            playerData.profileIndex = profile;
+
+            DssRef.storage.checkPlayerDoublettes(ix);
+
+            DssRef.storage.Save(null);
+            refreshSplitScreen();
+
+            underMenu.CloseDropDown();
+        }
+        void openProfileEditor(int playerIndex, int ProfileIx)
+        {
+            DssRef.storage.selectedPlayer = playerIndex;
+            DssRef.storage.profileStorage.selected = ProfileIx;
+            openUnderMenu(UnderMenu_PlayerProfile, StackOption.Stack);
+        }
+
+        void listAndEditCharacter(RichBoxContent content, int profileIx, bool editor)
+        {
+            var profile = DssRef.storage.profileStorage.Selected();
+
+            DropDownBuilder flagOptions = new DropDownBuilder("listcharacters");
+            {
+                for (int i = 0; i < DssRef.storage.characterStorage.profiles.Count; ++i)
+                {
+                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
+                }
+                flagOptions.menuCaption = DssRef.storage.profileStorage.profiles[profileIx].character.RbButton();
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, playerData.flagDesignIndex), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
+                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction(characterCreator), new RbTooltip_Text(DssRef.todoLang.Lobby_CharacterCreationEdit))
                                 };
                 flagOptions.Build(content, SpriteName.NO_IMAGE, null, underMenu);
             }
+        }
+
+        void selectCharacterLink(int charIx)
+        {
+            //LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
+
+            //TODO
+            //playerData.flagDesignIndex = profile;
+
+            //DssRef.storage.checkPlayerDoublettes(ix);
+
+            var profile = DssRef.storage.profileStorage.Selected();
+            {
+                profile.character = DssRef.storage.characterStorage.profiles[charIx];
+            }
+            DssRef.storage.profileStorage.SetSelected(profile);
+
+            DssRef.storage.Save(null);
+            refreshSplitScreen();
+
+            underMenu.CloseDropDown();
+        }
+        void characterCreator()
+        {
+            DssRef.storage.flagStorage.selected = DssRef.storage.profileStorage.Selected().flag.StorageIndex;
+            new StartEditor(-1, false, 2);
+        }
+
+        void listAndEditFlag(RichBoxContent content, LocalPlayerStorage playerData, bool editor)
+        {
+            DropDownBuilder flagOptions = new DropDownBuilder("listflags");
+            {
+                for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
+                {
+                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == playerData.Flag().StorageIndex, false, new RbAction1Arg<int>(selectFlagLink, i), null);
+                }
+                flagOptions.menuCaption = playerData.Flag().RbButton();
+                flagOptions.injectAfter = new List<AbsRichBoxMember>() {
+                                    new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openFlagEditor, playerData.Flag().StorageIndex), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
+                                };
+                flagOptions.Build(content, SpriteName.NO_IMAGE, null, underMenu);
+            }
+        }
+        void selectFlagLink(int flagIx)
+        {
+            //LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
+
+            //TODO
+            //playerData.flagDesignIndex = profile;
+
+            //DssRef.storage.checkPlayerDoublettes(ix);
+
+            var profile = DssRef.storage.profileStorage.profiles[DssRef.storage.profileStorage.selected];
+            {
+                profile.flag = DssRef.storage.flagStorage.flagDesigns[flagIx];
+            }
+            DssRef.storage.profileStorage.profiles[DssRef.storage.profileStorage.selected] = profile;
+
+            DssRef.storage.Save(null);
+            refreshSplitScreen();
+
+            underMenu.CloseDropDown();
+        }
+        void openFlagEditor(int flagIx)
+        {
+            int p = -1;
+            bool bController = Input.XInput.KeyIsDown(Buttons.A, ref p) || Input.XInput.KeyIsDown(Buttons.X, ref p);
+            new StartEditor(flagIx, bController, 0);
         }
 
         //void newGameSettings()
@@ -1402,25 +1560,25 @@ namespace VikingEngine.DSSWars
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_craftMulti, value);
         }
 
-        void gameModeText(GameMode mode, out string caption, out string desc)
+        void gameModeText(GameModeMainType mode, out string caption, out string desc)
         {
             caption = null;
             desc = null;
             switch (mode)
             {
-                case GameMode.FullStory:
+                case GameModeMainType.FullStory:
                     caption = DssRef.lang.Settings_Mode_Story;
                     desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
-                case GameMode.Sandbox:
+                case GameModeMainType.Sandbox:
                     caption = DssRef.lang.Settings_Mode_Sandbox;
                     desc = DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
-                case GameMode.Peaceful:
+                case GameModeMainType.Peaceful:
                     caption = DssRef.lang.Settings_Mode_Peaceful;
                     desc = DssRef.lang.Settings_Mode_Peaceful_Description;
                     break;
-                case GameMode.Spectator:
+                case GameModeMainType.Spectator:
                     caption = DssRef.lang.Settings_Mode_Spectator;
                     desc = DssRef.lang.Settings_Mode_Spectator_Description;
                     break;
@@ -1432,12 +1590,12 @@ namespace VikingEngine.DSSWars
         {
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
             {
-                for (GameMode mode = 0; mode < GameMode.NUM; ++mode)
+                for (GameModeMainType mode = 0; mode < GameModeMainType.NUM; ++mode)
                 {
                     gameModeText(mode, out string caption, out string desc);
 
                     new GuiTextButton(caption, desc,
-                        new GuiAction1Arg<GameMode>(gameModeClick, mode), false, layout);
+                        new GuiAction1Arg<GameModeMainType>(gameModeClick, mode), false, layout);
                 }
             }
             layout.End();
@@ -1840,32 +1998,14 @@ namespace VikingEngine.DSSWars
 
 
 
-        void selectProfileLink(int playerNumber, int profile)
-        {
-            int ix = playerNumber - 1;
-            LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
-            //playerData.inputSource = InputSource.DefaultPC;
-            //DssRef.storage.checkPlayerDoublettes(playerNumber - 1);
-
-            playerData.flagDesignIndex = profile;
-
-            DssRef.storage.checkPlayerDoublettes(ix);
-
-            DssRef.storage.Save(null);
-            refreshSplitScreen();
-
-            underMenu.CloseDropDown();
-        }
+   
 
         void voxeleditor()
         {
             new StartEditor(0, true, 1);
         }
 
-        void characterCreator()
-        {
-            new StartEditor(0, false, 2);
-        }
+       
 
         void mapFileGenerator()
         {
@@ -1873,12 +2013,7 @@ namespace VikingEngine.DSSWars
         }
 
 
-        void openProfileEditor(int ProfileIx)
-        {
-            int p = -1;
-            bool bController = Input.XInput.KeyIsDown(Buttons.A, ref p) || Input.XInput.KeyIsDown(Buttons.X, ref p);
-            new StartEditor(ProfileIx, bController, 0);
-        }
+        
 
         protected override void createDrawManager()
         {

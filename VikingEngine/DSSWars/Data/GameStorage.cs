@@ -37,7 +37,10 @@ namespace VikingEngine.DSSWars.Data
         public bool longerBuildQueue = false;
 
         public LocalPlayerStorage[] localPlayers = null;
+        public int selectedPlayer = 0;
+        public ProfileStorage profileStorage;
         public FlagStorage flagStorage;
+        public CharacterStorage characterStorage;
         public SaveMeta meta = null;
         public float multiplayerGameSpeed = 1;
 
@@ -47,7 +50,10 @@ namespace VikingEngine.DSSWars.Data
         public GameStorage()
         {
             //DssRef.storage = this;
+
             flagStorage = new FlagStorage();
+            characterStorage = new CharacterStorage();
+            profileStorage = new ProfileStorage();
             meta = new SaveMeta();
 
             localPlayers = new LocalPlayerStorage[MaxLocalPlayerCount];
@@ -279,11 +285,14 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
-        public FlagAndColor HostProfile()
+        public PlayerProfile GetHostProfile()
         {
-            return flagStorage.flagDesigns[localPlayers[0].flagDesignIndex];
+            return profileStorage.profiles[localPlayers[0].profileIndex];
         }
-        
+        public void SetHostProfile(PlayerProfile profile)
+        {
+            profileStorage.profiles[localPlayers[0].profileIndex] = profile;
+        }
     }
 
 

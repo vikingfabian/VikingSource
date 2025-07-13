@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars
 
         //26*48*78
 
-        public Graphics.VoxelModel buildModel(FlagAndColor profile, SoldierModelData modelData)
+        public Graphics.VoxelModel buildModel(PlayerProfile profile, SoldierModelData modelData)
         {
             IntVector3 hatOffset = new IntVector3(2, 6, 30);
             VoxelModelName weaponModel;
@@ -229,7 +229,7 @@ namespace VikingEngine.DSSWars
 
             var rightHandItem = DssRef.models.weaponModels[weaponModel];
             
-            var profileColors = profile.GetColorReplaceTable();
+            var profileColors = profile.flag.GetColorReplaceTable();
 
             var legsIdle = leg.Frames[0].GetVoxelArray(legOffSet, profileColors, GridSize);
             for (int frame = 0; frame < 2; frame++)

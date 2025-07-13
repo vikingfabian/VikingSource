@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars
             //this.name = name;
 
             VoxelObjGridDataAnimHD copy = grid.Clone();
-            copy.ReplaceMaterial(faction.flagProfile.GetColorReplaceTable());
+            copy.ReplaceMaterial(faction.player.profile.flag.GetColorReplaceTable());
 
 
             switch (name)
@@ -87,14 +87,14 @@ namespace VikingEngine.DSSWars
             //if (faction.flagProfile.blockColors != null)
             //{
             Span<ushort> blockColors = stackalloc ushort[5];
-            faction.flagProfile.FillBlockColors(blockColors);
+            faction.player.profile.flag.FillBlockColors(blockColors);
             //var blockColors = faction.flagProfile.BlockColors();
             var gridData = grid.Frames[frame];
 
-            var flagLoop = faction.flagProfile.flagDesign.LoopInstance();
+            var flagLoop =  faction.player.profile.flag.flagDesign.LoopInstance();
             while (flagLoop.Next())
             {
-                byte colId = faction.flagProfile.flagDesign.Get(flagLoop.Position);
+                byte colId = faction.player.profile.flag.flagDesign.Get(flagLoop.Position);
                 ushort blockCol = blockColors[colId];
 
                 IntVector3 gridPos = start;

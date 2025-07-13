@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
@@ -67,7 +68,7 @@ namespace VikingEngine.DSSWars.Interface
                     images.Add(screenbg);
 
                     Graphics.ImageAdvanced profileIcon = new ImageAdvanced(SpriteName.NO_IMAGE, area2.Position + Engine.Screen.SmallIconSizeV2, Engine.Screen.SmallIconSizeV2, ImageLayers.Lay6, false);
-                    var profileData = DssRef.storage.flagStorage.flagDesigns[player.flagDesignIndex];
+                    FlagAndColor profileData = player.Flag();//DssRef.storage.flagStorage.flagDesigns[player.flagDesignIndex];
                     profileIcon.Texture = profileData.flagDesign.CreateTexture(profileData);
                     profileIcon.SetFullTextureSource();
                     images.Add(profileIcon);

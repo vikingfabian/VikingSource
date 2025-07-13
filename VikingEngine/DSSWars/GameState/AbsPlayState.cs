@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.GameState
             :base() 
         {
             DssRef.state = this;
-           
+            DssRef.storage.profileStorage.refreshProfiles();
         }
 
         public void stepFrames(int frameCount)

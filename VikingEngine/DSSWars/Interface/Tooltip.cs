@@ -390,13 +390,13 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new RbText(string.Format(DssRef.lang.Hud_StrengthRating, string.Empty)));//"Strength ratings:"));
                     
                     content.newLine();
-                    content.Add(new RbTexture(player.faction.flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RbTexture(player.flagTexture, 1f, 0, 0.2f));
                     
                     content.Add(new RbText(": " + TextLib.OneDecimal(attacker.strengthValue)));//string.Format(HudLib.OneDecimalFormat, attacker.strengthValue)));
                     content.newLine();
                     content.text(DssRef.lang.Hud_Versus);
                     content.newLine();
-                    content.Add(new RbTexture(obj.GetFaction().flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RbTexture(obj.GetFaction().player.flagTexture, 1f, 0, 0.2f));
                     content.Add(new RbText(": " + TextLib.OneDecimal(defender.strengthValue)));
                     content.newLine();
                 }

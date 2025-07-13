@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars
 
 
                         rel.flag = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * 0.6f, HudLib.DiplomacyDisplayLayer + layerAdd, true);
-                        rel.flag.Texture = faction.flagTexture;
+                        rel.flag.Texture = faction.player.flagTexture;
                         rel.flag.SetFullTextureSource();
 
                         rel.bg = new Graphics.Image(SpriteName.WarsRelationFlag, rel.flag.position, rel.flag.size * 2.2f, HudLib.DiplomacyDisplayLayer + 1 + layerAdd, true);

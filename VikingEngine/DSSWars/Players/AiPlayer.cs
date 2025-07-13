@@ -71,8 +71,9 @@ namespace VikingEngine.DSSWars.Players
 
         public AiPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
-        {            
-            faction.flagProfile.gameStartInit();
+        {
+            SetProfile(new Profile.PlayerProfile(faction.factiontype, DssRef.world.metaData));
+            profile.flag.gameStartInit();
 
             switch (faction.factiontype)
             {               
@@ -485,7 +486,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 0.75f;
                     name = DssRef.lang.FactionName_Greenwood;
-                    faction.flagProfile.factionFlavorType = FactionFlavorType.Forest;
+                    profile.flag.factionFlavorType = FactionFlavorType.Forest;
 
                     techSetup();
                     faction.technology.steel.points = TechnologyTemplate.FactionUnlock;
@@ -610,7 +611,7 @@ namespace VikingEngine.DSSWars.Players
             void defaultSetup()
             {
                 var chance = Ref.rnd.Double();
-                if (faction.flagProfile.factionFlavorType == FactionFlavorType.Other)
+                if (profile.flag.factionFlavorType == FactionFlavorType.Other)
                 {
                     chance *= 1.5f;
                 }
@@ -638,7 +639,7 @@ namespace VikingEngine.DSSWars.Players
 
                 if (faction.mainCity != null)
                 {
-                    switch (faction.flagProfile.factionFlavorType)
+                    switch (profile.flag.factionFlavorType)
                     {
                         case FactionFlavorType.Mountain:
 
@@ -684,7 +685,7 @@ namespace VikingEngine.DSSWars.Players
                 faction.technology.blackPowder.points = TechnologyTemplate.SetRandom(
                     faction.technology.blackPowder.points, TechnologyTemplate.BlackPowderUnlock);
 
-                if (faction.flagProfile.factionFlavorType == FactionFlavorType.City)
+                if (profile.flag.factionFlavorType == FactionFlavorType.City)
                 {
                     if (Ref.rnd.Chance(0.8))
                     {
@@ -696,7 +697,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                if (faction.flagProfile.factionFlavorType == FactionFlavorType.Mountain)
+                if (profile.flag.factionFlavorType == FactionFlavorType.Mountain)
                 {
                     if (Ref.rnd.Chance(0.8))
                     {
@@ -717,7 +718,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                if (faction.flagProfile.factionFlavorType == FactionFlavorType.People)
+                if (profile.flag.factionFlavorType == FactionFlavorType.People)
                 {
                     faction.technology.iron.points = 0;
                     faction.technology.steel.points = 0;
@@ -908,7 +909,7 @@ namespace VikingEngine.DSSWars.Players
                 switch (faction.factiontype)
                 {
                     default:
-                        switch (faction.flagProfile.factionFlavorType)
+                        switch (profile.flag.factionFlavorType)
                         {
                             default:
                                 mainArmy = startMainArmy();

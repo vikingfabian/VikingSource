@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars
             Stack<Faction> spectatorFaction = new Stack<Faction>(playerCount);
             if (newGame)
             {
-                if (DssRef.difficulty.setting_gameMode == GameMode.Spectator)
+                if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
                 {
                     for (int i = 0; i < playerCount; ++i)
                     {
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars
                 {
                     Players.LocalPlayer local;
                     Faction startFaction;
-                    if (DssRef.difficulty.setting_gameMode == GameMode.Spectator)
+                    if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
                     {
                         startFaction = spectatorFaction.Pop();
                         local = startFaction.player.GetLocalPlayer();
@@ -838,8 +838,9 @@ namespace VikingEngine.DSSWars
                             w.Write((byte)localPlayers.Count);
                             foreach (var local in localPlayers)
                             {
-                                int flag = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].flagDesignIndex;
-                                DssRef.storage.flagStorage.flagDesigns[flag].write(w);
+                                //TODO
+                                //int flag = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].flagDesignIndex;
+                                //DssRef.storage.flagStorage.flagDesigns[flag].write(w);
                             }
                         }
                     }

@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Data
 
         static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200 };
         public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150 };
-        public static readonly GameMode[] AvailableModes = [GameMode.Sandbox, GameMode.Peaceful, GameMode.Spectator];
+        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
 
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
@@ -43,8 +43,8 @@ namespace VikingEngine.DSSWars.Data
         public float setting_waterMulti = 1;
         public float setting_childMulti = 1;
         public float setting_craftMulti = 1;
-        public const GameMode DefaultMode = GameMode.FullStory;
-        public GameMode setting_gameMode = DefaultMode;
+        public const GameModeMainType DefaultMode = GameModeMainType.FullStory;
+        public GameModeMainType setting_gameMode = DefaultMode;
         public bool runStory = true;
         public bool peaceful = false;
         //public bool toPeacefulCheck = true;
@@ -162,10 +162,10 @@ namespace VikingEngine.DSSWars.Data
             }
             switch (setting_gameMode)
             {
-                case GameMode.Sandbox:
+                case GameModeMainType.Sandbox:
                     result *= 0.75;
                     break;
-                case GameMode.Peaceful:
+                case GameModeMainType.Peaceful:
                     result *= 0.25;
                     break;
             }
@@ -298,16 +298,16 @@ namespace VikingEngine.DSSWars.Data
 
             switch (setting_gameMode)
             {
-                case GameMode.FullStory:
+                case GameModeMainType.FullStory:
                     runStory = true;
                     peaceful = false;
                     break;
-                case GameMode.Sandbox:
-                case GameMode.Spectator:
+                case GameModeMainType.Sandbox:
+                case GameModeMainType.Spectator:
                     runStory = false;
                     peaceful = false;
                     break;
-                case GameMode.Peaceful:
+                case GameModeMainType.Peaceful:
                     runStory = false;
                     peaceful = true;
                     toPeacefulPercentage = 0;
@@ -341,13 +341,13 @@ namespace VikingEngine.DSSWars.Data
                 runStory = r.ReadBoolean();
                 if (!runStory)
                 {
-                    setting_gameMode = GameMode.Sandbox;
+                    setting_gameMode = GameModeMainType.Sandbox;
                 }
             }
             else
             {
                 //NEW
-                setting_gameMode = (GameMode)r.ReadByte();
+                setting_gameMode = (GameModeMainType)r.ReadByte();
                 setting_foodMulti = r.ReadSingle();
                 if (storageversion >= 24)
                 {
@@ -367,7 +367,7 @@ namespace VikingEngine.DSSWars.Data
     }
 
 
-    enum GameMode
+    enum GameModeMainType
     { 
         FullStory,
         Sandbox,

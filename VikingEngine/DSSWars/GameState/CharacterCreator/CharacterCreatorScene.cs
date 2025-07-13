@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Presentation;
@@ -108,11 +109,11 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
         void mainMenu()
         {
-           var profile =  DssRef.storage.HostProfile();
+           var profile = GetProfile();
 
             RichBoxContent content = new RichBoxContent();
             content.h1("Character creator", HudLib.TitleColor_Head);
-
+            content.h2(profile.DisplayName(), HudLib.TitleColor_Name);
             content.newLine();
             listAndEditFlag(content, 1, DssRef.storage.localPlayers.First(), true);
 
@@ -148,23 +149,28 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             
             DropDownBuilder hatGenreDropdown = new DropDownBuilder("hat genre");
             {
-                hatGenreDropdown.AddOption("Follow weapon", profile.character.hatGenre == CharacterHatGenre.FollowWeapon,
+                hatGenreDropdown.AddOption("Follow weapon", profile.hatGenre == CharacterHatGenre.FollowWeapon,
                     true, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.FollowWeapon), null);
-                hatGenreDropdown.AddOption("Follow armor", profile.character.hatGenre == CharacterHatGenre.FollowArmor,
+                hatGenreDropdown.AddOption("Follow armor", profile.hatGenre == CharacterHatGenre.FollowArmor,
                     false, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.FollowArmor), null);
-                hatGenreDropdown.AddOption("Uniform", profile.character.hatGenre == CharacterHatGenre.Uniform,
+                hatGenreDropdown.AddOption("Uniform", profile.hatGenre == CharacterHatGenre.Uniform,
                     false, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.Uniform), null);
             }
             hatGenreDropdown.Build(content, SpriteName.NO_IMAGE, "Hat", menu);
 
-            if (profile.character.hatGenre == CharacterHatGenre.Uniform)
+            if (profile.hatGenre == CharacterHatGenre.Uniform)
             {
                 content.newLine();
                 for (int i = 0; i < 4; i++)
                 {
-                    content.Add(new ArtOption(i == profile.character.hat, new List<AbsRichBoxMember> { new RbText("Hat " + TextLib.IndexToString(i)) },
-                        new RbAction1Arg<int>((int hat) => { 
-                            profile.character.hat = hat; 
+                    content.Add(new ArtOption(i == profile.hat, new List<AbsRichBoxMember> { new RbText("Hat " + TextLib.IndexToString(i)) },
+                        new RbAction1Arg<int>((int hat) => {
+                            var profile = GetProfile();
+                            {
+                                profile.hat = hat;
+                            }
+                            SetProfile(profile);
+
                             soldierPreview.refresh();
                         }, i)));
                 }
@@ -179,9 +185,14 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.newParagraph();
             for (int i = 0; i < 4; i++)
             {
-                content.Add(new ArtOption(i == profile.character.face, new List<AbsRichBoxMember> { new RbText("Face " + TextLib.IndexToString(i)) },
-                    new RbAction1Arg<int>((int face)=> { 
-                        profile.character.face = face;
+                content.Add(new ArtOption(i == profile.face, new List<AbsRichBoxMember> { new RbText("Face " + TextLib.IndexToString(i)) },
+                    new RbAction1Arg<int>((int face)=> {
+                        var profile = GetProfile();
+                        {
+                            profile.face = face;                            
+                        }
+                        SetProfile(profile);
+
                         soldierPreview.refresh();
                     }, i)));
             }
@@ -227,25 +238,25 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             {
                 for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
                 {
-                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == playerData.flagDesignIndex, false, new RbAction2Arg<int, int>(selectProfileLink, playerNum, i), null);
+                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == DssRef.storage.flagStorage.selected, false, new RbAction2Arg<int, int>(selectFlagLink, playerNum, i), null);
                 }
-                flagOptions.menuCaption = DssRef.storage.flagStorage.flagDesigns[playerData.flagDesignIndex].RbButton();
+                flagOptions.menuCaption = playerData.Flag().RbButton();
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, playerData.flagDesignIndex), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
+                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, DssRef.storage.flagStorage.selected), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
                                 };
                 flagOptions.Build(content, SpriteName.NO_IMAGE, null, menu);
             }
         }
 
-        void selectProfileLink(int playerNumber, int profile)
+        void selectFlagLink(int playerNumber, int profile)
         {
             int ix = playerNumber - 1;
             LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
-            //playerData.inputSource = InputSource.DefaultPC;
-            //DssRef.storage.checkPlayerDoublettes(playerNumber - 1);
 
-            playerData.flagDesignIndex = profile;
+            //TODO
+            //playerData.flagDesignIndex = profile;
+            DssRef.storage.flagStorage.selected = profile;
 
             DssRef.storage.checkPlayerDoublettes(ix);
 
@@ -265,14 +276,20 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
         void setHatGenre(CharacterHatGenre genre)
         {
-            DssRef.storage.HostProfile().character.hatGenre = genre;
+
+            var profile = GetProfile();
+            {
+                profile.hatGenre = genre;
+            }
+            SetProfile(profile);
+            
             soldierPreview.refresh();
             menu.CloseDropDown();
         }
 
         void accessoriesPage()
         {
-            var profile = DssRef.storage.HostProfile();
+            var profile = DssRef.storage.GetHostProfile();
 
             RichBoxContent content = new RichBoxContent();
             content.h1("Add accessory", HudLib.TitleColor_Head);
@@ -283,7 +300,11 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 content.Add(new ArtOption(i == profile.character.accessory1, new List<AbsRichBoxMember> { new RbText("Accessory " + TextLib.IndexToString(i)) },
                     new RbAction1Arg<int>((int index)=>{
                         
-                        profile.character.accessory1 = index;
+                        var profile = GetProfile();
+                        {
+                            profile.accessory1 = index;
+                        }
+                        SetProfile(profile);
                         soldierPreview.refresh();
                     }, i)));
             }
@@ -311,6 +332,17 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             return scale;
         }
 
+        public CharacterProfile GetProfile()
+        {
+            //var profile = DssRef.storage.profileStorage.profiles[DssRef.storage.localPlayers[0].profileIndex];
+            //return profile;
+            return DssRef.storage.characterStorage.Selected();
+        }
+        public void SetProfile(CharacterProfile profile)
+        {
+            //DssRef.storage.profileStorage.profiles[DssRef.storage.localPlayers[0].profileIndex] = profile;
+            DssRef.storage.characterStorage.SetSelected(profile);
+        }
         //bool overrideHatProperty(int index, bool set, bool value)
         //{
         //    if (set) { DssRef.storage.HostProfile().character.overrideHat = value; }

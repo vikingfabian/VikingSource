@@ -49,14 +49,14 @@ namespace VikingEngine.DSSWars.Players.Profile
             BlockHD.JointBack = BlockHD.ToBlockValue(new Color(128, 0, 170), BlockHD.ReplaceMaterial); //blue purple
         }
 
-        int index;
+        public int StorageIndex;
         public Color col0_Main;
         public Color col1_Detail1;
         public Color col2_Detail2;
-
+        public Color col5_AltMain;
         public Color col3_Skin;
         public Color col4_Hair;
-        public Color col5_AltMain;
+       
 
         public Color col6_Tunic = Color.LightGreen;
         public Color col7_Pants = Color.Beige;
@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public FlagAndColor(FactionType factiontype, int index, WorldMetaData worldMeta)
         {
-            this.index = index;
+            this.StorageIndex = index;
             
 
             switch (factiontype)
@@ -2776,7 +2776,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public FlagAndColor Clone()
         {
-            FlagAndColor clonedData = new FlagAndColor(FactionType.Player, index, null)
+            FlagAndColor clonedData = new FlagAndColor(FactionType.Player, StorageIndex, null)
             {
                 //colors = this.colors != null ? (Color[])this.colors.Clone() : null,
                 col0_Main = col0_Main,
@@ -2988,7 +2988,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public void Button(GuiLayout layout, IGuiAction action, bool moreArrow)
         {
-            var button = new GuiIconTextButton(SpriteName.MissingImage, string.Format( DssRef.lang.Lobby_FlagNumbered ,index+1),
+            var button = new GuiIconTextButton(SpriteName.MissingImage, string.Format( DssRef.lang.Lobby_FlagNumbered ,StorageIndex+1),
                 null, action, moreArrow, layout);
 
             button.icon.Texture = flagDesign.CreateTexture(this);
@@ -3000,7 +3000,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             List<AbsRichBoxMember> result = new List<AbsRichBoxMember>(2);
             result.Add(new RbTexture(flagDesign.CreateTexture(this)));
             result.Add(new RbSpace());
-            result.Add(new RbText(string.Format(DssRef.lang.Lobby_FlagNumbered, index + 1)));
+            result.Add(new RbText(string.Format(DssRef.lang.Lobby_FlagNumbered, StorageIndex + 1)));
             return result;
         }
 
@@ -3031,8 +3031,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         const int Version = 3;
         public void write(System.IO.BinaryWriter w)
-        {
-            
+        {           
 
             w.Write(Version);
 

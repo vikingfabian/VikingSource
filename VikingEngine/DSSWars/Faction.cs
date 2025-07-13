@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars
     {
         //public int index;
         public Players.AbsPlayer player = null;
-        public FlagAndColor flagProfile;
+        //public FlagAndColor flagProfile;
 
         public GameObject.City mainCity;
         public Vector3 SelectionCenter { get; private set; }
@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars
 
         public SpottedArray<GameObject.City> cities;
 
-        public Texture2D flagTexture;
+       
         public int previousWarAgainstFaction = -1;
         public DiplomaticRelation[] diplomaticRelations = null;
         public DiplomaticSide diplomaticSide = DiplomaticSide.None;
@@ -124,16 +124,8 @@ namespace VikingEngine.DSSWars
         public void initVisuals(WorldMetaData worldMeta)
         {
             worldMeta.setObjSeed(parentArrayIndex);
-            SetProfile(new FlagAndColor(factiontype, -1, worldMeta));
+           //player.SetProfile(new PlayerProfile(factiontype, worldMeta));
         }
-
-        public void SetProfile(FlagAndColor profile)
-        {
-            this.flagProfile = profile;
-            flagTexture = profile.flagDesign.CreateTexture(profile);
-        }
-
-        
 
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
@@ -242,7 +234,8 @@ namespace VikingEngine.DSSWars
         virtual public void writeNet(System.IO.BinaryWriter w)
         {
             w.Write((ushort)factiontype);
-            this.flagProfile.write(w);
+            //player.profile.flag.write(w);
+            player.profile.write(w, true);
 
             writeRelations(w);
 
@@ -257,8 +250,9 @@ namespace VikingEngine.DSSWars
             
 
             factiontype = (FactionType)r.ReadUInt16();
-            FlagAndColor profile = new FlagAndColor(r);
-            SetProfile(profile);
+            player.profile.read(r);
+            //FlagAndColor profile = new FlagAndColor(r);
+            //SetProfile(profile);
 
             readRelations(r, int.MaxValue);
 
@@ -315,7 +309,7 @@ namespace VikingEngine.DSSWars
         void onNewOwner()
         {
             if (!textureLoaded)
-                FlagTexture.ColorAndAlpha = flagProfile.col0_Main.ToVector4();
+                FlagTexture.ColorAndAlpha = player.profile.flag.col0_Main.ToVector4();
 
             var citiesC = cities.counter();
             while (citiesC.Next())
@@ -1088,7 +1082,7 @@ namespace VikingEngine.DSSWars
 
         public RbTexture FlagTextureToHud()
         {
-            return new RbTexture(flagTexture, 1f, 0, 0.2f);
+            return new RbTexture(player.flagTexture, 1f, 0, 0.2f);
         }
         Color tempColor = FlagAndColor.AiColorRange.GetRandom();
 
@@ -1096,7 +1090,7 @@ namespace VikingEngine.DSSWars
         {
                 if (player == null)
                     return tempColor;
-                return player.faction.flagProfile.col0_Main;
+                return player.profile.flag.col0_Main;
             
         }
 

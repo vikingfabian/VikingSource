@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.Event
         {
             if (newGame)
             {
-                if (DssRef.difficulty.setting_gameMode != GameMode.Spectator)
+                if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
                     addStoryEvent(new List<AbsStoryEvent>
                     {
@@ -579,7 +579,7 @@ namespace VikingEngine.DSSWars.Event
 
         public void onPlayerDeath()
         {
-            if (DssRef.difficulty.setting_gameMode != GameMode.Spectator)
+            if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
                 foreach (var p in DssRef.state.localPlayers)
                 {

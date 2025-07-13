@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars
                 {
                     try
                     {
-                        if (flagProfile == null)
+                        if (player.profile.flag == null)
                         {
                             return;
                         }
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars
 
                             if (process)
                             {
-                                var model = new CharacterModelBuilder().buildModel(this.flagProfile, modelData);
+                                var model = new CharacterModelBuilder().buildModel(player.profile, modelData);
                                 lock (models_loaded)
                                 {
                                     if (!models_loaded.ContainsKey(id))

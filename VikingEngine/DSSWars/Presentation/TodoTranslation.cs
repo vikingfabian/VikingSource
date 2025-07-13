@@ -12,7 +12,13 @@ namespace VikingEngine.DSSWars.Presentation
     {
         //Option language
 
-        
+
+        public string HUD_DisplayName => "Display name";
+        public string Lobby_PlayerProfileNumbered => "Profile {0}";
+        public string Lobby_CharacterCreationNumbered => "Character {0}";
+        public string Lobby_PlayerProfileEdit => "Edit player profile";
+
+        public string Lobby_CharacterCreationEdit => "Open character creator";
 
     }
 
