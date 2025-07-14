@@ -54,6 +54,7 @@ namespace VikingEngine.DSSWars.Map
         public byte bits_renderStateB = Culling.NoRender;
         public bool hasTileInRender = false;
 
+        public int subtileVisualEdits = 0;
         //public bool inRender = false;
 
         public bool OutOfRenderTimeOut()

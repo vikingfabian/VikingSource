@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars
             float volumeCurve = 1f + (float)(Math.Sin(volumeCurveTime) * 0.3);
 
             float goalFade;
-            var detailLayer = Map.MapDetailLayerManager.CameraIndexToView[0];
+            var detailLayer = Map.MapLayerManager.CameraIndexToView[0];
             switch (detailLayer.current.type)
             {
                 case Map.MapDetailLayerType.UnitDetail1:

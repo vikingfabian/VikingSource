@@ -45,9 +45,11 @@ namespace VikingEngine.DSSWars.Players
         public GameControls gameControls;
         
 
-        public MapDetailLayerManager drawUnitsView;
-        public bool bUnitDetailLayer_buffer;
-        public bool bUnitDetailLayer;
+        public MapLayerManager mapLayersManager;
+        //public bool bUnitDetailLayer_buffer;
+        //public bool bUpdateDetailLayer;
+
+        
 
         public Rectangle2 cullingTileArea = Rectangle2.ZeroOne;
         
@@ -203,7 +205,7 @@ namespace VikingEngine.DSSWars.Players
             new GameHud(this, numPlayers);
 
             Ref.draw.AddPlayerScreen(playerData);
-            drawUnitsView = new MapDetailLayerManager(playerData);
+            mapLayersManager = new MapLayerManager(playerData);
             InitTutorial(newGame);
 
             //new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", playerindex);
@@ -780,7 +782,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            drawUnitsView.Update();
+            mapLayersManager.Update();
             playerData.view.Camera.RecalculateMatrices();
             
 
@@ -950,7 +952,7 @@ namespace VikingEngine.DSSWars.Players
         void updateMapOverlays()
         {
             
-            if (drawUnitsView.current.DrawFar)
+            if (mapLayersManager.current.DrawFar)
             {
                 if (gameControls.diplomacy == null)
                 {
@@ -968,7 +970,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            if (drawUnitsView.current.DrawMid)
+            if (mapLayersManager.current.DrawMid)
             {
                 if (cityTagMap == null)
                 { 

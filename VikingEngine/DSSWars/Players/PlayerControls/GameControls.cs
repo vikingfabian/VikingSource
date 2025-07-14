@@ -478,7 +478,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void updateMapShortCuts()
         {
-            if (player.drawUnitsView.current.DrawDetailLayer)
+            if (player.mapLayersManager.current.DrawDetailLayer)
             {
                 if (input.Build.DownEvent && map.hover.subTile.city.faction == player.faction)
                 {
@@ -904,7 +904,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 map.selection.obj != null &&
                 map.selection.obj.gameobjectType() == GameObjectType.City &&
                 build.buildMode != SelectTileResult.None &&
-                (!includeZoomLevel || player.drawUnitsView.current.DrawDetailLayer);
+                (!includeZoomLevel || player.mapLayersManager.current.DrawDetailLayer);
         }
     }
 

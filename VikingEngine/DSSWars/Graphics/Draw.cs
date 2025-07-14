@@ -77,12 +77,11 @@ namespace VikingEngine.DSSWars
 
             for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
             {
-                DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = false;
+                //DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = false;
                 Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
-                //p.view.Viewport
-                //p.view.Camera.RecalculateMatrices();
+                
 
-                Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
+                Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
                 if (drawUnits.prevLayer != null)
                 {
                     hasFadingLayer = true;
@@ -102,7 +101,7 @@ namespace VikingEngine.DSSWars
                 {
                     EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
 
-                    Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
+                    Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
                     if (drawUnits.prevLayer != null)
                     {
                         drawDetailLayer(cameraIndex, drawUnits.prevLayer);
@@ -116,7 +115,7 @@ namespace VikingEngine.DSSWars
             for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
             {
                 EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
-                Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
+                Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
 
                 drawDetailLayer(cameraIndex, drawUnits.current);
             }
@@ -127,7 +126,7 @@ namespace VikingEngine.DSSWars
                 
                 for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
                 {
-                    Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
+                    Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
                     if (drawUnits.prevLayer != null)
                     {
                         Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
@@ -143,17 +142,17 @@ namespace VikingEngine.DSSWars
             }
 
 
-            for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
-            {
-                DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer = DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer;
-            }
+            //for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
+            //{
+            //    DssRef.state.localPlayers[cameraIndex].bUpdateDetailLayer = DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer;
+            //}
 
             
             graphicsDeviceManager.GraphicsDevice.Viewport = saveView;
             Draw2d(0);
         }
 
-        void drawDetailLayer(int cameraIndex, Map.DetailLayer lay)
+        void drawDetailLayer(int cameraIndex, Map.MapLayer lay)
         {
             Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
             Camera = p.view.Camera;
@@ -162,13 +161,13 @@ namespace VikingEngine.DSSWars
             switch (lay.type)
             {
                 case Map.MapDetailLayerType.UnitDetail1:
-                    //DebugExtensions.TimeMeasure time = new DebugExtensions.TimeMeasure();
-                    DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
+                    
+                    //DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
 
                    
                     DrawGenerated(UnitDetailLayer, cameraIndex);
                     DssRef.state.detailMap.updateAndDraw(cameraIndex);
-                   drawBatch.RemoveAndDraw(cameraIndex);
+                    drawBatch.RemoveAndDraw(cameraIndex);
 
                     Draw3d(UnitDetailLayer, cameraIndex);
                     Engine.ParticleHandler.Draw(p.view.Camera);

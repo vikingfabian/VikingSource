@@ -1,9 +1,11 @@
 ﻿UPDATE
 -Change Log-
-* added mines to work tab
-* build category tooltip
-* fixed the broken timeout
-* fixed: updating mouse/keys in runtime dont work
+* Optimized map generating:
+1. is tracking changes now
+2. does block map generation during layer fade out
+3. limited how many tiles that can be removed per frame
+4. soldier generate has a light break on it
+5. the render tile radius is shrunk by 2 (however that gives some edge flicker on zoom out) 
 
 Voxel editor: 
 *
