@@ -73,8 +73,7 @@ namespace VikingEngine.DSSWars.Players
             : base(faction, newGame)
         {
             SetProfile(new Profile.PlayerProfile(faction.factiontype, DssRef.world.metaData));
-            profile.flag.gameStartInit();
-
+       
             switch (faction.factiontype)
             {               
                 case FactionType.Starshield:

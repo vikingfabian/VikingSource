@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Players.Profile
     {
         public List<FlagAndColor> flagDesigns;
 
-        public int selected;
+        public int selectedIx;
 
         public FlagStorage()
         {
@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public FlagAndColor Selected()
         {
-            return flagDesigns[selected];
+            return flagDesigns[selectedIx];
         }
 
         public void Load()

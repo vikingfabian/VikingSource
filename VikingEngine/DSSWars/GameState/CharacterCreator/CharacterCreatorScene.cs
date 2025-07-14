@@ -113,7 +113,8 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             RichBoxContent content = new RichBoxContent();
             content.h1("Character creator", HudLib.TitleColor_Head);
-            content.h2(profile.DisplayName(), HudLib.TitleColor_Name);
+            //content.h2(profile.DisplayName(), HudLib.TitleColor_Name);
+            listAndEditCharacter(content);
             content.newLine();
             listAndEditFlag(content, 1, DssRef.storage.localPlayers.First(), true);
 
@@ -171,7 +172,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                             }
                             SetProfile(profile);
 
-                            soldierPreview.refresh();
+                            refreshPreview();
                         }, i)));
                 }
                 content.newLine();
@@ -193,7 +194,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         }
                         SetProfile(profile);
 
-                        soldierPreview.refresh();
+                        refreshPreview();
                     }, i)));
             }
             content.newLine();
@@ -238,12 +239,12 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             {
                 for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
                 {
-                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == DssRef.storage.flagStorage.selected, false, new RbAction2Arg<int, int>(selectFlagLink, playerNum, i), null);
+                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == DssRef.storage.flagStorage.selectedIx, false, new RbAction2Arg<int, int>(selectFlagLink, playerNum, i), null);
                 }
                 flagOptions.menuCaption = playerData.Flag().RbButton();
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, DssRef.storage.flagStorage.selected), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
+                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, DssRef.storage.flagStorage.selectedIx), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
                                 };
                 flagOptions.Build(content, SpriteName.NO_IMAGE, null, menu);
             }
@@ -256,7 +257,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             //TODO
             //playerData.flagDesignIndex = profile;
-            DssRef.storage.flagStorage.selected = profile;
+            DssRef.storage.flagStorage.selectedIx = profile;
 
             DssRef.storage.checkPlayerDoublettes(ix);
 
@@ -264,6 +265,36 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             //refreshSplitScreen();
 
             //underMenu.CloseDropDown();
+            refreshPreview();
+        }
+
+        void listAndEditCharacter(RichBoxContent content)
+        {
+            DropDownBuilder flagOptions = new DropDownBuilder("listcharacters");
+            {
+                for (int i = 0; i < DssRef.storage.characterStorage.profiles.Count; ++i)
+                {
+                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, false), i == DssRef.storage.characterStorage.selectedIx, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
+                }
+                flagOptions.menuCaption = DssRef.storage.characterStorage.Selected().RbButton(DssRef.storage.flagStorage.selectedIx, false);
+                
+                flagOptions.Build(content, SpriteName.NO_IMAGE, null, menu);
+            }
+        }
+
+        void selectCharacterLink(int charIx)
+        {
+            DssRef.storage.characterStorage.selectedIx = charIx;
+           
+            DssRef.storage.Save(null);
+            soldierPreview.refresh();
+        }
+
+        void refreshPreview()
+        {
+            soldierPreview.characterIndex = DssRef.storage.characterStorage.selectedIx;
+            soldierPreview.flagIndex = DssRef.storage.flagStorage.selectedIx;
+
             soldierPreview.refresh();
         }
 
@@ -283,7 +314,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             }
             SetProfile(profile);
             
-            soldierPreview.refresh();
+            refreshPreview();
             menu.CloseDropDown();
         }
 
@@ -305,7 +336,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                             profile.accessory1 = index;
                         }
                         SetProfile(profile);
-                        soldierPreview.refresh();
+                        refreshPreview();
                     }, i)));
             }
             content.newLine();

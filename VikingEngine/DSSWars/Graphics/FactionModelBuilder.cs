@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars
         {
             //if (faction.flagProfile.blockColors != null)
             //{
-            Span<ushort> blockColors = stackalloc ushort[5];
+            Span<ushort> blockColors = stackalloc ushort[9];
             faction.player.profile.flag.FillBlockColors(blockColors);
             //var blockColors = faction.flagProfile.BlockColors();
             var gridData = grid.Frames[frame];

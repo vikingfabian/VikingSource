@@ -21,12 +21,13 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         CharacterPreviewType previewType;
         VectorRect area;
 
-        int flagIndex;
-        int characterIndex;
+        public int flagIndex;
+        public int characterIndex;
         bool mouseDown = false;
         public CharacterPreview(VectorRect screenArea, CharacterPreviewType previewType) 
         {
-            characterIndex = DssRef.storage.characterStorage.selected;
+            characterIndex = DssRef.storage.characterStorage.selectedIx;
+            this.flagIndex = DssRef.storage.flagStorage.selectedIx;
             this.previewType = previewType;
             screenArea.Round();
             this.area = screenArea;
@@ -39,12 +40,13 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         public CharacterPreview(int characterIndex, int flagIndex, Vector2 size)
         {
             this.characterIndex = characterIndex;
+            this.flagIndex = flagIndex;
             this.previewType = CharacterPreviewType.Soldier;
             size.Round();
             Init(size, false);
             target.ClearColor = Color.Black;
             target.ClearColor.A =10;
-            camera.CurrentZoom *= 0.4f;
+            camera.CurrentZoom *= 0.5f;
         }
 
         public void Init(Vector2 size, bool toRender)

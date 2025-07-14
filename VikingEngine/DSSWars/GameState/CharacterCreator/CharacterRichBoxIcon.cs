@@ -15,21 +15,31 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
     {
         CharacterPreview preview;
         int characterIndex;
-        public CharacterRichBoxIcon(int characterIndex)
+        int flagIndex;
+        bool rotating;
+        public CharacterRichBoxIcon(int characterIndex, int flagIndex, bool rotating)
             : base(null)
         {
+            this.rotating = rotating;
             this.characterIndex = characterIndex;
+            this.flagIndex = flagIndex;
         }
 
         public override void Create(RichBoxGroup group)
         {
-            preview = new CharacterPreview(new Vector2(64));
+            preview = new CharacterPreview(characterIndex, flagIndex, new Vector2(64));
             this.tex = preview.Texture();
-            //preview.update();
 
             base.Create(group);
 
-            new CharacterIconUpdater(pointer, preview);
+            if (rotating)
+            {
+                new CharacterIconUpdater(pointer, preview);
+            }
+            else
+            {
+                preview.rotationUpdate();
+            }
         }
     }
 
@@ -46,11 +56,6 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         public override void Time_Update(float time_ms)
         {
             preview.rotationUpdate();
-
-            //if (!pointer.InRenderList)
-            //{
-            //    DeleteMe();
-            //}
         }
     }
 }

@@ -181,7 +181,6 @@ namespace VikingEngine.DSSWars.Players
 
             inputConnected = input.Connected;
 
-            profile.flag.gameStartInit();
             faction.displayInFullOverview = true;
 
             playerData = Engine.XGuide.GetPlayer(playerindex);

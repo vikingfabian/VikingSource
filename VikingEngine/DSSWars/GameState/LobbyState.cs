@@ -39,6 +39,7 @@ using VikingEngine.PJ.CarBall;
 using VikingEngine.PJ.Strategy;
 using VikingEngine.Sound;
 using VikingEngine.Timer;
+using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars
 {
@@ -96,6 +97,7 @@ namespace VikingEngine.DSSWars
         public LobbyState(bool startLoadingMap = true)
             : base()
         {
+            DssRef.storage.profileStorage.refreshProfiles();
             HudLib.Init();
             Ref.isPaused = false;
             Engine.Screen.SetupSplitScreen(1, true);
@@ -337,6 +339,8 @@ namespace VikingEngine.DSSWars
                 case UnderMenu_PlayerProfile:
                     {
                         var profile = DssRef.storage.profileStorage.Selected();
+                        DssRef.storage.flagStorage.selectedIx = profile.flag.StorageIndex;
+                        DssRef.storage.characterStorage.selectedIx = profile.character.StorageIndex;
 
                         RichBoxContent content = new RichBoxContent();
                         HudLib.returnButton(content, underMenu, true, null);
@@ -1421,9 +1425,9 @@ namespace VikingEngine.DSSWars
             {
                 for (int i = 0; i < DssRef.storage.characterStorage.profiles.Count; ++i)
                 {
-                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
+                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, true), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
                 }
-                flagOptions.menuCaption = DssRef.storage.profileStorage.profiles[profileIx].character.RbButton();
+                flagOptions.menuCaption = DssRef.storage.profileStorage.profiles[profileIx].character.RbButton(DssRef.storage.flagStorage.selectedIx, true);
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                                         new RbImage(SpriteName.EditorToolPencil) }, new RbAction(characterCreator), new RbTooltip_Text(DssRef.todoLang.Lobby_CharacterCreationEdit))
@@ -1444,6 +1448,7 @@ namespace VikingEngine.DSSWars
             var profile = DssRef.storage.profileStorage.Selected();
             {
                 profile.character = DssRef.storage.characterStorage.profiles[charIx];
+                DssRef.storage.characterStorage.selectedIx = charIx;
             }
             DssRef.storage.profileStorage.SetSelected(profile);
 
@@ -1454,7 +1459,7 @@ namespace VikingEngine.DSSWars
         }
         void characterCreator()
         {
-            DssRef.storage.flagStorage.selected = DssRef.storage.profileStorage.Selected().flag.StorageIndex;
+            DssRef.storage.flagStorage.selectedIx = DssRef.storage.profileStorage.Selected().flag.StorageIndex;
             new StartEditor(-1, false, 2);
         }
 
@@ -1464,12 +1469,12 @@ namespace VikingEngine.DSSWars
             {
                 for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
                 {
-                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == playerData.Flag().StorageIndex, false, new RbAction1Arg<int>(selectFlagLink, i), null);
+                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == DssRef.storage.flagStorage.selectedIx/*playerData.Flag().StorageIndex*/, false, new RbAction1Arg<int>(selectFlagLink, i), null);
                 }
                 flagOptions.menuCaption = playerData.Flag().RbButton();
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openFlagEditor, playerData.Flag().StorageIndex), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
+                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openFlagEditor, DssRef.storage.flagStorage.selectedIx/*playerData.Flag().StorageIndex*/), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
                                 };
                 flagOptions.Build(content, SpriteName.NO_IMAGE, null, underMenu);
             }
@@ -1485,6 +1490,7 @@ namespace VikingEngine.DSSWars
 
             var profile = DssRef.storage.profileStorage.profiles[DssRef.storage.profileStorage.selected];
             {
+                DssRef.storage.flagStorage.selectedIx = flagIx;
                 profile.flag = DssRef.storage.flagStorage.flagDesigns[flagIx];
             }
             DssRef.storage.profileStorage.profiles[DssRef.storage.profileStorage.selected] = profile;

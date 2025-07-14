@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Players.Profile
     {
         //const int ReservedProfilesCount = 1;
         public List<CharacterProfile> profiles;
-        public int selected = 0;
+        public int selectedIx = 0;
 
         public CharacterStorage()
         {
@@ -26,11 +26,11 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public CharacterProfile Selected()
         {
-            return profiles[selected];
+            return profiles[selectedIx];
         }
         public void SetSelected(CharacterProfile profile)
         {
-            profiles[selected] = profile;
+            profiles[selectedIx] = profile;
         }
 
         public void Load()

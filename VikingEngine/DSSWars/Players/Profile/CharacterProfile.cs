@@ -45,11 +45,11 @@ namespace VikingEngine.DSSWars.Players.Profile
             return string.Format(DssRef.todoLang.Lobby_CharacterCreationNumbered, TextLib.IndexToString(StorageIndex));
         }
 
-        public List<AbsRichBoxMember> RbButton()
+        public List<AbsRichBoxMember> RbButton(int flagIndex, bool rotating)
         {
             List<AbsRichBoxMember> result = new List<AbsRichBoxMember>(2);
             //result.Add(new RbTexture(flag.flagDesign.CreateTexture(flag)));
-            result.Add(new CharacterRichBoxIcon(StorageIndex));
+            result.Add(new CharacterRichBoxIcon(StorageIndex, flagIndex, rotating));
             result.Add(new RbSpace());
             result.Add(new RbText(string.Format(DssRef.todoLang.Lobby_CharacterCreationNumbered, StorageIndex + 1)));
             return result;
