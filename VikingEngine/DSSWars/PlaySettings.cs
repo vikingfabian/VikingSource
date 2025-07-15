@@ -35,6 +35,7 @@ namespace VikingEngine.DSSWars
 
         public PlayStateType playType = PlayStateType.Play;
 
+        public List<string> returnFromEditorMenuStack = null;
         //public bool AiDelay = true;
 
         public PlaySettings() 

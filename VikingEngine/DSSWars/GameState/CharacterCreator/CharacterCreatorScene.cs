@@ -6,11 +6,14 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
@@ -30,13 +33,15 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         const float DefaultIconScale = 0.8f;
 
         const string Page_Accessory = "accessories";
-        public RichMenu menu;
+        public RichMenu menu, optMenu;
         CharacterPreview soldierPreview, animalPreview;
+
+
         public CharacterCreatorScene() 
             :base()
         {
             openMenu();
-            mainMenu();
+            
 
             new Interface.EditorBackground();
 
@@ -49,12 +54,15 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             previewArea.nextAreaX(1, Engine.Screen.IconSize);
             animalPreview = new CharacterPreview(previewArea, CharacterPreviewType.RideAnimal);
+
+            openOptionsMenu();
         }
 
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
             bool mouseOver = false;
+
             menu.updateMouseInput(ref mouseOver);
 
             if (menu.needRefresh)
@@ -62,6 +70,15 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 refreshPage();
                 menu.needRefresh = false;
             }
+
+            optMenu.updateMouseInput(ref mouseOver);
+
+            if (optMenu.needRefresh)
+            {
+                displayOptionsPage();
+                optMenu.needRefresh = false;
+            }
+
 
             soldierPreview.update();
             animalPreview.update();
@@ -91,9 +108,25 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 var bgTex = menu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
 
                 bgTex.SetColor(ColorExt.GrayScale(0.9f));
+                mainMenu();
 
+                
             }
         }
+
+        void openOptionsMenu()
+        {
+            //OPTIONS MENU
+            var optionsMenuArea = Screen.SafeArea;
+            optionsMenuArea.AddToLeftSide(-menu.backgroundArea.Width);
+            optionsMenuArea.AddWidth(-Engine.Screen.IconSize * 2f);
+
+            optMenu = new RichMenu(HudLib.RbSettings, optionsMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, XGuide.LocalHost);
+            displayOptionsPage();
+            optMenu.updateHeightFromContent();
+            optMenu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
+        }
+
         public void Refresh(RichBoxContent content)
         {
             //openMenu();
@@ -104,8 +137,29 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         int bodyOption = 0;
         float scale = 1f;
         CharacterCreatorTab tab = 0;
-        
-        // int faceOption = 0;
+
+        void displayOptionsPage()
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.h1("Diplay options", HudLib.TitleColor_Head);
+
+            content.newLine();
+            var weapons = ConscriptMenu.AllHandWeapons();
+            foreach (var wepArray in weapons)
+            {
+                foreach (var weapon in wepArray)
+                {         
+                    var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
+                        {
+                            new RbImage(ResourceLib.Icon(weapon))
+                        },
+                    new RbAction1Arg<ItemResourceType>((ItemResourceType weapon)=> { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, SoundLib.menu)
+                    );
+                    content.Add(button);
+                }
+            }
+            optMenu.Refresh(content);
+        }
 
         void mainMenu()
         {
@@ -113,7 +167,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             RichBoxContent content = new RichBoxContent();
             content.h1("Character creator", HudLib.TitleColor_Head);
-            //content.h2(profile.DisplayName(), HudLib.TitleColor_Name);
+            
             listAndEditCharacter(content);
             content.newLine();
             listAndEditFlag(content, 1, DssRef.storage.localPlayers.First(), true);
@@ -241,7 +295,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 {
                     flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == DssRef.storage.flagStorage.selectedIx, false, new RbAction2Arg<int, int>(selectFlagLink, playerNum, i), null);
                 }
-                flagOptions.menuCaption = playerData.Flag().RbButton();
+                flagOptions.menuCaption = DssRef.storage.flagStorage.Selected().RbButton();
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                                         new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openProfileEditor, DssRef.storage.flagStorage.selectedIx), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))

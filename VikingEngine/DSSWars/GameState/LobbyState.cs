@@ -136,10 +136,11 @@ namespace VikingEngine.DSSWars
                 Ref.lobby.startSearchLobbies(true);
             }
             createMenuLayout();
+            RestoreMenuStack();
 
 #if DEBUG
             //new TimedAction0ArgTrigger(collectReports, 600);
-            
+
 #endif
         }
         void refreshUnderMenu()
@@ -184,6 +185,9 @@ namespace VikingEngine.DSSWars
 
                 case UnderMenu_ListEditors:
                     {
+                        var playerData = DssRef.storage.localPlayers.First();
+                        DssRef.storage.profileStorage.selected = playerData.profileIndex;
+
                         RichBoxContent content = new RichBoxContent();
 
                         content.h1(DssRef.lang.Lobby_Category_Editor, HudLib.TitleColor_Head);
@@ -203,8 +207,15 @@ namespace VikingEngine.DSSWars
                             new RbAction(voxeleditor), new RbTooltip_Text(DssRef.lang.VoxelEditor_Description), !PlatformSettings.STEAM_DEMO));
 
                         content.newParagraph();
-                        var playerData = DssRef.storage.localPlayers.First();
-                        //listAndEditFlag(content, 1, playerData, true);
+
+                        
+                        //listAndEditProfile(content, 1, playerData, true);
+                                                
+                        //content.newLine();
+                        listAndEditFlag(content, playerData, true);
+
+                        content.newLine();
+                        listAndEditCharacter(content, 0, true);
 
                         underMenu.Refresh(content);
                     }
@@ -650,6 +661,8 @@ namespace VikingEngine.DSSWars
             }
 
             content.Button("crash", new RbAction(testCrash), null, true);
+            //content.newLine();
+            content.Button("Character creator", new RbAction(characterCreator), null, true);
 
 #endif
 
@@ -785,8 +798,7 @@ namespace VikingEngine.DSSWars
                 btn.fillWidth = true;
                 content.Add(btn);
             }
-            content.newLine();
-            content.Button("Character creator prototype", new RbAction(characterCreator), null, true);
+           
 #endif
             content.newParagraph();
             {
@@ -1429,8 +1441,9 @@ namespace VikingEngine.DSSWars
                 }
                 flagOptions.menuCaption = DssRef.storage.profileStorage.profiles[profileIx].character.RbButton(DssRef.storage.flagStorage.selectedIx, true);
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
-                                    new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction(characterCreator), new RbTooltip_Text(DssRef.todoLang.Lobby_CharacterCreationEdit))
+                                    new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary,
+                                     HudLib.AddLockOnDemo(new List<AbsRichBoxMember> {
+                                        new RbImage(SpriteName.EditorToolPencil) }), new RbAction(characterCreator), new RbTooltip_Text(DssRef.todoLang.Lobby_CharacterCreationEdit), !PlatformSettings.STEAM_DEMO)
                                 };
                 flagOptions.Build(content, SpriteName.NO_IMAGE, null, underMenu);
             }
@@ -1459,6 +1472,8 @@ namespace VikingEngine.DSSWars
         }
         void characterCreator()
         {
+            storeMenuStack();
+
             DssRef.storage.flagStorage.selectedIx = DssRef.storage.profileStorage.Selected().flag.StorageIndex;
             new StartEditor(-1, false, 2);
         }
@@ -1502,11 +1517,38 @@ namespace VikingEngine.DSSWars
         }
         void openFlagEditor(int flagIx)
         {
+            storeMenuStack();
+
             int p = -1;
             bool bController = Input.XInput.KeyIsDown(Buttons.A, ref p) || Input.XInput.KeyIsDown(Buttons.X, ref p);
             new StartEditor(flagIx, bController, 0);
         }
 
+        void storeMenuStack()
+        {
+            if (DssRef.settings == null)
+            {
+                new PlaySettings();
+            }
+
+            if (underMenu != null)
+            {
+                DssRef.settings.returnFromEditorMenuStack = underMenu.menuStack;
+            }
+        }
+        public void RestoreMenuStack()
+        {
+            if (DssRef.settings != null)
+            {
+                if (DssRef.settings.returnFromEditorMenuStack != null)
+                {
+                    openUnderMenu(string.Empty, StackOption.Stack);
+                    underMenu.menuStack = DssRef.settings.returnFromEditorMenuStack;
+                    refreshUnderMenu();
+                }
+                DssRef.settings.returnFromEditorMenuStack = null;
+            }
+        }
         //void newGameSettings()
         //{
         //    var mapSizes = new List<GuiOption<MapSize>>((int)MapSize.NUM);
@@ -2008,6 +2050,8 @@ namespace VikingEngine.DSSWars
 
         void voxeleditor()
         {
+            storeMenuStack();
+
             new StartEditor(0, true, 1);
         }
 

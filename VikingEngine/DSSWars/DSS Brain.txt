@@ -1,7 +1,10 @@
 ﻿UPDATE
 -Change Log-
 * Added player profiles, and its editor
+* Editors return to the right lobby menu stack
 
+x display name
+x weapon placements
 
 Voxel editor: 
 *

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.ToggEngine;
 using VikingEngine.Voxels;
@@ -24,6 +25,9 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         public int flagIndex;
         public int characterIndex;
         bool mouseDown = false;
+
+        public SoldierModelData soldierModelData = new SoldierModelData(ArmorLevel.None, Resource.ItemResourceType.Sword, Conscript.SpecializationType.None, VisualExperience.Experienced, 0, 0);
+
         public CharacterPreview(VectorRect screenArea, CharacterPreviewType previewType) 
         {
             characterIndex = DssRef.storage.characterStorage.selectedIx;
@@ -77,7 +81,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 case CharacterPreviewType.Soldier:
                     zoom = 140;
                     return characterModelBuilder.buildModel(new Players.Profile.PlayerProfile(characterIndex, flagIndex),
-                    new SoldierModelData(ArmorLevel.None, Resource.ItemResourceType.Sword, Conscript.SpecializationType.None, VisualExperience.Experienced, 0, 0));
+                    soldierModelData);
 
                 case CharacterPreviewType.RideAnimal:
                     zoom = 80;

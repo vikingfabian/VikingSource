@@ -87,6 +87,16 @@ namespace VikingEngine.DSSWars.Conscript
                 CannonWeapons,
             };
         }
+        public static List<ItemResourceType[]> AllHandWeapons()
+        {
+            return new List<ItemResourceType[]>
+            {
+                SoldierWeapons,
+                ArcherWeapons,
+                NobelWeapons,
+                GunWeapons,
+            };
+        }
 
         City city;
         LocalPlayer player;
