@@ -564,7 +564,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         }
         void toggleLayerAnimated(int layer)
         {
-            lib.Invert(ref designer.voxelProject.layers.list[layer].animatedLayer);
+            designer.voxelProject.toggleLayerAnimated(layer);//lib.Invert(ref designer.voxelProject.layers.list[layer].animatedLayer);
             designer.updateVoxelObj();
         }
 

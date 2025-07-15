@@ -158,6 +158,61 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                     content.Add(button);
                 }
             }
+
+            content.newLine();
+            for (ArmorLevel armorLevel = 0; armorLevel < ArmorLevel.NUM; armorLevel++)
+            {
+                SpriteName armorIcon;
+                switch (armorLevel)
+                {
+                    default://case ArmorLevel.None:
+                        armorIcon = CityTag.NoBackSprite;
+                        break;
+                    case ArmorLevel.Leather:
+                        armorIcon = SpriteName.WarsResource_PaddedArmor;
+                        break;
+                    case ArmorLevel.Iron:
+                        armorIcon = SpriteName.WarsResource_IronArmor;
+                        break;
+                    case ArmorLevel.Steel:
+                        armorIcon = SpriteName.WarsResource_FullPlateArmor;
+                        break;
+                    case ArmorLevel.Masterful:
+                        armorIcon = SpriteName.WarsResource_MithrilArmor;
+                        break;
+                }
+
+                var button = new ArtOption(soldierPreview.soldierModelData.armor == armorLevel, new List<AbsRichBoxMember>()
+                        {
+                            new RbImage(armorIcon)
+                        },
+                    new RbAction1Arg<ArmorLevel>((ArmorLevel armor) => { soldierPreview.soldierModelData.armor = armor; refreshPreview(); }, armorLevel, SoundLib.menu)
+                    );
+                content.Add(button);
+            }
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFramePrevious) }, new RbAction1Arg<bool>(soldierPreview.nextFrame, false)));
+            for (int frame = 0; frame < soldierPreview.FrameCount; frame++)
+            {
+                SpriteName frameicon;
+                RbButtonStyle buttonStyle;
+                if (frame == soldierPreview.Frame)
+                {
+                    buttonStyle = RbButtonStyle.OptionSelected;
+                    frameicon = SpriteName.VoxelEditorFrameSelected;
+                }
+                else
+                {
+                    buttonStyle = RbButtonStyle.OptionNotSelected;
+                    frameicon = SpriteName.VoxelEditorFrame;
+                }
+
+                content.Add(new ArtButton(buttonStyle,
+                    new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(frame)), new RbImage(frameicon) }, new RbAction1Arg<int>(soldierPreview.setFrame, frame)));
+            }
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameNext) }, new RbAction1Arg<bool>(soldierPreview.nextFrame, true)));
+
             optMenu.Refresh(content);
         }
 

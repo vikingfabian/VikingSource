@@ -74,6 +74,7 @@ namespace VikingEngine.DSSWars
         Iron,
         Steel,
         Masterful,
+        NUM
     }
 
     enum VisualExperience

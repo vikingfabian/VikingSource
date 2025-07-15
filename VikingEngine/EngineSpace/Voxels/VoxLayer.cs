@@ -119,6 +119,17 @@ namespace VikingEngine.Voxels
             }
         }
 
+        public void refreshFrameCount(int frameCount)
+        {
+            if (animatedLayer)
+            {
+                while (animationFrames.Frames.Count < frameCount)
+                {
+                    AddFrame(animationFrames.Frames.Count - 1, true);
+                }
+            }
+        }
+
         public void RemoveCurrentFrame(int index)
         {
             if (animatedLayer)

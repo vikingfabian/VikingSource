@@ -407,6 +407,11 @@ namespace VikingEngine.Voxels
 
         }
 
+        public void toggleLayerAnimated(int layer)
+        {
+            lib.Invert(ref layers.list[layer].animatedLayer);
+            layers.list[layer].refreshFrameCount(currentFrame.Length);
+        }
 
         const int Version = 1;
         public void write(System.IO.BinaryWriter w)

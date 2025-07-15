@@ -47,12 +47,13 @@ namespace VikingEngine.DSSWars
 
         public Graphics.VoxelModel buildModel(PlayerProfile profile, SoldierModelData modelData)
         {
-            IntVector3 hatOffset = new IntVector3(2, 6, 30);
+            IntVector3 hatOffset = new IntVector3(2, 5, 30);
             VoxelModelName weaponModel;
             int weaponHatFrame;
             int hatFrame = profile.character.hat;
             
             int faceFrame = 0;
+            int armorFrame = (int)modelData.armor;
             VoxelModelName rightArmType = VoxelModelName.modsoldier_rarm_sword1;
             VoxelModelName leftArmType = VoxelModelName.modsoldier_larm_empty1;
             VoxelModelName shield = VoxelModelName.NUM_NON;
@@ -70,7 +71,7 @@ namespace VikingEngine.DSSWars
                     weaponHatFrame = 0;
                     break;
                 case Resource.ItemResourceType.ShortSword:
-                    weaponModel = VoxelModelName.modweapon_sharpstick;
+                    weaponModel = VoxelModelName.modweapon_shortsword;
                     weaponHatFrame = 0;
                     break;
                 case Resource.ItemResourceType.Sword:
@@ -167,6 +168,16 @@ namespace VikingEngine.DSSWars
                     break;
             }
 
+            //switch (modelData.armor)
+            //{ 
+            //    case ArmorLevel.None: armorFrame = 0; break;
+
+            //    case ArmorLevel.Leather: armorFrame = 1; break;
+            //    case ArmorLevel.Iron: armorFrame = 2; break;
+            //    case ArmorLevel.Steel: armorFrame = 3; break;
+            //    case ArmorLevel.Masterful: armorFrame = 4; break;
+            //}
+
             switch (modelData.specialization)
             {
                 case Conscript.SpecializationType.HonorGuard:
@@ -212,7 +223,7 @@ namespace VikingEngine.DSSWars
 
             IntVector3 legOffSet = new IntVector3(5, 0, 32);
             IntVector3 rArmOffSet = new IntVector3(4, 0, 30);
-            IntVector3 lArmOffset = VectorExt.AddX(rArmOffSet, 10);
+            IntVector3 lArmOffset = VectorExt.AddX(rArmOffSet, 9);
             IntVector3 faceOffset = new IntVector3(2, 5, 30);
 
             VoxelObjGridDataAnimHD grid = new VoxelObjGridDataAnimHD(GridSize, FrameCount);
@@ -235,14 +246,13 @@ namespace VikingEngine.DSSWars
             for (int frame = 0; frame < 2; frame++)
             {                
                 grid.Frames[frame].AddVoxels(legsIdle);
-
             }
             for (int frame = 2; frame < FrameCount; frame++)
             {
-                grid.Frames[frame].AddVoxels(leg.Frames[frame - 1].GetVoxelArray(legOffSet, profileColors, GridSize));
+                grid.Frames[frame].AddVoxels(leg.Frames[frame].GetVoxelArray(legOffSet, profileColors, GridSize));
             }
 
-            var bodyVoxels = body.Frames[0].GetVoxelArray(new IntVector3(6, 0, 33), profileColors, GridSize);
+            var bodyVoxels = body.Frames[armorFrame].GetVoxelArray(new IntVector3(4, 0, 33), profileColors, GridSize);
             var faceVoxels = face.Frames[faceFrame].GetVoxelArray(faceOffset, profileColors, GridSize);
             var faceBlinkVoxels = face.Frames[faceFrame +1].GetVoxelArray(faceOffset, profileColors, GridSize);
 
@@ -259,7 +269,7 @@ namespace VikingEngine.DSSWars
 
             for (int frame = 0; frame < FrameCount; frame++)
             {
-                grid.Frames[frame].AddVoxels(bodyVoxels);
+                //grid.Frames[frame].AddVoxels(bodyVoxels);
                 grid.Frames[frame].AddVoxels(frame == 1? faceBlinkVoxels : faceVoxels);
                 grid.Frames[frame].AddVoxels(hatVoxels);
             }
@@ -298,7 +308,11 @@ namespace VikingEngine.DSSWars
                 rightHandItem.addToGrid(grid.Frames[frame], adjustJointPos(rightHandJointValue, rarm_jointPos)/*rarm_jointPos*/, attackFrame ? WeaponModel.AttackFrame : WeaponModel.MoveFrame);
             }
 
-            
+            for (int frame = 0; frame < FrameCount; frame++)
+            {
+                grid.Frames[frame].AddVoxels(bodyVoxels);
+            }
+
 
             if (profile.character.accessory1 >= 0 && profile.character.accessory1 < 3)
             {

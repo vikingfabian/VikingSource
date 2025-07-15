@@ -25,9 +25,10 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         public int flagIndex;
         public int characterIndex;
         bool mouseDown = false;
+        int viewFrame = 0;
 
         public SoldierModelData soldierModelData = new SoldierModelData(ArmorLevel.None, Resource.ItemResourceType.Sword, Conscript.SpecializationType.None, VisualExperience.Experienced, 0, 0);
-
+        AbsVoxelObj model;
         public CharacterPreview(VectorRect screenArea, CharacterPreviewType previewType) 
         {
             characterIndex = DssRef.storage.characterStorage.selectedIx;
@@ -39,6 +40,26 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             Init(screenArea.Size, true);
             target.position = screenArea.Position;
             Graphics.RectangleLines rectangle = new RectangleLines(screenArea, 2f, 1f, ImageLayers.Lay9);
+        }
+
+        public int Frame
+        {
+            get { return model.Frame; }
+            set {
+                viewFrame = value;
+                model.Frame = viewFrame; 
+            }
+        }
+
+        public int FrameCount => model.NumFrames;
+
+        public void setFrame(int frame)
+        { 
+            Frame = frame;
+        }
+        public void nextFrame(bool forward)
+        {
+            Frame = Bound.SetRollover(Frame + lib.BoolToLeftRight(forward), 0, FrameCount-1);
         }
 
         public CharacterPreview(int characterIndex, int flagIndex, Vector2 size)
@@ -56,7 +77,8 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         public void Init(Vector2 size, bool toRender)
         {
             characterModelBuilder = new CharacterModelBuilder();
-            var model = buildModel(out float zoom);
+            model = buildModel(out float zoom);
+            model.Frame = viewFrame;
             target = new RenderTargetImage(Vector2.Zero, size, ImageLayers.Background0, toRender);
             camera = new TopViewCamera(zoom, new Vector2(MathHelper.PiOver2 - 0.6f, MathHelper.PiOver4 + 0.3f),
                     size.X, size.Y);
@@ -94,7 +116,8 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
         public void refresh()
         {
-            var model = buildModel(out float zoom);
+            model = buildModel(out float zoom);
+            model.Frame = viewFrame;
             drawList = new List<AbsDraw> { model };
         }
 
