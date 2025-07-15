@@ -51,14 +51,11 @@ namespace VikingEngine.DSSWars
         
         
         TechnologyManager technologyManager = new TechnologyManager();
-        
-
         bool bResourceMinuteUpdate = true;
-        
-        
-        bool slowMinuteUpdate = true;   
-                     
+        bool slowMinuteUpdate = true;
         bool netMapUpdate = false;
+
+        
         
 
         public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
@@ -392,6 +389,8 @@ namespace VikingEngine.DSSWars
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
+            //detailUpdateChanges = 0;
+            MayChangeDetail_OnNewUpdate();
             Sound.SoundStackManager.Update();
 
             if (Ref.music != null)

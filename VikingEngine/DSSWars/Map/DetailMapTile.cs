@@ -1090,10 +1090,6 @@ namespace VikingEngine.DSSWars.Map
                     new List<int> { verticeData.DrawData.numTriangles / 2 },
                     Texture);
                 
-                //if (!model.InRenderList)
-                //{
-                //    model.AddToRender(DrawGame.UnitDetailLayer);
-                //}
                 PolygonLib.VerticeDataPool.Push(verticeData);
                 verticeData = null;
             }
@@ -1103,17 +1099,7 @@ namespace VikingEngine.DSSWars.Map
                 ref var m = ref foliageModels.array[i];
                 m.addToRender();
             }
-            //foreach (var m in foliageModels)
-            //{
-            //    m.addToRender();
-            //}
-
-            //for (int i = 0; i < flagModels.Count; ++i)
-            //{
-            //    ref var m = ref flagModels.array[i];
-            //    m.addToRender_flag();
-            //}
-
+           
             if (animalData != null)
             {
                 foreach (var m in animalData)

@@ -96,7 +96,7 @@ namespace VikingEngine.DSSWars
                     faction.isAlive &&
                     !faction.HasZeroUnits() &&
                     rel.inCullingView &&
-                    (!player.drawUnitsView.current.DrawFullOverview || faction.displayInFullOverview || rel == selected))
+                    (!player.mapLayersManager.current.DrawFullOverview || faction.displayInFullOverview || rel == selected))
                 {
                     bool cityPos;
                     var landAreaCenter = faction.landAreaCenter(out cityPos);

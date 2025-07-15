@@ -10,14 +10,14 @@ using VikingEngine.Input;
 namespace VikingEngine.DSSWars.Map
 {
     
-    class MapDetailLayerManager
+    class MapLayerManager
     {
         public static readonly float SelectUnitZoomIn = FactionZoom.Min - 0.4f;
-        public static MapDetailLayerManager[] CameraIndexToView;        
+        public static MapLayerManager[] CameraIndexToView;        
 
-        List2<DetailLayer> layers;
-        public DetailLayer current;
-        public DetailLayer prevLayer;
+        List2<MapLayer> layers;
+        public MapLayer current;
+        public MapLayer prevLayer;
 
         public static readonly IntervalF FullZoomRange = new IntervalF(0.05f, 2500);
         public static IntervalF MidToDetailZoomRange;
@@ -45,35 +45,35 @@ namespace VikingEngine.DSSWars.Map
 
         public float TiltYAdd = 0;
 
-        public MapDetailLayerManager(Engine.PlayerData player)
+        public MapLayerManager(Engine.PlayerData player)
         {
             this.player = player;
 
-            layers = new List2<DetailLayer>((int)MapDetailLayerType.NUM);
+            layers = new List2<MapLayer>((int)MapDetailLayerType.NUM);
             {
                 float zoomBuffer = FullZoomRange.Difference * 0.0025f;
 
                 float minZoom = FullZoomRange.Min;
                 float maxZoom = 40;//FullZoomRange.GetFromPercent(0.08f);
 
-                layers.Add(new DetailLayer(MapDetailLayerType.UnitDetail1, minZoom, maxZoom, zoomBuffer));
+                layers.Add(new MapLayer(MapDetailLayerType.UnitDetail1, minZoom, maxZoom, zoomBuffer));
 
                 minZoom = maxZoom;
                 maxZoom = TerrainMaxZoom;//FullZoomRange.GetFromPercent(0.5f);
 
-                layers.Add(new DetailLayer(MapDetailLayerType.TerrainOverview2, minZoom, maxZoom, zoomBuffer));
+                layers.Add(new MapLayer(MapDetailLayerType.TerrainOverview2, minZoom, maxZoom, zoomBuffer));
 
                 MidToDetailZoomRange = new IntervalF(FullZoomRange.Min, maxZoom - zoomBuffer);
 
                 minZoom = maxZoom;
                 maxZoom = 450;//FullZoomRange.GetFromPercent(0.75f);
 
-                layers.Add(new DetailLayer(MapDetailLayerType.FactionColors3, minZoom, maxZoom, zoomBuffer), true);
+                layers.Add(new MapLayer(MapDetailLayerType.FactionColors3, minZoom, maxZoom, zoomBuffer), true);
 
                 minZoom = maxZoom;
                 maxZoom = FullZoomRange.Max;
 
-                layers.Add(new DetailLayer(MapDetailLayerType.FullOverview4, minZoom, maxZoom, zoomBuffer));
+                layers.Add(new MapLayer(MapDetailLayerType.FullOverview4, minZoom, maxZoom, zoomBuffer));
             }
 
             setNewLayer();
@@ -82,7 +82,15 @@ namespace VikingEngine.DSSWars.Map
             new AsynchUpdateable(asynchUpdate, "Units cam culling, " + player.localPlayerIndex.ToString(), player.localPlayerIndex);
             
         }
-
+        public bool DoUpdateDetailLayer()
+        {
+            //Debug.Log(mapLayersManager.ToString());
+            //if (mapLayersManager.prevLayer != null)
+            //{
+            //    lib.DoNothing();
+            //}
+            return current.DrawDetailLayer;
+        }
 
         public bool LockDetailLevel = false;
         BoundingSphere boundingSphere = new BoundingSphere();
@@ -99,7 +107,7 @@ namespace VikingEngine.DSSWars.Map
         {
             if (CameraIndexToView == null)
             {
-                CameraIndexToView = new MapDetailLayerManager[DssLib.MaxLocalPlayers];
+                CameraIndexToView = new MapLayerManager[DssLib.MaxLocalPlayers];
             }
 
             for (int i = 0; i < DssLib.MaxLocalPlayers; ++i)
@@ -180,9 +188,13 @@ namespace VikingEngine.DSSWars.Map
         {
             return FullZoomRange.GetValuePercentPos(player.view.Camera.targetZoom);
         }
+        public override string ToString()
+        {
+            return $"Current: {current}, prev {prevLayer}";
+        }
     }
 
-    class DetailLayer
+    class MapLayer
     {
         const float CloseUpCamAngle = 0.85f;
         public const float NormalCamAngle = 0.78f;
@@ -199,7 +211,7 @@ namespace VikingEngine.DSSWars.Map
 
         public MapDetailLayerType type;
 
-        public DetailLayer(MapDetailLayerType type, float minZoom, float maxZoom, float zoomBuffer)
+        public MapLayer(MapDetailLayerType type, float minZoom, float maxZoom, float zoomBuffer)
         {
             this.type = type;
             zoom = new IntervalF(minZoom - zoomBuffer, maxZoom + zoomBuffer);
@@ -231,6 +243,11 @@ namespace VikingEngine.DSSWars.Map
                     DrawFar = true;                   
                     break;
             }
+        }
+
+        public override string ToString()
+        {
+            return type.ToString() + opacity;
         }
     }
 

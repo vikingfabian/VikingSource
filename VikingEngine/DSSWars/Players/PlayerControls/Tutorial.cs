@@ -454,7 +454,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                     }
 
-                    if (player.drawUnitsView.current.DrawDetailLayer)
+                    if (player.mapLayersManager.current.DrawDetailLayer)
                     {
                         if (!collectResources_zoomIn)
                         {
@@ -692,7 +692,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                     }
 
-                    if (player.drawUnitsView.current.DrawDetailLayer)
+                    if (player.mapLayersManager.current.DrawDetailLayer)
                     {
                         if (!recruitGuard_zoomIn)
                         {
@@ -986,7 +986,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
               
                 case TutorialMission.MoveArmy:
 
-                    if (player.drawUnitsView.current.DrawMid)
+                    if (player.mapLayersManager.current.DrawMid)
                     {
                         if (!moveArmy_ZoomOut)
                         {
@@ -1036,7 +1036,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.Diplomatics:
 
-                    if (player.drawUnitsView.current.DrawFar)
+                    if (player.mapLayersManager.current.DrawFar)
                     {
                         if (!diplomatics_ZoomOut)
                         {

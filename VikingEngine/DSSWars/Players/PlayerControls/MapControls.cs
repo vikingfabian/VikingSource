@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Players
 
         const float CamMaxRotation = 0.7f;
         const float CamStartRotation = MathHelper.PiOver2;
-        IntervalF ZoomRange = MapDetailLayerManager.FullZoomRange;
+        IntervalF ZoomRange = MapLayerManager.FullZoomRange;
         VectorRect panBounds;
         FloatInBound camRotation = new FloatInBound(CamStartRotation, new IntervalF(CamStartRotation - CamMaxRotation, CamStartRotation + CamMaxRotation), false);
         float camRotationKeyDownTime = 0;
@@ -69,9 +69,9 @@ namespace VikingEngine.DSSWars.Players
         {
             this.player = player;
 
-            targetZoom = MapDetailLayerManager.StartZoom;
-            camera = new TopViewCamera(MapDetailLayerManager.StartZoom, 
-                new Vector2(MathHelper.PiOver2, Map.MapDetailLayerManager.NormalCamAngle),
+            targetZoom = MapLayerManager.StartZoom;
+            camera = new TopViewCamera(MapLayerManager.StartZoom, 
+                new Vector2(MathHelper.PiOver2, Map.MapLayerManager.NormalCamAngle),
                 player.playerData.view.DrawAreaF.Width, player.playerData.view.DrawAreaF.Height);
             camera.FarPlane = 800;
             camera.positionChaseLengthPercentage = 0.9f;
@@ -102,12 +102,12 @@ namespace VikingEngine.DSSWars.Players
 
         public void battleModeCamBound()
         {
-            ZoomRange = MapDetailLayerManager.MidToDetailZoomRange;
+            ZoomRange = MapLayerManager.MidToDetailZoomRange;
         }
 
         public void setCameraBounds(bool tutorial, Rectangle2 cityArea)
         {
-            ZoomRange = tutorial? MapDetailLayerManager.MidToDetailZoomRange : MapDetailLayerManager.FullZoomRange;
+            ZoomRange = tutorial? MapLayerManager.MidToDetailZoomRange : MapLayerManager.FullZoomRange;
 
             if (tutorial)
             {
@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars.Players
 
         void rectangleSelectUpdate()
         {
-            if (player.drawUnitsView.current.DrawFar)
+            if (player.mapLayersManager.current.DrawFar)
             {
                 cancelRectangleSelect();
                 return;
@@ -430,7 +430,7 @@ namespace VikingEngine.DSSWars.Players
                     rectangleLines.Refresh(rectangleBound.vectorRect);
                     rectangleBound.outerBound(out Vector3 topLeft, out Vector3 bottomRight);
 
-                    switch (player.drawUnitsView.current.type)
+                    switch (player.mapLayersManager.current.type)
                     {
                         case MapDetailLayerType.TerrainOverview2:
                             {
@@ -694,7 +694,7 @@ namespace VikingEngine.DSSWars.Players
 
         void subTileHoverUpdate()
         {
-            if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
+            if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
             {
                 hover.subTile.update(subTilePosition, player);
             }
@@ -707,7 +707,7 @@ namespace VikingEngine.DSSWars.Players
         void mouseHoverUpdate()
         {
 
-            if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
+            if (player.mapLayersManager.current.type == MapDetailLayerType.TerrainOverview2)
             {
                 AbsMapObject intersectObj = null;
 
@@ -749,7 +749,7 @@ namespace VikingEngine.DSSWars.Players
 
                 hover.obj = intersectObj;
             }
-            else if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
+            else if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
             {
                 detailHoverUpdate();
             }
@@ -805,7 +805,7 @@ namespace VikingEngine.DSSWars.Players
         
         void controllerHoverUpdate()
         {
-            if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
+            if (player.mapLayersManager.current.type == MapDetailLayerType.TerrainOverview2)
             {
                 const float FriendlyPriorityDistAdd = 0.25f;
                 float maxDistance_enemy;
@@ -851,7 +851,7 @@ namespace VikingEngine.DSSWars.Players
                     hover.obj = closestObj;
                 }
             }
-            else if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
+            else if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
             {
                 //var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearDetailUnits(tilePosition);
 
@@ -1235,7 +1235,7 @@ namespace VikingEngine.DSSWars.Players
                     currentTiltYAngleOption = -1;
                 }
 
-                player.drawUnitsView.TiltYAdd = currentTiltYAngleOption * TiltYUpAngle;
+                player.mapLayersManager.TiltYAdd = currentTiltYAngleOption * TiltYUpAngle;
             }
         }
 

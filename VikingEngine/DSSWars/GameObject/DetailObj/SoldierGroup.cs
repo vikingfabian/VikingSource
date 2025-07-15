@@ -208,6 +208,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         void createSoldierObjects(bool create, bool models)
         {
+            DssRef.state.OnDetailChange();
+
             if (create)
             {
                 if (soldiers == null)

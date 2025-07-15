@@ -2,6 +2,12 @@
 -Change Log-
 * Added player profiles, and its editor
 * Editors return to the right lobby menu stack
+* Optimized map generating:
+1. is tracking changes now
+2. does block map generation during layer fade out
+3. limited how many tiles that can be removed per frame
+4. soldier generate has a light break on it
+5. the render tile radius is shrunk by 2 (however that gives some edge flicker on zoom out) 
 
 x display name
 x weapon placements

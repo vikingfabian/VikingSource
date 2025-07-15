@@ -35,8 +35,6 @@ namespace VikingEngine.DSSWars
 
         public bool outsidePlayerAttension(IntVector2 tilePos)
         {
-            //return false;
-
             foreach (var p in players)
             {
                 if (p.insidePlayerAttension(cullingStateA, tilePos))
@@ -47,6 +45,20 @@ namespace VikingEngine.DSSWars
 
             return true;
         }
+
+        public bool insidePlayerAttension_sub(IntVector2 subtilePos)
+        {
+            foreach (var p in players)
+            {
+                if (p.insidePlayerAttension(cullingStateA, subtilePos))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public void asynch_update(float time)
         {
             asynch_updateTiles();
@@ -230,6 +242,12 @@ namespace VikingEngine.DSSWars
             return state.attensionArea.IntersectTilePoint(tilePos);
         }
 
+        public bool insidePlayerAttension_subtile(bool bStateA, IntVector2 subtilePos)
+        {
+            PlayerCullingState state = bStateA ? stateA : stateB;
+            return state.attensionArea_subTile.IntersectTilePoint(subtilePos);
+        }
+
         public void asynch_clearupdate(bool bStateA)
         {
             //Clear out previous render state
@@ -239,7 +257,7 @@ namespace VikingEngine.DSSWars
 
         public void asynch_update(bool bStateA, ref bool detailView)
         {
-            Map.MapDetailLayerManager detailLayer = Map.MapDetailLayerManager.CameraIndexToView[index];
+            Map.MapLayerManager detailLayer = Map.MapLayerManager.CameraIndexToView[index];
             bool hasValue1, hasValue2, hasValue3, hasValue4;
             Vector3 topleft = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.Position, playerData.view.Viewport, mapPlane, out hasValue1);
             Vector3 topright = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.RightTop, playerData.view.Viewport, mapPlane, out hasValue2);
@@ -295,6 +313,7 @@ namespace VikingEngine.DSSWars
         public Rectangle2 enterArea = Rectangle2.Zero;
         public Rectangle2 exitArea = Rectangle2.Zero;
         public Rectangle2 attensionArea = Rectangle2.Zero;
+        public Rectangle2 attensionArea_subTile = Rectangle2.Zero;
 
         public bool detailLayer = false;
         public bool midLayer = false;
@@ -329,16 +348,20 @@ namespace VikingEngine.DSSWars
             midLayer = r.ReadBoolean();
         }
 
-        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Rectangle2 screenAreaRaw, Map.DetailLayer layer)
+        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Rectangle2 screenAreaRaw, Map.MapLayer layer)
         {
             this.screenAreaRaw = screenAreaRaw;
             enterArea = screenArea;
-            enterArea.AddRadius(1);
+            enterArea.AddWidthRadius(-1);
+            
+
             enterArea.SetTileBounds(DssRef.world.tileBounds);
             exitArea = enterArea;
             exitArea.AddRadius(1);
             attensionArea = enterArea;
             attensionArea.AddRadius(20);
+
+            attensionArea_subTile = new Rectangle2(WP.ToSubTilePos_TopLeft(attensionArea.pos), (attensionArea.size + 1) * WorldData.TileSubDivitions);
 
             //Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
 
