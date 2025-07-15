@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Players.Profile
@@ -54,7 +55,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             }
             else
             {
-                return name;
+                return LoadContent.CheckCharsSafety(name, LoadedFont.Regular);
             }
         }
 
@@ -150,7 +151,8 @@ namespace VikingEngine.DSSWars.Players.Profile
                 TextLib.HasValue(city1),
                 TextLib.HasValue(city2),
                 TextLib.HasValue(city3),
-                TextLib.HasValue(city4));
+                TextLib.HasValue(city4),
+                TextLib.HasValue(name));
 
             bools.write(w);
 
@@ -177,6 +179,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             if (TextLib.HasValue(city2)) StreamLib.WriteString(w, city2);
             if (TextLib.HasValue(city3)) StreamLib.WriteString(w, city3);
             if (TextLib.HasValue(city4)) StreamLib.WriteString(w, city4);
+            if (TextLib.HasValue(name)) StreamLib.WriteString(w, name);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -192,7 +195,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             bool hasCity2 = bools.Get(3);
             bool hasCity3 = bools.Get(4);
             bool hasCity4 = bools.Get(5);
-
+            bool hasName = bools.Get(6);
 
             if (customCharacter)
             {
@@ -218,6 +221,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             city2 = hasCity2 ? StreamLib.ReadString(r) : null;
             city3 = hasCity3 ? StreamLib.ReadString(r) : null;
             city4 = hasCity4 ? StreamLib.ReadString(r) : null;
+            name = hasName ? StreamLib.ReadString(r) : null;
         }
 
 

@@ -20,6 +20,11 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Lobby_CharacterCreationEdit => "Open character creator";
 
+        public string ProfileEditor_TunicColor => "Tunic";
+        public string ProfileEditor_PantsColor => "Pants";
+        public string ProfileEditor_LeaderColor => "Leader";
+
+
     }
 
 }

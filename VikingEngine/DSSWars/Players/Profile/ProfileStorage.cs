@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.Players.Profile
     class ProfileStorage
     {
         public List<PlayerProfile> profiles;
-        public int selected = 0;
+        public int selectedIx = 0;
 
         public ProfileStorage()
         {
@@ -25,12 +25,12 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public PlayerProfile Selected()
         { 
-            return profiles[selected];
+            return profiles[selectedIx];
         }
 
         public void SetSelected(PlayerProfile profile)
         {
-            profiles[selected] = profile;
+            profiles[selectedIx] = profile;
         }
 
         public void Load()
@@ -54,7 +54,10 @@ namespace VikingEngine.DSSWars.Players.Profile
                 FileToDiskManager.TryReadBinaryIO(filePath, new ProfileReader(index).read);
             }
         }
-
+        public void SaveSelected()
+        {
+            Save(selectedIx);
+        }
         public void Save(int index)
         {
             var filePath = path(index);

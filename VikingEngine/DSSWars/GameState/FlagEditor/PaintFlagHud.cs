@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
         RichMenu menu;
         PaintFlagState state;
         bool needRefresh = true;
-
+        const float TabStep = 0.25f;
         public PaintFlagHud(Engine.PlayerData playerData, InputMap input, PaintFlagState state)
             : base()
         {
@@ -179,22 +179,22 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             content.h2(DssRef.lang.ProfileEditor_FlagColorsTitle).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
             flagcolor(ProfileColorType.Main);
-            flagcolor(ProfileColorType.Detail1);
-            flagcolor(ProfileColorType.Detail2);
+            flagcolor(ProfileColorType.Detail1, ProfileColorType.Detail2);
+            //flagcolor(ProfileColorType.Detail2);
 
             content.newParagraph();
 
             content.h2(DssRef.lang.ProfileEditor_PeopleColorsTitle).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
 
-            peoplecolor(ProfileColorType.Skin);
-            peoplecolor(ProfileColorType.Hair);
+            peoplecolor([ProfileColorType.Skin, ProfileColorType.Hair]);
+            peoplecolor([ProfileColorType.Tunic, ProfileColorType.Pants, ProfileColorType.Leader]);
             altMainColor();
         }
 
         void flagcolor(ProfileColorType colorType)
         {
-            content.text(PaintFlagState.ProfileColorName(colorType));
+            content.Add(new  RbText( PaintFlagState.ProfileColorName(colorType), HudLib.TitleColor_TypeName));
             content.newLine();
             var color = colorContent(colorType);
             content.Add(new ArtOption(state.selectedColorType == colorType,
@@ -212,24 +212,74 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             content.newLine();
         }
 
-        void peoplecolor(ProfileColorType colorType)
+        void flagcolor(ProfileColorType colorType1, ProfileColorType colorType2)
         {
-            content.text(PaintFlagState.ProfileColorName(colorType));
+            content.Add(new RbText(PaintFlagState.ProfileColorName(colorType1), HudLib.TitleColor_TypeName));
+
+            content.Add(new RbTab(TabStep));
+
+            content.Add(new RbText(PaintFlagState.ProfileColorName(colorType2), HudLib.TitleColor_TypeName));
+
             content.newLine();
-            var color = colorContent(colorType);
-            content.Add(new ArtOption(state.selectedColorType == colorType,
+            var color1 = colorContent(colorType1);
+            content.Add(new ArtOption(state.selectedColorType == colorType1,
                 new List<AbsRichBoxMember>
                 {
-                    new RbImage(SpriteName.IconColorPick),
-                    color,
+                    new RbImage(SpriteName.EditorToolPencil),
+                    color1,
                 },
-                new RbAction1Arg<ProfileColorType>(selectColorType, colorType), null, true));
+                new RbAction1Arg<ProfileColorType>(selectColorType, colorType1), null, true));
 
-            if (state.selectedColorType == colorType)
+            if (state.selectedColorType == colorType1)
             {
                 content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
             }
 
+            content.Add(new RbTab(TabStep));
+            var color2 = colorContent(colorType2);
+            content.Add(new ArtOption(state.selectedColorType == colorType2,
+                new List<AbsRichBoxMember>
+                {
+                    new RbImage(SpriteName.EditorToolPencil),
+                    color2,
+                },
+                new RbAction1Arg<ProfileColorType>(selectColorType, colorType2), null, true));
+
+            if (state.selectedColorType == colorType2)
+            {
+                content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
+            }
+
+            content.newLine();
+        }
+
+        void peoplecolor(ProfileColorType[] colorType)
+        {
+            
+
+            for (int i = 0; i < colorType.Length; ++i)
+            {
+                content.Add(new RbText(PaintFlagState.ProfileColorName(colorType[i]), HudLib.TitleColor_TypeName));
+                content.Add(new RbTab(TabStep * (i +1)));
+            }
+            content.newLine();
+            for (int i = 0; i < colorType.Length; ++i)
+            {
+                var color = colorContent(colorType[i]);
+                content.Add(new ArtOption(state.selectedColorType == colorType[i],
+                    new List<AbsRichBoxMember>
+                    {
+                    new RbImage(SpriteName.IconColorPick),
+                    color,
+                    },
+                    new RbAction1Arg<ProfileColorType>(selectColorType, colorType[i]), null, true));
+
+                if (state.selectedColorType == colorType[i])
+                {
+                    content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
+                }
+                content.Add(new RbTab(TabStep * (i + 1)));
+            }
             content.newLine();
         }
 

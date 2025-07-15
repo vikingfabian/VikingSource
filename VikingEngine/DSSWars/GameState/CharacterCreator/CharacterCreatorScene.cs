@@ -393,6 +393,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
         void selectCharacterLink(int charIx)
         {
+            DssRef.storage.characterStorage.SaveSelected();
             DssRef.storage.characterStorage.selectedIx = charIx;
            
             DssRef.storage.Save(null);
@@ -482,6 +483,12 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         {
             //DssRef.storage.profileStorage.profiles[DssRef.storage.localPlayers[0].profileIndex] = profile;
             DssRef.storage.characterStorage.SetSelected(profile);
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            DssRef.storage.characterStorage.SaveSelected();
         }
         //bool overrideHatProperty(int index, bool set, bool value)
         //{

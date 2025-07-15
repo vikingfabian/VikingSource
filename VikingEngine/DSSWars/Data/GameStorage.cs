@@ -116,6 +116,8 @@ namespace VikingEngine.DSSWars.Data
                 meta.Load();
             }
             flagStorage.Load();
+            characterStorage.Load();
+            profileStorage.Load();
         }
 
         public void Save(IStreamIOCallback callBack)

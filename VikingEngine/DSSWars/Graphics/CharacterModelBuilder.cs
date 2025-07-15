@@ -313,7 +313,6 @@ namespace VikingEngine.DSSWars
                 grid.Frames[frame].AddVoxels(bodyVoxels);
             }
 
-
             if (profile.character.accessory1 >= 0 && profile.character.accessory1 < 3)
             {
                 var access = DssRef.models.rawModels[VoxelModelName.modsoldier_addons];

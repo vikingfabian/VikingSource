@@ -55,6 +55,10 @@ namespace VikingEngine.DSSWars.Players.Profile
             }
         }
 
+        public void SaveSelected()
+        {
+            Save(selectedIx);
+        }
         public void Save(int index)
         {
             var filePath = path(index);

@@ -21,6 +21,7 @@ using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -1745,7 +1746,20 @@ namespace VikingEngine.DSSWars.Players
         {
             return this;
         }
-        public override string Name => playerData.PublicName(LoadedFont.Regular);
+        public override string Name {
+
+            get
+            {
+                if (string.IsNullOrEmpty(profile.name))
+                {
+                    return playerData.PublicName(LoadedFont.Regular);
+                }
+                else
+                {
+                    return LoadContent.CheckCharsSafety( profile.name, LoadedFont.Regular);
+                }
+            }
+        } 
 
         public override string ToString()
         {

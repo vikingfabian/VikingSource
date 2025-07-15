@@ -21,12 +21,6 @@ namespace VikingEngine.DSSWars.Players.Profile
         public CharacterHatGenre hatGenre;
         public int hat;
 
-        //public Color col3_Skin;
-        //public Color col4_Hair;
-        //public Color col6_Tunic = Color.LightGreen;
-        //public Color col7_Pants = Color.Beige;
-        //public Color col8_Leader = Color.SaddleBrown;
-
         public CharacterProfile(int index)
         {
             StorageIndex = index;
@@ -60,12 +54,27 @@ namespace VikingEngine.DSSWars.Players.Profile
         {
             w.Write(Version);
 
+            w.Write(accessory1);
+            w.Write(accessory2);
+            w.Write(accessory3);
+
+            w.Write(face);
+            w.Write((int)hatGenre); // Enum stored as int
+            w.Write(hat);
         }
+
         public void read(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
             if (version > Version) { return; }
 
+            accessory1 = r.ReadInt32();
+            accessory2 = r.ReadInt32();
+            accessory3 = r.ReadInt32();
+
+            face = r.ReadInt32();
+            hatGenre = (CharacterHatGenre)r.ReadInt32(); // Cast back from int to enum
+            hat = r.ReadInt32();
         }
     }
 

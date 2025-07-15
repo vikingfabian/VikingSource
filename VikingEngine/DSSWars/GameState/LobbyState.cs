@@ -186,7 +186,7 @@ namespace VikingEngine.DSSWars
                 case UnderMenu_ListEditors:
                     {
                         var playerData = DssRef.storage.localPlayers.First();
-                        DssRef.storage.profileStorage.selected = playerData.profileIndex;
+                        DssRef.storage.profileStorage.selectedIx = playerData.profileIndex;
 
                         RichBoxContent content = new RichBoxContent();
 
@@ -372,7 +372,7 @@ namespace VikingEngine.DSSWars
 
                         listAndEditFlag(content, DssRef.storage.localPlayers[DssRef.storage.selectedPlayer], false);
 
-                        listAndEditCharacter(content, DssRef.storage.profileStorage.selected, false);
+                        listAndEditCharacter(content, DssRef.storage.profileStorage.selectedIx, false);
 
                         underMenu.Refresh(content);
                     }
@@ -425,6 +425,7 @@ namespace VikingEngine.DSSWars
                 profile.name = result;
             }
             DssRef.storage.profileStorage.SetSelected(profile);
+            DssRef.storage.profileStorage.SaveSelected();
             underMenu.needRefresh = true;
         }
 
@@ -1425,7 +1426,7 @@ namespace VikingEngine.DSSWars
         void openProfileEditor(int playerIndex, int ProfileIx)
         {
             DssRef.storage.selectedPlayer = playerIndex;
-            DssRef.storage.profileStorage.selected = ProfileIx;
+            DssRef.storage.profileStorage.selectedIx = ProfileIx;
             openUnderMenu(UnderMenu_PlayerProfile, StackOption.Stack);
         }
 
@@ -1464,8 +1465,8 @@ namespace VikingEngine.DSSWars
                 DssRef.storage.characterStorage.selectedIx = charIx;
             }
             DssRef.storage.profileStorage.SetSelected(profile);
-
-            DssRef.storage.Save(null);
+            DssRef.storage.profileStorage.SaveSelected();
+            //DssRef.storage.Save(null);
             refreshSplitScreen();
 
             underMenu.CloseDropDown();
@@ -1503,14 +1504,14 @@ namespace VikingEngine.DSSWars
 
             //DssRef.storage.checkPlayerDoublettes(ix);
 
-            var profile = DssRef.storage.profileStorage.profiles[DssRef.storage.profileStorage.selected];
+            var profile = DssRef.storage.profileStorage.profiles[DssRef.storage.profileStorage.selectedIx];
             {
                 DssRef.storage.flagStorage.selectedIx = flagIx;
                 profile.flag = DssRef.storage.flagStorage.flagDesigns[flagIx];
             }
-            DssRef.storage.profileStorage.profiles[DssRef.storage.profileStorage.selected] = profile;
-
-            DssRef.storage.Save(null);
+            DssRef.storage.profileStorage.profiles[DssRef.storage.profileStorage.selectedIx] = profile;
+            DssRef.storage.profileStorage.SaveSelected();
+            //DssRef.storage.Save(null);
             refreshSplitScreen();
 
             underMenu.CloseDropDown();
