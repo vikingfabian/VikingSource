@@ -269,9 +269,10 @@ namespace VikingEngine.DSSWars.Build
                             break;
                     }
 
-                    if (city.faction.player.IsLocalPlayer())
+                    var cityPlayer = city.GetPlayer();
+                    if (cityPlayer.IsLocalPlayer())
                     {
-                        city.faction.player.GetLocalPlayer().statistics.onDecorBuild_async(statue);
+                        city.GetPlayer().GetLocalPlayer().statistics.onDecorBuild_async(statue);
                     }
                     break;
             }

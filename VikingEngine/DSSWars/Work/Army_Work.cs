@@ -53,11 +53,11 @@ namespace VikingEngine.DSSWars.GameObject
                     if (city != null)
                     {
                         float bufferGoal_minutes = -1;
-                        if (city.faction == faction)
+                        if (city.factionIndex == factionIndex)
                         {
                             bufferGoal_minutes = friendlyAreaFoodBuffer_minutes;
                         }
-                        else if (!DssRef.diplomacy.InWar(city.faction, faction))
+                        else if (!DssRef.diplomacy.InWar(city.factionIndex, factionIndex))
                         {
                             bufferGoal_minutes = foodBuffer_minutes;
                         }
@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
                             int statusIx = getOrCreateFreeWorker();
                             var status = workerStatuses[statusIx];
                             status.createWorkOrder(WorkType.TrossCityTrade, -1, 0, XP.WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
-                            if (city.faction != faction)
+                            if (city.factionIndex != factionIndex)
                             {
                                 foodCosts_import.add(status.carry.amount);
                             }
@@ -93,11 +93,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (food < minBuffer)
                 {
-                    if (faction.player.IsLocalPlayer())
+                    if (GetPlayer().IsLocalPlayer())
                     {
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            faction.player.GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
+                            GetPlayer().GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
                         }));
                     }
 

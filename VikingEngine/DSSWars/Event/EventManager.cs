@@ -721,11 +721,13 @@ namespace VikingEngine.DSSWars.Event
                     foreach (var n in citiesC.sel.neighborCities)
                     {
                         var ncity = DssRef.world.cities[n];
-                        if (ncity.faction != faction &&
-                            ncity.faction.player.IsAi() &&
-                            !factions.Contains(ncity.faction))
+                        var nCityFaction = ncity.GetFaction();
+
+                        if (nCityFaction != faction &&
+                            nCityFaction.player.IsAi() &&
+                            !factions.Contains(nCityFaction))
                         { 
-                            factions.Add(ncity.faction);
+                            factions.Add(nCityFaction);
                         }
                     }
                 }
@@ -746,7 +748,7 @@ namespace VikingEngine.DSSWars.Event
                 {
                     foreach (var cindex in city.neighborCities)
                     {
-                        var otherfaction = DssRef.world.cities[cindex].faction;
+                        var otherfaction = DssRef.world.cities[cindex].GetFaction();
                         if (factionMayStartWar(otherfaction, defender))
                         {
                             return otherfaction;

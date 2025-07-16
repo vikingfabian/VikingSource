@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.GameObject
     /// </summary>
     abstract partial class AbsMapObject : AbsGroup
     {
-        public Faction faction;
+        //public Faction faction;
 
         /// <summary>
         /// Pågående strider, om order ges läggs inte battle till förrän armeerna är intill varandra
@@ -118,22 +118,22 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool LocalMember
         {
-            get { return faction.player.IsLocal; }
+            get { return GetFaction().player.IsLocal; }
         }
 
         //abstract public Faction Faction();
 
         virtual public void setFaction(Faction faction)
         {
-            this.faction = faction;
+            this.factionIndex = faction.myIndex;
             
             OnNewOwner();
         }
 
-        override public Faction GetFaction()
-        {
-            return faction;
-        }
+        //override public Faction GetFaction()
+        //{
+        //    return faction;
+        //}
 
         abstract public void OnNewOwner();
 

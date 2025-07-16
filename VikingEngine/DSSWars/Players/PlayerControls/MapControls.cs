@@ -303,7 +303,7 @@ namespace VikingEngine.DSSWars.Players
             if (onNewTile)
             {
                 var newCity = DssRef.world.tileGrid.Get(tilePosition).City();
-                if (newCity != selection.obj && newCity.faction == player.faction)
+                if (newCity != selection.obj && newCity.factionIndex == player.faction.myIndex)
                 {
                     selection.obj = newCity;
                     player.hud.needRefresh = true;
@@ -435,7 +435,7 @@ namespace VikingEngine.DSSWars.Players
                         case MapDetailLayerType.TerrainOverview2:
                             {
                                 
-                                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction);
+                                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction.myIndex);
 
                                 if (Input.Keyboard.Ctrl)
                                 {
@@ -727,7 +727,7 @@ namespace VikingEngine.DSSWars.Players
                         intersectObj = m;
 
                         if (
-                            (m.faction == player.faction && m.gameobjectType() == GameObjectType.Army) ||
+                            (m.factionIndex == player.faction.myIndex && m.gameobjectType() == GameObjectType.Army) ||
                             lookingForAttackTarget()
                             )
                         {
@@ -774,17 +774,17 @@ namespace VikingEngine.DSSWars.Players
             //var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, true);
             AbsMapObject closestObj = null;
             float closest = float.MaxValue;
-            foreach (var m in nearMapObjects)
+            foreach (AbsMapObject m in nearMapObjects)
             {
                 var dist = VectorExt.PlaneXZLength(m.position - pointerPosWP);
-                bool enemy = m.faction != player.faction;
+                bool enemy = m.factionIndex != player.faction.myIndex;
                 float maxDistance = enemy ? maxDistance_enemy : maxDistance_friend;
 
                 if (dist <= maxDistance)
                 {
                     if (dist < closest ||
                         (
-                            closestObj.faction != player.faction &&
+                            closestObj.factionIndex != player.faction.myIndex &&
                             dist < closest + FriendlyPriorityDistAdd &&
                             !lookingForAttackTarget()
                         )
@@ -827,14 +827,14 @@ namespace VikingEngine.DSSWars.Players
                 foreach (var m in nearMapObjects)
                 {
                     var dist= VectorExt.PlaneXZLength(m.position - pointerPosWP);
-                    bool enemy = m.faction != player.faction;
+                    bool enemy = m.factionIndex != player.faction.myIndex;
                     float maxDistance = enemy ? maxDistance_enemy : maxDistance_friend;
 
                     if (dist <= maxDistance)
                     {
                         if (dist < closest || 
                             (
-                                closestObj.faction != player.faction && 
+                                closestObj.factionIndex != player.faction.myIndex && 
                                 dist < closest + FriendlyPriorityDistAdd && 
                                 !lookingForAttackTarget()
                             )

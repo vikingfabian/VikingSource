@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Players
                                 CitiesInView.Add(tile.CityIndex);
                             }
 
-                            int faction = tile.City().faction.parentArrayIndex;
+                            int faction = tile.City().factionIndex;
                             if (!factionsRecieved[faction])
                             {
                                 FactionsInView.Add(faction);
@@ -174,8 +174,8 @@ namespace VikingEngine.DSSWars.Players
                             {                                
                                 var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, Network.PacketReliability.Unrelyable, out var packet);
                                 {
-                                    w.Write((ushort)army.faction.parentArrayIndex);
-                                    w.Write((ushort)army.parentArrayIndex);
+                                    w.Write((ushort)army.factionIndex);
+                                    w.Write((ushort)army.myIndex);
 
                                     while (--count < GroupsPerPacket && groupC.Next())
                                     {

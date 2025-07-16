@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (DssRef.storage.centralGold)
             {
-                return faction.payGold(cost, false, null);
+                return GetFaction().payGold(cost, false, null);
             }
             else
             {
@@ -105,8 +105,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
         {
-            w.Write((ushort)army.faction.parentArrayIndex);
-            w.Write((ushort)army.parentArrayIndex);
+            w.Write((ushort)army.factionIndex);
+            w.Write((ushort)army.myIndex);
 
             army.writeNet(w);
         }
@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (army == null)
             { 
                 army = new Army();
-                army.faction = faction;
+                army.factionIndex = factionIx;
                 faction.armies.HardSet(army, armyIx);
                 needInit = true;
             }
@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
         {
-            w.Write((ushort)group.parentArrayIndex);
+            w.Write((ushort)group.myIndex);
             group.writeNet(w);
         }
 
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.GameObject
         
         public void readGameState(Faction faction, System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
-            this.faction = faction;
+            this.factionIndex = faction.myIndex;
 
             //if (faction.player.IsLocalPlayer())
             //{
@@ -300,7 +300,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DssRef.lang.UnitType_Army + " (" + parentArrayIndex.ToString() + ")";
+            return DssRef.lang.UnitType_Army + " (" + myIndex.ToString() + ")";
         }
 
         public override void TypeIcon(RichBoxContent content)
@@ -311,7 +311,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string Name(out bool mayEdit)
         {
-            mayEdit = faction.player.IsLocalPlayer();
+            mayEdit = GetFaction().player.IsLocalPlayer();
             return name.name;
         }
 
@@ -336,7 +336,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbText(DssRef.lang.UnitType_Army, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space(1);
-            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
             ownerToHud(args, !tooltip); 
         }
@@ -364,7 +364,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space(1);
 
 
-            var typeCounts = Status().getTypeCounts_Sorted(faction);
+            var typeCounts = Status().getTypeCounts_Sorted(GetFaction());
 
             foreach (var kv in typeCounts)
             {
@@ -395,7 +395,7 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             //else
             //{
-                    if (faction == args.player.faction)
+                    if (factionIndex == args.player.faction.myIndex)
                     {
                         new Interface.ArmyMenu(args.player, this, args.content);
                     }
@@ -505,7 +505,7 @@ namespace VikingEngine.DSSWars.GameObject
             buttonContent.Add(new RbText(DssRef.lang.UnitType_Army, HudLib.TitleColor_TypeName));
 
             buttonContent.space(0.5f);
-            buttonContent.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            buttonContent.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
 
             buttonContent.Add(new RbImage(SpriteName.WarsStrengthIcon));
@@ -535,7 +535,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (otherArmy != null && otherArmy != this)
             {
-                var status = Status().getTypeCounts(faction);
+                var status = Status().getTypeCounts(GetFaction());
                 foreach (var kv in status)
                 {
                     tradeSoldiersAction(ref otherArmy, kv.Key, kv.Value);
@@ -557,7 +557,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (toArmy == null)
             {
                 IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
-                toArmy = faction.NewArmy(onTile);
+                toArmy = GetFaction().NewArmy(onTile);
             }
 
             tradeSoldiersTo(type, count, toArmy);
@@ -687,7 +687,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void selectionGui(Players.LocalPlayer player, ImageGroup guiModels)
         {
-            if (player.faction == faction)
+            if (player.faction.myIndex == factionIndex)
             {
                 hoverAndSelectInfo(player, guiModels);
             }
@@ -927,7 +927,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (overviewBanner == null)
                 {
-                    overviewBanner = faction.AutoLoadModelInstance(
+                    overviewBanner = GetFaction().AutoLoadModelInstance(
                         OverviewBannerModelName, 1f);
                     overviewBanner.AddToRender(DrawGame.TerrainLayer);
 
@@ -1069,8 +1069,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var onCity = DssRef.world.tileGrid.Get(tilePos).City();
 
-                if (onCity.faction == faction)
+                if (onCity.factionIndex == factionIndex)
                 {
+                    var faction = GetFaction();
                     if (gold < goldCarryCapacity)
                     {
                         gold += faction.payMoney_MuchAsPossible(goldCarryCapacity - gold, onCity);
@@ -1139,7 +1140,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool targetsFaction(AbsMapObject otherObj)
         {
             return attackTarget != null &&
-                attackTarget.faction == otherObj.faction;
+                attackTarget.factionIndex == otherObj.factionIndex;
         }
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
@@ -1149,7 +1150,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (reason == DeleteReason.EmptyGroup &&
                 isShip && 
-                faction.grouptype == FactionGroupType.Nordic)
+                GetFaction().grouptype == FactionGroupType.Nordic)
             {
                 //var battle = battles.First();
                 //if (battle != null && battle.faction.player.IsPlayer())
@@ -1168,7 +1169,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (removeFromParent)
             {
-                faction.remove(this);
+                GetFaction().remove(this);
             }
 
             if (workerUnits != null)
@@ -1253,7 +1254,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override bool defeatedBy(Faction attacker)
+        public override bool defeatedBy(int attackerFaction)
         {
             return isDeleted;
         }
@@ -1314,12 +1315,18 @@ namespace VikingEngine.DSSWars.GameObject
             //Gain a portion of deserters on all armies
             int totalDeserters = desertSoldiers();
 
-            if (totalDeserters > 0 &&
-                faction.player.IsLocalPlayer() && 
-                faction.player.GetLocalPlayer().hud.messages.freeSpace())
+
+
+            if (totalDeserters > 0)
             {
-                faction.player.GetLocalPlayer().hud.messages.Add("Deserters!", "Hungry soldiers are deserting from your armies");
-                faction.player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
+                var faction = GetFaction();
+
+                if (faction.player.IsLocalPlayer() &&
+                    faction.player.GetLocalPlayer().hud.messages.freeSpace())
+                {
+                    faction.player.GetLocalPlayer().hud.messages.Add("Deserters!", "Hungry soldiers are deserting from your armies");
+                    faction.player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
+                }
             }
         }
 
@@ -1333,12 +1340,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
-            return DssRef.lang.UnitType_Army + parentArrayIndex.ToString() + ", " + faction.ToString();
+            return DssRef.lang.UnitType_Army + myIndex.ToString() + ", " + GetFaction().ToString();
         }
 
         public bool Is(int index, int faction)
         {
-            return this.parentArrayIndex == index && this.faction.parentArrayIndex == faction;
+            return this.myIndex == index && factionIndex == faction;
         }
 
         public override bool CanMenuFocus()

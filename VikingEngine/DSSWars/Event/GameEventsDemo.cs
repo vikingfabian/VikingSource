@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.Event
 
             if (demoState_1start_2end == 1)
             {
-                bool lostCity = defendingCity.faction.player.IsAi();
+                bool lostCity = defendingCity.GetPlayer().IsAi();
 
                 if (lostCity)
                 {

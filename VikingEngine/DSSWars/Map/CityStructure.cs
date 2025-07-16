@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.Map
                     if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
                     {
                         var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                        if (tile.CityIndex == city.parentArrayIndex && tile.IsLand())
+                        if (tile.CityIndex == city.myIndex && tile.IsLand())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
                             subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars.Map
                     if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
                     {
                         var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                        if (tile.CityIndex == city.parentArrayIndex && tile.IsLand())
+                        if (tile.CityIndex == city.myIndex && tile.IsLand())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
                             subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
@@ -194,7 +194,7 @@ namespace VikingEngine.DSSWars.Map
                     if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
                     {
                         var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                        if (tile.CityIndex == city.parentArrayIndex && tile.IsLand())
+                        if (tile.CityIndex == city.myIndex && tile.IsLand())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
                             subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
@@ -591,7 +591,7 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainMainType.Destroyed:
                 case TerrainMainType.DefaultLand:
                     //{ 
-                       return DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos)).CityIndex == city.parentArrayIndex;
+                       return DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos)).CityIndex == city.myIndex;
                     //}
                     //break;
             }

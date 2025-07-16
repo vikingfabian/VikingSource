@@ -1214,7 +1214,7 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
                         IntVector2 dir = IntVector2.Dir4Array[dirIx];
                         Tile neighbor = world.tileGrid.array[dir.X + loop.Position.X, dir.Y + loop.Position.Y];
                         bool land = neighbor.IsLand();
-                        if (neighbor.CityIndex != owner.parentArrayIndex)
+                        if (neighbor.CityIndex != owner.myIndex)
                         {
                             t.AddBorder(dirIx, land ? neighbor.CityIndex : Tile.SeaBorder);
                             borderCity = neighbor.CityIndex;
@@ -1292,7 +1292,7 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
                 //}
                 //c.SetStartFaction(goalWorkForce, world.factions, world);
 
-                if (c.faction == null)
+                if (c.factionIndex < 0)
                 {
                     int size = goalWorkForce;
                     bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
@@ -1311,7 +1311,7 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
                     }
                 }
 #if DEBUG
-                if (c.faction == null)
+                if (c.factionIndex < 0)
                 {
                     throw new Exception();
                 }
@@ -1445,7 +1445,7 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
             while (collection.Count > 0)
             {
                 var city = arraylib.RandomListMemberPop(collection, world.rnd);
-                if (city.faction == null)
+                if (city.factionIndex < 0)
                 {
                     return city;
                 }
@@ -1459,7 +1459,7 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             int ix = world.rnd.Int(world.cities.Count);
 
-            while (world.cities[ix].faction != null)
+            while (world.cities[ix].factionIndex >= 0)
             {
                 ix++;
                 if (ix >= world.cities.Count)

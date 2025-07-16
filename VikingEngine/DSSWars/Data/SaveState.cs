@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.Data
                         w.Write((ushort)gameObject.GetArmy().id);
                         break;
                     case GameObjectType.City:
-                        w.Write((ushort)gameObject.GetCity().parentArrayIndex);
+                        w.Write((ushort)gameObject.GetCity().myIndex);
                         break;
                 }
             }
@@ -255,7 +255,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeFaction(System.IO.BinaryWriter w, Faction faction)
         {
-            w.Write((ushort)faction.parentArrayIndex);
+            w.Write((ushort)faction.myIndex);
         }
 
         public int readFaction(System.IO.BinaryReader r)

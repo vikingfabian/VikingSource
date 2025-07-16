@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool debugTagged = false;
         
         
-        abstract public bool defeatedBy(Faction attacker);
+        abstract public bool defeatedBy(int attackerFaction);
 
         virtual public bool defeated()
         {

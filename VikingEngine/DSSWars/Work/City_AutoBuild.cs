@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Build;
-using VikingEngine.DSSWars.Map;
-using VikingEngine.DSSWars.Work;
-
-using VikingEngine.ToGG.MoonFall;
-using VikingEngine.DSSWars.Players;
-using VikingEngine.ToGG;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -38,11 +35,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
         {
-            
+            var player = GetPlayer();
 
             //EMPTY
             if (checkAutoBuildAvailable())
             {
+               
+
                 AutoBuildList.Clear();
 
                 BuildAndExpandType safeGuardBuild = BuildAndExpandType.NUM_NONE;
@@ -64,9 +63,9 @@ namespace VikingEngine.DSSWars.GameObject
                         AutoBuildList.Add(safeGuardBuild);
                     }
                 }
-                else if (faction.player.IsAi())
+                else if (player.IsAi())
                 {
-                    var aiPlayer = faction.player.GetAiPlayer();
+                    var aiPlayer = player.GetAiPlayer();
                     automationFocus = AutomationFocus.NoFocus;
 
                     bool warCity = aiPlayer.IsWarBorderCity(this, aiPlayer.aggressionLevel < AbsPlayer.AggressionLevel2_RandomAttacks);
@@ -150,7 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (buildingStructure.buildingLevel_logistics < 2)
                 {
-                    var p = faction.player.GetLocalPlayer();
+                    var p = player.GetLocalPlayer();
                     if (p != null)
                     {
                         return p.orders.buildQueue(this) + 1 < MaxBuildQueue();

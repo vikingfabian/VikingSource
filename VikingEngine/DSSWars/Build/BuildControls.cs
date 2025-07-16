@@ -343,16 +343,16 @@ namespace VikingEngine.DSSWars.Build
                     if (sel.mayBuild && sel.usesBuildQue != 0)
                     {
                         int availabeQueueLength;
-                        if (!city_queLength.TryGetValue(sel.City.parentArrayIndex, out availabeQueueLength))
+                        if (!city_queLength.TryGetValue(sel.City.myIndex, out availabeQueueLength))
                         {
                             availabeQueueLength = sel.City.availableBuildQueueLength(player);
-                            city_queLength.Add(sel.City.parentArrayIndex, availabeQueueLength);                           
+                            city_queLength.Add(sel.City.myIndex, availabeQueueLength);                           
                         }
 
                         sel.model.Color = (availabeQueueLength > 0 || sel.usesBuildQue <= 0)  ? Color.White : Color.Gray;
 
                         availabeQueueLength -= sel.usesBuildQue;
-                        city_queLength[sel.City.parentArrayIndex] = Bound.Min(availabeQueueLength, 0);
+                        city_queLength[sel.City.myIndex] = Bound.Min(availabeQueueLength, 0);
                     }
                 }
             }
@@ -442,7 +442,7 @@ namespace VikingEngine.DSSWars.Build
                                 if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
                                 {
                                     var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                                    if (tile.CityIndex == city.parentArrayIndex && tile.MayBuild())
+                                    if (tile.CityIndex == city.myIndex && tile.MayBuild())
                                     {
                                         topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
                                         subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
@@ -1146,7 +1146,9 @@ namespace VikingEngine.DSSWars.Build
                             new RbSpace(),
                             upgradeText }, 
                             new RbAction(city.upgradeLogistics, SoundLib.menuBuy), new RbTooltip((RichBoxContent content, object tag) =>
-                        {                            
+                        {
+                            var cityFaction = city.GetFaction();
+
                             HudLib.Label(content, DssRef.lang.XP_Upgrade);
                             content.newLine();
                             CraftBuildingLib.CraftLogisticsLevel2.toMenu(content, city);
@@ -1154,13 +1156,13 @@ namespace VikingEngine.DSSWars.Build
                             content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
                             content.newLine();
-                            content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor = city.faction.totalWorkForce >= DssConst.Logistics2_PopulationRequirement ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                            content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor =cityFaction.totalWorkForce >= DssConst.Logistics2_PopulationRequirement ? HudLib.AvailableColor : HudLib.NotAvailableColor;
 
                             content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
                             content.newLine();
                             CraftBuildingLib.CraftLogisticsLevel2.listResources(content, city);
-                            content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(city.faction.totalWorkForce));
+                            content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(cityFaction.totalWorkForce));
                             //player.hud.tooltip.create(player, content, true);
                         }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
                     }

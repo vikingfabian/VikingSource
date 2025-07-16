@@ -480,7 +480,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (player.mapLayersManager.current.DrawDetailLayer)
             {
-                if (input.Build.DownEvent && map.hover.subTile.city.faction == player.faction)
+                if (input.Build.DownEvent && map.hover.subTile.city.factionIndex == player.faction.myIndex)
                 {
                     var order = player.orders.orderOnSubTile(map.hover.subTile.subTilePos) as BuildOrder;
                     if (order != null)
@@ -724,7 +724,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 DssRef.world.tileGrid.TryGet(map.tilePosition, out var tile))
             {
                 var city = tile.City();
-                if (city.faction == player.faction)
+                if (city.factionIndex == player.faction.myIndex)
                 {
                     mapSelect(city);
                 }

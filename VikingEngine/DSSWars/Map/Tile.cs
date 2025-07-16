@@ -329,15 +329,16 @@ namespace VikingEngine.DSSWars.Map
 
         public Faction Faction()
         {
-           return DssRef.world.cities[CityIndex].faction;
+           return DssRef.world.cities[CityIndex].GetFaction();
         }
 
         public Color FactionColor()
         {
             var c = DssRef.world.cities[CityIndex];
-            if (c.faction != null && c.faction.player.profile.flag != null)
+            var p = c.GetPlayer();
+            if (p != null && p.profile.flag != null)
             {
-                return c.faction.player.profile.flag.col0_Main;
+                return p.profile.flag.col0_Main;
             }
             else
             {
@@ -442,9 +443,9 @@ namespace VikingEngine.DSSWars.Map
             float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
 
             Tile nTile;
-            var faction = City().faction;
+            int faction = City().factionIndex;
 
-            if (faction == null)
+            if (faction <= 0)
             {
                 return Color.Black;
             }
@@ -480,7 +481,7 @@ namespace VikingEngine.DSSWars.Map
                         else
                         {
                             nCity = nTile.City();
-                            if (nCity != null && faction != nCity.faction)
+                            if (nCity != null && faction != nCity.factionIndex)
                             {
                                 brightness -= 0.2f;
                                 break;
@@ -495,7 +496,7 @@ namespace VikingEngine.DSSWars.Map
                 brightness = isCityAdjacentCorner? 1.15f : 1.25f;
             }
 
-            Color color = new Color(faction.Color().ToVector3() * brightness);
+            Color color = new Color(DssRef.world.factions.Array[faction].Color().ToVector3() * brightness);
             return color;
         }
 

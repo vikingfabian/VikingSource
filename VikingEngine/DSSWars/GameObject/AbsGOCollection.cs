@@ -22,10 +22,10 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbText(string.Format(DssRef.lang.Hud_ObjectsAndCount,TypeName(), CollectionCount()), tooltip? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
         }
 
-        public override Faction GetFaction()
-        {
-            return faction;
-        }
+        //public override Faction GetFaction()
+        //{
+        //    return faction;
+        //}
 
         public override bool defeated()
         {
@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
             throw new NotImplementedException();
         }
 
-        public override bool defeatedBy(Faction attacker)
+        public override bool defeatedBy(int attackerFaction)
         {
             throw new NotImplementedException();
         }

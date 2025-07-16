@@ -65,10 +65,10 @@ namespace VikingEngine.DSSWars.GameObject
             upgradeUnit.lockMovement = lockMovement;
             upgradeUnit.gridPlacement = gridPlacement;
             //upgradeUnit.aiState = aiState;
-            upgradeUnit.parentArrayIndex = parentArrayIndex;
+            upgradeUnit.myIndex = myIndex;
             //upgradeUnit.following = following;
 
-            upgradeUnit.parentArrayIndex = parentArrayIndex;
+            upgradeUnit.myIndex = myIndex;
             upgradeUnit.attackTarget = attackTarget;
             upgradeUnit.tilePos = tilePos;
             upgradeUnit.rotation = rotation;
@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.group = group;
             this.gridPlacement = gridPlacement;
-            parentArrayIndex = group.army.faction.pickNextUnitId();
+            myIndex = group.army.GetFaction().pickNextUnitId();
             //bound = new Physics.CircleBound(Vector2.Zero, SoldierProfile().boundRadius);
             boundRadius = SoldierProfile().boundRadius;
 
@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public override string TypeName()
         {
-            return group.soldierConscript.conscript.TypeName() + " (" + parentArrayIndex.ToString() + ")";
+            return group.soldierConscript.conscript.TypeName() + " (" + myIndex.ToString() + ")";
         }
         public override void TypeIcon(RichBoxContent content)
         {
@@ -1434,7 +1434,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override bool defeatedBy(Faction attacker)
+        public override bool defeatedBy(int attackerFaction)
         {
             return Dead_IncomingDamageIncluded();
         }

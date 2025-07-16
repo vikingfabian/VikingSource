@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars
 
         public Faction(int index)
         {
-            this.parentArrayIndex = index;
+            this.myIndex = index;
 
             cities = new SpottedArray<GameObject.City>(8);
             armies = new SpottedArray<Army>(16);
@@ -93,12 +93,12 @@ namespace VikingEngine.DSSWars
 
             if (arrayIndex >= 0)
             {
-                this.parentArrayIndex = arrayIndex;
+                this.myIndex = arrayIndex;
                 addTo.factions.HardSet(this, arrayIndex);
             }
             else
             {
-                this.parentArrayIndex = addTo.factions.Add(this);
+                this.myIndex = addTo.factions.Add(this);
             }
             initVisuals(addTo.metaData);
 
@@ -123,7 +123,7 @@ namespace VikingEngine.DSSWars
 
         public void initVisuals(WorldMetaData worldMeta)
         {
-            worldMeta.setObjSeed(parentArrayIndex);
+            worldMeta.setObjSeed(myIndex);
            //player.SetProfile(new PlayerProfile(factiontype, worldMeta));
         }
 
@@ -137,7 +137,7 @@ namespace VikingEngine.DSSWars
             var citiesC = cities.counter();
             while (citiesC.Next())
             {
-                w.Write((ushort)citiesC.sel.parentArrayIndex);
+                w.Write((ushort)citiesC.sel.myIndex);
             }
 
             w.Write((ushort)armies.Count); 
@@ -277,7 +277,7 @@ namespace VikingEngine.DSSWars
             
             foreach(var c in cityList)
             {
-                w.Write((ushort)c.parentArrayIndex);
+                w.Write((ushort)c.myIndex);
             }
 
             w.Write(availableForPlayer);
@@ -336,13 +336,13 @@ namespace VikingEngine.DSSWars
         {
             if (overrideIx < 0)
             {
-                army.parentArrayIndex = armies.Add(army);
+                army.myIndex = armies.Add(army);
             }
             else
             {
                 armies.HardSet(army, overrideIx);
             }
-            army.faction = this;
+            army.factionIndex = this.myIndex;
         }
 
         public void AddCity(City city, bool duringStartUp)
@@ -375,7 +375,7 @@ namespace VikingEngine.DSSWars
                         city.workTemplate.onFactionChange(workTemplate);
                         city.defaultResourceBuffer();
 
-                        if (mainCity == null || mainCity.faction != this)
+                        if (mainCity == null || mainCity.factionIndex != myIndex)
                         {
                             refreshMainCity();
                         }
@@ -479,7 +479,7 @@ namespace VikingEngine.DSSWars
             var citiesC = cities.counter();
             while (citiesC.Next())
             {
-                if (citiesC.sel.faction == this)
+                if (citiesC.sel.factionIndex == myIndex)
                 {
                     citiesC.sel.oneSecUpdate();
                     nobelHouseCount += citiesC.sel.buildingStructure.Nobelhouse_count;
@@ -592,14 +592,14 @@ namespace VikingEngine.DSSWars
         public void remove(Army army)
         {
             Debug.CrashIfThreaded();
-            armies.RemoveAt_EqualSafeCheck(army, army.parentArrayIndex);
+            armies.RemoveAt_EqualSafeCheck(army, army.myIndex);
         }
 
         public void remove(City city)
         {   
             cities.Remove(city);
             if (city == mainCity ||
-               mainCity == null || mainCity.faction != this)
+               mainCity == null || mainCity.factionIndex != myIndex)
             {
                 refreshMainCity();                     
             }
@@ -631,7 +631,7 @@ namespace VikingEngine.DSSWars
 
         public void refreshMainCity()
         {
-            if (mainCity != null && mainCity.faction != this)
+            if (mainCity != null && mainCity.factionIndex != myIndex)
             {
                 mainCity = null;
             }
@@ -904,7 +904,7 @@ namespace VikingEngine.DSSWars
                                 {
                                     var thirdFaction = m.opponent(otherFaction);
 
-                                    var thisAndThirdRelation = diplomaticRelations[thirdFaction.parentArrayIndex];
+                                    var thisAndThirdRelation = diplomaticRelations[thirdFaction.myIndex];
                                     if (thisAndThirdRelation == null)
                                     {
                                         //Gain bad relation
@@ -1023,7 +1023,7 @@ namespace VikingEngine.DSSWars
             //{
             //    return Owner.Name;
             //}
-            return $"Faction ({parentArrayIndex}) - Owner ({player.Name}), Type({factiontype})";
+            return $"Faction ({myIndex}) - Owner ({player.Name}), Type({factiontype})";
         }
 
         public string PlayerName
@@ -1036,7 +1036,7 @@ namespace VikingEngine.DSSWars
 
         public void WriteNetId(System.IO.BinaryWriter w)
         {
-            w.Write((byte)parentArrayIndex);
+            w.Write((byte)myIndex);
         }
         //public Players.AbsPlayer Owner
         //{
@@ -1125,7 +1125,7 @@ namespace VikingEngine.DSSWars
             for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
             {
                 if (diplomaticRelations[relIx] != null &&
-                    relIx != parentArrayIndex &&
+                    relIx != myIndex &&
                    diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN3_War)
                 {
                     opponents.Add(DssRef.world.factions.Array[relIx]);
@@ -1141,10 +1141,10 @@ namespace VikingEngine.DSSWars
                 DssRef.state.events.StoryIndex() >= EventsOrder.DarkLord;
         }
         
-        public override Faction GetFaction()
-        {
-            return this;
-        }
+        //public override Faction GetFaction()
+        //{
+        //    return this;
+        //}
 
         public Army GetArmyFromId(int id)
         {

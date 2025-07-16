@@ -30,8 +30,10 @@ namespace VikingEngine.DSSWars.GameObject
              
         public void async_workUpdate()
         {
-            if (faction == null || faction.player == null)
+            if (factionIndex < 0)
             { return; }
+
+            var faction = GetFaction();
 
             bool fullUpdate = DssRef.state.host || faction.player.IsLocalPlayer();
 
@@ -199,7 +201,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
             {
-                if (parentArrayIndex == 3 || debugTagged)
+                if (myIndex == 3 || debugTagged)
                 {
                     lib.DoNothing();
                 }
@@ -895,7 +897,7 @@ namespace VikingEngine.DSSWars.GameObject
                 int buyFood = -res_food.amount;
 
                 int cost = (int)(buyFood * DssConst.FoodGoldValue_BlackMarket);
-                faction.payGold(cost, true, this);
+                GetFaction().payGold(cost, true, this);
                 blackMarketCosts_food.add(cost);
                 res_food.amount += buyFood;
 

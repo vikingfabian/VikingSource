@@ -328,7 +328,7 @@ namespace VikingEngine.DSSWars.Interface
             switch (player.progressSubTab)
             {
                 default:
-                    new TechnologyHud().technologyHud(content, player, city, city.faction);
+                    new TechnologyHud().technologyHud(content, player, city, city.GetFaction());
                     break;
 
                 case ProgressSubTab.Experience:
@@ -1685,7 +1685,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 default:
                     content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
-                    city.workTemplate.toHud(player, content, player.resourcesSubTab, city.faction, city);
+                    city.workTemplate.toHud(player, content, player.resourcesSubTab, city.GetFaction(), city);
                     break;
             }
 
@@ -2075,7 +2075,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void tradeTab(RichBoxContent content)
         {
-            city.tradeTemplate.toHud(player,content, city.faction, city);
+            city.tradeTemplate.toHud(player,content, city.GetFaction(), city);
         }
 
         //void tabClick(int tab)

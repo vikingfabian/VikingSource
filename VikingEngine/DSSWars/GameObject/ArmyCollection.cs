@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.GameObject
         void removeClick(AbsMapObject obj)
         {
             remove(obj.GetArmy());
-            obj.faction.player.GetLocalPlayer().hud.needRefresh = true;
+            obj.GetPlayer().GetLocalPlayer().hud.needRefresh = true;
         }
 
         void remove(Army army)
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void selectClick(AbsMapObject obj)
         {            
-            obj.faction.player.GetLocalPlayer().gameControls.mapSelect(obj);
+            obj.GetPlayer().GetLocalPlayer().gameControls.mapSelect(obj);
 
             DeleteMembers(false);
         }
@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.GameObject
                     obj.army.disbandArmyAction();
                 }
 
-                objects[0].army.faction.player.GetLocalPlayer().gameControls.clearSelection();
+                objects[0].army.GetPlayer().GetLocalPlayer().gameControls.clearSelection();
 
                 DeleteMembers(false);
             }

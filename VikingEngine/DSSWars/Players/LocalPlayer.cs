@@ -431,7 +431,7 @@ namespace VikingEngine.DSSWars.Players
                 for (int i = 0; i < pinsCount; ++i)
                 {
                     LocationPin pin = new LocationPin(this, r, subversion);
-                    pin.parentArrayIndex = pins.Add(pin);
+                    pin.myIndex = pins.Add(pin);
                     pin.basicInit();
                 }
             }
@@ -515,7 +515,7 @@ namespace VikingEngine.DSSWars.Players
         {
 #if DEBUG
             LocationPin pin = new LocationPin(this,gameControls.map.pointerPosWP);
-            pin.parentArrayIndex = pins.Add(pin);
+            pin.myIndex = pins.Add(pin);
             pin.basicInit();
 #endif
         }
@@ -657,7 +657,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     foreach (var n in citiesC.sel.neighborCities)
                     {
-                        DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
+                        DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
                     }
                 }
             }
@@ -669,7 +669,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 foreach (var n in city.neighborCities)
                 {
-                    DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
+                    DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
                 }                
             }
 

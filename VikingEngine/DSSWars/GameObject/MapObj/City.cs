@@ -111,7 +111,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (toLevel == 2)
             {
-                return faction.totalWorkForce > DssConst.Logistics2_PopulationRequirement;
+                return GetFaction().totalWorkForce > DssConst.Logistics2_PopulationRequirement;
             }
 
             return false;
@@ -231,7 +231,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (commit)
                         {
-                            var player = faction.player.GetLocalPlayer();
+                            var player = GetFaction().player.GetLocalPlayer();
                             if (player != null)
                             {
                                 player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel);
@@ -304,7 +304,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public City(int index, IntVector2 pos, CityType type, WorldData world)
         {
-            this.parentArrayIndex = index;
+            this.myIndex = index;
 
             this.tilePos = pos;
             this.cityType = type;
@@ -312,12 +312,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public City(int index)
         {
-            this.parentArrayIndex = index;
+            this.myIndex = index;
         }
 
         public City(int index, System.IO.BinaryReader r, int version)
         {
-            this.parentArrayIndex = index;
+            this.myIndex = index;
             readMapFile(r, version);
         }
 
@@ -916,7 +916,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             writeMapFile(w);
 
-            w.Write((ushort)faction.parentArrayIndex);
+            w.Write((ushort)factionIndex);
 
             w.Write((byte)Tile().heightLevel);
         }
@@ -926,8 +926,8 @@ namespace VikingEngine.DSSWars.GameObject
             //guardCount = r.ReadUInt16();
             //maxGuardSize = r.ReadUInt16();
 
-            int factionIx = r.ReadUInt16();
-            faction = DssRef.world.factions[factionIx];
+            factionIndex = r.ReadUInt16();
+            //faction = DssRef.world.factions[factionIx];
 
             onGameStart(false);
             int height = r.ReadByte();
@@ -953,7 +953,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Reliable, out var packet);
                     {
-                        w.Write((ushort)parentArrayIndex);
+                        w.Write((ushort)myIndex);
                         w.Write((byte)part);
                         writeNet_update(w, part);
                     }
@@ -1039,7 +1039,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
 
                                 if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out Tile t) &&
-                                        t.IsLand() && t.CityIndex == parentArrayIndex)
+                                        t.IsLand() && t.CityIndex == myIndex)
                                 {
                                     const int SubStartTrialCount = 4;
                                     IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
@@ -1539,6 +1539,8 @@ namespace VikingEngine.DSSWars.GameObject
         void createOverViewModel()
         {
             //faction.profile.modelColorReplace
+            var faction = GetFaction();
+
             if (faction.player.profile.flag != null)
             {
                 overviewModel?.DeleteMe();
@@ -1580,7 +1582,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void update()
         {
-            if (parentArrayIndex == 441)
+            if (myIndex == 441)
             {
                 lib.DoNothing();
             }
@@ -1644,7 +1646,7 @@ namespace VikingEngine.DSSWars.GameObject
                 res_food.amount > 0 &&
                 homeUsers() < workersMax())
             {
-                var result = Bound.Min( workForce.amount / 600.0 * faction.growthMultiplier, 0.1);
+                var result = Bound.Min( workForce.amount / 600.0 * GetFaction().growthMultiplier, 0.1);
                 if (Culture == CityCulture.LargeFamilies)
                 {
                     result *= 2;
@@ -1683,7 +1685,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             const int MinWorkforce = 8;
 
-            if (parentArrayIndex == 35 || debugTagged)
+            if (myIndex == 35 || debugTagged)
             {
                 lib.DoNothing();
             }
@@ -1721,7 +1723,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (workForce.amount > Achievements.LargePopulationCount &&
                  !DssRef.achieve.largePopulation &&
-                 faction.player.IsLocalPlayer())
+                 GetFaction().player.IsLocalPlayer())
             {
                 DssRef.achieve.largePopulation = true;
                 DssRef.achieve.UnlockAchievement(AchievementIndex.large_population);
@@ -1741,6 +1743,7 @@ namespace VikingEngine.DSSWars.GameObject
                     starvingTimeSeconds = -30;
                     starving = false;
 
+                    var faction = GetFaction();
                     if (faction.player.IsLocalPlayer())
                     {
                         faction.player.GetLocalPlayer().hud.messages.cityLowFoodMessage(this);
@@ -1773,6 +1776,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 try
                 {
+                    Faction faction = GetFaction();
                     Faction newOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
                     if (newOwner != faction)
                     {
@@ -1928,7 +1932,8 @@ namespace VikingEngine.DSSWars.GameObject
             float armyDefence = 0;
             const int DominanceTileRadius = 4;
 
-            DssRef.world.unitCollAreaGrid.collectArmies(faction, tilePos, 2,
+            Faction faction = GetFaction();
+            DssRef.world.unitCollAreaGrid.collectArmies(factionIndex, tilePos, 2,
                 DssRef.world.unitCollAreaGrid.armies_nearUpdate);
 
             foreach (var m in DssRef.world.unitCollAreaGrid.armies_nearUpdate)
@@ -1941,7 +1946,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             ai_armyDefenceValue = armyDefence;
 
-            DssRef.world.unitCollAreaGrid.collectOpponentGroups(faction, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
+            DssRef.world.unitCollAreaGrid.collectOpponentGroups(factionIndex, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
             //detailObj.asynchFindBattleTarget(groups);
 
             //if (guardCount <= 0 && armyDefence == 0)
@@ -2093,7 +2098,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (parentArrayIndex == 30)
+            if (myIndex == 30)
             {
                 lib.DoNothing();
             }
@@ -2175,16 +2180,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override bool Equals(object obj)
         {
-            return obj is City && ((City)obj).parentArrayIndex == parentArrayIndex;
+            return obj is City && ((City)obj).myIndex == myIndex;
         }
 
         public override string ToString()
         {
-            return "City" + parentArrayIndex.ToString();
+            return "City" + myIndex.ToString();
         }
 
         public override string Name(out bool mayEdit)
         {
+            Faction faction = GetFaction();
             if (faction == null)
             {
                 mayEdit = false;
@@ -2201,7 +2207,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DssRef.lang.UnitType_City + " (" + parentArrayIndex + ")";
+            return DssRef.lang.UnitType_City + " (" + myIndex + ")";
         }
         //public override SpriteName TypeIcon()
         //{
@@ -2216,6 +2222,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void CityPresentationHud(ObjectHudArgs args, bool tooltip)
         {
+            Faction faction = GetFaction();
             if (faction != null)
             {
                 nameToHud(args.content, !tooltip);
@@ -2231,7 +2238,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new RbText(DssRef.lang.UnitType_City, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
                 args.content.space(1);
-                args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+                args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
                 ownerToHud(args, !tooltip);
             }
@@ -2273,7 +2280,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.newLine();
             //if (args.ShowFull)
             {
-                if (faction == args.player.faction)
+                if (GetFaction() == args.player.faction)
                 {
                     CityDetailsHud(true, args.player, args.content);
                     new Interface.CityMenu(args.player, this, args.content);
@@ -2291,6 +2298,8 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void CityDetailsHud(bool minimal, LocalPlayer player, RichBoxContent content)
         {
+            Faction faction = GetFaction();
+
             if (minimal)
             {
                 content.Add(new RbImage(SpriteName.WarsWorker));
@@ -2882,22 +2891,26 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void SetNeighborToPlayer()
         {
+            Faction faction = GetFaction();
+
             foreach (int n in neighborCities)
             {
-                City c = Get(n);
-                if (c.faction != this.faction && c.faction.player is Players.AiPlayer)
+                var cFaction = Get(n).GetFaction();
+                if (cFaction != faction && cFaction.player is Players.AiPlayer)
                 {
-                    c.faction.player.IsPlayerNeighbor = true;
+                    cFaction.player.IsPlayerNeighbor = true;
                 }
             }
         }
 
         public bool HasPlayerNeighbor()
         {
+            Faction faction = GetFaction();
+
             foreach (int n in neighborCities)
             {
-                City c = Get(n);
-                if (c.faction != this.faction && c.faction.player.IsPlayerNeighbor)
+                var cFaction = Get(n).GetFaction();
+                if (cFaction != faction && cFaction.player.IsPlayerNeighbor)
                 {
                     return true;
                 }
@@ -2905,15 +2918,15 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public override void setFaction(Faction faction)
+        public override void setFaction(Faction newFaction)
         {
-            
-            if (this.faction != faction)
+            Faction prevOwner = GetFaction_Safe();
+            if (prevOwner != newFaction)
             {
-                Faction prevOwner = this.faction;
-                this.faction = faction;
+                //Faction prevOwner = this.faction;
+                prevOwner = newFaction;
                 technology.destroyTechOnTakeOver();
-                faction.AddCity(this, false);
+                newFaction.AddCity(this, false);
                 if (prevOwner != null)
                 {
                     prevOwner.remove(this);
@@ -2928,6 +2941,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (DssRef.world != null)
             {
+                var faction = GetFaction();
                 DssRef.world.BordersUpdated = true;
 
                 //detailObj?.onNewOwner();
@@ -3140,7 +3154,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Army recruitToClosestArmy()
         {
-            return faction.ClosestFriendlyArmy(position, 3.6f);
+            return GetFaction().ClosestFriendlyArmy(position, 3.6f);
         }
 
         public override City GetCity()
@@ -3148,9 +3162,9 @@ namespace VikingEngine.DSSWars.GameObject
             return this;
         }
 
-        public override bool defeatedBy(Faction attacker)
+        public override bool defeatedBy(int attackerFaction)
         {
-            return faction == attacker;
+            return factionIndex == attackerFaction;
         }
 
         //public override bool defeated()
@@ -3165,7 +3179,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override bool aliveAndBelongTo(int faction)
         {
-            return this.faction.parentArrayIndex == faction;
+            return this.factionIndex == faction;
         }
 
         public override GameObjectType gameobjectType()

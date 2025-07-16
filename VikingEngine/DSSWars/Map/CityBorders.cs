@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.Map
                     return;
 
                 var tile = DssRef.world.tileGrid.Get(loop.Position);
-                if (tile.CityIndex == current.parentArrayIndex && tile.BorderCount > 0)
+                if (tile.CityIndex == current.myIndex && tile.BorderCount > 0)
                 {                     
                     var center = WP.ToMapPos(loop.Position);
                     
@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.Map
 
             int regionToFrame(int region)
             {
-                if (DssRef.world.cities[region].faction == player.faction)
+                if (DssRef.world.cities[region].factionIndex == player.faction.myIndex)
                 {
                     return 0;
                 }

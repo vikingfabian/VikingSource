@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Interface
                 var hoverCity = tile.City();
                 hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
 
-                if (hoverCity.faction == player.faction)
+                if (hoverCity.factionIndex == player.faction.myIndex)
                 {
                     content.newLine();
                     //RichBoxContent buttonContent = new RichBoxContent();

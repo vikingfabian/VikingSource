@@ -105,6 +105,7 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierGroup(AbsArmy army, SoldierConscriptProfile conscript, Vector3 startPos)
         {
             this.army = army;
+            this.factionIndex = army.factionIndex;
             soldierConscript = conscript;
             initPart1();
 
@@ -124,9 +125,9 @@ namespace VikingEngine.DSSWars.GameObject
                 setDetailLevel(true);
             }
 
-            if (army.faction.player.IsLocalPlayer())
+            if (army.GetFaction().player.IsLocalPlayer())
             {
-                army.faction.player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
+                army.GetFaction().player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
             }
         }
 
@@ -539,13 +540,14 @@ namespace VikingEngine.DSSWars.GameObject
             AbsSoldierUnit s;
 
             s = typeProfile.CreateUnit();
+            s.factionIndex = this.factionIndex;
             s.UnitType = typeProfile.unitType;
             s.soldierData = data;
 
 
             s.InitLocal(position, gridPlacement, area, this);
             s.position = WP.ToWorldPos(area); //temp pos
-            s.parentArrayIndex = soldiers.Add(s);
+            s.myIndex = soldiers.Add(s);
 
             if (army.inRender_detailLayer && models)
             {
@@ -881,7 +883,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (army.IsArmy())
                             {
                                 var city = DssRef.world.tileGrid.Get(tilePos).City();
-                                if (DssRef.diplomacy.InWar(army.faction, city.faction))
+                                if (DssRef.diplomacy.InWar(army.factionIndex, city.factionIndex))
                                 {
                                     if (city.tilePos.SideLength(tilePos) <= 2 || army.GetArmy().attackTarget == city)
                                     {
@@ -903,7 +905,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (Ref.peRnd.Chance(0.1))
                             {
                                 var city = DssRef.world.tileGrid.Get(tilePos).City();
-                                if (DssRef.diplomacy.InWar(army.faction, city.faction))
+                                if (DssRef.diplomacy.InWar(army.factionIndex, city.factionIndex))
                                 {
                                     goalWp = WP.ToWorldPos(city.tilePos);
 
@@ -1033,7 +1035,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbText(soldierConscript.conscript.TypeName(), tooltipOrGroup ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space(1);
-            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
             if (compact)
             {
@@ -1490,7 +1492,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (attackTarget_soldierGroupOrCity != null && 
                     (attackTarget_soldierGroupOrCity.defeated() || 
-                    !DssRef.diplomacy.InWar(army.faction, attackTarget_soldierGroupOrCity.GetFaction()) ||
+                    !DssRef.diplomacy.InWar(army.factionIndex, attackTarget_soldierGroupOrCity.factionIndex) ||
                     distance(attackTarget_soldierGroupOrCity) > 4)
                )
             {
@@ -1514,7 +1516,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return;
             }
 
-            DssRef.world.unitCollAreaGrid.collectOpponentGroups(army.faction, tilePos, out  List<GameObject.SoldierGroup> groups, out List<City> cities);
+            DssRef.world.unitCollAreaGrid.collectOpponentGroups(army.factionIndex, tilePos, out  List<GameObject.SoldierGroup> groups, out List<City> cities);
 
             AbsGroup nearest = null;
             float distanceValue = float.MaxValue;
@@ -1555,7 +1557,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (nearest != null)
             {
-                if (!nearest.defeatedBy(army.faction) && nearest != attackTarget_soldierGroupOrCity)
+                if (!nearest.defeatedBy(army.factionIndex) && nearest != attackTarget_soldierGroupOrCity)
                 {
                     if (attackTarget_soldierGroupOrCity != null)
                     {
@@ -1607,9 +1609,9 @@ namespace VikingEngine.DSSWars.GameObject
             if (rawValue <= toGroup.highTargetValueToOpponent)
             {
                 toGroup.highTargetValueToOpponent = rawValue;
-                toGroup.highTargetValueToOpponent_tagId = this.parentArrayIndex;
+                toGroup.highTargetValueToOpponent_tagId = this.myIndex;
             }
-            else if (toGroup.highTargetValueToOpponent_tagId != this.parentArrayIndex)
+            else if (toGroup.highTargetValueToOpponent_tagId != this.myIndex)
             {
                 value *= 2;
             }
@@ -1951,7 +1953,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //Debug.CrashIfThreaded();
            
-            soldiers.RemoveAt_EqualSafeCheck(soldier, soldier.parentArrayIndex);
+            soldiers.RemoveAt_EqualSafeCheck(soldier, soldier.myIndex);
             soldierCount = soldiers.Count;
 
             if (soldiers.Count <= 0)
@@ -1973,7 +1975,7 @@ namespace VikingEngine.DSSWars.GameObject
                 double dist = WP.birdDistance(closestCity, tilePos);
                 double keep = lib.ValueOnPercentScale(12, 3, dist, true) * 0.7 + 0.1;
 
-                if (deserter && closestCity.faction == this.GetFaction())
+                if (deserter && closestCity.factionIndex == this.factionIndex)
                 { 
                     keep *= 0.6;
                 }
@@ -2143,7 +2145,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        public override bool defeatedBy(Faction attacker)
+        public override bool defeatedBy(int attackerFaction)
         {
             return soldierCount <= 0;
         }
@@ -2292,10 +2294,10 @@ namespace VikingEngine.DSSWars.GameObject
         //    }            
         //}
 
-        public override Faction GetFaction()
-        {
-            return army.faction;
-        }
+        //public override Faction GetFaction()
+        //{
+        //    return army.faction;
+        //}
 
         public override AbsMapObject RelatedMapObject()
         {
@@ -2355,7 +2357,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override string ToString()
         {
             var type = soldierConscript.unitType();
-            return "Group " + type.ToString() + " x" + soldiers.Count.ToString() + ", id" + parentArrayIndex.ToString();
+            return "Group " + type.ToString() + " x" + soldiers.Count.ToString() + ", id" + myIndex.ToString();
         }
 
         virtual public bool InGuardPost()

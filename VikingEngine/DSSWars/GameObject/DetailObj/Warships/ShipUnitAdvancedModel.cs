@@ -55,13 +55,15 @@ namespace VikingEngine.DSSWars.GameObject
 
             float crewScale = DssConst.Men_StandardModelScale * 1.6f;
 
-            captain = soldier.group.army.faction.AutoLoadModelInstance_batched(
+            var faction = soldier.GetFaction();
+
+            captain = faction.AutoLoadModelInstance_batched(
                 LootFest.VoxelModelName.wars_captain, DssConst.Men_StandardModelScale * 0.7f);
 
-            leftcrew = soldier.group.army.faction.AutoLoadModelInstance_batched(
+            leftcrew = faction.AutoLoadModelInstance_batched(
                 LootFest.VoxelModelName.wars_shipcrew, crewScale);
 
-            rightcrew = soldier.group.army.faction.AutoLoadModelInstance_batched(
+            rightcrew = faction.AutoLoadModelInstance_batched(
                 LootFest.VoxelModelName.wars_shipcrew, crewScale);
 
            

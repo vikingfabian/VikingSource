@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars
             foreach (var rel in relationFlags)
             {
                 Faction faction = DssRef.world.factions[rel.faction];
-                if (faction!= null && faction.parentArrayIndex == 18)
+                if (faction!= null && faction.myIndex == 18)
                 {
                     lib.DoNothing();
                 }
@@ -333,7 +333,7 @@ namespace VikingEngine.DSSWars
                     rel.tilePos = faction.landAreaCenter(out cityPos);
 
                     rel.inCullingView = tileBound.IntersectTilePoint(rel.tilePos);
-                    rel.relation = DssRef.diplomacy.GetRelationType(player.faction.parentArrayIndex, rel.faction); 
+                    rel.relation = DssRef.diplomacy.GetRelationType(player.faction.myIndex, rel.faction); 
                 }
             }
 

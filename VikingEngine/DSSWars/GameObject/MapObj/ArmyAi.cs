@@ -394,7 +394,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (attackTarget_sp.gameobjectType() == GameObjectType.City)
                     {
-                        attackTarget_sp.GetCity().setFaction(faction);
+                        attackTarget_sp.GetCity().setFaction(GetFaction());
                     }
                     else
                     {
@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         bool orderOutsidePlayerAttension(AbsMapObject target)
         {            
-            return target.faction.player.IsAi() &&
+            return target.GetPlayer().IsAi() &&
                 orderOutsidePlayerAttension(target.tilePos);
         }
 
@@ -472,10 +472,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Order_Attack_Setup(AbsMapObject attackTarget)
         {
-            DssRef.diplomacy.declareWar(faction, attackTarget.faction);
+            DssRef.diplomacy.declareWar(GetFaction(), attackTarget.GetFaction());
             clearObjective();
             this.attackTarget = attackTarget;
-            this.attackTargetFaction = attackTarget.faction.parentArrayIndex;
+            this.attackTargetFaction = attackTarget.factionIndex;
             //objective = ArmyObjective.Attack;
         }
 
@@ -562,7 +562,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             var attackTarget_sp = attackTarget;
             if (attackTarget_sp != null && 
-                attackTarget_sp.faction == otherFaction)
+                attackTarget_sp.factionIndex == otherFaction.myIndex)
             {
                 haltMovement();
             }

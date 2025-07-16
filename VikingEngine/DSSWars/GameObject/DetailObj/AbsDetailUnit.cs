@@ -200,14 +200,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
             var attackTarget_sp = attackTarget;
 
-            if (attackTarget_sp != null && attackTarget_sp.defeatedBy(GetFaction()))
+            if (attackTarget_sp != null && attackTarget_sp.defeatedBy(factionIndex))
             {
                 attackTarget = null;
             }
 
             var nextAttackTarget_sp= nextAttackTarget;
             nextAttackTarget = null;
-            if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(GetFaction()))
+            if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(factionIndex))
             {
                 attackTarget = nextAttackTarget_sp;
             }
@@ -305,9 +305,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 ++enemyFaction.player.GetLocalPlayer().statistics.EnemySoldiersKilled;
             }
-            if (group.army.faction.player.IsLocalPlayer())
+            if (group.army.GetPlayer().IsLocalPlayer())
             {
-                ++group.army.faction.player.GetLocalPlayer().statistics.FriendlySoldiersLost;
+                ++group.army.GetPlayer().GetLocalPlayer().statistics.FriendlySoldiersLost;
             }
 
             if (fullUpdate)
@@ -499,7 +499,7 @@ namespace VikingEngine.DSSWars.GameObject
             return health <= 0;
         }
 
-        public override bool defeatedBy(Faction attacker)
+        public override bool defeatedBy(int attackerFaction)
         {
             return health <= 0;
         }
@@ -524,14 +524,14 @@ namespace VikingEngine.DSSWars.GameObject
             get { return player().IsLocal; }
         }
 
-        override public Faction GetFaction()
-        {
-            return group.army.faction;
-        }
+        //override public Faction GetFaction()
+        //{
+        //    return group.army.faction;
+        //}
 
         public Players.AbsPlayer player()
         {
-            return group.army.faction.player;
+            return GetFaction().player;
         }
 
         virtual public Vector3 projectileStartPos()
@@ -576,8 +576,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
-            string groupName = group == null? "" : " group(" + group.parentArrayIndex.ToString() + ")";
-            return DetailUnitType().ToString() + "(" + parentArrayIndex.ToString() + ")" + groupName + " p" + " area(" + tilePos.X.ToString() + "," + tilePos.Y.ToString() + ")";
+            string groupName = group == null? "" : " group(" + group.myIndex.ToString() + ")";
+            return DetailUnitType().ToString() + "(" + myIndex.ToString() + ")" + groupName + " p" + " area(" + tilePos.X.ToString() + "," + tilePos.Y.ToString() + ")";
         }
     }
 

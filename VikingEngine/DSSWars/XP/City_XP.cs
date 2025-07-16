@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (buildingCount > 0)
                 {
                     //Spread 
-                    var citiesC = faction.cities.counter();
+                    var citiesC = GetFaction().cities.counter();
                     while (citiesC.Next())
                     {
                         if (citiesC.sel != this && citiesC.sel.researchBuildingCount(true, techType) > 0)

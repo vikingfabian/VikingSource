@@ -217,6 +217,8 @@ namespace VikingEngine.DSSWars.Work
 
         void workComplete(City city, bool visualUnit)
         {
+            var faction = city.GetFaction();
+
             WorkExperienceType gainXp= WorkExperienceType.NONE;
 
             float energyCost = processTimeLengthSec * DssConst.WorkTeamEnergyCost;
@@ -235,7 +237,7 @@ namespace VikingEngine.DSSWars.Work
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
                     city.res_food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
-                    city.faction.res_food.onChange(-eatAmount);
+                    faction.res_food.onChange(-eatAmount);
                     energy += eatAmount * DssRef.difficulty.FoodEnergySett;
                     break;
 
@@ -468,10 +470,10 @@ namespace VikingEngine.DSSWars.Work
                     int payment = carry.amount;
                     ItemResource recieved = toCity.MakeTrade(tradeForItem, payment);
 
-                    if (city.faction != toCity.faction)
+                    if (city.factionIndex != toCity.factionIndex)
                     {
-                        city.faction.CityTradeImportCounting += payment;
-                        toCity.faction.CityTradeExportCounting += payment;
+                        faction.CityTradeImportCounting += payment;
+                        toCity.GetFaction().CityTradeExportCounting += payment;
                     }
 
                     carry = recieved;
@@ -681,7 +683,7 @@ namespace VikingEngine.DSSWars.Work
 
                 if (orderId >= 0)
                 {
-                    city.faction.player.orders?.CompleteOrderId(orderId);
+                    faction.player.orders?.CompleteOrderId(orderId);
                 }
             }
 
@@ -916,9 +918,9 @@ namespace VikingEngine.DSSWars.Work
         {
             if (orderId >= 0)
             {
-                if (city.faction.player.orders != null)
+                if (city.GetPlayer().orders != null)
                 {
-                    return city.faction.player.orders.GetFromId(orderId) != null;
+                    return city.GetPlayer().orders.GetFromId(orderId) != null;
                 }
             }
 

@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Map
                             for (int dir = 0; dir < 4; ++dir)
                             {
                                 int borderRegion = t.GetBorder(dir);
-                                if (borderRegion >= 0 && GameObject.City.Get(borderRegion).faction != t.City().faction)
+                                if (borderRegion >= 0 && GameObject.City.Get(borderRegion).factionIndex != t.City().factionIndex)
                                 {
                                     //if (dir.toOtherRegion >= 0 && GameObject.City.Get(dir.toOtherRegion).Faction != t.City.Faction)
                                     //{

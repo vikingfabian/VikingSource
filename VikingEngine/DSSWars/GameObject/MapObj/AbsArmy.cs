@@ -28,13 +28,13 @@ namespace VikingEngine.DSSWars.GameObject
         public void AddSoldierGroup(SoldierGroup group)
         {
             //Hitta en plats bland alla grupper
-            group.parentArrayIndex = groups.Add(group);
+            group.myIndex = groups.Add(group);
             group.army = this;
         }
         virtual public void remove(SoldierGroup group)
         {
             Debug.CrashIfThreaded();
-            groups.RemoveAt_EqualSafeCheck(group, group.parentArrayIndex);            
+            groups.RemoveAt_EqualSafeCheck(group, group.myIndex);            
         }
 
         public void asyncBattleUpdate()
@@ -67,11 +67,11 @@ namespace VikingEngine.DSSWars.GameObject
             else if (groupsInBattle >= 2)
             {
                 inBattle = true;
-                if (faction.player.IsLocalPlayer())
+                if (GetPlayer().IsLocalPlayer())
                 {
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        var localplayer = faction.player.GetLocalPlayer();
+                        var localplayer = GetPlayer().GetLocalPlayer();
                         if (localplayer.battleMessageCheck(tilePos))
                         {
                             RichBoxContent content = new RichBoxContent();

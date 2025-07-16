@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             base.writeGameState(w);
 
-            w.Write((ushort)city.parentArrayIndex);
+            w.Write((ushort)city.myIndex);
             subTile.write(w);
             w.Write((byte)buildingType);
         }
@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override bool refreshAvailable(Faction faction)
         {
-            return city.faction == faction;
+            return city.factionIndex == faction.myIndex;
         }
 
         override public OrderType GetWorkType(City city)

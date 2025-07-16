@@ -278,10 +278,10 @@ namespace VikingEngine.DSSWars.Map
                 {
                     Dictionary<int, int> cityInfluence = new Dictionary<int, int>();
                     ref var inf = ref inflenceMap.GetRef(loop.Position);
-                    cityInfluence.Add(inf.city.parentArrayIndex, 1);
+                    cityInfluence.Add(inf.city.myIndex, 1);
 
                     int mostInfluence = 1;
-                    int mostInfluenceCity = inf.city.parentArrayIndex;
+                    int mostInfluenceCity = inf.city.myIndex;
 
                     foreach (var dir in IntVector2.Dir8Array)
                     {
@@ -289,13 +289,13 @@ namespace VikingEngine.DSSWars.Map
                         if (world.tileGrid.Get(npos).IsLand())
                         {
                             var city = inflenceMap.Get(npos).city;
-                            if (cityInfluence.ContainsKey(city.parentArrayIndex))
+                            if (cityInfluence.ContainsKey(city.myIndex))
                             {
-                                ++cityInfluence[city.parentArrayIndex];
+                                ++cityInfluence[city.myIndex];
                             }
                             else
                             {
-                                cityInfluence.Add(city.parentArrayIndex, 1);
+                                cityInfluence.Add(city.myIndex, 1);
                             }
                         }
                     }
@@ -329,7 +329,7 @@ namespace VikingEngine.DSSWars.Map
                 }
                 
                 var tile = world.tileGrid.Get(loop.Position);
-                tile.CityIndex = city.parentArrayIndex;
+                tile.CityIndex = city.myIndex;
                 world.tileGrid.Set(loop.Position, tile);
 
                 var r = loop.Position.SideLength(city.tilePos);

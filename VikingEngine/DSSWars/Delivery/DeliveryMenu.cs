@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.Delivery
                 }
                 HudLib.Label(content, DssRef.lang.Hud_RecieveingCity);
                 content.newLine();
-                var cities_c = city.faction.cities.counter();
+                var cities_c = city.GetFaction().cities.counter();
                 while (cities_c.Next())
                 {
                     if (cities_c.sel != city && city.tilePos.SideLength(cities_c.sel.tilePos) <= DssConst.DeliveryMaxDistance)
@@ -204,8 +204,8 @@ namespace VikingEngine.DSSWars.Delivery
                         }
                         buttonContent.Add(new RbText(cities_c.sel.TypeName()));
 
-                        var button = new ArtToggle(cities_c.sel.parentArrayIndex == currentStatus.profile.toCity, buttonContent, 
-                            new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), 
+                        var button = new ArtToggle(cities_c.sel.myIndex == currentStatus.profile.toCity, buttonContent, 
+                            new RbAction1Arg<int>(cityClick, cities_c.sel.myIndex, SoundLib.menu), 
                             new RbTooltip((RichBoxContent content, object tag /*City toCity*/) =>
                             {
                                 City toCity = (City)tag;

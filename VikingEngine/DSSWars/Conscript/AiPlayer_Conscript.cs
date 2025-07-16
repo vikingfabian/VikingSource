@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.Players
 
         int setupConscriptAi_async(City city, bool aggresive, out ConscriptProfile profile, out int manCount, out int unitCount)
         {
-            if (city.parentArrayIndex == 500)
+            if (city.myIndex == 500)
             {
                 lib.DoNothing();
             }
@@ -199,7 +199,7 @@ namespace VikingEngine.DSSWars.Players
                 city.AddGroupedResource(profile.armorLevel, -get * unitCount);
                 city.workForce.amount -= get * manCount;
 
-                var aiPlayer = city.faction.player.GetAiPlayer();
+                var aiPlayer = city.GetPlayer().GetAiPlayer();
 
                 if (aiPlayer != null)
                 {

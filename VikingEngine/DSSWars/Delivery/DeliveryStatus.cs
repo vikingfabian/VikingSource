@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Delivery
 
             while (citiesC.Next())
             {
-                if (citiesC.sel.parentArrayIndex == profile.toCity)
+                if (citiesC.sel.myIndex == profile.toCity)
                 {
                     return;
                 }

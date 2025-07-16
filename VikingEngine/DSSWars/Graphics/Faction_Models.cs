@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars
 
             VoxelModelInstance_Pooled instance = DssRef.models.NextInstance_Pooled();
 #if DEBUG
-            instance.DebugName = name.ToString() + ", fac" + parentArrayIndex.ToString();
+            instance.DebugName = name.ToString() + ", fac" + myIndex.ToString();
 #endif
             instance.scale.X = scale;
             instance.scale.Y = 0;
@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars
 
             VoxelModelInstance_Pooled instance = DssRef.models.NextInstance_Pooled();
 #if DEBUG
-            instance.DebugName = modelData.ToString() + ", fac" + parentArrayIndex.ToString();
+            instance.DebugName = modelData.ToString() + ", fac" + myIndex.ToString();
 #endif
             instance.scale.X = scale;
             instance.scale.Y = 0;
