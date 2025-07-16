@@ -783,7 +783,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             FindMinValuePointer<AbsDetailUnit> closest = new FindMinValuePointer<AbsDetailUnit>();
 
-            var attack_sp = group.attackTarget_soldierGroupOrCity;
+            AbsGroup attack_sp = null;
+            group.attackTarget_soldierGroupOrCity.TryGetTarget(out attack_sp);
             if (attack_sp != null)
             {
                 if (attack_sp.gameobjectType() == GameObjectType.SoldierGroup)
@@ -820,7 +821,7 @@ namespace VikingEngine.DSSWars.GameObject
            
             if (attackTarget == null)
             {
-                attackTarget = group.attackTarget_soldierGroupOrCity?.Soldiers()?.GetRandomSafe(Ref.peRnd);
+                attackTarget = RefExt.Target_safe(group.attackTarget_soldierGroupOrCity)?.Soldiers()?.GetRandomSafe(Ref.peRnd);
             }
 
             var target = attackTarget;
@@ -1290,7 +1291,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
-            var attacking_sp = group.attackTarget_soldierGroupOrCity;
+            var attacking_sp = RefExt.Target_safe(group.attackTarget_soldierGroupOrCity);
 
             if (attacking_sp != null)
             {
