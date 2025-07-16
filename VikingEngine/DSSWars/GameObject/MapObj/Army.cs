@@ -1228,10 +1228,11 @@ namespace VikingEngine.DSSWars.GameObject
             //}
         }
 
-        public override void setFaction(Faction faction)
+        //public override void setFaction(Faction faction)
+        public override void setFaction(Faction newFaction, bool duringStartup)
         {
-            base.setFaction(faction);
-            faction.AddArmy(this);
+            setFaction(newFaction, duringStartup);
+            newFaction.AddArmy(this);
             
         }
 

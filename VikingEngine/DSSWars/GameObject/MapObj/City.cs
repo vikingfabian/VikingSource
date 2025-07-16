@@ -1791,7 +1791,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
                             }
 
-                            setFaction(newOwner);
+                            setFaction(newOwner, false);
                         }));
                     }
                 }
@@ -2918,19 +2918,23 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public override void setFaction(Faction newFaction)
+        public override void setFaction(Faction newFaction, bool duringStartup)
         {
-            Faction prevOwner = GetFaction_Safe();
-            if (prevOwner != newFaction)
+            Faction owner = GetFaction_Safe();
+            if (owner != newFaction)
             {
                 //Faction prevOwner = this.faction;
-                prevOwner = newFaction;
+                //prevOwner = newFaction;
+                factionIndex = newFaction.myIndex;
                 technology.destroyTechOnTakeOver();
-                newFaction.AddCity(this, false);
-                if (prevOwner != null)
+
+                if (!duringStartup)
                 {
-                    prevOwner.remove(this);
-                   
+                    newFaction.AddCity(this, false);
+                }
+                if (owner != null)
+                {
+                    owner.remove(this);                   
                 }
                 OnNewOwner();
                 //guardCount = Bound.Min(guardCount, 1);

@@ -390,35 +390,8 @@ namespace VikingEngine.DSSWars.Map.Generate
             });
 
         }
-        
-//public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
-//{
-//    this.world = world;
-//    world.rnd = new PcgRandom(world.metaData.seed);
-
-//    Task.Factory.StartNew(() =>
-//    {
-//        GenerateRoads roads = new GenerateRoads();
-
-//        if (loadMeta == null)
-//        {
-//            CityTemplateCollection templateCollection = new CityTemplateCollection();
-
-//            foreach (var c in world.cities)
-//            {
-//                Task.Factory.StartNew(() =>
-//                {
-//                    c.createBuildingSubtiles(world, templateCollection);
-//                });
-//            }
-
-//            //How do I wait for all threads to complete?
-//        }
-
-//        postComplete = true;
-//    });
-//}
-public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
+ 
+        public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             this.world = world;
             world.rnd = new PcgRandom(world.metaData.seed);
@@ -567,7 +540,6 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
             for (int i = 0; i < numLandChains; ++i)
             {
                 heightCurve = terrainTypes.GetRandom(world.rnd);
-                //biom = world.rnd.Chance(0.2) ? BiomType.YellowDry : BiomType.Green;//lib.Rnd.NextDouble() < 0.2;//world.rnd.RandomChance(0.2f);
 
                 center = world.rnd.vector2(world.Size.X, world.Size.Y);
                 biom = biomsLayout.get(world, center);
@@ -588,7 +560,6 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
                     {
                         for (pos.X = start.X; pos.X <= end.X; ++pos.X)
                         {
-                            //percentHCenter = Vector2.One + heightCenter.Direction(heightCenterLength);
                             posDiff = pos.Vec - center;
 
                             float distFromCenter = posDiff.Length();

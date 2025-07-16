@@ -178,7 +178,7 @@ namespace VikingEngine.DSSWars
                 int cityIx = r.ReadUInt16();
                 var city = DssRef.world.cities[cityIx];
                 //cities.Add(city);
-                city.setFaction(this);
+                city.setFaction(this, true);
             }
 
             int armiesCount = r.ReadUInt16();
@@ -342,7 +342,7 @@ namespace VikingEngine.DSSWars
             {
                 armies.HardSet(army, overrideIx);
             }
-            army.factionIndex = this.myIndex;
+            army.factionIndex = myIndex;
         }
 
         public void AddCity(City city, bool duringStartUp)
@@ -358,7 +358,7 @@ namespace VikingEngine.DSSWars
                     mainCity = city;
                 }
                 cities.Add(city);
-                city.setFaction(this);
+                city.setFaction(this, duringStartUp);
             }
             else
             {
@@ -366,7 +366,7 @@ namespace VikingEngine.DSSWars
                 if (!cities.Contains(city))
                 {
                     cities.Add(city);
-                    city.setFaction(this);
+                    city.setFaction(this, duringStartUp);
                     if (!duringStartUp)
                     {
                         player.OnCityCapture(city);
@@ -959,7 +959,7 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.setFaction(masterFaction);
+                armiesC.sel.setFaction(masterFaction, false);
             }
 
             armies.Clear();
@@ -967,7 +967,7 @@ namespace VikingEngine.DSSWars
             var citiesC = cities.counter();
             while (citiesC.Next())
             { 
-                citiesC.sel.setFaction(masterFaction);
+                citiesC.sel.setFaction(masterFaction, false);
             }
 
             cities.Clear();
@@ -1023,7 +1023,8 @@ namespace VikingEngine.DSSWars
             //{
             //    return Owner.Name;
             //}
-            return $"Faction ({myIndex}) - Owner ({player.Name}), Type({factiontype})";
+
+            return $"Faction ({myIndex}) - Owner ({player?.Name}), Type({factiontype})";
         }
 
         public string PlayerName

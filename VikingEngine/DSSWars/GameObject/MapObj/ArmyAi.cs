@@ -394,7 +394,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (attackTarget_sp.gameobjectType() == GameObjectType.City)
                     {
-                        attackTarget_sp.GetCity().setFaction(GetFaction());
+                        attackTarget_sp.GetCity().setFaction(GetFaction(), false);
                     }
                     else
                     {

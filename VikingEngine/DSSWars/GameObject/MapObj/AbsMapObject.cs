@@ -123,9 +123,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         //abstract public Faction Faction();
 
-        virtual public void setFaction(Faction faction)
+        virtual public void setFaction(Faction newFaction, bool duringStartup)
         {
-            this.factionIndex = faction.myIndex;
+            this.factionIndex = newFaction.myIndex;
             
             OnNewOwner();
         }
