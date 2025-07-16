@@ -19,8 +19,8 @@ using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -32,6 +32,7 @@ using VikingEngine.PJ.MiniGolf;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.ToggEngine.Map;
+using static Sentry.MeasurementUnit;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -111,7 +112,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (toLevel == 2)
             {
-                return faction.totalWorkForce > DssConst.Logistics2_PopulationRequirement;
+                return faction.TryGetTarget(out var tFaction) && tFaction.totalWorkForce > DssConst.Logistics2_PopulationRequirement;
             }
 
             return false;
@@ -231,7 +232,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (commit)
                         {
-                            var player = faction.player.GetLocalPlayer();
+                            var player = RefExt.Target(faction)?.player.GetLocalPlayer();
                             if (player != null)
                             {
                                 player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel);
@@ -916,18 +917,15 @@ namespace VikingEngine.DSSWars.GameObject
         {
             writeMapFile(w);
 
-            w.Write((ushort)faction.parentArrayIndex);
+            w.Write((ushort)RefExt.Target(faction).parentArrayIndex);
 
             w.Write((byte)Tile().heightLevel);
         }
         public void readNet_map(System.IO.BinaryReader r)
         {
             readMapFile(r, int.MaxValue);
-            //guardCount = r.ReadUInt16();
-            //maxGuardSize = r.ReadUInt16();
-
             int factionIx = r.ReadUInt16();
-            faction = DssRef.world.factions[factionIx];
+            faction =new WeakReference<Faction>(DssRef.world.factions[factionIx]);
 
             onGameStart(false);
             int height = r.ReadByte();
@@ -1539,11 +1537,11 @@ namespace VikingEngine.DSSWars.GameObject
         void createOverViewModel()
         {
             //faction.profile.modelColorReplace
-            if (faction.player.profile.flag != null)
+            if (faction.TryGetTarget(out var tFaction) && tFaction.player.profile.flag != null)
             {
                 overviewModel?.DeleteMe();
 
-                overviewModel = faction.AutoLoadModelInstance(
+                overviewModel = tFaction.AutoLoadModelInstance(
                    LootFest.VoxelModelName.cityicon, IconScale());
                 overviewModel.AddToRender(DrawGame.TerrainLayer);
                 overviewModel.position = position;
@@ -1644,7 +1642,7 @@ namespace VikingEngine.DSSWars.GameObject
                 res_food.amount > 0 &&
                 homeUsers() < workersMax())
             {
-                var result = Bound.Min( workForce.amount / 600.0 * faction.growthMultiplier, 0.1);
+                var result = Bound.Min( workForce.amount / 600.0 *  RefExt.Target(faction).growthMultiplier, 0.1);
                 if (Culture == CityCulture.LargeFamilies)
                 {
                     result *= 2;
@@ -1681,89 +1679,91 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void oneSecUpdate()
         {
-            const int MinWorkforce = 8;
-
-            if (parentArrayIndex == 35 || debugTagged)
+            if (faction.TryGetTarget(out var tFaction))
             {
-                lib.DoNothing();
-            }
+                const int MinWorkforce = 8;
 
-            int addWorkers = 0;
-
-            childrenAge0.value += childAddPerSec();
-
-            if (DssRef.time.oneMinute)
-            {
-                addWorkers = childrenAge1;
-                childrenAge1 = childrenAge0.pull();
-                
-                if (workForce.amount < MinWorkforce)
+                if (parentArrayIndex == 35 || debugTagged)
                 {
-                    addWorkers += MinWorkforce - workForce.amount;
+                    lib.DoNothing();
                 }
-            }
 
-            if (!inBattle)
-            {
-                if (immigrants.HasValue())
+                int addWorkers = 0;
+
+                childrenAge0.value += childAddPerSec();
+
+                if (DssRef.time.oneMinute)
                 {
-                    if (workForce.amount + addWorkers < HousingCount_Workers)
+                    addWorkers = childrenAge1;
+                    childrenAge1 = childrenAge0.pull();
+
+                    if (workForce.amount < MinWorkforce)
                     {
-                        var immigrantsToWork = immigrants.pull(DssConst.ImmigrantsTransfereSpeed + DssConst.ImmigrantionTent_TransfereSpeedBonus * buildingStructure.ImmigrationTent_count);
-                        addWorkers += immigrantsToWork;
-                    }
-
-                    immigrants.reduceTowardsMinValue(DssConst.ImmigrantsRemovePerSec, DssConst.ImmigrantionTent_Capacity * buildingStructure.ImmigrationTent_count);
-                }
-            }
-
-            workForce.amount = Bound.Max(workForce.amount + addWorkers, HousingCount_Workers);
-
-            if (workForce.amount > Achievements.LargePopulationCount &&
-                 !DssRef.achieve.largePopulation &&
-                 faction.player.IsLocalPlayer())
-            {
-                DssRef.achieve.largePopulation = true;
-                DssRef.achieve.UnlockAchievement(AchievementIndex.large_population);
-            }
-
-            
-            nextWater.value += waterAddPerSec;
-            maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
-            res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
-
-            if (starving)
-            {
-                starvingTimeSeconds++;
-                
-                if (starvingTimeSeconds > 15)
-                {
-                    starvingTimeSeconds = -30;
-                    starving = false;
-
-                    if (faction.player.IsLocalPlayer())
-                    {
-                        faction.player.GetLocalPlayer().hud.messages.cityLowFoodMessage(this);
+                        addWorkers += MinWorkforce - workForce.amount;
                     }
                 }
-            }
-            else
-            {
-                starvingTimeSeconds = 0;
-            }
 
-            if (strengthValue == 0 || capturePoints < 0)
-            {
-                capturePoints += 10;
-            }
+                if (!inBattle)
+                {
+                    if (immigrants.HasValue())
+                    {
+                        if (workForce.amount + addWorkers < HousingCount_Workers)
+                        {
+                            var immigrantsToWork = immigrants.pull(DssConst.ImmigrantsTransfereSpeed + DssConst.ImmigrantionTent_TransfereSpeedBonus * buildingStructure.ImmigrationTent_count);
+                            addWorkers += immigrantsToWork;
+                        }
 
-            if (capturePoints >= 100)
-            {
-                //Power check
-                cityCaptureCehck();
-                capturePoints = -100;                
-            }
+                        immigrants.reduceTowardsMinValue(DssConst.ImmigrantsRemovePerSec, DssConst.ImmigrantionTent_Capacity * buildingStructure.ImmigrationTent_count);
+                    }
+                }
 
+                workForce.amount = Bound.Max(workForce.amount + addWorkers, HousingCount_Workers);
+
+                if (workForce.amount > Achievements.LargePopulationCount &&
+                     !DssRef.achieve.largePopulation &&
+                     tFaction.player.IsLocalPlayer())
+                {
+                    DssRef.achieve.largePopulation = true;
+                    DssRef.achieve.UnlockAchievement(AchievementIndex.large_population);
+                }
+
+
+                nextWater.value += waterAddPerSec;
+                maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
+                res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
+
+                if (starving)
+                {
+                    starvingTimeSeconds++;
+
+                    if (starvingTimeSeconds > 15)
+                    {
+                        starvingTimeSeconds = -30;
+                        starving = false;
+
+                        if (tFaction.player.IsLocalPlayer())
+                        {
+                            tFaction.player.GetLocalPlayer().hud.messages.cityLowFoodMessage(this);
+                        }
+                    }
+                }
+                else
+                {
+                    starvingTimeSeconds = 0;
+                }
+
+                if (strengthValue == 0 || capturePoints < 0)
+                {
+                    capturePoints += 10;
+                }
+
+                if (capturePoints >= 100)
+                {
+                    //Power check
+                    cityCaptureCehck();
+                    capturePoints = -100;
+                }
+            }
             //capturePoints = Bound.Min(capturePoints - 10, 0);
         }
 
@@ -1774,20 +1774,23 @@ namespace VikingEngine.DSSWars.GameObject
                 try
                 {
                     Faction newOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
-                    if (newOwner != faction)
+                    if (!RefExt.EqTarget(newOwner, faction)) //newOwner != faction)
                     {
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            if (faction.player.IsLocalPlayer())
+                            if (faction.TryGetTarget(out var tFaction))
                             {
-                                ++faction.player.GetLocalPlayer().statistics.CitiesLost;
-                            }
-                            if (newOwner.player.IsLocalPlayer())
-                            {
-                                ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
-                            }
+                                if (tFaction.player.IsLocalPlayer())
+                                {
+                                    ++tFaction.player.GetLocalPlayer().statistics.CitiesLost;
+                                }
+                                if (newOwner.player.IsLocalPlayer())
+                                {
+                                    ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
+                                }
 
-                            setFaction(newOwner);
+                                setFaction(newOwner);
+                            }
                         }));
                     }
                 }
@@ -1920,159 +1923,28 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asyncNearObjectsUpdate()
         {
-            base.asyncNearObjectsUpdate();
-        //} 
-
-        ////public void asynchNearObjectsUpdate()
-        //{
-            float armyDefence = 0;
-            const int DominanceTileRadius = 4;
-
-            DssRef.world.unitCollAreaGrid.collectArmies(faction, tilePos, 2,
-                DssRef.world.unitCollAreaGrid.armies_nearUpdate);
-
-            foreach (var m in DssRef.world.unitCollAreaGrid.armies_nearUpdate)
+            if (faction.TryGetTarget(out var tFaction))
             {
-                if (m.tilePos.SideLength(tilePos) <= DominanceTileRadius)
+                base.asyncNearObjectsUpdate();
+
+                float armyDefence = 0;
+                const int DominanceTileRadius = 4;
+
+                DssRef.world.unitCollAreaGrid.collectArmies(tFaction, tilePos, 2,
+                    DssRef.world.unitCollAreaGrid.armies_nearUpdate);
+
+                foreach (var m in DssRef.world.unitCollAreaGrid.armies_nearUpdate)
                 {
-                    armyDefence += m.strengthValue;
+                    if (m.tilePos.SideLength(tilePos) <= DominanceTileRadius)
+                    {
+                        armyDefence += m.strengthValue;
+                    }
                 }
+
+                ai_armyDefenceValue = armyDefence;
+
+                DssRef.world.unitCollAreaGrid.collectOpponentGroups(tFaction, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
             }
-
-            ai_armyDefenceValue = armyDefence;
-
-            DssRef.world.unitCollAreaGrid.collectOpponentGroups(faction, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
-            //detailObj.asynchFindBattleTarget(groups);
-
-            //if (guardCount <= 0 && armyDefence == 0)
-            //{
-            //    //Destroyed in battle, domination check
-
-            //    CityDominationStrength.Clear();
-
-            //    foreach (var group in groups)
-            //    {
-            //        int key = group.GetFaction().parentArrayIndex;
-            //        float value = group.strengthValue();
-
-            //        if (CityDominationStrength.TryGetValue(key, out float current))
-            //        {
-            //            CityDominationStrength[key] = current + value;
-            //        }
-            //        else
-            //        {
-            //            CityDominationStrength.Add(key, value);
-            //        }
-            //    }
-
-            //    if (CityDominationStrength.Count >= 1)
-            //    {
-            //        int strongestFaction = -1;
-            //        float strongest = float.MinValue;
-
-            //        foreach (var kv in CityDominationStrength)
-            //        {
-            //            if (kv.Value > strongest)
-            //            {
-            //                strongestFaction = kv.Key;
-            //                strongest = kv.Value;
-            //            }
-            //        }
-
-
-
-            //        var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
-
-            //        if (faction.player.IsLocalPlayer())
-            //        {
-            //            ++faction.player.GetLocalPlayer().statistics.CitiesLost;
-            //        }
-            //        if (dominatingFaction.player.IsLocalPlayer())
-            //        {
-            //            ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
-            //        }
-
-            //        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(setFaction, dominatingFaction));
-            //    }
-            //}
-            //            var membersC = MembersCounter();
-            //            while (membersC.Next())
-            //            {
-            //                if (membersC.sel.gameobjectType() == GameObjectType.City)
-            //                {
-            //                    cities.Add(membersC.sel.GetCity());
-            //                }
-
-            //                if (cityDominationStrength.ContainsKey(membersC.sel.faction.parentArrayIndex))
-            //                {
-            //                    cityDominationStrength[membersC.sel.faction.parentArrayIndex] += membersC.sel.strengthValue;
-            //                }
-            //                else
-            //                {
-            //                    cityDominationStrength.Add(membersC.sel.faction.parentArrayIndex, membersC.sel.strengthValue);
-            //                }
-
-            //                membersC.sel.ExitBattleGroup();
-            //            }
-
-            //            int strongestFaction = -1;
-            //            float strongest = float.MinValue;
-
-            //            foreach (var kv in cityDominationStrength)
-            //            {
-            //                if (kv.Value > strongest)
-            //                {
-            //                    strongestFaction = kv.Key;
-            //                    strongest = kv.Value;
-            //                }
-            //            }
-
-            //            var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
-
-            //            if (cities.Count > 0)
-            //            {
-            //                foreach (var c in cities)
-            //                {
-            //                    if (DssRef.diplomacy.InWar(c.faction, dominatingFaction))
-            //                    {
-            //                        if (c.faction.player.IsPlayer())
-            //                        {
-            //                            ++c.faction.player.GetLocalPlayer().statistics.CitiesLost;
-            //                        }
-            //                        if (dominatingFaction.player.IsPlayer())
-            //                        {
-            //                            ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
-            //                        }
-
-            //                        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
-            //                    }
-            //                }
-            //            }
-
-            //            for (int i = 0; i < factions.Count; ++i)
-            //            {
-            //                var f = factions[i];
-
-            //                bool winner = f == dominatingFaction || !DssRef.diplomacy.InWar(f, dominatingFaction);
-
-            //                if (f.player.IsPlayer())
-            //                {
-            //                    var p = f.player.GetLocalPlayer();
-            //                    p.battles.Remove(this);
-            //                    if (winner)
-            //                    {
-            //                        p.statistics.BattlesWon++;
-            //                    }
-            //                    else
-            //                    {
-            //                        p.statistics.BattlesLost++;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //}
-
-            //detailObj.asynchNearObjectsUpdate();
         }
 
         protected override void setInRenderState()
@@ -2190,7 +2062,7 @@ namespace VikingEngine.DSSWars.GameObject
                 mayEdit = false;
                 return TextLib.Error;
             }
-            mayEdit = faction != null && faction.player != null && faction.player.IsLocalPlayer();
+            mayEdit = faction != null && faction.TryGetTarget(out var tFaction) && tFaction.player != null && tFaction.player.IsLocalPlayer();
             return name.name;
         }
 
@@ -2221,9 +2093,9 @@ namespace VikingEngine.DSSWars.GameObject
                 nameToHud(args.content, !tooltip);
 
                 args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
-                if (!tagToHud(args.content))
+                if (!tagToHud(args.content) && faction.TryGetTarget(out var tFaction))
                 {
-                    args.content.Add(faction.FlagTextureToHud());
+                    args.content.Add(tFaction.FlagTextureToHud());
                 }
                 args.content.space(0.5f);
                 args.content.Add(new RbImage(SpriteName.WarsCityHall));
@@ -2273,7 +2145,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.newLine();
             //if (args.ShowFull)
             {
-                if (faction == args.player.faction)
+                if (RefExt.EqTarget( args.player.faction, faction))
                 {
                     CityDetailsHud(true, args.player, args.content);
                     new Interface.CityMenu(args.player, this, args.content);
@@ -2291,472 +2163,476 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void CityDetailsHud(bool minimal, LocalPlayer player, RichBoxContent content)
         {
-            if (minimal)
+            if (faction.TryGetTarget(out var tFaction))
             {
-                content.Add(new RbImage(SpriteName.WarsWorker));
-                content.space(0.5f);
-                content.Add(new RbText(TextLib.LargeNumber(workForce.amount)));
-                //content.space();
-                HudLib.BulletSeperationPoint(content);
-                //content.space();
-                content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                content.space(0.5f);
-                content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
-            }
-            else
-            {
-                bool interactive = player.faction == faction;
 
-                if (interactive)
+                if (minimal)
                 {
-                    if (automateCity)
-                    {
-                        content.newParagraph();
-                    }
-                    else
-                    {
-                        content.newLine();
-                    }
+                    content.Add(new RbImage(SpriteName.WarsWorker));
+                    content.space(0.5f);
+                    content.Add(new RbText(TextLib.LargeNumber(workForce.amount)));
+                    //content.space();
+                    HudLib.BulletSeperationPoint(content);
+                    //content.space();
+                    content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                    content.space(0.5f);
+                    content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+                }
+                else
+                {
+                    bool interactive = RefExt.EqTarget(player.faction, faction);
 
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    if (interactive)
+                    {
+                        if (automateCity)
+                        {
+                            content.newParagraph();
+                        }
+                        else
+                        {
+                            content.newLine();
+                        }
+
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                         new RbText(DssRef.lang.Automation_AutomateCity)
                     }, AutomateCityProperty));
 
-                    if (automateCity)
-                    {
-                        content.newLine();
-                        HudLib.Label(content, DssRef.lang.Automation_AutomationFocus);
-
-                        content.newLine();
-                        foreach (var focus in CityMenu.AvailableAutomationFocuses)
+                        if (automateCity)
                         {
-                            string caption = null;
-                            switch (focus)
+                            content.newLine();
+                            HudLib.Label(content, DssRef.lang.Automation_AutomationFocus);
+
+                            content.newLine();
+                            foreach (var focus in CityMenu.AvailableAutomationFocuses)
                             {
-                                case AutomationFocus.NoFocus:
-                                    caption = DssRef.lang.Hud_None;
-                                    break;
-                                case AutomationFocus.Food:
-                                    caption = TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food);
-                                    break;
-                                case AutomationFocus.Grow:
-                                    caption = DssRef.lang.Automation_AutomationFocus_Grow;
-                                    break;
+                                string caption = null;
+                                switch (focus)
+                                {
+                                    case AutomationFocus.NoFocus:
+                                        caption = DssRef.lang.Hud_None;
+                                        break;
+                                    case AutomationFocus.Food:
+                                        caption = TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food);
+                                        break;
+                                    case AutomationFocus.Grow:
+                                        caption = DssRef.lang.Automation_AutomationFocus_Grow;
+                                        break;
+                                    case AutomationFocus.Export:
+                                        caption = DssRef.lang.Automation_AutomationFocus_Export;
+                                        break;
+                                    case AutomationFocus.Military:
+                                        caption = DssRef.lang.Automation_AutomationFocus_War;
+                                        break;
+                                }
+
+                                var button = new ArtOption(automationFocus == focus,
+                                    new List<AbsRichBoxMember>
+                                    {
+                                    new RbText(caption),
+                                    },
+                                    new RbAction(() =>
+                                    {
+                                        automationFocus = focus;
+                                        nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
+                                    }, SoundLib.menu),
+                                    new RbTooltip(automationToolTip, focus));
+
+                                content.Add(button);
+                            }
+
+                            switch (automationFocus)
+                            {
                                 case AutomationFocus.Export:
-                                    caption = DssRef.lang.Automation_AutomationFocus_Export;
+                                    content.newParagraph();
+                                    HudLib.Label(content, DssRef.lang.Automation_AutomationFocus_Export);
+                                    content.newLine();
+                                    for (ExportAutoType type = 0; type < ExportAutoType.NUM; type++)
+                                    {
+
+                                        var optionContent = new List<AbsRichBoxMember>(4);
+                                        if (type == ExportAutoType.Resources)
+                                        {
+                                            optionContent.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                                            optionContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                                            optionContent.Add(new RbImage(SpriteName.WarsResource_Stone));
+                                            optionContent.Add(new RbSpace());
+                                            optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Resources, HudLib.SubOptionTextColor));
+                                        }
+                                        else
+                                        {
+                                            optionContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                                            optionContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                                            optionContent.Add(new RbImage(SpriteName.WarsResource_PaddedArmor));
+                                            optionContent.Add(new RbSpace());
+                                            optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Weapons, HudLib.SubOptionTextColor));
+                                        }
+
+                                        var button = new ArtOption(type == exportAutoType,
+                                           optionContent,
+                                           new RbAction(() =>
+                                           {
+                                               exportAutoType = type;
+                                           }, SoundLib.menu), null);
+
+                                        content.Add(button);
+                                    }
                                     break;
                                 case AutomationFocus.Military:
-                                    caption = DssRef.lang.Automation_AutomationFocus_War;
+                                    content.newParagraph();
+                                    HudLib.Label(content, DssRef.lang.CityAutomation_SoldierQuality);
+                                    content.newLine();
+                                    for (WarAutoQuality quality = 0; quality < WarAutoQuality.NUM; quality++)
+                                    {
+                                        string caption;
+                                        switch (quality)
+                                        {
+                                            default:
+                                                caption = DssRef.lang.Hud_Low;
+                                                break;
+                                            case WarAutoQuality.Medium:
+                                                caption = DssRef.lang.Hud_Medium;
+                                                break;
+                                            case WarAutoQuality.High:
+                                                caption = DssRef.lang.Hud_High;
+                                                break;
+                                        }
+
+                                        var button = new ArtOption(quality == warAutoQuality,
+                                           new List<AbsRichBoxMember>
+                                           {
+                                            new RbText(caption, HudLib.SubOptionTextColor),
+                                           },
+                                           new RbAction1Arg<WarAutoQuality>((WarAutoQuality quality) =>
+                                           {
+                                               warAutoQuality = quality;
+                                           }, quality, SoundLib.menu), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
+
+                                        content.Add(button);
+                                    }
+                                    content.newParagraph();
+                                    HudLib.Label(content, DssRef.lang.CityAutomation_SoldierWeaponType);
+                                    content.newLine();
+                                    for (WarAutoWeaponType weaponType = 0; weaponType < WarAutoWeaponType.NUM; weaponType++)
+                                    {
+                                        string caption;
+                                        SpriteName icon;
+                                        switch (weaponType)
+                                        {
+                                            default:
+                                                icon = SpriteName.NO_IMAGE;
+                                                caption = DssRef.lang.WarsResourceGroup_AllWeaponTypes;
+                                                break;
+                                            case WarAutoWeaponType.Melee:
+                                                icon = SpriteName.WarsResource_Sword;
+                                                caption = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
+                                                break;
+                                            case WarAutoWeaponType.Ranged:
+                                                icon = SpriteName.WarsResource_Bow;
+                                                caption = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
+                                                break;
+                                            case WarAutoWeaponType.Warmachine:
+                                                icon = SpriteName.WarsResource_Ballista;
+                                                caption = DssRef.lang.WarsResourceGroup_Warmachines;
+                                                break;
+                                        }
+
+                                        List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(3);
+                                        if (icon != SpriteName.NO_IMAGE)
+                                        {
+                                            buttonContent.Add(new RbImage(icon));
+                                            buttonContent.Add(new RbSpace());
+                                        }
+                                        buttonContent.Add(new RbText(caption, HudLib.SubOptionTextColor));
+
+                                        var button = new ArtOption(weaponType == warAutoWeaponType,
+                                           buttonContent,
+                                           new RbAction1Arg<WarAutoWeaponType>((WarAutoWeaponType weaponType) =>
+                                           {
+                                               warAutoWeaponType = weaponType;
+                                           }, weaponType, SoundLib.menu));
+
+                                        content.Add(button);
+                                    }
+
                                     break;
                             }
 
-                            var button = new ArtOption(automationFocus == focus,
-                                new List<AbsRichBoxMember>
-                                {
-                                    new RbText(caption),
-                                },
-                                new RbAction(() =>
-                                {
-                                    automationFocus = focus;
-                                    nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
-                                }, SoundLib.menu), 
-                                new RbTooltip(automationToolTip, focus));
+                            content.Add(new RbSeperationLine());
 
-                            content.Add(button);
                         }
-
-                        switch (automationFocus)
-                        {
-                            case AutomationFocus.Export:
-                                content.newParagraph(); 
-                                HudLib.Label(content, DssRef.lang.Automation_AutomationFocus_Export);
-                                content.newLine();
-                                for (ExportAutoType type = 0; type < ExportAutoType.NUM; type++)
-                                {
-
-                                    var optionContent = new List<AbsRichBoxMember>(4);
-                                    if (type == ExportAutoType.Resources)
-                                    {
-                                        optionContent.Add(new RbImage(SpriteName.WarsResource_RawFood));
-                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Stone));
-                                        optionContent.Add(new RbSpace());
-                                        optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Resources, HudLib.SubOptionTextColor));
-                                    }
-                                    else
-                                    {
-                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-                                        optionContent.Add(new RbImage(SpriteName.WarsResource_PaddedArmor));
-                                        optionContent.Add(new RbSpace());
-                                        optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Weapons, HudLib.SubOptionTextColor));
-                                    }                                    
-
-                                    var button = new ArtOption(type == exportAutoType,
-                                       optionContent,
-                                       new RbAction(() =>
-                                       {
-                                           exportAutoType = type;
-                                       }, SoundLib.menu),null);
-
-                                    content.Add(button);
-                                }
-                                break;
-                            case AutomationFocus.Military:
-                                content.newParagraph();
-                                HudLib.Label(content, DssRef.lang.CityAutomation_SoldierQuality);
-                                content.newLine();
-                                for (WarAutoQuality quality = 0; quality < WarAutoQuality.NUM; quality++)
-                                {
-                                    string caption;
-                                    switch (quality)
-                                    {
-                                        default:
-                                            caption = DssRef.lang.Hud_Low;
-                                            break;
-                                        case WarAutoQuality.Medium:
-                                            caption = DssRef.lang.Hud_Medium;
-                                            break;
-                                        case WarAutoQuality.High:
-                                            caption = DssRef.lang.Hud_High;
-                                            break;
-                                    }
-
-                                    var button = new ArtOption(quality == warAutoQuality,
-                                       new List<AbsRichBoxMember>
-                                       {
-                                            new RbText(caption, HudLib.SubOptionTextColor),
-                                       },
-                                       new RbAction1Arg<WarAutoQuality>((WarAutoQuality quality) =>
-                                       {
-                                           warAutoQuality = quality;
-                                       }, quality, SoundLib.menu), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
-
-                                    content.Add(button);
-                                }
-                                content.newParagraph();
-                                HudLib.Label(content, DssRef.lang.CityAutomation_SoldierWeaponType);
-                                content.newLine();
-                                for (WarAutoWeaponType weaponType = 0; weaponType < WarAutoWeaponType.NUM; weaponType++)
-                                {
-                                    string caption;
-                                    SpriteName icon;
-                                    switch (weaponType)
-                                    {
-                                        default:
-                                            icon = SpriteName.NO_IMAGE;
-                                            caption = DssRef.lang.WarsResourceGroup_AllWeaponTypes;
-                                            break;
-                                        case WarAutoWeaponType.Melee:
-                                            icon = SpriteName.WarsResource_Sword;
-                                            caption = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
-                                            break;
-                                        case WarAutoWeaponType.Ranged:
-                                            icon = SpriteName.WarsResource_Bow;
-                                            caption = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
-                                            break;
-                                        case WarAutoWeaponType.Warmachine:
-                                            icon = SpriteName.WarsResource_Ballista;
-                                            caption = DssRef.lang.WarsResourceGroup_Warmachines;
-                                            break;
-                                    }
-                                    
-                                    List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(3);
-                                    if (icon != SpriteName.NO_IMAGE)
-                                    {
-                                        buttonContent.Add(new RbImage(icon));
-                                        buttonContent.Add(new RbSpace());
-                                    }
-                                    buttonContent.Add(new RbText(caption, HudLib.SubOptionTextColor));
-                                    
-                                    var button = new ArtOption(weaponType == warAutoWeaponType,
-                                       buttonContent,
-                                       new RbAction1Arg<WarAutoWeaponType>((WarAutoWeaponType weaponType) =>
-                                       {
-                                           warAutoWeaponType = weaponType;
-                                       }, weaponType, SoundLib.menu));
-
-                                    content.Add(button);
-                                }
-
-                                break;
-                        }
-
-                        content.Add(new RbSeperationLine());
-                        
                     }
-                }
 
-                HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
-                content.space();
-                if (interactive)
-                {
-                    HudLib.InfoButton(content, new RbTooltip(childrenTooltip, this));
-                }
-
-                content.newLine();
-                content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant));
-                content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
-                content.Add(new RbTab(0.4f));
-                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
-                content.space();
-                content.Add(new RbImage(SpriteName.WarsBuild_Tent));
-                content.space();
-                content.Add(new RbText(buildingStructure.ImmigrationTent_count.ToString()));
-                content.space();
-                if (interactive)
-                {
-                    HudLib.InfoButton(content, new RbTooltip(immigrantsTooltip, this));
-                }
-
-                content.newLine();
-                content.Add(new RbImage(SpriteName.WarsWorker));
-                content.space();
-                content.Add(new RbText( string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce.amount)));
-                content.Add(new RbTab(0.4f));
-                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
-                content.space();
-                content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
-                content.space();
-                content.Add(new RbText(HousingCount_Workers.ToString()));
-
-                content.newLine();
-                content.Add(new RbImage(SpriteName.WarsGuard));
-                content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_GuardCount, soldiersCount)));
-                content.Add(new RbTab(0.4f));
-                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
-                content.space();
-                content.Add(new RbImage(SpriteName.WarsBuild_GuardOffice));
-                content.space();
-                content.Add(new RbText(HousingCount_Guard.ToString()));
-
-                content.newLine();
-                content.Add(new RbImage(SpriteName.WarsServiceMen));
-                content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount)));
-                content.Add(new RbTab(0.4f));
-                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
-                content.space();
-                content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
-                content.space();
-                content.Add(new RbText(TotalServiceMen().ToString()));
-
-                //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
-                //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
-
-                CityEconomyData cityEconomy = new CityEconomyData(this);
-
-                content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, Money.CopperToGoldString_Large(cityEconomy.IncomeAndUpkeep_Total())));
-                //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
-
-                {
-                    content.newLine();
-                    content.Add(new RbImage(SpriteName.rtsIncomeTime));
+                    HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
                     content.space();
+                    if (interactive)
+                    {
+                        HudLib.InfoButton(content, new RbTooltip(childrenTooltip, this));
+                    }
+
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsBuild_Tent));
+                    content.space();
+                    content.Add(new RbText(buildingStructure.ImmigrationTent_count.ToString()));
+                    content.space();
+                    if (interactive)
+                    {
+                        HudLib.InfoButton(content, new RbTooltip(immigrantsTooltip, this));
+                    }
+
+                    content.newLine();
                     content.Add(new RbImage(SpriteName.WarsWorker));
                     content.space();
-                    var textCont = new RbText(string.Format(DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(cityEconomy.taxIncome_copp)));
-                    content.Add(textCont);
-                    if (interactive)
-                    {
-                        content.space();
-                        HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo));
-                    }
-                }
-                {
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce.amount)));
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
+                    content.space();
+                    content.Add(new RbText(HousingCount_Workers.ToString()));
+
                     content.newLine();
-                    content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                    content.space();
-                    content.Add(new RbImage(SpriteName.WarsServiceMen));
-                    content.space();
-                    var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
-                    content.Add(textCont);
-                    if (interactive)
-                    {
-                        content.space();
-                        HudLib.InfoButton(content, new RbTooltip(HudLib.servicemenUpkeepInfo));
-                    }
-                }
-                {
-                    content.newLine();
-                    content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                    content.space();
                     content.Add(new RbImage(SpriteName.WarsGuard));
                     content.space();
-                    var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.cityGuardUpkeep_copp)));
-                    content.Add(textCont);
-                    if (interactive)
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_GuardCount, soldiersCount)));
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsBuild_GuardOffice));
+                    content.space();
+                    content.Add(new RbText(HousingCount_Guard.ToString()));
+
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsServiceMen));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount)));
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
+                    content.space();
+                    content.Add(new RbText(TotalServiceMen().ToString()));
+
+                    //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
+                    //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
+
+                    CityEconomyData cityEconomy = new CityEconomyData(this);
+
+                    content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
+                    content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, Money.CopperToGoldString_Large(cityEconomy.IncomeAndUpkeep_Total())));
+                    //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
+
                     {
+                        content.newLine();
+                        content.Add(new RbImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        HudLib.InfoButton(content, new RbTooltip(HudLib.guardUpkeepInfo));
+                        content.Add(new RbImage(SpriteName.WarsWorker));
+                        content.space();
+                        var textCont = new RbText(string.Format(DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(cityEconomy.taxIncome_copp)));
+                        content.Add(textCont);
+                        if (interactive)
+                        {
+                            content.space();
+                            HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo));
+                        }
                     }
-                }
+                    {
+                        content.newLine();
+                        content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsServiceMen));
+                        content.space();
+                        var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
+                        content.Add(textCont);
+                        if (interactive)
+                        {
+                            content.space();
+                            HudLib.InfoButton(content, new RbTooltip(HudLib.servicemenUpkeepInfo));
+                        }
+                    }
+                    {
+                        content.newLine();
+                        content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsGuard));
+                        content.space();
+                        var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.cityGuardUpkeep_copp)));
+                        content.Add(textCont);
+                        if (interactive)
+                        {
+                            content.space();
+                            HudLib.InfoButton(content, new RbTooltip(HudLib.guardUpkeepInfo));
+                        }
+                    }
 
 
-                cultureToHud(player, content, interactive);
+                    cultureToHud(player, content, interactive);
 
-                if (immigrants.HasValue())
-                {
-                    content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
-                }
+                    if (immigrants.HasValue())
+                    {
+                        content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
+                    }
 
-                terrainStructure.miningOverviewHud(content);
-                new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
-                //technologyOverviewHud(content, player);
+                    terrainStructure.miningOverviewHud(content);
+                    new XP.TechnologyHud().technologyOverviewHud(content, player, this, tFaction);
+                    //technologyOverviewHud(content, player);
 #if DEBUG
-                //technologyHud(content, player);
+                    //technologyHud(content, player);
 #endif
-                //if (!player.inTutorialMode)
-                {
-                    //Properties
-                    //if (nobelHouse)
-                    //{
-                    //    content.newLine();
-                    //    HudLib.BulletPoint(content);
-                    //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
-                    //}
-
-                    if (cityType == CityType.Factory)
+                    //if (!player.inTutorialMode)
                     {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbImage(SpriteName.WarsFactoryIcon));
-                        content.Add(new RbText(DssRef.lang.Building_DarkFactory));
+                        //Properties
+                        //if (nobelHouse)
+                        //{
+                        //    content.newLine();
+                        //    HudLib.BulletPoint(content);
+                        //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
+                        //}
 
+                        if (cityType == CityType.Factory)
+                        {
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbImage(SpriteName.WarsFactoryIcon));
+                            content.Add(new RbText(DssRef.lang.Building_DarkFactory));
+
+                        }
                     }
                 }
-            }
 
-            
 
-            void automationToolTip(RichBoxContent content, object tag)
-            {
-                AutomationFocus focus = (AutomationFocus)tag;
-                switch (focus)
+
+                void automationToolTip(RichBoxContent content, object tag)
                 {
-                    case AutomationFocus.NoFocus:
-                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_NoFocus_Description, HudLib.InfoYellow_Light));
-                        break;
+                    AutomationFocus focus = (AutomationFocus)tag;
+                    switch (focus)
+                    {
+                        case AutomationFocus.NoFocus:
+                            content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_NoFocus_Description, HudLib.InfoYellow_Light));
+                            break;
 
-                    case AutomationFocus.Food:
-                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+                        case AutomationFocus.Food:
+                            content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
 
-                        //
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
-                        content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat)));
-                        //
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsBuild_Cook));
-                        content.space();
-                        content.Add(new RbText(DssRef.lang.BuildingType_Cook));
-                        //
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsBuild_CoalPit));
-                        content.space();
-                        content.Add(new RbText(DssRef.lang.BuildingType_CoalPit));
-                        //
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsResource_Food));
-                        content.space();
-                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
-                        //
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsBuild_Postal));
-                        content.space();
-                        content.Add(new RbText(DssRef.lang.BuildingType_Postal));
-                        break;
+                            //
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
+                            content.space();
+                            content.Add(new RbText(string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat)));
+                            //
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsBuild_Cook));
+                            content.space();
+                            content.Add(new RbText(DssRef.lang.BuildingType_Cook));
+                            //
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsBuild_CoalPit));
+                            content.space();
+                            content.Add(new RbText(DssRef.lang.BuildingType_CoalPit));
+                            //
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsResource_Food));
+                            content.space();
+                            content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+                            //
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsBuild_Postal));
+                            content.space();
+                            content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+                            break;
 
-                    case AutomationFocus.Export:
-                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+                        case AutomationFocus.Export:
+                            content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
 
-                        //
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsBuild_Postal));
-                        content.space();
-                        content.Add(new RbText(DssRef.lang.BuildingType_Postal));
-                        //
-                        //content.newLine();
-                        //HudLib.BulletPoint(content);
-                        //content.space();
-                        //content.Add(new RbImage(SpriteName.WarsResource_Wood));
-                        //content.space();
-                        //content.Add(new RbText(DssRef.lang.Resource_TypeName_Wood));
-                        ////
-                        //content.newLine();
-                        //HudLib.BulletPoint(content);
-                        //content.space();
-                        //content.Add(new RbImage(SpriteName.WarsResource_Stone));
-                        //content.space();
-                        //content.Add(new RbText(DssRef.lang.Resource_TypeName_Stone));
-                        ////
-                        //content.newLine();
-                        //HudLib.BulletPoint(content);
-                        //content.space();
-                        //content.Add(new RbImage(SpriteName.));
-                        //content.space();
-                        //content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+                            //
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsBuild_Postal));
+                            content.space();
+                            content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+                            //
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.space();
+                            //content.Add(new RbImage(SpriteName.WarsResource_Wood));
+                            //content.space();
+                            //content.Add(new RbText(DssRef.lang.Resource_TypeName_Wood));
+                            ////
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.space();
+                            //content.Add(new RbImage(SpriteName.WarsResource_Stone));
+                            //content.space();
+                            //content.Add(new RbText(DssRef.lang.Resource_TypeName_Stone));
+                            ////
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.space();
+                            //content.Add(new RbImage(SpriteName.));
+                            //content.space();
+                            //content.Add(new RbText(DssRef.lang.BuildingType_Postal));
 
 
-                        break;
+                            break;
 
-                    case AutomationFocus.Military:
-                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+                        case AutomationFocus.Military:
+                            content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
 
-                        //
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsBuild_SoldierBarracks));
-                        content.space();
-                        content.Add(new RbText(DssRef.lang.BuildingType_SoldierBarracks));
+                            //
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsBuild_SoldierBarracks));
+                            content.space();
+                            content.Add(new RbText(DssRef.lang.BuildingType_SoldierBarracks));
 
-                        //
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsSoldierIcon));
-                        content.space();
-                        content.Add(new RbText(DssRef.lang.UnitType_Soldier));
+                            //
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsSoldierIcon));
+                            content.space();
+                            content.Add(new RbText(DssRef.lang.UnitType_Soldier));
 
-                        break;
+                            break;
 
-                    case AutomationFocus.Grow:
-                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+                        case AutomationFocus.Grow:
+                            content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
 
-                        //
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
-                        content.space();
-                        content.Add(new RbText(DssRef.lang.BuildingType_WorkerHut));
+                            //
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
+                            content.space();
+                            content.Add(new RbText(DssRef.lang.BuildingType_WorkerHut));
 
-                        //
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
-                        content.space();
-                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Wheat));
+                            //
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
+                            content.space();
+                            content.Add(new RbText(DssRef.lang.Resource_TypeName_Wheat));
 
-                        break;
+                            break;
+                    }
                 }
             }
         }
@@ -2885,9 +2761,9 @@ namespace VikingEngine.DSSWars.GameObject
             foreach (int n in neighborCities)
             {
                 City c = Get(n);
-                if (c.faction != this.faction && c.faction.player is Players.AiPlayer)
+                if (!RefExt.EqTarget(c.faction, this.faction, out var tCityFaction)  && tCityFaction.player is Players.AiPlayer)
                 {
-                    c.faction.player.IsPlayerNeighbor = true;
+                    tCityFaction.player.IsPlayerNeighbor = true;
                 }
             }
         }
@@ -2897,7 +2773,7 @@ namespace VikingEngine.DSSWars.GameObject
             foreach (int n in neighborCities)
             {
                 City c = Get(n);
-                if (c.faction != this.faction && c.faction.player.IsPlayerNeighbor)
+                if (!RefExt.EqTarget(c.faction, this.faction, out var tCityFaction) && tCityFaction.player.IsPlayerNeighbor)
                 {
                     return true;
                 }
@@ -2905,19 +2781,19 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public override void setFaction(Faction faction)
+        public override void setFaction(Faction newFaction)
         {
-            
-            if (this.faction != faction)
+            var tFaction = RefExt.Target(this.faction);
+
+            if (newFaction != tFaction)
             {
-                Faction prevOwner = this.faction;
-                this.faction = faction;
+                //Faction prevOwner = this.faction;
+                this.faction = new WeakReference<Faction>(newFaction);
                 technology.destroyTechOnTakeOver();
-                faction.AddCity(this, false);
-                if (prevOwner != null)
+                newFaction.AddCity(this, false);
+                if (tFaction != null)
                 {
-                    prevOwner.remove(this);
-                   
+                    tFaction.remove(this);
                 }
                 OnNewOwner();
                 //guardCount = Bound.Min(guardCount, 1);
@@ -2926,13 +2802,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void OnNewOwner()
         {
-            if (DssRef.world != null)
+            if (DssRef.world != null && faction.TryGetTarget(out var tFaction))
             {
                 DssRef.world.BordersUpdated = true;
 
                 //detailObj?.onNewOwner();
 
-                if (cityType == CityType.Factory && faction.factiontype != FactionType.DarkLord)
+                if (cityType == CityType.Factory && tFaction.factiontype != FactionType.DarkLord)
                 {
                     setFactoryType(false);
                 }
@@ -2942,9 +2818,9 @@ namespace VikingEngine.DSSWars.GameObject
                     //createOverViewModel();
                 }
 
-                workTemplate.onFactionChange(faction.workTemplate);
-                tradeTemplate.onFactionValueChange(faction.tradeTemplate);
-                technology.addFactionUnlocked(faction.technology, true, false);
+                workTemplate.onFactionChange(tFaction.workTemplate);
+                tradeTemplate.onFactionValueChange(tFaction.tradeTemplate);
+                technology.addFactionUnlocked(tFaction.technology, true, false);
             }
         }
 
@@ -3140,7 +3016,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Army recruitToClosestArmy()
         {
-            return faction.ClosestFriendlyArmy(position, 3.6f);
+            return RefExt.Target(faction)?.ClosestFriendlyArmy(position, 3.6f);
         }
 
         public override City GetCity()
@@ -3150,7 +3026,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override bool defeatedBy(Faction attacker)
         {
-            return faction == attacker;
+            return RefExt.EqTarget(attacker, faction);// faction == attacker;
         }
 
         //public override bool defeated()
@@ -3165,7 +3041,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override bool aliveAndBelongTo(int faction)
         {
-            return this.faction.parentArrayIndex == faction;
+            return this.faction.TryGetTarget(out var tFaction) && tFaction.parentArrayIndex == faction;
         }
 
         public override GameObjectType gameobjectType()

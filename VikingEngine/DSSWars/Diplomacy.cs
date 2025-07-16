@@ -154,6 +154,15 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public bool InWar(WeakReference<Faction> faction1, WeakReference<Faction> faction2)
+        {
+            if (faction1.TryGetTarget(out var target1) && faction2.TryGetTarget(out var target2))
+            {
+                return InWar(target1, target2);
+            }
+            return false;
+        }
+
         public bool InWar(Faction faction1, Faction faction2)
         {
             if (faction1 == null || faction2 == null)

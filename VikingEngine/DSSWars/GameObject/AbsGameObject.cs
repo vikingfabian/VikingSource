@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
             return isDeleted;
         }
 
-        abstract public Faction GetFaction();
+        abstract public bool GetFaction(out Faction target);
 
         virtual public City GetCity() { return null; }
 

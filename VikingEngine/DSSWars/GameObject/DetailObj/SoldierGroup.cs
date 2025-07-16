@@ -124,9 +124,12 @@ namespace VikingEngine.DSSWars.GameObject
                 setDetailLevel(true);
             }
 
-            if (army.faction.player.IsLocalPlayer())
+            if (army.faction.TryGetTarget(out var factionTarget))
             {
-                army.faction.player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
+                if (factionTarget.player.IsLocalPlayer())
+                {
+                    factionTarget.player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
+                }
             }
         }
 
@@ -797,217 +800,221 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void update(float time, bool fullUpdate)
         {
-            if (debugTagged)
-            {
-                lib.DoNothing();
-            }
+            //if (debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
 
-            if (inShipOrGuardTransform)
-            {
-                return;
-            }
+            //if (army.faction.TryGetTarget(out var factionTarget))
+            //{
 
-            var attack_sp = attackTarget_soldierGroupOrCity;
-            var command_sp = command;
-
-            
-            if (attack_sp != null)
-            {
-                if (state != GroupState.Battle)
+                if (inShipOrGuardTransform)
                 {
-                    enterBattleState(true);
+                    return;
                 }
 
-                if (command_sp != null)
+                var attack_sp = attackTarget_soldierGroupOrCity;
+                var command_sp = command;
+
+
+                if (attack_sp != null)
                 {
-                    if (Ref.peRnd.Chance(0.1))
+                    if (state != GroupState.Battle)
                     {
+                        enterBattleState(true);
+                    }
 
-                        Vector2 diff = new Vector2(
-                           attack_sp.position.X - position.X,
-                           attack_sp.position.Z - position.Z);
-
-                        if (diff.Length() < groupRadius)
+                    if (command_sp != null)
+                    {
+                        if (Ref.peRnd.Chance(0.1))
                         {
-                            cancelCommand();
+
+                            Vector2 diff = new Vector2(
+                               attack_sp.position.X - position.X,
+                               attack_sp.position.Z - position.Z);
+
+                            if (diff.Length() < groupRadius)
+                            {
+                                cancelCommand();
+                            }
+
+                            var goalTarget = command_sp.AttackTarget();
+                            if (goalTarget != null && distance(goalTarget) < attackRadius)
+                            {
+                                attackTarget_soldierGroupOrCity = goalTarget;
+                                cancelCommand();
+                                updateMoveAndAttackTarget(time, fullUpdate, attackTarget_soldierGroupOrCity);
+                            }
+                        }
+                        if (command_sp.hasPathCommand(out bool towardsUnit))
+                        {
+                            Vector3 nodePos = towardsUnit ? walkingGoalAttackTarget(command_sp.AttackTarget(), out _) : walkingGoalWp(command_sp.GoalPosition(), out _, out _);
+                            if (updateWalking(nodePos, true, false, true, 0, time))
+                            {
+                                cancelCommand();
+                            }
+
+                            if (soldiers != null)
+                            {
+                                var soldiersC = soldiers.counter();
+                                while (soldiersC.Next())
+                                {
+                                    soldiersC.sel.update2_battle_move(time, fullUpdate);
+                                }
+                            }
                         }
 
-                        var goalTarget = command_sp.AttackTarget();
-                        if (goalTarget != null && distance(goalTarget) < attackRadius)
+                    }
+                    else
+                    {
+                        if (InGuardPost())
                         {
-                            attackTarget_soldierGroupOrCity = goalTarget;
-                            cancelCommand();
-                            updateMoveAndAttackTarget(time, fullUpdate, attackTarget_soldierGroupOrCity);
+                            updateStaticAttack(time, fullUpdate, attack_sp);
+                        }
+                        else
+                        {
+                            updateMoveAndAttackTarget(time, fullUpdate, attack_sp);
                         }
                     }
-                    if (command_sp.hasPathCommand(out bool towardsUnit))
+                }
+                else
+                {
+                    switch (state)
                     {
-                        Vector3 nodePos = towardsUnit ? walkingGoalAttackTarget(command_sp.AttackTarget(), out _) : walkingGoalWp(command_sp.GoalPosition(), out _, out _);
-                        if (updateWalking(nodePos, true, false, true, 0, time))
-                        {
-                            cancelCommand();
-                        }
+                        case GroupState.Battle:
+                            {
+                                //Capture city here
+                                if (army.IsArmy())
+                                {
+                                    var city = DssRef.world.tileGrid.Get(tilePos).City();
+                                    if (DssRef.diplomacy.InWar(factionTarget, city.faction))
+                                    {
+                                        if (city.tilePos.SideLength(tilePos) <= 2 || army.GetArmy().attackTarget == city)
+                                        {
+                                            goalWp = WP.ToWorldPos(city.tilePos);
+                                            state = GroupState.CityCapture;
+                                            return;
+                                        }
+                                    }
+                                }
+                                enterBattleState(false);
+                            }
+                            break;
 
+                        case GroupState.CityCapture:
+                            if (command == null)
+                            {
+                                walking_Peace(time, goalWp, true, out bool complete);
+
+                                if (Ref.peRnd.Chance(0.1))
+                                {
+                                    var city = DssRef.world.tileGrid.Get(tilePos).City();
+                                    if (DssRef.diplomacy.InWar(factionTarget, city.faction))
+                                    {
+                                        goalWp = WP.ToWorldPos(city.tilePos);
+
+                                        if (VectorExt.PlaneXZLength(goalWp - position) < CaptureDistance)
+                                        {
+                                            city.capturePoints += CaptureAddPerMs * time;
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        goalWp = armyPlacementWp;
+                                        state = GroupState.Battle;
+                                    }
+                                }
+
+                                goto UpdateInduviduals;
+                            }
+                            break;
+                    }
+
+                    if (command != null)
+                    {
+                        if (command_sp.hasPathCommand(out bool towardsUnit))
+                        {
+                            walking_Peace(time, towardsUnit ? command_sp.AttackTarget().position : command_sp.GoalPosition(), false, out bool complete);
+                            if (complete)
+                            {
+                                command_sp.OnMovePathComplete(this);
+                            }
+                            state = GroupState.FollowCommand;
+                        }
+                        else if (command_sp.haltCommand)
+                        {
+                            if (state != GroupState.Idle)
+                            {
+                                state = GroupState.GoingIdle;
+                                waitTime += time;
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                        switch (state)
+                        {
+                            case GroupState.Idle:
+                                waitTime += time;
+                                if (waitTime >= 5000)
+                                {
+                                    waitTime = 0f;
+                                    if ((goalWp - position).PlaneXZLength() > WorldData.SubTileHalfWidth)
+                                    {
+                                        state = GroupState.FindArmyPlacement;
+                                        wakeupSoldiers();
+                                    }
+                                }
+
+                                break;
+
+                            case GroupState.FindArmyPlacement:
+                                walking_Peace(time, goalWp, false, out bool complete);
+                                if (complete)
+                                {
+                                    state = GroupState.GoingIdle;
+                                    waitTime = 0;
+                                }
+
+                                break;
+                            case GroupState.GoingIdle:
+                                waitTime += time;
+                                break;
+                        }
+                    }
+
+                UpdateInduviduals:
+                    bool allIdle = true;
+
+
+                    if (state == GroupState.Idle)
+                    {
+                        //Passive check of souroundings
+                    }
+                    else
+                    {
                         if (soldiers != null)
                         {
                             var soldiersC = soldiers.counter();
                             while (soldiersC.Next())
                             {
-                                soldiersC.sel.update2_battle_move(time, fullUpdate);
+                                soldiersC.sel.update2(time, fullUpdate);
+                                allIdle &= soldiersC.sel.state2 == SoldierState2.idle;
                             }
                         }
                     }
 
-                }
-                else
-                {
-                    if (InGuardPost())
+                    if (allIdle &&
+                        state == GroupState.GoingIdle &&
+                        waitTime >= 5000)
                     {
-                        updateStaticAttack(time, fullUpdate, attack_sp);
-                    }
-                    else
-                    {
-                        updateMoveAndAttackTarget(time, fullUpdate, attack_sp);
-                    }
-                }
-            }
-            else
-            {
-                switch (state)
-                {
-                    case GroupState.Battle:
-                        {
-                            //Capture city here
-                            if (army.IsArmy())
-                            {
-                                var city = DssRef.world.tileGrid.Get(tilePos).City();
-                                if (DssRef.diplomacy.InWar(army.faction, city.faction))
-                                {
-                                    if (city.tilePos.SideLength(tilePos) <= 2 || army.GetArmy().attackTarget == city)
-                                    {
-                                        goalWp = WP.ToWorldPos(city.tilePos);
-                                        state = GroupState.CityCapture;
-                                        return;
-                                    }
-                                }
-                            }
-                            enterBattleState(false);
-                        }
-                        break;
-
-                    case GroupState.CityCapture:
-                        if (command == null)
-                        {
-                            walking_Peace(time, goalWp, true, out bool complete);
-
-                            if (Ref.peRnd.Chance(0.1))
-                            {
-                                var city = DssRef.world.tileGrid.Get(tilePos).City();
-                                if (DssRef.diplomacy.InWar(army.faction, city.faction))
-                                {
-                                    goalWp = WP.ToWorldPos(city.tilePos);
-
-                                    if (VectorExt.PlaneXZLength(goalWp - position) < CaptureDistance)
-                                    {
-                                        city.capturePoints += CaptureAddPerMs * time;
-                                    }
-                                    
-                                }
-                                else
-                                {
-                                    goalWp = armyPlacementWp;
-                                    state = GroupState.Battle;
-                                }
-                            }
-
-                            goto UpdateInduviduals;
-                        }
-                        break;
-                }
-
-                if (command != null)
-                {
-                    if (command_sp.hasPathCommand(out bool towardsUnit))
-                    {
-                        walking_Peace(time, towardsUnit? command_sp.AttackTarget().position : command_sp.GoalPosition(), false, out bool complete);
-                        if (complete)
-                        {
-                            command_sp.OnMovePathComplete(this);
-                        }
-                        state = GroupState.FollowCommand;
-                    }
-                    else if (command_sp.haltCommand)
-                    {
-                        if (state != GroupState.Idle)
-                        {
-                            state = GroupState.GoingIdle;
-                            waitTime += time;
-                        }
-                    }
-                }
-                else
-                {
-
-                    switch (state)
-                    {
-                        case GroupState.Idle:
-                            waitTime += time;
-                            if (waitTime >= 5000)
-                            {
-                                waitTime = 0f;
-                                if ((goalWp - position).PlaneXZLength() > WorldData.SubTileHalfWidth)
-                                {
-                                    state = GroupState.FindArmyPlacement;
-                                    wakeupSoldiers();
-                                }
-                            }
-
-                            break;
-
-                        case GroupState.FindArmyPlacement:
-                            walking_Peace(time, goalWp, false, out bool complete);
-                            if (complete)
-                            {
-                                state = GroupState.GoingIdle;
-                                waitTime = 0;
-                            }
-
-                            break;
-                        case GroupState.GoingIdle:
-                            waitTime += time;
-                            break;
+                        state = GroupState.Idle;
                     }
                 }
 
-            UpdateInduviduals:
-                bool allIdle = true;
-
-            
-                if (state == GroupState.Idle)
-                {
-                    //Passive check of souroundings
-                }
-                else
-                {
-                    if (soldiers != null)
-                    {
-                        var soldiersC = soldiers.counter();
-                        while (soldiersC.Next())
-                        {
-                            soldiersC.sel.update2(time, fullUpdate);
-                            allIdle &= soldiersC.sel.state2 == SoldierState2.idle;
-                        }
-                    }
-                }
-
-                if (allIdle &&
-                    state == GroupState.GoingIdle &&
-                    waitTime >= 5000)
-                {
-                    state = GroupState.Idle;
-                }
-            }
-
+            //}
         }
 
 
@@ -2292,11 +2299,14 @@ namespace VikingEngine.DSSWars.GameObject
         //    }            
         //}
 
-        public override Faction GetFaction()
+        //public override Faction GetFaction()
+        //{
+        //    return army.faction;
+        //}
+        public override bool GetFaction(out Faction target)
         {
-            return army.faction;
+            return army.faction.TryGetTarget(out target);
         }
-
         public override AbsMapObject RelatedMapObject()
         {
             return army;

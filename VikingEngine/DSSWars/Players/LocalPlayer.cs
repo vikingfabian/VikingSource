@@ -657,7 +657,10 @@ namespace VikingEngine.DSSWars.Players
                 {
                     foreach (var n in citiesC.sel.neighborCities)
                     {
-                        DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
+                        if (DssRef.world.cities[n].faction.TryGetTarget(out var tNcityFaction))
+                        { 
+                            tNcityFaction.player.onPlayerNeighborCapture(this);
+                        }                        
                     }
                 }
             }
@@ -669,7 +672,10 @@ namespace VikingEngine.DSSWars.Players
             {
                 foreach (var n in city.neighborCities)
                 {
-                    DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
+                    if (DssRef.world.cities[n].faction.TryGetTarget(out var tNcityFaction))
+                    {
+                        tNcityFaction.player.onPlayerNeighborCapture(this);
+                    }
                 }                
             }
 
