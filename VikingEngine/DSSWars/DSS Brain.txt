@@ -28,6 +28,7 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+x set all defence is broken, need set all towers
 x how to get science buildings tooltip
 x gun maker missing tooltip info
 x small map editor size crash

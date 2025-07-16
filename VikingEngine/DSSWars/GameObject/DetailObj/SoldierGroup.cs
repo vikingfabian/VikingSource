@@ -171,6 +171,7 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierGroup(AbsArmy army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
             this.army = army;
+            this.factionIndex = army.factionIndex;
             readGameState(r, version, true, pointers);
         }
 

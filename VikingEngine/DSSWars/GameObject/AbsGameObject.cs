@@ -37,6 +37,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public Faction GetFaction()
         {
+#if DEBUG
+            if (factionIndex < 0)
+            {
+                throw new Exception();
+            }
+#endif
             return DssRef.world.factions.Array[factionIndex];
         }
 

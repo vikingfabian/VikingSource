@@ -155,6 +155,11 @@ namespace VikingEngine.DSSWars
         }
         public bool InWar(int faction1, int faction2)
         {
+            if (faction1 < 0 || faction2 < 0)
+            {
+                return false;
+            }
+
             if (faction1 != faction2)
             {
                 return InWar(DssRef.world.factions.Array[faction1], DssRef.world.factions.Array[faction2]);

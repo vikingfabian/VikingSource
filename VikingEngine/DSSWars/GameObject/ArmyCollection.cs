@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public ArmyCollection(Faction faction)
         {
-            this.faction = faction;
+            this.factionIndex = faction.myIndex;
         }
 
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)

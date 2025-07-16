@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsGOCollection : AbsWorldObject
     {
-        protected Faction faction;
+        //protected Faction faction;
 
         protected void GroupPresentation(ObjectHudArgs args, bool tooltip)
         {
