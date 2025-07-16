@@ -1,7 +1,5 @@
 ﻿UPDATE
-* Removed the to-render delay, it is too annoying to see it all pop in
-* Fixed the camera culling bug
-
+* 
 
 Voxel editor: 
 *
