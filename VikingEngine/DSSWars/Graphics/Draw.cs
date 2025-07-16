@@ -176,12 +176,14 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case Map.MapDetailLayerType.TerrainOverview2:
+                    DssRef.state.detailMap.Update_outOfFocus();
                     DrawGenerated(TerrainLayer, cameraIndex);
                     Draw3d(TerrainLayer, cameraIndex);
                     break;
 
                 case Map.MapDetailLayerType.FullOverview4:
                 case Map.MapDetailLayerType.FactionColors3:
+                    DssRef.state.detailMap.Update_outOfFocus();
                     Draw3d(MinimapLayer, cameraIndex);
                     break;                    
             }

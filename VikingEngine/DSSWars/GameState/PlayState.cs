@@ -390,7 +390,7 @@ namespace VikingEngine.DSSWars
         {
             base.Time_Update(time);
             //detailUpdateChanges = 0;
-            MayChangeDetail_OnNewUpdate();
+            //MayChangeDetail_OnNewUpdate();
             Sound.SoundStackManager.Update();
 
             if (Ref.music != null)
@@ -509,6 +509,8 @@ namespace VikingEngine.DSSWars
 
             Engine.ParticleHandler.Update(time);
 
+
+            //asynchMapGenerating(0, time);
         }
 
         

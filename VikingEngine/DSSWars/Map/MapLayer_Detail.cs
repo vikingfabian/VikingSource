@@ -70,14 +70,19 @@ namespace VikingEngine.DSSWars.Map
                 {
                     tilesC.sel.synchToRender();
                 }
-                
+
                 if (tilesC.sel.renderState == DetailMapTileState.InRender)
                 {
                     tilesC.sel.model.Draw(cameraIndex);
-                } 
+                }
             }
 
             // Signal the thread (each call resumes the thread *once*)
+            pauseEvent.Set();
+        }
+
+        public void Update_outOfFocus()
+        {
             pauseEvent.Set();
         }
 

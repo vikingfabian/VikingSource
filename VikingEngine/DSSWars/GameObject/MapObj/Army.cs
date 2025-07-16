@@ -733,10 +733,10 @@ namespace VikingEngine.DSSWars.GameObject
                 lib.DoNothing();
             }
 
-            if (DssRef.state.MayChangeDetail())
-            {
+            
                 updateDetailLevel();
-            }
+            
+
             if (inRender_detailLayer)
             {
                 updateArmyMembers(Ref.DeltaGameTimeMs, true);               

@@ -49,27 +49,31 @@ namespace VikingEngine.DSSWars.GameState
         protected int stepFramesCount = 0;
         public Ambience ambience;
 
-        protected int detailUpdateChanges = 0;
+        //protected int detailUpdateChanges = 0;
 
-        protected void MayChangeDetail_OnNewUpdate()
-        {
-            if (detailUpdateChanges > 16)
-            {
-                detailUpdateChanges /= 2;
-            }
-            else
-            {
-                detailUpdateChanges = 0;
-            }
-        }
-        public void OnDetailChange()
-        {
-            detailUpdateChanges++;
-        }
-        public bool MayChangeDetail()
-        {
-            return detailUpdateChanges < 4;
-        }
+        //protected void MayChangeDetail_OnNewUpdate()
+        //{
+        //    //if (detailUpdateChanges > 16)
+        //    //{
+        //    //    detailUpdateChanges /= 2;
+        //    //}
+        //    //else
+        //    {
+        //        detailUpdateChanges = 0;
+        //    }
+        //}
+        //public void OnDetailChange()
+        //{
+        //    detailUpdateChanges++;
+        //}
+        //public bool MayChangeDetail()
+        //{
+        //    if (detailUpdateChanges >= 16)
+        //    {
+        //        lib.DoNothing();
+        //    }
+        //    return detailUpdateChanges < 4;
+        //}
 
         public AbsPlayState() 
             :base() 

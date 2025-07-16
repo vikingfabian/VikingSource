@@ -1580,6 +1580,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void update()
         {
+            if (parentArrayIndex == 441)
+            {
+                lib.DoNothing();
+            }
             updateDetailLevel();
 
             //detailObj.update(Ref.DeltaGameTimeMs, true);
@@ -1627,6 +1631,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Intvector2MinMax minMax = workerCullingMinMax;
             minMax.Combine(guardCullingMinMax);
+            //if (parentArrayIndex == 441)
+            //{
+            //    lib.DoNothing();
+            //}
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref minMax.min, ref minMax.max);
         }
 
