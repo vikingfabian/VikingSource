@@ -98,7 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />
-    <ProjectReference Include="..\NativeCode\NativeCode.csproj" />
+    <ProjectReference Include="..\NativeShared\NativeShared.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -111,8 +111,7 @@
 </PropertyGroup>
 
 <Target Name="CopyNativeDll" AfterTargets="Build">
-  <Copy SourceFiles="..\NativeCode\bin\Release\net8.0\win-x64\publish\NativeCode.dll"
-        DestinationFolder="$(OutDir)" />
+  <Copy SourceFiles="..\NativeCode\bin\Release\net8.0\win-x64\publish\NativeCode.dll" DestinationFolder="$(OutDir)" />
 </Target>
 
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">

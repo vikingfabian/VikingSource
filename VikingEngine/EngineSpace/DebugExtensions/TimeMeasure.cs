@@ -18,8 +18,8 @@ namespace VikingEngine.DebugExtensions
             time = DateTime.Now;
         }
         public void EndMeasure()
-        { 
-            Debug.Log(DebugLogType.MSG, "TIME, " + name + ": " + DateTime.Now.Subtract(time).TotalMilliseconds);
+        {
+            System.Diagnostics.Debug.WriteLine("TIME, " + name + ": " + DateTime.Now.Subtract(time).TotalMilliseconds);
         }
     }
 }

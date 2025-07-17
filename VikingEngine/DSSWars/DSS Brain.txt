@@ -168,6 +168,12 @@ Most of what I use can be found here:
 https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping 
 
 #Export
+cd NativeCode
+dotnet publish -c Release -r win-x64
+
 cd VikingEngine
 dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+
+
+
 

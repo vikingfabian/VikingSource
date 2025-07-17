@@ -9,7 +9,9 @@ namespace VikingEngine
 {
     static class Native
     {
-        [DllImport("NativeCode.dll")]
-        public static extern float add(float a, float b);
+        private const string Dll = "NativeCode.dll";
+
+        [DllImport(Dll)] public static extern float add(float a, float b);
+        [DllImport(Dll)] public static extern float heavyloop();
     }
 }

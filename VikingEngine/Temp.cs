@@ -35,4 +35,13 @@ namespace VikingEngine
     //}
 
     //new PartyArmy().checkStatus(); //Does not work properly
+
+    //class HandlerTest : NativeShared.IHandlerLayer
+    //{
+    //    public float value = 0;
+    //    public void setValue(float value)
+    //    {
+    //        this.value = value;
+    //    }
+    //}
 }

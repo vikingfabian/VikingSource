@@ -9,4 +9,8 @@
     <ImplicitUsings>false</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NativeShared\NativeShared.csproj" />
+  </ItemGroup>
+
 </Project>

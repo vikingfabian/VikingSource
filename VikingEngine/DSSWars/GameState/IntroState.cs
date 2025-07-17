@@ -18,6 +18,7 @@ using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
 using VikingEngine.Voxels;
 using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.DebugExtensions;
 
 namespace VikingEngine.DSSWars
 {
@@ -68,7 +69,20 @@ namespace VikingEngine.DSSWars
                 Map.Tile.Init();
             }
 
-           float result = Native.add(100, 1);
+
+            TimeMeasure timeScript = new TimeMeasure("script");
+            {
+                var resultScript = NativeShared.Test.RunHeavyLoop();
+            }
+            timeScript.EndMeasure();
+
+            TimeMeasure timeNative = new TimeMeasure("native");
+            {
+                var resultNative = Native.heavyloop();
+            }
+            timeNative.EndMeasure();
+
+            float result = Native.add(100, 1);
         }
 
         
