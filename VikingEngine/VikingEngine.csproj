@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />
+    <ProjectReference Include="..\NativeCode\NativeCode.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -108,6 +109,12 @@
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <PlatformTarget>AnyCPU</PlatformTarget>
 </PropertyGroup>
+
+<Target Name="CopyNativeDll" AfterTargets="Build">
+  <Copy SourceFiles="..\NativeCode\bin\Release\net8.0\win-x64\publish\NativeCode.dll"
+        DestinationFolder="$(OutDir)" />
+</Target>
+
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
