@@ -937,7 +937,7 @@ namespace VikingEngine.DSSWars.Work
                     break;
 
                 case GameObjectType.Army:
-                    workComplete(mapObject.GetAbsArmy());
+                    workComplete(mapObject.GetArmy());
                     break;
             }
         }

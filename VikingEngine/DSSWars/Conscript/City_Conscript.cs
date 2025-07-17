@@ -370,7 +370,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     new SoldierGroup(army, soldierProfile, startPos);
                 }
-                army?.GetAbsArmy().OnSoldierPurchaseCompleted();
+                army?.GetArmy().OnSoldierPurchaseCompleted();
             }
             
         }

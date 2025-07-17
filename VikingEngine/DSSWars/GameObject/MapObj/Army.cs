@@ -529,7 +529,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        public void mergeArmies(Army otherArmy)
+        public void mergeArmies(AbsArmy otherArmy)
         {
             //This army will be removed
 
@@ -603,10 +603,10 @@ namespace VikingEngine.DSSWars.GameObject
 
             gold -= transportGold;
 
-
-            toArmy.gold += transportGold;
-            toArmy.refreshPositions(false);
-            toArmy.onArmyMerge();
+            var army = toArmy as Army;
+            army.gold += transportGold;
+            army.refreshPositions(false);
+            army.onArmyMerge();
         }
 
         public void disbandSoldiersAction(UnitFilterType type, int count)

@@ -195,7 +195,7 @@ namespace VikingEngine.DSSWars.Data
                 {
                     case GameObjectType.Army:
                         writeFaction(w, gameObject.GetFaction());
-                        w.Write((ushort)gameObject.GetAbsArmy().id);
+                        w.Write((ushort)gameObject.GetArmy().id);
                         break;
                     case GameObjectType.City:
                         w.Write((ushort)gameObject.GetCity().myIndex);

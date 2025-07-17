@@ -897,7 +897,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 var city = DssRef.world.tileGrid.Get(tilePos).City();
                                 if (DssRef.diplomacy.InWar(tArmy.factionIndex, city.factionIndex))
                                 {
-                                    if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetAbsArmy().attackTarget == city)
+                                    if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
                                     {
                                         goalWp = WP.ToWorldPos(city.tilePos);
                                         state = GroupState.CityCapture;
@@ -1151,7 +1151,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (army.TryGetTarget(out var tArmy))
             {
-                tArmy.GetAbsArmy().refreshPositions(false);
+                tArmy.GetArmy().refreshPositions(false);
             }
         }
 
@@ -1603,7 +1603,7 @@ namespace VikingEngine.DSSWars.GameObject
             float aggroRange(AbsMapObject target)
             {
                 if (tArmy.IsArmy() &&
-                    target == tArmy.GetAbsArmy().attackTarget)
+                    target == tArmy.GetArmy().attackTarget)
                 {
                     return 4.5f;
                 }
@@ -1868,7 +1868,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             //bool endAsShip = DssRef.world.tileGrid.Get(army.adjustedWalkGoal).IsWater();
 
-            if (army.TryGetTarget(out var tArmy))
+            if (!army.TryGetTarget(out var tArmy))
             {
                 return;
             }
@@ -2213,7 +2213,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public override void stateDebugText(RichBoxContent content)
         {
-            if (army.TryGetTarget(out var tArmy))
+            if (!army.TryGetTarget(out var tArmy))
                 { return; }
 
             content.newLine();

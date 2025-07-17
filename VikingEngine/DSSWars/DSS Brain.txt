@@ -1,5 +1,8 @@
 ﻿UPDATE
 * Optimization: +1 (50k) cirkular reference, +3 (20k), +1 (40k)
+* Fixed load crash
+
+! camera culling is weird on near zoom
 
 Voxel editor: 
 *
