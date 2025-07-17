@@ -16,29 +16,29 @@ namespace VikingEngine.DSSWars.GameObject
         public static float AverageGroupStrength;
         public const float HealthToStrengthConvertion = 0.5f;
 
-        AbsSoldierProfile[] profiles = new AbsSoldierProfile[(int)UnitType.NUM];
+        AbsSoldierBuilder[] profiles = new AbsSoldierBuilder[(int)UnitType.NUM];
         //public CityDetailProfile city;
-        public BannerManProfile bannerman;
+        public BannerManBuilder bannerman;
 
         public AllUnits()
         {
-            DssRef.profile = this;
+            DssRef.units = this;
 
             //city = new CityDetailProfile();
-            bannerman = new BannerManProfile();
+            bannerman = new BannerManBuilder();
 
             add(bannerman);
 
-            add(new ConscriptedSoldierProfile());
+            add(new ConscriptedSoldierBuilder());
             add(new ConscriptedWarshipData());
 
             add(new WarmachineProfile());
-            add(new CavalryProfile());
+            add(new CavalryBuilder());
 
-            add(new DarkLordProfile());
+            add(new DarkLordBuilder());
             add(new DarkLordWarshipData());
 
-            add(new CityGuardSoldierProfile());
+            add(new CityGuardSoldierBuilder());
            
 
             int defaultAttackDamage = DssConst.WeaponDamage_Sword;
@@ -47,6 +47,12 @@ namespace VikingEngine.DSSWars.GameObject
             AverageGroupStrength = GroupStrengh_Raw(DssConst.SoldierGroup_DefaultCount, defaultDps, DssConst.Soldier_DefaultHealth);//DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
             
         }
+
+        public bool IsShip(UnitType type)
+        {
+            return profiles[(int)type].IsShip();
+        }
+
         static int DPS(int damage, float attackAndCoolDownTime)
         {
             return Convert.ToInt32(damage / (attackAndCoolDownTime / 1000.0));
@@ -134,16 +140,12 @@ namespace VikingEngine.DSSWars.GameObject
             };
         }
 
-        AbsSoldierProfile add(AbsSoldierProfile soldier)
+        void add(AbsSoldierBuilder builder)
         {
-            profiles[(int)soldier.unitType] = soldier;
-
-            //recruits[(int)soldier.unitType] = new RecruitData(soldier);
-
-            return soldier;
+            profiles[(int)builder.unitType] = builder;
         }
 
-        public AbsSoldierProfile Get(UnitType type)
+        public AbsSoldierBuilder Get(UnitType type)
         {
             return profiles[(int)type];
         }

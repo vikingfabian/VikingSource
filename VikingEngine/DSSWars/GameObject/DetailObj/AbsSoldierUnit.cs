@@ -49,13 +49,13 @@ namespace VikingEngine.DSSWars.GameObject
         float reactionTime;        
         SoldierBattleData battleData = null;
         public float boundRadius;
-        public override AbsDetailUnitProfile Profile()
+        public override AbsDetailUnitBuilder Profile()
         {
-            return DssRef.profile.Get(UnitType);
+            return DssRef.units.Get(UnitType);
         }
-        public AbsSoldierProfile SoldierProfile()
+        public AbsSoldierBuilder SoldierProfile()
         {
-            return DssRef.profile.Get(UnitType);
+            return DssRef.units.Get(UnitType);
         }
 
         virtual public void copyDataToUpgradedUnit(AbsSoldierUnit upgradeUnit)

@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 
-namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
+namespace VikingEngine.DSSWars.GameObject
 {
-    class CityGuardSoldierProfile : AbsSoldierProfile
+    class ConscriptedSoldierBuilder : AbsSoldierBuilder
     {
-        public CityGuardSoldierProfile()
+        public ConscriptedSoldierBuilder()
         {
-            unitType = UnitType.CityGuard;
-
+            unitType = UnitType.Conscript;
+           
             boundRadius = DssVar.StandardBoundRadius;
             //rotationSpeed = SoldierGroupStandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
-            //hasBannerMan = false;
         }
     }
 }

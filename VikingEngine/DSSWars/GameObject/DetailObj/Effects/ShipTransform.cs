@@ -102,7 +102,8 @@ namespace VikingEngine.DSSWars.GameObject
         protected override void init(out float timeSec)
         {
             toShip = !group.isShip;
-            timeSec = (toShip ? DssConst.ShipBuildTimeSec : DssConst.ShipExitTimeSec) * group.typeCurrentData.ShipBuildTimeMultiplier;
+            timeSec = (toShip ? DssConst.ShipBuildTimeSec : DssConst.ShipExitTimeSec) * 
+                DssRef.units.Get(group.currentBuilder).ShipBuildTimeMultiplier;
 
         }
 

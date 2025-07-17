@@ -567,7 +567,7 @@ namespace VikingEngine.DSSWars.GameObject
             return soldierData.basehealth;
         }
         
-        abstract public AbsDetailUnitProfile Profile();
+        abstract public AbsDetailUnitBuilder Profile();
 
         public override string TypeName()
         {

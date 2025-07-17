@@ -9,61 +9,10 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    //class KnightData : AbsSoldierProfile
-    //{
-    //    public KnightData() 
-    //    {
-    //        unitType = UnitType.Knight;
-
-    //        modelScale = DssConst.Men_StandardModelScale * 1.8f;
-    //        boundRadius = DssVar.StandardBoundRadius;
-
-    //        idleFrame = 0;
-    //        attackFrame = 1;
-
-    //        walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2f;
-    //        ArmySpeedBonusLand = 0.8;
-    //        rotationSpeed = StandardRotatingSpeed * 2f;
-    //        targetSpotRange = StandardTargetSpotRange;
-    //        attackRange = 0.06f;
-    //        basehealth = DssConst.Soldier_DefaultHealth * 3;
-    //        mainAttack = AttackType.Melee;
-    //        attackDamage = 120;
-    //        attackDamageStructure = 30;
-    //        attackDamageSea = 20;
-    //        attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
-
-    //        rowWidth = 4;
-    //        columnsDepth = 3;
-    //        groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
-
-    //        goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
-    //        workForcePerUnit = 2;
-    //        upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-    //        recruitTrainingTimeSec = MathExt.MultiplyInt(1.5, DssLib.DefalutRecruitTrainingTimeSec);
-
-    //        modelAdjY = 0.1f;
-    //        modelName = LootFest.VoxelModelName.war_knight;
-    //        modelVariationCount = 3;
-    //        hasBannerMan = false;
-
-    //        description = DssRef.lang.UnitType_Description_Knight;
-    //        icon = SpriteName.WarsUnitIcon_Knight;
-
-    //        energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 3;
-    //    }
-
-
-    //    public override AbsDetailUnit CreateUnit()
-    //    {
-
-    //        return new Knight();
-    //    }
-    //}
-
-    class CavalryProfile : ConscriptedSoldierProfile
+    
+    class CavalryBuilder : ConscriptedSoldierBuilder
     {
-        public CavalryProfile()
+        public CavalryBuilder()
             :base()
         {
             unitType = UnitType.ConscriptCavalry;

@@ -207,9 +207,9 @@ namespace VikingEngine.DSSWars.Defence
                 base.setGroundY();
             }
         }
-
-        protected override void createAllSoldiers(AbsSoldierProfile typeProfile, int count, bool createModels)
+        protected override void createAllSoldiers(UnitType type, int count, bool createModels)
         {
+            var typeProfile = DssRef.units.Get(type);
             soldiers = new SpottedArray<AbsSoldierUnit>(count);
             soldierData = soldierConscript.init();
 
@@ -226,7 +226,7 @@ namespace VikingEngine.DSSWars.Defence
             }
         }
 
-        private void refillGuardUnits(AbsSoldierProfile typeProfile, int count, bool createModels)
+        private void refillGuardUnits(AbsSoldierBuilder typeProfile, int count, bool createModels)
         {
             for (int i = 0; i < count; ++i)
             {

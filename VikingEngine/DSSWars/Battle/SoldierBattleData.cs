@@ -28,8 +28,6 @@ namespace VikingEngine.DSSWars.Battle
         int maxBlock;
         int blocks;
         GameTimeStamp lastBlockTime;
-        //Vector2 collisionForce = Vector2.Zero;
-        //bool hasCollsions = false;
 
         public SoldierBattleData(AbsSoldierUnit parent)
         {
@@ -91,8 +89,6 @@ namespace VikingEngine.DSSWars.Battle
                         collPush = 0.25f;
                     }
                     parent.position += VectorExt.V2toV3XZ(VectorExt.SetMaxSideLength(collPush * collisionForce, MaxPushLength));
-
-                    //collisionForce = Vector2.Zero;
                 }
             }
 
