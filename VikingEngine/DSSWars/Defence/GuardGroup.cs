@@ -27,15 +27,19 @@ namespace VikingEngine.DSSWars.Defence
             : base(army, r, version, pointers)
         {
         }
+        public GuardGroup(AbsArmy army)
+            : base(army)
+        { }
+
         public override void writeGameState(BinaryWriter w)
         {
             base.writeGameState(w);
             w.Write(assignedToPost_IdAndPosition);
         }
 
-        public override void readGameState(BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        public override void readGameState(BinaryReader r, int subVersion, bool needInit, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, subVersion, pointers);
+            base.readGameState(r, subVersion, needInit, pointers);
 
             assignedToPost_IdAndPosition = r.ReadInt32();
             if (assignedToPost_IdAndPosition >= 0)

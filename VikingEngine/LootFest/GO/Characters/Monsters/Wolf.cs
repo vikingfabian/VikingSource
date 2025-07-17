@@ -16,7 +16,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monsters
            {
                NetworkShareObject();
            }
-           LfRef.modelLoad.PreLoadImage(VoxelModelName.enemyattention, false, 0, false);
+           LfRef.modelLoad.PreLoadImage(VoxelModelName.NUM_NON, false, 0, false);
         }
         // public Wolf(System.IO.BinaryReader r)
         //    : base(r)
@@ -35,7 +35,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monsters
 
         protected override VoxelModelName imageName
         {
-            get { return characterLevel == 0? VoxelModelName.wolf_lvl1 : VoxelModelName.wolf_lvl2; }
+            get { return characterLevel == 0? VoxelModelName.NUM_NON : VoxelModelName.NUM_NON; }
         }
 
         static readonly Graphics.AnimationsSettings AnimSet = 

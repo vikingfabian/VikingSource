@@ -12,7 +12,7 @@ namespace VikingEngine.PJ
         //Vector2 velocity;
         const int AnimationLength = 6;
         int animation = 0;
-        CirkleCounterUp updateCount = new CirkleCounterUp(0, 4);
+        CircleCounterUp updateCount = new CircleCounterUp(0, 4);
 
         public FlapParticleRainbow(Vector2 pos, float gamerImageScale, int dir)
             : base(true)

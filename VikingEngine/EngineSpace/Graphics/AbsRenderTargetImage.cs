@@ -109,6 +109,7 @@ namespace VikingEngine.Graphics
                     Ref.draw.Camera = Camera;
                 }
 
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                 for (int i = 0; i < renderList3D.Count; i++)
                 {
                     if (renderList3D[i] != null)

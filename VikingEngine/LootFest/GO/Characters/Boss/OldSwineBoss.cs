@@ -41,12 +41,12 @@ namespace VikingEngine.LootFest.GO.Characters.Monsters
 
         /* Constructors */
         public OldSwineBoss(GoArgs args, BlockMap.AbsLevel level)
-            : base(args, VoxelModelName.old_swine, ScaleRange)
+            : base(args, VoxelModelName.NUM_NON, ScaleRange)
         {
             Health = LfLib.BossEnemyHealth;
             //this.subLevel = subLevel;
 
-            redModel = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.old_swine_red, image.Scale1D, 0, false, false);
+            redModel = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, image.Scale1D, 0, false, false);
             animSettings = new Graphics.AnimationsSettings(5, 0.8f, 1);
 
             if (args.LocalMember)

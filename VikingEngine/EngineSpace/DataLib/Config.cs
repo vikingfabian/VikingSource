@@ -57,7 +57,12 @@ $@"# Game Configuration
 # Changing path will disable Steam Cloud backup
 save_path =
 ";
-                File.WriteAllText(configPath, defaultConfig);
+                try
+                {
+                    File.WriteAllText(configPath, defaultConfig);
+                }
+                catch { }
+
             }
 
             // Use either the user path or default

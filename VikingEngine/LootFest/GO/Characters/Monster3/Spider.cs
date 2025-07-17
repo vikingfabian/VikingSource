@@ -34,7 +34,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monster3
 
         virtual protected void createSpiderImage()
         {
-            createImage(VoxelModelName.spider1, ScaleRange.GetRandom(), 0, new Graphics.AnimationsSettings(6, 0.4f, 1));
+            createImage(VoxelModelName.NUM_NON, ScaleRange.GetRandom(), 0, new Graphics.AnimationsSettings(6, 0.4f, 1));
         }
 
         public void bullSpiderSpawn(Rotation1D dir)

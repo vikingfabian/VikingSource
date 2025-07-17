@@ -61,6 +61,22 @@ namespace VikingEngine.HUD
         public abstract string MouseButton_X1 { get; }
         public abstract string MouseButton_X2 { get; }
 
+        //DEMO PATCH 4
+        public abstract string MouseButtonAction_PanAndCancel { get; }
+        public abstract string MouseButtonAction_PanAndOrderAndCancel { get; }
+
+        public abstract string GraphicsOption_Shadows { get; }
+        public abstract string GraphicsOption_ShadowType_ModelsToGround { get; }
+        public abstract string GraphicsOption_ShadowType_ModelsToModels { get; }
+
+        public abstract string GraphicsOption_Shadow_MapResolution { get; }
+
+        //DEMO PATCH 5
+        public abstract string GraphicsOption_RecordingPresets_AddXPixels { get; }
+        public abstract string Settings_KeyMapPanSpeed { get; }
+        public abstract string Settings_StoreCameraPosition { get; }
+        public abstract string Settings_LoadCameraPosition { get; }
+
 
         public string ThreeOption(ThreeOptions option)
         {

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
+
 using VikingEngine.Graphics;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.LootFest
 {
@@ -93,7 +95,7 @@ namespace VikingEngine.LootFest
         GO.Bounds.StaticBoxBound getBoundingBox(IntVector3 pos)
         {
             pos.Add(gridStart.WorldGrindex);
-            return new GO.Bounds.StaticBoxBound(pos.Vec, Data.Block.TerrainBlockHalfScaleV3, Vector3.Zero);
+            return new GO.Bounds.StaticBoxBound(pos.Vec, Block.TerrainBlockHalfScaleV3, Vector3.Zero);
         }
         int dirToIndex(int dir)
         {

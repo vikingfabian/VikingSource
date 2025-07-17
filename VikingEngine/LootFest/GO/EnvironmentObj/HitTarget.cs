@@ -21,7 +21,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
             WorldPos = args.startWp;
             SetAsManaged();
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.hit_target, Scale, 0, true);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, Scale, 0, true);
             image.position = WorldPos.PositionV3;
 
             rotation = dir;
@@ -37,7 +37,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
             base.DeathEvent(local, damage);
 
             WorldPos.SetAtClosestFreeY(1);
-            new PickUp.Key(new GoArgs(WorldPos), firstAreaKey, this.Level, VoxelModelName.key_lvl1);
+            new PickUp.Key(new GoArgs(WorldPos), firstAreaKey, this.Level, VoxelModelName.NUM_NON);
             //LfRef.levels.GetLevel(Map.WorldLevelEnum.Tutorial, null, createKey, 0);
             BlockSplatter();
         }

@@ -46,22 +46,22 @@ namespace VikingEngine.LootFest.GO.PickUp
                 {
                     case SuitType.NUM_NON:
                         return VoxelModelName.NUM_NON;
-                    case SuitType.Archer:
-                        return VoxelModelName.suit_archer;
-                    case SuitType.BarbarianDane:
-                        return VoxelModelName.suit_barbarian_dane;
-                    case SuitType.BarbarianDual:
-                        return VoxelModelName.suit_barbarian_dual;
-                    case SuitType.Swordsman:
-                        return VoxelModelName.suit_soldier;
-                    case SuitType.SpearMan:
-                        return VoxelModelName.suit_spearman;
-                    case SuitType.ShapeShifter:
-                        return VoxelModelName.suit_shapeshifter;
-                    case SuitType.FutureSuit:
-                        return VoxelModelName.temp_block;
-                    case SuitType.Emo:
-                        return VoxelModelName.suit_emo;
+                    //case SuitType.Archer:
+                    //    return VoxelModelName.suit_archer;
+                    //case SuitType.BarbarianDane:
+                    //    return VoxelModelName.suit_barbarian_dane;
+                    //case SuitType.BarbarianDual:
+                    //    return VoxelModelName.suit_barbarian_dual;
+                    //case SuitType.Swordsman:
+                    //    return VoxelModelName.suit_soldier;
+                    //case SuitType.SpearMan:
+                    //    return VoxelModelName.suit_spearman;
+                    //case SuitType.ShapeShifter:
+                    //    return VoxelModelName.suit_shapeshifter;
+                    //case SuitType.FutureSuit:
+                    //    return VoxelModelName.temp_block;
+                    //case SuitType.Emo:
+                    //    return VoxelModelName.suit_emo;
 
                     default:
                         throw new NotImplementedException("ItemBox voxelimage: " + suit.ToString()); 

@@ -9,16 +9,23 @@ namespace VikingEngine.DSSWars.Map
 {
     class MapLayer_Factions
     {
+        IntVector2 mapsz;
         public Map.FactionColorsTexture factionColorsTex;
 
         public MapLayer_Factions()
         {
-           var vol =  MapLayer_Overview.WaterModelVolume();
-           factionColorsTex = new FactionColorsTexture(vol.Position, vol.Scale);
+           mapsz = DssRef.world.Size;
+
+            factionColorsTex = new FactionColorsTexture(true);/*vol.Position, vol.Scale*/
         }
 
         public void asyncTask()
         {
+            if (mapsz != DssRef.world.Size)
+            { 
+                mapsz = DssRef.world.Size;
+                factionColorsTex.refreshScale();
+            }
             factionColorsTex.RefreshWorld_FactionCol();
         }
 

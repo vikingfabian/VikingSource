@@ -46,6 +46,7 @@ namespace VikingEngine.DSSWars
         public static float ShipRotatingSpeed = SoldierGroupStandardRotatingSpeed * 0.4f;
 
         public static float Men_StandardModelScale = 0.06f;
+        public static float Men_ModCharacterScale = Men_StandardModelScale * 1.76f;
         public static float Men_StandardWalkingSpeed = 0.00018f;
         public static float Men_StandardShipSpeed = Men_StandardWalkingSpeed * 2f;
 
@@ -178,6 +179,10 @@ namespace VikingEngine.DSSWars
         public static int TownHall_RequiredStaff = 20;
         public static int CapitalHall_RequiredStaff = 80;
 
+        public const double ImmigrantsRemovePerSec = 0.1;
+        public const int ImmigrantsTransfereSpeed = 5;
+        public const int ImmigrantionTent_TransfereSpeedBonus = 2;
+        public const int ImmigrantionTent_Capacity = 60;
         //DEFENCE
         public static float GuardPostDefenceChance_Palisade = 0.4f;
         public static float GuardPostDefenceChance_Dirt = 0.5f;
@@ -267,8 +272,9 @@ namespace VikingEngine.DSSWars
         public static int TechnologyGain_GoodRelation_PerMin = 1;
         public static int TechnologyGain_AllyRelation_PerMin = 2;
         public static int TechnologyGain_CitySpread = 4;
-        public static int TechnologyGain_Any = 1;
-        public static int TechnologyGain_Master = 5;
+        public static int TechnologyGain_AnyLevelUp = 1;
+        public static int TechnologyGain_MasterLevelUp = 5;
+        public static int TechnologyGain_ResearchCenter = 1;
 
         public static float Time_SchoolOneXPSec = 4;//50 per level
 

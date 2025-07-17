@@ -20,7 +20,7 @@ namespace VikingEngine.Voxels
                 ForXYZLoop loop = new ForXYZLoop(undoData.Size);
                 while (loop.Next())
                 {
-                    undoData.Set(loop.Position, designer.GetVoxel(loop.Position + volume.Min));
+                    undoData.Set(loop.Position, designer.GetVoxel(designer.CurrentFrame, loop.Position + volume.Min));
                 }
             }
             else
@@ -58,7 +58,7 @@ namespace VikingEngine.Voxels
                         }
                         else
                         {
-                            block = designer.GetVoxel(wp);
+                            block = designer.Get(wp);
                         }
                         undoData.Set(loop.Position, block);
                     }

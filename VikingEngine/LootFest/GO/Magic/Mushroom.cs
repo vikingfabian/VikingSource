@@ -29,7 +29,7 @@ namespace VikingEngine.LootFest.GO.Magic
             WorldPos.SetAtClosestFreeY(0);
             //position.Y = LfRef.chunks.GetScreen(WorldPosition).GetGroundY(WorldPosition);
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.poision_mushroom, 0, 1, false);//LootfestLib.Images.StandardObjInstance(VoxelObjName.poision_mushroom);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0, 1, false);//LootfestLib.Images.StandardObjInstance(VoxelObjName.poision_mushroom);
             image.position = WorldPos.BlockTopFaceV3();
             image.scale = Vector3.Zero;
 

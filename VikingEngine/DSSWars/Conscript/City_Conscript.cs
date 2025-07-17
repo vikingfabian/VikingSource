@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
-using VikingEngine.DSSWars.Display.Component;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface.Component;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         status.menCollected = 0;
                                         status.equipmentCollected = 0;
 
-                                        if (faction.player.IsLocalPlayer())
+                                        if (GetPlayer().IsLocalPlayer())
                                         {
                                             if (status.inProgress.specialization == SpecializationType.CityGuard)
                                             {
@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (army == null)
                 {
-                    army = faction.NewArmy(recruitToTile);
+                    army = GetFaction().NewArmy(recruitToTile);
                 }
             }
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
@@ -383,7 +383,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
 
-                army = faction.NewArmy(recruitToTile);
+                army = GetFaction().NewArmy(recruitToTile);
             }
 
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()

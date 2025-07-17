@@ -29,12 +29,12 @@ namespace VikingEngine.LootFest.GO.Characters
                         Data.MaterialType.gray_15);
                     break;
                 case 1:
-                    modelName = VoxelModelName.horse_brown;
+                    modelName = VoxelModelName.NUM_NON;
                     damCols = new Effects.BouncingBlockColors(Data.MaterialType.dark_warm_brown,
                         Data.MaterialType.gray_85);
                     break;
                 case 2:
-                    modelName = VoxelModelName.horse_red;
+                    modelName = VoxelModelName.NUM_NON;
                     damCols = new Effects.BouncingBlockColors(Data.MaterialType.dark_red_orange,
                         Data.MaterialType.dark_yellow_orange);
                     break;

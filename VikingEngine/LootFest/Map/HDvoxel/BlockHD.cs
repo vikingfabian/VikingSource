@@ -8,12 +8,25 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 {
     struct BlockHD
     {
+        public const byte EmptyBlockMaterial = 0;
+        public const byte DefaultBlockMaterial = 1;
+        //public const byte ProfileBlockMaterial = 2;
+        public const byte BlockPatternMaterial = 15;
+        public const byte EndBlockMaterial = BlockPatternMaterial - 1;
+        public static readonly byte DefaultMaterial = (byte)MaterialProperty.Default;
+        public static readonly byte ReplaceMaterial = (byte)MaterialProperty.Replaceable;
+
+        public const ushort EmptyBlock = 0;
+
+        public static readonly BlockHD Empty = new BlockHD(EmptyBlock);
+
         public const int ColorStep = 16;
         const int StartColor = ColorStep / 2;
-        const int ColorStepCount = (byte.MaxValue - StartColor) / ColorStep;
+        //const int ColorStepCount = (byte.MaxValue - StartColor) / ColorStep;
 
         public Color color;
         public MaterialProperty material;
+        public static ushort JointUp, JointForward, JointBack;
 
         public BlockHD(Color color, MaterialProperty material)
         {
@@ -139,7 +152,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 
         public static Color FilterColor(Color col)
         {
-            return ToColor(ToBlockValue(col, UnknownMaterial));
+            return ToColor(ToBlockValue(col, DefaultMaterial));
         }
 
         public void tintSteps(int addR, int addG, int addB)
@@ -151,20 +164,27 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         {
             return (MaterialProperty)(blockValue & 15);
         }
+
         public static int ToMaterialValue(ushort blockValue)
         {
             return blockValue & 15;
         }
 
-        public const byte EmptyBlockMaterial = 0;
-        public const byte BlockPatternMaterial = 15;
-        public const byte EndBlockMaterial = BlockPatternMaterial - 1;
-        public static readonly byte UnknownMaterial = (byte)MaterialProperty.Default;
-        public static readonly byte AntiMaterial = (byte)MaterialProperty.AntiBlock;
+        
+        public static ushort SetMaterialProperty(ushort blockValue, MaterialProperty toMaterial)
+        {
+            // Clear the lower 4 bits (material)
+            // mask to preserve the top 12 bits (RGB) and clear the bottom 4 (material)
+            ushort rgbPart = (ushort)(blockValue & ~0b1111);
 
-        public const ushort EmptyBlock = 0;
+            // Set the new material
+            ushort result = (ushort)(rgbPart | ((int)toMaterial & 0b1111));
 
-        public static readonly BlockHD Empty = new BlockHD(EmptyBlock);
+            return result;
+        }
+        
+
+
 
         public static Color FaceColorTinted(ushort blockValue, int addR, int addG, int addB)
         {

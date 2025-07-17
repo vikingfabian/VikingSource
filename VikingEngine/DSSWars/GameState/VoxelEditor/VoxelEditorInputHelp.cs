@@ -5,7 +5,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;
@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         input(map.editorInput.undo.Icon, SpriteName.Undo);
                         input(map.editorInput.toggleCameraMode.Icon, SpriteName.InterfaceIconCamera);
 
-                        if (designer.haveAnimation)
+                        if (designer.voxelProject.HaveAnimation)
                         {
                             input(map.editorInput.next.Icon, SpriteName.VoxelEditorFrameNext);
                             input(map.editorInput.previous.Icon, SpriteName.VoxelEditorFramePrevious);
@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         content.newLine();
                         content.Add(new RbImage(map.Menu.Icon));
                         content.space();
-                        content.Add(new RbText(DssRef.todoLang.Editor_SelectOptionsMenu));
+                        content.Add(new RbText(DssRef.lang.Editor_SelectOptionsMenu));
                             
                         input(map.editorInput.draw.Icon, SpriteName.IconBuildStamp);
                         input(map.editorInput.mirrorX.Icon, SpriteName.FlipHori);

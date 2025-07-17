@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
@@ -13,38 +15,50 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.Map
 {
+    struct AddBorderStick
+    {
+        Vector3 pos;
+        int frame;
+
+        public AddBorderStick(Vector3 pos, int frame)
+        {
+            this.pos = pos;
+            this.frame = frame;
+        }
+
+        public VoxelModelInstance_Pooled createStick()
+        {
+            var stick = DssRef.models.ModelInstance_drawbatch(VoxelModelName.wars_borderstick,
+                DssConst.Men_StandardModelScale * 1.5f);
+            stick.position = pos;
+            stick.Frame = frame;
+            return stick;
+        }
+    }
+
     class CityBorders
     {
         City current = null;
-        //ImageGroup imageGroup = new ImageGroup();
-        //int state_0del_1process_2created = 0;
-        List<VoxelModelInstance> imageGroup = new List<VoxelModelInstance>();
+        ConcurrentStack<AddBorderStick> add = new ConcurrentStack<AddBorderStick>();
+        List<VoxelModelInstance_Pooled> imageGroup = new List<VoxelModelInstance_Pooled>();
 
 
         Task process;
-        //List<Graphics.AbsVoxelObj> processModels = null;
+        CancellationTokenSource processCancel;
 
         public void update(LocalPlayer player)
         {
+            // If there's a running process
             if (process != null)
             {
                 if (process.IsCompleted)
                 {
                     process = null;
-                    //if (player.mapControls.selection.obj == current)
-                    //{
-                    //    //still relavant
-                    //    imageGroup.AddToRender(DrawGame.UnitDetailLayer);
-                    //    //state_0del_1process_2created = 2;
-                    //}
-                    //else
-                    //{
-                    //    //cancel
-                    //    state_0del_1process_2created = 0;
-                    //}
+                    processCancel.Dispose();
+                    processCancel = null;
                 }
                 else
-                { 
+                {
                     return;
                 }
             }
@@ -52,36 +66,58 @@ namespace VikingEngine.DSSWars.Map
             if (player.gameControls.map.selection.obj != current)
             {
                 current = player.gameControls.map.selection.obj as City;
-                //imageGroup.DeleteAll();
-                for(int i = 0; i < imageGroup.Count; ++i)//each (var img in imageGroup)
+
+                // Cancel previous task
+                if (processCancel != null)
+                {
+                    processCancel.Cancel();
+                    processCancel.Dispose();
+                    processCancel = null;
+                }
+
+                for (int i = 0; i < imageGroup.Count; ++i)
                 {
                     var img = imageGroup[i];
-                    DssRef.models.recycle(ref img, true);
+                    img.preRemoveFromDrawBatch();
                 }
 
                 imageGroup.Clear();
+                add.Clear();
 
                 if (current != null)
                 {
-                    //state_0del_1process_2created = 1;
+                    processCancel = new CancellationTokenSource();
+                    var token = processCancel.Token;
+
                     process = Task.Factory.StartNew(() =>
                     {
                         try
                         {
-                            create_async(player);
+                            create_async(player, token); // updated to accept the token
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            // expected, do nothing or log
                         }
                         catch (Exception ex)
                         {
                             BlueScreen.ThreadException = ex;
                         }
-                        
-                    });
+                    }, token);
                 }
+            }
+
+            while (add.TryPop(out var addBorder))
+            {
+                imageGroup.Add(addBorder.createStick());
             }
         }
 
-        void create_async(LocalPlayer player)
+
+        void create_async(LocalPlayer player, CancellationToken token)
         {
+
+
             const float ModelGroundYAdj = 0.01f;
             const float TileThird = 1f / 3f;
 
@@ -90,8 +126,11 @@ namespace VikingEngine.DSSWars.Map
             ForXYLoop loop = new ForXYLoop(area);
             while (loop.Next())
             {
+                if (token.IsCancellationRequested)
+                    return;
+
                 var tile = DssRef.world.tileGrid.Get(loop.Position);
-                if (tile.CityIndex == current.parentArrayIndex && tile.BorderCount > 0)
+                if (tile.CityIndex == current.myIndex && tile.BorderCount > 0)
                 {                     
                     var center = WP.ToMapPos(loop.Position);
                     
@@ -179,7 +218,7 @@ namespace VikingEngine.DSSWars.Map
 
             int regionToFrame(int region)
             {
-                if (DssRef.world.cities[region].faction == player.faction)
+                if (DssRef.world.cities[region].factionIndex == player.faction.myIndex)
                 {
                     return 0;
                 }
@@ -191,26 +230,9 @@ namespace VikingEngine.DSSWars.Map
 
             void addStick(Vector3 pos, int frame)
             {
-                var stick = DssRef.models.ModelInstance(VoxelModelName.wars_borderstick,true,
-                    DssConst.Men_StandardModelScale * 1.5f, true, true, true);
-                stick.position = pos;
-                stick.Frame = frame;
-                imageGroup.Add(stick);
+                add.Push(new AddBorderStick(pos, frame));
             }
         }
 
-        void create()
-        {
-            //Graphics.AbsVoxelObj stick = DssRef.models.ModelInstance(VoxelModelName.wars_borderstick,
-            //    DssConst.Men_StandardModelScale * 0.5f, false);
-            //stick.AddToRender(DrawGame.UnitDetailLayer);
-
-
-        }
-
-        //void delete()
-        //{ 
-            
-        //}
     }
 }

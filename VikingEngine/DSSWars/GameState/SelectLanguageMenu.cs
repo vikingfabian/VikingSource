@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;
@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.GameState
 
             menu = new RichMenu(HudLib.RbOnGuiSettings, menuArea, new Vector2(8), RichMenu.DefaultRenderEdge, ImageLayers.Lay0, new PlayerData(PlayerData.AllPlayers));
 
-            Translation translate = new Translation();
+            Presentation.Translation translate = new Presentation.Translation();
             var options = translate.available();
             //GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
             //{

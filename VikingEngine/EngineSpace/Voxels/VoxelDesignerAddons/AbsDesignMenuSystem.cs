@@ -62,7 +62,7 @@ namespace VikingEngine.Voxels
             new GuiTextButton("Copy", null, new GuiAction1Arg<bool>(designer.copySelectedVoxels, false), false, layout);
             new GuiTextButton("Cut", null, new GuiAction1Arg<bool>(designer.copySelectedVoxels, true), false, layout);
             //new GuiTextButton("Save as template", null, designer.LinkSelSaveTemplate, true, layout);
-            new GuiTextButton("Make Stamp", null, new GuiAction1Arg<bool>(designer.stampSelection, true), false, layout);
+            //new GuiTextButton("Make Stamp", null, new GuiAction1Arg<bool>(designer.stampSelection, true), false, layout);
             new GuiTextButton("Rotate/Flip", null, LinkRotateFlip, true, layout);
         }
 
@@ -77,11 +77,11 @@ namespace VikingEngine.Voxels
 
         protected void allFramesChkBox(HUD.GuiLayout layout)
         {
-            if (designer is LootFest.Editor.VoxelDesigner)
-            {
-                if (((LootFest.Editor.VoxelDesigner)designer).inGame)
-                    return;
-            }
+            //if (designer is VoxelDesigner)
+            //{
+            //    if (((VoxelDesigner)designer).inGame)
+            //        return;
+            //}
             new GuiCheckbox("All frames", "Make the same action on all frames", designer.bRepeateOnAllFramesProperty, layout);
         }
 

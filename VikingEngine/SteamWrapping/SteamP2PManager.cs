@@ -13,7 +13,12 @@ namespace VikingEngine.SteamWrapping
     {
         public const int SteamPackageByteLimit = 1200;
 
-        const float NoResponceTimeKickSeconds = 10;
+        const float NoResponceTimeKickSeconds =
+#if DSS
+            40;
+#else
+            10;
+#endif
         public bool autoAcceptSessionRequests = false;
         public int PeerCount { get { return remoteGamers.Count; } }
 
@@ -127,7 +132,6 @@ namespace VikingEngine.SteamWrapping
                         {
                             default:
                                 Ref.NetUpdateReciever().NetworkReadPacket(packet);
-
                                 break;
 
                             case PacketType.Steam_SendRoundtrip:
@@ -143,6 +147,17 @@ namespace VikingEngine.SteamWrapping
                                     float timePassed = TimeExt.SecondsToMS(Ref.TotalTimeSec - timestamp);
                                     packet.sender.roundTripTime = packet.sender.roundTripTime * 0.5f + timePassed * 0.5f;
 
+                                    int packetCount = 2;
+                                    if (packet.sender.roundTripTime < 40)
+                                    {
+                                        packetCount = 32;
+                                    }
+                                    else if(packet.sender.roundTripTime < 140)
+                                    {
+                                        packetCount = 8;
+                                    }
+
+                                    packet.sender.maxPacketCount = Bound.Min(packetCount / remoteGamers.Count, 1);
                                     Ref.NetUpdateReciever().NetEvent_PingReturned(packet.sender);
                                 }
                                 break;
@@ -454,7 +469,8 @@ namespace VikingEngine.SteamWrapping
 #if DEBUG
             if (data.Length > SteamPackageByteLimit)
             {
-                throw new Exception("Passed steam package limit");
+                var packet = (PacketType)data[1];
+                throw new Exception("Passed steam package limit: " + packet);
             }
 #endif
             EP2PSend sendType;

@@ -73,7 +73,7 @@ namespace VikingEngine.Graphics
         //public Vector3 scale = Vector3.One;
 
         protected bool fullyInitialized = false;
-        protected int modelIndex = NextIndex();
+        public int modelIndex = NextIndex();
 
         /* Constructors */
         public AbsVoxelObj(bool add)

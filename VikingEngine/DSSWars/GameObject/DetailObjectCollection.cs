@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public DetailObjectCollection(Faction faction)
         {
-            this.faction = faction;
+            this.factionIndex = faction.myIndex;
         }
 
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)

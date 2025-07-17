@@ -21,7 +21,7 @@ namespace VikingEngine.EngineSpace
 
     //GC optimized list that exposes the array for ref usage
     //Example: ref WorkerStatus status = ref workerStatuses.array[i];
-    struct StructList<T> where T : unmanaged
+    struct StructList<T> where T : struct
     {
         public T[] array;
         public int Count;
@@ -31,13 +31,25 @@ namespace VikingEngine.EngineSpace
 
         public StructList(int initialCapacity)
         {
-            array = new T[initialCapacity];
+            if (initialCapacity == 0)
+            {
+                array = null;
+            }
+            else
+            {
+                array = new T[initialCapacity];
+            }
             Count = 0;
         }
 
         public StructList()
             : this(16)
         {
+        }
+
+        public void Init(int initialCapacity)
+        {
+            array = new T[initialCapacity];
         }
 
         public void Add(T item)

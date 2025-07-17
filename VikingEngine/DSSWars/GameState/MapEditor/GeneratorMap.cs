@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public GeneratorMap(Vector2 pos)
         {
-            texture = new FactionColorsTexture();
+            texture = new FactionColorsTexture(false);
             image = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, pos, Vector2.One, ImageLayers.Lay8, false);
         }
 

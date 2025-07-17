@@ -60,7 +60,7 @@ namespace VikingEngine.LootFest.Effects
             public Coin(Vector3 startPos, Rotation1D heroDir)
                 : base(true)
             {
-                model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.Coin, 0.1f, 0, true, true);
+                model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0.1f, 0, true, true);
                 model.position = startPos;
                 model.Rotation = RotationQuarterion.Random;
                 heroDir.Add(Ref.rnd.Plus_MinusF(2f));

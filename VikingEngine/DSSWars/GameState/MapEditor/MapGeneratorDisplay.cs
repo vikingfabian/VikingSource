@@ -110,6 +110,20 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     {
                         for (MapStartAs mapStartAs = 0; mapStartAs < MapStartAs.NUM; ++mapStartAs)
                         {
+                            string caption = null;
+                            switch (mapStartAs)
+                            {
+                                case MapStartAs.Water:
+                                    caption = DssRef.lang.MapStartAs_Water;
+                                    break;
+                                case MapStartAs.Land:
+                                    caption = DssRef.lang.MapStartAs_Land;
+                                    break;
+                                case MapStartAs.Circle:
+                                    caption = DssRef.lang.MapStartAs_Circle;
+                                    break;
+                            }
+
                             startAs.AddOption(mapStartAs.ToString(), mapStartAs == Sett.StartAs, mapStartAs == 0,
                                 new RbAction1Arg<MapStartAs>((MapStartAs value) =>
                                 {
@@ -217,6 +231,9 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                         new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_NewGame) }, new RbAction(state.startNewGame), null, DssRef.world != null && DssRef.world.generatePassCompleted >= GenerateMapPass.Countries));
 
+#if DEBUG
+                    content.text("Finns inget sätt att ladda!");
+
                     content.newParagraph();
                     var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
                        new RbAction(beginEditName), null);
@@ -227,10 +244,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     nameText.overrideColor = Color.LightYellow;
                     content.Add(nameText);
 
+
                     content.newLine();
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                     new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Save) }, new RbAction(state.saveMap), null, DssRef.world != null));
-
+#endif
                     break;
 
             }

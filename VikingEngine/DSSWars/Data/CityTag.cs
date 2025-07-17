@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.Data
         {
             if (art == CityTagArt.None)
             {
-                return SpriteName.NO_IMAGE;
+                return NoBackSprite;
             }
             else if (art <= CityTagArt.ItemResourceTypeMithril)
             {

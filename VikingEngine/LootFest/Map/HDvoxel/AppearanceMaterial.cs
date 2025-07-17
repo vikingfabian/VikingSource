@@ -21,23 +21,22 @@ namespace VikingEngine.LootFest.Map.HDvoxel
     {
         public static AppearanceMaterial Material1, Material2, Material3, Material4, Material5;
 
-        public static void Init()
+        public static void Init() //Lootfest only!
         {
-            Material1 = new AppearanceMaterial(Color.Gray);
-            Material2 = new AppearanceMaterial(new Color(65,74,129)); //Blå
-            Material3 = new AppearanceMaterial(new Color(133,78,65));//Röd
-            Material4 = new AppearanceMaterial(new Color(65,133,69));//Grön
-            Material5 = new AppearanceMaterial(new Color(147,143,85));//Gul
+            Material1 = new AppearanceMaterial(Color.Gray, true);
+            Material2 = new AppearanceMaterial(new Color(65,74,129), false); //Blå
+            Material3 = new AppearanceMaterial(new Color(133,78,65), false);//Röd
+            Material4 = new AppearanceMaterial(new Color(65,133,69), false);//Grön
+            Material5 = new AppearanceMaterial(new Color(147,143,85), false);//Gul
         }
 
         public ushort baseColor, redTint, brighter, darker;
 
-        public AppearanceMaterial(Color color)
+        public AppearanceMaterial(Color color, bool red)
             :this()
         {
-            BlockHD baseBlock = new BlockHD(color, MaterialProperty.Default);
-
-            setupTints(baseBlock);
+            BlockHD baseBlock = new BlockHD(color, MaterialProperty.Replaceable);
+            setupTints(baseBlock, red);
         }
 
         public AppearanceMaterial(ushort color)
@@ -45,17 +44,25 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         {
             BlockHD baseBlock = new BlockHD();
             baseBlock.BlockValue = color;
+            baseBlock.material = MaterialProperty.Replaceable;
 
-            setupTints(baseBlock);
+            setupTints(baseBlock, true);
         }
 
-        void setupTints(BlockHD baseBlock)
+        void setupTints(BlockHD baseBlock, bool bRed)
         {
-            BlockHD red = baseBlock, bright = baseBlock, dark = baseBlock;
+            BlockHD bright = baseBlock, dark = baseBlock;
 
-            red.color.R = Bound.Byte(red.color.R + BlockHD.ColorStep);
-            //red.color.G = Bound.ByteBounds(red.color.G - BlockHD.ColorStep);
-            //red.color.B = Bound.ByteBounds(red.color.B - BlockHD.ColorStep);
+            if (bRed)
+            {
+                BlockHD red = baseBlock;
+                red.color.R = Bound.Byte(red.color.R + BlockHD.ColorStep);
+                redTint = red.BlockValue;
+            }
+            else
+            {
+                redTint = BlockHD.EmptyBlock;
+            }
 
             bright.color.R = Bound.Byte(bright.color.R + BlockHD.ColorStep);
             bright.color.G = Bound.Byte(bright.color.G + BlockHD.ColorStep);
@@ -66,7 +73,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
             dark.color.B = Bound.Byte(dark.color.B - BlockHD.ColorStep);
 
             baseColor = baseBlock.BlockValue;
-            redTint = red.BlockValue;
+            
             brighter = bright.BlockValue;
             darker = dark.BlockValue;
         }

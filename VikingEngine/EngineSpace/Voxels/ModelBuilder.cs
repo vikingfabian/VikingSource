@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map.HDvoxel;
 
@@ -31,7 +32,7 @@ namespace VikingEngine.Voxels
 
             foreach (VoxelObjGridDataHD grid in grids)
             {
-                Frame frameData = LootFest.Editor.VoxelObjBuilder.VoxelGridToVerticesHD(
+                Frame frameData = VoxelObjBuilder.VoxelGridToVerticesHD(
                     grid, posAdjust, ref vertices, ref indexDrawOrder);
                 framesData.Add(frameData);
             }
@@ -52,7 +53,7 @@ namespace VikingEngine.Voxels
 
             foreach (VoxelObjGridDataHD grid in grids)
             {
-                Frame frameData = LootFest.Editor.VoxelObjBuilder.VoxelGridToVerticesHD(
+                Frame frameData = VoxelObjBuilder.VoxelGridToVerticesHD(
                     grid, posAdjust, ref vertices, ref indexDrawOrder);
                 framesData.Add(frameData);
             }

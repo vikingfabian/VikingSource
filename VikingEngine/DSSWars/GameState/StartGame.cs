@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.Network;
@@ -23,7 +24,6 @@ namespace VikingEngine.DSSWars
         public AbsStartPlayState()
             :base(false)
         {
-
             loadingStatusText = new Graphics.TextG(LoadedFont.Regular,
                new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
                new Vector2(Engine.Screen.TextSize * 2f),
@@ -62,7 +62,8 @@ namespace VikingEngine.DSSWars
 
     class StartGame : AbsStartPlayState
     {
-       
+        TimeStamp joinRequestTime;
+        int joinTrials = 0;
         NetworkLobby netLobby;
         WorldDataStorage storage;
         int map_start_process_done = 0;
@@ -74,9 +75,8 @@ namespace VikingEngine.DSSWars
         public StartGame(bool host, NetworkLobby netLobby, SaveStateMeta loadMeta, MapBackgroundLoading loading)
             :base()
         {
+            DssRef.settings.playType = PlayStateType.Play;
             this.host = host;
-           
-
             this.loadMeta = loadMeta;
             
             
@@ -86,13 +86,13 @@ namespace VikingEngine.DSSWars
                 // new game
                 switch (DssRef.difficulty.setting_gameMode)
                 {
-                    case GameMode.FullStory:
+                    case GameModeMainType.FullStory:
                         DssRef.stats.startNewStory.addOne();
                         break;
-                    case GameMode.Sandbox:
+                    case GameModeMainType.Sandbox:
                         DssRef.stats.startNewSandbox.addOne();
                         break;
-                    case GameMode.Peaceful:
+                    case GameModeMainType.Peaceful:
                         DssRef.stats.startNewPeaceful.addOne();
                         break;
                 }
@@ -193,10 +193,44 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                joinRequest();
+                //if (Ref.netSession.Host() != null)
+                //{
+                //    var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
+                //        Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
+                //}
+            }
+        }
+
+        void joinRequest()
+        {
+            joinRequestTime.setNow();
+            if (Ref.netSession.Host() != null)
+            {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
                     Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
             }
         }
+
+        public override void Time_Update(float time)
+        {
+            base.Time_Update(time);
+            if (!host)
+            {
+                if (joinRequestTime.secPassed(3))
+                {
+                    if (++joinTrials >= 3)
+                    {
+                        new ExitGamePlay();
+                    }
+                    else
+                    {
+                        joinRequest();
+                    }
+                }
+            }
+        }
+
         protected override void onLoadComplete()
         {
             if (state == null)

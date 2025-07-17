@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         protected void createModel(int frame)
         {
             Debug.CrashIfThreaded();
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, true, WorldData.SubTileWidth * 1.4f, true, true, false);
+            model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f);
             model.Frame = frame;
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
         }
@@ -42,7 +42,8 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override void DeleteMe()
         {
-            DssRef.models.recycle(ref model, true);
+            //DssRef.models.recycle(ref model, true);
+            model.preRemoveFromDrawBatch();
             base.DeleteMe();
         }
     }
@@ -94,7 +95,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             base.writeGameState(w);
 
-            w.Write((ushort)city.parentArrayIndex);
+            w.Write((ushort)city.myIndex);
             subTile.write(w);
             w.Write((byte)buildingType);
         }
@@ -142,7 +143,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override bool refreshAvailable(Faction faction)
         {
-            return city.faction == faction;
+            return city.factionIndex == faction.myIndex;
         }
 
         override public OrderType GetWorkType(City city)

@@ -21,7 +21,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 21;
+        const int Version = 23;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -51,6 +51,7 @@ namespace VikingEngine
 
         public float scrollWheelSensitivity_menu = 1;
         public float scrollWheelSensitivity_game = 1;
+        public float keyPanSpeed = 1f;
 
 
         float MasterVolume = 0.5f;
@@ -58,6 +59,7 @@ namespace VikingEngine
         float SoundVolume = Engine.Sound.SoundStandardVolume;
         float AmbientVolume = Engine.Sound.SoundStandardVolume;
         float BattleMelodyVolume = 1f;
+        bool lowLatencyGarbageCollecting = true;
         public float SoundVol() { return SoundVolume * MasterVolume; }
         public float AmbientVol() { return AmbientVolume * MasterVolume; }
         public float BattleMelodyVol() { return BattleMelodyVolume; }
@@ -115,9 +117,11 @@ namespace VikingEngine
             w.Write(controlLayout);
             w.Write(scrollWheelSensitivity_menu);
             w.Write(scrollWheelSensitivity_game);
+            w.Write(keyPanSpeed);
             w.Write(BattleMelodyVolume);
             w.Write(ParticlesEffect);
 
+            w.Write(lowLatencyGarbageCollecting);
             Debug.WriteCheck(w);
         }
 
@@ -129,6 +133,8 @@ namespace VikingEngine
 
         public void readSettings(System.IO.BinaryReader r, int version)
         {
+            if (version > Version) return;
+
             Engine.Screen.RenderScalePerc = r.ReadInt32();
             Engine.Screen.PcTargetResolution.read(r);
             Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
@@ -165,12 +171,22 @@ namespace VikingEngine
             controlLayout = r.ReadInt32();
             scrollWheelSensitivity_menu = r.ReadSingle();
             scrollWheelSensitivity_game = r.ReadSingle();
+            if (version >= 22)
+            {
+                keyPanSpeed = r.ReadSingle();
+            }
 
             
             BattleMelodyVolume = r.ReadSingle();
             
             ParticlesEffect = r.ReadBoolean();
-            
+
+
+            if (version >= 23)
+            { 
+                lowLatencyGarbageCollecting = r.ReadBoolean();
+            }
+
             Debug.ReadCheck(r);
 
             MusicMasterVolume = 0;
@@ -251,6 +267,18 @@ namespace VikingEngine
                 settingsHasChanged = true;
             }
             return Engine.Screen.PcTargetFullScreen;
+        }
+
+        public bool AddSomePixelsProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                Engine.Screen.bRecordingPresetAddPixels = value;
+                Engine.Screen.ApplyScreenSettings();
+                graphicsHasChanged = true;
+                settingsHasChanged = true;
+            }
+            return Engine.Screen.bRecordingPresetAddPixels;
         }
 
         public void setRecordingPreset(RecordingPresets rp)
@@ -494,6 +522,16 @@ namespace VikingEngine
                 RecordPreset.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_RecordingPresets, menu);
             }
 
+            if (Engine.Screen.UseRecordingPreset != RecordingPresets.NumNon)
+            {
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    new RbText(Ref.langOpt.GraphicsOption_RecordingPresets + ":", HudLib.TitleColor_Label_Dark),
+                    new RbSpace(0.5f),
+                    new RbText(string.Format( Ref.langOpt.GraphicsOption_RecordingPresets_AddXPixels, Screen.RecordingPresetAddPixelsCount))
+                    }, AddSomePixelsProperty));
+            }
+
             content.newLine();
             //content.Add(new RbImage(SpriteName.LFIconLetter));
             content.Add(new RbText( Ref.langOpt.GraphicsOption_UiScale));
@@ -525,6 +563,8 @@ namespace VikingEngine
                             MapLoadingSpeed = value;
                             settingsHasChanged = true;
                             menu.CloseDropDown();
+
+                            DssRef.state?.detailMap?.refreshLoadSpeed();
                         }, opt), null);
                 }
                 mapLoadingDropDown.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_MapLoadSpeed, menu);
@@ -703,6 +743,15 @@ namespace VikingEngine
             }
             return scrollWheelSensitivity_game;
         }
+        public float panSpeedProperty(bool set, float value)
+        {
+            if (set)
+            {
+                keyPanSpeed = value;
+                settingsHasChanged = true;
+            }
+            return keyPanSpeed;
+        }
 
         public float musicVolProperty(bool set, float value)
         {
@@ -785,6 +834,17 @@ namespace VikingEngine
             return panOnZoom;
         }
 
+        public bool lowGCProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                lowLatencyGarbageCollecting = value;
+                settingsHasChanged = true;
+
+                Ref.gamestate.refreshGcLatency();
+            }
+            return lowLatencyGarbageCollecting;
+        }
         //string SongTitleProperty(bool set, string value)
         //{
         //    return "Playing: \n" + Ref.music.GetSongName();

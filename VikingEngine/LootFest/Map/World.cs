@@ -8,6 +8,8 @@ using VikingEngine.Graphics;
 using System.Threading;
 using VikingEngine.LootFest.Map.HDvoxel;
 
+using VikingEngine.Voxels;
+
 namespace VikingEngine.LootFest.Map
 {
     class World
@@ -51,7 +53,7 @@ namespace VikingEngine.LootFest.Map
         
         const int MeshGeneratingThreadCount = 5;
         List<IntVector2> currentMeshGenerating = new List<IntVector2>();
-        List<Editor.EditorPacket> editorPacketQue = new List<Editor.EditorPacket>();
+        List<EditorPacket> editorPacketQue = new List<EditorPacket>();
         MeshBuilder[] meshBuilders;
 
         public bool areaStorageHeaderNeedsUpdate = false;
@@ -648,7 +650,7 @@ namespace VikingEngine.LootFest.Map
             
         }
 
-        public void addEditorPacket(Editor.EditorPacket packet)
+        public void addEditorPacket(EditorPacket packet)
         {
             lock (editorPacketQue)
             {
@@ -660,7 +662,7 @@ namespace VikingEngine.LootFest.Map
         {
             while (editorPacketQue.Count > 0)
             {
-                Editor.EditorPacket packet = editorPacketQue[0];
+                EditorPacket packet = editorPacketQue[0];
                 
                 {//Try open area
                     bool generationHappened, chunkReachedDetailStatus;

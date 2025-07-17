@@ -46,6 +46,12 @@ namespace VikingEngine.DSSWars
         public static bool BlockBackgroundLoading = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
+        public static bool BlockMessages = PlatformSettings.DevBuild ? true :
+           false;//DO NOT CHANGE
+
+        public static bool BlockTooltip = PlatformSettings.DevBuild ? false :
+          false;//DO NOT CHANGE
+
         //public const bool Trailer = true;
 
         public static bool CheatActive =>
@@ -53,7 +59,9 @@ namespace VikingEngine.DSSWars
             !SpawnStartingArmies ||
             !RunAI ||
             EndlessResources ||
-            EndlessDiplomacy;
+            EndlessDiplomacy ||
+            BlockMessages ||
+            BlockTooltip;
 
     }
 }

@@ -19,7 +19,7 @@ namespace VikingEngine.LootFest.GO
         WeaponAttack.HandWeaponAttackSettings downSwing;
 
         public BarbarianDaneSuit(Players.AbsPlayer user)
-            : base(user, VoxelModelName.barbarian2haxe_base)
+            : base(user, VoxelModelName.NUM_NON)
         {
             primaryWeaponAttack = new WeaponAttack.HandWeaponAttackSettings(
                 GameObjectType.DaneAttack, HandWeaponAttackSettings.SwordStartScalePerc,

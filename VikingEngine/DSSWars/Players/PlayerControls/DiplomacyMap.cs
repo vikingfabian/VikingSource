@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars
             foreach (var rel in relationFlags)
             {
                 Faction faction = DssRef.world.factions[rel.faction];
-                if (faction!= null && faction.parentArrayIndex == 18)
+                if (faction!= null && faction.myIndex == 18)
                 {
                     lib.DoNothing();
                 }
@@ -96,7 +96,7 @@ namespace VikingEngine.DSSWars
                     faction.isAlive &&
                     !faction.HasZeroUnits() &&
                     rel.inCullingView &&
-                    (!player.drawUnitsView.current.DrawFullOverview || faction.displayInFullOverview || rel == selected))
+                    (!player.mapLayersManager.current.DrawFullOverview || faction.displayInFullOverview || rel == selected))
                 {
                     bool cityPos;
                     var landAreaCenter = faction.landAreaCenter(out cityPos);
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars
 
 
                         rel.flag = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * 0.6f, HudLib.DiplomacyDisplayLayer + layerAdd, true);
-                        rel.flag.Texture = faction.flagTexture;
+                        rel.flag.Texture = faction.player.flagTexture;
                         rel.flag.SetFullTextureSource();
 
                         rel.bg = new Graphics.Image(SpriteName.WarsRelationFlag, rel.flag.position, rel.flag.size * 2.2f, HudLib.DiplomacyDisplayLayer + 1 + layerAdd, true);
@@ -333,7 +333,7 @@ namespace VikingEngine.DSSWars
                     rel.tilePos = faction.landAreaCenter(out cityPos);
 
                     rel.inCullingView = tileBound.IntersectTilePoint(rel.tilePos);
-                    rel.relation = DssRef.diplomacy.GetRelationType(player.faction.parentArrayIndex, rel.faction); 
+                    rel.relation = DssRef.diplomacy.GetRelationType(player.faction.myIndex, rel.faction); 
                 }
             }
 

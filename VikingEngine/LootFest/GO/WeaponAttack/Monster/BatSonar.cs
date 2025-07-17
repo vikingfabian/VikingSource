@@ -43,7 +43,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Monster
 
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.bat_sonar; }
+            get { return VoxelModelName.NUM_NON; }
         }
 
         public override WeaponUserType WeaponTargetType

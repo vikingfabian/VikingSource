@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars
 
         public PlayerCulling[] players;
         public bool cullingStateA = true;
+        public bool playerInDetailView = false;
 
         public Culling()
         {
@@ -34,8 +35,6 @@ namespace VikingEngine.DSSWars
 
         public bool outsidePlayerAttension(IntVector2 tilePos)
         {
-            //return false;
-
             foreach (var p in players)
             {
                 if (p.insidePlayerAttension(cullingStateA, tilePos))
@@ -46,12 +45,23 @@ namespace VikingEngine.DSSWars
 
             return true;
         }
+
+        public bool insidePlayerAttension_sub(IntVector2 subtilePos)
+        {
+            foreach (var p in players)
+            {
+                if (p.insidePlayerAttension(cullingStateA, subtilePos))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public void asynch_update(float time)
         {
             asynch_updateTiles();
-
-            //Map objects före optimering: 859
-            //Efter: 25
 
             var factions = DssRef.world.factions.counter();
             while (factions.Next())
@@ -69,6 +79,7 @@ namespace VikingEngine.DSSWars
                 lp.asynchCullingUpdate(time,cullingStateA);
             }
         }
+
         void asynch_updateTiles()
         {
             foreach (var p in players)
@@ -76,10 +87,13 @@ namespace VikingEngine.DSSWars
                 p.asynch_clearupdate(!cullingStateA);
             }
 
+            bool detailview = false;
             foreach (var p in players)
             {
-                p.asynch_update(!cullingStateA);
+                p.asynch_update(!cullingStateA, ref detailview);
+                
             }
+            playerInDetailView = detailview;
 
             cullingStateA = !cullingStateA;
         }
@@ -109,7 +123,7 @@ namespace VikingEngine.DSSWars
             var state = bStateA ? players[cameraIx].stateA : players[cameraIx].stateB;
             if (state.enterArea.IntersectPoint(pos))
             {
-                enterRender_overviewLayer = state.overviewLayer;
+                enterRender_overviewLayer = state.midLayer;
                 enterRender_detailLayer = state.detailLayer;
             }
             else
@@ -130,7 +144,7 @@ namespace VikingEngine.DSSWars
                 var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
                 if (state.enterArea.IntersectRect(minpos, maxpos))
                 {
-                    overviewLayer |= state.overviewLayer;
+                    overviewLayer |= state.midLayer;
                     detailLayer |= state.detailLayer;
                 }
             }
@@ -146,7 +160,7 @@ namespace VikingEngine.DSSWars
                 var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
                 if (state.enterArea.IntersectRect(minpos, maxpos))
                 {
-                    enterRender_overviewLayer = state.overviewLayer;
+                    enterRender_overviewLayer = state.midLayer;
                     enterRender_detailLayer = state.detailLayer;
                     return;
                 }
@@ -228,6 +242,12 @@ namespace VikingEngine.DSSWars
             return state.attensionArea.IntersectTilePoint(tilePos);
         }
 
+        public bool insidePlayerAttension_subtile(bool bStateA, IntVector2 subtilePos)
+        {
+            PlayerCullingState state = bStateA ? stateA : stateB;
+            return state.attensionArea_subTile.IntersectTilePoint(subtilePos);
+        }
+
         public void asynch_clearupdate(bool bStateA)
         {
             //Clear out previous render state
@@ -235,9 +255,9 @@ namespace VikingEngine.DSSWars
             state.asynch_clearupdate(bStateA);
         }
 
-        public void asynch_update(bool bStateA)
+        public void asynch_update(bool bStateA, ref bool detailView)
         {
-            Map.MapDetailLayerManager detailLayer = Map.MapDetailLayerManager.CameraIndexToView[index];
+            Map.MapLayerManager detailLayer = Map.MapLayerManager.CameraIndexToView[index];
             bool hasValue1, hasValue2, hasValue3, hasValue4;
             Vector3 topleft = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.Position, playerData.view.Viewport, mapPlane, out hasValue1);
             Vector3 topright = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.RightTop, playerData.view.Viewport, mapPlane, out hasValue2);
@@ -258,57 +278,90 @@ namespace VikingEngine.DSSWars
                 float bottom = lib.LargestValue(bottomleft.Z, bottomright.Z);
 
                 Rectangle2 screenArea = Rectangle2.FromTwoTilePoints(new IntVector2(left, top), new IntVector2(right, bottom));
+                Rectangle2 screenAreaRaw = screenArea;
                 DssRef.state.localPlayers[index].cullingTileArea = screenArea;
 
-                if (detailLayer.current.DrawOverview)
+                if (detailLayer.current.DrawFar)
                 {
-                    screenArea.SetMaxRadius(120, 100);
+                    //screenArea.SetMaxRadius(120, 100);
+                    MaxUpdateArea(ref screenArea);
                 }
                
                 PlayerCullingState state = bStateA ? stateA : stateB;
                 state.detailLayer = detailLayer.current.DrawDetailLayer;
-                state.overviewLayer = detailLayer.current.DrawNormal;
+                detailView |= state.detailLayer;
+                state.midLayer = detailLayer.current.DrawMid;
+                state.farLayer = detailLayer.current.DrawFar;
                 if (detailLayer.prevLayer != null)
                 {
-                    state.overviewLayer |= detailLayer.prevLayer.DrawNormal;
+                    state.midLayer |= detailLayer.prevLayer.DrawMid;
                 }
-                state.async_playerViewToRenderState(bStateA, screenArea, detailLayer.current);
+                state.async_playerViewToRenderState(bStateA, screenArea, screenAreaRaw, detailLayer.current);
             }
 
         }
 
+        public static void MaxUpdateArea(ref Rectangle2 area)
+        {
+            area.SetMaxRadius(120, 100);
+        }
     }
 
     class PlayerCullingState
     {
+        public Rectangle2 screenAreaRaw = Rectangle2.Zero;
         public Rectangle2 enterArea = Rectangle2.Zero;
         public Rectangle2 exitArea = Rectangle2.Zero;
         public Rectangle2 attensionArea = Rectangle2.Zero;
+        public Rectangle2 attensionArea_subTile = Rectangle2.Zero;
 
-        public bool overviewLayer = false;
         public bool detailLayer = false;
-
+        public bool midLayer = false;
+        public bool farLayer = false;
 
         public void writeNet(System.IO.BinaryWriter w)
         {
-            enterArea.writeUshort(w);
-            w.Write(overviewLayer);
+            //enterArea.writeUshort(w);
+            screenAreaRaw.pos.writeShort(w);
+            screenAreaRaw.size.writeUshort(w);
+            new EightBit(detailLayer, midLayer, farLayer).write(w);
+            w.Write(midLayer);
         }
         public void readNet(System.IO.BinaryReader r)
         {
-            enterArea.readUshort(r);
-            overviewLayer = r.ReadBoolean();
+            //enterArea.readUshort(r);
+            Rectangle2 area = Rectangle2.Zero;
+            area.pos.readShort(r);
+            area.size.readUshort(r);
+
+            Rectangle2 enter = area;
+            PlayerCulling.MaxUpdateArea(ref enter);
+
+            area.SetBounds(DssRef.world.tileBounds);
+            enter.SetBounds(DssRef.world.tileBounds);
+
+            screenAreaRaw = area;
+            enterArea = enter;
+            
+            EightBit bools = EightBit.FromStream(r);
+            bools.Get(out detailLayer, out midLayer, out farLayer);
+            midLayer = r.ReadBoolean();
         }
 
-        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Map.DetailLayer layer)
+        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Rectangle2 screenAreaRaw, Map.MapLayer layer)
         {
+            this.screenAreaRaw = screenAreaRaw;
             enterArea = screenArea;
-            enterArea.AddRadius(1);
+            enterArea.AddWidthRadius(-1);
+            
+
             enterArea.SetTileBounds(DssRef.world.tileBounds);
             exitArea = enterArea;
             exitArea.AddRadius(1);
             attensionArea = enterArea;
             attensionArea.AddRadius(20);
+
+            attensionArea_subTile = new Rectangle2(WP.ToSubTilePos_TopLeft(attensionArea.pos), (attensionArea.size + 1) * WorldData.TileSubDivitions);
 
             //Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
 

@@ -18,7 +18,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.ItemThrow
         public AbsBomb(GoArgs args, GO.Characters.AbsCharacter h, float sideSpeed)
             : base(args)
         {
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.handgranade, 
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 
                 Scale, 1, false);
 
             if (args.LocalMember)

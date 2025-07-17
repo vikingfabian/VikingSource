@@ -96,7 +96,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Boss
             : base(args, target, startDir, StartSpeed, HomingSpeed)
         {
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.bot_rocket, Scale, 0, true);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, Scale, 0, true);
             image.position = args.startPos;
 
             //givesDamage = ;

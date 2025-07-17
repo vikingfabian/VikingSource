@@ -52,9 +52,11 @@ namespace VikingEngine.DSSWars
         {
             overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
-            shadowEffect = new EffectVertexColorShadow();
+            //shadowEffect = new EffectVertexColorShadow();
             //TODO SurfaceFormat.Single
             //shadowMapRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 2048, 2048, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
+
+            drawBatch = new DrawBatchCollection();
         }
 
         //public static void LoadContent()
@@ -77,12 +79,11 @@ namespace VikingEngine.DSSWars
 
             for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
             {
-                DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = false;
+                //DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = false;
                 Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
-                //p.view.Viewport
-                //p.view.Camera.RecalculateMatrices();
+                
 
-                Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
+                Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
                 if (drawUnits.prevLayer != null)
                 {
                     hasFadingLayer = true;
@@ -91,7 +92,7 @@ namespace VikingEngine.DSSWars
 
 
 
-            DrawShadowMap(0);
+            //DrawShadowMap(0);
 
 
             if (hasFadingLayer)
@@ -103,7 +104,7 @@ namespace VikingEngine.DSSWars
                 {
                     EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
 
-                    Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
+                    Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
                     if (drawUnits.prevLayer != null)
                     {
                         drawDetailLayer(cameraIndex, drawUnits.prevLayer);
@@ -117,7 +118,7 @@ namespace VikingEngine.DSSWars
             for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
             {
                 EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
-                Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
+                Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
 
                 drawDetailLayer(cameraIndex, drawUnits.current);
             }
@@ -128,7 +129,7 @@ namespace VikingEngine.DSSWars
                 
                 for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
                 {
-                    Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
+                    Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
                     if (drawUnits.prevLayer != null)
                     {
                         Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
@@ -144,17 +145,17 @@ namespace VikingEngine.DSSWars
             }
 
 
-            for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
-            {
-                DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer = DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer;
-            }
+            //for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
+            //{
+            //    DssRef.state.localPlayers[cameraIndex].bUpdateDetailLayer = DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer;
+            //}
 
             
             graphicsDeviceManager.GraphicsDevice.Viewport = saveView;
             Draw2d(0);
         }
 
-        void drawDetailLayer(int cameraIndex, Map.DetailLayer lay)
+        void drawDetailLayer(int cameraIndex, Map.MapLayer lay)
         {
             Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
 
@@ -168,27 +169,32 @@ namespace VikingEngine.DSSWars
             switch (lay.type)
             {
                 case Map.MapDetailLayerType.UnitDetail1:
-                    
-                    DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
 
-                    //SWADOW
-                    
-                    //DrawGenerated(UnitDetailLayer, cameraIndex);
-                    DrawGenerated_Shadows(UnitDetailLayer, cameraIndex);
+                    //DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
 
+                    //SHADOW
+                    DrawGenerated(UnitDetailLayer, cameraIndex);
+                    //DrawGenerated_Shadows(UnitDetailLayer, cameraIndex);
+                    DssRef.state.detailMap.updateAndDraw(cameraIndex);
+                    drawBatch.RemoveAndDraw(cameraIndex);
+
+                    //DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
 
                     Draw3d(UnitDetailLayer, cameraIndex);
                     Engine.ParticleHandler.Draw(p.view.Camera);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                    //time.EndMeasure();
                     break;
 
                 case Map.MapDetailLayerType.TerrainOverview2:
+                    DssRef.state.detailMap.Update_outOfFocus();
                     DrawGenerated(TerrainLayer, cameraIndex);
                     Draw3d(TerrainLayer, cameraIndex);
                     break;
 
                 case Map.MapDetailLayerType.FullOverview4:
                 case Map.MapDetailLayerType.FactionColors3:
+                    DssRef.state.detailMap.Update_outOfFocus();
                     Draw3d(MinimapLayer, cameraIndex);
                     break;                    
             }
@@ -203,8 +209,6 @@ namespace VikingEngine.DSSWars
             //    graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             //    //graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
             //    graphicsDeviceManager.GraphicsDevice.Clear(Color.Transparent);
-
-                Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
             //    //Camera = p.view.LightCamera;
             //    ////Camera.position = p.view.Camera.position;
             //    //Camera.LookTarget = p.view.Camera.LookTarget;
@@ -230,7 +234,20 @@ namespace VikingEngine.DSSWars
             //    depthWriter.Parameters["FloatingPointPrecisionModifier"].SetValue(1f);
 
             //    //DrawGenerated(UnitDetailLayer, cameraIndex);
+
+
+
+            Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
+            
+            
+            
+            
+            
             shadowEffect.DrawShadowMap(p, cameraIndex);
+
+
+
+
 
             DrawRenderListMembersDepthOnly(EffectVertexColorShadow.depthWriter, UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
 

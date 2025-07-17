@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;
@@ -173,6 +173,8 @@ namespace VikingEngine.DSSWars.Conscript
 
             SoldierData soldierData = ItemPropertyColl.Get(conscript.weapon).soldierData;
             soldierData.applySkillBonus(skillBonus);
+
+
             //if (profile != null)
             //{
             //    soldierData = profile.data;
@@ -181,9 +183,11 @@ namespace VikingEngine.DSSWars.Conscript
             //{
             //    soldierData = new SoldierData();
             //}
+            var armorData = ItemPropertyColl.Get(conscript.armorLevel).soldierData;
+            soldierData.basehealth = armorData.basehealth;//ConscriptProfile.ArmorHealth(conscript.armorLevel);
+            soldierData.modelData.armor = armorData.modelData.armor;
 
-            soldierData.basehealth = ItemPropertyColl.Get(conscript.armorLevel).soldierData.basehealth;//ConscriptProfile.ArmorHealth(conscript.armorLevel);
-
+            soldierData.modelData.specialization = conscript.specialization;
             //soldierData.attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(conscript.weapon, out soldierData.attackSplashCount) * skillBonus);
             //soldierData.attackDamageStructure = soldierData.attackDamage;
             //soldierData.attackDamageSea = soldierData.attackDamage;
@@ -734,7 +738,7 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
                 case SpecializationType.HonorGuard:
-                    soldierData.modelScale = DssConst.Men_StandardModelScale * 1.2f;
+                    soldierData.modelScale = DssConst.Men_ModCharacterScale * 1.2f;
                     soldierData.energyPerSoldier = 0;
                     soldierData.modelName = LootFest.VoxelModelName.little_hirdman;
                     soldierData.modelVariationCount = 1;
@@ -754,7 +758,7 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
                 case SpecializationType.DarkLord:
-                    soldierData.modelScale = DssConst.Men_StandardModelScale;
+                    //soldierData.modelScale = DssConst.Men_StandardModelScale;
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed;
                     soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
                     soldierData.basehealth = DssConst.Soldier_DefaultHealth * 4;
@@ -789,12 +793,8 @@ namespace VikingEngine.DSSWars.Conscript
 
         public SoldierData bannermanSetup(SoldierData soldierData)
         {
-            soldierData.modelScale = DssConst.Men_StandardModelScale;
             soldierData.attackDamage /= 2;
             soldierData.attackDamageStructure /= 2;
-
-            //soldierData.canAttackCharacters = true;
-            //soldierData.canAttackStructure = true;
 
             soldierData.factionColoredModel = true;
             soldierData.modelName = LootFest.VoxelModelName.war_bannerman;
@@ -817,8 +817,8 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.rowWidth = 1;
             soldierData.columnsDepth = 1;
             soldierData.rotationSpeed = DssConst.ShipRotatingSpeed;
+            soldierData.modelData.modelType = ModelType.Ship;
 
-            
 
             switch (conscript.specialization)
             {

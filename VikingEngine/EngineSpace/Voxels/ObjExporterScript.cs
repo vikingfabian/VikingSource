@@ -10,7 +10,7 @@ using VikingEngine.Timer;
 using System.IO;
 using VikingEngine.DataStream;
 
-namespace VikingEngine.EngineSpace.Voxels
+namespace VikingEngine.Voxels
 {
     class ObjExporterScript
     {

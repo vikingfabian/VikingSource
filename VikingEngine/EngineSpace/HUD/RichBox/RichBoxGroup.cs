@@ -36,7 +36,7 @@ namespace VikingEngine.HUD.RichBox
 
         public override void SetOffset(Vector2 position)
         {
-            Debug.Log($"Richbox set offset {position}");
+            //Debug.Log($"Richbox set offset {position}");
             base.SetOffset(position);
 
         }

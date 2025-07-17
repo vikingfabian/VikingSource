@@ -45,6 +45,11 @@ namespace VikingEngine
             return sel != null;
         }
 
+        public bool HasMore()
+        {
+            return selIndex < 0 || sel != null;
+        }
+
         public bool Prev_Rollover()
         {
             if (array.Count == 0)

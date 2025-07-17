@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.GameObject
                         SoundLib.throwblade.Play(start);
                     }
                     //warsRef.sound.javelin.Play(start);
-                    modelName = LootFest.VoxelModelName.ThrowingSpear;
+                    modelName = LootFest.VoxelModelName.NUM_NON;
                     scale = 1.5f;
                     linear = true;
                     break;
@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
             }
 
-            model = DssRef.models.ModelInstance(modelName, true, scale, true, true);
+            model = DssRef.models.ModelInstance_drawbatch(modelName, scale);
             //model.AddToRender(DrawGame.UnitDetailLayer);
             model.Frame = frame;
             linearPosition = start;
@@ -344,7 +344,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
             //model.DeleteMe();
-            DssRef.models.recycle(ref model, true, true);
+            //DssRef.models.recycle(ref model, true, true);
+            model.preRemoveFromDrawBatch();
         }
     }
 }

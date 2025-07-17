@@ -10,10 +10,11 @@ namespace VikingEngine.Voxels
         AbsVoxelDesigner designer;
         VoxelObjListDataHD selection;
         IntervalIntV3 updateArea;
-
-        public ThreadedTemplateStamp(AbsVoxelDesigner designer, VoxelObjListDataHD selection)
+        int frame;
+        public ThreadedTemplateStamp(AbsVoxelDesigner designer, VoxelObjListDataHD selection, int frame)
             : base( QuedTasksType.QueAndSynch)
         {
+            this.frame = frame;
             this.designer = designer;
             this.selection = selection;
             beginAutoTasksRun();
@@ -22,7 +23,7 @@ namespace VikingEngine.Voxels
         {
             //base.runQuedAsynchTask();
             updateArea = selection.getMinMax();
-            designer.MakeThreadedStamp(selection, updateArea);
+            designer.MakeThreadedStamp(selection, updateArea, frame);
             //return true;
         }
         public override void runSyncAction()

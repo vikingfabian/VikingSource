@@ -2198,6 +2198,19 @@ namespace VikingEngine
                 add(SpriteName.WarsHudIconCut);
                 add(SpriteName.VoxelEditorAllFrames);
                 add(SpriteName.VoxelEditorEmptyCube);
+
+                add(SpriteName.VoxelEditorFrameRemoveAll);
+                add(SpriteName.EditorLayer);
+                add(SpriteName.EditorAllLayer);
+                add(SpriteName.EditorLayerAdd);
+                add(SpriteName.EditorLayerRemove);
+                add(SpriteName.WarsHudIconCrop);
+                add(SpriteName.WarsHudIconSaveProject);
+                add(SpriteName.WarsHudIconOpenProject);
+                add(SpriteName.EditorLayerMergeDown);
+                add(SpriteName.WarsUnitIcon_Immigrant_RemoveTime);
+                add(SpriteName.WarsUnitIcon_Immigrant);
+        
             }
 
             currentIndex = numTilesWidth * 87;
@@ -2209,6 +2222,9 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_BigServiceHouse, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_Palisade, currentIndex, 3, 3);
                 add(SpriteName.SteamIcon, currentIndex, 8, 3);
+                add(SpriteName.WarsBuild_Tent, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Bookpress, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_ResearchCenter, currentIndex, 3, 3);
             }
             currentIndex = numTilesWidth * 90;
             {
@@ -2730,6 +2746,8 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Palisade);
                     add(SpriteName.WarsHudRoundButtonNotSelected);
                     add(SpriteName.WarsHudIconCollection);
+
+                    
                 }
 
                 currentIndex = numTilesWidth * 101;
@@ -2758,6 +2776,8 @@ namespace VikingEngine
                     add(SpriteName.WarsTutorialArmy, 2, 2);
                     add(SpriteName.WarsTutorialCity, 2, 2);
                     add(SpriteName.WarsTutorialSoldiers, 2, 2);
+                    add(SpriteName.WarsRelationEnemy, 2, 2);
+                    
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 

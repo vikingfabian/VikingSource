@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Input;
 
@@ -12,7 +12,6 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
     abstract class AbsBattlePlayState : AbsPlayState
     {
         bool isReady = false;
-        
 
         public AbsBattlePlayState()
             : base()
@@ -107,10 +106,6 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
                 new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
 
-                //new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
-                //new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
-
-
                 if (localPlayers.Count > 1)
                 {
                     Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
@@ -125,6 +120,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
+            //MayChangeDetail_OnNewUpdate();
             updateStepFrames();
             Sound.SoundStackManager.Update();
 
@@ -187,7 +183,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 overviewMap.bRefreshTimer = true;
             }
 
-            detailMap.update();
+            //detailMap.update();
             overviewMap.update();
 
             if (localPlayers != null)

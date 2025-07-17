@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.Graphics
 {
     abstract class AbsDraw : IDeleteable, IPosition, ISpottedArrayMember
     {
         /* Properties */
+        //public int InDrawBatchCount = 0;
+
         public abstract DrawObjType DrawType { get; }
 
         public Color pureColor = Color.White;
@@ -104,6 +107,12 @@ namespace VikingEngine.Graphics
 
         public void AddToRender()
         {
+#if DEBUG
+            if (this.GetType() == typeof(DSSWars.VoxelModelInstance_Pooled))
+            {
+                throw new Exception();
+            }
+#endif
             Ref.draw.AddToRenderList(this);
             inRenderList = true;
         }
@@ -114,6 +123,28 @@ namespace VikingEngine.Graphics
             Ref.draw.CurrentRenderLayer = layer;
             AddToRender();
             Ref.draw.CurrentRenderLayer = storeLay;
+        }
+
+        public void SetInRender(bool inRender)
+        {
+            inRenderList = inRender;            
+        }
+
+        virtual public void preRemoveFromDrawBatch()
+        {
+//#if DEBUG
+//            Debug.CrashIfThreaded();
+//#endif
+            inRenderList = false;
+        }
+
+        public void OnDrawBatchAdd()
+        {
+            inRenderList = true;
+        }
+        virtual public void OnDrawBatchRemove()
+        {
+            inRenderList = false;
         }
 
         virtual public void settingsChangedRefresh() { }

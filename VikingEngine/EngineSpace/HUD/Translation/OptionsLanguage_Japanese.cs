@@ -117,5 +117,21 @@ namespace VikingEngine.HUD
         public override string MouseButton_X1 => "X1ボタン";
         public override string MouseButton_X2 => "X2ボタン";
 
+        //DEMO PATCH 4
+        public override string MouseButtonAction_PanAndCancel => "パンとキャンセル";
+        public override string MouseButtonAction_PanAndOrderAndCancel => "パン、命令、キャンセル";
+
+        public override string GraphicsOption_Shadows => "影";
+        public override string GraphicsOption_ShadowType_ModelsToGround => "モデルの影（地面）";
+        public override string GraphicsOption_ShadowType_ModelsToModels => "モデルの影（他モデル）";
+
+        public override string GraphicsOption_Shadow_MapResolution => "シャドウマップ解像度";
+
+        //DEMO PATCH 5
+        public override string GraphicsOption_RecordingPresets_AddXPixels => "{0} ピクセル追加";
+        public override string Settings_KeyMapPanSpeed => "パン速度";
+        public override string Settings_StoreCameraPosition => "カメラ位置を保存";
+        public override string Settings_LoadCameraPosition => "位置を読み込む";
+
     }
 }

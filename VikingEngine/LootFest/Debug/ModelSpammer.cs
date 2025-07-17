@@ -23,26 +23,26 @@ namespace VikingEngine.LootFest
 
         public override void Time_Update(float time_ms)
         {
-            if (spawnTimer.Update())
-            {
-                Vector3 pos = VectorExt.AddXZ(center, dir.Direction(distance));
-                distance += 0.1f;
-                dir.Add(0.5f / distance);
+            //if (spawnTimer.Update())
+            //{
+            //    Vector3 pos = VectorExt.AddXZ(center, dir.Direction(distance));
+            //    distance += 0.1f;
+            //    dir.Add(0.5f / distance);
 
-                LfRef.modelLoad.AutoLoadModelInstance(model).position = pos;
+            //    LfRef.modelLoad.AutoLoadModelInstance(model).position = pos;
 
-                model++;
+            //    model++;
 
-                if (model == VoxelModelName.CATEGORY_WEAPON_1)
-                {
-                    model++;
-                }
-                if (model >= VoxelModelName.CATEGORY_APPEARANCE_2)
-                {
-                    this.DeleteMe();
-                }
+            //    if (model == VoxelModelName.CATEGORY_WEAPON_1)
+            //    {
+            //        model++;
+            //    }
+            //    if (model >= VoxelModelName.CATEGORY_APPEARANCE_2)
+            //    {
+            //        this.DeleteMe();
+            //    }
 
-            }
+            //}
         }
     }
 }

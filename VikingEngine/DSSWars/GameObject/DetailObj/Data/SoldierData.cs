@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 
         public bool factionColoredModel = true;
         public LootFest.VoxelModelName modelName = 0;
+        public SoldierModelData modelData;
         public int modelVariationCount = 1;
         public SpriteName icon = SpriteName.MissingImage;
         public bool hasBannerMan = true;
@@ -41,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public float walkingSpeed = DssConst.Men_StandardWalkingSpeed;
         public bool canAttackCharacters = true;
         public bool canAttackStructure = true;
-        public float modelScale = DssConst.Men_StandardModelScale;
+        public float modelScale = DssConst.Men_ModCharacterScale;
 
         public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
         public int workForcePerUnit = 1;
@@ -54,6 +55,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 
         public SoldierData()
         { }
+
 
         public void applySkillBonus(float skillBonus)
         {

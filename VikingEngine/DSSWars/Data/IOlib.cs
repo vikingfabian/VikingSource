@@ -15,11 +15,11 @@ namespace VikingEngine.DSSWars.Data
             {
                 case GameObjectType.Army:
                     WriteFactionPointer(w, gameObject.GetFaction());
-                    w.Write((ushort)gameObject.parentArrayIndex);
+                    w.Write((ushort)gameObject.myIndex);
                     break;
 
                 case GameObjectType.City:
-                    w.Write((ushort)gameObject.parentArrayIndex);
+                    w.Write((ushort)gameObject.myIndex);
                     break;
 
                 case GameObjectType.Faction:
@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Data
 
         public static void WriteFactionPointer(System.IO.BinaryWriter w, Faction faction)
         {
-            w.Write((ushort)faction.parentArrayIndex);
+            w.Write((ushort)faction.myIndex);
         }
 
         public static Faction ReadFactionPointer(System.IO.BinaryReader r)

@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
@@ -324,10 +324,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void AddGroupedResource(ItemResourceType type, int add)
         {
-            if (add == 0)
-            {
-                lib.DoNothing();
-            }
+            //if (add == 0)
+            //{
+            //    lib.DoNothing();
+            //}
+            var faction = GetFaction();
 
             switch (type)
             {
@@ -686,7 +687,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    return new GroupedResource() { amount = DssRef.storage.centralGold? faction.money.GetGold() : money.GetGold() };
+                    return new GroupedResource() { amount = DssRef.storage.centralGold? GetFaction().money.GetGold() : money.GetGold() };
                 case ItemResourceType.GoldOre:
                     return new GroupedResource() { amount = 1 };
                 case ItemResourceType.Men:
@@ -1118,7 +1119,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.GoldOre:
                     {
                         var price = convert1.amount * DssConst.GoldOreSellValue;
-                        faction.addGold( price, this);
+                        GetFaction().addGold( price, this);
                         soldResources.add(price);
 
                         convert1.type = ItemResourceType.Gold;
@@ -1128,7 +1129,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             if (Ref.peRnd.Chance(DssRef.difficulty.resourceMultiplyChance) &&
-                faction.player.IsAi())
+                GetPlayer().IsAi())
             {
                 if (DssRef.difficulty.resourceMultiplyDecrease)
                 {
@@ -1163,7 +1164,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
         {
-            if (faction.payGold(cost * count, false, this))
+            if (GetFaction().payGold(cost * count, false, this))
             {
                 AddGroupedResource(resourceType, count);
             }

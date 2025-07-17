@@ -216,17 +216,17 @@ namespace VikingEngine.LootFest.Players
             removeInputOverView();
 
             int state = 0;
-            if (voxelDesigner != null)
-            {
-                if (voxelDesigner.HasSelection)
-                {
-                    state = 2;
-                }
-                else
-                {
-                    state = 1;
-                }
-            }
+            //if (voxelDesigner != null)
+            //{
+            //    if (voxelDesigner.HasSelection)
+            //    {
+            //        state = 2;
+            //    }
+            //    else
+            //    {
+            //        state = 1;
+            //    }
+            //}
             inputOverview = new Display.InputOverview(safeScreenArea, inputMap, state);
         }
 

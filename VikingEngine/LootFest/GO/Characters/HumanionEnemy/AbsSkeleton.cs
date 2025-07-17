@@ -11,7 +11,7 @@ namespace VikingEngine.LootFest.GO.Characters
     class SkeletonBoneThrower : AbsSkeleton
     {
         public SkeletonBoneThrower(GoArgs args)
-            : base(args, VoxelModelName.Skeleton)
+            : base(args, VoxelModelName.NUM_NON)
         {
             preRangeAttackTime = 400;
             projectileRate.Seconds = 4;
@@ -60,7 +60,7 @@ namespace VikingEngine.LootFest.GO.Characters
         protected void goblinBoneSword()
         {
             handWeapon = new Gadgets.HumanoidEnemyHandWeapon(
-                VoxelModelName.goblin_sword,
+                VoxelModelName.NUM_NON,
                 new HandWeaponAttackSettings(
                     GameObjectType.GoblinBoneAttack, 0.8f, 0.16f,
                     new Vector3(2, 4, 6.1f),

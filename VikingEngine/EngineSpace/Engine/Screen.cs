@@ -47,6 +47,8 @@ namespace VikingEngine.Engine
         public static bool PcTargetFullScreen = false;
         public static int RenderScalePerc = 100;
         public static RecordingPresets UseRecordingPreset = RecordingPresets.NumNon;
+        public const int RecordingPresetAddPixelsCount = 8;
+        public static bool bRecordingPresetAddPixels = true;
         public static float RenderScaleF;
 
         public static VectorRect SafeArea;
@@ -115,6 +117,12 @@ namespace VikingEngine.Engine
                 RenderScaleF = 1f;
 
                 IntVector2 preSetResolution = RecordingPresetsResolution(UseRecordingPreset);
+
+                if (bRecordingPresetAddPixels)
+                {
+                    preSetResolution += RecordingPresetAddPixelsCount;
+                }
+                
                 bool fullScreen = monitorResolution.X <= preSetResolution.X || monitorResolution.Y <= preSetResolution.Y;
 
                 if (fullScreen)

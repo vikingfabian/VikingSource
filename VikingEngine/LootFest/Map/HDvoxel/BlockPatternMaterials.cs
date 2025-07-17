@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.Voxels;
+
 
 namespace VikingEngine.LootFest.Map.HDvoxel
 {
@@ -14,14 +16,14 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         {
             MaterialColors = new ColorGrid[(int)BlockPatternMaterial.NUM];
 
-            LoadPattern(VoxelModelName.grassmaterial, BlockPatternMaterial.Grass);
-            LoadPattern(VoxelModelName.sandmaterial, BlockPatternMaterial.Sand);
-            LoadPattern(VoxelModelName.dirtmaterial, BlockPatternMaterial.Dirt);
+            LoadPattern(VoxelModelName.NUM_NON, BlockPatternMaterial.Grass);
+            LoadPattern(VoxelModelName.NUM_NON, BlockPatternMaterial.Sand);
+            LoadPattern(VoxelModelName.NUM_NON, BlockPatternMaterial.Dirt);
         }
 
         static void LoadPattern(VoxelModelName modelName, BlockPatternMaterial material)
         {
-            var grid = VikingEngine.LootFest.Editor.VoxelObjDataLoader.LoadVoxelObjGrid(modelName)[0];
+            var grid = VoxelObjDataLoader.LoadVoxelObjGrid(modelName)[0];
             MaterialColors[(int)material] = new ColorGrid(grid);
         }
 

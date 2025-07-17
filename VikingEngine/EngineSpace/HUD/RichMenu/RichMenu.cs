@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -157,6 +157,15 @@ namespace VikingEngine.HUD.RichMenu
                 backgroundArea = edgeArea;
             }
             backgroundArea.Height = richBox.area.Size.Y + edgeThickness * 3;
+        }
+
+        public void updateHeightFromContent(float maxBottom, bool resetFirst = true)
+        {
+            updateHeightFromContent(resetFirst);
+            if (backgroundArea.Bottom > maxBottom)
+            {
+                backgroundArea.SetBottom(maxBottom, true);
+            }
         }
 
 

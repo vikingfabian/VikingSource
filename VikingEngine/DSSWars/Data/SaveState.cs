@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 12;
-        public const int SubVersion = 63; 
+        public const int SubVersion = 66; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -80,6 +80,8 @@ namespace VikingEngine.DSSWars.Data
         {
             meta.worldmeta.writeNet(w);
             DssRef.world.writeNet(w);
+
+            w.Write(Ref.TotalGameTimeSec);
         }
         public void readNet(System.IO.BinaryReader r)
         {
@@ -89,6 +91,8 @@ namespace VikingEngine.DSSWars.Data
             worldData.readNet(r);
             worldData.metaData = meta.worldmeta;
             DssRef.world = worldData;
+
+            Ref.TotalGameTimeSec = r.ReadSingle();
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -194,7 +198,7 @@ namespace VikingEngine.DSSWars.Data
                         w.Write((ushort)gameObject.GetArmy().id);
                         break;
                     case GameObjectType.City:
-                        w.Write((ushort)gameObject.GetCity().parentArrayIndex);
+                        w.Write((ushort)gameObject.GetCity().myIndex);
                         break;
                 }
             }
@@ -251,7 +255,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeFaction(System.IO.BinaryWriter w, Faction faction)
         {
-            w.Write((ushort)faction.parentArrayIndex);
+            w.Write((ushort)faction.myIndex);
         }
 
         public int readFaction(System.IO.BinaryReader r)

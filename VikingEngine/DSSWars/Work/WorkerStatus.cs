@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -75,7 +75,9 @@ namespace VikingEngine.DSSWars.Work
             }
         }
 
-        public void writeGameState(System.IO.BinaryWriter w)
+        const int TimeNetShareDiv = 4;
+
+        public void writeGameState(City city, System.IO.BinaryWriter w, bool netPacket)
         {
             w.Write((byte)xpType1);
             w.Write((byte)xpType2);
@@ -88,8 +90,18 @@ namespace VikingEngine.DSSWars.Work
             w.Write(saveEnergy);
 
             carry.writeGameState(w);
+
+            if (netPacket)
+            {
+                w.Write((byte)work);
+                w.Write((byte)workSubType);
+                int secondsPassed = Convert.ToInt32(processTimeStartStampSec - Ref.TotalGameTimeSec);
+                w.Write(Bound.Byte(secondsPassed / TimeNetShareDiv));
+                w.Write(Bound.Byte((int)processTimeLengthSec / TimeNetShareDiv));
+                (subTileEnd - city.cityHallSubtilePos).writeShort(w);
+            }
         }
-        public void readGameState(System.IO.BinaryReader r, int subversion)
+        public void readGameState(City city, System.IO.BinaryReader r, bool netPacket, int subversion)
         {
             xpType1 = (WorkExperienceType)r.ReadByte();
             xpType2 = (WorkExperienceType)r.ReadByte();
@@ -112,6 +124,16 @@ namespace VikingEngine.DSSWars.Work
             }
             carry.readGameState(r, subversion);
 
+            if (netPacket)
+            {
+                work = (WorkType)r.ReadByte();
+                workSubType= r.ReadByte();
+                int secondsPassed = r.ReadByte() * TimeNetShareDiv;
+                processTimeStartStampSec = Ref.TotalGameTimeSec - secondsPassed;
+                processTimeLengthSec = r.ReadByte() * TimeNetShareDiv;
+                subTileEnd = IntVector2.FromReadShort(r) + city.cityHallSubtilePos;
+                subTileStart = subTileEnd;
+            }
         }
 
         public override string ToString()
@@ -195,6 +217,8 @@ namespace VikingEngine.DSSWars.Work
 
         void workComplete(City city, bool visualUnit)
         {
+            var faction = city.GetFaction();
+
             WorkExperienceType gainXp= WorkExperienceType.NONE;
 
             float energyCost = processTimeLengthSec * DssConst.WorkTeamEnergyCost;
@@ -213,7 +237,7 @@ namespace VikingEngine.DSSWars.Work
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
                     city.res_food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
-                    city.faction.res_food.onChange(-eatAmount);
+                    faction.res_food.onChange(-eatAmount);
                     energy += eatAmount * DssRef.difficulty.FoodEnergySett;
                     break;
 
@@ -446,10 +470,10 @@ namespace VikingEngine.DSSWars.Work
                     int payment = carry.amount;
                     ItemResource recieved = toCity.MakeTrade(tradeForItem, payment);
 
-                    if (city.faction != toCity.faction)
+                    if (city.factionIndex != toCity.factionIndex)
                     {
-                        city.faction.CityTradeImportCounting += payment;
-                        toCity.faction.CityTradeExportCounting += payment;
+                        faction.CityTradeImportCounting += payment;
+                        toCity.GetFaction().CityTradeExportCounting += payment;
                     }
 
                     carry = recieved;
@@ -659,7 +683,7 @@ namespace VikingEngine.DSSWars.Work
 
                 if (orderId >= 0)
                 {
-                    city.faction.player.orders?.CompleteOrderId(orderId);
+                    faction.player.orders?.CompleteOrderId(orderId);
                 }
             }
 
@@ -775,7 +799,9 @@ namespace VikingEngine.DSSWars.Work
                 if (nextlevel > level)
                 {
                     //Level up
-                    city.onLevelUp(type, level>= ExperienceLevel.Master_4 ? DssConst.TechnologyGain_Master : DssConst.TechnologyGain_Any);
+                    city.addTechPoints(type, 
+                        level>= ExperienceLevel.Master_4 ? DssConst.TechnologyGain_MasterLevelUp : DssConst.TechnologyGain_AnyLevelUp, 
+                        TechnologyGainReason.WorkerLevel);
                 }
                 //if (xp >= DssConst.WorkLevel_Expert &&
                 //    !expert)
@@ -892,9 +918,9 @@ namespace VikingEngine.DSSWars.Work
         {
             if (orderId >= 0)
             {
-                if (city.faction.player.orders != null)
+                if (city.GetPlayer().orders != null)
                 {
-                    return city.faction.player.orders.GetFromId(orderId) != null;
+                    return city.GetPlayer().orders.GetFromId(orderId) != null;
                 }
             }
 
@@ -995,6 +1021,8 @@ namespace VikingEngine.DSSWars.Work
 
             switch (work)
             {
+                case WorkType.Idle:
+                    return 5;
                 case WorkType.Eat:
                     return DssConst.WorkTime_Eat;
                 case WorkType.PickUpResource:

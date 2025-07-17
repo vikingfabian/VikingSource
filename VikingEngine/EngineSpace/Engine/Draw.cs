@@ -46,6 +46,8 @@ namespace VikingEngine.Engine
         static IntVector2 targetSize;
         public static int MaxScreenSplit = 4;
 
+        public DrawBatchCollection drawBatch;
+
         public static void Init()
         {
             //Set the technique names
@@ -232,6 +234,11 @@ namespace VikingEngine.Engine
             if (obj == null)
                 throw new Exception("Draw object is null");
 
+#if DEBUG
+            if (obj is DSSWars.VoxelModelInstance_Pooled)
+                throw new Exception();
+#endif
+
             if (AddToContainer == null)
             {
                 obj.inRenderLayer = CurrentRenderLayer;
@@ -396,8 +403,6 @@ namespace VikingEngine.Engine
         {
             Ref.draw.AddToContainer = null;
 
-
-
             spriteBatch.GraphicsDevice.Clear(ClrColor);
 
             if (spriteBatch.IsDisposed)
@@ -448,6 +453,10 @@ namespace VikingEngine.Engine
                 spriteBatch.Begin();
                 spriteBatch.Draw(MainRenderTarget, Screen.MonitorTargetRect, Color.White);
                 spriteBatch.End();
+            }
+            else
+            {
+                graphicsDeviceManager.GraphicsDevice.Clear(ClrColor);
             }
         }
 

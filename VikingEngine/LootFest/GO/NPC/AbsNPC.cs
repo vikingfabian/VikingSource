@@ -571,7 +571,7 @@ namespace VikingEngine.LootFest.GO.NPC
 
         virtual protected VoxelModelName swordImage
         {
-            get { return VoxelModelName.stick; }
+            get { return VoxelModelName.NUM_NON; }
         }
         virtual protected WeaponAttack.DamageData attackDamage
         {

@@ -70,12 +70,20 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (soldier.soldierData.factionColoredModel)
             {
-                model = soldier.group.army.faction.AutoLoadModelInstance(
-                    soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale, true);
+                if (soldier.soldierData.modelData.modelType == ModelType.Soldier)
+                {
+                    model = soldier.group.army.GetFaction().AutoLoadModelInstance_character(
+                        soldier.soldierData.modelData, soldier.soldierData.modelScale);
+                }
+                else
+                {
+                    model = soldier.group.army.GetFaction().AutoLoadModelInstance_batched(
+                        soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale);
+                }
             }
             else
             {
-                model = DssRef.models.ModelInstance(soldier.soldierData.modelName, true, soldier.soldierData.modelScale);
+                model = DssRef.models.ModelInstance_drawbatch(soldier.soldierData.modelName, soldier.soldierData.modelScale);
             }
             model.position = soldier.position;
 
@@ -92,7 +100,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void DeleteMe()
         {
-            base.DeleteMe();
+            //base.DeleteMe();
+            model.preRemoveFromDrawBatch();
             shadowPlane?.DeleteMe();
         }
     }

@@ -10,7 +10,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monster3
         static readonly IntervalF ScaleRange = new IntervalF(5.8f, 6.4f);
 
         public SquigHorned(GoArgs args)
-            : base(args, VoxelModelName.squig_horned, ScaleRange, false, 40)
+            : base(args, VoxelModelName.NUM_NON, ScaleRange, false, 40)
         {
             if (DamageBound.MainBound != null)
             {
@@ -67,7 +67,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monster3
         static readonly IntervalF ScaleRange = new IntervalF(2f, 2.2f);
 
         public SquigHornedBaby(GoArgs args)
-            : base(args, VoxelModelName.squig_horned_baby, ScaleRange, true, 60)
+            : base(args, VoxelModelName.NUM_NON, ScaleRange, true, 60)
         {
 
         }

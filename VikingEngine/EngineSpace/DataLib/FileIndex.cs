@@ -22,6 +22,7 @@ namespace VikingEngine.DataLib
 
     public class FileIndex
     {
+        public bool projectType = false;
 
         public class FileEntry
         {

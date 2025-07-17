@@ -84,6 +84,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
             banner.DeleteMe();
+            banner = null;
         }
 
         public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
@@ -93,20 +94,21 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class Banner : AbsModelAttachment
+    class Banner : AbsModelAttachment_Batched
     {
         public Banner(Faction faction, float soldierScale, int skill)
         {
-            model = faction.AutoLoadModelInstance(
-               modelName(), soldierScale * 2f, true);
+            model = faction.AutoLoadModelInstance_batched(
+               modelName(), soldierScale * 2f / 1.76f);
             model.Frame = skill;
-            diff = new Vector3(0.17f, 0, 0.12f) * soldierScale;
+            diff = new Vector3(0.17f, 0, 0.12f) * soldierScale / 1.76f;
         }
-
         protected override VoxelModelName modelName()
         {
             return VoxelModelName.banner;
         }
+
+        
     }
 
     

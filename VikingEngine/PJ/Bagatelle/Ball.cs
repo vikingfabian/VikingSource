@@ -28,7 +28,7 @@ namespace VikingEngine.PJ.Bagatelle
 
         static readonly Sound.SoundSettings FallOffSound = new Sound.SoundSettings(LoadedSound.bassdrop, 1f);
         public const int BumpCount = 3;
-        static CirkleCounterUp NextBallLayer = new CirkleCounterUp(0, 63);
+        static CircleCounterUp NextBallLayer = new CircleCounterUp(0, 63);
        
         public int bumps = BumpCount;
         int splitCount = 0;
@@ -44,7 +44,7 @@ namespace VikingEngine.PJ.Bagatelle
         Timer.Basic traceTimer = new Timer.Basic(120, true);
 
         Sound.SoundSettings pointSound;
-        CirkleCounterUp rainbowColor;
+        CircleCounterUp rainbowColor;
         Physics.CircleBound circleBound;
         public bool isShadowBall = false;
         Ball shadowBall = null;
@@ -171,7 +171,7 @@ namespace VikingEngine.PJ.Bagatelle
                 }
                 else if (gamer.animalSetup.theme == AnimalTheme.Rainbow)
                 {
-                    rainbowColor = new CirkleCounterUp(0, RainBowColors.Length - 1);
+                    rainbowColor = new CircleCounterUp(0, RainBowColors.Length - 1);
                 }
             }
 

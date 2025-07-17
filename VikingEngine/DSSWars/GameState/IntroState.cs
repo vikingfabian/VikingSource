@@ -15,6 +15,9 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState;
+using VikingEngine.Engine;
+using VikingEngine.Voxels;
+using VikingEngine.DSSWars.Players.Profile;
 
 namespace VikingEngine.DSSWars
 {
@@ -24,7 +27,7 @@ namespace VikingEngine.DSSWars
     class IntroState : Engine.GameState
     {        
         bool isReset;
-        Graphics.TextG pressStartText;
+        //Graphics.TextG pressStartText;
 
         bool loadingContentComplete = false;
         bool loadingDataComplete = false;
@@ -38,9 +41,9 @@ namespace VikingEngine.DSSWars
 
             Ref.draw.ClrColor = Color.Black;
 
-            pressStartText = new Graphics.TextG(
-                LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
-                Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
+            //pressStartText = new Graphics.TextG(
+            //    LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
+            //    Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
                         
             DssVar.UpdateConstants();
 
@@ -80,7 +83,7 @@ namespace VikingEngine.DSSWars
                     LoadedTexture.particle3,
                     });
             new SpriteSheet();
-            LootFest.Data.Block.Init();
+            Block.Init();
             FlagAndColor.Init();
             ItemPropertyColl.Init();
             WorkLib.Init();
@@ -107,7 +110,8 @@ namespace VikingEngine.DSSWars
 
             //Display.AbsBubbleMessage.Init();
 
-            DataStream.FilePath.CreateStorageFolder(LootFest.Editor.DesignerStorage.UserVoxelObjFolder);
+            DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
+            DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
             UserGeneratedContent.UGClib.GameInit();
             
 
@@ -124,7 +128,7 @@ namespace VikingEngine.DSSWars
 
             DssRef.storage.meta.CreateImportFolders();
             Ref.gamesett.Load();
-            new Display.Translation.Translation().setupLanguage(true);
+            new Presentation.Translation().setupLanguage(true);
 
             loadingDataComplete = true;
         }
@@ -160,5 +164,10 @@ namespace VikingEngine.DSSWars
             }
         }
 
+
+        protected override void createDrawManager()
+        {
+            draw =new Draw2D();
+        }
     }
 }

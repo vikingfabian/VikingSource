@@ -184,7 +184,7 @@ namespace VikingEngine.Voxels
             crossHair.SetSpriteName(icon);
         }
         
-        public void moveFreePencil(Vector3 dirTime)
+        public void moveFreePencil(Vector3 dirTime, bool yMoveToggle)
         {
             Vector3 startVal = dirTime;
 
@@ -193,6 +193,12 @@ namespace VikingEngine.Voxels
             {
                 Rotation1D camrot = Rotation1D.FromDirection(xz);
                 camrot.Radians += pData.view.Camera.TiltX - MathHelper.PiOver2;
+
+                if (yMoveToggle)
+                {
+                    camrot.snapToNearest90Degrees();
+                }
+
                 Vector2 rotatedXZmove = camrot.Direction(xz.Length());
                 dirTime.X = rotatedXZmove.X;
                 dirTime.Z = rotatedXZmove.Y;
@@ -234,7 +240,7 @@ namespace VikingEngine.Voxels
         public void setPencilPosition(Vector3 pos)
         {
             freePencilGridPos = pos;
-            moveFreePencil(Vector3.Zero);
+            moveFreePencil(Vector3.Zero, false);
         }
 
         public void UpdateMultiSelectionPencil(IntVector3 drawCoordPosDiff)
@@ -369,7 +375,7 @@ namespace VikingEngine.Voxels
             grid = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
                 gridPolys, new List<Graphics.TriangleColor>()), LoadedTexture.SpriteSheet, true);
 
-            moveFreePencil(Vector3.Zero);
+            moveFreePencil(Vector3.Zero, false);
 
             if (forwardArrow == null)
             {

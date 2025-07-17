@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display.CutScene;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 
@@ -11,7 +11,11 @@ namespace VikingEngine.DSSWars.Event
 {
     class GameEventsDemo : EventManager
     {
+//#if DEBUG
+//        Time maxDemoTime = new Time(1f, TimeUnit.Minutes);
+//#else
         Time maxDemoTime = new Time(90f, TimeUnit.Minutes);
+//#endif
         City defendingCity;
         int demoState_1start_2end = 0;
         List<Army> attackerArmies;
@@ -90,7 +94,10 @@ namespace VikingEngine.DSSWars.Event
             if (maxDemoTime.CountDownGameTime_IfActive())
             {
                
-                Ref.update.AddSyncAction(new SyncAction(endPreWarningMessage));
+                Ref.update.AddSyncAction(new SyncAction(()=>
+                {
+                    viewEndScreen(GameEndReason.TimesUp);
+                }));
             }
 
             if (!endPreWarning && maxDemoTime.MilliSeconds < endPreWarningTime)
@@ -101,7 +108,7 @@ namespace VikingEngine.DSSWars.Event
 
             if (demoState_1start_2end == 1)
             {
-                bool lostCity = defendingCity.faction.player.IsAi();
+                bool lostCity = defendingCity.GetPlayer().IsAi();
 
                 if (lostCity)
                 {

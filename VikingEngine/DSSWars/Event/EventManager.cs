@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.CutScene;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;
@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.Event
         {
             if (newGame)
             {
-                if (DssRef.difficulty.setting_gameMode != GameMode.Spectator)
+                if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
                     addStoryEvent(new List<AbsStoryEvent>
                     {
@@ -579,7 +579,7 @@ namespace VikingEngine.DSSWars.Event
 
         public void onPlayerDeath()
         {
-            if (DssRef.difficulty.setting_gameMode != GameMode.Spectator)
+            if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
                 foreach (var p in DssRef.state.localPlayers)
                 {
@@ -721,11 +721,13 @@ namespace VikingEngine.DSSWars.Event
                     foreach (var n in citiesC.sel.neighborCities)
                     {
                         var ncity = DssRef.world.cities[n];
-                        if (ncity.faction != faction &&
-                            ncity.faction.player.IsAi() &&
-                            !factions.Contains(ncity.faction))
+                        var nCityFaction = ncity.GetFaction();
+
+                        if (nCityFaction != faction &&
+                            nCityFaction.player.IsAi() &&
+                            !factions.Contains(nCityFaction))
                         { 
-                            factions.Add(ncity.faction);
+                            factions.Add(nCityFaction);
                         }
                     }
                 }
@@ -746,7 +748,7 @@ namespace VikingEngine.DSSWars.Event
                 {
                     foreach (var cindex in city.neighborCities)
                     {
-                        var otherfaction = DssRef.world.cities[cindex].faction;
+                        var otherfaction = DssRef.world.cities[cindex].GetFaction();
                         if (factionMayStartWar(otherfaction, defender))
                         {
                             return otherfaction;

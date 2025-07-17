@@ -15,7 +15,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
         public GoblinSpawner(GoArgs args)
             :base(args)
         {
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.goblin_hut, Scale, 0, false);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, Scale, 0, false);
 
            
             WorldPos.SetAtClosestFreeY(1);
@@ -72,7 +72,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
         public OrcSpawner(GoArgs args)
             : base(args)
         {
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.orc_hut, Scale, 0, false);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, Scale, 0, false);
 
             //WorldPos = position;
             WorldPos.SetAtClosestFreeY(1);

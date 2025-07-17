@@ -31,10 +31,10 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
             workers.Add(soldier.GetFaction(),
                 scale * -Xdiff, scale * Zdiff);
 
-            barrel = soldier.group.army.faction.AutoLoadModelInstance(
-                 VoxelModelName.wars_ironsiegecannon, scale, false);
+            barrel = soldier.group.army.GetFaction().AutoLoadModelInstance_batched(
+                 VoxelModelName.wars_ironsiegecannon, scale);
             barrel.Frame = 1;
-            barrel.AddToRender(DrawGame.UnitDetailLayer);
+            //barrel.AddToRender(DrawGame.UnitDetailLayer);
         }
 
 

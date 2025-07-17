@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public ArmyCollection(Faction faction)
         {
-            this.faction = faction;
+            this.factionIndex = faction.myIndex;
         }
 
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new ArtButton(RbButtonStyle.Outline,
                     new List<AbsRichBoxMember> { new RbImage(SpriteName.ButtonDisabledCross) { color = HudLib.NotAvailableColor } },
                     new RbAction1Arg<AbsMapObject>(removeClick, obj),
-                    new RbTooltip_Text(DssRef.todoLang.Hud_RemoveFromList)));
+                    new RbTooltip_Text(DssRef.lang.Hud_RemoveFromList)));
 
                 args.content.Add(new ArtButton(RbButtonStyle.Outline,
                     new List<AbsRichBoxMember> { new RbImage(SpriteName.ClickCirkleEffect) { color = HudLib.AvailableColor } },
@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.GameObject
         void removeClick(AbsMapObject obj)
         {
             remove(obj.GetArmy());
-            obj.faction.player.GetLocalPlayer().hud.needRefresh = true;
+            obj.GetPlayer().GetLocalPlayer().hud.needRefresh = true;
         }
 
         void remove(Army army)
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void selectClick(AbsMapObject obj)
         {            
-            obj.faction.player.GetLocalPlayer().gameControls.mapSelect(obj);
+            obj.GetPlayer().GetLocalPlayer().gameControls.mapSelect(obj);
 
             DeleteMembers(false);
         }
@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.GameObject
                     obj.army.disbandArmyAction();
                 }
 
-                objects[0].army.faction.player.GetLocalPlayer().gameControls.clearSelection();
+                objects[0].army.GetPlayer().GetLocalPlayer().gameControls.clearSelection();
 
                 DeleteMembers(false);
             }

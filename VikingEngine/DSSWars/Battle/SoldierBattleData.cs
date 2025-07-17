@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Battle
                             if (intersection.IsCollision)
                             {
                                
-                                if (parent.group.army.faction == unit.group.army.faction)
+                                if (parent.group.army.factionIndex == unit.group.army.factionIndex)
                                 {
                                     if (Rotation1D.AngleDifference_Absolute(parent.rotation.radians, lib.V2ToAngle_PreNorm_Unsafe(-intersection.direction)) < MathExt.TauOver8)
                                     {
@@ -101,7 +101,7 @@ namespace VikingEngine.DSSWars.Battle
 
         public void onTakeMeleeDamage(AbsSoldierUnit parent, AbsDetailUnit meleeAttacker)
         {
-            if (parent.group.debugTagged && parent.parentArrayIndex == 3)
+            if (parent.group.debugTagged && parent.myIndex == 3)
             {
                 lib.DoNothing();
             }

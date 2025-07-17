@@ -22,7 +22,7 @@ namespace VikingEngine.LootFest.GO.PickUp
         }
         protected override VoxelModelName imageType
         {
-            get { return VoxelModelName.specialattup; }
+            get { return VoxelModelName.NUM_NON; }
         }
 
         public override GameObjectType Type
@@ -54,7 +54,7 @@ namespace VikingEngine.LootFest.GO.PickUp
         }
         protected override VoxelModelName imageType
         {
-            get { return VoxelModelName.specialammorefill; }
+            get { return VoxelModelName.NUM_NON; }
         }
 
         public override GameObjectType Type

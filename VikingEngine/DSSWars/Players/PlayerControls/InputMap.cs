@@ -382,6 +382,7 @@ namespace VikingEngine.DSSWars
 
             Debug.WriteCheck(w);
         }
+
         public void read(System.IO.BinaryReader r)
         {
             int inputVersion = r.ReadInt32();
@@ -389,15 +390,7 @@ namespace VikingEngine.DSSWars
             {
                 xboxSetup();
             }
-            //if (
-            //inputSource.read(r);
-
-            //var  old1 = MapRead.Button(r, inputSource.controllerIndex);
-            
-            //ControllerMessageClick = MapRead.Button(r, inputSource.controllerIndex);
-
-            //Menu = MapRead.Button(r, inputSource.controllerIndex);
-
+           
             if (inputSource.HasKeyBoard)
             {
                 CancelKey = MapRead.Button(r, inputSource.controllerIndex);

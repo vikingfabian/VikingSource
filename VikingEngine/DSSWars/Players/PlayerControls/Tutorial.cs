@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         LocalPlayer player;
         //TutorialMission tutorialMission = 0;
-        Display.TutorialDisplay display;
+        Interface.TutorialDisplay display;
 
         public List<MenuTab> cityTabs;
         const int ReachFoodBuffer = City.DefaultFoodBuffer + 100;
@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             cityarea = new Rectangle2();
 
             this.player = player;
-            display = new Display.TutorialDisplay(player);
+            display = new Interface.TutorialDisplay(player);
             initMissions();
 
             //Setup resources and map
@@ -454,7 +454,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                     }
 
-                    if (player.drawUnitsView.current.DrawDetailLayer)
+                    if (player.mapLayersManager.current.DrawDetailLayer)
                     {
                         if (!collectResources_zoomIn)
                         {
@@ -474,7 +474,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     
 
                     
-                    if (player.cityTab == Display.MenuTab.Resources)
+                    if (player.cityTab == Interface.MenuTab.Resources)
                     {
                         if (!collectResources_selectTab)
                         {
@@ -527,7 +527,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.Linen:
                     if (!linen_selectTab)
                     {
-                        if (player.cityTab == Display.MenuTab.Build)
+                        if (player.cityTab == Interface.MenuTab.Build)
                         {
                             linen_selectTab = true;
                             onPartSuccess();
@@ -576,7 +576,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.ProduceWeaponsArmor:
                     //if (!weaponsArmor_selectTab)
                     //{
-                    if (player.cityTab == Display.MenuTab.Resources)
+                    if (player.cityTab == Interface.MenuTab.Resources)
                     {
                         if (!weaponsArmor_selectTab)
                         {
@@ -692,7 +692,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                     }
 
-                    if (player.drawUnitsView.current.DrawDetailLayer)
+                    if (player.mapLayersManager.current.DrawDetailLayer)
                     {
                         if (!recruitGuard_zoomIn)
                         {
@@ -709,7 +709,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                     }
 
-                    if (player.cityTab == Display.MenuTab.Conscript)
+                    if (player.cityTab == Interface.MenuTab.Conscript)
                     {
                         if (!recruitGuard_selectConscriptTab)
                         {
@@ -755,7 +755,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.BuildDefences:
 
-                    if (player.cityTab == Display.MenuTab.Build)
+                    if (player.cityTab == Interface.MenuTab.Build)
                     {
                         if (!buildDefences_selectBuildTab)
                         {
@@ -834,7 +834,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     if (!conscriptArmy_selectTab)
                     {
-                        if (player.cityTab == Display.MenuTab.Conscript)
+                        if (player.cityTab == Interface.MenuTab.Conscript)
                         {
                             conscriptArmy_selectTab = true;
 
@@ -863,7 +863,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //bool CollectFood_reachfoodamount = false;
                     if (!CollectFood_selecttab)
                     {
-                        if (player.cityTab == Display.MenuTab.Resources)
+                        if (player.cityTab == Interface.MenuTab.Resources)
                         {
                             CollectFood_selecttab = true;
 
@@ -951,7 +951,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!CollectFood_selectStockPile)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.cityTab == Display.MenuTab.Resources &&
+                            player.cityTab == Interface.MenuTab.Resources &&
                             player.resourcesSubTab == ResourcesSubTab.Stockpile_Resources)
                         {
                             CollectFood_selectStockPile = true;
@@ -986,7 +986,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
               
                 case TutorialMission.MoveArmy:
 
-                    if (player.drawUnitsView.current.DrawNormal)
+                    if (player.mapLayersManager.current.DrawMid)
                     {
                         if (!moveArmy_ZoomOut)
                         {
@@ -1036,7 +1036,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.Diplomatics:
 
-                    if (player.drawUnitsView.current.DrawOverview)
+                    if (player.mapLayersManager.current.DrawFar)
                     {
                         if (!diplomatics_ZoomOut)
                         {

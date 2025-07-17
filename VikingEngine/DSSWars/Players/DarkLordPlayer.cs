@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 foreach (var ally in darkLordAllies)
                 {
-                    w.Write((ushort)ally.parentArrayIndex);
+                    w.Write((ushort)ally.myIndex);
                 }
             }
 
@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     foreach (var n in city.neighborCities)
                     {
-                        var nFaction = DssRef.world.cities[n].faction;
+                        var nFaction = DssRef.world.cities[n].GetFaction();
                         if (nFaction != faction &&
                             nFaction.diplomaticSide != DiplomaticSide.Light &&
                             !DssRef.diplomacy.PositiveRelationWithPlayer(nFaction))

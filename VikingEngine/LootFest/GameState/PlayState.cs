@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Input;
 //xna
 using VikingEngine.EngineSpace.Graphics.DeferredRendering;
 using VikingEngine.SteamWrapping;
+using VikingEngine.Voxels;
+
 
 namespace VikingEngine.LootFest
 {
@@ -1078,7 +1080,7 @@ namespace VikingEngine.LootFest
 
                 case Network.PacketType.VoxelEdit:
                     //Voxels.EditorDrawTools.NetReadVoxelEdit(packet);
-                    new Editor.EditorPacket(packet);
+                    new EditorPacket(packet);
                     break;
                 //case Network.PacketType.TextBlocks:
                 //    clientPlayer = GetClientPlayer(sender);
@@ -1211,61 +1213,61 @@ namespace VikingEngine.LootFest
                         //screen.AddChunkObject(new GO.EnvironmentObj.Door(r, byte.MaxValue, screen.Index, true), true);
                     }
                     break;
-                case Network.PacketType.ClientStartingEditing:
-                    clientPlayer = GetClientPlayer(sender);
-                    if (clientPlayer != null)
-                    {
-                        clientPlayer.InBuildMode = true;
-                        clientPlayer.BuildingPos = Map.WorldPosition.ReadChunkGrindex_Static(r); //.ReadStreamNisse(r);
+//                case Network.PacketType.ClientStartingEditing:
+//                    clientPlayer = GetClientPlayer(sender);
+//                    if (clientPlayer != null)
+//                    {
+//                        clientPlayer.InBuildMode = true;
+//                        clientPlayer.BuildingPos = Map.WorldPosition.ReadChunkGrindex_Static(r); //.ReadStreamNisse(r);
 
-                        if (Ref.netSession.IsHost)
-                        {
+//                        if (Ref.netSession.IsHost)
+//                        {
 
-                            Map.WorldPosition minWp = Editor.VoxelDesigner.HeroPosToCreationStartPos(clientPlayer.BuildingPos);
-                            //min//wp.UpdateWorldGridPos();
-                            Map.WorldPosition maxWp = minWp;
-                            maxWp.WorldGrindex += Editor.VoxelDesigner.CreationSizeLimit.Max;
+//                            Map.WorldPosition minWp = VoxelDesigner.HeroPosToCreationStartPos(clientPlayer.BuildingPos);
+//                            //min//wp.UpdateWorldGridPos();
+//                            Map.WorldPosition maxWp = minWp;
+//                            maxWp.WorldGrindex += VoxelDesigner.CreationSizeLimit.Max;
 
-                            //min//wp.UpdateChunkPos(); max//wp.UpdateChunkPos();
+//                            //min//wp.UpdateChunkPos(); max//wp.UpdateChunkPos();
 
-                            IntVector2 bpos = IntVector2.Zero;
-                            //const int Radius = 1;
-                            for (bpos.Y = minWp.ChunkGrindex.Y; bpos.Y <= maxWp.ChunkGrindex.Y; bpos.Y++)
-                            {
-                                for (bpos.X = minWp.ChunkGrindex.X; bpos.X <= maxWp.ChunkGrindex.X; bpos.X++)
-                                {
-                                    screen = LfRef.chunks.GetScreenUnsafe(bpos);
-                                    //if (Map.World.RunningAsHost)
-                                    //{
-                                    //    new Map.SafeCopyCheck(bpos);
-                                    //}
+//                            IntVector2 bpos = IntVector2.Zero;
+//                            //const int Radius = 1;
+//                            for (bpos.Y = minWp.ChunkGrindex.Y; bpos.Y <= maxWp.ChunkGrindex.Y; bpos.Y++)
+//                            {
+//                                for (bpos.X = minWp.ChunkGrindex.X; bpos.X <= maxWp.ChunkGrindex.X; bpos.X++)
+//                                {
+//                                    screen = LfRef.chunks.GetScreenUnsafe(bpos);
+//                                    //if (Map.World.RunningAsHost)
+//                                    //{
+//                                    //    new Map.SafeCopyCheck(bpos);
+//                                    //}
 
-                                    if (screen == null || !screen.DataGridLoadingComplete)
-                                    {
-                                        if (LfRef.WorldHost)
-                                        {
-                                            screen = LfRef.chunks.GetScreen(bpos);
-                                            //screen.generate1_Topographic();
-                                            screen.generate2_HeightMap();
-                                            screen.generate3_Detail();
-#if PCGAME
-                                            screen.ClientEditingFlag = true;
-#endif
+//                                    if (screen == null || !screen.DataGridLoadingComplete)
+//                                    {
+//                                        if (LfRef.WorldHost)
+//                                        {
+//                                            screen = LfRef.chunks.GetScreen(bpos);
+//                                            //screen.generate1_Topographic();
+//                                            screen.generate2_HeightMap();
+//                                            screen.generate3_Detail();
+//#if PCGAME
+//                                            screen.ClientEditingFlag = true;
+//#endif
 
-                                        }
-                                        else
-                                        {
-                                            //map is changed and the files should be disqualified
-                                            screen = LfRef.chunks.GetScreen(bpos);
-                                            screen.CompleteRemoval();
-                                        }
-                                    }
+//                                        }
+//                                        else
+//                                        {
+//                                            //map is changed and the files should be disqualified
+//                                            screen = LfRef.chunks.GetScreen(bpos);
+//                                            screen.CompleteRemoval();
+//                                        }
+//                                    }
 
-                                }
-                            }
-                        }
-                    }
-                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+//                    break;
                 case Network.PacketType.ClientEndingEditing:
                     Players.ClientPlayer cp6 = GetClientPlayer(sender);
                     if (cp6 != null)

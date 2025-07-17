@@ -81,7 +81,7 @@ namespace VikingEngine.LootFest.GO.Characters.CastleEnemy
         {
             get
             {
-                return VoxelModelName.shootingturret;
+                return VoxelModelName.NUM_NON;
             }
         }
         ////static readonly Data.TempBlockReplacementSett TempImage = new Data.TempBlockReplacementSett(Color.Gray, new Vector3(1.5f, 1.5f, 3));

@@ -57,9 +57,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (transformModel == null)
                 {
-                    transformModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipbuild, true, DssConst.Men_StandardModelScale * 2f, true);
+                    transformModel = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_shipbuild, DssConst.Men_StandardModelScale * 2f);
 
-                    loadingModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_loading_anim, true, DssConst.Men_StandardModelScale * 2f, true);
+                    loadingModel = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_loading_anim, DssConst.Men_StandardModelScale * 2f);
                     transformModel.Frame = modelFrame();
 
 
@@ -80,8 +80,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
 
-            DssRef.models.recycle(ref transformModel, true);
-            DssRef.models.recycle(ref loadingModel, true);
+            transformModel?.preRemoveFromDrawBatch();
+            loadingModel?.preRemoveFromDrawBatch();
+            //DssRef.models.recycle(ref transformModel, true);
+            //DssRef.models.recycle(ref loadingModel, true);
 
             completeTransform();
         }

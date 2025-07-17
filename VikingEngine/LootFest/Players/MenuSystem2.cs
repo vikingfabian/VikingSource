@@ -20,6 +20,8 @@ using VikingEngine.EngineSpace.Maths;
 //using SharpDX.DirectInput;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Network;
+using VikingEngine.Voxels;
+
 
 namespace VikingEngine.LootFest
 {
@@ -142,15 +144,15 @@ namespace VikingEngine.LootFest
                     //new GuiTextButton("Joystick Test", null, JoystickTest, true, layout);
                 }
                 
-                new GuiIcon(SpriteName.LFExpressHi, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_hi), false, layout);
-                new GuiIcon(SpriteName.LFExpressThumbsUp, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_thumbup), false, layout);
-                new GuiIcon(SpriteName.LFExpressLaugh, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_laugh), false, layout);
-                new GuiIcon(SpriteName.LFExpressTease, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_teasing), false, layout);
+                new GuiIcon(SpriteName.LFExpressHi, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressThumbsUp, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressLaugh, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressTease, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
 
-                new GuiIcon(SpriteName.LFExpressAngry, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_anger), false, layout);
-                new GuiIcon(SpriteName.LFExpressSad, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_sad1), false, layout);
-                new GuiIcon(SpriteName.LFExpressLoot, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_loot), false, layout);
-                new GuiIcon(SpriteName.LFExpressDuck, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_duck), false, layout);
+                new GuiIcon(SpriteName.LFExpressAngry, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressSad, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressLoot, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressDuck, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
 
 
                 // basic & important
@@ -1241,11 +1243,11 @@ namespace VikingEngine.LootFest
 
         void startVoxelEditor()
         {
-            new GameState.VoxelDesignState(player.PlayerIndex);
+            //new GameState.VoxelDesignState(player.PlayerIndex);
         }
         void startSceneMaker()
         {
-            new Editor.SceneMaker(player.PlayerIndex);
+            new Voxels.SceneMaker(player.PlayerIndex);
         }
 
         //void HandMadeTerrainPage()
@@ -1939,7 +1941,7 @@ namespace VikingEngine.LootFest
 
         void listMaterials(Action<BlockHD> link)
         {
-            Editor.VoxelDesigner.listMaterials(menu, link, false);//mFile, (int)d, false, Storage, (int)Link.ShowHideMaterialNames, 0);
+            //VoxelDesigner.listMaterials(menu, link, false);//mFile, (int)d, false, Storage, (int)Link.ShowHideMaterialNames, 0);
         }
 
         void refreshShield()

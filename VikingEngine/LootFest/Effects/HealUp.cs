@@ -22,7 +22,7 @@ namespace VikingEngine.LootFest.Effects
             :base(true)
         {
             int num;// = smallBoost ? 1 : NumIcons;
-            VoxelModelName model = heal_notMagic ? VoxelModelName.healup_effect : VoxelModelName.magicup_effect;
+            VoxelModelName model = heal_notMagic ? VoxelModelName.NUM_NON : VoxelModelName.NUM_NON;
         //    Data.IReplacementImage replacementImg = heal_notMagic ? HeartTempImage : WaterDropTempImage;
             if (smallBoost)
             {

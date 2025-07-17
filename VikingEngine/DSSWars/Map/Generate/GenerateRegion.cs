@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     foreach (int n in cities[cityIx].neighborCities)
                     {
                         City c = world.cities[n];
-                        if (c.faction == null)
+                        if (c.factionIndex < 0)
                         {
                             addCity(c);
 

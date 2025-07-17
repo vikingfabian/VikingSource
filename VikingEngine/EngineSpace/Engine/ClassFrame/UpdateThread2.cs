@@ -162,7 +162,7 @@ namespace VikingEngine
 
         override protected void asynchAction()
         {
-#if DEBUG
+#if FALSE
             if (updateAction != null)
             {
                 end = updateAction(id, asynchTime);

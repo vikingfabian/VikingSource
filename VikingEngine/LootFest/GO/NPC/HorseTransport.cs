@@ -19,13 +19,13 @@ namespace VikingEngine.LootFest.GO.NPC
 
             WorldPos = args.startWp;
             modelScale = 11f;
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.transport_wagon, modelScale);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, modelScale);
             image.position = args.startPos;
 
             Vector3 boundSz = new Vector3(modelScale * 0.16f, modelScale * 0.15f, modelScale * 0.45f);
             CollisionAndDefaultBound = new Bounds.ObjectBound(Bounds.BoundShape.Box1axisRotation, VectorExt.AddY(image.position, boundSz.Y), boundSz, Vector3.Zero);
 
-            driverModel = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.wagondriver, modelScale * 0.3f);
+            driverModel = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, modelScale * 0.3f);
             driverModel.position = image.position + modelScale * new Vector3(0f, 0.17f, -0.16f);
         }
 

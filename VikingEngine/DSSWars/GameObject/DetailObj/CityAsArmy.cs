@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         void updateArmyMembers(float time, bool fullUpdate)
         {
-            if (parentArrayIndex == 0)
+            if (myIndex == 0)
             {
                 lib.DoNothing();
             }

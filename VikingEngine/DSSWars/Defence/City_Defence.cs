@@ -173,7 +173,7 @@ int closestIx = -1;
                         }
                     }
 
-                    var player = faction.player.GetLocalPlayer();
+                    var player = GetPlayer().GetLocalPlayer();
                     if (player != null)
                     {
                         Ref.update.AddSyncAction(new SyncAction2Arg<bool, int>(player.hud.messages.changedAllBuildings, toValue, count));
@@ -190,7 +190,7 @@ int closestIx = -1;
         {
             var defence = defenceBuildings[index];
             guard.onEnterGuard(this, defence.idAndPosition);
-            defence.soldierGroupId = guard.parentArrayIndex;
+            defence.soldierGroupId = guard.myIndex;
             defenceBuildings[index] = defence;
 
             //guard.refreshSoldierDefence();

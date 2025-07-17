@@ -21,7 +21,7 @@ namespace VikingEngine.LootFest.GO.Characters
             args.startWp.SetAtClosestFreeY(1);
             WorldPos = args.startWp;
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.dummie, ImageScale, 1, false);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, ImageScale, 1, false);
             CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickCylinderBound(ImageScale * ScaleToBound, ImageScale * 0.46f);//LootFest.ObjSingleBound.QuickBoundingBox(ImageScale * ScaleToBound);//LootFest.ObjSingleBound.QuickRectangleRotated(new Vector3(ImageScale * ScaleToBound));
             image.position = WorldPos.PositionV3;
             rotation = Rotation1D.Random();

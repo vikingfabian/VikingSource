@@ -8,37 +8,12 @@ using System.Text;
 namespace VikingEngine.Graphics
 {
     class VoxelModelInstance : AbsVoxelModelInstance
-    {
-        /* Properties */
-        //public override int Frame
-        //{
-        //    get { return currentFrame; }
-        //    set { currentFrame = value; }
-        //}
-        //public override AnimationsSettings AnimationsSettings
-        //{
-        //    get { return settings; }
-        //    set { settings = value; }
-        //}
-       // public override bool Animated { get { return true; } }
-
-        /* Fields */
-        //int currentFrame;
-        //float currentTime;
-        //AnimationsSettings settings;
-
-        /* Constructors */
+    {        
         public VoxelModelInstance(VoxelModel master, bool addToRender = true)
             : base(master, addToRender)
         {
-           // this.settings = settings;
         }
 
-        //public VoxelModelInstance(VoxelModel voxelObj, AnimationsSettings settings)
-        //    : this(voxelObj, settings, true)
-        //{ }
-
-        /* Family methods */
         public override void Draw(int cameraIndex)
         {
             if (master != null)
@@ -69,28 +44,7 @@ namespace VikingEngine.Graphics
                 base.DrawDeferredDepthOnly(shader, cameraIndex);
             }
         }
-        //public override void UpdateAnimation(float speed, float time)
-        //{
-        //    if ((speed == 0 && settings.NumIdleFrames > 0) || settings.NumFramesPlusIdle == 1)
-        //    {
-        //        currentFrame = 0;
-        //    }
-        //    else
-        //    {
-        //        if (currentFrame < settings.NumIdleFrames) currentFrame = settings.NumIdleFrames;
-
-        //        currentTime += speed * time;
-        //        if (currentTime >= settings.TimePerFrameAndSpeed)
-        //        {
-        //            currentTime = 0f;//-= settings.TimePerFrameAndSpeed;
-        //            currentFrame++;
-        //            if (currentFrame >= settings.NumFramesPlusIdle)
-        //            {
-        //                currentFrame = settings.NumIdleFrames;
-        //            }
-        //        }
-        //    }
-        //}
+       
         public override void NextAnimationFrame()
         {
             if (master != null && ++Frame >= master.NumFrames)
@@ -111,19 +65,13 @@ namespace VikingEngine.Graphics
         {
             throw new NotImplementedException();
         }
-        //    currentFrame++;
-        //    if (currentFrame >= settings.NumFramesPlusIdle)
-        //        currentFrame = 0;
-        //}
     }
 
     struct AnimationsSettings
     {
-        /* Static readonlies */
         public static readonly AnimationsSettings OneFrame = new AnimationsSettings(1, float.MaxValue, false);
         public static readonly AnimationsSettings BasicAnimation = new AnimationsSettings(2, float.MaxValue, 0);
 
-        /* Properties */
         public bool HasIdleFrame
         {
             get { return NumIdleFrames > 0; }
@@ -131,13 +79,11 @@ namespace VikingEngine.Graphics
         }
         public bool Animated { get { return NumFramesPlusIdle > 1; } }
 
-        /* Fields */
         public int NumIdleFrames;
         public int NumFramesPlusIdle;
         public float TimePerFrameAndSpeed;
         float currentTime;
 
-        /* Constructors */
         public AnimationsSettings(int NumFramesPlusIdle, float TimePerFrameAndSpeed)
             : this(NumFramesPlusIdle, TimePerFrameAndSpeed, true)
         { }
@@ -166,7 +112,7 @@ namespace VikingEngine.Graphics
                 currentTime += speed * time;
                 if (currentTime >= TimePerFrameAndSpeed)
                 {
-                    currentTime = 0f;//-= settings.TimePerFrameAndSpeed;
+                    currentTime = 0f;
                     model.Frame++;
 
                     if (model.Frame >= NumFramesPlusIdle)

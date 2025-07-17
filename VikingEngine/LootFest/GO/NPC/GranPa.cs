@@ -160,7 +160,7 @@ namespace VikingEngine.LootFest.GO.NPC
         public AbsGranPa(GoArgs args)
             :base(args)
         {
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.granpa2, 0f, 1f);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0f, 1f);
             //loadImage();
             postImageSetup();
 

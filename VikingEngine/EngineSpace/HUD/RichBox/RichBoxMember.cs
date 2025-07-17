@@ -395,13 +395,21 @@ namespace VikingEngine.HUD.RichBox
 
     class RbTexture : AbsRichBoxImage
     {
-        Texture2D tex;
+        protected Texture2D tex;
         public ImageAdvanced pointer;
 
         public RbTexture(Texture2D tex, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
             : base(scale, addLeftSpace, addRightSpace)
         {
             this.tex = tex;
+        }
+
+        public override void Create(RichBoxGroup group)
+        {
+            if (tex != null)
+            {
+                base.Create(group);
+            }
         }
 
         override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)

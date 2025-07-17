@@ -12,6 +12,7 @@ namespace VikingEngine.Voxels
     static class VoxelLib
     {
         public const string VoxelObjByteArrayEnding = ".vox";
+        public const string VoxelProjectEnding = ".voxproj";
         public static readonly byte AntiBlock = (byte)VikingEngine.LootFest.Data.MaterialType.AntiBlock;
         public const int FaceTopDir = 1;
         public const int FaceFrontDir = 1;
@@ -1110,19 +1111,18 @@ namespace VikingEngine.Voxels
         public Color Col3;
 
         public FaceCornerColor(float whiteness, Vector3 color, float corner0, float corner1, float corner2, float corner3)
-        {
-            
-                float w = whiteness * corner0;
-                Col0 = new Color(w * color.X, w * color.Y, w * color.Z);
+        {            
+            float w = whiteness * corner0;
+            Col0 = new Color(w * color.X, w * color.Y, w * color.Z);
 
-                w = whiteness * corner1;
-                Col1 = new Color(w * color.X, w * color.Y, w * color.Z);
+            w = whiteness * corner1;
+            Col1 = new Color(w * color.X, w * color.Y, w * color.Z);
 
-                w = whiteness * corner2;
-                Col2 = new Color(w * color.X, w * color.Y, w * color.Z);
+            w = whiteness * corner2;
+            Col2 = new Color(w * color.X, w * color.Y, w * color.Z);
 
-                w = whiteness * corner3;
-                Col3 = new Color(w * color.X, w * color.Y, w * color.Z);
+            w = whiteness * corner3;
+            Col3 = new Color(w * color.X, w * color.Y, w * color.Z);
         }
 
     }

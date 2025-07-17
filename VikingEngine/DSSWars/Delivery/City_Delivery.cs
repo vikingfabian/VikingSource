@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
-using VikingEngine.DSSWars.Display.Component;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface.Component;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         case DeliveryActiveStatus.Idle:
                             {
-                                if (faction.player.IsAi() || 
+                                if (GetPlayer().IsAi() || 
                                     (automateCity && status.que == 0))//OR fully auto
                                 {
                                     status.profile.toCity = DeliveryProfile.ToCityAuto;
@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     City othercity = findOtherCity(sendItem, ref status);
 
                                     if (othercity != null && 
-                                        othercity.faction == this.faction )
+                                        othercity.factionIndex == this.factionIndex )
                                     {
                                         if (status.CountDownQue())
                                         {
@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                     if (status.inProgress.type == ItemResourceType.Food_G &&
                                         resource.amount <= 2 &&
-                                        faction.player.IsLocalPlayer())
+                                        GetPlayer().IsLocalPlayer())
                                     {
                                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.deliver_food);
                                     }
@@ -153,12 +153,12 @@ namespace VikingEngine.DSSWars.GameObject
                     int minAmount = int.MaxValue;
                     City city = null;
 
-                    var citiesC = faction.cities.counter();
+                    var citiesC = GetFaction().cities.counter();
                     while (citiesC.Next())
                     {
                         if (citiesC.sel != this && tilePos.SideLength(citiesC.sel.tilePos) <= DssConst.DeliveryMaxDistance)
                         {
-                            if (status.CanRecieve(sendItem, citiesC.sel.parentArrayIndex, out int hasAmount))
+                            if (status.CanRecieve(sendItem, citiesC.sel.myIndex, out int hasAmount))
                             {
                                 if (hasAmount < minAmount)
                                 {
@@ -171,7 +171,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (city != null)
                     {
-                        status.profile.autoCity = city.parentArrayIndex;
+                        status.profile.autoCity = city.myIndex;
                     }
                     return city;
                 }

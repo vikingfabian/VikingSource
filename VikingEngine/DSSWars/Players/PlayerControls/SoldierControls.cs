@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void mapExecute(LocalPlayer player)
         {
-            if (player.drawUnitsView.current.DrawDetailLayer)
+            if (player.mapLayersManager.current.DrawDetailLayer)
             {
                 var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.subTilePosition);
                 SoldierGroup target = null;

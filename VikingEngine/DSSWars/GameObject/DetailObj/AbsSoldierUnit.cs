@@ -5,10 +5,11 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.Strategy;
@@ -64,10 +65,10 @@ namespace VikingEngine.DSSWars.GameObject
             upgradeUnit.lockMovement = lockMovement;
             upgradeUnit.gridPlacement = gridPlacement;
             //upgradeUnit.aiState = aiState;
-            upgradeUnit.parentArrayIndex = parentArrayIndex;
+            upgradeUnit.myIndex = myIndex;
             //upgradeUnit.following = following;
 
-            upgradeUnit.parentArrayIndex = parentArrayIndex;
+            upgradeUnit.myIndex = myIndex;
             upgradeUnit.attackTarget = attackTarget;
             upgradeUnit.tilePos = tilePos;
             upgradeUnit.rotation = rotation;
@@ -125,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.group = group;
             this.gridPlacement = gridPlacement;
-            parentArrayIndex = group.army.faction.pickNextUnitId();
+            myIndex = group.army.GetFaction().pickNextUnitId();
             //bound = new Physics.CircleBound(Vector2.Zero, SoldierProfile().boundRadius);
             boundRadius = SoldierProfile().boundRadius;
 
@@ -197,7 +198,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public override string TypeName()
         {
-            return group.soldierConscript.conscript.TypeName() + " (" + parentArrayIndex.ToString() + ")";
+            return group.soldierConscript.conscript.TypeName() + " (" + myIndex.ToString() + ")";
         }
         public override void TypeIcon(RichBoxContent content)
         {
@@ -376,7 +377,10 @@ namespace VikingEngine.DSSWars.GameObject
             state.idle = !walking;
             model?.update(this);
         }
-
+        public void update_client()
+        {
+            updateGroudY(false);
+        }
         public void update2(float time, bool fullUpdate)
         {
             if (state2 == SoldierState2.wakeup)
@@ -557,7 +561,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (UnitType == UnitType.CityGuard)
             {
-
                 var guards = group.GetGuardGroup();
                 if (guards.assignedToPost_IdAndPosition > 0)
                 {
@@ -568,7 +571,13 @@ namespace VikingEngine.DSSWars.GameObject
             
             if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))//position.X > 0 && position.Z>0)
             {
-                float y = DssRef.world.SubTileHeight(position) + ModelGroundYAdj;
+                float y = DssRef.world.SubTileHeight(position, out SubTile subTile) + ModelGroundYAdj;
+
+                if (subTile.groundY == 0)
+                {
+                    position.Y = DssRef.world.tileGrid.Get(tilePos).ModelGroundY();
+                    return;
+                }
 
                 if (y < Map.Tile.UnitMinY)
                 {
@@ -1425,7 +1434,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override bool defeatedBy(Faction attacker)
+        public override bool defeatedBy(int attackerFaction)
         {
             return Dead_IncomingDamageIncluded();
         }

@@ -1,15 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
-using VikingEngine.EngineSpace.Voxels;
+
+
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -17,7 +19,6 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.Editor;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.PJ;
 using VikingEngine.Voxels;
@@ -68,11 +69,24 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             SelectedMaterial = col;
             menusystem.closeMenu();
         }
+        public void replaceAllMaterials()
+        {
+            storeUndoableAction(repeateOnAllFrames, repeateOnAllLayers);
+            voxelProject.replaceAllMaterialProperties(SelectedMaterial.material, repeateOnAllFrames, repeateOnAllLayers);
+            menusystem.closeMenu();
+        }
+        public void pickColorAndMaterialLink(BlockHD col)
+        {
+            //col.material = SelectedMaterial.material;
+
+            SelectedMaterial = col;
+            menusystem.closeMenu();
+        }
 
         public void pickMaterialLink(MaterialProperty material)
         {
             Settings.Material.material = material;
-            menusystem.closeMenu();
+            //menusystem.closeMenu();
         }
 
         override public BlockHD SelectedMaterial
@@ -119,7 +133,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             setupNewInput(controller, playerIndex);
         }
 
-        void setupNewInput(bool controller, int playerIndex)
+        public void setupNewInput(bool controller, int playerIndex)
         {
             if (dssInput == null || dssInput.inputSource.IsController != controller)
             {
@@ -191,20 +205,23 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             {
                 inputHelp.refreshUpdate(this, prevInputState, dssInput);
             }
+
+            bool mouseOverHud = false;
+            messages.Update(ref mouseOverHud);
         }
 
         protected override bool openMenuInput()
         {
             if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
-                setupNewInput(false, 0);
+                //setupNewInput(false, 0);
                 return true;
             }
 
             int playerIx;
             if (XInput.KeyDownEvent(Microsoft.Xna.Framework.Input.Buttons.Start, out playerIx))
             {
-                setupNewInput(true, playerIx);
+                //setupNewInput(true, playerIx);
                 return true;
             }
 
@@ -253,7 +270,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             infoText.TextString = "Tool: " + tool.ToString();
         }
 
-        void deleteArea(IntervalIntV3 volume)
+        void deleteArea(int frame, IntervalIntV3 volume)
         {
             ushort value = BlockHD.Empty.BlockValue;
             IntVector3 drawPoint = new IntVector3();
@@ -264,7 +281,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 {
                     for (drawPoint.X = volume.Min.X; drawPoint.X <= volume.Max.X; drawPoint.X++)
                     {
-                        SetVoxel(drawPoint, value);
+                        SetVoxel(frame, drawPoint, value);
                     }
                 }
             }
@@ -329,20 +346,20 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
         }
 
-        const string DoorPart1Text = "Door (open)";
-        const string DoorPart2Text = "Door (closed)";
+        //const string DoorPart1Text = "Door (open)";
+        //const string DoorPart2Text = "Door (closed)";
 
-        void newCharacterSizeAdjust()
-        {
-            drawLimits.Max.AddDimension(Dimensions.X, 2);
-            drawLimits.Max.AddDimension(Dimensions.Y, 2);
-            drawLimits.Max.AddDimension(Dimensions.Z, 2);
-            UpdateDrawLimits();
+        //void newCharacterSizeAdjust()
+        //{
+        //    drawLimits.Max.AddDimension(Dimensions.X, 2);
+        //    drawLimits.Max.AddDimension(Dimensions.Y, 2);
+        //    drawLimits.Max.AddDimension(Dimensions.Z, 2);
+        //    UpdateDrawLimits();
 
-            moveAll(new IntVector3(1, 0, 1), false);
+        //    moveAll(new IntVector3(1, 0, 1), false);
 
-            updateVoxelObj();
-        }
+        //    updateVoxelObj();
+        //}
 
 
         public bool WaitingForTextInput = false;
@@ -352,13 +369,16 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             if (HasSelection)
             {
-                lockFirstFrames = 0;
+                //lockFirstFrames = 0;
                 dropSelection(false);
-                bool repeatSave = repeateOnAllFrames;
-                repeateOnAllFrames = true;
-                moveAll(-designerInterface.selectionArea.Min, true);
-                repeateOnAllFrames = repeatSave;
-                drawLimits.Max = designerInterface.selectionArea.Add;
+                //bool repeatSave = repeateOnAllFrames;
+                //repeateOnAllFrames = true;
+                moveAll(-designerInterface.selectionArea.Min, true, true, true);
+                //repeateOnAllFrames = repeatSave;
+                var limits = voxelProject.drawLimits;
+                limits.Max = designerInterface.selectionArea.Add;
+                voxelProject.setDrawLimit(limits);
+
                 UpdateDrawLimits();
                 updateVoxelObj();
             }
@@ -366,52 +386,52 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void LinkStampOnFrames(int frame = -1)
         {
-            int current = currentFrame.Value;
+            //int current = voxelProject.currentFrame.Value;
 
             if (frame < 0)
             {
-                for (int i = 0; i < animationFrames.Frames.Count; i++)
+                for (int i = 0; i < voxelProject.AnimationFrames.Frames.Count; i++)
                 {
                     //nextFrame(true);
-                    currentFrame.Value = i;
+                    //currentFrame.Value = i;
                     if (stampEmpty)
                     {
-                        deleteArea(designerInterface.selectionArea);
+                        deleteArea(i, designerInterface.selectionArea);
                     }
 
-                    stampSelection(false);
+                    stampSelection(false, frame);
                 }
             }
             else
             {
-                currentFrame.Value = frame;
+                //currentFrame.Value = frame;
                 if (stampEmpty)
                 {
-                    deleteArea(designerInterface.selectionArea);
+                    deleteArea(frame, designerInterface.selectionArea);
                 }
-                stampSelection(false);
+                stampSelection(false, frame);
             }
 
-            currentFrame.Value = current;
+            //currentFrame.Value = current;
             menusystem.closeMenu();
         }
 
         public void ClearSelectedAreaOnFrames(bool includeThisFrame)
         {
-            int current = currentFrame.Value;
-            for (int i = 0; i < animationFrames.Frames.Count; i++)
+            //int current = currentFrame.Value;
+            for (int i = 0; i < voxelProject.AnimationFrames.Frames.Count; i++)
             {
                 //nextFrame(true);
-                if (i != current || includeThisFrame)
+                if (i != CurrentFrame || includeThisFrame)
                 {
-                    currentFrame.Value = i;
+                    //currentFrame.Value = i;
 
-                    deleteArea(designerInterface.selectionArea);
+                    deleteArea(i, designerInterface.selectionArea);
 
                 }
             }
 
-            currentFrame.Value = current;
+            //currentFrame.Value = current;
             if (includeThisFrame)
             {
                 removeSelection();
@@ -427,29 +447,30 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void LinkAnimUnlockFrame()
         {
-            lockFirstFrames = 0;
+            voxelProject.lockFirstFrames = 0;
             menusystem.closeMenu();
         }
-        public void LinkAnimLockFrame()
+        public void LinkAnimLockFrame(bool start)
         {
-            lockFirstFrames = currentFrame.Value;
+            //lockFirstFrames = currentFrame.Value;
+            voxelProject.LockAnimation(start);
             menusystem.closeMenu();
         }
 
-        public void LinkAnimAddFrame()
-        {
-            const int MaxFrames = 140;
+        //public void LinkAnimAddFrame()
+        //{
+        //    const int MaxFrames = 140;
 
-            if (currentFrame.Max < MaxFrames)
-            {
-                AddFrame();
-            }
-            else
-            {
-                SoundLib.wrong.Play();
-                //SoundLib.UnavailableActionSound.PlayFlat();
-            }
-        }
+        //    if (currentFrame.Max < MaxFrames)
+        //    {
+        //        AddFrame();
+        //    }
+        //    else
+        //    {
+        //        SoundLib.wrong.Play();
+        //        //SoundLib.UnavailableActionSound.PlayFlat();
+        //    }
+        //}
         public void LinkHideHUD()
         {
             ShowHUD(false);
@@ -471,10 +492,11 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void changeCanvasSize(IntVector3 add)
         {
-            storeUndoableAction(true);
-            drawLimits.Max += add;
-            UpdateDrawLimits();
-            updateVoxelObj();
+            storeUndoableAction(true, true);
+            var limits = voxelProject.drawLimits;
+            limits.Max += add;
+            voxelProject.setDrawLimit(limits);
+           
 
             if (add.LargestSideLength_Abs() > 1)
             {
@@ -484,10 +506,14 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
                 repeateOnAllFrames = storeRepeateOnAllFrames;
             }
+
+            UpdateDrawLimits();
+            updateVoxelObj();
         }
         public void setCanvasSize(IntVector3 size)
         {
-            drawLimits.Size = size;
+            //drawLimits.Size = size;
+            voxelProject.setSize(size);
             UpdateDrawLimits();
             updateVoxelObj();
         }
@@ -560,7 +586,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             selectedVoxels.Voxels = grid.GetVoxelArray();
 
-            selectedVoxels.Move(designerInterface.drawCoord, drawLimits);
+            selectedVoxels.Move(designerInterface.drawCoord, voxelProject.drawLimits);
             refreshSelectionModel();
             menusystem.closeMenu();
 
@@ -583,27 +609,27 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             dropSelection(false);
             //drawInArea(PaintToolType.Delete, DrawShape.Rectangle, area, false);
         }
-        public void clearSelectedArea_AllFrames()
-        {
-            for (int i = 0; i < animationFrames.Frames.Count; i++)
-            {
-                nextFrame(true);
-                //drawInArea(PaintToolType.Delete, DrawShape.Rectangle, designerInterface.selectionArea, false);
-            }
-            clearSelectedArea();
-        }
-        public void clearSelectedArea_AllFramesButThis()
-        {
-            IntervalIntV3 area = designerInterface.selectionArea;
-            dropSelection(false);
-            int protectedFrame = currentFrame.Value;
-            for (int i = 0; i < animationFrames.Frames.Count - 1; i++)
-            {
-                nextFrame(true);
-                if (currentFrame.Value != protectedFrame)
-                { } //drawInArea(PaintToolType.Delete, DrawShape.Rectangle, area, false);
-            }
-        }
+        //public void clearSelectedArea_AllFrames()
+        //{
+        //    for (int i = 0; i < animationFrames.Frames.Count; i++)
+        //    {
+        //        nextFrame(true);
+        //        //drawInArea(PaintToolType.Delete, DrawShape.Rectangle, designerInterface.selectionArea, false);
+        //    }
+        //    clearSelectedArea();
+        //}
+        //public void clearSelectedArea_AllFramesButThis()
+        //{
+        //    IntervalIntV3 area = designerInterface.selectionArea;
+        //    dropSelection(false);
+        //    int protectedFrame = currentFrame.Value;
+        //    for (int i = 0; i < animationFrames.Frames.Count - 1; i++)
+        //    {
+        //        nextFrame(true);
+        //        if (currentFrame.Value != protectedFrame)
+        //        { } //drawInArea(PaintToolType.Delete, DrawShape.Rectangle, area, false);
+        //    }
+        //}
         public void InsertLoadedTemplate(VoxelObjListDataHD selectedVoxels, IntervalIntV3 volume)
         {
             this.selectedVoxels = selectedVoxels;
@@ -641,39 +667,39 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             List<VoxelModelName> loadable = new List<VoxelModelName>
             {
-                VoxelModelName.Apple,
-                VoxelModelName.ApplePie,
-                VoxelModelName.barrelX,
-                VoxelModelName.bee,
-                VoxelModelName.Character,
-                VoxelModelName.chest_open,
-                VoxelModelName.Coin,
-                VoxelModelName.cook,
-                VoxelModelName.crockodile1,
-                VoxelModelName.ent,
-                VoxelModelName.father,
-                VoxelModelName.fire_goblin,
-                VoxelModelName.frog1,
-                VoxelModelName.ghost,
-                VoxelModelName.granpa2,
-                VoxelModelName.grunt,
-                VoxelModelName.harpy,
-                VoxelModelName.hog_lvl1,
-                VoxelModelName.lizard1,
-                VoxelModelName.Lumberjack,
-                VoxelModelName.magician,
-                VoxelModelName.mommy,
-                VoxelModelName.orc_sword1,
-                VoxelModelName.Pig,
-                VoxelModelName.priest,
-                VoxelModelName.scorpion1,
-                VoxelModelName.sheep,
-                VoxelModelName.spider1,
-                VoxelModelName.squig_lvl1,
-                VoxelModelName.war_veteran,
-                VoxelModelName.white_hen,
-                VoxelModelName.wolf_lvl1,
-                VoxelModelName.zombie1,
+                //VoxelModelName.Apple,
+                //VoxelModelName.ApplePie,
+                //VoxelModelName.barrelX,
+                //VoxelModelName.bee,
+                //VoxelModelName.Character,
+                //VoxelModelName.chest_open,
+                //VoxelModelName.Coin,
+                //VoxelModelName.cook,
+                //VoxelModelName.crockodile1,
+                //VoxelModelName.ent,
+                //VoxelModelName.father,
+                //VoxelModelName.fire_goblin,
+                //VoxelModelName.frog1,
+                //VoxelModelName.ghost,
+                //VoxelModelName.granpa2,
+                //VoxelModelName.grunt,
+                //VoxelModelName.harpy,
+                //VoxelModelName.hog_lvl1,
+                //VoxelModelName.lizard1,
+                //VoxelModelName.Lumberjack,
+                //VoxelModelName.magician,
+                //VoxelModelName.mommy,
+                //VoxelModelName.orc_sword1,
+                //VoxelModelName.Pig,
+                //VoxelModelName.priest,
+                //VoxelModelName.scorpion1,
+                //VoxelModelName.sheep,
+                //VoxelModelName.spider1,
+                //VoxelModelName.squig_lvl1,
+                //VoxelModelName.war_veteran,
+                //VoxelModelName.white_hen,
+                //VoxelModelName.wolf_lvl1,
+                //VoxelModelName.zombie1,
             };
 
 
@@ -706,11 +732,11 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 //Debug.Log("Picked: " + Settings.Material.ToString() + ", blockVal:" + Settings.Material.BlockValue.ToString());
 
                 RichBoxContent content = new RichBoxContent();
-                HudLib.Label(content, DssRef.todoLang.Editor_PickedColor);
+                HudLib.Label(content, DssRef.lang.Editor_PickedColor);
                 content.newLine();
                 content.Add(new RbImage(SpriteName.VoxelEditorColorCube, 1f, Settings.Material.color));
                 content.hspace();
-                content.Add(new RbText(string.Format(DssRef.todoLang.Editor_ColorRGBvalues, Settings.Material.color.R, Settings.Material.color.G, Settings.Material.color.B)));
+                content.Add(new RbText(string.Format(DssRef.lang.Editor_ColorRGBvalues, Settings.Material.color.R, Settings.Material.color.G, Settings.Material.color.B)));
 
                 content.space(2);
                 content.Add(new RbImage(SpriteName.VoxelEditorMaterialCube));
@@ -721,16 +747,16 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
         }
 
-        override protected ushort Get(IntVector3 pos)
-        {
+        //override protected ushort Get(IntVector3 pos)
+        //{
             
-                return voxels.Get(pos);
+        //        return curretVoxelGrid.Get(pos);
             
-        }
+        //}
 
         protected override void UpdatePencilInfo()
         {
-            if (drawLimits.pointInBounds(designerInterface.drawCoord))
+            if (voxelProject.drawLimits.pointInBounds(designerInterface.drawCoord))
             {
                 //Map.WorldPosition wp = Map.WorldPosition.EmptyPos;
                 drawCoordMaterial.BlockValue = Get(designerInterface.drawCoord);
@@ -767,43 +793,57 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 return;
             }
 
-            storeUndoableAction(true);
+            storeUndoableAction(true, false);
 
             if (loadOption_combine)
             {
-                if (loadedModel.Frames.Count == 1 && animationFrames.Frames.Count == 1)
-                {
-                    selectMergeOption(MergeFramesOptions.NewFirstOnOldFrames, loadedModel);
-                }
-                else
-                {
+                //NEW: will add as new layer
 
-                    //menusystem.mergeOptions(loadedModel);
-                }
+                //if (loadedModel.Frames.Count == 1 && voxelProject.currentFrame.Length == 1)
+                //{
+                //    selectMergeOption(MergeFramesOptions.NewFirstOnOldFrames, loadedModel);
+                //}
+                //else
+                //{
+
+                //    //menusystem.mergeOptions(loadedModel);
+                //}
             }
             else
             {
-                animationFrames = loadedModel;
-                drawLimits.Max = animationFrames.Frames[0].Limits;
+                //animationFrames = loadedModel;
+                //drawLimits.Max = animationFrames.Frames[0].Limits;
+                voxelProject = new VoxelProject(loadedModel);
                 EventTriggerCallBack();
+            }
+
+            if (!loadOption_preview)
+            {
+                menusystem.closeMenu();
             }
         }
 
-
-        public void selectMergeOption(MergeFramesOptions opt, VoxelObjGridDataAnimHD loadedModel)
+        public override void addLoadedProject(VoxelProject project)
         {
-            mergeModelsOption.MergeFramesOptions = opt;
-            animationFrames.Merge(loadedModel, mergeModelsOption);
+            voxelProject = project;
             EventTriggerCallBack();
         }
 
-        void FlipSelection(Dimensions dir)
-        {
-            menusystem.closeMenu();
-            voxels.FlipDir(dir, drawLimits, true);
-            updateVoxelObj();
 
-        }
+        //public void selectMergeOption(MergeFramesOptions opt, VoxelObjGridDataAnimHD loadedModel)
+        //{
+        //    mergeModelsOption.MergeFramesOptions = opt;
+        //    animationFrames.Merge(loadedModel, mergeModelsOption);
+        //    EventTriggerCallBack();
+        //}
+
+        //void FlipSelection(Dimensions dir)
+        //{
+        //    menusystem.closeMenu();
+        //    curretVoxelGrid.FlipDir(dir, drawLimits, true);
+        //    updateVoxelObj();
+
+        //}
 
         public void EventTriggerCallBack()
         {
@@ -834,7 +874,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void replaceSelectionMaterialsTo(BlockHD to)
         {
-            storeUndoableAction(repeateOnAllFrames);
+            storeUndoableAction(repeateOnAllFrames, repeateOnAllLayers);
 
             ushort swapTo = to.BlockValue;
             if (HasSelection)
@@ -843,18 +883,18 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
                 if (repeateOnAllFrames)
                 {
-                    for (int i = 0; i < animationFrames.Frames.Count; i++)
+                    for (int i = 0; i < voxelProject.AnimationFrames.Frames.Count; i++)
                     {
-                        if (i != currentFrame.Value)
+                        if (i != voxelProject.currentFrame.Value)
                         {
-                            animationFrames.Frames[i].ReplaceMaterial(swapMaterialFrom.BlockValue, swapTo, designerInterface.selectionArea);
+                            voxelProject.AnimationFrames.Frames[i].ReplaceMaterial(swapMaterialFrom.BlockValue, swapTo, designerInterface.selectionArea);
                         }
                     }
                 }
             }
             else
             {
-                swapMaterials(voxels, swapTo);
+                swapMaterials(voxelProject.CurrentVoxelGrid, swapTo);
             }
             templateSent = false;
             absMenuSystem.closeMenu();
@@ -864,7 +904,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             GuiLayout layout = new GuiLayout(SpriteName.NO_IMAGE, "Select Color", menu, GuiLayoutMode.MultipleColumns);
             {
-                DesignMenuSystem.BigPalette(layout, callback);
+                //DesignMenuSystem.BigPalette(layout, callback);
             }
             layout.End();
 
@@ -932,9 +972,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             swapMaterialFrom.BlockValue = from;
             designerInterface.selectionArea.Min = IntVector3.Zero;
-            designerInterface.selectionArea.Max = voxels.Size - 1;
+            designerInterface.selectionArea.Max = voxelProject.CurrentVoxelGrid.Size - 1;
 
-            swapMaterials(voxels, to);
+            swapMaterials(voxelProject.CurrentVoxelGrid, to);
         }
 
         void swapMaterials(VoxelObjGridDataHD grid, ushort swapTo)
@@ -989,12 +1029,12 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         string exportName()
         {
-            return storage.saveFileName + TextLib.Parentheses(TextLib.IndexToString(currentFrame.Value));
+            return storage.saveFileName + TextLib.Parentheses(TextLib.IndexToString(voxelProject.currentFrame.Value));
         }
 
         public void exportObjModel()
         {
-            var frame = animationFrames.Frames[currentFrame.Value];
+            var frame = voxelProject.AnimationFrames.Frames[voxelProject.currentFrame.Value];
             ObjExporterScript.Export(frame, exportName());
             menusystem.mainMenu();
         }

@@ -75,6 +75,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 switch (pass)
                 {
                     case GenerateMapPass.Clear:
+                        clearCityData();
                         generate_clearpass(worldMeta, generateSettings);
                         break;
 
@@ -298,7 +299,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     }
                     break;
 
-                case MapStartAs.Cirkle:
+                case MapStartAs.Circle:
                     {
                         int centerX = world.Size.X / 2;
                         int centerY = world.Size.Y / 2;
@@ -389,35 +390,8 @@ namespace VikingEngine.DSSWars.Map.Generate
             });
 
         }
-        
-//public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
-//{
-//    this.world = world;
-//    world.rnd = new PcgRandom(world.metaData.seed);
-
-//    Task.Factory.StartNew(() =>
-//    {
-//        GenerateRoads roads = new GenerateRoads();
-
-//        if (loadMeta == null)
-//        {
-//            CityTemplateCollection templateCollection = new CityTemplateCollection();
-
-//            foreach (var c in world.cities)
-//            {
-//                Task.Factory.StartNew(() =>
-//                {
-//                    c.createBuildingSubtiles(world, templateCollection);
-//                });
-//            }
-
-//            //How do I wait for all threads to complete?
-//        }
-
-//        postComplete = true;
-//    });
-//}
-public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
+ 
+        public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             this.world = world;
             world.rnd = new PcgRandom(world.metaData.seed);
@@ -566,7 +540,6 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
             for (int i = 0; i < numLandChains; ++i)
             {
                 heightCurve = terrainTypes.GetRandom(world.rnd);
-                //biom = world.rnd.Chance(0.2) ? BiomType.YellowDry : BiomType.Green;//lib.Rnd.NextDouble() < 0.2;//world.rnd.RandomChance(0.2f);
 
                 center = world.rnd.vector2(world.Size.X, world.Size.Y);
                 biom = biomsLayout.get(world, center);
@@ -587,7 +560,6 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
                     {
                         for (pos.X = start.X; pos.X <= end.X; ++pos.X)
                         {
-                            //percentHCenter = Vector2.One + heightCenter.Direction(heightCenterLength);
                             posDiff = pos.Vec - center;
 
                             float distFromCenter = posDiff.Length();
@@ -983,6 +955,8 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
 
         void clearCityData()
         {
+            world.factions.Clear();
+
             if (world.cities != null)
             {
                 world.cities = null;
@@ -1211,7 +1185,7 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
                         IntVector2 dir = IntVector2.Dir4Array[dirIx];
                         Tile neighbor = world.tileGrid.array[dir.X + loop.Position.X, dir.Y + loop.Position.Y];
                         bool land = neighbor.IsLand();
-                        if (neighbor.CityIndex != owner.parentArrayIndex)
+                        if (neighbor.CityIndex != owner.myIndex)
                         {
                             t.AddBorder(dirIx, land ? neighbor.CityIndex : Tile.SeaBorder);
                             borderCity = neighbor.CityIndex;
@@ -1289,7 +1263,7 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
                 //}
                 //c.SetStartFaction(goalWorkForce, world.factions, world);
 
-                if (c.faction == null)
+                if (c.factionIndex < 0)
                 {
                     int size = goalWorkForce;
                     bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
@@ -1308,7 +1282,7 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
                     }
                 }
 #if DEBUG
-                if (c.faction == null)
+                if (c.factionIndex < 0)
                 {
                     throw new Exception();
                 }
@@ -1442,7 +1416,7 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
             while (collection.Count > 0)
             {
                 var city = arraylib.RandomListMemberPop(collection, world.rnd);
-                if (city.faction == null)
+                if (city.factionIndex < 0)
                 {
                     return city;
                 }
@@ -1456,7 +1430,7 @@ public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             int ix = world.rnd.Int(world.cities.Count);
 
-            while (world.cities[ix].faction != null)
+            while (world.cities[ix].factionIndex >= 0)
             {
                 ix++;
                 if (ix >= world.cities.Count)

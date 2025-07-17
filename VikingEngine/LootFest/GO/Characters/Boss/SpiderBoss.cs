@@ -77,7 +77,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
         public SpiderBoss(GoArgs args)
             : base(args)
         {
-            createImage(VoxelModelName.spiderboss, SpiderBossScale, 0, new Graphics.AnimationsSettings(9, 0.8f, 4));
+            createImage(VoxelModelName.NUM_NON, SpiderBossScale, 0, new Graphics.AnimationsSettings(9, 0.8f, 4));
             Health = LfLib.StandardEnemyHealth;
             loadBounds();
             Health = LfLib.BossEnemyHealth;

@@ -60,6 +60,37 @@ namespace VikingEngine
             return false;
         }
 
+        /// <summary>
+        /// Moves an element within a list by a relative offset.
+        /// </summary>
+        /// <typeparam name="T">The type of list elements.</typeparam>
+        /// <param name="list">The list to modify.</param>
+        /// <param name="index">The index of the item to move.</param>
+        /// <param name="move">The relative offset to move the item (e.g., -1 to move up).</param>
+        public static int MoveElement<T>(List<T> list, int index, int move)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+            if (index < 0 || index >= list.Count)
+                throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
+            if (move == 0 || list.Count < 2)
+                return index;
+
+            int newIndex = index + move;
+            newIndex = Math.Max(0, Math.Min(newIndex, list.Count - 1)); // clamp to list bounds
+
+            if (newIndex == index)
+                return index;
+
+            // Swap elements
+            T temp = list[index];
+            list[index] = list[newIndex];
+            list[newIndex] = temp;
+
+            return newIndex;
+        }
+
+
         public static List<T> Repeate_List<T>(T value, int repeate)
         {
             List<T> list = new List<T>(repeate);

@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             void execute()
             {
-                if ( faction.player.IsAi())
+                if ( GetPlayer().IsAi())
                 {
                     autoColumnWidth();
                 }

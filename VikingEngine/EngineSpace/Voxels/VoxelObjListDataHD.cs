@@ -21,15 +21,6 @@ namespace VikingEngine.Voxels
             Voxels = voxels;
         }
 
-        //public VoxelObjListData(byte[] compressedData)
-        //{
-        //    //List<byte> list = new List<byte>(compressedData);
-        //    VoxelObjGridData grid = VoxelObjGridData.FromByteArray(compressedData);
-        //    //grid.FromCompressedData(list);
-        //    Voxels = grid.GetVoxelArray();
-        //    Size = grid.Limits + 1;
-        //}
-
         public IntervalIntV3 getMinMax()
         {
             IntervalIntV3 blockRange = IntervalIntV3.Zero;
@@ -375,14 +366,14 @@ namespace VikingEngine.Voxels
                 return;
             foreach (var v in Voxels)
             {
-                if (v.Material == BlockHD.AntiMaterial)//VoxelLib.AntiBlock)
-                {
-                    origo.GetNeighborPos(v.Position).SetBlock_IfOpen(BlockHD.EmptyBlock);//LootFest.LfRef.chunks.SetIfOpen(origo.GetNeighborPos(v.Position), BlockHD.Empty);
-                }
-                else
-                {
+                //if (v.Material == BlockHD.AntiMaterial)//VoxelLib.AntiBlock)
+                //{
+                //    origo.GetNeighborPos(v.Position).SetBlock_IfOpen(BlockHD.EmptyBlock);//LootFest.LfRef.chunks.SetIfOpen(origo.GetNeighborPos(v.Position), BlockHD.Empty);
+                //}
+                //else
+                //{
                     origo.GetNeighborPos(v.Position).SetBlock_IfOpen(v.Material);//LootFest.LfRef.chunks.SetIfOpen(origo.GetNeighborPos(v.Position), v.Material);
-                }
+                //}
             }
         }
 

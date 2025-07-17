@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 cityStorageCenter;
         public void createBuildingSubtiles(WorldData world, CityTemplateCollection templateCollection)
         {
-            PcgRandom rnd = new PcgRandom(world.metaData.seed * parentArrayIndex);
+            PcgRandom rnd = new PcgRandom(world.metaData.seed * myIndex);
 
             List<IntVector2> emptyGeneral = new List<IntVector2>();
             Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, out IntVector2 startSubTilePos);

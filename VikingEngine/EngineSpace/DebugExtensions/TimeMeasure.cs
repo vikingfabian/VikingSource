@@ -9,6 +9,9 @@ namespace VikingEngine.DebugExtensions
     {
         string name;
         DateTime time;
+        public TimeMeasure()
+            : this("measure")
+        { }
         public TimeMeasure(string name)
         {
             this.name = name;

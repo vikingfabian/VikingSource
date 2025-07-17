@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
@@ -19,8 +19,8 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsGameObject
     {
-
-        public int parentArrayIndex = -1;
+        public int factionIndex = -1;
+        public int myIndex = -1;
         public bool isDeleted = false;
         
         abstract public GameObjectType gameobjectType();
@@ -35,7 +35,36 @@ namespace VikingEngine.DSSWars.GameObject
             return isDeleted;
         }
 
-        abstract public Faction GetFaction();
+        virtual public Faction GetFaction()
+        {
+#if DEBUG
+            if (factionIndex < 0)
+            {
+                throw new Exception();
+            }
+#endif
+            return DssRef.world.factions.Array[factionIndex];
+        }
+
+        virtual public Faction GetFaction_Safe()
+        {
+            if (factionIndex < 0)
+            {
+                return null;
+            }
+            return DssRef.world.factions.Array[factionIndex];
+        }
+
+        public Players.AbsPlayer GetPlayer()
+        {
+#if DEBUG
+            if (factionIndex < 0)
+            {
+                throw new Exception();
+            }
+#endif
+            return DssRef.world.factions.Array[factionIndex].player;
+        }
 
         virtual public City GetCity() { return null; }
 
@@ -113,7 +142,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.newLine();
             }
         }
-        protected void ownerToHud(Display.ObjectHudArgs args, bool divider)
+        protected void ownerToHud(Interface.ObjectHudArgs args, bool divider)
         {
             if (args.player != null && GetFaction() != args.player.faction)
             {
@@ -132,7 +161,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-        virtual public void toHud(Display.ObjectHudArgs args)
+        virtual public void toHud(Interface.ObjectHudArgs args)
         {
             nameToHud(args.content, true);
             args.content.Add(new RbBeginTitle());

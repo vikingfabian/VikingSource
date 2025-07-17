@@ -35,6 +35,11 @@ namespace VikingEngine.DSSWars.Map
             {
                 subTile.mainTerrain = value.mainTerrain;
                 subTile.subTerrain = value.subTerrain;
+
+                if (DssRef.state.culling.insidePlayerAttension_sub(position))
+                {
+                    DssRef.world.tileGrid.GetRef(WP.SubtileToTilePos(position)).subtileVisualEdits++;
+                }
             }
 
             if (editAmount)
@@ -46,8 +51,6 @@ namespace VikingEngine.DSSWars.Map
             {
                 subTile.collectionPointer = value.collectionPointer;
             }
-
-            //DssRef.world.subTileGrid.Set(position, subTile);
         }
     }
 }

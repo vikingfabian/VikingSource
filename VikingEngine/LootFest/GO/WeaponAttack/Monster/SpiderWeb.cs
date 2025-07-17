@@ -24,7 +24,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Monster
         public SpiderWeb(GoArgs args)
             :base(args)
         {
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.spider_web, 0f, 0, false);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0f, 0, false);
             image.position = args.startPos;
 
             CollisionAndDefaultBound = new ObjectBound(BoundShape.BoundingBox, image.position, Vector3.Zero, Vector3.Zero);

@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.Engine;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
@@ -67,6 +68,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             else
             {
                 GameSpeedOptions = new int[] { 1, 2 };
+            }
+        }
+
+        public void refreshInput()
+        {
+            if (input.inputSource.HasMouse)
+            {
+                input.copyDataFrom(Ref.gamesett.keyboardMap);
             }
         }
 
@@ -469,9 +478,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void updateMapShortCuts()
         {
-            if (player.drawUnitsView.current.DrawDetailLayer)
+            if (player.mapLayersManager.current.DrawDetailLayer)
             {
-                if (input.Build.DownEvent && map.hover.subTile.city.faction == player.faction)
+                if (input.Build.DownEvent && map.hover.subTile.city.factionIndex == player.faction.myIndex)
                 {
                     var order = player.orders.orderOnSubTile(map.hover.subTile.subTilePos) as BuildOrder;
                     if (order != null)
@@ -715,7 +724,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 DssRef.world.tileGrid.TryGet(map.tilePosition, out var tile))
             {
                 var city = tile.City();
-                if (city.faction == player.faction)
+                if (city.factionIndex == player.faction.myIndex)
                 {
                     mapSelect(city);
                 }
@@ -838,7 +847,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         void gameSpeedInput()
         {
-            if (DssRef.state.IsSinglePlayer())
+            if (DssRef.state.IsSinglePlayer_Local())
             {
                 if (DssRef.difficulty.setting_allowPauseCommand &&
                     input.PauseGame.DownEvent)
@@ -855,7 +864,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void setNextGameSpeed()
         {
-            if (DssRef.state.IsSinglePlayer())
+            if (DssRef.state.IsSinglePlayer_Local())
             {
                 if (Ref.isPaused)
                 {
@@ -891,11 +900,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         public bool InBuildOrdersMode(bool includeZoomLevel = true)
         {
-            return player.cityTab == Display.MenuTab.Build &&
+            return player.cityTab == Interface.MenuTab.Build &&
                 map.selection.obj != null &&
                 map.selection.obj.gameobjectType() == GameObjectType.City &&
                 build.buildMode != SelectTileResult.None &&
-                (!includeZoomLevel || player.drawUnitsView.current.DrawDetailLayer);
+                (!includeZoomLevel || player.mapLayersManager.current.DrawDetailLayer);
         }
     }
 

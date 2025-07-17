@@ -45,7 +45,7 @@ namespace VikingEngine.LootFest.GO.PickUp
 
         protected override bool heroPickUp(PlayerCharacter.AbsHero hero)
         {
-            hero.foundItemAnimation(VoxelModelName.baby, Scale, true);
+            hero.foundItemAnimation(VoxelModelName.NUM_NON, Scale, true);
             new Effects.BossDefeatedAnimation(WorldPos, location);
             return true;
         }
@@ -71,11 +71,11 @@ namespace VikingEngine.LootFest.GO.PickUp
         //}
         protected override VoxelModelName imageType
         {
-            get { return VoxelModelName.baby; }
+            get { return VoxelModelName.NUM_NON; }
         }
         public override GameObjectType Type
         {
-            get { return GameObjectType.Baby; }
+            get { return GameObjectType.NUM_NON; }
         }
 
         protected override bool giveStartSpeed

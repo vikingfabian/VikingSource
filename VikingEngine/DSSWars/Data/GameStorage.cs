@@ -7,7 +7,7 @@ using System.Text;
 using System.Xml.Schema;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.DSSWars.Profile;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
@@ -37,7 +37,10 @@ namespace VikingEngine.DSSWars.Data
         public bool longerBuildQueue = false;
 
         public LocalPlayerStorage[] localPlayers = null;
-        public Profile.FlagStorage flagStorage;
+        public int selectedPlayer = 0;
+        public ProfileStorage profileStorage;
+        public FlagStorage flagStorage;
+        public CharacterStorage characterStorage;
         public SaveMeta meta = null;
         public float multiplayerGameSpeed = 1;
 
@@ -47,7 +50,10 @@ namespace VikingEngine.DSSWars.Data
         public GameStorage()
         {
             //DssRef.storage = this;
+
             flagStorage = new FlagStorage();
+            characterStorage = new CharacterStorage();
+            profileStorage = new ProfileStorage();
             meta = new SaveMeta();
 
             localPlayers = new LocalPlayerStorage[MaxLocalPlayerCount];
@@ -110,6 +116,8 @@ namespace VikingEngine.DSSWars.Data
                 meta.Load();
             }
             flagStorage.Load();
+            characterStorage.Load();
+            profileStorage.Load();
         }
 
         public void Save(IStreamIOCallback callBack)
@@ -149,9 +157,11 @@ namespace VikingEngine.DSSWars.Data
         {
             write(w, false);
         }
+
+        const int Version = 25;
         public void write(System.IO.BinaryWriter w, bool gamestate = false)
         {
-            const int Version = 25;
+           
 
             w.Write(Version);
 
@@ -187,7 +197,7 @@ namespace VikingEngine.DSSWars.Data
         public void read(System.IO.BinaryReader r, bool gamestate)
         {
             int version = r.ReadInt32();
-            if (version <= 4)
+            if (version > Version || version <= 4)
             {
                 return;
             }
@@ -277,7 +287,14 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
-        
+        public PlayerProfile GetHostProfile()
+        {
+            return profileStorage.profiles[localPlayers[0].profileIndex];
+        }
+        public void SetHostProfile(PlayerProfile profile)
+        {
+            profileStorage.profiles[localPlayers[0].profileIndex] = profile;
+        }
     }
 
 

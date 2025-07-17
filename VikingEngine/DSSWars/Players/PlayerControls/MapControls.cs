@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Reflection.Metadata.Ecma335;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Players
 
         const float CamMaxRotation = 0.7f;
         const float CamStartRotation = MathHelper.PiOver2;
-        IntervalF ZoomRange = MapDetailLayerManager.FullZoomRange;
+        IntervalF ZoomRange = MapLayerManager.FullZoomRange;
         VectorRect panBounds;
         FloatInBound camRotation = new FloatInBound(CamStartRotation, new IntervalF(CamStartRotation - CamMaxRotation, CamStartRotation + CamMaxRotation), false);
         float camRotationKeyDownTime = 0;
@@ -69,9 +69,9 @@ namespace VikingEngine.DSSWars.Players
         {
             this.player = player;
 
-            targetZoom = MapDetailLayerManager.StartZoom;
-            camera = new TopViewCamera(MapDetailLayerManager.StartZoom, 
-                new Vector2(MathHelper.PiOver2, Map.MapDetailLayerManager.NormalCamAngle),
+            targetZoom = MapLayerManager.StartZoom;
+            camera = new TopViewCamera(MapLayerManager.StartZoom, 
+                new Vector2(MathHelper.PiOver2, Map.MapLayerManager.NormalCamAngle),
                 player.playerData.view.DrawAreaF.Width, player.playerData.view.DrawAreaF.Height);
             camera.FarPlane = 800;
             camera.positionChaseLengthPercentage = 0.9f;
@@ -102,12 +102,12 @@ namespace VikingEngine.DSSWars.Players
 
         public void battleModeCamBound()
         {
-            ZoomRange = MapDetailLayerManager.MidToDetailZoomRange;
+            ZoomRange = MapLayerManager.MidToDetailZoomRange;
         }
 
         public void setCameraBounds(bool tutorial, Rectangle2 cityArea)
         {
-            ZoomRange = tutorial? MapDetailLayerManager.MidToDetailZoomRange : MapDetailLayerManager.FullZoomRange;
+            ZoomRange = tutorial? MapLayerManager.MidToDetailZoomRange : MapLayerManager.FullZoomRange;
 
             if (tutorial)
             {
@@ -303,7 +303,7 @@ namespace VikingEngine.DSSWars.Players
             if (onNewTile)
             {
                 var newCity = DssRef.world.tileGrid.Get(tilePosition).City();
-                if (newCity != selection.obj && newCity.faction == player.faction)
+                if (newCity != selection.obj && newCity.factionIndex == player.faction.myIndex)
                 {
                     selection.obj = newCity;
                     player.hud.needRefresh = true;
@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars.Players
 
         void rectangleSelectUpdate()
         {
-            if (player.drawUnitsView.current.DrawOverview)
+            if (player.mapLayersManager.current.DrawFar)
             {
                 cancelRectangleSelect();
                 return;
@@ -430,12 +430,12 @@ namespace VikingEngine.DSSWars.Players
                     rectangleLines.Refresh(rectangleBound.vectorRect);
                     rectangleBound.outerBound(out Vector3 topLeft, out Vector3 bottomRight);
 
-                    switch (player.drawUnitsView.current.type)
+                    switch (player.mapLayersManager.current.type)
                     {
                         case MapDetailLayerType.TerrainOverview2:
                             {
                                 
-                                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction);
+                                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction.myIndex);
 
                                 if (Input.Keyboard.Ctrl)
                                 {
@@ -694,7 +694,7 @@ namespace VikingEngine.DSSWars.Players
 
         void subTileHoverUpdate()
         {
-            if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
+            if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
             {
                 hover.subTile.update(subTilePosition, player);
             }
@@ -707,7 +707,7 @@ namespace VikingEngine.DSSWars.Players
         void mouseHoverUpdate()
         {
 
-            if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
+            if (player.mapLayersManager.current.type == MapDetailLayerType.TerrainOverview2)
             {
                 AbsMapObject intersectObj = null;
 
@@ -727,7 +727,7 @@ namespace VikingEngine.DSSWars.Players
                         intersectObj = m;
 
                         if (
-                            (m.faction == player.faction && m.gameobjectType() == GameObjectType.Army) ||
+                            (m.factionIndex == player.faction.myIndex && m.gameobjectType() == GameObjectType.Army) ||
                             lookingForAttackTarget()
                             )
                         {
@@ -749,7 +749,7 @@ namespace VikingEngine.DSSWars.Players
 
                 hover.obj = intersectObj;
             }
-            else if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
+            else if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
             {
                 detailHoverUpdate();
             }
@@ -774,17 +774,17 @@ namespace VikingEngine.DSSWars.Players
             //var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, true);
             AbsMapObject closestObj = null;
             float closest = float.MaxValue;
-            foreach (var m in nearMapObjects)
+            foreach (AbsMapObject m in nearMapObjects)
             {
                 var dist = VectorExt.PlaneXZLength(m.position - pointerPosWP);
-                bool enemy = m.faction != player.faction;
+                bool enemy = m.factionIndex != player.faction.myIndex;
                 float maxDistance = enemy ? maxDistance_enemy : maxDistance_friend;
 
                 if (dist <= maxDistance)
                 {
                     if (dist < closest ||
                         (
-                            closestObj.faction != player.faction &&
+                            closestObj.factionIndex != player.faction.myIndex &&
                             dist < closest + FriendlyPriorityDistAdd &&
                             !lookingForAttackTarget()
                         )
@@ -805,7 +805,7 @@ namespace VikingEngine.DSSWars.Players
         
         void controllerHoverUpdate()
         {
-            if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
+            if (player.mapLayersManager.current.type == MapDetailLayerType.TerrainOverview2)
             {
                 const float FriendlyPriorityDistAdd = 0.25f;
                 float maxDistance_enemy;
@@ -827,14 +827,14 @@ namespace VikingEngine.DSSWars.Players
                 foreach (var m in nearMapObjects)
                 {
                     var dist= VectorExt.PlaneXZLength(m.position - pointerPosWP);
-                    bool enemy = m.faction != player.faction;
+                    bool enemy = m.factionIndex != player.faction.myIndex;
                     float maxDistance = enemy ? maxDistance_enemy : maxDistance_friend;
 
                     if (dist <= maxDistance)
                     {
                         if (dist < closest || 
                             (
-                                closestObj.faction != player.faction && 
+                                closestObj.factionIndex != player.faction.myIndex && 
                                 dist < closest + FriendlyPriorityDistAdd && 
                                 !lookingForAttackTarget()
                             )
@@ -851,7 +851,7 @@ namespace VikingEngine.DSSWars.Players
                     hover.obj = closestObj;
                 }
             }
-            else if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
+            else if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
             {
                 //var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearDetailUnits(tilePosition);
 
@@ -950,14 +950,14 @@ namespace VikingEngine.DSSWars.Players
             {
                 case SelectTileResult.Conscript:
                     {
-                        player.cityTab = Display.MenuTab.Conscript;
+                        player.cityTab = Interface.MenuTab.Conscript;
                         selectedSubTile.city.selectedConscript = selectedSubTile.city.conscriptIxFromSubTile(selectedSubTile.subTilePos);
 
                     }
                     break;
                 case SelectTileResult.Wall:
                     {
-                        player.cityTab = Display.MenuTab.Defence;
+                        player.cityTab = Interface.MenuTab.Defence;
                         selectedSubTile.city.selectedDefenceBuilding = selectedSubTile.city.defenceIxFromSubTile(selectedSubTile.subTilePos);
 
                     }
@@ -965,7 +965,7 @@ namespace VikingEngine.DSSWars.Players
                 case SelectTileResult.Recruitment:
                 case SelectTileResult.Postal:
                     {
-                        player.cityTab = Display.MenuTab.Delivery;
+                        player.cityTab = Interface.MenuTab.Delivery;
                         selectedSubTile.city.selectedDelivery = selectedSubTile.city.deliveryIxFromSubTile(selectedSubTile.subTilePos);
 
                     }
@@ -973,10 +973,18 @@ namespace VikingEngine.DSSWars.Players
 
                 case SelectTileResult.School:
                     {
-                        player.cityTab = Display.MenuTab.Progress;
-                        player.progressSubTab = Display.ProgressSubTab.Schools;
+                        player.cityTab = Interface.MenuTab.Progress;
+                        player.progressSubTab = Interface.ProgressSubTab.Schools;
                         selectedSubTile.city.selectedSchool = selectedSubTile.city.SchoolIxFromSubTile(selectedSubTile.subTilePos);
+                    }
+                    break;
 
+                case SelectTileResult.ResearchCenter:
+                case SelectTileResult.BookPress:
+                    {
+                        player.cityTab = Interface.MenuTab.Progress;
+                        player.progressSubTab = Interface.ProgressSubTab.Research;
+                        selectedSubTile.city.selectedResearchBuilding = selectedSubTile.city.ResearchIxFromSubTile(selectedSubTile.subTilePos);
                     }
                     break;
             }
@@ -1113,7 +1121,7 @@ namespace VikingEngine.DSSWars.Players
             float zoominput = player.gameControls.input.ZoomValue();
 
             targetZoom = VikingEngine.Bound.Set(
-                targetZoom + zoominput * 0.005f * targetZoom, ZoomRange);
+                targetZoom + zoominput * 0.005f * Bound.Min(targetZoom, 0.5f), ZoomRange);
 
             if (targetZoom != camera.CurrentZoom)
             {
@@ -1227,20 +1235,22 @@ namespace VikingEngine.DSSWars.Players
                     currentTiltYAngleOption = -1;
                 }
 
-                player.drawUnitsView.TiltYAdd = currentTiltYAngleOption * TiltYUpAngle;
+                player.mapLayersManager.TiltYAdd = currentTiltYAngleOption * TiltYUpAngle;
             }
         }
 
 
         float PanSpeed()
         {
+            const float MinZoomAffect = 1.5f;
+
             if (controllerInput)
             {
-                return 0.0003f * camera.targetZoom;
+                return Ref.gamesett.keyPanSpeed * 0.0003f * Bound.Min(targetZoom, MinZoomAffect);
             }
             else
             {
-                return 0.0006f * camera.targetZoom;
+                return Ref.gamesett.keyPanSpeed * 0.0006f * Bound.Min(targetZoom, MinZoomAffect);
             }
         }
 
@@ -1356,6 +1366,12 @@ namespace VikingEngine.DSSWars.Players
                 DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
                 playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
             }
+        }
+
+        public void loadCamPos()
+        {
+            playerPointerPos = camera.LookTarget;
+            camRotation.Value = camera.TiltX;
         }
 
         bool hasMouseMapPanInput()

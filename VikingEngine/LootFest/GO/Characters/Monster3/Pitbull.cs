@@ -13,7 +13,7 @@ namespace VikingEngine.LootFest.GO.Characters
         public Pitbull(GoArgs args)
             : base(args)
         {
-            createImage(VoxelModelName.pitbull_lvl1, ScaleRange.GetRandom(), 0, new Graphics.AnimationsSettings(5, 0.8f, 1));
+            createImage(VoxelModelName.NUM_NON, ScaleRange.GetRandom(), 0, new Graphics.AnimationsSettings(5, 0.8f, 1));
             Health = LfLib.StandardEnemyHealth;
             loadBounds();
 

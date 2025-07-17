@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Voxels;
 using VikingEngine.LootFest.Map.HDvoxel;
 
+
 namespace VikingEngine.LootFest.Process
 {
     interface ILoadImage
@@ -60,7 +61,7 @@ namespace VikingEngine.LootFest.Process
             this.baseImage = baseImage;
 
             this.addItems = addItems;
-            bool updateThread = baseImage == VoxelModelName.npc_male || baseImage == VoxelModelName.npc_female;
+            bool updateThread = baseImage == VoxelModelName.NUM_NON || baseImage == VoxelModelName.NUM_NON;
            
             bool storage = !(updateThread && (addItems == null||  addItems.Count == 0));
 
@@ -76,8 +77,8 @@ namespace VikingEngine.LootFest.Process
 
         public static void Init()
         {
-            npcMale = new VoxelObjGridDataAnimHD( Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.npc_male));
-            npcFemale = new VoxelObjGridDataAnimHD(Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.npc_female));
+            npcMale = new VoxelObjGridDataAnimHD( VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.NUM_NON));
+            npcFemale = new VoxelObjGridDataAnimHD(VoxelObjDataLoader.LoadVoxelObjGridHD(VoxelModelName.NUM_NON));
         }
 
         //protected override void SynchedEvent()
@@ -96,7 +97,7 @@ namespace VikingEngine.LootFest.Process
             if (threadType == MultiThreadType.Storage)
             {
                 if (frames == null)
-                    frames = Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(baseImage);
+                    frames = VoxelObjDataLoader.LoadVoxelObjGridHD(baseImage);
                 if (addItems != null)
                 {
                     foreach (AddImageToCustom add in addItems)
@@ -113,12 +114,12 @@ namespace VikingEngine.LootFest.Process
             {
                 switch (baseImage)
                 {
-                    case VoxelModelName.npc_male:
+                    case VoxelModelName.NUM_NON:
                         frames = npcMale.Clone().Frames;
                         break;
-                    case VoxelModelName.npc_female:
-                        frames = npcFemale.Clone().Frames;
-                        break;
+                    //case VoxelModelName.NUM_NON:
+                    //    frames = npcFemale.Clone().Frames;
+                    //    break;
 
                 }
 
@@ -194,7 +195,7 @@ namespace VikingEngine.LootFest.Process
             //}
             //else
             //{
-                originalMesh = Editor.VoxelObjBuilder.BuildModelHD(frames, posAdj);//BuildAnimatedFromVoxelGrid_Old(frames, posAdj);
+                originalMesh = VoxelObjBuilder.BuildModelHD(frames, posAdj);//BuildAnimatedFromVoxelGrid_Old(frames, posAdj);
            // }
             return originalMesh;
         }
@@ -245,7 +246,7 @@ namespace VikingEngine.LootFest.Process
 
         public void ReadData()
         {
-            result = Editor.VoxelObjDataLoader.LoadVoxelObjGrid(obj)[0];
+            result = VoxelObjDataLoader.LoadVoxelObjGrid(obj)[0];
         }
 
         public VoxelObjGridDataHD Generate()
@@ -257,7 +258,7 @@ namespace VikingEngine.LootFest.Process
 
         public VoxelObjGridDataAnimHD GenerateAnimated()
         {
-            var result = new VoxelObjGridDataAnimHD(Editor.VoxelObjDataLoader.LoadVoxelObjGrid(obj));
+            var result = new VoxelObjGridDataAnimHD(VoxelObjDataLoader.LoadVoxelObjGrid(obj));
             //result.ReplaceMaterial(findReplace);
             return result;
         }

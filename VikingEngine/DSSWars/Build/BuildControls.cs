@@ -10,12 +10,12 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -343,16 +343,16 @@ namespace VikingEngine.DSSWars.Build
                     if (sel.mayBuild && sel.usesBuildQue != 0)
                     {
                         int availabeQueueLength;
-                        if (!city_queLength.TryGetValue(sel.City.parentArrayIndex, out availabeQueueLength))
+                        if (!city_queLength.TryGetValue(sel.City.myIndex, out availabeQueueLength))
                         {
                             availabeQueueLength = sel.City.availableBuildQueueLength(player);
-                            city_queLength.Add(sel.City.parentArrayIndex, availabeQueueLength);                           
+                            city_queLength.Add(sel.City.myIndex, availabeQueueLength);                           
                         }
 
                         sel.model.Color = (availabeQueueLength > 0 || sel.usesBuildQue <= 0)  ? Color.White : Color.Gray;
 
                         availabeQueueLength -= sel.usesBuildQue;
-                        city_queLength[sel.City.parentArrayIndex] = Bound.Min(availabeQueueLength, 0);
+                        city_queLength[sel.City.myIndex] = Bound.Min(availabeQueueLength, 0);
                     }
                 }
             }
@@ -442,7 +442,7 @@ namespace VikingEngine.DSSWars.Build
                                 if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
                                 {
                                     var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                                    if (tile.CityIndex == city.parentArrayIndex && tile.MayBuild())
+                                    if (tile.CityIndex == city.myIndex && tile.MayBuild())
                                     {
                                         topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
                                         subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
@@ -504,7 +504,7 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.ExpandAndCraft,
                 BuildCategoryTab.Military,
                 BuildCategoryTab.Decor,
-                BuildCategoryTab.Updgrade,
+                BuildCategoryTab.Upgrade,
             };
 
             if (city.buildingStructure.buildingLevel_logistics > 0)
@@ -514,29 +514,36 @@ namespace VikingEngine.DSSWars.Build
 
             foreach (var tab in buildCategories)
             {
+                string category;
                 SpriteName tabIcon;
                 switch (tab)
                 {
                     case BuildCategoryTab.ExpandAndCraft:
                         tabIcon = SpriteName.warsBuildCategoryHouse;
+                        category = DssRef.lang.BuildCategory_General;
                         break;
                     case BuildCategoryTab.Military:
                         tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
+                        category = DssRef.lang.BuildCategory_Military;
                         break;
                     case BuildCategoryTab.Decor:
                         tabIcon = SpriteName.warsBuildCategoryDecorTree;
+                        category = DssRef.lang.BuildCategory_Decoration;
                         break;
-                    case BuildCategoryTab.Updgrade:
+                    case BuildCategoryTab.Upgrade:
                         tabIcon = SpriteName.warsBuildCategoryUpgrades;
+                        category = DssRef.lang.BuildCategory_Upgrade;
                         break;
                     default:
                         tabIcon = SpriteName.warsBuildCategoryAutomation;
+                        category = DssRef.lang.Automation_Title;
                         break;
 
                 }
                 var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                     new List<AbsRichBoxMember> { new RbImage(tabIcon) },
-                    new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, SoundLib.menutab));
+                    new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, SoundLib.menutab),
+                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_category, category)));
                 content.Add(tabButton);
             }
 
@@ -603,19 +610,11 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(new RichBoxScale(2.1f));
                 content.newLine();
 
-                List<BuildAndExpandType> available = availableBuildOptions(city);//= new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-
-                //if (player.tutorial == null)
-                //{ BuildLib.AvailableBuildTypes(available, city); }
-                //else
-                //{ available = player.tutorial.AvailableBuildTypes(); }
+                List<BuildAndExpandType> available = availableBuildOptions(city);
 
                 foreach (var opt in available)
                 {
                     var build = BuildLib.BuildOptions[(int)opt];
-
-                    //if (build.buildCategory == player.buildCategoryTab)
-                    //{
 
                     var buildCount = city.buildingStructure.getCount(opt);
 
@@ -631,11 +630,12 @@ namespace VikingEngine.DSSWars.Build
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
                         BuildAndExpandType type = (BuildAndExpandType)tag;
-                        //RichBoxContent content = new RichBoxContent();
 
                         var build = BuildLib.BuildOptions[(int)type];
                         content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
-                        build.blueprint.toMenu(content, city, false, false);
+
+                        //content.newLine();
+                        build.blueprint.toMenu(content, city, false, true, true);
                         if (build.altBlueprint != null)
                         {
                             content.Add(new RbSeperationLine(HudLib.TitleColor_Head, 0.2f));
@@ -653,6 +653,26 @@ namespace VikingEngine.DSSWars.Build
                         content.newLine();
                         switch (type)
                         {
+                            case BuildAndExpandType.ResearchCenter:
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
+                                content.space();
+                                content.Add(new RbText(string.Format(DssRef.lang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter)));
+                                content.newParagraph();
+                                content.Add(new RbText(LangLib.TechnologyExample(), HudLib.InfoYellow_Light));
+                                break;
+
+                            case BuildAndExpandType.BookPress:
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
+                                content.space();
+                                content.Add(new RbText(string.Format(DssRef.lang.BuildingType_Bookpress_Description, DssRef.lang.BuildingType_ReseachCenter)));
+                                content.newParagraph();
+                                content.Add(new RbText(LangLib.TechnologyExample(), HudLib.InfoYellow_Light));
+                                break;
+
+
+
                             case BuildAndExpandType.WaterResovoir:
                                 HudLib.BulletPoint(content);
                                 content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
@@ -1113,7 +1133,7 @@ namespace VikingEngine.DSSWars.Build
                 content.newLine();
                 content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
 
-                if (player.buildCategoryTab == BuildCategoryTab.Updgrade)
+                if (player.buildCategoryTab == BuildCategoryTab.Upgrade)
                 {
 
                     if (city.buildingStructure.buildingLevel_logistics == 1)
@@ -1126,7 +1146,9 @@ namespace VikingEngine.DSSWars.Build
                             new RbSpace(),
                             upgradeText }, 
                             new RbAction(city.upgradeLogistics, SoundLib.menuBuy), new RbTooltip((RichBoxContent content, object tag) =>
-                        {                            
+                        {
+                            var cityFaction = city.GetFaction();
+
                             HudLib.Label(content, DssRef.lang.XP_Upgrade);
                             content.newLine();
                             CraftBuildingLib.CraftLogisticsLevel2.toMenu(content, city);
@@ -1134,13 +1156,13 @@ namespace VikingEngine.DSSWars.Build
                             content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
                             content.newLine();
-                            content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor = city.faction.totalWorkForce >= DssConst.Logistics2_PopulationRequirement ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                            content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor =cityFaction.totalWorkForce >= DssConst.Logistics2_PopulationRequirement ? HudLib.AvailableColor : HudLib.NotAvailableColor;
 
                             content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
                             content.newLine();
                             CraftBuildingLib.CraftLogisticsLevel2.listResources(content, city);
-                            content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(city.faction.totalWorkForce));
+                            content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(cityFaction.totalWorkForce));
                             //player.hud.tooltip.create(player, content, true);
                         }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
                     }

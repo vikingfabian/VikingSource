@@ -1,35 +1,18 @@
 ﻿UPDATE
--Change Log-
-* Added a folder for overriding ingame models
-
-
-Voxel editor 2
 * 
 
-X need bucket tool and better color seletion, and color adjust options
-X (maybe) import / export for MagicaVoxel
-X layers
-X project file that saves layers and history
-X templates for modding
-X material select and replace
-
-X highlight system to show affected voxels, and draw preview
-X coordinate arrows
-
-X "are you sure you want to override this file"
-
-
-
+Voxel editor: 
+*
+X remove layer
+X merge layer
+X shift description
+X load retail character models
 
 #Voxel editor#
 
 #Pics
-
-
-#Free build defences
- Rock thrower
--representeras av en gubbe tills de strider
-Assign men to wall (ballista, har warmachine crew)
+Animated
+Move up down
 
 
 #OPT#
@@ -43,14 +26,34 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
--Diplomacy, timer to reduce relation. Affect others. View relations teo all on select.
--mod av Storage location
+x set all defence is broken, need set all towers
+x how to get science buildings tooltip
+x gun maker missing tooltip info
+x small map editor size crash
+x Pen stroke size on map editor
+x Guards are never clearing move orders
+x Battles off camera sometimes get stuck
+x There are permance issues on large battles, still 
+x Merge army button dont update the hud
+x Archers are weirdly delayed
+x Should try prioritise towers for guards
+x Guard controls suck
+x I think I forgot upkeep on the guards
+x Soldiers update their target too often (shaking)
+x Ballistas should not animate on move
+x Still have models drifting
+x main menu goes off screen
+x start from nothing option
+x all schools/postals should have "set all to", and next/previous buttons 
+x B C D all were the same pavement 
+x show connected research, next to experience overview types
+x describe work group count
+x Rock thrower guard
+x Ballista, har warmachine crew, guards
 
-x beer example in the help menu
-x input options in ingame menu are broken
-x Auto upgrade
+-Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning
-x animals don't freeze when saving (game is not paused, just overridden by save state)
+x save custom map, cant load, should save in user content folder
 
 -ai dynamic low to high quality soldiers, and prio ranged units for walls
 -låt inte dread anfalla spelaren
@@ -65,22 +68,20 @@ x animals don't freeze when saving (game is not paused, just overridden by save 
 * annoyed by the deliveries being inefficient
 -Embassy expansion för att unlocka diplomacy
 * soldier level
-* Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
 * wall crusher
 * diplomat, med politic / spy upgrade
 * horse farm
 * ox farm, also incread farming area
 * go legendary, bonus building
  farm - apple tree
-* refugee tent, samlar på invandrare (60) half food cost, auto build homes?
-* vetskap kan sparas i pergament och sparas, kopieras, trade, sprida med messenger > papyrus/läder pergament
--kanske en som delar sin progress med alla kopplade
-* faction resources per second current/produced/consumed 
+
+* fire lance weapon
 
 #Todo (xmas patch)#
 krig varning på ally
 new maps
 dölj carry amount
+save count på end screen, +min difficulty
 
 lamps - förbättrar produktion i area, måste fyllas med fuel
 förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv

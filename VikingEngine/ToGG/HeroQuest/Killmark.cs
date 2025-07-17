@@ -13,7 +13,7 @@ namespace VikingEngine.ToGG.HeroQuest
 {
     class KillmarkTile : ToggEngine.GO.AbsTileObject
     {
-        public CirkleCounterUp removeNext = new CirkleCounterUp(0, Killmark.PlacementCount -1);
+        public CircleCounterUp removeNext = new CircleCounterUp(0, Killmark.PlacementCount -1);
         public List<Killmark> marks = new List<Killmark>(3);
 
         public KillmarkTile(IntVector2 pos)

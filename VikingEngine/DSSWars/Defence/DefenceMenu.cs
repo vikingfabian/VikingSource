@@ -46,16 +46,16 @@ namespace VikingEngine.DSSWars.Defence
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(HudLib.RbSettings.checkOn, 0.8f),
                     new RbSpace(),
-                    new RbText(DssRef.todoLang.GeneralSetting_On)
+                    new RbText(DssRef.lang.GeneralSetting_On)
                     }, new RbAction1Arg<bool>(city.setAllDefenceAutoAssign, true), 
-                    new RbTooltip_Text(DssRef.todoLang.GeneralSetting_AllBuildingsDescription)));
+                    new RbTooltip_Text(DssRef.lang.GeneralSetting_AllBuildingsDescription)));
                 
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(HudLib.RbSettings.checkOff, 0.8f),
                     new RbSpace(),
-                    new RbText(DssRef.todoLang.GeneralSetting_Off)
+                    new RbText(DssRef.lang.GeneralSetting_Off)
                     }, new RbAction1Arg<bool>(city.setAllDefenceAutoAssign, false),
-                    new RbTooltip_Text(DssRef.todoLang.GeneralSetting_AllBuildingsDescription)));
+                    new RbTooltip_Text(DssRef.lang.GeneralSetting_AllBuildingsDescription)));
             }
             
         }

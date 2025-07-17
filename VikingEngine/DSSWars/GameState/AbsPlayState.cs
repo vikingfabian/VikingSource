@@ -2,12 +2,13 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.Event;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Path;
@@ -31,11 +32,14 @@ namespace VikingEngine.DSSWars.GameState
         public PathUpdateThread[] pathUpdates;
         protected ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_detail = new ConcurrentStack<VoxelModelInstance>();
         protected ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_overview = new ConcurrentStack<VoxelModelInstance>();
+
+        public ConcurrentStack<VoxelModelInstance_Pooled> voxelModelInstancesPooled = new ConcurrentStack<VoxelModelInstance_Pooled>();
+
         public bool exitThreads = false;
         protected Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);
 
         public AbsCutScene cutScene = null;
-        protected bool host = true;
+        public bool host = true;
         public GameMenuSystem menuSystem;
         public SpottedArray<Players.RemotePlayer> remotePlayers = new SpottedArray<Players.RemotePlayer>();
         public List<Players.LocalPlayer> localPlayers;
@@ -45,11 +49,37 @@ namespace VikingEngine.DSSWars.GameState
         protected int stepFramesCount = 0;
         public Ambience ambience;
 
+        //protected int detailUpdateChanges = 0;
+
+        //protected void MayChangeDetail_OnNewUpdate()
+        //{
+        //    //if (detailUpdateChanges > 16)
+        //    //{
+        //    //    detailUpdateChanges /= 2;
+        //    //}
+        //    //else
+        //    {
+        //        detailUpdateChanges = 0;
+        //    }
+        //}
+        //public void OnDetailChange()
+        //{
+        //    detailUpdateChanges++;
+        //}
+        //public bool MayChangeDetail()
+        //{
+        //    if (detailUpdateChanges >= 16)
+        //    {
+        //        lib.DoNothing();
+        //    }
+        //    return detailUpdateChanges < 4;
+        //}
+
         public AbsPlayState() 
             :base() 
         {
             DssRef.state = this;
-           
+            DssRef.storage.profileStorage.refreshProfiles();
         }
 
         public void stepFrames(int frameCount)
@@ -220,22 +250,12 @@ namespace VikingEngine.DSSWars.GameState
                     while (armiesC.Next())
                     {
                         armiesC.sel.asyncBattleUpdate();
-                        //var groupsC = armiesC.sel.groups.counter();
-                        //while (groupsC.Next())
-                        //{
-                        //    groupsC.sel.asyncBattleUpdate();
-                        //}
                     }
                 }
 
                 foreach (var m in DssRef.world.cities)
                 {
                     m.asyncBattleUpdate();
-                    //var groupsC = m.groups.counter();
-                    //while (groupsC.Next())
-                    //{
-                    //    groupsC.sel.asyncBattleUpdate();
-                    //}
                 }
             }
             return exitThreads;
@@ -276,7 +296,11 @@ namespace VikingEngine.DSSWars.GameState
             var remotePlayerC = remotePlayers.counter();
             while (remotePlayerC.Next())
             {
-                if (remotePlayerC.sel.networkPeer.peer == peer)
+                if (remotePlayerC.sel.networkPeer == null)
+                {
+                    remotePlayerC.RemoveAtCurrent();
+                }
+                else if (remotePlayerC.sel.networkPeer.peer == peer)
                 {
                     //TODO return region to AI
                     return remotePlayerC.sel;
@@ -293,7 +317,12 @@ namespace VikingEngine.DSSWars.GameState
         }
         virtual public void OneMinute_Update()
         { }
-        public bool IsSinglePlayer()
+
+        public bool IsSinglePlayer_LocalAndOnline()
+        { 
+            return DssRef.storage.playerCount == 1 && !Ref.netSession.InMultiplayerSession;
+        }
+        public bool IsSinglePlayer_Local()
         {
             return DssRef.storage.playerCount == 1;
         }
@@ -310,6 +339,10 @@ namespace VikingEngine.DSSWars.GameState
             throw new NotImplementedException();
         }
 
+        public override bool MayUseLowLatencyGC()
+        {
+            return true;
+        }
         abstract public PlayStateType PlayType();
 
         abstract public int PathThreadCount();
@@ -320,5 +353,6 @@ namespace VikingEngine.DSSWars.GameState
         Play,
         BattleLab,
         BattleTrials,
+        MapEditor,
     }
 }

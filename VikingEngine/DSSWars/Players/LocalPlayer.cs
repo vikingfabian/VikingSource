@@ -1,38 +1,36 @@
 ﻿using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
-using VikingEngine.HUD;
-using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Players;
-using VikingEngine.LootFest.Players;
-using VikingEngine.HUD.RichBox;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Delivery;
+using VikingEngine.DSSWars.GameObject;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameState;
-using System;
-using System.IO;
-using Microsoft.Xna.Framework.Input;
-using VikingEngine.ToGG.MoonFall;
-using VikingEngine.ToGG;
-using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
-using VikingEngine.DSSWars.Data;
-using System.Threading.Tasks;
-using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Delivery;
-using VikingEngine.ToGG.Commander.LevelSetup;
-using VikingEngine.ToGG.HeroQuest.Net;
+using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
-using System.Net.Http.Headers;
-using System.Drawing;
-using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.DSSWars.Players.PlayerControls;
+using VikingEngine.Engine;
+using VikingEngine.Graphics;
+using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
-using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
-using VikingEngine.DebugExtensions;
+using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG;
+using VikingEngine.ToGG.Commander.LevelSetup;
+using VikingEngine.ToGG.HeroQuest.Net;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -48,9 +46,11 @@ namespace VikingEngine.DSSWars.Players
         public GameControls gameControls;
         
 
-        public MapDetailLayerManager drawUnitsView;
-        public bool bUnitDetailLayer_buffer;
-        public bool bUnitDetailLayer;
+        public MapLayerManager mapLayersManager;
+        //public bool bUnitDetailLayer_buffer;
+        //public bool bUpdateDetailLayer;
+
+        
 
         public Rectangle2 cullingTileArea = Rectangle2.ZeroOne;
         
@@ -64,25 +64,23 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
-       
-
-        //public int mercenaryCost = DssRef.difficulty.MercenaryPurchaseCost_Start;
 
         const int MercenaryMarketSoftLock1 = DssLib.MercenaryPurchaseCount * 5;
         const double MercenaryMarketAddPerSec_Speed1 = 0.5;
         const double MercenaryMarketAddPerSec_Speed2 = 0.3;
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
-        public MenuTab factionTab = MenuTab.NUM_NONE;//HeadDisplay.Tabs[0];
+        public MenuTab factionTab = MenuTab.NUM_NONE;
         public MenuTab cityTab = CityMenu.Tabs[0];
         public MenuTab armyTab = ArmyMenu.Tabs[0];
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
-        //public WorkSubTab workSubTab = WorkSubTab.Priority_Resources;
+
         public ProgressSubTab progressSubTab = 0;
         public MixTabEditType mixTabEditType = MixTabEditType.None;
         public WorkPriorityType mixWorkType = WorkPriorityType.NUM_NONE;
         public ItemResourceType mixTabItem = ItemResourceType.NONE;
         public BuildCategoryTab buildCategoryTab = 0;
+        public XP.TechnologyTreeType selectedTech = 0;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;
         public ConscriptProfile soldierConscriptCopy, archerConscriptCopy, warmachineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
@@ -106,6 +104,8 @@ namespace VikingEngine.DSSWars.Players
 
         List<MessagePosition> battleMessages = new List<MessagePosition>(8);
         public bool isDropInPlayer = false;
+
+        public StoredCameraPos storedCameraPos;
 
         public LocalPlayer()
         {
@@ -133,7 +133,7 @@ namespace VikingEngine.DSSWars.Players
             setPlayerFaction(faction);
 
             faction.technology = new XP.TechnologyTemplate();
-            faction.technology.iron = XP.TechnologyTemplate.FactionUnlock;
+            faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
 
             faction.addGold_factionWide(10000);
         }
@@ -156,10 +156,19 @@ namespace VikingEngine.DSSWars.Players
             return true;
         }
 
+        public void initNetwork()
+        {
+            var peer = Ref.netSession.LocalPeer();
+            if (peer != null)
+            {
+                networkPeer = new Network.NetworkInstancePeer(peer, playerData.localPlayerIndex);
+            }
+        }
+
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
-            faction.SetProfile(DssRef.storage.flagStorage.flagDesigns[pStorage.flagDesignIndex]);
+            SetProfile(DssRef.storage.profileStorage.profiles[pStorage.profileIndex]);
             faction.diplomaticSide = DiplomaticSide.Light;
 
             InputMap input = new InputMap(playerindex);
@@ -175,23 +184,16 @@ namespace VikingEngine.DSSWars.Players
 
             inputConnected = input.Connected;
 
-
-            if (Ref.netSession.HasInternet)
-            {
-                var peer = Ref.netSession.LocalPeer();
-                if (peer != null)
-                {
-                    networkPeer = new Network.NetworkInstancePeer(peer,playerindex);
-                }
-            }
-            
-
-            faction.profile.gameStartInit();
             faction.displayInFullOverview = true;
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
             playerData.Tag = this;
             playerData.view.SetDrawArea(numPlayers, pStorage.screenIndex, false, null);
+
+            if (Ref.netSession.HasInternet)
+            {
+                initNetwork();
+            }
 
             if (!Bound.IsWithin(playerData.view.ScreenIndex, 0, 3))
             {
@@ -203,7 +205,7 @@ namespace VikingEngine.DSSWars.Players
             new GameHud(this, numPlayers);
 
             Ref.draw.AddPlayerScreen(playerData);
-            drawUnitsView = new MapDetailLayerManager(playerData);
+            mapLayersManager = new MapLayerManager(playerData);
             InitTutorial(newGame);
 
             //new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", playerindex);
@@ -214,21 +216,21 @@ namespace VikingEngine.DSSWars.Players
                 toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
             }
 
-            if (StartupSettings.EndlessResources)
-            {
-                foreach (var c in faction.cities.Array)
-                {
-                    if (c != null)
-                    {
-                        //foreach (var type in City.MovableCityResourceTypes)
-                        //{
-                        //    var res = c.GetGroupedResource(type);
-                        //    res.amount += 1000;
-                        //    c.SetGroupedResource(type, res);
-                        //}
-                    }
-                }
-            }
+            //if (StartupSettings.EndlessResources)
+            //{
+            //    foreach (var c in faction.cities.Array)
+            //    {
+            //        if (c != null)
+            //        {
+            //            //foreach (var type in City.MovableCityResourceTypes)
+            //            //{
+            //            //    var res = c.GetGroupedResource(type);
+            //            //    res.amount += 1000;
+            //            //    c.SetGroupedResource(type, res);
+            //            //}
+            //        }
+            //    }
+            //}
 
             menDeliveryCopy = new DeliveryStatus();
             menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
@@ -344,6 +346,8 @@ namespace VikingEngine.DSSWars.Players
                 pinsC.sel.writeGameState(w);
             }
 
+            storedCameraPos.writeGameState(w);
+
             Debug.WriteCheck(w);
         }
 
@@ -427,9 +431,14 @@ namespace VikingEngine.DSSWars.Players
                 for (int i = 0; i < pinsCount; ++i)
                 {
                     LocationPin pin = new LocationPin(this, r, subversion);
-                    pin.parentArrayIndex = pins.Add(pin);
+                    pin.myIndex = pins.Add(pin);
                     pin.basicInit();
                 }
+            }
+
+            if (subversion >= 66)
+            {
+                storedCameraPos.readGameState(r, subversion);
             }
 
             Debug.ReadCheck(r);
@@ -506,7 +515,7 @@ namespace VikingEngine.DSSWars.Players
         {
 #if DEBUG
             LocationPin pin = new LocationPin(this,gameControls.map.pointerPosWP);
-            pin.parentArrayIndex = pins.Add(pin);
+            pin.myIndex = pins.Add(pin);
             pin.basicInit();
 #endif
         }
@@ -648,7 +657,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     foreach (var n in citiesC.sel.neighborCities)
                     {
-                        DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
+                        DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
                     }
                 }
             }
@@ -660,7 +669,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 foreach (var n in city.neighborCities)
                 {
-                    DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
+                    DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
                 }                
             }
 
@@ -753,14 +762,14 @@ namespace VikingEngine.DSSWars.Players
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
-                    //battleLineUpTest2(true);
-                    DssRef.state.events.TestNextEvent();
+                    battleLineUpTest2(true);
+                    //DssRef.state.events.TestNextEvent();
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
+                    //battleLineUpTest3_friendly_only();
                     battleLineUpTest2(false);
-
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
                     //Debug.Log(tile.ToString());
@@ -773,7 +782,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            drawUnitsView.Update();
+            mapLayersManager.Update();
             playerData.view.Camera.RecalculateMatrices();
             
 
@@ -943,7 +952,7 @@ namespace VikingEngine.DSSWars.Players
         void updateMapOverlays()
         {
             
-            if (drawUnitsView.current.DrawOverview)
+            if (mapLayersManager.current.DrawFar)
             {
                 if (gameControls.diplomacy == null)
                 {
@@ -961,7 +970,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            if (drawUnitsView.current.DrawNormal)
+            if (mapLayersManager.current.DrawMid)
             {
                 if (cityTagMap == null)
                 { 
@@ -990,8 +999,7 @@ namespace VikingEngine.DSSWars.Players
             //model.position = WP.ToSubTilePos_Centered(position);
            
         }
-
-        void battleLineUpTest2(bool friendly)
+        void battleLineUpTest3_friendly_only()
         {
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
             Rotation1D playerRot = enemyRot.getInvert();
@@ -1006,13 +1014,93 @@ namespace VikingEngine.DSSWars.Players
             Army friendlyArmy, enemyArmy;
 
 
-            if (friendly)
+            //if (friendly)
             {
                 var army = faction.NewArmy(position);
                 friendlyArmy = army;
                 army.rotation = playerRot;
 
-               
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Sword,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 64; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Bow,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 16; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Ballista,
+                            armorLevel = Resource.ItemResourceType.PaddedArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 16; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                army.setAsStartArmy();
+                //army.(true);
+            }
+            
+        }
+
+        void battleLineUpTest2(bool friendly)
+        {
+            Rotation1D enemyRot = Rotation1D.FromDegrees(180 + Ref.rnd.Plus_Minus(10));
+            Rotation1D playerRot = enemyRot.getInvert();
+
+            Faction enemyFac = DssRef.world.factions[DssRef.settings.Faction_DarkFollower];
+            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
+            DssRef.diplomacy.declareWar(faction, enemyFac);
+
+
+            IntVector2 position = gameControls.map.tilePosition;
+
+            Army friendlyArmy, enemyArmy;
+
+
+            if (friendly)
+            {
+                var army = faction.NewArmy(position);
+                friendlyArmy = army;
+                army.rotation = playerRot;
+                army.armyColumnWidth = 6;
+
                 //{
                 //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                 //    {
@@ -1035,42 +1123,14 @@ namespace VikingEngine.DSSWars.Players
                     {
                         conscript = new ConscriptProfile()
                         {
-                            weapon = Resource.ItemResourceType.Bow,
+                            weapon = Resource.ItemResourceType.Sword,
                             armorLevel = Resource.ItemResourceType.IronArmor,
                             training = TrainingLevel.Basic,
                             specialization = SpecializationType.Traditional,
                         }
                     };
 
-                    for (int i = 0; i < 4; ++i)
-                    {
-                        new SoldierGroup(army, SoldierProfile, army.position);
-                    }
-                }
-               
-                army.setAsStartArmy();
-                //army.(true);
-            }
-            //else
-            {
-
-                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-                enemyArmy = army;
-                army.rotation = enemyRot;
-
-                {
-                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                    {
-                        conscript = new ConscriptProfile()
-                        {
-                            weapon = Resource.ItemResourceType.ShortSword,
-                            armorLevel = Resource.ItemResourceType.IronArmor,
-                            training = TrainingLevel.Basic,
-                            specialization = SpecializationType.Traditional,
-                        }
-                    };
-
-                    for (int i = 0; i < 16; ++i)
+                    for (int i = 0; i < 6; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -1080,7 +1140,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         conscript = new ConscriptProfile()
                         {
-                            weapon = Resource.ItemResourceType.LongBow,
+                            weapon = Resource.ItemResourceType.ThrowingSpear,
                             armorLevel = Resource.ItemResourceType.IronArmor,
                             training = TrainingLevel.Basic,
                             specialization = SpecializationType.Traditional,
@@ -1092,7 +1152,142 @@ namespace VikingEngine.DSSWars.Players
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
                 }
-               
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.KnightsLance,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Bow,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 8; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Ballista,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 8; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+
+                army.setAsStartArmy();
+                //army.(true);
+            }
+            else
+            {
+
+                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                enemyArmy = army;
+                army.rotation = enemyRot;
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Pike,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 12; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Crossbow,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 8; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.TwoHandSword,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Catapult,
+                            armorLevel = Resource.ItemResourceType.PaddedArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 8; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
                 army.refreshPositions(true);
                 army.setAsStartArmy();
             }
@@ -1551,7 +1746,20 @@ namespace VikingEngine.DSSWars.Players
         {
             return this;
         }
-        public override string Name => playerData.PublicName(LoadedFont.Regular);
+        public override string Name {
+
+            get
+            {
+                if (string.IsNullOrEmpty(profile.name))
+                {
+                    return playerData.PublicName(LoadedFont.Regular);
+                }
+                else
+                {
+                    return LoadContent.CheckCharsSafety( profile.name, LoadedFont.Regular);
+                }
+            }
+        } 
 
         public override string ToString()
         {

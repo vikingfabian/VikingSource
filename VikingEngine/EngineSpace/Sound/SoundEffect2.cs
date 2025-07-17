@@ -54,6 +54,9 @@ namespace VikingEngine.Sound
         {
             if (SoundStackManager.Available())
             {
+                if (Ref.draw.ActivePlayerScreens.Count == 0)
+                    return;
+
                 FindMinValue distanceFinder = new FindMinValue(true);
 
                 for (int i = 0; i < Ref.draw.ActivePlayerScreens.Count; i++)

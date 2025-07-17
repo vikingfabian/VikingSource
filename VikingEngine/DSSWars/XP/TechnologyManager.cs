@@ -56,19 +56,24 @@ namespace VikingEngine.DSSWars.XP
                     foreach (var ni in city.neighborCities)
                     {
                         var nCity = DssRef.world.cities[ni];
-                        if (city.faction == nCity.faction)
+                        if (city.factionIndex == nCity.factionIndex)
                         {
-                            city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
+                            TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_CitySpread, TechnologyGainReason.CityToCitySpread);
+                            //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
                         }
                         else
                         {
-                            switch (DssRef.diplomacy.GetRelationType(city.faction, nCity.faction))
+                            switch (DssRef.diplomacy.GetRelationType(city.GetFaction(), nCity.GetFaction()))
                             {
                                 case RelationType.RelationType2_Good:
-                                    city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin);
+                                    TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
+
+                                    //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin);
                                     break;
                                 case RelationType.RelationType3_Ally:
-                                    city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin);
+                                    TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
+
+                                    //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin);
                                     break;
                             }
                         }

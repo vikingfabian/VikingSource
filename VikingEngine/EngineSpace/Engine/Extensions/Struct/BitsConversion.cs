@@ -134,19 +134,27 @@ namespace VikingEngine
         
         public byte bitArray;
 
-        public EightBit(bool value1, bool value2)
-            : this(value1, value2, false, false, false, false, false, false)
-        { }
+        //public EightBit(bool value1, bool value2)
+        //    : this(value1, value2, false, false, false, false, false, false)
+        //{ }
 
-        public EightBit(bool value1, bool value2, bool value3)
-           : this(value1, value2, value3, false, false, false, false, false)
-        { }
+        //public EightBit(bool value1, bool value2, bool value3)
+        //   : this(value1, value2, value3, false, false, false, false, false)
+        //{ }
 
-        public EightBit(bool value1, bool value2, bool value3, bool value4)
-           : this(value1, value2, value3, value4, false, false, false, false)
-        { }
+        //public EightBit(bool value1, bool value2, bool value3, bool value4)
+        //   : this(value1, value2, value3, value4, false, false, false, false)
+        //{ }
 
-        public EightBit(bool value1, bool value2, bool value3, bool value4, bool value5, bool value6, bool value7, bool value8)
+        public EightBit(
+            bool value1, 
+            bool value2 = false,
+            bool value3 = false,
+            bool value4 = false,
+            bool value5 = false,
+            bool value6 = false,
+            bool value7 = false,
+            bool value8 = false)
         {
             bitArray = 0;
 

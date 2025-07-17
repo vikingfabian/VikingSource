@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 
@@ -28,13 +28,13 @@ namespace VikingEngine.DSSWars.GameObject
         public void AddSoldierGroup(SoldierGroup group)
         {
             //Hitta en plats bland alla grupper
-            group.parentArrayIndex = groups.Add(group);
+            group.myIndex = groups.Add(group);
             group.army = this;
         }
         virtual public void remove(SoldierGroup group)
         {
             Debug.CrashIfThreaded();
-            groups.RemoveAt_EqualSafeCheck(group, group.parentArrayIndex);            
+            groups.RemoveAt_EqualSafeCheck(group, group.myIndex);            
         }
 
         public void asyncBattleUpdate()
@@ -67,11 +67,11 @@ namespace VikingEngine.DSSWars.GameObject
             else if (groupsInBattle >= 2)
             {
                 inBattle = true;
-                if (faction.player.IsLocalPlayer())
+                if (GetPlayer().IsLocalPlayer())
                 {
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        var localplayer = faction.player.GetLocalPlayer();
+                        var localplayer = GetPlayer().GetLocalPlayer();
                         if (localplayer.battleMessageCheck(tilePos))
                         {
                             RichBoxContent content = new RichBoxContent();
@@ -90,6 +90,46 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
+
+
+        //protected void net_writeGroups(System.IO.BinaryWriter w)
+        //{
+        //    w.Write((ushort)groups.Count);
+        //    var groupsC = groups.counter();
+        //    while (groupsC.Next())
+        //    {
+        //        w.Write((ushort)groupsC.sel.parentArrayIndex);
+        //        groupsC.sel.writeNet(w);
+        //    }
+        //}
+
+        //protected void net_readGroups(System.IO.BinaryReader r)
+        //{
+        //    int groupsCount = r.ReadUInt16();
+        //    for (int i = 0; i < groupsCount; i++)
+        //    {
+        //        int index = r.ReadUInt16();
+        //        var group = groups.GetIndex_Safe(index);
+        //        bool needInit = false;
+        //        if (group == null)
+        //        {
+        //            needInit = true;
+        //            if (IsCity())
+        //            {
+        //                group = new GuardGroup(this);
+        //            }
+        //            else
+        //            {
+        //                group = new SoldierGroup(this);
+        //            }
+        //            groups.HardSet(group, index);
+        //        }
+
+        //        group.readNet(r, needInit);
+        //        group.net_onUpdate();
+        //        group.net_updateclient(DssRef.state.culling.playerInDetailView);
+        //    }
+        //}
 
         protected void writeGroups(System.IO.BinaryWriter w)
         {
@@ -128,6 +168,9 @@ namespace VikingEngine.DSSWars.GameObject
                 Debug.ReadCheck(r);
             }
         }
+
+        
+
         virtual public void asyncNearObjectsUpdate()
         {
             var groupsC = groups.counter();

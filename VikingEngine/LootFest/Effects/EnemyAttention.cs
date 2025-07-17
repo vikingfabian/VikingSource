@@ -28,10 +28,10 @@ namespace VikingEngine.LootFest.Effects
             switch (type)
             {
                 case EnemyAttentionType.Expression:
-                    image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.enemy_expression, 0.01f, 0, false);
+                    image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0.01f, 0, false);
                     break;
                 case EnemyAttentionType.PreAttack:
-                    image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.enemyattention, 0.01f, 0, false);
+                    image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0.01f, 0, false);
                     break;
 
             }

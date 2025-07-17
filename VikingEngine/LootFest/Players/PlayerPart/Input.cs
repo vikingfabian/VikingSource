@@ -361,12 +361,12 @@ namespace VikingEngine.LootFest.Players
 
         public override void TextInputEvent(string input, object tag)
         {
-            if (voxelDesigner != null && voxelDesigner.WaitingForTextInput)
-            {
-                voxelDesigner.TextInputEvent(input, tag);
-                //return true;
-            }
-            else
+            //if (voxelDesigner != null && voxelDesigner.WaitingForTextInput)
+            //{
+            //    voxelDesigner.TextInputEvent(input, tag);
+            //    //return true;
+            //}
+            //else
             {
                 input = Engine.LoadContent.CheckCharsSafety(input, LoadedFont.Regular);
                 input = TextLib.CheckBadLanguage(input);

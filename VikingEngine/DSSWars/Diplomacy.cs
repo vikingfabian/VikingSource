@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars
 
         public RelationType GetRelationType(Faction faction1, Faction faction2)
         {
-            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];
+            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
             if (rel == null)
             {
                 return RelationType.RelationType0_Neutral;
@@ -153,7 +153,19 @@ namespace VikingEngine.DSSWars
                 return rel.Relation;
             }
         }
+        public bool InWar(int faction1, int faction2)
+        {
+            if (faction1 < 0 || faction2 < 0)
+            {
+                return false;
+            }
 
+            if (faction1 != faction2)
+            {
+                return InWar(DssRef.world.factions.Array[faction1], DssRef.world.factions.Array[faction2]);
+            }
+            return false;
+        }
         public bool InWar(Faction faction1, Faction faction2)
         {
             if (faction1 == null || faction2 == null)
@@ -166,7 +178,7 @@ namespace VikingEngine.DSSWars
                 return false;
             }
 
-            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];
+            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
             if (rel == null)
             {
                 return false;
@@ -191,7 +203,7 @@ namespace VikingEngine.DSSWars
                 return false;
             }
 
-            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];           
+            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];           
             if (rel == null)
             {
                 return true;
@@ -223,7 +235,7 @@ namespace VikingEngine.DSSWars
 
         public DiplomaticRelation GetOrCreateRelation(Faction faction1, Faction faction2)
         {
-            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];
+            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
             if (rel == null)
             {
                 rel = NewRelation(faction1, faction2, RelationType.RelationType0_Neutral);
@@ -235,7 +247,7 @@ namespace VikingEngine.DSSWars
         {
             if (faction1 != faction2)
             {
-                DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];
+                DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
                 if (rel != null)
                 {
                     if (rel.Relation != newRelation)
@@ -264,7 +276,7 @@ namespace VikingEngine.DSSWars
             {
                 DiplomaticRelation rel;
                 SpeakTerms speakterms = (SpeakTerms)Math.Min((int)faction1.DefaultSpeakingTerms(), (int)faction2.DefaultSpeakingTerms());
-                rel = new DiplomaticRelation(faction1.parentArrayIndex, faction2.parentArrayIndex, newRelation, speakterms);
+                rel = new DiplomaticRelation(faction1.myIndex, faction2.myIndex, newRelation, speakterms);
 
                 faction1.player.onNewRelation(faction2, rel, RelationType.RelationType0_Neutral);
                 faction2.player.onNewRelation(faction1, rel, RelationType.RelationType0_Neutral);
@@ -353,7 +365,7 @@ namespace VikingEngine.DSSWars
             {
                 if (faction.diplomaticRelations[relIx] != null)
                 {
-                    DssRef.world.factions[relIx].diplomaticRelations[faction.parentArrayIndex] = null;
+                    DssRef.world.factions[relIx].diplomaticRelations[faction.myIndex] = null;
                 }
             }
         }
@@ -385,7 +397,7 @@ namespace VikingEngine.DSSWars
                 case RelationType.RelationType2_Good: return SpriteName.WarsRelationGood;
                 case RelationType.RelationType1_Peace: return SpriteName.WarsRelationPeace;
                 case RelationType.RelationType0_Neutral: return SpriteName.WarsRelationNeutral;
-                case RelationType.RelationTypeN1_Enemies: return SpriteName.MissingImage;
+                case RelationType.RelationTypeN1_Enemies: return SpriteName.WarsRelationEnemy;
                 case RelationType.RelationTypeN2_Truce: return SpriteName.WarsRelationTruce;
                 case RelationType.RelationTypeN3_War: return SpriteName.WarsRelationWar;
                 case RelationType.RelationTypeN4_TotalWar: return SpriteName.WarsRelationTotalWar;
@@ -627,7 +639,7 @@ namespace VikingEngine.DSSWars
 
         public Faction opponent(Faction faction)
         {
-            if (faction.parentArrayIndex == faction1)
+            if (faction.myIndex == faction1)
             {
                 return DssRef.world.factions[faction2];
             }
@@ -648,7 +660,7 @@ namespace VikingEngine.DSSWars
 
         public bool IsFactionOne(Faction faction)
         {
-            return faction.parentArrayIndex == faction1;
+            return faction.myIndex == faction1;
         }
     }
 

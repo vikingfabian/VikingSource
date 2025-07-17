@@ -17,7 +17,7 @@ namespace VikingEngine.LootFest.GO
         WeaponAttack.HandWeaponAttackSettings dashAttack;
 
         public SpearManSuit(Players.AbsPlayer user)
-            : base(user, VoxelModelName.handspear)
+            : base(user, VoxelModelName.NUM_NON)
         {
             shield = new WeaponAttack.Shield(user.hero, player.Storage);
             primaryWeaponAttack = new WeaponAttack.HandWeaponAttackSettings(

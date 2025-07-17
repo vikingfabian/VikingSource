@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void fromCity(WorldData world, City city)
         {
             DssRef.world = world;
-            PcgRandom rnd = new PcgRandom(world.metaData.seed * city.parentArrayIndex);
+            PcgRandom rnd = new PcgRandom(world.metaData.seed * city.myIndex);
 
 
 
@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             foreach (var n in city.neighborCities)
             {
                 //Low index cities track to higher
-                if (city.parentArrayIndex < n)
+                if (city.myIndex < n)
                 {
 
                     //if (city.parentArrayIndex == 139 || n == 139) 
@@ -48,13 +48,13 @@ namespace VikingEngine.DSSWars.Map.Generate
                     double chance = (city.cityType == CityType.Capital || nCity.cityType == CityType.Capital) ? 0.6 : 0.2f;
 
                     if (rnd.Chance(chance) &&
-                       (nCity.faction == city.faction || rnd.Chance(0.1)))
+                       (nCity.factionIndex == city.factionIndex || rnd.Chance(0.1)))
                     {
 
-                        if (city.parentArrayIndex == 139 || n == 139)
+                        if (city.myIndex == 139 || n == 139)
                         {
                             lib.DoNothing();
-                            Debug.Log($"From {city.parentArrayIndex} to {n}");
+                            Debug.Log($"From {city.myIndex} to {n}");
                         }
 
                         PathFinding largePath = new PathFinding();

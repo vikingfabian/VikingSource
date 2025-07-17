@@ -117,6 +117,21 @@ namespace VikingEngine.HUD
         public override string MouseButton_X1 => "Maus-Taste X1";
         public override string MouseButton_X2 => "Maus-Taste X2";
 
+        //DEMO PATCH 4
+        public override string MouseButtonAction_PanAndCancel => "Schwenken und Abbrechen";
+        public override string MouseButtonAction_PanAndOrderAndCancel => "Schwenken, Befehl geben und Abbrechen";
+
+        public override string GraphicsOption_Shadows => "Schatten";
+        public override string GraphicsOption_ShadowType_ModelsToGround => "Modelle auf Boden";
+        public override string GraphicsOption_ShadowType_ModelsToModels => "Modelle auf Modelle";
+
+        public override string GraphicsOption_Shadow_MapResolution => "Schattenkartenauflösung";
+
+        //DEMO PATCH 5
+        public override string GraphicsOption_RecordingPresets_AddXPixels => "{0} Pixel hinzufügen";
+        public override string Settings_KeyMapPanSpeed => "Schwenkgeschwindigkeit";
+        public override string Settings_StoreCameraPosition => "Kameraposition speichern";
+        public override string Settings_LoadCameraPosition => "Position laden";
 
     }
 }

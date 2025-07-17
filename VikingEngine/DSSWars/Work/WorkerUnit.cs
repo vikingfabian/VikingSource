@@ -5,12 +5,12 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Timer;
 
@@ -38,21 +38,23 @@ namespace VikingEngine.DSSWars.Work
         public WorkerUnit(AbsArmy mapObject, WorkerStatus status, int statusIndex)
         {
             parentMapObject = mapObject;
+            factionIndex = mapObject.factionIndex;
             this.status = status;
-            parentArrayIndex = statusIndex;
-            model = mapObject.GetFaction().AutoLoadModelInstance(
-                 DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f, true);
+            myIndex = statusIndex;
+            model = mapObject.GetFaction().AutoLoadModelInstance_batched(
+                 DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
             checkForGoal(true, mapObject.GetCity());
 
             updateGroudY(true);
+            refreshCarryModel();
         }
 
-        public void update(City city)
+        public bool update(City city)
         {
-            if (parentArrayIndex == 6)
+            if (myIndex == 6)
             {
                 lib.DoNothing();
             }
@@ -84,7 +86,7 @@ namespace VikingEngine.DSSWars.Work
                         {
                             state = WorkerUnitState.None;
                             status.cancelWork();
-                            parentMapObject.setWorkerStatus(parentArrayIndex, ref status);
+                            parentMapObject.setWorkerStatus(myIndex, ref status);
                         }
                         else
                         {
@@ -260,17 +262,19 @@ namespace VikingEngine.DSSWars.Work
                         }
 
                         status.WorkComplete(parentMapObject, true);
-                        parentMapObject.setWorkerStatus(parentArrayIndex, ref status);
+                        parentMapObject.setWorkerStatus(myIndex, ref status);
                         state = WorkerUnitState.None;
                         refreshCarryModel();
                     }
                     break;
 
                 case WorkerUnitState.None:
-                    parentMapObject.getWorkerStatus(parentArrayIndex, ref status);
+                    parentMapObject.getWorkerStatus(myIndex, ref status);
                     checkForGoal(false, city);
                     break;
             }
+
+            return model.IsDeleted;
         }
 
         bool workAnimation_soundframe()
@@ -490,7 +494,7 @@ namespace VikingEngine.DSSWars.Work
             args.content.Add(new RbText(DssRef.lang.UnitType_Worker, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space();
-            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
             ownerToHud(args, false);
         }
@@ -541,7 +545,7 @@ namespace VikingEngine.DSSWars.Work
 
         public void DeleteMe()
         {
-            model.DeleteMe();
+            model.preRemoveFromDrawBatch();//.DeleteMe();
             resourceModel?.DeleteMe();
         }
 
@@ -549,11 +553,14 @@ namespace VikingEngine.DSSWars.Work
         {
             return GameObjectType.Worker;
         }
-
         public override Faction GetFaction()
         {
             return parentMapObject.GetFaction();
         }
+        //public override Faction GetFaction()
+        //{
+        //    return parentMapObject.GetFaction();
+        //}
 
         public override Vector3 WorldPos()
         {
@@ -573,7 +580,7 @@ namespace VikingEngine.DSSWars.Work
         public override string Name(out bool mayEdit)
         {
             mayEdit = false;
-            return parentMapObject.TypeName() + " " + DssRef.lang.UnitType_Worker + " (" + parentArrayIndex.ToString() + ")";
+            return parentMapObject.TypeName() + " " + DssRef.lang.UnitType_Worker + " (" + myIndex.ToString() + ")";
         }
 
         enum WorkerUnitState

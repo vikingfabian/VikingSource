@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using VikingEngine.DebugExtensions;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
@@ -14,30 +15,137 @@ namespace VikingEngine.DSSWars
 {
     partial class Faction
     {
-        Dictionary<VoxelModelName, Graphics.VoxelModel> models_loaded =
-           new Dictionary<VoxelModelName, Graphics.VoxelModel>();
+        Dictionary<int, Graphics.VoxelModel> models_loaded =
+           new Dictionary<int, Graphics.VoxelModel>();
 
-        List<VoxelModelName> processStarted = new List<VoxelModelName>(8);
+        List<int> processStarted = new List<int>(8);
 
         public Graphics.VoxelModelInstance AutoLoadModelInstance(VoxelModelName name,
-           float scale = 1f,          
-           bool addToRender = false)
+           float scale = 1f, bool addToRender = false)
         {
-            
+
             Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
-            
+
             instance.scale.X = scale;
             instance.scale.Y = 0;
 #if DEBUG
             instance.DebugName = name.ToString();
 #endif
+            getOrCreateMaster(name, instance);
+            return instance;
+        }
+
+        public VoxelModelInstance_Pooled AutoLoadModelInstance_batched(VoxelModelName name,
+           float scale = 1f)
+        {
+
+            VoxelModelInstance_Pooled instance = DssRef.models.NextInstance_Pooled();
+#if DEBUG
+            instance.DebugName = name.ToString() + ", fac" + myIndex.ToString();
+#endif
+            instance.scale.X = scale;
+            instance.scale.Y = 0;
+
+            getOrCreateMaster(name, instance);
+
+            Ref.draw.drawBatch.Add(instance);
+
+            return instance;
+        }
+
+        public VoxelModelInstance_Pooled AutoLoadModelInstance_character(SoldierModelData modelData,
+          float scale = 1f)
+        {
+
+            VoxelModelInstance_Pooled instance = DssRef.models.NextInstance_Pooled();
+#if DEBUG
+            instance.DebugName = modelData.ToString() + ", fac" + myIndex.ToString();
+#endif
+            instance.scale.X = scale;
+            instance.scale.Y = 0;
+
             Graphics.VoxelModel master = null;
 
-            models_loaded.TryGetValue(name, out master);
+            int id = modelData.GetHashCode();
+            models_loaded.TryGetValue(id, out master);
 
             if (master != null)
             {
-                setMaster(instance, master);    
+                setMaster(instance, master);
+            }
+            else
+            {
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        if (player.profile.flag == null)
+                        {
+                            return;
+                        }
+
+                        int numLoops = 0;
+
+                        {
+                            bool process = false;
+
+                            lock (processStarted)
+                            {
+                                if (!processStarted.Contains(id))
+                                {
+                                    process = true;
+                                    processStarted.Add(id);
+                                }
+                            }
+
+                            if (process)
+                            {
+                                var model = new CharacterModelBuilder().buildModel(player.profile, modelData);
+                                lock (models_loaded)
+                                {
+                                    if (!models_loaded.ContainsKey(id))
+                                    {
+                                        models_loaded.Add(id, model);
+                                    }
+                                }
+                            }
+                        }
+
+                        while (!models_loaded.TryGetValue(id, out master))
+                        {
+                            if (++numLoops > 1000)
+                            {
+                                //lib.DoNothing();
+                                BlueScreen.ThreadException = new EndlessLoopException("Load faction master " + modelData.ToString());
+                            }
+                            await Task.Delay(100);
+                        }
+
+                        setMaster(instance, master);
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+
+                });
+
+            }
+
+            Ref.draw.drawBatch.Add(instance);
+
+            return instance;
+        }
+
+        private void getOrCreateMaster(VoxelModelName name, VoxelModelInstance instance)
+        {
+            Graphics.VoxelModel master = null;
+
+            models_loaded.TryGetValue((int)name, out master);
+
+            if (master != null)
+            {
+                setMaster(instance, master);
             }
             else
             {
@@ -46,41 +154,37 @@ namespace VikingEngine.DSSWars
                     try
                     {
                         int numLoops = 0;
-#if DEBUG
-                        if (!DssRef.models.rawModels.ContainsKey(name))
-                        {
-                            lib.DoNothing();
-                        }
-#endif
+//#if DEBUG
+//                        if (!DssRef.models.rawModels.ContainsKey(name))
+//                        {
+//                            lib.DoNothing();
+//                        }
+//#endif
                         var grid = DssRef.models.rawModels[name];
 
 
                         generateFromGrid_asynch(name, grid);
 
-                        while (!models_loaded.TryGetValue(name, out master))
+                        while (!models_loaded.TryGetValue((int)name, out master))
                         {
                             if (++numLoops > 1000)
                             {
-                                lib.DoNothing();
+                                //lib.DoNothing();
+                                BlueScreen.ThreadException = new EndlessLoopException("Load faction master " + name);
                             }
                             await Task.Delay(100);
                         }
 
-                        if (master == null)
-                        {
-                            lib.DoNothing();
-                        }
                         setMaster(instance, master);
                     }
                     catch (Exception ex)
                     {
                         BlueScreen.ThreadException = ex;
                     }
-                   
+
                 });
 
             }
-            return instance;
         }
 
         void setMaster(Graphics.VoxelModelInstance instance, Graphics.VoxelModel master)
@@ -103,49 +207,25 @@ namespace VikingEngine.DSSWars
 
             lock (processStarted)
             {
-                if (!processStarted.Contains(name))
+                if (!processStarted.Contains((int)name))
                 {
                     process = true;
-                    processStarted.Add(name);
+                    processStarted.Add((int)name);
                 }
             }
 
             if (process)
             {
-                //new FactionModelBuilder(this, name, grid);
                 var model = new FactionModelBuilder().buildModel(this, name, grid);
                 lock (models_loaded)
                 {
-                    if (!models_loaded.ContainsKey(name))
+                    if (!models_loaded.ContainsKey((int)name))
                     {
-                        models_loaded.Add(name, model);
+                        models_loaded.Add((int)name, model);
                     }
                 }
             }
         }
-
-        //public void onNewModel(VoxelModelName name, Graphics.VoxelModel model)
-        //{
-        //    lock (models_loaded)
-        //    {
-        //        if (!models_loaded.ContainsKey(name))
-        //        {
-        //            models_loaded.Add(name, model);
-        //        }
-        //    }
-
-        //    //var armies = player.faction.armies.counter();
-        //    //while (armies.Next())
-        //    //{
-        //    //    armies.sel.onNewModel(name, model);
-        //    //}
-
-        //    //var cities = player.faction.cities.counter();
-        //    //while (cities.Next())
-        //    //{
-        //    //    cities.sel.onNewModel(name, model);
-        //    //}
-        //}
 
         public static void SetNewMaster(LootFest.VoxelModelName newModelName, LootFest.VoxelModelName myModelName, 
             Graphics.AbsVoxelObj model, Graphics.VoxelModel master)
@@ -162,151 +242,155 @@ namespace VikingEngine.DSSWars
         }
     }
 
-    class FactionModelBuilder : Voxels.ModelBuilder
-    {
-        static readonly IntVector3 TroopBannerStart = new IntVector3(4, 44, 2);
-        static readonly IntVector3 WavingFlagStart = new IntVector3(4, 44, 3);
-        static readonly IntVector3 WavingFlagStart_LargeFlag = new IntVector3(7, 39, 3);
-        static readonly IntVector3 HorseBannerStart = new IntVector3(3, 50, 0);
-        static readonly IntVector3 CityBannerStart = new IntVector3(6, 44, 0);
-        static readonly IntVector3 ArmyBannerStart = new IntVector3(1, 0, 1);
-        static readonly IntVector3 ArmyStandStart = new IntVector3(8, 32, 8);
-        static readonly IntVector3 ArmyShipStart = new IntVector3(8, 25, 8);
-        static readonly IntVector3 CityIconStart = new IntVector3(3, 2, 3);
+    //class FactionModelBuilder : Voxels.ModelBuilder
+    //{
+    //    static readonly IntVector3 TroopBannerStart = new IntVector3(4, 44, 2);
+    //    static readonly IntVector3 WavingFlagStart = new IntVector3(4, 44, 3);
+    //    static readonly IntVector3 WavingFlagStart_LargeFlag = new IntVector3(7, 39, 3);
+    //    static readonly IntVector3 HorseBannerStart = new IntVector3(3, 50, 0);
+    //    static readonly IntVector3 CityBannerStart = new IntVector3(6, 44, 0);
+    //    static readonly IntVector3 ArmyBannerStart = new IntVector3(1, 0, 1);
+    //    static readonly IntVector3 ArmyStandStart = new IntVector3(8, 32, 8);
+    //    static readonly IntVector3 ArmyShipStart = new IntVector3(8, 25, 8);
+    //    static readonly IntVector3 CityIconStart = new IntVector3(3, 2, 3);
 
-        //Faction faction;
-        //VoxelModelName name;
+    //    //Faction faction;
+    //    //VoxelModelName name;
 
-        //public FactionModelBuilder(Faction faction, VoxelModelName name, VoxelObjGridDataAnimHD grid)
-        //   : base()
-        //{
-        //    this.faction = faction;
-        //    this.name = name;
+    //    //public FactionModelBuilder(Faction faction, VoxelModelName name, VoxelObjGridDataAnimHD grid)
+    //    //   : base()
+    //    //{
+    //    //    this.faction = faction;
+    //    //    this.name = name;
 
-        //    VoxelObjGridDataAnimHD copy = grid.Clone();
-        //    copy.ReplaceMaterial(faction.profile.modelColorReplace);
+    //    //    VoxelObjGridDataAnimHD copy = grid.Clone();
+    //    //    copy.ReplaceMaterial(faction.profile.modelColorReplace);
 
-        //    switch (name)
-        //    {
-        //        case VoxelModelName.banner:
-        //            addFlagTexture(copy, TroopBannerStart, true);
-        //            break;
-        //        case VoxelModelName.horsebanner:
-        //            addFlagTexture(copy, HorseBannerStart, true);
-        //            break;
-        //        case VoxelModelName.citybanner:
-        //            addFlagTexture(copy, CityBannerStart, true);
-        //            break;
-        //        case VoxelModelName.armystand:
-        //            addFlagTexture(copy, ArmyStandStart, true);
-        //            break;
-        //        case VoxelModelName.armybanner:
-        //            addFlagTexture(copy, ArmyBannerStart, false);
-        //            break;
-        //        case VoxelModelName.cityicon:
-        //            addFlagTexture(copy, CityIconStart, false);
-        //            break;
-        //    }
+    //    //    switch (name)
+    //    //    {
+    //    //        case VoxelModelName.banner:
+    //    //            addFlagTexture(copy, TroopBannerStart, true);
+    //    //            break;
+    //    //        case VoxelModelName.horsebanner:
+    //    //            addFlagTexture(copy, HorseBannerStart, true);
+    //    //            break;
+    //    //        case VoxelModelName.citybanner:
+    //    //            addFlagTexture(copy, CityBannerStart, true);
+    //    //            break;
+    //    //        case VoxelModelName.armystand:
+    //    //            addFlagTexture(copy, ArmyStandStart, true);
+    //    //            break;
+    //    //        case VoxelModelName.armybanner:
+    //    //            addFlagTexture(copy, ArmyBannerStart, false);
+    //    //            break;
+    //    //        case VoxelModelName.cityicon:
+    //    //            addFlagTexture(copy, CityIconStart, false);
+    //    //            break;
+    //    //    }
 
-        //    var centerAdjust = grid.Frames[0].BottomCenterAdj();
-
-
-        //    buildVerticeDataHD(copy.Frames, centerAdjust);
+    //    //    var centerAdjust = grid.Frames[0].BottomCenterAdj();
 
 
-        //    new Timer.Action0ArgTrigger(synchedUpdate);            
-        //}
+    //    //    buildVerticeDataHD(copy.Frames, centerAdjust);
 
-        public Graphics.VoxelModel buildModel(Faction faction, VoxelModelName name, VoxelObjGridDataAnimHD grid)
-        {
-            //this.faction = faction;
-            //this.name = name;
 
-            VoxelObjGridDataAnimHD copy = grid.Clone();
-            copy.ReplaceMaterial(faction.profile.modelColorReplace);
+    //    //    new Timer.Action0ArgTrigger(synchedUpdate);            
+    //    //}
+
+    //    public Graphics.VoxelModel buildModel(Faction faction, VoxelModelName name, VoxelObjGridDataAnimHD grid)
+    //    {
+    //        //this.faction = faction;
+    //        //this.name = name;
+
+    //        VoxelObjGridDataAnimHD copy = grid.Clone();
+    //        copy.ReplaceMaterial(faction.flagProfile.modelColorReplace);
             
 
-            switch (name)
-            {
-                case VoxelModelName.banner:
-                    addFlagTexture(faction, copy, TroopBannerStart, true, 1);
-                    addFlagTexture(faction, copy, TroopBannerStart, true, 2);
-                    addFlagTexture(faction, copy, TroopBannerStart, true, 3);
-                    break;
-                case VoxelModelName.wars_flag:
-                    addFlagTexture(faction, copy, WavingFlagStart, true, 0);
-                    addFlagTexture(faction, copy, WavingFlagStart, true, 1);
+    //        switch (name)
+    //        {
+    //            case VoxelModelName.banner:
+    //                addFlagTexture(faction, copy, TroopBannerStart, true, 1);
+    //                addFlagTexture(faction, copy, TroopBannerStart, true, 2);
+    //                addFlagTexture(faction, copy, TroopBannerStart, true, 3);
+    //                break;
+    //            case VoxelModelName.wars_flag:
+    //                addFlagTexture(faction, copy, WavingFlagStart, true, 0);
+    //                addFlagTexture(faction, copy, WavingFlagStart, true, 1);
 
-                    addFlagTexture(faction, copy, WavingFlagStart, true, 3);
-                    addFlagTexture(faction, copy, WavingFlagStart, true, 4);
-                    addFlagTexture(faction, copy, WavingFlagStart_LargeFlag, true, 5);
+    //                addFlagTexture(faction, copy, WavingFlagStart, true, 3);
+    //                addFlagTexture(faction, copy, WavingFlagStart, true, 4);
+    //                addFlagTexture(faction, copy, WavingFlagStart_LargeFlag, true, 5);
 
-                    addFlagTexture(faction, copy, WavingFlagStart, true, 8);
-                    break;
-                case VoxelModelName.horsebanner:
-                    addFlagTexture(faction, copy, HorseBannerStart, true);
-                    break;
-                case VoxelModelName.citybanner:
-                    addFlagTexture(faction, copy, CityBannerStart, true);
-                    break;
-                case VoxelModelName.armystand:
-                    addFlagTexture(faction, copy, ArmyStandStart, true, 0);
-                    addFlagTexture(faction, copy, ArmyShipStart, true, 1);
-                    break;
-                case VoxelModelName.armystand_detail:
-                    addFlagTexture(faction, copy, ArmyStandStart, true, 0);
-                    break;
-                case VoxelModelName.armybanner:
-                    addFlagTexture(faction, copy, ArmyBannerStart, false);
-                    break;
-                case VoxelModelName.cityicon:
-                    addFlagTexture(faction, copy, CityIconStart, false);
-                    break;
-            }
+    //                addFlagTexture(faction, copy, WavingFlagStart, true, 8);
+    //                break;
+    //            case VoxelModelName.horsebanner:
+    //                addFlagTexture(faction, copy, HorseBannerStart, true);
+    //                break;
+    //            case VoxelModelName.citybanner:
+    //                addFlagTexture(faction, copy, CityBannerStart, true);
+    //                break;
+    //            case VoxelModelName.armystand:
+    //                addFlagTexture(faction, copy, ArmyStandStart, true, 0);
+    //                addFlagTexture(faction, copy, ArmyShipStart, true, 1);
+    //                break;
+    //            case VoxelModelName.armystand_detail:
+    //                addFlagTexture(faction, copy, ArmyStandStart, true, 0);
+    //                break;
+    //            case VoxelModelName.armybanner:
+    //                addFlagTexture(faction, copy, ArmyBannerStart, false);
+    //                break;
+    //            case VoxelModelName.cityicon:
+    //                addFlagTexture(faction, copy, CityIconStart, false);
+    //                break;
+    //        }
 
-            var centerAdjust = grid.Frames[0].BottomCenterAdj();
+    //        var centerAdjust = grid.Frames[0].BottomCenterAdj();
 
 
-            buildVerticeDataHD_ColorNormal(copy.Frames, centerAdjust);
+    //        buildVerticeDataHD_ColorNormal(copy.Frames, centerAdjust);
 
-            Graphics.VoxelModel model = modelFromVertices();
+    //        Graphics.VoxelModel model = modelFromVertices();
 
-            if (name == VoxelModelName.wars_flag)
-            {
-                model.Effect = FlagWaveEffect.GetSingletonSafe();
-            }
+    //        if (name == VoxelModelName.wars_flag)
+    //        {
+    //            model.Effect = FlagWaveEffect.GetSingletonSafe();
+    //        }
 
-            return model;
-        }
-        //void synchedUpdate()
-        //{
-        //    Graphics.VoxelModel model = modelFromVertices();
+    //        return model;
+    //    }
+    //    //void synchedUpdate()
+    //    //{
+    //    //    Graphics.VoxelModel model = modelFromVertices();
 
-        //    faction.onNewModel(name, model);
-        //}
+    //    //    faction.onNewModel(name, model);
+    //    //}
 
-        void addFlagTexture(Faction faction, VoxelObjGridDataAnimHD grid, IntVector3 start, bool standing, int frame = 0)
-        {
-            var gridData = grid.Frames[frame];
+    //    void addFlagTexture(Faction faction, VoxelObjGridDataAnimHD grid, IntVector3 start, bool standing, int frame = 0)
+    //    {
+    //        if (faction.profile.blockColors != null)
+    //        {
 
-            var flagLoop = faction.profile.flagDesign.LoopInstance();
-            while (flagLoop.Next())
-            {
-                byte colId = faction.profile.flagDesign.Get(flagLoop.Position);
-                var blockCol = faction.profile.blockColors[colId];
+    //            var gridData = grid.Frames[frame];
 
-                IntVector3 gridPos = start;
-                gridPos.X += flagLoop.Position.X;
-                if (standing)
-                {
-                    gridPos.Y -= flagLoop.Position.Y; //inverted
-                }
-                else
-                {
-                    gridPos.Z += flagLoop.Position.Y;
-                }
-                gridData.Set(gridPos, blockCol);
-            }
-        }
-    }
+    //            var flagLoop = faction.profile.flagDesign.LoopInstance();
+    //            while (flagLoop.Next())
+    //            {
+    //                byte colId = faction.profile.flagDesign.Get(flagLoop.Position);
+    //                var blockCol = faction.profile.blockColors[colId];
+
+    //                IntVector3 gridPos = start;
+    //                gridPos.X += flagLoop.Position.X;
+    //                if (standing)
+    //                {
+    //                    gridPos.Y -= flagLoop.Position.Y; //inverted
+    //                }
+    //                else
+    //                {
+    //                    gridPos.Z += flagLoop.Position.Y;
+    //                }
+    //                gridData.Set(gridPos, blockCol);
+    //            }
+    //        }
+    //    }
+    //}
 }

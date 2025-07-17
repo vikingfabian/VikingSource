@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using VikingEngine.LootFest.Editor;
+
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.Threading.Tasks;

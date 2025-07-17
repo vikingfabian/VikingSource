@@ -68,8 +68,9 @@ namespace VikingEngine.Voxels
             }
         }
 
-        public Vector3 pencilMovement(int playerIndex, float settingsMoveSpeed)
+        public Vector3 pencilMovement(int playerIndex, float settingsMoveSpeed, out bool yMoveToggle)
         {
+            yMoveToggle = false;
             if (toggleCameraMode.IsDown)
             {
                 return Vector3.Zero;
@@ -106,6 +107,7 @@ namespace VikingEngine.Voxels
 
             if (keyboardYmovementToggel.IsDown)
             {
+                yMoveToggle = true;
                 result.Y -= result.Z;
                 result.Z = 0;
             }

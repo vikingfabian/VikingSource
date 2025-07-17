@@ -6,11 +6,11 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.Component;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface.Component;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Data;
@@ -85,6 +85,16 @@ namespace VikingEngine.DSSWars.Conscript
                 NobelWeapons,
                 GunWeapons,
                 CannonWeapons,
+            };
+        }
+        public static List<ItemResourceType[]> AllHandWeapons()
+        {
+            return new List<ItemResourceType[]>
+            {
+                SoldierWeapons,
+                ArcherWeapons,
+                NobelWeapons,
+                GunWeapons,
             };
         }
 
@@ -329,11 +339,11 @@ namespace VikingEngine.DSSWars.Conscript
                 que.buttonsToHud(player, content, queClick, currentStatus.que, BarracksStatus.MaxQue, true);
 
                 content.newParagraph();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsWorker), new RbSpace(), new RbText(DssRef.todoLang.Conscript_MaxPopulation) },
-                    maxPopulationProperty, new RbTooltip_Text(DssRef.todoLang.Conscript_MaxPopulation_Description)));
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsWorker), new RbSpace(), new RbText(DssRef.lang.Conscript_MaxPopulation) },
+                    maxPopulationProperty, new RbTooltip_Text(DssRef.lang.Conscript_MaxPopulation_Description)));
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsResource_Food), new RbSpace(), new RbText(DssRef.todoLang.Conscript_FoodAbundance) },
-                    maxFoodProperty, new RbTooltip_Text(DssRef.todoLang.Conscript_FoodAbundance_Description)));
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsResource_Food), new RbSpace(), new RbText(DssRef.lang.Conscript_FoodAbundance) },
+                    maxFoodProperty, new RbTooltip_Text(DssRef.lang.Conscript_FoodAbundance_Description)));
 
                 content.newParagraph();
                 content.Add(new RbImage(player.gameControls.input.Copy.Icon));
@@ -437,11 +447,11 @@ namespace VikingEngine.DSSWars.Conscript
                     content.Add(new RbSeperationLine());
                     if (currentStatus.requireMaxPopulation)
                     {
-                        progressPoint(DssRef.todoLang.Conscript_MaxPopulation, true, hasPopulation);
+                        progressPoint(DssRef.lang.Conscript_MaxPopulation, true, hasPopulation);
                     }
                     if (currentStatus.requireMaxFood)
                     {
-                        progressPoint(DssRef.todoLang.Conscript_FoodAbundance, true, hasFood);
+                        progressPoint(DssRef.lang.Conscript_FoodAbundance, true, hasFood);
                     }
 
                     progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment, menCostProgress, out bool gotEquipment), currentStatus.active > ConscriptActiveStatus.CollectingEquipment, gotEquipment);
