@@ -100,6 +100,7 @@ namespace VikingEngine.DSSWars
             {
                 this.myIndex = addTo.factions.Add(this);
             }
+            factionIndex = myIndex;
             initVisuals(addTo.metaData);
 
             cities = new SpottedArray<GameObject.City>(8);

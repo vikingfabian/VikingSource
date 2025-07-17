@@ -37,9 +37,9 @@ namespace VikingEngine.DSSWars.Defence
             w.Write(assignedToPost_IdAndPosition);
         }
 
-        public override void readGameState(BinaryReader r, int subVersion, bool needInit, ObjectPointerCollection pointers)
+        public override void readGameState(AbsArmy tArmy, BinaryReader r, int subVersion, bool needInit, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, subVersion, needInit, pointers);
+            base.readGameState(tArmy, r, subVersion, needInit, pointers);
 
             assignedToPost_IdAndPosition = r.ReadInt32();
             if (assignedToPost_IdAndPosition >= 0)
@@ -61,8 +61,12 @@ namespace VikingEngine.DSSWars.Defence
         {
             if (transformType == SoldierTransformType.EnterGuard)
             {
-                var city = this.army.GetCity();
-                TeleportToDefencePost(city, positionId, city.defenceIxFromPosId(positionId));
+                if (army.TryGetTarget(out var tArmy))
+                {
+                    var city = tArmy.GetCity();
+
+                    TeleportToDefencePost(city, positionId, city.defenceIxFromPosId(positionId));
+                }
             }
             else if (transformType == SoldierTransformType.ExitGuard)
             {

@@ -72,12 +72,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (soldier.soldierData.modelData.modelType == ModelType.Soldier)
                 {
-                    model = soldier.group.army.GetFaction().AutoLoadModelInstance_character(
+                    model = soldier.GetFaction().AutoLoadModelInstance_character(
                         soldier.soldierData.modelData, soldier.soldierData.modelScale);
                 }
                 else
                 {
-                    model = soldier.group.army.GetFaction().AutoLoadModelInstance_batched(
+                    model = soldier.GetFaction().AutoLoadModelInstance_batched(
                         soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale);
                 }
             }

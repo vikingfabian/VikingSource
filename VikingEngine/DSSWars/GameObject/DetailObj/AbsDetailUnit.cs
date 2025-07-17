@@ -264,7 +264,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual protected AbsMapObject ParentMapObject()
         {
-            return group.army;
+            
+            group.army.TryGetTarget(out var tArmy);
+            return tArmy;
         }
 
         virtual protected bool canTargetUnit(AbsDetailUnit unit)
@@ -305,9 +307,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 ++enemyFaction.player.GetLocalPlayer().statistics.EnemySoldiersKilled;
             }
-            if (group.army.GetPlayer().IsLocalPlayer())
+            if (group.GetPlayer().IsLocalPlayer())
             {
-                ++group.army.GetPlayer().GetLocalPlayer().statistics.FriendlySoldiersLost;
+                ++group.GetPlayer().GetLocalPlayer().statistics.FriendlySoldiersLost;
             }
 
             if (fullUpdate)

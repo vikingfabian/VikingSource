@@ -59,12 +59,15 @@ namespace VikingEngine.DSSWars.Players.Command
 
         public static void ExitPost(GuardGroup group)
         {
-            var city = group.army.GetCity();
-            int defenceIndex = city.defenceIxFromPosId(group.assignedToPost_IdAndPosition);
-            if (city.defenceBuildings.InBound(defenceIndex))
+            if (group.army.TryGetTarget(out var tArmy))
             {
-                ref var defence = ref city.defenceBuildings.array[defenceIndex];
-                defence.soldierGroupId = DefenceStatus.NoSoldiers;
+                var city = tArmy.GetCity();
+                int defenceIndex = city.defenceIxFromPosId(group.assignedToPost_IdAndPosition);
+                if (city.defenceBuildings.InBound(defenceIndex))
+                {
+                    ref var defence = ref city.defenceBuildings.array[defenceIndex];
+                    defence.soldierGroupId = DefenceStatus.NoSoldiers;
+                }
             }
         }
 

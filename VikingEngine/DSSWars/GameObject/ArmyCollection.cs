@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.GameObject
                     new RbAction1Arg<AbsMapObject>(selectClick, obj),
                     new RbTooltip_Text(DssRef.lang.InputActionName_ControllerSelect)));
 
-                obj.GetArmy().toGroupHud(args.content);
+                obj.GetAbsArmy().toGroupHud(args.content);
                 
                 args.content.Add(new RbSeperationLine());
                 

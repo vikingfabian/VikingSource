@@ -910,7 +910,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                         break;
                     case GameObjectType.Army:
-                        var army = m.GetArmy();
+                        var army = m.GetAbsArmy();
                         if (army.workerUnits != null)
                         {
                             foreach (var worker in army.workerUnits)

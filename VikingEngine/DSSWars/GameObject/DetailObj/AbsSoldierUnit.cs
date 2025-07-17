@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.group = group;
             this.gridPlacement = gridPlacement;
-            myIndex = group.army.GetFaction().pickNextUnitId();
+            myIndex = group.GetFaction().pickNextUnitId();
             //bound = new Physics.CircleBound(Vector2.Zero, SoldierProfile().boundRadius);
             boundRadius = SoldierProfile().boundRadius;
 
@@ -1468,7 +1468,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override AbsMapObject RelatedMapObject()
         {
-            return group.army;
+            group.army.TryGetTarget(out var tArmy);
+            return tArmy;
         }
 
         public override GameObjectType gameobjectType()
@@ -1486,9 +1487,10 @@ namespace VikingEngine.DSSWars.GameObject
             return group;
         }
 
-        public override Army GetArmy()
+        public override AbsArmy GetAbsArmy()
         {
-            return group.army.GetArmy();
+            group.army.TryGetTarget(out var tArmy);
+            return tArmy;
         }
         public override UnitType DetailUnitType()
         {

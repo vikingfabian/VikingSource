@@ -202,7 +202,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void divideTab(RichBoxContent content)
         {
-            List<GameObject.Army> tradeAbleArmies = new List<GameObject.Army>();
+            List<GameObject.AbsArmy> tradeAbleArmies = new List<GameObject.AbsArmy>();
             DssRef.world.unitCollAreaGrid.collectArmies(player.faction.myIndex, army.tilePos, 1,
                 tradeAbleArmies);
 
@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars.Interface
                 buttonContent.Add(new RbText(otherArmy.TypeName()));
 
                 var button = new ArtOption(player.hud.objMenu.otherArmy == otherArmy, buttonContent,
-                new RbAction1Arg<Army>(selectArmyTrade, otherArmy, SoundLib.menutab));
+                new RbAction1Arg<AbsArmy>(selectArmyTrade, otherArmy, SoundLib.menutab));
                 //button.setGroupSelectionColor(HudLib.RbSettings, player.hud.objMenu.otherArmy == otherArmy);
                 content.Add(button);
             }
@@ -317,7 +317,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(mergeAllButton);
         }
 
-        public static void FilterTradeAbleArmies(Army army,List<Army> tradeAbleArmies)
+        public static void FilterTradeAbleArmies(Army army,List<AbsArmy> tradeAbleArmies)
         {
             for (int i = tradeAbleArmies.Count - 1; i >= 0; --i)
             {
@@ -504,7 +504,7 @@ namespace VikingEngine.DSSWars.Interface
             player.hud.objMenu.menu.OpenMenu(TradeMenuState, StackOption.Stack);
         }
 
-        void selectArmyTrade(Army toarmy)
+        void selectArmyTrade(AbsArmy toarmy)
         {
             player.hud.objMenu.otherArmy = toarmy;
         }

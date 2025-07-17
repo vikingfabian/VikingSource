@@ -1,5 +1,5 @@
 ﻿UPDATE
-* Optimization: +1 cirkular reference
+* Optimization: +1 (50k) cirkular reference, +3 (20k), +1 (40k)
 
 Voxel editor: 
 *

@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.Battle
                             if (intersection.IsCollision)
                             {
                                
-                                if (parent.group.army.factionIndex == unit.group.army.factionIndex)
+                                if (parent.factionIndex == unit.factionIndex)
                                 {
                                     if (Rotation1D.AngleDifference_Absolute(parent.rotation.radians, lib.V2ToAngle_PreNorm_Unsafe(-intersection.direction)) < MathExt.TauOver8)
                                     {

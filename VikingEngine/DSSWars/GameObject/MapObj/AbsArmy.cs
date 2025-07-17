@@ -29,14 +29,24 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //Hitta en plats bland alla grupper
             group.myIndex = groups.Add(group);
-            group.army = this;
+            group.army = new WeakReference<AbsArmy>(this);
+            group.factionIndex = factionIndex;
         }
         virtual public void remove(SoldierGroup group)
         {
             Debug.CrashIfThreaded();
             groups.RemoveAt_EqualSafeCheck(group, group.myIndex);            
         }
+        public override void setFaction(Faction newFaction, bool duringStartup)
+        {
+            base.setFaction(newFaction, duringStartup);
 
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {
+                groupsC.sel.factionIndex = newFaction.myIndex;
+            }
+        }
         public void asyncBattleUpdate()
         {
             int mostCenter = -1;
