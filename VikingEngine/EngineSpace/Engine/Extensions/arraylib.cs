@@ -228,6 +228,11 @@ namespace VikingEngine
             return list[random.Int(list.Count)];
         }
 
+        public static int MaxIndex<T>(List<T> list)
+        {
+            return list.Count -1;
+        }
+
         public static List<T> RandomListMembers<T>(List<T> list, int count)
         {
             if (list.Count <= count)

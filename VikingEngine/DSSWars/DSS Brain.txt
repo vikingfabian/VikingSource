@@ -1,22 +1,20 @@
 ﻿UPDATE
-* Optimization: +1 (50k) cirkular reference, +3 (20k), +1 (40k)
-* Fixed load crash
-
-! camera culling is weird on near zoom
+* Fixed a load crash
+* Fixed out of map bounds crash
+* Fixed: camera culling is weird on near zoom
 
 Voxel editor: 
-*
+* merge layer
+* added some icons
+
 X remove layer
-X merge layer
 X shift description
 X load retail character models
 
 #Voxel editor#
 
 #Pics
-Animated
-Move up down
-
+synligeare merge down layer
 
 #OPT#
 monogame fork? DrawUserPrimitives opt, titta på OGG filer

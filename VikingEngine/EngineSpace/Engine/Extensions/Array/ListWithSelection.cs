@@ -143,6 +143,20 @@ namespace VikingEngine
             }
         }
 
+        public T PeekPrevious(bool rollover)
+        {
+            int index = selectedIndex -1;
+            if (index < 0)
+            {
+                if (rollover)
+                    index = list.Count - 1;
+                else
+                    index = 0;
+            }
+
+            return list[index];
+        }
+
         /// <summary>
         /// Move the selected member in the list
         /// </summary>

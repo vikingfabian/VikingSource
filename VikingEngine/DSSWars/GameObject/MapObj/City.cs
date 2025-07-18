@@ -2945,7 +2945,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (DssRef.world != null)
             {
-                var faction = GetFaction();
+                var faction = GetFaction_Safe();
                 DssRef.world.BordersUpdated = true;
 
                 //detailObj?.onNewOwner();

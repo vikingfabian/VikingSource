@@ -25,6 +25,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string ProfileEditor_LeaderColor => "Leader";
 
 
+        public string Editor_ConvertAnimationToLayers => "Convert animation to layers";
+
     }
 
 }

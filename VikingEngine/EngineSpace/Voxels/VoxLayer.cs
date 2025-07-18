@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
+using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Voxels;
 
@@ -243,6 +244,27 @@ namespace VikingEngine.Voxels
                 animationFrames.Frames[currentFrame].BucketFill(pos, fromColor, toColor, continous);
             }
             //animationFrames.BucketFill(action.keyDownDrawCoord, action.frame, action.fill == PaintFillType.Delete ? BlockHD.EmptyBlock : action.material1, action.paintSettings.continiousFill, action.allFrames, );
+        }
+
+        public void merge_recieve(VoxLayer topLayer, int currentFrame)
+        {
+            if (!topLayer.animatedLayer && !animatedLayer)
+            {
+                //just merge one frame
+                animationFrames.Frames[0].Merge(topLayer.GetFrame(currentFrame), true, true, IntVector3.Zero);
+            }
+            else
+            {
+                animatedLayer = true;
+                int animationLength = Math.Max(animationFrames.Frames.Count, topLayer.animationFrames.Frames.Count);
+
+                refreshFrameCount(animationLength);
+
+                for (int frame = 0; frame < animationLength; frame++)
+                {
+                    animationFrames.Frames[frame].Merge(topLayer.GetFrame(frame), true, true, IntVector3.Zero);
+                }
+            }
         }
 
         

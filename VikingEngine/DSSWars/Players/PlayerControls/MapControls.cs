@@ -316,7 +316,7 @@ namespace VikingEngine.DSSWars.Players
         {
             pointerPosWP = screenPosToWorldPos(pointerPos());
             IntVector2 prevTile = tilePosition;
-            tilePosition = WP.ToTilePos(pointerPosWP);
+            tilePosition = DssRef.world.tileBounds.KeepTilePointInArea(WP.ToTilePos(pointerPosWP));
             onNewTile = prevTile != tilePosition;
             if (onNewTile)
             {
