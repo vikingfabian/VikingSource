@@ -2222,7 +2222,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void CityPresentationHud(ObjectHudArgs args, bool tooltip)
         {
-            Faction faction = GetFaction();
+            Faction faction = GetFaction_Safe();
             if (faction != null)
             {
                 nameToHud(args.content, !tooltip);
@@ -2936,21 +2936,21 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     owner.remove(this);                   
                 }
-                OnNewOwner();
+                OnNewOwner(newFaction);
                 //guardCount = Bound.Min(guardCount, 1);
             }
         }
 
-        override public void OnNewOwner()
+        override public void OnNewOwner(Faction newFaction)
         {
             if (DssRef.world != null)
             {
-                var faction = GetFaction_Safe();
+                //var faction = GetFaction_Safe();
                 DssRef.world.BordersUpdated = true;
 
                 //detailObj?.onNewOwner();
 
-                if (cityType == CityType.Factory && faction.factiontype != FactionType.DarkLord)
+                if (cityType == CityType.Factory && newFaction.factiontype != FactionType.DarkLord)
                 {
                     setFactoryType(false);
                 }
@@ -2960,9 +2960,9 @@ namespace VikingEngine.DSSWars.GameObject
                     //createOverViewModel();
                 }
 
-                workTemplate.onFactionChange(faction.workTemplate);
-                tradeTemplate.onFactionValueChange(faction.tradeTemplate);
-                technology.addFactionUnlocked(faction.technology, true, false);
+                workTemplate.onFactionChange(newFaction.workTemplate);
+                tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
+                technology.addFactionUnlocked(newFaction.technology, true, false);
             }
         }
 

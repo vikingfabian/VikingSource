@@ -430,6 +430,11 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
+                //Debug.Log($"Queu time {battleData.queueTime}");
+                //if (battleData.queueTime < 0)
+                //{
+                //    Debug.Log("!!!ZERO");
+                //}
                 return battleData.queueTime <= 0;
             }
 

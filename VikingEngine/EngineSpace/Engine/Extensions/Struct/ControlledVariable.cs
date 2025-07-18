@@ -205,15 +205,15 @@ namespace VikingEngine
 
         public float Hours
         {
-            get { return TimeExt.SecondsToHours(Ref.TotalGameTimeSec - totalTimeStampSec); }
+            get { return TimeExt.SecondsToHours(-Ref.TotalGameTimeSec + totalTimeStampSec); }
         }
         public float Seconds
         {
-            get { return Ref.TotalGameTimeSec - totalTimeStampSec; }
+            get { return -Ref.TotalGameTimeSec + totalTimeStampSec; }
         }
         public float MilliSec
         {
-            get { return TimeExt.SecondsToMS(Ref.TotalGameTimeSec - totalTimeStampSec); }
+            get { return TimeExt.SecondsToMS(-Ref.TotalGameTimeSec + totalTimeStampSec); }
         }
     }
 

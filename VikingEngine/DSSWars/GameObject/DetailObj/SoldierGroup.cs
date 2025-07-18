@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.GameObject
         public DetailWalkingPath detailPath = null;
         float waitTime = 0;
         public AbsCommand command = null;
-        
+        GameTimeStamp enterBattleStateTime = GameTimeStamp.None;
 
         public SoldierGroup(AbsArmy tArmy, SoldierConscriptProfile conscript, Vector3 startPos)
         {
@@ -660,24 +660,34 @@ namespace VikingEngine.DSSWars.GameObject
 
         void enterBattleState(bool enter)
         {
-            if (enter)
+            if (enter != (state == GroupState.Battle))
             {
-                state = GroupState.Battle;
-                createSoldierObjects(enter, false);
-            }
-            else
-            {
-                highTargetValueToOpponent = float.MaxValue;
-                state = GroupState.FindArmyPlacement;
-            }
-
-            var soldiers_sp = soldiers;
-            if (soldiers_sp != null)
-            {
-                var soldiersC = soldiers_sp.counter();
-                while (soldiersC.Next())
+                if (enter)
                 {
-                    soldiersC.sel.enterBattleState(enter);
+                    enterBattleStateTime = GameTimeStamp.Now();
+
+                    state = GroupState.Battle;
+                    createSoldierObjects(enter, false);
+                }
+                else
+                {
+                    if (!enterBattleStateTime.secPassed(5))
+                    {
+                        return;
+                    }
+
+                    highTargetValueToOpponent = float.MaxValue;
+                    state = GroupState.FindArmyPlacement;      
+                }
+
+                var soldiers_sp = soldiers;
+                if (soldiers_sp != null)
+                {
+                    var soldiersC = soldiers_sp.counter();
+                    while (soldiersC.Next())
+                    {
+                        soldiersC.sel.enterBattleState(enter);
+                    }
                 }
             }
         }
@@ -850,6 +860,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (goalTarget != null && distance(goalTarget) < attackRadius)
                         {
                             attackTarget_soldierGroupOrCity = new WeakReference<AbsGroup>(goalTarget);
+                            goalTarget.OnBecomeAttackTarget();
                             cancelCommand();
                             updateMoveAndAttackTarget(time, fullUpdate, goalTarget);
                         }
@@ -1003,9 +1014,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-                    if (soldiers != null)
+                    var soldiers_sp = soldiers;
+                    if (soldiers_sp != null)
                     {
-                        var soldiersC = soldiers.counter();
+                        var soldiersC = soldiers_sp.counter();
                         while (soldiersC.Next())
                         {
                             soldiersC.sel.update2(time, fullUpdate);
@@ -1022,6 +1034,11 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+        }
+
+        public override void OnBecomeAttackTarget()
+        {
+            enterBattleState(true);
         }
 
 
@@ -1596,6 +1613,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     attackTargetTimeLock = Ref.TotalGameTimeSec + 2f + distanceValue;
                     attackTarget_soldierGroupOrCity =new WeakReference<AbsGroup>(nearest);
+                    nearest.OnBecomeAttackTarget();
                 }
             }
 

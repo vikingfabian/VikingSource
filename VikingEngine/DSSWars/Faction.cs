@@ -297,17 +297,17 @@ namespace VikingEngine.DSSWars
             availableForPlayer= r.ReadBoolean();
         }
 
-        public void OnFlagtextureLoaded()
+        public void OnFlagtextureLoaded(Faction newFaction)
         {
             if (!textureLoaded)
             {
                 FlagTexture.SetSpriteName(SpriteName.NO_IMAGE);
                 textureLoaded = true;
-                onNewOwner();
+                onNewOwner(newFaction);
             }
         }
 
-        void onNewOwner()
+        void onNewOwner(Faction newFaction)
         {
             if (!textureLoaded)
                 FlagTexture.ColorAndAlpha = player.profile.flag.col0_Main.ToVector4();
@@ -315,7 +315,7 @@ namespace VikingEngine.DSSWars
             var citiesC = cities.counter();
             while (citiesC.Next())
             {
-                citiesC.sel.OnNewOwner();
+                citiesC.sel.OnNewOwner(newFaction);
             }
         }
         

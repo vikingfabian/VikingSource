@@ -1196,15 +1196,24 @@ namespace VikingEngine.DSSWars.Work
                         //player.hud.tooltip.create(player, content, true);
                     //}));
 
-                    mining_iron.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Iron), SpriteName.WarsWorkMine, SpriteName.WarsResource_Iron, WorkPriorityType.miningIron, faction, city, city.terrainStructure.mineCount_bogIron + city.terrainStructure.mineCount_iron);
-                    mining_tin.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Tin), SpriteName.WarsWorkMine, SpriteName.WarsResource_Tin, WorkPriorityType.miningTin, faction, city, city.terrainStructure.mineCount_tin);
-                    mining_cupper.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Copper), SpriteName.WarsWorkMine, SpriteName.WarsResource_Copper, WorkPriorityType.miningCopper, faction, city, city.terrainStructure.mineCount_copper);
-                    mining_lead.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Lead), SpriteName.WarsWorkMine, SpriteName.WarsResource_Lead, WorkPriorityType.miningLead, faction, city, city.terrainStructure.mineCount_lead);
-                    mining_silver.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Silver), SpriteName.WarsWorkMine, SpriteName.WarsResource_Silver, WorkPriorityType.miningSilver, faction, city, city.terrainStructure.mineCount_silver);
-                    mining_gold.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.ResourceType_Gold), SpriteName.WarsWorkMine, SpriteName.WarsResource_Gold, WorkPriorityType.miningGold, faction, city, city.terrainStructure.mineCount_gold);
-                    mining_mithril.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Mithril), SpriteName.WarsWorkMine, SpriteName.WarsResource_Mithril, WorkPriorityType.miningMithril, faction, city, city.terrainStructure.mineCount_mithril);
-                    mining_sulfur.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Sulfur), SpriteName.WarsWorkMine, SpriteName.WarsResource_Sulfur, WorkPriorityType.miningSulfur, faction, city, city.terrainStructure.mineCount_sulfur);
-                    mining_coal.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Coal), SpriteName.WarsWorkMine, SpriteName.WarsResource_Fuel, WorkPriorityType.miningCoal, faction, city, city.terrainStructure.mineCount_coal);
+                    mining_iron.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Iron), SpriteName.WarsWorkMine, SpriteName.WarsResource_Iron, WorkPriorityType.miningIron, faction, city,
+                        city == null? 0: city.terrainStructure.mineCount_bogIron + city.terrainStructure.mineCount_iron);
+                    mining_tin.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Tin), SpriteName.WarsWorkMine, SpriteName.WarsResource_Tin, WorkPriorityType.miningTin, faction, city,
+                        city == null ? 0 : city.terrainStructure.mineCount_tin);
+                    mining_cupper.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Copper), SpriteName.WarsWorkMine, SpriteName.WarsResource_Copper, WorkPriorityType.miningCopper, faction, city,
+                         city == null ? 0 : city.terrainStructure.mineCount_copper);
+                    mining_lead.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Lead), SpriteName.WarsWorkMine, SpriteName.WarsResource_Lead, WorkPriorityType.miningLead, faction, city,
+                         city == null ? 0 : city.terrainStructure.mineCount_lead);
+                    mining_silver.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Silver), SpriteName.WarsWorkMine, SpriteName.WarsResource_Silver, WorkPriorityType.miningSilver, faction, city,
+                         city == null ? 0 : city.terrainStructure.mineCount_silver);
+                    mining_gold.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.ResourceType_Gold), SpriteName.WarsWorkMine, SpriteName.WarsResource_Gold, WorkPriorityType.miningGold, faction, city,
+                         city == null ? 0 : city.terrainStructure.mineCount_gold);
+                    mining_mithril.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Mithril), SpriteName.WarsWorkMine, SpriteName.WarsResource_Mithril, WorkPriorityType.miningMithril, faction, city,
+                         city == null ? 0 : city.terrainStructure.mineCount_mithril);
+                    mining_sulfur.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Sulfur), SpriteName.WarsWorkMine, SpriteName.WarsResource_Sulfur, WorkPriorityType.miningSulfur, faction, city,
+                         city == null ? 0 : city.terrainStructure.mineCount_sulfur);
+                    mining_coal.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Coal), SpriteName.WarsWorkMine, SpriteName.WarsResource_Fuel, WorkPriorityType.miningCoal, faction, city,
+                         city == null ? 0 : city.terrainStructure.mineCount_coal);
                     content.newParagraph();
            
                     craft_iron.toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Iron), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Iron, WorkPriorityType.smeltIron, faction, city);
@@ -1321,7 +1330,7 @@ namespace VikingEngine.DSSWars.Work
             content.Add(infoButton);
             content.Add(new RbTab(0.2f));
 
-            if (mineCount <= 0)
+            if (mineCount <= 0 && city != null)
             {
                 content.Add(new RbText(DssRef.lang.Work_NoMines, HudLib.NotAvailableColor));
             }

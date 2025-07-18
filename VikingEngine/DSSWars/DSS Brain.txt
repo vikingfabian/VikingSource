@@ -1,7 +1,14 @@
 ﻿UPDATE
+* Crash on work tab fix
+
+
 * Fixed a load crash
 * Fixed out of map bounds crash
 * Fixed: camera culling is weird on near zoom
+* Fixed: negative truce timer
+* Fixed: battle lab crashing
+* fixed: Battles off camera sometimes get stuck
+* repaired: absorb as servant
 
 Voxel editor: 
 * merge layer
@@ -27,6 +34,7 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+x multiplayer is broken in battle lab
 x set all defence is broken, need set all towers
 x how to get science buildings tooltip
 x gun maker missing tooltip info
@@ -51,6 +59,7 @@ x show connected research, next to experience overview types
 x describe work group count
 x Rock thrower guard
 x Ballista, har warmachine crew, guards
+x removing soldiers cancels move order
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning

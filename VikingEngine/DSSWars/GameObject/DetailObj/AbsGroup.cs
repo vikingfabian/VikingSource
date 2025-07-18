@@ -25,6 +25,8 @@ namespace VikingEngine.DSSWars.GameObject
             return null;
         }
 
+        virtual public void OnBecomeAttackTarget() { }
+
         //abstract public bool isMelee();
     }
 }

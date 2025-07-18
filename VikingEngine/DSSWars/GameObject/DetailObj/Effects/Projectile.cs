@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     // warsRef.sound.javelin.Play(start);
                     modelName = LootFest.VoxelModelName.little_javelin;
-                    scale = DssConst.Men_StandardModelScale * 1f;//0.8f;
+                    scale = DssConst.Men_StandardModelScale * 0.6f;//0.8f;
                     linear = true;
                     break;
             }
