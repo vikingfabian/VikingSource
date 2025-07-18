@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     
 
-    class WarmachineProfile : ConscriptedSoldierProfile
+    class WarmachineProfile : ConscriptedSoldierBuilder
     {
         public const float BallistaRange = 3;
         public WarmachineProfile() 
@@ -41,13 +41,13 @@ namespace VikingEngine.DSSWars.GameObject
         public override AbsSoldierUnit CreateUnit()
         {
             
-            return new BaseWarmachine();
+            return new BaseWarmachineBuilder();
         }
     }
 
-    class BaseWarmachine : BaseSoldier
+    class BaseWarmachineBuilder : BaseSoldier
     {
-        public BaseWarmachine()
+        public BaseWarmachineBuilder()
             : base()
         { }
 

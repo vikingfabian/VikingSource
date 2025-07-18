@@ -34,6 +34,7 @@ namespace VikingEngine.LootFest
         #region CHARACTER
         modsoldier_debug,
         modsoldier_body1,
+        modsoldier_body_beef1,
         modsoldier_face1,
         modsoldier_face_skull,
         modsoldier_face_orc,

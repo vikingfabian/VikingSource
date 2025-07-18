@@ -17,11 +17,11 @@ namespace VikingEngine.DSSWars.Map
         public List<GameObject.SoldierGroup> groups_nearUpdate = new List<GameObject.SoldierGroup>(32);
         public List<City> cities_nearUpdate = new List<City>(4);
         public List<GameObject.AbsGroup> groupsAndCities_nearUpdate = new List<GameObject.AbsGroup>(32);
-        public List<GameObject.Army> armies_nearUpdate = new List<GameObject.Army>(8);
+        public List<GameObject.AbsArmy> armies_nearUpdate = new List<GameObject.AbsArmy>(8);
         public List<GameObject.AbsGroup> friendlyGroupsAndCities_nearUpdate = new List<GameObject.AbsGroup>(8);
 
         public List<GameObject.City> cities_aiUpdate = new List<GameObject.City>(8);
-        public List<GameObject.Army> armies_aiUpdate = new List<GameObject.Army>(8);
+        public List<GameObject.AbsArmy> armies_aiUpdate = new List<GameObject.AbsArmy>(8);
 
         public List<GameObject.AbsMapObject> mapObjects_aiUpdate = new List<GameObject.AbsMapObject>(8);
 
@@ -275,7 +275,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             foreach (var group in area.groups)
                             { 
-                                if (group.attackTarget_soldierGroupOrCity != null && group.army.factionIndex == playerFaction)
+                                if (group.attackTarget_soldierGroupOrCity != null && group.factionIndex == playerFaction)
                                 {
                                     return true;
                                 }
@@ -450,16 +450,16 @@ namespace VikingEngine.DSSWars.Map
                                 {
                                     if (m.tilePos.SideLength(city.tilePos) <= radius)
                                     {
-                                        if (city.factionIndex == m.army.factionIndex ||
-                                            DssRef.diplomacy.InWar(city.factionIndex, m.army.factionIndex))
+                                        if (city.factionIndex == m.factionIndex ||
+                                            DssRef.diplomacy.InWar(city.factionIndex, m.factionIndex))
                                         {
-                                            if (faction_power.TryGetValue(m.army.factionIndex, out float strength))
+                                            if (faction_power.TryGetValue(m.factionIndex, out float strength))
                                             {
-                                                faction_power[m.army.factionIndex] = strength + m.strengthValue();
+                                                faction_power[m.factionIndex] = strength + m.strengthValue();
                                             }
                                             else
                                             {
-                                                faction_power.Add(m.army.factionIndex, m.strengthValue());
+                                                faction_power.Add(m.factionIndex, m.strengthValue());
                                             }
                                         }
                                     }
@@ -506,7 +506,7 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 foreach (var m in area.groups)
                                 {
-                                    if (DssRef.diplomacy.InWar(faction, m.army.factionIndex))
+                                    if (DssRef.diplomacy.InWar(faction, m.factionIndex))
                                     {
                                         groups_nearUpdate.Add(m);
                                     }
@@ -719,7 +719,7 @@ namespace VikingEngine.DSSWars.Map
         }
 
 
-        public void collectArmies(IntVector2 tilePos, List<GameObject.Army> armies)
+        public void collectArmies(IntVector2 tilePos, List<GameObject.AbsArmy> armies)
         {
             armies.Clear();
 
@@ -782,7 +782,7 @@ namespace VikingEngine.DSSWars.Map
         }
 
         public void collectArmies(int factionFilter, IntVector2 tilePos, int areaRadius,
-            List<GameObject.Army> armies)
+            List<GameObject.AbsArmy> armies)
         {
             armies.Clear();
             
@@ -818,10 +818,10 @@ namespace VikingEngine.DSSWars.Map
 
 
         public void collectOpponentArmies(int faction, IntVector2 tilePos, int areaRadius,
-            List<GameObject.Army> armies)
+            List<GameObject.AbsArmy> armies)
         {
             armies.Clear();
-            GameObject.Army prevArmy = null;
+            GameObject.AbsArmy prevArmy = null;
 
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
@@ -838,10 +838,10 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 foreach (var m in area.groups)
                                 {
-                                    if (m.army.factionIndex != faction &&
-                                        m.army != prevArmy)
+                                    if (m.factionIndex != faction && !RefExt.EqTarget(prevArmy, m.army))
+                                        /*prevArmy != m.army*/
                                     {
-                                        prevArmy = m.GetArmy();
+                                        prevArmy = m.GetAbsArmy();
                                         if (prevArmy != null && !armies.Contains(prevArmy))
                                         {
                                             armies.Add(prevArmy);

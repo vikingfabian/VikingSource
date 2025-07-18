@@ -68,6 +68,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public City GetCity() { return null; }
 
+        virtual public AbsArmy GetAbsArmy() { return null; }
         virtual public Army GetArmy() { return null; }
         virtual public AbsSoldierUnit GetSoldier() { return null; }
         virtual public SoldierGroup GetSoldierGroup() { return null; }

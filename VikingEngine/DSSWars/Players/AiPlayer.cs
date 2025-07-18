@@ -1603,10 +1603,11 @@ namespace VikingEngine.DSSWars.Players
 
             foreach (var a in DssRef.world.unitCollAreaGrid.armies_aiUpdate)
             {
-                double chance = a.objective == ArmyObjective.None ? 0.8 : 0.1;
+                var army = a as Army;
+                double chance = army.objective == ArmyObjective.None ? 0.8 : 0.1;
                 if (a != mainArmy && Ref.rnd.Chance(chance))
                 {
-                    a.Ai_Order_MoveTo(toPos);
+                    army.Ai_Order_MoveTo(toPos);
                 }
             }
         }
@@ -1689,8 +1690,9 @@ namespace VikingEngine.DSSWars.Players
                             return true;
                         }
 
-                        if (army.attackTarget == city ||
-                            city.distanceTo(army.walkGoal) <= 4)
+                        var armyarmy = army as Army;
+                        if (armyarmy.attackTarget == city ||
+                            city.distanceTo(armyarmy.walkGoal) <= 4)
                         {
                             return true;
                         }

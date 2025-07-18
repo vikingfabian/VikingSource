@@ -7,14 +7,10 @@ using VikingEngine.DSSWars.Conscript;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    abstract class AbsSoldierProfile : AbsDetailUnitProfile
-    {        
-        
+    abstract class AbsSoldierBuilder : AbsDetailUnitBuilder
+    {                
         public int goldCost = DssLib.GroupDefaultCost;
 
-        
-
-        
         public float walkingWaggleAngle = 0.16f;
         public float ShipBuildTimeMultiplier = 1;
 

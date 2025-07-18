@@ -8,9 +8,9 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Warships;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class DarkLordProfile : ConscriptedSoldierProfile
+    class DarkLordBuilder : ConscriptedSoldierBuilder
     {
-        public DarkLordProfile()
+        public DarkLordBuilder()
         {
             unitType = UnitType.DarkLord;
 

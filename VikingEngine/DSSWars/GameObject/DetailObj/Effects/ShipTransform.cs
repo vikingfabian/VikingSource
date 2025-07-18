@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 DeleteMe();
             }
-            else if (transformEffect && group.army.inRender_detailLayer)
+            else if (transformEffect && group.army.TryGetTarget(out var tArmy) && tArmy.inRender_detailLayer)
             {
                 if (transformModel == null)
                 {
@@ -102,7 +102,8 @@ namespace VikingEngine.DSSWars.GameObject
         protected override void init(out float timeSec)
         {
             toShip = !group.isShip;
-            timeSec = (toShip ? DssConst.ShipBuildTimeSec : DssConst.ShipExitTimeSec) * group.typeCurrentData.ShipBuildTimeMultiplier;
+            timeSec = (toShip ? DssConst.ShipBuildTimeSec : DssConst.ShipExitTimeSec) * 
+                DssRef.units.Get(group.currentBuilder).ShipBuildTimeMultiplier;
 
         }
 

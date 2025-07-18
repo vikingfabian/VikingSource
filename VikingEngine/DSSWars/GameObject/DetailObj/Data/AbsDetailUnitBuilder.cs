@@ -8,7 +8,7 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    abstract class AbsDetailUnitProfile
+    abstract class AbsDetailUnitBuilder
     {
         //public SoldierData data = new SoldierData();
 

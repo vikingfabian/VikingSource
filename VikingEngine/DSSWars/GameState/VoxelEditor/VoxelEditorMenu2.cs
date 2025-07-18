@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemove) }, new RbAction(designer.RemoveCurrentFrame), new RbTooltip_Text(DssRef.lang.Editor_Animation_RemoveCurrentFrame), designer.voxelProject.HaveAnimation));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemove), new RbImage(SpriteName.VoxelEditorFrameRemove) }, new RbAction(designer.RemoveAllFramesButThis), new RbTooltip_Text(".remove all other frames"), designer.voxelProject.HaveAnimation));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemoveAll) }, new RbAction(designer.RemoveAllFramesButThis), new RbTooltip_Text(".remove all other frames"), designer.voxelProject.HaveAnimation));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameAddCopy) }, new RbAction1Arg<bool>(designer.AddFrame, true), new RbTooltip_Text(DssRef.lang.Editor_Animation_AddFrameCopy)));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameAddEmpty) }, new RbAction1Arg<bool>(designer.AddFrame, false), new RbTooltip_Text(DssRef.lang.Editor_Animation_AddEmptyFrame)));
             
@@ -331,18 +331,22 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
 
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Convert animation to layers") },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_ConvertAnimationToLayers) },
                     new RbAction(convertAnimationToLayers)));
             }
 
             content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Layers_Titel, HudLib.TitleColor_Label) },
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.EditorAllLayer),
+                new RbSpace(),
+                new RbText(DssRef.lang.Editor_Layers_Titel, HudLib.TitleColor_Label) },
                  new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Layers, StackOption.Stack)));
 
             content.newLine();
             for (int layerIx = 0; layerIx < designer.voxelProject.layers.list.Count; ++layerIx)
             {
                 content.Add(new ArtToggle(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.EditorLayer),
                     new RbText(TextLib.IndexToString(layerIx)) },
                     new RbAction1Arg<int>(selectLayer, layerIx)));
             }
@@ -530,6 +534,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 content.Add(new ArtToggle(layer.visible, new List<AbsRichBoxMember> { new RbImage(SpriteName.lineofsightEye) },
                      new RbAction1Arg<int>(toggleLayerVisible, layerIx), new RbTooltip_Text(DssRef.lang.Editor_ToggleVisible)));
                 content.Add(new ArtOption(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.EditorLayer),
                     new RbText(string.Format( DssRef.lang.Editor_LayerNumber, TextLib.IndexToString(layerIx))) },
                     new RbAction1Arg<int>(selectLayer, layerIx)));
                 content.Add(new ArtToggle(layer.animatedLayer, new List<AbsRichBoxMember> {  
@@ -539,8 +544,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
 
             content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.pjNumPlus) },
-                new RbAction(layerMergeDown), new RbTooltip_Text(DssRef.lang.Editor_Layer_MergeDown)));
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.EditorLayerMergeDown) },
+                new RbAction(mergeLayerDown), new RbTooltip_Text(DssRef.lang.Editor_Layer_MergeDown)));
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsIncreaseArrowUp) },
                 new RbAction1Arg<bool>(moveLayer, false),
                 new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Up))));
@@ -549,9 +554,15 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Down))));
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Layer_AddCopy) },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                new RbImage(SpriteName.EditorLayerAdd),
+                new RbSpace(),
+                new RbText(DssRef.lang.Editor_Layer_AddCopy) },
                 new RbAction1Arg<bool>(addLayer, true)));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Layer_AddEmpty) },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.EditorLayerAdd),
+                new RbSpace(),
+                new RbText(DssRef.lang.Editor_Layer_AddEmpty) },
                 new RbAction1Arg<bool>(addLayer, false)));
 
             Refresh(content);
@@ -578,9 +589,10 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             designer.voxelProject.moveLayer(down);
             designer.updateVoxelObj();
         }
-        void layerMergeDown()
+        void mergeLayerDown()
         {
-            designer.voxelProject.layerMergeDown();
+            designer.storeUndoableAction(true, true);
+            designer.voxelProject.mergeLayerDown();
             designer.updateVoxelObj();
         }
 

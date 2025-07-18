@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     default:
                         army = objectCollection.objects[0].army;
-                        List<Army> tradeAbleArmies = new List<Army>(objectCollection.objects.Count - 1);
+                        List<AbsArmy> tradeAbleArmies = new List<AbsArmy>(objectCollection.objects.Count - 1);
                         for (int i = 1; i < objectCollection.objects.Count; i++)
                         {
                             tradeAbleArmies.Add(objectCollection.objects[i].army);
@@ -202,7 +202,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void divideTab(RichBoxContent content)
         {
-            List<GameObject.Army> tradeAbleArmies = new List<GameObject.Army>();
+            List<GameObject.AbsArmy> tradeAbleArmies = new List<GameObject.AbsArmy>();
             DssRef.world.unitCollAreaGrid.collectArmies(player.faction.myIndex, army.tilePos, 1,
                 tradeAbleArmies);
 
@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars.Interface
                 buttonContent.Add(new RbText(otherArmy.TypeName()));
 
                 var button = new ArtOption(player.hud.objMenu.otherArmy == otherArmy, buttonContent,
-                new RbAction1Arg<Army>(selectArmyTrade, otherArmy, SoundLib.menutab));
+                new RbAction1Arg<AbsArmy>(selectArmyTrade, otherArmy, SoundLib.menutab));
                 //button.setGroupSelectionColor(HudLib.RbSettings, player.hud.objMenu.otherArmy == otherArmy);
                 content.Add(button);
             }
@@ -305,19 +305,19 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        private void mergeAllButton(RichBoxContent content, List<Army> tradeAbleArmies)
+        private void mergeAllButton(RichBoxContent content, List<AbsArmy> tradeAbleArmies)
         {
             var mergeAllButton = new ArtButton(RbButtonStyle.Primary,
                     new List<AbsRichBoxMember>
                     {
                         new HUD.RichBox.RbText(DssRef.lang.ArmyOption_MergeAllArmies),
                     },
-                    new RbAction1Arg<List<GameObject.Army>>(mergeAllArmies, tradeAbleArmies, SoundLib.menu), null);
+                    new RbAction1Arg<List<GameObject.AbsArmy>>(mergeAllArmies, tradeAbleArmies, SoundLib.menu), null);
             mergeAllButton.enabled = tradeAbleArmies.Count > 0;
             content.Add(mergeAllButton);
         }
 
-        public static void FilterTradeAbleArmies(Army army,List<Army> tradeAbleArmies)
+        public static void FilterTradeAbleArmies(Army army,List<AbsArmy> tradeAbleArmies)
         {
             for (int i = tradeAbleArmies.Count - 1; i >= 0; --i)
             {
@@ -463,17 +463,17 @@ namespace VikingEngine.DSSWars.Interface
             army.mergeArmies(player.hud.objMenu.otherArmy);
         }
 
-        void mergeAllArmies(List<GameObject.Army> tradeAbleArmies)
+        void mergeAllArmies(List<GameObject.AbsArmy> tradeAbleArmies)
         {
             
 
             if (tradeAbleArmies.Count >= 1)
             {
-                List<GameObject.Army> all = new List<Army>(tradeAbleArmies.Count + 1);
+                List<GameObject.AbsArmy> all = new List<AbsArmy>(tradeAbleArmies.Count + 1);
                 all.Add(army);
                 all.AddRange(tradeAbleArmies);
 
-                GameObject.Army largest = null;
+                GameObject.AbsArmy largest = null;
 
                 foreach (var m in all)
                 {
@@ -487,7 +487,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     if (m != largest)
                     {
-                        m.mergeArmies(largest);
+                        m.GetArmy().mergeArmies(largest);
                     }
                 }
             }
@@ -504,7 +504,7 @@ namespace VikingEngine.DSSWars.Interface
             player.hud.objMenu.menu.OpenMenu(TradeMenuState, StackOption.Stack);
         }
 
-        void selectArmyTrade(Army toarmy)
+        void selectArmyTrade(AbsArmy toarmy)
         {
             player.hud.objMenu.otherArmy = toarmy;
         }

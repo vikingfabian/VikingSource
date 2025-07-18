@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars
         public static AbsPlayState state;
         public static Ambience ambience;
 
-        public static GameObject.AllUnits profile;
+        public static GameObject.AllUnits units;
         public static GameTime time = new GameTime();
         public static Presentation.AbsLanguage lang;
         public static TodoTranslation todoLang = new Presentation.TodoTranslation();

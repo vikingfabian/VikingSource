@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Map.Path
         public PathFindingPool pathFindingPool = new PathFindingPool();
         public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
 
-        public List<GameObject.Army> ArmiesColl_asyncupdate = new List<Army>();
+        public List<GameObject.AbsArmy> ArmiesColl_asyncupdate = new List<AbsArmy>();
 
         public PathUpdateThread(int index, int startFaction, int endFaction, System.Threading.ThreadPriority prio = System.Threading.ThreadPriority.BelowNormal)
         {              

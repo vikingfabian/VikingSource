@@ -8,7 +8,7 @@ using VikingEngine.DSSWars.Conscript;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class ConscriptedWarshipData : AbsWarShipProfile
+    class ConscriptedWarshipData : AbsWarShipBuilder
     {
         public ConscriptedWarshipData()
             : base(UnitType.ConscriptWarship)

@@ -2080,6 +2080,9 @@
 #begin VoxelModel/Character/modsoldier_addons.vox
 /copy:VoxelModel/Character/modsoldier_addons.vox
 
+#begin VoxelModel/Character/modsoldier_body_beef1.vox
+/copy:VoxelModel/Character/modsoldier_body_beef1.vox
+
 #begin VoxelModel/Character/modsoldier_body1.vox
 /copy:VoxelModel/Character/modsoldier_body1.vox
 

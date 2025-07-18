@@ -352,8 +352,15 @@ namespace VikingEngine.DSSWars
         {
             this.screenAreaRaw = screenAreaRaw;
             enterArea = screenArea;
-            enterArea.AddWidthRadius(-1);
-            
+
+            if (enterArea.Width <= 8)
+            {
+                enterArea.AddWidthRadius(1);
+            }
+            else if (enterArea.Width > 14)
+            {
+                enterArea.AddWidthRadius(-1);
+            }
 
             enterArea.SetTileBounds(DssRef.world.tileBounds);
             exitArea = enterArea;

@@ -49,13 +49,13 @@ namespace VikingEngine.DSSWars.GameObject
         float reactionTime;        
         SoldierBattleData battleData = null;
         public float boundRadius;
-        public override AbsDetailUnitProfile Profile()
+        public override AbsDetailUnitBuilder Profile()
         {
-            return DssRef.profile.Get(UnitType);
+            return DssRef.units.Get(UnitType);
         }
-        public AbsSoldierProfile SoldierProfile()
+        public AbsSoldierBuilder SoldierProfile()
         {
-            return DssRef.profile.Get(UnitType);
+            return DssRef.units.Get(UnitType);
         }
 
         virtual public void copyDataToUpgradedUnit(AbsSoldierUnit upgradeUnit)
@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.group = group;
             this.gridPlacement = gridPlacement;
-            myIndex = group.army.GetFaction().pickNextUnitId();
+            myIndex = group.GetFaction().pickNextUnitId();
             //bound = new Physics.CircleBound(Vector2.Zero, SoldierProfile().boundRadius);
             boundRadius = SoldierProfile().boundRadius;
 
@@ -783,7 +783,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             FindMinValuePointer<AbsDetailUnit> closest = new FindMinValuePointer<AbsDetailUnit>();
 
-            var attack_sp = group.attackTarget_soldierGroupOrCity;
+            AbsGroup attack_sp = null;
+            group.attackTarget_soldierGroupOrCity.TryGetTarget(out attack_sp);
             if (attack_sp != null)
             {
                 if (attack_sp.gameobjectType() == GameObjectType.SoldierGroup)
@@ -820,7 +821,7 @@ namespace VikingEngine.DSSWars.GameObject
            
             if (attackTarget == null)
             {
-                attackTarget = group.attackTarget_soldierGroupOrCity?.Soldiers()?.GetRandomSafe(Ref.peRnd);
+                attackTarget = RefExt.Target_safe(group.attackTarget_soldierGroupOrCity)?.Soldiers()?.GetRandomSafe(Ref.peRnd);
             }
 
             var target = attackTarget;
@@ -1290,7 +1291,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
-            var attacking_sp = group.attackTarget_soldierGroupOrCity;
+            var attacking_sp = RefExt.Target_safe(group.attackTarget_soldierGroupOrCity);
 
             if (attacking_sp != null)
             {
@@ -1467,7 +1468,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override AbsMapObject RelatedMapObject()
         {
-            return group.army;
+            group.army.TryGetTarget(out var tArmy);
+            return tArmy;
         }
 
         public override GameObjectType gameobjectType()
@@ -1485,9 +1487,10 @@ namespace VikingEngine.DSSWars.GameObject
             return group;
         }
 
-        public override Army GetArmy()
+        public override AbsArmy GetAbsArmy()
         {
-            return group.army.GetArmy();
+            group.army.TryGetTarget(out var tArmy);
+            return tArmy;
         }
         public override UnitType DetailUnitType()
         {

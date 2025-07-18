@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.GameObject
                     army.groups.HardSet(group, index);
                 }
 
-                group.readNet(r, needInit);
+                group.readNet(army, r, needInit);
                 group.net_onUpdate();
                 return true;
             }
@@ -529,7 +529,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        public void mergeArmies(Army otherArmy)
+        public void mergeArmies(AbsArmy otherArmy)
         {
             //This army will be removed
 
@@ -543,7 +543,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void tradeSoldiersAction(ref Army toArmy, UnitFilterType type, int count)
+        public void tradeSoldiersAction(ref AbsArmy toArmy, UnitFilterType type, int count)
         {
             if (
                 toArmy != null &&
@@ -563,7 +563,7 @@ namespace VikingEngine.DSSWars.GameObject
             tradeSoldiersTo(type, count, toArmy);
         }
 
-        public void tradeSoldiersTo(UnitFilterType type, int count, Army toArmy)
+        public void tradeSoldiersTo(UnitFilterType type, int count, AbsArmy toArmy)
         {
             float startGroupCount = groups.Count;
             var groupsCounter = groups.counter();
@@ -572,7 +572,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (groupsCounter.sel.soldierConscript.filterType() == type)
                 {
-                    groupsCounter.sel.army = toArmy;
+                    groupsCounter.sel.army = new WeakReference<AbsArmy>(toArmy);
                     toArmy.AddSoldierGroup(groupsCounter.sel);
                     //if (groupsCounter.sel.groupObjective == SoldierGroup.GroupObjective_FollowArmyObjective)
                     //{
@@ -602,9 +602,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             gold -= transportGold;
-            toArmy.gold += transportGold;
-            toArmy.refreshPositions(false);
-            toArmy.onArmyMerge();
+
+            var army = toArmy as Army;
+            army.gold += transportGold;
+            army.refreshPositions(false);
+            army.onArmyMerge();
         }
 
         public void disbandSoldiersAction(UnitFilterType type, int count)
@@ -1331,6 +1333,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        override public Army GetAbsArmy() { return this; }
         override public Army GetArmy() { return this; }
 
         public override GameObjectType gameobjectType()

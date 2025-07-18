@@ -9,9 +9,9 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class BannerManProfile : ConscriptedSoldierProfile
+    class BannerManBuilder : ConscriptedSoldierBuilder
     {
-        public BannerManProfile():base() 
+        public BannerManBuilder():base() 
         {
             unitType = UnitType.BannerMan;
         }
@@ -20,30 +20,6 @@ namespace VikingEngine.DSSWars.GameObject
             return new BannerMan();
         }
     }
-
-    //class BannerManData : AbsSoldierProfile
-    //{
-    //    public BannerManData()
-    //    {
-    //        unitType = UnitType.BannerMan;
-
-    //        modelScale =DssConst.Men_StandardModelScale * 1f;
-    //        boundRadius = DssVar.StandardBoundRadius;
-
-    //        walkingSpeed = DssConst.Men_StandardWalkingSpeed;
-    //        rotationSpeed = StandardRotatingSpeed;
-
-    //        //basehealth = 50;
-    //        canAttackCharacters = false;
-
-    //        data.modelName = LootFest.VoxelModelName.war_bannerman;
-    //    }
-
-    //    public override AbsDetailUnit CreateUnit()
-    //    {
-    //        return new BannerMan();
-    //    }
-    //}
 
     class BannerMan : BaseSoldier
     {        

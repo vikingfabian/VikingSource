@@ -28,8 +28,6 @@ namespace VikingEngine.DSSWars.Battle
         int maxBlock;
         int blocks;
         GameTimeStamp lastBlockTime;
-        //Vector2 collisionForce = Vector2.Zero;
-        //bool hasCollsions = false;
 
         public SoldierBattleData(AbsSoldierUnit parent)
         {
@@ -69,7 +67,7 @@ namespace VikingEngine.DSSWars.Battle
                             if (intersection.IsCollision)
                             {
                                
-                                if (parent.group.army.factionIndex == unit.group.army.factionIndex)
+                                if (parent.factionIndex == unit.factionIndex)
                                 {
                                     if (Rotation1D.AngleDifference_Absolute(parent.rotation.radians, lib.V2ToAngle_PreNorm_Unsafe(-intersection.direction)) < MathExt.TauOver8)
                                     {
@@ -91,8 +89,6 @@ namespace VikingEngine.DSSWars.Battle
                         collPush = 0.25f;
                     }
                     parent.position += VectorExt.V2toV3XZ(VectorExt.SetMaxSideLength(collPush * collisionForce, MaxPushLength));
-
-                    //collisionForce = Vector2.Zero;
                 }
             }
 
@@ -294,7 +290,7 @@ namespace VikingEngine.DSSWars.Battle
 
             if (closestOpponent == null)
             {
-                var groupTarget_sp = parent.group.attackTarget_soldierGroupOrCity?.Soldiers();
+                var groupTarget_sp = RefExt.Target_safe(parent.group.attackTarget_soldierGroupOrCity)?.Soldiers();
 
                 if (groupTarget_sp != null)
                 {

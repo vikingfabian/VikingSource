@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Interface
         
         DiplomacyDisplay diplomacy;
         public RichMenu menu;
-        public Army otherArmy;
+        public AbsArmy otherArmy;
 
 
 

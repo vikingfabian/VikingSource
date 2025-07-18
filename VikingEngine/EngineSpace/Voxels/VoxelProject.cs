@@ -402,9 +402,18 @@ namespace VikingEngine.Voxels
             //designer.voxelProject.layers.selectedIndex = layer;
             layers.MoveSelected(lib.BoolToLeftRight(down));
         }
-        public void layerMergeDown()
+        public void mergeLayerDown()
         {
+            if (layers.selectedIndex < arraylib.MaxIndex(layers.list))
+            {
+                VoxLayer topLayer = layers.Selected();
+                VoxLayer bottomLayer = layers.PeekNext(false, out int bottomIx, out _);
 
+                bottomLayer.merge_recieve(topLayer, currentFrame.Value);
+
+                layers.Remove();
+                //layers.selectedIndex = bottomIx;
+            }
         }
 
         public void toggleLayerAnimated(int layer)
