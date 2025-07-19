@@ -11,11 +11,11 @@ namespace VikingEngine.DSSWars.Event
 {
     class GameEventsDemo : EventManager
     {
-//#if DEBUG
-//        Time maxDemoTime = new Time(1f, TimeUnit.Minutes);
-//#else
+#if DEBUG
+        Time maxDemoTime = new Time(1f, TimeUnit.Minutes);
+#else
         Time maxDemoTime = new Time(90f, TimeUnit.Minutes);
-//#endif
+#endif
         City defendingCity;
         int demoState_1start_2end = 0;
         List<Army> attackerArmies;
@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars.Event
                 var defend = DssRef.state.LocalHost().getPin("defend");
                 defendingCity = DssRef.world.tileGrid.Get(defend.tilePos).City();
 
+                //1. Send one army
                 new Timer.TimedAction0ArgTrigger_InGame(() =>
                 {
                     DssRef.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
@@ -52,31 +53,41 @@ namespace VikingEngine.DSSWars.Event
                     firstAttacker.Order_Attack(defendingCity);
                     firstAttacker.setMassiveFood();
 
-                }, 20);
 
-                new Timer.TimedAction0ArgTrigger_InGame(() =>
-                {
-                    List<Army> all = new List<Army>(8);
-
-                    var armiesC = attacker.armies.counter();
-                    while (armiesC.Next())
+                    //2. Send all armies
+                    new Timer.TimedAction0ArgTrigger_InGame(() =>
                     {
-                        if (!armiesC.sel.isDeleted)
-                        {
-                            armiesC.sel.Order_Attack(defendingCity);
-                            armiesC.sel.setMassiveFood();
+                        List<Army> all = new List<Army>(8);
 
-                            all.Add(armiesC.sel);
+                        var armiesC = attacker.armies.counter();
+                        while (armiesC.Next())
+                        {
+                            if (!armiesC.sel.isDeleted)
+                            {
+                                armiesC.sel.Order_Attack(defendingCity);
+                                armiesC.sel.setMassiveFood();
+
+                                all.Add(armiesC.sel);
+                            }
                         }
-                    }
-                    attackerArmies = all;
-                    demoState_1start_2end = 1;
-                },
+                        attackerArmies = all;
+                        demoState_1start_2end = 1;
+
+
+                        //3. Turn Ai back on
+                        new Timer.TimedAction0ArgTrigger_InGame(() =>
+                        {
+                            attacker.player.GetAiPlayer().armyAi_enabled = true;
+                        }, 15 * TimeExt.MinuteInSeconds); //3.
+
+                    },
 #if DEBUG
-                1);
+                    1);
 #else
-                15 * TimeExt.MinuteInSeconds);
+                15 * TimeExt.MinuteInSeconds);//2.
 #endif
+                }, 20);//1.
+
 
                 DssRef.state.LocalHost().clearPins();
 
