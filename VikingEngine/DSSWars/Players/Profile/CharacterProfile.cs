@@ -13,24 +13,29 @@ namespace VikingEngine.DSSWars.Players.Profile
     {
         public int StorageIndex = -1;
 
-        public int accessory1;
-        public int accessory2;
+        public int accessoryBack;
+        public int accessoryFace;
         public int accessory3;
 
         public int face;
+        public int body;
+        public ArmsTheme arms;
         public CharacterHatGenre hatGenre;
+        
         public int hat;
+       
 
         public CharacterProfile(int index)
         {
             StorageIndex = index;
-            accessory1 = -1;
-            accessory2 = -1;
+            accessoryBack = -1;
+            accessoryFace = -1;
             accessory3 = -1;
         }
 
-        public CharacterProfile(System.IO.BinaryReader r)
+        public CharacterProfile(int index, System.IO.BinaryReader r)
         {
+            StorageIndex = index;
             read(r);
         }
 
@@ -49,39 +54,39 @@ namespace VikingEngine.DSSWars.Players.Profile
             return result;
         }
 
-        const int Version = 1;
+        const int Version = 2;
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);
 
-            w.Write(accessory1);
-            w.Write(accessory2);
+            w.Write(accessoryBack);
+            w.Write(accessoryFace);
             w.Write(accessory3);
 
             w.Write(face);
             w.Write((int)hatGenre); // Enum stored as int
             w.Write(hat);
+            w.Write(body);
+            w.Write((int)arms);
         }
 
         public void read(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
-            if (version > Version) { return; }
+            if (version < 2 || version > Version) { return; }
 
-            accessory1 = r.ReadInt32();
-            accessory2 = r.ReadInt32();
+            accessoryBack = r.ReadInt32();
+            accessoryFace = r.ReadInt32();
             accessory3 = r.ReadInt32();
 
             face = r.ReadInt32();
             hatGenre = (CharacterHatGenre)r.ReadInt32(); // Cast back from int to enum
             hat = r.ReadInt32();
+
+            body = r.ReadInt32();
+            arms = (ArmsTheme)r.ReadInt32();
         }
     }
 
-    enum CharacterHatGenre
-    { 
-        FollowWeapon,
-        FollowArmor,
-        Uniform,
-    }
+    
 }

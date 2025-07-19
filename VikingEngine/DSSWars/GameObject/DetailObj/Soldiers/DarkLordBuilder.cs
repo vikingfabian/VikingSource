@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             //data.modelName = LootFest.VoxelModelName.wars_darklord;
 
-            description = DssRef.lang.UnitType_Description_DarkLord;
+            //description = DssRef.lang.UnitType_Description_DarkLord;
         }
         override public UnitType ShipType()
         {

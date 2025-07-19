@@ -25,27 +25,23 @@ namespace VikingEngine.DSSWars
     /// The first state for DSS, will load all content
     /// </summary>
     class IntroState : Engine.GameState
-    {        
-        bool isReset;
-        //Graphics.TextG pressStartText;
+    {
+        /*
+            --should run in four steps--
+            1. load font
+            2. load screen size
+            3. load splash image
+            4. load the rest of the content
+         */
 
         bool loadingContentComplete = false;
         bool loadingDataComplete = false;
-        //bool bStorageReady = false;
         WaitForCloudSynch  waitForCloudSynch = new WaitForCloudSynch();
 
         public IntroState(bool isReset)
             : base()
         {
-            this.isReset = isReset;
-
             Ref.draw.ClrColor = Color.Black;
-
-            //pressStartText = new Graphics.TextG(
-            //    LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
-            //    Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
-                        
-            DssVar.UpdateConstants();
 
             if (isReset)
             {
@@ -54,10 +50,13 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                
                 if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
                 {
                     new EngineSpace.DebugExtensions.SentryReport();
                 }
+                DssVar.UpdateConstants();
+
                 if (Ref.music == null)
                 {
                     Ref.music = new Sound.MusicPlayer();
@@ -167,7 +166,7 @@ namespace VikingEngine.DSSWars
 
         protected override void createDrawManager()
         {
-            draw =new Draw2D();
+            draw = new Draw2D();
         }
     }
 }

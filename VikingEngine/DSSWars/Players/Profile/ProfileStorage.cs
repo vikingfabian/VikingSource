@@ -94,7 +94,11 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public void read(System.IO.BinaryReader r)
         {
-            DssRef.storage.profileStorage.profiles[index] = new PlayerProfile(r);
+            DssRef.storage.profileStorage.profiles[index] = new PlayerProfile(index, r);
+#if DEBUG
+            if (DssRef.storage.profileStorage.profiles[index].StorageIndex < 0)
+                throw new Exception();
+#endif
         }
     }
 

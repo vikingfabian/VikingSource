@@ -68,16 +68,25 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_debug,
                 VoxelModelName.modsoldier_body1,
                 VoxelModelName.modsoldier_body_beef1,
+                VoxelModelName.modsoldier_body3lady,
                 VoxelModelName.modsoldier_face1,
                 VoxelModelName.modsoldier_face_orc,
                 VoxelModelName.modsoldier_face_skull,
          
                 VoxelModelName.modsoldier_leg1,
+
                 VoxelModelName.modsoldier_larm_empty1,
                 VoxelModelName.modsoldier_larm_shield1,
                 VoxelModelName.modsoldier_rarm_sword1,
-                VoxelModelName.modsoldier_rarm_bow1,
+                VoxelModelName.modsoldier_rarm_bow1v2,
+
+                VoxelModelName.modsoldier_larm_empty2naked,
+                VoxelModelName.modsoldier_larm_shield2naked,
+                VoxelModelName.modsoldier_rarm_sword2naked,
+                VoxelModelName.modsoldier_rarm_bow2naked,
+
                 VoxelModelName.modsoldier_addons,
+                VoxelModelName.modsoldier_face_access,
                 VoxelModelName.modsoldier_hat_soldier_all,
                 VoxelModelName.modsoldier_hat_custom_all,
 

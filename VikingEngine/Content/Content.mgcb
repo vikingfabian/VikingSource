@@ -2080,8 +2080,14 @@
 #begin VoxelModel/Character/modsoldier_body1.vox
 /copy:VoxelModel/Character/modsoldier_body1.vox
 
+#begin VoxelModel/Character/modsoldier_body3lady.vox
+/copy:VoxelModel/Character/modsoldier_body3lady.vox
+
 #begin VoxelModel/Character/modsoldier_debug.vox
 /copy:VoxelModel/Character/modsoldier_debug.vox
+
+#begin VoxelModel/Character/modsoldier_face_access.vox
+/copy:VoxelModel/Character/modsoldier_face_access.vox
 
 #begin VoxelModel/Character/modsoldier_face_orc.vox
 /copy:VoxelModel/Character/modsoldier_face_orc.vox
@@ -2101,17 +2107,29 @@
 #begin VoxelModel/Character/modsoldier_larm_empty1.vox
 /copy:VoxelModel/Character/modsoldier_larm_empty1.vox
 
+#begin VoxelModel/Character/modsoldier_larm_empty2naked.vox
+/copy:VoxelModel/Character/modsoldier_larm_empty2naked.vox
+
 #begin VoxelModel/Character/modsoldier_larm_shield1.vox
 /copy:VoxelModel/Character/modsoldier_larm_shield1.vox
+
+#begin VoxelModel/Character/modsoldier_larm_shield2naked.vox
+/copy:VoxelModel/Character/modsoldier_larm_shield2naked.vox
 
 #begin VoxelModel/Character/modsoldier_leg1.vox
 /copy:VoxelModel/Character/modsoldier_leg1.vox
 
-#begin VoxelModel/Character/modsoldier_rarm_bow1.vox
-/copy:VoxelModel/Character/modsoldier_rarm_bow1.vox
+#begin VoxelModel/Character/modsoldier_rarm_bow1v2.vox
+/copy:VoxelModel/Character/modsoldier_rarm_bow1v2.vox
+
+#begin VoxelModel/Character/modsoldier_rarm_bow2naked.vox
+/copy:VoxelModel/Character/modsoldier_rarm_bow2naked.vox
 
 #begin VoxelModel/Character/modsoldier_rarm_sword1.vox
 /copy:VoxelModel/Character/modsoldier_rarm_sword1.vox
+
+#begin VoxelModel/Character/modsoldier_rarm_sword2naked.vox
+/copy:VoxelModel/Character/modsoldier_rarm_sword2naked.vox
 
 #begin VoxelModel/Character/modweapon_blunderbuss.vox
 /copy:VoxelModel/Character/modweapon_blunderbuss.vox

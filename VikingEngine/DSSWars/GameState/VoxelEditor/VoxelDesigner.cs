@@ -399,7 +399,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         deleteArea(i, designerInterface.selectionArea);
                     }
 
-                    stampSelection(false, frame);
+                    stampSelection(false, i);
                 }
             }
             else

@@ -19,6 +19,7 @@ using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.LootFest;
 using VikingEngine.LootFest.Players;
 using VikingEngine.PJ;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -134,7 +135,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         }
 
         //int faceOption = 0;
-        int bodyOption = 0;
+        //int bodyOption = 0;
         float scale = 1f;
         CharacterCreatorTab tab = 0;
 
@@ -284,12 +285,12 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                             refreshPreview();
                         }, i)));
                 }
-                content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.WarsHudIconOpen),
-                new RbSpace(),
-                new RbText("Import model")
-                }, null));
+                //content.newLine();
+                //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                //new RbImage(SpriteName.WarsHudIconOpen),
+                //new RbSpace(),
+                //new RbText("Import model")
+                //}, null));
             }
 
             content.newParagraph();
@@ -306,32 +307,109 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         refreshPreview();
                     }, i)));
             }
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
-                new RbImage(SpriteName.WarsHudIconOpen),
-                new RbSpace(),
-                new RbText("Import model")
-            }, null));
+            //content.newLine();
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+            //    new RbImage(SpriteName.WarsHudIconOpen),
+            //    new RbSpace(),
+            //    new RbText("Import model")
+            //}, null));
 
             content.newParagraph();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
-                content.Add(new ArtOption(i == bodyOption, new List<AbsRichBoxMember> { new RbText("Body " + TextLib.IndexToString(i)) },
-                    null));
+                content.Add(new ArtOption(i == profile.body, new List<AbsRichBoxMember> { new RbText("Body " + TextLib.IndexToString(i)) },
+                    new RbAction1Arg<int>((int body) => {
+                        var profile = GetProfile();
+                        {
+                            profile.body = body;
+                        }
+                        SetProfile(profile);
+
+                        refreshPreview();
+                    }, i)));
             }
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.WarsHudIconOpen),
-                new RbSpace(),
-                new RbText("Import model")
-            }, null));
+            //content.newLine();
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+            //    new RbImage(SpriteName.WarsHudIconOpen),
+            //    new RbSpace(),
+            //    new RbText("Import model")
+            //}, null));
 
             content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.pjNumPlus, 1, Color.Green),
-                new RbSpace(),
-                new RbText("Add accessory")
-            }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Accessory, StackOption.Stack)));
+            for (ArmsTheme i = 0; i <  ArmsTheme.NUM; i++)
+            {
+                content.Add(new ArtOption(i == profile.arms, new List<AbsRichBoxMember> { new RbText("Arms " + TextLib.IndexToString((int)i)) },
+                    new RbAction1Arg<ArmsTheme>((ArmsTheme arms) => {
+                        var profile = GetProfile();
+                        {
+                            profile.arms = arms;
+                        }
+                        SetProfile(profile);
+
+                        refreshPreview();
+                    }, i)));
+            }
+
+            content.newParagraph();
+            content.h2("Accessories", HudLib.TitleColor_Label);
+
+            content.newLine();
+            content.Add(new ArtOption(profile.accessoryBack == -1,  new List<AbsRichBoxMember> { new RbText("None") },
+                new RbAction1Arg<int>((int backpack) => {
+                    var profile = GetProfile();
+                    {
+                        profile.accessoryBack = backpack;
+                    }
+                    SetProfile(profile);
+
+                    refreshPreview();
+                }, -1)));
+            for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_addons].Frames.Count; i++)
+            {                
+                content.Add(new ArtOption(i == profile.accessoryBack, new List<AbsRichBoxMember> { new RbText("Back " + TextLib.IndexToString(i)) },
+                    new RbAction1Arg<int>((int back) => {
+                        var profile = GetProfile();
+                        {
+                            profile.accessoryBack = back;
+                        }
+                        SetProfile(profile);
+
+                        refreshPreview();
+                    }, i)));
+            }
+
+
+            content.newParagraph();
+
+
+            content.Add(new ArtOption(profile.accessoryFace == -1, new List<AbsRichBoxMember> { new RbText("None") },
+                new RbAction1Arg<int>((int faceadd) => {
+                    var profile = GetProfile();
+                    {
+                        profile.accessoryFace = faceadd;
+                    }
+                    SetProfile(profile);
+
+                    refreshPreview();
+                }, -1)));
+            for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_face_access].Frames.Count; i++)
+            {
+                content.Add(new ArtOption(i == profile.accessoryFace, new List<AbsRichBoxMember> { new RbText("Face " + TextLib.IndexToString(i)) },
+                    new RbAction1Arg<int>((int faceadd) => {
+                        var profile = GetProfile();
+                        {
+                            profile.accessoryFace = faceadd;
+                        }
+                        SetProfile(profile);
+
+                        refreshPreview();
+                    }, i)));
+            }
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+            //    new RbImage(SpriteName.pjNumPlus, 1, Color.Green),
+            //    new RbSpace(),
+            //    new RbText("Add accessory")
+            //}, new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Accessory, StackOption.Stack)));
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -397,7 +475,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             DssRef.storage.characterStorage.selectedIx = charIx;
            
             DssRef.storage.Save(null);
-            soldierPreview.refresh();
+            refreshPreview();
         }
 
         void refreshPreview()
@@ -438,12 +516,12 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.newLine();
             for (int i = 0; i < 8; i++)
             {
-                content.Add(new ArtOption(i == profile.character.accessory1, new List<AbsRichBoxMember> { new RbText("Accessory " + TextLib.IndexToString(i)) },
+                content.Add(new ArtOption(i == profile.character.accessoryBack, new List<AbsRichBoxMember> { new RbText("Accessory " + TextLib.IndexToString(i)) },
                     new RbAction1Arg<int>((int index)=>{
                         
                         var profile = GetProfile();
                         {
-                            profile.accessory1 = index;
+                            profile.accessoryBack = index;
                         }
                         SetProfile(profile);
                         refreshPreview();

@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float maxAttackAngle = 0.15f;
         
-        public string description;
+        //public string description;
         public UnitType unitType;
 
         public bool Command_Javelin=false;

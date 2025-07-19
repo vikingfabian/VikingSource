@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public string Editor_ConvertAnimationToLayers => "Convert animation to layers";
-
+        public string Editor_StampAllFrames => "Stamp on all frames";
     }
 
 }

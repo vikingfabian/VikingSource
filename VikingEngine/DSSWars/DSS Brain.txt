@@ -1,5 +1,17 @@
 ﻿UPDATE
 * The demo attacker will regain normal ai at the 30min mark
+* Fixed profile load crash
+* Voxel editor: stamp on all frames
+* improved text wrapping
+
+Character creator:
+* Bent the bow arm out
+* +2 body type
+* Added arms
+* Added face accessories
+
+
+
 
 
 BETA
@@ -19,6 +31,7 @@ Voxel editor:
 X remove layer
 X shift description
 X load retail character models
+x recolor is broken
 
 #Voxel editor#
 
@@ -36,6 +49,9 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+x  i must remake my loading so it can display any issues
+x flag editor need color copy, + tatoo color
+	-add voxel model texture
 x coal mines in work tab
 x multiplayer is broken in battle lab
 x set all defence is broken, need set all towers
