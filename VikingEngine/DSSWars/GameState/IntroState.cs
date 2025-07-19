@@ -24,56 +24,36 @@ namespace VikingEngine.DSSWars
     /// <summary>
     /// The first state for DSS, will load all content
     /// </summary>
-    class IntroState : Engine.GameState
+    class IntroState : Engine.LaunchState
     {
-        /*
-            --should run in four steps--
-            1. load font
-            2. load screen size
-            3. load splash image
-            4. load the rest of the content
-         */
-
-        bool loadingContentComplete = false;
-        bool loadingDataComplete = false;
-        WaitForCloudSynch  waitForCloudSynch = new WaitForCloudSynch();
 
         public IntroState(bool isReset)
-            : base()
+            : base(isReset)
         {
-            Ref.draw.ClrColor = Color.Black;
-
-            if (isReset)
+        }
+        protected override void preLoading()
+        {
+            if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
             {
-                loadingDataComplete = true;
-                loadingContentComplete = true;
+                new EngineSpace.DebugExtensions.SentryReport();
             }
-            else
+            DssVar.UpdateConstants();
+
+            if (Ref.music == null)
             {
-                
-                if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
-                {
-                    new EngineSpace.DebugExtensions.SentryReport();
-                }
-                DssVar.UpdateConstants();
-
-                if (Ref.music == null)
-                {
-                    Ref.music = new Sound.MusicPlayer();
-                }
-                Engine.ParticleHandler.Init();
-                new VikingEngine.Engine.LoadBaseTextures();
-               
-                new Timer.AsynchActionTrigger(asynchContentLoading);
-                new Timer.AsynchActionTrigger(asynchStorageLoading);
-
-                new MapSettings();
-                Map.Tile.Init();
+                Ref.music = new Sound.MusicPlayer();
             }
+            Engine.ParticleHandler.Init();
+            new VikingEngine.Engine.LoadBaseTextures();
+
+
+            new MapSettings();
+            Map.Tile.Init();
         }
 
-        
-        void asynchContentLoading()
+
+
+        override protected void asynchContentLoading()
         {
             Config.OnStartUp();
 
@@ -114,11 +94,10 @@ namespace VikingEngine.DSSWars
             UserGeneratedContent.UGClib.GameInit();
             
 
-            loadingContentComplete = true;
             //new Timer.Action0ArgTrigger(createStartButton);
         }
 
-        void asynchStorageLoading()
+        override protected void asynchStorageLoading()
         {
             FlagDesign.Init();
 
@@ -129,37 +108,58 @@ namespace VikingEngine.DSSWars
             Ref.gamesett.Load();
             new Presentation.Translation().setupLanguage(true);
 
-            loadingDataComplete = true;
         }
 
 
         public override void Time_Update(float time)
         {
-            base.Time_Update(time);
-
             DssRef.models?.sychLoading();
 
-            if (waitForCloudSynch.update())
-            {
-                if (loadingContentComplete && loadingDataComplete)
-                {
+            base.Time_Update(time);
+
+            
+
+//            if (waitForCloudSynch.update())
+//            {
+//                if (loadingContentComplete && loadingDataComplete)
+//                {
+//#if PCGAME
+//                    Engine.Screen.ApplyScreenSettings();
+//#endif
+
+//                    Ref.main.criticalContentIsLoaded = true;
+//                    new Achievements();
+//                    new GameStats();
+
+//                    if (Ref.gamesett.language == LanguageType.NONE)
+//                    {
+//                        new SelectLanguageMenu();
+//                    }
+//                    else
+//                    {
+//                        new GameState.ExitGamePlay();
+//                    }
+//                }
+//            }
+        }
+
+        protected override void launch()
+        {
 #if PCGAME
-                    Engine.Screen.ApplyScreenSettings();
+            Engine.Screen.ApplyScreenSettings();
 #endif
 
-                    Ref.main.criticalContentIsLoaded = true;
-                    new Achievements();
-                    new GameStats();
+            Ref.main.criticalContentIsLoaded = true;
+            new Achievements();
+            new GameStats();
 
-                    if (Ref.gamesett.language == LanguageType.NONE)
-                    {
-                        new SelectLanguageMenu();
-                    }
-                    else
-                    {
-                        new GameState.ExitGamePlay();
-                    }
-                }
+            if (Ref.gamesett.language == LanguageType.NONE)
+            {
+                new SelectLanguageMenu();
+            }
+            else
+            {
+                new GameState.ExitGamePlay();
             }
         }
 
