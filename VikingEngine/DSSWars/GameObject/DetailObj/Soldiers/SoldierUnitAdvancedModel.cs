@@ -9,7 +9,6 @@ namespace VikingEngine.DSSWars.GameObject
     class DetailUnitModel : IDeleteable
     {
         public Graphics.AbsVoxelObj model;
-        //public Physics.AbsBound2D bound;
 
         virtual public void DeleteMe()
         {
@@ -70,14 +69,16 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (soldier.soldierData.factionColoredModel)
             {
+                var faction = soldier.GetFaction();
+
                 if (soldier.soldierData.modelData.modelType == ModelType.Soldier)
                 {
-                    model = soldier.GetFaction().AutoLoadModelInstance_character(
-                        soldier.soldierData.modelData, soldier.soldierData.modelScale);
+                    model = faction.AutoLoadModelInstance_character(
+                        soldier.soldierData.modelData, soldier.soldierData.modelScale * faction.player.profile.character.soldierScale);
                 }
                 else
                 {
-                    model = soldier.GetFaction().AutoLoadModelInstance_batched(
+                    model = faction.AutoLoadModelInstance_batched(
                         soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale);
                 }
             }

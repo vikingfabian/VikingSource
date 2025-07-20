@@ -129,6 +129,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
     enum CharacterHatGenre
     {
+        NoHat,
         FollowWeapon,
         FollowArmor,
         Uniform,
@@ -145,6 +146,13 @@ namespace VikingEngine.DSSWars.Players.Profile
         Shield,
     }
 
+    enum FaceTheme
+    {
+        Default,
+        Orc,
+        Skeleton,
+        NUM,
+    }
     enum ArmsTheme
     {
         Default,

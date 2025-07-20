@@ -634,7 +634,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
 
             content.newLine();
-            colorPalette(content, designer.replaceSelectionMaterialsTo, designer.pickColorAndMaterialLink);
+            colorPalette(content, designer.replaceSelectionMaterialsTo/*, designer.pickColorAndMaterialLink*/);
 
             Refresh(content);
 
@@ -781,7 +781,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         //    layout.End();
         //}
 
-        public void colorPalette(RichBoxContent content, Action<BlockHD> link, Action<BlockHD> replaceLink)
+        public void colorPalette(RichBoxContent content, Action<BlockHD> link/*, Action<BlockHD> replaceLink*/)
         {
 
             var inUse = designer.materialsInUse(true, out ushort selected);
@@ -825,7 +825,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             //new GuiSectionSeparator(layout);
 
-            DSSSoldierPalette(content, replaceLink);
+            DSSSoldierPalette(content, link);
 
             //new GuiSectionSeparator(layout);
             content.Add(new RbSeperationLine());
@@ -960,7 +960,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             //new GuiIntSlider(SpriteName.NO_IMAGE, "B", blueProperty, RGBrange, false, layout);
             //new GuiSectionSeparator(layout);
 
-            colorPalette(content, designer.pickColorLink, designer.pickColorAndMaterialLink);
+            colorPalette(content, designer.pickColorLink/*, designer.pickColorAndMaterialLink*/);
 
             Refresh(content);
         }

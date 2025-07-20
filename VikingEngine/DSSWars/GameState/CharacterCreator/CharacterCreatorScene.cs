@@ -35,14 +35,13 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
         const string Page_Accessory = "accessories";
         public RichMenu menu, optMenu;
-        CharacterPreview soldierPreview, animalPreview;
+        CharacterPreview soldierPreview/*, animalPreview*/;
 
 
         public CharacterCreatorScene() 
             :base()
         {
-            openMenu();
-            
+            openMenu();            
 
             new Interface.EditorBackground();
 
@@ -54,7 +53,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             soldierPreview = new CharacterPreview(previewArea, CharacterPreviewType.Soldier);
 
             previewArea.nextAreaX(1, Engine.Screen.IconSize);
-            animalPreview = new CharacterPreview(previewArea, CharacterPreviewType.RideAnimal);
+            //animalPreview = new CharacterPreview(previewArea, CharacterPreviewType.RideAnimal);
 
             openOptionsMenu();
         }
@@ -82,7 +81,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
 
             soldierPreview.update();
-            animalPreview.update();
+            //animalPreview.update();
         }
         void refreshPage()
         {
@@ -91,9 +90,9 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 default:
                     mainMenu();
                     break;
-                case Page_Accessory:
-                    accessoriesPage();
-                    break;
+                //case Page_Accessory:
+                //    accessoriesPage();
+                //    break;
             }
         }
 
@@ -110,8 +109,6 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
                 bgTex.SetColor(ColorExt.GrayScale(0.9f));
                 mainMenu();
-
-                
             }
         }
 
@@ -136,8 +133,8 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
         //int faceOption = 0;
         //int bodyOption = 0;
-        float scale = 1f;
-        CharacterCreatorTab tab = 0;
+        //float scale = 1f;
+        //CharacterCreatorTab tab = 0;
 
         void displayOptionsPage()
         {
@@ -222,63 +219,65 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
            var profile = GetProfile();
 
             RichBoxContent content = new RichBoxContent();
-            content.h1("Character creator", HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.Editor_CharacterCreator, HudLib.TitleColor_Head);
             
             listAndEditCharacter(content);
             content.newLine();
             listAndEditFlag(content, 1, DssRef.storage.localPlayers.First(), true);
 
-                 content.newParagraph();
-            List<CharacterCreatorTab> availableTabs = new List<CharacterCreatorTab> {
-                CharacterCreatorTab.Soldiers,
-                CharacterCreatorTab.Workers,
-                CharacterCreatorTab.Animals
-            };
+            content.Add(new RbSeperationLine());
+            //List<CharacterCreatorTab> availableTabs = new List<CharacterCreatorTab> {
+            //    CharacterCreatorTab.Soldiers,
+            //    CharacterCreatorTab.Workers,
+            //    CharacterCreatorTab.Animals
+            //};
 
-            var tabs = new List<ArtTabMember>(availableTabs.Count);
+            //var tabs = new List<ArtTabMember>(availableTabs.Count);
                         
-            for (int i = 0; i < availableTabs.Count; ++i)
-            {
-                var text = new RbText(availableTabs[i].ToString());
-                text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+            //for (int i = 0; i < availableTabs.Count; ++i)
+            //{
+            //    var text = new RbText(availableTabs[i].ToString());
+            //    text.overrideColor = HudLib.RbSettings.tabSelected.Color;
 
-                tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
-                { text }));
-            }
-            var tabGroup = new ArtTabgroup(tabs, arraylib.IndexFromValue(availableTabs, tab), 
-                (int tabIx)=> { tab = availableTabs[tabIx]; }, null, SoundLib.menutab, null);
+            //    tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
+            //    { text }));
+            //}
+            //var tabGroup = new ArtTabgroup(tabs, arraylib.IndexFromValue(availableTabs, tab), 
+            //    (int tabIx)=> { tab = availableTabs[tabIx]; }, null, SoundLib.menutab, null);
 
-            content.Add(tabGroup);
+            //content.Add(tabGroup);
 
-            content.h2("Default setup", HudLib.TitleColor_TypeName);
+            //content.h2("Default setup", HudLib.TitleColor_TypeName);
 
-            content.newLine();
-            HudLib.Label(content, "Scale");
+            content.newParagraph();
+            HudLib.Label(content, DssRef.todoLang.HUD_Scale);
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, new DragButtonSettings(MinScale, MaxScale, 0.1f), ScaleProperty);
             content.newParagraph();
             
             DropDownBuilder hatGenreDropdown = new DropDownBuilder("hat genre");
             {
-                hatGenreDropdown.AddOption("Follow weapon", profile.hatGenre == CharacterHatGenre.FollowWeapon,
+                hatGenreDropdown.AddOption(DssRef.lang.Hud_None, profile.hatGenre == CharacterHatGenre.NoHat,
+                    true, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.NoHat), null);
+                hatGenreDropdown.AddOption(DssRef.todoLang.Editor_HatGenre_FollowWeapon, profile.hatGenre == CharacterHatGenre.FollowWeapon,
                     true, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.FollowWeapon), null);
-                hatGenreDropdown.AddOption("Follow armor", profile.hatGenre == CharacterHatGenre.FollowArmor,
-                    false, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.FollowArmor), null);
-                hatGenreDropdown.AddOption("Uniform", profile.hatGenre == CharacterHatGenre.Uniform,
+                //hatGenreDropdown.AddOption("Follow armor", profile.hatGenre == CharacterHatGenre.FollowArmor,
+                //    false, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.FollowArmor), null);
+                hatGenreDropdown.AddOption(DssRef.todoLang.Editor_HatGenre_Uniform, profile.hatGenre == CharacterHatGenre.Uniform,
                     false, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.Uniform), null);
             }
-            hatGenreDropdown.Build(content, SpriteName.NO_IMAGE, "Hat", menu);
+            hatGenreDropdown.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Editor_HatGenre, menu);
 
             if (profile.hatGenre == CharacterHatGenre.Uniform)
             {
                 content.newLine();
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_hat_custom_all].Frames.Count; i++)
                 {
-                    content.Add(new ArtOption(i == profile.hat, new List<AbsRichBoxMember> { new RbText("Hat " + TextLib.IndexToString(i)) },
+                    content.Add(new ArtOption(i == profile.customHat, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Hat ,i)) },
                         new RbAction1Arg<int>((int hat) => {
                             var profile = GetProfile();
                             {
-                                profile.hat = hat;
+                                profile.customHat = hat;
                             }
                             SetProfile(profile);
 
@@ -294,10 +293,10 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             }
 
             content.newParagraph();
-            for (int i = 0; i < 4; i++)
+            for (FaceTheme i = 0; i < FaceTheme.NUM; i++)
             {
-                content.Add(new ArtOption(i == profile.face, new List<AbsRichBoxMember> { new RbText("Face " + TextLib.IndexToString(i)) },
-                    new RbAction1Arg<int>((int face)=> {
+                content.Add(new ArtOption(i == profile.face, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Head,(int)i)) },
+                    new RbAction1Arg<FaceTheme>((FaceTheme face)=> {
                         var profile = GetProfile();
                         {
                             profile.face = face;                            
@@ -317,7 +316,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.newParagraph();
             for (int i = 0; i < 3; i++)
             {
-                content.Add(new ArtOption(i == profile.body, new List<AbsRichBoxMember> { new RbText("Body " + TextLib.IndexToString(i)) },
+                content.Add(new ArtOption(i == profile.body, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Body, i)) },
                     new RbAction1Arg<int>((int body) => {
                         var profile = GetProfile();
                         {
@@ -338,7 +337,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.newParagraph();
             for (ArmsTheme i = 0; i <  ArmsTheme.NUM; i++)
             {
-                content.Add(new ArtOption(i == profile.arms, new List<AbsRichBoxMember> { new RbText("Arms " + TextLib.IndexToString((int)i)) },
+                content.Add(new ArtOption(i == profile.arms, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Arms, (int)i)) },
                     new RbAction1Arg<ArmsTheme>((ArmsTheme arms) => {
                         var profile = GetProfile();
                         {
@@ -351,10 +350,10 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             }
 
             content.newParagraph();
-            content.h2("Accessories", HudLib.TitleColor_Label);
+            content.h2(DssRef.todoLang.Character_Accessories, HudLib.TitleColor_Label);
 
             content.newLine();
-            content.Add(new ArtOption(profile.accessoryBack == -1,  new List<AbsRichBoxMember> { new RbText("None") },
+            content.Add(new ArtOption(profile.accessoryBack == -1,  new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_None) },
                 new RbAction1Arg<int>((int backpack) => {
                     var profile = GetProfile();
                     {
@@ -366,7 +365,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 }, -1)));
             for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_addons].Frames.Count; i++)
             {                
-                content.Add(new ArtOption(i == profile.accessoryBack, new List<AbsRichBoxMember> { new RbText("Back " + TextLib.IndexToString(i)) },
+                content.Add(new ArtOption(i == profile.accessoryBack, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Back, i)) },
                     new RbAction1Arg<int>((int back) => {
                         var profile = GetProfile();
                         {
@@ -382,7 +381,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.newParagraph();
 
 
-            content.Add(new ArtOption(profile.accessoryFace == -1, new List<AbsRichBoxMember> { new RbText("None") },
+            content.Add(new ArtOption(profile.accessoryFace == -1, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_None) },
                 new RbAction1Arg<int>((int faceadd) => {
                     var profile = GetProfile();
                     {
@@ -394,7 +393,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 }, -1)));
             for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_face_access].Frames.Count; i++)
             {
-                content.Add(new ArtOption(i == profile.accessoryFace, new List<AbsRichBoxMember> { new RbText("Face " + TextLib.IndexToString(i)) },
+                content.Add(new ArtOption(i == profile.accessoryFace, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Face, i)) },
                     new RbAction1Arg<int>((int faceadd) => {
                         var profile = GetProfile();
                         {
@@ -410,8 +409,9 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             //    new RbSpace(),
             //    new RbText("Add accessory")
             //}, new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Accessory, StackOption.Stack)));
-
+            content.Add(new RbSeperationLine());
             content.newParagraph();
+            
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                  new RbImage(SpriteName.WarsHudIconExit, DefaultIconScale), new RbSpace(), new RbText(DssRef.lang.Hud_Exit) },
                new RbAction(()=> { new ExitToLobby(true); })));
@@ -506,49 +506,53 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             menu.CloseDropDown();
         }
 
-        void accessoriesPage()
-        {
-            var profile = DssRef.storage.GetHostProfile();
+        //void accessoriesPage()
+        //{
+        //    var profile = DssRef.storage.GetHostProfile();
 
-            RichBoxContent content = new RichBoxContent();
-            content.h1("Add accessory", HudLib.TitleColor_Head);
+        //    RichBoxContent content = new RichBoxContent();
+        //    content.h1("Add accessory", HudLib.TitleColor_Head);
 
-            content.newLine();
-            for (int i = 0; i < 8; i++)
-            {
-                content.Add(new ArtOption(i == profile.character.accessoryBack, new List<AbsRichBoxMember> { new RbText("Accessory " + TextLib.IndexToString(i)) },
-                    new RbAction1Arg<int>((int index)=>{
+        //    content.newLine();
+        //    for (int i = 0; i < 8; i++)
+        //    {
+        //        content.Add(new ArtOption(i == profile.character.accessoryBack, new List<AbsRichBoxMember> { new RbText("Accessory " + TextLib.IndexToString(i)) },
+        //            new RbAction1Arg<int>((int index)=>{
                         
-                        var profile = GetProfile();
-                        {
-                            profile.accessoryBack = index;
-                        }
-                        SetProfile(profile);
-                        refreshPreview();
-                    }, i)));
-            }
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.WarsHudIconOpen),
-                new RbSpace(),
-                new RbText("Import model")
-            }, null));
+        //                var profile = GetProfile();
+        //                {
+        //                    profile.accessoryBack = index;
+        //                }
+        //                SetProfile(profile);
+        //                refreshPreview();
+        //            }, i)));
+        //    }
+        //    content.newLine();
+        //    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+        //        new RbImage(SpriteName.WarsHudIconOpen),
+        //        new RbSpace(),
+        //        new RbText("Import model")
+        //    }, null));
 
-            content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.pjNumPlus),
-                new RbSpace(),
-                new RbText("Add")
-            }, new RbAction(menu.clearState)));
+        //    content.newParagraph();
+        //    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+        //        new RbImage(SpriteName.pjNumPlus),
+        //        new RbSpace(),
+        //        new RbText("Add")
+        //    }, new RbAction(menu.clearState)));
 
-            Refresh(content);
-        }
+        //    Refresh(content);
+        //}
 
 
         float ScaleProperty(bool set, float value)
         {
-            if (set) { scale = value; }
-            return scale;
+            var profile = GetProfile();
+            if (set) { 
+                profile.soldierScale = value;
+                SetProfile(profile);
+            }
+            return profile.soldierScale;
         }
 
         public CharacterProfile GetProfile()

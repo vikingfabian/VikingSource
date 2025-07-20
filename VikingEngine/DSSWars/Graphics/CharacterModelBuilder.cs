@@ -40,8 +40,6 @@ namespace VikingEngine.DSSWars
 
         static readonly IntVector3 GridSize = new IntVector3(26, 48, 78);
         const int FrameCount = 7;
-        //const int SwordAttackFrame = 1;
-        //const int SwordForwardFrame = 0;
 
         //26*48*78
 
@@ -50,12 +48,10 @@ namespace VikingEngine.DSSWars
             IntVector3 hatOffset = new IntVector3(2, 5, 30);
             VoxelModelName weaponModel;
             int weaponHatFrame;
-            int hatFrame = profile.character.hat;
+            int hatFrame = profile.character.customHat;
             
             int faceFrame = 0;
             int armorFrame = (int)modelData.armor;
-            //VoxelModelName rightArmType = VoxelModelName.modsoldier_rarm_sword1;
-            //VoxelModelName leftArmType = VoxelModelName.modsoldier_larm_empty1;
             VoxelModelName shield = VoxelModelName.NUM_NON;
 
             WeaponLeftArmType weaponLeftArmType = WeaponLeftArmType.None;
@@ -175,16 +171,7 @@ namespace VikingEngine.DSSWars
 
             ArmThemeModels armtheme = CharacterTheme.arm(profile.character.arms,
                 weaponLeftArmType, weaponRightArmType);
-            //switch (modelData.armor)
-            //{ 
-            //    case ArmorLevel.None: armorFrame = 0; break;
-
-            //    case ArmorLevel.Leather: armorFrame = 1; break;
-            //    case ArmorLevel.Iron: armorFrame = 2; break;
-            //    case ArmorLevel.Steel: armorFrame = 3; break;
-            //    case ArmorLevel.Masterful: armorFrame = 4; break;
-            //}
-
+            
             switch (modelData.specialization)
             {
                 case Conscript.SpecializationType.HonorGuard:
@@ -204,6 +191,9 @@ namespace VikingEngine.DSSWars
                     hatmodel = VoxelModelName.modsoldier_hat_soldier_all;
                     hatFrame = weaponHatFrame;
                     break;
+                case CharacterHatGenre.NoHat:
+                    hatmodel = VoxelModelName.NUM_NON;
+                    break;
                 case CharacterHatGenre.Uniform:
                     hatmodel = VoxelModelName.modsoldier_hat_custom_all;
                     hatOffset.Y = 5;
@@ -219,10 +209,10 @@ namespace VikingEngine.DSSWars
                 default:
                     faceModel = VoxelModelName.modsoldier_face1;
                     break;
-                case 1:
+                case  FaceTheme.Orc:
                     faceModel = VoxelModelName.modsoldier_face_orc;
                     break;
-                case 2:
+                case  FaceTheme.Skeleton:
                     faceModel = VoxelModelName.modsoldier_face_skull;
                     break;
 
@@ -253,7 +243,7 @@ namespace VikingEngine.DSSWars
 
             //var debug = DssRef.models.rawModels[VoxelModelName.modsoldier_debug];
             var face = DssRef.models.rawModels[faceModel];
-            var hat = DssRef.models.rawModels[hatmodel];
+            
             var body = DssRef.models.rawModels[bodyModel];
             var leg = DssRef.models.rawModels[VoxelModelName.modsoldier_leg1];
 
@@ -279,8 +269,6 @@ namespace VikingEngine.DSSWars
             var faceVoxels = face.Frame(faceFrame).GetVoxelArray(faceOffset, profileColors, GridSize);
             var faceBlinkVoxels = face.Frame(faceFrame +1).GetVoxelArray(faceOffset, profileColors, GridSize);
 
-            var hatVoxels = hat.Frame(hatFrame).GetVoxelArray(hatOffset, profileColors, GridSize);
-
             WeaponModel leftHandItemVoxels = null;
             ushort leftHandItemJointValue = 0;
             if (shield != VoxelModelName.NUM_NON)
@@ -292,9 +280,18 @@ namespace VikingEngine.DSSWars
 
             for (int frame = 0; frame < FrameCount; frame++)
             {
-                //grid.Frame(frame].AddVoxels(bodyVoxels);
-                grid.Frame(frame).AddVoxels(frame == 1? faceBlinkVoxels : faceVoxels);
-                grid.Frame(frame).AddVoxels(hatVoxels);
+                grid.Frame(frame).AddVoxels(frame == 1 ? faceBlinkVoxels : faceVoxels);
+            }
+                        
+            if (hatmodel != VoxelModelName.NUM_NON)
+            {
+                VoxelObjGridDataAnimHD hat = DssRef.models.rawModels[hatmodel];
+                List<VoxelHD> hatVoxels = null;
+                hatVoxels = hat.Frame(hatFrame).GetVoxelArray(hatOffset, profileColors, GridSize);
+                for (int frame = 0; frame < FrameCount; frame++)
+                {
+                    grid.Frame(frame).AddVoxels(hatVoxels);
+                }
             }
 
             var larmIdle = leftArm.Frame(0).GetVoxelArray(lArmOffset, profileColors, leftHandItemJointValue, out IntVector3 larm_jointPos);

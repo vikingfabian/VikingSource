@@ -879,7 +879,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             ushort swapTo = to.BlockValue;
             if (HasSelection)
             {
-                swapMaterials(selectedVoxels, swapTo, true);
+                swapMaterials(selectedVoxels, swapTo, false);
+                refreshSelectionModel();
 
                 if (repeateOnAllFrames)
                 {
