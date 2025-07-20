@@ -528,7 +528,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void LinkEXIT()
         {
-            new ExitGamePlay();
+            new ExitToLobby(true);
             //if (inGame)
             //    parent.EndCreationMode();
             //else

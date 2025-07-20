@@ -19,7 +19,8 @@ namespace VikingEngine.Engine
             1. load font
             2. load screen size
             3. load splash image
-            4. load the rest of the content
+            4. defalt content
+            5. load the rest of the content
         */
 
         enum LoadState
@@ -27,6 +28,7 @@ namespace VikingEngine.Engine
             Font,
             Screen,
             Splash,
+            DefaltContent,
             GameContent,
             COMPLETE,            
         }
@@ -34,6 +36,7 @@ namespace VikingEngine.Engine
         bool failState = false;
         LoadState load = 0;
 
+        bool loadingDefaltContentComplete = false;
         bool loadingContentComplete = false;
         bool loadingDataComplete = false;
         WaitForCloudSynch waitForCloudSynch = new WaitForCloudSynch();
@@ -42,68 +45,134 @@ namespace VikingEngine.Engine
         protected int storagePart = 0;
 
         string exceptionString;
-
+        Texture2D bgTex = null;
+        Graphics.ImageAdvanced bgImage = null;
         public LaunchState(bool isReset)
             :base()
         {
-            Ref.draw.ClrColor = Color.Black;
+            Ref.draw.ClrColor = new Color(33, 37, 41);
+            
+            if (isReset)
+            {
+                loadingDataComplete = true;
+                loadingContentComplete = true;
+                load = LoadState.COMPLETE;
+            }
+            else
+            {
+                initPart1();
+            }           
+        }
 
+        void initPart1()
+        {
             try
             {
-                if (isReset)
+                //1.
+                LoadContent.LoadConsoleFont();
+
+                load = LoadState.Screen;
+
+                Ref.gamesett.Load();
+
+#if PCGAME
+                Engine.Screen.ApplyScreenSettings(false);
+#endif
+                
+                //todo splash
+
+                new Timer.AsynchActionTrigger(() =>
                 {
-                    loadingDataComplete = true;
-                    loadingContentComplete = true;
-                }
-                else
-                {
-                    //1.
-                    LoadContent.Font(LoadedFont.Console);
-
-
-                    preLoading();
-
-                    new Timer.AsynchActionTrigger(() =>
+                    try
                     {
-                        try
-                        {
-                            asynchContentLoading();
-                            loadingContentComplete = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
-                        }
-                    });
-                    new Timer.AsynchActionTrigger(() =>
-                    {
-                        try
-                        {
-                            asynchStorageLoading();
-                            loadingDataComplete = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
-                        }
-                    });
+                        load = LoadState.Splash;
 
-                }
+                        bgTex = Ref.main.Content.Load<Texture2D>(LoadContent.TexturePath + "monogame_splash");
+
+                        load = LoadState.DefaltContent;
+                        Ref.main.baseContentLoad(ref contentPart);
+                        Engine.Screen.RefreshUiSize();
+                        loadingDefaltContentComplete = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
+                    }
+                });     
             }
             catch (Exception ex)
             {
                 //failState = true;
                 exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
-                
+
             }
+        }
+
+        void initPart2()
+        {
+            try
+            {
+                preLoading();
+
+                new Timer.AsynchActionTrigger(() =>
+                {
+                    try
+                    {
+                        contentPart = 0;
+                        asynchContentLoading(ref contentPart);
+                        loadingContentComplete = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
+                    }
+                });
+                new Timer.AsynchActionTrigger(() =>
+                {
+                    try
+                    {
+                        asynchStorageLoading(ref storagePart);
+                        loadingDataComplete = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
+                    }
+                });                
+            }
+            catch (Exception ex)
+            {
+                //failState = true;
+                exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
+            }
+        }
+
+        void createSplash()
+        {
+            float w = bgTex.Width;
+            float h = bgTex.Height;
+            float x = Screen.CenterScreen.X - w * 0.5f;
+            float y = Screen.CenterScreen.Y - h * 0.5f;
+
+            bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
+                new Vector2(x, y), new Vector2(w, h), ImageLayers.Background5, false);
+            bgImage.Texture = bgTex;
+            bgImage.SetFullTextureSource();
+            //bgImage.Color = ColorExt.GrayScale(0.8f);
+            //bgImage.Opacity = 0.8f;
+
+            //Vector2 promoworkerSz = new Vector2(9, 6) * new Vector2(h * 0.02f);
+
+            //var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoCannon, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.7f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
+            //worker1.LayerAbove(bgImage);
         }
 
         /// <summary>
         /// Before asych loading
         /// </summary>
         abstract protected void preLoading();
-        abstract protected void asynchContentLoading();
-        abstract protected void asynchStorageLoading();
+        abstract protected void asynchContentLoading(ref int part);
+        abstract protected void asynchStorageLoading(ref int part);
         abstract protected void launch();
 
         public override void Time_Update(float time)
@@ -115,13 +184,33 @@ namespace VikingEngine.Engine
                 return;
             }
 
+            
+
             try
             {
-                if (waitForCloudSynch.update())
+                if (bgTex != null)
                 {
-                    if (loadingContentComplete && loadingDataComplete)
+                    createSplash();
+                    bgTex = null;
+                }
+
+
+                if (load <= LoadState.DefaltContent)
+                {
+                    if (loadingDefaltContentComplete)
                     {
-                        launch();
+                        load++;
+                        initPart2();
+                    }
+                }
+                else
+                {
+                    if (waitForCloudSynch.update())
+                    {
+                        if (loadingContentComplete && loadingDataComplete)
+                        {
+                            launch();
+                        }
                     }
                 }
             }
@@ -132,6 +221,11 @@ namespace VikingEngine.Engine
 
             if (exceptionString != null)
             {
+                if (bgImage != null)
+                {
+                    bgImage.Visible = false;
+                }
+
                 failState = true;
                 switch (load)
                 {
@@ -143,6 +237,9 @@ namespace VikingEngine.Engine
                         break;
                     case LoadState.Splash:
                         draw.ClrColor = Color.DarkMagenta;
+                        break;
+                    case LoadState.DefaltContent:
+                        draw.ClrColor = Color.DarkGreen;
                         break;
                     case LoadState.GameContent:
                         draw.ClrColor = Color.DarkBlue;

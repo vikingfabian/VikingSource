@@ -111,7 +111,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void exitToMain()
         {
-            new GameState.ExitGamePlay();
+            new GameState.ExitToLobby(false);
         }
         void exitGame()
         {

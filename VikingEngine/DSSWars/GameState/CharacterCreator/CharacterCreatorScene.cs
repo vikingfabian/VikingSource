@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                  new RbImage(SpriteName.WarsHudIconExit, DefaultIconScale), new RbSpace(), new RbText(DssRef.lang.Hud_Exit) },
-               new RbAction(()=> { new ExitGamePlay(); })));
+               new RbAction(()=> { new ExitToLobby(true); })));
 
 
             Refresh(content);

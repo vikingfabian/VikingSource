@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars
                     }
                     new Timer.TimedAction0ArgTrigger(() =>
                     {
-                        new ExitGamePlay();
+                        new ExitToLobby(false);
                     }, 5000);
                     complete = true;
 

@@ -12,7 +12,7 @@ namespace VikingEngine.Input
         static MouseState previousMouseState;
         static MouseState currentMouseState;
 
-        static MainGame main;
+        //static MainGame main;
         static bool swapLeftRightButtons = false;
         public static bool LockToScreenArea
         {
@@ -35,29 +35,29 @@ namespace VikingEngine.Input
             }
         }
 
-        public static void Init(MainGame _main)
-        {
-            main = _main;
+//        public static void Init(MainGame _main)
+//        {
+//            //main = _main;
 
-//#if PCGAME
-//            var key = Registry.CurrentUser.CreateSubKey("Control Panel\\Mouse\\");
-//            var newValue = key.GetValue("SwapMouseButtons");
-//            if (newValue != null)
-//            {
-//                swapLeftRightButtons = Convert.ToInt32(newValue) != 0;
-//            }
-//#endif
-        }
+////#if PCGAME
+////            var key = Registry.CurrentUser.CreateSubKey("Control Panel\\Mouse\\");
+////            var newValue = key.GetValue("SwapMouseButtons");
+////            if (newValue != null)
+////            {
+////                swapLeftRightButtons = Convert.ToInt32(newValue) != 0;
+////            }
+////#endif
+//        }
 
         public static bool Visible
         {
             get {
-                return PlatformSettings.PC_platform && main.IsMouseVisible;
+                return PlatformSettings.PC_platform && Ref.main.IsMouseVisible;
             }
             set { 
 
                 if (PlatformSettings.PC_platform && (PlatformSettings.Debug_HideMouse || !PlatformSettings.DevBuild))
-                    main.IsMouseVisible = value; 
+                    Ref.main.IsMouseVisible = value; 
             }
         }
 
@@ -86,7 +86,7 @@ namespace VikingEngine.Input
             RealPosition = new Vector2(currentMouseState.X, currentMouseState.Y);
             Position = RealPosition * Engine.Screen.RenderScaleF;
 
-            if (main.IsMouseVisible)
+            if (Ref.main.IsMouseVisible)
             {
                 hiddenFramesCount = 0;
                 RealMoveDistance = RealPosition - PrevRealPosition;
@@ -108,7 +108,7 @@ namespace VikingEngine.Input
 
             if (MainGame.GameIsActive)
             {
-                if (!main.IsMouseVisible)
+                if (!Ref.main.IsMouseVisible)
                 {
                     SetPosition(Engine.Screen.MonitorCenter);
                 }

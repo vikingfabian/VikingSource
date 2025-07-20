@@ -288,7 +288,7 @@ namespace VikingEngine.DSSWars.GameState
             Ref.music.stop(true);
             exitThreads = true;
             DssRef.ambience.gameEnd();
-            new ExitGamePlay();
+            new ExitToLobby(false);
         }
 
         public Players.RemotePlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)

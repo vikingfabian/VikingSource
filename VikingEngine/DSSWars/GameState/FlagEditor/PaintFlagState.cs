@@ -351,7 +351,8 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
 
         public void discardAndExit()
         {
-            new LobbyState();
+            //new LobbyState();
+            new ExitToLobby(true);
         }
         public void saveAndExit()
         {
@@ -359,7 +360,8 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
 
             //EXIT
             DssRef.storage.flagStorage.flagDesigns[profileIx] = profile;
-            new LobbyState();
+            //new LobbyState();
+            new ExitToLobby(true);
             DssRef.storage.flagStorage.Save(profileIx);
         }
 

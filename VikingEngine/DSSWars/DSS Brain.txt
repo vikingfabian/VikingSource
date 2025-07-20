@@ -3,6 +3,10 @@
 * Fixed profile load crash
 * Voxel editor: stamp on all frames
 * improved text wrapping
+* Fixed a bad start sequence
+* Debug: complete remake of the game launch, to easier find crash on load
+* Added monogame splash
+* Performance: Trimmed the startup and game scenes loads to be faster
 
 Character creator:
 * Bent the bow arm out

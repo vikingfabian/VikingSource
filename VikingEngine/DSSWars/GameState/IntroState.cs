@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars
     /// </summary>
     class IntroState : Engine.LaunchState
     {
+        Texture2D bgTex;
 
         public IntroState(bool isReset)
             : base(isReset)
@@ -51,9 +52,7 @@ namespace VikingEngine.DSSWars
             Map.Tile.Init();
         }
 
-
-
-        override protected void asynchContentLoading()
+        override protected void asynchContentLoading(ref int part)
         {
             Config.OnStartUp();
 
@@ -92,12 +91,12 @@ namespace VikingEngine.DSSWars
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
             UserGeneratedContent.UGClib.GameInit();
-            
 
+            bgTex = LobbyState.LoadBg();
             //new Timer.Action0ArgTrigger(createStartButton);
         }
 
-        override protected void asynchStorageLoading()
+        override protected void asynchStorageLoading(ref int part)
         {
             FlagDesign.Init();
 
@@ -107,7 +106,6 @@ namespace VikingEngine.DSSWars
             DssRef.storage.meta.CreateImportFolders();
             Ref.gamesett.Load();
             new Presentation.Translation().setupLanguage(true);
-
         }
 
 
@@ -145,9 +143,9 @@ namespace VikingEngine.DSSWars
 
         protected override void launch()
         {
-#if PCGAME
-            Engine.Screen.ApplyScreenSettings();
-#endif
+//#if PCGAME
+//            Engine.Screen.ApplyScreenSettings();
+//#endif
 
             Ref.main.criticalContentIsLoaded = true;
             new Achievements();
@@ -159,7 +157,8 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                new GameState.ExitGamePlay();
+                new LobbyState(bgTex);
+                //new GameState.ExitGamePlay();
             }
         }
 
