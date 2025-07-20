@@ -18,6 +18,7 @@ using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
 using VikingEngine.Voxels;
 using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.Sound;
 
 namespace VikingEngine.DSSWars
 {
@@ -52,7 +53,7 @@ namespace VikingEngine.DSSWars
             Map.Tile.Init();
         }
 
-        override protected void asynchContentLoading(ref int part)
+        override protected void asyncContentLoading(ref int part)
         {
             Config.OnStartUp();
 
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleDotted, Engine.LoadContent.ModelPath + "SelectCircleDotted");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleSolid, Engine.LoadContent.ModelPath + "SelectCircleSolid");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleThick, Engine.LoadContent.ModelPath + "SelectCircleThick");
-            //DSSWars.DrawGame.LoadContent();
+            
 
             SoundLib.LoadContent();
             Engine.LoadContent.LoadSteamVersion();
@@ -86,17 +87,18 @@ namespace VikingEngine.DSSWars
 
             VikingEngine.HUD.Gui.LoadContent();
 
-            //Display.AbsBubbleMessage.Init();
-
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
             UserGeneratedContent.UGClib.GameInit();
 
             bgTex = LobbyState.LoadBg();
-            //new Timer.Action0ArgTrigger(createStartButton);
+        }
+        protected override void asyncLoadIntro()
+        {
+            introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
         }
 
-        override protected void asynchStorageLoading(ref int part)
+        override protected void asyncStorageLoading(ref int part)
         {
             FlagDesign.Init();
 
@@ -113,39 +115,11 @@ namespace VikingEngine.DSSWars
         {
             DssRef.models?.sychLoading();
 
-            base.Time_Update(time);
-
-            
-
-//            if (waitForCloudSynch.update())
-//            {
-//                if (loadingContentComplete && loadingDataComplete)
-//                {
-//#if PCGAME
-//                    Engine.Screen.ApplyScreenSettings();
-//#endif
-
-//                    Ref.main.criticalContentIsLoaded = true;
-//                    new Achievements();
-//                    new GameStats();
-
-//                    if (Ref.gamesett.language == LanguageType.NONE)
-//                    {
-//                        new SelectLanguageMenu();
-//                    }
-//                    else
-//                    {
-//                        new GameState.ExitGamePlay();
-//                    }
-//                }
-//            }
+            base.Time_Update(time);        
         }
 
         protected override void launch()
         {
-//#if PCGAME
-//            Engine.Screen.ApplyScreenSettings();
-//#endif
 
             Ref.main.criticalContentIsLoaded = true;
             new Achievements();
@@ -158,7 +132,6 @@ namespace VikingEngine.DSSWars
             else
             {
                 new LobbyState(bgTex);
-                //new GameState.ExitGamePlay();
             }
         }
 

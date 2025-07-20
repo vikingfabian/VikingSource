@@ -72,6 +72,10 @@ namespace VikingEngine.DSSWars.Players.Profile
 
                 flag = DssRef.storage.flagStorage.flagDesigns[flagIx];
             }
+            else
+            { 
+                flag = DssRef.storage.flagStorage.flagDesigns[flag.StorageIndex];
+            }
 
             if (character.StorageIndex < 0)
             {

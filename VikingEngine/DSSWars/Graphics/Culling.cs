@@ -353,7 +353,11 @@ namespace VikingEngine.DSSWars
             this.screenAreaRaw = screenAreaRaw;
             enterArea = screenArea;
 
-            if (enterArea.Width <= 8)
+            if (enterArea.Width <= 4)
+            {
+                enterArea.AddRadius(2);
+            }
+            else if (enterArea.Width <= 8)
             {
                 enterArea.AddWidthRadius(1);
             }

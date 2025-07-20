@@ -1,41 +1,5 @@
 ﻿UPDATE
-* The demo attacker will regain normal ai at the 30min mark
-* Fixed profile load crash
-* Voxel editor: stamp on all frames
-* improved text wrapping
-* Fixed a bad start sequence
-* Debug: complete remake of the game launch, to easier find crash on load
-* Added monogame splash
-* Performance: Trimmed the startup and game scenes loads to be faster
-
-Character creator:
-* Bent the bow arm out
-* +2 body type
-* Added arms
-* Added face accessories
-
-
-
-
-
-BETA
-* Crash on work tab fix
-* Fixed a load crash
-* Fixed out of map bounds crash
-* Fixed: camera culling is weird on near zoom
-* Fixed: negative truce timer
-* Fixed: battle lab crashing
-* fixed: Battles off camera sometimes get stuck
-* repaired: absorb as servant
-
-Voxel editor: 
-* merge layer
-* added some icons
-
-X remove layer
-X shift description
-X load retail character models
-x recolor is broken
+* 
 
 #Voxel editor#
 

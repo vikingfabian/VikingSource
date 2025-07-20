@@ -1306,6 +1306,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/hover_disabled.wav
 
+#begin DSS/Sound/intro_beat.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/intro_beat.wav
+
 #begin DSS/Sound/load_ballista.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

@@ -498,6 +498,17 @@ namespace VikingEngine
             return array != null && index >= 0 && index < array.Length;
         }
 
+        public static int Bound<T>(List<T> list, int index)
+        {
+            if (index < 0)
+                return 0;
+            
+            if (index >= list.Count)
+                return list.Count -1;
+
+            return index;
+        }
+
         public static bool InBound<T>(T[] array, int index1, int index2)
         {
             return array != null && 

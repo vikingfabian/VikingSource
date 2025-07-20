@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Players.Profile
                                 result.left = VoxelModelName.modsoldier_larm_empty1;
                                 break;
                             case WeaponLeftArmType.Shield: 
-                                result.right = VoxelModelName.modsoldier_larm_shield1;
+                                result.left = VoxelModelName.modsoldier_larm_shield1;
                                 break;
                         }
 
@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.Players.Profile
                                 result.left = VoxelModelName.modsoldier_larm_empty2naked;
                                 break;
                             case WeaponLeftArmType.Shield:
-                                result.right = VoxelModelName.modsoldier_larm_shield2naked;
+                                result.left = VoxelModelName.modsoldier_larm_shield2naked;
                                 break;
                         }
 

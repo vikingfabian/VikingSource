@@ -1633,10 +1633,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Intvector2MinMax minMax = workerCullingMinMax;
             minMax.Combine(guardCullingMinMax);
-            //if (parentArrayIndex == 441)
-            //{
-            //    lib.DoNothing();
-            //}
+            if (myIndex == 316)
+            {
+                lib.DoNothing();
+                //var tp = this.tilePos;
+            }
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref minMax.min, ref minMax.max);
         }
 

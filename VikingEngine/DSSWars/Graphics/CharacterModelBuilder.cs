@@ -265,21 +265,21 @@ namespace VikingEngine.DSSWars
             
             var profileColors = profile.flag.GetColorReplaceTable();
 
-            var legsIdle = leg.Frames[0].GetVoxelArray(legOffSet, profileColors, GridSize);
+            var legsIdle = leg.Frame(0).GetVoxelArray(legOffSet, profileColors, GridSize);
             for (int frame = 0; frame < 2; frame++)
             {                
-                grid.Frames[frame].AddVoxels(legsIdle);
+                grid.Frame(frame).AddVoxels(legsIdle);
             }
             for (int frame = 2; frame < FrameCount; frame++)
             {
-                grid.Frames[frame].AddVoxels(leg.Frames[frame].GetVoxelArray(legOffSet, profileColors, GridSize));
+                grid.Frame(frame).AddVoxels(leg.Frame(frame).GetVoxelArray(legOffSet, profileColors, GridSize));
             }
 
-            var bodyVoxels = body.Frames[armorFrame].GetVoxelArray(new IntVector3(4, 0, 33), profileColors, GridSize);
-            var faceVoxels = face.Frames[faceFrame].GetVoxelArray(faceOffset, profileColors, GridSize);
-            var faceBlinkVoxels = face.Frames[faceFrame +1].GetVoxelArray(faceOffset, profileColors, GridSize);
+            var bodyVoxels = body.Frame(armorFrame).GetVoxelArray(new IntVector3(4, 0, 33), profileColors, GridSize);
+            var faceVoxels = face.Frame(faceFrame).GetVoxelArray(faceOffset, profileColors, GridSize);
+            var faceBlinkVoxels = face.Frame(faceFrame +1).GetVoxelArray(faceOffset, profileColors, GridSize);
 
-            var hatVoxels = hat.Frames[hatFrame].GetVoxelArray(hatOffset, profileColors, GridSize);
+            var hatVoxels = hat.Frame(hatFrame).GetVoxelArray(hatOffset, profileColors, GridSize);
 
             WeaponModel leftHandItemVoxels = null;
             ushort leftHandItemJointValue = 0;
@@ -287,72 +287,57 @@ namespace VikingEngine.DSSWars
             {
                 leftHandItemVoxels = DssRef.models.weaponModels[shield].recolor(profileColors);
                 leftHandItemJointValue = leftHandItemVoxels.idle_jointPos.value;
-                //var shieldVoxels = shieldModel.Frames[0].GetVoxelArray(new IntVector3(6, 0, 33), profileColors, GridSize);
+                //var shieldVoxels = shieldModel.Frame(0].GetVoxelArray(new IntVector3(6, 0, 33), profileColors, GridSize);
             }
 
             for (int frame = 0; frame < FrameCount; frame++)
             {
-                //grid.Frames[frame].AddVoxels(bodyVoxels);
-                grid.Frames[frame].AddVoxels(frame == 1? faceBlinkVoxels : faceVoxels);
-                grid.Frames[frame].AddVoxels(hatVoxels);
+                //grid.Frame(frame].AddVoxels(bodyVoxels);
+                grid.Frame(frame).AddVoxels(frame == 1? faceBlinkVoxels : faceVoxels);
+                grid.Frame(frame).AddVoxels(hatVoxels);
             }
 
-            
-
-            var larmIdle = leftArm.Frames[0].GetVoxelArray(lArmOffset, profileColors, leftHandItemJointValue, out IntVector3 larm_jointPos);
-            var rarmIdle = rightArm.Frames[0].GetVoxelArray(rArmOffSet, profileColors, rightHandItem.idle_jointPos.value, out IntVector3 rarm_jointPos);
+            var larmIdle = leftArm.Frame(0).GetVoxelArray(lArmOffset, profileColors, leftHandItemJointValue, out IntVector3 larm_jointPos);
+            var rarmIdle = rightArm.Frame(0).GetVoxelArray(rArmOffSet, profileColors, rightHandItem.idle_jointPos.value, out IntVector3 rarm_jointPos);
             
             for (int frame = 0; frame < 2; frame++)
             {
-                grid.Frames[frame].AddVoxels(larmIdle);
-                grid.Frames[frame].AddVoxels(rarmIdle);
+                grid.Frame(frame).AddVoxels(larmIdle);
+                grid.Frame(frame).AddVoxels(rarmIdle);
 
                 if (leftHandItemVoxels != null)
                 { 
-                    leftHandItemVoxels.addToGrid(grid.Frames[frame], adjustJointPos(leftHandItemVoxels.idle_jointPos, larm_jointPos), WeaponModel.IdleFrame);
+                    leftHandItemVoxels.addToGrid(grid.Frame(frame), adjustJointPos(leftHandItemVoxels.idle_jointPos, larm_jointPos), WeaponModel.IdleFrame);
                 }
-                rightHandItem.addToGrid(grid.Frames[frame], adjustJointPos(rightHandItem.idle_jointPos, rarm_jointPos)/*rarm_jointPos*/, WeaponModel.IdleFrame);
+                rightHandItem.addToGrid(grid.Frame(frame), adjustJointPos(rightHandItem.idle_jointPos, rarm_jointPos)/*rarm_jointPos*/, WeaponModel.IdleFrame);
             }
 
             for (int frame = 2; frame < FrameCount; frame++)
             {
                 bool attackFrame = frame == 2;
 
-                grid.Frames[frame].AddVoxels(leftArm.Frames[frame - 1].GetVoxelArray(lArmOffset, profileColors, out _, out larm_jointPos));
+                grid.Frame(frame).AddVoxels(leftArm.Frame(frame - 1).GetVoxelArray(lArmOffset, profileColors, out _, out larm_jointPos));
 
                 VoxelJoint rightHandJointValue = attackFrame ? rightHandItem.attack_jointPos : rightHandItem.move_jointPos;
-                grid.Frames[frame].AddVoxels(rightArm.Frames[frame - 1].GetVoxelArray(rArmOffSet, profileColors,
+                grid.Frame(frame).AddVoxels(rightArm.Frame(frame - 1).GetVoxelArray(rArmOffSet, profileColors,
                     rightHandJointValue.value, out rarm_jointPos));
 
                 if (leftHandItemVoxels != null)
                 {
-                    leftHandItemVoxels.addToGrid(grid.Frames[frame], adjustJointPos(leftHandItemVoxels.idle_jointPos, larm_jointPos), WeaponModel.IdleFrame);
+                    leftHandItemVoxels.addToGrid(grid.Frame(frame), adjustJointPos(leftHandItemVoxels.idle_jointPos, larm_jointPos), WeaponModel.IdleFrame);
                 }
-                rightHandItem.addToGrid(grid.Frames[frame], adjustJointPos(rightHandJointValue, rarm_jointPos)/*rarm_jointPos*/, attackFrame ? WeaponModel.AttackFrame : WeaponModel.MoveFrame);
+                rightHandItem.addToGrid(grid.Frame(frame), adjustJointPos(rightHandJointValue, rarm_jointPos)/*rarm_jointPos*/, attackFrame ? WeaponModel.AttackFrame : WeaponModel.MoveFrame);
             }
 
             for (int frame = 0; frame < FrameCount; frame++)
             {
-                grid.Frames[frame].AddVoxels(bodyVoxels);
+                grid.Frame(frame).AddVoxels(bodyVoxels);
             }
 
             accessory(profile.character.accessoryBack, VoxelModelName.modsoldier_addons, IntVector3.Zero);
             accessory(profile.character.accessoryFace, VoxelModelName.modsoldier_face_access, faceOffset);
 
-            //if (profile.character.accessoryBack >= 0)
-            //{
-            //    var access = DssRef.models.rawModels[VoxelModelName.modsoldier_addons];
-            //    if (profile.character.accessoryBack < access.Frames.Count)
-            //    {
-            //        var accessVoxels = access.Frames[profile.character.accessoryBack].GetVoxelArray(IntVector3.Zero, profileColors, GridSize);
-            //        for (int frame = 0; frame < FrameCount; frame++)
-            //        {
-            //            grid.Frames[frame].AddVoxels(accessVoxels);
-            //        }
-            //    }
-            //}
-
-            var centerAdjust = grid.Frames[0].BottomCenterAdj();
+            var centerAdjust = grid.Frame(0).BottomCenterAdj();
             buildVerticeDataHD_ColorNormal(grid.Frames, centerAdjust);
             Graphics.VoxelModel model = modelFromVertices();
 
@@ -366,10 +351,10 @@ namespace VikingEngine.DSSWars
                     var access = DssRef.models.rawModels[model];
                     if (index < access.Frames.Count)
                     {
-                        var accessVoxels = access.Frames[index].GetVoxelArray(offset, profileColors, GridSize);
+                        var accessVoxels = access.Frame(index).GetVoxelArray(offset, profileColors, GridSize);
                         for (int frame = 0; frame < FrameCount; frame++)
                         {
-                            grid.Frames[frame].AddVoxels(accessVoxels);
+                            grid.Frame(frame).AddVoxels(accessVoxels);
                         }
                     }
                 }

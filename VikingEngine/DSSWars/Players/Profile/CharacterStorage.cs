@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
                 while (index >= profiles.Count)
                 {
-                    profiles.Add(new CharacterProfile());
+                    profiles.Add(new CharacterProfile(index));
                 }
 
                 FileToDiskManager.TryReadBinaryIO(filePath, new CharacterReader(index).read);

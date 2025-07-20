@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars;
-using VikingEngine.SteamWrapping;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Settings;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.LootFest;
+using VikingEngine.Sound;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.Engine
 {
@@ -47,6 +49,7 @@ namespace VikingEngine.Engine
         string exceptionString;
         Texture2D bgTex = null;
         Graphics.ImageAdvanced bgImage = null;
+        protected SoundContainerSingle introSound = null;// = new SoundContainerSingle(SoundDir + "click", 0.7f);
         public LaunchState(bool isReset)
             :base()
         {
@@ -87,6 +90,7 @@ namespace VikingEngine.Engine
                     {
                         load = LoadState.Splash;
 
+                        asyncLoadIntro();
                         bgTex = Ref.main.Content.Load<Texture2D>(LoadContent.TexturePath + "monogame_splash");
 
                         load = LoadState.DefaltContent;
@@ -119,7 +123,7 @@ namespace VikingEngine.Engine
                     try
                     {
                         contentPart = 0;
-                        asynchContentLoading(ref contentPart);
+                        asyncContentLoading(ref contentPart);
                         loadingContentComplete = true;
                     }
                     catch (Exception ex)
@@ -131,7 +135,7 @@ namespace VikingEngine.Engine
                 {
                     try
                     {
-                        asynchStorageLoading(ref storagePart);
+                        asyncStorageLoading(ref storagePart);
                         loadingDataComplete = true;
                     }
                     catch (Exception ex)
@@ -158,21 +162,18 @@ namespace VikingEngine.Engine
                 new Vector2(x, y), new Vector2(w, h), ImageLayers.Background5, false);
             bgImage.Texture = bgTex;
             bgImage.SetFullTextureSource();
-            //bgImage.Color = ColorExt.GrayScale(0.8f);
-            //bgImage.Opacity = 0.8f;
 
-            //Vector2 promoworkerSz = new Vector2(9, 6) * new Vector2(h * 0.02f);
-
-            //var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoCannon, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.7f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
-            //worker1.LayerAbove(bgImage);
+            introSound?.Play();
         }
+
+        virtual protected void asyncLoadIntro() { }
 
         /// <summary>
         /// Before asych loading
         /// </summary>
         abstract protected void preLoading();
-        abstract protected void asynchContentLoading(ref int part);
-        abstract protected void asynchStorageLoading(ref int part);
+        abstract protected void asyncContentLoading(ref int part);
+        abstract protected void asyncStorageLoading(ref int part);
         abstract protected void launch();
 
         public override void Time_Update(float time)
