@@ -1,11 +1,5 @@
 ﻿UPDATE
-* Voxel editor: recolor selection
-
-Character creator:
-* New hats
-* Cleaned out the prototype placeholders
-x Scale
-* Localize prep
+* 
 
 #Voxel editor#
 
