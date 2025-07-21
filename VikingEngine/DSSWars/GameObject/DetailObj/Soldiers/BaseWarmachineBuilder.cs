@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             //hasBannerMan = false;
             
-            description = DssRef.lang.UnitType_Description_Ballista;
+            //description = DssRef.lang.UnitType_Description_Ballista;
 
             
         }

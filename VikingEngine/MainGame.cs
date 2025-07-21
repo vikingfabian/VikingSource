@@ -158,22 +158,7 @@ namespace VikingEngine
             base.Draw(gameTime);
         }
 
-        protected override void UnloadContent()
-        {
-            //Ref.analytics.onExit();
-            Ref.update.exitApplication = true;
-            AbortAllThreads();
-
-            //System.Threading.Thread.Sleep(16);
-
-            MusicPlayer.StopMusic();
-            Engine.XGuide.OnSuspend(true);
-            //Ref.gamestate.onClosingApplication();
-            base.UnloadContent();
-
-            //Input.PlayerInputMap.StopAllVibration();
-            Input.Mouse.Visible = true;
-        }
+       
 
         /* Novelty Methods */
         void init1_Construct()
@@ -219,21 +204,48 @@ namespace VikingEngine
         void init3_LoadContent()
         {
             Engine.LoadContent.Init(Content);
+           
+            bootUp();
+        }
+
+        public void baseContentLoad(ref int part)
+        {
+            Engine.LoadContent.BaseContentLoad();
+            part++;
+
             DataLib.SpriteCollection.Init();
+            part++;
+
             Engine.Draw.Init();
-
+            part++;
+            
             Input.InputLib.Init(this);
-
+            part++;
 #if XBOX
             Engine.Screen.ApplyScreenSettings();
             new XboxWrapping.XboxManager();
 #endif
             Engine.XGuide.Init(this);
+            part++;
 
             DataLib.SaveLoad.Init();
+            part++;
+        }
+        protected override void UnloadContent()
+        {
+            //Ref.analytics.onExit();
+            Ref.update.exitApplication = true;
+            AbortAllThreads();
 
-            bootUp();
+            //System.Threading.Thread.Sleep(16);
 
+            MusicPlayer.StopMusic();
+            Engine.XGuide.OnSuspend(true);
+            //Ref.gamestate.onClosingApplication();
+            base.UnloadContent();
+
+            //Input.PlayerInputMap.StopAllVibration();
+            Input.Mouse.Visible = true;
         }
 
         void bootUp()

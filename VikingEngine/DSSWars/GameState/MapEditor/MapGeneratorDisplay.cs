@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         void exit()
         {
-            new ExitGamePlay();
+            new ExitToLobby(false);
         }
 
         

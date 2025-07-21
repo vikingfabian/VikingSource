@@ -84,8 +84,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         
         public void startNewGame()
         {
-            var state = new LobbyState(false);
-            state.playOnCustomMap(mapBackgroundLoading);
+            //var state = new LobbyState(false);
+            var state = new ExitToLobby(false);
+            state.mapBackgroundLoading = mapBackgroundLoading;
+            //state.playOnCustomMap(mapBackgroundLoading);
         }
 
         public void saveMap()

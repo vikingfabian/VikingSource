@@ -66,7 +66,7 @@ namespace VikingEngine.Engine
         public static int oversizeHeightPerc = 0;
 
         /* Novelty methods */
-        public static void ApplyScreenSettings()
+        public static void ApplyScreenSettings(bool refreshUi = true)
         {
 
             Vector2 SafeBorderPerc;            
@@ -179,11 +179,13 @@ namespace VikingEngine.Engine
 
             ResolutionVec = RenderingResolution.Vec;
             MonitorCenter = MonitorTargetResolution / 2;
-            
-            RefreshUiSize();
-            
+
+            if (refreshUi)
+            {
+                RefreshUiSize();
+            }
             ScreenIsReady = true;
-            if (Ref.gamestate != null) Ref.gamestate.OnResolutionChange();
+            Ref.gamestate?.OnResolutionChange();
         }
 
         public static void SetupSplitScreen(int numPlayers, bool horizontalSplit)

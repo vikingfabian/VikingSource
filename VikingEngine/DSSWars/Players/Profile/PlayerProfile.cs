@@ -42,8 +42,9 @@ namespace VikingEngine.DSSWars.Players.Profile
         {
             flag = new FlagAndColor(factiontype, -1, worldMeta);
         }
-        public PlayerProfile(System.IO.BinaryReader r)
-        { 
+        public PlayerProfile(int index, System.IO.BinaryReader r)
+        {
+            StorageIndex = index;
             read(r);
         }
 
@@ -70,6 +71,10 @@ namespace VikingEngine.DSSWars.Players.Profile
                 }
 
                 flag = DssRef.storage.flagStorage.flagDesigns[flagIx];
+            }
+            else
+            { 
+                flag = DssRef.storage.flagStorage.flagDesigns[flag.StorageIndex];
             }
 
             if (character.StorageIndex < 0)
@@ -132,7 +137,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             }
         }
 
-        const int Version = 1;
+        const int Version = 2;
 
         public void write(System.IO.BinaryWriter w)
         {
@@ -185,7 +190,7 @@ namespace VikingEngine.DSSWars.Players.Profile
         public void read(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
-            if (version > Version) { return; }
+            if (version < 2 || version > Version) { return; }
 
             EightBit bools = new EightBit(r);
             bool customCharacter = bools.Get(0);

@@ -44,18 +44,22 @@ namespace VikingEngine.Engine
             return retrievedColor;
         }
 
-        public static void Init(ContentManager inContent)
+        public static void Init(ContentManager contentManager)
+        { 
+            Content = contentManager;
+        }
+
+        public static void LoadConsoleFont()
+        { 
+            var console = Content.Load<SpriteFont>("Font\\Console");
+            Fonts[(int)LoadedFont.Console] = console;
+        }
+
+        public static void BaseContentLoad()
         {
-            Content = inContent;
             
             //Load fonts
             Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
-
-            //regular = Content.Load<SpriteFont>("Font\\Regular");
-            //bold = Content.Load<SpriteFont>("Font\\Bold");
-            //console = Content.Load<SpriteFont>("Font\\Console");
-
-            
 
             setFontLanguage(FontLanguage.Western);
 

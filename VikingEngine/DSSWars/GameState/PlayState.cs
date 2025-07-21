@@ -573,7 +573,7 @@ namespace VikingEngine.DSSWars
             base.NetEvent_ConnectionLost(reason);
             if (!this.host)
             {
-                new GameState.ExitGamePlay();
+                new GameState.ExitToLobby(false);
             }
         }
         

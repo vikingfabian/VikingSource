@@ -24,7 +24,7 @@ namespace VikingEngine
         public const string Unknown = "Unknown";
         const string MaxTwoDecimalsFormat = "0.##";
         public const string TextFileEnding = ".txt";
-        public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '^' };
+        public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '\\', '^' };
         //const char NewLineChar1 = '\n';
         //const char NewLineChar2 = '\r';
         public static readonly string NewLine = Environment.NewLine;
@@ -289,6 +289,7 @@ namespace VikingEngine
         }
 
         public static string IndexToString(int index) { return (index + 1).ToString(); }
+        public static string AddIndexToString(string name, int index) { return name + " " + (index + 1).ToString(); }
 
         public static string CheckBadLanguage(string textString)
         {

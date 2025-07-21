@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Net
             {
                 //Ref.lobby.startSearchLobbies(true);
 
-                new ExitGamePlay();
+                new ExitToLobby(false);
                 
                 return;
             }

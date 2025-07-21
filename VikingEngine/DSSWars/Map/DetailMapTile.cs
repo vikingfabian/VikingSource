@@ -573,7 +573,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_guard_house, 0, wp, WorldData.SubTileWidth * 1.0f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(faction, 7, wp + new Vector3(WorldData.SubTileWidth * 0.22f, 0.002f, -0.004f), WorldData.SubTileWidth * 0.8f);
@@ -585,7 +585,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_guard_house, 1, wp, WorldData.SubTileWidth * 1.0f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -641,7 +641,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 0, wp, WorldData.SubTileWidth * 1.4f));
                     
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -654,7 +654,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 1, wp, WorldData.SubTileWidth * 1.4f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -667,7 +667,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 2, wp, WorldData.SubTileWidth * 1.4f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -880,7 +880,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 0, wp, WorldData.SubTileWidth * 1f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -894,7 +894,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 0, wp, WorldData.SubTileWidth * 1f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel( faction, 1, wp + new Vector3(0.011f, 0.009f, -0.032f), WorldData.SubTileWidth * 1f);
@@ -907,7 +907,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 0, wp, WorldData.SubTileWidth * 1f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -921,7 +921,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -935,7 +935,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -949,7 +949,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -963,7 +963,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -977,7 +977,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f));
 
-                        var faction = tile.Faction();
+                        var faction = tile.Faction_Safe();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(

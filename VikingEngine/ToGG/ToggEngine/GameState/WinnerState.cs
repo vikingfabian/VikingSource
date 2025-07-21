@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.ToGG.Commander.Players;
 
 namespace VikingEngine.ToGG
@@ -53,7 +54,8 @@ namespace VikingEngine.ToGG
                     Input.Mouse.ButtonDownEvent(MouseButton.Left))
                 {
 #if DSS
-                    new DSSWars.LobbyState();
+                    //new DSSWars.LobbyState();
+                    new ExitToLobby(false);
 #else
                     new GameState.MainMenuState();
 #endif

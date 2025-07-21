@@ -48,6 +48,11 @@ namespace VikingEngine.Input
         
         public static void Update()
         {
+            if (controllers == null)
+            {
+                return;
+            }
+
             XController.ButtonB_KeyUpTime--;
 
             while (GamePad.MaximumGamePadCount > controllers.Count)

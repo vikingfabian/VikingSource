@@ -634,7 +634,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
 
             content.newLine();
-            colorPalette(content, designer.replaceSelectionMaterialsTo, designer.pickColorAndMaterialLink);
+            colorPalette(content, designer.replaceSelectionMaterialsTo/*, designer.pickColorAndMaterialLink*/);
 
             Refresh(content);
 
@@ -747,9 +747,10 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                     content.Add(new ArtButton(buttonStyle,
                         new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(frame)), new RbImage(SpriteName.IconBuildStamp), new RbSpace(0.5f), new RbImage(frameicon) }, new RbAction1Arg<int>(designer.LinkStampOnFrames, frame), new RbTooltip_Text(DssRef.lang.Editor_StampOtherFrames_Description), enabled));
                 }
-
-
                 content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.IconBuildStamp), new RbImage(SpriteName.VoxelEditorAllFrames), new RbText(DssRef.todoLang.Editor_StampAllFrames) }, new RbAction1Arg<int>(designer.LinkStampOnFrames, -1)));
+
+                content.newParagraph();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.IconBuildRemove), new RbText(DssRef.lang.Editor_ClearAllFrames) }, new RbAction1Arg<bool>(designer.ClearSelectedAreaOnFrames, true)));
 
                 content.newLine();
@@ -780,7 +781,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         //    layout.End();
         //}
 
-        public void colorPalette(RichBoxContent content, Action<BlockHD> link, Action<BlockHD> replaceLink)
+        public void colorPalette(RichBoxContent content, Action<BlockHD> link/*, Action<BlockHD> replaceLink*/)
         {
 
             var inUse = designer.materialsInUse(true, out ushort selected);
@@ -824,7 +825,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             //new GuiSectionSeparator(layout);
 
-            DSSSoldierPalette(content, replaceLink);
+            DSSSoldierPalette(content, link);
 
             //new GuiSectionSeparator(layout);
             content.Add(new RbSeperationLine());
@@ -959,7 +960,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             //new GuiIntSlider(SpriteName.NO_IMAGE, "B", blueProperty, RGBrange, false, layout);
             //new GuiSectionSeparator(layout);
 
-            colorPalette(content, designer.pickColorLink, designer.pickColorAndMaterialLink);
+            colorPalette(content, designer.pickColorLink/*, designer.pickColorAndMaterialLink*/);
 
             Refresh(content);
         }

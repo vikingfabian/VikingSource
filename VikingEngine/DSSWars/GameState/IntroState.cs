@@ -18,63 +18,42 @@ using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
 using VikingEngine.Voxels;
 using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.Sound;
 
 namespace VikingEngine.DSSWars
 {
     /// <summary>
     /// The first state for DSS, will load all content
     /// </summary>
-    class IntroState : Engine.GameState
-    {        
-        bool isReset;
-        //Graphics.TextG pressStartText;
-
-        bool loadingContentComplete = false;
-        bool loadingDataComplete = false;
-        //bool bStorageReady = false;
-        WaitForCloudSynch  waitForCloudSynch = new WaitForCloudSynch();
+    class IntroState : Engine.LaunchState
+    {
+        Texture2D bgTex;
 
         public IntroState(bool isReset)
-            : base()
+            : base(isReset)
         {
-            this.isReset = isReset;
-
-            Ref.draw.ClrColor = Color.Black;
-
-            //pressStartText = new Graphics.TextG(
-            //    LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
-            //    Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
-                        
+        }
+        protected override void preLoading()
+        {
+            if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
+            {
+                new EngineSpace.DebugExtensions.SentryReport();
+            }
             DssVar.UpdateConstants();
 
-            if (isReset)
+            if (Ref.music == null)
             {
-                loadingDataComplete = true;
-                loadingContentComplete = true;
+                Ref.music = new Sound.MusicPlayer();
             }
-            else
-            {
-                if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
-                {
-                    new EngineSpace.DebugExtensions.SentryReport();
-                }
-                if (Ref.music == null)
-                {
-                    Ref.music = new Sound.MusicPlayer();
-                }
-                Engine.ParticleHandler.Init();
-                new VikingEngine.Engine.LoadBaseTextures();
-               
-                new Timer.AsynchActionTrigger(asynchContentLoading);
-                new Timer.AsynchActionTrigger(asynchStorageLoading);
+            Engine.ParticleHandler.Init();
+            new VikingEngine.Engine.LoadBaseTextures();
 
-                new MapSettings();
-                Map.Tile.Init();
-            }
+
+            new MapSettings();
+            Map.Tile.Init();
         }
 
-        
-        void asynchContentLoading()
+        override protected void asyncContentLoading(ref int part)
         {
             Config.OnStartUp();
 
@@ -108,18 +87,20 @@ namespace VikingEngine.DSSWars
 
             VikingEngine.HUD.Gui.LoadContent();
 
-            //Display.AbsBubbleMessage.Init();
-
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
             UserGeneratedContent.UGClib.GameInit();
-            
 
-            loadingContentComplete = true;
-            //new Timer.Action0ArgTrigger(createStartButton);
+            bgTex = LobbyState.LoadBg();
+        }
+        protected override void asyncLoadIntro()
+        {
+#if !DEBUG
+            introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
+#endif
         }
 
-        void asynchStorageLoading()
+        override protected void asyncStorageLoading(ref int part)
         {
             FlagDesign.Init();
 
@@ -129,45 +110,37 @@ namespace VikingEngine.DSSWars
             DssRef.storage.meta.CreateImportFolders();
             Ref.gamesett.Load();
             new Presentation.Translation().setupLanguage(true);
-
-            loadingDataComplete = true;
         }
 
 
         public override void Time_Update(float time)
         {
-            base.Time_Update(time);
-
             DssRef.models?.sychLoading();
 
-            if (waitForCloudSynch.update())
+            base.Time_Update(time);        
+        }
+
+        protected override void launch()
+        {
+
+            Ref.main.criticalContentIsLoaded = true;
+            new Achievements();
+            new GameStats();
+
+            if (Ref.gamesett.language == LanguageType.NONE)
             {
-                if (loadingContentComplete && loadingDataComplete)
-                {
-#if PCGAME
-                    Engine.Screen.ApplyScreenSettings();
-#endif
-
-                    Ref.main.criticalContentIsLoaded = true;
-                    new Achievements();
-                    new GameStats();
-
-                    if (Ref.gamesett.language == LanguageType.NONE)
-                    {
-                        new SelectLanguageMenu();
-                    }
-                    else
-                    {
-                        new GameState.ExitGamePlay();
-                    }
-                }
+                new SelectLanguageMenu();
+            }
+            else
+            {
+                new LobbyState(bgTex);
             }
         }
 
 
         protected override void createDrawManager()
         {
-            draw =new Draw2D();
+            draw = new Draw2D();
         }
     }
 }

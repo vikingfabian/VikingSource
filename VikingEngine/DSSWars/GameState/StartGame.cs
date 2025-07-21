@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars
                 {
                     if (++joinTrials >= 3)
                     {
-                        new ExitGamePlay();
+                        new ExitToLobby(false);
                     }
                     else
                     {

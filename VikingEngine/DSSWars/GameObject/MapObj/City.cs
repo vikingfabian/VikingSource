@@ -1633,10 +1633,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Intvector2MinMax minMax = workerCullingMinMax;
             minMax.Combine(guardCullingMinMax);
-            //if (parentArrayIndex == 441)
-            //{
-            //    lib.DoNothing();
-            //}
+            if (myIndex == 316)
+            {
+                lib.DoNothing();
+                //var tp = this.tilePos;
+            }
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref minMax.min, ref minMax.max);
         }
 
@@ -2222,7 +2223,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void CityPresentationHud(ObjectHudArgs args, bool tooltip)
         {
-            Faction faction = GetFaction();
+            Faction faction = GetFaction_Safe();
             if (faction != null)
             {
                 nameToHud(args.content, !tooltip);
@@ -2936,21 +2937,21 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     owner.remove(this);                   
                 }
-                OnNewOwner();
+                OnNewOwner(newFaction);
                 //guardCount = Bound.Min(guardCount, 1);
             }
         }
 
-        override public void OnNewOwner()
+        override public void OnNewOwner(Faction newFaction)
         {
             if (DssRef.world != null)
             {
-                var faction = GetFaction_Safe();
+                //var faction = GetFaction_Safe();
                 DssRef.world.BordersUpdated = true;
 
                 //detailObj?.onNewOwner();
 
-                if (cityType == CityType.Factory && faction.factiontype != FactionType.DarkLord)
+                if (cityType == CityType.Factory && newFaction.factiontype != FactionType.DarkLord)
                 {
                     setFactoryType(false);
                 }
@@ -2960,9 +2961,9 @@ namespace VikingEngine.DSSWars.GameObject
                     //createOverViewModel();
                 }
 
-                workTemplate.onFactionChange(faction.workTemplate);
-                tradeTemplate.onFactionValueChange(faction.tradeTemplate);
-                technology.addFactionUnlocked(faction.technology, true, false);
+                workTemplate.onFactionChange(newFaction.workTemplate);
+                tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
+                technology.addFactionUnlocked(newFaction.technology, true, false);
             }
         }
 

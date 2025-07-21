@@ -399,7 +399,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         deleteArea(i, designerInterface.selectionArea);
                     }
 
-                    stampSelection(false, frame);
+                    stampSelection(false, i);
                 }
             }
             else
@@ -528,7 +528,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void LinkEXIT()
         {
-            new ExitGamePlay();
+            new ExitToLobby(true);
             //if (inGame)
             //    parent.EndCreationMode();
             //else
@@ -879,7 +879,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             ushort swapTo = to.BlockValue;
             if (HasSelection)
             {
-                swapMaterials(selectedVoxels, swapTo, true);
+                swapMaterials(selectedVoxels, swapTo, false);
+                refreshSelectionModel();
 
                 if (repeateOnAllFrames)
                 {

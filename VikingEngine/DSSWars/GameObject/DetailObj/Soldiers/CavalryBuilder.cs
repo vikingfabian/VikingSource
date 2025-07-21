@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.GameObject
             modelAdjY = 0.1f;
             //hasBannerMan = false;
 
-            description = DssRef.lang.UnitType_Description_Knight;
+            //description = DssRef.lang.UnitType_Description_Knight;
         }
 
         public override AbsSoldierUnit CreateUnit()

@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public string HUD_DisplayName => "Display name";
+        public string HUD_Scale => "Scale";
         public string Lobby_PlayerProfileNumbered => "Profile {0}";
         public string Lobby_CharacterCreationNumbered => "Character {0}";
         public string Lobby_PlayerProfileEdit => "Edit player profile";
@@ -24,8 +25,23 @@ namespace VikingEngine.DSSWars.Presentation
         public string ProfileEditor_PantsColor => "Pants";
         public string ProfileEditor_LeaderColor => "Leader";
 
-
         public string Editor_ConvertAnimationToLayers => "Convert animation to layers";
+        public string Editor_StampAllFrames => "Stamp on all frames";
+
+        public string Editor_DisplayOptions => "Diplay options";
+        public string Editor_CharacterCreator => "Character creator";
+        public string Editor_HatGenre => "Hat display mode";
+        public string Editor_HatGenre_FollowWeapon => "Follow weapon";
+        public string Editor_HatGenre_Uniform => "Uniform";
+
+        public string Character_Accessories=> "Accessories";
+        public string Character_Hat => "Hat";
+        public string Character_Head => "Head";
+        public string Character_Body => "Body";
+        public string Character_Arms => "Arms";
+        public string Character_Back => "Back";
+        public string Character_Face => "Face";
+
 
     }
 

@@ -730,7 +730,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             updateArmyMovement(Ref.DeltaGameTimeMs);
 
-            if (debugTagged || id == -1)
+            if (debugTagged || id == 12)
             {
                 lib.DoNothing();
             }
@@ -814,6 +814,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         void updateArmyMembers(float time, bool fullUpdate)
         {
+            if (id == 12)
+            {
+                lib.DoNothing();
+            }
+
             if (groups.Count > 0)
             {
                 if (fullUpdate || !army_isIdle)
@@ -1233,12 +1238,13 @@ namespace VikingEngine.DSSWars.GameObject
         //public override void setFaction(Faction faction)
         public override void setFaction(Faction newFaction, bool duringStartup)
         {
-            setFaction(newFaction, duringStartup);
+            base.setFaction(newFaction, duringStartup);
+            //setFaction(newFaction, duringStartup);
             newFaction.AddArmy(this);
             
         }
 
-        public override void OnNewOwner()
+        public override void OnNewOwner(Faction newFaction)
         {
             if (inRender_detailLayer)
             {

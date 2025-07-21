@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars
         const float MoreArrowScale = 0.4f;
         SpriteName moreOptArrow = SpriteName.LfMenuMoreMenusArrow;
         SaveStateMeta loadGame = null;
-        public LobbyState(bool startLoadingMap = true)
+        public LobbyState(Texture2D bgTex, bool startLoadingMap = true)
             : base()
         {
             DssRef.storage.profileStorage.refreshProfiles();
@@ -138,6 +138,8 @@ namespace VikingEngine.DSSWars
             createMenuLayout();
             RestoreMenuStack();
 
+            this.bgTex = bgTex;
+            createBackground();
 #if DEBUG
             //new TimedAction0ArgTrigger(collectReports, 600);
 
@@ -580,15 +582,20 @@ namespace VikingEngine.DSSWars
             if (Ref.gamesett.graphicsHasChanged)
             {
                 Ref.gamesett.graphicsHasChanged = false;
-                new LobbyState();
+                new LobbyState(bgTex);
             }
         }
 
+        public static Texture2D LoadBg()
+        {
+            var bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
+            return bgTex;
+        }
 
         void load_asynch()
         {
-            bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
-            new Timer.Action0ArgTrigger(loadingComplete);
+            //bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
+            //new Timer.Action0ArgTrigger(loadingComplete);
 
             LoopingSound sound = new LoopingSound();
             sound.setVolume(0);
@@ -597,7 +604,7 @@ namespace VikingEngine.DSSWars
             lobbyAmbienceLoop = sound;
         }
 
-        void loadingComplete()
+        void createBackground()
         {
             float w = Engine.Screen.SafeArea.Width;
             float h = w / bgTex.Width * bgTex.Height;
@@ -2013,7 +2020,7 @@ namespace VikingEngine.DSSWars
         {
             base.OnResolutionChange();
             Ref.gamesett.Save();
-            new LobbyState().openUnderMenu(UnderMenu_Options, StackOption.ClearStack);
+            new LobbyState(bgTex).openUnderMenu(UnderMenu_Options, StackOption.ClearStack);
         }
         public override void LostFocus()
         {

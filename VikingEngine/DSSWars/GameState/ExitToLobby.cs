@@ -1,0 +1,50 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars.Map.Generate;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
+
+namespace VikingEngine.DSSWars.GameState
+{
+    class ExitToLobby : AbsDssState
+    {
+        protected int waitUpdates;
+        Texture2D bgTex = null;
+        public MapGenerator_BackgroundLoading mapBackgroundLoading;
+        bool startLoadingMap;
+       
+        public ExitToLobby(bool quick, bool startLoadingMap = true)
+            :base()
+        {
+            waitUpdates = quick ? 2 : 30;
+            this.startLoadingMap = startLoadingMap;
+            draw.ClrColor = Color.Black;
+            Ref.lobby?.disconnect(null);
+            new Timer.AsynchActionTrigger(load_asynch, true);
+        }
+        void load_asynch()
+        {
+            bgTex = LobbyState.LoadBg();
+        }
+        public override void Time_Update(float time)
+        {
+            base.Time_Update(time);
+            if (--waitUpdates <= 0 && bgTex != null)
+            {
+                launch();
+            }
+        }
+
+        virtual protected void launch()
+        {
+            DssRef.world = null;
+            var lobby = new LobbyState(bgTex, startLoadingMap);
+
+            if (mapBackgroundLoading != null)
+            {
+                lobby.playOnCustomMap(mapBackgroundLoading);
+            }
+        }
+    }
+}

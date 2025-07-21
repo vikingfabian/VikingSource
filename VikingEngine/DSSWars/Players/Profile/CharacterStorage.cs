@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
@@ -48,7 +49,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
                 while (index >= profiles.Count)
                 {
-                    profiles.Add(new CharacterProfile());
+                    profiles.Add(new CharacterProfile(index));
                 }
 
                 FileToDiskManager.TryReadBinaryIO(filePath, new CharacterReader(index).read);
@@ -83,7 +84,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public void read(System.IO.BinaryReader r)
         {
-           DssRef.storage.characterStorage.profiles[index] = new CharacterProfile(r);
+           DssRef.storage.characterStorage.profiles[index] = new CharacterProfile(index, r);
         }
     }
 }

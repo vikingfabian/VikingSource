@@ -98,6 +98,11 @@ namespace VikingEngine.Voxels
                     break;
             }
         }
+
+        public VoxelObjGridDataHD Frame(int index)
+        { 
+            return Frames[arraylib.Bound(Frames, index)];
+        }
     }
 
     class VoxelObjGridDataAnimHD : AbsVoxelObjDataAnimHD

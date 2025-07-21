@@ -1,15 +1,11 @@
 ﻿UPDATE
-* Fixed a load crash
-* Fixed out of map bounds crash
-* Fixed: camera culling is weird on near zoom
+* Voxel editor: recolor selection
 
-Voxel editor: 
-* merge layer
-* added some icons
-
-X remove layer
-X shift description
-X load retail character models
+Character creator:
+* New hats
+* Cleaned out the prototype placeholders
+x Scale
+* Localize prep
 
 #Voxel editor#
 
@@ -27,6 +23,11 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+x  i must remake my loading so it can display any issues
+x flag editor need color copy, + tatoo color
+	-add voxel model texture
+x coal mines in work tab
+x multiplayer is broken in battle lab
 x set all defence is broken, need set all towers
 x how to get science buildings tooltip
 x gun maker missing tooltip info
@@ -51,6 +52,8 @@ x show connected research, next to experience overview types
 x describe work group count
 x Rock thrower guard
 x Ballista, har warmachine crew, guards
+x removing soldiers cancels move order
+x drag slider needs description
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning
