@@ -92,6 +92,8 @@ namespace VikingEngine.DSSWars
             UserGeneratedContent.UGClib.GameInit();
 
             bgTex = LobbyState.LoadBg();
+
+            //DrawGame.LoadContent();
         }
         protected override void asyncLoadIntro()
         {

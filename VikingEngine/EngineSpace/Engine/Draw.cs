@@ -74,6 +74,7 @@ namespace VikingEngine.Engine
             TextureEffects[(int)Graphics.TextureEffectType.Flat] = new Graphics.CustomEffect("Flat", false);
             TextureEffects[(int)Graphics.TextureEffectType.SeaNoise] = new Graphics.SeaNoiseEffect();
             TextureEffects[(int)Graphics.TextureEffectType.Shadow] = new Graphics.CustomEffect("Shadow", false);
+            TextureEffects[(int)Graphics.TextureEffectType.MonoShadow] = new Graphics.CustomEffect("RenderTextured", false);
 #if TOGG
             TextureEffects[(int)Graphics.TextureEffectType.FlatNoOpacity] = new Graphics.CustomEffect("FlatNoOpacity", false);
             

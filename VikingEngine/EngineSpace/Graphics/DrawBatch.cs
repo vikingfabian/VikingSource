@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -67,7 +68,18 @@ namespace VikingEngine.Graphics
         //        batch.preremoved++;
         //    }
         //}
+        public void DrawDepth(int cameraIndex, Effect shader)
+        {
+            foreach (var kv in batches)
+            {
+                var list = kv.Value;
 
+                foreach (var model in list)
+                {
+                    (model as Abs3DModel)?.DrawDeferredDepthOnly(shader, cameraIndex);
+                }
+            }
+        }
         public void RemoveAndDraw(int cameraIndex)
         {
             while (loadingQueue.TryPeek(out var model)

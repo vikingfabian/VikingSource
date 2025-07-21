@@ -47,12 +47,13 @@ namespace VikingEngine.DSSWars
         
         Graphics.ImageAdvanced viewDepth=null;
         EffectVertexColorShadow shadowEffect;
+        //static Effect depthWriter;
         public DrawGame()
             : base()
         {
             overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
-            //shadowEffect = new EffectVertexColorShadow();
+            shadowEffect = new EffectVertexColorShadow();
             //TODO SurfaceFormat.Single
             //shadowMapRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 2048, 2048, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
 
@@ -82,7 +83,6 @@ namespace VikingEngine.DSSWars
                 //DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = false;
                 Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
                 
-
                 Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
                 if (drawUnits.prevLayer != null)
                 {
@@ -90,10 +90,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-
-
             //DrawShadowMap(0);
-
 
             if (hasFadingLayer)
             { //Draw overview to rendertarget
@@ -107,7 +104,7 @@ namespace VikingEngine.DSSWars
                     Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
                     if (drawUnits.prevLayer != null)
                     {
-                        drawDetailLayer(cameraIndex, drawUnits.prevLayer);
+                        drawDetailLayer(cameraIndex, drawUnits.prevLayer, overviewMapTarget);
                     }
                 }                
             }
@@ -120,7 +117,7 @@ namespace VikingEngine.DSSWars
                 EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
                 Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
 
-                drawDetailLayer(cameraIndex, drawUnits.current);
+                drawDetailLayer(cameraIndex, drawUnits.current, MainRenderTarget);
             }
             
 
@@ -155,13 +152,13 @@ namespace VikingEngine.DSSWars
             Draw2d(0);
         }
 
-        void drawDetailLayer(int cameraIndex, Map.MapLayer lay)
+        void drawDetailLayer(int cameraIndex, Map.MapLayer lay, RenderTarget2D previousTarget)
         {
             Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
 
             if (lay.type == Map.MapDetailLayerType.UnitDetail1)
             {
-                //DrawShadowMap(cameraIndex);
+                DrawShadowMap(cameraIndex, previousTarget);
             }
             Camera = p.view.Camera;
             graphicsDeviceManager.GraphicsDevice.Viewport = p.view.Viewport;
@@ -173,8 +170,8 @@ namespace VikingEngine.DSSWars
                     //DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
 
                     //SHADOW
-                    DrawGenerated(UnitDetailLayer, cameraIndex);
-                    //DrawGenerated_Shadows(UnitDetailLayer, cameraIndex);
+                    //DrawGenerated(UnitDetailLayer, cameraIndex);
+                    DrawGenerated_Shadows(UnitDetailLayer, cameraIndex);
                     DssRef.state.detailMap.updateAndDraw(cameraIndex);
                     drawBatch.RemoveAndDraw(cameraIndex);
 
@@ -200,64 +197,69 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void DrawShadowMap(int cameraIndex)
+        public void DrawShadowMap(int cameraIndex, RenderTarget2D previousTarget)
         {
-
-
-            //    //GraphicsDevice device
-            //    graphicsDeviceManager.GraphicsDevice.SetRenderTarget(shadowMapRenderTarget);
-            //    graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            //    //graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
-            //    graphicsDeviceManager.GraphicsDevice.Clear(Color.Transparent);
-            //    //Camera = p.view.LightCamera;
-            //    ////Camera.position = p.view.Camera.position;
-            //    //Camera.LookTarget = p.view.Camera.LookTarget;
-            //    //Camera.CurrentZoom = 50;
-            //    //Camera.instantMoveToTarget();
-            //    //Camera.RecalculateMatrices();
-
-
-            //    Vector3 lightPos = p.view.Camera.LookTarget + new Vector3(0, 5, 0);
-
-            //    //Matrix lightViewProjection = lightView * lightProjection;
-            //    Matrix lightView = Matrix.CreateLookAt(lightPos, Camera.LookTarget, Vector3.Forward);
-            //    float orthoSize = 8f;
-            //    float zNear = 4f;
-            //    float zFar = 6f;
-            //    Matrix lightProjection = Matrix.CreateOrthographic(orthoSize, orthoSize, zNear, zFar);
-
-            //    depthWriter.Parameters["View"].SetValue(lightView);
-            //    depthWriter.Parameters["Projection"].SetValue(lightProjection);
-            //    //depthWriter.Parameters["LightPosition"].SetValue(lightPos);
-            //    depthWriter.Parameters["ZNear"].SetValue(zNear);
-            //    depthWriter.Parameters["ZFar"].SetValue(zFar);
-            //    depthWriter.Parameters["FloatingPointPrecisionModifier"].SetValue(1f);
-
-            //    //DrawGenerated(UnitDetailLayer, cameraIndex);
-
-
-
             Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
-            
-            
-            
-            
-            
-            shadowEffect.DrawShadowMap(p, cameraIndex);
+
+            //GraphicsDevice device
+            //graphicsDeviceManager.GraphicsDevice.SetRenderTarget(shadowEffect.shadowMapRenderTarget);
+
+            //graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            ////graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
+            //graphicsDeviceManager.GraphicsDevice.Clear(Color.Transparent);
+            ////Camera = p.view.LightCamera;
+            //////Camera.position = p.view.Camera.position;
+            ////Camera.LookTarget = p.view.Camera.LookTarget;
+            ////Camera.CurrentZoom = 50;
+            ////Camera.instantMoveToTarget();
+            ////Camera.RecalculateMatrices();
+
+
+            //Vector3 lightPos = p.view.Camera.LookTarget + new Vector3(0, 5, 0);
+
+            ////Matrix lightViewProjection = lightView * lightProjection;
+            //Matrix lightView = Matrix.CreateLookAt(lightPos, Camera.LookTarget, Vector3.Forward);
+            //float orthoSize = 8f;
+            //float zNear = 4f;
+            //float zFar = 6f;
+            //Matrix lightProjection = Matrix.CreateOrthographic(orthoSize, orthoSize, zNear, zFar);
+
+            //depthWriter.Parameters["View"].SetValue(lightView);
+            //depthWriter.Parameters["Projection"].SetValue(lightProjection);
+            ////depthWriter.Parameters["LightPosition"].SetValue(lightPos);
+            //depthWriter.Parameters["ZNear"].SetValue(zNear);
+            //depthWriter.Parameters["ZFar"].SetValue(zFar);
+            //depthWriter.Parameters["FloatingPointPrecisionModifier"].SetValue(1f);
+
+            //DrawGenerated(UnitDetailLayer, cameraIndex);
 
 
 
 
 
+
+
+
+
+            //shadowEffect.DrawShadowMap(p, cameraIndex);
+
+
+
+
+             graphicsDeviceManager.GraphicsDevice.SetRenderTarget(shadowEffect.shadowMapRenderTarget);
             DrawRenderListMembersDepthOnly(EffectVertexColorShadow.depthWriter, UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
-
+            drawBatch.DrawDepth(cameraIndex, EffectVertexColorShadow.depthWriter);
 
             if (viewDepth == null)
             {
                 viewDepth = new ImageAdvanced(SpriteName.WhiteArea, Engine.Screen.CenterScreen, Engine.Screen.Area.Size * VectorExt.V2Half, ImageLayers.Top0, false);
                 viewDepth.Texture = shadowEffect.shadowMapRenderTarget;
                 viewDepth.SetFullTextureSource();
+
+                Image bg = new Image(SpriteName.WhiteArea, viewDepth.position, viewDepth.size, ImageLayers.Top1);
             }
+
+            graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
             //    //DrawModels(device, depthWriter);
             //}
         }

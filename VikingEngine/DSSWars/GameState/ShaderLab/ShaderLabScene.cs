@@ -11,16 +11,21 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;
 using Microsoft.Xna.Framework;
+using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.GameState.ShaderLab
 {
     class ShaderLabScene : Engine.GameState
     {
         RichMenu menu;
-        public ShaderLabScene() 
-            :base()
-        { 
+        public ShaderLabScene()
+            : base()
+        {
             openMenu();
+
+            new Mesh(LoadedMesh.cube_repeating, Vector3.Zero, Vector3.One, TextureEffectType.Flat, SpriteName.cmdTileGrass1, Color.White);
+
+            new Mesh(LoadedMesh.cube_repeating, new Vector3(0, -2, 0), new Vector3(10, 1, 10), TextureEffectType.Flat, SpriteName.cmdTileEmpty, Color.White);
         }
         protected override void createDrawManager()
         {

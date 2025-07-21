@@ -102,7 +102,7 @@ float4 PS(VSO input) : COLOR0
     depth = (depth - ZNear) / (ZFar - ZNear);
     depth = saturate(depth);
 
-    return float4(depth, depth, depth, 1.0);
+    return float4(1, 0, 0, 1.0); //float4(depth, depth, depth, 1.0);
 }
 
 technique Default
