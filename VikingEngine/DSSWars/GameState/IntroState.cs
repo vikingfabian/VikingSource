@@ -95,7 +95,9 @@ namespace VikingEngine.DSSWars
         }
         protected override void asyncLoadIntro()
         {
+#if !DEBUG
             introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
+#endif
         }
 
         override protected void asyncStorageLoading(ref int part)
