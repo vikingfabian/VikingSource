@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Editor_DisplayOptions => "Diplay options";
         public string Editor_CharacterCreator => "Character creator";
-        public string Editor_CharacterCreator_Description => "Soldier model appearance editor";
+        public string Editor_CharacterCreator_Description => "Military models appearance editor";
         public string Editor_HatGenre => "Hat display mode";
         public string Editor_HatGenre_FollowWeapon => "Follow weapon";
         public string Editor_HatGenre_Uniform => "Uniform";
