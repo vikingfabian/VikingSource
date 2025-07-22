@@ -32,6 +32,7 @@ using VikingEngine.PJ.MiniGolf;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.ToggEngine.Map;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -325,69 +326,25 @@ namespace VikingEngine.DSSWars.GameObject
         {
             initEconomy(true);
 
-            double land = 0, water = 0, plain = 0, forest = 0, mountain = 0, dryBiom = 0;
+            CityAreaCulture areaCulture = new CityAreaCulture(this, world);
 
-            Rectangle2 cultureArea = Rectangle2.FromCenterTileAndRadius(tilePos, 3);
-            double total = cultureArea.Area;
-            ForXYLoop loop = new ForXYLoop(cultureArea);
+            workHutStyle = areaCulture.percMountain > 0.5 ? 0 : 1;
 
-            while (loop.Next())
-            {
-                var tile = world.tileGrid.Get(loop.Position);
-                if (tile.IsWater())
-                {
-                    ++water;
-                }
-                else
-                {
-                    ++land;
-                    switch (tile.heightSett().culture)
-                    {
-                        case TerrainCultureType.Plains:
-                            ++plain;
-                            break;
-                        case TerrainCultureType.Forest:
-                            ++forest;
-                            break;
-                        case TerrainCultureType.Mountain:
-                            ++mountain;
-                            break;
-                    }
-                    if (tile.biom == BiomType.YellowDry || tile.biom == BiomType.RedDry)
-                    {
-                        ++dryBiom;
-                    }
-                }
-            }
-
-            double percWater = water / total;
-            double percForest = forest / land;
-            double percPlains = plain / land;
-            double percMountain = mountain / land;
-            double percDry = dryBiom / land;
-
-            workHutStyle = percMountain > 0.5 ? 0 : 1;
-
-
-            //Collect cultures
-            double percX = tilePos.X / (double)world.Size.X;
-            double percY = tilePos.Y / (double)world.Size.Y;
-
-            if (percForest >= 0.7 && cityType == CityType.Capital)
+            if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
             {
                 cityCultureCollection.LargeGreen.Add(this);
             }
-            else if (percDry >= 0.7 && percX >= 0.75)
+            else if (areaCulture.percDry >= 0.7 && areaCulture.worldPercX >= 0.75)
             {
                 cityCultureCollection.DryEast.Add(this);
             }
-            else if (percWater >= 0.25 && percY <= 0.25)
+            else if (areaCulture.percWater >= 0.25 && areaCulture.worldPercY <= 0.25)
             {
                 cityCultureCollection.NorthSea.Add(this);
             }
-            else if (percY > 0.5f)
+            else if (areaCulture.worldPercY > 0.5f)
             {
-                if (percX < 0.3f)
+                if (areaCulture.worldPercX < 0.3f)
                 {
                     cityCultureCollection.WestKingdom.Add(this);
                 }
@@ -400,31 +357,31 @@ namespace VikingEngine.DSSWars.GameObject
             if (world.rnd.Chance(0.3))
             {
                 //Area specific culture
-                if (percDry > 0.05 && percDry < 0.7 && percPlains >= 0.1)
+                if (areaCulture.percDry > 0.05 && areaCulture.percDry < 0.7 && areaCulture.percPlains >= 0.1)
                 {
                     Culture = CityCulture.FertileGround;
                 }
-                else if (percForest >= 0.8)
+                else if (areaCulture.percForest >= 0.8)
                 {
                     Culture = CityCulture.Woodcutters;
                 }
-                else if (percMountain > 0.5)
+                else if (areaCulture.percMountain > 0.5)
                 {
                     Culture = CityCulture.Miners;
                 }
-                else if (percMountain > 0.3)
+                else if (areaCulture.percMountain > 0.3)
                 {
                     Culture = CityCulture.Stonemason;
                 }
-                else if (dryBiom <= 1)
+                else if (areaCulture.dryBiom <= 1)
                 {
                     Culture = CityCulture.DeepWell;
                 }
-                else if (percForest >= 0.1)
+                else if (areaCulture.percForest >= 0.1)
                 {
                     Culture = CityCulture.PitMasters;
                 }
-                else if (percWater >= 0.25)
+                else if (areaCulture.percWater >= 0.25)
                 {
                     Culture = CityCulture.Seafaring;
                 }
@@ -432,9 +389,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (Culture == CityCulture.NUM_NONE)
             {
-                Culture = arraylib.RandomListMember(CityCultureCollection.GeneralCultures, world.rnd); 
+                Culture = arraylib.RandomListMember(CityCultureCollection.GeneralCultures, world.rnd);
             }
+
+            casualCityProfile.InitCulture(this, areaCulture);
         }
+
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {

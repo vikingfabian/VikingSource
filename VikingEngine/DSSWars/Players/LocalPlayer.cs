@@ -502,7 +502,11 @@ namespace VikingEngine.DSSWars.Players
         }
 
         public List<MenuTab> AvailableCityTabs()
-        { 
+        {
+            if (profile.casualControls)
+            {
+                return new List<MenuTab> { MenuTab.Casual_Recruit, MenuTab.Casual_Build };
+            }
             return tutorial != null ? tutorial.cityTabs : CityMenu.Tabs;
         }
 

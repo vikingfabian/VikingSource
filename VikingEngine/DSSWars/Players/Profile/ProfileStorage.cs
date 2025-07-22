@@ -83,6 +83,18 @@ namespace VikingEngine.DSSWars.Players.Profile
                 profiles[i] = profile;
             }
         }
+
+        public bool casualProperty(int index, bool set, bool value)
+        {
+            var profile = profiles[index];
+            if (set)
+            {
+                profile.casualControls = value;
+                profiles[index] = profile;
+            }
+
+            return profile.casualControls;
+        }
     }
 
     class ProfileReader

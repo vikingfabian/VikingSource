@@ -43,7 +43,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Character_Back => "Back";
         public string Character_Face => "Face";
 
-
+        public string Settings_CasualControls => "Casual player controls";
+        public string Settings_CasualControls_Description => "Simplifies gameplay by reducing choices to key decisions. Only money is used as a resource.";
     }
 
 }

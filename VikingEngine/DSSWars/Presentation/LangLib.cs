@@ -798,6 +798,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case MenuTab.Tag:
                     description = null;
                     return DssRef.lang.MenuTab_Tag;
+
                 case MenuTab.Build:
                     description = DssRef.lang.MenuTab_Build_Description;
                     return DssRef.lang.MenuTab_Build;
@@ -844,6 +845,14 @@ namespace VikingEngine.DSSWars.Presentation
                 case MenuTab.Help:
                     description = null;
                     return DssRef.lang.Help_Title;
+
+                case MenuTab.Casual_Recruit:
+                    description = DssRef.lang.MenuTab_Recruit;
+                    return DssRef.lang.BuildingType_Recruitment_Description;
+
+                case MenuTab.Casual_Build:
+                    description = DssRef.lang.MenuTab_Build_Description;
+                    return DssRef.lang.MenuTab_Build;
                 default:
                     throw new NotImplementedException();
             }

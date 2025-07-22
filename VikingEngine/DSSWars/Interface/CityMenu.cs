@@ -38,8 +38,8 @@ namespace VikingEngine.DSSWars.Interface
             MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Defence, MenuTab.Progress,
             MenuTab.Tag,MenuTab.Help,};
 
-        Players.LocalPlayer player;
-        City city;
+        protected Players.LocalPlayer player;
+        protected City city;
         static readonly List<float> StockPileControls = new List<float> { 100 };
 
         public static readonly AutomationFocus[] AvailableAutomationFocuses =
@@ -69,7 +69,6 @@ namespace VikingEngine.DSSWars.Interface
             if (city.automateCity)
             {
                 city.CityDetailsHud(false, player, content);
-                //purchaseOptions(content);
             }
             else
             {
@@ -176,6 +175,10 @@ namespace VikingEngine.DSSWars.Interface
 
                     case MenuTab.Help:
                         helpTab(content);
+                        break;
+
+                    case MenuTab.Casual_Recruit:
+
                         break;
                 }
             }
@@ -2368,7 +2371,6 @@ namespace VikingEngine.DSSWars.Interface
         Info,
         Tag,
         Conscript,
-        Recruit,
         Economy,
         Resources,
         Work,
@@ -2383,6 +2385,9 @@ namespace VikingEngine.DSSWars.Interface
         Mix,
         Help,
         Defence,
+
+        Casual_Recruit,
+        Casual_Build,
         NUM_NONE
     }
 

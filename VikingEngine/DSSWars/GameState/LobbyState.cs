@@ -1358,6 +1358,10 @@ namespace VikingEngine.DSSWars
                 {
                     content.h2(string.Format(DssRef.lang.Player_DefaultName, playerNum), HudLib.TitleColor_Name);
                 }
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_CasualControls) }, DssRef.storage.profileStorage.casualProperty, new RbTooltip_Text(DssRef.todoLang.Settings_CasualControls_Description))
+                { propertyIndex = playerData.profileIndex, });
+
                 if (available.Count > 1)
                 {
                     DropDownBuilder inputOptions = new DropDownBuilder($"inputOptions{playerNum}");
@@ -1367,7 +1371,6 @@ namespace VikingEngine.DSSWars
                             playerData.inputSource.Equals(m), m.HasMouse,
                             new RbAction1Arg<InputSource>((InputSource inputSource) =>
                             {
-                                //var playerData = DssRef.storage.localPlayers[0];
                                 playerData.inputSource = inputSource;
                                 DssRef.storage.checkPlayerDoublettes(0);
                                 refreshSplitScreen();

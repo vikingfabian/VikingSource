@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Players.Profile
         public string city4;
 
         public int StorageIndex = -1;
+        public bool casualControls = false;
 
         public PlayerProfile(int index)
         { 
@@ -137,7 +138,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             }
         }
 
-        const int Version = 2;
+        const int Version = 3;
 
         public void write(System.IO.BinaryWriter w)
         {
@@ -157,7 +158,8 @@ namespace VikingEngine.DSSWars.Players.Profile
                 TextLib.HasValue(city2),
                 TextLib.HasValue(city3),
                 TextLib.HasValue(city4),
-                TextLib.HasValue(name));
+                TextLib.HasValue(name),
+                casualControls);
 
             bools.write(w);
 
@@ -185,6 +187,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             if (TextLib.HasValue(city3)) StreamLib.WriteString(w, city3);
             if (TextLib.HasValue(city4)) StreamLib.WriteString(w, city4);
             if (TextLib.HasValue(name)) StreamLib.WriteString(w, name);
+
         }
 
         public void read(System.IO.BinaryReader r)
@@ -201,6 +204,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             bool hasCity3 = bools.Get(4);
             bool hasCity4 = bools.Get(5);
             bool hasName = bools.Get(6);
+            casualControls = bools.Get(7);
 
             if (customCharacter)
             {
@@ -227,14 +231,17 @@ namespace VikingEngine.DSSWars.Players.Profile
             city3 = hasCity3 ? StreamLib.ReadString(r) : null;
             city4 = hasCity4 ? StreamLib.ReadString(r) : null;
             name = hasName ? StreamLib.ReadString(r) : null;
+            
+            
         }
-
 
         public int NamedCityCount =>
             (string.IsNullOrEmpty(city1) ? 0 : 1) +
             (string.IsNullOrEmpty(city2) ? 0 : 1) +
             (string.IsNullOrEmpty(city3) ? 0 : 1) +
             (string.IsNullOrEmpty(city4) ? 0 : 1);
+
+       
 
     }
 }

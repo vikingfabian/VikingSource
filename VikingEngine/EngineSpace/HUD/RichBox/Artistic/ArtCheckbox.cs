@@ -11,6 +11,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
         BoolGetSet property;
         RbImage checkImage = null;
         SpriteName checkOn, checkOff;
+        public int propertyIndex = 0;
         public ArtCheckbox(List<AbsRichBoxMember> content, BoolGetSet property, AbsRbAction enter=null)
             :base(RbButtonStyle.CheckBox, content, null, enter)
         {
@@ -20,8 +21,8 @@ namespace VikingEngine.HUD.RichBox.Artistic
 
         public override void onClick(RichMenu.RichMenu menu)
         {
-            bool value = !property.Invoke(0, false, false);
-            property.Invoke(0, true, value);
+            bool value = !property.Invoke(propertyIndex, false, false);
+            property.Invoke(propertyIndex, true, value);
 
             if (checkImage != null)
             {
@@ -36,7 +37,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
 
             if (this.property != null)
             {
-                bool value = property.Invoke(0, false, false);
+                bool value = property.Invoke(propertyIndex, false, false);
 
                 checkImage = new RbImage(value ? checkOn : checkOff, 0.76f);
                 checkImage.Create(group);
