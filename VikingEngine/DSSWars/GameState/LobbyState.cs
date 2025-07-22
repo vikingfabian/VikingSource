@@ -1451,7 +1451,7 @@ namespace VikingEngine.DSSWars
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary,
                                      HudLib.AddLockOnDemo(new List<AbsRichBoxMember> {
-                                        new RbImage(SpriteName.EditorToolPencil) }), new RbAction(characterCreator), new RbTooltip_Text(DssRef.todoLang.Lobby_CharacterCreationEdit), !PlatformSettings.STEAM_DEMO)
+                                        new RbImage(SpriteName.EditorToolPencil) }), new RbAction(characterCreator), new RbTooltip_Text(DssRef.todoLang.Editor_CharacterCreator + ": " + DssRef.todoLang.Editor_CharacterCreator_Description), !PlatformSettings.STEAM_DEMO)
                                 };
                 flagOptions.Build(content, SpriteName.NO_IMAGE, null, underMenu);
             }

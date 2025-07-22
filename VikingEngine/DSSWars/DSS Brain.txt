@@ -48,6 +48,7 @@ x Rock thrower guard
 x Ballista, har warmachine crew, guards
 x removing soldiers cancels move order
 x drag slider needs description
+x god mode where you can edit all nations? Like giving money, spawning units, deleting buildings etc.
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning

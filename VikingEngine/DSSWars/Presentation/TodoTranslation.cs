@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Lobby_CharacterCreationNumbered => "Character {0}";
         public string Lobby_PlayerProfileEdit => "Edit player profile";
 
-        public string Lobby_CharacterCreationEdit => "Open character creator";
+        //public string Lobby_CharacterCreationEdit => "Open character creator";
 
         public string ProfileEditor_TunicColor => "Tunic";
         public string ProfileEditor_PantsColor => "Pants";
@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Editor_DisplayOptions => "Diplay options";
         public string Editor_CharacterCreator => "Character creator";
+        public string Editor_CharacterCreator_Description => "Soldier model appearance editor";
         public string Editor_HatGenre => "Hat display mode";
         public string Editor_HatGenre_FollowWeapon => "Follow weapon";
         public string Editor_HatGenre_Uniform => "Uniform";

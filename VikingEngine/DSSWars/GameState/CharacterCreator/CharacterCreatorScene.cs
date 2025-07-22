@@ -220,6 +220,9 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             RichBoxContent content = new RichBoxContent();
             content.h1(DssRef.todoLang.Editor_CharacterCreator, HudLib.TitleColor_Head);
+            content.newLine();
+            content.text(DssRef.todoLang.Editor_CharacterCreator_Description, HudLib.InfoYellow_Light);
+
             
             listAndEditCharacter(content);
             content.newLine();
