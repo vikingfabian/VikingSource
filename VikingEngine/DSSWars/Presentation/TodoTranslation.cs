@@ -43,7 +43,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Character_Back => "Back";
         public string Character_Face => "Face";
 
-
+        public string Settings_CraftMultiplier => "Craft time multiplier";
+        public string Settings_ChildMultiplier_Description => "Increases the speed new workers are added";
     }
 
 }

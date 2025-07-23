@@ -1,47 +1,33 @@
 ﻿UPDATE
 * 
 
-#Voxel editor#
 
 #Pics
 synligeare merge down layer
 
-#OPT#
-monogame fork? DrawUserPrimitives opt, titta på OGG filer
 
-# WORKER PATH #
-Ha en loop som går! igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
-Plus räkna tid att passera i verti hori riktning (gör en path som fram, diagonal up ner, till har gått 4 tiles - kanske upp ner)
-Gissat avstånd är lägsta av att passera centrum eller snabbast verti hori
-Alternativt ha en hash dictionary mellan alla tiles i en stad
-Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
-x  i must remake my loading so it can display any issues
-x flag editor need color copy, + tatoo color
-	-add voxel model texture
-x coal mines in work tab
+x loading progress counter
+x flag editor need color copy, 
+
 x multiplayer is broken in battle lab
 x set all defence is broken, need set all towers
-x how to get science buildings tooltip
+
 x gun maker missing tooltip info
 x small map editor size crash
 x Pen stroke size on map editor
 x Guards are never clearing move orders
-x Battles off camera sometimes get stuck
-x There are permance issues on large battles, still 
 x Merge army button dont update the hud
 x Archers are weirdly delayed
 x Should try prioritise towers for guards
 x Guard controls suck
+
 x I think I forgot upkeep on the guards
 x Soldiers update their target too often (shaking)
-x Ballistas should not animate on move
-x Still have models drifting
-x main menu goes off screen
 x start from nothing option
 x all schools/postals should have "set all to", and next/previous buttons 
-x B C D all were the same pavement 
+
 x show connected research, next to experience overview types
 x describe work group count
 x Rock thrower guard
@@ -73,8 +59,9 @@ x save custom map, cant load, should save in user content folder
 * ox farm, also incread farming area
 * go legendary, bonus building
  farm - apple tree
-
+x Where do I find the "Dark horde" in the tutorial? I can't find it
 * fire lance weapon
+x tatoo color -add voxel model texture
 
 #Todo (xmas patch)#
 krig varning på ally
@@ -123,13 +110,15 @@ Polish
 -start war popup
 -attack ally yes/no warning
 
-#Art
+#OPT#
+monogame fork, titta på OGG filer
 
-build categories
-
-
-(placement bonus icon
-work skill icons (carpenting)
+# WORKER PATH #
+Ha en loop som går! igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
+Plus räkna tid att passera i verti hori riktning (gör en path som fram, diagonal up ner, till har gått 4 tiles - kanske upp ner)
+Gissat avstånd är lägsta av att passera centrum eller snabbast verti hori
+Alternativt ha en hash dictionary mellan alla tiles i en stad
+Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Voxel
 

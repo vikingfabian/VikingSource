@@ -1344,10 +1344,12 @@ namespace VikingEngine.DSSWars.Interface
                     content.newParagraph();
 
                     city.res_fuel.toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    int totalmines = 0;
+                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, ref totalmines);
                     blueprintButton(player, content, CraftResourceLib.Fuel1, null, true);
                     content.space();
                     blueprintButton(player, content, CraftResourceLib.Charcoal);
-
+                    
 
                     city.res_Palisade.toMenu(content, ItemResourceType.Palisade, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
                     blueprintButton(player, content, CraftResourceLib.Palisade);

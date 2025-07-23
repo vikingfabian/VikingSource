@@ -20,6 +20,7 @@ using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.PJ;
 using VikingEngine.Timer;
 using VikingEngine.ToGG;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls
 {
@@ -176,6 +177,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 missions = new List2<TutorialMission>
                 {
+                    //TutorialMission.AttackBarbarian,
                     TutorialMission.CollectResources,
                     TutorialMission.Linen,
                     TutorialMission.ProduceWeaponsArmor,
@@ -198,6 +200,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             this.player = player;
             display = new Interface.TutorialDisplay(player);
             initMissions();
+            
 
             //Setup resources and map
             var cityCounter = player.faction.cities.counter();
@@ -408,6 +411,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.AttackBarbarian:
                     content.iconicontext(HudLib.CheckImage(attackBarbarian_win), SpriteName.WarsRelationWar, string.Format( DssRef.lang.Tutorial_AttackAndDestroyX, DssRef.lang.FactionName_Barbarian));
+                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass), new RbSpace(), new RbText(DssRef.lang.FactionName_Barbarian) },
+                    //    new RbAction(() =>
+                    //    {
+                    //        player.gameControls.map.cameraFocus = barbarianArmy;
+                    //    })));
                     break;
 
                 case TutorialMission.Diplomatics:
@@ -1255,6 +1263,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                         barbarianArmy.refreshPositions(true);
                         barbarianArmy.setAsStartArmy();
+
+                        player.gameControls.map.cameraFocus = barbarianArmy;
 
                         return;
                     }

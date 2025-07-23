@@ -134,6 +134,8 @@ namespace VikingEngine.DSSWars.Build
     {
         public static List<BuildAndExpandType> LogisticsUnlockBuildings = new List<BuildAndExpandType>
         {
+
+            BuildAndExpandType.ImmigrationTent,
             BuildAndExpandType.Nobelhouse,
             BuildAndExpandType.Recruitment,
             BuildAndExpandType.Storehouse,
@@ -142,7 +144,7 @@ namespace VikingEngine.DSSWars.Build
             //BuildAndExpandType.CoalPit,
             //BuildAndExpandType.Foundry,
             BuildAndExpandType.School,
-
+            BuildAndExpandType.ResearchCenter,
         };
 
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
@@ -166,10 +168,10 @@ namespace VikingEngine.DSSWars.Build
                 StartupSettings.UnlockAllProgress)
             {
                 list.Add(BuildAndExpandType.School);
-#if DEBUG
+
                 list.Add(BuildAndExpandType.ResearchCenter);
                 list.Add(BuildAndExpandType.BookPress);
-#endif
+
             }
 
             list.Add(BuildAndExpandType.WorkerHut);
@@ -191,9 +193,9 @@ namespace VikingEngine.DSSWars.Build
                StartupSettings.UnlockAllProgress)
             {
                 list.Add(BuildAndExpandType.GuardHouse_Large);
-#if DEBUG
+
                 list.Add(BuildAndExpandType.ImmigrationTent);
-#endif
+
             }
 
             list.Add(BuildAndExpandType.WheatFarm);
@@ -318,7 +320,21 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.Pavement);
                 list.Add(BuildAndExpandType.PavementFlower);
-                
+                list.Add(BuildAndExpandType.PavementLamp);
+                list.Add(BuildAndExpandType.PavemenFountain);
+                list.Add(BuildAndExpandType.PavementRectFlower);
+
+                list.Add(BuildAndExpandType.GardenGrass);
+                list.Add(BuildAndExpandType.GardenBird);
+                list.Add(BuildAndExpandType.GardenFourBushes);
+                list.Add(BuildAndExpandType.GardenLongTree);
+                list.Add(BuildAndExpandType.GardenWalledBush);
+
+                list.Add(BuildAndExpandType.Statue_Leader);
+                list.Add(BuildAndExpandType.Statue_Lion);
+                list.Add(BuildAndExpandType.Statue_Horse);
+                list.Add(BuildAndExpandType.Statue_Pillar);
+
             }
             if (unlocks.building_stoneBuildings)
             {
@@ -329,41 +345,41 @@ namespace VikingEngine.DSSWars.Build
             list.Add(BuildAndExpandType.DirtTower);
             list.Add(BuildAndExpandType.WoodWall);
             list.Add(BuildAndExpandType.WoodTower);
-            list.Add(BuildAndExpandType.StoneWall);
-            list.Add(BuildAndExpandType.StoneTower);
-            list.Add(BuildAndExpandType.StoneWallGreen);
-            list.Add(BuildAndExpandType.StoneWallBlueRoof);
-            list.Add(BuildAndExpandType.StoneWallWoodHouse);
-            list.Add(BuildAndExpandType.StoneGate);
-            list.Add(BuildAndExpandType.StoneHouse);
-            list.Add(BuildAndExpandType.PavementLamp);
-            list.Add(BuildAndExpandType.PavemenFountain);
-            list.Add(BuildAndExpandType.PavementRectFlower);
-            list.Add(BuildAndExpandType.GardenGrass);
-            list.Add(BuildAndExpandType.GardenBird);
-            list.Add(BuildAndExpandType.GardenFourBushes);
-            list.Add(BuildAndExpandType.GardenLongTree);
-            list.Add(BuildAndExpandType.GardenWalledBush);
+
+            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
+                StartupSettings.UnlockAllProgress)
+            {
+                list.Add(BuildAndExpandType.StoneWall);
+                list.Add(BuildAndExpandType.StoneTower);
+                list.Add(BuildAndExpandType.StoneWallGreen);
+                list.Add(BuildAndExpandType.StoneWallBlueRoof);
+                list.Add(BuildAndExpandType.StoneWallWoodHouse);
+                list.Add(BuildAndExpandType.StoneGate);
+                list.Add(BuildAndExpandType.StoneHouse);
+            }
+            
+           
             //list.Add(BuildAndExpandType.ServiceHouse_Small);
             //list.Add(BuildAndExpandType.BigCityHouse);
             list.Add(BuildAndExpandType.CitySquare);
             list.Add(BuildAndExpandType.CobbleStones);
 
             list.Add(BuildAndExpandType.GardenMemoryStone);
-            list.Add(BuildAndExpandType.Statue_Leader);
-            list.Add(BuildAndExpandType.Statue_Lion);
-            list.Add(BuildAndExpandType.Statue_Horse);
-            list.Add(BuildAndExpandType.Statue_Pillar);
-            
-            list.Add(BuildAndExpandType.FlagPole_LongBanner);
-            list.Add(BuildAndExpandType.FlagPole_Banner);
-            list.Add(BuildAndExpandType.FlagPole_SlimBanner);
 
-            list.Add(BuildAndExpandType.FlagPole_Flag);
-            list.Add(BuildAndExpandType.FlagPole_FlagRound);
-            list.Add(BuildAndExpandType.FlagPole_FlagLarge);
-            list.Add(BuildAndExpandType.FlagPole_Streamer);
-            list.Add(BuildAndExpandType.FlagPole_Triangle);
+
+            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
+                StartupSettings.UnlockAllProgress)
+            {
+                list.Add(BuildAndExpandType.FlagPole_LongBanner);
+                list.Add(BuildAndExpandType.FlagPole_Banner);
+                list.Add(BuildAndExpandType.FlagPole_SlimBanner);
+
+                list.Add(BuildAndExpandType.FlagPole_Flag);
+                list.Add(BuildAndExpandType.FlagPole_FlagRound);
+                list.Add(BuildAndExpandType.FlagPole_FlagLarge);
+                list.Add(BuildAndExpandType.FlagPole_Streamer);
+                list.Add(BuildAndExpandType.FlagPole_Triangle);
+            }
         }
 
         public static void Init()
