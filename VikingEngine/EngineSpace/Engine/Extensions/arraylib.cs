@@ -314,6 +314,10 @@ namespace VikingEngine
         {
             return array[array.Length - 1];
         }
+        public static ref T RefLast<T>(T[] array)
+        {
+            return ref array[array.Length - 1];
+        }
         public static T Last<T>(List<T> list)
         {
             if (list == null || list.Count == 0)
@@ -321,6 +325,13 @@ namespace VikingEngine
                 return default(T);
             }
             return list[list.Count - 1];
+        }
+        public static void ReplaceLast<T>(List<T> list, T replacingValue)
+        {
+            if (list != null || list.Count > 0)
+            {
+                list[list.Count - 1] = replacingValue;
+            }           
         }
 
         public static bool IsLast<T>(int index, List<T> list)
@@ -365,6 +376,10 @@ namespace VikingEngine
                 return list[0];
             }
             return default(T);
+        }
+        public static void ReplaceFirst<T>(List<T> list, T replacingValue)
+        {
+            list[0] = replacingValue;
         }
         public static T PullLastMember<T>(List<T> list)
         {

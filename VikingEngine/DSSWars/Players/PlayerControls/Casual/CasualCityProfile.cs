@@ -3,16 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 {
+    enum CasualSoldierType
+    { 
+        Guard,
+        FolkMen,
+        Melee,
+        Ranged,
+        Rider,
+        Siege,
+    }
+
     struct SoldierPurchaseOption
     {
         public int price;
         public ItemResourceType weapon;
+        public TrainingLevel training;
 
         public bool Available => price > 0;
     }
@@ -34,17 +46,26 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         {
             guard.price = 50;
             guard.weapon = ItemResourceType.Bow;
+            guard.training = TrainingLevel.Basic;
 
             folkmen.price = 1;
             folkmen.weapon = ItemResourceType.SharpStick;
+            folkmen.training = TrainingLevel.Minimal;
 
             meleeMen.price = 1;
             meleeMen.weapon = ItemResourceType.Sword;
+            meleeMen.training = TrainingLevel.Basic;
+
             rangedMen.price = 1;
             rangedMen.weapon = ItemResourceType.Bow;
+            rangedMen.training = TrainingLevel.Basic;
+
             riderMen.weapon = ItemResourceType.KnightsLance;
+            rangedMen.training = TrainingLevel.Skillful;
+
             siegeMen.price = 1;
             siegeMen.weapon = ItemResourceType.Ballista;
+            siegeMen.training = TrainingLevel.Basic;
 
             if (city.cityType >= CityType.Capital)
             {

@@ -232,11 +232,11 @@ namespace VikingEngine.DSSWars.Data
                     case CityTagArt.BuildArmory: return SpriteName.WarsBuild_Armory;
 
                     case CityTagArt.BuildSoldierBarracks: return SpriteName.WarsBuild_Barracks;
-                    case CityTagArt.BuildArcherBarracks: return SpriteName.MissingImage;
-                    case CityTagArt.BuildWarmachineBarracks: return SpriteName.MissingImage;
-                    case CityTagArt.BuildGunBarracks: return SpriteName.MissingImage;
-                    case CityTagArt.BuildCannonBarracks: return SpriteName.MissingImage;
-                    case CityTagArt.BuildKnightsBarracks: return SpriteName.MissingImage;
+                    case CityTagArt.BuildArcherBarracks: return SpriteName.WarsBuild_ArcherBarracks;
+                    case CityTagArt.BuildWarmachineBarracks: return SpriteName.WarsBuild_WarmachineBarracks;
+                    case CityTagArt.BuildGunBarracks: return SpriteName.WarsBuild_GunBarracks;
+                    case CityTagArt.BuildCannonBarracks: return SpriteName.WarsBuild_CannonBarracks;
+                    case CityTagArt.BuildKnightsBarracks: return SpriteName.WarsBuild_KnightBarrack;
 
                     case CityTagArt.BuildWoodCutter: return SpriteName.WarsBuild_WoodCutter;
                     case CityTagArt.BuildStoneCutter: return SpriteName.WarsBuild_StoneCutter;
@@ -324,7 +324,7 @@ namespace VikingEngine.DSSWars.Data
         {
             if (art == ArmyTagArt.None)
             {
-                return SpriteName.NO_IMAGE;
+                return NoBackSprite;
             }
             else if (art <= ArmyTagArt.UnitType_ManIronCannon)
             {

@@ -28,6 +28,7 @@ namespace VikingEngine.DSSWars.Interface
 
         LocalPlayer player;
 
+        public static readonly MenuTab[] CasualTabs = { MenuTab.Economy };
         public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, /*MenuTab.Automation*/ MenuTab.Progress };
         public static readonly MenuTab[] TutorialTabs = { MenuTab.Economy };
 
@@ -76,7 +77,16 @@ namespace VikingEngine.DSSWars.Interface
         }
 
         public MenuTab[] factionTabOptions()
-        { return DssRef.storage.runTutorial_1short_2normal == 0 ? Tabs : TutorialTabs; }
+        {
+            if (player.profile.casualControls)
+            {
+                return CasualTabs;
+            }
+            else
+            {
+                return DssRef.storage.runTutorial_1short_2normal == 0 ? Tabs : TutorialTabs;
+            }
+        }
 
         public void headMenu(RichBoxContent content, bool prepareLayout)
         {

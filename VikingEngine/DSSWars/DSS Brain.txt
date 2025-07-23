@@ -1,5 +1,6 @@
 ﻿UPDATE
-* 
+* Object tag improvements
+
 
 #Voxel editor#
 
@@ -17,7 +18,6 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
-x  i must remake my loading so it can display any issues
 x flag editor need color copy, + tatoo color
 	-add voxel model texture
 x coal mines in work tab
@@ -40,8 +40,7 @@ x Ballistas should not animate on move
 x Still have models drifting
 x main menu goes off screen
 x start from nothing option
-x all schools/postals should have "set all to", and next/previous buttons 
-x B C D all were the same pavement 
+x all schools/postals should have "set all to", and next/previous buttons
 x show connected research, next to experience overview types
 x describe work group count
 x Rock thrower guard

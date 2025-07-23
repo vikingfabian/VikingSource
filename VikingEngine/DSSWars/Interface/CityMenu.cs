@@ -238,15 +238,12 @@ namespace VikingEngine.DSSWars.Interface
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {                       
                             new RbText("x" + counts, player.faction.hasGold(option.price * counts, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
                             }, new RbAction2Arg<SoldierPurchaseOption, int>(casualRecruitGroup, option, counts)));
-                    }
-                    
-                }
-
-               
+                    }                    
+                }               
             }
             void casualRecruitGroup(SoldierPurchaseOption option, int count)
             {
-
+                city.GetCasualProgress().AddRecruit(city, new CasualRecruitQueueItem(option, count));
             }
         }
 

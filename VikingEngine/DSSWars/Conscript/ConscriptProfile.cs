@@ -4,10 +4,12 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Conscript
@@ -553,6 +555,25 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
             }
             
+            return result;
+        }
+
+        public static float TrainingTime(CasualSoldierType casualType)
+        {
+            float result;
+            switch (casualType)
+            {
+                case CasualSoldierType.FolkMen:
+                    result = DssConst.TrainingTimeSec_Minimal;
+                    break;
+                default:
+                    result = DssConst.TrainingTimeSec_Basic;
+                    break;
+                case  CasualSoldierType.Rider:
+                    result = DssConst.TrainingTimeSec_Skillful;
+                    break;
+            }
+
             return result;
         }
     }

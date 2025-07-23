@@ -2931,6 +2931,8 @@ namespace VikingEngine.DSSWars.GameObject
                 workTemplate.onFactionChange(newFaction.workTemplate);
                 tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
                 technology.addFactionUnlocked(newFaction.technology, true, false);
+
+                
             }
         }
 

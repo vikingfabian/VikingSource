@@ -422,10 +422,10 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.newLine();
                 }
-                else
-                {
-                    content.space();
-                }
+                //else
+                //{
+                //    content.space();
+                //}
             }
 
             if (army.tagBack != CityTagBack.NONE)
@@ -438,7 +438,7 @@ namespace VikingEngine.DSSWars.Interface
                     }, new RbAction1Arg<ArmyTagArt>((ArmyTagArt art) => { army.tagArt = art; }, art));
                     //button.setGroupSelectionColor(HudLib.RbSettings, art == army.tagArt);
                     content.Add(button);
-                    content.space();
+                    //content.space();
                 }
             }
         }
