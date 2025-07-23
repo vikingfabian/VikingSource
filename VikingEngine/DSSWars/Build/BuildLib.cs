@@ -366,6 +366,8 @@ namespace VikingEngine.DSSWars.Build
             list.Add(BuildAndExpandType.FlagPole_Triangle);
         }
 
+        
+
         public static void Init()
         {
             new BuildOption(BuildAndExpandType.Logistics, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, SpriteName.WarsBuild_Logistics, CraftBuildingLib.CraftLogistics, true, BuildCategoryTab.Upgrade, MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)

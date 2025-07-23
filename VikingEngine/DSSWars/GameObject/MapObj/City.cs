@@ -2277,7 +2277,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 bool interactive = player.faction == faction;
 
-                if (interactive)
+                if (interactive && !player.profile.casualControls)
                 {
                     if (automateCity)
                     {
@@ -2502,17 +2502,19 @@ namespace VikingEngine.DSSWars.GameObject
                 content.space();
                 content.Add(new RbText(HousingCount_Guard.ToString()));
 
-                content.newLine();
-                content.Add(new RbImage(SpriteName.WarsServiceMen));
-                content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount)));
-                content.Add(new RbTab(0.4f));
-                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
-                content.space();
-                content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
-                content.space();
-                content.Add(new RbText(TotalServiceMen().ToString()));
-
+                if (!player.profile.casualControls)
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsServiceMen));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount)));
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
+                    content.space();
+                    content.Add(new RbText(TotalServiceMen().ToString()));
+                }
                 //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
                 //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
 
@@ -2536,6 +2538,7 @@ namespace VikingEngine.DSSWars.GameObject
                         HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo));
                     }
                 }
+                if (!player.profile.casualControls)
                 {
                     content.newLine();
                     content.Add(new RbImage(SpriteName.rtsUpkeepTime));
@@ -2565,16 +2568,20 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-
-                cultureToHud(player, content, interactive);
-
+                if (!player.profile.casualControls)
+                {
+                    cultureToHud(player, content, interactive);
+                }
                 if (immigrants.HasValue())
                 {
                     content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
                 }
 
-                terrainStructure.miningOverviewHud(content);
-                new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
+                if (!player.profile.casualControls)
+                {
+                    terrainStructure.miningOverviewHud(content);
+                    new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
+                }
                 //technologyOverviewHud(content, player);
 #if DEBUG
                 //technologyHud(content, player);

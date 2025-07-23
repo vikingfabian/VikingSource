@@ -89,8 +89,12 @@ namespace VikingEngine.DSSWars.Players.Profile
             var profile = profiles[index];
             if (set)
             {
-                profile.casualControls = value;
-                profiles[index] = profile;
+                if (profile.casualControls != value)
+                {
+                    profile.casualControls = value;
+                    profiles[index] = profile;
+                    Save(index);
+                }
             }
 
             return profile.casualControls;

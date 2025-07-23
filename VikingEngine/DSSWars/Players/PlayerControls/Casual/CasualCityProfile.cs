@@ -9,66 +9,84 @@ using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 {
+    struct SoldierPurchaseOption
+    {
+        public int price;
+        public ItemResourceType weapon;
+
+        public bool Available => price > 0;
+    }
+
     struct CasualCityProfile
     {
-        /// <summary>
-        /// Price for the unit, zero is not available
-        /// </summary>
-        public int folkmen;
-        public int shipmen;
-        public int meleeMen;
-        public int rangedMen;
-        public int riderMen;
-        public int siegeMen;
+        public SoldierPurchaseOption guard;
 
-        public ItemResourceType meleeWeapon;
-        public ItemResourceType rangedWeapon;
-        public ItemResourceType riderWeapon;
-        public ItemResourceType siegeWeapon;
+        public SoldierPurchaseOption folkmen;
+        public SoldierPurchaseOption shipmen;
+        public SoldierPurchaseOption meleeMen;
+        public SoldierPurchaseOption rangedMen;
+        public SoldierPurchaseOption riderMen;
+        public SoldierPurchaseOption siegeMen;
 
         bool armorBonus;
 
         public void InitCulture(City city, CityAreaCulture culture)
         {
-            folkmen = 1;
+            guard.price = 50;
+            guard.weapon = ItemResourceType.Bow;
 
-            if (city.cityType >= CityType.Capital) 
+            folkmen.price = 1;
+            folkmen.weapon = ItemResourceType.SharpStick;
+
+            meleeMen.price = 1;
+            meleeMen.weapon = ItemResourceType.Sword;
+            rangedMen.price = 1;
+            rangedMen.weapon = ItemResourceType.Bow;
+            riderMen.weapon = ItemResourceType.KnightsLance;
+            siegeMen.price = 1;
+            siegeMen.weapon = ItemResourceType.Ballista;
+
+            if (city.cityType >= CityType.Capital)
             {
                 if (culture.percPlains > 0.2)
                 {
-                    riderMen = 1;
-                    folkmen = 0;
+                    riderMen.price = 1;
+                    folkmen.price = 0;
                 }
             }
 
-            if (culture.percMountain > 0.1 && culture.percForest > 0.1) 
-            { 
-                siegeMen = 1;
+            if (culture.percMountain > 0.1 && culture.percForest > 0.1)
+            {
+                siegeMen.price = 1;
             }
 
             if (city.Culture == CityCulture.Seafaring || culture.percWater > 0.5)
-            { 
-                shipmen = 1;
-                siegeMen = 0;
+            {
+                shipmen.price = 1;
+                siegeMen.price = 0;
             }
 
-            if (folkmen > 0)
+            if (folkmen.price > 0)
             {
                 switch (city.cityType)
                 {
                     case CityType.Village:
-                        folkmen = 40;
+                        folkmen.price = 40;
                         break;
                     case CityType.Town:
-                        folkmen = 50;
+                        folkmen.price = 50;
                         break;
                     case CityType.Capital:
-                        folkmen = 70;
+                        folkmen.price = 70;
                         break;
                 }
-
-                
             }
+
+            if (shipmen.Available) shipmen.price = 200;
+            if (meleeMen.Available) meleeMen.price = 200;
+            if (rangedMen.Available) rangedMen.price = 200;
+            if (riderMen.Available) riderMen.price = 500;
+            if (siegeMen.Available) siegeMen.price = 200;
 
             switch (city.Culture)
             {
@@ -77,12 +95,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 case CityCulture.LargeFamilies:
                 case CityCulture.Lawbiding:
                 case CityCulture.CrabMentality:
-                    folkmen -= 20;
+                    folkmen.price = Math.Max(0, folkmen.price - 20);
                     break;
 
+                case CityCulture.BronzeCasters:
+                    meleeMen.weapon = ItemResourceType.BronzeSword;
+                    break;
 
-
+                case CityCulture.Archers:
+                    folkmen.weapon = ItemResourceType.SlingShot;
+                    break;
             }
-
         }
+    }
+
 }

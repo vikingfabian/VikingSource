@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -72,7 +73,6 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-
 #if DEBUG
                 //content.Button("*soldier", new RbAction(()=> { city.debugGuardConscript( ItemResourceType.Sword); }) , null, true);
                 //content.Button("*archer", new RbAction(() => { city.debugConscript(ItemResourceType.Bow); }), null, true);
@@ -177,12 +177,81 @@ namespace VikingEngine.DSSWars.Interface
                         helpTab(content);
                         break;
 
-                    case MenuTab.Casual_Recruit:
-
+                    case MenuTab.Casual_Recruit:                        
+                        casualRecruitTab(content);
+                        break;
+                    case MenuTab.Casual_Build:
+                        CasualBuild.ToHud(player, content, city);
                         break;
                 }
             }
         }
+
+        static readonly int[] RecruitTabCounts = [2, 5, 10, 25];
+
+        void casualRecruitTab(RichBoxContent content)
+        {
+            buySoldierOption(city.casualCityProfile.guard, true);
+            content.newParagraph();
+            buySoldierOption(city.casualCityProfile.folkmen);
+            buySoldierOption(city.casualCityProfile.shipmen);
+            buySoldierOption(city.casualCityProfile.meleeMen);
+            buySoldierOption(city.casualCityProfile.rangedMen);
+            buySoldierOption(city.casualCityProfile.riderMen);
+            buySoldierOption(city.casualCityProfile.siegeMen);
+
+            void buySoldierOption(SoldierPurchaseOption option, bool guard = false)
+            {
+                if (option.Available)
+                {
+                    SoldierConscriptProfile soldierConscript = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile() { weapon = option.weapon },
+                    };
+                    content.newLine();
+
+                    SpriteName icon;
+                    string caption;
+                    if (guard)
+                    {
+                        icon = SpriteName.WarsGuard;
+                        caption = DssRef.lang.Conscript_Soldiers_GuardType;
+                    }
+                    else
+                    {
+                        icon = soldierConscript.Icon();
+                        caption = soldierConscript.conscript.TypeName();
+                    }
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                        new RbImage(icon),
+                        new RbSpace(),
+                        new RbText(caption),
+                        new RbSpace(2),
+                        new RbImage(SpriteName.rtsMoney),
+                        new RbText(option.price.ToString(), player.faction.hasGold(option.price, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
+                    }, new RbAction2Arg<SoldierPurchaseOption, int>(casualRecruitGroup, option, 1)));
+
+                    content.Add(new RbTab(0.55f));
+                    foreach (var counts in RecruitTabCounts)
+                    {
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {                       
+                            new RbText("x" + counts, player.faction.hasGold(option.price * counts, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
+                            }, new RbAction2Arg<SoldierPurchaseOption, int>(casualRecruitGroup, option, counts)));
+                    }
+                    
+                }
+
+               
+            }
+            void casualRecruitGroup(SoldierPurchaseOption option, int count)
+            {
+
+            }
+        }
+
+        
+
         void helpTab(RichBoxContent content)
         {
             content.h2(DssRef.lang.Help_Work_Title, HudLib.TitleColor_Head);

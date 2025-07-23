@@ -38,8 +38,10 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);
         public static readonly Color TitleColor_Label_Dark = new Color(0, 63, 76);
         public static readonly Color AvailableColor = Color.LightGreen;
+        public static readonly Color AvailableColor_Dark = Color.DarkGreen;
         //     Salmon color (R:250,G:128,B:114,A:255).
         public static readonly Color NotAvailableColor = new Color(250, 180, 180);
+        public static readonly Color NotAvailableColor_Dark = Color.DarkRed;
 
         public static readonly Color TextColor_Relation = Color.LightBlue;
 

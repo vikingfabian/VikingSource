@@ -497,6 +497,16 @@ namespace VikingEngine.DSSWars.Build
 
             return availableFiltered;
         }
+
+        //public void toHud_casual(LocalPlayer player, RichBoxContent content, City city)
+        //{
+        //    List<BuildAndExpandType> available = BuildLib.AvailableBuildTypes_Casual(city);
+        //    foreach (var opt in available)
+        //    {
+                
+        //    }
+        //}
+
         public void toHud(LocalPlayer player, RichBoxContent content, City city)
         {
             List<BuildCategoryTab> buildCategories = new List<BuildCategoryTab>

@@ -847,8 +847,8 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.Help_Title;
 
                 case MenuTab.Casual_Recruit:
-                    description = DssRef.lang.MenuTab_Recruit;
-                    return DssRef.lang.BuildingType_Recruitment_Description;
+                    description = null;
+                    return DssRef.lang.MenuTab_Recruit;
 
                 case MenuTab.Casual_Build:
                     description = DssRef.lang.MenuTab_Build_Description;

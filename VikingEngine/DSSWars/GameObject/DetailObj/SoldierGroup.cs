@@ -149,8 +149,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        
-
         void initPart2()
         {
             halfColDepth = soldierData.columnsDepth * -0.5f;

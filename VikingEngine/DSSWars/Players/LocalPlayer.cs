@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.Players
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
         public MenuTab factionTab = MenuTab.NUM_NONE;
-        public MenuTab cityTab = CityMenu.Tabs[0];
+        public MenuTab cityTab; //= CityMenu.Tabs[0];
         public MenuTab armyTab = ArmyMenu.Tabs[0];
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
 
@@ -136,6 +136,8 @@ namespace VikingEngine.DSSWars.Players
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
 
             faction.addGold_factionWide(10000);
+
+            //cityTab = profile.casualControls? MenuTab.Casual_Recruit : CityMenu.Tabs[0];
         }
 
         public bool battleMessageCheck(IntVector2 tilepos)
@@ -203,6 +205,8 @@ namespace VikingEngine.DSSWars.Players
             new GameControls(this, input);
 
             new GameHud(this, numPlayers);
+
+            cityTab = AvailableCityTabs()[0];
 
             Ref.draw.AddPlayerScreen(playerData);
             mapLayersManager = new MapLayerManager(playerData);
@@ -505,7 +509,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (profile.casualControls)
             {
-                return new List<MenuTab> { MenuTab.Casual_Recruit, MenuTab.Casual_Build };
+                return new List<MenuTab> { MenuTab.Info, MenuTab.Casual_Recruit, MenuTab.Casual_Build };
             }
             return tutorial != null ? tutorial.cityTabs : CityMenu.Tabs;
         }

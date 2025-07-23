@@ -9,8 +9,13 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-        CasualCityProfile casualCityProfile = new CasualCityProfile();
+        public CasualCityProfile casualCityProfile = new CasualCityProfile();
 
+
+        public void CasualBuild(CasualBuildType type, int price, int count)
+        { 
+            
+        }
         //protected void initCasual()
         //{
             
