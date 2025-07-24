@@ -1,5 +1,5 @@
 ﻿UPDATE
-* 
+* loading progress debug string 
 
 
 #Pics
@@ -8,7 +8,7 @@ synligeare merge down layer
 
 
 #Todo#
-x loading progress counter
+
 x flag editor need color copy, 
 
 x multiplayer is broken in battle lab

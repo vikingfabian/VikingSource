@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
@@ -45,9 +46,11 @@ namespace VikingEngine.Engine
 
         protected int contentPart = 0;
         protected int storagePart = 0;
+        int updateCounter = 0;
 
         string exceptionString;
         Texture2D bgTex = null;
+        TextS progressString = null;
         Graphics.ImageAdvanced bgImage = null;
         protected SoundContainerSingle introSound = null;// = new SoundContainerSingle(SoundDir + "click", 0.7f);
         public LaunchState(bool isReset)
@@ -73,7 +76,7 @@ namespace VikingEngine.Engine
             {
                 //1.
                 LoadContent.LoadConsoleFont();
-
+                
                 load = LoadState.Screen;
 
                 Ref.gamesett.Load();
@@ -81,8 +84,9 @@ namespace VikingEngine.Engine
 #if PCGAME
                 Engine.Screen.ApplyScreenSettings(false);
 #endif
+                progressString = new TextS(LoadedFont.Console, VectorExt.AddY( Engine.Screen.SafeArea.LeftBottom, -20), new Vector2(1), Align.CenterHeight,
+                    string.Empty, Color.Gray, ImageLayers.Top8);
                 
-                //todo splash
 
                 new Timer.AsynchActionTrigger(() =>
                 {
@@ -185,10 +189,10 @@ namespace VikingEngine.Engine
                 return;
             }
 
-            
-
             try
             {
+
+
                 if (bgTex != null)
                 {
                     createSplash();
@@ -213,6 +217,16 @@ namespace VikingEngine.Engine
                             launch();
                         }
                     }
+                }
+
+                if (progressString != null)
+                {
+                    updateCounter++;
+                    if (updateCounter >= 100)
+                    { 
+                        updateCounter = 0;
+                    }
+                    progressString.TextString = $"State{(int)load}, c{contentPart}, s{storagePart}, u{updateCounter}";
                 }
             }
             catch (Exception ex)

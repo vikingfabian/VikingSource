@@ -34,6 +34,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Editor_HatGenre => "Hat display mode";
         public string Editor_HatGenre_FollowWeapon => "Follow weapon";
         public string Editor_HatGenre_Uniform => "Uniform";
+        public string Editor_CopyPasteSelectedColor => "Copy from selected color";
 
         public string Character_Accessories=> "Accessories";
         public string Character_Hat => "Hat";

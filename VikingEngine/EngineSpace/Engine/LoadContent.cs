@@ -59,7 +59,7 @@ namespace VikingEngine.Engine
         {
             
             //Load fonts
-            Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
+            //Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
 
             setFontLanguage(FontLanguage.Western);
 

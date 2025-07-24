@@ -448,7 +448,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             setUndoPoint();
         }
 
-        void onColorChange()
+        public void onColorChange()
         {
             updateImageGrid();
             hud.refresh();
