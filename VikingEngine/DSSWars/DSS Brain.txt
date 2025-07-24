@@ -1,5 +1,4 @@
 ﻿UPDATE
-* loading progress debug string 
 
 
 #Pics

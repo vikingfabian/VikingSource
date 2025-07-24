@@ -44,6 +44,7 @@ namespace VikingEngine.Engine
         bool loadingDataComplete = false;
         WaitForCloudSynch waitForCloudSynch = new WaitForCloudSynch();
 
+        protected int mainPart = 0;
         protected int contentPart = 0;
         protected int storagePart = 0;
         int updateCounter = 0;
@@ -75,31 +76,36 @@ namespace VikingEngine.Engine
             try
             {
                 //1.
+                mainPart = 0;
                 LoadContent.LoadConsoleFont();
-                
+                mainPart++;
                 load = LoadState.Screen;
 
                 Ref.gamesett.Load();
-
+                mainPart++;
 #if PCGAME
                 Engine.Screen.ApplyScreenSettings(false);
+                mainPart++;
 #endif
                 progressString = new TextS(LoadedFont.Console, VectorExt.AddY( Engine.Screen.SafeArea.LeftBottom, -20), new Vector2(1), Align.CenterHeight,
                     string.Empty, Color.Gray, ImageLayers.Top8);
-                
+                mainPart++;
 
                 new Timer.AsynchActionTrigger(() =>
                 {
                     try
                     {
                         load = LoadState.Splash;
-
+                        mainPart = 10;
                         asyncLoadIntro();
+                        mainPart++;
                         bgTex = Ref.main.Content.Load<Texture2D>(LoadContent.TexturePath + "monogame_splash");
-
+                        mainPart++;
                         load = LoadState.DefaltContent;
                         Ref.main.baseContentLoad(ref contentPart);
+                        mainPart++;
                         Engine.Screen.RefreshUiSize();
+                        mainPart++;
                         loadingDefaltContentComplete = true;
                     }
                     catch (Exception ex)
@@ -226,7 +232,7 @@ namespace VikingEngine.Engine
                     { 
                         updateCounter = 0;
                     }
-                    progressString.TextString = $"State{(int)load}, c{contentPart}, s{storagePart}, u{updateCounter}";
+                    progressString.TextString = $"State{(int)load}, m{mainPart}, c{contentPart}, s{storagePart}, u{updateCounter}";
                 }
             }
             catch (Exception ex)
