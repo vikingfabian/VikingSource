@@ -191,16 +191,16 @@ namespace VikingEngine.DSSWars.Interface
 
         void casualRecruitTab(RichBoxContent content)
         {
-            buySoldierOption(city.casualCityProfile.guard, true);
+            buySoldierOption(city.casualCityProfile.guard,  CasualSoldierType.Guard);
             content.newParagraph();
-            buySoldierOption(city.casualCityProfile.folkmen);
-            buySoldierOption(city.casualCityProfile.shipmen);
-            buySoldierOption(city.casualCityProfile.meleeMen);
-            buySoldierOption(city.casualCityProfile.rangedMen);
-            buySoldierOption(city.casualCityProfile.riderMen);
-            buySoldierOption(city.casualCityProfile.siegeMen);
+            buySoldierOption(city.casualCityProfile.folkmen, CasualSoldierType.FolkMen);
+            buySoldierOption(city.casualCityProfile.shipmen,  CasualSoldierType.Seamen);
+            buySoldierOption(city.casualCityProfile.meleeMen, CasualSoldierType.Melee);
+            buySoldierOption(city.casualCityProfile.rangedMen, CasualSoldierType.Ranged);
+            buySoldierOption(city.casualCityProfile.riderMen, CasualSoldierType.Rider);
+            buySoldierOption(city.casualCityProfile.siegeMen, CasualSoldierType.Siege);
 
-            void buySoldierOption(SoldierPurchaseOption option, bool guard = false)
+            void buySoldierOption(SoldierPurchaseOption option, CasualSoldierType soldierType)
             {
                 if (option.Available)
                 {
@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     SpriteName icon;
                     string caption;
-                    if (guard)
+                    if (soldierType == CasualSoldierType.Guard)
                     {
                         icon = SpriteName.WarsGuard;
                         caption = DssRef.lang.Conscript_Soldiers_GuardType;
@@ -230,20 +230,21 @@ namespace VikingEngine.DSSWars.Interface
                         new RbSpace(2),
                         new RbImage(SpriteName.rtsMoney),
                         new RbText(option.price.ToString(), player.faction.hasGold(option.price, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
-                    }, new RbAction2Arg<SoldierPurchaseOption, int>(casualRecruitGroup, option, 1)));
+                    }, new RbAction3Arg<CasualSoldierType, SoldierPurchaseOption, int>(casualRecruitGroup, soldierType,option, 1)));
 
-                    content.Add(new RbTab(0.55f));
+                    content.Add(new RbTab(0.4f));
                     foreach (var counts in RecruitTabCounts)
                     {
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {                       
                             new RbText("x" + counts, player.faction.hasGold(option.price * counts, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
-                            }, new RbAction2Arg<SoldierPurchaseOption, int>(casualRecruitGroup, option, counts)));
+                            },
+                            new RbAction3Arg<CasualSoldierType, SoldierPurchaseOption, int>(casualRecruitGroup, soldierType, option, counts)));
                     }                    
                 }               
             }
-            void casualRecruitGroup(SoldierPurchaseOption option, int count)
+            void casualRecruitGroup(CasualSoldierType soldierType, SoldierPurchaseOption option, int count)
             {
-                city.GetCasualProgress().AddRecruit(city, new CasualRecruitQueueItem(option, count));
+                city.GetCasualProgress().AddRecruit(city, new CasualRecruitQueueItem(soldierType,option, count));
             }
         }
 

@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
     { 
         Guard,
         FolkMen,
+        Seamen,
         Melee,
         Ranged,
         Rider,
