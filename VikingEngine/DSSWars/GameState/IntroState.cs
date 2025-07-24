@@ -56,20 +56,30 @@ namespace VikingEngine.DSSWars
         override protected void asyncContentLoading(ref int part)
         {
             Config.OnStartUp();
-
+            part++;
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
+            part++;
             Engine.LoadContent.LoadTextures(new List<LoadedTexture> {
                     LoadedTexture.particle3,
                     });
+            part++;
             new SpriteSheet();
+            part++;
             Block.Init();
+            part++;
             FlagAndColor.Init();
+            part++;
             ItemPropertyColl.Init();
+            part++;
             WorkLib.Init();
+            part++;
             DssRef.ambience = new Ambience();
+            part++;
             DssRef.ambience.contentLoad();
+            part++;
 
             new Models().loadContent();
+            part++;
 
             Engine.LoadContent.LoadMesh(LoadedMesh.cube_repeating, Engine.LoadContent.ModelPath + "cube_repeating");
             Engine.LoadContent.LoadMesh(LoadedMesh.plane, Engine.LoadContent.ModelPath + "plane");
@@ -79,19 +89,23 @@ namespace VikingEngine.DSSWars
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleDotted, Engine.LoadContent.ModelPath + "SelectCircleDotted");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleSolid, Engine.LoadContent.ModelPath + "SelectCircleSolid");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleThick, Engine.LoadContent.ModelPath + "SelectCircleThick");
-            
+            part++;
 
             SoundLib.LoadContent();
+            part++;
             Engine.LoadContent.LoadSteamVersion();
-            
+            part++;
 
             VikingEngine.HUD.Gui.LoadContent();
-
+            part++;
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
+            part++;
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
+            part++;
             UserGeneratedContent.UGClib.GameInit();
-
+            part++;
             bgTex = LobbyState.LoadBg();
+            part++;
         }
         protected override void asyncLoadIntro()
         {
@@ -103,13 +117,16 @@ namespace VikingEngine.DSSWars
         override protected void asyncStorageLoading(ref int part)
         {
             FlagDesign.Init();
-
+            part++;
             DssRef.storage = new Data.GameStorage();
             DssRef.storage.Load();
-
+            part++;
             DssRef.storage.meta.CreateImportFolders();
+            part++;
             Ref.gamesett.Load();
+            part++;
             new Presentation.Translation().setupLanguage(true);
+            part++;
         }
 
 

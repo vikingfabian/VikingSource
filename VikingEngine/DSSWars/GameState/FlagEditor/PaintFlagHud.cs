@@ -209,7 +209,23 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             {
                 content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
             }
+            else
+            { 
+                pasteColor(colorType);
+            }
             content.newLine();
+        }
+
+        void pasteColor(ProfileColorType toColorType)
+        {
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconPaste) },
+                new RbAction1Arg<ProfileColorType>(copyPasteColorAction, toColorType), new RbTooltip_Text(DssRef.todoLang.Editor_CopyPasteSelectedColor)));
+        }
+
+        void copyPasteColorAction(ProfileColorType toColorType)
+        { 
+           state.profile.setColor(toColorType, state.profile.getColor(state.selectedColorType));
+           state.onColorChange();
         }
 
         void flagcolor(ProfileColorType colorType1, ProfileColorType colorType2)

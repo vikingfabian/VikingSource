@@ -16,6 +16,7 @@ using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
@@ -37,11 +38,15 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         public RichMenu menu, optMenu;
         CharacterPreview soldierPreview/*, animalPreview*/;
 
+        bool bAutoAnimate = false;
+        ListCirkleCounter<FrameTime> autoAnimateCounter;
+        Time autoAnimateTimer = new Time(2000);
+        List<FrameTime> autoAnimate;
 
-        public CharacterCreatorScene() 
-            :base()
+        public CharacterCreatorScene()
+            : base()
         {
-            openMenu();            
+            openMenu();
 
             new Interface.EditorBackground();
 
@@ -56,8 +61,33 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             //animalPreview = new CharacterPreview(previewArea, CharacterPreviewType.RideAnimal);
 
             openOptionsMenu();
-        }
 
+            autoAnimate = new List<FrameTime>(64);
+            autoAnimate.Add(new FrameTime(0, 1000));
+            //Blink
+            autoAnimate.Add(new FrameTime(1, 100));
+            autoAnimate.Add(new FrameTime(0, 200));
+            autoAnimate.Add(new FrameTime(1, 100));
+            autoAnimate.Add(new FrameTime(0, 500));
+
+            //Attack
+            for (int i = 0; i < 2; ++i)
+            {
+                autoAnimate.Add(new FrameTime(2, 400));
+                autoAnimate.Add(new FrameTime(0, 600));
+            }
+
+            //Walk
+            for (int i = 0; i < 6; ++i)
+            {
+                for (int frame = 3; frame < soldierPreview.FrameCount; ++frame)
+                {
+                    autoAnimate.Add(new FrameTime(frame, 150));
+                }
+            }
+
+            autoAnimateCounter = new ListCirkleCounter<FrameTime>(autoAnimate, 0);
+        }
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
@@ -81,7 +111,16 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
 
             soldierPreview.update();
-            //animalPreview.update();
+
+            if (bAutoAnimate)
+            {
+                if (autoAnimateTimer.CountDown())
+                {
+                    autoAnimateCounter.Next();
+                    soldierPreview.setFrame(autoAnimateCounter.CurrentValue.frame);
+                    autoAnimateTimer = new Time(autoAnimateCounter.CurrentValue.time);
+                }
+            }
         }
         void refreshPage()
         {
@@ -146,12 +185,12 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             foreach (var wepArray in weapons)
             {
                 foreach (var weapon in wepArray)
-                {         
+                {
                     var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
                         {
                             new RbImage(ResourceLib.Icon(weapon))
                         },
-                    new RbAction1Arg<ItemResourceType>((ItemResourceType weapon)=> { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, SoundLib.menu)
+                    new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, SoundLib.menu)
                     );
                     content.Add(button);
                 }
@@ -195,7 +234,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             {
                 SpriteName frameicon;
                 RbButtonStyle buttonStyle;
-                if (frame == soldierPreview.Frame)
+                if (frame == soldierPreview.Frame && !bAutoAnimate)
                 {
                     buttonStyle = RbButtonStyle.OptionSelected;
                     frameicon = SpriteName.VoxelEditorFrameSelected;
@@ -207,9 +246,13 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 }
 
                 content.Add(new ArtButton(buttonStyle,
-                    new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(frame)), new RbImage(frameicon) }, new RbAction1Arg<int>(soldierPreview.setFrame, frame)));
+                    new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(frame)), new RbImage(frameicon) }, new RbAction1Arg<int>((int frame)=> {
+                        bAutoAnimate = false;
+                        soldierPreview.setFrame(frame);  
+                    }, frame)));
             }
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameNext) }, new RbAction1Arg<bool>(soldierPreview.nextFrame, true)));
+            content.Add(new ArtOption(bAutoAnimate, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon) }, new RbAction(() => { bAutoAnimate = true; })));
 
             optMenu.Refresh(content);
         }
@@ -557,6 +600,15 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             }
             return profile.soldierScale;
         }
+        //public bool AutoAnimate(int index, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        panOnZoom = value;
+        //        settingsHasChanged = true;
+        //    }
+        //    return panOnZoom;
+        //}
 
         public CharacterProfile GetProfile()
         {
@@ -588,5 +640,17 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         Workers,
         Animals,
         NUM
+    }
+
+    struct FrameTime
+    {
+        public int frame;
+        public float time;
+
+        public FrameTime(int frame, float time)
+        {
+            this.frame = frame;
+            this.time = time;
+        }
     }
 }

@@ -267,7 +267,10 @@ namespace VikingEngine.DSSWars
                 case UnderMenu_PlayerSetup:
                     {
                         RichBoxContent content = new RichBoxContent();
-
+                        if (underMenu.menuStack.Count > 1)
+                        {
+                            HudLib.returnButton(content, underMenu, true, null);
+                        }
                         //bool startTutorialDisplay = false;
 
                         var title = content.h1(string.Empty, HudLib.TitleColor_Head);
@@ -1216,7 +1219,6 @@ namespace VikingEngine.DSSWars
                     }
                     mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, underMenu);
                 }
-
             }
 
             Difficulty.OptionsRb(content, underMenu, difficultyOptionsLink);
@@ -1280,12 +1282,12 @@ namespace VikingEngine.DSSWars
             content.space();
             content.Add(new RbText(DssRef.lang.Settings_ChildMultiplier, HudLib.TitleColor_Label));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), ChildMultiProperty, true));
+            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), ChildMultiProperty, true, new RbTooltip_Text(DssRef.todoLang.Settings_ChildMultiplier_Description)));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsHammer));
             content.space();
-            content.Add(new RbText(DssRef.lang.Settings_CraftMultiplier, HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.todoLang.Settings_CraftMultiplier, HudLib.TitleColor_Label));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4f, 0.1f), CraftMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_CraftMultiplier_Description)));
 
@@ -1351,8 +1353,7 @@ namespace VikingEngine.DSSWars
             content.h1(DssRef.lang.Lobby_PlayerSetup, HudLib.TitleColor_Head);
 
             for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
-            {
-                
+            {                
                 var playerData = DssRef.storage.localPlayers[playerNum - 1];
                 if (DssRef.storage.playerCount > 1)
                 {

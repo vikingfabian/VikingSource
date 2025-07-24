@@ -30,10 +30,11 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Editor_DisplayOptions => "Diplay options";
         public string Editor_CharacterCreator => "Character creator";
-        public string Editor_CharacterCreator_Description => "Soldier model appearance editor";
+        public string Editor_CharacterCreator_Description => "Military models appearance editor";
         public string Editor_HatGenre => "Hat display mode";
         public string Editor_HatGenre_FollowWeapon => "Follow weapon";
         public string Editor_HatGenre_Uniform => "Uniform";
+        public string Editor_CopyPasteSelectedColor => "Copy from selected color";
 
         public string Character_Accessories=> "Accessories";
         public string Character_Hat => "Hat";
@@ -43,6 +44,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Character_Back => "Back";
         public string Character_Face => "Face";
 
+        public string Settings_CraftMultiplier => "Craft time multiplier";
+        public string Settings_ChildMultiplier_Description => "Increases the speed new workers are added";
         public string Settings_CasualControls => "Casual player controls";
         public string Settings_CasualControls_Description => "Simplifies gameplay by reducing choices to key decisions. Only money is used as a resource.";
     }
