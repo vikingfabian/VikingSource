@@ -28,6 +28,32 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public TrainingLevel training;
 
         public bool Available => price > 0;
+
+        public SoldierConscriptProfile SoldierProfile()
+        {
+            SoldierConscriptProfile soldierConscript = new SoldierConscriptProfile()
+            {
+                conscript = new ConscriptProfile() { weapon = weapon },
+                
+            };
+
+            return soldierConscript;
+        }
+
+        public void ButtonVisuals(CasualSoldierType soldierType, out SpriteName icon, out string caption)
+        {
+            if (soldierType == CasualSoldierType.Guard)
+            {
+                icon = SpriteName.WarsGuard;
+                caption = DssRef.lang.Conscript_Soldiers_GuardType;
+            }
+            else
+            {
+                var profile = SoldierProfile();
+                icon = profile.Icon();
+                caption = profile.conscript.TypeName();
+            }
+        }
     }
 
     struct CasualCityProfile

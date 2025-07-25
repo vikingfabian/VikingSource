@@ -15,45 +15,94 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         WorkerHut,
         Barracks,
         ResearchCenter,
+        NUM
     }
+
+    class CasualBuildOption
+    { 
+        public CasualBuildType Type;
+        public string Name;
+        public SpriteName icon;
+        public int price;
+        public int buildtime_sec;
+
+        public bool allowMultiBuild;
+    }
+
 
     static class CasualBuild
     {
+        public static CasualBuildOption[] CasualBuildOptionList;
 
-        //public static List<BuildAndExpandType> AvailableBuildTypes_Casual(City city)
-        //{
-        //    List<BuildAndExpandType> list = new List<BuildAndExpandType>(8);
+        public static void Init()
+        {
+            CasualBuildOptionList = new CasualBuildOption[]
+            {
+                new CasualBuildOption {
+                    Type = CasualBuildType.WorkerHut,
+                    Name = DssRef.lang.BuildingType_WorkerHut,
+                    icon = SpriteName.WarsBuild_WorkerHuts,
+                    price = 200,
+                    buildtime_sec = (int)DssConst.WorkTime_Building_Default,
+                    allowMultiBuild = true
+                },
+                new CasualBuildOption {
+                    Type = CasualBuildType.Barracks,
+                    Name = DssRef.lang.BuildingType_Barracks,
+                    icon = SpriteName.WarsBuild_Barracks,
+                    price = 300,
+                    buildtime_sec = (int)DssConst.WorkTime_Building_Default * 2,
+                    allowMultiBuild = true
+                },
+                new CasualBuildOption {
+                    Type = CasualBuildType.ResearchCenter,
+                    Name = DssRef.lang.BuildingType_ReseachCenter,
+                    icon = SpriteName.WarsBuild_ResearchCenter,
+                    price = 500,
+                    buildtime_sec = (int)DssConst.WorkTime_Building_Large,
+                    allowMultiBuild = false
+                }
+            };
+        }
 
-        //    list.Add(BuildAndExpandType.WorkerHut);
-        //    list.Add(BuildAndExpandType.SoldierBarracks);
-        //    list.Add(BuildAndExpandType.ResearchCenter);
-
-        //    return list;
-        //}
 
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
-            purchaseButton(CasualBuildType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, DssRef.lang.BuildingType_WorkerHut, 200, true);
-            purchaseButton(CasualBuildType.Barracks, SpriteName.WarsBuild_Barracks, DssRef.lang.BuildingType_Barracks, 300, true);
-            purchaseButton(CasualBuildType.WorkerHut, SpriteName.WarsBuild_ResearchCenter, DssRef.lang.BuildingType_ReseachCenter, 500, false);
-
-            void purchaseButton(CasualBuildType buildType, SpriteName icon, string caption, int price, bool multiBuild)
+            // Define which buildings to show in the HUD
+            List<CasualBuildType> available = new List<CasualBuildType>
             {
-                content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>
+                CasualBuildType.WorkerHut,
+                CasualBuildType.Barracks,
+                CasualBuildType.ResearchCenter
+            };
+
+            foreach (var buildType in available)
+            {
+                CasualBuildOption option = CasualBuildOptionList.FirstOrDefault(o => o.Type == buildType);
+                if (option != null)
                 {
-                    new RbImage(icon),
-                    new RbSpace(),
-                    new RbText(caption),
-                    new RbSpace(2),
-                    new RbImage(SpriteName.rtsMoney),
-                    new RbText(price.ToString(), player.faction.hasGold(price, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark)
-                }, new RbAction3Arg<CasualBuildType, int, int>(city.CasualBuild, buildType, price, 1)));
+                    AddBuildButton(option);
+                }
             }
 
-            
+            void AddBuildButton(CasualBuildOption option)
+            {
+                content.newLine();
+                bool canAfford = player.faction.hasGold(option.price, city);
+
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>
+                {
+                    new RbImage(option.icon),
+                    new RbSpace(),
+                    new RbText(option.Name),
+                    new RbSpace(2),
+                    new RbImage(SpriteName.rtsMoney),
+                    new RbText(option.price.ToString(), canAfford ? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark)
+                }, new RbAction3Arg<CasualBuildType, int, int>(city.CasualBuild, option.Type, option.price, 1)));
+            }
         }
 
-        
+
+
     }
 }

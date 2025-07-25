@@ -1728,6 +1728,7 @@ namespace VikingEngine.DSSWars.GameObject
                 capturePoints = -100;                
             }
 
+            casualProgress?.oneSecondUpdate(this);
             //capturePoints = Bound.Min(capturePoints - 10, 0);
         }
 

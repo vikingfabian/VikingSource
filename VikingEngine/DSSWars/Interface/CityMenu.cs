@@ -200,28 +200,32 @@ namespace VikingEngine.DSSWars.Interface
             buySoldierOption(city.casualCityProfile.riderMen, CasualSoldierType.Rider);
             buySoldierOption(city.casualCityProfile.siegeMen, CasualSoldierType.Siege);
 
+
+            city.GetCasualProgress().RecruitToHud(player, city, content);
+
             void buySoldierOption(SoldierPurchaseOption option, CasualSoldierType soldierType)
             {
                 if (option.Available)
                 {
-                    SoldierConscriptProfile soldierConscript = new SoldierConscriptProfile()
-                    {
-                        conscript = new ConscriptProfile() { weapon = option.weapon },
-                    };
+                    //SoldierConscriptProfile soldierConscript = new SoldierConscriptProfile()
+                    //{
+                    //    conscript = new ConscriptProfile() { weapon = option.weapon },
+                    //};
                     content.newLine();
 
-                    SpriteName icon;
-                    string caption;
-                    if (soldierType == CasualSoldierType.Guard)
-                    {
-                        icon = SpriteName.WarsGuard;
-                        caption = DssRef.lang.Conscript_Soldiers_GuardType;
-                    }
-                    else
-                    {
-                        icon = soldierConscript.Icon();
-                        caption = soldierConscript.conscript.TypeName();
-                    }
+                    //SpriteName icon;
+                    //string caption;
+                    //if (soldierType == CasualSoldierType.Guard)
+                    //{
+                    //    icon = SpriteName.WarsGuard;
+                    //    caption = DssRef.lang.Conscript_Soldiers_GuardType;
+                    //}
+                    //else
+                    //{
+                    //    icon = soldierConscript.Icon();
+                    //    caption = soldierConscript.conscript.TypeName();
+                    //}
+                    option.ButtonVisuals(soldierType, out SpriteName icon, out string caption);
 
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbImage(icon),

@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (casualProgress == null)
             {
-                casualProgress = new CityCasualProgress();
+                casualProgress = new CityCasualProgress(this);
             }
 
             return casualProgress;
