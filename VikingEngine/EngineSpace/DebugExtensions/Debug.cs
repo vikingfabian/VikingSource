@@ -9,8 +9,10 @@ using System.Data;
 
 namespace VikingEngine
 {
+    
     static class Debug
     {
+
         public static VikingEngine.DataStream.FilePath logFilePath;
         static OutputWindow OutputWindow = null;
 

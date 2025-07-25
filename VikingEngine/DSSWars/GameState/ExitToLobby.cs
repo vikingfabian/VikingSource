@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.GameState
         public ExitToLobby(bool quick, bool startLoadingMap = true)
             :base()
         {
-            waitUpdatesCount = quick ? 3 : 30;
+            waitUpdatesCount = quick ? 3 : 60;
             this.startLoadingMap = startLoadingMap;
             draw.ClrColor = Color.Black;
             Ref.lobby?.disconnect(null);            

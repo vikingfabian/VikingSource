@@ -1,7 +1,6 @@
 ﻿UPDATE
 * Object tag improvements
 
-
 #Pics
 synligeare merge down layer
 
@@ -9,8 +8,7 @@ synligeare merge down layer
 
 #Todo#
 
-x flag editor need color copy, 
-
+x more categories/filters in build
 x flag editor need color copy, + tatoo color
 	-add voxel model texture
 x coal mines in work tab

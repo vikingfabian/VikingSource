@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
         RichMenu menu;
         PaintFlagState state;
         bool needRefresh = true;
-        const float TabStep = 0.25f;
+        const float TabStep = 0.32f;
         public PaintFlagHud(Engine.PlayerData playerData, InputMap input, PaintFlagState state)
             : base()
         {
@@ -218,13 +218,15 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
 
         void pasteColor(ProfileColorType toColorType)
         {
+            
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconPaste) },
                 new RbAction1Arg<ProfileColorType>(copyPasteColorAction, toColorType), new RbTooltip_Text(DssRef.todoLang.Editor_CopyPasteSelectedColor)));
         }
 
         void copyPasteColorAction(ProfileColorType toColorType)
-        { 
-           state.profile.setColor(toColorType, state.profile.getColor(state.selectedColorType));
+        {
+            state.setUndoPoint();
+            state.profile.setColor(toColorType, state.profile.getColor(state.selectedColorType));
            state.onColorChange();
         }
 
@@ -250,6 +252,10 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             {
                 content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
             }
+            else
+            {
+                pasteColor(colorType1);
+            }
 
             content.Add(new RbTab(TabStep));
             var color2 = colorContent(colorType2);
@@ -264,6 +270,10 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             if (state.selectedColorType == colorType2)
             {
                 content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
+            }
+            else
+            {
+                pasteColor(colorType2);
             }
 
             content.newLine();
@@ -294,6 +304,10 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                 {
                     content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
                 }
+                else
+                {
+                    pasteColor(colorType[i]);
+                }
                 content.Add(new RbTab(TabStep * (i + 1)));
             }
             content.newLine();
@@ -322,6 +336,10 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             if (state.selectedColorType == colorType)
             {
                 content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
+            }
+            else
+            {
+                pasteColor(colorType);
             }
 
             content.newLine();

@@ -21,6 +21,8 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
+        public static FileCheck FileCheck;
+
         const int Version = 23;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
@@ -200,24 +202,32 @@ namespace VikingEngine
 
         public void read(System.IO.BinaryReader r)
         {
+            FileCheck fileCheck = new FileCheck();
             try
             {
                 int version = r.ReadInt32();
+                fileCheck.start(version, Version);
 
                 if (version >= 21)
                 {
                     readSettings(r, version);
                 }
+
+                fileCheck.end();
             }
             catch (Exception e)
             {
-                Debug.LogError("Loading game settings error, " + e.Message);
+                fileCheck.exception = e;
+                //Debug.LogError("Loading game settings error, " + e.Message);
             }
-            
+
+            FileCheck = fileCheck;
         }
 
         public void oldread(System.IO.BinaryReader r, int version)
         {
+            
+
             if (version >= 2)
             {
                 Engine.Screen.RenderScalePerc = r.ReadInt32();
