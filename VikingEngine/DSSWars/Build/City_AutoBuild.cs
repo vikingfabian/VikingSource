@@ -6,10 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -32,6 +34,57 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool autoExport_weapons = false;
         public GameTimeStamp nextAutoConscriptTime = GameTimeStamp.None;
+
+        public void FinishCasualBuild(CasualBuildType casualBuildType)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    switch (casualBuildType)
+                    {
+                        case CasualBuildType.WorkerHut:
+                            placeBuilding(BuildAndExpandType.WorkerHut);
+                            break;
+                        case CasualBuildType.Barracks:                            
+                            placeBuilding(BuildAndExpandType.SoldierBarracks);
+                            placeBuilding(BuildAndExpandType.ArcherBarracks);
+                            break;
+                    }
+
+                    void placeBuilding(BuildAndExpandType build)
+                    {
+                        var buildData = BuildLib.BuildOptions[(int)build];
+                        IntVector2 buildPos = IntVector2.NegativeOne;
+
+                        if (CityStructure.Find(this, buildData.mainType, buildData.subType, out IntVector2 sameBuilding))
+                        {
+                            findAdjacentFreeSpot(sameBuilding, ref buildPos);
+                        }
+
+                        if (buildPos.X < 0)
+                        {
+                            if (!CityStructure.FindEmpty(this, out buildPos))
+                            {
+                                return;
+                            }
+                        }
+
+                        var subTile = DssRef.world.subTileGrid.Get(buildPos);
+                        bool upgrade = false;
+                        if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
+                        {
+                            EditSubTile edit = new EditSubTile(buildPos, subTile, true, !upgrade, false);
+                            edit.Submit();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+            });
+        }
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
         {
@@ -128,22 +181,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            void findAdjacentFreeSpot(IntVector2 center, ref IntVector2 result)
-            {
-                for (int r = 1; r <= 2; r++)
-                {
-                    Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
-
-                    while (Auto_EdgeRandomizer.Next())
-                    {
-                        if (CityStructure.WorkInstance.MayAutoBuildHere(this, Auto_EdgeRandomizer.Position))
-                        {
-                            result = Auto_EdgeRandomizer.Position;
-                            return;
-                        }
-                    }
-                }
-            }
+            
 
             bool checkAutoBuildAvailable()
             {
@@ -156,6 +194,23 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
                 return true;
+            }
+        }
+
+        void findAdjacentFreeSpot(IntVector2 center, ref IntVector2 result)
+        {
+            for (int r = 1; r <= 2; r++)
+            {
+                Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+
+                while (Auto_EdgeRandomizer.Next())
+                {
+                    if (CityStructure.WorkInstance.MayAutoBuildHere(this, Auto_EdgeRandomizer.Position))
+                    {
+                        result = Auto_EdgeRandomizer.Position;
+                        return;
+                    }
+                }
             }
         }
 

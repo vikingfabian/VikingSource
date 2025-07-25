@@ -15,12 +15,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 {
     class CityCasualProgress
     {
+        public int cityIndex;
+
         List<CasualRecruitQueueItem> recruitQueue = new List<CasualRecruitQueueItem>(16);
         int recruitTimeSeconds = -1;
         bool payedRecruitCost = false;
-        public int cityIndex;
-
+       
         List<CasualBuildQueueItem> buildQueue = new List<CasualBuildQueueItem>(8);
+        int buildTimeSeconds = 0;
+        bool payedBuildCost = false;
 
         public CityCasualProgress(City city)
         {
@@ -128,6 +131,48 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     }
                 }
             }
+
+
+            if (buildTimeSeconds <= 0)
+            {
+                if (buildQueue.Count > 0)
+                {
+                    var first = arraylib.First(buildQueue);
+                    buildTimeSeconds = CasualBuild.Get(first.build).buildtime_sec;//city.casualBuildTime_sec(first.build);
+                }
+            }
+            else if (buildQueue.Count > 0)
+            {
+                var first = arraylib.First(buildQueue);
+
+                if (payedBuildCost)
+                {
+                    buildTimeSeconds--;
+
+                    if (buildTimeSeconds <= 0)
+                    {
+                        city.FinishCasualBuild(first.build); // Replace with actual handling
+                        payedBuildCost = false;
+                        first.count--;
+
+                        if (first.count <= 0)
+                            buildQueue.RemoveAt(0);
+                        else
+                            arraylib.ReplaceFirst(buildQueue, first);
+                    }
+                }
+                else
+                {
+                    var faction = city.GetFaction();
+                    buildCost(city, out int gold);
+
+                    if (faction.hasGold(gold, city))
+                    {
+                        faction.payGold(gold, true, city);
+                        payedBuildCost = true;
+                    }
+                }
+            }
         }
 
         public void RecruitToHud(Players.LocalPlayer player, City city, RichBoxContent content)
@@ -141,12 +186,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 recruitCost(city, out int men, out int gold);
                 int hasGold, hasMen;
 
-                if (payedRecruitCost) {
+                if (payedRecruitCost)
+                {
                     hasGold = gold;
                     hasMen = men;
                 }
                 else
-                { 
+                {
                     hasGold = Math.Min(player.faction.GetGold(city), gold);
                     hasMen = Math.Min(city.workForce.amount, men);
                 }
@@ -216,13 +262,151 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 //text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingEquipment ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                 content.Add(text);
             }
+
+           
         }
+
+
 
         void recruitCost(City city, out int men, out int gold)//todo upkeep
         {
             var first = arraylib.First(recruitQueue);
             men = first.ConscriptProfile(city).menCost();
             gold = first.purchaseOption.price;
+        }
+
+        public void BuildToHud(Players.LocalPlayer player, City city, RichBoxContent content)
+        {
+            if (buildQueue.Count > 0)
+            {
+                content.Add(new RbSeperationLine());
+                content.h2(DssRef.lang.Hud_ProductionQueue, HudLib.TitleColor_Label);
+
+                var first = arraylib.First(buildQueue);
+                buildCost(city, out int gold);
+                int hasGold = payedBuildCost ? gold : Math.Min(player.faction.GetGold(city), gold);
+
+                progressPoint(ItemResourceType.Gold, hasGold, gold);
+
+                var cancelTooltip = new RbTooltip_Text(".Click to cancel");
+
+                content.newLine();
+                {
+                    var option = CasualBuild.Get(first.build);
+                    //option.ButtonVisuals(first.build, out SpriteName icon, out string caption);
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbText(first.count.ToString() + "x"),
+                new RbImage(option.icon),
+                new RbSpace(),
+                new RbText(option.Name, HudLib.TitleColor_TypeName_Dark),
+                new RbSpace(2),
+                new RbImage(SpriteName.IconSandGlass),
+                new RbText(buildTimeSeconds > 0 ? buildTimeSeconds.ToString() : "-"),
+            }, new RbAction1Arg<int>(cancelBuild, 0), cancelTooltip));
+                }
+
+                for (int i = 1; i < buildQueue.Count; i++)
+                {
+                    var item = buildQueue[i];
+                    var option = CasualBuild.Get(item.build);
+                    //option.ButtonVisuals(item.build, out SpriteName icon, out _);
+
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                new RbText(item.count.ToString() + "x"),
+                new RbImage(option.icon)
+            }, new RbAction1Arg<int>(cancelBuild, i), cancelTooltip));
+                }
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>
+        {
+            new RbText(DssRef.lang.FlagEditor_ClearAll)
+        }, new RbAction(clearBuildQueue)));
+            }
+
+            void progressPoint(ItemResourceType resourceType, int has, int need)
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(ResourceLib.Icon(resourceType)));
+                content.hspace();
+                var text = new RbText($"{LangLib.Item(resourceType)} {has}/{need}");
+
+                if (payedBuildCost)
+                {
+                    text.overrideColor = HudLib.SecondaryTextColor;
+                }
+                else
+                {
+                    if (has >= need)
+                    {
+                        text.overrideColor = HudLib.AvailableColor;
+                        content.Add(new RbImage(HudLib.AvailableIcon));
+                    }
+                    else
+                    {
+                        text.overrideColor = HudLib.NotAvailableColor;
+                        content.Add(new RbImage(HudLib.NotAvailableIcon));
+                    }
+                    content.space();
+                }
+
+                content.Add(text);
+            }
+        }
+
+
+        public void AddBuild(City city, CasualBuildQueueItem queueItem)
+        {
+            if (buildQueue.Count > 0 && buildQueue.Last().build == queueItem.build)
+            {
+                var last = arraylib.Last(buildQueue);
+                last.count += queueItem.count;
+                arraylib.ReplaceLast(buildQueue, last);
+            }
+            else
+            {
+                buildQueue.Add(queueItem);
+            }
+        }
+
+        void clearBuildQueue()
+        {
+            cancelCurrentBuild();
+            buildQueue.Clear();
+            buildTimeSeconds = 0;
+        }
+
+        void cancelBuild(int index)
+        {
+            if (arraylib.InBound(buildQueue, index))
+            {
+                if (index == 0)
+                {
+                    cancelCurrentBuild();
+                }
+                buildQueue.RemoveAt(index);
+            }
+        }
+
+        void cancelCurrentBuild()
+        {
+            if (payedBuildCost)
+            {
+                var city = GetCity();
+                var faction = city.GetFaction();
+                buildCost(city, out int gold);
+                faction.money.AddGold(gold);
+            }
+            payedBuildCost = false;
+        }
+
+        void buildCost(City city, out int gold)
+        {
+            var first = arraylib.First(buildQueue);
+            gold = CasualBuild.Get(first.build).price;
+            //gold = CasualBuildLib.GetBuildOption(first.build).price;
         }
     }
 } 

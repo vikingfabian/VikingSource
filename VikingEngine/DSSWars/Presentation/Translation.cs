@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
 
@@ -126,7 +127,7 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
             }
 
-            BuildLib.Init();
+            
             //if (onChange && onContentLoad)
             //{ 
             //    Ref.

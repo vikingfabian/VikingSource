@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public bool find(City city, TerrainMainType main, int sub, out IntVector2 position)
+        public static bool Find(City city, TerrainMainType main, int sub, out IntVector2 position)
         {
             IntVector2 topleft;
             ForXYLoop subTileLoop;
@@ -133,6 +133,44 @@ namespace VikingEngine.DSSWars.Map
 
                                 if (subTile.mainTerrain == main && subTile.subTerrain == sub)
                                 { 
+                                    position = subTileLoop.Position;
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            position = IntVector2.Zero;
+            return false;
+        }
+
+        public static bool FindEmpty(City city, out IntVector2 position)
+        {
+            IntVector2 topleft;
+            ForXYLoop subTileLoop;
+            for (int radius = 0; radius <= city.cityTileRadius; ++radius)
+            {
+                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+
+                while (cirkleLoop.Next())
+                {
+                    if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                    {
+                        var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+                        if (tile.CityIndex == city.myIndex && tile.IsLand())
+                        {
+                            topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
+                            subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+
+                            while (subTileLoop.Next())
+                            {
+                                SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+
+                                if (subTile.mainTerrain == TerrainMainType.DefaultLand ||
+                                    subTile.mainTerrain == TerrainMainType.Destroyed)
+                                {
                                     position = subTileLoop.Position;
                                     return true;
                                 }

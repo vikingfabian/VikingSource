@@ -182,6 +182,7 @@ namespace VikingEngine.DSSWars.Interface
                         break;
                     case MenuTab.Casual_Build:
                         CasualBuild.ToHud(player, content, city);
+
                         break;
                 }
             }

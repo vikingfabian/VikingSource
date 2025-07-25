@@ -1,24 +1,25 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
-using VikingEngine.Graphics;
-using Microsoft.Xna.Framework.Graphics;
-using System.IO;
-using VikingEngine.PJ;
-using VikingEngine.DSSWars.Map.Settings;
-using VikingEngine.SteamWrapping;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
-using VikingEngine.DSSWars.Resource;
-using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState;
-using VikingEngine.Engine;
-using VikingEngine.Voxels;
+using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
+using VikingEngine.Engine;
+using VikingEngine.Graphics;
+using VikingEngine.PJ;
 using VikingEngine.Sound;
+using VikingEngine.SteamWrapping;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
 {
@@ -126,6 +127,11 @@ namespace VikingEngine.DSSWars
             Ref.gamesett.Load();
             part++;
             new Presentation.Translation().setupLanguage(true);
+            part++;
+
+            BuildLib.Init();
+            part++;
+            CasualBuild.Init();
             part++;
         }
 

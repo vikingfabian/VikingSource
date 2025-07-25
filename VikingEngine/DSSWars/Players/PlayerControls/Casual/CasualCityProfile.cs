@@ -111,6 +111,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             if (city.Culture == CityCulture.Seafaring || culture.percWater > 0.5)
             {
                 shipmen.price = 1;
+                shipmen.weapon = ItemResourceType.ThrowingSpear;
                 siegeMen.price = 0;
             }
 

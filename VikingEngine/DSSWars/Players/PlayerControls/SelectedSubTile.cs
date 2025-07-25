@@ -135,10 +135,7 @@ namespace VikingEngine.DSSWars.Players
                                                 selectTileResult = SelectTileResult.BookPress;
                                                 break;
                                         }
-
-                                        hasSelection = selectTileResult != SelectTileResult.None;
-                                        model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
-                                        return;
+                                        break;
 
                                     case TerrainMainType.Mine:
                                         tileOfInterest = true;
@@ -154,16 +151,22 @@ namespace VikingEngine.DSSWars.Players
                                         break;
                                     case TerrainMainType.Wall:
                                         selectTileResult = SelectTileResult.Wall;
-                                        hasSelection = true;
-                                        model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+                                        //hasSelection = true;
+                                        //model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
                                         break;
                                 }
-                            }
 
+                                if (player.profile.casualControls && selectTileResult != SelectTileResult.CityHall)
+                                {
+                                    selectTileResult = SelectTileResult.None;
+                                }
+
+                                hasSelection = selectTileResult != SelectTileResult.None;
+                                model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+                            }
                         }
                     }
                 }
-
             }
             else
             {

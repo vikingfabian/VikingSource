@@ -36,35 +36,46 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
         public static void Init()
         {
-            CasualBuildOptionList = new CasualBuildOption[]
+            CasualBuildOptionList = new CasualBuildOption[(int)CasualBuildType.NUM];
+
+            add(new CasualBuildOption 
             {
-                new CasualBuildOption {
-                    Type = CasualBuildType.WorkerHut,
-                    Name = DssRef.lang.BuildingType_WorkerHut,
-                    icon = SpriteName.WarsBuild_WorkerHuts,
-                    price = 200,
-                    buildtime_sec = (int)DssConst.WorkTime_Building_Default,
-                    allowMultiBuild = true
-                },
-                new CasualBuildOption {
-                    Type = CasualBuildType.Barracks,
-                    Name = DssRef.lang.BuildingType_Barracks,
-                    icon = SpriteName.WarsBuild_Barracks,
-                    price = 300,
-                    buildtime_sec = (int)DssConst.WorkTime_Building_Default * 2,
-                    allowMultiBuild = true
-                },
-                new CasualBuildOption {
-                    Type = CasualBuildType.ResearchCenter,
-                    Name = DssRef.lang.BuildingType_ReseachCenter,
-                    icon = SpriteName.WarsBuild_ResearchCenter,
-                    price = 500,
-                    buildtime_sec = (int)DssConst.WorkTime_Building_Large,
-                    allowMultiBuild = false
-                }
-            };
+                Type = CasualBuildType.WorkerHut,
+                Name = DssRef.lang.BuildingType_WorkerHut,
+                icon = SpriteName.WarsBuild_WorkerHuts,
+                price = 200,
+                buildtime_sec = (int)DssConst.WorkTime_Building_Default,
+                allowMultiBuild = true
+            });
+            add(new CasualBuildOption 
+            {
+                Type = CasualBuildType.Barracks,
+                Name = DssRef.lang.BuildingType_Barracks,
+                icon = SpriteName.WarsBuild_Barracks,
+                price = 300,
+                buildtime_sec = (int)DssConst.WorkTime_Building_Default * 2,
+                allowMultiBuild = true
+            });
+            add(new CasualBuildOption
+            {
+                Type = CasualBuildType.ResearchCenter,
+                Name = DssRef.lang.BuildingType_ReseachCenter,
+                icon = SpriteName.WarsBuild_ResearchCenter,
+                price = 500,
+                buildtime_sec = (int)DssConst.WorkTime_Building_Large,
+                allowMultiBuild = false
+            });
+            
+            void add(CasualBuildOption buildOption)
+            {
+                CasualBuildOptionList[(int)buildOption.Type] = buildOption;
+            }
         }
 
+        public static CasualBuildOption Get(CasualBuildType type)
+        { 
+            return CasualBuildOptionList[(int)type];
+        }
 
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
@@ -73,17 +84,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 CasualBuildType.WorkerHut,
                 CasualBuildType.Barracks,
-                CasualBuildType.ResearchCenter
+                //CasualBuildType.ResearchCenter
             };
 
             foreach (var buildType in available)
             {
-                CasualBuildOption option = CasualBuildOptionList.FirstOrDefault(o => o.Type == buildType);
+                CasualBuildOption option = CasualBuildOptionList[(int)buildType];
                 if (option != null)
                 {
                     AddBuildButton(option);
                 }
             }
+
+            city.GetCasualProgress().BuildToHud(player, city, content);
 
             void AddBuildButton(CasualBuildOption option)
             {
@@ -98,7 +111,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     new RbSpace(2),
                     new RbImage(SpriteName.rtsMoney),
                     new RbText(option.price.ToString(), canAfford ? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark)
-                }, new RbAction3Arg<CasualBuildType, int, int>(city.CasualBuild, option.Type, option.price, 1)));
+                }, new RbAction2Arg<CasualBuildType, int>(city.CasualBuild, option.Type, 1)));
             }
         }
 

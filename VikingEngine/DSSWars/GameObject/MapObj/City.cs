@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 try
                 {
-                    if (CityStructure.WorkInstance.find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
+                    if (CityStructure.Find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
                     {
                         CraftBuildingLib.CraftLogisticsLevel2.payResources(this);
 
