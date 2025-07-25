@@ -9,8 +9,19 @@ using System.Data;
 
 namespace VikingEngine
 {
+    struct FileCheck
+    {
+        public bool start;
+        public bool end;
+        public bool version;
+    }
     static class Debug
     {
+        public static FileCheck fileCheck_gamesett;
+        public static FileCheck fileCheck_gamestorage;
+        public static FileCheck fileCheck_flag;
+        public static FileCheck fileCheck_savemeta;
+
         public static VikingEngine.DataStream.FilePath logFilePath;
         static OutputWindow OutputWindow = null;
 

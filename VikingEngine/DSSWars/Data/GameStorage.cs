@@ -21,7 +21,9 @@ using VikingEngine.PJ;
 namespace VikingEngine.DSSWars.Data
 {
     class GameStorage
-    {        
+    {
+        
+
         public const int MaxLocalPlayerCount = 4;
         public int playerCount = 1;
         public bool verticalScreenSplit = true;
@@ -201,6 +203,8 @@ namespace VikingEngine.DSSWars.Data
             {
                 return;
             }
+
+            throw new Exception();
             
             mapSize = (MapSize)r.ReadInt32();
 
@@ -297,5 +301,5 @@ namespace VikingEngine.DSSWars.Data
         }
     }
 
-
+    
 }
