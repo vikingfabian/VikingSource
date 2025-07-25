@@ -7,8 +7,7 @@ synligeare merge down layer
 
 #Todo#
 
-x flag editor need color copy, 
-
+x more categories/filters in build
 x multiplayer is broken in battle lab
 x set all defence is broken, need set all towers
 
