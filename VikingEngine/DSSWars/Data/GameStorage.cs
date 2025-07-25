@@ -198,54 +198,64 @@ namespace VikingEngine.DSSWars.Data
         }
         public void read(System.IO.BinaryReader r, bool gamestate)
         {
-            int version = r.ReadInt32();
-            if (version > Version || version <= 4)
+            FileCheck fileCheck = new FileCheck();
+            try
             {
-                return;
-            }
-
-            throw new Exception();
-            
-            mapSize = (MapSize)r.ReadInt32();
-
-            if (!gamestate || version < 16)
-            {
-                verticalScreenSplit = r.ReadBoolean();
-
-                for (int i = 0; i < MaxLocalPlayerCount; ++i)
+                int version = r.ReadInt32();
+                fileCheck.start(version, Version);
+                if (version > Version || version <= 4)
                 {
-                    localPlayers[i].read(r, version);
+                    return;
                 }
+
+                mapSize = (MapSize)r.ReadInt32();
+
+                if (!gamestate || version < 16)
+                {
+                    verticalScreenSplit = r.ReadBoolean();
+
+                    for (int i = 0; i < MaxLocalPlayerCount; ++i)
+                    {
+                        localPlayers[i].read(r, version);
+                    }
+                }
+
+
+                generateNewMaps = r.ReadBoolean();
+                autoSave = r.ReadBoolean();
+
+                multiplayerGameSpeed = r.ReadSingle();
+
+                DssRef.difficulty.read(r, version);
+
+                if (version >= 15)
+                {
+                    runTutorial_1short_2normal = r.ReadByte();
+                }
+
+                if (version >= 18)
+                {
+                    speed5x = r.ReadBoolean();
+                }
+                if (version >= 19)
+                {
+                    longerBuildQueue = r.ReadBoolean();
+                }
+                if (version >= 21)
+                {
+                    centralGold = r.ReadBoolean();
+                }
+                mapSettings.read(r, version);
+
+                generateNewMaps = true;//temp
+                fileCheck.end();
+            }
+            catch (Exception e)
+            {
+                fileCheck.exception = e;
             }
 
-            
-            generateNewMaps = r.ReadBoolean();
-            autoSave = r.ReadBoolean();
-            
-            multiplayerGameSpeed = r.ReadSingle();
-            
-            DssRef.difficulty.read(r, version);
-            
-            if (version >= 15)
-            {
-                runTutorial_1short_2normal = r.ReadByte();
-            }
-            
-            if (version >= 18)
-            { 
-                speed5x = r.ReadBoolean();
-            }
-            if (version >= 19)
-            {
-                longerBuildQueue = r.ReadBoolean();
-            }
-            if (version >= 21)
-            { 
-                centralGold = r.ReadBoolean();
-            }
-            mapSettings.read(r, version);
-
-            generateNewMaps = true;//temp
+            IOLib.fileCheck_gamestorage = fileCheck;
         }
 
         public void checkPlayerDoublettes()

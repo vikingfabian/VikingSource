@@ -2010,7 +2010,10 @@ namespace VikingEngine.DSSWars
 
             Ref.gamesett.volumeOptions(content);
             GameMenuSystem.SettingsToMenu(content, underMenu, true);
-            
+
+            content.newParagraph();
+            IOLib.FileCheckToHud(content);
+
             underMenu.Refresh(content);
         }
 

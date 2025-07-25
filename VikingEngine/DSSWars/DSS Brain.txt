@@ -1,6 +1,4 @@
 ﻿UPDATE
-* flag editor color copy
-
 
 #Pics
 synligeare merge down layer

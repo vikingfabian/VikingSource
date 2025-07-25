@@ -102,27 +102,38 @@ namespace VikingEngine.DSSWars.Data
 
         public void read(System.IO.BinaryReader r)
         {
-            int version = r.ReadInt32();
-            if (version > Version) { return; }
-
-            if (version == 1)
+            FileCheck fileCheck = new FileCheck();
+            try
             {
-                if (r.ReadBoolean())
+                int version = r.ReadInt32();
+                fileCheck.start(version, Version);
+                if (version > Version) { return; }
+
+                if (version == 1)
                 {
-                    var state = new SaveStateMeta(r);
-                    if (state.stateVersion == SaveGamestate.Version)
+                    if (r.ReadBoolean())
                     {
-                        saves.saves[0] = state;
+                        var state = new SaveStateMeta(r);
+                        if (state.stateVersion == SaveGamestate.Version)
+                        {
+                            saves.saves[0] = state;
+                        }
                     }
                 }
+                else
+                {
+                    saves.read(r, version);
+                    autosaves.read(r, version);
+
+                }
+                fileCheck.end();
             }
-            else
+            catch (Exception e)
             {
-                saves.read(r, version);
-                autosaves.read(r, version);
-
+                fileCheck.exception = e;
             }
 
+            IOLib.fileCheck_savemeta = fileCheck;
         }
     }
 
