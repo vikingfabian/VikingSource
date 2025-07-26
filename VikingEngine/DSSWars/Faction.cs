@@ -473,7 +473,7 @@ namespace VikingEngine.DSSWars
             //{ 
             //    lib.DoNothing();
             //}
-            nobelHouseCount = 0;
+            embassyCount = 0;
             //resources_oneSecUpdate();
             player.oneSecUpdate();
 
@@ -483,7 +483,7 @@ namespace VikingEngine.DSSWars
                 if (citiesC.sel.factionIndex == myIndex)
                 {
                     citiesC.sel.oneSecUpdate();
-                    nobelHouseCount += citiesC.sel.buildingStructure.Nobelhouse_count;
+                    embassyCount += citiesC.sel.buildingStructure.Embassy_count;
 
                     income += citiesC.sel.income_oneSecUpdate(incomeMultiplier);
                     citiesTotalCopper.copper += citiesC.sel.money.copper;

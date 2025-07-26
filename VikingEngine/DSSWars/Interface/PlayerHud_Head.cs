@@ -310,6 +310,11 @@ namespace VikingEngine.DSSWars.Interface
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec_CapIncluded()))));
 
+            content.newLine();
+            content.Add(new RbSeperationLine());
+            content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.BuildingType_Embassy, player.faction.embassyCount), 
+                HudLib.TitleColor_Label));
+
         }
         void foodTip(RichBoxContent content, object tag)
         {

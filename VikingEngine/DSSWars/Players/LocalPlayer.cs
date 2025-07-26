@@ -1637,7 +1637,7 @@ namespace VikingEngine.DSSWars.Players
 
         public double diplomacyAddPerSec()
         {
-            return DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.NobelHouseAddDiplomacy * faction.nobelHouseCount;
+            return DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.EmbassyAddDiplomacy * faction.embassyCount;
         }
 
         public double diplomacyAddPerSec_CapIncluded()
@@ -1658,7 +1658,7 @@ namespace VikingEngine.DSSWars.Players
 
             faction.resourceOverviewOneSecondUpdate();
 
-            double max = DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.NobelHouseAddMaxDiplomacy * faction.nobelHouseCount;
+            double max = DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.EmbassyAddMaxDiplomacy * faction.embassyCount;
             diplomaticPoints_softMax = (int)Math.Floor(max);
             diplomaticPoints.setMax(max + DssRef.diplomacy.Diplomacy_HardMax_Add);
 

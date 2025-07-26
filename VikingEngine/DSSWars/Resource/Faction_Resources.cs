@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars
         Money storeMoney = Money.Zero;
         Money previuosMoney = Money.Zero;
         public int totalWorkForce, armyFoodUpkeep, armyFoodImportCost, armyFoodBlackMarketCost;
-        public int nobelHouseCount = 0;
+        public int embassyCount = 0;
 
         public TradeTemplate tradeTemplate = new TradeTemplate();
         public WorkTemplate workTemplate = new WorkTemplate();

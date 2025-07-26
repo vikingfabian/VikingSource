@@ -21,8 +21,8 @@ namespace VikingEngine.DSSWars
         public int ServantMaxCities = 2;
         public int DefaultMaxDiplomacy = 4;
         public double DefaultDiplomacyPerSecond = 1.0 / 120.0;
-        public double NobelHouseAddDiplomacy = 1.0 / 480.0;
-        public double NobelHouseAddMaxDiplomacy = 0.25;
+        public double EmbassyAddDiplomacy = 1.0 / 480.0;
+        public double EmbassyAddMaxDiplomacy = 0.25;
 
 
         public double AddDiplomacy_AfterSoftlock_PerSecond = 1 / 120.0;
@@ -43,8 +43,8 @@ namespace VikingEngine.DSSWars
                 case 0:
                     DefaultMaxDiplomacy = 4;
                     DefaultDiplomacyPerSecond = 1.0 / 60.0;
-                    NobelHouseAddDiplomacy = 1.0 / 240.0;
-                    NobelHouseAddMaxDiplomacy = 0.5;
+                    EmbassyAddDiplomacy = 1.0 / 240.0;
+                    EmbassyAddMaxDiplomacy = 0.5;
                     ServantMaxCities = 4;
 
                     SpeakTermsOnWar_BadChance = 0.3;
@@ -56,8 +56,8 @@ namespace VikingEngine.DSSWars
                 case 1:
                     DefaultMaxDiplomacy = 3;
                     DefaultDiplomacyPerSecond = 1.0 / 90.0;
-                    NobelHouseAddDiplomacy = 1.0 / 300.0;
-                    NobelHouseAddMaxDiplomacy = 0.25;
+                    EmbassyAddDiplomacy = 1.0 / 300.0;
+                    EmbassyAddMaxDiplomacy = 0.25;
 
                     SpeakTermsOnWar_BadChance = 0.5;
                     SpeakTermsOnWar_NoneChance = 0.08;
@@ -68,8 +68,8 @@ namespace VikingEngine.DSSWars
                 case 2:
                     DefaultMaxDiplomacy = 2;
                     DefaultDiplomacyPerSecond = 1.0 / 120.0;
-                    NobelHouseAddDiplomacy = 1.0 / 600.0;
-                    NobelHouseAddMaxDiplomacy = 0.1;
+                    EmbassyAddDiplomacy = 1.0 / 600.0;
+                    EmbassyAddMaxDiplomacy = 0.1;
 
                     SpeakTermsOnWar_BadChance = 0.8;
                     SpeakTermsOnWar_NoneChance = 0.2;

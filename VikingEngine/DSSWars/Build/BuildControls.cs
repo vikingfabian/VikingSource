@@ -789,7 +789,26 @@ namespace VikingEngine.DSSWars.Build
                                 break;
 
                             case BuildAndExpandType.Nobelhouse:
-                                int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
+                                
+
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
+                                content.newLine();
+
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbText(DssRef.lang.Hud_Unlock + ": "));
+                                content.Add(new RbImage(SpriteName.WarsBuild_Embassy));
+                                content.Add(new RbText(DssRef.lang.BuildingType_Embassy));
+                                content.newLine();
+
+                                //HudLib.BulletPoint(content);
+                                //content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                                //content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, Resource.Money.CopperToGoldString_Decimal( DssConst.NobleHouseUpkeep_copp))));
+
+                                break;
+
+                            case BuildAndExpandType.Embassy:
+                                int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
 
                                 HudLib.BulletPoint(content);
                                 content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
@@ -798,17 +817,8 @@ namespace VikingEngine.DSSWars.Build
 
                                 HudLib.BulletPoint(content);
                                 content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-                                content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
+                                content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
                                 content.newLine();
-
-                                HudLib.BulletPoint(content);
-                                content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
-                                content.newLine();
-
-                                //HudLib.BulletPoint(content);
-                                //content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                                //content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, Resource.Money.CopperToGoldString_Decimal( DssConst.NobleHouseUpkeep_copp))));
-
                                 break;
 
                             case BuildAndExpandType.WheatFarm:
