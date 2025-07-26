@@ -31,6 +31,8 @@ namespace VikingEngine.DSSWars.Data
                         new RbTooltip_Text(fileCheck.exception.Message)));
                 }
             }
+            HudLib.BulletSeperationPoint(content);
+            content.Add(new RbText("cnf" + "(" + Config.RWCheck.ToString() + ")", HudLib.SecondaryTextColor));
         }
 
         public static void WriteGameObject(System.IO.BinaryWriter w, AbsGameObject gameObject)

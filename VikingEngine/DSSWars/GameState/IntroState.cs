@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars
 
         override protected void asyncContentLoading(ref int part)
         {
-            Config.OnStartUp();
+            
             part++;
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
             part++;

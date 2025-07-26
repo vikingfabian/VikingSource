@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public string HUD_DisplayName => "Display name";
+        public string HUD_Filter => "Filter";
         public string HUD_Scale => "Scale";
         public string Lobby_PlayerProfileNumbered => "Profile {0}";
         public string Lobby_CharacterCreationNumbered => "Character {0}";
@@ -44,8 +45,15 @@ namespace VikingEngine.DSSWars.Presentation
         public string Character_Back => "Back";
         public string Character_Face => "Face";
 
+        public string BuildingType_Tavern => "Common Hall";
+
         public string Settings_CraftMultiplier => "Craft time multiplier";
         public string Settings_ChildMultiplier_Description => "Increases the speed new workers are added";
+
+        public string WarsResourceGroup_Metal => "Metal";
+        public string Work_Craft => "Craft";
+        public string Catergory_Optimize => "Optimize";
+        public string BuildCategory_Road => "Road";
     }
 
 }

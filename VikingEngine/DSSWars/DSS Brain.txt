@@ -1,8 +1,10 @@
 ﻿UPDATE
+-Repaired config file, and added file health check
+
 
 #Pics
 synligeare merge down layer
-
+Build category: filter, advanced
 
 
 #Todo#
@@ -32,6 +34,8 @@ x Ballista, har warmachine crew, guards
 x removing soldiers cancels move order
 x drag slider needs description
 x god mode where you can edit all nations? Like giving money, spawning units, deleting buildings etc.
+x metal minting has no controls
+x should smelt gold
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning
@@ -142,6 +146,8 @@ https://discord.com/verification
 - kolla steam db releases
 
 
+Pigeon bombs
+https://discord.com/channels/405016249127665664/405016249660211213/1398608516767420548
 
 
 

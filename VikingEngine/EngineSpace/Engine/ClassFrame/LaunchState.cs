@@ -29,6 +29,7 @@ namespace VikingEngine.Engine
         enum LoadState
         { 
             Font,
+            Config,
             Screen,
             Splash,
             DefaltContent,
@@ -53,7 +54,8 @@ namespace VikingEngine.Engine
         Texture2D bgTex = null;
         TextS progressString = null;
         Graphics.ImageAdvanced bgImage = null;
-        protected SoundContainerSingle introSound = null;// = new SoundContainerSingle(SoundDir + "click", 0.7f);
+        protected SoundContainerSingle introSound = null;
+
         public LaunchState(bool isReset)
             :base()
         {
@@ -79,8 +81,12 @@ namespace VikingEngine.Engine
                 mainPart = 0;
                 LoadContent.LoadConsoleFont();
                 mainPart++;
-                load = LoadState.Screen;
+                load = LoadState.Config;
 
+                Config.OnStartUp();
+                mainPart++;
+
+                load = LoadState.Screen;
                 Ref.gamesett.Load();
                 mainPart++;
 #if PCGAME

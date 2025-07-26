@@ -10,6 +10,7 @@ namespace VikingEngine
 {
     static class Config
     {
+        public static ReadWriteCheck RWCheck;
         public static string PcStoragePath = null;
 
         public static void OnStartUp()
@@ -46,6 +47,7 @@ namespace VikingEngine
                         }
                     }
                 }
+                RWCheck.read = true;
             }
             else
             {
@@ -60,8 +62,12 @@ save_path =
                 try
                 {
                     File.WriteAllText(configPath, defaultConfig);
+                    RWCheck.write = true;
                 }
-                catch { }
+                catch 
+                { 
+                    RWCheck.writeFail = true;
+                }
 
             }
 

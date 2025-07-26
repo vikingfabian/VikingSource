@@ -486,22 +486,38 @@ namespace VikingEngine.DSSWars.Build
             { available = player.tutorial.AvailableBuildTypes(); }
 
             List<BuildAndExpandType> availableFiltered = new List<BuildAndExpandType>(available.Count);
-            foreach (var opt in available)
+
+            if (player.buildCategoryTab == BuildCategoryTab.Filter)
             {
-                var build = BuildLib.BuildOptions[(int)opt];
-                if (build.buildCategory == player.buildCategoryTab)
+                foreach (var opt in available)
                 {
-                    availableFiltered.Add(opt);
+                    var build = BuildLib.BuildOptions[(int)opt];
+                    if (build.Contains(player.buildFilterTag))
+                    {
+                        availableFiltered.Add(opt);
+                    }
                 }
             }
-
+            else
+            {
+                foreach (var opt in available)
+                {
+                    var build = BuildLib.BuildOptions[(int)opt];
+                    if (build.buildCategory == player.buildCategoryTab)
+                    {
+                        availableFiltered.Add(opt);
+                    }
+                }
+            }
             return availableFiltered;
         }
         public void toHud(LocalPlayer player, RichBoxContent content, City city)
         {
             List<BuildCategoryTab> buildCategories = new List<BuildCategoryTab>
             {
-                BuildCategoryTab.ExpandAndCraft,
+                BuildCategoryTab.Filter,
+                BuildCategoryTab.General,
+                BuildCategoryTab.Advanced,
                 BuildCategoryTab.Military,
                 BuildCategoryTab.Decor,
                 BuildCategoryTab.Upgrade,
@@ -518,9 +534,17 @@ namespace VikingEngine.DSSWars.Build
                 SpriteName tabIcon;
                 switch (tab)
                 {
-                    case BuildCategoryTab.ExpandAndCraft:
+                    case BuildCategoryTab.Filter:
+                        tabIcon = SpriteName.cmdSpyglass;
+                        category = DssRef.todoLang.HUD_Filter;
+                        break;
+                    case BuildCategoryTab.General:
                         tabIcon = SpriteName.warsBuildCategoryHouse;
                         category = DssRef.lang.BuildCategory_General;
+                        break;
+                    case BuildCategoryTab.Advanced:
+                        tabIcon = SpriteName.WarsUnitLevelLegend;
+                        category = DssRef.lang.Hud_Advanced;
                         break;
                     case BuildCategoryTab.Military:
                         tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
@@ -607,10 +631,21 @@ namespace VikingEngine.DSSWars.Build
                     content.Add(new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor });
                     content.newLine();
                 }
-                content.Add(new RichBoxScale(2.1f));
-                content.newLine();
 
                 List<BuildAndExpandType> available = availableBuildOptions(city);
+
+                if (player.buildCategoryTab == BuildCategoryTab.Filter)
+                {
+                    content.newLine();
+                    for (BuildFilterTag tag = 0; tag < BuildFilterTag.NUM_NONE; ++tag)
+                    {
+                        content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(LangLib.Filter(tag)) },
+                            new RbAction1Arg<BuildFilterTag>((BuildFilterTag tag) => { player.buildFilterTag = tag; }, tag),
+                            null, true, player.buildFilterTag == tag ? Color.White : Color.Gray));
+                    }
+                }
+                content.Add(new RichBoxScale(2.1f));
+                content.newLine();
 
                 foreach (var opt in available)
                 {
@@ -1123,7 +1158,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     autoBuildButton(string.Format(DssRef.lang.Hud_XTimes, 4), 4);
                 }
-               
+
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Build_ClearOrders) },
                     new RbAction(() =>
@@ -1138,13 +1173,13 @@ namespace VikingEngine.DSSWars.Build
 
                     if (city.buildingStructure.buildingLevel_logistics == 1)
                     {
-                        
+
                         var upgradeText = new RbText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics));
                         content.newParagraph();
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() {
                             new RbImage(SpriteName.WarsBuild_Logistics),
                             new RbSpace(),
-                            upgradeText }, 
+                            upgradeText },
                             new RbAction(city.upgradeLogistics, SoundLib.menuBuy), new RbTooltip((RichBoxContent content, object tag) =>
                         {
                             var cityFaction = city.GetFaction();
@@ -1156,7 +1191,7 @@ namespace VikingEngine.DSSWars.Build
                             content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
                             content.newLine();
-                            content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor =cityFaction.totalWorkForce >= DssConst.Logistics2_PopulationRequirement ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                            content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor = cityFaction.totalWorkForce >= DssConst.Logistics2_PopulationRequirement ? HudLib.AvailableColor : HudLib.NotAvailableColor;
 
                             content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);

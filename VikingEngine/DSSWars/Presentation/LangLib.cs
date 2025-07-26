@@ -904,7 +904,7 @@ namespace VikingEngine.DSSWars.Presentation
                         case TerrainBuildingType.Storehouse:
                             return DssRef.lang.BuildingType_Storage;
                         case TerrainBuildingType.Tavern:
-                            return DssRef.lang.BuildingType_Tavern;
+                            return DssRef.todoLang.BuildingType_Tavern;
                         case TerrainBuildingType.Work_Bench:
                             return DssRef.lang.BuildingType_WorkBench;
                         case TerrainBuildingType.WorkerHut:
@@ -1225,6 +1225,36 @@ namespace VikingEngine.DSSWars.Presentation
                     return TextLib.Error;
             }
         }
+
+        public static string Filter(BuildFilterTag tag)
+        {
+            switch (tag)
+            {
+                case BuildFilterTag.Workers: return DssRef.lang.ResourceType_Workers;
+                case BuildFilterTag.Farm: return DssRef.lang.Work_Farming;
+                case BuildFilterTag.Resources: return DssRef.lang.Resource;
+                case BuildFilterTag.Metals: return DssRef.todoLang.WarsResourceGroup_Metal;
+                case BuildFilterTag.Water: return DssRef.lang.Resource_TypeName_Water;
+                case BuildFilterTag.Food: return DssRef.lang.Resource_TypeName_Food;
+                case BuildFilterTag.Fuel: return DssRef.lang.Resource_TypeName_Fuel;
+                case BuildFilterTag.Craft: return DssRef.todoLang.Work_Craft;
+                case BuildFilterTag.Transport: return DssRef.lang.ExperienceType_Transport;
+                case BuildFilterTag.Weapons: return DssRef.lang.WarsResourceGroup_Weapons;
+                case BuildFilterTag.Military: return DssRef.lang.BuildCategory_Military;
+                case BuildFilterTag.Soldiers: return DssRef.lang.UnitType_Soldier;
+                case BuildFilterTag.Guards: return DssRef.lang.Conscript_Soldiers_GuardType;
+                case BuildFilterTag.Walls: return DssRef.lang.BuildingType_Wall;
+                case BuildFilterTag.Optimize: return DssRef.todoLang.Catergory_Optimize;
+                case BuildFilterTag.Upgrade: return DssRef.lang.BuildCategory_Upgrade;
+                case BuildFilterTag.Research: return DssRef.lang.Research_Tab;
+                case BuildFilterTag.Road: return DssRef.todoLang.BuildCategory_Road;
+                case BuildFilterTag.Garden: return DssRef.lang.DecorType_Garden;
+                case BuildFilterTag.Statue: return DssRef.lang.DecorType_Statue;
+                case BuildFilterTag.Flag: return DssRef.lang.DecorType_Flag;
+                default: return tag.ToString(); // fallback, or you can return a specific string like DssRef.lang.Unknown
+            }
+        }
+
 
         public static string TechnologyExample()
         {
