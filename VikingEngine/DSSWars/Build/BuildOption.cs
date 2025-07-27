@@ -28,8 +28,18 @@ namespace VikingEngine.DSSWars.Build
         public BuildCategoryTab buildCategory;
         public MapPaintToolCategory paintToolCategory;
         public float buildTimeSec;
+
+        public BuildFilterTag filterTag1;
+        public BuildFilterTag filterTag2;
+        public BuildFilterTag filterTag3;
+
+
         public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, 
-            bool canAutoBuild, BuildCategoryTab buildCategory, MapPaintToolCategory paintToolCategory, float buildTimeSec)
+            bool canAutoBuild, BuildCategoryTab buildCategory,
+            BuildFilterTag filterTag1,
+            BuildFilterTag filterTag2,
+            BuildFilterTag filterTag3,
+            MapPaintToolCategory paintToolCategory, float buildTimeSec)
         {
             this.canAutoBuild = canAutoBuild;
             this.sprite = sprite;
@@ -39,10 +49,19 @@ namespace VikingEngine.DSSWars.Build
             this.subType = subType;
             //this.experienceType = experienceType;
             this.buildCategory = buildCategory;
+            this.filterTag1 = filterTag1;
+            this.filterTag2 = filterTag2;
+            this.filterTag3 = filterTag3;
             BuildLib.BuildOptions[(int)buildType] = this;
             this.paintToolCategory = paintToolCategory;
             this.buildTimeSec = buildTimeSec;
         }
+
+        public bool Contains(BuildFilterTag filterTag)
+        { 
+            return filterTag == filterTag1 ||  filterTag == filterTag2 || filterTag ==filterTag3;
+        }
+
         public WorkExperienceType experienceType() 
         {
             return blueprint.experienceType;

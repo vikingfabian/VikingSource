@@ -1266,7 +1266,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             content.Add(new RbImage(ResourceLib.Icon(item)));
             content.space();
-            content.Add(new RbText(LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
+            content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount)));
 
             if (item != ItemResourceType.Water_G &&
                     item != ItemResourceType.Gold &&

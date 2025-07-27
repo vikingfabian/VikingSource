@@ -1115,6 +1115,11 @@ namespace VikingEngine.DSSWars.Work
                     return 1f;
 
                 case WorkType.School:
+#if DEBUG
+                    if (StartupSettings.UnlockAllProgress)
+                        return 1f;
+#endif
+
                     int toXp = workBonus * DssConst.WorkXpToLevel;
                     int diff = toXp - getXpFor(experienceType);
                     return diff * DssConst.Time_SchoolOneXPSec;

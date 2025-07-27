@@ -276,7 +276,7 @@ namespace VikingEngine.DSSWars
         public static int TechnologyGain_MasterLevelUp = 5;
         public static int TechnologyGain_ResearchCenter = 1;
 
-        public static float Time_SchoolOneXPSec = 4;//50 per level
+        public static float Time_SchoolOneXPSec = 8;//100 per level
 
         public static float DeliveryLevel2TimeReducePerc = 5;
         public static float DeliveryLevel3TimeReducePerc = 10;

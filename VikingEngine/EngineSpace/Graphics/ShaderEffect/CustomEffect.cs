@@ -53,6 +53,8 @@ namespace VikingEngine.Graphics
             this.usesWorldPos = usesWorldPos;
             this.TechniqueName = TechniqueName;
             //shader.CurrentTechnique = shader.Techniques[TechniqueName];
+            
+            
         }
         public override void Draw(Mesh obj)
         {
@@ -100,5 +102,7 @@ namespace VikingEngine.Graphics
             base.shader.Parameters["wvp"].SetValue(Ref.draw.worldMatrix * Ref.draw.Camera.ViewProjection);
             base.shader.Parameters[CustomEffect.ColorArgument].SetValue(obj.colorAndAlpha);
         }        
-    }    
+    }
+
+    
 }

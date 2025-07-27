@@ -386,123 +386,391 @@ namespace VikingEngine.DSSWars.Build
 
         public static void Init()
         {
-            new BuildOption(BuildAndExpandType.Logistics, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, SpriteName.WarsBuild_Logistics, CraftBuildingLib.CraftLogistics, true, BuildCategoryTab.Upgrade, MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
+            new BuildOption(BuildAndExpandType.Logistics, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, SpriteName.WarsBuild_Logistics, CraftBuildingLib.CraftLogistics, true, 
+                BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
             {
                 uniqueBuilding = true
             };
 
-            new BuildOption(BuildAndExpandType.WorkerHut, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, CraftBuildingLib.WorkerHut, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.WorkerHutLarge, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHutLarge, SpriteName.WarsBuild_WorkerHutLarge, CraftBuildingLib.WorkerHutLarge, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.WorkerHut, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, CraftBuildingLib.WorkerHut, true, 
+                BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.ServiceHouse_Small, TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_small, SpriteName.WarsBuild_SmallServiceHouse, CraftBuildingLib.ServiceHouse_Small, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.ServiceHouse_Large, TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_Large, SpriteName.WarsBuild_BigServiceHouse, CraftBuildingLib.ServiceHouse_Large, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.WorkerHutLarge, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHutLarge, SpriteName.WarsBuild_WorkerHutLarge, CraftBuildingLib.WorkerHutLarge, false, 
+                BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
-            new BuildOption(BuildAndExpandType.GuardHouse_Small, TerrainMainType.Building, (int)TerrainBuildingType.GuardHouse_Small, SpriteName.WarsBuild_GuardOffice, CraftBuildingLib.GuardHouse_Small, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.GuardHouse_Large, TerrainMainType.Building, (int)TerrainBuildingType.GuardHouse_Large, SpriteName.WarsBuild_GuardOfficeLarge, CraftBuildingLib.GuardHouse_Large, false, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.ServiceHouse_Small, TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_small, SpriteName.WarsBuild_SmallServiceHouse, CraftBuildingLib.ServiceHouse_Small, true, 
+                BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.ImmigrationTent, TerrainMainType.Building, (int)TerrainBuildingType.ImmigrationTent, SpriteName.WarsBuild_Tent, CraftBuildingLib.ImmigrationTent, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
+            new BuildOption(BuildAndExpandType.ServiceHouse_Large, TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_Large, SpriteName.WarsBuild_BigServiceHouse, CraftBuildingLib.ServiceHouse_Large, false, 
+                BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
+            new BuildOption(BuildAndExpandType.GuardHouse_Small, TerrainMainType.Building, (int)TerrainBuildingType.GuardHouse_Small, SpriteName.WarsBuild_GuardOffice, CraftBuildingLib.GuardHouse_Small, true, 
+                BuildCategoryTab.Military, BuildFilterTag.Guards, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            
+            new BuildOption(BuildAndExpandType.GuardHouse_Large, TerrainMainType.Building, (int)TerrainBuildingType.GuardHouse_Large, SpriteName.WarsBuild_GuardOfficeLarge, CraftBuildingLib.GuardHouse_Large, false, 
+                BuildCategoryTab.Military, BuildFilterTag.Guards, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
-            new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.PostalLevel2, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel2, SpriteName.WarsBuild_PostalLevel2, CraftBuildingLib.Postal_Level2, false, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.PostalLevel3, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel3, SpriteName.WarsBuild_PostalLevel3, CraftBuildingLib.Postal_Level3, false, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.ImmigrationTent, TerrainMainType.Building, (int)TerrainBuildingType.ImmigrationTent, SpriteName.WarsBuild_Tent, CraftBuildingLib.ImmigrationTent, true, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Workers, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
 
-            new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.RecruitmentLevel2, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel2, SpriteName.WarsBuild_RecruitmentLevel2, CraftBuildingLib.Recruitment_Level2, false, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.RecruitmentLevel3, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel3, SpriteName.WarsBuild_RecruitmentLevel3, CraftBuildingLib.Recruitment_Level3, false, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal, true, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Transport, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.GoldDeliveryLvl1, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel1, SpriteName.WarsBuild_GoldDeliver, CraftBuildingLib.GoldDelivery, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.GoldDeliveryLvl2, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel2, SpriteName.WarsBuild_GoldDeliverLevel2, CraftBuildingLib.GoldDelivery_Level2, false, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.GoldDeliveryLvl3, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel3, SpriteName.WarsBuild_GoldDeliverLevel3, CraftBuildingLib.GoldDelivery_Level3, false, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            new BuildOption(BuildAndExpandType.PostalLevel2, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel2, SpriteName.WarsBuild_PostalLevel2, CraftBuildingLib.Postal_Level2, false, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Transport, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
+            new BuildOption(BuildAndExpandType.PostalLevel3, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel3, SpriteName.WarsBuild_PostalLevel3, CraftBuildingLib.Postal_Level3, false, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Transport, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
-            new BuildOption(BuildAndExpandType.SoldierBarracks, TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, SpriteName.WarsBuild_SoldierBarracks, CraftBuildingLib.SoldierBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, CraftBuildingLib.NobelHouse, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, CraftBuildingLib.Tavern, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.Storehouse, TerrainMainType.Building, (int)TerrainBuildingType.Storehouse, SpriteName.WarsBuild_Storehouse, CraftBuildingLib.Storehouse, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Brewery, TerrainMainType.Building, (int)TerrainBuildingType.Brewery, SpriteName.WarsBuild_Brewery, CraftBuildingLib.Brewery, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default) { altBlueprint = CraftBuildingLib.Brewery_Bronze };
-            new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, CraftBuildingLib.PigPen, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, CraftBuildingLib.HenPen, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, CraftBuildingLib.Cook, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default) { altBlueprint = CraftBuildingLib.Cook_Copper };
-            new BuildOption(BuildAndExpandType.CoalPit, TerrainMainType.Building, (int)TerrainBuildingType.Work_CoalPit, SpriteName.WarsBuild_CoalPit, CraftBuildingLib.CoalPit, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.WorkBench, TerrainMainType.Building, (int)TerrainBuildingType.Work_Bench, SpriteName.WarsBuild_WorkBench, CraftBuildingLib.WorkBench, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default){ altBlueprint = CraftBuildingLib.WorkBench_Bronze };
-            new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, CraftBuildingLib.Smith, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, CraftBuildingLib.Carpenter, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default) { altBlueprint = CraftBuildingLib.Carpenter_Bronze };
+            new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment,
+                true, BuildCategoryTab.Advanced, BuildFilterTag.Transport, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarm, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.WheatFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarmUpgraded, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarmUpgrade, true, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarm, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.LinenFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarmUpgraded, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarmUpgrade, true, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarm, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.HempFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarmUpgraded, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarmUpgrade, true, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarm, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.RapeSeedFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarmUpgraded, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarmUpgrade, true, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.RecruitmentLevel2, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel2, SpriteName.WarsBuild_RecruitmentLevel2, CraftBuildingLib.Recruitment_Level2, false, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Transport, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
-            new BuildOption(BuildAndExpandType.DirtRoad, TerrainMainType.Road, (int)TerrainRoadType.DirtRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false, BuildCategoryTab.Decor, MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
-            new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, CraftBuildingLib.Pavement, false, BuildCategoryTab.Decor, MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
-            new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementFlower, false, BuildCategoryTab.Decor, MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, SpriteName.WarsBuild_Statue, CraftBuildingLib.Statue, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
+            new BuildOption(BuildAndExpandType.RecruitmentLevel3, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel3, SpriteName.WarsBuild_RecruitmentLevel3, CraftBuildingLib.Recruitment_Level3, false, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Transport, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
-            new BuildOption(BuildAndExpandType.Smelter, TerrainMainType.Building, (int)TerrainBuildingType.Smelter, SpriteName.WarsBuild_Smelter, CraftBuildingLib.Smelter, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Armory, TerrainMainType.Building, (int)TerrainBuildingType.Armory, SpriteName.WarsBuild_Armory, CraftBuildingLib.Armory, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.WoodCutter, TerrainMainType.Building, (int)TerrainBuildingType.WoodCutter, SpriteName.WarsBuild_WoodCutter, CraftBuildingLib. WoodCutter, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.StoneCutter, TerrainMainType.Building, (int)TerrainBuildingType.StoneCutter, SpriteName.WarsBuild_StoneCutter, CraftBuildingLib.StoneCutter, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Bank, TerrainMainType.Building, (int)TerrainBuildingType.Bank, SpriteName.WarsBuild_Bank, CraftBuildingLib.Bank, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.CoinMinter, TerrainMainType.Building, (int)TerrainBuildingType.CoinMinter, SpriteName.WarsBuild_Coinminter, CraftBuildingLib.CoinMinter, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Embassy, TerrainMainType.Building, (int)TerrainBuildingType.Embassy, SpriteName.WarsBuild_Embassy, CraftBuildingLib.Embassy, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.WaterResovoir, TerrainMainType.Building, (int)TerrainBuildingType.WaterResovoir, SpriteName.WarsBuild_WaterReservoir, CraftBuildingLib.WaterResovoir, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.ArcherBarracks, TerrainMainType.Building, (int)TerrainBuildingType.ArcherBarracks, SpriteName.WarsBuild_ArcherBarracks, CraftBuildingLib.ArcherBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
-            new BuildOption(BuildAndExpandType.WarmachineBarracks, TerrainMainType.Building, (int)TerrainBuildingType.WarmachineBarracks, SpriteName.WarsBuild_WarmachineBarracks, CraftBuildingLib.WarmachineBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
-            new BuildOption(BuildAndExpandType.GunBarracks, TerrainMainType.Building, (int)TerrainBuildingType.GunBarracks, SpriteName.WarsBuild_GunBarracks, CraftBuildingLib.GunBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.CannonBarracks, TerrainMainType.Building, (int)TerrainBuildingType.CannonBarracks, SpriteName.WarsBuild_CannonBarracks, CraftBuildingLib.CannonBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.KnightsBarracks, TerrainMainType.Building, (int)TerrainBuildingType.KnightsBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks, true, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Foundry, TerrainMainType.Building, (int)TerrainBuildingType.Foundry, SpriteName.WarsBuild_Foundry, CraftBuildingLib.Foundry, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Chemist, TerrainMainType.Building, (int)TerrainBuildingType.Chemist, SpriteName.WarsBuild_Chemist, CraftBuildingLib.Chemist, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Gunmaker, TerrainMainType.Building, (int)TerrainBuildingType.Gunmaker, SpriteName.WarsBuild_Gunmaker, CraftBuildingLib.Gunmaker, true, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.School, TerrainMainType.Building, (int)TerrainBuildingType.School, SpriteName.WarsBuild_School, CraftBuildingLib.School, true, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.ResearchCenter, TerrainMainType.Building, (int)TerrainBuildingType.ResearchCenter, SpriteName.WarsBuild_ResearchCenter, CraftBuildingLib.ResearchCenter, false, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.BookPress, TerrainMainType.Building, (int)TerrainBuildingType.BookPress, SpriteName.WarsBuild_Bookpress, CraftBuildingLib.BookPress, false, BuildCategoryTab.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl1, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel1, SpriteName.WarsBuild_GoldDeliver, CraftBuildingLib.GoldDelivery, true, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Transport, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.Palisade, TerrainMainType.Wall, (int)TerrainWallType.Palisade, SpriteName.WarsBuild_Palisade, CraftBuildingLib.Palisade, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Palisade);
-            new BuildOption(BuildAndExpandType.DirtWall, TerrainMainType.Wall, (int)TerrainWallType.DirtWall, SpriteName.WarsBuild_DirtWall, CraftBuildingLib.DirtWall, false, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.DirtTower,TerrainMainType.Wall, (int)TerrainWallType.DirtTower, SpriteName.WarsBuild_DirtTower, CraftBuildingLib.DirtTower, false, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.WoodWall,TerrainMainType.Wall, (int)TerrainWallType.WoodWall, SpriteName.WarsBuild_WoodWall, CraftBuildingLib.WoodWall, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.WoodTower,TerrainMainType.Wall, (int)TerrainWallType.WoodTower, SpriteName.WarsBuild_WoodTower, CraftBuildingLib.WoodTower, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.StoneWall,TerrainMainType.Wall, (int)TerrainWallType.StoneWall, SpriteName.WarsBuild_StoneWall, CraftBuildingLib.StoneWall, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
-            new BuildOption(BuildAndExpandType.StoneTower,TerrainMainType.Wall, (int)TerrainWallType.StoneTower, SpriteName.WarsBuild_StoneTower, CraftBuildingLib.StoneTower, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
-            new BuildOption(BuildAndExpandType.StoneWallGreen,TerrainMainType.Wall, (int)TerrainWallType.StoneWallGreen, SpriteName.WarsBuild_StoneWallGreen, CraftBuildingLib.StoneWallGreen, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
-             new BuildOption(BuildAndExpandType.StoneWallBlueRoof,TerrainMainType.Wall, (int)TerrainWallType.StoneWallBlueRoof, SpriteName.WarsBuild_StoneWallBlueRoof, CraftBuildingLib.StoneWallBlueRoof, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
-             new BuildOption(BuildAndExpandType.StoneWallWoodHouse,TerrainMainType.Wall, (int)TerrainWallType.StoneWallWoodHouse, SpriteName.WarsBuild_StoneWallWoodHouse, CraftBuildingLib.StoneWallWoodHouse, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
-             new BuildOption(BuildAndExpandType.StoneGate,TerrainMainType.Wall, (int)TerrainWallType.StoneGate, SpriteName.WarsBuild_StoneGate, CraftBuildingLib.StoneGate, false, BuildCategoryTab.Military, MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
-             new BuildOption(BuildAndExpandType.StoneHouse,TerrainMainType.Wall, (int)TerrainWallType.StoneHouse, SpriteName.WarsBuild_StoneHouse, CraftBuildingLib.StoneHouse, false, BuildCategoryTab.Military, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
-             new BuildOption(BuildAndExpandType.PavementLamp,TerrainMainType.Decor, (int)TerrainDecorType.PavementLamp, SpriteName.WarsBuild_PavementLamp, CraftBuildingLib.PavementLamp, false, BuildCategoryTab.Decor, MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.PavemenFountain,TerrainMainType.Decor, (int)TerrainDecorType.PavemenFountain, SpriteName.WarsBuild_PavemenFountain, CraftBuildingLib.PavemenFountain, false, BuildCategoryTab.Decor, MapPaintToolCategory.Road, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.PavementRectFlower,TerrainMainType.Decor, (int)TerrainDecorType.PavementRectFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementRectFlower, false, BuildCategoryTab.Decor, MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.GardenGrass, TerrainMainType.Decor, (int)TerrainDecorType.GardenGrass, SpriteName.WarsBuild_GardenGrass, CraftBuildingLib.GardenGrass, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.GardenBird, TerrainMainType.Decor, (int)TerrainDecorType.GardenBird, SpriteName.WarsBuild_GardenBird, CraftBuildingLib.GardenBird, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.GardenFourBushes, TerrainMainType.Decor, (int)TerrainDecorType.GardenFourBushes, SpriteName.WarsBuild_GardenFourBushes, CraftBuildingLib.GardenFourBushes, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.GardenLongTree,TerrainMainType.Decor, (int)TerrainDecorType.GardenLongTree, SpriteName.WarsBuild_GardenLongTree, CraftBuildingLib.GardenLongTree, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.GardenWalledBush,TerrainMainType.Decor, (int)TerrainDecorType.GardenWalledBush, SpriteName.WarsBuild_GardenWalledBush, CraftBuildingLib.GardenWalledBush, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl2, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel2, SpriteName.WarsBuild_GoldDeliverLevel2, CraftBuildingLib.GoldDelivery_Level2, false, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Transport, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+            
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl3, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel3, SpriteName.WarsBuild_GoldDeliverLevel3, CraftBuildingLib.GoldDelivery_Level3, false,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Transport, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.SoldierBarracks, TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, SpriteName.WarsBuild_SoldierBarracks, CraftBuildingLib.SoldierBarracks, true,
+                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, CraftBuildingLib.NobelHouse, true,
+                BuildCategoryTab.Advanced, BuildFilterTag.Upgrade, BuildFilterTag.Military, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, CraftBuildingLib.Tavern, false,
+                BuildCategoryTab.Advanced, BuildFilterTag.Food, BuildFilterTag.Workers, BuildFilterTag.Optimize,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.Storehouse, TerrainMainType.Building, (int)TerrainBuildingType.Storehouse, SpriteName.WarsBuild_Storehouse, CraftBuildingLib.Storehouse, false,
+                BuildCategoryTab.Advanced, BuildFilterTag.Resources, BuildFilterTag.Workers, BuildFilterTag.Optimize,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Brewery, TerrainMainType.Building, (int)TerrainBuildingType.Brewery, SpriteName.WarsBuild_Brewery, CraftBuildingLib.Brewery, true,
+                BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.Water, BuildFilterTag.Optimize,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+                { altBlueprint = CraftBuildingLib.Brewery_Bronze };
+
+            new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, CraftBuildingLib.PigPen, true,
+                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.Resources,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, CraftBuildingLib.HenPen, true,
+                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, CraftBuildingLib.Cook, true,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+                { altBlueprint = CraftBuildingLib.Cook_Copper };
+
+            new BuildOption(BuildAndExpandType.CoalPit, TerrainMainType.Building, (int)TerrainBuildingType.Work_CoalPit, SpriteName.WarsBuild_CoalPit, CraftBuildingLib.CoalPit, true, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.WorkBench, TerrainMainType.Building, (int)TerrainBuildingType.Work_Bench, SpriteName.WarsBuild_WorkBench, CraftBuildingLib.WorkBench, true, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default){ altBlueprint = CraftBuildingLib.WorkBench_Bronze };
+
+            new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, CraftBuildingLib.Smith, true, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.Metals,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, CraftBuildingLib.Carpenter, true, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.Resources,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default) { altBlueprint = CraftBuildingLib.Carpenter_Bronze };
+
+            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarm, true, 
+                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.WheatFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarmUpgraded, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarmUpgrade, true, 
+                BuildCategoryTab.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarm, true, 
+                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.LinenFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarmUpgraded, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarmUpgrade, true, 
+                BuildCategoryTab.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarm, true, 
+                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.Fuel, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.HempFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarmUpgraded, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarmUpgrade, true, 
+                BuildCategoryTab.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.Fuel, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarm, true, 
+                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.RapeSeedFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarmUpgraded, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarmUpgrade, true, 
+                BuildCategoryTab.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.DirtRoad, TerrainMainType.Road, (int)TerrainRoadType.DirtRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
+
+            new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, CraftBuildingLib.Pavement, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
+
+            new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementFlower, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, SpriteName.WarsBuild_Statue, CraftBuildingLib.Statue, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
+
+            new BuildOption(BuildAndExpandType.Smelter, TerrainMainType.Building, (int)TerrainBuildingType.Smelter, SpriteName.WarsBuild_Smelter, CraftBuildingLib.Smelter, true, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Armory, TerrainMainType.Building, (int)TerrainBuildingType.Armory, SpriteName.WarsBuild_Armory, CraftBuildingLib.Armory, true, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.WoodCutter, TerrainMainType.Building, (int)TerrainBuildingType.WoodCutter, SpriteName.WarsBuild_WoodCutter, CraftBuildingLib.WoodCutter, false, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Optimize, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.StoneCutter, TerrainMainType.Building, (int)TerrainBuildingType.StoneCutter, SpriteName.WarsBuild_StoneCutter, CraftBuildingLib.StoneCutter, false, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Optimize, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Bank, TerrainMainType.Building, (int)TerrainBuildingType.Bank, SpriteName.WarsBuild_Bank, CraftBuildingLib.Bank, true,
+                BuildCategoryTab.Advanced, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.CoinMinter, TerrainMainType.Building, (int)TerrainBuildingType.CoinMinter, SpriteName.WarsBuild_Coinminter, CraftBuildingLib.CoinMinter, true, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Embassy, TerrainMainType.Building, (int)TerrainBuildingType.Embassy, SpriteName.WarsBuild_Embassy, CraftBuildingLib.Embassy, false, 
+                BuildCategoryTab.Advanced, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.WaterResovoir, TerrainMainType.Building, (int)TerrainBuildingType.WaterResovoir, SpriteName.WarsBuild_WaterReservoir, CraftBuildingLib.WaterResovoir, true, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Optimize, BuildFilterTag.Water, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.ArcherBarracks, TerrainMainType.Building, (int)TerrainBuildingType.ArcherBarracks, SpriteName.WarsBuild_ArcherBarracks, CraftBuildingLib.ArcherBarracks, true,
+                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
+
+            new BuildOption(BuildAndExpandType.WarmachineBarracks, TerrainMainType.Building, (int)TerrainBuildingType.WarmachineBarracks, SpriteName.WarsBuild_WarmachineBarracks, CraftBuildingLib.WarmachineBarracks, true, 
+                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
+
+            new BuildOption(BuildAndExpandType.GunBarracks, TerrainMainType.Building, (int)TerrainBuildingType.GunBarracks, SpriteName.WarsBuild_GunBarracks, CraftBuildingLib.GunBarracks, true, 
+                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.CannonBarracks, TerrainMainType.Building, (int)TerrainBuildingType.CannonBarracks, SpriteName.WarsBuild_CannonBarracks, CraftBuildingLib.CannonBarracks, true, 
+                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.KnightsBarracks, TerrainMainType.Building, (int)TerrainBuildingType.KnightsBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks, true, 
+                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Foundry, TerrainMainType.Building, (int)TerrainBuildingType.Foundry, SpriteName.WarsBuild_Foundry, CraftBuildingLib.Foundry, true, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Chemist, TerrainMainType.Building, (int)TerrainBuildingType.Chemist, SpriteName.WarsBuild_Chemist, CraftBuildingLib.Chemist, true, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Gunmaker, TerrainMainType.Building, (int)TerrainBuildingType.Gunmaker, SpriteName.WarsBuild_Gunmaker, CraftBuildingLib.Gunmaker, true, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.School, TerrainMainType.Building, (int)TerrainBuildingType.School, SpriteName.WarsBuild_School, CraftBuildingLib.School, true, 
+                BuildCategoryTab.Upgrade, BuildFilterTag.Optimize, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.ResearchCenter, TerrainMainType.Building, (int)TerrainBuildingType.ResearchCenter, SpriteName.WarsBuild_ResearchCenter, CraftBuildingLib.ResearchCenter, false, 
+                BuildCategoryTab.Upgrade, BuildFilterTag.Optimize, BuildFilterTag.Research, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.BookPress, TerrainMainType.Building, (int)TerrainBuildingType.BookPress, SpriteName.WarsBuild_Bookpress, CraftBuildingLib.BookPress, false,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Optimize, BuildFilterTag.Research, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.Palisade, TerrainMainType.Wall, (int)TerrainWallType.Palisade, SpriteName.WarsBuild_Palisade, CraftBuildingLib.Palisade, false, 
+                BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards, 
+                MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Palisade);
+
+            new BuildOption(BuildAndExpandType.DirtWall, TerrainMainType.Wall, (int)TerrainWallType.DirtWall, SpriteName.WarsBuild_DirtWall, CraftBuildingLib.DirtWall, false, 
+                BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards, 
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.DirtTower,TerrainMainType.Wall, (int)TerrainWallType.DirtTower, SpriteName.WarsBuild_DirtTower, CraftBuildingLib.DirtTower, false, 
+                BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.WoodWall,TerrainMainType.Wall, (int)TerrainWallType.WoodWall, SpriteName.WarsBuild_WoodWall, CraftBuildingLib.WoodWall, false, 
+                BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
+                MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.WoodTower,TerrainMainType.Wall, (int)TerrainWallType.WoodTower, SpriteName.WarsBuild_WoodTower, CraftBuildingLib.WoodTower, false, 
+                BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
+                MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.StoneWall,TerrainMainType.Wall, (int)TerrainWallType.StoneWall, SpriteName.WarsBuild_StoneWall, CraftBuildingLib.StoneWall, false, 
+                BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
+                MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
+
+            new BuildOption(BuildAndExpandType.StoneTower,TerrainMainType.Wall, (int)TerrainWallType.StoneTower, SpriteName.WarsBuild_StoneTower, CraftBuildingLib.StoneTower, false, 
+                BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
+                MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
+
+            new BuildOption(BuildAndExpandType.StoneWallGreen,TerrainMainType.Wall, (int)TerrainWallType.StoneWallGreen, SpriteName.WarsBuild_StoneWallGreen, CraftBuildingLib.StoneWallGreen, false, 
+                BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
+                MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
+
+             new BuildOption(BuildAndExpandType.StoneWallBlueRoof,TerrainMainType.Wall, (int)TerrainWallType.StoneWallBlueRoof, SpriteName.WarsBuild_StoneWallBlueRoof, CraftBuildingLib.StoneWallBlueRoof, false, 
+                 BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
+                MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
+
+             new BuildOption(BuildAndExpandType.StoneWallWoodHouse,TerrainMainType.Wall, (int)TerrainWallType.StoneWallWoodHouse, SpriteName.WarsBuild_StoneWallWoodHouse, CraftBuildingLib.StoneWallWoodHouse, false, 
+                 BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
+                MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
+
+             new BuildOption(BuildAndExpandType.StoneGate,TerrainMainType.Wall, (int)TerrainWallType.StoneGate, SpriteName.WarsBuild_StoneGate, CraftBuildingLib.StoneGate, false, 
+                 BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
+                 MapPaintToolCategory.Wall, DssConst.WorkTime_Building_Epic);
+
+             new BuildOption(BuildAndExpandType.StoneHouse,TerrainMainType.Wall, (int)TerrainWallType.StoneHouse, SpriteName.WarsBuild_StoneHouse, CraftBuildingLib.StoneHouse, false, 
+                 BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
+
+             new BuildOption(BuildAndExpandType.PavementLamp,TerrainMainType.Decor, (int)TerrainDecorType.PavementLamp, SpriteName.WarsBuild_PavementLamp, CraftBuildingLib.PavementLamp, false, 
+                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.PavemenFountain,TerrainMainType.Decor, (int)TerrainDecorType.PavemenFountain, SpriteName.WarsBuild_PavemenFountain, CraftBuildingLib.PavemenFountain, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.PavementRectFlower,TerrainMainType.Decor, (int)TerrainDecorType.PavementRectFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementRectFlower, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.GardenGrass, TerrainMainType.Decor, (int)TerrainDecorType.GardenGrass, SpriteName.WarsBuild_GardenGrass, CraftBuildingLib.GardenGrass, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Garden, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.GardenBird, TerrainMainType.Decor, (int)TerrainDecorType.GardenBird, SpriteName.WarsBuild_GardenBird, CraftBuildingLib.GardenBird, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Garden, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.GardenFourBushes, TerrainMainType.Decor, (int)TerrainDecorType.GardenFourBushes, SpriteName.WarsBuild_GardenFourBushes, CraftBuildingLib.GardenFourBushes, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Garden, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.GardenLongTree,TerrainMainType.Decor, (int)TerrainDecorType.GardenLongTree, SpriteName.WarsBuild_GardenLongTree, CraftBuildingLib.GardenLongTree, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Garden, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.GardenWalledBush,TerrainMainType.Decor, (int)TerrainDecorType.GardenWalledBush, SpriteName.WarsBuild_GardenWalledBush, CraftBuildingLib.GardenWalledBush, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Garden, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
             //new BuildOption(BuildAndExpandType.ServiceHouse_Small,TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_small, SpriteName.MissingImage, CraftBuildingLib.SmallCityHouse, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
             //new BuildOption(BuildAndExpandType.BigCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_Large, SpriteName.MissingImage, CraftBuildingLib.BigCityHouse, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
-            new BuildOption(BuildAndExpandType.CitySquare,TerrainMainType.Decor, (int)TerrainDecorType.Square, SpriteName.WarsBuild_CitySquare, CraftBuildingLib.CitySquare, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.CobbleStones,TerrainMainType.Decor, (int)TerrainDecorType.CobbleStones, SpriteName.WarsBuild_CobbleStones, CraftBuildingLib.CobbleStones, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
+            
+            new BuildOption(BuildAndExpandType.CitySquare,TerrainMainType.Decor, (int)TerrainDecorType.Square, SpriteName.WarsBuild_CitySquare, CraftBuildingLib.CitySquare, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.GardenMemoryStone, TerrainMainType.Decor, (int)TerrainDecorType.GardenMemoryStone, SpriteName.WarsBuild_GardenMemoryStone, CraftBuildingLib.GardenMemoryStone, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.Statue_Leader, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Leader, SpriteName.WarsBuild_Statue_Leader, CraftBuildingLib.Statue_Leader, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
-            new BuildOption(BuildAndExpandType.Statue_Lion, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Lion, SpriteName.WarsBuild_Statue_Lion, CraftBuildingLib.Statue_Lion, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.Statue_Horse, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Horse, SpriteName.WarsBuild_Statue_Horse, CraftBuildingLib.Statue_Horse, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
-            new BuildOption(BuildAndExpandType.Statue_Pillar, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Pillar, SpriteName.WarsBuild_Statue_Pillar, CraftBuildingLib.Statue_Pillar, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.CobbleStones,TerrainMainType.Decor, (int)TerrainDecorType.CobbleStones, SpriteName.WarsBuild_CobbleStones, CraftBuildingLib.CobbleStones, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
 
-            new BuildOption(BuildAndExpandType.FlagPole_LongBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_LongBanner, SpriteName.WarsFlagType_LongBanner, CraftBuildingLib.FlagPole_LongBanner, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.FlagPole_Banner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Banner, SpriteName.WarsFlagType_Banner, CraftBuildingLib.FlagPole_Banner, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.FlagPole_SlimBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_SlimBanner, SpriteName.WarsFlagType_SlimBanner, CraftBuildingLib.FlagPole_SlimBanner, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.GardenMemoryStone, TerrainMainType.Decor, (int)TerrainDecorType.GardenMemoryStone, SpriteName.WarsBuild_GardenMemoryStone, CraftBuildingLib.GardenMemoryStone, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Garden, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.FlagPole_Flag, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Flag, SpriteName.WarsFlagType_Flag, CraftBuildingLib.FlagPole_Flag, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.FlagPole_FlagRound, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_FlagRound, SpriteName.WarsFlagType_FlagRound, CraftBuildingLib.FlagPole_FlagRound, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.FlagPole_FlagLarge, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_FlagLarge, SpriteName.WarsFlagType_FlagLarge, CraftBuildingLib.FlagPole_FlagLarge, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default , DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.FlagPole_Streamer, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Streamer, SpriteName.WarsFlagType_Streamer, CraftBuildingLib.FlagPole_Streamer, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            new BuildOption(BuildAndExpandType.FlagPole_Triangle, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Triangle, SpriteName.WarsFlagType_Triangle, CraftBuildingLib.FlagPole_Triangle, false, BuildCategoryTab.Decor, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.Statue_Leader, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Leader, SpriteName.WarsBuild_Statue_Leader, CraftBuildingLib.Statue_Leader, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
+
+            new BuildOption(BuildAndExpandType.Statue_Lion, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Lion, SpriteName.WarsBuild_Statue_Lion, CraftBuildingLib.Statue_Lion, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.Statue_Horse, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Horse, SpriteName.WarsBuild_Statue_Horse, CraftBuildingLib.Statue_Horse, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+
+            new BuildOption(BuildAndExpandType.Statue_Pillar, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Pillar, SpriteName.WarsBuild_Statue_Pillar, CraftBuildingLib.Statue_Pillar, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.FlagPole_LongBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_LongBanner, SpriteName.WarsFlagType_LongBanner, CraftBuildingLib.FlagPole_LongBanner, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Flag, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.FlagPole_Banner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Banner, SpriteName.WarsFlagType_Banner, CraftBuildingLib.FlagPole_Banner, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Flag, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.FlagPole_SlimBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_SlimBanner, SpriteName.WarsFlagType_SlimBanner, CraftBuildingLib.FlagPole_SlimBanner, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Flag, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.FlagPole_Flag, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Flag, SpriteName.WarsFlagType_Flag, CraftBuildingLib.FlagPole_Flag, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Flag, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.FlagPole_FlagRound, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_FlagRound, SpriteName.WarsFlagType_FlagRound, CraftBuildingLib.FlagPole_FlagRound, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Flag, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.FlagPole_FlagLarge, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_FlagLarge, SpriteName.WarsFlagType_FlagLarge, CraftBuildingLib.FlagPole_FlagLarge, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Flag, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default , DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.FlagPole_Streamer, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Streamer, SpriteName.WarsFlagType_Streamer, CraftBuildingLib.FlagPole_Streamer, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Flag, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.FlagPole_Triangle, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Triangle, SpriteName.WarsFlagType_Triangle, CraftBuildingLib.FlagPole_Triangle, false, 
+                BuildCategoryTab.Decor, BuildFilterTag.Flag, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
 
         }
@@ -628,12 +896,46 @@ namespace VikingEngine.DSSWars.Build
 
     enum BuildCategoryTab
     { 
-        ExpandAndCraft,
+        Filter,
+        General,
+        Advanced,
         Military,
         Decor,
         Upgrade,
         Automation,
         NUM
+    }
+
+    enum BuildFilterTag
+    { 
+        
+        Workers,
+        
+        Resources,
+        Water,
+        Food,
+        Fuel,
+        Metals,
+        Craft,
+        Farm,
+        Transport,
+
+        Weapons,
+        Military,
+        Soldiers,
+        Guards,
+        Walls,
+
+        Road,
+        Garden,
+        Statue,
+        Flag,
+
+        Optimize,
+        Upgrade,
+        Research,
+
+        NUM_NONE,
     }
 
     enum LShapeDir

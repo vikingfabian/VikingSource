@@ -1,17 +1,22 @@
 ﻿UPDATE
-* Object tag improvements
+-Repaired config file, and added file health check
+-All non-essensial buildings have their own "advanced" category
+-All buildings have tags, that can be filtered
+-Added a file debug lab
+-fixed: the letter "ё" breaks the font
+-Doubled school practice time, to 100 seconds per level
+-Embassy is complete, gives diplomacy instead of nobel house. Hud updated.
+-Fixed: Diplomatic point cap doesn't increase
 
 #Pics
 synligeare merge down layer
-
+Build category: filter, advanced
 
 
 #Todo#
-
+x file access lab
+x pinned resources
 x more categories/filters in build
-x flag editor need color copy, + tatoo color
-	-add voxel model texture
-x coal mines in work tab
 x multiplayer is broken in battle lab
 x set all defence is broken, need set all towers
 
@@ -27,7 +32,7 @@ x Guard controls suck
 x I think I forgot upkeep on the guards
 x Soldiers update their target too often (shaking)
 x start from nothing option
-x all schools/postals should have "set all to", and next/previous buttons
+x all schools/postals should have "set all to", and next/previous buttons 
 
 x show connected research, next to experience overview types
 x describe work group count
@@ -36,7 +41,8 @@ x Ballista, har warmachine crew, guards
 x removing soldiers cancels move order
 x drag slider needs description
 x god mode where you can edit all nations? Like giving money, spawning units, deleting buildings etc.
-x add a 'play loop' button to character editor
+x metal minting has no controls
+x should smelt gold
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning
@@ -147,6 +153,8 @@ https://discord.com/verification
 - kolla steam db releases
 
 
+Pigeon bombs
+https://discord.com/channels/405016249127665664/405016249660211213/1398608516767420548
 
 
 

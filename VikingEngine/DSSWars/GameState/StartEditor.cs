@@ -11,11 +11,13 @@ namespace VikingEngine.DSSWars.GameState
 {
     class StartEditor : AbsDssState
     {
-        int editor_flag_vox_char;
+
+
+        EditorType editor;
         int waitUpdates = 2;
         int ProfileIx;
         bool controller;
-        public StartEditor(int ProfileIx, bool controller, int editor_flag_vox_char)
+        public StartEditor(int ProfileIx, bool controller, EditorType editor)
             : base()
         {
             this.ProfileIx = ProfileIx;
@@ -23,8 +25,7 @@ namespace VikingEngine.DSSWars.GameState
             draw.ClrColor = Color.Black;
             Ref.lobby?.disconnect(null);
             
-            //DssRef.settings.playType = PlayStateType.MapEditor;
-            this.editor_flag_vox_char = editor_flag_vox_char;
+            this.editor = editor;
         }
 
         public override void Time_Update(float time)
@@ -35,23 +36,36 @@ namespace VikingEngine.DSSWars.GameState
                 DssRef.world = null;
                 Ref.music.stop(false);
 
-                switch (editor_flag_vox_char)
+                switch (editor)
                 {
-                    case 0:
+                    case  EditorType.Flag:
                         new PaintFlagState(ProfileIx, controller);
                         break;
-                    case 1:
+                    case  EditorType.Voxel:
                         XGuide.LocalHost.inputMap = new InputMap(false);
-                        //XGuide.LocalHost.inputMap = new LootFest.Players.InputMap(XGuide.LocalHost.localPlayerIndex);
-                        //XGuide.LocalHost.inputMap.xboxSetup();
-                        //XGuide.LocalHost.inputMap.menuInput.xboxSetup(XGuide.LocalHost.localPlayerIndex);
                         new VoxelEditor.VoxelDesignState(false, XGuide.LocalHostIndex);
                         break;
-                    case 2:
+                    case   EditorType.Character:
                         new CharacterCreator.CharacterCreatorScene();
+                        break;
+
+                    case EditorType.Shader:
+                        new ShaderLab.ShaderLabScene();
+                        break;
+                    case EditorType.Files:
+                        new FileLab.FileLabScene();
                         break;
                 }
             }
         }
+    }
+
+    enum EditorType
+    { 
+        Flag,
+        Voxel,
+        Character,
+        Shader,
+        Files,
     }
 }

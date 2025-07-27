@@ -31,4 +31,16 @@ namespace VikingEngine
             return $"{(hasStart ? 'T' : 'F')}-{(hasEnd ? 'T' : 'F')}: {readVersion}/{buildVersion}";
         }
     }
+
+    struct ReadWriteCheck
+    {
+        public bool read;
+        public bool write;
+        public bool writeFail;
+
+        public override string ToString()
+        {
+            return $"R{(read ? 'T' : 'F')}, W{(write ? 'T' : 'F')}, F{(writeFail ? 'T' : 'F')}";
+        }
+    }
 }

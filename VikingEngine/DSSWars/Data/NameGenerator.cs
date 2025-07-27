@@ -15,7 +15,20 @@ namespace VikingEngine.DSSWars.Data
     static class NameGenerator
     {
         static PcgRandom random = new PcgRandom();
-        
+
+        public static string RandomLetters(int seed)
+        {
+            random.SetSeed(seed);
+            string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles, random);
+            string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
+            string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors, random);
+            string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures, random);
+            string place = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Places, random);
+            string symbol = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Symbols, random);
+            
+            return $"{TextLib.FirstLetters(title, 3)}{TextLib.FirstLetters(adjective, 3)}{TextLib.FirstLetters(color, 3)}{TextLib.FirstLetters(creature, 3)}{TextLib.FirstLetters(place, 3)}{TextLib.FirstLetters(symbol, 3)}";
+        }
+
         public static string ArmyName(int armyId)
         {
             random.SetSeed(armyId + DssRef.world.metaData.objSeed);

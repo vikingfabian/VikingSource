@@ -169,6 +169,7 @@ namespace VikingEngine.Graphics
         //BumpMask,
         //Water,
         Shadow,
+        MonoShadow,
         FixedLight,
         Flag,
         SeaNoise,
