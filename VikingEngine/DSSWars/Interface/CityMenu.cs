@@ -1283,7 +1283,8 @@ namespace VikingEngine.DSSWars.Interface
                     //content.newLine();
 
                     content.Add(new RbImage(SpriteName.WarsResource_Water));
-                    content.Add(new RbText(DssRef.lang.Resource_TypeName_Water + ": " + string.Format(DssRef.lang.Language_CollectProgress, city.res_water.amount, city.maxWaterTotal)));
+                    content.space();
+                    content.Add(new RbText(TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Water) + ": " + string.Format(DssRef.lang.Language_CollectProgress, city.res_water.amount, city.maxWaterTotal)));
                     content.Add(new RbTab(0.4f));
                     content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
                     content.Add(new RbText(TextLib.OneDecimal(city.waterAddPerSec)));
