@@ -305,6 +305,16 @@ namespace VikingEngine.DSSWars.Interface
             content.text(string.Format(DssRef.lang.Resource_MaxAmount_Soft, player.diplomaticPoints_softMax));
             content.text(string.Format(DssRef.lang.Resource_MaxAmount, player.diplomaticPoints.max));
 
+            
+            content.newLine();
+            HudLib.Label(content, "Below soft cap");
+            content.newLine();
+            content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
+            content.space();
+            content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec()))));
+
+            content.newLine();
+            HudLib.Label(content, "Above soft cap");
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
             content.space();
@@ -312,9 +322,23 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newLine();
             content.Add(new RbSeperationLine());
-            content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.BuildingType_Embassy, player.faction.embassyCount), 
-                HudLib.TitleColor_Label));
+            content.Add(new RbBeginTitle());
+            content.Add(new RbImage(SpriteName.WarsBuild_Embassy));
+            content.space();
+            content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.BuildingType_Embassy, player.faction.embassyCount), HudLib.TitleColor_Head));
 
+            content.newLine();
+            int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
+            content.newLine();
+
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+            content.newLine();
         }
         void foodTip(RichBoxContent content, object tag)
         {

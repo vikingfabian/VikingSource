@@ -2,6 +2,11 @@
 -Repaired config file, and added file health check
 -All non-essensial buildings have their own "advanced" category
 -All buildings have tags, that can be filtered
+-Added a file debug lab
+-fixed: the letter "ё" breaks the font
+-Doubled school practice time, to 100 seconds per level
+-Embassy is complete, gives diplomacy instead of nobel house. Hud updated.
+-Fixed: Diplomatic point cap doesn't increase
 
 #Pics
 synligeare merge down layer

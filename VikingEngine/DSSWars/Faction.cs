@@ -473,10 +473,11 @@ namespace VikingEngine.DSSWars
             //{ 
             //    lib.DoNothing();
             //}
-            embassyCount = 0;
+            
             //resources_oneSecUpdate();
             player.oneSecUpdate();
 
+            embassyCount = 0;
             var citiesC = cities.counter();
             while (citiesC.Next())
             {

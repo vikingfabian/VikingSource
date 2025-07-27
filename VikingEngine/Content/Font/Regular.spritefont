@@ -79,6 +79,11 @@ with.
         <End>&#x44F;</End>
 
       </CharacterRegion>
+		
+		<CharacterRegion>
+			<Start>&#x0451;</Start>
+			<End>&#x0451;</End>
+		</CharacterRegion>
 
       <!-- Most common Kanji (japanese, chinese) -->
       <CharacterRegion>
