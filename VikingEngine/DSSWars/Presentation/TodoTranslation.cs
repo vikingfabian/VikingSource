@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string HUD_DisplayName => "Display name";
         public string HUD_Filter => "Filter";
         public string HUD_Scale => "Scale";
+        public string HUD_Tags => "Tags";
         public string Lobby_PlayerProfileNumbered => "Profile {0}";
         public string Lobby_CharacterCreationNumbered => "Character {0}";
         public string Lobby_PlayerProfileEdit => "Edit player profile";

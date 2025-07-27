@@ -1,6 +1,7 @@
 ﻿UPDATE
 -Repaired config file, and added file health check
-
+-All non-essensial buildings have their own "advanced" category
+-All buildings have tags, that can be filtered
 
 #Pics
 synligeare merge down layer
@@ -8,7 +9,8 @@ Build category: filter, advanced
 
 
 #Todo#
-
+x file access lab
+x pinned resources
 x more categories/filters in build
 x multiplayer is broken in battle lab
 x set all defence is broken, need set all towers

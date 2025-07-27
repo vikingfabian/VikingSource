@@ -908,30 +908,30 @@ namespace VikingEngine.DSSWars.Build
     { 
         
         Workers,
-        Farm,
+        
         Resources,
-        Metals,
         Water,
         Food,
         Fuel,
+        Metals,
         Craft,
+        Farm,
         Transport,
 
         Weapons,
         Military,
         Soldiers,
-        //Barracks,
         Guards,
         Walls,
-
-        Optimize,
-        Upgrade,
-        Research,
 
         Road,
         Garden,
         Statue,
         Flag,
+
+        Optimize,
+        Upgrade,
+        Research,
 
         NUM_NONE,
     }

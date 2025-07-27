@@ -1234,9 +1234,9 @@ namespace VikingEngine.DSSWars.Presentation
                 case BuildFilterTag.Farm: return DssRef.lang.Work_Farming;
                 case BuildFilterTag.Resources: return DssRef.lang.Resource;
                 case BuildFilterTag.Metals: return DssRef.todoLang.WarsResourceGroup_Metal;
-                case BuildFilterTag.Water: return DssRef.lang.Resource_TypeName_Water;
-                case BuildFilterTag.Food: return DssRef.lang.Resource_TypeName_Food;
-                case BuildFilterTag.Fuel: return DssRef.lang.Resource_TypeName_Fuel;
+                case BuildFilterTag.Water: return TextLib.LargeFirstLetter( DssRef.lang.Resource_TypeName_Water);
+                case BuildFilterTag.Food: return TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food);
+                case BuildFilterTag.Fuel: return TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Fuel);
                 case BuildFilterTag.Craft: return DssRef.todoLang.Work_Craft;
                 case BuildFilterTag.Transport: return DssRef.lang.ExperienceType_Transport;
                 case BuildFilterTag.Weapons: return DssRef.lang.WarsResourceGroup_Weapons;
