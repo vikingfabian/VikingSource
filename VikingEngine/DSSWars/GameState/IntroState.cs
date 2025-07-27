@@ -89,6 +89,7 @@ namespace VikingEngine.DSSWars
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleDotted, Engine.LoadContent.ModelPath + "SelectCircleDotted");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleSolid, Engine.LoadContent.ModelPath + "SelectCircleSolid");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleThick, Engine.LoadContent.ModelPath + "SelectCircleThick");
+            EffectVertexColorShadow.LoadContent();
             part++;
 
             SoundLib.LoadContent();
@@ -106,6 +107,8 @@ namespace VikingEngine.DSSWars
             part++;
             bgTex = LobbyState.LoadBg();
             part++;
+
+            //DrawGame.LoadContent();
         }
         protected override void asyncLoadIntro()
         {

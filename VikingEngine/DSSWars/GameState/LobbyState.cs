@@ -674,6 +674,7 @@ namespace VikingEngine.DSSWars
             content.Button("crash", new RbAction(testCrash), null, true);
             //content.newLine();
             content.Button("Character creator", new RbAction(characterCreator), null, true);
+            content.Button("Shader lab", new RbAction(shaderLab), null, true);
 
 #endif
 
@@ -1484,7 +1485,12 @@ namespace VikingEngine.DSSWars
             storeMenuStack();
 
             DssRef.storage.flagStorage.selectedIx = DssRef.storage.profileStorage.Selected().flag.StorageIndex;
-            new StartEditor(-1, false, 2);
+            new StartEditor(-1, false, EditorType.Character);
+        }
+
+        void shaderLab()
+        {
+            new StartEditor(-1, false, EditorType.Shader);
         }
 
         void listAndEditFlag(RichBoxContent content, LocalPlayerStorage playerData, bool editor)
@@ -2064,7 +2070,7 @@ namespace VikingEngine.DSSWars
         {
             storeMenuStack();
 
-            new StartEditor(0, true, 1);
+            new StartEditor(0, true,  EditorType.Voxel);
         }
 
        

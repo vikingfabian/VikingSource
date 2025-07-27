@@ -18,7 +18,7 @@ namespace VikingEngine.Graphics
         public SeaNoiseEffect()
             : base("SeaNoiseTechnique", usesWorldPos: true)
         {
-            shader = Engine.Draw.effectSeaNoise;
+            //shader = Engine.Draw.effectSeaNoise;
             shader.CurrentTechnique = shader.Techniques[TechniqueName];
 
             shader.Parameters["Time"]?.SetValue(Time);
