@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars
         {
             overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
-            shadowEffect = new EffectVertexColorShadow();
+            //shadowEffect = new EffectVertexColorShadow();
             //TODO SurfaceFormat.Single
             //shadowMapRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 2048, 2048, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
 
@@ -158,7 +158,7 @@ namespace VikingEngine.DSSWars
 
             if (lay.type == Map.MapDetailLayerType.UnitDetail1)
             {
-                DrawShadowMap(cameraIndex, previousTarget);
+                //DrawShadowMap(cameraIndex, previousTarget);
             }
             Camera = p.view.Camera;
             graphicsDeviceManager.GraphicsDevice.Viewport = p.view.Viewport;
@@ -170,8 +170,8 @@ namespace VikingEngine.DSSWars
                     //DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
 
                     //SHADOW
-                    //DrawGenerated(UnitDetailLayer, cameraIndex);
-                    DrawGenerated_Shadows(UnitDetailLayer, cameraIndex);
+                    DrawGenerated(UnitDetailLayer, cameraIndex);
+                    //DrawGenerated_Shadows(UnitDetailLayer, cameraIndex);
                     DssRef.state.detailMap.updateAndDraw(cameraIndex);
                     drawBatch.RemoveAndDraw(cameraIndex);
 
