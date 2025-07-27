@@ -244,6 +244,10 @@ namespace VikingEngine.DSSWars
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_MusicPlayList) }),
                             new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListMusic, StackOption.ClearStack), null, !PlatformSettings.STEAM_DEMO));
 
+                        content.newParagraph();
+                        content.Add(new RbButton(HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText("File debug lab") }),
+                            new RbAction(fileLab), null));
+
 #if DEBUG
                         if (Ref.steam.isInitialized)
                         {
@@ -2073,7 +2077,12 @@ namespace VikingEngine.DSSWars
             new StartEditor(0, true,  EditorType.Voxel);
         }
 
-       
+        void fileLab()
+        {
+            storeMenuStack();
+
+            new StartEditor(0, true, EditorType.Files);
+        }
 
         void mapFileGenerator()
         {

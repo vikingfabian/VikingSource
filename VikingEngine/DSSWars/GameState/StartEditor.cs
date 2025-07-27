@@ -52,6 +52,9 @@ namespace VikingEngine.DSSWars.GameState
                     case EditorType.Shader:
                         new ShaderLab.ShaderLabScene();
                         break;
+                    case EditorType.Files:
+                        new FileLab.FileLabScene();
+                        break;
                 }
             }
         }
@@ -63,5 +66,6 @@ namespace VikingEngine.DSSWars.GameState
         Voxel,
         Character,
         Shader,
+        Files,
     }
 }

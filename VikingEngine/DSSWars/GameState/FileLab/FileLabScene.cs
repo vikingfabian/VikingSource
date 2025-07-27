@@ -29,7 +29,15 @@ namespace VikingEngine.DSSWars.GameState.FileLab
             openMenu();
         }
 
-        void openMenu()
+        public override void Time_Update(float time)
+        {
+            base.Time_Update(time);
+            bool mouseOver = false;
+
+            menu.updateMouseInput(ref mouseOver);
+        }
+
+            void openMenu()
         {
             if (menu == null)
             {
@@ -53,7 +61,9 @@ namespace VikingEngine.DSSWars.GameState.FileLab
         {
             RichBoxContent content = new RichBoxContent();
             content.h1("File lab", HudLib.TitleColor_Head);
-            
+
+
+            content.newLine();
             content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("1. Write 100 files - date marked") },
                 new RbAction1Arg<bool>(writeFiles, true)));
             
@@ -87,6 +97,8 @@ namespace VikingEngine.DSSWars.GameState.FileLab
             content.newParagraph();
             content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Clear log") },
                new RbAction(()=> { textLog.TextString = string.Empty; })));
+
+            content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                  new RbText(DssRef.lang.Hud_Exit) },
               new RbAction(() => { new ExitToLobby(true); })));
@@ -144,7 +156,7 @@ namespace VikingEngine.DSSWars.GameState.FileLab
 
         DataStream.FilePath filepath(bool dateMark)
         {
-            DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath + +DataStream.FilePath.Dir + "FileTest_" +
+            DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath + DataStream.FilePath.Dir + "FileTest_" +
                (dateMark ? "datemark" : "no_mark"), "name", ".sav");
             path.UseTimeMark = dateMark;
 
@@ -154,14 +166,14 @@ namespace VikingEngine.DSSWars.GameState.FileLab
         DataStream.FilePath fileInstancePath(DataStream.FilePath path, int index)
         {
             var name = path;
-            name.FileName = Data.NameGenerator.CityName(new IntVector2(index));
+            name.FileName = Data.NameGenerator.RandomLetters(index);
 
             return name;
         }
 
         void print(string text)
         { 
-            textLog.TextString= Environment.NewLine + text;
+            textLog.TextString+= Environment.NewLine + text;
         }
 
         
