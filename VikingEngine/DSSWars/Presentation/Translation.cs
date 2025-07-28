@@ -7,6 +7,7 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Translation.OptionLanguages;
 
 namespace VikingEngine.DSSWars.Presentation
 {
@@ -81,13 +82,13 @@ namespace VikingEngine.DSSWars.Presentation
             {
                 default:
                     DssRef.lang = new English();
-                    Ref.langOpt = new HUD.OptionsLanguage_English();
+                    Ref.langOpt = new OptionsLanguage_English();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
 
                 case LanguageType.Chinese:
                     DssRef.lang = new SimplifiedChinese();
-                    Ref.langOpt = new HUD.OptionsLanguage_SimplifiedChinese();
+                    Ref.langOpt = new OptionsLanguage_SimplifiedChinese();
                     LoadContent.setFontLanguage(FontLanguage.Chinese);
 
                     if (onChange)
@@ -98,7 +99,7 @@ namespace VikingEngine.DSSWars.Presentation
 
                 case LanguageType.Japanese:
                     DssRef.lang = new Japanese();
-                    Ref.langOpt = new HUD.OptionsLanguage_Japanese();
+                    Ref.langOpt = new OptionsLanguage_Japanese();
                     LoadContent.setFontLanguage(FontLanguage.Japanese);
 
                     if (onChange)
@@ -109,19 +110,19 @@ namespace VikingEngine.DSSWars.Presentation
 
                 case LanguageType.German:
                     DssRef.lang = new German();
-                    Ref.langOpt = new HUD.OptionsLanguage_German();
+                    Ref.langOpt = new OptionsLanguage_German();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
 
                 case LanguageType.Russian:
                     DssRef.lang = new Russian();
-                    Ref.langOpt = new HUD.OptionsLanguage_Russian();
+                    Ref.langOpt = new OptionsLanguage_Russian();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
 
                 case LanguageType.Spanish:
                     DssRef.lang = new Spanish();
-                    Ref.langOpt = new HUD.OptionsLanguage_Spanish();
+                    Ref.langOpt = new OptionsLanguage_Spanish();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
             }

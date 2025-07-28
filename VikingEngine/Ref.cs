@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Maths;
+using VikingEngine.EngineSpace.Translation;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine
@@ -26,7 +27,7 @@ namespace VikingEngine
         public static GameSettings gamesett;
         public static VikingEngine.SteamWrapping.SteamManager steam;
         //public static DataLib.Language language;
-        public static HUD.AbsOptionsLanguage langOpt;                                                                                                                                                               
+        public static AbsOptionsLanguage langOpt;                                                                                                                                                               
         public static System.Globalization.CultureInfo culture;
 
 
