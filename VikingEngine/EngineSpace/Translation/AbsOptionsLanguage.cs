@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
 
-namespace VikingEngine.HUD
+namespace VikingEngine.EngineSpace.Translation
 {
     abstract class AbsOptionsLanguage
     {

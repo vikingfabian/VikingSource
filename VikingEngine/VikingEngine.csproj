@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="DSSWars\Presentation\Swedish.cs" />
-    <Compile Remove="EngineSpace\HUD\Translation\OptionsLanguage_Swedish.cs" />
+    <Compile Remove="EngineSpace\Translation\OptionsLanguage_Swedish.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Content\Modding\ModConst.txt" />
