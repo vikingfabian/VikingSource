@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.MoonFall.GO;
 using VikingEngine.ToGG.MoonFall.Players;
@@ -64,6 +65,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
 #endif
             return DssRef.world.factions.Array[factionIndex].player;
+        }
+
+        public bool GetCasual()
+        {
+            return DssRef.world.factions.Array[factionIndex].player.profile.casualControls;
         }
 
         virtual public City GetCity() { return null; }
