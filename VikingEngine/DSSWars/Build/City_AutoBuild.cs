@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -37,53 +38,55 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void FinishCasualBuild(CasualBuildType casualBuildType)
         {
-            Task.Run(() =>
+            switch (casualBuildType)
             {
-                try
+                case CasualBuildType.WorkerHut:
+                    queuePlaceBuilding(BuildAndExpandType.WorkerHut);
+                    break;
+                case CasualBuildType.Barracks:                            
+                    queuePlaceBuilding(BuildAndExpandType.SoldierBarracks);
+                    queuePlaceBuilding(BuildAndExpandType.ArcherBarracks);
+                    break;
+                case CasualBuildType.StartUpBarracks:
+                    queuePlaceBuilding(BuildAndExpandType.ArcherBarracks);
+                    queuePlaceBuilding(BuildAndExpandType.WarmachineBarracks);
+                    break;
+            }
+
+            void queuePlaceBuilding(BuildAndExpandType build)
+            {
+                DssRef.state.resources.editSubTilesActionQueue.Enqueue(new RbAction1Arg<BuildAndExpandType>(placeBuilding, build));
+            }
+
+            void placeBuilding(BuildAndExpandType build)
+            {
+                var buildData = BuildLib.BuildOptions[(int)build];
+                IntVector2 buildPos = IntVector2.NegativeOne;
+
+                if (CityStructure.Find(this, buildData.mainType, buildData.subType, out IntVector2 sameBuilding))
                 {
-                    switch (casualBuildType)
+                    findAdjacentFreeSpot(sameBuilding, ref buildPos);
+                }
+
+                if (buildPos.X < 0)
+                {
+                    if (!CityStructure.FindEmpty(this, out buildPos))
                     {
-                        case CasualBuildType.WorkerHut:
-                            placeBuilding(BuildAndExpandType.WorkerHut);
-                            break;
-                        case CasualBuildType.Barracks:                            
-                            placeBuilding(BuildAndExpandType.SoldierBarracks);
-                            placeBuilding(BuildAndExpandType.ArcherBarracks);
-                            break;
-                    }
-
-                    void placeBuilding(BuildAndExpandType build)
-                    {
-                        var buildData = BuildLib.BuildOptions[(int)build];
-                        IntVector2 buildPos = IntVector2.NegativeOne;
-
-                        if (CityStructure.Find(this, buildData.mainType, buildData.subType, out IntVector2 sameBuilding))
-                        {
-                            findAdjacentFreeSpot(sameBuilding, ref buildPos);
-                        }
-
-                        if (buildPos.X < 0)
-                        {
-                            if (!CityStructure.FindEmpty(this, out buildPos))
-                            {
-                                return;
-                            }
-                        }
-
-                        var subTile = DssRef.world.subTileGrid.Get(buildPos);
-                        bool upgrade = false;
-                        if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
-                        {
-                            EditSubTile edit = new EditSubTile(buildPos, subTile, true, !upgrade, false);
-                            edit.Submit();
-                        }
+                        return;
                     }
                 }
-                catch (Exception ex)
+
+                var subTile = DssRef.world.subTileGrid.Get(buildPos);
+                bool upgrade = false;
+
+                var dist = cityHallSubtilePos.SideLength(buildPos);
+                if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
                 {
-                    BlueScreen.ThreadException = ex;
+                    EditSubTile edit = new EditSubTile(buildPos, subTile, true, true, false);
+                    edit.ExecuteEdit();
                 }
-            });
+            }
+          
         }
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)

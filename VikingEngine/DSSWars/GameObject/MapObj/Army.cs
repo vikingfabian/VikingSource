@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -52,7 +53,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Vector2 cullingTopLeft, cullingBottomRight;
         
         public float food = 0;
-        public float foodUpkeep = 0;
+        public float totalUpkeep = 0;
 
         public float foodBuffer_minutes = 2f;
         public float friendlyAreaFoodBuffer_minutes = 5f;
@@ -351,6 +352,7 @@ namespace VikingEngine.DSSWars.GameObject
             ArmyPresentationHud(args, true);
 
             //if (food < foodUpkeep * 2)
+            if (!GetCasual())
             {
                 HudLib.ItemCount(args.content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, TextLib.OneDecimal(food));
             }
@@ -408,80 +410,58 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void basicInfoHud(ObjectHudArgs args)
         {
-            //int count = 0;
-
-            //var groupsCounter = groups.counter();
-            //while (groupsCounter.Next())
-            //{
-            //    count += groupsCounter.sel.soldiers.Count;
-            //}
-
-            //HudLib.ItemCount(args.content, SpriteName.WarsGroupIcon, DssRef.lang.Hud_SoldierGroupsCount, groups.Count.ToString());
             args.content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
             args.content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(soldiersCount)));
             args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-            //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
             args.content.newLine();
 
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
             {
-                foodToHud(args, true);
-                //args.content.Add(new RbImage(SpriteName.WarsResource_Food));
-                //args.content.space();
-                //args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food))));
-
-                //args.content.space();
-                //HudLib.InfoButton(args.content, new RbTooltip_Text(DssRef.lang.Info_ArmyFood));
-
-                //args.content.newLine();
-                //args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
-                //args.content.space();
-                //args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep))));
-                //args.content.space();
-                //HudLib.PerSecondInfo(args.player, args.content, false);
-
-                //args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_gold_sec)));
-                //args.content.space();
-                //HudLib.PerSecondInfo(args.player, args.content, true);
+                foodAndUpkeepToHud(args, true);
             }
             
-            
-            //    () =>
-            //{
-            //    RichBoxContent content = new RichBoxContent();
-            //    HudLib.Description(content, DssRef.lang.Info_ArmyFood);
-            //    args.player.hud.tooltip.create(args.player, content, true);
-            //}));
-            
-
             if (PlatformSettings.DevBuild)
             {
                 args.content.text("Id: " + id.ToString());
             }
         }
 
-        void foodToHud(ObjectHudArgs args, bool mayInteract)
+        void foodAndUpkeepToHud(ObjectHudArgs args, bool mayInteract)
         {
-            args.content.Add(new RbImage(SpriteName.WarsResource_Food));
-            args.content.space();
-            args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food))));
+            float upkeepConvert = GetPlayer().ConvertUpkeep(totalUpkeep, out bool casual);
 
-            if (mayInteract)
+            if (casual)
             {
+                args.content.newLine();
+                args.content.Add(new RbImage(SpriteName.rtsUpkeepTime));
                 args.content.space();
-                HudLib.InfoButton(args.content, new RbTooltip_Text(DssRef.lang.Info_ArmyFood));
+                args.content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, TextLib.OneDecimal(upkeepConvert * Money.CopperToGold))));
+                args.content.space();
+                HudLib.PerSecondInfo(args.player, args.content, false);
             }
+            else
+            {
+                args.content.Add(new RbImage(SpriteName.WarsResource_Food));
+                args.content.space();
+                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food))));
 
-            args.content.newLine();
-            args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
-            args.content.space();
-            args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep))));
-            args.content.space();
-            HudLib.PerSecondInfo(args.player, args.content, false);
+                if (mayInteract)
+                {
+                    args.content.space();
+                    HudLib.InfoButton(args.content, new RbTooltip_Text(DssRef.lang.Info_ArmyFood));
+                }
 
-            args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_gold_sec)));
-            args.content.space();
-            HudLib.PerSecondInfo(args.player, args.content, true);
+                args.content.newLine();
+                args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
+                args.content.space();
+                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(upkeepConvert))));
+                args.content.space();
+                HudLib.PerSecondInfo(args.player, args.content, false);
+
+                args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_gold_sec)));
+                args.content.space();
+                HudLib.PerSecondInfo(args.player, args.content, true);
+            }
         }
 
 
@@ -574,10 +554,6 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     groupsCounter.sel.army = new WeakReference<AbsArmy>(toArmy);
                     toArmy.AddSoldierGroup(groupsCounter.sel);
-                    //if (groupsCounter.sel.groupObjective == SoldierGroup.GroupObjective_FollowArmyObjective)
-                    //{
-                    //    groupsCounter.sel.groupObjective = SoldierGroup.GroupObjective_ReGrouping;
-                    //}
                     groupsCounter.RemoveAtCurrent();
 
                     if (--count <= 0)
@@ -617,7 +593,6 @@ namespace VikingEngine.DSSWars.GameObject
                 if (groupsCounter.sel.soldierConscript.filterType() == type)
                 {
                     groupsCounter.sel.DeleteMe(DeleteReason.Disband, false);
-                    //groupsCounter.sel.onDisband(false);
                     groupsCounter.RemoveAtCurrent();
 
                     if (--count <= 0)
@@ -651,11 +626,6 @@ namespace VikingEngine.DSSWars.GameObject
                     group.DeleteMe(DeleteReason.Desert, false);                    
                 }
             }
-
-            //if (faction.player.IsPlayer())
-            //{
-            //    faction.player.GetLocalPlayer().statistics.SoldiersDeserted += soldiersDeserted;
-            //}
 
             if (groups.Count <= 0)
             {

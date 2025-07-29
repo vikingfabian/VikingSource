@@ -130,9 +130,10 @@ namespace VikingEngine.DSSWars.Interface
         }
         void economyTab(LocalPlayer player)
         {
-
+            bool advanced = !player.profile.casualControls;
             content.h2(DssRef.lang.UnitType_Cities).overrideColor = HudLib.TitleColor_Label;
 
+            if (advanced)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
@@ -141,6 +142,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
             }
+            if (advanced)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
@@ -148,10 +150,21 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), player.faction.CityFoodSpending), HudLib.NotAvailableColor));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
+
+               
             }
             
             {
-                content.newParagraph();
+
+                if (advanced)
+                {
+                    content.newParagraph();
+                }
+                else
+                {
+                    content.newLine();
+                }
+
                 content.Add(new RbImage(SpriteName.rtsIncomeTime));
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsWorker));
@@ -180,6 +193,7 @@ namespace VikingEngine.DSSWars.Interface
 
             }
 
+            if (advanced)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsUpkeepTime));
@@ -209,6 +223,7 @@ namespace VikingEngine.DSSWars.Interface
 
             }
 
+            if (advanced)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsUpkeepTime));
@@ -234,30 +249,42 @@ namespace VikingEngine.DSSWars.Interface
             content.newParagraph();
             content.h2(DssRef.lang.UnitType_Armies).overrideColor = HudLib.TitleColor_Label;
 
+            if (advanced)
+            {
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), player.ConvertUpkeep(player.faction.armyUpkeep, out _)), HudLib.NotAvailableColor));
+                    content.space();
+                    HudLib.PerSecondInfo(player, content, false);
+                }
+
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ImportCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.faction.armyFoodImportCost)), HudLib.NotAvailableColor));
+                    content.space();
+                    HudLib.PerSecondInfo(player, content, true);
+                }
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.faction.armyFoodBlackMarketCost)), HudLib.NotAvailableColor));
+                    content.space();
+                    HudLib.PerSecondInfo(player, content, true);
+                }
+            }
+            else
             {
                 content.newLine();
-                content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
+                content.Add(new RbImage(SpriteName.rtsUpkeepTime));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), player.faction.armyFoodUpkeep), HudLib.NotAvailableColor));
+                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.ResourceType_Gold), TextLib.OneDecimal( player.ConvertUpkeep(player.faction.armyUpkeep, out _))), HudLib.NotAvailableColor));
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
-            }
-
-            {
-                content.newLine();
-                content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Economy_ImportCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.faction.armyFoodImportCost)), HudLib.NotAvailableColor));
-                content.space();
-                HudLib.PerSecondInfo(player, content, true);
-            }
-            {
-                content.newLine();
-                content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.faction.armyFoodBlackMarketCost)), HudLib.NotAvailableColor));
-                content.space();
-                HudLib.PerSecondInfo(player, content, true);
             }
         }
         void toggleMenu(LocalPlayer player)

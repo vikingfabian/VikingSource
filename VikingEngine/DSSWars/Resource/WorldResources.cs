@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Resource
 {
@@ -17,8 +18,8 @@ namespace VikingEngine.DSSWars.Resource
         SpottedArrayCounter_Resource registerCounter;
 
         TerrainContent terrainContent = new TerrainContent();
-        public ConcurrentStack<EditSubTile> editSubTilesStack = new ConcurrentStack<EditSubTile>();
-
+        public ConcurrentQueue<EditSubTile> editSubTiles = new ConcurrentQueue<EditSubTile>();
+        public ConcurrentQueue<AbsRbAction> editSubTilesActionQueue = new ConcurrentQueue<AbsRbAction>();
         public WorldResources()
         {
             registerCounter = new SpottedArrayCounter_Resource(resourceRegister);
@@ -91,7 +92,7 @@ namespace VikingEngine.DSSWars.Resource
 
             while (loop.Next())
             {
-                while (editSubTilesStack.TryPop(out var edit))
+                while (editSubTiles.TryDequeue(out var edit))
                 {
                     edit.ExecuteEdit();
                 }
@@ -111,9 +112,14 @@ namespace VikingEngine.DSSWars.Resource
 
         public void asyncEditTiles()
         {
-            while (editSubTilesStack.TryPop(out var edit))
+            while (editSubTiles.TryDequeue(out var edit))
             {
                 edit.ExecuteEdit();
+            }
+
+            while (editSubTilesActionQueue.TryDequeue(out var action))
+            {
+                action.actionTrigger();
             }
         }
 

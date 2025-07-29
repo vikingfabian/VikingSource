@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelScale *= 1.06f;
                 soldier.icon = SpriteName.WarsUnitIcon_Knight;
 
-                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 3;
+                soldier.upkeepMultiplier = 3;//DssLib.SoldierDefaultEnergyUpkeep * 3;
                 soldier.rowWidth = 4;
                 soldier.columnsDepth = 3;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
@@ -699,7 +699,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelScale = DssConst.Men_StandardModelScale * 2f;
                 soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
                 soldier.icon = SpriteName.WarsUnitIcon_Ballista;
-                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.upkeepMultiplier = 2;//DssLib.SoldierDefaultEnergyUpkeep * 2;
                 soldier.rowWidth = 3;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
@@ -732,7 +732,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelScale = DssConst.Men_StandardModelScale * 1.5f;
                 soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
                 soldier.icon = SpriteName.WarsResource_Manuballista;
-                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.upkeepMultiplier = 2;//DssLib.SoldierDefaultEnergyUpkeep * 2;
                 soldier.rowWidth = 3;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
@@ -764,7 +764,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelScale = DssConst.Men_StandardModelScale * 2.3f;
                 soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
                 soldier.icon = SpriteName.WarsUnitIcon_Catapult;
-                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.upkeepMultiplier = 2;//DssLib.SoldierDefaultEnergyUpkeep * 2;
                 soldier.rowWidth = 2;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
@@ -796,7 +796,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelScale = DssConst.Men_StandardModelScale * 5f;
                 soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
                 soldier.icon = SpriteName.WarsUnitIcon_Catapult;
-                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.upkeepMultiplier = 2;//DssLib.SoldierDefaultEnergyUpkeep * 2;
                 soldier.rowWidth = 1;
                 soldier.columnsDepth = 1;
                 soldier.workForcePerUnit = 6;
@@ -829,7 +829,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelScale = DssConst.Men_StandardModelScale * 2f;
                 soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
                 soldier.icon = SpriteName.WarsResource_BronzeManCannon;
-                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.upkeepMultiplier = 2;//DssLib.SoldierDefaultEnergyUpkeep * 2;
                 soldier.rowWidth = 3;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
@@ -862,7 +862,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelScale = DssConst.Men_StandardModelScale * 1f;
                 soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
                 soldier.icon = SpriteName.WarsResource_IronSiegeCannon;
-                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 4;
+                soldier.upkeepMultiplier = 4;//DssLib.SoldierDefaultEnergyUpkeep * 4;
                 soldier.rowWidth = 3;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
@@ -896,7 +896,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelScale = DssConst.Men_StandardModelScale * 1.7f;
                 soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
                 soldier.icon = SpriteName.WarsUnitIcon_IronManCannon;
-                soldier.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                soldier.upkeepMultiplier = 4;//DssLib.SoldierDefaultEnergyUpkeep * 2;
                 soldier.rowWidth = 3;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;

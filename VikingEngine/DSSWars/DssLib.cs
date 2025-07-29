@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars
         public const int GroupDefaultCultureCostReduction = 20;
         public const int GroupMinCost = 20;
         public const float SoldierDefaultUpkeep = 1f;
-        public static float SoldierDefaultEnergyUpkeep = DssConst.ManDefaultEnergyCost;
+        //public static float SoldierDefaultEnergyUpkeep = DssConst.ManDefaultEnergyCost;
         public static float GroupDefaultUpkeep = SoldierDefaultUpkeep * DssConst.SoldierGroup_DefaultCount;
         public const int DefalutRecruitTrainingTimeSec = 3 * 60;
                 

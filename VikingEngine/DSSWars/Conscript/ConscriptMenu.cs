@@ -419,9 +419,6 @@ namespace VikingEngine.DSSWars.Conscript
                             );
                         caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
-                        
-                       
-
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>(){
                         new RbImage(
                             new SoldierConscriptProfile(){ conscript = currentProfile.profile }.Icon()

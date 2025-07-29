@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
@@ -192,17 +193,32 @@ namespace VikingEngine.DSSWars.Interface
 
         void casualRecruitTab(RichBoxContent content)
         {
-            buySoldierOption(city.casualCityProfile.guard,  CasualSoldierType.Guard);
-            content.newParagraph();
-            buySoldierOption(city.casualCityProfile.folkmen, CasualSoldierType.FolkMen);
-            buySoldierOption(city.casualCityProfile.shipmen,  CasualSoldierType.Seamen);
-            buySoldierOption(city.casualCityProfile.meleeMen, CasualSoldierType.Melee);
-            buySoldierOption(city.casualCityProfile.rangedMen, CasualSoldierType.Ranged);
-            buySoldierOption(city.casualCityProfile.riderMen, CasualSoldierType.Rider);
-            buySoldierOption(city.casualCityProfile.siegeMen, CasualSoldierType.Siege);
+            if (city.buildingStructure.getCount(CasualBuildType.Barracks) > 0)
+            {
+            
+                buySoldierOption(city.casualCityProfile.guard,  CasualSoldierType.Guard);
+                content.newParagraph();
+                buySoldierOption(city.casualCityProfile.folkmen, CasualSoldierType.FolkMen);
+                buySoldierOption(city.casualCityProfile.shipmen,  CasualSoldierType.Seamen);
+                buySoldierOption(city.casualCityProfile.meleeMen, CasualSoldierType.Melee);
+                buySoldierOption(city.casualCityProfile.rangedMen, CasualSoldierType.Ranged);
+                buySoldierOption(city.casualCityProfile.riderMen, CasualSoldierType.Rider);
+                buySoldierOption(city.casualCityProfile.siegeMen, CasualSoldierType.Siege);
 
 
-            city.GetCasualProgress().RecruitToHud(player, city, content);
+                city.GetCasualProgress().RecruitToHud(player, city, content);
+            }
+            else
+            {
+                content.text(DssRef.lang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
+                content.newParagraph();
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsBuild_Barracks));
+                content.space();
+                content.Add(new RbText(DssRef.lang.BuildingType_Barracks));
+            }
+
 
             void buySoldierOption(SoldierPurchaseOption option, CasualSoldierType soldierType)
             {
@@ -228,6 +244,8 @@ namespace VikingEngine.DSSWars.Interface
                     //}
                     option.ButtonVisuals(soldierType, out SpriteName icon, out string caption);
 
+                    var recruitOption = new CasualRecruitQueueItem(soldierType, option, 1);
+
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbImage(icon),
                         new RbSpace(),
@@ -235,21 +253,66 @@ namespace VikingEngine.DSSWars.Interface
                         new RbSpace(2),
                         new RbImage(SpriteName.rtsMoney),
                         new RbText(option.price.ToString(), player.faction.hasGold(option.price, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
-                    }, new RbAction3Arg<CasualSoldierType, SoldierPurchaseOption, int>(casualRecruitGroup, soldierType,option, 1)));
+                    }, new RbAction1Arg<CasualRecruitQueueItem>(casualRecruitGroup, recruitOption), new RbTooltip(casualRecruitTooltip, recruitOption)));
 
                     content.Add(new RbTab(0.4f));
                     foreach (var counts in RecruitTabCounts)
                     {
+                        recruitOption.count = counts;
+
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {                       
                             new RbText("x" + counts, player.faction.hasGold(option.price * counts, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
                             },
-                            new RbAction3Arg<CasualSoldierType, SoldierPurchaseOption, int>(casualRecruitGroup, soldierType, option, counts)));
+                            new RbAction1Arg<CasualRecruitQueueItem>(casualRecruitGroup, recruitOption), new RbTooltip(casualRecruitTooltip, recruitOption)));
                     }                    
                 }               
             }
-            void casualRecruitGroup(CasualSoldierType soldierType, SoldierPurchaseOption option, int count)
+            void casualRecruitGroup(CasualRecruitQueueItem recruitOption)//CasualSoldierType soldierType, SoldierPurchaseOption option, int count)
             {
-                city.GetCasualProgress().AddRecruit(city, new CasualRecruitQueueItem(soldierType,option, count));
+                city.GetCasualProgress().AddRecruit(city, recruitOption);
+            }
+
+            void casualRecruitTooltip(RichBoxContent content, object tag)
+            {
+
+               
+
+                    CasualRecruitQueueItem recruitOption = (CasualRecruitQueueItem)tag;
+                    var conscript = recruitOption.ConscriptProfile(city);
+                    content.newLine();
+
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = conscript,
+                    };
+                    var data = SoldierProfile.init();
+
+
+                    content.h1(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.UnitType_SoldierGroup, recruitOption.count), HudLib.TitleColor_Head);
+                    content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Label);
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    HudLib.ResourceCost(content, ResourceType.Gold, recruitOption.purchaseOption.price * recruitOption.count, player.faction.GetGold(city));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    HudLib.ResourceCost(content, ResourceType.Worker, data.workForceCount() * recruitOption.count, city.workForce.amount);
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(string.Format(DssRef.lang.Conscript_TrainingTime, new TimeLength(city.casualRecruitTime_sec(recruitOption.soldierType) * recruitOption.count).LongString())));
+
+                    content.newParagraph();
+                    content.h2(DssRef.lang.Hud_PurchaseTitle_Gain, HudLib.TitleColor_Label);
+                    conscript.toHud(content, false);
+
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                    content.Add(new RbText(TextLib.TwoDecimal(AllUnits.GroupStrengh(data.UnitCount(), ref data, true))));
+
+               
+
             }
         }
 

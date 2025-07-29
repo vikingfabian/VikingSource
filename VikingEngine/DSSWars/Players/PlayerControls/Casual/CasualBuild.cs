@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 
@@ -14,8 +17,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
     {
         WorkerHut,
         Barracks,
+        StartUpBarracks,
         ResearchCenter,
         NUM
+    }
+
+    struct CasualBuildPurchase
+    {
+        public CasualBuildType buildType;
+        public int count;
     }
 
     class CasualBuildOption
@@ -103,6 +113,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 content.newLine();
                 bool canAfford = player.faction.hasGold(option.price, city);
 
+                content.Add(new RbText(city.buildingStructure.getCount(option.Type).ToString()));
+                content.Add(new RbTab(0.06f));
+
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>
                 {
                     new RbImage(option.icon),
@@ -111,7 +124,49 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     new RbSpace(2),
                     new RbImage(SpriteName.rtsMoney),
                     new RbText(option.price.ToString(), canAfford ? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark)
-                }, new RbAction2Arg<CasualBuildType, int>(city.CasualBuild, option.Type, 1)));
+                }, new RbAction2Arg<CasualBuildType, int>(city.CasualBuild, option.Type, 1),
+                new RbTooltip(buildTooltip, new CasualBuildPurchase() { buildType = option.Type, count = 1 })));
+            }
+
+            void buildTooltip(RichBoxContent content, object tag)
+            {
+                var buildPurchase = (CasualBuildPurchase)tag;
+                //CasualBuildOption option = (CasualBuildOption)tag;
+                CasualBuildOption option = CasualBuildOptionList[(int)buildPurchase.buildType];
+
+
+                content.h1(option.Name, HudLib.TitleColor_Head);
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Label);
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                HudLib.ResourceCost(content, ResourceType.Gold, option.price * buildPurchase.count, player.faction.GetGold(city));
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ": " + new TimeLength(option.buildtime_sec).LongString()));
+
+               
+                content.newParagraph();
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain, HudLib.TitleColor_Label);
+                switch (buildPurchase.buildType)
+                {
+                    case CasualBuildType.WorkerHut:
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(string.Format(DssRef.lang.CityOption_ExpandWorkForce_IncreaseMax, DssConst.HousingCount_WorkerHut)));
+                        break;
+                    case CasualBuildType.Barracks:
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(".Soldier recruit time is divided among the barracks"));
+                        break;
+                }
+
+                content.newParagraph();
+                content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn, HudLib.TitleColor_Label);
+                content.newLine();
+                content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, option.Name, city.buildingStructure.getCount(buildPurchase.buildType))));
             }
         }
 

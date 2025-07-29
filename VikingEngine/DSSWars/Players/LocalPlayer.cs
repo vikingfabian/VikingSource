@@ -29,6 +29,7 @@ using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.Commander.LevelSetup;
+using VikingEngine.ToGG.HeroQuest.HeroStrategy;
 using VikingEngine.ToGG.HeroQuest.Net;
 using VikingEngine.ToGG.MoonFall;
 
@@ -1637,6 +1638,11 @@ namespace VikingEngine.DSSWars.Players
                 {
                     faction.mainCity.tagBack = CityTagBack.Carton;
                     faction.mainCity.tagArt = CityTagArt.IconFaction;
+
+                    if (profile.casualControls)
+                    { 
+                        faction.mainCity.FinishCasualBuild( PlayerControls.Casual.CasualBuildType.StartUpBarracks);
+                    }
                 }
             }
 

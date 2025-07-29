@@ -22,10 +22,10 @@ namespace VikingEngine.DSSWars.Map
             this.editAmount = editAmount;
             this.editCollection = editCollection;
         }
-
+               
         public void Submit()
         { 
-            DssRef.state.resources.editSubTilesStack.Push(this);
+            DssRef.state.resources.editSubTiles.Enqueue(this);
         }
 
         public void ExecuteEdit()

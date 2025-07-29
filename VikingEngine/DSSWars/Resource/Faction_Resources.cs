@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars
         public Money money = new Money(4000);
         Money storeMoney = Money.Zero;
         Money previuosMoney = Money.Zero;
-        public int totalWorkForce, armyFoodUpkeep, armyFoodImportCost, armyFoodBlackMarketCost;
+        public int totalWorkForce, armyUpkeep, armyFoodImportCost, armyFoodBlackMarketCost;
         public int embassyCount = 0;
 
         public TradeTemplate tradeTemplate = new TradeTemplate();
@@ -113,6 +113,7 @@ namespace VikingEngine.DSSWars
         public ResourceOverview res_FullPlateArmor = new ResourceOverview();
         public ResourceOverview res_MithrilArmor = new ResourceOverview();
 
+       
         public int GoldSecDiff()
         {
             return storeMoney.GetGold() - previuosMoney.GetGold();
@@ -560,47 +561,60 @@ namespace VikingEngine.DSSWars
             float foodImport = 0;
             float foodBlackMarket = 0;
 
-            float totalArmiesFoodUpkeep = 0;
+            float totalArmiesUpkeep = 0;
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                float energyUpkeep = 0;
+                float upkeepCount = 0;
                 float moneyCarry = 0;
                 //float armyUpkeep = 0;
 
                 var groups = armiesC.sel.groups.counter();
                 while (groups.Next())
                 {
-                    groups.sel.Upkeep(ref energyUpkeep, ref moneyCarry);
+                    groups.sel.Upkeep(ref upkeepCount, ref moneyCarry);
                 }
 
-                float foodUpkeep = energyUpkeep / DssRef.difficulty.FoodEnergySett;
+                float upkeep = upkeepCount / DssRef.difficulty.setting_foodMulti;
 
                 //totalArmiesUpkeep += armyUpkeep;
                 foodImport += armiesC.sel.foodCosts_import.displayValue_gold_sec;
                 foodBlackMarket += armiesC.sel.foodCosts_blackmarket.displayValue_gold_sec;
 
-                totalArmiesFoodUpkeep += foodUpkeep;
+                totalArmiesUpkeep += upkeep;
          
                 armiesC.sel.goldCarryCapacity = Convert.ToInt32(moneyCarry);
-                armiesC.sel.foodUpkeep = foodUpkeep;
-                armiesC.sel.food -= foodUpkeep * oneSecondUpdate;
-                if (armiesC.sel.food < -foodUpkeep * 60)
+                armiesC.sel.totalUpkeep = upkeep;
+
+                if (player.profile.casualControls)
                 {
-                    if (hasDeserters)
+                    float copperUpkeep = upkeep * DssConst.CasualSoldierDefaultCost_Copp;
+                    if (!money.PayUpkeep(copperUpkeep))
                     {
                         Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
                     }
-                    else
+                }
+                else
+                {
+                    float foodUpkeep = (upkeep * DssConst.ManDefaultEnergyCost) / DssConst.FoodEnergy;
+                    armiesC.sel.food -= foodUpkeep * oneSecondUpdate;
+                    if (armiesC.sel.food < -foodUpkeep * 60)
                     {
-                        armiesC.sel.setMaxFood();
+                        if (hasDeserters)
+                        {
+                            Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
+                        }
+                        else
+                        {
+                            armiesC.sel.setMaxFood();
+                        }
                     }
                 }
             }
             
             armyFoodImportCost = Convert.ToInt32(foodImport);
             armyFoodBlackMarketCost = Convert.ToInt32(foodBlackMarket);
-            armyFoodUpkeep = Convert.ToInt32(totalArmiesFoodUpkeep);
+            armyUpkeep = Convert.ToInt32(totalArmiesUpkeep);
         }
 
         public void resourceOverviewOneSecondUpdate()

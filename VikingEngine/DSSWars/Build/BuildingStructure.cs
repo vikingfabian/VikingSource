@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
@@ -353,6 +354,20 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
+        public int getCount(CasualBuildType casualType)
+        {
+            switch (casualType)
+            {
+                case CasualBuildType.WorkerHut:
+                    return WorkerHuts_count + WorkerHuts_Large_count;
+
+                case CasualBuildType.Barracks:
+                    return Math.Min(SoldierBarracks_count, ArcherBarracks_count);
+
+                default: return 0;
+            }
+        }
+
         //public int getCount(BuildAndExpandType type)
         //{
         //    switch (type)
@@ -360,52 +375,52 @@ namespace VikingEngine.DSSWars.Build
         //        case BuildAndExpandType.WorkerHut: return WorkerHuts_count;
         //        case BuildAndExpandType.WorkerHutLarge: return WorkerHuts_Large_count;
 
-        //        case BuildAndExpandType.ServiceHouse_Small: return ServiceMenHouse_count;
-        //        case BuildAndExpandType.ServiceHouse_Large: return ServiceMenHouse_Large_count;
+            //        case BuildAndExpandType.ServiceHouse_Small: return ServiceMenHouse_count;
+            //        case BuildAndExpandType.ServiceHouse_Large: return ServiceMenHouse_Large_count;
 
-        //        case BuildAndExpandType.Postal: return Postal_count;
-        //        case BuildAndExpandType.Recruitment: return Recruitment_count;
-        //        case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_count;
-        //        case BuildAndExpandType.Nobelhouse: return Nobelhouse_count;
-        //        case BuildAndExpandType.Tavern: return Tavern_count;
-        //        case BuildAndExpandType.Storehouse: return Storehouse_count;
-        //        case BuildAndExpandType.Brewery: return Brewery_count;
-        //        case BuildAndExpandType.Cook: return Cook_count;
-        //        case BuildAndExpandType.CoalPit: return CoalPit_count;
-        //        case BuildAndExpandType.WorkBench: return WorkBench_count;
-        //        case BuildAndExpandType.Smith: return Smith_count;
-        //        case BuildAndExpandType.Carpenter: return Carpenter_count;
-        //        case BuildAndExpandType.WheatFarm: return WheatFarm_count;
-        //        case BuildAndExpandType.LinenFarm: return LinenFarm_count;
-        //        case BuildAndExpandType.HempFarm: return HempFarm_count;
-        //        case BuildAndExpandType.RapeSeedFarm: return RapeSeedFarm_count;
-        //        case BuildAndExpandType.PigPen: return PigPen_count;
-        //        case BuildAndExpandType.HenPen: return HenPen_count;
-        //        case BuildAndExpandType.Statue_ThePlayer: return Statue_ThePlayer_count;
-        //        case BuildAndExpandType.Pavement: return Pavement_count;
-        //        case BuildAndExpandType.PavementFlower: return PavementFlower_count;
-        //        case BuildAndExpandType.Bank: return Bank_count;
-        //        case BuildAndExpandType.CoinMinter: return CoinMinter_count;
-        //        case BuildAndExpandType.GoldDeliveryLvl1: return GoldDelivery_count;
-        //        case BuildAndExpandType.WoodCutter: return WoodCutter_count;
-        //        case BuildAndExpandType.StoneCutter: return StoneCutter_count;
-        //        case BuildAndExpandType.Embassy: return Embassy_count;
-        //        case BuildAndExpandType.WaterResovoir: return WaterResovoir_count;
-        //        case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
-        //        case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_count;
-        //        case BuildAndExpandType.GunBarracks: return GunBarracks_count;
-        //        case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
-        //        case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
-        //        case BuildAndExpandType.Smelter: return Smelter_count;
-        //        case BuildAndExpandType.Foundry: return Foundry_count;
-        //        case BuildAndExpandType.Armory: return Armory_count;
-        //        case BuildAndExpandType.Chemist: return Chemist_count;
-        //        case BuildAndExpandType.Gunmaker: return Gunmaker_count;
-        //        case BuildAndExpandType.School: return School_count;
+            //        case BuildAndExpandType.Postal: return Postal_count;
+            //        case BuildAndExpandType.Recruitment: return Recruitment_count;
+            //        case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_count;
+            //        case BuildAndExpandType.Nobelhouse: return Nobelhouse_count;
+            //        case BuildAndExpandType.Tavern: return Tavern_count;
+            //        case BuildAndExpandType.Storehouse: return Storehouse_count;
+            //        case BuildAndExpandType.Brewery: return Brewery_count;
+            //        case BuildAndExpandType.Cook: return Cook_count;
+            //        case BuildAndExpandType.CoalPit: return CoalPit_count;
+            //        case BuildAndExpandType.WorkBench: return WorkBench_count;
+            //        case BuildAndExpandType.Smith: return Smith_count;
+            //        case BuildAndExpandType.Carpenter: return Carpenter_count;
+            //        case BuildAndExpandType.WheatFarm: return WheatFarm_count;
+            //        case BuildAndExpandType.LinenFarm: return LinenFarm_count;
+            //        case BuildAndExpandType.HempFarm: return HempFarm_count;
+            //        case BuildAndExpandType.RapeSeedFarm: return RapeSeedFarm_count;
+            //        case BuildAndExpandType.PigPen: return PigPen_count;
+            //        case BuildAndExpandType.HenPen: return HenPen_count;
+            //        case BuildAndExpandType.Statue_ThePlayer: return Statue_ThePlayer_count;
+            //        case BuildAndExpandType.Pavement: return Pavement_count;
+            //        case BuildAndExpandType.PavementFlower: return PavementFlower_count;
+            //        case BuildAndExpandType.Bank: return Bank_count;
+            //        case BuildAndExpandType.CoinMinter: return CoinMinter_count;
+            //        case BuildAndExpandType.GoldDeliveryLvl1: return GoldDelivery_count;
+            //        case BuildAndExpandType.WoodCutter: return WoodCutter_count;
+            //        case BuildAndExpandType.StoneCutter: return StoneCutter_count;
+            //        case BuildAndExpandType.Embassy: return Embassy_count;
+            //        case BuildAndExpandType.WaterResovoir: return WaterResovoir_count;
+            //        case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
+            //        case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_count;
+            //        case BuildAndExpandType.GunBarracks: return GunBarracks_count;
+            //        case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
+            //        case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
+            //        case BuildAndExpandType.Smelter: return Smelter_count;
+            //        case BuildAndExpandType.Foundry: return Foundry_count;
+            //        case BuildAndExpandType.Armory: return Armory_count;
+            //        case BuildAndExpandType.Chemist: return Chemist_count;
+            //        case BuildAndExpandType.Gunmaker: return Gunmaker_count;
+            //        case BuildAndExpandType.School: return School_count;
 
-        //        default: return 0; // Return 0 for NUM_NONE or any other undefined type
-        //    }
-        //}
+            //        default: return 0; // Return 0 for NUM_NONE or any other undefined type
+            //    }
+            //}
 
         public int getBarracksCount(BuildAndExpandType type)
         {

@@ -890,10 +890,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         void async_blackMarketUpdate()
         {
-            //float foodUpkeep = 0;
+           
 
             if (res_food.amount <= -10)
             {
+                if (GetCasual())
+                {
+                    res_food.amount = 100;
+                    return;
+                }
+
                 int buyFood = -res_food.amount;
 
                 int cost = (int)(buyFood * DssConst.FoodGoldValue_BlackMarket);

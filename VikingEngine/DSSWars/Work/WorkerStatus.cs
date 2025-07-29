@@ -640,7 +640,7 @@ namespace VikingEngine.DSSWars.Work
                         var build = BuildLib.BuildOptions[workSubType];
                         if (build.execute_async(city, subTileEnd, ref subTile, upgrade))
                         {
-                            EditSubTile edit = new EditSubTile(subTileEnd, subTile, true, !upgrade, false);
+                            EditSubTile edit = new EditSubTile(subTileEnd, subTile, true, true, false);
                             edit.Submit();
                         }
                         gainXp = build.experienceType();

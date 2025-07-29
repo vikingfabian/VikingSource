@@ -1566,13 +1566,9 @@ namespace VikingEngine.DSSWars.GameObject
         public int income_oneSecUpdate(double incomeMultiplier)
         {
             CityEconomyData cityEconomy = new CityEconomyData(this);
-            //double income = cityEconomy.tax(this) * incomeMultiplier;
+            
 
-            //income -= GuardUpkeep(maxGuardSize);
-            //income -=  DssConst.NobleHouseUpkeep_copp * buildingStructure.Nobelhouse_count;
-
-            //gold += Convert.ToInt32(income);
-            int income = cityEconomy.IncomeAndUpkeep_Total();
+            int income = GetCasual()? cityEconomy.IncomeAndUpkeep_Total_Casual() : cityEconomy.IncomeAndUpkeep_Total();
             money.copper += income;
 
             return income;
@@ -1603,9 +1599,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         public double childAddPerSec()
         {
-            if (!inBattle &&
-                res_food.amount > 0 &&
-                homeUsers() < workersMax())
+            bool requirements = !inBattle;
+
+            if (GetCasual())
+            {
+                requirements &= workForce.amount < HousingCount_Workers;
+            }
+            else
+            {
+                requirements &= res_food.amount > 0 &&
+                    homeUsers() < workersMax();
+            }
+
+            if (requirements)
             {
                 var result = Bound.Min( workForce.amount / 600.0 * GetFaction().growthMultiplier, 0.1);
                 if (Culture == CityCulture.LargeFamilies)
@@ -1646,10 +1652,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             const int MinWorkforce = 8;
 
-            if (myIndex == 35 || debugTagged)
-            {
-                lib.DoNothing();
-            }
+            //if (myIndex == 35 || debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
 
             int addWorkers = 0;
 
@@ -2803,27 +2809,33 @@ namespace VikingEngine.DSSWars.GameObject
                 content.Add(new RbText(string.Format(DssRef.lang.WorkForce_AvailableHomes, city.homesUnused()), HudLib.ResourceCostColor(available)));
                
             }
+
+            if (!city.GetCasual())
             {
-                bool available = city.res_food.amount > 0;
-                content.newLine();
-                HudLib.BulletPoint(content);
-                content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
-                content.hspace();
-                content.Add(new RbImage(SpriteName.WarsResource_Food));
-                content.hspace();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource_TypeName_Food, city.res_food.amount), HudLib.ResourceCostColor(available)));
-                //HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
-            }
-            if (cityType < CityType.Capital)
-            {
-                bool available = homeUsers() < WorkersMaxLimit;
-                content.newLine();
-                HudLib.BulletPoint(content);
-                content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
-                content.hspace();
-                content.Add(new RbImage(SpriteName.WarsCityHall));
-                content.hspace();
-                content.Add(new RbText(string.Format(DssRef.lang.CityHall_MaxSupportedWorkers, WorkersMaxLimit), HudLib.ResourceCostColor(available)));
+
+                {
+                    bool available = city.res_food.amount > 0;
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                    content.hspace();
+                    content.Add(new RbImage(SpriteName.WarsResource_Food));
+                    content.hspace();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource_TypeName_Food, city.res_food.amount), HudLib.ResourceCostColor(available)));
+                    //HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
+                }
+                if (cityType < CityType.Capital)
+                {
+                    bool available = homeUsers() < WorkersMaxLimit;
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                    content.hspace();
+                    content.Add(new RbImage(SpriteName.WarsCityHall));
+                    content.hspace();
+                    content.Add(new RbText(string.Format(DssRef.lang.CityHall_MaxSupportedWorkers, WorkersMaxLimit), HudLib.ResourceCostColor(available)));
+                }
+
             }
         }
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)

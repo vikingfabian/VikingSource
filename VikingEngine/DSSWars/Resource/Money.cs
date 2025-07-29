@@ -11,8 +11,8 @@ namespace VikingEngine.DSSWars.Resource
     {
         public static readonly Money Zero = new Money(0);
 
-        const int GoldToCopper = 100;
-        const float CopperToGold = 1f / GoldToCopper;
+        public const int GoldToCopper = 100;
+        public const float CopperToGold = 1f / GoldToCopper;
 
         public int copper;
 
@@ -35,6 +35,24 @@ namespace VikingEngine.DSSWars.Resource
                 return canPay;
             }
             return 0;
+        }
+
+        public bool PayUpkeep(float payCopper)
+        {
+            if (copper >= payCopper)
+            {
+                copper -= (int)payCopper;
+                return true;
+            }
+            else
+            {
+                if (copper > 0)
+                {
+                    copper = 0;
+                }
+
+                return false;
+            }
         }
 
         public int GetGold()

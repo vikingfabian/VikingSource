@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public bool hasBannerMan = true;
 
         public int defaultArmyPlacement = 0;
-        public float energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep;
+        public float upkeepMultiplier = 1f;//DssLib.SoldierDefaultEnergyUpkeep;
         public float rotationSpeed= DssConst.SoldierGroupStandardRotatingSpeed;
         public float walkingSpeed = DssConst.Men_StandardWalkingSpeed;
         public bool canAttackCharacters = true;

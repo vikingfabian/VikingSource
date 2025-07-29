@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setMaxFood()
         {
-            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
+            float energy = DssConst.ManDefaultEnergyCost / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
             float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
             food = bufferGoalFood;
         }
@@ -50,8 +50,6 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                      foodUpkeepUpdate_async(seconds);
                 }
-               
-
             }
 
             if (!casual && !inRender_detailLayer)
@@ -87,7 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
                         bufferGoal_minutes = foodBuffer_minutes;
                     }
 
-                    float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * foodUpkeep;
+                    float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * totalUpkeep;
 
                     if (bufferGoal_minutes > 0 && food < bufferGoalFood && city.res_food.amount >= ItemPropertyColl.CarryFood)
                     {
@@ -114,7 +112,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             }
 
-            float minBuffer = foodUpkeep * 2;
+            float minBuffer = totalUpkeep * 2;
 
             if (food < minBuffer)
             {

@@ -392,7 +392,7 @@ namespace VikingEngine
         {
             for (int i = 0; i < SpottedLength; ++i)
             {
-                if (Array[i] != null && Array[i].Equals(obj))
+                if (Array != null && Array[i] != null && Array[i].Equals(obj))
                 {
                     RemoveAt(i);
                     return;

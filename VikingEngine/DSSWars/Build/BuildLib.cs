@@ -452,7 +452,7 @@ namespace VikingEngine.DSSWars.Build
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
             
             new BuildOption(BuildAndExpandType.GoldDeliveryLvl3, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel3, SpriteName.WarsBuild_GoldDeliverLevel3, CraftBuildingLib.GoldDelivery_Level3, false,
-                BuildCategoryTab.Upgrade, BuildFilterTag.Transport, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Advanced, BuildFilterTag.Transport, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
             new BuildOption(BuildAndExpandType.SoldierBarracks, TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, SpriteName.WarsBuild_SoldierBarracks, CraftBuildingLib.SoldierBarracks, true,

@@ -359,12 +359,13 @@ namespace VikingEngine.DSSWars.Conscript
                     content.Add(new RbText(LangLib.Item(armorLevel), HudLib.TitleColor_TypeName));
                 }
 
-                content.newLine();
-                HudLib.BulletSeperationPoint(content);
-
-                //content.Add(new RbImage(ResourceLib.Icon(weapon)));
-                content.space();
-                content.Add(new RbText(LangLib.SpecializationTypeName(specialization, out var specIcon), HudLib.TitleColor_TypeName));
+                if (specialization != SpecializationType.None)
+                {
+                    content.newLine();
+                    HudLib.BulletSeperationPoint(content);
+                    content.space();
+                    content.Add(new RbText(LangLib.SpecializationTypeName(specialization, out var specIcon), HudLib.TitleColor_TypeName));
+                }
             }
 
             //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_WeaponTitle, LangLib.Item(weapon)));

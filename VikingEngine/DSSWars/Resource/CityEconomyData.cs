@@ -51,6 +51,11 @@ namespace VikingEngine.DSSWars.Resource
             return taxIncome_copp - servicemenUpkeep_copp - cityGuardUpkeep_copp;
         }
 
+        public int IncomeAndUpkeep_Total_Casual()
+        {
+            return taxIncome_copp - cityGuardUpkeep_copp;
+        }
+
         //public int total(City city)
         //{
         //    return Convert.ToInt32(Math.Floor(tax(city) - cityGuardUpkeep_copp));

@@ -251,6 +251,8 @@ namespace VikingEngine.DSSWars
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
         public static int FoodEnergy = 100;
         public static int PlantWaterCost = 1;
+
+        public static float CasualSoldierDefaultCost_Copp = 1f * TaxPerWorker_copp / SoldierGroup_DefaultCount;
         //public static int PlantFoodCost = 6;
 
         public static int WorkSafeGuardAmount = 10;

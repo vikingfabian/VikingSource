@@ -163,7 +163,10 @@ namespace VikingEngine.DSSWars.Interface
                     new RbTooltip(diplomacyTip)));
             }
 
+            
+            
             content.Add(new RbTab(0.8f));
+            if (!player.profile.casualControls)
             {
                 int foodSum = foodAdd - foodSub;
                 RichBoxContent buttonContent = new RichBoxContent();

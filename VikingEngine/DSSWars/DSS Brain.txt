@@ -8,6 +8,25 @@
 -Embassy is complete, gives diplomacy instead of nobel house. Hud updated.
 -Fixed: Diplomatic point cap doesn't increase
 
+
+Casual
+Gold upkeep for armies
+Unpayed soldiers are "free", so you wont swing into negative numbers.
+Removed city food upkeep
+Tooltips
+Changed child requirements
+
+
+x Remove guard post require
+x Limit guard to walls, 
+x build tower
+x logistics + speed, + tent, +research
+x research weapons 
+x build farms on add hut
+x auto upgrade city hall
+x max huts (follow water)
+
+
 #Pics
 synligeare merge down layer
 Build category: filter, advanced

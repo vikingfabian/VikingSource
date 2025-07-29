@@ -739,14 +739,14 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case SpecializationType.HonorGuard:
                     soldierData.modelScale = DssConst.Men_ModCharacterScale * 1.2f;
-                    soldierData.energyPerSoldier = 0;
+                    soldierData.upkeepMultiplier = 0;
                     soldierData.modelName = LootFest.VoxelModelName.little_hirdman;
                     soldierData.modelVariationCount = 1;
                     soldierData.icon = SpriteName.WarsUnitIcon_Honorguard;
                     break;
 
                 case SpecializationType.Traditional:
-                    soldierData.energyPerSoldier *= 0.5f;
+                    soldierData.upkeepMultiplier *= 0.5f;
                     break;
 
                 case SpecializationType.Green:

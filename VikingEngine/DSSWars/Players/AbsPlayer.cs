@@ -52,6 +52,22 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        /// <summary>
+        /// Casual: upkeep in copper, Normal: upkeep in energy
+        /// </summary>
+        public float ConvertUpkeep(float upkeep, out bool casual)
+        {
+            casual = profile.casualControls;
+            if (profile.casualControls)
+            {
+                return upkeep * DssConst.CasualSoldierDefaultCost_Copp;
+            }
+            else
+            {
+                return upkeep * DssConst.ManDefaultEnergyCost;
+            }
+        }
+
         public void createStartupBarracks()
         { 
             faction.mainCity?.createStartupBarracks();

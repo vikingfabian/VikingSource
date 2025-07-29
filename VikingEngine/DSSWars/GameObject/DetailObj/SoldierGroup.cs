@@ -2161,9 +2161,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void Upkeep(ref float energy, ref float moneyCarry)
+        public void Upkeep(ref float upkeepCount, ref float moneyCarry)
         {
-            energy += soldierData.energyPerSoldier * soldierCount;
+            upkeepCount += soldierData.upkeepMultiplier * soldierCount;
             moneyCarry += soldierCount * DssConst.MoneyCarryPerSoldier;
         }
 
