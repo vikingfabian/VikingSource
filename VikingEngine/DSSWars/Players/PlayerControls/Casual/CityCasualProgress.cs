@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
@@ -13,9 +14,21 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 {
+    struct CasualBuildQueueItem
+    {
+        public CasualBuildType build;
+        public int count;
+    }
+
     class CityCasualProgress
     {
         public int cityIndex;
+        public bool unlock_logistics = false;
+        public bool unlock_research = false;
+        public int unlock_armor = 0;
+        public int unlock_sword = 0;
+        public int unlock_projectile = 0;
+        public int unlock_farming = 0;
 
         List<CasualRecruitQueueItem> recruitQueue = new List<CasualRecruitQueueItem>(16);
         int recruitTimeSeconds = -1;
@@ -164,12 +177,20 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 else
                 {
                     var faction = city.GetFaction();
-                    buildCost(city, out int gold);
 
-                    if (faction.hasGold(gold, city))
+                    if (mayQueueBuild(city, first.build))
                     {
-                        faction.payGold(gold, true, city);
-                        payedBuildCost = true;
+                        buildCost(city, out int gold);
+
+                        if (faction.hasGold(gold, city))
+                        {
+                            faction.payGold(gold, true, city);
+                            payedBuildCost = true;
+                        }
+                    }
+                    else
+                    {
+                        buildQueue.RemoveAt(0);
                     }
                 }
             }
@@ -272,7 +293,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         {
             var first = arraylib.First(recruitQueue);
             men = first.ConscriptProfile(city).menCost();
-            gold = first.purchaseOption.price;
+            gold = first.purchaseOption.FullPrice;
         }
 
         public void BuildToHud(Players.LocalPlayer player, City city, RichBoxContent content)
@@ -407,6 +428,27 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             var first = arraylib.First(buildQueue);
             gold = CasualBuild.Get(first.build).price;
             //gold = CasualBuildLib.GetBuildOption(first.build).price;
+        }
+
+        bool mayQueueBuild(City city, CasualBuildType build)
+        {
+            int count = city.getCount(build);
+
+            var option = CasualBuild.CasualBuildOptionList[(int)build];
+            if (option.category == CasualBuildCategory.Build)
+            {
+                if (city.getMaxCount(build) >= count)
+                    return false;
+            }
+            else
+            {
+                if (count > 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 } 

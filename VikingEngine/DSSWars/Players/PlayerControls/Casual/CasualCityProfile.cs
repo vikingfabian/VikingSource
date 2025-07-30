@@ -24,8 +24,22 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
     struct SoldierPurchaseOption
     {
         public int price;
+        public int upgradePrice;
+        public ItemResourceType armor;
         public ItemResourceType weapon;
         public TrainingLevel training;
+
+        public SoldierPurchaseOption(int price,
+            ItemResourceType armor, ItemResourceType weapon, TrainingLevel training)
+        { 
+            this.price = price;
+            upgradePrice = 0;
+            this.armor = armor;
+            this.weapon = weapon;
+            this.training = training;
+        }
+
+        public int FullPrice => price + upgradePrice;
 
         public bool Available => price > 0;
 
@@ -54,10 +68,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 caption = profile.conscript.TypeName();
             }
         }
+
+        
     }
 
     struct CasualCityProfile
     {
+        public int maxHuts;
         public SoldierPurchaseOption guard;
 
         public SoldierPurchaseOption folkmen;
@@ -71,28 +88,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
         public void InitCulture(City city, CityAreaCulture culture)
         {
-            guard.price = 50;
-            guard.weapon = ItemResourceType.Bow;
-            guard.training = TrainingLevel.Basic;
-
-            folkmen.price = 1;
-            folkmen.weapon = ItemResourceType.SharpStick;
-            folkmen.training = TrainingLevel.Minimal;
-
-            meleeMen.price = 1;
-            meleeMen.weapon = ItemResourceType.Sword;
-            meleeMen.training = TrainingLevel.Basic;
-
-            rangedMen.price = 1;
-            rangedMen.weapon = ItemResourceType.Bow;
-            rangedMen.training = TrainingLevel.Basic;
-
-            riderMen.weapon = ItemResourceType.KnightsLance;
-            rangedMen.training = TrainingLevel.Skillful;
-
-            siegeMen.price = 1;
-            siegeMen.weapon = ItemResourceType.Ballista;
-            siegeMen.training = TrainingLevel.Basic;
+            guard = new SoldierPurchaseOption(50, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
+            folkmen = new SoldierPurchaseOption(1, ItemResourceType.NONE,ItemResourceType.SharpStick, TrainingLevel.Minimal);
+            meleeMen = new SoldierPurchaseOption(1, ItemResourceType.HeavyPaddedArmor, ItemResourceType.ShortSword, TrainingLevel.Basic);
+            rangedMen = new SoldierPurchaseOption(1, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
+            riderMen = new SoldierPurchaseOption(0, ItemResourceType.IronArmor, ItemResourceType.KnightsLance, TrainingLevel.Skillful);
+            siegeMen = new SoldierPurchaseOption(1, ItemResourceType.NONE, ItemResourceType.Ballista, TrainingLevel.Basic);
 
             if (city.cityType >= CityType.Capital)
             {
@@ -110,8 +111,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
             if (city.Culture == CityCulture.Seafaring || culture.percWater > 0.5)
             {
-                shipmen.price = 1;
-                shipmen.weapon = ItemResourceType.ThrowingSpear;
+                shipmen = new SoldierPurchaseOption(  1, ItemResourceType.PaddedArmor, ItemResourceType.ThrowingSpear, TrainingLevel.Basic);
+                
                 siegeMen.price = 0;
             }
 
@@ -153,6 +154,79 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
                 case CityCulture.Archers:
                     folkmen.weapon = ItemResourceType.SlingShot;
+                    break;
+            }
+        }
+
+        public void refreshTech(CityCasualProgress progress)
+        {
+            guard.upgradePrice = 0;
+            meleeMen.upgradePrice = 0;
+            rangedMen.upgradePrice = 0;
+            siegeMen.upgradePrice = 0;
+
+            switch (progress.unlock_armor)
+            {
+                case 1:
+                    guard.armor = ItemResourceType.HeavyIronArmor;
+                    guard.upgradePrice += 50;
+
+                    meleeMen.armor = ItemResourceType.HeavyIronArmor;
+                    meleeMen.upgradePrice += 100;
+
+                    rangedMen.armor = ItemResourceType.IronArmor;
+                    rangedMen.upgradePrice += 100;
+                    break;
+
+
+                case 2:
+                    guard.armor = ItemResourceType.FullPlateArmor;
+                    guard.upgradePrice += 10;
+
+                    meleeMen.armor = ItemResourceType.FullPlateArmor;
+                    meleeMen.upgradePrice += 200;
+
+                    rangedMen.armor = ItemResourceType.LightPlateArmor;
+                    rangedMen.upgradePrice += 200;
+                    break;
+            }
+
+            switch (progress.unlock_sword)
+            {
+                case 1:
+                    meleeMen.weapon = ItemResourceType.Sword;
+                    meleeMen.upgradePrice += 100;
+                    break;
+                case 2:
+                    meleeMen.weapon = ItemResourceType.LongSword;
+                    meleeMen.upgradePrice += 200;
+                    break;
+            }
+
+            switch (progress.unlock_projectile)
+            {
+                case 1:
+                    rangedMen.weapon = ItemResourceType.Crossbow;
+                    rangedMen.upgradePrice += 100;
+
+                    siegeMen.weapon = ItemResourceType.Catapult;
+                    siegeMen.upgradePrice += 50;
+                    break;
+
+                case 2:
+                    rangedMen.weapon = ItemResourceType.HandCulverin;
+                    rangedMen.upgradePrice += 200;
+
+                    siegeMen.weapon = ItemResourceType.ManCannonBronze;
+                    siegeMen.upgradePrice += 150;
+                    break;
+
+                case 3:
+                    rangedMen.weapon = ItemResourceType.Rifle;
+                    rangedMen.upgradePrice += 300;
+
+                    siegeMen.weapon = ItemResourceType.ManCannonIron;
+                    siegeMen.upgradePrice += 250;
                     break;
             }
         }

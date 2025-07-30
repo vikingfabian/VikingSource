@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -16,6 +19,130 @@ namespace VikingEngine.DSSWars.GameObject
         public void CasualBuild(CasualBuildType type, int count)
         {
             GetCasualProgress().AddBuild(this, new CasualBuildQueueItem() { build = type, count = count });
+        }
+        public void FinishCasualBuild(CasualBuildType casualBuildType)
+        {
+            switch (casualBuildType)
+            {
+                case CasualBuildType.Tent:
+                    queuePlaceBuilding(BuildAndExpandType.ImmigrationTent);
+                    break;
+                case CasualBuildType.WorkerHut:
+                    queuePlaceBuilding(BuildAndExpandType.WorkerHut);
+                    queuePlaceBuilding(BuildAndExpandType.WheatFarm);
+                    queuePlaceBuilding(BuildAndExpandType.LinenFarm);
+                    break;
+                case CasualBuildType.Barracks:
+                    queuePlaceBuilding(BuildAndExpandType.SoldierBarracks);
+                    queuePlaceBuilding(BuildAndExpandType.ArcherBarracks);
+                    break;
+                case CasualBuildType.StartUpBarracks:
+                    queuePlaceBuilding(BuildAndExpandType.ArcherBarracks);
+                    queuePlaceBuilding(BuildAndExpandType.WarmachineBarracks);
+                    break;
+
+                case CasualBuildType.Logistics:
+                    GetCasualProgress().unlock_logistics = true;
+                    queuePlaceBuilding(BuildAndExpandType.Logistics);
+                    break;
+
+                case CasualBuildType.ResearchCenter:
+                    GetCasualProgress().unlock_research = true;
+                    queuePlaceBuilding(BuildAndExpandType.ResearchCenter);
+                    break;
+
+                case CasualBuildType.UnlockIronArmor:
+                    GetCasualProgress().unlock_armor = 1;
+                    casualCityProfile.refreshTech(casualProgress);
+                    queuePlaceBuilding(BuildAndExpandType.Armory);
+                    queuePlaceBuilding(BuildAndExpandType.Smith);
+                    queuePlaceBuilding(BuildAndExpandType.Smelter);
+
+                    break;
+                case CasualBuildType.UnlockSteelArmor:
+                    GetCasualProgress().unlock_armor = 2;
+                    casualCityProfile.refreshTech(casualProgress);
+                    queuePlaceBuilding(BuildAndExpandType.Armory);
+                    queuePlaceBuilding(BuildAndExpandType.Smith);
+                    queuePlaceBuilding(BuildAndExpandType.Smelter);
+                    break;
+
+                case CasualBuildType.UnlockSword:
+                    GetCasualProgress().unlock_sword = 1;
+                    casualCityProfile.refreshTech(casualProgress);
+                    queuePlaceBuilding(BuildAndExpandType.Smith);
+                    break;
+                case CasualBuildType.UnlockSteelSword:
+                    GetCasualProgress().unlock_sword = 2;
+                    casualCityProfile.refreshTech(casualProgress);
+                    queuePlaceBuilding(BuildAndExpandType.Smith);
+                    queuePlaceBuilding(BuildAndExpandType.Smelter);
+                    break;
+
+                case CasualBuildType.UnlockCatapult:
+                    GetCasualProgress().unlock_projectile = 1;
+                    queuePlaceBuilding(BuildAndExpandType.Carpenter);
+                    casualCityProfile.refreshTech(casualProgress);
+                    break;
+                case CasualBuildType.UnlockBlackPower:
+                    GetCasualProgress().unlock_projectile = 2;
+                    queuePlaceBuilding(BuildAndExpandType.Chemist);
+                    queuePlaceBuilding(BuildAndExpandType.Gunmaker);
+                    queuePlaceBuilding(BuildAndExpandType.GunBarracks);
+                    casualCityProfile.refreshTech(casualProgress);
+                    break;
+                case CasualBuildType.UnlockGunPower:
+                    GetCasualProgress().unlock_projectile = 3;
+                    queuePlaceBuilding(BuildAndExpandType.GunBarracks);
+                    casualCityProfile.refreshTech(casualProgress);
+                    break;
+
+                case CasualBuildType.UnlockFarming2:
+                    GetCasualProgress().unlock_farming = 1;
+                    queuePlaceBuilding(BuildAndExpandType.Bank);
+                    casualCityProfile.refreshTech(casualProgress);
+                    break;
+                case CasualBuildType.UnlockFarming3:
+                    GetCasualProgress().unlock_farming = 2;
+                    queuePlaceBuilding(BuildAndExpandType.CoinMinter);
+                    casualCityProfile.refreshTech(casualProgress);
+                    break;
+            }
+
+            void queuePlaceBuilding(BuildAndExpandType build)
+            {
+                DssRef.state.resources.editSubTilesActionQueue.Enqueue(new RbAction1Arg<BuildAndExpandType>(placeBuilding, build));
+            }
+
+            void placeBuilding(BuildAndExpandType build)
+            {
+                var buildData = BuildLib.BuildOptions[(int)build];
+                IntVector2 buildPos = IntVector2.NegativeOne;
+
+                if (CityStructure.Find(this, buildData.mainType, buildData.subType, out IntVector2 sameBuilding))
+                {
+                    findAdjacentFreeSpot(sameBuilding, ref buildPos);
+                }
+
+                if (buildPos.X < 0)
+                {
+                    if (!CityStructure.FindEmpty(this, out buildPos))
+                    {
+                        return;
+                    }
+                }
+
+                var subTile = DssRef.world.subTileGrid.Get(buildPos);
+                bool upgrade = false;
+
+                var dist = cityHallSubtilePos.SideLength(buildPos);
+                if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
+                {
+                    EditSubTile edit = new EditSubTile(buildPos, subTile, true, true, false);
+                    edit.ExecuteEdit();
+                }
+            }
+
         }
 
         public CityCasualProgress GetCasualProgress()
@@ -30,7 +157,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int casualRecruitTime_sec(CasualSoldierType soldierType)
         {
-            int barracksCount = Math.Min(buildingStructure.SoldierBarracks_count, buildingStructure.ArcherBarracks_count);
+            int barracksCount = getCount(CasualBuildType.Barracks);
             if (barracksCount == 0)
             {
                 barracksCount = 1;
@@ -38,10 +165,69 @@ namespace VikingEngine.DSSWars.GameObject
 
             return Convert.ToInt32(ConscriptProfile.TrainingTime(soldierType) / barracksCount);
         }
-        //protected void initCasual()
-        //{
+
+        public int getCount(CasualBuildType casualType)
+        {
+            switch (casualType)
+            {
+                case CasualBuildType.Tent:
+                    return buildingStructure.ImmigrationTent_count;
+
+                case CasualBuildType.WorkerHut:
+                    return buildingStructure.WorkerHuts_count + buildingStructure.WorkerHuts_Large_count;
+
+                case CasualBuildType.Barracks:
+                    return Math.Min(buildingStructure.SoldierBarracks_count, buildingStructure.ArcherBarracks_count);
+
+                case CasualBuildType.GuardTower_Wood:
+                case CasualBuildType.GuardTower_Stone:
+                    return defenceBuildings.Count;
+
+                case CasualBuildType.Logistics:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_logistics);
+                case CasualBuildType.ResearchCenter:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_research);
+
+                case CasualBuildType.UnlockIronArmor:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_armor >= 1);
+                case CasualBuildType.UnlockSteelArmor:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_armor >= 2);
+
+                case CasualBuildType.UnlockSword:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_sword >= 1);
+                case CasualBuildType.UnlockSteelSword:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_sword >= 2);
+
+                case CasualBuildType.UnlockCatapult:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_projectile >= 1);
+                case CasualBuildType.UnlockBlackPower:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_projectile >= 2);
+                case CasualBuildType.UnlockGunPower:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_projectile >= 3);
+
+                case CasualBuildType.UnlockFarming2:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_farming >= 1);
+                case CasualBuildType.UnlockFarming3:
+                    return lib.BoolToInt01(GetCasualProgress().unlock_farming >= 2);
 
 
-        //}
+                default: return 0;
+            }
+        }
+
+        public int getMaxCount(CasualBuildType casualType)
+        {
+            switch (casualType)
+            {
+                case CasualBuildType.WorkerHut:
+                    return casualCityProfile.maxHuts;
+                case CasualBuildType.Barracks:
+                    return 8;
+                case CasualBuildType.Tent:
+                    return 8;
+
+                default: return 1;
+            }
+        }        
     }
 }

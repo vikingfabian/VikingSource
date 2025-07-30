@@ -183,6 +183,7 @@ namespace VikingEngine.DSSWars
         public const int ImmigrantsTransfereSpeed = 5;
         public const int ImmigrantionTent_TransfereSpeedBonus = 2;
         public const int ImmigrantionTent_Capacity = 60;
+
         //DEFENCE
         public static float GuardPostDefenceChance_Palisade = 0.4f;
         public static float GuardPostDefenceChance_Dirt = 0.5f;
@@ -227,6 +228,10 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_Building_Default = 50;
         public static float WorkTime_Building_Large = 100;
         public static float WorkTime_Building_Epic = 150;
+
+        public static float WorkTime_CasualResearch_Level2_Minutes = 10;
+        public static float WorkTime_CasualResearch_Level3_Minutes = 15;
+        public static float WorkTime_CasualResearch_Level4_Minutes = 20;
 
         public static float WorkTime_UpgradeBuilding = 5;
         public static float WorkTime_Demolish = 10;
@@ -292,6 +297,8 @@ namespace VikingEngine.DSSWars
         public static int GoldDeliveryChunkSize_Level2 = 2000;
         public static int GoldDeliveryChunkSize_Level3 = 5000;
 
+        public static float Casual_Farm2TaxIncreasePercUnits = 0.05f;
+        public static float Casual_Farm3TaxIncreasePercUnits = 0.1f;
         //EVENTS
         public static Range DominationSizeIncrease = new Range(5, 7);
         public static IntervalF DominationWarTimeDelay_Minutes = new IntervalF(10, 20);

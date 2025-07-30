@@ -29,13 +29,28 @@ namespace VikingEngine.DSSWars.Resource
             float taxPerc = DssConst.TaxPerWorker_copp;
             if (city != null)
             {
-                if (city.buildingStructure.Bank_count > 0)
+                if (city.GetCasual())
                 {
-                    taxPerc += DssConst.BankTaxIncreasePercUnits;
+                    switch (city.GetCasualProgress().unlock_farming)
+                    {
+                        case 1:
+                            taxPerc += DssConst.Casual_Farm2TaxIncreasePercUnits;
+                            break;
+                        case 2:
+                            taxPerc += DssConst.Casual_Farm3TaxIncreasePercUnits;
+                            break;
+                    }
                 }
-                if (city.Culture == CityCulture.Lawbiding)
+                else
                 {
-                    taxPerc *= 2f;
+                    if (city.buildingStructure.Bank_count > 0)
+                    {
+                        taxPerc += DssConst.BankTaxIncreasePercUnits;
+                    }
+                    if (city.Culture == CityCulture.Lawbiding)
+                    {
+                        taxPerc *= 2f;
+                    }
                 }
             }
             else

@@ -354,19 +354,7 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
-        public int getCount(CasualBuildType casualType)
-        {
-            switch (casualType)
-            {
-                case CasualBuildType.WorkerHut:
-                    return WorkerHuts_count + WorkerHuts_Large_count;
-
-                case CasualBuildType.Barracks:
-                    return Math.Min(SoldierBarracks_count, ArcherBarracks_count);
-
-                default: return 0;
-            }
-        }
+        
 
         //public int getCount(BuildAndExpandType type)
         //{

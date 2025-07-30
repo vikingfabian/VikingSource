@@ -1362,6 +1362,7 @@ namespace VikingEngine.DSSWars.GameObject
                 waterAddPerSec *= DssRef.difficulty.setting_waterMulti;
                 maxWaterBase = Convert.ToInt32( DssConst.Maxwater * DssRef.difficulty.setting_waterMulti);
                 maxWaterTotal = maxWaterBase;
+                casualCityProfile.maxHuts = maxWaterTotal / 3;
 
                 defaultResourceBuffer();
             }

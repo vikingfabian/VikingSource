@@ -10,22 +10,22 @@
 
 
 Casual
-Gold upkeep for armies
-Unpayed soldiers are "free", so you wont swing into negative numbers.
-Removed city food upkeep
-Tooltips
-Changed child requirements
+* Gold upkeep for armies
+* Unpayed soldiers are "free", so you wont swing into negative numbers.
+* Removed city food upkeep
+* Tooltips
+* Changed child requirements
 
-
+x Set all walls to auto assign
 x Remove guard post require
 x Limit guard to walls, 
 x build tower
-x logistics + speed, + tent, +research
-x research weapons 
-x build farms on add hut
-x auto upgrade city hall
-x max huts (follow water)
-
+* logistics + stone wall, + tent, +research
+* research weapons 
+* build farms on add hut
+* max buildings check
+x build blocks income
+x save/load
 
 #Pics
 synligeare merge down layer
@@ -89,6 +89,7 @@ x save custom map, cant load, should save in user content folder
 x Where do I find the "Dark horde" in the tutorial? I can't find it
 * fire lance weapon
 x tatoo color -add voxel model texture
+x rich menu sound system
 
 #Todo (xmas patch)#
 krig varning på ally

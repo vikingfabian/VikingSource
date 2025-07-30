@@ -33,44 +33,44 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
         public ConscriptProfile ConscriptProfile(City city)
         {
-            ItemResourceType armor;
+            //ItemResourceType armor;
             SpecializationType specialization;
             TrainingLevel training;
 
             switch (soldierType)
             {
                 default:
-                    armor = ItemResourceType.PaddedArmor;
+                    //armor = ItemResourceType.PaddedArmor;
                     specialization = SpecializationType.None;
                     training = TrainingLevel.Basic;
                     break;
 
                 case CasualSoldierType.Guard:
-                    armor = ItemResourceType.PaddedArmor;
+                    //armor = ItemResourceType.PaddedArmor;
                     specialization = SpecializationType.CityGuard;
                     training = TrainingLevel.Basic;
                     break;
                 
                 case CasualSoldierType.FolkMen:
-                    armor = ItemResourceType.NONE;
+                    //armor = ItemResourceType.NONE;
                     specialization = SpecializationType.None;
                     training = TrainingLevel.Minimal;
                     break;
 
                 case CasualSoldierType.Seamen:
-                    armor = ItemResourceType.PaddedArmor;
+                    //armor = ItemResourceType.PaddedArmor;
                     specialization = SpecializationType.Sea;
                     training = TrainingLevel.Basic;
                     break;
 
                 case CasualSoldierType.Siege:
-                    armor = ItemResourceType.NONE;
+                    //armor = ItemResourceType.NONE;
                     specialization = SpecializationType.Siege;
                     training = TrainingLevel.Basic;
                     break;
 
                 case CasualSoldierType.Rider:
-                    armor = ItemResourceType.IronArmor;
+                    //armor = ItemResourceType.IronArmor;
                     specialization = SpecializationType.Field;
                     training = TrainingLevel.Skillful;
                     break;
@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             return new ConscriptProfile()
             {
                 weapon = purchaseOption.weapon,
-                armorLevel = armor,
+                armorLevel = purchaseOption.armor,
                 specialization= specialization,
                 training = training,
             };

@@ -233,14 +233,17 @@ namespace VikingEngine.DSSWars
                 content.space(0.5f);
             }
 
+            bool hasEnough = hasResource >= needResource;
+
+            content.Add(new RbImage(hasEnough ? AvailableIcon : NotAvailableIcon));
+
             string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
                 ResourceLib.Name(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
 
-            content.Add( new RbText(text, ResourceCostColor(hasResource >= needResource)));
+            content.Add( new RbText(text, ResourceCostColor(hasEnough)));
         }
         public static void ResourceCost(RichBoxContent content, SpriteName resourceIcon, string resourceName, int needResource, int hasResource)
-        {
-      
+        {      
             if (resourceIcon != SpriteName.NO_IMAGE)
             {
                 content.Add(new RbImage(resourceIcon));

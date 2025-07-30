@@ -36,58 +36,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool autoExport_weapons = false;
         public GameTimeStamp nextAutoConscriptTime = GameTimeStamp.None;
 
-        public void FinishCasualBuild(CasualBuildType casualBuildType)
-        {
-            switch (casualBuildType)
-            {
-                case CasualBuildType.WorkerHut:
-                    queuePlaceBuilding(BuildAndExpandType.WorkerHut);
-                    break;
-                case CasualBuildType.Barracks:                            
-                    queuePlaceBuilding(BuildAndExpandType.SoldierBarracks);
-                    queuePlaceBuilding(BuildAndExpandType.ArcherBarracks);
-                    break;
-                case CasualBuildType.StartUpBarracks:
-                    queuePlaceBuilding(BuildAndExpandType.ArcherBarracks);
-                    queuePlaceBuilding(BuildAndExpandType.WarmachineBarracks);
-                    break;
-            }
-
-            void queuePlaceBuilding(BuildAndExpandType build)
-            {
-                DssRef.state.resources.editSubTilesActionQueue.Enqueue(new RbAction1Arg<BuildAndExpandType>(placeBuilding, build));
-            }
-
-            void placeBuilding(BuildAndExpandType build)
-            {
-                var buildData = BuildLib.BuildOptions[(int)build];
-                IntVector2 buildPos = IntVector2.NegativeOne;
-
-                if (CityStructure.Find(this, buildData.mainType, buildData.subType, out IntVector2 sameBuilding))
-                {
-                    findAdjacentFreeSpot(sameBuilding, ref buildPos);
-                }
-
-                if (buildPos.X < 0)
-                {
-                    if (!CityStructure.FindEmpty(this, out buildPos))
-                    {
-                        return;
-                    }
-                }
-
-                var subTile = DssRef.world.subTileGrid.Get(buildPos);
-                bool upgrade = false;
-
-                var dist = cityHallSubtilePos.SideLength(buildPos);
-                if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
-                {
-                    EditSubTile edit = new EditSubTile(buildPos, subTile, true, true, false);
-                    edit.ExecuteEdit();
-                }
-            }
-          
-        }
+        
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
         {
