@@ -1,6 +1,13 @@
 ﻿UPDATE
 * 
 
+#Modes
+* Faction startup size, one city, default, large, massive, world divided
+* Tech: bronze, iron, medieval, renaissance, all unlocked
+* Max city size (Wild land, campsite)
+* Game mode: quick match (all big nations in instant total war) - grace period on easy
+
+
 #Pics
 synligeare merge down layer
 Build category: filter, advanced
