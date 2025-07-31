@@ -110,6 +110,13 @@ namespace VikingEngine.DSSWars
 
             //DrawGame.LoadContent();
         }
+
+        protected override void asyncLoading_OnRestart(ref int part)
+        {
+            bgTex = LobbyState.LoadBg();
+            part++;
+        }
+
         protected override void asyncLoadIntro()
         {
 #if !DEBUG

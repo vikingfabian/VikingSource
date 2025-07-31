@@ -150,12 +150,14 @@ namespace VikingEngine.DSSWars.Build
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city)
         {
+            //if (StartupSettings.UnlockAllProgress)
+            //{
+            //    unlocks.unlockAll();
+            //}
+
             var unlocks = city.technology.GetUnlocks(false);
 
-            if (StartupSettings.UnlockAllProgress)
-            { 
-                unlocks.unlockAll();
-            }
+            
 
             list.Add(BuildAndExpandType.Palisade);
 

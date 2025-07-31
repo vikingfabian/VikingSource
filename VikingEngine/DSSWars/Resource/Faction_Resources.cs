@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars
         public ResourceOverview res_FullPlateArmor = new ResourceOverview();
         public ResourceOverview res_MithrilArmor = new ResourceOverview();
 
-        public int GoldSecDiff()
+        public long GoldSecDiff()
         {
             return storeMoney.GetGold() - previuosMoney.GetGold();
         }
@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars
         //    }
         //}
 
-        public int GetGold(City city)
+        public long GetGold(City city)
         {
             if (DssRef.storage.centralGold)
             {
@@ -502,10 +502,10 @@ namespace VikingEngine.DSSWars
         public void addGold_factionWide(int value)
         {   
             money.AddGold(value);
-
-            if (cities.Count > 0)
+            int cityCount = cities.Count;
+            if (cityCount > 0)
             {
-                int perCity = value / cities.Count;
+                int perCity = value / cityCount;
 
                 var citiesC = cities.counter();
                 while (citiesC.Next())

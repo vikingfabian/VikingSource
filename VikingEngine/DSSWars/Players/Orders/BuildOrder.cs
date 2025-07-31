@@ -77,6 +77,9 @@ namespace VikingEngine.DSSWars.Players.Orders
             iconPos.Z += model.scale.Y * 0.15f;
 
             icon = new Mesh(LoadedMesh.plane, iconPos, model.scale * 9.6f, TextureEffectType.Flat, Build.BuildLib.BuildOptions[(int)buildingType].sprite, Color.White, false);
+#if DEBUG
+            icon.DebugName = "BuildOrder icon";
+#endif
             icon.Opacity = 0.8f;
             icon.Rotation = DssLib.FaceForwardRotation;
             icon.AddToRender(DrawGame.UnitDetailLayer);

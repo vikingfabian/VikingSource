@@ -47,11 +47,7 @@ namespace VikingEngine.DSSWars.Players
         
 
         public MapLayerManager mapLayersManager;
-        //public bool bUnitDetailLayer_buffer;
-        //public bool bUpdateDetailLayer;
-
-        
-
+      
         public Rectangle2 cullingTileArea = Rectangle2.ZeroOne;
         
         public CityTagMap cityTagMap = null;
@@ -137,6 +133,7 @@ namespace VikingEngine.DSSWars.Players
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
 
             faction.addGold_factionWide(10000);
+
         }
 
         public bool battleMessageCheck(IntVector2 tilepos)

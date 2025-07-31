@@ -1046,6 +1046,8 @@ namespace VikingEngine.DSSWars.Interface
             experience(SpriteName.WarsWorkMove, DssRef.lang.ExperienceType_Transport, city.topskill_Transport);
             experience(SpriteName.WarsResource_Food, DssRef.lang.ExperienceType_Cook, city.topskill_Cook);
             experience(SpriteName.WarsFletcherArrowIcon, DssRef.lang.ExperienceType_Fletcher, city.topskill_Fletcher);
+            experience(SpriteName.WarsWorkSmelting, DssRef.todoLang.ExperienceType_Smelting, city.topskill_Smelting);
+            experience(SpriteName.WarsResource_CastIron, DssRef.lang.ExperienceType_Casting, city.topskill_Casting);
             experience(SpriteName.WarsResource_Iron, DssRef.lang.ExperienceType_CraftMetal, city.topskill_CraftMetal);
             experience(SpriteName.WarsResource_IronArmor, DssRef.lang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
             experience(SpriteName.WarsResource_Sword, DssRef.lang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);

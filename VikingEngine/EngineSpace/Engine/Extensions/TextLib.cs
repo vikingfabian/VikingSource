@@ -111,6 +111,20 @@ namespace VikingEngine
             return number.ToString(NoDecimals, ThounsandSeperatorSpaceFormat).Trim();
         }
 
+        public static string LargeNumber(long number)
+        {
+            if (number < short.MinValue)
+            {
+                return Error;
+            }
+
+            if (Math.Abs(number) < 1000)
+            {
+                return number.ToString();
+            }
+            return number.ToString(NoDecimals, ThounsandSeperatorSpaceFormat).Trim();
+        }
+
         public const string OneDecimalFormat = "{0:0.0}";
         public static string OneDecimal(double value)
         {

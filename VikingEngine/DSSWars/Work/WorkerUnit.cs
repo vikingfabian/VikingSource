@@ -426,6 +426,9 @@ namespace VikingEngine.DSSWars.Work
                 {
                     resourceModel = new Graphics.Mesh(LoadedMesh.plane, Vector3.Zero,
                         new Vector3(DssConst.Men_StandardModelScale * 0.6f), Graphics.TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White, false);
+#if DEBUG
+                    resourceModel.DebugName = "resourceModel";
+#endif
                     resourceModel.AddToRender(DrawGame.UnitDetailLayer);
                     resourceModel.Rotation = DssLib.FaceCameraRotation;
                 }

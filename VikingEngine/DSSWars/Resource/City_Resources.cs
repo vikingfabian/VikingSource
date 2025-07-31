@@ -687,7 +687,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    return new GroupedResource() { amount = DssRef.storage.centralGold? GetFaction().money.GetGold() : money.GetGold() };
+                    return new GroupedResource() { amount = (int)(DssRef.storage.centralGold? GetFaction().money.GetGold() : money.GetGold()) };
                 case ItemResourceType.GoldOre:
                     return new GroupedResource() { amount = 1 };
                 case ItemResourceType.Men:

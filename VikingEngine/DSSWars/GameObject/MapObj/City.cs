@@ -682,12 +682,15 @@ namespace VikingEngine.DSSWars.GameObject
                 int gold = r.ReadInt32();
                 money.copper = gold * 100;
             }
-            else
+            else if (subversion < 67)
             {
                 money.copper = r.ReadInt32();
-            }          
+            }
+            else
+            {
+                money.copper = r.ReadInt64();
+            }
 
-            
             automateCity = r.ReadBoolean();
             automationFocus = (AutomationFocus)r.ReadByte();
             if (subversion >= 60)

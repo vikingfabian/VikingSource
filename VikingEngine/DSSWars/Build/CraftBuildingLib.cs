@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Build
         };
 
         public static readonly ItemResourceType[] FoundryCraftTypes = {
-            ItemResourceType.Bronze, ItemResourceType.CastIron, ItemResourceType.BloomeryIron, ItemResourceType.Mithril };
+            ItemResourceType.Bronze, ItemResourceType.CastIron, ItemResourceType.LedBullet, ItemResourceType.BloomeryIron, ItemResourceType.Mithril };
 
         public static readonly ItemResourceType[] BenchCraftTypes = {
             ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
@@ -45,7 +45,8 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.Palisade,
             ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
             ItemResourceType.MithrilBow,
-            ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult };
+            ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult, 
+            ItemResourceType.Wagon2Wheel, ItemResourceType.Wagon4Wheel };
 
         public static readonly ItemResourceType[] ChemistCraftTypes = {
             ItemResourceType.BlackPowder, ItemResourceType.GunPowder };

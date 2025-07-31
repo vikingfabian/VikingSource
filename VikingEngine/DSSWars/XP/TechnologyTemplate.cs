@@ -438,6 +438,23 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
+        public void unlockAll_debug()
+        {
+            tech(ref advancedBuilding.points, AdvancedBuildingUnlock);
+            tech(ref advancedFarming.points, AdvancedFarmingUnlock);
+            tech(ref advancedCasting.points, AdvancedCastingUnlock);
+            tech(ref iron.points, IronUnlock);
+            tech(ref steel.points, SteelUnlock);
+            tech(ref catapult.points, CatapultUnlock);
+            tech(ref blackPowder.points, BlackPowderUnlock);
+            tech(ref gunPowder.points, GunPowderUnlock);
+
+            void tech(ref int thisTech, int unlock)
+            {
+                thisTech = unlock;
+            }
+        }
+
         public void countUnlocks(TechnologyTemplate city)
         {
             tech(ref advancedBuilding.points, AdvancedBuildingUnlock, city.advancedBuilding.points);

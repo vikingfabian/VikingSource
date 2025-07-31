@@ -584,6 +584,18 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public static Color? NegativeRed(long value)
+        {
+            if (value < 0)
+            {
+                return NotAvailableColor;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
 
         public static void taxInfo(RichBoxContent content, object tag)
         {

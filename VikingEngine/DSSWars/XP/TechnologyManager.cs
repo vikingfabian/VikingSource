@@ -90,7 +90,16 @@ namespace VikingEngine.DSSWars.XP
                 factionTech.zero();
                 factionTech.addFactionUnlocked(factionsC.sel.technology, false, false);
 
-
+#if DEBUG
+                if (StartupSettings.UnlockAllProgress && factionsC.sel.player.IsLocalPlayer())
+                {
+                    var citiesCounter = factionsC.sel.cities.counter();
+                    while (citiesCounter.Next())
+                    {
+                        citiesCounter.sel.technology.unlockAll_debug();
+                    }
+                }
+#endif
                 var citiesC = factionsC.sel.cities.counter();
                 while (citiesC.Next())
                 {
