@@ -1308,6 +1308,8 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
                 }
+
+                setAllDefenceAutoAssign(true, false);
             }
             float iconScale = IconScale();
 

@@ -16,7 +16,7 @@ Casual
 * Tooltips
 * Changed child requirements
 
-x Set all walls to auto assign
+* Set all walls to auto assign
 x Remove guard post require
 x Limit guard to walls, 
 x build tower
@@ -24,7 +24,7 @@ x build tower
 * research weapons 
 * build farms on add hut
 * max buildings check
-x build blocks income
+x building blocks income
 x save/load
 
 #Pics

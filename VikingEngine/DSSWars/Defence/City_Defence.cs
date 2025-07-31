@@ -28,27 +28,24 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public void addDefenceBuilding_async(IntVector2 subPos)
-        {
-            //Task.Factory.StartNew(() =>
-            //{
-                lock (defenceBuildings.array)
+        {   
+            lock (defenceBuildings.array)
+            {
+                DefenceStatus newDefence = new DefenceStatus();
+                newDefence.init(subPos);
+                newDefence.autoAssign = true;
+
+                for (int i = 0; i < defenceBuildings.Count; ++i)
                 {
-                    DefenceStatus newDefence = new DefenceStatus();
-                    newDefence.init(subPos);
-                    newDefence.autoAssign = true;
-
-                    for (int i = 0; i < defenceBuildings.Count; ++i)
+                    if (!defenceBuildings.array[i].active)
                     {
-                        if (!defenceBuildings.array[i].active)
-                        {
-                            defenceBuildings[i] = newDefence;
-                            return;
-                        }
+                        defenceBuildings[i] = newDefence;
+                        return;
                     }
-
-                    defenceBuildings.Add(newDefence);
                 }
-            //});
+
+                defenceBuildings.Add(newDefence);
+            }            
         }
 
         public void destroyDefenceBuilding_async(IntVector2 subPos)
@@ -80,7 +77,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 try
                 {
-int closestIx = -1;
+                int closestIx = -1;
                 float closestDist = float.MaxValue;
 
                     lock (defenceBuildings.array)
@@ -152,7 +149,7 @@ int closestIx = -1;
             return -1;
         }
 
-        public void setAllDefenceAutoAssign(bool toValue)
+        public void setAllDefenceAutoAssign(bool toValue, bool message = true)
         {
             Task.Run(() =>
             {
@@ -173,10 +170,13 @@ int closestIx = -1;
                         }
                     }
 
-                    var player = GetPlayer().GetLocalPlayer();
-                    if (player != null)
+                    if (message)
                     {
-                        Ref.update.AddSyncAction(new SyncAction2Arg<bool, int>(player.hud.messages.changedAllBuildings, toValue, count));
+                        var player = GetPlayer().GetLocalPlayer();
+                        if (player != null)
+                        {
+                            Ref.update.AddSyncAction(new SyncAction2Arg<bool, int>(player.hud.messages.changedAllBuildings, toValue, count));
+                        }
                     }
                 }
                 catch (Exception e)
