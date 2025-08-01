@@ -79,9 +79,9 @@ namespace VikingEngine.DSSWars.XP
 
         public const int AdvancedBuildingUnlock = 60;
         public const int AdvancedFarmingUnlock = 150;
-        public const int AdvancedCastingUnlock = 400;
-        public const int IronUnlock = 300;
-        public const int SteelUnlock = 500;
+        public const int AdvancedCastingUnlock = 200;
+        public const int IronUnlock = 200;
+        public const int SteelUnlock = 300;
         public const int CatapultUnlock = 200;
         public const int BlackPowderUnlock = 500;
         public const int GunPowderUnlock = 600;

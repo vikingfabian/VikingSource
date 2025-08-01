@@ -1,5 +1,6 @@
 ﻿UPDATE
-* 
+* Technology cost for iron, steel and adv casting have been lowered
+* fixed: MITHRIL ARMOR NOT TRANSPORTABLE
 
 #Pics
 synligeare merge down layer

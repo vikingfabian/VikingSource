@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.Wagon2Wheel, ItemResourceType.Wagon4Wheel };
 
         public static readonly ItemResourceType[] ChemistCraftTypes = {
-            ItemResourceType.BlackPowder, ItemResourceType.GunPowder };
+             ItemResourceType.CoolingFluid, ItemResourceType.BlackPowder, ItemResourceType.GunPowder };
 
 
 
