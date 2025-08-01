@@ -92,6 +92,8 @@ namespace VikingEngine.DSSWars.GameObject
                  soldier.soldierData.ShadowModelScale(), Graphics.TextureEffectType.Flat,
                  SpriteName.LittleUnitShadow, Color.Black);
 
+
+
             shadowPlane.Opacity = 0.5f;
 
             

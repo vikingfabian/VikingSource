@@ -79,9 +79,9 @@ namespace VikingEngine.DSSWars.XP
 
         public const int AdvancedBuildingUnlock = 60;
         public const int AdvancedFarmingUnlock = 150;
-        public const int AdvancedCastingUnlock = 400;
-        public const int IronUnlock = 300;
-        public const int SteelUnlock = 500;
+        public const int AdvancedCastingUnlock = 200;
+        public const int IronUnlock = 200;
+        public const int SteelUnlock = 300;
         public const int CatapultUnlock = 200;
         public const int BlackPowderUnlock = 500;
         public const int GunPowderUnlock = 600;
@@ -435,6 +435,23 @@ namespace VikingEngine.DSSWars.XP
                 {
                     thisTech = FactionUnlock;
                 }
+            }
+        }
+
+        public void unlockAll_debug()
+        {
+            tech(ref advancedBuilding.points, AdvancedBuildingUnlock);
+            tech(ref advancedFarming.points, AdvancedFarmingUnlock);
+            tech(ref advancedCasting.points, AdvancedCastingUnlock);
+            tech(ref iron.points, IronUnlock);
+            tech(ref steel.points, SteelUnlock);
+            tech(ref catapult.points, CatapultUnlock);
+            tech(ref blackPowder.points, BlackPowderUnlock);
+            tech(ref gunPowder.points, GunPowderUnlock);
+
+            void tech(ref int thisTech, int unlock)
+            {
+                thisTech = unlock;
             }
         }
 

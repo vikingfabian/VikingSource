@@ -60,15 +60,17 @@ namespace VikingEngine.Graphics
         {
             this.spriteSheet = spriteSheet;
             visible = false;
-            effectGround = new Microsoft.Xna.Framework.Graphics.BasicEffect(Engine.Draw.graphicsDeviceManager.GraphicsDevice);
-            effectGround.VertexColorEnabled = true;
-            effectGround.AmbientLightColor = Vector3.One;
-            effectGround.TextureEnabled = true;
-           // effectGround.Texture = Engine.LoadContent.Texture(LoadedTexture.NO_TEXTURE);
-            effectGround.Texture = Engine.LoadContent.Texture(spriteSheet);
-            effectGround.FogEnabled = false;
-            effectGround.LightingEnabled = false;
-           
+            if (effectGround == null)
+            {
+                effectGround = new Microsoft.Xna.Framework.Graphics.BasicEffect(Engine.Draw.graphicsDeviceManager.GraphicsDevice);
+                effectGround.VertexColorEnabled = true;
+                effectGround.AmbientLightColor = Vector3.One;
+                effectGround.TextureEnabled = true;
+                // effectGround.Texture = Engine.LoadContent.Texture(LoadedTexture.NO_TEXTURE);
+                effectGround.Texture = Engine.LoadContent.Texture(spriteSheet);
+                effectGround.FogEnabled = false;
+                effectGround.LightingEnabled = false;
+            }
 
             if (polygonsAndTriangles.NumPolygons == 0)
                 return;

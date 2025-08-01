@@ -211,6 +211,12 @@ namespace VikingEngine.Graphics
 
         override public void SetSpriteName(SpriteName sprite)
         {
+#if DEBUG
+            if (string.IsNullOrEmpty(DebugName))
+            {
+                DebugName = sprite.ToString();
+            }
+#endif
             TextureSource = DataLib.SpriteCollection.Get(sprite);
             texture = TextureSource.Texture();
         }

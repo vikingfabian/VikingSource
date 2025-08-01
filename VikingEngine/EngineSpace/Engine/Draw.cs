@@ -348,6 +348,9 @@ namespace VikingEngine.Engine
             graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 #if DEBUG
             int activeRenderCount = 0;
+
+            //var detailLayerMesh = renderList[0].GetList(DrawObjType.Mesh).toList();
+
 #endif
             SpottedArrayCounter<AbsDraw> drawList = new SpottedArrayCounter<AbsDraw>(renderList[layer].GetList(Graphics.DrawObjType.MeshGenerated));
             while (drawList.Next())

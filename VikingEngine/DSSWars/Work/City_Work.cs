@@ -122,10 +122,13 @@ namespace VikingEngine.DSSWars.GameObject
             topskill_Transport = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Transport]);
             topskill_Cook = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Cook]);
             topskill_Fletcher = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Fletcher]);
+            topskill_Smelting = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Smelting]);
+            topskill_Casting = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CastMetal]);
             topskill_CraftMetal = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftMetal]);
             topskill_CraftArmor = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftArmor]);
             topskill_CraftWeapon = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftWeapon]);
             topskill_CraftFuel = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftFuel]);
+            topskill_Chemistry = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Chemistry]);
 
             //cullingTopLeft = WP.SubtileToTilePos(minMax.min);
             //cullingBottomRight = WP.SubtileToTilePos(minMax.max);

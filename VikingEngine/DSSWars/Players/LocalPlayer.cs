@@ -48,11 +48,7 @@ namespace VikingEngine.DSSWars.Players
         
 
         public MapLayerManager mapLayersManager;
-        //public bool bUnitDetailLayer_buffer;
-        //public bool bUpdateDetailLayer;
-
-        
-
+      
         public Rectangle2 cullingTileArea = Rectangle2.ZeroOne;
         
         public CityTagMap cityTagMap = null;

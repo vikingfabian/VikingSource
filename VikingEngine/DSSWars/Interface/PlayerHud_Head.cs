@@ -92,8 +92,8 @@ namespace VikingEngine.DSSWars.Interface
         {
             //LocalPlayer localPlayer = player.GetLocalPlayer();
 
-            int gold;
-            int income;
+            long gold;
+            long income;
 
             int workForce;
             int totalStrength;

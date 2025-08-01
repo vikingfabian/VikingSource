@@ -97,6 +97,10 @@ namespace VikingEngine.DSSWars.GameObject
             this.groundY = groundY;
             model = new Graphics.Mesh(LoadedMesh.cube_repeating, pos, new Vector3(Blood_BlockScale), 
                 Graphics.TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.Red);
+#if DEBUG
+            model.DebugName = "BloodBlock";
+#endif
+
             float speed = Ref.peRnd.Float(0.001f, 0.003f) * DssConst.Men_StandardModelScale;
             if (onDeath)
             {

@@ -55,6 +55,8 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string WarsResourceGroup_Metal => "Metal";
         public string Work_Craft => "Craft";
+
+        public string ExperienceType_Smelting => "Smeleting";
         public string Catergory_Optimize => "Optimize";
         public string BuildCategory_Road => "Road";
     }

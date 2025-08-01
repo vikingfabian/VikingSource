@@ -139,7 +139,6 @@ namespace VikingEngine.DSSWars.GameObject
             switch (experienceType)
             {
                 case WorkExperienceType.Farm: return topskill_Farm;
-
                 case WorkExperienceType.AnimalCare: return topskill_AnimalCare;
                 case WorkExperienceType.HouseBuilding: return topskill_HouseBuilding;
                 case WorkExperienceType.WoodWork: return topskill_WoodCutter;

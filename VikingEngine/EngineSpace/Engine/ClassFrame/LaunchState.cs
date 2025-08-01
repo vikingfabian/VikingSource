@@ -63,9 +63,22 @@ namespace VikingEngine.Engine
             
             if (isReset)
             {
-                loadingDataComplete = true;
-                loadingContentComplete = true;
+                
                 load = LoadState.COMPLETE;
+
+                new Timer.AsynchActionTrigger(() =>
+                {
+                    try
+                    {
+                        asyncLoading_OnRestart(ref contentPart);
+                        loadingDataComplete = true;
+                        loadingContentComplete = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
+                    }
+                });       
             }
             else
             {
@@ -190,6 +203,8 @@ namespace VikingEngine.Engine
         abstract protected void preLoading();
         abstract protected void asyncContentLoading(ref int part);
         abstract protected void asyncStorageLoading(ref int part);
+
+        abstract protected void asyncLoading_OnRestart(ref int part);
         abstract protected void launch();
 
         public override void Time_Update(float time)

@@ -11,10 +11,10 @@ namespace VikingEngine.DSSWars.Resource
     {
         public static readonly Money Zero = new Money(0);
 
-        public const int GoldToCopper = 100;
-        public const float CopperToGold = 1f / GoldToCopper;
+        public const long GoldToCopper = 100;
+        public const double CopperToGold = 1.0 / GoldToCopper;
 
-        public int copper;
+        public long copper;
 
         public Money(int copper)
         {
@@ -23,7 +23,13 @@ namespace VikingEngine.DSSWars.Resource
 
         public void AddGold(int add)
         {
+            //Debug.CrashCorruptValue(add);
             copper += add * GoldToCopper;
+        }
+
+        public void AddCopper(int add)
+        {
+            copper += add;
         }
 
         public int payGold_MuchAsPossible(int goldCost)
@@ -37,6 +43,8 @@ namespace VikingEngine.DSSWars.Resource
             return 0;
         }
 
+        public long GetGold()
+        { return (long)(copper * CopperToGold); }
         public bool PayUpkeep(float payCopper)
         {
             if (copper >= payCopper)
@@ -70,14 +78,14 @@ namespace VikingEngine.DSSWars.Resource
 
         public static string CopperToGoldString_Dynamic(int copper)
         {
-            float gold = copper * CopperToGold;
+            double gold = copper * CopperToGold;
             if (gold < 10)
             {
                 return TextLib.TwoDecimal(gold);
             }
             else
             {
-                return TextLib.LargeNumber((int)gold);
+                return TextLib.LargeNumber((long)gold);
             }
         }
     }

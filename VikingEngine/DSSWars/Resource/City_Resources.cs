@@ -77,11 +77,14 @@ namespace VikingEngine.DSSWars.GameObject
         };
 
         public static readonly ItemResourceType[] MovableCityResource_WeaponRanged =
-         {   
+         {
+            ItemResourceType.SlingShot,
+             ItemResourceType.ThrowingSpear,
+
              ItemResourceType.Bow,
              ItemResourceType.LongBow,
             ItemResourceType.Crossbow,
-           ItemResourceType.MithrilBow,
+                ItemResourceType.MithrilBow,
 
             ItemResourceType.HandCannon,
             ItemResourceType.HandCulverin,
@@ -95,8 +98,7 @@ namespace VikingEngine.DSSWars.GameObject
             ItemResourceType.SiegeCannonIron,
             ItemResourceType.ManCannonIron,
 
-            ItemResourceType.SlingShot,
-             ItemResourceType.ThrowingSpear,
+            
 
         };
 
@@ -104,13 +106,14 @@ namespace VikingEngine.DSSWars.GameObject
          {
              
              ItemResourceType.BronzeArmor,
+             ItemResourceType.PaddedArmor,
+             ItemResourceType.HeavyPaddedArmor,
              ItemResourceType.IronArmor,
              ItemResourceType.HeavyIronArmor,
              ItemResourceType.LightPlateArmor,
              ItemResourceType.FullPlateArmor,
 
-             ItemResourceType.PaddedArmor,
-             ItemResourceType.HeavyPaddedArmor,
+             ItemResourceType.MithrilArmor,
         };
 
         MinuteStats blackMarketCosts_food = new MinuteStats();
@@ -687,7 +690,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    return new GroupedResource() { amount = DssRef.storage.centralGold? GetFaction().money.GetGold() : money.GetGold() };
+                    return new GroupedResource() { amount = (int)(DssRef.storage.centralGold? GetFaction().money.GetGold() : money.GetGold()) };
                 case ItemResourceType.GoldOre:
                     return new GroupedResource() { amount = 1 };
                 case ItemResourceType.Men:

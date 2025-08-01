@@ -285,7 +285,7 @@ namespace VikingEngine.DSSWars.Delivery
                     HudLib.ResourceCost(content, ItemResourceType.Men, profile.SendAmount, city.workForce.amount);
                     break;
                 case DeliveryType_Gold:
-                    HudLib.ResourceCost(content, ItemResourceType.Gold, profile.SendAmount, city.money.GetGold());
+                    HudLib.ResourceCost(content, ItemResourceType.Gold, profile.SendAmount, (int)city.money.GetGold());
                     break;
                 case DeliveryType_Resource:
                     content.Add(new RbImage(SpriteName.AutomationGearIcon));

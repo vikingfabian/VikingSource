@@ -1,12 +1,6 @@
 ﻿UPDATE
--Repaired config file, and added file health check
--All non-essensial buildings have their own "advanced" category
--All buildings have tags, that can be filtered
--Added a file debug lab
--fixed: the letter "ё" breaks the font
--Doubled school practice time, to 100 seconds per level
--Embassy is complete, gives diplomacy instead of nobel house. Hud updated.
--Fixed: Diplomatic point cap doesn't increase
+* Technology cost for iron, steel and adv casting have been lowered
+* fixed: MITHRIL ARMOR NOT TRANSPORTABLE
 
 
 Casual
@@ -33,7 +27,8 @@ Build category: filter, advanced
 
 
 #Todo#
-x file access lab
+x Optimize: SelectionGroupModels have their own render
+X match casual to save
 x pinned resources
 x more categories/filters in build
 x multiplayer is broken in battle lab
@@ -89,6 +84,8 @@ x save custom map, cant load, should save in user content folder
 x Where do I find the "Dark horde" in the tutorial? I can't find it
 * fire lance weapon
 x tatoo color -add voxel model texture
+x world peace victory condition
+x there should be some "breaing the bank" achivement 🙂 > passing an int
 x rich menu sound system
 
 #Todo (xmas patch)#

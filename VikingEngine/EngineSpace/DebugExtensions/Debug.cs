@@ -20,6 +20,7 @@ namespace VikingEngine
         { 
             return float.IsNaN(value) || float.IsInfinity(value);
         }
+
         public static bool CorruptValue(Vector3 value)
         {
             return CorruptValue(value.X) || CorruptValue(value.Y) || CorruptValue(value.Z);
@@ -32,6 +33,14 @@ namespace VikingEngine
                 throw new DivideByZeroException();
             }
         }
+
+        //public static void CrashCorruptValue(int value)
+        //{
+        //    if (CorruptValue(value))
+        //    {
+        //        throw new DivideByZeroException();
+        //    }
+        //}
 
         public static void ToggleOutput()
         {

@@ -168,9 +168,13 @@ namespace VikingEngine.DSSWars
                 int gold = r.ReadInt32();
                 money.copper = gold * 100;
             }
-            else
+            else if (subVersion < 67)
             {
                 money.copper = r.ReadInt32();
+            }
+            else
+            {
+                money.copper = r.ReadInt64();
             }
 
             int citiesCount = r.ReadUInt16();

@@ -1176,6 +1176,7 @@ namespace VikingEngine.DSSWars.Build
             //TAGS
             content.Add(new RbSeperationLine());
             HudLib.Label(content, DssRef.todoLang.HUD_Tags);
+            content.space();
             filterTag(build.filterTag1);
             filterTag(build.filterTag2);
             filterTag(build.filterTag3);

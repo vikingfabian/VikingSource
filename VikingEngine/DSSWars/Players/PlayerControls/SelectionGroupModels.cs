@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Players
             while (index >= groupModels.Count)
             {
                 var model = new Mesh(mesh, Vector3.Zero, scale,
-                TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
+                    TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
                 model.AddToRender(layer);
                 model.setVisibleCamera(playerCam);
                 model.Visible = false;

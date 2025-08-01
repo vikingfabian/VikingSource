@@ -279,9 +279,9 @@ namespace VikingEngine.DSSWars
         public static int TechnologyGain_GoodRelation_PerMin = 1;
         public static int TechnologyGain_AllyRelation_PerMin = 2;
         public static int TechnologyGain_CitySpread = 4;
-        public static int TechnologyGain_AnyLevelUp = 1;
-        public static int TechnologyGain_MasterLevelUp = 5;
-        public static int TechnologyGain_ResearchCenter = 1;
+        public static int TechnologyGain_AnyLevelUp = 2;
+        public static int TechnologyGain_MasterLevelUp = 20;
+        public static int TechnologyGain_ResearchCenter = 2;
 
         public static float Time_SchoolOneXPSec = 8;//100 per level
 
