@@ -205,6 +205,8 @@ namespace VikingEngine.DSSWars.Players
         public void end()
         {
             isNew = prevObj != obj;
+
+            //Debug.Log($"sel hover({isHover}) end {isNew}: prev{prevObj} obj{obj}");
         }
 
         public bool clear()

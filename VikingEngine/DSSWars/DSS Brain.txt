@@ -1,35 +1,19 @@
 ﻿UPDATE
-* Technology cost for iron, steel and adv casting have been lowered
-* fixed: MITHRIL ARMOR NOT TRANSPORTABLE
-* fixed: bank wasnt following the new copper system
-
-Casual
-* Gold upkeep for armies
-* Unpayed soldiers are "free", so you wont swing into negative numbers.
-* Removed city food upkeep
-* Tooltips
-* Changed child requirements
-* Set all walls to auto assign
-* Removed guard post require
-* build towers
-* logistics + stone wall, + tent, + research
-* research weapons, upgrade soldiers
-* build farms on add hut
-* max buildings check
-* save/load
-
+Change Log:
+* 
 
 #Pics
 synligeare merge down layer
 Build category tab: filter, advanced
 
+
+
 #Todo#
-x Optimize: SelectionGroupModels have their own render
+
 x cities from casual must empty build queues 
 x add casual to demo
+x casual trigger the right tutorial
 X match casual to save
-x pinned resources
-x more categories/filters in build
 x multiplayer is broken in battle lab
 x set all defence is broken, need set all towers
 
@@ -42,9 +26,7 @@ x Archers are weirdly delayed
 x Should try prioritise towers for guards
 x Guard controls suck
 
-x I think I forgot upkeep on the guards
 x Soldiers update their target too often (shaking)
-x start from nothing option
 x all schools/postals should have "set all to", and next/previous buttons 
 
 x show connected research, next to experience overview types

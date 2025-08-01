@@ -897,6 +897,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (res_food.amount <= -10)
             {
+                if (GetPlayer().IsLocalPlayer())
+                {
+                    lib.DoNothing();
+                }
+
                 if (GetCasual())
                 {
                     res_food.amount = 100;

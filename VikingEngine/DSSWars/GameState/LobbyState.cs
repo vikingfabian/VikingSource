@@ -94,6 +94,7 @@ namespace VikingEngine.DSSWars
         const float MoreArrowScale = 0.4f;
         SpriteName moreOptArrow = SpriteName.LfMenuMoreMenusArrow;
         SaveStateMeta loadGame = null;
+        MessageGroup_Editor messages;
         public LobbyState(Texture2D bgTex, bool startLoadingMap = true)
             : base()
         {
@@ -140,6 +141,7 @@ namespace VikingEngine.DSSWars
 
             this.bgTex = bgTex;
             createBackground();
+            messages = new MessageGroup_Editor();
 #if DEBUG
             //new TimedAction0ArgTrigger(collectReports, 600);
 
@@ -2127,6 +2129,8 @@ namespace VikingEngine.DSSWars
                 mapBackgroundLoading.Update();
                 maploading.TextString = mapBackgroundLoading.ProgressString();
             }
+
+            messages.Update(ref mouseOver);
             //if (StartupSettings.AutoStartLevel && PlatformSettings.DevBuild)
             //{
             //    startGame();
@@ -2200,7 +2204,7 @@ namespace VikingEngine.DSSWars
         public void loadFileClick(SaveStateMeta saveMeta)
         {
             loadGame = saveMeta;
-            //openUnderMenu(UnderMenu_PlayerSetup, StackOption.Stack);
+
             openPlayerSetupForMode(StartGameMode.Play);
         }
 
@@ -2304,6 +2308,7 @@ namespace VikingEngine.DSSWars
             var saves = DssRef.storage.meta.listSaves();
 
             RichBoxContent content = new RichBoxContent();
+            //HudLib.returnButton(content, underMenu, true, null);
 
             for (int i = 0; i < saves.Count; ++i)
             {
@@ -2329,10 +2334,16 @@ namespace VikingEngine.DSSWars
             }
 
             content.newParagraph();
+
+            SaveStateMeta exportPath = new SaveStateMeta();
+            exportPath.import = " ";
+            var tooltip = new RbTooltip_Text(string.Format(DssRef.todoLang.ExportImportDescription, exportPath.Path.CompleteDirectory));
+
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconExport), new RbSpace() ,new RbText(DssRef.lang.Lobby_ExportSave) },
-                new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListSavesForExport, StackOption.Stack), new RbTooltip_Text(string.Format(DssRef.lang.Lobby_ExportSave_Description, SaveMeta.ImportSaveFolder))));
+                new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListSavesForExport, StackOption.Stack), tooltip));
+            
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconImport), new RbSpace(), new RbText(DssRef.lang.Lobby_ImportSave) },
-                new RbAction(importSaves2)));
+                new RbAction(importSaves2), tooltip));
 
             //new GuiSectionSeparator(layout);
             //new GuiTextButton(DssRef.lang.Lobby_ExportSave, string.Format(DssRef.lang.Lobby_ExportSave_Description, SaveMeta.ImportSaveFolder), exportSave_listsaves, true, layout);
@@ -2340,6 +2351,8 @@ namespace VikingEngine.DSSWars
 
             underMenu.Refresh(content);
         }
+
+
         //void listSaves()
         //{
         //    var saves = DssRef.storage.meta.listSaves();
@@ -2377,6 +2390,7 @@ namespace VikingEngine.DSSWars
         void exportSave_listsaves2()
         {
             RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, underMenu, true, null);
             var saves = DssRef.storage.meta.listSaves();
 
             for (int i = 0; i < saves.Count; ++i)
@@ -2406,7 +2420,13 @@ namespace VikingEngine.DSSWars
             var fileName = FileToDiskManager.SearchFilesInStorageDir(saveMeta.Path, false)[0];
             File.Copy(fileName, exportPath.Path.CompletePath(true), overwrite: true);
 
-            mainMenu2();
+            RichBoxContent content = new RichBoxContent();
+            content.h1(DssRef.lang.Hud_SaveCompleted, HudLib.TitleColor_Head);
+            content.text(DssRef.lang.Lobby_ExportSave);
+            content.newLine();
+            content.Add(new RbText(exportPath.Path.CompletePath(true), HudLib.InfoYellow_Light));
+            messages.Add(content);
+            //mainMenu2();
         }
 
         bool importSavesMenu = false;
@@ -2426,11 +2446,15 @@ namespace VikingEngine.DSSWars
         void importSaves2()
         {
             RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, underMenu, true, null);
+
+
             var saves = DssRef.storage.meta.listSaves();
             importSavesMenu = true;
 
             content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
-           
+
+            underMenu.menuStack.Add("import");
             underMenu.Refresh(content);
             new Timer.AsynchActionTrigger(loadSaveImportsList_async2, true);
 
@@ -2476,6 +2500,8 @@ namespace VikingEngine.DSSWars
         void listImports2(List<string> names)
         {
             RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, underMenu, true, null);
+
             if (importSavesMenu)
             {
                 //menuSystem.menu.PopLayout();
@@ -2512,11 +2538,18 @@ namespace VikingEngine.DSSWars
         {
             SaveStateMeta meta = new SaveStateMeta();            
             meta.import = name;
-
-            meta.loadImportMeta();
+            loadGame = meta;
+            openPlayerSetupForMode(StartGameMode.Play);
+            //meta.loadImportMeta();
         }
+        //public void loadFileClick(SaveStateMeta saveMeta)
+        //{
+        //    loadGame = saveMeta;
 
-        
+        //    openPlayerSetupForMode(StartGameMode.Play);
+        //}
+
+
 
         void selectController_startGame(InputSource inputSource, SaveStateMeta saveMeta)
         {

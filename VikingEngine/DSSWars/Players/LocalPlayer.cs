@@ -110,6 +110,18 @@ namespace VikingEngine.DSSWars.Players
             baseInit();
         }
 
+        public void DrawDetalLayer(int cameraIndex)
+        {
+            gameControls.map.hover.groupModels_detail.Draw(cameraIndex);
+            gameControls.map.selection.groupModels_detail.Draw(cameraIndex);
+        }
+        public void DrawMidLayer(int cameraIndex)
+        {
+            gameControls.map.hover.groupModels_terrian.Draw(cameraIndex);
+            gameControls.map.selection.groupModels_terrian.Draw(cameraIndex);
+        }
+
+
         public void setPlayerFaction(Faction faction)
         { 
             faction.factiontype = FactionType.Player;

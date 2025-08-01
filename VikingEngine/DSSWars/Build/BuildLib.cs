@@ -322,9 +322,9 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.Pavement);
                 list.Add(BuildAndExpandType.PavementFlower);
+                list.Add(BuildAndExpandType.PavementRectFlower);
                 list.Add(BuildAndExpandType.PavementLamp);
                 list.Add(BuildAndExpandType.PavemenFountain);
-                list.Add(BuildAndExpandType.PavementRectFlower);
 
                 list.Add(BuildAndExpandType.GardenGrass);
                 list.Add(BuildAndExpandType.GardenBird);
@@ -543,13 +543,28 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
 
+
             new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, CraftBuildingLib.Pavement, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
 
-            new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementFlower, false, 
+            new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementFlower, false, //B
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.PavementRectFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementRectFlower, SpriteName.WarsBuild_PavementRectFlower, CraftBuildingLib.PavementRectFlower, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
+            
+            new BuildOption(BuildAndExpandType.PavementLamp, TerrainMainType.Decor, (int)TerrainDecorType.PavementLamp, SpriteName.WarsBuild_PavementLamp, CraftBuildingLib.PavementLamp, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
+               MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.PavemenFountain, TerrainMainType.Decor, (int)TerrainDecorType.PavemenFountain, SpriteName.WarsBuild_PavemenFountain, CraftBuildingLib.PavemenFountain, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
+                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Large);
+
+            
 
             new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, SpriteName.WarsBuild_Statue, CraftBuildingLib.Statue, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
@@ -679,17 +694,7 @@ namespace VikingEngine.DSSWars.Build
                  BuildCategoryTab.Military, BuildFilterTag.Walls, BuildFilterTag.Military, BuildFilterTag.Guards,
                  MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
 
-             new BuildOption(BuildAndExpandType.PavementLamp,TerrainMainType.Decor, (int)TerrainDecorType.PavementLamp, SpriteName.WarsBuild_PavementLamp, CraftBuildingLib.PavementLamp, false, 
-                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
-
-            new BuildOption(BuildAndExpandType.PavemenFountain,TerrainMainType.Decor, (int)TerrainDecorType.PavemenFountain, SpriteName.WarsBuild_PavemenFountain, CraftBuildingLib.PavemenFountain, false, 
-                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
-                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Large);
-
-            new BuildOption(BuildAndExpandType.PavementRectFlower,TerrainMainType.Decor, (int)TerrainDecorType.PavementRectFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementRectFlower, false, 
-                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
-                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
+            
 
             new BuildOption(BuildAndExpandType.GardenGrass, TerrainMainType.Decor, (int)TerrainDecorType.GardenGrass, SpriteName.WarsBuild_GardenGrass, CraftBuildingLib.GardenGrass, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Garden, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,

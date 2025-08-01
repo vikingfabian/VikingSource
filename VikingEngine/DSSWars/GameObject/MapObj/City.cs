@@ -1021,7 +1021,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
 
                                 if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out Tile t) &&
-                                        t.IsLand() && t.CityIndex == myIndex)
+                                        t.MayBuild() && t.CityIndex == myIndex)
                                 {
                                     const int SubStartTrialCount = 4;
                                     IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);

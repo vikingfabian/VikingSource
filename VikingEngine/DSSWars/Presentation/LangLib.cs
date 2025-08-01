@@ -1050,12 +1050,17 @@ namespace VikingEngine.DSSWars.Presentation
                             return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Pavement);
                         case TerrainDecorType.PavementFlower:
                             return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Pavement);
+                        case TerrainDecorType.PavementRectFlower:
+                            return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Pavement);
+                        case TerrainDecorType.PavementLamp: 
+                            return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Pavement);
+                        case TerrainDecorType.PavemenFountain: 
+                            return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Pavement);
+                        
+
                         case TerrainDecorType.Statue_ThePlayer:
                             return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Statue);
 
-                        case TerrainDecorType.PavementLamp: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Pavement); 
-                        case TerrainDecorType.PavemenFountain: return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Pavement); 
-                        case TerrainDecorType.PavementRectFlower: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Pavement);
                         case TerrainDecorType.GardenFourBushes: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Garden); 
                         case TerrainDecorType.GardenLongTree: return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Garden);
                         case TerrainDecorType.GardenWalledBush: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Garden); 

@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.Map
                     if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
                     {
                         var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                        if (tile.CityIndex == city.myIndex && tile.IsLand())
+                        if (tile.CityIndex == city.myIndex && tile.MayBuild())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
                             subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
@@ -628,10 +628,9 @@ namespace VikingEngine.DSSWars.Map
             {
                 case TerrainMainType.Destroyed:
                 case TerrainMainType.DefaultLand:
-                    //{ 
-                       return DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos)).CityIndex == city.myIndex;
-                    //}
-                    //break;
+                    var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
+                    return tile.MayBuild() && tile.CityIndex == city.myIndex;
+                    
             }
 
             return false;

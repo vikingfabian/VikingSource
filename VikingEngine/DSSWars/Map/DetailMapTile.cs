@@ -795,20 +795,19 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_square, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
 
+
                 case TerrainDecorType.Pavement:
                     surfaceColor = PavementGroundCol;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 0, wp, WorldData.SubTileWidth * 1.3f));
                     break;
                 case TerrainDecorType.PavementFlower:
                     surfaceColor = PavementGroundCol;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 1, wp, WorldData.SubTileWidth * 1.3f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 4, wp, WorldData.SubTileWidth * 1.3f));
                     break;
-                case TerrainDecorType.Statue_ThePlayer:
+                case TerrainDecorType.PavementRectFlower:
                     surfaceColor = PavementGroundCol;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.decor_statue, 0, wp, WorldData.SubTileWidth * 1f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 3, wp, WorldData.SubTileWidth * 1.3f));
                     break;
-
-
                 case TerrainDecorType.PavementLamp:
                     surfaceColor = PavementGroundCol;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 1, wp, WorldData.SubTileWidth * 1.3f));
@@ -817,10 +816,16 @@ namespace VikingEngine.DSSWars.Map
                     surfaceColor = PavementGroundCol;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 2, wp, WorldData.SubTileWidth * 1.3f));
                     break;
-                case TerrainDecorType.PavementRectFlower:
+                
+
+
+                case TerrainDecorType.Statue_ThePlayer:
                     surfaceColor = PavementGroundCol;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 4, wp, WorldData.SubTileWidth * 1.3f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.decor_statue, 0, wp, WorldData.SubTileWidth * 1f));
                     break;
+
+
+                
                 case TerrainDecorType.GardenFourBushes:
                     bSurfacePolygonTexture = true;
                     surfaceColor = GardenGrassColShadow;

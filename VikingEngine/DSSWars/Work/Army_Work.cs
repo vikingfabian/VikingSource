@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine;
 using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -63,8 +64,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
+        public static float ManUpkeepToFoodUpkeep(float manUpkeep)
+        {
+            float energyUpkeep = manUpkeep * DssConst.ManDefaultEnergyCost;
+            float foodUpkeep = energyUpkeep / DssRef.difficulty.FoodEnergySett;
+            return foodUpkeep;
+        }
+
         void foodUpkeepUpdate_async(float seconds)
         {
+            //float energyUpkeep = totalUpkeep * DssConst.ManDefaultEnergyCost;
+            //float foodUpkeep = energyUpkeep * DssRef.difficulty.FoodEnergySett;
+            float foodUpkeep = ManUpkeepToFoodUpkeep(totalUpkeep);
+
             if (foodBackOrderTimeSec > 0)
             {
                 foodBackOrderTimeSec -= seconds;
@@ -85,7 +97,7 @@ namespace VikingEngine.DSSWars.GameObject
                         bufferGoal_minutes = foodBuffer_minutes;
                     }
 
-                    float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * totalUpkeep;
+                    float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * foodUpkeep;
 
                     if (bufferGoal_minutes > 0 && food < bufferGoalFood && city.res_food.amount >= ItemPropertyColl.CarryFood)
                     {
@@ -112,7 +124,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             }
 
-            float minBuffer = totalUpkeep * 2;
+            float minBuffer = foodUpkeep * 2;
 
             if (food < minBuffer)
             {

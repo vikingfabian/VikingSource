@@ -445,6 +445,11 @@ namespace VikingEngine.DSSWars
                 return true;
             }
 
+            //if (player.IsLocalPlayer())
+            //{
+            //    lib.DoNothing();
+            //}
+
             if (DssRef.storage.centralGold)
             {
                 if (allowDept || money.GetGold() >= cost)
@@ -489,6 +494,12 @@ namespace VikingEngine.DSSWars
 
         public void addGold(int value, City city)
         {
+
+            if (player.IsLocalPlayer())
+            {
+                lib.DoNothing();
+            }
+
             if (DssRef.storage.centralGold)
             {
                 money.AddGold(value);
@@ -564,17 +575,17 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                float upkeepCount = 0;
+                float manUpkeepCount = 0;
                 float moneyCarry = 0;
                 //float armyUpkeep = 0;
 
                 var groups = armiesC.sel.groups.counter();
                 while (groups.Next())
                 {
-                    groups.sel.Upkeep(ref upkeepCount, ref moneyCarry);
+                    groups.sel.Upkeep(ref manUpkeepCount, ref moneyCarry);
                 }
 
-                float upkeep = upkeepCount / DssRef.difficulty.setting_foodMulti;
+                float upkeep = manUpkeepCount;
 
                 //totalArmiesUpkeep += armyUpkeep;
                 foodImport += armiesC.sel.foodCosts_import.displayValue_gold_sec;
@@ -587,15 +598,21 @@ namespace VikingEngine.DSSWars
 
                 if (player.profile.casualControls)
                 {
-                    float copperUpkeep = upkeep * DssConst.CasualSoldierDefaultCost_Copp;
+                    float copperUpkeep = upkeep * DssConst.CasualSoldierDefaultCost_Copp; // DssRef.difficulty.setting_foodMulti;
                     if (!money.PayUpkeep(copperUpkeep))
                     {
                         Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
                     }
+
+                    //if (player.IsLocalPlayer())
+                    //{
+                    //    lib.DoNothing();
+                    //}
                 }
                 else
                 {
-                    float foodUpkeep = (upkeep * DssConst.ManDefaultEnergyCost) / DssConst.FoodEnergy;
+                    float foodUpkeep = Army.ManUpkeepToFoodUpkeep(upkeep);
+                    //float foodUpkeep = (upkeep * DssConst.ManDefaultEnergyCost) / DssConst.FoodEnergy;
                     armiesC.sel.food -= foodUpkeep * oneSecondUpdate;
                     if (armiesC.sel.food < -foodUpkeep * 60)
                     {

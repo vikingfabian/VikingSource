@@ -13,6 +13,11 @@ using VikingEngine.ToGG.ToggEngine;
 
 namespace VikingEngine.DSSWars
 {
+    //interface IDrawLayer
+    //{ 
+        
+    //}
+
     class DrawMenu : Engine.Draw
     {
         public DrawMenu()
@@ -154,6 +159,7 @@ namespace VikingEngine.DSSWars
 
         void drawDetailLayer(int cameraIndex, Map.MapLayer lay, RenderTarget2D previousTarget)
         {
+            var localPlayer = DssRef.state.localPlayers[cameraIndex];
             Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
 
             if (lay.type == Map.MapDetailLayerType.UnitDetail1)
@@ -178,6 +184,7 @@ namespace VikingEngine.DSSWars
                     //DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = true;
 
                     Draw3d(UnitDetailLayer, cameraIndex);
+                    localPlayer.DrawDetalLayer(cameraIndex);
                     Engine.ParticleHandler.Draw(p.view.Camera);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     //time.EndMeasure();
@@ -187,6 +194,7 @@ namespace VikingEngine.DSSWars
                     DssRef.state.detailMap.Update_outOfFocus();
                     DrawGenerated(TerrainLayer, cameraIndex);
                     Draw3d(TerrainLayer, cameraIndex);
+                    localPlayer.DrawMidLayer(cameraIndex);
                     break;
 
                 case Map.MapDetailLayerType.FullOverview4:

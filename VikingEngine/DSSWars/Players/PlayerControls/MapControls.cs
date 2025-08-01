@@ -262,6 +262,7 @@ namespace VikingEngine.DSSWars.Players
                 //mouseHoverUpdate();
             }
             hover.end();
+                        
             //}
             //}
 
@@ -296,6 +297,9 @@ namespace VikingEngine.DSSWars.Players
             {
                 player.createPin();
             }
+
+            
+
         }
 
         void updateCitySelectionFromTile()

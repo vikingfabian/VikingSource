@@ -454,7 +454,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
                 args.content.space();
-                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(upkeepConvert))));
+                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(Army.ManUpkeepToFoodUpkeep(upkeepConvert)))));
                 args.content.space();
                 HudLib.PerSecondInfo(args.player, args.content, false);
 

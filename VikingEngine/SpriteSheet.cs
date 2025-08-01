@@ -2253,7 +2253,7 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_GardenBird, 3, 3);
                 add(SpriteName.WarsBuild_PavementLamp, 3, 3);
                 add(SpriteName.WarsBuild_PavemenFountain, 3, 3);
-                add(SpriteName.WarsBuild_PavementRectFlower, 3, 3);
+                add(SpriteName.WarsBuild_PavementFlowers, 3, 3);
                 add(SpriteName.WarsBuild_StoneWall, 3, 3);
                 add(SpriteName.WarsBuild_StoneWallGreen, 3, 3);
                 add(SpriteName.WarsBuild_StoneWallBlueRoof, 3, 3);
@@ -2561,7 +2561,7 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_WorkBench, 3, 3);
                     add(SpriteName.WarsBuild_CoalPit, 3, 3);
                     add(SpriteName.WarsBuild_Pavement, 3, 3);
-                    add(SpriteName.WarsBuild_PavementFlowers, 3, 3);
+                    add(SpriteName.WarsBuild_PavementRectFlower, 3, 3);
                     add(SpriteName.WarsBuild_Bank, 3, 3);
                     add(SpriteName.WarsBuild_Storehouse, 3, 3);
                     add(SpriteName.WarsCityHall, 3, 3);
