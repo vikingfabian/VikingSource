@@ -39,6 +39,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             this.training = training;
         }
 
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)price);
+            w.Write((byte)weapon);
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion)
+        {
+            price = r.ReadUInt16();
+            weapon = (ItemResourceType)r.ReadByte();
+        }
+
         public int FullPrice => price + upgradePrice;
 
         public bool Available => price > 0;
@@ -84,7 +95,31 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public SoldierPurchaseOption riderMen;
         public SoldierPurchaseOption siegeMen;
 
-        bool armorBonus;
+        //bool armorBonus;
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)maxHuts);
+            guard.writeGameState(w);
+            folkmen.writeGameState(w);
+            shipmen.writeGameState(w);
+            meleeMen.writeGameState(w);
+            rangedMen.writeGameState(w);
+            riderMen.writeGameState(w);
+            siegeMen.writeGameState(w);
+        }
+
+        public void readGameState(System.IO.BinaryReader r, int subversion)
+        {
+            maxHuts = r.ReadByte();
+            guard.readGameState(r, subversion);
+            folkmen.readGameState(r, subversion);
+            shipmen.readGameState(r, subversion);
+            meleeMen.readGameState(r, subversion);
+            rangedMen.readGameState(r, subversion);
+            riderMen.readGameState(r, subversion);
+            siegeMen.readGameState(r, subversion);
+        }
 
         public void InitCulture(City city, CityAreaCulture culture)
         {

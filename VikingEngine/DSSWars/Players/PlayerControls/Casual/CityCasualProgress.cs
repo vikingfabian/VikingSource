@@ -5,20 +5,18 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 {
-    struct CasualBuildQueueItem
-    {
-        public CasualBuildType build;
-        public int count;
-    }
+    
 
     class CityCasualProgress
     {
@@ -30,17 +28,93 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public int unlock_projectile = 0;
         public int unlock_farming = 0;
 
-        List<CasualRecruitQueueItem> recruitQueue = new List<CasualRecruitQueueItem>(16);
-        int recruitTimeSeconds = -1;
         bool payedRecruitCost = false;
-       
-        List<CasualBuildQueueItem> buildQueue = new List<CasualBuildQueueItem>(8);
-        int buildTimeSeconds = 0;
+        int recruitTimeSeconds = -1;
+        List<CasualRecruitQueueItem> recruitQueue = new List<CasualRecruitQueueItem>(16);
+        
         bool payedBuildCost = false;
-
+        int buildTimeSeconds = -1;
+        List<CasualBuildQueueItem> buildQueue = new List<CasualBuildQueueItem>(8);
+        
         public CityCasualProgress(City city)
         {
             cityIndex = city.myIndex;
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            var bools = new EightBit(unlock_logistics, unlock_research, payedRecruitCost, payedBuildCost);
+            bools.write(w);
+            
+            TwoHalfByte armor_sword = new TwoHalfByte(unlock_armor, unlock_sword);
+            armor_sword.write(w);
+            
+            TwoHalfByte projectile_farming = new TwoHalfByte(unlock_projectile, unlock_farming);
+            projectile_farming.write(w);
+
+
+            //Debug.WriteCheck(w);
+
+            w.Write((ushort)(recruitTimeSeconds + 1));
+
+            byte byteReqCount = (byte)recruitQueue.Count;
+            w.Write(byteReqCount);
+            for (int i = 0; i < byteReqCount; i++)
+            {
+                recruitQueue[i].writeGameState(w);
+            }
+
+            //Debug.WriteCheck(w);
+
+            w.Write((ushort)(buildTimeSeconds + 1));
+
+            byte byteBuildCount = (byte)buildQueue.Count;
+            w.Write(byteBuildCount);
+            for (int i = 0; i < byteBuildCount; i++)
+            {
+                buildQueue[i].writeGameState(w);
+            }
+
+            //Debug.WriteCheck(w);
+        }
+
+        public void readGameState(City city, System.IO.BinaryReader r, int subversion)
+        {
+            var bools = new EightBit(r);
+            bools.Get(out unlock_logistics, out unlock_research, out payedRecruitCost, out payedBuildCost);
+
+            TwoHalfByte armor_sword = TwoHalfByte.FromStream(r);
+            unlock_armor = armor_sword.Value1;
+            unlock_sword = armor_sword.Value2;
+
+            TwoHalfByte projectile_farming = TwoHalfByte.FromStream(r);
+            unlock_projectile = projectile_farming.Value1;
+            unlock_farming = projectile_farming.Value2;
+
+
+            //Debug.ReadCheck(r);
+
+            recruitTimeSeconds = r.ReadUInt16() - 1;
+            var byteReqCount = r.ReadByte();
+            for (int i = 0; i < byteReqCount; i++)
+            {
+                var item = new CasualRecruitQueueItem();
+                item.readGameState(r, subversion, ref city.casualCityProfile);
+                recruitQueue.Add(item);
+            }
+
+            //Debug.ReadCheck(r);
+
+            buildTimeSeconds = r.ReadUInt16() - 1;
+            var byteBuildCount = r.ReadByte();
+            for (int i = 0; i < byteBuildCount; i++)
+            {
+                var item = new CasualBuildQueueItem();
+                item.readGameState(r, subversion);
+                buildQueue.Add(item);
+            }
+
+            //Debug.ReadCheck(r);
         }
 
         City GetCity()
@@ -114,7 +188,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 {  
                     recruitTimeSeconds--;
 
-                    if (recruitTimeSeconds < 0)
+                    if (recruitTimeSeconds < 0 || StartupSettings.CasualInstaBuild)
                     {
                         //Spawn
                         city.conscriptArmy(first.ConscriptProfile(city), city.defaultConscriptPos(), 1);
@@ -145,13 +219,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 }
             }
 
-
             if (buildTimeSeconds <= 0)
             {
                 if (buildQueue.Count > 0)
                 {
                     var first = arraylib.First(buildQueue);
-                    buildTimeSeconds = CasualBuild.Get(first.build).buildtime_sec;//city.casualBuildTime_sec(first.build);
+                    buildTimeSeconds = CasualBuild.Get(first.build).buildtime_sec;
                 }
             }
             else if (buildQueue.Count > 0)
@@ -162,7 +235,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 {
                     buildTimeSeconds--;
 
-                    if (buildTimeSeconds <= 0)
+                    if (buildTimeSeconds <= 0 || StartupSettings.CasualInstaBuild)
                     {
                         city.FinishCasualBuild(first.build); // Replace with actual handling
                         payedBuildCost = false;
@@ -205,7 +278,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 var first = arraylib.First(recruitQueue);
 
                 recruitCost(city, out int men, out int gold);
-                int hasGold, hasMen;
+                long hasGold;
+                int hasMen;
 
                 if (payedRecruitCost)
                 {
@@ -218,17 +292,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     hasMen = Math.Min(city.workForce.amount, men);
                 }
 
-                progressPoint(ItemResourceType.Gold, hasGold, gold);
+                progressPoint(ItemResourceType.Gold, (int)hasGold, gold);
                 progressPoint(ItemResourceType.Men, hasMen, men);
 
-                var cancelTooltip = new RbTooltip_Text(".Click to cancel");
+                var cancelTooltip = new RbTooltip_Text(DssRef.todoLang.HUD_ClickToCancel);
 
                 content.newLine();
                 {
                     first.purchaseOption.ButtonVisuals(first.soldierType, out SpriteName icon, out string caption);
 
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                        new RbText(first.count.ToString() + "x"),
+                        new RbText(string.Format( DssRef.lang.Hud_XTimes, first.count)),
                         new RbImage(icon),
                         new RbSpace(),
                         new RbText(caption, HudLib.TitleColor_TypeName_Dark),
@@ -242,7 +316,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     recruitQueue[i].purchaseOption.ButtonVisuals(recruitQueue[i].soldierType, out SpriteName icon, out string caption);
 
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                        new RbText(recruitQueue[i].count.ToString() + "x"),
+                        new RbText(string.Format( DssRef.lang.Hud_XTimes, recruitQueue[i].count)),
                         new RbImage(icon) }, new RbAction1Arg<int>(cancelRecruit, i), cancelTooltip
                     ));
                 }
@@ -287,8 +361,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
            
         }
 
-
-
         void recruitCost(City city, out int men, out int gold)//todo upkeep
         {
             var first = arraylib.First(recruitQueue);
@@ -305,11 +377,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
                 var first = arraylib.First(buildQueue);
                 buildCost(city, out int gold);
-                int hasGold = payedBuildCost ? gold : Math.Min(player.faction.GetGold(city), gold);
+                long hasGold = payedBuildCost ? gold : Math.Min(player.faction.GetGold(city), gold);
 
-                progressPoint(ItemResourceType.Gold, hasGold, gold);
+                progressPoint(ItemResourceType.Gold, (int)hasGold, gold);
 
-                var cancelTooltip = new RbTooltip_Text(".Click to cancel");
+                var cancelTooltip = new RbTooltip_Text(DssRef.todoLang.HUD_ClickToCancel);
 
                 content.newLine();
                 {
@@ -317,14 +389,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     //option.ButtonVisuals(first.build, out SpriteName icon, out string caption);
 
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                new RbText(first.count.ToString() + "x"),
-                new RbImage(option.icon),
-                new RbSpace(),
-                new RbText(option.Name, HudLib.TitleColor_TypeName_Dark),
-                new RbSpace(2),
-                new RbImage(SpriteName.IconSandGlass),
-                new RbText(buildTimeSeconds > 0 ? buildTimeSeconds.ToString() : "-"),
-            }, new RbAction1Arg<int>(cancelBuild, 0), cancelTooltip));
+                        new RbText(string.Format(DssRef.lang.Hud_XTimes, first.count)),
+                        new RbImage(option.icon),
+                        new RbSpace(),
+                        new RbText(option.Name, HudLib.TitleColor_TypeName_Dark),
+                        new RbSpace(2),
+                        new RbImage(SpriteName.IconSandGlass),
+                        new RbText(buildTimeSeconds > 0 ? new TimeLength(buildTimeSeconds).ShortString() : "-"),
+                    }, new RbAction1Arg<int>(cancelBuild, 0), cancelTooltip));
                 }
 
                 for (int i = 1; i < buildQueue.Count; i++)
@@ -334,7 +406,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     //option.ButtonVisuals(item.build, out SpriteName icon, out _);
 
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                new RbText(item.count.ToString() + "x"),
+                new RbText(string.Format(DssRef.lang.Hud_XTimes, item.count)),
                 new RbImage(option.icon)
             }, new RbAction1Arg<int>(cancelBuild, i), cancelTooltip));
                 }
@@ -427,7 +499,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         {
             var first = arraylib.First(buildQueue);
             gold = CasualBuild.Get(first.build).price;
-            //gold = CasualBuildLib.GetBuildOption(first.build).price;
         }
 
         bool mayQueueBuild(City city, CasualBuildType build)
@@ -437,7 +508,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             var option = CasualBuild.CasualBuildOptionList[(int)build];
             if (option.category == CasualBuildCategory.Build)
             {
-                if (city.getMaxCount(build) >= count)
+                if (count >= city.getMaxCount(build))
                     return false;
             }
             else

@@ -9,9 +9,11 @@ using Valve.Steamworks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 
@@ -456,6 +458,280 @@ namespace VikingEngine.DSSWars.GameObject
                 (value ? SoundLib.click : SoundLib.back).Play();
             }
             return automateCity;
+        }
+
+        public bool executeBuildEffectsOnCity(bool build, IntVector2 subPos, ref SubTile subTile, TerrainMainType mainType, int subType)
+        {
+            switch (mainType)
+            {
+                case TerrainMainType.Building:
+                    {
+                        switch ((TerrainBuildingType)subType)
+                        {
+                            case TerrainBuildingType.Logistics:
+                                if (build)
+                                {
+                                    if (buildingStructure.buildingLevel_logistics > 0)
+                                    {
+                                        //Already built
+                                        return false;
+                                    }
+
+                                    if (CanBuildLogistics(2))
+                                    {
+                                        subTile.terrainAmount = 2;
+                                    }
+                                    buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
+                                }
+                                break;
+
+
+                            case TerrainBuildingType.WorkerHut:
+                                onWorkHutBuild(build, false);
+                                break;
+                            case TerrainBuildingType.WorkerHutLarge:
+                                onWorkHutBuild(build, true);
+                                break;
+
+                            case TerrainBuildingType.ServiceMenHouse_small:
+                                onServiceHouseBuild(build, false);
+                                break;
+                            case TerrainBuildingType.ServiceMenHouse_Large:
+                                onServiceHouseBuild(build, true);
+                                break;
+
+                            case TerrainBuildingType.GuardHouse_Small:
+                                onGuardHouseBuild(build, false);
+                                break;
+                            case TerrainBuildingType.GuardHouse_Large:
+                                onGuardHouseBuild(build, true);
+                                break;
+
+
+
+                            case TerrainBuildingType.SoldierBarracks:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(addBarracks, subPos, Build.BuildAndExpandType.SoldierBarracks));
+                                }
+                                else
+                                {
+                                    destroyBarracks(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.ArcherBarracks:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(addBarracks, subPos, Build.BuildAndExpandType.ArcherBarracks));
+                                }
+                                else
+                                {
+                                    destroyBarracks(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.WarmachineBarracks:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(addBarracks, subPos, Build.BuildAndExpandType.WarmachineBarracks));
+                                }
+                                else
+                                {
+                                    destroyBarracks(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.KnightsBarracks:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(addBarracks, subPos, Build.BuildAndExpandType.KnightsBarracks));
+                                }
+                                else
+                                {
+                                    destroyBarracks(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.GunBarracks:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(addBarracks, subPos, Build.BuildAndExpandType.GunBarracks));
+                                }
+                                else
+                                {
+                                    destroyBarracks(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.CannonBarracks:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(addBarracks, subPos, Build.BuildAndExpandType.CannonBarracks));
+                                }
+                                else
+                                {
+                                    destroyBarracks(subPos);
+                                }
+                                break;
+
+                            case TerrainBuildingType.Postal:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(addDelivery, subPos, 1, DeliveryStatus.DeliveryType_Resource));
+                                }
+                                else
+                                {
+                                    destroyDelivery(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.PostalLevel2:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(addDelivery, subPos, 2, DeliveryStatus.DeliveryType_Resource));
+                                }
+                                else
+                                {
+                                    destroyDelivery(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.PostalLevel3:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(addDelivery, subPos, 3, DeliveryStatus.DeliveryType_Resource));
+                                }
+                                else
+                                {
+                                    destroyDelivery(subPos);
+                                }
+                                break;
+
+                            case TerrainBuildingType.Recruitment:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(addDelivery, subPos, 1, DeliveryStatus.DeliveryType_Men));
+                                }
+                                else
+                                {
+                                    destroyDelivery(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.RecruitmentLevel2:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(addDelivery, subPos, 2, DeliveryStatus.DeliveryType_Men));
+                                }
+                                else
+                                {
+                                    destroyDelivery(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.RecruitmentLevel3:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(addDelivery, subPos, 3, DeliveryStatus.DeliveryType_Men));
+                                }
+                                else
+                                {
+                                    destroyDelivery(subPos);
+                                }
+                                break;
+
+                            case TerrainBuildingType.GoldDeliveryLevel1:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(addDelivery, subPos, 1, DeliveryStatus.DeliveryType_Gold));
+                                }
+                                else
+                                {
+                                    destroyDelivery(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.GoldDeliveryLevel2:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(addDelivery, subPos, 2, DeliveryStatus.DeliveryType_Gold));
+                                }
+                                else
+                                {
+                                    destroyDelivery(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.GoldDeliveryLevel3:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(addDelivery, subPos, 3, DeliveryStatus.DeliveryType_Gold));
+                                }
+                                else
+                                {
+                                    destroyDelivery(subPos);
+                                }
+                                break;
+
+
+                            case TerrainBuildingType.School:
+                                if (build)
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction1Arg<IntVector2>(addSchool, subPos));
+                                }
+                                else
+                                {
+                                    destroySchool(subPos);
+                                }
+                                break;
+
+                            case TerrainBuildingType.ResearchCenter:
+                                if (build)
+                                {
+                                    addResearchBuilding(subPos, true);
+                                }
+                                else
+                                {
+                                    destroyResearchBuilding(subPos);
+                                }
+                                break;
+                            case TerrainBuildingType.BookPress:
+                                if (build)
+                                {
+                                    addResearchBuilding(subPos, false);
+                                }
+                                else
+                                {
+                                    destroyResearchBuilding(subPos);
+                                }
+                                break;
+
+                        }
+                    }
+                    break;
+
+                case TerrainMainType.Wall:
+                    if (build)
+                    {
+                        addDefenceBuilding_async(subPos);
+                    }
+                    else
+                    {
+                        destroyDefenceBuilding_async(subPos);
+                    }
+                    break;
+
+                case TerrainMainType.Decor:
+                    if (build)
+                    {
+                        bool statue = false;
+                        switch ((TerrainDecorType)subType)
+                        {
+                            case TerrainDecorType.Statue_ThePlayer:
+                                statue = true;
+                                break;
+                        }
+
+                        var cityPlayer = GetPlayer();
+                        if (cityPlayer.IsLocalPlayer())
+                        {
+                            cityPlayer.GetLocalPlayer().statistics.onDecorBuild_async(statue);
+                        }
+                    }
+                    break;
+            }
+
+            return true;
         }
     }
 

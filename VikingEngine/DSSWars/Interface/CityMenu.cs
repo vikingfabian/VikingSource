@@ -261,7 +261,7 @@ namespace VikingEngine.DSSWars.Interface
                         recruitOption.count = counts;
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {                       
-                            new RbText("x" + counts, player.faction.hasGold(option.FullPrice * counts, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
+                            new RbText(string.Format(DssRef.lang.Hud_XTimes, counts), player.faction.hasGold(option.FullPrice * counts, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
                             },
                             new RbAction1Arg<CasualRecruitQueueItem>(casualRecruitGroup, recruitOption), new RbTooltip(casualRecruitTooltip, recruitOption)));
                     }                    
@@ -290,7 +290,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                HudLib.ResourceCost(content, ResourceType.Gold, recruitOption.purchaseOption.FullPrice * recruitOption.count, player.faction.GetGold(city));
+                HudLib.ResourceCost(content, ResourceType.Gold, recruitOption.purchaseOption.FullPrice * recruitOption.count, (int)player.faction.GetGold(city));
 
                 content.newLine();
                 HudLib.BulletPoint(content);

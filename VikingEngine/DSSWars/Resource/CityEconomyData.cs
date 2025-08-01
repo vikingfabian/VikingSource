@@ -18,15 +18,15 @@ namespace VikingEngine.DSSWars.Resource
         //public int nobelMenCosts_copp;
         public CityEconomyData(City city)
         {
-            taxIncome_copp = (int)tax(city);
+            taxIncome_copp = (int)tax(city, out _);
             servicemenUpkeep_copp = city.workingAndFreeServiceMen * DssConst.UpkeepPerServiceMan_copp;
             cityGuardUpkeep_copp = city.soldiersCount * DssConst.UpkeepPerGuard_copp;
             //nobelMenCosts_copp = DssConst.NobleHouseUpkeep_copp * city.buildingStructure.Nobelhouse_count;
         }
 
-        public float tax(City city) 
+        public float tax(City city, out float taxPerWorker_copp)
         {
-            float taxPerc = DssConst.TaxPerWorker_copp;
+            taxPerWorker_copp = DssConst.TaxPerWorker_copp;
             if (city != null)
             {
                 if (city.GetCasual())
@@ -34,10 +34,10 @@ namespace VikingEngine.DSSWars.Resource
                     switch (city.GetCasualProgress().unlock_farming)
                     {
                         case 1:
-                            taxPerc += DssConst.Casual_Farm2TaxIncreasePercUnits;
+                            taxPerWorker_copp += DssConst.Casual_Farm2TaxIncreasePercUnits_copp;
                             break;
                         case 2:
-                            taxPerc += DssConst.Casual_Farm3TaxIncreasePercUnits;
+                            taxPerWorker_copp += DssConst.Casual_Farm3TaxIncreasePercUnits_copp;
                             break;
                     }
                 }
@@ -45,20 +45,20 @@ namespace VikingEngine.DSSWars.Resource
                 {
                     if (city.buildingStructure.Bank_count > 0)
                     {
-                        taxPerc += DssConst.BankTaxIncreasePercUnits;
+                        taxPerWorker_copp += DssConst.BankTaxIncreasePercUnits_copp;
                     }
                     if (city.Culture == CityCulture.Lawbiding)
                     {
-                        taxPerc *= 2f;
+                        taxPerWorker_copp *= 2f;
                     }
                 }
             }
             else
             { 
-                return workerCount *  taxPerc;
+                return workerCount *  taxPerWorker_copp;
             }
 
-            return city.workForce.amount * taxPerc;
+            return city.workForce.amount * taxPerWorker_copp;
         }
 
         public int IncomeAndUpkeep_Total()

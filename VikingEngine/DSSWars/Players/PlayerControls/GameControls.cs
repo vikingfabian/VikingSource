@@ -23,7 +23,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
     class GameControls
     {
         public MapControls map;
-        public Casual.CasualControls casual = null;
         public ArmyControls army = null;
         public SoldierControls soldier = null;
         public DiplomacyMap diplomacy = null;
@@ -69,11 +68,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             else
             {
                 GameSpeedOptions = new int[] { 1, 2 };
-            }
-
-            if (player.profile.casualControls)
-            {
-                casual = new Casual.CasualControls();
             }
         }
 

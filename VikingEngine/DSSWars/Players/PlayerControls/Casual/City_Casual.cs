@@ -41,6 +41,21 @@ namespace VikingEngine.DSSWars.GameObject
                     queuePlaceBuilding(BuildAndExpandType.WarmachineBarracks);
                     break;
 
+                case CasualBuildType.GuardTower_Wood:
+                    queuePlaceBuilding(BuildAndExpandType.WoodTower);
+                    if (defenceBuildings.Count +1 >= HousingCount_Guard)
+                    {
+                        queuePlaceBuilding(BuildAndExpandType.GuardHouse_Small);
+                    }
+                    break;
+                case CasualBuildType.GuardTower_Stone:
+                    queuePlaceBuilding(BuildAndExpandType.StoneTower);
+                    if (defenceBuildings.Count +1 >= HousingCount_Guard)
+                    {
+                        queuePlaceBuilding(BuildAndExpandType.GuardHouse_Large);
+                    }
+                    break;
+
                 case CasualBuildType.Logistics:
                     GetCasualProgress().unlock_logistics = true;
                     queuePlaceBuilding(BuildAndExpandType.Logistics);
@@ -135,7 +150,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var subTile = DssRef.world.subTileGrid.Get(buildPos);
                 bool upgrade = false;
 
-                var dist = cityHallSubtilePos.SideLength(buildPos);
+                //var dist = cityHallSubtilePos.SideLength(buildPos);
                 if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
                 {
                     EditSubTile edit = new EditSubTile(buildPos, subTile, true, true, false);
@@ -210,7 +225,6 @@ namespace VikingEngine.DSSWars.GameObject
                 case CasualBuildType.UnlockFarming3:
                     return lib.BoolToInt01(GetCasualProgress().unlock_farming >= 2);
 
-
                 default: return 0;
             }
         }
@@ -225,6 +239,10 @@ namespace VikingEngine.DSSWars.GameObject
                     return 8;
                 case CasualBuildType.Tent:
                     return 8;
+
+                case CasualBuildType.GuardTower_Wood:
+                case CasualBuildType.GuardTower_Stone:
+                    return 99;
 
                 default: return 1;
             }

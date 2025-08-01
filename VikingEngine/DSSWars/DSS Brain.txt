@@ -1,7 +1,7 @@
 ﻿UPDATE
 * Technology cost for iron, steel and adv casting have been lowered
 * fixed: MITHRIL ARMOR NOT TRANSPORTABLE
-
+* fixed: bank wasnt following the new copper system
 
 Casual
 * Gold upkeep for armies
@@ -9,25 +9,24 @@ Casual
 * Removed city food upkeep
 * Tooltips
 * Changed child requirements
-
 * Set all walls to auto assign
-x Remove guard post require
-x Limit guard to walls, 
-x build tower
-* logistics + stone wall, + tent, +research
-* research weapons 
+* Removed guard post require
+* build towers
+* logistics + stone wall, + tent, + research
+* research weapons, upgrade soldiers
 * build farms on add hut
 * max buildings check
-x building blocks income
-x save/load
+* save/load
+
 
 #Pics
 synligeare merge down layer
-Build category: filter, advanced
-
+Build category tab: filter, advanced
 
 #Todo#
 x Optimize: SelectionGroupModels have their own render
+x cities from casual must empty build queues 
+x add casual to demo
 X match casual to save
 x pinned resources
 x more categories/filters in build

@@ -206,6 +206,14 @@ namespace VikingEngine
             value3 = Get(2);
         }
 
+        public void Get(out bool value1, out bool value2, out bool value3, out bool value4)
+        {
+            value1 = Get(0);
+            value2 = Get(1);
+            value3 = Get(2);
+            value4 = Get(3);
+        }
+
         public void Set(int index, bool value)
         {
             if (value)
@@ -293,10 +301,16 @@ namespace VikingEngine
         {
             bitArray = value;
         }
+       
         public TwoHalfByte(byte value1, byte value2)
         {
             bitArray = value1;
             Value2 = value2;
+        }
+        public TwoHalfByte(int value1, int value2)
+        {
+            bitArray = (byte)value1;
+            Value2 = (byte)value2;
         }
 
         public byte Value1

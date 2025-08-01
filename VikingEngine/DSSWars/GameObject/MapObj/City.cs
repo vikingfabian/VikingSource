@@ -521,7 +521,17 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write((byte)warAutoWeaponType);
 
             name.write(w);
-            
+
+            casualCityProfile.writeGameState(w);
+            if (casualProgress == null)
+            {
+                w.Write(false);
+            }
+            else
+            {
+                w.Write(true);
+                casualProgress.writeGameState(w);
+            }
             Debug.WriteCheck(w);
         }
 
@@ -660,6 +670,15 @@ namespace VikingEngine.DSSWars.GameObject
             }
             name.read(r, subversion);
 
+            if (subversion >= 68)
+            {
+                casualCityProfile.readGameState(r, subversion);
+                if (r.ReadBoolean())
+                {
+                    GetCasualProgress().readGameState(this, r, subversion);
+                    casualCityProfile.refreshTech(casualProgress);
+                }
+            }
             Debug.ReadCheck(r);
         }
 
@@ -2508,12 +2527,16 @@ namespace VikingEngine.DSSWars.GameObject
                 content.Add(new RbImage(SpriteName.WarsGuard));
                 content.space();
                 content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_GuardCount, soldiersCount)));
-                content.Add(new RbTab(0.4f));
-                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
-                content.space();
-                content.Add(new RbImage(SpriteName.WarsBuild_GuardOffice));
-                content.space();
-                content.Add(new RbText(HousingCount_Guard.ToString()));
+
+                if (!player.profile.casualControls)
+                {
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsBuild_GuardOffice));
+                    content.space();
+                    content.Add(new RbText(HousingCount_Guard.ToString()));
+                }
 
                 if (!player.profile.casualControls)
                 {
@@ -2548,7 +2571,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (interactive)
                     {
                         content.space();
-                        HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo));
+                        HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo, this));
                     }
                 }
                 if (!player.profile.casualControls)

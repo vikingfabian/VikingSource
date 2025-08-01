@@ -63,8 +63,8 @@ namespace VikingEngine.DSSWars.Resource
             }
         }
 
-        public int GetGold()
-        { return (int)(copper * CopperToGold); }
+        //public int GetGold()
+        //{ return (int)(copper * CopperToGold); }
 
         public static string CopperToGoldString_Decimal(int copper)
         {

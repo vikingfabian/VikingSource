@@ -17,11 +17,10 @@ namespace VikingEngine.DSSWars.Presentation
         public string HUD_Filter => "Filter";
         public string HUD_Scale => "Scale";
         public string HUD_Tags => "Tags";
+        public string HUD_ClickToCancel => "Click to cancel";
         public string Lobby_PlayerProfileNumbered => "Profile {0}";
         public string Lobby_CharacterCreationNumbered => "Character {0}";
         public string Lobby_PlayerProfileEdit => "Edit player profile";
-
-        //public string Lobby_CharacterCreationEdit => "Open character creator";
 
         public string ProfileEditor_TunicColor => "Tunic";
         public string ProfileEditor_PantsColor => "Pants";
@@ -59,6 +58,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string ExperienceType_Smelting => "Smeleting";
         public string Catergory_Optimize => "Optimize";
         public string BuildCategory_Road => "Road";
+        public string Technology_ModernFarming => "Modern farming";
     }
 
 }

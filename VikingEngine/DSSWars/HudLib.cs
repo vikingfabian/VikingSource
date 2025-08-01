@@ -604,7 +604,10 @@ namespace VikingEngine.DSSWars
 
         public static void taxInfo(RichBoxContent content, object tag)
         {
-            content.text(string.Format(DssRef.lang.Economy_TaxDescription, Resource.Money.CopperToGoldString_Decimal(DssConst.TaxPerWorker_copp)));
+            City city = (City)tag;
+            CityEconomyData cityEconomy = new CityEconomyData();
+            cityEconomy.tax(city, out float taxPerWorker_copp);
+            content.text(string.Format(DssRef.lang.Economy_TaxDescription, Resource.Money.CopperToGoldString_Decimal((int)taxPerWorker_copp)));
             content.newParagraph();
             content.text(DssRef.lang.Info_PerSecond);
         }

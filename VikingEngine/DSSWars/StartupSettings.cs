@@ -31,6 +31,9 @@ namespace VikingEngine.DSSWars
         public static bool UnlockAllProgress = PlatformSettings.DevBuild ? true :
             false;//DO NOT CHANGE
 
+        public static bool CasualInstaBuild = PlatformSettings.DevBuild ? true :
+            false;//DO NOT CHANGE
+
         public static bool TestOffscreenUpdate = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
@@ -61,7 +64,8 @@ namespace VikingEngine.DSSWars
             EndlessResources ||
             EndlessDiplomacy ||
             BlockMessages ||
-            BlockTooltip;
+            BlockTooltip ||
+            CasualInstaBuild;
 
     }
 }

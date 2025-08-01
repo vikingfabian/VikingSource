@@ -291,14 +291,14 @@ namespace VikingEngine.DSSWars
 
         //BANK
         public static float GoldDeliveryFeePerc = 10;
-        public static float BankTaxIncreasePercUnits = 0.05f;
+        public static int BankTaxIncreasePercUnits_copp = 5;
         public static int GoldDeliveryChunkSize_Mini = 100;
         public static int GoldDeliveryChunkSize_Level1 = 500;
         public static int GoldDeliveryChunkSize_Level2 = 2000;
         public static int GoldDeliveryChunkSize_Level3 = 5000;
 
-        public static float Casual_Farm2TaxIncreasePercUnits = 0.05f;
-        public static float Casual_Farm3TaxIncreasePercUnits = 0.1f;
+        public static int Casual_Farm2TaxIncreasePercUnits_copp = 5;
+        public static int Casual_Farm3TaxIncreasePercUnits_copp = 10;
         //EVENTS
         public static Range DominationSizeIncrease = new Range(5, 7);
         public static IntervalF DominationWarTimeDelay_Minutes = new IntervalF(10, 20);

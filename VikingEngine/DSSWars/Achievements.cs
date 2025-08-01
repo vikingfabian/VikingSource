@@ -11,6 +11,12 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
+    /*
+     * BRAINSTORM
+     * -breaking int32 gold
+     * 
+     */
+
     class Achievements
     {
         public const int DecorationsTotalCount = 20;

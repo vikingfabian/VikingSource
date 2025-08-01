@@ -155,13 +155,6 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
                     case CityTemplateCellType.Gate:
                         {
-                            //DefenceStatus defence = new DefenceStatus();
-                            //main = TerrainMainType.Wall;
-                            //sub = gate;
-                            //defence.autoAssign = false;
-
-                            //defence.init(pos);
-                            //defenceBuildings.Add(defence);
                             main = TerrainMainType.Decor;
                             sub = road;
                         }

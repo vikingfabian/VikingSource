@@ -60,8 +60,23 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public SpriteName icon;
         public int price;
         public int buildtime_sec;
+    }
 
-        //public bool allowMultiBuild;
+    struct CasualBuildQueueItem
+    {
+        public CasualBuildType build;
+        public int count;
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)build);
+            w.Write((ushort)count);
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion)
+        {
+            build = (CasualBuildType)r.ReadByte();
+            count = r.ReadUInt16();
+        }
     }
 
 
@@ -222,7 +237,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockFarming3,
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
-                                DssRef.lang.Hud_Unlock, ".Modern farming"),
+                                DssRef.lang.Hud_Unlock, DssRef.todoLang.Technology_ModernFarming),
                 icon = SpriteName.WarsResource_Wagon4Wheel,
                 price = 1500,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level3_Minutes * TimeExt.MinuteInSeconds),
@@ -238,6 +253,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         { 
             return CasualBuildOptionList[(int)type];
         }
+
+        //static readonly int[] BuildCountOptions = [4, 8, 20];
 
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
@@ -262,7 +279,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
                 if (progress.unlock_research)
                 {
-                    available.Add(CasualBuildType.ResearchCenter);
+                    complete.Add(CasualBuildType.ResearchCenter);
 
                     switch (progress.unlock_armor)
                     {
@@ -349,6 +366,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 }
             }
 
+            //CURRENT PROGRESS
             city.GetCasualProgress().BuildToHud(player, city, content);
 
             if (complete.Count > 0)
@@ -369,7 +387,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             void AddBuildButton(CasualBuildOption option, bool complete)
             {
                 content.newLine();
-                bool canAfford = player.faction.hasGold(option.price, city);
+                
                 int count = city.getCount(option.Type);
                 int maxCount = city.getMaxCount(option.Type);
                 bool mayQueue = count < maxCount;
@@ -385,16 +403,58 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 }
                 content.Add(new RbTab(0.06f));
 
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>
                 {
-                    new RbImage(option.icon),
-                    new RbSpace(),
-                    new RbText(option.Name),
-                    new RbSpace(2),
-                    new RbImage(SpriteName.rtsMoney),
-                    new RbText(option.price.ToString(), canAfford ? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark)
-                }, new RbAction2Arg<CasualBuildType, int>(city.CasualBuild, option.Type, 1),
-                new RbTooltip(buildTooltip, new CasualBuildPurchase() { buildType = option.Type, count = 1 }), !complete && mayQueue));
+                    bool canAfford = player.faction.hasGold(option.price, city);
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>
+                    {
+                        new RbImage(option.icon),
+                        new RbSpace(),
+                        new RbText(option.Name),
+                        new RbSpace(2),
+                        new RbImage(SpriteName.rtsMoney),
+                        new RbText(option.price.ToString(), canAfford ? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark)
+                    }, new RbAction2Arg<CasualBuildType, int>(city.CasualBuild, option.Type, 1),
+                    new RbTooltip(buildTooltip, new CasualBuildPurchase() { buildType = option.Type, count = 1 }), !complete && mayQueue));
+                }
+
+                if (option.category == CasualBuildCategory.Build)
+                {
+                    int maxBuild = maxCount - count;
+                    if (maxBuild >= 4)
+                    {
+                        xButton(4);
+                        if (maxBuild >= 6)
+                        {
+                            if (maxBuild <= 10)
+                            {
+                                xButton(maxBuild);
+                            }
+                            else
+                            {
+                                xButton(8);
+                                xButton(maxBuild);
+                            }
+                        }
+                    }
+
+                    void xButton(int buildcount)
+                    {
+                        if (buildcount <= maxCount)
+                        {
+                            bool canAfford = player.faction.hasGold(option.price * buildcount, city);
+
+                            if (count + buildcount <= maxCount)
+                            {
+                                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>
+                                {
+                                    new RbText(string.Format( DssRef.lang.Hud_XTimes, buildcount), canAfford ? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark)
+                                }, new RbAction2Arg<CasualBuildType, int>(city.CasualBuild, option.Type, buildcount),
+                                new RbTooltip(buildTooltip, new CasualBuildPurchase() { buildType = option.Type, count = buildcount }), !complete && mayQueue));
+                            }
+                        }
+                    }
+                }
             }
 
             void buildTooltip(RichBoxContent content, object tag)
@@ -409,7 +469,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                HudLib.ResourceCost(content, ResourceType.Gold, option.price * buildPurchase.count, player.faction.GetGold(city));
+                HudLib.ResourceCost(content, ResourceType.Gold, option.price * buildPurchase.count, (int)player.faction.GetGold(city));
 
                 content.newLine();
                 HudLib.BulletPoint(content);
@@ -447,6 +507,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         content.Add(new RbText(".Soldier recruit time is divided among the barracks"));
                         break;
 
+                    case CasualBuildType.GuardTower_Wood:
+                    case CasualBuildType.GuardTower_Stone:
+                        content.h2(DssRef.lang.Hud_PurchaseTitle_Gain, HudLib.TitleColor_Label);
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbImage(SpriteName.WarsGuardPostIcon));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.Defence_GuardPost));
+                        break;
+
+
                     case CasualBuildType.Logistics:
                         content.h2(DssRef.lang.Hud_Unlock, HudLib.TitleColor_Label);
 
@@ -471,7 +542,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
                     case CasualBuildType.ResearchCenter:
                         content.h2(DssRef.lang.Hud_Unlock, HudLib.TitleColor_Label);
-
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
@@ -515,17 +585,20 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
                     case CasualBuildType.UnlockFarming2:
                         content.h2(DssRef.lang.Hud_Unlock, HudLib.TitleColor_Label);
+                        content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(MathExt.PercentageInteger(DssConst.Casual_Farm2TaxIncreasePercUnits)))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(DssConst.Casual_Farm2TaxIncreasePercUnits_copp))));
                         break;
+
                     case CasualBuildType.UnlockFarming3:
                         content.h2(DssRef.lang.Hud_Unlock, HudLib.TitleColor_Label);
+                        content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(MathExt.PercentageInteger(DssConst.Casual_Farm3TaxIncreasePercUnits)))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(DssConst.Casual_Farm3TaxIncreasePercUnits_copp))));
                         break;
 
                 }

@@ -2,13 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Metrics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.LootFest.GO.NPC;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 {
@@ -24,6 +28,44 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             this.soldierType = soldierType;
             purchaseOption = option;
             this.count = count;
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)soldierType);
+            w.Write((ushort)count);
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion, ref CasualCityProfile cityProfile)
+        {
+            soldierType = (CasualSoldierType)r.ReadByte();
+            count = r.ReadUInt16();
+
+            switch (soldierType)
+            {
+                case CasualSoldierType.Guard:
+                    purchaseOption = cityProfile.guard;
+                    break;
+                case CasualSoldierType.FolkMen:
+                    purchaseOption = cityProfile.folkmen;
+                    break;
+                case CasualSoldierType.Seamen:
+                    purchaseOption = cityProfile.shipmen;
+                    break;
+                case CasualSoldierType.Melee:
+                    purchaseOption = cityProfile.meleeMen;
+                    break;
+                case CasualSoldierType.Ranged:
+                    purchaseOption = cityProfile.rangedMen;
+                    break;
+                case CasualSoldierType.Rider:
+                    purchaseOption = cityProfile.riderMen;
+                    break;
+                case CasualSoldierType.Siege:
+                    purchaseOption = cityProfile.siegeMen;
+                    break;
+
+            }
+
         }
 
         public bool Equals(CasualRecruitQueueItem other)
@@ -92,13 +134,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             };
         }
     }
-
     
-
-    class CasualControls
-    {
-        
-    }
-
     
 }

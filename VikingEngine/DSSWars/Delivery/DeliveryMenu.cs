@@ -14,6 +14,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.ToGG;
 using static System.Net.Mime.MediaTypeNames;
+using VikingEngine.DSSWars.Data;
 
 namespace VikingEngine.DSSWars.Delivery
 {
@@ -211,7 +212,7 @@ namespace VikingEngine.DSSWars.Delivery
                                 City toCity = (City)tag;
                                 //RichBoxContent content = new RichBoxContent();
                                 content.h2(toCity.Name(out _)).overrideColor = HudLib.TitleColor_Label;
-                                var time = DeliveryProfile.DeliveryTime(city, toCity, currentStatus.level, out float distance);
+                                TimeLength time = DeliveryProfile.DeliveryTime(city, toCity, currentStatus.level, out float distance);
                                 content.text(string.Format(DssRef.lang.Delivery_DistanceX, TextLib.OneDecimal(distance)));
                                 content.text(string.Format(DssRef.lang.Delivery_DeliveryTimeX, time.LongString()));
 
