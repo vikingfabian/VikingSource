@@ -2873,14 +2873,23 @@ namespace VikingEngine.DSSWars.GameObject
             if (interactive)
             {
                 content.space();
-                HudLib.InfoButton(content, new RbTooltip_Text(LangLib.CityCulture(Culture, false)));
+                HudLib.InfoButton(content, new RbTooltip(cultureToolTip));
             }
             else
             {
                 content.newLine();
                 HudLib.Description(content, LangLib.CityCulture(Culture, false));
             }
-        }        
+        }
+
+        void cultureToolTip(RichBoxContent content, object tag)
+        {
+            content.h2(LangLib.CityCulture(Culture, true), HudLib.TitleColor_Head);
+            content.text(LangLib.CityCulture(Culture, false));
+
+            content.newParagraph();
+            content.text(DssRef.todoLang.CityCultureDescription, HudLib.InfoYellow_Light);
+        }
 
         public void AddNeighborCity(int nCityIndex)
         {

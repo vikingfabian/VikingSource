@@ -495,10 +495,10 @@ namespace VikingEngine.DSSWars
         public void addGold(int value, City city)
         {
 
-            if (player.IsLocalPlayer())
-            {
-                lib.DoNothing();
-            }
+            //if (player.IsLocalPlayer())
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (DssRef.storage.centralGold)
             {

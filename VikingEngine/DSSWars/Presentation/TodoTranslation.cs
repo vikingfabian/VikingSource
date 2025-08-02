@@ -61,6 +61,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Technology_ModernFarming => "Modern farming";
 
         public string ExportImportDescription => "For sharing save files with other player, all files are this folder: {0}";
+
+        public string CityCultureDescription => "Culuture will give it a special bonus to the city";
     }
 
 }

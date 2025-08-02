@@ -714,10 +714,10 @@ namespace VikingEngine.DSSWars.GameObject
                     ItemResourceType topItem = ItemResourceType.NONE;
                     int topPrio = 0;
 
-                    getMintPriority(workTemplate.coinmaker_cupper, ItemResourceType.CopperCoin, ResourceLib.CupperCoin);
-                    getMintPriority(workTemplate.coinmaker_bronze, ItemResourceType.BronzeCoin, ResourceLib.BronzeCoin);
-                    getMintPriority(workTemplate.coinmaker_silver, ItemResourceType.SilverCoin, ResourceLib.SilverCoin);
-                    getMintPriority(workTemplate.coinmaker_mithril, ItemResourceType.ElfCoin, ResourceLib.ElfCoin);
+                    getMintPriority(workTemplate.coinmaker_copper, ItemResourceType.CopperCoin, Minting.CopperCoin);
+                    getMintPriority(workTemplate.coinmaker_bronze, ItemResourceType.BronzeCoin, Minting.BronzeCoin);
+                    getMintPriority(workTemplate.coinmaker_silver, ItemResourceType.SilverCoin, Minting.SilverCoin);
+                    getMintPriority(workTemplate.coinmaker_mithril, ItemResourceType.ElfCoin, Minting.ElfCoin);
 
                     void getMintPriority(WorkPriority priority, ItemResourceType  item, CraftBlueprint blueprint)
                     {

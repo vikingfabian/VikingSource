@@ -115,10 +115,10 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.ManCannonIron, DefaultWeight, CraftResourceLib.ManCannonIron, null);
 
             // coins
-            new ItemProperties(ItemResourceType.CopperCoin, DefaultWeight, ResourceLib.CupperCoin, null);
-            new ItemProperties(ItemResourceType.BronzeCoin, DefaultWeight, ResourceLib.BronzeCoin, null);
-            new ItemProperties(ItemResourceType.SilverCoin, DefaultWeight, ResourceLib.SilverCoin, null);
-            new ItemProperties(ItemResourceType.ElfCoin, DefaultWeight, ResourceLib.ElfCoin, null);
+            new ItemProperties(ItemResourceType.CopperCoin, DefaultWeight, Minting.CopperCoin, null);
+            new ItemProperties(ItemResourceType.BronzeCoin, DefaultWeight, Minting.BronzeCoin, null);
+            new ItemProperties(ItemResourceType.SilverCoin, DefaultWeight, Minting.SilverCoin, null);
+            new ItemProperties(ItemResourceType.ElfCoin, DefaultWeight, Minting.ElfCoin, null);
 
 
             for (int i = 0; i < items.Length; ++i)

@@ -1303,7 +1303,10 @@ namespace VikingEngine.DSSWars.Interface
                         case ResourcesSubTab.Stockpile_Armor:
                         case ResourcesSubTab.Work_Armor:
                             tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
+                            break;
 
+                        case ResourcesSubTab.Work_Mint:
+                            tabContent.Add(new RbImage(SpriteName.WarsResource_SilverCoin));
                             break;
 
                         case ResourcesSubTab.Overview_Resources:
@@ -1360,7 +1363,7 @@ namespace VikingEngine.DSSWars.Interface
                                    {
                                        GroupedResource.BufferIconInfo(content, true);
                                    }
-                                   ResourceLib.ConvertGoldOre.toMenu(content, city, false, true, false, false);
+                                   Minting.ConvertGoldOre.toMenu(content, city, false, true, false, false);
                                    {
                                        content.newLine();
                                        content.Add(new RbText(1.ToString()));
@@ -2555,6 +2558,7 @@ namespace VikingEngine.DSSWars.Interface
         Work_Weapons,
         Work_Projectile,
         Work_Armor,
+        Work_Mint,
 
         Auto,
         

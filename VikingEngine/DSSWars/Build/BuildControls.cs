@@ -1167,7 +1167,7 @@ namespace VikingEngine.DSSWars.Build
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(DssConst.BankTaxIncreasePercUnits_copp))));
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(DssConst.BankTaxIncreasePercUnits_copp * Money.CopperToGold))));
                     content.text(DssRef.lang.Hud_EffectDoesNotStack).overrideColor = HudLib.InfoYellow_Light;
                     break;
 

@@ -1209,7 +1209,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.Work_CoalPit:
                     return DssRef.lang.BuildingType_CoalPit_Description;
                 case TerrainBuildingType.Bank:
-                    return DssRef.lang.BuildingType_GoldDelivery_Description;
+                    return DssRef.lang.BuildingType_Bank_Description;
                 case TerrainBuildingType.CoinMinter:
                     return DssRef.lang.BuildingType_CoinMaker_Description;
 

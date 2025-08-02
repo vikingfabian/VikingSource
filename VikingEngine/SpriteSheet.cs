@@ -2210,7 +2210,13 @@ namespace VikingEngine
                 add(SpriteName.EditorLayerMergeDown);
                 add(SpriteName.WarsUnitIcon_Immigrant_RemoveTime);
                 add(SpriteName.WarsUnitIcon_Immigrant);
-        
+
+                add(SpriteName.WarsResource_CopperCoin);
+                add(SpriteName.WarsResource_ElfCoin);
+                add(SpriteName.WarsResource_BonzeCoin);
+                add(SpriteName.WarsResource_SilverCoin);
+
+
             }
 
             currentIndex = numTilesWidth * 87;

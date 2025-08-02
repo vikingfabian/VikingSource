@@ -110,13 +110,20 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority trading = new WorkPriority(2);
         public WorkPriority autoBuild = new WorkPriority(1);
 
-        public WorkPriority coinmaker_cupper = new WorkPriority(0);
+        public WorkPriority smeltgold = new WorkPriority(3);
+        public WorkPriority coinmaker_copper = new WorkPriority(0);
         public WorkPriority coinmaker_bronze = new WorkPriority(0);
         public WorkPriority coinmaker_silver = new WorkPriority(0);
         public WorkPriority coinmaker_mithril = new WorkPriority(0);
+
+        public bool coinmaker_copper_fullStock = true;
+        public bool coinmaker_bronze_fullStock = true;
+        public bool coinmaker_silver_fullStock = true;
+        public bool coinmaker_mithril_fullStock = true;
+
         public void applyUnlock(Unlocks unlocks)
         {
-            coinmaker_cupper.unlocked = unlocks.coinMaking;
+            coinmaker_copper.unlocked = unlocks.coinMaking;
             coinmaker_bronze.unlocked = unlocks.coinMaking;
             coinmaker_silver.unlocked = unlocks.coinMaking;
             coinmaker_mithril.unlocked = unlocks.coinMaking;
@@ -253,10 +260,13 @@ namespace VikingEngine.DSSWars.Work
             trading.writeGameState(w, isCity);
             autoBuild.writeGameState(w, isCity);
 
-            coinmaker_cupper.writeGameState(w, isCity);
+            smeltgold.writeGameState(w, isCity);
+            coinmaker_copper.writeGameState(w, isCity);
             coinmaker_bronze.writeGameState(w, isCity);
             coinmaker_silver.writeGameState(w, isCity);
             coinmaker_mithril.writeGameState(w, isCity);
+
+            
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
         {
@@ -350,10 +360,16 @@ namespace VikingEngine.DSSWars.Work
             trading.readGameState(r, subversion, isCity);
             autoBuild.readGameState(r, subversion, isCity);
 
-            coinmaker_cupper.readGameState(r, subversion, isCity);
+            if (subversion >= 69)
+            {
+                smeltgold.readGameState(r, subversion, isCity);
+            }
+            coinmaker_copper.readGameState(r, subversion, isCity);
             coinmaker_bronze.readGameState(r, subversion, isCity);
             coinmaker_silver.readGameState(r, subversion, isCity);
             coinmaker_mithril.readGameState(r, subversion, isCity);
+
+            
         }
 
 
@@ -447,7 +463,8 @@ namespace VikingEngine.DSSWars.Work
             trading.onFactionValueChange(factionTemplate.trading);
             autoBuild.onFactionValueChange(factionTemplate.autoBuild);
 
-            coinmaker_cupper.onFactionValueChange(factionTemplate.coinmaker_cupper);
+            smeltgold.onFactionValueChange(factionTemplate.coinmaker_copper);
+            coinmaker_copper.onFactionValueChange(factionTemplate.coinmaker_copper);
             coinmaker_bronze.onFactionValueChange(factionTemplate.coinmaker_bronze);
             coinmaker_silver.onFactionValueChange(factionTemplate.coinmaker_silver);
             coinmaker_mithril.onFactionValueChange(factionTemplate.coinmaker_mithril);
@@ -543,7 +560,8 @@ namespace VikingEngine.DSSWars.Work
             trading.followFaction = true;
             autoBuild.followFaction = true;
 
-            coinmaker_cupper.followFaction = true;
+            smeltgold.followFaction = true;
+            coinmaker_copper.followFaction = true;
             coinmaker_bronze.followFaction = true;
             coinmaker_silver.followFaction = true;
             coinmaker_mithril.followFaction = true;
@@ -873,8 +891,8 @@ namespace VikingEngine.DSSWars.Work
                 //case WorkPriorityType.expandFarms:
                 //    return expandFarms;
 
-                case WorkPriorityType.coinmaker_cupper:
-                    return coinmaker_cupper;
+                case WorkPriorityType.coinmaker_copper:
+                    return coinmaker_copper;
                 case WorkPriorityType.coinmaker_bronze:
                     return coinmaker_bronze;
                 case WorkPriorityType.coinmaker_silver:
@@ -1134,8 +1152,8 @@ namespace VikingEngine.DSSWars.Work
                 //     = value;
                 //    break;
 
-                case WorkPriorityType.coinmaker_cupper:
-                    coinmaker_cupper = value;
+                case WorkPriorityType.coinmaker_copper:
+                    coinmaker_copper = value;
                     break;
                 case WorkPriorityType.coinmaker_bronze:
                     coinmaker_bronze = value;
@@ -1278,6 +1296,16 @@ namespace VikingEngine.DSSWars.Work
                     craft_fullplatearmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_FullPlateArmor), SpriteName.WarsHammer, SpriteName.WarsResource_FullPlateArmor, WorkPriorityType.craftFullPlateArmor, faction, city);
                     craft_mithrilarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilArmor), SpriteName.WarsHammer, SpriteName.WarsResource_MithrilArmor, WorkPriorityType.craftMithrilArmor, faction, city);
 
+                    break;
+
+                case ResourcesSubTab.Work_Mint:
+                    coinmaker_copper.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Coin), SpriteName.WarsHammer, SpriteName.WarsResource_CopperCoin, WorkPriorityType.coinmaker_copper, faction, city);
+
+                    void waitForFullStock(WorkPriorityType priorityType)
+                    { 
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsStockpileStop) }, 
+
+                    }
                     break;
             } 
         
@@ -1537,8 +1565,8 @@ namespace VikingEngine.DSSWars.Work
         trading,
         autoBuild,
         //expandFarms,
-
-        coinmaker_cupper,
+        smeltGold,
+        coinmaker_copper,
         coinmaker_bronze,
         coinmaker_silver,
         coinmaker_mithril,

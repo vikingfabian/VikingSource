@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
+* Improved hud
+
 
 #Pics
 synligeare merge down layer
