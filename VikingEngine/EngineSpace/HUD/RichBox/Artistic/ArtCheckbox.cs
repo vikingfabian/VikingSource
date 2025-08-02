@@ -8,10 +8,10 @@ namespace VikingEngine.HUD.RichBox.Artistic
 {
     class ArtCheckbox : ArtButton
     {
-        BoolGetSet property;
+        BoolGetSet_Tag property;
         RbImage checkImage = null;
         SpriteName checkOn, checkOff;
-        public ArtCheckbox(List<AbsRichBoxMember> content, BoolGetSet property, AbsRbAction enter=null)
+        public ArtCheckbox(List<AbsRichBoxMember> content, BoolGetSet_Tag property, AbsRbAction enter=null)
             :base(RbButtonStyle.CheckBox, content, null, enter)
         {
             this.property = property;

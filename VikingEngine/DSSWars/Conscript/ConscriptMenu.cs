@@ -575,7 +575,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
-        bool maxPopulationProperty(int index, bool setValue, bool value)
+        bool maxPopulationProperty(object tag, bool setValue, bool value)
         {
             BarracksStatus currentProfile = get();
             if (setValue)
@@ -585,7 +585,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
             return currentProfile.requireMaxPopulation;
         }
-        bool maxFoodProperty(int index, bool setValue, bool value)
+        bool maxFoodProperty(object tag, bool setValue, bool value)
         {
             BarracksStatus currentProfile = get();
             if (setValue)

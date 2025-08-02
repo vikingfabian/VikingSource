@@ -1119,10 +1119,10 @@ namespace VikingEngine.DSSWars.Interface
                         description = null;
                         break;
 
-                    case TagSubTab.PostIt:
+                    case TagSubTab.HudPin:
                         tabContent.Add(new RbImage(SpriteName.MissingImage));
                         tabContent.space(0.6f);
-                        tabContent.Add(new RbText(".Post-it"));
+                        tabContent.Add(new RbText(".HUD pins"));
                         description = DssRef.lang.Experience_Description;
                         break;
 
@@ -1174,7 +1174,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
                     break;
 
-                case TagSubTab.PostIt:
+                case TagSubTab.HudPin:
                     foreach (var item in City.MovableCityResource_Misc)
                     {
                         resourcePostIt(item);
@@ -1182,8 +1182,8 @@ namespace VikingEngine.DSSWars.Interface
 
                     void resourcePostIt(ItemResourceType item)
                     { 
-                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { 
-                            new RbImage(ResourceLib.Icon(item)), new RbSpace(), new RbText(LangLib.Item(item)) },
+                        //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { 
+                        //    new RbImage(ResourceLib.Icon(item)), new RbSpace(), new RbText(LangLib.Item(item)) }, 
 
                     }
                     break;
@@ -2503,7 +2503,7 @@ namespace VikingEngine.DSSWars.Interface
     enum TagSubTab
     { 
         Tag,
-        PostIt,
+        HudPin,
         NUM
     }
 }

@@ -7,31 +7,32 @@ using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Interface
 {
-    enum PostItType
+    //HUD Pins
+    enum HudPinType
     { 
         Resource,
     }
 
-    struct PostIt
+    struct HudPin
     {
-        public PostItType type;
+        public HudPinType type;
         public int id;
 
-        public PostIt(ItemResourceType itemResource)
+        public HudPin(ItemResourceType itemResource)
         { 
-            type = PostItType.Resource;
+            type = HudPinType.Resource;
             id = (int)itemResource;
         }
     }
 
-    class CityPostIt : List<PostItType>
+    class CityHudPin : List<HudPinType>
     { 
         
     }
 
-    class PostItManager : Dictionary<int, CityPostIt>
+    class HudPinManager : Dictionary<int, CityHudPin>
     {
-        public PostItManager() :
+        public HudPinManager() :
             base(8)
         { }
 

@@ -1296,7 +1296,7 @@ namespace VikingEngine.DSSWars
 
             underMenu.Refresh(content);
 
-            bool tutorialProperty(int index, bool set, bool value)
+            bool tutorialProperty(object tag, bool set, bool value)
             {
                 if (set)
                 {
@@ -1318,7 +1318,7 @@ namespace VikingEngine.DSSWars
             //    return DssRef.storage.generateNewMaps;
             //}
 
-            bool bCustomSeedProperty(int index, bool set, bool value)
+            bool bCustomSeedProperty(object tag, bool set, bool value)
             {
                 if (set)
                 {
@@ -1740,7 +1740,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public bool allowPauseProperty(int index, bool set, bool value)
+        public bool allowPauseProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -1751,7 +1751,7 @@ namespace VikingEngine.DSSWars
             return DssRef.difficulty.setting_allowPauseCommand;
         }
 
-        public bool centralGoldProperty(int index, bool set, bool value)
+        public bool centralGoldProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -1762,7 +1762,7 @@ namespace VikingEngine.DSSWars
             return DssRef.storage.centralGold;
         }
 
-        public bool bossProperty(int index, bool set, bool value)
+        public bool bossProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -1861,7 +1861,7 @@ namespace VikingEngine.DSSWars
             refreshSplitScreen();
         }
 
-        public bool verticalSplitProperty(int index, bool set, bool value)
+        public bool verticalSplitProperty(object tag, bool set, bool value)
         {
             if (set)
             {

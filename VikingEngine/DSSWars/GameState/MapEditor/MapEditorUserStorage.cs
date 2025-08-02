@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
     {
 
         public bool viewAdvancedSettings = false;
-        public bool ViewAdvancedProperty(int index, bool set, bool value)
+        public bool ViewAdvancedProperty(object tag, bool set, bool value)
         {
             if (set)
             {

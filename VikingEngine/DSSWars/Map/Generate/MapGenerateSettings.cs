@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             startRadiusRange = new IntervalF(LandChainMinRadius, LandChainMaxRadius * 0.5f);
         }
 
-        public bool CustomSizeProperty(int index, bool set, bool value)
+        public bool CustomSizeProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             return bCustomSize;
         }
 
-        public bool CleanUpProperty(int index, bool set, bool value)
+        public bool CleanUpProperty(object tag, bool set, bool value)
         {
             if (set)
             {

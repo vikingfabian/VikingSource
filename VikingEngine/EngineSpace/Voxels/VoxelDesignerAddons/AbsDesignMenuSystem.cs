@@ -82,7 +82,7 @@ namespace VikingEngine.Voxels
             //    if (((VoxelDesigner)designer).inGame)
             //        return;
             //}
-            new GuiCheckbox("All frames", "Make the same action on all frames", designer.bRepeateOnAllFramesProperty, layout);
+            //new GuiCheckbox("All frames", "Make the same action on all frames", designer.bRepeateOnAllFramesProperty, layout);
         }
 
         protected void roatateFlipMenu(HUD.GuiLayout layout)

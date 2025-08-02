@@ -441,7 +441,7 @@ namespace VikingEngine.DSSWars.GameObject
             AutoConscriptLib.WorkPriority(this, ref workTemplate);
         }
 
-        public bool AutomateCityProperty(int index, bool set, bool value)
+        public bool AutomateCityProperty(object tag, bool set, bool value)
         {
             if (set)
             {

@@ -98,7 +98,7 @@ namespace VikingEngine.PJ
 
                 new GuiSectionSeparator(layout);
                 resolutionOptions(layout);
-                new GuiImageCheckbox(SpriteName.MenuIconMonitorArrowsOut, null, Ref.gamesett.fullscreenProperty, layout);
+                //new GuiImageCheckbox(SpriteName.MenuIconMonitorArrowsOut, null, Ref.gamesett.fullscreenProperty, layout);
 
                 new GuiSectionSeparator(layout);
                 new GuiTextButton("*Debug Controls*", null, controlDebugScreen, true, layout);

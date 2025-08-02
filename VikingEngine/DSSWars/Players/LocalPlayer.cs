@@ -1701,7 +1701,7 @@ namespace VikingEngine.DSSWars.Players
             intelligent = true;
             city.AutoExpandType(out work, out farm);
         }
-        public bool CityTagsOnMapProperty(int index, bool set, bool value)
+        public bool CityTagsOnMapProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -1711,7 +1711,7 @@ namespace VikingEngine.DSSWars.Players
             return viewCityTagsOnMap;
         }
 
-        public bool ArmyTagsOnMapProperty(int index, bool set, bool value)
+        public bool ArmyTagsOnMapProperty(object tag, bool set, bool value)
         {
             if (set)
             {
