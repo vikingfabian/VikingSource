@@ -73,6 +73,7 @@ namespace VikingEngine.DSSWars.Players
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
 
         public ProgressSubTab progressSubTab = 0;
+        public TagSubTab tagSubTab = 0;
         public MixTabEditType mixTabEditType = MixTabEditType.None;
         public WorkPriorityType mixWorkType = WorkPriorityType.NUM_NONE;
         public ItemResourceType mixTabItem = ItemResourceType.NONE;
@@ -1722,7 +1723,7 @@ namespace VikingEngine.DSSWars.Players
             intelligent = true;
             city.AutoExpandType(out work, out farm);
         }
-        public bool CityTagsOnMapProperty(int index, bool set, bool value)
+        public bool CityTagsOnMapProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -1732,7 +1733,7 @@ namespace VikingEngine.DSSWars.Players
             return viewCityTagsOnMap;
         }
 
-        public bool ArmyTagsOnMapProperty(int index, bool set, bool value)
+        public bool ArmyTagsOnMapProperty(object tag, bool set, bool value)
         {
             if (set)
             {

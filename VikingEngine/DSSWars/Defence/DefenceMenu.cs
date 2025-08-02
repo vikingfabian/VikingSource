@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Defence
             city.defenceBuildings[city.selectedDefenceBuilding] = profile;
         }
 
-        public bool autoAssignProperty(int index, bool bSet, bool value)
+        public bool autoAssignProperty(object tag, bool bSet, bool value)
         {
             var defence = getSelected();
             if (bSet)

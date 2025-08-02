@@ -266,7 +266,7 @@ namespace VikingEngine
             }
         }
 
-        public bool fullscreenProperty(int index, bool set, bool value)
+        public bool fullscreenProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -279,7 +279,7 @@ namespace VikingEngine
             return Engine.Screen.PcTargetFullScreen;
         }
 
-        public bool AddSomePixelsProperty(int index, bool set, bool value)
+        public bool AddSomePixelsProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -322,7 +322,7 @@ namespace VikingEngine
             return Screen.Monitor;
         }
 
-        public bool modelLightProperty(int index, bool set, bool val)
+        public bool modelLightProperty(object tag, bool set, bool val)
         {
             if (set)
             {
@@ -336,7 +336,7 @@ namespace VikingEngine
             return ModelLightShaderEffect;
         }
 
-        public bool particlesProperty(int index, bool set, bool val)
+        public bool particlesProperty(object tag, bool set, bool val)
         {
             if (set)
             {
@@ -681,7 +681,7 @@ namespace VikingEngine
 
         void fullScreenBox(GuiLayout layout)
         {
-            new GuiCheckbox(Ref.langOpt.GraphicsOption_Fullscreen, null, Ref.gamesett.fullscreenProperty, layout);
+            //new GuiCheckbox(Ref.langOpt.GraphicsOption_Fullscreen, null, Ref.gamesett.fullscreenProperty, layout);
         }
 
         void recordingResolutionOptions(Gui gui)
@@ -834,7 +834,7 @@ namespace VikingEngine
             return VibrationLevel;
         }
 
-        public bool panOnZoomProperty(int index, bool set, bool value)
+        public bool panOnZoomProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -844,7 +844,7 @@ namespace VikingEngine
             return panOnZoom;
         }
 
-        public bool lowGCProperty(int index, bool set, bool value)
+        public bool lowGCProperty(object tag, bool set, bool value)
         {
             if (set)
             {

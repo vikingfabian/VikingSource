@@ -382,7 +382,7 @@ namespace VikingEngine.DSSWars.Interface
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
 
-            bool autoSaveProperty(int index, bool set, bool value)
+            bool autoSaveProperty(object tag, bool set, bool value)
             {
                 if (set)
                 {
@@ -393,7 +393,7 @@ namespace VikingEngine.DSSWars.Interface
                 return DssRef.storage.autoSave;
             }
 
-            bool speed5Property(int index, bool set, bool value)
+            bool speed5Property(object tag, bool set, bool value)
             {
                 if (set)
                 {
@@ -406,7 +406,7 @@ namespace VikingEngine.DSSWars.Interface
 
             
 
-            bool longerBuildQueueProperty(int index, bool set, bool value)
+            bool longerBuildQueueProperty(object tag, bool set, bool value)
             {
                 if (set)
                 {

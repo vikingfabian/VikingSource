@@ -284,7 +284,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public bool AutoBuildWorkProperty(int index, bool set, bool value)
+        public bool AutoBuildWorkProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             return autoBuild_Work;
         }
-        public bool AutoBuildFarmProperty(int index, bool set, bool value)
+        public bool AutoBuildFarmProperty(object tag, bool set, bool value)
         {
             if (set)
             {

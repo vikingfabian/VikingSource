@@ -1405,33 +1405,33 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             return designer.Settings.paintSettings.roadPercentFill;
         }
 
-        bool bSelectionCutProperty(int index, bool set, bool value)
+        bool bSelectionCutProperty(object tag, bool set, bool value)
         {
             if (set) { designer.Settings.SelectionCut = value; }
             return designer.Settings.SelectionCut;
         }
-        bool bRoundPencilProperty(int index, bool set, bool value)
+        bool bRoundPencilProperty(object tag, bool set, bool value)
         {
             if (set) { designer.Settings.paintSettings.roundPencil = value; }
             return designer.Settings.paintSettings.roundPencil;
         }
-        bool bCombineLoadedModelProperty(int index, bool set, bool value)
+        bool bCombineLoadedModelProperty(object tag, bool set, bool value)
         {
             if (set) { designer.loadOption_combine = value; }
             return designer.loadOption_combine;
         }
-        bool bMergeKeepSizeProperty(int index, bool set, bool value)
+        bool bMergeKeepSizeProperty(object tag, bool set, bool value)
         {
             if (set) { designer.mergeModelsOption.KeepOldGridSize = value; }
             return designer.mergeModelsOption.KeepOldGridSize;
         }
-        bool bMergeNewOverrideProperty(int index, bool set, bool value)
+        bool bMergeNewOverrideProperty(object tag, bool set, bool value)
         {
             if (set) { designer.mergeModelsOption.NewBlocksReplaceOld = value; }
             return designer.mergeModelsOption.NewBlocksReplaceOld;
         }
 
-        bool bContiniousProperty(int index, bool set, bool value)
+        bool bContiniousProperty(object tag, bool set, bool value)
         {
             if (set) { designer.Settings.paintSettings.continiousFill = value; }
             return designer.Settings.paintSettings.continiousFill;

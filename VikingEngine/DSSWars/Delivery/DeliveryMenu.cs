@@ -522,7 +522,7 @@ namespace VikingEngine.DSSWars.Delivery
             //}
         }
 
-        bool UseSenderMinProperty(int index, bool _set, bool value)
+        bool UseSenderMinProperty(object tag, bool _set, bool value)
         {
             DeliveryStatus currentStatus = get();
             if (_set)
@@ -533,7 +533,7 @@ namespace VikingEngine.DSSWars.Delivery
             return currentStatus.useSenderMin;
         }
 
-        bool UseRecieverMaxProperty(int index, bool _set, bool value)
+        bool UseRecieverMaxProperty(object tag, bool _set, bool value)
         {
             DeliveryStatus currentStatus = get();
             if (_set)

@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Players
         //    return autoRecruit;
         //}
 
-        bool AutoBuildProperty(int index, bool set, bool value)
+        bool AutoBuildProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Players
             }
             return autoBuild;
         }
-        bool AutoBuildIntelligentProperty(int index, bool set, bool value)
+        bool AutoBuildIntelligentProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Players
             return autoBuild_intelligent;
         }
 
-        bool AutoExpandGuardProperty(int index, bool set, bool value)
+        bool AutoExpandGuardProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Players
             return autoExpandGuard;
         }
 
-        bool AutoRepairCityProperty(int index, bool set, bool value)
+        bool AutoRepairCityProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Players
             return autoRepair;
         }
 
-        bool AutoUpgradeLogisticsProperty(int index, bool set, bool value)
+        bool AutoUpgradeLogisticsProperty(object tag, bool set, bool value)
         {
             if (set)
             {

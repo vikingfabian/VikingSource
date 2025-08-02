@@ -84,8 +84,9 @@ namespace VikingEngine.DSSWars.Players.Profile
             }
         }
 
-        public bool casualProperty(int index, bool set, bool value)
+        public bool casualProperty(object tag, bool set, bool value)
         {
+            int index = (int)tag;
             var profile = profiles[index];
             if (set)
             {

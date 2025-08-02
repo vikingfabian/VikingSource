@@ -567,7 +567,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
         }
 
         bool autoAltMain = true;
-        public bool autoAltMainProperty(int index, bool _set, bool value)
+        public bool autoAltMainProperty(object tag, bool _set, bool value)
         {
             if (_set)
             {

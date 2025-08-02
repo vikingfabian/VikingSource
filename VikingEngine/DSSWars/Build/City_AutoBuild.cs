@@ -447,10 +447,21 @@ namespace VikingEngine.DSSWars.GameObject
 
             workTemplate.autoBuild.set(1);
 
+            workTemplate.smeltgold.set(4);
+            workTemplate.coinmaker_copper.set(3);
+            workTemplate.coinmaker_copper_fullStock = true;
+            workTemplate.coinmaker_bronze.set(3);
+            workTemplate.coinmaker_bronze_fullStock = true;
+            workTemplate.coinmaker_silver.set(3);
+            workTemplate.coinmaker_silver_fullStock = true;
+            workTemplate.coinmaker_mithril.set(3);
+            workTemplate.coinmaker_mithril_fullStock = true;
+
+
             AutoConscriptLib.WorkPriority(this, ref workTemplate);
         }
 
-        public bool AutomateCityProperty(int index, bool set, bool value)
+        public bool AutomateCityProperty(object tag, bool set, bool value)
         {
             if (set)
             {

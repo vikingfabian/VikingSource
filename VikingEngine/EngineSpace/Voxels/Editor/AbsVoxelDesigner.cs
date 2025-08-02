@@ -1169,19 +1169,19 @@ namespace VikingEngine.Voxels
                 refreshSelectionModel();
             }
         }
-        public bool bRepeateOnAllFramesProperty(int index, bool set, bool value)
+        public bool bRepeateOnAllFramesProperty(object tag, bool set, bool value)
         {
             if (set) { repeateOnAllFrames = value; }
             return repeateOnAllFrames;
         }
 
-        public bool bRepeateOnAllLayersProperty(int index, bool set, bool value)
+        public bool bRepeateOnAllLayersProperty(object tag, bool set, bool value)
         {
             if (set) { repeateOnAllLayers = value; }
             return repeateOnAllLayers;
         }
 
-        public bool bStampEmptyProperty(int index, bool set, bool value)
+        public bool bStampEmptyProperty(object tag, bool set, bool value)
         {
             if (set) { stampEmpty = value; }
             return stampEmpty;

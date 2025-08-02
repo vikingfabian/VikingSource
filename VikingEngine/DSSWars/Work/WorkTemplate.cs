@@ -890,6 +890,8 @@ namespace VikingEngine.DSSWars.Work
                     return autoBuild;
                 //case WorkPriorityType.expandFarms:
                 //    return expandFarms;
+                case WorkPriorityType.smeltGold:
+                    return smeltgold;
 
                 case WorkPriorityType.coinmaker_copper:
                     return coinmaker_copper;
@@ -1151,7 +1153,9 @@ namespace VikingEngine.DSSWars.Work
                 //case WorkPriorityType.expandFarms:
                 //     = value;
                 //    break;
-
+                case WorkPriorityType.smeltGold:
+                    smeltgold = value;
+                    break;
                 case WorkPriorityType.coinmaker_copper:
                     coinmaker_copper = value;
                     break;

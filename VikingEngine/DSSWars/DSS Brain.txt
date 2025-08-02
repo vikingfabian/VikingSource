@@ -6,7 +6,7 @@ Change Log:
 #Pics
 synligeare merge down layer
 Build category tab: filter, advanced
-
+hud pin icon
 
 
 #Todo#
