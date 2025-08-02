@@ -76,6 +76,7 @@ namespace VikingEngine.DSSWars.Players
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
 
         public ProgressSubTab progressSubTab = 0;
+        public TagSubTab tagSubTab = 0;
         public MixTabEditType mixTabEditType = MixTabEditType.None;
         public WorkPriorityType mixWorkType = WorkPriorityType.NUM_NONE;
         public ItemResourceType mixTabItem = ItemResourceType.NONE;

@@ -1105,34 +1105,92 @@ namespace VikingEngine.DSSWars.Interface
 
         public void tagsToMenu(RichBoxContent content)
         {
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.CityTagsOnMapProperty));
+            for (TagSubTab subTabType = 0; subTabType < TagSubTab.NUM; ++subTabType)
+            {
+                var tabContent = new RichBoxContent();
+                string description = null;
+                //string text = null;
+                switch (subTabType)
+                {
+                    case TagSubTab.Tag:
+                        tabContent.Add(new RbImage(SpriteName.warsFolder_carton));
+                        tabContent.space(0.6f);
+                        tabContent.Add(new RbText(DssRef.lang.UnitType_City));
+                        description = null;
+                        break;
+
+                    case TagSubTab.PostIt:
+                        tabContent.Add(new RbImage(SpriteName.MissingImage));
+                        tabContent.space(0.6f);
+                        tabContent.Add(new RbText(".Post-it"));
+                        description = DssRef.lang.Experience_Description;
+                        break;
+
+                }
+
+                var subTab = new ArtButton(player.tagSubTab == subTabType ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
+                    new RbAction1Arg<TagSubTab>((TagSubTab subTabType) =>
+                    {
+                        player.tagSubTab = subTabType;
+                    }, subTabType, SoundLib.menutab), new RbTooltip_Text(description));
+                //subTab.setGroupSelectionColor(HudLib.RbSettings, player.progressSubTab == workSubTab);
+                content.Add(subTab);
+                //content.space();
+            }
             content.newParagraph();
 
-            for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
+            switch (player.tagSubTab)
             {
-                var button = new ArtToggle(back == city.tagBack, new List<AbsRichBoxMember> {
-                    new RbImage(Data.CityTag.BackSprite(back))
-                }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { city.tagBack = back; }, back));
-                content.Add(button);
-
-                if (back == CityTagBack.NONE)
-                {
+                default:
+                    //__
                     content.newLine();
-                }
-            }
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.CityTagsOnMapProperty));
+                    content.newParagraph();
 
-            if (city.tagBack != CityTagBack.NONE)
-            {
-                content.newParagraph();
-                for (CityTagArt art = CityTagArt.None; art < CityTagArt.NUM; art++)
-                {
-                    var button = new ArtToggle(art == city.tagArt, new List<AbsRichBoxMember> {
+                    for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
+                    {
+                        var button = new ArtToggle(back == city.tagBack, new List<AbsRichBoxMember>
+                        {
+                    new RbImage(Data.CityTag.BackSprite(back))
+                            }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { city.tagBack = back; }, back));
+                        content.Add(button);
+
+                        if (back == CityTagBack.NONE)
+                        {
+                            content.newLine();
+                        }
+                    }
+
+                    if (city.tagBack != CityTagBack.NONE)
+                    {
+                        content.newParagraph();
+                        for (CityTagArt art = CityTagArt.None; art < CityTagArt.NUM; art++)
+                        {
+                            var button = new ArtToggle(art == city.tagArt, new List<AbsRichBoxMember> {
                     new RbImage(Data.CityTag.ArtSprite(art))
                     }, new RbAction1Arg<CityTagArt>((CityTagArt art) => { city.tagArt = art; }, art));
-                    content.Add(button);
-                }
+                            content.Add(button);
+                        }
+                    }
+                    break;
+
+                case TagSubTab.PostIt:
+                    foreach (var item in City.MovableCityResource_Misc)
+                    {
+                        resourcePostIt(item);
+                    }
+
+                    void resourcePostIt(ItemResourceType item)
+                    { 
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { 
+                            new RbImage(ResourceLib.Icon(item)), new RbSpace(), new RbText(LangLib.Item(item)) },
+
+                    }
+                    break;
+
             }
+
+
         }
 
         public void resourcesToMenu(RichBoxContent content)
@@ -2439,6 +2497,13 @@ namespace VikingEngine.DSSWars.Interface
         Experience,
         Schools,
         Research,
+        NUM
+    }
+
+    enum TagSubTab
+    { 
+        Tag,
+        PostIt,
         NUM
     }
 }
