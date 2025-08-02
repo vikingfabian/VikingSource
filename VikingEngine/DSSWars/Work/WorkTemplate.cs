@@ -1307,7 +1307,7 @@ namespace VikingEngine.DSSWars.Work
 
                     void waitForFullStock(WorkPriorityType priorityType)
                     { 
-                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsStockpileStop) }, 
+                        //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsStockpileStop) }, 
 
                     }
                     break;

@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Interface
         //public Vector2 MessageStart;
         RichMenu menu;
         LocalPlayer player;
-
+        public float Left;
         public PlayerHud_HeadOptions(LocalPlayer player)
         {
             this.player = player;
@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.Interface
                 
                 menu.move(VectorExt.V2FromX(toX));
                 menu.updateHeightFromContent(false);
-
+                Left = menu.backgroundArea.X;
                 NineSplitAreaTexture bg = new NineSplitAreaTexture(new NineSplitSettings(SpriteName.WarsHudHeadBarSecondaryBg, 1, 11, 1f, true, true), menu.backgroundArea, HudLib.GUILayer + 4);
             }
 

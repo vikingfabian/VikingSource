@@ -363,6 +363,8 @@ namespace VikingEngine.DSSWars.Players
 
             storedCameraPos.writeGameState(w);
 
+            hud.pins.writeGameState(w);
+
             Debug.WriteCheck(w);
         }
 
@@ -455,7 +457,10 @@ namespace VikingEngine.DSSWars.Players
             {
                 storedCameraPos.readGameState(r, subversion);
             }
-
+            if (subversion >= 69)
+            {
+                hud.pins.readGameState(r, subversion);
+            }
             Debug.ReadCheck(r);
         }
 

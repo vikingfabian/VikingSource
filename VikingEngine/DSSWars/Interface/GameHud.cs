@@ -29,6 +29,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public PlayerHud_Head head;
         public PlayerHud_HeadOptions headOptions;
+        public PlayerHud_Pins pinHud;
         public PlayerHud_Faction factionMenu;
         public PlayerHud_Object objMenu;
         public PlayerHud_InputHelp inputHelp;
@@ -37,6 +38,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public PopMenu popMenu = null;
         public Vector2 MessageStart;
+        public HudPinManager pins;
 
         public GameHud(LocalPlayer player, int numPlayers)
         {
@@ -54,6 +56,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 headOptions = new PlayerHud_HeadOptions(player);
             }
+            pinHud = new PlayerHud_Pins(player);
             objMenu = new PlayerHud_Object(player);
             factionMenu = new PlayerHud_Faction();
 
@@ -62,7 +65,7 @@ namespace VikingEngine.DSSWars.Interface
             //hudmenu = new GameHudMenu(player);
             messages = new MessageGroup_Ingame(player, numPlayers, HudLib.richboxGui);
             tooltip = new Tooltip();
-
+            pins = new HudPinManager();
             
         }
 
@@ -159,7 +162,8 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     refresh |= headOptions.updateMouseInput(ref mouseOverHud);
                 }
-                refresh |= objMenu.updateMouseInput(ref mouseOverHud);
+                refresh |= pinHud.updateMouseInput( ref mouseOverHud);
+               refresh |= objMenu.updateMouseInput(ref mouseOverHud);
                 
             }
             player.tutorial?.update(ref mouseOverHud);
@@ -179,6 +183,7 @@ namespace VikingEngine.DSSWars.Interface
                 refreshTimer.Reset();
                 head?.refreshUpdate(player);
                 headOptions?.refreshUpdate();
+                pinHud.refreshUpdate(player);
                 updateMenuDisplays(true);
                 factionMenu.refreshUpdate(player);
                 inputHelp.refreshUpdate(player);

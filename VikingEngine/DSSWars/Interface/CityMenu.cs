@@ -1252,15 +1252,15 @@ namespace VikingEngine.DSSWars.Interface
                     case TagSubTab.Tag:
                         tabContent.Add(new RbImage(SpriteName.warsFolder_carton));
                         tabContent.space(0.6f);
-                        tabContent.Add(new RbText(DssRef.lang.UnitType_City));
-                        description = null;
+                        tabContent.Add(new RbText(DssRef.lang.MenuTab_Tag));
+                        description = ".Add a symbol on the map";
                         break;
 
                     case TagSubTab.HudPin:
                         tabContent.Add(new RbImage(SpriteName.MissingImage));
                         tabContent.space(0.6f);
                         tabContent.Add(new RbText(".HUD pins"));
-                        description = DssRef.lang.Experience_Description;
+                        description = ".Stick information to the screen";
                         break;
 
                 }
@@ -1270,9 +1270,7 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         player.tagSubTab = subTabType;
                     }, subTabType, SoundLib.menutab), new RbTooltip_Text(description));
-                //subTab.setGroupSelectionColor(HudLib.RbSettings, player.progressSubTab == workSubTab);
                 content.Add(subTab);
-                //content.space();
             }
             content.newParagraph();
 
@@ -1312,16 +1310,102 @@ namespace VikingEngine.DSSWars.Interface
                     break;
 
                 case TagSubTab.HudPin:
-                    foreach (var item in City.MovableCityResource_Misc)
+
                     {
-                        resourcePostIt(item);
-                    }
+                        if (player.resourcesSubTab > ResourcesSubTab.Overview_Armor)
+                        {
+                            player.resourcesSubTab = ResourcesSubTab.Overview_Resources;
+                        }
 
-                    void resourcePostIt(ItemResourceType item)
-                    { 
-                        //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { 
-                        //    new RbImage(ResourceLib.Icon(item)), new RbSpace(), new RbText(LangLib.Item(item)) }, 
+                        for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+                        {
+                            var tabContent = new RichBoxContent();
+                            //string text = null;
+                            switch (resourcesSubTab)
+                            {
+                                case ResourcesSubTab.Overview_Metals:
+                                    tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+                                    break;
+                                case ResourcesSubTab.Overview_Weapons:
+                                    tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                                    break;
 
+                                case ResourcesSubTab.Overview_Projectile:
+                                    tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                                    break;
+
+                                case ResourcesSubTab.Overview_Armor:
+                                    tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
+                                    break;
+
+                                case ResourcesSubTab.Overview_Resources:
+                                    tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                                    break;
+
+
+                            }
+                            var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                                tabContent,
+                                new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                                {
+                                    player.resourcesSubTab = resourcesSubTab;
+                                }, resourcesSubTab, SoundLib.menutab), new RbTooltip_Text(DssRef.lang.Work_SelectCategory));
+                            //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
+                            content.Add(subTab);
+                        }
+        //                    Overview_Resources,
+        //Overview_Metals,
+        //Overview_Weapons,
+        //Overview_Projectile,
+        //Overview_Armor,
+                        switch (player.resourcesSubTab)
+                        {
+                            case ResourcesSubTab.Overview_Resources:
+                                foreach (var item in City.MovableCityResource_Misc)
+                                {
+                                    resourcePin(item);
+                                }
+                                break;
+                            case ResourcesSubTab.Overview_Metals:
+                                foreach (var item in City.MovableCityResource_Metals)
+                                {
+                                    resourcePin(item);
+                                }
+                                break;
+                            case ResourcesSubTab.Overview_Weapons:
+                                foreach (var item in City.MovableCityResource_WeaponMelee)
+                                {
+                                    resourcePin(item);
+                                }
+                                break;
+                            case ResourcesSubTab.Overview_Projectile:
+                                foreach (var item in City.MovableCityResource_WeaponRanged)
+                                {
+                                    resourcePin(item);
+                                }
+                                break;
+                            case ResourcesSubTab.Overview_Armor:
+                                foreach (var item in City.MovableCityResource_Armor)
+                                {
+                                    resourcePin(item);
+                                }
+                                break;
+
+                        }
+
+                        content.newParagraph();
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Canvas_Clear) },
+                            new RbAction(()=> { player.hud.pins.clear(city); })));
+
+                        void resourcePin(ItemResourceType item)
+                        {
+                            content.newLine();
+                            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                            new RbImage(ResourceLib.Icon(item)), new RbSpace(), new RbText(LangLib.Item(item)) },
+                                player.hud.pins.isPinnedProperty)
+                            { propertyTag = new CityHudPinId(city.myIndex, new HudPin(item)) });
+                        }
                     }
                     break;
 

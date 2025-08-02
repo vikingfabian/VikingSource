@@ -24,6 +24,7 @@ namespace VikingEngine.DSSWars.Interface
         NineSplitAreaTexture flagBg;
         RichMenu menu;
         public float Bottom;
+        public float Right;
         public Vector2 factionMenuStart;
 
         LocalPlayer player;
@@ -55,6 +56,7 @@ namespace VikingEngine.DSSWars.Interface
             headBgTex.SetOpacity(0.95f);
 
             Bottom = menu.backgroundArea.Bottom;
+            Right = menu.backgroundArea.Right;
 
             factionMenuStart = new Vector2(menu.backgroundArea.X, Bottom);
         }

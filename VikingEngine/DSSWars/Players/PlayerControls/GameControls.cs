@@ -748,6 +748,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         }
 
+        public void nextCity(City city)
+        {
+            map.cameraFocus = city;
+            mapSelect(city);
+        }
+
         public void nextCity(bool forward)
         {
             if (forward)

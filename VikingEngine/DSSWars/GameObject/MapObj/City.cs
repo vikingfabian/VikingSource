@@ -2237,6 +2237,12 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void tooltip(RichBoxContent content, object tag)
+        {
+            toTooltip(new ObjectHudArgs() { content = content });
+        }
+
+
         public override void toTooltip(ObjectHudArgs args)
         {
             CityPresentationHud(args, true);
@@ -2283,6 +2289,21 @@ namespace VikingEngine.DSSWars.GameObject
                     CityDetailsHud(false, args.player, args.content);
                 }
             }
+        }
+
+        public bool ToPinHud(ObjectHudArgs args)
+        {
+            if (GetFaction() == args.player.faction)
+            {
+                RichBoxContent buttonContent = new RichBoxContent();
+                TypeIcon(buttonContent);
+                args.content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent,
+                    new RbAction1Arg<City>(args.player.gameControls.nextCity, this),
+                    new RbTooltip(this.tooltip)));
+                
+                return true;
+            }
+            return false;
         }
 
         int TotalServiceMen()
