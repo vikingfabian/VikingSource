@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.Defence
                 {
                     soldierAttackRangeBonus = 0.03f;
                 }
-
+                soldierAttackDamageBonus = 3;
 
                 switch (subTile.GetWallType())
                 {
@@ -130,6 +130,7 @@ namespace VikingEngine.DSSWars.Defence
                         break;
                     case Map.TerrainWallType.Palisade:
                         damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Palisade;
+                        soldierAttackDamageBonus = 2;
                         break;
                     case Map.TerrainWallType.DirtWall:
                     case Map.TerrainWallType.DirtTower:
@@ -152,6 +153,7 @@ namespace VikingEngine.DSSWars.Defence
             EnterPostCommand.ExitPost(this);
             assignedToPost_IdAndPosition = -1;
             soldierAttackRangeBonus = 0;
+            soldierAttackDamageBonus = 0;
             damageBlockChance_fromTerrain = 0;
         }
 

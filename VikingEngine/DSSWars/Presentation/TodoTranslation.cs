@@ -18,6 +18,13 @@ namespace VikingEngine.DSSWars.Presentation
         public string HUD_Scale => "Scale";
         public string HUD_Tags => "Tags";
         public string HUD_ClickToCancel => "Click to cancel";
+
+
+        public string ObjectTag_Description => "Add a symbol on the map";
+        public string HudPins => "HUD pins";
+        public string HudPins_Description => "Stick information to the screen";
+
+
         public string Lobby_PlayerProfileNumbered => "Profile {0}";
         public string Lobby_CharacterCreationNumbered => "Character {0}";
         public string Lobby_PlayerProfileEdit => "Edit player profile";
@@ -54,6 +61,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string WarsResourceGroup_Metal => "Metal";
         public string Work_Craft => "Craft";
+        public string Work_OnlyCraftOnFullStock => "Only craft on full stockpile";
 
         public string ExperienceType_Smelting => "Smeleting";
         public string Catergory_Optimize => "Optimize";

@@ -8,15 +8,17 @@ namespace VikingEngine.DSSWars.Resource
 {
     static class Minting
     {
+        public static CraftBlueprint[] CoinCraftTypes = { ElfCoin, SilverCoin, BronzeCoin, CopperCoin };
+
         public static readonly CraftBlueprint ConvertGoldOre = new CraftBlueprint(
           CraftResultType.Resource,
           (int)ItemResourceType.Gold,
-            DssConst.GoldOreSellValue,
+          5 * DssConst.GoldOreSellValue,
          new UseResource[]
          {
-               new UseResource(ItemResourceType.GoldOre, 1),
+               new UseResource(ItemResourceType.GoldOre, 5),
          },
-            XP.WorkExperienceType.CraftMetal, XP.ExperienceLevel.Beginner_1, CraftRequirement.Smelter
+            XP.WorkExperienceType.Smelting, XP.ExperienceLevel.Beginner_1, CraftRequirement.Smelter
         );
 
         public static readonly CraftBlueprint CopperCoin = new CraftBlueprint(
@@ -27,8 +29,9 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.Copper, 5),
            },
-            XP.WorkExperienceType.NONE
-       );
+            XP.WorkExperienceType.CraftMetal,  XP.ExperienceLevel.Beginner_1, CraftRequirement.Minter
+       )
+        { workTag = (int)ItemResourceType.CopperCoin };
 
         public static readonly CraftBlueprint BronzeCoin = new CraftBlueprint(
             CraftResultType.Resource,
@@ -38,8 +41,9 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.Bronze, 5),
            },
-            XP.WorkExperienceType.NONE
-       );
+            XP.WorkExperienceType.CraftMetal, XP.ExperienceLevel.Beginner_1, CraftRequirement.Minter
+       )
+        { workTag = (int)ItemResourceType.BronzeCoin };
 
         public static readonly CraftBlueprint SilverCoin = new CraftBlueprint(
            CraftResultType.Resource,
@@ -49,8 +53,9 @@ namespace VikingEngine.DSSWars.Resource
           {
                new UseResource(ItemResourceType.Silver, 5),
           },
-           XP.WorkExperienceType.NONE
-      );
+           XP.WorkExperienceType.CraftMetal, XP.ExperienceLevel.Beginner_1, CraftRequirement.Minter
+      )
+        { workTag = (int)ItemResourceType.SilverCoin };
 
         public static readonly CraftBlueprint ElfCoin = new CraftBlueprint(
            CraftResultType.Resource,
@@ -60,8 +65,9 @@ namespace VikingEngine.DSSWars.Resource
           {
                new UseResource(ItemResourceType.Mithril, 1),
           },
-           XP.WorkExperienceType.NONE
-      );
+           XP.WorkExperienceType.CraftMetal, XP.ExperienceLevel.Beginner_1, CraftRequirement.Minter
+      )
+        { workTag = (int)ItemResourceType.ElfCoin };
 
     }
 }

@@ -133,6 +133,12 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public bool InRender_Asynch(int playerIx, bool bStateA, ref IntVector2 pos)
+        {           
+            var state = bStateA ? players[playerIx].stateA : players[playerIx].stateB;
+            return state.enterArea.IntersectPoint(pos);
+        }
+
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref IntVector2 minpos, ref IntVector2 maxpos)
         {
             

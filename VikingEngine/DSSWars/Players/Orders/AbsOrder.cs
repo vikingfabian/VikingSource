@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         static int NextId = 1;
         public int id;
 
-        virtual public void onAdd()
+        virtual public void onAdd(int playerIx)
         { }
 
         public void baseInit(int priority)
@@ -24,8 +24,6 @@ namespace VikingEngine.DSSWars.Players.Orders
             this.priority = priority;
             id = NextId++;
         }
-
-        
 
         virtual public bool BuildQueue(City city)
         {
@@ -52,7 +50,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             w.Write((byte)priority);
         }
-        virtual public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        virtual public void readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             priority = r.ReadByte();
         }
@@ -68,6 +66,11 @@ namespace VikingEngine.DSSWars.Players.Orders
         virtual public OrderType GetWorkType(City city)
         { 
             return OrderType.NONE;
+        }
+
+        virtual public void cullingUpdate(bool bStateA, int playerIx)
+        { 
+            
         }
 
         abstract public OrderType Type();

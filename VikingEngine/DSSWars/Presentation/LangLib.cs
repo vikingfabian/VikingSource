@@ -1197,6 +1197,8 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.BuildingType_Carpenter_Description;
                 case TerrainBuildingType.Armory:
                     return DssRef.lang.BuildingType_Armory_Description;
+                case TerrainBuildingType.Gunmaker:
+                    return DssRef.lang.BuildingType_Gunmaker_Description;
                 case TerrainBuildingType.Chemist:
                     return DssRef.lang.BuildingType_Chemist_Description;
 
@@ -1246,6 +1248,7 @@ namespace VikingEngine.DSSWars.Presentation
             {
                 case BuildFilterTag.Workers: return DssRef.lang.ResourceType_Workers;
                 case BuildFilterTag.Farm: return DssRef.lang.Work_Farming;
+                case BuildFilterTag.Gold: return DssRef.lang.ResourceType_Gold;
                 case BuildFilterTag.Resources: return DssRef.lang.Resource;
                 case BuildFilterTag.Metals: return DssRef.todoLang.WarsResourceGroup_Metal;
                 case BuildFilterTag.Water: return TextLib.LargeFirstLetter( DssRef.lang.Resource_TypeName_Water);

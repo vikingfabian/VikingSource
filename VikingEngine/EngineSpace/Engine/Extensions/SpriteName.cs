@@ -2488,8 +2488,11 @@ namespace VikingEngine
         warsFolder_blue,
         warsFolder_cyan,
 
+
+        warsBuildCategorySearch,
         warsBuildCategoryMilitaryWall,
         warsBuildCategoryHouse,
+        warsBuildCategoryAdvanced,
         warsBuildCategoryDecorTree,
         warsBuildCategoryAutomation,
         warsBuildCategoryUpgrades,
@@ -2506,6 +2509,7 @@ namespace VikingEngine
         warsArmyTag_Retreat,
         warsArmyTag_Return,
         warsArmyTag_Anchor,
+        HudPinIcon,
 
 
         WarsRelationAlly,
@@ -2532,6 +2536,7 @@ namespace VikingEngine
         WarsWorkCollect,
         WarsWorkMine,
         WarsWorkFarm,
+        WarsWorkCasting,
         WarsWorkSmelting,
         //WarsMapIcon,
         //WarsFactionIcon,

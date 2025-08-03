@@ -113,6 +113,8 @@ namespace VikingEngine.DSSWars.GameObject
                     damage = soldierData.secondaryAttackDamage;
                 }
 
+                damage += damage * group.soldierAttackDamageBonus;
+
                 attackDir = angleToUnit(target);
 
                 if (soldierData.mainAttack == AttackType.Melee && mainAttack)

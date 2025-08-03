@@ -45,6 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.CopperOre,
              ItemResourceType.LeadOre,
              ItemResourceType.SilverOre,
+             ItemResourceType.GoldOre,
 
              ItemResourceType.Iron_G,
              ItemResourceType.Tin,
@@ -148,6 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_CupperOre = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_LeadOre = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_SilverOre = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_GoldOre = new GroupedResource() { goalBuffer = 100 };
 
         public GroupedResource res_iron = new GroupedResource() { amount = 10, goalBuffer = 100 };
         public GroupedResource res_Tin = new GroupedResource() { goalBuffer = 100 };
@@ -268,6 +270,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_CupperOre.goalBuffer = 100;
             res_LeadOre.goalBuffer = 100;
             res_SilverOre.goalBuffer = 100;
+            res_GoldOre.goalBuffer = 100;
 
             res_iron.goalBuffer = 100;
             res_Tin.goalBuffer = 100;
@@ -420,6 +423,10 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.SilverOre:
                     res_SilverOre.amount += add;
                     faction.res_SilverOre.onChange(add);
+                    break;
+                case ItemResourceType.GoldOre:
+                    res_GoldOre.amount += add;
+                    faction.res_GoldOre.onChange(add);
                     break;
                 case ItemResourceType.Iron_G:
                     res_iron.amount += add;
@@ -625,6 +632,14 @@ namespace VikingEngine.DSSWars.GameObject
                     faction.res_Blunderbuss.onChange(add);
                     break;
 
+                case ItemResourceType.CopperCoin:
+                case ItemResourceType.BronzeCoin:
+                case ItemResourceType.SilverCoin:
+                case ItemResourceType.ElfCoin:
+                    faction.addGold(add, this);
+                    break;
+                
+
                 case ItemResourceType.NONE:
                     return;
 
@@ -690,9 +705,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    return new GroupedResource() { amount = (int)(DssRef.storage.centralGold? GetFaction().money.GetGold() : money.GetGold()) };
-                case ItemResourceType.GoldOre:
-                    return new GroupedResource() { amount = 1 };
+                    return new GroupedResource() { amount = (int)(DssRef.storage.centralGold ? GetFaction().money.GetGold() : money.GetGold()), goalBuffer = int.MaxValue };
                 case ItemResourceType.Men:
                     return workForce;
                 case ItemResourceType.ServiceMen:
@@ -722,6 +735,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.CopperOre: return res_CupperOre;
                 case ItemResourceType.LeadOre: return res_LeadOre;
                 case ItemResourceType.SilverOre: return res_SilverOre;
+                case ItemResourceType.GoldOre: return res_GoldOre;
 
                 case ItemResourceType.Iron_G: return res_iron;
                 case ItemResourceType.Tin: return res_Tin;
@@ -854,6 +868,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.SilverOre:
                     res_SilverOre = resource;
+                    break;
+                case ItemResourceType.GoldOre:
+                    res_GoldOre = resource;
                     break;
                 case ItemResourceType.Iron_G:
                     res_iron = resource;
@@ -1119,16 +1136,16 @@ namespace VikingEngine.DSSWars.GameObject
                     convert2.amount = DssConst.HempLinenAndFuelAmount;
                     break;
 
-                case ItemResourceType.GoldOre:
-                    {
-                        var price = convert1.amount * DssConst.GoldOreSellValue;
-                        GetFaction().addGold( price, this);
-                        soldResources.add(price);
+                //case ItemResourceType.GoldOre:
+                //    {
+                //        var price = convert1.amount * DssConst.GoldOreSellValue;
+                //        GetFaction().addGold( price, this);
+                //        soldResources.add(price);
 
-                        convert1.type = ItemResourceType.Gold;
-                        convert1.amount = price;
-                    }
-                    break;
+                //        convert1.type = ItemResourceType.Gold;
+                //        convert1.amount = price;
+                //    }
+                //    break;
             }
 
             if (Ref.peRnd.Chance(DssRef.difficulty.resourceMultiplyChance) &&
@@ -1207,6 +1224,11 @@ namespace VikingEngine.DSSWars.GameObject
         public bool reachedBuffer()
         {
             return amount >= goalBuffer;
+        }
+
+        public bool almostReachedBuffer()
+        {
+            return amount >= goalBuffer - 50;
         }
 
         public bool needToImport()

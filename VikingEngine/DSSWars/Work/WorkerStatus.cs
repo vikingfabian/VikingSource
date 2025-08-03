@@ -540,12 +540,18 @@ namespace VikingEngine.DSSWars.Work
                         ItemResourceType item = (ItemResourceType)workSubType;
                         ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
 
-                        int add = bp1.tryPayResources(city);
-                        gainXp = bp1.experienceType;
-                        if (add == 0 && bp2 != null)
-                        {
+                        bool alwaysNeedMore = false;
+                        int add = 0;
+                        if (bp2 != null)
+                        { //Secondary blueprint has priority
                             add = bp2.tryPayResources(city);
                         }
+                        if (add == 0)
+                        {
+                            add = bp1.tryPayResources(city);
+                        }
+                        gainXp = bp1.experienceType;
+                        
 
                         if (add > 0)
                         {
@@ -605,13 +611,21 @@ namespace VikingEngine.DSSWars.Work
                                         add *= 2;
                                     }
                                     break;
+
+                                case ItemResourceType.Gold:
+                                case ItemResourceType.CopperCoin:
+                                case ItemResourceType.BronzeCoin:
+                                case ItemResourceType.SilverCoin:
+                                case ItemResourceType.ElfCoin:
+                                    alwaysNeedMore = true;
+                                    break;
                             }
 
                             city.AddGroupedResource(item, add);
 
                             tryRepeatWork = false;
 
-                            if (city.GetGroupedResource(item).needMore())
+                            if (alwaysNeedMore || city.GetGroupedResource(item).needMore())
                             {
                                 if (bp1.hasResources(city))
                                 {

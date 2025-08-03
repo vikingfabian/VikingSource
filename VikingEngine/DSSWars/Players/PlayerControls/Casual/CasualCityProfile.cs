@@ -10,78 +10,7 @@ using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 {
-    enum CasualSoldierType
-    { 
-        Guard,
-        FolkMen,
-        Seamen,
-        Melee,
-        Ranged,
-        Rider,
-        Siege,
-    }
-
-    struct SoldierPurchaseOption
-    {
-        public int price;
-        public int upgradePrice;
-        public ItemResourceType armor;
-        public ItemResourceType weapon;
-        public TrainingLevel training;
-
-        public SoldierPurchaseOption(int price,
-            ItemResourceType armor, ItemResourceType weapon, TrainingLevel training)
-        { 
-            this.price = price;
-            upgradePrice = 0;
-            this.armor = armor;
-            this.weapon = weapon;
-            this.training = training;
-        }
-
-        public void writeGameState(System.IO.BinaryWriter w)
-        {
-            w.Write((ushort)price);
-            w.Write((byte)weapon);
-        }
-        public void readGameState(System.IO.BinaryReader r, int subversion)
-        {
-            price = r.ReadUInt16();
-            weapon = (ItemResourceType)r.ReadByte();
-        }
-
-        public int FullPrice => price + upgradePrice;
-
-        public bool Available => price > 0;
-
-        public SoldierConscriptProfile SoldierProfile()
-        {
-            SoldierConscriptProfile soldierConscript = new SoldierConscriptProfile()
-            {
-                conscript = new ConscriptProfile() { weapon = weapon },
-                
-            };
-
-            return soldierConscript;
-        }
-
-        public void ButtonVisuals(CasualSoldierType soldierType, out SpriteName icon, out string caption)
-        {
-            if (soldierType == CasualSoldierType.Guard)
-            {
-                icon = SpriteName.WarsGuard;
-                caption = DssRef.lang.Conscript_Soldiers_GuardType;
-            }
-            else
-            {
-                var profile = SoldierProfile();
-                icon = profile.Icon();
-                caption = profile.conscript.TypeName();
-            }
-        }
-
-        
-    }
+    
 
     struct CasualCityProfile
     {
@@ -123,7 +52,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
         public void InitCulture(City city, CityAreaCulture culture)
         {
-            guard = new SoldierPurchaseOption(50, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
+            guard = new SoldierPurchaseOption(100, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
             folkmen = new SoldierPurchaseOption(1, ItemResourceType.NONE,ItemResourceType.SharpStick, TrainingLevel.Minimal);
             meleeMen = new SoldierPurchaseOption(1, ItemResourceType.HeavyPaddedArmor, ItemResourceType.ShortSword, TrainingLevel.Basic);
             rangedMen = new SoldierPurchaseOption(1, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
@@ -156,22 +85,22 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 switch (city.cityType)
                 {
                     case CityType.Village:
-                        folkmen.price = 40;
+                        folkmen.price = 80;
                         break;
                     case CityType.Town:
-                        folkmen.price = 50;
+                        folkmen.price = 100;
                         break;
                     case CityType.Capital:
-                        folkmen.price = 70;
+                        folkmen.price = 140;
                         break;
                 }
             }
 
-            if (shipmen.Available) shipmen.price = 200;
-            if (meleeMen.Available) meleeMen.price = 200;
-            if (rangedMen.Available) rangedMen.price = 200;
-            if (riderMen.Available) riderMen.price = 500;
-            if (siegeMen.Available) siegeMen.price = 200;
+            if (shipmen.Available) shipmen.price = 400;
+            if (meleeMen.Available) meleeMen.price = 400;
+            if (rangedMen.Available) rangedMen.price = 400;
+            if (riderMen.Available) riderMen.price = 1000;
+            if (siegeMen.Available) siegeMen.price = 400;
 
             switch (city.Culture)
             {
@@ -180,7 +109,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 case CityCulture.LargeFamilies:
                 case CityCulture.Lawbiding:
                 case CityCulture.CrabMentality:
-                    folkmen.price = Math.Max(0, folkmen.price - 20);
+                    folkmen.price = Math.Max(0, folkmen.price - 40);
                     break;
 
                 case CityCulture.BronzeCasters:
@@ -204,25 +133,25 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 case 1:
                     guard.armor = ItemResourceType.HeavyIronArmor;
-                    guard.upgradePrice += 50;
+                    guard.upgradePrice += 100;
 
                     meleeMen.armor = ItemResourceType.HeavyIronArmor;
-                    meleeMen.upgradePrice += 100;
+                    meleeMen.upgradePrice += 200;
 
                     rangedMen.armor = ItemResourceType.IronArmor;
-                    rangedMen.upgradePrice += 100;
+                    rangedMen.upgradePrice += 200;
                     break;
 
 
                 case 2:
                     guard.armor = ItemResourceType.FullPlateArmor;
-                    guard.upgradePrice += 10;
+                    guard.upgradePrice += 200;
 
                     meleeMen.armor = ItemResourceType.FullPlateArmor;
-                    meleeMen.upgradePrice += 200;
+                    meleeMen.upgradePrice += 400;
 
                     rangedMen.armor = ItemResourceType.LightPlateArmor;
-                    rangedMen.upgradePrice += 200;
+                    rangedMen.upgradePrice += 600;
                     break;
             }
 
@@ -230,38 +159,47 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 case 1:
                     meleeMen.weapon = ItemResourceType.Sword;
-                    meleeMen.upgradePrice += 100;
+                    meleeMen.upgradePrice += 200;
                     break;
                 case 2:
                     meleeMen.weapon = ItemResourceType.LongSword;
-                    meleeMen.upgradePrice += 200;
+                    meleeMen.upgradePrice +=400;
                     break;
             }
 
             switch (progress.unlock_projectile)
             {
                 case 1:
+                    guard.weapon = ItemResourceType.Crossbow;
+                    guard.upgradePrice += 50;
+
                     rangedMen.weapon = ItemResourceType.Crossbow;
-                    rangedMen.upgradePrice += 100;
+                    rangedMen.upgradePrice +=200;
 
                     siegeMen.weapon = ItemResourceType.Catapult;
-                    siegeMen.upgradePrice += 50;
+                    siegeMen.upgradePrice += 100;
                     break;
 
                 case 2:
+                    guard.weapon = ItemResourceType.HandCulverin;
+                    guard.upgradePrice += 100;
+
                     rangedMen.weapon = ItemResourceType.HandCulverin;
-                    rangedMen.upgradePrice += 200;
+                    rangedMen.upgradePrice += 400;
 
                     siegeMen.weapon = ItemResourceType.ManCannonBronze;
-                    siegeMen.upgradePrice += 150;
+                    siegeMen.upgradePrice += 300;
                     break;
 
                 case 3:
+                    guard.weapon = ItemResourceType.Rifle;
+                    guard.upgradePrice += 200;
+
                     rangedMen.weapon = ItemResourceType.Rifle;
-                    rangedMen.upgradePrice += 300;
+                    rangedMen.upgradePrice += 600;
 
                     siegeMen.weapon = ItemResourceType.ManCannonIron;
-                    siegeMen.upgradePrice += 250;
+                    siegeMen.upgradePrice += 500;
                     break;
             }
         }

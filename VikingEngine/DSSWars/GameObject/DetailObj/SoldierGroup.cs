@@ -54,6 +54,7 @@ namespace VikingEngine.DSSWars.GameObject
         bool isWalkingIntoOtherGroup = false;
         public bool restingGuardMode = false;
         public float soldierAttackRangeBonus = 0;
+        public int soldierAttackDamageBonus = 0;
         public float halfColDepth;
 
         public int soldierCount = 0;
@@ -2003,13 +2004,16 @@ namespace VikingEngine.DSSWars.GameObject
         public void remove(AbsSoldierUnit soldier)
         {
             //Debug.CrashIfThreaded();
-           
-            soldiers.RemoveAt_EqualSafeCheck(soldier, soldier.myIndex);
-            soldierCount = soldiers.Count;
 
-            if (soldiers.Count <= 0)
+            if (soldiers != null)
             {
-                DeleteMe(DeleteReason.EmptyGroup, true);
+                soldiers.RemoveAt_EqualSafeCheck(soldier, soldier.myIndex);
+                soldierCount = soldiers.Count;
+
+                if (soldiers.Count <= 0)
+                {
+                    DeleteMe(DeleteReason.EmptyGroup, true);
+                }
             }
         }
 

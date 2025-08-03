@@ -587,11 +587,11 @@ namespace VikingEngine.DSSWars.Build
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.Bank, TerrainMainType.Building, (int)TerrainBuildingType.Bank, SpriteName.WarsBuild_Bank, CraftBuildingLib.Bank, true,
-                BuildCategoryTab.Advanced, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Upgrade, BuildFilterTag.Gold, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
             new BuildOption(BuildAndExpandType.CoinMinter, TerrainMainType.Building, (int)TerrainBuildingType.CoinMinter, SpriteName.WarsBuild_Coinminter, CraftBuildingLib.CoinMinter, true, 
-                BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.Gold, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.Embassy, TerrainMainType.Building, (int)TerrainBuildingType.Embassy, SpriteName.WarsBuild_Embassy, CraftBuildingLib.Embassy, false, 
@@ -902,14 +902,14 @@ namespace VikingEngine.DSSWars.Build
     }
 
     enum BuildCategoryTab
-    { 
-        Filter,
+    {  
         General,
         Advanced,
         Military,
         Decor,
         Upgrade,
         Automation,
+        Filter,
         NUM
     }
 
@@ -918,6 +918,7 @@ namespace VikingEngine.DSSWars.Build
         
         Workers,
         
+        Gold,
         Resources,
         Water,
         Food,

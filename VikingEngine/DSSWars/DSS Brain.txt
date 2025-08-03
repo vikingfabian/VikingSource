@@ -1,16 +1,12 @@
 ﻿UPDATE
 Change Log:
-* Improved hud
-
+* 
 
 #Pics
-synligeare merge down layer
-Build category tab: filter, advanced
-hud pin icon
-
 
 #Todo#
 
+x guard needs damage output
 x cities from casual must empty build queues 
 x add casual to demo
 x casual trigger the right tutorial
@@ -37,8 +33,8 @@ x Ballista, har warmachine crew, guards
 x removing soldiers cancels move order
 x drag slider needs description
 x god mode where you can edit all nations? Like giving money, spawning units, deleting buildings etc.
-x metal minting has no controls
-x should smelt gold
+x adjustable faction sizes in map editor
+x 
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning

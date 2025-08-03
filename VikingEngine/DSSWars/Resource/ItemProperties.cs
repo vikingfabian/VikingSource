@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.Lead, DefaultWeight, CraftResourceLib.Lead, null);
             new ItemProperties(ItemResourceType.Iron_G, DefaultWeight, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
             new ItemProperties(ItemResourceType.Silver, DefaultWeight, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
+            new ItemProperties(ItemResourceType.Gold, DefaultWeight, Minting.ConvertGoldOre, null);
             new ItemProperties(ItemResourceType.Bronze, DefaultWeight, CraftResourceLib.Bronze, null);
             new ItemProperties(ItemResourceType.CastIron, DefaultWeight, CraftResourceLib.CastIron, null);
             new ItemProperties(ItemResourceType.BloomeryIron, DefaultWeight, CraftResourceLib.BloomeryIron, null);

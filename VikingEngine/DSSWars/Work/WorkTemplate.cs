@@ -7,10 +7,11 @@ using System.Net;
 using System.Reflection.Metadata;
 using System.Security.AccessControl;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
+using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 
@@ -266,7 +267,11 @@ namespace VikingEngine.DSSWars.Work
             coinmaker_silver.writeGameState(w, isCity);
             coinmaker_mithril.writeGameState(w, isCity);
 
-            
+            if (isCity)
+            {
+                EightBit minterBools = new EightBit(coinmaker_copper_fullStock, coinmaker_bronze_fullStock, coinmaker_silver_fullStock, coinmaker_mithril_fullStock);
+                minterBools.write(w);
+            }
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
         {
@@ -369,7 +374,11 @@ namespace VikingEngine.DSSWars.Work
             coinmaker_silver.readGameState(r, subversion, isCity);
             coinmaker_mithril.readGameState(r, subversion, isCity);
 
-            
+            if (isCity && subversion >= 69)
+            {
+                EightBit minterBools = new EightBit(r);
+                minterBools.Get(out coinmaker_copper_fullStock, out coinmaker_bronze_fullStock, out coinmaker_silver_fullStock, out coinmaker_mithril_fullStock);
+            }
         }
 
 
@@ -588,6 +597,33 @@ namespace VikingEngine.DSSWars.Work
             work.onFactionValueChange(factionTemplate.GetWorkPriority(prioType));
             SetWorkPriority(prioType, work);
         }
+
+        public WorkPriority GetWorkPriorityAndStockCheck(ItemResourceType item, out bool waitForFullStock)
+        {
+            switch (item)
+            {
+                case ItemResourceType.CopperCoin:
+                    waitForFullStock = coinmaker_copper_fullStock;
+                    return coinmaker_copper;
+
+                case ItemResourceType.BronzeCoin:
+                    waitForFullStock = coinmaker_bronze_fullStock;
+                    return coinmaker_bronze;
+
+                case ItemResourceType.SilverCoin:
+                    waitForFullStock = coinmaker_silver_fullStock;
+                    return coinmaker_silver;
+
+                case ItemResourceType.ElfCoin:
+                    waitForFullStock = coinmaker_mithril_fullStock;
+                    return coinmaker_mithril;
+
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public WorkPriority GetWorkPriority(ItemResourceType item)
         {
             switch (item)
@@ -714,6 +750,18 @@ namespace VikingEngine.DSSWars.Work
                     return craft_siegecannoniron;
                 case ItemResourceType.ManCannonIron:
                     return craft_mancannoniron;
+
+                case ItemResourceType.Gold:
+                    return smeltgold;
+
+                case ItemResourceType.CopperCoin:
+                    return coinmaker_copper;
+                case ItemResourceType.BronzeCoin:
+                    return coinmaker_bronze;
+                case ItemResourceType.SilverCoin:
+                    return coinmaker_silver;
+                case ItemResourceType.ElfCoin:
+                    return coinmaker_mithril;
 
 
                 default:
@@ -1243,6 +1291,8 @@ namespace VikingEngine.DSSWars.Work
                     craft_cupper.toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Copper), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Copper, WorkPriorityType.smeltCopper, faction, city);
                     craft_lead.toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Lead), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Lead, WorkPriorityType.smeltLead, faction, city);
                     craft_silver.toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Silver), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Silver, WorkPriorityType.smeltSilver, faction, city);
+                    smeltgold.toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.ResourceType_Gold), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Gold, WorkPriorityType.smeltGold, faction, city);
+
                     craft_bronze.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bronze), SpriteName.WarsHammer, SpriteName.WarsResource_Bronze, WorkPriorityType.craftBronze, faction, city);
                     craft_castiron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_CastIron), SpriteName.WarsHammer, SpriteName.WarsResource_CastIron, WorkPriorityType.craftCastIron, faction, city);
                     craft_bloomeryiron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BloomIron), SpriteName.WarsHammer, SpriteName.WarsResource_BloomeryIron, WorkPriorityType.craftBloomeryIron, faction, city);
@@ -1303,11 +1353,58 @@ namespace VikingEngine.DSSWars.Work
                     break;
 
                 case ResourcesSubTab.Work_Mint:
-                    coinmaker_copper.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Coin), SpriteName.WarsHammer, SpriteName.WarsResource_CopperCoin, WorkPriorityType.coinmaker_copper, faction, city);
+                    const string CraftCoinCaption = "{0} - {1}";
+
+                    {
+                        content.newLine();
+                        coinmaker_copper.titleToHud(content, string.Format(CraftCoinCaption, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Coin), DssRef.lang.Resource_TypeName_Copper),
+                            SpriteName.WarsHammer, SpriteName.WarsResource_CopperCoin);
+                        content.space();
+                        HudLib.blueprintButton(city, player, content, Minting.CopperCoin);
+                        content.newLine();
+                        coinmaker_copper.priorityToHud(player, content, WorkPriorityType.coinmaker_copper, faction, city);
+                        content.space(2);
+                        waitForFullStock(WorkPriorityType.coinmaker_copper);
+                    }
+                    {
+                        content.newParagraph();
+                        coinmaker_bronze.titleToHud(content, string.Format(CraftCoinCaption, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Coin), DssRef.lang.Resource_TypeName_Bronze),
+                            SpriteName.WarsHammer, SpriteName.WarsResource_BonzeCoin);
+                        content.space();
+                        HudLib.blueprintButton(city, player, content, Minting.BronzeCoin);
+                        content.newLine();
+                        coinmaker_bronze.priorityToHud(player, content, WorkPriorityType.coinmaker_bronze, faction, city);
+                        content.space(2);
+                        waitForFullStock(WorkPriorityType.coinmaker_bronze);
+                    }
+                    {
+                        content.newParagraph();
+                        coinmaker_silver.titleToHud(content, string.Format(CraftCoinCaption, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Coin), DssRef.lang.Resource_TypeName_Silver),
+                            SpriteName.WarsHammer, SpriteName.WarsResource_SilverCoin);
+                        content.space();
+                        HudLib.blueprintButton(city, player, content, Minting.SilverCoin);
+                        content.newLine();
+                        coinmaker_silver.priorityToHud(player, content, WorkPriorityType.coinmaker_silver, faction, city);
+                        content.space(2);
+                        waitForFullStock(WorkPriorityType.coinmaker_silver);
+                    }
+                    {
+                        content.newParagraph();
+                        coinmaker_mithril.titleToHud(content, string.Format(CraftCoinCaption, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Coin), DssRef.lang.Resource_TypeName_Mithril),
+                            SpriteName.WarsHammer, SpriteName.WarsResource_ElfCoin);
+                        content.space();
+                        HudLib.blueprintButton(city, player, content, Minting.ElfCoin);
+                        content.newLine();
+                        coinmaker_mithril.priorityToHud(player, content, WorkPriorityType.coinmaker_mithril, faction, city);
+                        content.space(2);
+                        waitForFullStock(WorkPriorityType.coinmaker_mithril);
+                    }
 
                     void waitForFullStock(WorkPriorityType priorityType)
-                    { 
-                        //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsStockpileStop) }, 
+                    {
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsStockpileStop) },
+                            city.mintOnFullStockProperty, new RbTooltip_Text(DssRef.todoLang.Work_OnlyCraftOnFullStock))
+                        { propertyTag = priorityType, });
 
                     }
                     break;
@@ -1346,7 +1443,18 @@ namespace VikingEngine.DSSWars.Work
                 value = factionTemplate.value;
             }
         }
+        public void titleToHud(RichBoxContent content, string name, SpriteName sprite1, SpriteName sprite2)
+        {
+            content.Add(new RbImage(sprite1));
+            if (sprite2 != SpriteName.NO_IMAGE)
+            {
+                content.Add(new RbImage(sprite2));
+            }
+            content.hspace();
+            content.Add(new RbText(name, HudLib.TitleColor_Label));
 
+
+        }
         public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, SpriteName sprite1, SpriteName sprite2, WorkPriorityType priorityType, Faction faction, City city, int mineCount = 1)
         {
             content.newLine();
@@ -1366,7 +1474,15 @@ namespace VikingEngine.DSSWars.Work
             {
                 content.Add(new RbText(DssRef.lang.Work_NoMines, HudLib.NotAvailableColor));
             }
-            else if (unlocked)
+            else 
+            {
+                priorityToHud(player, content, priorityType, faction, city);
+            }
+        }
+
+        public void priorityToHud(Players.LocalPlayer player, RichBoxContent content, WorkPriorityType priorityType, Faction faction, City city)
+        {
+            if (unlocked)
             {
                 if (city != null)
                 {
@@ -1396,25 +1512,13 @@ namespace VikingEngine.DSSWars.Work
                             break;
                     }
 
-                    //AbsRbAction hover = null;
-                    //if (prioText != null)
-                    //{
-                    //    hover = new RbAction(() =>
-                    //    {
-                    //        RichBoxContent content = new RichBoxContent();
-                    //        content.text(prioText);
-
-                    //        player.hud.tooltip.create(player, content, true);
-                    //    });
-                    //}
-
                     var button = new ArtToggle(prio == value, new List<AbsRichBoxMember> {
-                            new RbText(prio.ToString())
-                        },
+                                new RbText(prio.ToString())
+                            },
                         new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city, SoundLib.menu),
-                        prioText == null? null : new RbTooltip_Text(prioText));
-                        //button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
-                        content.Add(button);
+                        prioText == null ? null : new RbTooltip_Text(prioText));
+                    //button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
+                    content.Add(button);
                     if (prio == 0)
                     {
                         content.space();
@@ -1426,6 +1530,7 @@ namespace VikingEngine.DSSWars.Work
                 content.Add(new RbImage(SpriteName.birdLock));
             }
         }
+
         public void writeGameState(System.IO.BinaryWriter w, bool isCity)
         {
 

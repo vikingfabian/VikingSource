@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.Build
                     {
                         if (city.availableBuildQueue(player) && placeBuildingOption().blueprint.meetsRequirements(city))
                         {
-                            player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
                         }
                         else
                         {
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     if (commit)
                     {
-                        player.orders.addOrder(new DemolishOrder(WorkTemplate.MaxPrio, true, city, subTilePos), ActionOnConflict.Toggle);
+                        player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(WorkTemplate.MaxPrio, true, city, subTilePos), ActionOnConflict.Toggle);
                     }
 
                     return true;
@@ -394,7 +394,7 @@ namespace VikingEngine.DSSWars.Build
 
                     foreach (IntVector2 position in positions)
                     {
-                        player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, false);
+                        player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, false);
                     }
 
                     void findBuildPositons_AutoBuilder(List<IntVector2> result)
@@ -531,12 +531,13 @@ namespace VikingEngine.DSSWars.Build
 
             List<BuildCategoryTab> buildCategories = new List<BuildCategoryTab>
             {
-                BuildCategoryTab.Filter,
+                
                 BuildCategoryTab.General,
                 BuildCategoryTab.Advanced,
                 BuildCategoryTab.Military,
                 BuildCategoryTab.Decor,
                 BuildCategoryTab.Upgrade,
+                BuildCategoryTab.Filter,
             };
 
             if (city.buildingStructure.buildingLevel_logistics > 0)
@@ -551,7 +552,7 @@ namespace VikingEngine.DSSWars.Build
                 switch (tab)
                 {
                     case BuildCategoryTab.Filter:
-                        tabIcon = SpriteName.cmdSpyglass;
+                        tabIcon = SpriteName.warsBuildCategorySearch;
                         category = DssRef.todoLang.HUD_Filter;
                         break;
                     case BuildCategoryTab.General:
@@ -559,7 +560,7 @@ namespace VikingEngine.DSSWars.Build
                         category = DssRef.lang.BuildCategory_General;
                         break;
                     case BuildCategoryTab.Advanced:
-                        tabIcon = SpriteName.WarsUnitLevelLegend;
+                        tabIcon = SpriteName.warsBuildCategoryAdvanced;
                         category = DssRef.lang.Hud_Advanced;
                         break;
                     case BuildCategoryTab.Military:
@@ -1119,6 +1120,10 @@ namespace VikingEngine.DSSWars.Build
 
                 case BuildAndExpandType.Smith:
                     mayCraftList(content, city, CraftBuildingLib.SmithCraftTypes);
+                    break;
+
+                case BuildAndExpandType.Gunmaker:
+                    mayCraftList(content, city, CraftBuildingLib.GunmakerCraftTypes);
                     break;
 
                 case BuildAndExpandType.CoalPit:

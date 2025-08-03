@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static readonly ItemResourceType[] SmelterCraftTypes = {
             ItemResourceType.Copper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G,
-            ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Mithril };
+            ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Gold, ItemResourceType.Mithril };
 
         public static readonly ItemResourceType[] SmithCraftTypes = {
             ItemResourceType.BronzeSword,
@@ -51,7 +51,8 @@ namespace VikingEngine.DSSWars.Build
         public static readonly ItemResourceType[] ChemistCraftTypes = {
              ItemResourceType.CoolingFluid, ItemResourceType.BlackPowder, ItemResourceType.GunPowder };
 
-
+        //public static readonly ItemResourceType[] CoinMinterCraftTypes = {
+        //     ItemResourceType.CoolingFluid, ItemResourceType.BlackPowder, ItemResourceType.GunPowder };
 
         public static readonly CraftBlueprint CraftLogistics = new CraftBlueprint(
             CraftResultType.Building,

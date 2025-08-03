@@ -286,7 +286,7 @@ namespace VikingEngine.DSSWars.Data
                     case CityTagArt.IconMovebox: return SpriteName.WarsWorkMove;
                     case CityTagArt.IconHandCollect: return SpriteName.WarsWorkCollect;
                     case CityTagArt.IconMine: return SpriteName.WarsWorkMine;
-                    case CityTagArt.IconSmelt: return SpriteName.WarsWorkSmelting;
+                    case CityTagArt.IconSmelt: return SpriteName.WarsWorkCasting;
                     case CityTagArt.IconDig: return SpriteName.WarsWorkFarm;
                     case CityTagArt.IconBed: return SpriteName.WarsBedIcon;
                     case CityTagArt.IconMap: return SpriteName.WarsMapIcon;

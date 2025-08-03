@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Type = CasualBuildType.WorkerHut,
                 Name = DssRef.lang.BuildingType_WorkerHut,
                 icon = SpriteName.WarsBuild_WorkerHuts,
-                price = 200,
+                price = 400,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Default,
                 //allowMultiBuild = true
             });
@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Type = CasualBuildType.Barracks,
                 Name = DssRef.lang.BuildingType_Barracks,
                 icon = SpriteName.WarsBuild_Barracks,
-                price = 300,
+                price = 600,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Default * 2,
                 //allowMultiBuild = true
             });
@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Type = CasualBuildType.GuardTower_Wood,
                 Name = DssRef.lang.BuildingType_WoodTower,
                 icon = SpriteName.WarsBuild_WoodTower,
-                price = 100,
+                price = 200,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Small,
                 //allowMultiBuild = true
             });
@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Type = CasualBuildType.GuardTower_Stone,
                 Name = DssRef.lang.BuildingType_StoneTower,
                 icon = SpriteName.WarsBuild_StoneTower,
-                price = 150,
+                price = 300,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Default,
             });
 
@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Type = CasualBuildType.Logistics,
                 Name = DssRef.lang.BuildingType_Logistics,
                 icon = SpriteName.WarsBuild_Logistics,
-                price = 500,
+                price = 1000,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Large,
                 //allowMultiBuild = false
             });
@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Type = CasualBuildType.ResearchCenter,
                 Name = DssRef.lang.BuildingType_ReseachCenter,
                 icon = SpriteName.WarsBuild_ResearchCenter,
-                price = 500,
+                price = 1000,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Large,
                 //allowMultiBuild = false
             });
@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
                     DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_IronArmor),
                 icon = SpriteName.WarsResource_IronArmor,
-                price = 1000,
+                price = 2000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level2_Minutes * TimeExt.MinuteInSeconds),
             });
             add(new CasualBuildOption
@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
                                 DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_FullPlateArmor),
                 icon = SpriteName.WarsResource_FullPlateArmor,
-                price = 1500,
+                price = 3000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level3_Minutes * TimeExt.MinuteInSeconds),
             });
 
@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
                    DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_Sword),
                 icon = SpriteName.WarsResource_Sword,
-                price = 1000,
+                price = 2000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level2_Minutes * TimeExt.MinuteInSeconds),
             });
             add(new CasualBuildOption
@@ -187,7 +187,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
                                 DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_LongSword),
                 icon = SpriteName.WarsResource_Longsword,
-                price = 1500,
+                price = 3000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level3_Minutes * TimeExt.MinuteInSeconds),
             });
 
@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
                     DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_Catapult),
                 icon = SpriteName.WarsResource_Catapult,
-                price = 1500,
+                price = 3000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level2_Minutes * TimeExt.MinuteInSeconds),
             });
             add(new CasualBuildOption
@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
                                 DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_BlackPowder),
                 icon = SpriteName.WarsResource_BlackPowder,
-                price = 2000,
+                price = 4000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level3_Minutes * TimeExt.MinuteInSeconds),
             });
             add(new CasualBuildOption
@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
                                 DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_GunPowder),
                 icon = SpriteName.WarsResource_GunPowder,
-                price = 3000,
+                price = 6000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level4_Minutes * TimeExt.MinuteInSeconds),
             });
 
@@ -229,7 +229,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
                     DssRef.lang.Hud_Unlock, DssRef.lang.Technology_AdvancedFarming),
                 icon = SpriteName.WarsResource_Toolkit,
-                price = 1000,
+                price = 2000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level2_Minutes * TimeExt.MinuteInSeconds),
             });
             add(new CasualBuildOption
@@ -239,7 +239,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
                                 DssRef.lang.Hud_Unlock, DssRef.todoLang.Technology_ModernFarming),
                 icon = SpriteName.WarsResource_Wagon4Wheel,
-                price = 1500,
+                price = 3000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level3_Minutes * TimeExt.MinuteInSeconds),
             });
 

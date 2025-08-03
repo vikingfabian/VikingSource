@@ -111,12 +111,12 @@ namespace VikingEngine.DSSWars.Players
             baseInit();
         }
 
-        public void DrawDetalLayer(int cameraIndex)
+        public void DrawDetalLayer_Mesh(int cameraIndex)
         {
             gameControls.map.hover.groupModels_detail.Draw(cameraIndex);
             gameControls.map.selection.groupModels_detail.Draw(cameraIndex);
         }
-        public void DrawMidLayer(int cameraIndex)
+        public void DrawMidLayer_Mesh(int cameraIndex)
         {
             gameControls.map.hover.groupModels_terrian.Draw(cameraIndex);
             gameControls.map.selection.groupModels_terrian.Draw(cameraIndex);
@@ -434,7 +434,7 @@ namespace VikingEngine.DSSWars.Players
             tutorial_readGameState(r, subversion);
 
            // Debug.ReadCheck(r);//TEMP!
-            orders.readGameState(r, subversion, pointers);
+            orders.readGameState(playerData.localPlayerIndex , r, subversion, pointers);
 
             viewCityTagsOnMap = r.ReadBoolean();
             viewArmyTagsOnMap = r.ReadBoolean();
@@ -779,6 +779,14 @@ namespace VikingEngine.DSSWars.Players
             //    tutorial.update();
             //}
 
+#if DEBUG
+            if (Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left))
+            {
+                RichBoxContent c = new RichBoxContent();
+                c.text(gameControls.map.tilePosition.ToString());
+                hud.messages.Add(c);
+            }
+#endif 
             gameControls.update();
 
             if (PlatformSettings.DevBuild)
@@ -825,14 +833,6 @@ namespace VikingEngine.DSSWars.Players
                 }
             //}
 
-#if DEBUG
-            if (Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left))
-            {
-                RichBoxContent c = new RichBoxContent();
-                c.text(gameControls.map.tilePosition.ToString());
-                hud.messages.Add(c);
-            }
-#endif 
         }
 
         public LocationPin rayCollisionWithPin(Ray ray)
@@ -1612,6 +1612,8 @@ namespace VikingEngine.DSSWars.Players
             {
                 pinsC.sel.asynchCullingUpdate(time, bStateA);
             }
+
+            orders.cullingUpdate(bStateA, playerData.localPlayerIndex);
         }
 
         public override void onGameStart(bool newGame)

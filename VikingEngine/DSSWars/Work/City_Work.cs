@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -743,6 +744,9 @@ namespace VikingEngine.DSSWars.GameObject
                         case TerrainBuildingType.Gunmaker:
                             craftBench(pos, distanceValue, CraftBuildingLib.GunmakerCraftTypes);
                             break;
+                        case TerrainBuildingType.CoinMinter:
+                            coinMint(pos, distanceValue);
+                            break;
                     }
                 }
 
@@ -786,14 +790,36 @@ namespace VikingEngine.DSSWars.GameObject
                     int topPrioValue = WorkTemplate.NoPrio;
                     ItemResourceType topItem = ItemResourceType.NONE;
                     WorkPriority topPrio = WorkPriority.Empty;
+                    //bool waitForFullStock = false;
 
                     foreach (var item in types)
                     {
-                        var template = workTemplate.GetWorkPriority(item);
+                        WorkPriority template= workTemplate.GetWorkPriority(item);
+                        //if (checkMaxStock)
+                        //{
+                        //    template = workTemplate.GetWorkPriorityAndStockCheck(item, out waitForFullStock);
+                        //}
+                        //else
+                        //{
+                        //template = workTemplate.GetWorkPriority(item);
+                        //}
+                        
                         if (template.value > topPrioValue)
                         {
+                            if (item == ItemResourceType.Gold)
+                            {
+                                lib.DoNothing();
+                            }
+
                             ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
-                            if (bp1.available(this) && GetGroupedResource(item).needMore())
+                            bool available = bp1.available(this);
+                            
+                            if (!available && bp2 != null)
+                            {
+                                available = bp2.available(this);
+                            }
+
+                            if (available && GetGroupedResource(item).needMore())
                             {
                                 topPrioValue = template.value;
                                 topItem = item;
@@ -806,6 +832,30 @@ namespace VikingEngine.DSSWars.GameObject
                         work_isFreeTile(pos))
                     {
                         workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, 0, pos, topPrioValue, prioAdd, distanceValue));
+                    }
+                }
+
+                void coinMint(IntVector2 pos, int distanceValue)
+                {
+                    int topPrioValue = WorkTemplate.NoPrio;
+                    int topItem = -1;
+                    WorkPriority topPrio = WorkPriority.Empty;
+
+                    foreach (var bp in Minting.CoinCraftTypes)
+                    {
+                        WorkPriority template = workTemplate.GetWorkPriorityAndStockCheck((ItemResourceType)bp.workTag, out bool waitForFullStock);
+                        if ((!waitForFullStock || bp.hasFullStock(this)) && bp.available(this))
+                        {
+                            topPrioValue = template.value;
+                            topItem = bp.workTag;
+                            topPrio = template;
+                        }
+                    }
+
+                    if (topPrioValue > WorkTemplate.NoPrio &&
+                        work_isFreeTile(pos))
+                    {
+                        workQue.Add(new WorkQueMember(WorkType.Craft, topItem, 0, pos, topPrioValue, 0, distanceValue));
                     }
                 }
 

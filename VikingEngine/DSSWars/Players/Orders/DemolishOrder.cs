@@ -23,9 +23,9 @@ namespace VikingEngine.DSSWars.Players.Orders
             this.subTile = subTile;
         }
 
-        public override void onAdd()
+        public override void onAdd(int playerIx)
         {
-            createModel(1);
+            createModel(1, playerIx);
         }
 
         public WorkQueMember createWorkQue()

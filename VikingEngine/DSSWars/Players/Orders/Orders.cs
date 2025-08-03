@@ -31,6 +31,17 @@ namespace VikingEngine.DSSWars.Players.Orders
             return count;
         }
 
+        public void cullingUpdate(bool bStateA, int playerIx)
+        {
+            lock (orders)
+            {
+                foreach (AbsOrder order in orders)
+                {
+                    order.cullingUpdate(bStateA, playerIx);
+                }
+            }
+        }
+
         public void refreshAvailable(Faction faction)
         {
             lock (orders)
@@ -81,7 +92,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             return false;
         }
 
-        public void addOrder(AbsOrder order, ActionOnConflict onConflict, bool mainThread = true)
+        public void addOrder(int playerIx, AbsOrder order, ActionOnConflict onConflict, bool mainThread = true)
         {
             lock (orders)
             {
@@ -107,11 +118,11 @@ namespace VikingEngine.DSSWars.Players.Orders
 
                 if (mainThread)
                 {
-                    order.onAdd();
+                    order.onAdd(playerIx);
                 }
                 else
                 {
-                    Ref.update.AddSyncAction(new SyncAction(order.onAdd));
+                    Ref.update.AddSyncAction(new SyncAction1Arg<int>(order.onAdd, playerIx));
                 }
                 orders.Add(order);
             }
@@ -189,7 +200,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             Debug.WriteCheck(w);
         }
 
-        public void readGameState(BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        public void readGameState(int playerIx, BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {            
             int ordersCount = r.ReadUInt16();
             for (int i = 0; i < ordersCount; i++)
@@ -214,7 +225,7 @@ namespace VikingEngine.DSSWars.Players.Orders
                 }
                 
                 
-                order.readGameState(r, subversion, pointers);
+                order.readGameState(playerIx, r, subversion, pointers);
                 //orderConflictingSubTile(order.GetBuild().
                 orders.Add(order);
             }

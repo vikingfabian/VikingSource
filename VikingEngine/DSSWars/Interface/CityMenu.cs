@@ -550,7 +550,7 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.Fuel_G;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Fuel1, CraftResourceLib.Charcoal);
+                        HudLib.blueprint(content, CraftResourceLib.Fuel1, CraftResourceLib.Charcoal);
                         work(item, WorkPriorityType.farmfuel);
                         work(item, WorkPriorityType.craftFuel);
                         end(item);
@@ -566,7 +566,7 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.Food_G;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Food1, CraftResourceLib.Food2);
+                        HudLib.blueprint(content, CraftResourceLib.Food1, CraftResourceLib.Food2);
                         work(item, WorkPriorityType.craftFood);
                         blackMarket(item);
                         end(item);
@@ -574,14 +574,14 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.Beer;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Beer);
+                        HudLib.blueprint(content, CraftResourceLib.Beer);
                         work(item, WorkPriorityType.craftBeer);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.CoolingFluid;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.CoolingFluid);
+                        HudLib.blueprint(content, CraftResourceLib.CoolingFluid);
                         work(item, WorkPriorityType.craftCoolingFluid);
                         end(item);
                     }
@@ -596,35 +596,35 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.Toolkit;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Toolkit);
+                        HudLib.blueprint(content, CraftResourceLib.Toolkit);
                         work(item, WorkPriorityType.craftToolkit);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Wagon2Wheel;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.WagonLight);
+                        HudLib.blueprint(content, CraftResourceLib.WagonLight);
                         work(item, WorkPriorityType.craftWagonLight);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Wagon4Wheel;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.WagonHeavy);
+                        HudLib.blueprint(content, CraftResourceLib.WagonHeavy);
                         work(item, WorkPriorityType.craftWagonHeavy);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.BlackPowder;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.BlackPowder);
+                        HudLib.blueprint(content, CraftResourceLib.BlackPowder);
                         work(item, WorkPriorityType.craftBlackPowder);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.LedBullet;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.LedBullets);
+                        HudLib.blueprint(content, CraftResourceLib.LedBullets);
                         work(item, WorkPriorityType.craftBullet);
                         end(item);
                     }
@@ -672,7 +672,7 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.Iron_G;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
+                        HudLib.blueprint(content, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
                         work(item, WorkPriorityType.smeltIron);
                         blackMarket(item);
                         end(item);
@@ -680,28 +680,28 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.Tin;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Tin);
+                        HudLib.blueprint(content, CraftResourceLib.Tin);
                         work(item, WorkPriorityType.smeltTin);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Copper;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
+                        HudLib.blueprint(content, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
                         work(item, WorkPriorityType.smeltCopper);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Lead;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Lead);
+                        HudLib.blueprint(content, CraftResourceLib.Lead);
                         work(item, WorkPriorityType.smeltLead);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Silver;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
+                        HudLib.blueprint(content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
                         work(item, WorkPriorityType.smeltSilver);
                         end(item);
                     }
@@ -716,35 +716,35 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.Bronze;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Bronze);
+                        HudLib.blueprint(content, CraftResourceLib.Bronze);
                         work(item, WorkPriorityType.craftBronze);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.CastIron;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.CastIron);
+                        HudLib.blueprint(content, CraftResourceLib.CastIron);
                         work(item, WorkPriorityType.craftCastIron);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.BloomeryIron;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.BloomeryIron);
+                        HudLib.blueprint(content, CraftResourceLib.BloomeryIron);
                         work(item, WorkPriorityType.craftBloomeryIron);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Steel;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
+                        HudLib.blueprint(content, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
                         work(item, WorkPriorityType.craftSteel);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Mithril;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Mithril);
+                        HudLib.blueprint(content, CraftResourceLib.Mithril);
                         work(item, WorkPriorityType.craftMithril);
                         end(item);
                     }
@@ -755,42 +755,42 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.SharpStick;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.SharpStick);
+                        HudLib.blueprint(content, CraftResourceLib.SharpStick);
                         work(item, WorkPriorityType.craftSharpStick);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.HandSpear;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
+                        HudLib.blueprint(content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
                         work(item, WorkPriorityType.craftHandSpear);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.BronzeSword;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.BronzeSword);
+                        HudLib.blueprint(content, CraftResourceLib.BronzeSword);
                         work(item, WorkPriorityType.craftBronzeSword);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.ShortSword;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.ShortSword);
+                        HudLib.blueprint(content, CraftResourceLib.ShortSword);
                         work(item, WorkPriorityType.craftShortSword);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Sword;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Sword);
+                        HudLib.blueprint(content, CraftResourceLib.Sword);
                         work(item, WorkPriorityType.craftSword);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.LongSword;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.LongSword);
+                        HudLib.blueprint(content, CraftResourceLib.LongSword);
                         work(item, WorkPriorityType.craftLongSword);
                         end(item);
                     }
@@ -798,28 +798,28 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.Warhammer;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
+                        HudLib.blueprint(content, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
                         work(item, WorkPriorityType.craftWarhammer);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.TwoHandSword;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.TwoHandSword);
+                        HudLib.blueprint(content, CraftResourceLib.TwoHandSword);
                         work(item, WorkPriorityType.craftTwoHandSword);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.KnightsLance;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.KnightsLance);
+                        HudLib.blueprint(content, CraftResourceLib.KnightsLance);
                         work(item, WorkPriorityType.craftKnightsLance);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.MithrilSword;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.MithrilSword);
+                        HudLib.blueprint(content, CraftResourceLib.MithrilSword);
                         work(item, WorkPriorityType.craftMithrilSword);
                         end(item);
                     }
@@ -830,42 +830,42 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.SlingShot;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Slingshot);
+                        HudLib.blueprint(content, CraftResourceLib.Slingshot);
                         work(item, WorkPriorityType.craftSlingshot);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.ThrowingSpear;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.ThrowingSpear1,CraftResourceLib.ThrowingSpear2);
+                        HudLib.blueprint(content, CraftResourceLib.ThrowingSpear1,CraftResourceLib.ThrowingSpear2);
                         work(item, WorkPriorityType.craftThrowingspear);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Bow;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Bow);
+                        HudLib.blueprint(content, CraftResourceLib.Bow);
                         work(item, WorkPriorityType.craftBow);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.LongBow;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.LongBow);
+                        HudLib.blueprint(content, CraftResourceLib.LongBow);
                         work(item, WorkPriorityType.craftLongbow);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Crossbow;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.CrossBow);
+                        HudLib.blueprint(content, CraftResourceLib.CrossBow);
                         work(item, WorkPriorityType.craftCrossbow);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.MithrilBow;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.MithrilBow);
+                        HudLib.blueprint(content, CraftResourceLib.MithrilBow);
                         work(item, WorkPriorityType.craftMithrilbow);
                         end(item);
                     }
@@ -873,28 +873,28 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.HandCannon;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.BronzeHandCannon);
+                        HudLib.blueprint(content, CraftResourceLib.BronzeHandCannon);
                         work(item, WorkPriorityType.craftHandCannon);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.HandCulverin;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.BronzeHandCulverin);
+                        HudLib.blueprint(content, CraftResourceLib.BronzeHandCulverin);
                         work(item, WorkPriorityType.craftHandCulverin);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Rifle;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Rifle);
+                        HudLib.blueprint(content, CraftResourceLib.Rifle);
                         work(item, WorkPriorityType.craftRifle);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Blunderbuss;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Blunderbus);
+                        HudLib.blueprint(content, CraftResourceLib.Blunderbus);
                         work(item, WorkPriorityType.craftBlunderbus);
                         end(item);
                     }
@@ -902,49 +902,49 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.Ballista;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Ballista_Iron,CraftResourceLib.Ballista_Bronze);
+                        HudLib.blueprint(content, CraftResourceLib.Ballista_Iron,CraftResourceLib.Ballista_Bronze);
                         work(item, WorkPriorityType.craftBallista);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Manuballista;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.ManuBallista);
+                        HudLib.blueprint(content, CraftResourceLib.ManuBallista);
                         work(item, WorkPriorityType.craftManuBallista);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Catapult;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.Catapult);
+                        HudLib.blueprint(content, CraftResourceLib.Catapult);
                         work(item, WorkPriorityType.craftCatapult);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.SiegeCannonBronze;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.SiegeCannonBronze);
+                        HudLib.blueprint(content, CraftResourceLib.SiegeCannonBronze);
                         work(item, WorkPriorityType.craftSiegeCannonBronze);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.ManCannonBronze;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.ManCannonBronze);
+                        HudLib.blueprint(content, CraftResourceLib.ManCannonBronze);
                         work(item, WorkPriorityType.craftManCannonBronze);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.SiegeCannonIron;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.SiegeCannonIron);
+                        HudLib.blueprint(content, CraftResourceLib.SiegeCannonIron);
                         work(item, WorkPriorityType.craftSiegeCannonIron);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.ManCannonIron;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.ManCannonIron);
+                        HudLib.blueprint(content, CraftResourceLib.ManCannonIron);
                         work(item, WorkPriorityType.craftManCannonIron);
                         end(item);
                     }
@@ -956,56 +956,56 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.PaddedArmor;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.PaddedArmor);
+                        HudLib.blueprint(content, CraftResourceLib.PaddedArmor);
                         work(item, WorkPriorityType.craftPaddedArmor);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.HeavyPaddedArmor;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.HeavyPaddedArmor);
+                        HudLib.blueprint(content, CraftResourceLib.HeavyPaddedArmor);
                         work(item, WorkPriorityType.craftHeavyPaddedArmor);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.BronzeArmor;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.BronzeArmor);
+                        HudLib.blueprint(content, CraftResourceLib.BronzeArmor);
                         work(item, WorkPriorityType.craftBronzeArmor);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.IronArmor;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.MailArmor);
+                        HudLib.blueprint(content, CraftResourceLib.MailArmor);
                         work(item, WorkPriorityType.craftMailArmor);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.HeavyIronArmor;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.HeavyMailArmor);
+                        HudLib.blueprint(content, CraftResourceLib.HeavyMailArmor);
                         work(item, WorkPriorityType.craftHeavyMailArmor);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.LightPlateArmor;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.PlateArmor);
+                        HudLib.blueprint(content, CraftResourceLib.PlateArmor);
                         work(item, WorkPriorityType.craftPlateArmor);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.FullPlateArmor;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.FullPlateArmor);
+                        HudLib.blueprint(content, CraftResourceLib.FullPlateArmor);
                         work(item, WorkPriorityType.craftFullPlateArmor);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.MithrilArmor;
                         mixResource(item, false);
-                        blueprint(CraftResourceLib.MithrilArmor);
+                        HudLib.blueprint(content, CraftResourceLib.MithrilArmor);
                         work(item, WorkPriorityType.craftMithrilArmor);
                         end(item);
                     }
@@ -1084,16 +1084,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
             }
 
-            void blueprint(CraftBlueprint blueprint, CraftBlueprint optionalBp = null)
-            {
-
-                content.Add(new ArtButton( RbButtonStyle.HoverArea,new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.WarsBluePrint)
-                    },
-                    null,new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs() { blueprint = blueprint, optionalBp = optionalBp }
-                    )));
-                content.space();
-            }
+            
 
             void work(ItemResourceType item, WorkPriorityType workPriorityType)
             {
@@ -1182,7 +1173,7 @@ namespace VikingEngine.DSSWars.Interface
             experience(SpriteName.WarsResource_Food, DssRef.lang.ExperienceType_Cook, city.topskill_Cook);
             experience(SpriteName.WarsFletcherArrowIcon, DssRef.lang.ExperienceType_Fletcher, city.topskill_Fletcher);
             experience(SpriteName.WarsWorkSmelting, DssRef.todoLang.ExperienceType_Smelting, city.topskill_Smelting);
-            experience(SpriteName.WarsResource_CastIron, DssRef.lang.ExperienceType_Casting, city.topskill_Casting);
+            experience(SpriteName.WarsWorkCasting, DssRef.lang.ExperienceType_Casting, city.topskill_Casting);
             experience(SpriteName.WarsResource_Iron, DssRef.lang.ExperienceType_CraftMetal, city.topskill_CraftMetal);
             experience(SpriteName.WarsResource_IronArmor, DssRef.lang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
             experience(SpriteName.WarsResource_Sword, DssRef.lang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
@@ -1250,17 +1241,17 @@ namespace VikingEngine.DSSWars.Interface
                 switch (subTabType)
                 {
                     case TagSubTab.Tag:
-                        tabContent.Add(new RbImage(SpriteName.warsFolder_carton));
+                        tabContent.Add(new RbImage(SpriteName.warsFolder_carton, 0.7f));
                         tabContent.space(0.6f);
                         tabContent.Add(new RbText(DssRef.lang.MenuTab_Tag));
-                        description = ".Add a symbol on the map";
+                        description = DssRef.todoLang.ObjectTag_Description;
                         break;
 
                     case TagSubTab.HudPin:
-                        tabContent.Add(new RbImage(SpriteName.MissingImage));
+                        tabContent.Add(new RbImage(SpriteName.HudPinIcon, 0.7f));
                         tabContent.space(0.6f);
-                        tabContent.Add(new RbText(".HUD pins"));
-                        description = ".Stick information to the screen";
+                        tabContent.Add(new RbText(DssRef.todoLang.HudPins));
+                        description = DssRef.todoLang.HudPins_Description;
                         break;
 
                 }
@@ -1286,7 +1277,7 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         var button = new ArtToggle(back == city.tagBack, new List<AbsRichBoxMember>
                         {
-                    new RbImage(Data.CityTag.BackSprite(back))
+                    new RbImage(Data.CityTag.BackSprite(back), 0.8f)
                             }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { city.tagBack = back; }, back));
                         content.Add(button);
 
@@ -1449,6 +1440,10 @@ namespace VikingEngine.DSSWars.Interface
 
                         case ResourcesSubTab.Work_Mint:
                             tabContent.Add(new RbImage(SpriteName.WarsResource_SilverCoin));
+                            if (city.buildingStructure.CoinMinter_count == 0)
+                            {
+                                continue;
+                            }
                             break;
 
                         case ResourcesSubTab.Overview_Resources:
@@ -1505,7 +1500,7 @@ namespace VikingEngine.DSSWars.Interface
                                    {
                                        GroupedResource.BufferIconInfo(content, true);
                                    }
-                                   Minting.ConvertGoldOre.toMenu(content, city, false, true, false, false);
+                                   //Minting.ConvertGoldOre.toMenu(content, city, false, true, false, false);
                                    {
                                        content.newLine();
                                        content.Add(new RbText(1.ToString()));
@@ -1602,7 +1597,7 @@ namespace VikingEngine.DSSWars.Interface
 
 
                     city.res_food.toMenu(content, ItemResourceType.Food_G, foodSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    blueprintButton(player, content, CraftResourceLib.Food1, CraftResourceLib.Food2);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Food1, CraftResourceLib.Food2);
                     content.space();
 
                     content.Add(new ArtToggle(city.res_food_safeguard,new List<AbsRichBoxMember> {
@@ -1620,40 +1615,40 @@ namespace VikingEngine.DSSWars.Interface
                     })));
 
                     city.res_beer.toMenu(content, ItemResourceType.Beer, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    blueprintButton(player, content, CraftResourceLib.Beer);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Beer);
 
                     city.res_coolingfluid.toMenu(content, ItemResourceType.CoolingFluid, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    blueprintButton(player, content, CraftResourceLib.CoolingFluid);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.CoolingFluid);
                     content.newParagraph();
 
                     city.res_fuel.toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
                     int totalmines = 0;
                     city.terrainStructure.mine(content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, ref totalmines);
-                    blueprintButton(player, content, CraftResourceLib.Fuel1, null, true);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Fuel1, null, true);
                     content.space();
-                    blueprintButton(player, content, CraftResourceLib.Charcoal);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
                     
 
                     city.res_Palisade.toMenu(content, ItemResourceType.Palisade, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    blueprintButton(player, content, CraftResourceLib.Palisade);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Palisade);
 
                     city.res_Toolkit.toMenu(content, ItemResourceType.Toolkit, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    blueprintButton(player, content, CraftResourceLib.Toolkit);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Toolkit);
 
                     city.res_Wagon2Wheel.toMenu(content, ItemResourceType.Wagon2Wheel, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    blueprintButton(player, content, CraftResourceLib.WagonLight);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.WagonLight);
 
                     city.res_Wagon4Wheel.toMenu(content, ItemResourceType.Wagon4Wheel, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    blueprintButton(player, content, CraftResourceLib.WagonHeavy);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.WagonHeavy);
 
                     city.res_BlackPowder.toMenu(content, ItemResourceType.BlackPowder, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    blueprintButton(player, content, CraftResourceLib.BlackPowder);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.BlackPowder);
 
                     city.res_GunPowder.toMenu(content, ItemResourceType.GunPowder, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    blueprintButton(player, content, CraftResourceLib.GunPowder);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.GunPowder);
 
                     city.res_LedBullet.toMenu(content, ItemResourceType.LedBullet, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    blueprintButton(player, content, CraftResourceLib.LedBullets);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.LedBullets);
 
                     
                     //content.Add(new RbSeperationLine());
@@ -1695,23 +1690,27 @@ namespace VikingEngine.DSSWars.Interface
                     city.res_SilverOre.toMenu(content, ItemResourceType.SilverOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
                     city.terrainStructure.mine(content, city.terrainStructure.mineCount_silver, ItemResourceType.Silver, ref totalMines);
 
+                    city.res_GoldOre.toMenu(content, ItemResourceType.GoldOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_gold, ItemResourceType.Gold, ref totalMines);
+                    HudLib.blueprintButton(city, player, content, Minting.ConvertGoldOre);
+
                     content.newParagraph();
 
 
                     city.res_iron.toMenu(content, ItemResourceType.Iron_G, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    blueprintButton(player, content, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
 
                     city.res_Tin.toMenu(content, ItemResourceType.Tin, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    blueprintButton(player, content, CraftResourceLib.Tin);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Tin);
 
                     city.res_Cupper.toMenu(content, ItemResourceType.Copper, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    blueprintButton(player, content, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
 
                     city.res_Lead.toMenu(content, ItemResourceType.Lead, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    blueprintButton(player, content, CraftResourceLib.Lead);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Lead);
 
                     city.res_Silver.toMenu(content, ItemResourceType.Silver, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    blueprintButton(player, content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
 
                     city.res_RawMithril.toMenu(content, ItemResourceType.RawMithril, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
                     city.terrainStructure.mine(content, city.terrainStructure.mineCount_mithril, ItemResourceType.Mithril, ref totalMines);
@@ -1722,139 +1721,139 @@ namespace VikingEngine.DSSWars.Interface
 
 
                     city.res_Bronze.toMenu(content, ItemResourceType.Bronze, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    blueprintButton(player, content, CraftResourceLib.Bronze);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Bronze);
 
                     city.res_CastIron.toMenu(content, ItemResourceType.CastIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    blueprintButton(player, content, CraftResourceLib.CastIron);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.CastIron);
 
                     city.res_BloomeryIron.toMenu(content, ItemResourceType.BloomeryIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    blueprintButton(player, content, CraftResourceLib.BloomeryIron);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.BloomeryIron);
                     
                     city.res_Steel.toMenu(content, ItemResourceType.Steel, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    blueprintButton(player, content, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
 
                     city.res_Mithril.toMenu(content, ItemResourceType.Mithril, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    blueprintButton(player, content, CraftResourceLib.Mithril);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Mithril);
                     break;
 
                 case ResourcesSubTab.Overview_Weapons:
 
                     city.res_sharpstick.toMenu(content, ItemResourceType.SharpStick, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    blueprintButton(player, content, CraftResourceLib.SharpStick);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.SharpStick);
 
                     city.res_BronzeSword.toMenu(content, ItemResourceType.BronzeSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    blueprintButton(player, content, CraftResourceLib.BronzeSword);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.BronzeSword);
 
                     city.res_shortsword.toMenu(content, ItemResourceType.ShortSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    blueprintButton(player, content, CraftResourceLib.ShortSword);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ShortSword);
 
                     city.res_Sword.toMenu(content, ItemResourceType.Sword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    blueprintButton(player, content, CraftResourceLib.Sword);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Sword);
 
                     city.res_LongSword.toMenu(content, ItemResourceType.LongSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    blueprintButton(player, content, CraftResourceLib.LongSword);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.LongSword);
                     
                     city.res_HandSpear.toMenu(content, ItemResourceType.HandSpear, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    blueprintButton(player, content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
                     
                     content.newParagraph();
 
                     city.res_Warhammer.toMenu(content, ItemResourceType.Warhammer, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    blueprintButton(player, content, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
 
                     city.res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    blueprintButton(player, content, CraftResourceLib.TwoHandSword);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.TwoHandSword);
 
                     city.res_knightslance.toMenu(content, ItemResourceType.KnightsLance, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    blueprintButton(player, content, CraftResourceLib.KnightsLance);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.KnightsLance);
 
                     city.res_MithrilSword.toMenu(content, ItemResourceType.MithrilSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    blueprintButton(player, content, CraftResourceLib.MithrilSword);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MithrilSword);
                    
                     break;
 
                 case ResourcesSubTab.Overview_Projectile:
 
                     city.res_SlingShot.toMenu(content, ItemResourceType.SlingShot, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.Slingshot);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Slingshot);
 
                     city.res_ThrowingSpear.toMenu(content, ItemResourceType.ThrowingSpear, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.ThrowingSpear1, CraftResourceLib.ThrowingSpear2);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ThrowingSpear1, CraftResourceLib.ThrowingSpear2);
 
                     city.res_bow.toMenu(content, ItemResourceType.Bow, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.Bow);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Bow);
 
                     city.res_longbow.toMenu(content, ItemResourceType.LongBow, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.LongBow);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.LongBow);
 
                     city.res_crossbow.toMenu(content, ItemResourceType.Crossbow, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.CrossBow);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.CrossBow);
 
                     city.res_MithrilBow.toMenu(content, ItemResourceType.MithrilBow, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.MithrilBow);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MithrilBow);
 
 
                     city.res_HandCannon.toMenu(content, ItemResourceType.HandCannon, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.BronzeHandCannon);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.BronzeHandCannon);
 
                     city.res_HandCulvertin.toMenu(content, ItemResourceType.HandCulverin, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.BronzeHandCulverin);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.BronzeHandCulverin);
 
                     city.res_Rifle.toMenu(content, ItemResourceType.Rifle, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.Rifle);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Rifle);
 
                     city.res_Blunderbuss.toMenu(content, ItemResourceType.Blunderbuss, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.Blunderbus);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Blunderbus);
                     content.newParagraph();
 
                     city.res_ballista.toMenu(content, ItemResourceType.Ballista, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.Ballista_Iron, CraftResourceLib.Ballista_Bronze);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Ballista_Iron, CraftResourceLib.Ballista_Bronze);
 
                     city.res_Manuballista.toMenu(content, ItemResourceType.Manuballista, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.ManuBallista);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ManuBallista);
 
                     city.res_Catapult.toMenu(content, ItemResourceType.Catapult, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.Catapult);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Catapult);
 
                     city.res_SiegeCannonBronze.toMenu(content, ItemResourceType.SiegeCannonBronze, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.SiegeCannonBronze);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.SiegeCannonBronze);
 
                     city.res_ManCannonBronze.toMenu(content, ItemResourceType.ManCannonBronze, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.ManCannonBronze);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ManCannonBronze);
 
                     city.res_SiegeCannonIron.toMenu(content, ItemResourceType.SiegeCannonIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.SiegeCannonIron);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.SiegeCannonIron);
 
                     city.res_SiegeCannonIron.toMenu(content, ItemResourceType.ManCannonIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    blueprintButton(player, content, CraftResourceLib.ManCannonIron);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ManCannonIron);
 
                     break;
 
                 case ResourcesSubTab.Overview_Armor:
 
                     city.res_paddedArmor.toMenu(content, ItemResourceType.PaddedArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
-                    blueprintButton(player, content, CraftResourceLib.PaddedArmor);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.PaddedArmor);
 
                     city.res_HeavyPaddedArmor.toMenu(content, ItemResourceType.HeavyPaddedArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
-                    blueprintButton(player, content, CraftResourceLib.HeavyPaddedArmor);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.HeavyPaddedArmor);
                     
                     city.res_BronzeArmor.toMenu(content, ItemResourceType.BronzeArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
-                    blueprintButton(player, content, CraftResourceLib.BronzeArmor);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.BronzeArmor);
 
                     city.res_mailArmor.toMenu(content, ItemResourceType.IronArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
-                    blueprintButton(player, content, CraftResourceLib.MailArmor);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MailArmor);
 
                     city.res_heavyMailArmor.toMenu(content, ItemResourceType.HeavyIronArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
-                    blueprintButton(player, content, CraftResourceLib.HeavyMailArmor);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.HeavyMailArmor);
 
                     city.res_LightPlateArmor.toMenu(content, ItemResourceType.LightPlateArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
-                    blueprintButton(player, content, CraftResourceLib.PlateArmor);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.PlateArmor);
 
                     city.res_FullPlateArmor.toMenu(content, ItemResourceType.FullPlateArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
-                    blueprintButton(player, content, CraftResourceLib.FullPlateArmor);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.FullPlateArmor);
 
                     city.res_MithrilArmor.toMenu(content, ItemResourceType.MithrilArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
-                    blueprintButton(player, content, CraftResourceLib.MithrilArmor);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MithrilArmor);
                     break;
 
                 case ResourcesSubTab.Stockpile_Resources:
@@ -2126,64 +2125,9 @@ namespace VikingEngine.DSSWars.Interface
         //    }
         //}
 
-        void blueprintButton(LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null, bool roomForAnotherButton = false)
-        {
-            
-            content.Add(new RbTab(0.65f));//roomForAnotherButton? 0.65f : 0.8f));
+        
 
-            var tooltip = new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs()
-            {
-                blueprint = blueprint,
-                optionalBp = optionalBp
-            });
-
-            if (blueprint == CraftResourceLib.Food1)
-            {
-                tooltip.tagId = Tooltip.Food_BlueprintId;
-            }
-
-            content.Add(new ArtButton( RbButtonStyle.HoverArea,new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.WarsBluePrint)
-            },
-            null, tooltip));
-
-        }
-
-        class BlueprintTooltipArgs
-        {
-            public CraftBlueprint blueprint;
-            public CraftBlueprint optionalBp;
-        }
-
-        void blueprintTooltip(RichBoxContent content, object tag)
-        {
-            //hover
-            BlueprintTooltipArgs args = (BlueprintTooltipArgs)tag;
-            //RichBoxContent content = new RichBoxContent();
-            content.h2(DssRef.lang.Blueprint_Title, HudLib.TitleColor_Head);
-            args.blueprint.toMenu(content, city);
-            if (args.optionalBp != null)
-            { 
-                content.newParagraph();
-                args.optionalBp.toMenu(content, city);
-            }
-
-            args.blueprint.requirementToHud(content, city, out _);
-
-            content.Add(new RbSeperationLine());
-            content.newParagraph();
-            content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
-            args.blueprint.listResources(content, city, args.optionalBp);
-
-            if (args.blueprint.levelRequirement > ExperienceLevel.Beginner_1)
-            {
-                content.newLine();
-
-                HudLib.Experience(content, args.blueprint.experienceType, city.GetTopSkill(args.blueprint.experienceType));
-            }
-
-            //player.hud.tooltip.create(player, content, true, blueprint.tooltipId);
-        }
+       
 
         
 

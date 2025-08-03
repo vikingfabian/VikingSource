@@ -42,13 +42,9 @@ namespace VikingEngine.DSSWars.GameObject
         public CityType cityType;
         public List<int> neighborCities = new List<int>();
 
-        //int overviewModelFaction = -1;
         Graphics.AbsVoxelObj overviewModel;
 
         BoundingBox bound;
-
-        //public int maxGuardSize;
-        //public int guardCount;
 
         public FloatingInt childrenAge0 = new FloatingInt();
         public int childrenAge1 = 0;
@@ -235,7 +231,7 @@ namespace VikingEngine.DSSWars.GameObject
                             var player = GetFaction().player.GetLocalPlayer();
                             if (player != null)
                             {
-                                player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel);
+                                player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel);
                             }
                         }
                         return true;
@@ -743,6 +739,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_CupperOre.writeGameState(w); // ItemResourceType.CopperOre_G
             res_LeadOre.writeGameState(w); // ItemResourceType.LeadOre_G
             res_SilverOre.writeGameState(w); // ItemResourceType.SilverOre_G
+            res_GoldOre.writeGameState(w);
 
             res_iron.writeGameState(w); // ItemResourceType.Iron_G
             res_Tin.writeGameState(w); // ItemResourceType.Tin_G
@@ -826,6 +823,10 @@ namespace VikingEngine.DSSWars.GameObject
             res_CupperOre.readGameState(r, subversion); // ItemResourceType.CopperOre_G
             res_LeadOre.readGameState(r, subversion); // ItemResourceType.LeadOre_G
             res_SilverOre.readGameState(r, subversion); // ItemResourceType.SilverOre_G
+            if (subversion >= 70)
+            { 
+                res_GoldOre.readGameState(r, subversion);
+            }
 
             res_iron.readGameState(r, subversion); // ItemResourceType.Iron_G
             res_Tin.readGameState(r, subversion); // ItemResourceType.Tin_G

@@ -2216,6 +2216,10 @@ namespace VikingEngine
                 add(SpriteName.WarsResource_BonzeCoin);
                 add(SpriteName.WarsResource_SilverCoin);
 
+                add(SpriteName.WarsWorkSmelting);
+                add(SpriteName.HudPinIcon);
+                add(SpriteName.warsBuildCategoryAdvanced);
+                add(SpriteName.warsBuildCategorySearch);
 
             }
 
@@ -2673,7 +2677,7 @@ namespace VikingEngine
                     add(SpriteName.WarsTechnology_Unlocked);
                     add(SpriteName.WarsTechnology_Locked);
                     add(SpriteName.WarsFletcherArrowIcon);
-                    add(SpriteName.WarsWorkSmelting);
+                    add(SpriteName.WarsWorkCasting);
                     add(SpriteName.WarsIncreaseArrowUp);
                     add(SpriteName.WarsDecreaseArrowDown);
 

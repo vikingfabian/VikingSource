@@ -6,8 +6,11 @@ using Valve.Steamworks;
 using VikingEngine.DataLib;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -221,6 +224,77 @@ namespace VikingEngine.DSSWars
                 bglayer = CutSceneBgLayer - 2,
                 RbSettings = RbSettings,
             };
+        }
+
+        public static void blueprintButton(City city, LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null, bool roomForAnotherButton = false)
+        {
+
+            content.Add(new RbTab(0.65f));//roomForAnotherButton? 0.65f : 0.8f));
+
+            var tooltip = new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs()
+            {
+                blueprint = blueprint,
+                optionalBp = optionalBp,
+                city = city.myIndex,
+            });
+
+            if (blueprint == CraftResourceLib.Food1)
+            {
+                tooltip.tagId = Tooltip.Food_BlueprintId;
+            }
+
+            content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsBluePrint)
+            },
+            null, tooltip));
+
+        }
+        class BlueprintTooltipArgs
+        {
+            public CraftBlueprint blueprint;
+            public CraftBlueprint optionalBp;
+            public int city;
+        }
+
+        public static void blueprint(RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null)
+        {
+
+            content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsBluePrint)
+                    },
+                    null, new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs() { blueprint = blueprint, optionalBp = optionalBp }
+                )));
+            content.space();
+        }
+        static void blueprintTooltip(RichBoxContent content, object tag)
+        {
+            //hover
+            BlueprintTooltipArgs args = (BlueprintTooltipArgs)tag;
+            var city = DssRef.world.cities[args.city];
+            //RichBoxContent content = new RichBoxContent();
+            content.h2(DssRef.lang.Blueprint_Title, HudLib.TitleColor_Head);
+            args.blueprint.toMenu(content, city);
+            if (args.optionalBp != null)
+            {
+                content.newParagraph();
+                args.optionalBp.toMenu(content, city);
+            }
+
+            args.blueprint.requirementToHud(content, city, out _);
+
+            content.Add(new RbSeperationLine());
+            content.newParagraph();
+            content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
+            args.blueprint.listResources(content, city, args.optionalBp);
+
+            if (args.blueprint.levelRequirement > ExperienceLevel.Beginner_1)
+            {
+                content.newLine();
+
+                HudLib.Experience(content, args.blueprint.experienceType, city.GetTopSkill(args.blueprint.experienceType));
+            }
+
+            //player.hud.tooltip.create(player, content, true, blueprint.tooltipId);
         }
 
         public static void ResourceCost(RichBoxContent content, ResourceType resource, int needResource, int hasResource)

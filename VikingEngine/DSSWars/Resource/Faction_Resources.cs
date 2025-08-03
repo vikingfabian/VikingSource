@@ -49,6 +49,7 @@ namespace VikingEngine.DSSWars
         public ResourceOverview res_CupperOre = new ResourceOverview();
         public ResourceOverview res_LeadOre = new ResourceOverview();
         public ResourceOverview res_SilverOre = new ResourceOverview();
+        public ResourceOverview res_GoldOre = new ResourceOverview();
 
         public ResourceOverview res_iron = new ResourceOverview();
         public ResourceOverview res_Tin = new ResourceOverview();
@@ -206,25 +207,25 @@ namespace VikingEngine.DSSWars
                     res_LeadOre.toMenu(content, ItemResourceType.LeadOre);
                     content.Add(new RbSeperationLine());
                     res_SilverOre.toMenu(content, ItemResourceType.SilverOre);
+                    res_GoldOre.toMenu(content, ItemResourceType.SilverOre);
 
+                    content.Add(new RbSeperationLine());
                     res_iron.toMenu(content, ItemResourceType.Iron_G);
-                    content.Add(new RbSeperationLine());
                     res_Tin.toMenu(content, ItemResourceType.Tin);
+                    content.Add(new RbSeperationLine());
                     res_Cupper.toMenu(content, ItemResourceType.Copper);
-                    content.Add(new RbSeperationLine());
                     res_Lead.toMenu(content, ItemResourceType.Lead);
-                    res_Silver.toMenu(content, ItemResourceType.Silver);
                     content.Add(new RbSeperationLine());
+                    res_Silver.toMenu(content, ItemResourceType.Silver);                    
                     res_RawMithril.toMenu(content, ItemResourceType.RawMithril);
+                    content.Add(new RbSeperationLine());
                     res_Sulfur.toMenu(content, ItemResourceType.Sulfur);
-                    content.Add(new RbSeperationLine());
-
                     res_Bronze.toMenu(content, ItemResourceType.Bronze);
+                    content.Add(new RbSeperationLine());
                     res_Steel.toMenu(content, ItemResourceType.Steel);
-                    content.Add(new RbSeperationLine());
                     res_CastIron.toMenu(content, ItemResourceType.CastIron);
-                    res_BloomeryIron.toMenu(content, ItemResourceType.BloomeryIron);
                     content.Add(new RbSeperationLine());
+                    res_BloomeryIron.toMenu(content, ItemResourceType.BloomeryIron);
                     res_Mithril.toMenu(content, ItemResourceType.Mithril);
                     break;
 
@@ -598,7 +599,7 @@ namespace VikingEngine.DSSWars
 
                 if (player.profile.casualControls)
                 {
-                    float copperUpkeep = upkeep * DssConst.CasualSoldierDefaultCost_Copp; // DssRef.difficulty.setting_foodMulti;
+                    float copperUpkeep = upkeep * DssConst.CasualSoldierDefaultCost_Copp * oneSecondUpdate; // DssRef.difficulty.setting_foodMulti;
                     if (!money.PayUpkeep(copperUpkeep))
                     {
                         Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
@@ -649,6 +650,7 @@ namespace VikingEngine.DSSWars
             res_CupperOre.oneSecondUpdate();
             res_LeadOre.oneSecondUpdate();
             res_SilverOre.oneSecondUpdate();
+            res_GoldOre.oneSecondUpdate();
 
             res_iron.oneSecondUpdate();
             res_Tin.oneSecondUpdate();
@@ -730,6 +732,7 @@ namespace VikingEngine.DSSWars
             res_CupperOre.clearCurrent();
             res_LeadOre.clearCurrent();
             res_SilverOre.clearCurrent();
+            res_GoldOre.clearCurrent();
 
             res_iron.clearCurrent();
             res_Tin.clearCurrent();
@@ -811,6 +814,7 @@ namespace VikingEngine.DSSWars
                 res_CupperOre.current += citiesC.sel.res_CupperOre.amount;
                 res_LeadOre.current += citiesC.sel.res_LeadOre.amount;
                 res_SilverOre.current += citiesC.sel.res_SilverOre.amount;
+                res_GoldOre.current += citiesC.sel.res_GoldOre.amount;
 
                 res_iron.current += citiesC.sel.res_iron.amount;
                 res_Tin.current += citiesC.sel.res_Tin.amount;

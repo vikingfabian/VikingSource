@@ -22,12 +22,13 @@ namespace VikingEngine.DSSWars.Players.Orders
         protected IntVector2 subTile;
         protected VoxelModelInstance model;
 
-        protected void createModel(int frame)
+        protected void createModel(int frame, int playerIx)
         {
             Debug.CrashIfThreaded();
             model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f);
             model.Frame = frame;
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
+            model.setVisibleCamera(playerIx);
         }
 
         public override bool IsBuildOnSubTile(IntVector2 subTile)
@@ -45,6 +46,12 @@ namespace VikingEngine.DSSWars.Players.Orders
             //DssRef.models.recycle(ref model, true);
             model.preRemoveFromDrawBatch();
             base.DeleteMe();
+        }
+
+        public override void cullingUpdate(bool bStateA, int playerIx)
+        {
+            IntVector2 tilepos = WP.SubtileToTilePos(subTile);
+            model.Visible = DssRef.state.culling.InRender_Asynch(playerIx, bStateA, ref tilepos);
         }
     }
 
@@ -67,12 +74,14 @@ namespace VikingEngine.DSSWars.Players.Orders
             this.upgrade = upgrade;
         }
 
-        public override void onAdd()
+
+
+        public override void onAdd(int playerIx)
         {
 
-            createModel(0);
+            createModel(0, playerIx);
 
-             Vector3 iconPos = model.position;
+            Vector3 iconPos = model.position;
             iconPos.Y += model.scale.Y * 6f;
             iconPos.Z += model.scale.Y * 0.15f;
 
@@ -102,15 +111,15 @@ namespace VikingEngine.DSSWars.Players.Orders
             subTile.write(w);
             w.Write((byte)buildingType);
         }
-        override public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        override public void readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, subversion, pointers);
+            base.readGameState(playerIx, r, subversion, pointers);
 
             city = DssRef.world.cities[r.ReadUInt16()];
             subTile.read(r);
             buildingType = (BuildAndExpandType)r.ReadByte();
 
-            onAdd();
+            onAdd(playerIx);
         }
 
         override public void DeleteMe()

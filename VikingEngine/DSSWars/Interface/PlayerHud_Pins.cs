@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             bool mouseOverBg = false;
             menu.updateMouseInput(ref mouseOverBg);
-            mouseOver = menu.interaction?.hover != null;
+            mouseOver |= menu.interaction?.hover != null;
             return menu.needRefresh;
         }
 

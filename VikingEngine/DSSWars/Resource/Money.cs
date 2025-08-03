@@ -47,6 +47,9 @@ namespace VikingEngine.DSSWars.Resource
         { return (long)(copper * CopperToGold); }
         public bool PayUpkeep(float payCopper)
         {
+            if (payCopper == 0)
+                return true;
+
             if (copper >= payCopper)
             {
                 copper -= (int)payCopper;

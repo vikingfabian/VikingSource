@@ -32,6 +32,8 @@ namespace VikingEngine.DSSWars.Resource
         public ExperienceLevel levelRequirement;
         public CraftBlueprint upgradeFrom = null;
 
+        public int workTag = -1;
+
         public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, XP.WorkExperienceType experienceType, ExperienceLevel levelRequirement = ExperienceLevel.Beginner_1, CraftRequirement requirement = CraftRequirement.None)
         {
             //this.icon = icon;
@@ -110,6 +112,19 @@ namespace VikingEngine.DSSWars.Resource
                 min = lib.SmallestValue(res.amount / r.amount, min);
             }
             return min;
+        }
+
+        public bool hasFullStock(City city)
+        {
+            foreach (var r in resources)
+            {
+                var res = city.GetGroupedResource(r.type);
+                if (!res.almostReachedBuffer())
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public int payResources(City city)
@@ -330,6 +345,11 @@ namespace VikingEngine.DSSWars.Resource
                         reqText = DssRef.lang.BuildingType_SmeltingFurnace;
                         available = city.buildingStructure.Smelter_count > 0;
                         break;
+                    case CraftRequirement.Minter:
+                        icon = SpriteName.WarsBuild_Coinminter;
+                        reqText = DssRef.lang.BuildingType_CoinMaker;
+                        available = city.buildingStructure.CoinMinter_count > 0;
+                        break;
                     case CraftRequirement.Chemist:
                         icon = SpriteName.WarsBuild_Chemist;
                         reqText = DssRef.lang.BuildingType_Chemist;
@@ -440,7 +460,7 @@ namespace VikingEngine.DSSWars.Resource
         Gunmaker,
         Logistics1,
         Logistics2,
-
+        Minter
     }
 
     enum CraftResultType
