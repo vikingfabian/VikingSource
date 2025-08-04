@@ -1891,7 +1891,8 @@ namespace VikingEngine.DSSWars.Interface
                     stockpile(ItemResourceType.TinOre);
                     stockpile(ItemResourceType.CopperOre);
                     stockpile(ItemResourceType.LeadOre);
-                    stockpile(ItemResourceType.SilverOre);                    
+                    stockpile(ItemResourceType.SilverOre);
+                    stockpile(ItemResourceType.GoldOre);
                     content.newParagraph();
 
                     stockpile(ItemResourceType.Iron_G);

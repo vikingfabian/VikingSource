@@ -7,6 +7,10 @@ Change Log:
 * fixed: set all defence is broken, need set all towers
 * fullscreen will set 100% resolution
 * fixed flag update on capture
+* fixed: Taken cities battle alert toward yourself
+* build prio instead of max queue
+* gold ore lacks the warehouse tab gold ore thing
+* darkened the pin hud background
 
 Casual mode:
 * Captured cities will clear their build queue 
@@ -17,15 +21,14 @@ Casual mode:
 ! All previous casual mode saves are broken
 
 #Pics
+build building icon
+
 
 #must do#
 
-
-x Taken cities battle alert toward yourself
-
-x build prio instead of max queue
 x casual tutorial
 x add casual to demo
+x remove tutorial
 
 #Todo#
 
