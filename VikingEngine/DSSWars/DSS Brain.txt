@@ -1,36 +1,19 @@
 ﻿UPDATE
 Change Log:
-* Fixed unit type names
-* Fixed stuck build orders after load
-* Fixed: BUILD UPGRADES ARE FREE.
-* improved city toggle
-* fixed: set all defence is broken, need set all towers
-* fullscreen will set 100% resolution
-* fixed flag update on capture
-* fixed: Taken cities battle alert toward yourself
-
-Casual mode:
-* Captured cities will clear their build queue 
-* Upgrades will unlock advanced mode tech
-* Deserters text will correctly mention money/food
-
-! Old saves does not store what is tower/wall (does only affect "set all towers")
-! All previous casual mode saves are broken
-
+* 
 #Pics
 build building icon
 
 
 #must do#
-x gold ore lacks the warehouse tab gold ore thing
-x darken the pin hud background
-x build prio instead of max queue
+
 x casual tutorial
 x add casual to demo
+x remove tutorial
 
 #Todo#
 
-x building over borders doesnt check available
+
 X match casual to save
 x multiplayer is broken in battle lab
 x small map editor size crash
