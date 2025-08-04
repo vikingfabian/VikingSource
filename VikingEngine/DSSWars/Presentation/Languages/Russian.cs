@@ -1031,7 +1031,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// Сообщение, когда солдаты покидают армию, если вы не можете оплатить их содержание
         /// </summary>
         public override string EventMessage_DesertersTitle => "Дезертиры!";
-        public override string EventMessage_DesertersText => "Неоплаченные солдаты дезертируют из ваших армий";
+        public override string EventMessage_DesertersText_Money => "Неоплаченные солдаты дезертируют из ваших армий";
 
         public override string DifficultyDescription_AiAggression => "Агрессивность ИИ: {0}.";
         public override string DifficultyDescription_BossSize => "Размер босса: {0}.";

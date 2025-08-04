@@ -52,5 +52,13 @@ namespace VikingEngine.DSSWars.Map
                 subTile.collectionPointer = value.collectionPointer;
             }
         }
+
+        public static void OntileChange(IntVector2 tilePos)
+        {
+            if (!DssRef.state.culling.outsidePlayerAttension(tilePos))
+            {
+                DssRef.world.tileGrid.GetRef(tilePos).subtileVisualEdits++;
+            }
+        }
     }
 }

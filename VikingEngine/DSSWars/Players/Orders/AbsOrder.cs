@@ -53,6 +53,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         virtual public void readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             priority = r.ReadByte();
+            id = NextId++;
         }
 
         virtual public DemolishOrder GetDemolish()

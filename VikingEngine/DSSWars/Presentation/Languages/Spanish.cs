@@ -1032,7 +1032,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// Mensaje cuando los soldados abandonan el ejército porque no puedes pagar su mantenimiento
         /// </summary>
         public override string EventMessage_DesertersTitle => "¡Desertores!";
-        public override string EventMessage_DesertersText => "Los soldados no pagados están desertando de tus ejércitos";
+        public override string EventMessage_DesertersText_Money => "Los soldados no pagados están desertando de tus ejércitos";
 
 
         public override string DifficultyDescription_AiAggression => "Agresividad de la IA: {0}.";

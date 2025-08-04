@@ -1037,7 +1037,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// 兵士の維持費を払えないときに軍隊を離れるメッセージ
         /// </summary>
         public override string EventMessage_DesertersTitle => "脱走者！";
-        public override string EventMessage_DesertersText => "未払いの兵士たちがあなたの軍隊から脱走しています";
+        public override string EventMessage_DesertersText_Money => "未払いの兵士たちがあなたの軍隊から脱走しています";
 
         public override string DifficultyDescription_AiAggression => "AIの攻撃性: {0}。";
         public override string DifficultyDescription_BossSize => "ボスのサイズ: {0}。";

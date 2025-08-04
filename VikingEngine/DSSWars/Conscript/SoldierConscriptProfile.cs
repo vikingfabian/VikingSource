@@ -101,9 +101,8 @@ namespace VikingEngine.DSSWars.Conscript
                             return UnitFilterType.MithrilKnight;
 
                         case ItemResourceType.SlingShot:
-                            return UnitFilterType.Slingshot;
                         case ItemResourceType.ThrowingSpear:
-                            return UnitFilterType.Throwingspear;
+                            return UnitFilterType.Skirmisher;
                         case ItemResourceType.Bow:
                         case ItemResourceType.LongBow:
                             return UnitFilterType.Bow;

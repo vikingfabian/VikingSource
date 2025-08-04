@@ -714,7 +714,16 @@ namespace VikingEngine.DSSWars.GameObject
                 case TerrainMainType.Wall:
                     if (build)
                     {
-                        addDefenceBuilding_async(subPos);
+                        bool tower = false;
+                        switch ((TerrainWallType)subType)
+                        { 
+                            case TerrainWallType.DirtTower:
+                            case TerrainWallType.WoodTower:
+                            case TerrainWallType.StoneTower:
+                                tower = true;
+                                break;
+                        }
+                        addDefenceBuilding_async(subPos, tower);
                     }
                     else
                     {

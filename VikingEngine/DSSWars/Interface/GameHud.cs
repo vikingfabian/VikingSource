@@ -132,6 +132,8 @@ namespace VikingEngine.DSSWars.Interface
         {
             //Debug.Log("game hud update");
 
+            
+
             mouseOverHud = false;
             refresh = refreshTimer.Update();
 

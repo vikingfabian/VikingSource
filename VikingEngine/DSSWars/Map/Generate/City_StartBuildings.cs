@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.GameObject
                             sub = wall;
                             defence.autoAssign = rnd.Chance(percWallGuard);
 
-                            defence.init(pos);
+                            defence.init(pos, false);
                             defenceBuildings.Add(defence);
                         }
                         break;
@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject
                             sub = lowWall;
                             defence.autoAssign = rnd.Chance(percWallGuard);
 
-                            defence.init(pos);
+                            defence.init(pos, false);
                             defenceBuildings.Add(defence);
                         }
                         break;
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
                             sub = tower;
                             defence.autoAssign = true;
 
-                            defence.init(pos);
+                            defence.init(pos, true);
                             defenceBuildings.Add(defence);
                         }
                         break;

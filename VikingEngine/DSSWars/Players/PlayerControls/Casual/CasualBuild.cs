@@ -261,9 +261,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             List<CasualBuildType> available = new List<CasualBuildType>(8);
             List<CasualBuildType> complete = new List<CasualBuildType>(8);
 
+            var profile = city.casualCityProfile;
             var progress = city.GetCasualProgress();
 
-            if (progress.unlock_logistics)
+            if (profile.unlock_logistics)
             {
                 available.Add(CasualBuildType.Tent);
             }
@@ -272,16 +273,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
             available.Add(CasualBuildType.GuardTower_Wood);
 
-            if (progress.unlock_logistics)
+            if (profile.unlock_logistics)
             {
                 complete.Add(CasualBuildType.Logistics);
                 available.Add(CasualBuildType.GuardTower_Stone);
 
-                if (progress.unlock_research)
+                if (profile.unlock_research)
                 {
                     complete.Add(CasualBuildType.ResearchCenter);
 
-                    switch (progress.unlock_armor)
+                    switch (profile.unlock_armor)
                     {
                         case 0:
                             available.Add(CasualBuildType.UnlockIronArmor);
@@ -296,7 +297,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                             break;
                     }
 
-                    switch (progress.unlock_sword)
+                    switch (profile.unlock_sword)
                     {
                         case 0:
                             available.Add(CasualBuildType.UnlockSword);
@@ -311,7 +312,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                             break;
                     }
 
-                    switch (progress.unlock_projectile)
+                    switch (profile.unlock_projectile)
                     {
                         case 0:
                             available.Add(CasualBuildType.UnlockCatapult);
@@ -332,7 +333,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                             break;
                     }
 
-                    switch (progress.unlock_farming)
+                    switch (profile.unlock_farming)
                     {
                         case 0:
                             available.Add(CasualBuildType.UnlockFarming2);

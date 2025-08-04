@@ -21,12 +21,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
     class CityCasualProgress
     {
         public int cityIndex;
-        public bool unlock_logistics = false;
-        public bool unlock_research = false;
-        public int unlock_armor = 0;
-        public int unlock_sword = 0;
-        public int unlock_projectile = 0;
-        public int unlock_farming = 0;
+       
 
         bool payedRecruitCost = false;
         int recruitTimeSeconds = -1;
@@ -43,16 +38,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            var bools = new EightBit(unlock_logistics, unlock_research, payedRecruitCost, payedBuildCost);
+            var bools = new EightBit(payedRecruitCost, payedBuildCost);
             bools.write(w);
             
-            TwoHalfByte armor_sword = new TwoHalfByte(unlock_armor, unlock_sword);
-            armor_sword.write(w);
-            
-            TwoHalfByte projectile_farming = new TwoHalfByte(unlock_projectile, unlock_farming);
-            projectile_farming.write(w);
-
-
             //Debug.WriteCheck(w);
 
             w.Write((ushort)(recruitTimeSeconds + 1));
@@ -81,16 +69,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public void readGameState(City city, System.IO.BinaryReader r, int subversion)
         {
             var bools = new EightBit(r);
-            bools.Get(out unlock_logistics, out unlock_research, out payedRecruitCost, out payedBuildCost);
-
-            TwoHalfByte armor_sword = TwoHalfByte.FromStream(r);
-            unlock_armor = armor_sword.Value1;
-            unlock_sword = armor_sword.Value2;
-
-            TwoHalfByte projectile_farming = TwoHalfByte.FromStream(r);
-            unlock_projectile = projectile_farming.Value1;
-            unlock_farming = projectile_farming.Value2;
-
+            bools.Get(out payedRecruitCost, out payedBuildCost);
 
             //Debug.ReadCheck(r);
 

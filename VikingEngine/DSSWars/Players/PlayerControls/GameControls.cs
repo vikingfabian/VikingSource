@@ -81,6 +81,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void update()
         {
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+
             if (player.hud.popMenu != null)
             {
                 if (player.hud.popMenu.update(player, out bool overPopHud))
@@ -752,10 +757,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             map.cameraFocus = city;
             mapSelect(city);
+            player.hud.needRefresh = true;
         }
 
         public void nextCity(bool forward)
         {
+            player.hud.needRefresh = true;
             if (forward)
             {
                 tabCity++;
@@ -788,9 +795,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
                 current++;
             }
+            
         }
         public void nextArmy(bool forward)
         {
+            player.hud.needRefresh = true;
             if (forward)
             {
                 if (tabArmy.Next_Rollover())
@@ -811,6 +820,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     return;
                 }
             }
+            
         }
         public bool clearSelection()
         {

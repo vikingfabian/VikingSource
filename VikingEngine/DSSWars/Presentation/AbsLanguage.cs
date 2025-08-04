@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string EventMessage_FinalBattleText { get; }
 
         public abstract string EventMessage_DesertersTitle { get; }
-        public abstract string EventMessage_DesertersText { get; }
+        public abstract string EventMessage_DesertersText_Money { get; }
 
         public abstract string DifficultyDescription_AiAggression { get; }
         public abstract string DifficultyDescription_BossSize { get; }

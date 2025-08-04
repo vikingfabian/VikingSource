@@ -179,9 +179,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case UnitFilterType.MithrilBow:
                     return SpriteName.WarsUnitIcon_MithrilArcher;
 
-                case UnitFilterType.Slingshot:
-                    return SpriteName.WarsUnitIcon_Slingshot;
-                case UnitFilterType.Throwingspear:
+                case UnitFilterType.Skirmisher:
                     return SpriteName.WarsUnitIcon_Javelin;
                 case UnitFilterType.Bow:
                     return SpriteName.WarsUnitIcon_Archer;
@@ -239,8 +237,7 @@ namespace VikingEngine.DSSWars.GameObject
         Knight,
         MithrilKnight,
 
-        Slingshot,
-        Throwingspear,
+        Skirmisher,
         Bow,
         CrossBow,
         MithrilBow,

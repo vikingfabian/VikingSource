@@ -280,7 +280,6 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void tooltip(LocalPlayer player, City city, RichBoxContent content)
         {
-
             ItemResourceType weaponItem = profile.weapon;
             bool hasWeapons = city.GetGroupedResource(weaponItem).amount >= DssConst.SoldierGroup_DefaultCount;
 
@@ -301,6 +300,7 @@ namespace VikingEngine.DSSWars.Conscript
             content.Add(new RbImage(
                             new SoldierConscriptProfile() { conscript = profile }.Icon()
                             ));
+            content.hspace();
             //ItemResourceType weaponitem = ConscriptProfile.WeaponItem(profile.weapon);
             content.Add(new RbImage(ResourceLib.Icon(weaponItem)));
 

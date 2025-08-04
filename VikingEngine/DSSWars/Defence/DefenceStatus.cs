@@ -18,8 +18,10 @@ namespace VikingEngine.DSSWars.Defence
         public int idAndPosition;
         public bool autoAssign;
         public bool active; //not destroyed
-        public void init(IntVector2 subtilepos)
+        public bool tower;
+        public void init(IntVector2 subtilepos, bool tower)
         {
+            this.tower = tower;
             soldierGroupId = NoSoldiers;
             idAndPosition = conv.IntVector2ToInt(subtilepos);
             active = true;
@@ -97,7 +99,7 @@ namespace VikingEngine.DSSWars.Defence
             w.Write((ushort)soldierGroupId);
             w.Write(idAndPosition);
 
-            EightBit bools = new EightBit(active, autoAssign);
+            EightBit bools = new EightBit(active, autoAssign, tower);
             bools.write(w);
         }
 
@@ -109,6 +111,7 @@ namespace VikingEngine.DSSWars.Defence
             EightBit bools =EightBit.FromStream(r);
             active = bools.Get(0);
             autoAssign = bools.Get(1);
+            tower = bools.Get(2);
         }
     }
 }

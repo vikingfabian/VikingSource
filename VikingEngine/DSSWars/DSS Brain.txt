@@ -1,20 +1,37 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed unit type names
+* Fixed stuck build orders after load
+* Fixed: BUILD UPGRADES ARE FREE.
+* improved city toggle
+* fixed: set all defence is broken, need set all towers
+* fullscreen will set 100% resolution
+* fixed flag update on capture
+
+Casual mode:
+* Captured cities will clear their build queue 
+* Upgrades will unlock advanced mode tech
+* Deserters text will correctly mention money/food
+
+! Old saves does not store what is tower/wall (does only affect "set all towers")
+! All previous casual mode saves are broken
 
 #Pics
 
+#must do#
+
+
+x Taken cities battle alert toward yourself
+
+x build prio instead of max queue
+x casual tutorial
+x add casual to demo
+
 #Todo#
 
-x guard needs damage output
-x cities from casual must empty build queues 
-x add casual to demo
-x casual trigger the right tutorial
+
 X match casual to save
 x multiplayer is broken in battle lab
-x set all defence is broken, need set all towers
-
-x gun maker missing tooltip info
 x small map editor size crash
 x Pen stroke size on map editor
 x Guards are never clearing move orders
@@ -40,11 +57,10 @@ x
 x Declaring war needs warning
 x save custom map, cant load, should save in user content folder
 
--ai dynamic low to high quality soldiers, and prio ranged units for walls
 -låt inte dread anfalla spelaren
 -lock camera on army
 -show all resources option
--build prio
+
 -new game plus, skip story, end me now option
 -list cities
 

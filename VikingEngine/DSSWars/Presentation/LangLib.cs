@@ -1589,17 +1589,53 @@ namespace VikingEngine.DSSWars.Presentation
             switch (filterType)
             {
                 case UnitFilterType.SharpStick:
-                    return DssRef.lang.Resource_TypeName_SharpStick;
+                    return DssRef.lang.UnitType_Folkman;
+                
                 case UnitFilterType.Sword:
-                    return DssRef.lang.Resource_TypeName_Sword;
+                case UnitFilterType.LongSword:
+                    return DssRef.lang.UnitType_Soldier;
+                case UnitFilterType.Pike:
+                case UnitFilterType.SpearAndShield:
+                    return DssRef.lang.UnitType_Spearman;
+
+                case UnitFilterType.Skirmisher:
+                    return DssRef.todoLang.UnitType_Skirmisher;
+                case UnitFilterType.Bow:
+                    return DssRef.lang.UnitType_Archer;
+
+                case UnitFilterType.CrossBow:
+                    return DssRef.lang.UnitType_Crossbow;
+                case UnitFilterType.Rifle:
+                    return DssRef.todoLang.UnitType_LongRangeRifle;
+                case UnitFilterType.Shotgun:
+                    return DssRef.todoLang.UnitType_CloseRangeRifle;
+
+
+                case UnitFilterType.Ballista:
+                    return DssRef.lang.UnitType_Ballista;
+                case UnitFilterType.ManuBallista:
+                    return DssRef.lang.Resource_TypeName_Manuballista;
+                case UnitFilterType.Catapult:
+                    return DssRef.lang.Resource_TypeName_Catapult;
+
+                case UnitFilterType.ManCannonBronze:
+                    return DssRef.lang.Resource_TypeName_ManCannonBronze;
+                case UnitFilterType.SiegeCannonBronze:
+                    return DssRef.lang.Resource_TypeName_SiegeCannonBronze;
+                case UnitFilterType.ManCannonIron:
+                    return DssRef.lang.Resource_TypeName_ManCannonIron;
+                case UnitFilterType.SiegeCannonIron:
+                    return DssRef.lang.Resource_TypeName_SiegeCannonIron;
+
                 case UnitFilterType.TwohandSword:
+                case UnitFilterType.Warhammer:
                     return DssRef.lang.UnitType_FootKnight;
                 case UnitFilterType.Knight:
                     return DssRef.lang.UnitType_CavalryKnight;
-                case UnitFilterType.Bow:
-                    return DssRef.lang.UnitType_Archer;
-                case UnitFilterType.Ballista:
-                    return DssRef.lang.UnitType_Ballista;
+                case UnitFilterType.MithrilBow:
+                    return DssRef.todoLang.UnitType_MithrilArcher;
+                case UnitFilterType.MithrilKnight:
+                    return DssRef.todoLang.UnitType_MithrilSwordsman;
 
                 case UnitFilterType.GreenSoldier:
                     return DssRef.lang.FactionName_Greenwood;

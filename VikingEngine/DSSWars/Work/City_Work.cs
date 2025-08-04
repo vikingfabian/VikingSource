@@ -1038,8 +1038,13 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
+                case WorkType.Upgrade:
                 case WorkType.Build:
                     {
+                        //if (work == WorkType.Upgrade)
+                        //{
+                        //    lib.DoNothing();
+                        //}
                         return BuildLib.BuildOptions[subWork].availableBlueprintResources(this);
                     }
 

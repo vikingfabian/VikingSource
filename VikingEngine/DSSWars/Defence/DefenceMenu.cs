@@ -34,28 +34,55 @@ namespace VikingEngine.DSSWars.Defence
             }
             else
             {
+
                 content.Add(new RbBeginTitle(1));
                 content.Add(new RbImage(SpriteName.WarsGuardPostIcon));
                 content.space();
                 content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.Defence_GuardPost, city.defenceBuildings.Count), HudLib.TitleColor_Head));
 
-                content.newLine();
-                content.Add(new RbText(DssRef.lang.Defence_AutoAssign, HudLib.TitleColor_Label));
-                content.space();
+                //SET ALL
+                {
+                    const bool SetTowersOnly = false;
+                    content.newLine();
+                    content.Add(new RbText(DssRef.lang.Defence_AutoAssign, HudLib.TitleColor_Label));
+                    content.space();
 
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(HudLib.RbSettings.checkOn, 0.8f),
                     new RbSpace(),
                     new RbText(DssRef.lang.GeneralSetting_On)
-                    }, new RbAction2Arg<bool, bool>(city.setAllDefenceAutoAssign, true, true), 
-                    new RbTooltip_Text(DssRef.lang.GeneralSetting_AllBuildingsDescription)));
-                
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    }, new RbAction3Arg<bool, bool, bool>(city.setAllDefenceAutoAssign, true, SetTowersOnly, true),
+                        new RbTooltip_Text(DssRef.lang.GeneralSetting_AllBuildingsDescription)));
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(HudLib.RbSettings.checkOff, 0.8f),
                     new RbSpace(),
                     new RbText(DssRef.lang.GeneralSetting_Off)
-                    }, new RbAction2Arg<bool, bool>(city.setAllDefenceAutoAssign, false, true),
-                    new RbTooltip_Text(DssRef.lang.GeneralSetting_AllBuildingsDescription)));
+                    }, new RbAction3Arg<bool, bool, bool>(city.setAllDefenceAutoAssign, false, SetTowersOnly, true),
+                        new RbTooltip_Text(DssRef.lang.GeneralSetting_AllBuildingsDescription)));
+                }
+
+                //SET ALL TOWERS
+                {
+                    const bool SetTowersOnly = true;
+                    content.newLine();
+                    content.Add(new RbText(DssRef.todoLang.Defence_AutoAssign_Towers, HudLib.TitleColor_Label));
+                    content.space();
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(HudLib.RbSettings.checkOn, 0.8f),
+                    new RbSpace(),
+                    new RbText(DssRef.lang.GeneralSetting_On)
+                    }, new RbAction3Arg<bool, bool, bool>(city.setAllDefenceAutoAssign, true, SetTowersOnly, true),
+                        new RbTooltip_Text(DssRef.lang.GeneralSetting_AllBuildingsDescription)));
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(HudLib.RbSettings.checkOff, 0.8f),
+                    new RbSpace(),
+                    new RbText(DssRef.lang.GeneralSetting_Off)
+                    }, new RbAction3Arg<bool, bool, bool>(city.setAllDefenceAutoAssign, false, SetTowersOnly, true),
+                        new RbTooltip_Text(DssRef.lang.GeneralSetting_AllBuildingsDescription)));
+                }
             }
             
         }

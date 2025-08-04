@@ -270,6 +270,10 @@ namespace VikingEngine
         {
             if (set)
             {
+                if (value)
+                {
+                    Engine.Screen.RenderScalePerc = 100;
+                }
                 Engine.Screen.UseRecordingPreset = RecordingPresets.NumNon;
                 Engine.Screen.PcTargetFullScreen = value;
                 Engine.Screen.ApplyScreenSettings();

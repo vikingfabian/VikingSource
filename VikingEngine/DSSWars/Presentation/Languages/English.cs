@@ -1041,7 +1041,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// Message when soldiers leave the army when you can't pay thier upkeep
         /// </summary>
         public override string EventMessage_DesertersTitle => "Deserters!";
-        public override string EventMessage_DesertersText => "Unpaid soldiers are deserting from your armies";
+        public override string EventMessage_DesertersText_Money => "Unpaid soldiers are deserting from your armies";
 
         public override string DifficultyDescription_AiAggression => "Ai aggressivity: {0}.";
         public override string DifficultyDescription_BossSize => "Boss size: {0}.";

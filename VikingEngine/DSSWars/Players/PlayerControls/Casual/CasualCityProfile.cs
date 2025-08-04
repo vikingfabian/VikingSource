@@ -24,6 +24,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public SoldierPurchaseOption riderMen;
         public SoldierPurchaseOption siegeMen;
 
+        public bool unlock_logistics;
+        public bool unlock_research;
+        public int unlock_armor;
+        public int unlock_sword;
+        public int unlock_projectile;
+        public int unlock_farming;
         //bool armorBonus;
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -36,6 +42,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             rangedMen.writeGameState(w);
             riderMen.writeGameState(w);
             siegeMen.writeGameState(w);
+
+            var bools = new EightBit(unlock_logistics, unlock_research);
+            bools.write(w);
+
+            TwoHalfByte armor_sword = new TwoHalfByte(unlock_armor, unlock_sword);
+            armor_sword.write(w);
+
+            TwoHalfByte projectile_farming = new TwoHalfByte(unlock_projectile, unlock_farming);
+            projectile_farming.write(w);
         }
 
         public void readGameState(System.IO.BinaryReader r, int subversion)
@@ -48,6 +63,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             rangedMen.readGameState(r, subversion);
             riderMen.readGameState(r, subversion);
             siegeMen.readGameState(r, subversion);
+
+            var bools = new EightBit(r);
+            bools.Get(out unlock_logistics, out unlock_research);
+
+            TwoHalfByte armor_sword = TwoHalfByte.FromStream(r);
+            unlock_armor = armor_sword.Value1;
+            unlock_sword = armor_sword.Value2;
+
+            TwoHalfByte projectile_farming = TwoHalfByte.FromStream(r);
+            unlock_projectile = projectile_farming.Value1;
+            unlock_farming = projectile_farming.Value2;
+
+            refreshTech();
         }
 
         public void InitCulture(City city, CityAreaCulture culture)
@@ -122,14 +150,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             }
         }
 
-        public void refreshTech(CityCasualProgress progress)
+        public void refreshTech()
         {
             guard.upgradePrice = 0;
             meleeMen.upgradePrice = 0;
             rangedMen.upgradePrice = 0;
             siegeMen.upgradePrice = 0;
 
-            switch (progress.unlock_armor)
+            switch (unlock_armor)
             {
                 case 1:
                     guard.armor = ItemResourceType.HeavyIronArmor;
@@ -155,7 +183,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     break;
             }
 
-            switch (progress.unlock_sword)
+            switch (unlock_sword)
             {
                 case 1:
                     meleeMen.weapon = ItemResourceType.Sword;
@@ -167,7 +195,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     break;
             }
 
-            switch (progress.unlock_projectile)
+            switch (unlock_projectile)
             {
                 case 1:
                     guard.weapon = ItemResourceType.Crossbow;

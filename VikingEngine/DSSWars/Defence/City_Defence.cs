@@ -27,12 +27,12 @@ namespace VikingEngine.DSSWars.GameObject
             return defenceIxFromPosId(id);
         }
 
-        public void addDefenceBuilding_async(IntVector2 subPos)
+        public void addDefenceBuilding_async(IntVector2 subPos, bool tower)
         {   
             lock (defenceBuildings.array)
             {
                 DefenceStatus newDefence = new DefenceStatus();
-                newDefence.init(subPos);
+                newDefence.init(subPos, tower);
                 newDefence.autoAssign = true;
 
                 for (int i = 0; i < defenceBuildings.Count; ++i)
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
             return -1;
         }
 
-        public void setAllDefenceAutoAssign(bool toValue, bool message = true)
+        public void setAllDefenceAutoAssign(bool toValue, bool towersOnly, bool message = true)
         {
             Task.Run(() =>
             {
@@ -157,15 +157,17 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     int count = 0;
                     lock (defenceBuildings.array)
-                    {
-                        
+                    {                        
                         for (int i = 0; i < defenceBuildings.Count; ++i)
                         {
                             ref var defence = ref defenceBuildings.array[i];
-                            if (defence.autoAssign != toValue)
+                            if (!towersOnly || defence.tower)
                             {
-                                ++count;
-                                defence.autoAssign = toValue;
+                                if (defence.autoAssign != toValue)
+                                {
+                                    ++count;
+                                    defence.autoAssign = toValue;
+                                }
                             }
                         }
                     }

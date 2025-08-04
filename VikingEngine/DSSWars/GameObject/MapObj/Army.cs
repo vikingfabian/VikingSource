@@ -1294,17 +1294,20 @@ namespace VikingEngine.DSSWars.GameObject
             //Gain a portion of deserters on all armies
             int totalDeserters = desertSoldiers();
 
-
-
             if (totalDeserters > 0)
             {
                 var faction = GetFaction();
 
-                if (faction.player.IsLocalPlayer() &&
-                    faction.player.GetLocalPlayer().hud.messages.freeSpace())
+
+                if (faction.player.IsLocalPlayer())
                 {
-                    faction.player.GetLocalPlayer().hud.messages.Add("Deserters!", "Hungry soldiers are deserting from your armies");
-                    faction.player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
+                    var player = faction.player.GetLocalPlayer();
+                    if (player.hud.messages.freeSpace())
+                    {
+                        player.hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, player.profile.casualControls? 
+                            DssRef.lang.EventMessage_DesertersText_Money : DssRef.todoLang.EventMessage_DesertersText_Food);
+                        player.statistics.SoldiersDeserted += totalDeserters;
+                    }
                 }
             }
         }

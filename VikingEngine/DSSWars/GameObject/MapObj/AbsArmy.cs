@@ -79,6 +79,11 @@ namespace VikingEngine.DSSWars.GameObject
                 inBattle = true;
                 if (GetPlayer().IsLocalPlayer())
                 {
+                    //if (this.IsCity())
+                    //{ 
+                    //    if (GetCity().capturePoints 
+                    //}
+
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
                         var localplayer = GetPlayer().GetLocalPlayer();

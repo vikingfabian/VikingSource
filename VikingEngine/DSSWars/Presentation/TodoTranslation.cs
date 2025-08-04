@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.LootFest.GO.Characters.Monsters;
+using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars.Presentation
 {
@@ -56,8 +58,12 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Settings_CraftMultiplier => "Craft time multiplier";
         public string Settings_ChildMultiplier_Description => "Increases the speed new workers are added";
+        
         public string Settings_CasualControls => "Casual player controls";
         public string Settings_CasualControls_Description => "Simplifies gameplay by reducing choices to key decisions. Only money is used as a resource.";
+
+        public string Settings_AdvancedControls => "Advanced controls";
+        public string Settings_AdvancedControls_Description => "The full resource management experience.";
 
         public string WarsResourceGroup_Metal => "Metal";
         public string Work_Craft => "Craft";
@@ -71,6 +77,19 @@ namespace VikingEngine.DSSWars.Presentation
         public string ExportImportDescription => "For sharing save files with other player, all files are this folder: {0}";
 
         public string CityCultureDescription => "Culuture will give it a special bonus to the city";
+
+        public string UnitType_CloseRangeRifle => "Arquebusier";
+        public string UnitType_LongRangeRifle => "Musketeer";
+        public string UnitType_Skirmisher => "Skirmisher";
+
+        //From lumen(light)
+        public string UnitType_MithrilArcher => "Lunari archer";
+        public string UnitType_MithrilSwordsman => "Lunari knight";
+
+        public string Defence_AutoAssign_Towers => "Assign towers";
+
+        public string EventMessage_DesertersText_Food => "Hungry soldiers are deserting from your army";
+
     }
 
 }

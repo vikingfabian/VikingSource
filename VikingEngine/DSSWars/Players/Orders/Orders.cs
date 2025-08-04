@@ -226,10 +226,10 @@ namespace VikingEngine.DSSWars.Players.Orders
                 
                 
                 order.readGameState(playerIx, r, subversion, pointers);
-                //orderConflictingSubTile(order.GetBuild().
+
                 orders.Add(order);
             }
-            Debug.ReadCheck(r);
+             Debug.ReadCheck(r);
         }
     }
 

@@ -911,7 +911,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// Nachricht, wenn Soldaten die Armee verlassen, weil du ihren Unterhalt nicht bezahlen kannst.
         /// </summary>
         public override string EventMessage_DesertersTitle => "Deserteure!";
-        public override string EventMessage_DesertersText => "Unbezahlte Soldaten desertieren aus deinen Armeen.";
+        public override string EventMessage_DesertersText_Money => "Unbezahlte Soldaten desertieren aus deinen Armeen.";
 
         public override string DifficultyDescription_AiAggression => "KI-Aggressivität: {0}.";
         public override string DifficultyDescription_BossSize => "Boss-Größe: {0}.";

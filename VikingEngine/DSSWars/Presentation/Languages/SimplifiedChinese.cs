@@ -1031,7 +1031,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// 当你无法支付士兵的维持费用时士兵离开军队的消息
         /// </summary>
         public override string EventMessage_DesertersTitle => "逃兵！";
-        public override string EventMessage_DesertersText => "未支付薪水的士兵正在逃离你的军队";
+        public override string EventMessage_DesertersText_Money => "未支付薪水的士兵正在逃离你的军队";
 
 
         public override string DifficultyDescription_AiAggression => "AI攻击性: {0}。";

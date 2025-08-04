@@ -672,7 +672,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (r.ReadBoolean())
                 {
                     GetCasualProgress().readGameState(this, r, subversion);
-                    casualCityProfile.refreshTech(casualProgress);
+                    //casualCityProfile.refreshTech(casualProgress);
                 }
             }
             Debug.ReadCheck(r);
@@ -1332,7 +1332,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                setAllDefenceAutoAssign(true, false);
+                setAllDefenceAutoAssign(true, false, false);
             }
             float iconScale = IconScale();
 
@@ -2964,19 +2964,20 @@ namespace VikingEngine.DSSWars.GameObject
             Faction owner = GetFaction_Safe();
             if (owner != newFaction)
             {
-                //Faction prevOwner = this.faction;
-                //prevOwner = newFaction;
+                if (owner != null)
+                {
+                    owner.remove(this);
+                }
+
                 factionIndex = newFaction.myIndex;
                 technology.destroyTechOnTakeOver();
 
                 if (!duringStartup)
                 {
                     newFaction.AddCity(this, false);
+                    EditSubTile.OntileChange(tilePos);
                 }
-                if (owner != null)
-                {
-                    owner.remove(this);                   
-                }
+                
                 OnNewOwner(newFaction);
                 //guardCount = Bound.Min(guardCount, 1);
             }
@@ -3005,7 +3006,10 @@ namespace VikingEngine.DSSWars.GameObject
                 tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
                 technology.addFactionUnlocked(newFaction.technology, true, false);
 
-                
+                if (casualProgress != null && !newFaction.player.profile.casualControls)
+                {
+
+                }
             }
         }
 
