@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -47,12 +48,12 @@ namespace VikingEngine.DSSWars.Interface
         {
             var item = (ItemResourceType)id;
             var resourceCount = city.GetGroupedResource(item);
-            content.Add(new ArtButton(RbButtonStyle.Outline,
+            content.Add(new RbButton(
                 new List<AbsRichBoxMember> { 
                     new RbImage(ResourceLib.Icon(item)),
                     new RbSpace(0.5f), 
-                    new RbText(resourceCount.amount.ToString())
-                }, null, new RbTooltip_Text(TextLib.LargeFirstLetter(LangLib.Item(item)))));
+                    new RbText(resourceCount.amount.ToString(), Color.White)
+                }, null, new RbTooltip_Text(TextLib.LargeFirstLetter(LangLib.Item(item))), true, new Color(0, 0, 0.1f, 0.4f)));
         }
 
         public bool Equals(HudPin other)
