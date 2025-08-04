@@ -378,8 +378,15 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                workTemplate.setWorkPrio(set, priorityType);
-                refreshCityWork();
+                //if (priorityType == WorkPriorityType.buildOrders)
+                //{
+                //    player.GetLocalPlayer().gameControls.build.buildPriority.value = set;
+                //}
+                //else
+                //{
+                    workTemplate.setWorkPrio(set, priorityType);
+                    refreshCityWork();
+                //}
             }
         }
 
@@ -388,7 +395,7 @@ namespace VikingEngine.DSSWars
             var cityCounter = cities.counter();
             while (cityCounter.Next())
             {
-                cityCounter.sel.workTemplate.onFactionChange(workTemplate);
+                cityCounter.sel.workTemplate.onFactionChange(cityCounter.sel, workTemplate);
             }
         }
 

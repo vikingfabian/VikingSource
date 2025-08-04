@@ -272,8 +272,11 @@ namespace VikingEngine.DSSWars
         public static byte DefaultWorkXpGain = 5;
         public static float XpLevelWorkTimePercReduction = 0.1f;
 
-        public static int WorkQueue_Start = 3;
-        public static int WorkQueue_LogisticsLevel1 = 6;
+        //public static int WorkQueue_Start = 3;
+        //public static int WorkQueue_LogisticsLevel1 = 6;
+        public static int BuildPrio_Start = 2;
+        public static int BuildPrio_LogisticsLevel1 = 4;
+
         public static int Logistics2_PopulationRequirement = 1200;
 
         public static int TechnologyGain_GoodRelation_PerMin = 1;

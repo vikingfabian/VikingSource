@@ -97,8 +97,13 @@ namespace VikingEngine.DSSWars.Players.Orders
         public override RichBoxContent ToHud()
         {
             RichBoxContent content = new RichBoxContent();
-            content.h2(upgrade? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order);
+            content.h2(upgrade? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
             BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city, upgrade);
+
+            content.newLine();
+            HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
+            content.space();
+            content.Add(new RbText(priority.ToString()));
 
             return content;
         }

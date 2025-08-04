@@ -569,7 +569,7 @@ namespace VikingEngine
         WeaponLongSwordMithril,
         WeaponPickAxe,
         WeaponSickle,
-        WeaponBuildHammer,
+        //WeaponBuildHammer,
 
         WeaponAxeBronze,
         WeaponAxeIron,

@@ -377,7 +377,7 @@ namespace VikingEngine.DSSWars
                         player.OnCityCapture(city);
 
                         city.workTemplate.setAllToFollowFaction();
-                        city.workTemplate.onFactionChange(workTemplate);
+                        city.workTemplate.onFactionChange(city, workTemplate);
                         city.defaultResourceBuffer();
 
                         if (mainCity == null || mainCity.factionIndex != myIndex)

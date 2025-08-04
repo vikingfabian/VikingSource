@@ -9,6 +9,7 @@ using System.Security.AccessControl;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
@@ -110,6 +111,8 @@ namespace VikingEngine.DSSWars.Work
 
         public WorkPriority trading = new WorkPriority(2);
         public WorkPriority autoBuild = new WorkPriority(1);
+        public WorkPriority buildOrder = new WorkPriority(2);
+
 
         public WorkPriority smeltgold = new WorkPriority(3);
         public WorkPriority coinmaker_copper = new WorkPriority(0);
@@ -260,6 +263,7 @@ namespace VikingEngine.DSSWars.Work
 
             trading.writeGameState(w, isCity);
             autoBuild.writeGameState(w, isCity);
+            buildOrder.writeGameState(w, isCity);
 
             smeltgold.writeGameState(w, isCity);
             coinmaker_copper.writeGameState(w, isCity);
@@ -364,7 +368,10 @@ namespace VikingEngine.DSSWars.Work
 
             trading.readGameState(r, subversion, isCity);
             autoBuild.readGameState(r, subversion, isCity);
-
+            if (subversion >= 70)
+            {
+                buildOrder.readGameState(r, subversion, isCity);
+            }
             if (subversion >= 69)
             {
                 smeltgold.readGameState(r, subversion, isCity);
@@ -383,7 +390,7 @@ namespace VikingEngine.DSSWars.Work
 
 
 
-        public void onFactionChange(WorkTemplate factionTemplate)
+        public void onFactionChange(City city, WorkTemplate factionTemplate)
         {
             move.onFactionValueChange(factionTemplate.move);
             wood.onFactionValueChange(factionTemplate.wood);
@@ -471,6 +478,11 @@ namespace VikingEngine.DSSWars.Work
 
             trading.onFactionValueChange(factionTemplate.trading);
             autoBuild.onFactionValueChange(factionTemplate.autoBuild);
+
+            if (buildOrder.followFaction && buildOrder.value != factionTemplate.buildOrder.value)
+            {
+                buildOrder.value = Bound.Max(factionTemplate.buildOrder.value, city.MaxBuildPrio());
+            }
 
             smeltgold.onFactionValueChange(factionTemplate.coinmaker_copper);
             coinmaker_copper.onFactionValueChange(factionTemplate.coinmaker_copper);
@@ -568,6 +580,7 @@ namespace VikingEngine.DSSWars.Work
 
             trading.followFaction = true;
             autoBuild.followFaction = true;
+            buildOrder.followFaction = true;
 
             smeltgold.followFaction = true;
             coinmaker_copper.followFaction = true;
@@ -936,6 +949,8 @@ namespace VikingEngine.DSSWars.Work
                     return trading;
                 case WorkPriorityType.autoBuild:
                     return autoBuild;
+                case WorkPriorityType.buildOrders:
+                    return buildOrder;
                 //case WorkPriorityType.expandFarms:
                 //    return expandFarms;
                 case WorkPriorityType.smeltGold:
@@ -1198,6 +1213,9 @@ namespace VikingEngine.DSSWars.Work
                 case WorkPriorityType.autoBuild:
                     autoBuild = value;
                     break;
+                case WorkPriorityType.buildOrders:
+                    buildOrder = value;
+                    break;
                 //case WorkPriorityType.expandFarms:
                 //     = value;
                 //    break;
@@ -1249,9 +1267,11 @@ namespace VikingEngine.DSSWars.Work
                     farm_food.toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food, SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farmfood, faction, city);
                     farm_fuel.toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Fuel, SpriteName.WarsWorkFarm, SpriteName.WarsResource_Fuel, WorkPriorityType.farmfuel, faction, city);
                     farm_linen.toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen, SpriteName.WarsWorkFarm, SpriteName.WarsResource_LinenCloth, WorkPriorityType.farmlinen, faction, city);
-                                       
-                    autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, faction, city);
-                   
+
+                    content.newParagraph();
+                    autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, SpriteName.AutomationGearIcon, SpriteName.warsBuildCategoryHouse, WorkPriorityType.autoBuild, faction, city);
+                    buildOrder.toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders, faction, city);
+
 
                     //HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, MaxPrio));
                     break;
@@ -1492,7 +1512,18 @@ namespace VikingEngine.DSSWars.Work
                         player, content);
                 }
 
-                for (int prio = 0; prio <= WorkTemplate.MaxPrio; prio++)
+                int min = 0, max = WorkTemplate.MaxPrio;
+
+                if (priorityType == WorkPriorityType.buildOrders)
+                {
+                    min = 1;
+                    if (city != null)
+                    {
+                        max = city.MaxBuildPrio();
+                    }
+                }
+
+                for (int prio = min; prio <= max; prio++)
                 {
                     //content.space();
 
@@ -1673,6 +1704,7 @@ namespace VikingEngine.DSSWars.Work
 
         trading,
         autoBuild,
+        buildOrders,
         //expandFarms,
         smeltGold,
         coinmaker_copper,

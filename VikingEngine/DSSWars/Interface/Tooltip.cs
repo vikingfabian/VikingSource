@@ -210,10 +210,10 @@ namespace VikingEngine.DSSWars.Interface
                                 break;
                         }
 
-                        if (subTile.city.buildingStructure.buildingLevel_logistics < 2)
-                        {
-                            content.text(string.Format(DssRef.lang.BuildHud_Queue, player.orders.buildQueue(subTile.city), subTile.city.MaxBuildQueue())).overrideColor = subTile.city.availableBuildQueue(player) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        }
+                        //if (subTile.city.buildingStructure.buildingLevel_logistics < 2)
+                        //{
+                        //    content.text(string.Format(DssRef.lang.BuildHud_Queue, player.orders.buildQueue(subTile.city), subTile.city.MaxBuildQueue())).overrideColor = subTile.city.availableBuildQueue(player) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        //}
                         buildOpt.blueprint.requirementToHud(content, subTile.city, out _);
 
                         content.Add(new RbSeperationLine());

@@ -365,6 +365,8 @@ namespace VikingEngine.DSSWars.Players
 
             hud.pins.writeGameState(w);
 
+            //gameControls.build.buildPriority.writeGameState(w, false);
+
             Debug.WriteCheck(w);
         }
 
@@ -461,6 +463,10 @@ namespace VikingEngine.DSSWars.Players
             {
                 hud.pins.readGameState(r, subversion);
             }
+            //if (subversion >= 70)
+            //{
+            //    gameControls.build.buildPriority.readGameState(r, subversion, false);
+            //}
             Debug.ReadCheck(r);
         }
 

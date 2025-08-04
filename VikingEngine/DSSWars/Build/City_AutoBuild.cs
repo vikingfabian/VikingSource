@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
             var player = GetPlayer();
 
             //EMPTY
-            if (checkAutoBuildAvailable())
+            //if (checkAutoBuildAvailable())
             {
                
 
@@ -137,18 +137,18 @@ namespace VikingEngine.DSSWars.GameObject
 
             
 
-            bool checkAutoBuildAvailable()
-            {
-                if (buildingStructure.buildingLevel_logistics < 2)
-                {
-                    var p = player.GetLocalPlayer();
-                    if (p != null)
-                    {
-                        return p.orders.buildQueue(this) + 1 < MaxBuildQueue();
-                    }
-                }
-                return true;
-            }
+            //bool checkAutoBuildAvailable()
+            //{
+            //    if (buildingStructure.buildingLevel_logistics < 2)
+            //    {
+            //        var p = player.GetLocalPlayer();
+            //        if (p != null)
+            //        {
+            //            return p.orders.buildQueue(this) + 1 < MaxBuildQueue();
+            //        }
+            //    }
+            //    return true;
+            //}
         }
 
         void findAdjacentFreeSpot(IntVector2 center, ref IntVector2 result)

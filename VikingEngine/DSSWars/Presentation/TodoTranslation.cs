@@ -72,6 +72,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string ExperienceType_Smelting => "Smeleting";
         public string Catergory_Optimize => "Optimize";
         public string BuildCategory_Road => "Road";
+        public string XP_UnlockBuildPrio => "Unlock build priority: {0}";
         public string Technology_ModernFarming => "Modern farming";
 
         public string ExportImportDescription => "For sharing save files with other player, all files are this folder: {0}";

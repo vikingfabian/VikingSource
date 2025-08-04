@@ -50,6 +50,8 @@ namespace VikingEngine.DSSWars.Build
         public MapPaintToolShape toolShape = MapPaintToolShape.Free;
         LocalPlayer player;
         City city;
+        
+
         public BuildControls(LocalPlayer player) 
         { 
             this.player = player;
@@ -70,9 +72,9 @@ namespace VikingEngine.DSSWars.Build
                 {
                     if (commit)
                     {
-                        if (city.availableBuildQueue(player) && placeBuildingOption().blueprint.meetsRequirements(city))
+                        if (/*city.availableBuildQueue(player) && */placeBuildingOption().blueprint.meetsRequirements(city))
                         {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.buildOrder.value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
                         }
                         else
                         {
@@ -98,7 +100,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     if (commit)
                     {
-                        player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(WorkTemplate.MaxPrio, true, city, subTilePos), ActionOnConflict.Toggle);
+                        player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.buildOrder.value, true, city, subTilePos), ActionOnConflict.Toggle);
                     }
 
                     return true;
@@ -339,23 +341,23 @@ namespace VikingEngine.DSSWars.Build
 
             void refreshSelection()
             {
-                Dictionary<int, int> city_queLength = new Dictionary<int, int>();
+                //Dictionary<int, int> city_queLength = new Dictionary<int, int>();
 
                 foreach (var sel in selection)
                 {
-                    if (sel.mayBuild && sel.usesBuildQue != 0)
+                    if (sel.mayBuild /*&& sel.usesBuildQue != 0*/)
                     {
-                        int availabeQueueLength;
-                        if (!city_queLength.TryGetValue(sel.City.myIndex, out availabeQueueLength))
-                        {
-                            availabeQueueLength = sel.City.availableBuildQueueLength(player);
-                            city_queLength.Add(sel.City.myIndex, availabeQueueLength);                           
-                        }
+                        //int availabeQueueLength;
+                        //if (!city_queLength.TryGetValue(sel.City.myIndex, out availabeQueueLength))
+                        //{
+                        //    availabeQueueLength = sel.City.availableBuildQueueLength(player);
+                        //    city_queLength.Add(sel.City.myIndex, availabeQueueLength);                           
+                        //}
 
-                        sel.model.Color = (availabeQueueLength > 0 || sel.usesBuildQue <= 0)  ? Color.White : Color.Gray;
+                        sel.model.Color = /*(availabeQueueLength > 0 || sel.usesBuildQue <= 0)  ?*/ Color.White/* : Color.Gray*/;
 
-                        availabeQueueLength -= sel.usesBuildQue;
-                        city_queLength[sel.City.myIndex] = Bound.Min(availabeQueueLength, 0);
+                        //availabeQueueLength -= sel.usesBuildQue;
+                        //city_queLength[sel.City.myIndex] = Bound.Min(availabeQueueLength, 0);
                     }
                 }
             }
@@ -784,7 +786,15 @@ namespace VikingEngine.DSSWars.Build
                         player.orders.clearAll(city);
                     }, SoundLib.menuBack), null, orderLength > 0));
                 content.newLine();
-                content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
+                content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength), HudLib.InfoYellow_Light);
+
+                content.newLine();
+                HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
+                content.newLine();
+                city.workTemplate.buildOrder.toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
+                    player.faction, city);
+
+                
 
                 if (player.buildCategoryTab == BuildCategoryTab.Upgrade)
                 {
@@ -835,18 +845,18 @@ namespace VikingEngine.DSSWars.Build
 
                 void autoBuildButton(string caption, int count)
                 {
-                    int max = city.MaxBuildQueue();
+                    //int max = city.MaxBuildQueue();
 
-                    if (max >= count)
-                    {
+                    //if (max >= count)
+                    //{
                         int current = player.orders.buildQueue(city);
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(caption) },
                             new RbAction(() =>
                             {
                                 autoPlaceBuilding(city, count);
-                            }, SoundLib.menuBuy), null, buildOpt != null && (count <= max - current)));
-                    }
+                            }, SoundLib.menuBuy), null, buildOpt != null/* && (count <= max - current)*/));
+                    //}
                 }
             }
             
@@ -951,11 +961,11 @@ namespace VikingEngine.DSSWars.Build
                     content.Add(new RbImage(SpriteName.birdUnLock));
                     if (city.CanBuildLogistics(2))
                     {
-                        content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildQueue, DssRef.lang.Hud_NoLimit)));
+                        content.Add(new RbText(string.Format(DssRef.todoLang.XP_UnlockBuildPrio, DssRef.lang.Hud_NoLimit)));
                     }
                     else
                     {
-                        content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildQueue, City.LevelToMaxBuildQueue(1))));
+                        content.Add(new RbText(string.Format(DssRef.todoLang.XP_UnlockBuildPrio, City.LevelToMaxBuildPrio(1))));
                     }
 
                     foreach (var building in BuildLib.LogisticsUnlockBuildings)

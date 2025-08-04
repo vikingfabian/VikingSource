@@ -114,9 +114,14 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public int MaxBuildQueue()
-        {
-            return LevelToMaxBuildQueue(buildingStructure.buildingLevel_logistics);
+        //public int MaxBuildQueue()
+        //{
+        //    return LevelToMaxBuildQueue(buildingStructure.buildingLevel_logistics);
+        //}
+
+        public int MaxBuildPrio()
+        { 
+            return LevelToMaxBuildPrio(buildingStructure.buildingLevel_logistics);
         }
 
         public IntVector2 ArmySpawnTilePos()
@@ -170,22 +175,41 @@ namespace VikingEngine.DSSWars.GameObject
         //    //}
         //}
 
-        public static int LevelToMaxBuildQueue(int level)
+        //public static int LevelToMaxBuildQueue(int level)
+        //{
+        //    int queue = int.MaxValue;
+        //    switch (level)
+        //    {
+        //        default: return queue;
+        //        case 0: queue = DssConst.WorkQueue_Start; break;
+        //        case 1: queue = DssConst.WorkQueue_LogisticsLevel1; break;
+        //    }
+
+        //    if (DssRef.storage.longerBuildQueue)
+        //    {
+        //        queue *= 2;
+        //    }
+
+        //    return queue;
+        //}
+
+        public static int LevelToMaxBuildPrio(int level)
         {
-            int queue = int.MaxValue;
+            int max = WorkTemplate.MaxPrio;
+
             switch (level)
             {
-                default: return queue;
-                case 0: queue = DssConst.WorkQueue_Start; break;
-                case 1: queue = DssConst.WorkQueue_LogisticsLevel1; break;
+                default: return max;
+                case 0: max = DssConst.BuildPrio_Start; break;
+                case 1: max = DssConst.BuildPrio_LogisticsLevel1; break;
             }
 
-            if (DssRef.storage.longerBuildQueue)
-            {
-                queue *= 2;
-            }
+            //if (DssRef.storage.longerBuildQueue)
+            //{
+            //    queue *= 2;
+            //}
 
-            return queue;
+            return max;
         }
 
         public void upgradeLogistics()
@@ -253,15 +277,15 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public bool availableBuildQueue(LocalPlayer player)
-        {
-            return MaxBuildQueue() > 1000 || player.orders.buildQueue(this) < MaxBuildQueue();
-        }
+        //public bool availableBuildQueue(LocalPlayer player)
+        //{
+        //    return MaxBuildQueue() > 1000 || player.orders.buildQueue(this) < MaxBuildQueue();
+        //}
 
-        public int availableBuildQueueLength(LocalPlayer player)
-        {
-            return MaxBuildQueue() - player.orders.buildQueue(this);
-        }
+        //public int availableBuildQueueLength(LocalPlayer player)
+        //{
+        //    return MaxBuildQueue() - player.orders.buildQueue(this);
+        //}
 
         public void haltConscriptAndDelivery()
         {
@@ -3002,7 +3026,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //createOverViewModel();
                 }
 
-                workTemplate.onFactionChange(newFaction.workTemplate);
+                workTemplate.onFactionChange(this, newFaction.workTemplate);
                 tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
                 technology.addFactionUnlocked(newFaction.technology, true, false);
 
