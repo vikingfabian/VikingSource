@@ -26,76 +26,79 @@ namespace VikingEngine.DSSWars.Event
         {
             base.onGameStarted();
 
-            var citiesC = DssRef.state.LocalHost().faction.cities.counter();
-            while (citiesC.Next())
+            if (!DssRef.state.LocalHost().profile.casualControls)
             {
-                citiesC.sel.res_Palisade.amount += 20;
-                citiesC.sel.res_food.amount += 500;
-            }
-
-            var enemy = DssRef.state.LocalHost().getPin("enemy");
-            if (enemy != null)
-            {
-                Faction attacker = DssRef.world.tileGrid.Get(enemy.tilePos).Faction();
-                attacker.addGold_factionWide(100000);
-
-                var defend = DssRef.state.LocalHost().getPin("defend");
-                defendingCity = DssRef.world.tileGrid.Get(defend.tilePos).City();
-
-                //1. Send one army
-                new Timer.TimedAction0ArgTrigger_InGame(() =>
+                var citiesC = DssRef.state.LocalHost().faction.cities.counter();
+                while (citiesC.Next())
                 {
-                    DssRef.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
-                    attacker.player.GetAiPlayer().armyAi_enabled = false;
+                    citiesC.sel.res_Palisade.amount += 20;
+                    citiesC.sel.res_food.amount += 500;
+                }
 
-                    const int FirstAttackerId = 4;
-                    var firstAttacker = attacker.armies.GetIndex_Safe(FirstAttackerId);
-                    firstAttacker.Order_Attack(defendingCity);
-                    firstAttacker.setMassiveFood();
+                var enemy = DssRef.state.LocalHost().getPin("enemy");
+                if (enemy != null)
+                {
+                    Faction attacker = DssRef.world.tileGrid.Get(enemy.tilePos).Faction();
+                    attacker.addGold_factionWide(100000);
 
+                    var defend = DssRef.state.LocalHost().getPin("defend");
+                    defendingCity = DssRef.world.tileGrid.Get(defend.tilePos).City();
 
-                    //2. Send all armies
+                    //1. Send one army
                     new Timer.TimedAction0ArgTrigger_InGame(() =>
                     {
-                        List<Army> all = new List<Army>(8);
+                        DssRef.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
+                        attacker.player.GetAiPlayer().armyAi_enabled = false;
 
-                        var armiesC = attacker.armies.counter();
-                        while (armiesC.Next())
-                        {
-                            if (!armiesC.sel.isDeleted)
-                            {
-                                armiesC.sel.Order_Attack(defendingCity);
-                                armiesC.sel.setMassiveFood();
-
-                                all.Add(armiesC.sel);
-                            }
-                        }
-                        attackerArmies = all;
-                        demoState_1start_2end = 1;
+                        const int FirstAttackerId = 4;
+                        var firstAttacker = attacker.armies.GetIndex_Safe(FirstAttackerId);
+                        firstAttacker.Order_Attack(defendingCity);
+                        firstAttacker.setMassiveFood();
 
 
-                        //3. Turn Ai back on
+                        //2. Send all armies
                         new Timer.TimedAction0ArgTrigger_InGame(() =>
                         {
-                            attacker.player.GetAiPlayer().armyAi_enabled = true;
-                        }, 15 * TimeExt.MinuteInSeconds); //3.
+                            List<Army> all = new List<Army>(8);
 
-                    },
+                            var armiesC = attacker.armies.counter();
+                            while (armiesC.Next())
+                            {
+                                if (!armiesC.sel.isDeleted)
+                                {
+                                    armiesC.sel.Order_Attack(defendingCity);
+                                    armiesC.sel.setMassiveFood();
+
+                                    all.Add(armiesC.sel);
+                                }
+                            }
+                            attackerArmies = all;
+                            demoState_1start_2end = 1;
+
+
+                            //3. Turn Ai back on
+                            new Timer.TimedAction0ArgTrigger_InGame(() =>
+                            {
+                                attacker.player.GetAiPlayer().armyAi_enabled = true;
+                            }, 15 * TimeExt.MinuteInSeconds); //3.
+
+                        },
 #if DEBUG
-                    1);
+                        1);
 #else
                 15 * TimeExt.MinuteInSeconds);//2.
 #endif
-                }, 20);//1.
+                    }, 20);//1.
 
 
-                DssRef.state.LocalHost().clearPins();
+                    DssRef.state.LocalHost().clearPins();
 
 
-                var mission = new RichBoxContent();
-                mission.h1(DssRef.lang.Demo_MissionObjective_Title, HudLib.TitleColor_Head);
-                mission.text(DssRef.lang.Demo_MissionObjective_Description);
-                DssRef.state.LocalHost().hud.messages.Add(mission);
+                    var mission = new RichBoxContent();
+                    mission.h1(DssRef.lang.Demo_MissionObjective_Title, HudLib.TitleColor_Head);
+                    mission.text(DssRef.lang.Demo_MissionObjective_Description);
+                    DssRef.state.LocalHost().hud.messages.Add(mission);
+                }
             }
         }
 

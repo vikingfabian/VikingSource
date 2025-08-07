@@ -91,6 +91,8 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string EventMessage_DesertersText_Food => "Hungry soldiers are deserting from your army";
 
+
+        public string Tutorial_CasualRescruitSoldiers => "Purchase one soldier group";
     }
 
 }

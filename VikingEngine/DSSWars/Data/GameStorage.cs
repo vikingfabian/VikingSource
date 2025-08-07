@@ -64,13 +64,27 @@ namespace VikingEngine.DSSWars.Data
                 localPlayers[i] = new LocalPlayerStorage(i);
             }
 
+#if DEMO
+            demoSetup();
+
+#else
             defaultGameSettings();
+#endif
         }
 
         public void defaultGameSettings()
         {
             mapSize = MapSize.Medium;
             centralGold = true;
+        }
+
+        void demoSetup()
+        {
+            mapSize = MapSize.Medium;
+            centralGold = true;
+            mapSettings = MapSettingsStorage.Default;
+            mapSettings.customSeed = true;
+            mapSettings.seed = 1;
         }
 
         public void multiplayerGameSpeedToMenu(RichBoxContent content, RichMenu menu)
@@ -249,6 +263,10 @@ namespace VikingEngine.DSSWars.Data
 
                 generateNewMaps = true;//temp
                 fileCheck.end();
+
+#if DEMO
+                demoSetup();
+#endif
             }
             catch (Exception e)
             {
