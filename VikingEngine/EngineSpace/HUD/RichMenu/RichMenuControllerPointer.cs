@@ -17,8 +17,9 @@ namespace VikingEngine.HUD.RichMenu
         public RichMenu menu;
         public float maxInteractDistance;
 
-        const float LowAccelerate = 0.4f;
+        const float LowAccelerate = 0.3f;
         float moveAcc = LowAccelerate;
+        Rotation1D accelerateDir = Rotation1D.D0;
         public RichMenuControllerPointer(InputMap inputMap)
         {
             this.inputMap = inputMap;
@@ -53,16 +54,29 @@ namespace VikingEngine.HUD.RichMenu
             float speed = 1.0f;
             var l = input.Length();
             Vector2 result = Ref.DeltaTimeMs * moveAcc * speed * input;
-            if (l < 0.5f)
+            if (l < 0.9f)
             {
-                moveAcc = LowAccelerate;
+                setLow();
+            }
+            else if (Rotation1D.FromDirection(input).AngleDifference(accelerateDir) > MathExt.TauOver8)
+            {
+                setLow();
             }
             else
             {
-                moveAcc = Bound.Max(moveAcc + Ref.DeltaTimeSec * 3f, 1f);
+                moveAcc = Bound.Max(moveAcc + Ref.DeltaTimeSec * 2f, 1f);
             }
 
             return result;
+
+            void setLow()
+            {
+                moveAcc = LowAccelerate;
+                if (l != 0)
+                {
+                    accelerateDir = Rotation1D.FromDirection(input);
+                }
+            }
         }
 
         public void DeleteMe(out Vector2 storedPos)

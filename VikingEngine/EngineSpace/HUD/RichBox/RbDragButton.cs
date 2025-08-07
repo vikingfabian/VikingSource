@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.Network;
 
@@ -229,7 +230,8 @@ namespace VikingEngine.HUD.RichBox
         float moveLengthForValueChange;
         TimeStamp timeStamp;
         float buttonCenter;
-        
+        //float controllerMove = 0;
+        DirXYstepping controllerStepping = new DirXYstepping();
         public DragButtonInteraction(RichMenu.RichMenu menu, RbDragButton dragButton) 
         {
             prevMousePos = Input.Mouse.Position;
@@ -272,11 +274,52 @@ namespace VikingEngine.HUD.RichBox
             return false;
         }
 
-        public override void end(out bool needRefresh)
+        public override bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction)
+        {
+            pointer.pointer.Visible = false;
+
+            int steps = controllerStepping.update(pointer.inputMap.move.direction).X;
+            //pointer.inputMap.move.
+            //controllerMove += pointer.accelerateInput(pointer.inputMap.move.direction).X * 0.2f;
+
+            //if (Math.Abs(controllerMove) > moveLengthForValueChange)
+            //{
+            //    float change = (int)(controllerMove / moveLengthForValueChange);
+            //    controllerMove -= change * moveLengthForValueChange;
+
+            if (steps == 0)
+            {
+                needRefresh = false;
+            }
+            else
+            {
+                needRefresh = true;
+                dragButton.valueChangeInput(steps, true);
+            }
+            //}
+            //else
+            //{
+            //    needRefresh = false;
+            //}
+
+            if (pointer.inputMap.MenuClick.IsDown == false)
+            {
+                endInteraction = true;
+                pointer.pointer.Visible = true;
+            }
+            else
+            {
+                endInteraction = false;
+            }
+
+            return false;
+        }
+
+        public override void end(float pointerX, out bool needRefresh)
         {
             if (timeStamp.belowTime_ms(InputLib.ButtonMaxClickTimeMs))
             {
-                dragButton.valueChangeInput(lib.BoolToLeftRight(prevMousePos.X > buttonCenter), true);
+                dragButton.valueChangeInput(lib.BoolToLeftRight(pointerX/*prevMousePos.X*/ > buttonCenter), true);
                 needRefresh = true;
             }
 

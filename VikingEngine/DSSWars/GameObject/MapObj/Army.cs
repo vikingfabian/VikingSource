@@ -379,7 +379,11 @@ namespace VikingEngine.DSSWars.GameObject
         public override void toHud(ObjectHudArgs args)
         {
             //base.toHud(args);
+
+            debugTagButton(args.content);
             ArmyPresentationHud(args, false);
+
+
 
             //if (args.player.hud.detailLevel == Display.HudDetailLevel.Minimal)
             //{
@@ -397,7 +401,7 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             //else
             //{
-                    if (factionIndex == args.player.faction.myIndex)
+            if (factionIndex == args.player.faction.myIndex)
                     {
                         new Interface.ArmyMenu(args.player, this, args.content);
                     }
@@ -1064,6 +1068,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void asynchCullingUpdate(float time, bool bStateA)
         {
+            if (this.debugTagged)
+            {
+                lib.DoNothing();
+            }
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
         }
 

@@ -1233,16 +1233,20 @@ namespace VikingEngine.DSSWars.Players
 
             if (player.gameControls.input.cameraTiltUp.DownEvent)
             {
-                currentTiltYAngleOption++;
-                if (currentTiltYAngleOption >= 3)
-                { 
-                    currentTiltYAngleOption = -1;
-                }
-
-                player.mapLayersManager.TiltYAdd = currentTiltYAngleOption * TiltYUpAngle;
+                toggleCameraTiltUp();
             }
         }
 
+        public void toggleCameraTiltUp()
+        {
+            currentTiltYAngleOption++;
+            if (currentTiltYAngleOption >= 3)
+            {
+                currentTiltYAngleOption = -1;
+            }
+
+            player.mapLayersManager.TiltYAdd = currentTiltYAngleOption * TiltYUpAngle;
+        }
 
         float PanSpeed()
         {

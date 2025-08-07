@@ -71,13 +71,10 @@ namespace VikingEngine.DSSWars
         public IButtonMap FlagDesign_PaintBucket;
         public IButtonMap Controller_FlagDesign_Colorpicker;
         public IButtonMap Controller_TabLeft, Controller_TabRight;
+        public IButtonMap Controller_SubTabLeft, Controller_SubTabRight;
 
         public Voxels.EditorInputMap editorInput = new Voxels.EditorInputMap();
-        //public InputMap()
-        //    : base()
-        //{
-        //    menuInput = new HUD.MenuInputMap();
-        //}
+        
 
         public MouseButtonAction GetMouseAction(MouseButton MouseButton)
         {
@@ -307,6 +304,9 @@ namespace VikingEngine.DSSWars
 
             Controller_TabLeft = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
             Controller_TabRight = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
+            Controller_SubTabLeft = new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex);
+            Controller_SubTabRight = new XboxButtonMap(Buttons.RightTrigger, inputSource.controllerIndex);
+
             GameSpeed = new NoButtonMap();//
             PauseGame = new NoButtonMap();//new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
 
@@ -314,7 +314,7 @@ namespace VikingEngine.DSSWars
 
             NextCity = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);// new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, false);
             NextArmy = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);//new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex, true, false);
-            NextBattle = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true, false);
+            //NextBattle = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true, false);
 
             ControllerMessageClick = new XboxButtonMap(Buttons.DPadUp, inputSource.controllerIndex);//new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, true);
 

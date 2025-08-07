@@ -1,38 +1,29 @@
 ﻿UPDATE
 Change Log:
-* Fixed unit type names
-* Fixed stuck build orders after load
-* Fixed: BUILD UPGRADES ARE FREE.
-* improved city toggle
-* fixed: set all defence is broken, need set all towers
-* fullscreen will set 100% resolution
-* fixed flag update on capture
-* fixed: Taken cities battle alert toward yourself
-* build prio instead of max queue
-* gold ore lacks the warehouse tab gold ore thing
-* darkened the pin hud background
+* player units not rendering on others splitscreen
+* I added more info about work prio in the manual
+* fixed: can build on mines
 
-Casual mode:
-* Captured cities will clear their build queue 
-* Upgrades will unlock advanced mode tech
-* Deserters text will correctly mention money/food
+controller: 
+* made the controller menu pointer accelerate a bit slower, and it will only accelerate on straight moves
+* improved button help hud
+* input for select area city and camera tilt up
+* fixed: gets stuck on drag-value buttons
 
-! Old saves does not store what is tower/wall (does only affect "set all towers")
-! All previous casual mode saves are broken
 
 #Pics
 build building icon
 
 
 #must do#
+x capital letter on faction resources
 
-x casual tutorial
-x add casual to demo
-x remove tutorial
+
+
+x?? showing wrong resource tab in tutorial
 
 #Todo#
-
-
+x 
 X match casual to save
 x multiplayer is broken in battle lab
 x small map editor size crash
@@ -54,7 +45,8 @@ x removing soldiers cancels move order
 x drag slider needs description
 x god mode where you can edit all nations? Like giving money, spawning units, deleting buildings etc.
 x adjustable faction sizes in map editor
-x 
+x add pause all bulding button
+x faction setting for stockpile
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning

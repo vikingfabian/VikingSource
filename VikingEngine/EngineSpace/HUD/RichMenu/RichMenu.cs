@@ -352,10 +352,12 @@ namespace VikingEngine.HUD.RichMenu
         {
             if (interaction != null)
             {
-                if (interaction.updateController(pointer))
+                if (interaction.updateController(pointer, this, false, out needRefresh, out _))
                 {
                     needRefresh = true;
                 }
+
+                this.needRefresh |= needRefresh;
             }
         }
 
