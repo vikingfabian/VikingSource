@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Interface
             if (DssRef.state.IsSinglePlayer_LocalAndOnline())
             {
 
-                bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause, out Color focusColor);
+                bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause_GamePlay, out Color focusColor);
                 if (viewControllerTabs)
                 {
                     content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });

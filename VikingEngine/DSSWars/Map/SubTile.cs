@@ -222,6 +222,8 @@ namespace VikingEngine.DSSWars.Map
                             upgrade = true;
                             return build == BuildAndExpandType.RecruitmentLevel3;
                     }
+
+                case TerrainMainType.Mine:
                 case TerrainMainType.DefaultSea:
                     return false;
 
@@ -244,10 +246,11 @@ namespace VikingEngine.DSSWars.Map
                             upgrade = true;
                             return build == BuildAndExpandType.HempFarmUpgraded;
 
-                        case TerrainSubFoilType.WheatFarmUpgraded:
-                        case TerrainSubFoilType.LinenFarmUpgraded:
-                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                        case TerrainSubFoilType.HempFarmUpgraded:
+                        //case TerrainSubFoilType.WheatFarmUpgraded:
+                        //case TerrainSubFoilType.LinenFarmUpgraded:
+                        //case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                        //case TerrainSubFoilType.HempFarmUpgraded:
+                        case TerrainSubFoilType.BogIron:
                             return false;
                         
                     }

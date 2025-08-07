@@ -63,8 +63,19 @@ namespace VikingEngine.DSSWars.Interface
             {
                 case InputHelpState.Map:
                     input(map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
+                    if (ct)
+                    {
+                        input(map.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
+                    }
                     input(ct ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
-                    input(map.Build.Icon, DssRef.lang.InputActionName_Build);
+                    if (mouse)
+                    {
+                        input(map.Build.Icon, DssRef.lang.InputActionName_Build);
+                    }
+                    if (ct)
+                    {
+                        input(map.Controller_SubTabRight.Icon, DssRef.lang.InputActionName_CameraTiltUp);
+                    }
                     break;
 
                 case InputHelpState.Army:

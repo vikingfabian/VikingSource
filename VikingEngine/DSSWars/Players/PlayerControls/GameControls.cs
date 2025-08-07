@@ -247,11 +247,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 if (input.Controller_TabLeft.DownEvent)
                 {
-                    controllerTabbing(-1);
+                    controllerTabbing(-1, true);
                 }
                 if (input.Controller_TabRight.DownEvent)
                 {
-                    controllerTabbing(1);
+                    controllerTabbing(1, true);
+                }
+                if (input.Controller_SubTabLeft.DownEvent)
+                {
+                    controllerTabbing(-1, false);
+                }
+                if (input.Controller_SubTabRight.DownEvent)
+                {
+                    controllerTabbing(1, false);
                 }
 
                 if (input.ControllerMessageClick.DownEvent)
@@ -341,60 +349,82 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 return ControllerTabFocus.Build;
             }
 
-            return ControllerTabFocus.Pause;
+            return ControllerTabFocus.Pause_GamePlay;
         }
 
-        void controllerTabbing(int dir)
+        void controllerTabbing(int dir, bool mainTabbing)
         {
-            switch (tabFocus())
+            if (mainTabbing)
             {
-                case ControllerTabFocus.CityMenu:
-                    {
-                        var tabs = player.AvailableCityTabs();
-                        var index = arraylib.IndexFromValue(tabs, player.cityTab);
-                        index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
-                        player.cityTab = tabs[index];                           
-                    }
-                    break;
-                case ControllerTabFocus.ArmyMenu:
-                    {
-                        var tabs = player.AvailableArmyTabs();
-                        var index = arraylib.IndexFromValue(tabs, player.armyTab);
-                        index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
-                        player.armyTab = tabs[index];
-                    }
-                    break;
-                case ControllerTabFocus.Headmenu:
-                    {
-                        var tabs = player.hud.head.factionTabOptions();
-                        var index = arraylib.IndexFromValue(tabs, player.factionTab);
-                        index = Bound.SetRollover(index + dir, 0, tabs.Length - 1);
-                        player.hud.head.TabClick(tabs[index]);
-                    }
-                    break;
-                case ControllerTabFocus.Build:
-                    var city = map.selection.obj?.GetCity();
-                    if (city != null)
-                    {
-                        var tabs = build.availableBuildOptions(city);
-                        var index = arraylib.IndexFromValue(tabs, build.placeBuildingType);
-                        index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
-                        build.buildingTypeClick(tabs[index]);
-                    }
-                    break;
-                case ControllerTabFocus.Pause:
-                    if (dir < 0)
-                    {
-                        Ref.TogglePause();
-                    }
-                    else
-                    {
-                        setNextGameSpeed();
-                    }
-                    break;
+                switch (tabFocus())
+                {
+                    case ControllerTabFocus.CityMenu:
+                        {
+                            var tabs = player.AvailableCityTabs();
+                            var index = arraylib.IndexFromValue(tabs, player.cityTab);
+                            index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
+                            player.cityTab = tabs[index];
+                        }
+                        break;
+                    case ControllerTabFocus.ArmyMenu:
+                        {
+                            var tabs = player.AvailableArmyTabs();
+                            var index = arraylib.IndexFromValue(tabs, player.armyTab);
+                            index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
+                            player.armyTab = tabs[index];
+                        }
+                        break;
+                    case ControllerTabFocus.Headmenu:
+                        {
+                            var tabs = player.hud.head.factionTabOptions();
+                            var index = arraylib.IndexFromValue(tabs, player.factionTab);
+                            index = Bound.SetRollover(index + dir, 0, tabs.Length - 1);
+                            player.hud.head.TabClick(tabs[index]);
+                        }
+                        break;
+                    case ControllerTabFocus.Build:
+                        var city = map.selection.obj?.GetCity();
+                        if (city != null)
+                        {
+                            var tabs = build.availableBuildOptions(city);
+                            var index = arraylib.IndexFromValue(tabs, build.placeBuildingType);
+                            index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
+                            build.buildingTypeClick(tabs[index]);
+                        }
+                        break;
+                    case ControllerTabFocus.Pause_GamePlay:
+                        if (dir < 0)
+                        {
+                            Ref.TogglePause();
+                        }
+                        else
+                        {
+                            setNextGameSpeed();
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (tabFocus())
+                {
+                    case ControllerTabFocus.Pause_GamePlay:
+                        if (dir < 0)
+                        {
+                            selectAreaCity();
+                            setMenuFocus(true, true);
+                        }
+                        else
+                        {
+                            map.toggleCameraTiltUp();
+                        }
+                        break;
+                }
             }
             player.hud.needRefresh = true;
         }
+
+        
 
         public bool tabFocusColor(ControllerTabFocus inFocus, out Color color)
         {
@@ -927,7 +957,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
     enum ControllerTabFocus
     { 
         None,
-        Pause,
+        Pause_GamePlay,
         CityMenu,
         ArmyMenu,
         GeneralObjectsMenu,

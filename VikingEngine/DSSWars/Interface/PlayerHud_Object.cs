@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Interface
                     SpriteName buttonIcon;
                     if (player.gameControls.input.inputSource.IsController)
                     {
-                        buttonIcon = player.gameControls.input.mouseSelect.Icon;
+                        buttonIcon = player.gameControls.input.Controller_SubTabLeft.Icon;
                     }
                     else
                     {

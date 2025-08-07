@@ -161,19 +161,19 @@ namespace VikingEngine.DSSWars
 
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
         {
+            enterRender_overviewLayer = false;
+            enterRender_detailLayer = false;
+
             for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
             {
                 var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
                 if (state.enterArea.IntersectRect(minpos, maxpos))
                 {
-                    enterRender_overviewLayer = state.midLayer;
-                    enterRender_detailLayer = state.detailLayer;
-                    return;
+                    enterRender_overviewLayer |= state.midLayer;
+                    enterRender_detailLayer |= state.detailLayer;                    
                 }
             }
-
-            enterRender_overviewLayer = false;
-            enterRender_detailLayer = false;
+           
         }
 
         const byte TerrainOverview_EnterRenderBit = 1, TerrainOverview_InRenderBit = 2, UnitDetail_EnterRenderBit = 4, UnitDetail_InRenderBit = 8;

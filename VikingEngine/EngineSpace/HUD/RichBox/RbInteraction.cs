@@ -12,9 +12,12 @@ using VikingEngine.PJ.Match3;
 namespace VikingEngine.HUD.RichBox
 {
     abstract class AbsRbInteraction
-    {   
+    {
+
+        abstract public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
+
         abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
-        abstract public void end(out bool needRefresh);
+        abstract public void end(float pointerX, out bool needRefresh);
     }
     class RbInteraction: AbsRbInteraction
     {
@@ -49,13 +52,28 @@ namespace VikingEngine.HUD.RichBox
         }
 
        
-        public bool updateController(RichMenuControllerPointer pointer)
+        override public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction)
         {
-            pointer.pointer.position += pointer.accelerateInput(pointer.inputMap.move.direction);
-            pointer.pointer.position = pointer.menu.renderArea.KeepPointInsideBound_Position(pointer.pointer.position);
+            if (interactionStack == null)
+            {
+                pointer.pointer.position += pointer.accelerateInput(pointer.inputMap.move.direction);
+                pointer.pointer.position = pointer.menu.renderArea.KeepPointInsideBound_Position(pointer.pointer.position);
 
-            refreshControllerHover(pointer);
-            return clickUpdate(pointer.menu, true);
+                refreshControllerHover(pointer);
+                needRefresh = false;
+                endInteraction = false;
+                return clickUpdate(pointer.menu, true);
+            }
+            else
+            {
+                var result = interactionStack.updateController(pointer, menu, useClickInput, out needRefresh, out endInteraction);
+                if (endInteraction)
+                {
+                    interactionStack.end(pointer.pointer.Xpos, out needRefresh);
+                    interactionStack = null;
+                }
+                return result;
+            }
         }
 
         public void refreshControllerHover(RichMenuControllerPointer pointer)
@@ -104,7 +122,7 @@ namespace VikingEngine.HUD.RichBox
                 var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out needRefresh, out bool endInteraction);
                 if (endInteraction)
                 {
-                    interactionStack.end(out needRefresh);
+                    interactionStack.end(Input.Mouse.Position.X, out needRefresh);
                     interactionStack = null;
                 }
                 return result;
@@ -174,7 +192,7 @@ namespace VikingEngine.HUD.RichBox
             return false;
         }
 
-        public override void end(out bool needRefresh)
+        public override void end(float pointerX, out bool needRefresh)
         {
             needRefresh = false;
             //throw new NotImplementedException();
