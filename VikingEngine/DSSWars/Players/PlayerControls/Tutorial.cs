@@ -32,9 +32,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         enum TutorialMission
         {
             CollectResources,
+            
             Linen,
             //SharpStickWork,
             ProduceWeaponsArmor,
+            CasualBuildBarracks,
+            CasualRecruitSoldier,
             ConscriptArmy,
             CollectFood,
             RecruitGuard,
@@ -42,6 +45,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             MoveArmy,
             AttackBarbarian,
             Diplomatics,
+
+            
+
             End,
         }
 
@@ -59,6 +65,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool collectResources_selectTab_sound = false;
         bool collectResources_collectwood = false;
         bool collectResources_collectstone = false;
+
+        bool CasualBuildBarracks_selectCity = false;
+        bool CasualBuildBarracks_selectCity_sound = false;
+        bool CasualBuildBarracks_selectTab = false;
+        bool CasualBuildBarracks_selectTab_sound = false;
+        bool CasualBuildBarracks_build = false;
+        //bool casualRecruit_selectCity = false;
+        //bool casualRecruit_selectCity_sound = false;
+        bool casualRecruit_selectTab = false;
+        bool casualRecruit_selectTab_sound = false;
+        bool casualRecruit_recruit = false;
+        //bool casualRecruit_recruit_sound = false;
 
         bool linen_selectTab = false;
         bool linen_build = false;
@@ -163,19 +181,33 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void initMissions()
         {
-            if (DssRef.storage.runTutorial_1short_2normal == 1)
+            if (player.profile.casualControls)
             {
                 missions = new List2<TutorialMission>
                 {
-                    TutorialMission.RecruitGuard,
-                    TutorialMission.BuildDefences,
-                    TutorialMission.MoveArmy,                
+                    TutorialMission.CasualBuildBarracks,
+                    TutorialMission.CasualRecruitSoldier,
+                    TutorialMission.MoveArmy,
+                    TutorialMission.AttackBarbarian,
+                    TutorialMission.Diplomatics,
                     TutorialMission.End,
                 };
             }
             else
             {
-                missions = new List2<TutorialMission>
+                //if (DssRef.storage.runTutorial_1short_2normal == 1)
+                //{
+                //    missions = new List2<TutorialMission>
+                //{
+                //    TutorialMission.RecruitGuard,
+                //    TutorialMission.BuildDefences,
+                //    TutorialMission.MoveArmy,
+                //    TutorialMission.End,
+                //};
+                //}
+                //else
+                //{
+                    missions = new List2<TutorialMission>
                 {
                     //TutorialMission.AttackBarbarian,
                     TutorialMission.CollectResources,
@@ -188,8 +220,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     TutorialMission.Diplomatics,
                     TutorialMission.End,
                 };
+                //}
             }
-
             missions.selectFirst();
         }
 
@@ -283,8 +315,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             switch (missions.sel)
             {
+
+
                 case TutorialMission.CollectResources:
-                    //content.icontext(HudLib.CheckImage(collectResources_selectCity), DssRef.lang.Tutorial_SelectACity);
+                    
                     content.newLine();
                     content.Add(new RbImage(HudLib.CheckImage(collectResources_selectCity)));
                     content.space();
@@ -298,6 +332,25 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.iconicontext(HudLib.CheckImage(collectResources_selectTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
                     content.iconicontext(HudLib.CheckImage(collectResources_collectwood), SpriteName.WarsResource_Wood, string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectWoodStoneAmount, DssRef.lang.Resource_TypeName_Wood));
                     content.iconicontext(HudLib.CheckImage(collectResources_collectstone), SpriteName.WarsResource_Stone, string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectWoodStoneAmount, DssRef.lang.Resource_TypeName_Stone));
+                    break;
+
+                case TutorialMission.CasualBuildBarracks:
+                    content.newLine();
+                    content.Add(new RbImage(HudLib.CheckImage(CasualBuildBarracks_selectCity)));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsTutorialCity));
+                    content.Add(new RbText("/"));
+                    content.Add(new RbImage(SpriteName.WarsCityHall));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Tutorial_SelectACity));
+
+                    content.iconicontext(HudLib.CheckImage(CasualBuildBarracks_selectTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
+                    content.iconicontext(HudLib.CheckImage(CasualBuildBarracks_build), SpriteName.WarsBuild_Barracks, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, DssRef.lang.BuildingType_Barracks));
+                    break;
+
+                case TutorialMission.CasualRecruitSoldier:
+                    content.iconicontext(HudLib.CheckImage(casualRecruit_selectTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Recruit));
+                    content.iconicontext(HudLib.CheckImage(casualRecruit_recruit), SpriteName.WarsUnitIcon_Folkman, DssRef.todoLang.Tutorial_CasualRescruitSoldiers);
                     break;
                
                 case TutorialMission.Linen:
@@ -442,6 +495,88 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             switch (missions.sel)
             {
+                case TutorialMission.CasualBuildBarracks:
+                    if (player.gameControls.map.selection.obj is City)
+                    {
+                        if (!CasualBuildBarracks_selectCity)
+                        {
+                            CasualBuildBarracks_selectCity = true;
+                            onPartSuccess(CasualBuildBarracks_selectCity_sound);
+                            CasualBuildBarracks_selectCity_sound = true;
+                        }
+                    }
+                    else
+                    {
+                        if (CasualBuildBarracks_selectCity)
+                        {
+                            CasualBuildBarracks_selectCity = false;
+                            display.refresh = true;
+                        }
+                    }
+
+                    if (player.cityTab == Interface.MenuTab.Casual_Build)
+                    {
+                        if (!CasualBuildBarracks_selectTab)
+                        {
+                            CasualBuildBarracks_selectTab = true;
+                            onPartSuccess(CasualBuildBarracks_selectTab_sound);
+                            CasualBuildBarracks_selectTab_sound = true;
+                        }
+                    }
+                    else
+                    {
+                        if (CasualBuildBarracks_selectTab)
+                        {
+                            CasualBuildBarracks_selectTab = false;
+                            display.refresh = true;
+                        }
+                    }
+
+                    if (!CasualBuildBarracks_build)
+                    {
+                        if (player.gameControls.map.selection.obj is City)
+                        {
+                            if (player.gameControls.map.selection.obj.GetCity().getCount(Casual.CasualBuildType.Barracks) > 0)
+                            {
+                                CasualBuildBarracks_build = true;
+                                onPartSuccess(true);
+                            }
+                        }
+                    }
+
+                    break;
+
+                case TutorialMission.CasualRecruitSoldier:
+                    
+
+                    if (player.cityTab == Interface.MenuTab.Casual_Recruit)
+                    {
+                        if (!casualRecruit_selectTab)
+                        {
+                            casualRecruit_selectTab = true;
+                            onPartSuccess(casualRecruit_selectTab_sound);
+                            casualRecruit_selectTab_sound = true;
+                        }
+                    }
+                    else
+                    {
+                        if (casualRecruit_selectTab)
+                        {
+                            casualRecruit_selectTab = false;
+                            display.refresh = true;
+                        }
+                    }
+
+                    if (!casualRecruit_recruit && player.faction.armies.Count > 0)
+                    {
+                        casualRecruit_recruit = true;
+                        onPartSuccess(true);
+                    }
+
+                    break;
+
+
+
                 case TutorialMission.CollectResources:
 
                     if (player.gameControls.map.selection.obj is City)
@@ -1108,7 +1243,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         collectResources_collectwood &&
                         collectResources_collectstone;
                     break;
-                
+
+                case TutorialMission.CasualBuildBarracks:
+                    missionComplete = CasualBuildBarracks_build;
+                    break;
+                case TutorialMission.CasualRecruitSoldier:
+                    missionComplete = casualRecruit_recruit;
+                    break;
+
                 case TutorialMission.Linen:
                     missionComplete = linen_selectTab &&
                         linen_build &&

@@ -32,7 +32,8 @@ namespace VikingEngine.DSSWars.Event
 
         public void onTutorialEnd()
         {
-            if (PlatformSettings.STEAM_DEMO)
+            if (PlatformSettings.STEAM_DEMO &&
+                !DssRef.state.LocalHost().profile.casualControls)
             {
                 onDemoTimeUp();
             }

@@ -100,6 +100,18 @@ namespace VikingEngine.DSSWars.Players.Profile
 
             return profile.casualControls;
         }
+
+        public void SetCasualToAll(bool casual)
+        {
+            for (int i = 0; i < profiles.Count; i++)
+            {
+                var profile = profiles[i];
+                {
+                    profile.casualControls = casual;
+                }
+                profiles[i] = profile;
+            }
+        }
     }
 
     class ProfileReader

@@ -147,6 +147,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 city.workForce.amount += men;
             }
             payedRecruitCost = false;
+            recruitTimeSeconds = -1;
         }
 
         public void oneSecondUpdate(City city)
@@ -157,6 +158,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 {
                     var first = arraylib.First(recruitQueue);
                     recruitTimeSeconds = city.casualRecruitTime_sec(first.soldierType);
+
+                    if (DssRef.storage.runTutorial_1short_2normal > 0 &&
+                        city.GetFaction().armies.Count == 0)
+                    {
+                        recruitTimeSeconds = 5;
+                    }
                 }
             }
             else if (recruitQueue.Count > 0)
@@ -204,6 +211,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 {
                     var first = arraylib.First(buildQueue);
                     buildTimeSeconds = CasualBuild.Get(first.build).buildtime_sec;
+
+                    if (DssRef.storage.runTutorial_1short_2normal > 0 &&
+                        first.build == CasualBuildType.Barracks)
+                    {
+                        buildTimeSeconds = 5;
+                    }
                 }
             }
             else if (buildQueue.Count > 0)
@@ -472,6 +485,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 faction.money.AddGold(gold);
             }
             payedBuildCost = false;
+            buildTimeSeconds = -1;
         }
 
         void buildCost(City city, out int gold)

@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars
             technologyManager.initGame(newGame);
 
             if (PlatformSettings.STEAM_DEMO &&
-               DssRef.storage.runTutorial_1short_2normal == 0)
+               (DssRef.storage.runTutorial_1short_2normal == 0 || LocalHost().profile.casualControls))
             {
                 events = new Event.GameEventsDemo();
             }

@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 var menuArea = player.playerData.view.safeScreenArea;
                 menuArea.X = player.hud.head.Right;
-                if (player.hud.headOptions == null)
+                if (player.hud.headOptions != null)
                 {
                     menuArea.SetRight(player.hud.headOptions.Left, true);
                 }

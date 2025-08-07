@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars
         public static bool UnlockAllProgress = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
-        public static bool CasualInstaBuild = PlatformSettings.DevBuild ? true :
+        public static bool CasualInstaBuild = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
         public static bool TestOffscreenUpdate = PlatformSettings.DevBuild ? false :
