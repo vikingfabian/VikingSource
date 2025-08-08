@@ -1266,7 +1266,6 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_DefaultName => "Building";
         public override string BuildingType_WorkerHut => "Worker hut";
-        public override string BuildingType_Tavern => "Tavern";
         public override string BuildingType_Brewery => "Brewery";
         public override string BuildingType_Postal => "Postal service";
         public override string BuildingType_Recruitment => "Recruitment center";
@@ -2046,8 +2045,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_Coin => "Coin";
 
         public override string UnitType_Warhammer => "Hammer knight";
-        public override string UnitType_MithrilKnight => "Immortal knight";
-        public override string UnitType_MithrilArcher => "Immortal archer";
+        
         public override string UnitType_SpearAndShield => "Lineman";
 
         public override string UnitType_CollectionOfSoldiers => "Soldier Bundle";
@@ -2268,7 +2266,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Settings_WaterMultiplier_Description => "Determines how much water cities produce and store. Higher values reduce computer performance.";
 
         public override string Settings_ChildMultiplier => "Childbirth Multiplier";
-        public override string Settings_CraftMultiplier => "Craft Speed Multiplier";
+        
         public override string Settings_CraftMultiplier_Description => "Lower values result in faster production.";
 
         public override string FastProduction => "Fast Production";
@@ -2468,5 +2466,78 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildCategory_Decoration => "Decoration";
         public override string BuildCategory_Upgrade => "Upgrade";
         public override string Work_NoMines => "No mines";
+
+        //NEXT FEST DEMO
+        public override string HUD_DisplayName => "Display name";
+        public override string HUD_Filter => "Filter";
+        public override string HUD_Scale => "Scale";
+        public override string HUD_Tags => "Tags";
+        public override string HUD_ClickToCancel => "Click to cancel";
+
+        public override string ObjectTag_Description => "Add a symbol on the map";
+        public override string HudPins => "HUD pins";
+        public override string HudPins_Description => "Stick information to the screen";
+
+        public override string Lobby_PlayerProfileNumbered => "Profile {0}";
+        public override string Lobby_CharacterCreationNumbered => "Character {0}";
+        public override string Lobby_PlayerProfileEdit => "Edit player profile";
+
+        public override string Editor_ConvertAnimationToLayers => "Convert animation to layers";
+        public override string Editor_StampAllFrames => "Stamp on all frames";
+
+        public override string Editor_DisplayOptions => "Display options";
+        public override string Editor_CharacterCreator => "Character creator";
+        public override string Editor_CharacterCreator_Description => "Military model appearance editor";
+        public override string Editor_HatGenre => "Hat display mode";
+        public override string Editor_HatGenre_FollowWeapon => "Follow weapon";
+        public override string Editor_HatGenre_Uniform => "Uniform";
+        public override string Editor_CopyPasteSelectedColor => "Copy from selected color";
+
+        public override string Character_Accessories => "Accessories";
+        public override string Character_Hat => "Hat";
+        public override string Character_Head => "Head";
+        public override string Character_Body => "Body";
+        public override string Character_Arms => "Arms";
+        public override string Character_Back => "Back";
+        public override string Character_Face => "Face";
+
+        public override string BuildingType_Tavern => "Common Hall";
+
+        public override string Settings_CraftMultiplier => "Craft time multiplier";
+        public override string Settings_ChildMultiplier_Description => "Increases the speed at which new workers are added";
+
+        public override string Settings_CasualControls => "Casual player controls";
+        public override string Settings_CasualControls_Description => "Simplifies gameplay by reducing choices to key decisions. Only money is used as a resource.";
+
+        public override string Settings_AdvancedControls => "Advanced controls";
+        public override string Settings_AdvancedControls_Description => "The full resource management experience.";
+
+        public override string WarsResourceGroup_Metal => "Metal";
+        public override string Work_Craft => "Craft";
+        public override string Work_OnlyCraftOnFullStock => "Only craft on full stockpile";
+
+        public override string ExperienceType_Smelting => "Smelting";
+        public override string Category_Optimize => "Optimize";
+        public override string BuildCategory_Road => "Road";
+        public override string XP_UnlockBuildPrio => "Unlock build priority: {0}";
+        public override string Technology_ModernFarming => "Modern farming";
+
+        public override string ExportImportDescription => "For sharing save files with other player, all files are this folder: {0}";
+
+        public override string CityCultureDescription => "Culuture will give it a special bonus to the city";
+
+        public override string UnitType_CloseRangeRifle => "Arquebusier";
+        public override string UnitType_LongRangeRifle => "Musketeer";
+        public override string UnitType_Skirmisher => "Skirmisher";
+
+        //From lumen (light)
+        public override string UnitType_MithrilArcher => "Lunari archer";
+        public override string UnitType_MithrilSwordsman => "Lunari knight";
+
+        public override string Defence_AutoAssign_Towers => "Assign towers";
+
+        public override string EventMessage_DesertersText_Food => "Hungry soldiers are deserting from your army";
+
+        public override string Tutorial_CasualRecruitSoldiers => "Purchase one soldier group";
     }
 }

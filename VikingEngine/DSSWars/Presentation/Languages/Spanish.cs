@@ -1251,7 +1251,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_DefaultName => "Edificio";
         public override string BuildingType_WorkerHut => "Cabaña de trabajadores";
-        public override string BuildingType_Tavern => "Taberna";
+        
         public override string BuildingType_Brewery => "Cervecería";
         public override string BuildingType_Postal => "Servicio postal";
         public override string BuildingType_Recruitment => "Centro de reclutamiento";
@@ -2009,8 +2009,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_Coin => "Moneda";
 
         public override string UnitType_Warhammer => "Caballero con martillo";
-        public override string UnitType_MithrilKnight => "Caballero inmortal";
-        public override string UnitType_MithrilArcher => "Arquero inmortal";
+       
         public override string UnitType_SpearAndShield => "Infantería de línea";
 
         public override string UnitType_CollectionOfSoldiers => "Grupo de soldados";
@@ -2229,7 +2228,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Settings_WaterMultiplier_Description => "Determina cuánta agua producen y almacenan las ciudades. Un valor alto reduce el rendimiento del ordenador.";
 
         public override string Settings_ChildMultiplier => "Multiplicador de natalidad";
-        public override string Settings_CraftMultiplier => "Multiplicador de velocidad de producción";
+        
         public override string Settings_CraftMultiplier_Description => "Valores bajos producen más rápido.";
 
         public override string FastProduction => "Producción rápida";
@@ -2430,6 +2429,78 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Work_NoMines => "No hay minas";
 
 
+        //NEXT FEST DEMO
+        public override string HUD_DisplayName => "Nombre visible";
+        public override string HUD_Filter => "Filtro";
+        public override string HUD_Scale => "Escala";
+        public override string HUD_Tags => "Etiquetas";
+        public override string HUD_ClickToCancel => "Haz clic para cancelar";
+
+        public override string ObjectTag_Description => "Agregar un símbolo en el mapa";
+        public override string HudPins => "Fijaciones del HUD";
+        public override string HudPins_Description => "Fijar información en la pantalla";
+
+        public override string Lobby_PlayerProfileNumbered => "Perfil {0}";
+        public override string Lobby_CharacterCreationNumbered => "Personaje {0}";
+        public override string Lobby_PlayerProfileEdit => "Editar perfil del jugador";
+
+        public override string Editor_ConvertAnimationToLayers => "Convertir animación a capas";
+        public override string Editor_StampAllFrames => "Aplicar a todos los fotogramas";
+
+        public override string Editor_DisplayOptions => "Opciones de visualización";
+        public override string Editor_CharacterCreator => "Creador de personajes";
+        public override string Editor_CharacterCreator_Description => "Editor de apariencia de modelos militares";
+        public override string Editor_HatGenre => "Modo de visualización de sombrero";
+        public override string Editor_HatGenre_FollowWeapon => "Seguir arma";
+        public override string Editor_HatGenre_Uniform => "Uniforme";
+        public override string Editor_CopyPasteSelectedColor => "Copiar del color seleccionado";
+
+        public override string Character_Accessories => "Accesorios";
+        public override string Character_Hat => "Sombrero";
+        public override string Character_Head => "Cabeza";
+        public override string Character_Body => "Cuerpo";
+        public override string Character_Arms => "Brazos";
+        public override string Character_Back => "Espalda";
+        public override string Character_Face => "Rostro";
+
+        public override string BuildingType_Tavern => "Salón común";
+
+        public override string Settings_CraftMultiplier => "Multiplicador de tiempo de fabricación";
+        public override string Settings_ChildMultiplier_Description => "Aumenta la velocidad con la que se añaden nuevos trabajadores";
+
+        public override string Settings_CasualControls => "Controles para jugadores casuales";
+        public override string Settings_CasualControls_Description => "Simplifica la jugabilidad reduciendo las opciones a decisiones clave. Solo se utiliza el dinero como recurso.";
+
+        public override string Settings_AdvancedControls => "Controles avanzados";
+        public override string Settings_AdvancedControls_Description => "La experiencia completa de gestión de recursos.";
+
+        public override string WarsResourceGroup_Metal => "Metal";
+        public override string Work_Craft => "Fabricar";
+        public override string Work_OnlyCraftOnFullStock => "Solo fabricar con almacén lleno";
+
+        public override string ExperienceType_Smelting => "Fundición";
+        public override string Category_Optimize => "Optimizar";
+        public override string BuildCategory_Road => "Camino";
+        public override string XP_UnlockBuildPrio => "Desbloquear prioridad de construcción: {0}";
+        public override string Technology_ModernFarming => "Agricultura moderna";
+
+        public override string ExportImportDescription => "Para compartir archivos guardados con otros jugadores, todos los archivos están en esta carpeta: {0}";
+
+        public override string CityCultureDescription => "La cultura otorgará una bonificación especial a la ciudad";
+
+        public override string UnitType_CloseRangeRifle => "Arcabucero";
+        public override string UnitType_LongRangeRifle => "Mosquetero";
+        public override string UnitType_Skirmisher => "Hostigador";
+
+        //From lumen (light)
+        public override string UnitType_MithrilArcher => "Arquero Lunari";
+        public override string UnitType_MithrilSwordsman => "Caballero Lunari";
+
+        public override string Defence_AutoAssign_Towers => "Asignar torres";
+
+        public override string EventMessage_DesertersText_Food => "Los soldados hambrientos están desertando de tu ejército";
+
+        public override string Tutorial_CasualRecruitSoldiers => "Comprar un grupo de soldados";
 
     }
 }

@@ -11,21 +11,16 @@ using VikingEngine.ToGG.Commander.UnitsData;
 namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
-    {
-        //Option language
-
-
+    {        
         public string HUD_DisplayName => "Display name";
         public string HUD_Filter => "Filter";
         public string HUD_Scale => "Scale";
         public string HUD_Tags => "Tags";
         public string HUD_ClickToCancel => "Click to cancel";
 
-
         public string ObjectTag_Description => "Add a symbol on the map";
         public string HudPins => "HUD pins";
         public string HudPins_Description => "Stick information to the screen";
-
 
         public string Lobby_PlayerProfileNumbered => "Profile {0}";
         public string Lobby_CharacterCreationNumbered => "Character {0}";
@@ -38,9 +33,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string Editor_ConvertAnimationToLayers => "Convert animation to layers";
         public string Editor_StampAllFrames => "Stamp on all frames";
 
-        public string Editor_DisplayOptions => "Diplay options";
+        public string Editor_DisplayOptions => "Display options";
         public string Editor_CharacterCreator => "Character creator";
-        public string Editor_CharacterCreator_Description => "Military models appearance editor";
+        public string Editor_CharacterCreator_Description => "Military model appearance editor";
         public string Editor_HatGenre => "Hat display mode";
         public string Editor_HatGenre_FollowWeapon => "Follow weapon";
         public string Editor_HatGenre_Uniform => "Uniform";
@@ -57,7 +52,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_Tavern => "Common Hall";
 
         public string Settings_CraftMultiplier => "Craft time multiplier";
-        public string Settings_ChildMultiplier_Description => "Increases the speed new workers are added";
+        public string Settings_ChildMultiplier_Description => "Increases the speed at which new workers are added";
         
         public string Settings_CasualControls => "Casual player controls";
         public string Settings_CasualControls_Description => "Simplifies gameplay by reducing choices to key decisions. Only money is used as a resource.";
@@ -69,8 +64,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Work_Craft => "Craft";
         public string Work_OnlyCraftOnFullStock => "Only craft on full stockpile";
 
-        public string ExperienceType_Smelting => "Smeleting";
-        public string Catergory_Optimize => "Optimize";
+        public string ExperienceType_Smelting => "Smelting";
+        public string Category_Optimize => "Optimize";
         public string BuildCategory_Road => "Road";
         public string XP_UnlockBuildPrio => "Unlock build priority: {0}";
         public string Technology_ModernFarming => "Modern farming";
@@ -83,7 +78,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string UnitType_LongRangeRifle => "Musketeer";
         public string UnitType_Skirmisher => "Skirmisher";
 
-        //From lumen(light)
+        //From lumen (light)
         public string UnitType_MithrilArcher => "Lunari archer";
         public string UnitType_MithrilSwordsman => "Lunari knight";
 
@@ -92,7 +87,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string EventMessage_DesertersText_Food => "Hungry soldiers are deserting from your army";
 
 
-        public string Tutorial_CasualRescruitSoldiers => "Purchase one soldier group";
+        public string Tutorial_CasualRecruitSoldiers => "Purchase one soldier group";
     }
 
 }

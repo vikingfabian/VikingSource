@@ -1248,7 +1248,6 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_DefaultName => "Здание";
         public override string BuildingType_WorkerHut => "Хижина рабочих";
-        public override string BuildingType_Tavern => "Таверна";
         public override string BuildingType_Brewery => "Пивоварня";
         public override string BuildingType_Postal => "Почтовая служба";
         public override string BuildingType_Recruitment => "Центр набора";
@@ -2005,8 +2004,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_Coin => "Монета";
 
         public override string UnitType_Warhammer => "Рыцарь с молотом";
-        public override string UnitType_MithrilKnight => "Бессмертный рыцарь";
-        public override string UnitType_MithrilArcher => "Бессмертный лучник";
         public override string UnitType_SpearAndShield => "Копейщик с щитом";
 
         public override string UnitType_CollectionOfSoldiers => "Отряд солдат";
@@ -2224,7 +2221,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Settings_WaterMultiplier_Description => "Определяет, сколько воды производят и хранят города. Более высокие значения снижают производительность.";
 
         public override string Settings_ChildMultiplier => "Коэффициент рождаемости";
-        public override string Settings_CraftMultiplier => "Коэффициент скорости производства";
         public override string Settings_CraftMultiplier_Description => "Меньшие значения ускоряют производство.";
 
         public override string FastProduction => "Быстрое производство";
@@ -2425,6 +2421,78 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Work_NoMines => "Нет шахт";
 
 
+        //NEXT FEST DEMO
+        public override string HUD_DisplayName => "Отображаемое имя";
+        public override string HUD_Filter => "Фильтр";
+        public override string HUD_Scale => "Масштаб";
+        public override string HUD_Tags => "Теги";
+        public override string HUD_ClickToCancel => "Нажмите, чтобы отменить";
+
+        public override string ObjectTag_Description => "Добавить символ на карту";
+        public override string HudPins => "Закрепки HUD";
+        public override string HudPins_Description => "Закрепить информацию на экране";
+
+        public override string Lobby_PlayerProfileNumbered => "Профиль {0}";
+        public override string Lobby_CharacterCreationNumbered => "Персонаж {0}";
+        public override string Lobby_PlayerProfileEdit => "Редактировать профиль игрока";
+
+        public override string Editor_ConvertAnimationToLayers => "Преобразовать анимацию в слои";
+        public override string Editor_StampAllFrames => "Применить ко всем кадрам";
+
+        public override string Editor_DisplayOptions => "Параметры отображения";
+        public override string Editor_CharacterCreator => "Редактор персонажа";
+        public override string Editor_CharacterCreator_Description => "Редактор внешности военных моделей";
+        public override string Editor_HatGenre => "Режим отображения головных уборов";
+        public override string Editor_HatGenre_FollowWeapon => "Следовать за оружием";
+        public override string Editor_HatGenre_Uniform => "Униформа";
+        public override string Editor_CopyPasteSelectedColor => "Скопировать из выбранного цвета";
+
+        public override string Character_Accessories => "Аксессуары";
+        public override string Character_Hat => "Головной убор";
+        public override string Character_Head => "Голова";
+        public override string Character_Body => "Тело";
+        public override string Character_Arms => "Руки";
+        public override string Character_Back => "Спина";
+        public override string Character_Face => "Лицо";
+
+        public override string BuildingType_Tavern => "Общий зал";
+
+        public override string Settings_CraftMultiplier => "Множитель времени крафта";
+        public override string Settings_ChildMultiplier_Description => "Увеличивает скорость появления новых рабочих";
+
+        public override string Settings_CasualControls => "Управление для казуальных игроков";
+        public override string Settings_CasualControls_Description => "Упрощает игру, сводя выбор к ключевым решениям. В качестве ресурса используется только деньги.";
+
+        public override string Settings_AdvancedControls => "Продвинутое управление";
+        public override string Settings_AdvancedControls_Description => "Полный опыт управления ресурсами.";
+
+        public override string WarsResourceGroup_Metal => "Металл";
+        public override string Work_Craft => "Производство";
+        public override string Work_OnlyCraftOnFullStock => "Производить только при полном складе";
+
+        public override string ExperienceType_Smelting => "Плавка";
+        public override string Category_Optimize => "Оптимизация";
+        public override string BuildCategory_Road => "Дорога";
+        public override string XP_UnlockBuildPrio => "Разблокировать приоритет строительства: {0}";
+        public override string Technology_ModernFarming => "Современное сельское хозяйство";
+
+        public override string ExportImportDescription => "Для обмена сохранениями с другими игроками все файлы находятся в этой папке: {0}";
+
+        public override string CityCultureDescription => "Культура даёт городу особый бонус";
+
+        public override string UnitType_CloseRangeRifle => "Аркебузир";
+        public override string UnitType_LongRangeRifle => "Мушкетёр";
+        public override string UnitType_Skirmisher => "Стрелок-бродяга";
+
+        //From lumen (light)
+        public override string UnitType_MithrilArcher => "Лунарийский лучник";
+        public override string UnitType_MithrilSwordsman => "Лунарийский рыцарь";
+
+        public override string Defence_AutoAssign_Towers => "Назначить башни";
+
+        public override string EventMessage_DesertersText_Food => "Голодные солдаты дезертируют из вашей армии";
+
+        public override string Tutorial_CasualRecruitSoldiers => "Купить одну группу солдат";
 
 
     }

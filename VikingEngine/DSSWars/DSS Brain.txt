@@ -1,13 +1,13 @@
 ﻿UPDATE
 Change Log:
-* DEMO BETA UPDATE - 344 "next fest demo patch 2"
+* Manual: Added video recording help
 
 #Pics
 build building icon
 
 
 #must do#
-
+x limit animal sound
 x translations
 
 
@@ -40,6 +40,8 @@ x add pause all bulding button
 x faction setting for stockpile
 x OBS dont record fullscreen
 x go fullscreen in langugage select screen
+- make music youtube safe
+- use VLC as music player?
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning

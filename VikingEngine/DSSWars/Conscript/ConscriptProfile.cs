@@ -248,7 +248,7 @@ namespace VikingEngine.DSSWars.Conscript
                         case ItemResourceType.TwoHandSword:
                             return DssRef.lang.UnitType_FootKnight;
                         case ItemResourceType.MithrilSword:
-                            return DssRef.lang.UnitType_MithrilKnight;
+                            return DssRef.lang.UnitType_MithrilSwordsman;
                         case ItemResourceType.MithrilBow:
                             return DssRef.lang.UnitType_MithrilArcher;
 

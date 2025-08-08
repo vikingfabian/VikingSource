@@ -1258,7 +1258,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_DefaultName => "建物";
         public override string BuildingType_WorkerHut => "労働者の小屋";
-        public override string BuildingType_Tavern => "居酒屋";
+   
         public override string BuildingType_Brewery => "醸造所";
         public override string BuildingType_Postal => "郵便サービス";
         public override string BuildingType_Recruitment => "募集センター";
@@ -2010,8 +2010,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_Coin => "コイン";
 
         public override string UnitType_Warhammer => "ハンマー騎士";
-        public override string UnitType_MithrilKnight => "不死の騎士";
-        public override string UnitType_MithrilArcher => "不死の弓兵";
         public override string UnitType_SpearAndShield => "槍盾兵";
 
         public override string UnitType_CollectionOfSoldiers => "兵士の束";
@@ -2229,7 +2227,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Settings_WaterMultiplier_Description => "都市が生産・貯蔵する水の量を決定します。値が高いとパフォーマンスが低下します。";
 
         public override string Settings_ChildMultiplier => "出生倍率";
-        public override string Settings_CraftMultiplier => "生産速度倍率";
         public override string Settings_CraftMultiplier_Description => "値が低いほど生産が速くなります。";
 
         public override string FastProduction => "高速生産";
@@ -2435,6 +2432,78 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Work_NoMines => "鉱山がありません";
 
 
+        //NEXT FEST DEMO
+        public override string HUD_DisplayName => "表示名";
+        public override string HUD_Filter => "フィルター";
+        public override string HUD_Scale => "スケール";
+        public override string HUD_Tags => "タグ";
+        public override string HUD_ClickToCancel => "クリックしてキャンセル";
+
+        public override string ObjectTag_Description => "マップにシンボルを追加する";
+        public override string HudPins => "HUDピン";
+        public override string HudPins_Description => "画面に情報を固定する";
+
+        public override string Lobby_PlayerProfileNumbered => "プロフィール {0}";
+        public override string Lobby_CharacterCreationNumbered => "キャラクター {0}";
+        public override string Lobby_PlayerProfileEdit => "プレイヤープロフィールを編集";
+
+        public override string Editor_ConvertAnimationToLayers => "アニメーションをレイヤーに変換";
+        public override string Editor_StampAllFrames => "すべてのフレームにスタンプ";
+
+        public override string Editor_DisplayOptions => "表示オプション";
+        public override string Editor_CharacterCreator => "キャラクター作成";
+        public override string Editor_CharacterCreator_Description => "軍用モデルの外見エディター";
+        public override string Editor_HatGenre => "帽子表示モード";
+        public override string Editor_HatGenre_FollowWeapon => "武器に追従";
+        public override string Editor_HatGenre_Uniform => "制服";
+        public override string Editor_CopyPasteSelectedColor => "選択した色からコピー";
+
+        public override string Character_Accessories => "アクセサリー";
+        public override string Character_Hat => "帽子";
+        public override string Character_Head => "頭";
+        public override string Character_Body => "胴体";
+        public override string Character_Arms => "腕";
+        public override string Character_Back => "背中";
+        public override string Character_Face => "顔";
+
+        public override string BuildingType_Tavern => "共同ホール";
+
+        public override string Settings_CraftMultiplier => "クラフト時間倍率";
+        public override string Settings_ChildMultiplier_Description => "新しい労働者が追加される速度が上昇する";
+
+        public override string Settings_CasualControls => "カジュアルプレイヤー向け操作";
+        public override string Settings_CasualControls_Description => "選択肢を重要な決定に絞ることでゲームプレイを簡略化します。資源はお金のみを使用します。";
+
+        public override string Settings_AdvancedControls => "上級操作";
+        public override string Settings_AdvancedControls_Description => "資源管理のフル体験。";
+
+        public override string WarsResourceGroup_Metal => "金属";
+        public override string Work_Craft => "クラフト";
+        public override string Work_OnlyCraftOnFullStock => "在庫が満タンの時のみクラフトする";
+
+        public override string ExperienceType_Smelting => "精錬";
+        public override string Category_Optimize => "最適化";
+        public override string BuildCategory_Road => "道路";
+        public override string XP_UnlockBuildPrio => "建設優先度をアンロック: {0}";
+        public override string Technology_ModernFarming => "近代農業";
+
+        public override string ExportImportDescription => "セーブデータを他のプレイヤーと共有するには、すべてのファイルがこのフォルダーに保存されます: {0}";
+
+        public override string CityCultureDescription => "文化は都市に特別なボーナスを与える";
+
+        public override string UnitType_CloseRangeRifle => "アーケブジア兵";
+        public override string UnitType_LongRangeRifle => "マスケット兵";
+        public override string UnitType_Skirmisher => "散兵";
+
+        //From lumen (light)
+        public override string UnitType_MithrilArcher => "ルナリの弓兵";
+        public override string UnitType_MithrilSwordsman => "ルナリの騎士";
+
+        public override string Defence_AutoAssign_Towers => "塔を自動割り当て";
+
+        public override string EventMessage_DesertersText_Food => "空腹の兵士たちが軍から脱走しています";
+
+        public override string Tutorial_CasualRecruitSoldiers => "兵士グループを1つ購入する";
 
 
     }

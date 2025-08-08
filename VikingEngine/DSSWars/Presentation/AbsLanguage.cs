@@ -1253,7 +1253,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Resource_TypeName_Coin { get; }
 
         public abstract string UnitType_Warhammer { get; }
-        public abstract string UnitType_MithrilKnight { get; }
+        //public abstract string UnitType_MithrilKnight { get; }
         public abstract string UnitType_MithrilArcher { get; }
         public abstract string UnitType_SpearAndShield { get; }
 
@@ -1558,7 +1558,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         //DEMO PATCH 5
-       
+
 
         public abstract string Editor_CropSelection { get; }
 
@@ -1603,5 +1603,74 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string BuildCategory_Upgrade { get; }
 
         public abstract string Work_NoMines { get; }
+
+        //NEXT FEST DEMO
+         
+        public abstract string HUD_DisplayName { get; }
+        public abstract string HUD_Filter { get; }
+        public abstract string HUD_Scale { get; }
+        public abstract string HUD_Tags { get; }
+        public abstract string HUD_ClickToCancel { get; }
+
+        public abstract string ObjectTag_Description { get; }
+        public abstract string HudPins { get; }
+        public abstract string HudPins_Description { get; }
+
+
+        public abstract string Lobby_PlayerProfileNumbered { get; }
+        public abstract string Lobby_CharacterCreationNumbered { get; }
+        public abstract string Lobby_PlayerProfileEdit { get; }
+
+  
+        public abstract string Editor_ConvertAnimationToLayers { get; }
+        public abstract string Editor_StampAllFrames { get; }
+        public abstract string Editor_DisplayOptions { get; }
+        public abstract string Editor_CharacterCreator { get; }
+        public abstract string Editor_CharacterCreator_Description { get; }
+        public abstract string Editor_HatGenre { get; }
+        public abstract string Editor_HatGenre_FollowWeapon { get; }
+        public abstract string Editor_HatGenre_Uniform { get; }
+        public abstract string Editor_CopyPasteSelectedColor { get; }
+
+  
+        public abstract string Character_Accessories { get; }
+        public abstract string Character_Hat { get; }
+        public abstract string Character_Head { get; }
+        public abstract string Character_Body { get; }
+        public abstract string Character_Arms { get; }
+        public abstract string Character_Back { get; }
+        public abstract string Character_Face { get; }
+
+        public abstract string Settings_ChildMultiplier_Description { get; }
+        public abstract string Settings_CasualControls { get; }
+        public abstract string Settings_CasualControls_Description { get; }
+        public abstract string Settings_AdvancedControls { get; }
+        public abstract string Settings_AdvancedControls_Description { get; }
+
+        public abstract string WarsResourceGroup_Metal { get; }
+        public abstract string Work_Craft { get; }
+        public abstract string Work_OnlyCraftOnFullStock { get; }
+
+ 
+        public abstract string ExperienceType_Smelting { get; }
+        public abstract string Category_Optimize { get; }
+        public abstract string BuildCategory_Road { get; }
+        public abstract string XP_UnlockBuildPrio { get; }
+        public abstract string Technology_ModernFarming { get; }
+
+        public abstract string ExportImportDescription { get; }
+        public abstract string CityCultureDescription { get; }
+
+        public abstract string UnitType_CloseRangeRifle { get; }
+        public abstract string UnitType_LongRangeRifle { get; }
+        public abstract string UnitType_Skirmisher { get; }
+        public abstract string UnitType_MithrilSwordsman { get; }
+
+        public abstract string Defence_AutoAssign_Towers { get; }
+
+        public abstract string EventMessage_DesertersText_Food { get; }
+
+        public abstract string Tutorial_CasualRecruitSoldiers { get; }
+
     }
 }

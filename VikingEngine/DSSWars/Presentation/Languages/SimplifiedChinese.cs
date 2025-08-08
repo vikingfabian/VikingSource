@@ -1249,7 +1249,6 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_DefaultName => "建筑";
         public override string BuildingType_WorkerHut => "工人小屋";
-        public override string BuildingType_Tavern => "酒馆";
         public override string BuildingType_Brewery => "酿酒厂";
         public override string BuildingType_Postal => "邮政服务";
         public override string BuildingType_Recruitment => "招募中心";
@@ -2007,8 +2006,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_Coin => "金币";
 
         public override string UnitType_Warhammer => "战锤骑士";
-        public override string UnitType_MithrilKnight => "不朽骑士";
-        public override string UnitType_MithrilArcher => "不朽弓箭手";
         public override string UnitType_SpearAndShield => "枪盾兵";
 
         public override string UnitType_CollectionOfSoldiers => "士兵集群";
@@ -2225,7 +2222,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Settings_WaterMultiplier_Description => "决定城市生产和储存水的数量。数值越高，性能越差。";
 
         public override string Settings_ChildMultiplier => "生育倍率";
-        public override string Settings_CraftMultiplier => "制作速度倍率";
         public override string Settings_CraftMultiplier_Description => "数值越低，生产越快。";
 
         public override string FastProduction => "快速生产";
@@ -2424,6 +2420,78 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildCategory_Upgrade => "升级";
         public override string Work_NoMines => "没有矿场";
 
+        //NEXT FEST DEMO
+        public override string HUD_DisplayName => "显示名称";
+        public override string HUD_Filter => "筛选器";
+        public override string HUD_Scale => "缩放";
+        public override string HUD_Tags => "标签";
+        public override string HUD_ClickToCancel => "点击取消";
+
+        public override string ObjectTag_Description => "在地图上添加一个符号";
+        public override string HudPins => "HUD 固定项";
+        public override string HudPins_Description => "将信息固定在屏幕上";
+
+        public override string Lobby_PlayerProfileNumbered => "档案 {0}";
+        public override string Lobby_CharacterCreationNumbered => "角色 {0}";
+        public override string Lobby_PlayerProfileEdit => "编辑玩家档案";
+
+        public override string Editor_ConvertAnimationToLayers => "将动画转换为图层";
+        public override string Editor_StampAllFrames => "应用到所有帧";
+
+        public override string Editor_DisplayOptions => "显示选项";
+        public override string Editor_CharacterCreator => "角色创建器";
+        public override string Editor_CharacterCreator_Description => "军队模型外观编辑器";
+        public override string Editor_HatGenre => "帽子显示模式";
+        public override string Editor_HatGenre_FollowWeapon => "跟随武器";
+        public override string Editor_HatGenre_Uniform => "制服";
+        public override string Editor_CopyPasteSelectedColor => "从选中颜色复制";
+
+        public override string Character_Accessories => "配件";
+        public override string Character_Hat => "帽子";
+        public override string Character_Head => "头部";
+        public override string Character_Body => "身体";
+        public override string Character_Arms => "手臂";
+        public override string Character_Back => "背部";
+        public override string Character_Face => "脸部";
+
+        public override string BuildingType_Tavern => "公共大厅";
+
+        public override string Settings_CraftMultiplier => "制作时间倍率";
+        public override string Settings_ChildMultiplier_Description => "加快新工人加入的速度";
+
+        public override string Settings_CasualControls => "休闲玩家控制";
+        public override string Settings_CasualControls_Description => "通过减少选项简化玩法。仅使用金钱作为资源。";
+
+        public override string Settings_AdvancedControls => "高级控制";
+        public override string Settings_AdvancedControls_Description => "完整的资源管理体验。";
+
+        public override string WarsResourceGroup_Metal => "金属";
+        public override string Work_Craft => "制作";
+        public override string Work_OnlyCraftOnFullStock => "库存满时才进行制作";
+
+        public override string ExperienceType_Smelting => "冶炼";
+        public override string Category_Optimize => "优化";
+        public override string BuildCategory_Road => "道路";
+        public override string XP_UnlockBuildPrio => "解锁建造优先级：{0}";
+        public override string Technology_ModernFarming => "现代农业";
+
+        public override string ExportImportDescription => "要与其他玩家共享存档，所有文件都位于此文件夹中：{0}";
+
+        public override string CityCultureDescription => "文化将为城市提供特殊加成";
+
+        public override string UnitType_CloseRangeRifle => "火绳枪手";
+        public override string UnitType_LongRangeRifle => "滑膛枪手";
+        public override string UnitType_Skirmisher => "散兵";
+
+        //From lumen (light)
+        public override string UnitType_MithrilArcher => "露娜精灵弓箭手";
+        public override string UnitType_MithrilSwordsman => "露娜精灵骑士";
+
+        public override string Defence_AutoAssign_Towers => "分配防御塔";
+
+        public override string EventMessage_DesertersText_Food => "饥饿的士兵正在逃离你的军队";
+
+        public override string Tutorial_CasualRecruitSoldiers => "招募一个士兵小队";
 
 
     }

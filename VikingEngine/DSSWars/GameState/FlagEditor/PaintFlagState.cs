@@ -558,9 +558,9 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                 case ProfileColorType.Hair: return DssRef.lang.ProfileEditor_HairColor;
                 case ProfileColorType.AltMain: return DssRef.lang.ProfileEditor_AltMain;
 
-                case ProfileColorType.Tunic: return DssRef.todoLang.ProfileEditor_TunicColor;
-                case ProfileColorType.Pants: return DssRef.todoLang.ProfileEditor_PantsColor;
-                case ProfileColorType.Leader: return DssRef.todoLang.ProfileEditor_LeaderColor;
+                case ProfileColorType.Tunic: return DssRef.lang.ProfileEditor_TunicColor;
+                case ProfileColorType.Pants: return DssRef.lang.ProfileEditor_PantsColor;
+                case ProfileColorType.Leader: return DssRef.lang.ProfileEditor_LeaderColor;
 
             }
             throw new NotImplementedException();

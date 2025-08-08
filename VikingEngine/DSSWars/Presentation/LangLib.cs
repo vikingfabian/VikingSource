@@ -1261,7 +1261,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case BuildFilterTag.Soldiers: return DssRef.lang.UnitType_Soldier;
                 case BuildFilterTag.Guards: return DssRef.lang.Conscript_Soldiers_GuardType;
                 case BuildFilterTag.Walls: return DssRef.lang.BuildingType_Wall;
-                case BuildFilterTag.Optimize: return DssRef.todoLang.Catergory_Optimize;
+                case BuildFilterTag.Optimize: return DssRef.todoLang.Category_Optimize;
                 case BuildFilterTag.Upgrade: return DssRef.lang.BuildCategory_Upgrade;
                 case BuildFilterTag.Research: return DssRef.lang.Research_Tab;
                 case BuildFilterTag.Road: return DssRef.todoLang.BuildCategory_Road;
