@@ -44,7 +44,7 @@ namespace VikingEngine.Engine
         //public static System.Windows.Forms.Screen FormScreen = System.Windows.Forms.Screen.PrimaryScreen;
 #endif
         public static IntVector2 PcTargetResolution = new IntVector2(1280, 720);
-        public static bool PcTargetFullScreen = true;
+        public static bool PcTargetFullScreen = false;
         public static bool BorderLessFullScreen = false;
         public static int RenderScalePerc = 100;
         public static RecordingPresets UseRecordingPreset = RecordingPresets.NumNon;

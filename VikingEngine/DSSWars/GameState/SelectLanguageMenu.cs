@@ -50,7 +50,9 @@ namespace VikingEngine.DSSWars.GameState
         void selectLanguegeLink(LanguageType language)
         {
             Ref.gamesett.language = language;
+            Ref.gamesett.fullscreenProperty(null, true, true);
             new ChangeLanguageRefresh();
+            
         }
 
         public override void Time_Update(float time)
