@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
 
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Editor_ConvertAnimationToLayers) },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_ConvertAnimationToLayers) },
                     new RbAction(convertAnimationToLayers)));
             }
 
@@ -748,7 +748,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(frame)), new RbImage(SpriteName.IconBuildStamp), new RbSpace(0.5f), new RbImage(frameicon) }, new RbAction1Arg<int>(designer.LinkStampOnFrames, frame), new RbTooltip_Text(DssRef.lang.Editor_StampOtherFrames_Description), enabled));
                 }
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.IconBuildStamp), new RbImage(SpriteName.VoxelEditorAllFrames), new RbText(DssRef.todoLang.Editor_StampAllFrames) }, new RbAction1Arg<int>(designer.LinkStampOnFrames, -1)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.IconBuildStamp), new RbImage(SpriteName.VoxelEditorAllFrames), new RbText(DssRef.lang.Editor_StampAllFrames) }, new RbAction1Arg<int>(designer.LinkStampOnFrames, -1)));
 
                 content.newParagraph();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.IconBuildRemove), new RbText(DssRef.lang.Editor_ClearAllFrames) }, new RbAction1Arg<bool>(designer.ClearSelectedAreaOnFrames, true)));

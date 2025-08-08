@@ -373,10 +373,10 @@ namespace VikingEngine.DSSWars
                         RichBoxContent content = new RichBoxContent();
                         HudLib.returnButton(content, underMenu, true, null);
 
-                        content.h1(DssRef.todoLang.Lobby_PlayerProfileEdit, HudLib.TitleColor_Head);
+                        content.h1(DssRef.lang.Lobby_PlayerProfileEdit, HudLib.TitleColor_Head);
 
                         content.newLine();
-                        HudLib.Label(content, DssRef.todoLang.HUD_DisplayName);
+                        HudLib.Label(content, DssRef.lang.HUD_DisplayName);
                         content.newLine();
                         var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
                                 new RbAction(beginEditPlayerName), null);
@@ -858,18 +858,18 @@ namespace VikingEngine.DSSWars
         {
             RichBoxContent content = new RichBoxContent();
 
-            content.h1(DssRef.todoLang.Settings_AdvancedControls, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Settings_AdvancedControls, HudLib.TitleColor_Head);
             content.space();
             HudLib.InfoButton(content, new RbTooltip(tooltip, false));
-            //content.text(DssRef.todoLang.Settings_AdvancedControls_Description, HudLib.InfoYellow_Light);
+            //content.text(DssRef.lang.Settings_AdvancedControls_Description, HudLib.InfoYellow_Light);
             modeButtons(false);
 
             content.Add(new RbSeperationLine());
 
-            content.h1(DssRef.todoLang.Settings_CasualControls, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Settings_CasualControls, HudLib.TitleColor_Head);
             content.space();
             HudLib.InfoButton(content, new RbTooltip(tooltip, true));
-            //content.text(DssRef.todoLang.Settings_CasualControls_Description, HudLib.InfoYellow_Light);
+            //content.text(DssRef.lang.Settings_CasualControls_Description, HudLib.InfoYellow_Light);
             modeButtons(true);
 
             void modeButtons(bool casual)
@@ -925,7 +925,7 @@ namespace VikingEngine.DSSWars
             {
                 bool casual = (bool)tag;
 
-                content.text(casual? DssRef.todoLang.Settings_CasualControls_Description: DssRef.todoLang.Settings_AdvancedControls_Description, HudLib.InfoYellow_Light);
+                content.text(casual? DssRef.lang.Settings_CasualControls_Description: DssRef.lang.Settings_AdvancedControls_Description, HudLib.InfoYellow_Light);
             }
         }
 
@@ -1396,12 +1396,12 @@ namespace VikingEngine.DSSWars
             content.space();
             content.Add(new RbText(DssRef.lang.Settings_ChildMultiplier, HudLib.TitleColor_Label));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), ChildMultiProperty, true, new RbTooltip_Text(DssRef.todoLang.Settings_ChildMultiplier_Description)));
+            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), ChildMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_ChildMultiplier_Description)));
 
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsHammer));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Settings_CraftMultiplier, HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.lang.Settings_CraftMultiplier, HudLib.TitleColor_Label));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4f, 0.1f), CraftMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_CraftMultiplier_Description)));
 
@@ -1476,7 +1476,7 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 if (!PlatformSettings.STEAM_DEMO)
                 {
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_CasualControls) }, DssRef.storage.profileStorage.casualProperty, new RbTooltip_Text(DssRef.todoLang.Settings_CasualControls_Description))
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_CasualControls) }, DssRef.storage.profileStorage.casualProperty, new RbTooltip_Text(DssRef.lang.Settings_CasualControls_Description))
                     { propertyTag = playerData.profileIndex, });
                 }
 
@@ -1530,7 +1530,7 @@ namespace VikingEngine.DSSWars
                 options.menuCaption = playerData.Profile().RbButton();
                 options.injectAfter = new List<AbsRichBoxMember>() {
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction2Arg<int, int>(openProfileEditor, playerNum -1, playerData.profileIndex), new RbTooltip_Text(DssRef.todoLang.Lobby_PlayerProfileEdit))
+                                        new RbImage(SpriteName.EditorToolPencil) }, new RbAction2Arg<int, int>(openProfileEditor, playerNum -1, playerData.profileIndex), new RbTooltip_Text(DssRef.lang.Lobby_PlayerProfileEdit))
                                 };
                 options.Build(content, SpriteName.NO_IMAGE, null, underMenu);
             }
@@ -1571,7 +1571,7 @@ namespace VikingEngine.DSSWars
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary,
                                      HudLib.AddLockOnDemo(new List<AbsRichBoxMember> {
-                                        new RbImage(SpriteName.EditorToolPencil) }), new RbAction(characterCreator), new RbTooltip_Text(DssRef.todoLang.Editor_CharacterCreator + ": " + DssRef.todoLang.Editor_CharacterCreator_Description), !PlatformSettings.STEAM_DEMO)
+                                        new RbImage(SpriteName.EditorToolPencil) }), new RbAction(characterCreator), new RbTooltip_Text(DssRef.lang.Editor_CharacterCreator + ": " + DssRef.lang.Editor_CharacterCreator_Description), !PlatformSettings.STEAM_DEMO)
                                 };
                 flagOptions.Build(content, SpriteName.NO_IMAGE, null, underMenu);
             }
@@ -2446,7 +2446,7 @@ namespace VikingEngine.DSSWars
 
             SaveStateMeta exportPath = new SaveStateMeta();
             exportPath.import = " ";
-            var tooltip = new RbTooltip_Text(string.Format(DssRef.todoLang.ExportImportDescription, exportPath.Path.CompleteDirectory));
+            var tooltip = new RbTooltip_Text(string.Format(DssRef.lang.ExportImportDescription, exportPath.Path.CompleteDirectory));
 
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconExport), new RbSpace() ,new RbText(DssRef.lang.Lobby_ExportSave) },
                 new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListSavesForExport, StackOption.Stack), tooltip));

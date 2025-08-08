@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     case BuildCategoryTab.Filter:
                         tabIcon = SpriteName.warsBuildCategorySearch;
-                        category = DssRef.todoLang.HUD_Filter;
+                        category = DssRef.lang.HUD_Filter;
                         break;
                     case BuildCategoryTab.General:
                         tabIcon = SpriteName.warsBuildCategoryHouse;
@@ -961,11 +961,11 @@ namespace VikingEngine.DSSWars.Build
                     content.Add(new RbImage(SpriteName.birdUnLock));
                     if (city.CanBuildLogistics(2))
                     {
-                        content.Add(new RbText(string.Format(DssRef.todoLang.XP_UnlockBuildPrio, DssRef.lang.Hud_NoLimit)));
+                        content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildPrio, DssRef.lang.Hud_NoLimit)));
                     }
                     else
                     {
-                        content.Add(new RbText(string.Format(DssRef.todoLang.XP_UnlockBuildPrio, City.LevelToMaxBuildPrio(1))));
+                        content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildPrio, City.LevelToMaxBuildPrio(1))));
                     }
 
                     foreach (var building in BuildLib.LogisticsUnlockBuildings)
@@ -1190,7 +1190,7 @@ namespace VikingEngine.DSSWars.Build
 
             //TAGS
             content.Add(new RbSeperationLine());
-            HudLib.Label(content, DssRef.todoLang.HUD_Tags);
+            HudLib.Label(content, DssRef.lang.HUD_Tags);
             content.space();
             filterTag(build.filterTag1);
             filterTag(build.filterTag2);

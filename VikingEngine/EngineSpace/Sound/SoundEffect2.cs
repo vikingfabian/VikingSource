@@ -15,6 +15,8 @@ namespace VikingEngine.Sound
 {
     static class SoundStackManager
     {
+        static TimeStamp NextRareSound = new TimeStamp();
+
         const float StackTimeRamgeMs = 30;
         const int MaxSoundStack = 3;
 
@@ -34,6 +36,16 @@ namespace VikingEngine.Sound
         public static bool Available()
         { 
             return stack++ <= MaxSoundStack;
+        }
+
+        public static bool RareAvailable()
+        {
+            if (NextRareSound.TimeOut())
+            {
+                NextRareSound.setTimeFromNow(Ref.peRnd.Float(2, 4));
+                return true;
+            }
+            return false;
         }
     }
 

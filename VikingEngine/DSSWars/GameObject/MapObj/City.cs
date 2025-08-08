@@ -2934,7 +2934,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.text(LangLib.CityCulture(Culture, false));
 
             content.newParagraph();
-            content.text(DssRef.todoLang.CityCultureDescription, HudLib.InfoYellow_Light);
+            content.text(DssRef.lang.CityCultureDescription, HudLib.InfoYellow_Light);
         }
 
         public void AddNeighborCity(int nCityIndex)

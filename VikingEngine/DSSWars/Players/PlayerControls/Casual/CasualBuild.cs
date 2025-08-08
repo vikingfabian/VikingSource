@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockFarming3,
                 Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
-                                DssRef.lang.Hud_Unlock, DssRef.todoLang.Technology_ModernFarming),
+                                DssRef.lang.Hud_Unlock, DssRef.lang.Technology_ModernFarming),
                 icon = SpriteName.WarsResource_Wagon4Wheel,
                 price = 3000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level3_Minutes * TimeExt.MinuteInSeconds),

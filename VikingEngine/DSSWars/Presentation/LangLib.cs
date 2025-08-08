@@ -913,7 +913,7 @@ namespace VikingEngine.DSSWars.Presentation
                         case TerrainBuildingType.Storehouse:
                             return DssRef.lang.BuildingType_Storage;
                         case TerrainBuildingType.Tavern:
-                            return DssRef.todoLang.BuildingType_Tavern;
+                            return DssRef.lang.BuildingType_Tavern;
                         case TerrainBuildingType.Work_Bench:
                             return DssRef.lang.BuildingType_WorkBench;
                         case TerrainBuildingType.WorkerHut:
@@ -1250,21 +1250,21 @@ namespace VikingEngine.DSSWars.Presentation
                 case BuildFilterTag.Farm: return DssRef.lang.Work_Farming;
                 case BuildFilterTag.Gold: return DssRef.lang.ResourceType_Gold;
                 case BuildFilterTag.Resources: return DssRef.lang.Resource;
-                case BuildFilterTag.Metals: return DssRef.todoLang.WarsResourceGroup_Metal;
+                case BuildFilterTag.Metals: return DssRef.lang.WarsResourceGroup_Metal;
                 case BuildFilterTag.Water: return TextLib.LargeFirstLetter( DssRef.lang.Resource_TypeName_Water);
                 case BuildFilterTag.Food: return TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food);
                 case BuildFilterTag.Fuel: return TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Fuel);
-                case BuildFilterTag.Craft: return DssRef.todoLang.Work_Craft;
+                case BuildFilterTag.Craft: return DssRef.lang.Work_Craft;
                 case BuildFilterTag.Transport: return DssRef.lang.ExperienceType_Transport;
                 case BuildFilterTag.Weapons: return DssRef.lang.WarsResourceGroup_Weapons;
                 case BuildFilterTag.Military: return DssRef.lang.BuildCategory_Military;
                 case BuildFilterTag.Soldiers: return DssRef.lang.UnitType_Soldier;
                 case BuildFilterTag.Guards: return DssRef.lang.Conscript_Soldiers_GuardType;
                 case BuildFilterTag.Walls: return DssRef.lang.BuildingType_Wall;
-                case BuildFilterTag.Optimize: return DssRef.todoLang.Category_Optimize;
+                case BuildFilterTag.Optimize: return DssRef.lang.Category_Optimize;
                 case BuildFilterTag.Upgrade: return DssRef.lang.BuildCategory_Upgrade;
                 case BuildFilterTag.Research: return DssRef.lang.Research_Tab;
-                case BuildFilterTag.Road: return DssRef.todoLang.BuildCategory_Road;
+                case BuildFilterTag.Road: return DssRef.lang.BuildCategory_Road;
                 case BuildFilterTag.Garden: return DssRef.lang.DecorType_Garden;
                 case BuildFilterTag.Statue: return DssRef.lang.DecorType_Statue;
                 case BuildFilterTag.Flag: return DssRef.lang.DecorType_Flag;
@@ -1599,16 +1599,16 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.UnitType_Spearman;
 
                 case UnitFilterType.Skirmisher:
-                    return DssRef.todoLang.UnitType_Skirmisher;
+                    return DssRef.lang.UnitType_Skirmisher;
                 case UnitFilterType.Bow:
                     return DssRef.lang.UnitType_Archer;
 
                 case UnitFilterType.CrossBow:
                     return DssRef.lang.UnitType_Crossbow;
                 case UnitFilterType.Rifle:
-                    return DssRef.todoLang.UnitType_LongRangeRifle;
+                    return DssRef.lang.UnitType_LongRangeRifle;
                 case UnitFilterType.Shotgun:
-                    return DssRef.todoLang.UnitType_CloseRangeRifle;
+                    return DssRef.lang.UnitType_CloseRangeRifle;
 
 
                 case UnitFilterType.Ballista:
@@ -1633,9 +1633,9 @@ namespace VikingEngine.DSSWars.Presentation
                 case UnitFilterType.Knight:
                     return DssRef.lang.UnitType_CavalryKnight;
                 case UnitFilterType.MithrilBow:
-                    return DssRef.todoLang.UnitType_MithrilArcher;
+                    return DssRef.lang.UnitType_MithrilArcher;
                 case UnitFilterType.MithrilKnight:
-                    return DssRef.todoLang.UnitType_MithrilSwordsman;
+                    return DssRef.lang.UnitType_MithrilSwordsman;
 
                 case UnitFilterType.GreenSoldier:
                     return DssRef.lang.FactionName_Greenwood;

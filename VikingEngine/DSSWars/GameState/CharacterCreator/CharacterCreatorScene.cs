@@ -262,9 +262,9 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
            var profile = GetProfile();
 
             RichBoxContent content = new RichBoxContent();
-            content.h1(DssRef.todoLang.Editor_CharacterCreator, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Editor_CharacterCreator, HudLib.TitleColor_Head);
             content.newLine();
-            content.text(DssRef.todoLang.Editor_CharacterCreator_Description, HudLib.InfoYellow_Light);
+            content.text(DssRef.lang.Editor_CharacterCreator_Description, HudLib.InfoYellow_Light);
 
             
             listAndEditCharacter(content);
@@ -296,7 +296,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             //content.h2("Default setup", HudLib.TitleColor_TypeName);
 
             content.newParagraph();
-            HudLib.Label(content, DssRef.todoLang.HUD_Scale);
+            HudLib.Label(content, DssRef.lang.HUD_Scale);
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, new DragButtonSettings(MinScale, MaxScale, 0.1f), ScaleProperty);
             content.newParagraph();
@@ -305,21 +305,21 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             {
                 hatGenreDropdown.AddOption(DssRef.lang.Hud_None, profile.hatGenre == CharacterHatGenre.NoHat,
                     true, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.NoHat), null);
-                hatGenreDropdown.AddOption(DssRef.todoLang.Editor_HatGenre_FollowWeapon, profile.hatGenre == CharacterHatGenre.FollowWeapon,
+                hatGenreDropdown.AddOption(DssRef.lang.Editor_HatGenre_FollowWeapon, profile.hatGenre == CharacterHatGenre.FollowWeapon,
                     true, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.FollowWeapon), null);
                 //hatGenreDropdown.AddOption("Follow armor", profile.hatGenre == CharacterHatGenre.FollowArmor,
                 //    false, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.FollowArmor), null);
-                hatGenreDropdown.AddOption(DssRef.todoLang.Editor_HatGenre_Uniform, profile.hatGenre == CharacterHatGenre.Uniform,
+                hatGenreDropdown.AddOption(DssRef.lang.Editor_HatGenre_Uniform, profile.hatGenre == CharacterHatGenre.Uniform,
                     false, new RbAction1Arg<CharacterHatGenre>(setHatGenre, CharacterHatGenre.Uniform), null);
             }
-            hatGenreDropdown.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Editor_HatGenre, menu);
+            hatGenreDropdown.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Editor_HatGenre, menu);
 
             if (profile.hatGenre == CharacterHatGenre.Uniform)
             {
                 content.newLine();
                 for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_hat_custom_all].Frames.Count; i++)
                 {
-                    content.Add(new ArtOption(i == profile.customHat, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Hat ,i)) },
+                    content.Add(new ArtOption(i == profile.customHat, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.lang.Character_Hat ,i)) },
                         new RbAction1Arg<int>((int hat) => {
                             var profile = GetProfile();
                             {
@@ -341,7 +341,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.newParagraph();
             for (FaceTheme i = 0; i < FaceTheme.NUM; i++)
             {
-                content.Add(new ArtOption(i == profile.face, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Head,(int)i)) },
+                content.Add(new ArtOption(i == profile.face, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.lang.Character_Head,(int)i)) },
                     new RbAction1Arg<FaceTheme>((FaceTheme face)=> {
                         var profile = GetProfile();
                         {
@@ -362,7 +362,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.newParagraph();
             for (int i = 0; i < 3; i++)
             {
-                content.Add(new ArtOption(i == profile.body, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Body, i)) },
+                content.Add(new ArtOption(i == profile.body, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.lang.Character_Body, i)) },
                     new RbAction1Arg<int>((int body) => {
                         var profile = GetProfile();
                         {
@@ -383,7 +383,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.newParagraph();
             for (ArmsTheme i = 0; i <  ArmsTheme.NUM; i++)
             {
-                content.Add(new ArtOption(i == profile.arms, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Arms, (int)i)) },
+                content.Add(new ArtOption(i == profile.arms, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.lang.Character_Arms, (int)i)) },
                     new RbAction1Arg<ArmsTheme>((ArmsTheme arms) => {
                         var profile = GetProfile();
                         {
@@ -396,7 +396,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             }
 
             content.newParagraph();
-            content.h2(DssRef.todoLang.Character_Accessories, HudLib.TitleColor_Label);
+            content.h2(DssRef.lang.Character_Accessories, HudLib.TitleColor_Label);
 
             content.newLine();
             content.Add(new ArtOption(profile.accessoryBack == -1,  new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_None) },
@@ -411,7 +411,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 }, -1)));
             for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_addons].Frames.Count; i++)
             {                
-                content.Add(new ArtOption(i == profile.accessoryBack, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Back, i)) },
+                content.Add(new ArtOption(i == profile.accessoryBack, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.lang.Character_Back, i)) },
                     new RbAction1Arg<int>((int back) => {
                         var profile = GetProfile();
                         {
@@ -439,7 +439,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 }, -1)));
             for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_face_access].Frames.Count; i++)
             {
-                content.Add(new ArtOption(i == profile.accessoryFace, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.todoLang.Character_Face, i)) },
+                content.Add(new ArtOption(i == profile.accessoryFace, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.lang.Character_Face, i)) },
                     new RbAction1Arg<int>((int faceadd) => {
                         var profile = GetProfile();
                         {

@@ -1,17 +1,15 @@
 ﻿UPDATE
 Change Log:
 * Manual: Added video recording help
+* Fixed crashing battle lab
+* added a time limit on animal sounds
 
 #Pics
 build building icon
 
 
 #must do#
-x limit animal sound
-x translations
 
-
-x?? showing wrong resource tab in tutorial
 
 #Todo#
 x the ui scale might be overtuned, 0.5 feels more like 0.05

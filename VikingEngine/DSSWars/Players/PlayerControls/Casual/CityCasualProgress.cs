@@ -287,7 +287,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 progressPoint(ItemResourceType.Gold, (int)hasGold, gold);
                 progressPoint(ItemResourceType.Men, hasMen, men);
 
-                var cancelTooltip = new RbTooltip_Text(DssRef.todoLang.HUD_ClickToCancel);
+                var cancelTooltip = new RbTooltip_Text(DssRef.lang.HUD_ClickToCancel);
 
                 content.newLine();
                 {
@@ -373,7 +373,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
                 progressPoint(ItemResourceType.Gold, (int)hasGold, gold);
 
-                var cancelTooltip = new RbTooltip_Text(DssRef.todoLang.HUD_ClickToCancel);
+                var cancelTooltip = new RbTooltip_Text(DssRef.lang.HUD_ClickToCancel);
 
                 content.newLine();
                 {

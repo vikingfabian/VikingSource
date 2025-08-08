@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
+using VikingEngine.Sound;
 
 namespace VikingEngine.DSSWars.GameObject.Animal
 {
@@ -109,7 +110,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
 
         protected override void sound()
         {
-            if (Ref.peRnd.Chance(0.014))
+            if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
             {
                 SoundLib.pig.Play(model.position);
             }
@@ -131,7 +132,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
 
         protected override void sound()
         {
-            if (Ref.peRnd.Chance(0.014))
+            if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
             {
                 SoundLib.hen.Play(model.position);
             }

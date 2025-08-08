@@ -1172,7 +1172,7 @@ namespace VikingEngine.DSSWars.Interface
             experience(SpriteName.WarsWorkMove, DssRef.lang.ExperienceType_Transport, city.topskill_Transport);
             experience(SpriteName.WarsResource_Food, DssRef.lang.ExperienceType_Cook, city.topskill_Cook);
             experience(SpriteName.WarsFletcherArrowIcon, DssRef.lang.ExperienceType_Fletcher, city.topskill_Fletcher);
-            experience(SpriteName.WarsWorkSmelting, DssRef.todoLang.ExperienceType_Smelting, city.topskill_Smelting);
+            experience(SpriteName.WarsWorkSmelting, DssRef.lang.ExperienceType_Smelting, city.topskill_Smelting);
             experience(SpriteName.WarsWorkCasting, DssRef.lang.ExperienceType_Casting, city.topskill_Casting);
             experience(SpriteName.WarsResource_Iron, DssRef.lang.ExperienceType_CraftMetal, city.topskill_CraftMetal);
             experience(SpriteName.WarsResource_IronArmor, DssRef.lang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
@@ -1244,14 +1244,14 @@ namespace VikingEngine.DSSWars.Interface
                         tabContent.Add(new RbImage(SpriteName.warsFolder_carton, 0.7f));
                         tabContent.space(0.6f);
                         tabContent.Add(new RbText(DssRef.lang.MenuTab_Tag));
-                        description = DssRef.todoLang.ObjectTag_Description;
+                        description = DssRef.lang.ObjectTag_Description;
                         break;
 
                     case TagSubTab.HudPin:
                         tabContent.Add(new RbImage(SpriteName.HudPinIcon, 0.7f));
                         tabContent.space(0.6f);
-                        tabContent.Add(new RbText(DssRef.todoLang.HudPins));
-                        description = DssRef.todoLang.HudPins_Description;
+                        tabContent.Add(new RbText(DssRef.lang.HudPins));
+                        description = DssRef.lang.HudPins_Description;
                         break;
 
                 }

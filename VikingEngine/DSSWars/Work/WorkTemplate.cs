@@ -1423,7 +1423,7 @@ namespace VikingEngine.DSSWars.Work
                     void waitForFullStock(WorkPriorityType priorityType)
                     {
                         content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsStockpileStop) },
-                            city.mintOnFullStockProperty, new RbTooltip_Text(DssRef.todoLang.Work_OnlyCraftOnFullStock))
+                            city.mintOnFullStockProperty, new RbTooltip_Text(DssRef.lang.Work_OnlyCraftOnFullStock))
                         { propertyTag = priorityType, });
 
                     }

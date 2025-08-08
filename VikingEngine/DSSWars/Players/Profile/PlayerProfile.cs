@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Players.Profile
         {
             if (string.IsNullOrEmpty(name))
             {
-                return string.Format(DssRef.todoLang.Lobby_PlayerProfileNumbered, TextLib.IndexToString(StorageIndex));
+                return string.Format(DssRef.lang.Lobby_PlayerProfileNumbered, TextLib.IndexToString(StorageIndex));
             }
             else
             {

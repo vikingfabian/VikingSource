@@ -56,7 +56,10 @@ namespace VikingEngine.DSSWars.Interface
             {
                 headOptions = new PlayerHud_HeadOptions(player);
             }
-            pinHud = new PlayerHud_Pins(player);
+            if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+            {
+                pinHud = new PlayerHud_Pins(player);
+            }
             objMenu = new PlayerHud_Object(player);
             factionMenu = new PlayerHud_Faction();
 
@@ -164,7 +167,10 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     refresh |= headOptions.updateMouseInput(ref mouseOverHud);
                 }
-                refresh |= pinHud.updateMouseInput( ref mouseOverHud);
+                if (pinHud != null)
+                {
+                    refresh |= pinHud.updateMouseInput(ref mouseOverHud);
+                }
                refresh |= objMenu.updateMouseInput(ref mouseOverHud);
                 
             }
@@ -185,7 +191,7 @@ namespace VikingEngine.DSSWars.Interface
                 refreshTimer.Reset();
                 head?.refreshUpdate(player);
                 headOptions?.refreshUpdate();
-                pinHud.refreshUpdate(player);
+                pinHud?.refreshUpdate(player);
                 updateMenuDisplays(true);
                 factionMenu.refreshUpdate(player);
                 inputHelp.refreshUpdate(player);

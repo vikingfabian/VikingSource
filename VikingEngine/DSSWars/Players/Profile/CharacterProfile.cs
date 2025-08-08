@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public string DisplayName()
         { 
-            return string.Format(DssRef.todoLang.Lobby_CharacterCreationNumbered, TextLib.IndexToString(StorageIndex));
+            return string.Format(DssRef.lang.Lobby_CharacterCreationNumbered, TextLib.IndexToString(StorageIndex));
         }
 
         public List<AbsRichBoxMember> RbButton(int flagIndex, bool rotating)
@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             //result.Add(new RbTexture(flag.flagDesign.CreateTexture(flag)));
             result.Add(new CharacterRichBoxIcon(StorageIndex, flagIndex, rotating));
             result.Add(new RbSpace());
-            result.Add(new RbText(string.Format(DssRef.todoLang.Lobby_CharacterCreationNumbered, StorageIndex + 1)));
+            result.Add(new RbText(string.Format(DssRef.lang.Lobby_CharacterCreationNumbered, StorageIndex + 1)));
             return result;
         }
 

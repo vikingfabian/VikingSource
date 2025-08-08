@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Defence
                 {
                     const bool SetTowersOnly = true;
                     content.newLine();
-                    content.Add(new RbText(DssRef.todoLang.Defence_AutoAssign_Towers, HudLib.TitleColor_Label));
+                    content.Add(new RbText(DssRef.lang.Defence_AutoAssign_Towers, HudLib.TitleColor_Label));
                     content.space();
 
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {

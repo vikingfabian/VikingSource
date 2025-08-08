@@ -1313,7 +1313,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (player.hud.messages.freeSpace())
                     {
                         player.hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, player.profile.casualControls? 
-                            DssRef.lang.EventMessage_DesertersText_Money : DssRef.todoLang.EventMessage_DesertersText_Food);
+                            DssRef.lang.EventMessage_DesertersText_Money : DssRef.lang.EventMessage_DesertersText_Food);
                         player.statistics.SoldiersDeserted += totalDeserters;
                     }
                 }

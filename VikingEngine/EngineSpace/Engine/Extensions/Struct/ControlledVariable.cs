@@ -76,7 +76,14 @@ namespace VikingEngine
         {
             this.totalTimeStampSec = Ref.TotalTimeSec;
         }
-
+        public void setTimeFromNow(float seconds)
+        {
+            this.totalTimeStampSec = Ref.TotalTimeSec + seconds;
+        }
+        public bool TimeOut()
+        {
+            return Ref.TotalTimeSec >= totalTimeStampSec;
+        }
         /// <summary>
         /// Time passed this frame
         /// </summary>

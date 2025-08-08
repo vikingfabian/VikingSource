@@ -67,8 +67,8 @@ namespace VikingEngine.DSSWars
             scythe = new SoundContainerSingle(SoundDir + "scythe", 0.2f, 0.4f);
             drop_item = new SoundContainerSingle(SoundDir + "drop_item", 1f, 0.4f);
             pickaxe = new SoundContainerSingle(SoundDir + "pickaxe", 0.6f, 0.2f);
-            hen = new SoundContainerMultiple([SoundDir + "hen1", SoundDir + "hen2"], 0.4f, 0.4f);
-            pig = new SoundContainerSingle(SoundDir + "pig", 0.4f, 0.8f);
+            hen = new SoundContainerMultiple([SoundDir + "hen1", SoundDir + "hen2"], 0.6f, 0.4f);
+            pig = new SoundContainerSingle(SoundDir + "pig", 0.6f, 0.8f);
             pickup = new SoundContainerSingle(SoundDir + "pickup", 0.6f, 0.4f);
             anvil = new SoundContainerSingle(SoundDir + "anvil", 0.45f, 0.4f);
             dig = new SoundContainerSingle(SoundDir + "dig", 0.3f, 0.4f);
@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars
                 SoundDir + "footstep (8)",
                 SoundDir + "footstep (9)",
                 SoundDir + "footstep (10)"
-            ], 0.26f, 0.4f);
+            ], 0.20f, 0.4f);
             ship_knirr = new SoundContainerMultiple([SoundDir + "ship_knirr1", SoundDir + "ship_knirr2"], 1.3f, 0.4f);
             //Attacks
             bow = new SoundContainerMultiple([SoundDir + "bow1", SoundDir + "bow2"], 0.5f, 0.4f);

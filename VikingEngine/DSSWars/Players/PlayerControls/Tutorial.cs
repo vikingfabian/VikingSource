@@ -350,7 +350,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.CasualRecruitSoldier:
                     content.iconicontext(HudLib.CheckImage(casualRecruit_selectTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Recruit));
-                    content.iconicontext(HudLib.CheckImage(casualRecruit_recruit), SpriteName.WarsUnitIcon_Folkman, DssRef.todoLang.Tutorial_CasualRecruitSoldiers);
+                    content.iconicontext(HudLib.CheckImage(casualRecruit_recruit), SpriteName.WarsUnitIcon_Folkman, DssRef.lang.Tutorial_CasualRecruitSoldiers);
                     break;
                
                 case TutorialMission.Linen:
