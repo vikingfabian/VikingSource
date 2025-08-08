@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Название этого языка
         /// </summary>
-        public override string MyLanguage => "Английский";
+        public override string MyLanguage => "Русский";
 
         /// <summary>
         /// Как отображать количество предметов. 0: предмет, 1: количество
@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// В редакторе профиля игрока. Подсказка для отмены
         /// </summary>
-        public override string ProfileEditor_DiscardAndExitDescription => "Отменить все изменения";
+        public override string ProfileEditor_DiscardAndExitDescription => "Отменить все изменения и выйти";
 
         /// <summary>
         /// В редакторе профиля игрока. Сохранить изменения и закрыть редактор
@@ -388,12 +388,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// В меню настроек игры. Опция создания новых карт вместо загрузки существующих
         /// </summary>
-        public override string Settings_GenerateMaps => "Создать новые карты";
+        public override string Settings_GenerateMaps => "Создать новую карту";
 
         /// <summary>
         /// В меню настроек игры. Создание новых карт занимает больше времени
         /// </summary>
-        public override string Settings_GenerateMaps_SlowDescription => "Создание занимает больше времени, чем загрузка готовых карт";
+        public override string Settings_GenerateMaps_SlowDescription => "Создание занимает больше времени, чем загрузка готовой карты";
 
         /// <summary>
         /// В меню настроек игры. Опция сложности. Блокирует возможность играть в игре во время паузы.
@@ -408,7 +408,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// В меню настроек игры. Опция сложности. Описание отсутствия боссов.
         /// </summary>
-        public override string Settings_BossEvents_SandboxDescription => "Отключение событий с боссами переведет игру в песочницу без завершения.";
+        public override string Settings_BossEvents_SandboxDescription => "Отключение событий с боссами переведет игру в песочницу без концовки.";
 
 
         /// <summary>
@@ -426,7 +426,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Опции для автоматизации игровых механик. Информация о том, как работает автоматизация.
         /// </summary>
-        public override string Automation_InfoLine_Priority => "В приоритете крупные города";
+        public override string Automation_InfoLine_Priority => "Крупные города в приоритете";
         /// <summary>
         /// Опции для автоматизации игровых механик. Информация о том, как работает автоматизация.
         /// </summary>
@@ -531,17 +531,17 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Дипломатический заголовок. Другой игрок предложил новые дипломатические отношения. 0: имя игрока
         /// </summary>
-        public override string Diplomacy_PlayerOfferAlliance => "{0} предлагает новые отношения";
+        public override string Diplomacy_PlayerOfferAlliance => "{0} предлагает новые дипломатические отношения";
 
         /// <summary>
         /// Дипломатическое действие. Принять новые дипломатические отношения.
         /// </summary>
-        public override string Diplomacy_AcceptRelationOffer => "Принять новые отношения";
+        public override string Diplomacy_AcceptRelationOffer => "Принять новые дипломатические отношения";
 
         /// <summary>
         /// Дипломатическое описание. Другой игрок предложил новые дипломатические отношения. 0: тип отношений
         /// </summary>
-        public override string Diplomacy_NewRelationOffered => "Предложены новые отношения: {0}";
+        public override string Diplomacy_NewRelationOffered => "Предложены новые дипломатические отношения: {0}";
 
         /// <summary>
         /// Дипломатическое действие. Сделать другую нацию своим слугой.
@@ -936,12 +936,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityOption_Repair_Description => "Повреждения уменьшают количество рабочих, которых можно разместить.";
 
         public override string CityOption_BurnItDown => "Сжечь дотла";
-        public override string CityOption_BurnItDown_Description => "Удалите рабочую силу и нанесите максимальные повреждения";
+        public override string CityOption_BurnItDown_Description => "Удалить рабочую силу и нанести максимальные повреждения";
 
         /// <summary>
         /// Главный босс. Назван в честь светящегося металлического камня, застрявшего в их лбу.
         /// </summary>
-        public override string FactionName_DarkLord => "Око Рока";
+        public override string FactionName_DarkLord => "Око Тьмы";
 
         /// <summary>
         /// Фракция, вдохновленная орками. Служит темному лорду.
@@ -956,7 +956,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Фракция, вдохновленная эльфами. Живут в гармонии с лесом.
         /// </summary>
-        public override string FactionName_Greenwood => "Зеленый Лес";
+        public override string FactionName_Greenwood => "Гринвуд";
 
         /// <summary>
         /// Фракция с азиатским уклоном на востоке.
@@ -976,7 +976,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Королевство викингов на севере. Использует символ петуха.
         /// </summary>
-        public override string FactionName_NordicSpur => "Северный Шпор";
+        public override string FactionName_NordicSpur => "Северный Отрог";
 
         /// <summary>
         /// Королевство викингов на севере. Использует символ черного ворона.
@@ -1013,25 +1013,24 @@ namespace VikingEngine.DSSWars.Presentation
         /// Первое предупреждение о появлении главного босса.
         /// </summary>
         public override string EventMessage_ProphesyTitle => "Темное пророчество";
-        public override string EventMessage_ProphesyText => "Око Рока скоро появится, и ваши враги присоединятся к нему!";
+        public override string EventMessage_ProphesyText => "Око Тьмы скоро появится, и ваши враги присоединятся к нему!";
 
         /// <summary>
         /// Второе предупреждение о появлении главного босса.
         /// </summary>
         public override string EventMessage_FinalBossEnterTitle => "Темные времена";
-        public override string EventMessage_FinalBossEnterText => "Око Рока вошло на карту!";
+        public override string EventMessage_FinalBossEnterText => "Око Тьмы вошло на карту!";
 
         /// <summary>
         /// Сообщение, когда главный босс встретится с вами на поле боя.
         /// </summary>
         public override string EventMessage_FinalBattleTitle => "Отчаянная атака";
-        public override string EventMessage_FinalBattleText => "Темный лорд присоединился к полю боя. Теперь ваш шанс уничтожить его!";
+        public override string EventMessage_FinalBattleText => "Темный лорд присоединился к полю боя. Это ваш шанс уничтожить его!";
 
         /// <summary>
         /// Сообщение, когда солдаты покидают армию, если вы не можете оплатить их содержание
         /// </summary>
         public override string EventMessage_DesertersTitle => "Дезертиры!";
-        public override string EventMessage_DesertersText_Money => "Неоплаченные солдаты дезертируют из ваших армий";
 
         public override string DifficultyDescription_AiAggression => "Агрессивность ИИ: {0}.";
         public override string DifficultyDescription_BossSize => "Размер босса: {0}.";
@@ -1105,7 +1104,7 @@ namespace VikingEngine.DSSWars.Presentation
 {
     "Сны преследуют тебя ночью,",
     "Пророчество о темном будущем",
-    "Готовьтесь к его приходу,",
+    "Готовься к его приходу,",
 };
 
         /// <summary>
@@ -1164,17 +1163,17 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Прогресс завершен, ожидание ввода игрока
         /// </summary>
-        public override string Progressbar_PressAnyKey => "Нажмите любую клавишу для продолжения";
+        public override string Progressbar_PressAnyKey => "Нажмите любую кнопку для продолжения";
 
         /// <summary>
         /// Краткий учебник, в котором нужно купить и переместить солдата. Все расширенные команды заблокированы до завершения обучения.
         /// </summary>
-        public override string Tutorial_MenuOption => "Пройти учебник";
+        public override string Tutorial_MenuOption => "Пройти обучение";
         public override string Tutorial_MissionsTitle => "Учебные задания";
         public override string Tutorial_Mission_BuySoldier => "Выберите город и наймите солдата";
         public override string Tutorial_Mission_MoveArmy => "Выберите армию и переместите ее";
 
-        public override string Tutorial_CompleteTitle => "Учебник завершен!";
+        public override string Tutorial_CompleteTitle => "обучение завершено!";
         public override string Tutorial_CompleteMessage => "Разблокированы полный зум и расширенные опции игры.";
 
         /// <summary>
@@ -1234,7 +1233,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_GoldOre => "золотая руда";
         public override string Resource_TypeName_Iron => "железо";
 
-        public override string Resource_TypeName_SharpStick => "Острый палка";
+        public override string Resource_TypeName_SharpStick => "Острая палка";
         public override string Resource_TypeName_Sword => "Меч";
         public override string Resource_TypeName_KnightsLance => "Копье рыцаря";
         public override string Resource_TypeName_TwoHandSword => "Двуручный меч";
@@ -1250,7 +1249,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildingType_WorkerHut => "Хижина рабочих";
         public override string BuildingType_Brewery => "Пивоварня";
         public override string BuildingType_Postal => "Почтовая служба";
-        public override string BuildingType_Recruitment => "Центр набора";
+        public override string BuildingType_Recruitment => "Пункт набора войск";
         public override string BuildingType_Barracks => "Казармы";
         public override string BuildingType_PigPen => "Свинарник";
         public override string BuildingType_HenPen => "Курятник";
@@ -1451,7 +1450,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string UnitType_Cities => "Города";
         public override string UnitType_Armies => "Армии";
-        public override string UnitType_Worker => "Рабочий";
+        public override string UnitType_Worker => "Рабочие";
 
         public override string UnitType_FootKnight => "Рыцарь с мечом";
         public override string UnitType_CavalryKnight => "Рыцарь на коне";
@@ -1467,7 +1466,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_CrabMentality => "Менталитет краба";
         public override string CityCulture_DeepWell => "Глубокий колодец";
         public override string CityCulture_Networker => "Сетевик";
-        public override string CityCulture_PitMasters => "Мастера по топливу";
+        public override string CityCulture_PitMasters => "Мастер по топливу";
 
         public override string CityCulture_CultureIsX => "Культура: {0}";
         public override string CityCulture_LargeFamilies_Description => "Увеличивается рождаемость";
@@ -1632,7 +1631,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Seafaring => "Мореходство";
         public override string CityCulture_Seafaring_Description => "Солдаты с морской специализацией имеют более сильные корабли";
 
-        public override string CityCulture_Backtrader => "Черный торговец";
+        public override string CityCulture_Backtrader => "торговец черного рынка";
         public override string CityCulture_Backtrader_Description => "Дешевый черный рынок";
 
         public override string CityCulture_LawAbiding => "Законопослушный";
@@ -1710,7 +1709,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Settings_CentralGold_Description => "Вкл.: всё золото в общем пуле и доступно сразу. Выкл.: золото является физическим и требует транспортировки.";
 
         public override string InputActionName_StopStart => "Старт/Стоп";
-        public override string InputActionName_ToggleHudDetail => "Переключить подробности HUD";
+        public override string InputActionName_ToggleHudDetail => "Переключить детали HUD";
         public override string InputActionName_NextCity => "Следующий город";
         public override string InputActionName_NextArmy => "Следующая армия";
         public override string InputActionName_NextBattle => "Следующее сражение";
@@ -1786,7 +1785,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string MapType_CustomMap => "Пользовательская карта";
         public override string MapType_GenerateNewMap => "Сгенерировать новую карту";
-        public override string MapGenerator_GenerateAction => "Генерировать";
+        public override string MapGenerator_GenerateAction => "Сгенерировать";
         public override string MapGenerator_Terrain_CustomSize => "Пользовательский размер";
         public override string MapGenerator_Terrain_StartAs => "Начать как";
         public override string MapGenerator_Terrain_ClearPass => "Выполнить очистку";
@@ -1797,7 +1796,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string MapGenerator_Terrain_BuildStrokes_Description => "Измеряется в штрихах на 100 плиток";
         public override string MapGenerator_Terrain_DigStrokes => "Количество штрихов выемки";
         public override string MapGenerator_Terrain_CleanUp_Option => "Очистка одиночных плиток";
-        public override string MapGenerator_Terrain_CleanUpPass => "Выполнить проход очистки";
+        public override string MapGenerator_Terrain_CleanUpPass => "Выполнить проверку очистки";
 
         public override string Economy_ServicemenUpkeep => "Содержание обслуживающего персонала: {0}";
         public override string Economy_ServicemenUpkeep_Description => "Содержание составляет {0} золота за одного работника";
@@ -1881,10 +1880,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string ExperienceType_Chemist => "Химик";
 
         public override string ExperienceLevel_1 => "Новичок";
-        public override string ExperienceLevel_2 => "Практик";
+        public override string ExperienceLevel_2 => "Адепт";
         public override string ExperienceLevel_3 => "Эксперт";
         public override string ExperienceLevel_4 => "Мастер";
-        public override string ExperienceLevel_5 => "Легендарный";
+        public override string ExperienceLevel_5 => "Легенда";
 
         public override string ExperenceOrDistancePrio_Title => "Выбор работника";
         public override string ExperenceOrDistancePrio_Description => "Свободные работники будут выбраны по расстоянию или опыту";
@@ -1978,7 +1977,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_LedBullet => "Пуля";
 
         public override string Resource_TypeName_HandCannon => "Ручная пушка";
-        public override string Resource_TypeName_HandCulverin => "Ручной кулеврин";
+        public override string Resource_TypeName_HandCulverin => "Кремнёвая пушка";
         public override string Resource_TypeName_Rifle => "Ружьё";
         public override string Resource_TypeName_Blunderbuss => "Аркебуза";
 
@@ -2004,6 +2003,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_Coin => "Монета";
 
         public override string UnitType_Warhammer => "Рыцарь с молотом";
+
         public override string UnitType_SpearAndShield => "Копейщик с щитом";
 
         public override string UnitType_CollectionOfSoldiers => "Отряд солдат";
@@ -2036,7 +2036,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildingType_StoneCutter => "Каменоломня";
 
         public override string BuildingType_Embassy => "Посольство";
-        public override string BuildingType_Embassy_Description => "Для дипломатических отношений";
+        public override string BuildingType_Embassy_Description => "Создание или улучшение отношений с другими фракциями";
 
         public override string BuildingType_SoldierBarracks => "Казарма (пехота)";
         public override string BuildingType_ArcherBarracks => "Казарма (лучники)";
@@ -2421,6 +2421,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Work_NoMines => "Нет шахт";
 
 
+
         //NEXT FEST DEMO
         public override string HUD_DisplayName => "Отображаемое имя";
         public override string HUD_Filter => "Фильтр";
@@ -2494,6 +2495,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Tutorial_CasualRecruitSoldiers => "Купить одну группу солдат";
 
+        public override string EventMessage_DesertersText_Money => "Неполучившие оплату солдаты дезертируют из вашей армии";
 
     }
 }

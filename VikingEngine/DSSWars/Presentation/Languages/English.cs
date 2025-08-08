@@ -394,7 +394,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         /// <summary>
-        ///  In game settings menu.Option for creating new maps instead of loading one
+        ///  In game settings menu. Option for creating new maps instead of loading one. You can load pre-generated maps or create new ones.
         /// </summary>
         public override string Settings_GenerateMaps => "Generate new maps";
 
@@ -1449,6 +1449,10 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string WorkForce_ChildBirthRequirements => "Child birth requirements";
         public override string WorkForce_AvailableHomes => "Available homes: {0}";
+        
+        /// <summary>
+        /// workers require peace to grow(make babies)
+        /// </summary>
         public override string WorkForce_Peace => "Peace";
         public override string WorkForce_ChildToManTime => "Grown up age: {0} minutes";
 
@@ -1482,9 +1486,17 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Miners => "Miners";
         public override string CityCulture_Woodcutters => "Lumbermen";
         public override string CityCulture_Builders => "Builders";
+
+        /// <summary>
+        /// Crab mentality: culture where you suppress those who are better at something
+        /// </summary>
         public override string CityCulture_CrabMentality => "Crab mentality";
         public override string CityCulture_DeepWell => "Deep well";
         public override string CityCulture_Networker => "Networker";
+
+        /// <summary>
+        /// Pit master: someone who is good at burning work (char coal) 
+        /// </summary>
         public override string CityCulture_PitMasters => "Pit masters";
 
         public override string CityCulture_CultureIsX => "Culture: {0}";

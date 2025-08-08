@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.Presentation
     partial class Russian
     {
         public override string FactionName_Starshield => "Старшилд";
-        public override string FactionName_Bluepeak => "Блупик";
+        public override string FactionName_Bluepeak => "Блупеак";
         public override string FactionName_Hoft => "Хофт";
         public override string FactionName_RiverStallion => "Ривер Сталлион";
         public override string FactionName_Sivo => "Сиво";
@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string FactionName_OrentharTribes => "Орентар Трайбс";
         public override string FactionName_SkarnVael => "Скарн Вэйл";
         public override string FactionName_Glimmerfell => "Глиммерфелл";
-        public override string FactionName_BleakwaterFold => "Бликвотер Фолд";
+        public override string FactionName_BleakwaterFold => "Блеакватер Фолд";
         public override string FactionName_Oathmaeren => "Отмаерен";
         public override string FactionName_Elderforge => "Элдерфордж";
         public override string FactionName_MarhollowCartel => "Мархоллоу Картель";
@@ -64,14 +64,14 @@ namespace VikingEngine.DSSWars.Presentation
         public override string FactionName_VarnokRimeguard => "Варнок Раймгард";
         public override string FactionName_KorrakFirehand => "Коррак Файрхенд";
         public override string FactionName_MoongladeGat => "Мунглейд Гат";
-        public override string FactionName_DraskarSons => "Драскар Санс";
+        public override string FactionName_DraskarSons => "Драскар Сонс";
         public override string FactionName_YrdenFlamekeepers => "Ирден Флеймкиперс";
         public override string FactionName_BrundirWarhorns => "Брундир Вархорнс";
         public override string FactionName_OltunBonecarvers => "Олтун Боункарверс";
         public override string FactionName_HaskariEmber => "Хаскари Эмбер";
-        public override string FactionName_ZalfrikThunderborn => "Залфрик Тандерборн";
+        public override string FactionName_ZalfrikThunderborn => "Залфрек Тандерборн";
         public override string FactionName_BjorunStonetender => "Бьюрон Стоунтендер";
-        public override string FactionName_MyrdarrIcewalkers => "Мирдарр Айсволкерс";
+        public override string FactionName_MyrdarrIcewalkers => "Мирдарр Айсвалкерс";
         public override string FactionName_SkelvikSpear => "Скелвик Спир";
         public override string FactionName_VaragThroatcallers => "Вараг Троткаллерс";
         public override string FactionName_Durakai => "Дуракай";

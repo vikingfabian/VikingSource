@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars
                     res_LeadOre.toMenu(content, ItemResourceType.LeadOre);
                     content.Add(new RbSeperationLine());
                     res_SilverOre.toMenu(content, ItemResourceType.SilverOre);
-                    res_GoldOre.toMenu(content, ItemResourceType.SilverOre);
+                    res_GoldOre.toMenu(content, ItemResourceType.GoldOre);
 
                     content.Add(new RbSeperationLine());
                     res_iron.toMenu(content, ItemResourceType.Iron_G);

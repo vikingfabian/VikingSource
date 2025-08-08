@@ -381,6 +381,7 @@ namespace VikingEngine.DSSWars.GameObject
             //base.toHud(args);
 
             debugTagButton(args.content);
+
             ArmyPresentationHud(args, false);
 
 

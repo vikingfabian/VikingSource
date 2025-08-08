@@ -1,15 +1,22 @@
 ﻿UPDATE
 Change Log:
 * Manual: Added video recording help
+* Removed build queue in settings
+* fixed faction missing gold ore
+* removed debug button on army
+* Translated all new words
+* Russian has been manually spell checked and improved
+
 
 #Pics
 build building icon
-
+Turkish, portugual flag
 
 #must do#
+x PlayerHud_Pins crash
 x limit animal sound
 x translations
-
+x fullscreen on language select
 
 x?? showing wrong resource tab in tutorial
 
