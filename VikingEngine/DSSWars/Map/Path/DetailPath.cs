@@ -105,120 +105,133 @@ namespace VikingEngine.DSSWars.Map.Path
             {
                 return null;
             }
-            
-            area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
-            Rectangle2 subtileLimit = DssRef.world.subTileGrid.Area;
-            subtileLimit.AddRadius(-1);
-            area.SetTileBounds(subtileLimit);
-            //gridOffset = area.pos
-            DetailPathNode startNode = new DetailPathNode(center, conv.ToDir8_INT(startDir), startAsShip);
+
+#if !DEBUG
+            try
             {
-                IntVector2 gridPos = center - area.pos;
-                nodeGrid[gridPos.X, gridPos.Y] = startNode;
-                nodeUseTopLeft = gridPos;
-                nodeUseBottomRight = gridPos;
-            }
-            //bool endAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
-            DetailPathNode currentNode = startNode;
+#endif
 
-            int numLoops = 0;
-
-
-            while (true)
-            {
-                for (int dir = 0; dir < 8; dir++)
+                area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
+                Rectangle2 subtileLimit = DssRef.world.subTileGrid.Area;
+                subtileLimit.AddRadius(-1);
+                area.SetTileBounds(subtileLimit);
+                //gridOffset = area.pos
+                DetailPathNode startNode = new DetailPathNode(center, conv.ToDir8_INT(startDir), startAsShip);
                 {
-                    IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
-                    IntVector2 gridPos = pos - area.pos;
-                    if (area.IntersectTilePoint(pos) && !nodeGrid[gridPos.X, gridPos.Y].HasValue)
+                    IntVector2 gridPos = center - area.pos;
+                    nodeGrid[gridPos.X, gridPos.Y] = startNode;
+                    nodeUseTopLeft = gridPos;
+                    nodeUseBottomRight = gridPos;
+                }
+                //bool endAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
+                DetailPathNode currentNode = startNode;
+
+                int numLoops = 0;
+
+
+                while (true)
+                {
+                    for (int dir = 0; dir < 8; dir++)
                     {
+                        IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
+                        IntVector2 gridPos = pos - area.pos;
+                        if (area.IntersectTilePoint(pos) && !nodeGrid[gridPos.X, gridPos.Y].HasValue)
+                        {
 
-                        //add a node to open list
-                        DetailPathNode node = new DetailPathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
-                        open.Add(node);
-                        
-                        nodeGrid[gridPos.X, gridPos.Y] = node;
-                        if (gridPos.X < nodeUseTopLeft.X)
-                        {
-                            nodeUseTopLeft.X = gridPos.X;
-                        }
-                        else if (gridPos.X > nodeUseBottomRight.X)
-                        { 
-                            nodeUseBottomRight.X = gridPos.X;
-                        }
+                            //add a node to open list
+                            DetailPathNode node = new DetailPathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
+                            open.Add(node);
 
-                        if (gridPos.Y < nodeUseTopLeft.Y)
-                        {
-                            nodeUseTopLeft.Y = gridPos.Y;
+                            nodeGrid[gridPos.X, gridPos.Y] = node;
+                            if (gridPos.X < nodeUseTopLeft.X)
+                            {
+                                nodeUseTopLeft.X = gridPos.X;
+                            }
+                            else if (gridPos.X > nodeUseBottomRight.X)
+                            {
+                                nodeUseBottomRight.X = gridPos.X;
+                            }
+
+                            if (gridPos.Y < nodeUseTopLeft.Y)
+                            {
+                                nodeUseTopLeft.Y = gridPos.Y;
+                            }
+                            else if (gridPos.Y > nodeUseBottomRight.Y)
+                            {
+                                nodeUseBottomRight.Y = gridPos.Y;
+                            }
                         }
-                        else if (gridPos.Y > nodeUseBottomRight.Y)
+                    }
+
+                    var lowValue = float.MaxValue;
+                    int lowIndex = -1;
+                    for (int i = 0; i < open.Count; i++)
+                    {
+                        if (open[i].Value < lowValue)
                         {
-                            nodeUseBottomRight.Y = gridPos.Y;
+                            lowValue = open[i].Value;
+                            lowIndex = i;
                         }
+                    }
+
+                    if (open.Count > 1)
+                    {
+                        currentNode = open[lowIndex];
+                        open.RemoveAt(lowIndex);
+                    }
+
+                    currentNode.closed = true;
+                    nodeGrid[currentNode.Position.X - area.pos.X, currentNode.Position.Y - area.pos.Y] = currentNode;
+
+                    if (currentNode.Position == goal)
+                    {
+                        break;
+                    }
+
+                    numLoops++;
+                    if (numLoops > 20000)
+                    {
+                        break;
                     }
                 }
 
-                var lowValue = float.MaxValue;
-                int lowIndex = -1;
-                for (int i = 0; i < open.Count; i++)
+                //List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
+
+                //const int MaxBacknodes = 1;
+                var path = DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetRes();
+                bool blocked = false;
+                int totalNodes = 0;
+
+                while (currentNode.Position != startNode.Position)
                 {
-                    if (open[i].Value < lowValue)
-                    {
-                        lowValue = open[i].Value;
-                        lowIndex = i;
-                    }
-                }
-
-                if (open.Count > 1)
-                {
-                    currentNode = open[lowIndex];
-                    open.RemoveAt(lowIndex);
-                }
-
-                currentNode.closed = true;
-                nodeGrid[currentNode.Position.X - area.pos.X, currentNode.Position.Y - area.pos.Y] = currentNode;
-
-                if (currentNode.Position == goal)
-                {
-                    break;
-                }
-
-                numLoops++;
-                if (numLoops > 20000)
-                {
-                    break;
-                }
-            }
-
-            //List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
-
-            //const int MaxBacknodes = 1;
-            var path = DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetRes();
-            bool blocked = false;
-            int totalNodes = 0;
-
-            while (currentNode.Position != startNode.Position)
-            {
-                //if (isTravelNode || currentNode.ship == startAsShip || currentNode.ship == endAsShip || totalNodes > MaxBacknodes)
-                //{
+                    //if (isTravelNode || currentNode.ship == startAsShip || currentNode.ship == endAsShip || totalNodes > MaxBacknodes)
+                    //{
                     path.nodes.Add(new DetailPathNodeResult(currentNode.Position, currentNode.ship));
 
                     totalNodes++;
                     if (totalNodes > MaxNodeLength)
                         throw new EndlessLoopException("");
-                //}
-                //else
-                //{
-                //    path.nodes.Clear();
-                //    blocked = true;
-                //}
+                    //}
+                    //else
+                    //{
+                    //    path.nodes.Clear();
+                    //    blocked = true;
+                    //}
 
-                IntVector2 pos = currentNode.PreviousPosition;
-                currentNode = nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];
+                    IntVector2 pos = currentNode.PreviousPosition;
+                    currentNode = nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];
+                }
+
+                path.init(goal, blocked);
+                return path;
+
+#if !DEBUG
             }
-                        
-            path.init(goal, blocked);
-            return path;
+            catch (Exception ex)
+            {
+                return null;
+            }
+#endif
         }
 
         public void recycle()

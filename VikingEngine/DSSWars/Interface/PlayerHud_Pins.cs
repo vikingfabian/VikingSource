@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public PlayerHud_Pins(LocalPlayer player)
         {
-            createMenu(player);
+            //createMenu(player);
         }
 
         public void createMenu(LocalPlayer player)
@@ -43,6 +43,9 @@ namespace VikingEngine.DSSWars.Interface
         /// <returns>need refresh</returns>
         public bool updateMouseInput(ref bool mouseOver)
         {
+            if (menu == null)
+                return false;
+
             bool mouseOverBg = false;
             menu.updateMouseInput(ref mouseOverBg);
             mouseOver |= menu.interaction?.hover != null;
@@ -51,6 +54,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void refreshUpdate(LocalPlayer player)
         {
+            createMenu(player);
+
             var content = new RichBoxContent();
             player.hud.pins.toHUD(player, content);
             menu.Refresh(content, player.gameControls.controllerPointer);

@@ -1326,7 +1326,10 @@ namespace VikingEngine.DSSWars.GameObject
                     var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, 
                         new RbAction(()=> 
                         {
-                            player.resourcesSubTab = stockpileLink;  
+                            if (player.tutorial == null)
+                            {
+                                player.resourcesSubTab = stockpileLink;
+                            }
                         }),                        
                         new RbTooltip((RichBoxContent content, object tag) =>
                         {

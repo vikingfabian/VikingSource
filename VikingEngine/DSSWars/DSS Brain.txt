@@ -1,7 +1,6 @@
 ﻿UPDATE
 Change Log:
-* fixed: capital letter on faction resources
-
+* DEMO BETA UPDATE - 344 "next fest demo patch 2"
 
 #Pics
 build building icon
@@ -45,6 +44,7 @@ x go fullscreen in langugage select screen
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning
 x save custom map, cant load, should save in user content folder
+x a player onboarding, extended tutorial
 
 -låt inte dread anfalla spelaren
 -lock camera on army

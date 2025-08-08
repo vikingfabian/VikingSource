@@ -50,8 +50,11 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override void cullingUpdate(bool bStateA, int playerIx)
         {
-            IntVector2 tilepos = WP.SubtileToTilePos(subTile);
-            model.Visible = DssRef.state.culling.InRender_Asynch(playerIx, bStateA, ref tilepos);
+            if (model != null)
+            {
+                IntVector2 tilepos = WP.SubtileToTilePos(subTile);
+                model.Visible = DssRef.state.culling.InRender_Asynch(playerIx, bStateA, ref tilepos);
+            }
         }
     }
 

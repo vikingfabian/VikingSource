@@ -517,16 +517,24 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 if (input.Build.DownEvent && map.hover.subTile.city.factionIndex == player.faction.myIndex)
                 {
-                    var order = player.orders.orderOnSubTile(map.hover.subTile.subTilePos) as BuildOrder;
-                    if (order != null)
+                    if (player.profile.casualControls)
                     {
-                        setBuildMode(map.hover.subTile.city, order.buildingType);
+                        selectAreaCity();
+                        player.cityTab = MenuTab.Casual_Build;
+                    }
+                    else
+                    {
+                        var order = player.orders.orderOnSubTile(map.hover.subTile.subTilePos) as BuildOrder;
+                        if (order != null)
+                        {
+                            setBuildMode(map.hover.subTile.city, order.buildingType);
+                            return;
+                        }
+
+                        var build = BuildLib.BuildTypeFromTerrain(map.hover.subTile.subTile.mainTerrain, map.hover.subTile.subTile.subTerrain);
+                        setBuildMode(map.hover.subTile.city, build);
                         return;
                     }
-
-                    var build = BuildLib.BuildTypeFromTerrain(map.hover.subTile.subTile.mainTerrain, map.hover.subTile.subTile.subTerrain);
-                    setBuildMode(map.hover.subTile.city, build);
-                    return;
                 }
 
                 bool inHotkeyRepeceptiveMenu = map.selection.obj != null &&

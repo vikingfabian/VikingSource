@@ -661,31 +661,31 @@ namespace VikingEngine.DSSWars
             RichBoxContent content = new RichBoxContent();
 #if DEBUG
 
-            //if (StartupSettings.CheatActive)
-            //{
-            //    content.text("! debug cheats !");
-            //}
-            //content.Button("start", new RbAction(startGame), null, true);
-            //content.Button("map editor", new RbAction(openMapEditor), null, true);
-            
-            //content.Button("battle lab", new RbAction(startBattleLab), null, true);
-            //content.Button("trial", new RbAction(startTrial), null, true);
-            //content.Button("cresh reports", new RbAction(Ref.steam.downloadCrashReports), null, true);
-            //if (Ref.steam.isInitialized)
-            //{
-            //    content.Button("wish", new RbAction(() =>
-            //        {
-            //            SteamAPI.SteamFriends().ActivateGameOverlayToStore(
-            //            3585100,
-            //            EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
-            //        }
-            //    ), null, true);
-            //}
+            if (StartupSettings.CheatActive)
+            {
+                content.text("! debug cheats !");
+            }
+            content.Button("start", new RbAction(startGame), null, true);
+            content.Button("map editor", new RbAction(openMapEditor), null, true);
 
-            //content.Button("crash", new RbAction(testCrash), null, true);
-        
-            //content.Button("Character creator", new RbAction(characterCreator), null, true);
-            //content.Button("Shader lab", new RbAction(shaderLab), null, true);
+            content.Button("battle lab", new RbAction(startBattleLab), null, true);
+            content.Button("trial", new RbAction(startTrial), null, true);
+            content.Button("cresh reports", new RbAction(Ref.steam.downloadCrashReports), null, true);
+            if (Ref.steam.isInitialized)
+            {
+                content.Button("wish", new RbAction(() =>
+                    {
+                        SteamAPI.SteamFriends().ActivateGameOverlayToStore(
+                        3585100,
+                        EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+                    }
+                ), null, true);
+            }
+
+            content.Button("crash", new RbAction(testCrash), null, true);
+
+            content.Button("Character creator", new RbAction(characterCreator), null, true);
+            content.Button("Shader lab", new RbAction(shaderLab), null, true);
 
 #endif
 
@@ -709,7 +709,7 @@ namespace VikingEngine.DSSWars
             //    content.Add(btn);
             //}
 
-           
+
             {
                 content.newLine();
 
@@ -940,7 +940,29 @@ namespace VikingEngine.DSSWars
         {
             //DssRef.storage.runTutorial_1short_2normal = 2;//bShort ? 1 : 2;
             //openUnderMenu(UnderMenu_PlayerSetup, StackOption.Stack);
-            DssRef.storage.runTutorial_1short_2normal = (casual || tutorial)? 2 : 0;
+
+            if (!casual)
+            {
+                if (tutorial)
+                {
+                    DssRef.storage.runTutorial_1short_2normal = 2;
+                }
+                else
+                {
+                    DssRef.storage.runTutorial_1short_2normal = 0;
+                    SaveStateMeta meta = new SaveStateMeta();
+                    meta.playmap = "demomap5";
+
+                    loadGame = meta;
+                }
+            }
+            else
+            {
+                //Casual
+                DssRef.storage.runTutorial_1short_2normal = 2;
+            }
+
+            //DssRef.storage.runTutorial_1short_2normal = (casual || tutorial)? 2 : 0;
             DssRef.storage.profileStorage.SetCasualToAll(casual);
 
             openPlayerSetupForMode( tutorial? StartGameMode.Tutorial : StartGameMode.Play);

@@ -44,7 +44,8 @@ namespace VikingEngine.Engine
         //public static System.Windows.Forms.Screen FormScreen = System.Windows.Forms.Screen.PrimaryScreen;
 #endif
         public static IntVector2 PcTargetResolution = new IntVector2(1280, 720);
-        public static bool PcTargetFullScreen = false;
+        public static bool PcTargetFullScreen = true;
+        public static bool BorderLessFullScreen = false;
         public static int RenderScalePerc = 100;
         public static RecordingPresets UseRecordingPreset = RecordingPresets.NumNon;
         public const int RecordingPresetAddPixelsCount = 8;
@@ -110,7 +111,7 @@ namespace VikingEngine.Engine
                     RenderScaleF = 1f;
                 }
 
-                applyBorderLessWindow(PcTargetFullScreen);
+                applyFullScreen(PcTargetFullScreen);
             }
             else
             { //Recording presets
@@ -135,7 +136,7 @@ namespace VikingEngine.Engine
                 }
                 RenderingResolution = MonitorTargetResolution;
 
-                applyBorderLessWindow(fullScreen);
+                applyFullScreen(fullScreen);
             }
 
             if (!PcTargetFullScreen)
@@ -186,6 +187,8 @@ namespace VikingEngine.Engine
             }
             ScreenIsReady = true;
             Ref.gamestate?.OnResolutionChange();
+
+            Engine.Draw.graphicsDeviceManager.ApplyChanges();
         }
 
         public static void SetupSplitScreen(int numPlayers, bool horizontalSplit)
@@ -227,12 +230,19 @@ namespace VikingEngine.Engine
             TextTitleScale = Graphics.AbsText.HeightToScale(TextTitleHeight, LoadedFont.Bold);
         }
 
-        static void applyBorderLessWindow(bool fullScreen)
+        static void applyFullScreen(bool fullScreen)
         {
             //Ref.main.Window.IsBorderless = fullScreen;
-
-            Engine.Draw.graphicsDeviceManager.HardwareModeSwitch = false;
-            Engine.Draw.graphicsDeviceManager.IsFullScreen = fullScreen;
+            if (BorderLessFullScreen)
+            {
+                Engine.Draw.graphicsDeviceManager.IsFullScreen = false;
+                Ref.main.Window.IsBorderless = fullScreen;
+            }
+            else
+            {
+                Engine.Draw.graphicsDeviceManager.HardwareModeSwitch = false;
+                Engine.Draw.graphicsDeviceManager.IsFullScreen = fullScreen;
+            }
             
             if (!fullScreen)
             {
