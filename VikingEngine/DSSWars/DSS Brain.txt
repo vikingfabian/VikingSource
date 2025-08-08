@@ -1,14 +1,6 @@
 ﻿UPDATE
 Change Log:
-* player units not rendering on others splitscreen
-* I added more info about work prio in the manual
-* fixed: can build on mines
-
-controller: 
-* made the controller menu pointer accelerate a bit slower, and it will only accelerate on straight moves
-* improved button help hud
-* input for select area city and camera tilt up
-* fixed: gets stuck on drag-value buttons
+* fixed: capital letter on faction resources
 
 
 #Pics
@@ -16,14 +8,14 @@ build building icon
 
 
 #must do#
-x capital letter on faction resources
 
+x translations
 
 
 x?? showing wrong resource tab in tutorial
 
 #Todo#
-x 
+x the ui scale might be overtuned, 0.5 feels more like 0.05
 X match casual to save
 x multiplayer is broken in battle lab
 x small map editor size crash
@@ -47,6 +39,8 @@ x god mode where you can edit all nations? Like giving money, spawning units, de
 x adjustable faction sizes in map editor
 x add pause all bulding button
 x faction setting for stockpile
+x OBS dont record fullscreen
+x go fullscreen in langugage select screen
 
 -Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
 x Declaring war needs warning
@@ -174,4 +168,3 @@ https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
 #Export
 cd VikingEngine
 dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
-

@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                 (status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
                                                 status.inProgress.training == TrainingLevel.Professional)
                                             {
-                                                DssRef.achieve.UnlockAchievement_async(AchievementIndex.elite_knights);
+                                                DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
                                             }
 
                                             switch (Culture)

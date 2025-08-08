@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Resource
 
             content.Add(new RbImage(ResourceLib.Icon(item)));
             content.space();
-            content.Add(new RbText(LangLib.Item(item) + ": "));
+            content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": "));
             content.Add(new RbTab(0.4f));
             content.Add(new RbText(TextLib.LargeNumber(prevCurrent)));
 

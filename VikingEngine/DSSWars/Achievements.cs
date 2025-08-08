@@ -227,9 +227,14 @@ namespace VikingEngine.DSSWars
         decorations,//t
 
         /// <summary>
-        /// Knights of Elite: Produce cavalry knights with the best armor and training
+        /// Knights: Produce cavalry knights
         /// </summary>
-        elite_knights,//t
+        knights,//t
+
+        /// <summary>
+        /// Knights of Lunimari: Produce an army with fully mithril equipped swordsmen and archers
+        /// </summary>
+        knights_of_lumini,
 
         /// <summary>
         /// All unit types: Own an army with all unit types
