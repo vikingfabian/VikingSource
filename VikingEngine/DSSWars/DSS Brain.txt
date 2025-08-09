@@ -1,20 +1,13 @@
 ﻿UPDATE
 Change Log:
-* Manual: Added video recording help
-* Removed build queue in settings
-* fixed faction missing gold ore
-* removed debug button on army
-* Translated all new strings
-* Russian has been manually spell checked and improved
-* Fixed crashing battle lab
-* added a time limit on animal sounds
-* goes fullscreen on language select
+* 
 
 #Pics
 build building icon
 Turkish, portugual flag
 
 #must do#
+xtutorial volume boost
 
 #Todo#
 x the ui scale might be overtuned, 0.5 feels more like 0.05
