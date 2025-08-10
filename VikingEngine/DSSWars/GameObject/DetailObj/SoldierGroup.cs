@@ -558,7 +558,8 @@ namespace VikingEngine.DSSWars.GameObject
             s.position = WP.ToWorldPos(area); //temp pos
             s.myIndex = soldiers.Add(s);
 
-            if (army.TryGetTarget(out var tArmy) && tArmy.inRender_detailLayer && models)
+            if (army != null && army.TryGetTarget(out var tArmy) && 
+                tArmy.inRender_detailLayer && models)
             {
                 s.setDetailLevel(true);
                 s.update(1f, true);

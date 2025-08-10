@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
 * fixed get soldier crash
+* fixed empty army reference crash 
 
 
 x removed scripted cohalition
