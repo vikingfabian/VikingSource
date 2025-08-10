@@ -69,7 +69,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool GetCasual()
         {
-            return DssRef.world.factions.Array[factionIndex].player.profile.casualControls;
+            //if (factionIndex > 0)
+            //{
+                return DssRef.world.factions.Array[factionIndex].player.profile.casualControls;
+            //}
+            //return false;
         }
 
         virtual public City GetCity() { return null; }

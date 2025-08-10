@@ -141,6 +141,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             void queuePlaceBuilding(BuildAndExpandType build)
             {
+                buildingStructure.addCount(build, 1);
                 DssRef.state.resources.editSubTilesActionQueue.Enqueue(new RbAction1Arg<BuildAndExpandType>(placeBuilding, build));
             }
 

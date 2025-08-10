@@ -381,8 +381,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (army == null)
             {
-                //IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
-
                 army = GetFaction().NewArmy(recruitToTile);
             }
 
@@ -401,7 +399,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 new SoldierGroup(army, soldierProfile, startPos);
             }
-            //army?.OnSoldierPurchaseCompleted();
+
             army.setAsStartArmy();
         }
 

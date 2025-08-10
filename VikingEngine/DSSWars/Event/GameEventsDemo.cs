@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Event
     class GameEventsDemo : EventManager
     {
 #if DEBUG
-        Time maxDemoTime = new Time(1f, TimeUnit.Minutes);
+        Time maxDemoTime = new Time(90f, TimeUnit.Minutes);
 #else
         Time maxDemoTime = new Time(90f, TimeUnit.Minutes);
 #endif

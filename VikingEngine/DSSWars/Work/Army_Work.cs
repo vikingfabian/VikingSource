@@ -39,24 +39,27 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_workUpdate(float seconds)
         {
-            bool casual = GetCasual();
-
-            if (seconds > 0)
+            if ( factionIndex >= 0)
             {
-                if (casual)
-                {
-                    goldUpkeepUpdate_async(seconds);
-                }
-                else
-                {
-                     foodUpkeepUpdate_async(seconds);
-                }
-            }
+                bool casual = GetCasual();
 
-            if (!casual && !inRender_detailLayer)
-            {
-                processAsynchWork(ref workerStatuses);
-            }           
+                if (seconds > 0)
+                {
+                    if (casual)
+                    {
+                        goldUpkeepUpdate_async(seconds);
+                    }
+                    else
+                    {
+                        foodUpkeepUpdate_async(seconds);
+                    }
+                }
+
+                if (!casual && !inRender_detailLayer)
+                {
+                    processAsynchWork(ref workerStatuses);
+                }
+            }        
         }
 
         void goldUpkeepUpdate_async(float seconds)

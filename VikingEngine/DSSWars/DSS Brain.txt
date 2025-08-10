@@ -2,12 +2,12 @@
 Change Log:
 * 
 
+
 #Pics
 build building icon
 Turkish, portugual flag
 
 #must do#
-
 
 #Todo#
 x guard to wall tutorial
@@ -22,6 +22,7 @@ x Archers are weirdly delayed
 x Should try prioritise towers for guards
 x Guard controls suck
 
+x casual missing some way to increase Diplomacy
 x Soldiers update their target too often (shaking)
 x all schools/postals/conscripts should have "set all to", and next/previous buttons. Plus +1 queue to all
 x copy paste city setups
