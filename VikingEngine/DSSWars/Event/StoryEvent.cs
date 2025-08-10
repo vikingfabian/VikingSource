@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Event
 {
@@ -80,7 +82,7 @@ namespace VikingEngine.DSSWars.Event
                             }));
 
 #endif
-                            calcAndRunEvent();
+                            calcAndRunEvent_async();
                             eventState = EventState.Done;
                         }
                         break;
@@ -90,7 +92,7 @@ namespace VikingEngine.DSSWars.Event
             return eventState == EventState.Done;
         }
 
-        virtual protected void calcAndRunEvent()
+        virtual protected void calcAndRunEvent_async()
         {
             //switch (nextEvent)
             //{
@@ -305,6 +307,162 @@ namespace VikingEngine.DSSWars.Event
             return EventsOrder.WarmanagerDelay;
         }
     }
+
+    class StoryEvent_Barbarians : AbsStoryEvent
+    {
+        List<int> attackCities = null;
+
+        public override EventType StoryEventType()
+        {
+            return Event.EventType.Barbarians;
+        }
+        public override void onStart()
+        {
+            init(
+                triggerTimeSpan_Minutes: new IntervalF(2f, 4f) * TimeExt.HourInMinutes,
+                nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 1f, DssConst.HeadCityStartMaxWorkForce * 2f));
+        }
+
+        protected override void calcAndRunEvent_async()
+        {
+            attackCities = new List<int>(8);
+
+            List<City> completedCities = new List<City>();
+
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                List<City> searchcities = p.faction.cities.toList();
+
+                int found = 0;
+                while (found < 3)
+                { 
+                    var check = arraylib.RandomListMemberPop(searchcities);
+                    foreach (var ncityIx in check.neighborCities)
+                    {
+                        if (!attackCities.Contains(ncityIx))
+                        { 
+                            var ncity_p = DssRef.world.cities[ncityIx];
+                            if (!completedCities.Contains(ncity_p) &&
+                                !searchcities.Contains(ncity_p))
+                            { 
+                                searchcities.Add(ncity_p);
+                            }
+                        }
+                    }
+
+                    if (check.factionIndex != p.faction.myIndex && 
+                        check.cityType < CityType.Capital &&
+                        DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
+                    {
+                        attackCities.Add(check.myIndex);
+                        found++;
+                    }
+                }
+            }
+
+            Ref.update.AddSyncAction(new SyncAction(() =>
+            {
+                foreach (var cityIx in attackCities)
+                {
+                    spawnBarbarians(DssRef.world.cities[cityIx]);
+                }
+
+                attackCities = null;
+            }));
+        }
+
+        void spawnBarbarians(City city)
+        {
+
+            ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
+            for (int radius = city.cityTileRadius - 2; radius > 1; ++radius)
+            {
+                loop.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                while (loop.Next())
+                {
+                    if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile) &&
+                        tile.IsLand())
+                    {
+                        //Available for spawn
+                        Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
+                        enemyFac.player.GetAiPlayer().armyAi_enabled = false;
+
+                        var barbarianArmy = enemyFac.NewArmy(loop.Position);
+                        {
+                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                            {
+                                conscript = new ConscriptProfile()
+                                {
+                                    weapon = Resource.ItemResourceType.ShortSword,
+                                    armorLevel = Resource.ItemResourceType.PaddedArmor,
+                                    training = TrainingLevel.Basic,
+                                    specialization = SpecializationType.Field,
+                                }
+                            };
+
+                            int rndCount = Ref.rnd.Int(3, 5) + (int)DssRef.difficulty.bossSize;
+                            for (int i = 0; i < rndCount; ++i)
+                            {
+                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                            }
+                        }
+                        {
+                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                            {
+                                conscript = new ConscriptProfile()
+                                {
+                                    weapon = Resource.ItemResourceType.ThrowingSpear,
+                                    armorLevel = Resource.ItemResourceType.NONE,
+                                    training = TrainingLevel.Minimal,
+                                    specialization = SpecializationType.Field,
+                                }
+                            };
+
+                            int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize;
+                            for (int i = 0; i < rndCount; ++i)
+                            {
+                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                            }
+                        }
+                        {
+                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                            {
+                                conscript = new ConscriptProfile()
+                                {
+                                    weapon = Resource.ItemResourceType.Crossbow,
+                                    armorLevel = Resource.ItemResourceType.NONE,
+                                    training = TrainingLevel.Basic,
+                                    specialization = SpecializationType.Field,
+                                }
+                            };
+
+                            int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize;
+                            for (int i = 0; i < rndCount; ++i)
+                            {
+                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                            }
+                        }
+                        barbarianArmy.refreshPositions(true);
+                        barbarianArmy.setAsStartArmy();
+
+                        return;
+                    }
+                }
+            }
+
+            throw new Exception("No enemy spawn");
+        }
+
+        public override bool RunWarManager()
+        {
+            return true;
+        }
+        public override int OrderIndex()
+        {
+            return EventsOrder.WarmanagerDelay;
+        }
+    }
+
     class StoryEvent_SouthShips : AbsStoryEvent
     {
         City[] playerMostSouthCity;
@@ -312,7 +470,7 @@ namespace VikingEngine.DSSWars.Event
 
         public override EventType StoryEventType()
         {
-            return Event.EventType.SouthShips;
+            return Event.EventType.Mercenaries;
         }
 
         public override void onStart()
@@ -338,7 +496,7 @@ namespace VikingEngine.DSSWars.Event
             time -= diff * 2f;
         }
 
-        protected override void calcAndRunEvent()
+        protected override void calcAndRunEvent_async()
         {
             calcSouthSpawn();
 
@@ -510,7 +668,7 @@ namespace VikingEngine.DSSWars.Event
 
         public override int OrderIndex()
         {
-            return EventsOrder.SouthShips;
+            return EventsOrder.Mercenaries;
         }
     }
 
@@ -518,7 +676,7 @@ namespace VikingEngine.DSSWars.Event
     {
         public override EventType StoryEventType()
         {
-            return Event.EventType.DarkLordWarning;
+            return Event.EventType.BossWarning;
         }
         public override void onStart()
         {
@@ -527,7 +685,7 @@ namespace VikingEngine.DSSWars.Event
              nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 4f, DssConst.HeadCityStartMaxWorkForce * 8f));
         }
 
-        protected override void calcAndRunEvent()
+        protected override void calcAndRunEvent_async()
         {
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
@@ -550,7 +708,7 @@ namespace VikingEngine.DSSWars.Event
 
         public override EventType StoryEventType()
         {
-            return Event.EventType.DarkLord;
+            return Event.EventType.Boss;
         }
         public override void onStart()
         {
@@ -607,7 +765,7 @@ namespace VikingEngine.DSSWars.Event
                 darkLordAvailableFactions = available;
             }
         }
-        protected override void calcAndRunEvent()
+        protected override void calcAndRunEvent_async()
         {
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
@@ -652,84 +810,84 @@ namespace VikingEngine.DSSWars.Event
         }
     }
 
-    class StoryEvent_Factories : AbsStoryEvent
-    {
-        public override EventType StoryEventType()
-        {
-            return Event.EventType.Factories;
-        }
+    //class StoryEvent_Factories : AbsStoryEvent
+    //{
+    //    public override EventType StoryEventType()
+    //    {
+    //        return Event.EventType.Factories;
+    //    }
 
-        protected override bool TimedEvent()
-        {
-            return false;
-        }
+    //    protected override bool TimedEvent()
+    //    {
+    //        return false;
+    //    }
 
-        public override int OrderIndex()
-        {
-            return EventsOrder.Factories;
-        }
-    }
+    //    public override int OrderIndex()
+    //    {
+    //        return EventsOrder.Factories;
+    //    }
+    //}
 
-    class StoryEvent_FactoriesDestroyed : AbsStoryEvent
-    {
-        public override EventType StoryEventType()
-        {
-            return Event.EventType.FactoriesDestroyed;
-        }
+    //class StoryEvent_FactoriesDestroyed : AbsStoryEvent
+    //{
+    //    public override EventType StoryEventType()
+    //    {
+    //        return Event.EventType.FactoriesDestroyed;
+    //    }
 
-        protected override bool TimedEvent()
-        {
-            return false;
-        }
+    //    protected override bool TimedEvent()
+    //    {
+    //        return false;
+    //    }
 
-        public override int OrderIndex()
-        {
-            return EventsOrder.FactoriesDestroyed;
-        }
-    }
+    //    public override int OrderIndex()
+    //    {
+    //        return EventsOrder.FactoriesDestroyed;
+    //    }
+    //}
 
-    class StoryEvent_DarkLordInPerson : AbsStoryEvent
-    {
-        public override EventType StoryEventType()
-        {
-            return Event.EventType.DarkLordInPerson;
-        }
-        protected override bool TimedEvent()
-        {
-            return false;
-        }
-        public override int OrderIndex()
-        {
-            return EventsOrder.DarkLordInPerson;
-        }
-    }
-    class StoryEvent_KillTheDarkLord : AbsStoryEvent
-    {
-        public override EventType StoryEventType()
-        {
-            return Event.EventType.KillTheDarkLord;
-        }
+    //class StoryEvent_DarkLordInPerson : AbsStoryEvent
+    //{
+    //    public override EventType StoryEventType()
+    //    {
+    //        return Event.EventType.DarkLordInPerson;
+    //    }
+    //    protected override bool TimedEvent()
+    //    {
+    //        return false;
+    //    }
+    //    public override int OrderIndex()
+    //    {
+    //        return EventsOrder.DarkLordInPerson;
+    //    }
+    //}
+    //class StoryEvent_KillTheDarkLord : AbsStoryEvent
+    //{
+    //    public override EventType StoryEventType()
+    //    {
+    //        return Event.EventType.KillTheDarkLord;
+    //    }
 
-        public override void onStart()
-        {
-            Ref.update.AddSyncAction(new SyncAction(() =>
-            {
-                foreach (var p in DssRef.state.localPlayers)
-                {
-                    p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
-                }
-            }));
-        }
+    //    public override void onStart()
+    //    {
+    //        Ref.update.AddSyncAction(new SyncAction(() =>
+    //        {
+    //            foreach (var p in DssRef.state.localPlayers)
+    //            {
+    //                p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
+    //            }
+    //        }));
+    //    }
 
-        protected override bool TimedEvent()
-        {
-            return false;
-        }
-        public override int OrderIndex()
-        {
-            return EventsOrder.KillTheDarkLord;
-        }
-    }
+    //    protected override bool TimedEvent()
+    //    {
+    //        return false;
+    //    }
+    //    public override int OrderIndex()
+    //    {
+    //        return EventsOrder.KillTheDarkLord;
+    //    }
+    //}
 
     static class EventsOrder
     {
@@ -737,13 +895,14 @@ namespace VikingEngine.DSSWars.Event
         public const int AiDelay = 1;
         public const int AiWarDelay = 2;
         public const int WarmanagerDelay = 3;
-        public const int SouthShips = 4;
-        public const int DarkLordWarning = 5;
-        public const int DarkLord = 6;
-        public const int Factories = 7;
-        public const int FactoriesDestroyed = 8;
-        public const int DarkLordInPerson = 9;
-        public const int KillTheDarkLord = 10;
+        public const int Barbarians = 4;
+        public const int Mercenaries = 5;
+        public const int DarkLordWarning = 6;
+        public const int DarkLord = 7;
+        //public const int Factories = 7;
+        //public const int FactoriesDestroyed = 8;
+        //public const int DarkLordInPerson = 9;
+        //public const int KillTheDarkLord = 10;
 
         public const int StoryEnd = 100;
     }
@@ -756,13 +915,12 @@ namespace VikingEngine.DSSWars.Event
         AiDelay,
         AiWarDelay,
         WarmanagerDelay,
-        SouthShips,
-        DarkLordWarning,
-        DarkLord,
-        Factories,
-        FactoriesDestroyed,
-        DarkLordInPerson,
-        KillTheDarkLord,
+        
+        Barbarians,
+        Mercenaries,
+        BossWarning,
+        Boss,
+        //Horde,
     }
 
     enum EventState

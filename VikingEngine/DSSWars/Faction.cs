@@ -519,7 +519,7 @@ namespace VikingEngine.DSSWars
             if (armies.Count == 0 && cities.Count == 0)
             {
                 bool protectedFaction = factiontype == FactionType.DarkLord ||
-                    (factiontype == FactionType.SouthHara && DssRef.state.events.StoryIndex() < EventsOrder.SouthShips);
+                    (factiontype == FactionType.SouthHara && DssRef.state.events.StoryIndex() < EventsOrder.Mercenaries);
                                     
                 if (!protectedFaction)
                 {

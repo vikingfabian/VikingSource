@@ -151,10 +151,12 @@ namespace VikingEngine.DSSWars.Event
                     {
                         addStoryEvent(new List<AbsStoryEvent>
                         {
+                            new stor(),
+                            new StoryEvent_SouthShips(),
                             new StoryEvent_SouthShips(),
                             new StoryEvent_DarkLordWarning(),
                             new StoryEvent_DarkLord(),
-                            new StoryEvent_Factories(),
+                            //new StoryEvent_Factories(),
                             //new StoryEvent_FactoriesDestroyed(),
                         }, false);
                     }
@@ -785,11 +787,11 @@ namespace VikingEngine.DSSWars.Event
                     return new StoryEvent_AiWarDelay();
                 case EventType.WarmanagerDelay:
                     return new StoryEvent_WarmanagerDelay();
-                case EventType.SouthShips:
+                case EventType.Mercenaries:
                     return new StoryEvent_SouthShips();
-                case EventType.DarkLordWarning:
+                case EventType.BossWarning:
                     return new StoryEvent_DarkLordWarning();
-                case EventType.DarkLord:
+                case EventType.Boss:
                     return new StoryEvent_DarkLord();
                 case EventType.Factories:
                     return new StoryEvent_Factories();

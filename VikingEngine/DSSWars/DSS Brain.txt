@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
+* Added story mode
+* Barbarian event in story mode
 
 
 #Pics
