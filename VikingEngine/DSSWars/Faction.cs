@@ -454,7 +454,7 @@ namespace VikingEngine.DSSWars
 
             //double tax = citiesEconomy.tax(null);
             double incomeMultiplier = 1;
-            if (player.IsAi())
+            if (player.IsBot())
             {
                 if (DssRef.state.events.RunAi() == false)
                 {
@@ -932,8 +932,7 @@ namespace VikingEngine.DSSWars
                     catch (Exception ex)
                     {
                         BlueScreen.ThreadException = ex;
-                    }
-                    
+                    }                    
                 }
             );
         }
@@ -1142,10 +1141,43 @@ namespace VikingEngine.DSSWars
             return opponents;
         }
 
+
+        /// <returns>Combined strength of allied nations (myself not included)</returns>
+        public float CollectAllianceStrength()
+        {
+            float result = 0;
+
+            for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
+            {
+                if (diplomaticRelations[relIx] != null &&
+                    relIx != myIndex &&
+                   diplomaticRelations[relIx].Relation >= RelationType.RelationType3_Ally)
+                {
+                    var ally = DssRef.world.factions.GetIndex_Safe(relIx);
+                    if (ally != null)
+                    {
+                        result += ally.militaryStrength;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public float MyPlusAllianceStrengthValue()
+        {
+            return militaryStrength + CollectAllianceStrength() * 0.5f;
+        }
+
         public bool WantToAllyAgainstDark()
         {
             return diplomaticSide == DiplomaticSide.Light &&
                 DssRef.state.events.StoryIndex() >= EventsOrder.DarkLord;
+        }
+
+        public bool SameOrNeutralSide(DiplomaticSide otherFaction)
+        {
+            return this.diplomaticSide == DiplomaticSide.None || otherFaction == DiplomaticSide.None || diplomaticSide == otherFaction;
         }
         
         //public override Faction GetFaction()

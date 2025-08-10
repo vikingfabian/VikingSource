@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void onPlayerNeighborCapture(LocalPlayer player)
         {
-            if (player.IsAi())
+            if (player.IsBot())
             {
                 if (ignorePlayerCapture)
                     return;
@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Players
 
         abstract public bool IsLocal { get; }
 
-        abstract public bool IsAi();
+        abstract public bool IsBot();
 
         abstract public bool IsLocalPlayer();
 

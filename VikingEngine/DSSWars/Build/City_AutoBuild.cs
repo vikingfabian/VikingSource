@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.GameObject
                         AutoBuildList.Add(safeGuardBuild);
                     }
                 }
-                else if (player.IsAi())
+                else if (player.IsBot())
                 {
                     var aiPlayer = player.GetAiPlayer();
                     automationFocus = AutomationFocus.NoFocus;

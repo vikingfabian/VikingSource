@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Players
 
         }
 
-        public override bool IsAi()
+        public override bool IsBot()
         {
             return false;
         }

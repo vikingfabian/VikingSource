@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         bool orderOutsidePlayerAttension(AbsMapObject target)
         {            
-            return target.GetPlayer().IsAi() &&
+            return target.GetPlayer().IsBot() &&
                 orderOutsidePlayerAttension(target.tilePos);
         }
 

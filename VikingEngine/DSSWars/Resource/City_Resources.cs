@@ -1149,7 +1149,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             if (Ref.peRnd.Chance(DssRef.difficulty.resourceMultiplyChance) &&
-                GetPlayer().IsAi())
+                GetPlayer().IsBot())
             {
                 if (DssRef.difficulty.resourceMultiplyDecrease)
                 {

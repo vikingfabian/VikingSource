@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newLine();
 
-                if (otherfaction.player.IsAi())
+                if (otherfaction.player.IsBot())
                 {
                     playerToAi();
                 }
@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.text(string.Format(DssRef.lang.Diplomacy_SpeakTermIs, Diplomacy.SpeakTermsString(selectedRelation.SpeakTerms)));
 
                 if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None &&
-                    faction.player.IsAi())
+                    faction.player.IsBot())
                 {
                     content.newParagraph();
                     if (selectedRelation.Relation <= RelationType.RelationTypeN3_War)

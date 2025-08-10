@@ -44,6 +44,11 @@ namespace VikingEngine
             return false;
         }
 
+        public static bool ContainsAny<T>(IEnumerable<T> source, IEnumerable<T> items)
+        {
+            return source.Any(items.Contains);
+        }
+
         public static bool HasDuplicatePointer<T>(List<T> list) where T : class
         {
             for (int i = 0; i < list.Count; ++i)

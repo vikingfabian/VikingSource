@@ -725,7 +725,7 @@ namespace VikingEngine.DSSWars.Event
                         var nCityFaction = ncity.GetFaction();
 
                         if (nCityFaction != faction &&
-                            nCityFaction.player.IsAi() &&
+                            nCityFaction.player.IsBot() &&
                             !factions.Contains(nCityFaction))
                         { 
                             factions.Add(nCityFaction);

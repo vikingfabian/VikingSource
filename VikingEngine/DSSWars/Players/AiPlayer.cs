@@ -47,6 +47,7 @@ namespace VikingEngine.DSSWars.Players
 
         public AiConscript aiConscript = AiConscript.Default;
         public bool armyAi_enabled = true;
+        protected int diplomacyPoints = 0;
 
         public override void writeGameState(BinaryWriter w)
         {
@@ -55,16 +56,17 @@ namespace VikingEngine.DSSWars.Players
             w.Write(IsPlayerNeighbor);
             w.Write((byte)aggressionLevel);
             w.Write(protectedPlayer);
-
+            w.Write(Bound.Byte(diplomacyPoints));
         }
         public override void readGameState(BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             base.readGameState(r, subversion, pointers);
 
             readAiPlayerGameState(r, subversion);
-            //IsPlayerNeighbor = r.ReadBoolean();
-            //aggressionLevel = r.ReadByte();
-            //protectedPlayer = r.ReadBoolean();
+            if (subversion >= 72)
+            {
+                diplomacyPoints = r.ReadByte();
+            }
         }
 
         
@@ -1210,15 +1212,16 @@ namespace VikingEngine.DSSWars.Players
         {
             base.oneSecUpdate();
             ignorePlayerCapture = false;
+            diplomacyPoints++;
         }
 
 
         override public void aiPlayerAsynchUpdate(float time)
         {
-            if (faction.factiontype == FactionType.SouthHara)
-            {
-                lib.DoNothing();
-            }
+            //if (faction.factiontype == FactionType.SouthHara)
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (StartupSettings.RunAI && nextDecisionTimer.CountDownGameTime(time))
             {
@@ -1241,7 +1244,7 @@ namespace VikingEngine.DSSWars.Players
                 
                 bool protect = Ref.peRnd.Chance(0.6);
 
-                var wars = DssRef.diplomacy.aiPlayerAsynchUpdate_collectWars(faction);
+                List<int> wars = DssRef.diplomacy.aiPlayerAsynchUpdate_collectWars(faction);
                 bool inWar = aggressionLevel >= AggressionLevel2_RandomAttacks ||
                     (aggressionLevel == AggressionLevel1_RevengeOnly && wars.Count > 0);
 
@@ -1271,17 +1274,105 @@ namespace VikingEngine.DSSWars.Players
                     searchAttackTarget(wars);
                 }
                 
-
-                //async_buildUpCheck();
-
-                //Merge armies check
-
                 MergeArmiesCheck();
 
                 decisionTimerSizeCheck();
 
+                //diplomacyCheck(wars);
             }
         }
+
+        void diplomacyCheck(List<int> wars)
+        {
+            if (diplomacyPoints >= 30)
+            {
+                diplomacyPoints = 0;
+
+                if (Ref.peRnd.Chance(0.1))
+                {
+                    if (wars.Count > 0 && Ref.peRnd.Chance(0.8))
+                    {
+                        int rndEnemy = arraylib.RandomListMember(wars);
+
+                        Faction enemyFaction = DssRef.world.factions.GetIndex_Safe(rndEnemy);
+
+                        if (enemyFaction != null &&
+                            enemyFaction.MyPlusAllianceStrengthValue() * 1.5f > faction.MyPlusAllianceStrengthValue()) //Check threat level
+                        {
+                            findAlliances(enemyFaction, true);
+                        }
+                    }
+                    else if (aggressionLevel >= AggressionLevel2_RandomAttacks)
+                    {
+                        List<int> threats = DssRef.diplomacy.aiPlayerAsynchUpdate_collectThreats(faction, Ref.rnd.Float(2f, 6f));
+                        if (threats.Count > 0)
+                        {
+                            Faction enemyFaction = DssRef.world.factions.GetIndex_Safe(arraylib.RandomListMember(threats));
+
+                            findAlliances(enemyFaction, false);
+                        }
+                    }
+                }
+            }
+
+
+            void findAlliances(Faction enemyFaction, bool reasonWar)
+            {
+                DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Clear();
+
+                var factions = DssRef.world.factions.counter();
+                while (factions.Next())
+                {
+                    if (factions.sel != faction &&
+                        factions.sel.player.IsBot() )
+                    {
+                        var relation = DssRef.diplomacy.GetRelationType(this.faction, factions.sel);
+
+                        if (relation >= RelationType.RelationType0_Neutral &&
+                            relation < RelationType.RelationType3_Ally &&
+                            this.faction.SameOrNeutralSide(factions.sel.diplomaticSide) &&
+                            shareWarOrThreat(factions.sel, enemyFaction.myIndex))
+                        {
+                            DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Add(factions.CurrentIndex);
+                        }
+                    }
+                }
+
+                if (DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Count > 0)
+                {
+                    int newAlly = arraylib.RandomListMember(DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances);
+                    var allyFaction = DssRef.world.factions.GetIndex_Safe(newAlly);
+                    if (DssRef.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(faction, allyFaction))
+                    {
+                        DssRef.diplomacy.SetRelationType(faction, DssRef.world.factions.GetIndex_Safe(newAlly), RelationType.RelationType3_Ally).allyAgainst = enemyFaction.myIndex;
+
+#if DEBUG
+                        Ref.update.AddSyncAction(new SyncAction(() =>
+                        {
+                            DssRef.state.LocalHost().hud.messages.Add("Bot alliance", $"between {allyFaction.PlayerName} and {faction.PlayerName}, reason ({(reasonWar ? "share war" : "threat")})");
+                        }));
+#endif
+                    }
+                }
+            }
+
+            bool shareWarOrThreat(Faction maybeFriendFaction, int enemyFactionIx)
+            {
+                if (DssRef.diplomacy.aiPlayerAsynchUpdate_collectWars(maybeFriendFaction).Contains(enemyFactionIx))
+                {
+                    return true;
+                }
+
+                if (maybeFriendFaction.player.GetAiPlayer().aggressionLevel >= AggressionLevel2_RandomAttacks &&
+                    DssRef.diplomacy.aiPlayerAsynchUpdate_collectThreats(maybeFriendFaction).Contains(enemyFactionIx))
+                {
+                    return true;
+                }
+                
+                return false;
+            }
+        }
+
 
         void decisionTimerSizeCheck()
         {
@@ -2001,7 +2092,7 @@ namespace VikingEngine.DSSWars.Players
         }
 
         public override bool IsLocal => true;
-        public override bool IsAi()
+        public override bool IsBot()
         {
             return true;
         }

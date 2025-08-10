@@ -221,9 +221,13 @@ namespace VikingEngine.DSSWars.GameObject
                     if (soldierCount > 0)
                     {
                         createAllSoldiers(currentBuilder, soldierCount, models);
-                        if (DssRef.units.IsShip( currentBuilder))
+                        if (DssRef.units.IsShip(currentBuilder))
                         {
-                            FirstSoldier().health = shipHealth;
+                            var first = FirstSoldier();
+                            if (first != null)
+                            {
+                               first.health = shipHealth;
+                            }
                         }
                     }
                     else
