@@ -7,9 +7,10 @@ build building icon
 Turkish, portugual flag
 
 #must do#
-xtutorial volume boost
+
 
 #Todo#
+x guard to wall tutorial
 x the ui scale might be overtuned, 0.5 feels more like 0.05
 X match casual to save
 x multiplayer is broken in battle lab
@@ -22,7 +23,8 @@ x Should try prioritise towers for guards
 x Guard controls suck
 
 x Soldiers update their target too often (shaking)
-x all schools/postals should have "set all to", and next/previous buttons 
+x all schools/postals/conscripts should have "set all to", and next/previous buttons. Plus +1 queue to all
+x copy paste city setups
 
 x show connected research, next to experience overview types
 x describe work group count
