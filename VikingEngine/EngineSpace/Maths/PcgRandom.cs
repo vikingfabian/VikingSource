@@ -115,6 +115,8 @@ namespace VikingEngine
         {
             int result = (int)Uint((uint)exMax);
             if (result < 0) result = -result;
+            if (result == exMax) return exMax -1;
+            
             return result;
         }
 

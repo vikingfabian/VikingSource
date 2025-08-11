@@ -2,6 +2,7 @@
 Change Log:
 * fixed get soldier crash
 * fixed empty army reference crash 
+* Autobuild crash fix
 
 
 x removed scripted cohalition
@@ -176,3 +177,12 @@ https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
 #Export
 cd VikingEngine
 dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+
+#LINUX
+dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
+
+(högerklick i Publish "open git bash here")
+chmod +x VikingEngine
+
+tar -czf VikingEngine-linux-x64.tar.gz -C bin/Release/net8.0/linux-x64/publish .
+(hamnar i Repo\VikingSource\VikingEngine)
