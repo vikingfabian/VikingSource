@@ -1,17 +1,30 @@
 ﻿UPDATE
 Change Log:
-* fixed get soldier crash
-* fixed empty army reference crash 
-* Autobuild crash fix
+
+
 * Added story mode
 * Barbarian event in story mode
-
-
-x scripted cohalition only happens once in the story
+* scripted cohalition only happens once in the story
 * cpu players have diplomacy, and will seek alliances using a "my enemy's enemy" logic, happens when under threat by a bigger faction, or when attacking the same faction.
 * cpu alliances between a huge and small faction will make them join as one nation
 * alliances will break when their common enemy is gone
-x bots cannot drag players into more wars after alliance
+* some bots have "loner" and will avoid alliances
+* bots cannot drag players into more wars after alliance
+
+ x barbarian reward
+
+Event timers (are slightly random)
+- Ai delay: 8 minutes
+- Ai peace time: 15 min
+- War manager start: 20min
+- Barbarians: 3 hours
+- Mercenaries: 8 hours (total 12 hours by now)
+- The cohalition: 12 hours (or when the player grabs 5 to 7 cities)
+- Boss warning: 25 hours
+- Boss; 1 hour
+Plus the boss fight: about 10 hours
+(total: about 60 hours)
+
 
 #Pics
 build building icon

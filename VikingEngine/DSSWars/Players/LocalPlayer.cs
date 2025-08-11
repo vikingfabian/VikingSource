@@ -90,7 +90,8 @@ namespace VikingEngine.DSSWars.Players
         public bool viewArmyTagsOnMap = true;
         
         public int nextDominationSize;
-        public int dominationEvents = 0;
+        public bool cohalitionEvent = false;
+        public bool cohalitionWarning = false;
 
         static readonly Vector3 ThemeNorth_Blue = new Vector3(0f, 0f, 0.3f);
         static readonly Vector3 ThemeMid_Yellow = new Vector3(0.15f, 0.15f, 0);
@@ -351,7 +352,7 @@ namespace VikingEngine.DSSWars.Players
             w.Write(viewArmyTagsOnMap);
 
             w.Write((ushort)nextDominationSize);
-            w.Write((ushort)dominationEvents);
+            w.Write(cohalitionEvent);
 
 
             w.Write((ushort)pins.Count);
@@ -442,7 +443,14 @@ namespace VikingEngine.DSSWars.Players
             viewArmyTagsOnMap = r.ReadBoolean();
                         
             nextDominationSize = r.ReadUInt16();
-            dominationEvents = r.ReadUInt16();
+            if (subversion < 72)
+            {
+                r.ReadUInt16();
+            }
+            else
+            {
+                cohalitionEvent = r.ReadBoolean();
+            }
 
             if (subversion > 53)
             { 
@@ -800,14 +808,14 @@ namespace VikingEngine.DSSWars.Players
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
-                    battleLineUpTest2(true);
-                    //DssRef.state.events.TestNextEvent();
+                    //battleLineUpTest2(true);
+                    DssRef.state.events.TestNextEvent();
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
-                    battleLineUpTest2(false);
+                    //battleLineUpTest2(false);
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
                     //Debug.Log(tile.ToString());
@@ -861,7 +869,7 @@ namespace VikingEngine.DSSWars.Players
         {
             new GuiTextButton("Next event", "skip forward in the event timer", new GuiAction(new Action(DssRef.state.events.TestNextEvent) + DssRef.state.menuSystem.closeMenu), false, layout);
             new GuiTextButton("1000 resources", "add 1000 of all resources to all cities", new GuiAction(new Action(debugAddResources) + DssRef.state.menuSystem.closeMenu), false, layout);
-            new GuiTextButton("Enemy alliance", "when the player grow to fast", new GuiAction(new Action(()=> { DssRef.state.events.collectAllianceAgainstPlayerDomination(this); }) + DssRef.state.menuSystem.closeMenu), false, layout);
+            //new GuiTextButton("Enemy alliance", "when the player grow to fast", new GuiAction(new Action(()=> { DssRef.state.events.collectAllianceAgainstPlayerDomination(this); }) + DssRef.state.menuSystem.closeMenu), false, layout);
 
             //UnitType[] unitTypes = DssLib.AvailableUnitTypes;
             //foreach (var type in unitTypes)

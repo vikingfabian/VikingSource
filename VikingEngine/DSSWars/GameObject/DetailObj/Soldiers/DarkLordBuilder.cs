@@ -8,49 +8,49 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Warships;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class DarkLordBuilder : ConscriptedSoldierBuilder
-    {
-        public DarkLordBuilder()
-        {
-            unitType = UnitType.DarkLord;
+    //class DarkLordBuilder : ConscriptedSoldierBuilder
+    //{
+    //    public DarkLordBuilder()
+    //    {
+    //        unitType = UnitType.DarkLord;
 
-            //modelScale = DssConst.Men_StandardModelScale;
-            boundRadius = DssVar.StandardBoundRadius;
+    //        //modelScale = DssConst.Men_StandardModelScale;
+    //        boundRadius = DssVar.StandardBoundRadius;
 
 
-            //walkingSpeed = DssConst.Men_StandardWalkingSpeed;
-            //rotationSpeed = SoldierGroupStandardRotatingSpeed;
-            targetSpotRange = StandardTargetSpotRange;
-            //data.attackRange = 0.02f;
-            //data.basehealth = DssConst.Soldier_DefaultHealth * 4;
-            //data.mainAttack = AttackType.Melee;
-            //data.attackDamage = 500;
-            //data.attackDamageStructure = data.attackDamage;
-            //data.attackDamageSea = data.attackDamage;
-            //data.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.5f;
-            //hasBannerMan = false;
-
-            
-            goldCost = 0;
+    //        //walkingSpeed = DssConst.Men_StandardWalkingSpeed;
+    //        //rotationSpeed = SoldierGroupStandardRotatingSpeed;
+    //        targetSpotRange = StandardTargetSpotRange;
+    //        //data.attackRange = 0.02f;
+    //        //data.basehealth = DssConst.Soldier_DefaultHealth * 4;
+    //        //data.mainAttack = AttackType.Melee;
+    //        //data.attackDamage = 500;
+    //        //data.attackDamageStructure = data.attackDamage;
+    //        //data.attackDamageSea = data.attackDamage;
+    //        //data.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.5f;
+    //        //hasBannerMan = false;
 
             
+    //        goldCost = 0;
+
+            
             
 
-            //data.modelName = LootFest.VoxelModelName.wars_darklord;
+    //        //data.modelName = LootFest.VoxelModelName.wars_darklord;
 
-            //description = DssRef.lang.UnitType_Description_DarkLord;
-        }
-        override public UnitType ShipType()
-        {
-            return UnitType.DarkLordWarship;
-        }
-        public override AbsSoldierUnit CreateUnit()
-        {
-            var unit = new DarkLord();
-            DssRef.settings.darkLordPlayer.darkLordUnit = unit;
-            return unit;
-        }
-    }
+    //        //description = DssRef.lang.UnitType_Description_DarkLord;
+    //    }
+    //    override public UnitType ShipType()
+    //    {
+    //        return UnitType.DarkLordWarship;
+    //    }
+    //    public override AbsSoldierUnit CreateUnit()
+    //    {
+    //        var unit = new DarkLord();
+    //        DssRef.settings.darkLordPlayer.darkLordUnit = unit;
+    //        return unit;
+    //    }
+    //}
 
     //class DarkLordWarshipData : KnightWarshipData
     //{
@@ -76,51 +76,51 @@ namespace VikingEngine.DSSWars.GameObject
     //    }
     //}
 
-    class DarkLordWarshipData : ConscriptedWarshipData
-    {
-        public DarkLordWarshipData() 
-            :base()
-        {
-            unitType = UnitType.DarkLordWarship;
-        }
+    //class DarkLordWarshipData : ConscriptedWarshipData
+    //{
+    //    public DarkLordWarshipData() 
+    //        :base()
+    //    {
+    //        unitType = UnitType.DarkLordWarship;
+    //    }
 
-        public override AbsSoldierUnit CreateUnit()
-        {
-            var unit = new DarkLordWarship();
-            DssRef.settings.darkLordPlayer.darkLordUnit = unit;
-            return unit;
-        }
-    }
+    //    public override AbsSoldierUnit CreateUnit()
+    //    {
+    //        var unit = new DarkLordWarship();
+    //        DssRef.settings.darkLordPlayer.darkLordUnit = unit;
+    //        return unit;
+    //    }
+    //}
 
-    class DarkLord : BaseSoldier
-    {
-        public DarkLord()
-            : base()
-        {
-            DssRef.state.events.onDarkLordSpawn();
-        }
+    //class DarkLord : BaseSoldier
+    //{
+    //    public DarkLord()
+    //        : base()
+    //    {
+    //        DssRef.state.events.onDarkLordSpawn();
+    //    }
 
-        public override void onDeath(bool fullUpdate, Faction enemyFaction)
-        {
-            base.onDeath(fullUpdate, enemyFaction);
+    //    public override void onDeath(bool fullUpdate, Faction enemyFaction)
+    //    {
+    //        base.onDeath(fullUpdate, enemyFaction);
 
-            Ref.update.AddSyncAction(new SyncAction(DssRef.state.events.onDarkLorDeath));
-        }
-    }
+    //        Ref.update.AddSyncAction(new SyncAction(DssRef.state.events.onDarkLorDeath));
+    //    }
+    //}
 
-    class DarkLordWarship : BaseWarship
-    {
-        public DarkLordWarship()
-            : base()
-        {
-        }
+    //class DarkLordWarship : BaseWarship
+    //{
+    //    public DarkLordWarship()
+    //        : base()
+    //    {
+    //    }
 
-        public override void onDeath(bool fullUpdate, Faction enemyFaction)
-        {
-            base.onDeath(fullUpdate, enemyFaction);
+    //    public override void onDeath(bool fullUpdate, Faction enemyFaction)
+    //    {
+    //        base.onDeath(fullUpdate, enemyFaction);
 
-            Ref.update.AddSyncAction(new SyncAction(DssRef.state.events.onDarkLorDeath));
-        }
-    }
+    //        Ref.update.AddSyncAction(new SyncAction(DssRef.state.events.onDarkLorDeath));
+    //    }
+    //}
 
 }

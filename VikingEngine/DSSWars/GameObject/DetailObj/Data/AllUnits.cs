@@ -35,8 +35,8 @@ namespace VikingEngine.DSSWars.GameObject
             add(new WarmachineProfile());
             add(new CavalryBuilder());
 
-            add(new DarkLordBuilder());
-            add(new DarkLordWarshipData());
+            //add(new DarkLordBuilder());
+            //add(new DarkLordWarshipData());
 
             add(new CityGuardSoldierBuilder());
            

@@ -1284,7 +1284,7 @@ namespace VikingEngine.DSSWars
 
         void newGameSettings2()
         {
-            //openUnderMenu();
+
             RichBoxContent content = new RichBoxContent();
             {
                 content.newLine();

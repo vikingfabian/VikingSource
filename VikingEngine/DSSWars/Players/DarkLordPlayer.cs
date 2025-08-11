@@ -222,34 +222,34 @@ namespace VikingEngine.DSSWars.Players
 
             takeOverFaction.mergeTo(faction);
 
-            if (factory && factoriesLeft > 0 && takeOverFaction.mainCity != null)
-            {
-                --factoriesLeft;
-                takeOverFaction.mainCity.setFactoryType(true);
-            }
+            //if (factory && factoriesLeft > 0 && takeOverFaction.mainCity != null)
+            //{
+            //    --factoriesLeft;
+            //    takeOverFaction.mainCity.setFactoryType(true);
+            //}
         }
 
-        protected override bool buySoldiers(City city, bool aggresive, bool commit)
-        {
-            bool result = base.buySoldiers(city, aggresive, commit);
+        //protected override bool buySoldiers(City city, bool aggresive, bool commit)
+        //{
+        //    bool result = base.buySoldiers(city, aggresive, commit);
 
-            if (commit && DssRef.state.events.CurrentEvent()?.StoryEventType() == EventType.DarkLordInPerson)
-            {
-                city.conscriptArmy(DssLib.SoldierProfile_HonorGuard.conscript, city.defaultConscriptPos(), 4);
+        //    //if (commit && DssRef.state.events.CurrentEvent()?.StoryEventType() == EventType.DarkLordInPerson)
+        //    //{
+        //    //    city.conscriptArmy(DssLib.SoldierProfile_HonorGuard.conscript, city.defaultConscriptPos(), 4);
 
-                ConscriptProfile profile = new ConscriptProfile();
-                profile.specialization = SpecializationType.DarkLord;
-                city.conscriptArmy(profile, city.defaultConscriptPos(), 1);
+        //    //    ConscriptProfile profile = new ConscriptProfile();
+        //    //    profile.specialization = SpecializationType.DarkLord;
+        //    //    city.conscriptArmy(profile, city.defaultConscriptPos(), 1);
 
-                DssRef.state.events.addStoryEvent(new List<AbsStoryEvent>
-                    {
-                        new StoryEvent_KillTheDarkLord()
-                    }, true);
-                //DssRef.state.events.nextEvent = EventType.KillTheDarkLord;
-            }
+        //    //    DssRef.state.events.addStoryEvent(new List<AbsStoryEvent>
+        //    //        {
+        //    //            new StoryEvent_KillTheDarkLord()
+        //    //        }, true);
+        //    //    //DssRef.state.events.nextEvent = EventType.KillTheDarkLord;
+        //    //}
 
-            return result;
-        }
+        //    return result;
+        //}
     }
 
 }

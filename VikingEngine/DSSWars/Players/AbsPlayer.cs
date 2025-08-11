@@ -24,8 +24,8 @@ namespace VikingEngine.DSSWars.Players
         public int aggressionLevel = AggressionLevel0_Passive;
         public bool protectedPlayer = false;
         protected bool ignorePlayerCapture = false;
+        public bool personality_loner = false;
 
-        //public List<AbsOrder> orders = new List<AbsOrder>();
         public Orders.Orders orders;
         abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
 
@@ -81,11 +81,22 @@ namespace VikingEngine.DSSWars.Players
 
         }
 
-        protected void readAiPlayerGameState(BinaryReader r, int version)
+        
+
+        protected void readAiPlayerGameState(BinaryReader r, int subversion)
         {
-            IsPlayerNeighbor = r.ReadBoolean();
-            aggressionLevel = r.ReadByte();
-            protectedPlayer = r.ReadBoolean();
+            if (subversion < 72)
+            {
+                IsPlayerNeighbor = r.ReadBoolean();
+                aggressionLevel = r.ReadByte();
+                protectedPlayer = r.ReadBoolean();
+            }
+            else
+            {
+                aggressionLevel = r.ReadByte();
+                var bools = new EightBit(r);
+                bools.Get(out IsPlayerNeighbor, out protectedPlayer, out personality_loner);
+            }
         }
 
         virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)

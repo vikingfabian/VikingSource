@@ -1436,9 +1436,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshVisualSize()
         {
-            if (cityType != CityType.Factory)
-            {
-                //CityType newType;
+            //if (cityType != CityType.Factory)
+            //{
+            //    //CityType newType;
 
                 //if (HousingCount_Workers >= DssConst.HeadCityStartMaxWorkForce)
                 //{
@@ -1460,46 +1460,46 @@ namespace VikingEngine.DSSWars.GameObject
                     overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
                 }
                 
-            }
+            //}
         }
 
-        public void setFactoryType(bool set)
-        {
-            if (set)
-            {
-                if (cityType != CityType.Factory)
-                {
-                    cityType = CityType.Factory;
+        //public void setFactoryType(bool set)
+        //{
+        //    if (set)
+        //    {
+        //        if (cityType != CityType.Factory)
+        //        {
+        //            cityType = CityType.Factory;
 
-                    HousingCount_Workers += DssConst.HeadCityStartMaxWorkForce;
-                    //detailObj.refreshModel();
+        //            HousingCount_Workers += DssConst.HeadCityStartMaxWorkForce;
+        //            //detailObj.refreshModel();
 
-                    if (overviewModel != null)
-                    {
-                        overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
-                    }
+        //            if (overviewModel != null)
+        //            {
+        //                overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
+        //            }
 
-                    DssRef.state.events.onFactoryBuilt(this);
-                }
-            }
-            else
-            {
-                if (cityType == CityType.Factory)
-                {
-                    cityType = CityType.Town;
+        //            DssRef.state.events.onFactoryBuilt(this);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (cityType == CityType.Factory)
+        //        {
+        //            cityType = CityType.Town;
 
-                    HousingCount_Workers -= DssConst.HeadCityStartMaxWorkForce;
-                    //detailObj.refreshModel();
+        //            HousingCount_Workers -= DssConst.HeadCityStartMaxWorkForce;
+        //            //detailObj.refreshModel();
 
-                    if (overviewModel != null)
-                    {
-                        overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
-                    }
+        //            if (overviewModel != null)
+        //            {
+        //                overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
+        //            }
 
-                    DssRef.state.events?.onFactoryDestroyed(this);
-                }
-            }
-        }
+        //            DssRef.state.events?.onFactoryDestroyed(this);
+        //        }
+        //    }
+        //}
 
         //public bool canBuyNobelHouse()
         //{
@@ -1572,8 +1572,8 @@ namespace VikingEngine.DSSWars.GameObject
                     return 1f;
                 default:
                     return 1.3f;
-                case CityType.Factory:
-                    return 1.5f;
+                //case CityType.Factory:
+                //    return 1.5f;
             }
         }
 
@@ -2669,24 +2669,24 @@ namespace VikingEngine.DSSWars.GameObject
                 //technologyHud(content, player);
 #endif
                 //if (!player.inTutorialMode)
-                {
-                    //Properties
-                    //if (nobelHouse)
-                    //{
-                    //    content.newLine();
-                    //    HudLib.BulletPoint(content);
-                    //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
-                    //}
+                //{
+                //    //Properties
+                //    //if (nobelHouse)
+                //    //{
+                //    //    content.newLine();
+                //    //    HudLib.BulletPoint(content);
+                //    //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
+                //    //}
 
-                    if (cityType == CityType.Factory)
-                    {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbImage(SpriteName.WarsFactoryIcon));
-                        content.Add(new RbText(DssRef.lang.Building_DarkFactory));
+                //    if (cityType == CityType.Factory)
+                //    {
+                //        content.newLine();
+                //        HudLib.BulletPoint(content);
+                //        content.Add(new RbImage(SpriteName.WarsFactoryIcon));
+                //        content.Add(new RbText(DssRef.lang.Building_DarkFactory));
 
-                    }
-                }
+                //    }
+                //}
             }
 
             
@@ -3016,11 +3016,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                 //detailObj?.onNewOwner();
 
-                if (cityType == CityType.Factory && newFaction.factiontype != FactionType.DarkLord)
-                {
-                    setFactoryType(false);
-                }
-                else if (overviewModel != null)
+                //if (cityType == CityType.Factory && newFaction.factiontype != FactionType.DarkLord)
+                //{
+                //    setFactoryType(false);
+                //}
+                //else 
+                if (overviewModel != null)
                 {
                     Ref.update.AddSyncAction(new SyncAction(createOverViewModel));
                     //createOverViewModel();
@@ -3311,7 +3312,7 @@ namespace VikingEngine.DSSWars.GameObject
         Village,
         Town,
         Capital,
-        Factory,
+        //Factory,
         NUM
     }
 }

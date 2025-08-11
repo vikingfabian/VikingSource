@@ -95,7 +95,18 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public bool InplayerAlliance(Faction aifaction)
+        {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (GetRelationType(p.faction, aifaction) >= RelationType.RelationType3_Ally)
+                { 
+                    return true;
+                }
+            }
 
+            return false;
+        }
 
         public List<int> aiPlayerAsynchUpdate_collectWars(Faction aifaction)
         {

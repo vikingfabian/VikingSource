@@ -92,18 +92,11 @@ namespace VikingEngine.DSSWars.Event
             return eventState == EventState.Done;
         }
 
+        /// <summary>
+        /// The timer is out and the event is finally fired off
+        /// </summary>
         virtual protected void calcAndRunEvent_async()
         {
-            //switch (nextEvent)
-            //{
-            //    case EventType.SouthShips:
-            //        {
-            //            calcSouthSpawn();
-            //        }
-            //        break;
-            //}
-
-            //Ref.update.AddSyncAction(new SyncAction1Arg<EventType>(RunNextEvent_synced, nextEvent));
         }
 
 
@@ -310,7 +303,7 @@ namespace VikingEngine.DSSWars.Event
 
     class StoryEvent_Barbarians : AbsStoryEvent
     {
-        List<int> attackCities = null;
+        //List<int> attackCities = null;
 
         public override EventType StoryEventType()
         {
@@ -325,7 +318,7 @@ namespace VikingEngine.DSSWars.Event
 
         protected override void calcAndRunEvent_async()
         {
-            attackCities = new List<int>(8);
+            var attackCities = new List<int>(8);
 
             List<City> completedCities = new List<City>();
 
@@ -350,7 +343,7 @@ namespace VikingEngine.DSSWars.Event
                         }
                     }
 
-                    if (check.factionIndex != p.faction.myIndex && 
+                    if (check.GetPlayer().IsBot() && 
                         check.cityType < CityType.Capital &&
                         DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
                     {
@@ -362,6 +355,11 @@ namespace VikingEngine.DSSWars.Event
 
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.hud.messages.Add(DssRef.todoLang.EventMessage_Event_Title, DssRef.todoLang.EventMessage_DarkHorde);
+                }
+
                 foreach (var cityIx in attackCities)
                 {
                     spawnBarbarians(DssRef.world.cities[cityIx]);
@@ -373,7 +371,6 @@ namespace VikingEngine.DSSWars.Event
 
         void spawnBarbarians(City city)
         {
-
             ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
             for (int radius = city.cityTileRadius - 2; radius > 1; ++radius)
             {
@@ -385,8 +382,7 @@ namespace VikingEngine.DSSWars.Event
                     {
                         //Available for spawn
                         Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
-                        enemyFac.player.GetAiPlayer().armyAi_enabled = false;
-
+                        
                         var barbarianArmy = enemyFac.NewArmy(loop.Position);
                         {
                             SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
@@ -400,7 +396,7 @@ namespace VikingEngine.DSSWars.Event
                                 }
                             };
 
-                            int rndCount = Ref.rnd.Int(3, 5) + (int)DssRef.difficulty.bossSize;
+                            int rndCount = Ref.rnd.Int(3, 5) + (int)DssRef.difficulty.bossSize *2;
                             for (int i = 0; i < rndCount; ++i)
                             {
                                 new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
@@ -418,7 +414,7 @@ namespace VikingEngine.DSSWars.Event
                                 }
                             };
 
-                            int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize;
+                            int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize * 2;
                             for (int i = 0; i < rndCount; ++i)
                             {
                                 new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
@@ -436,7 +432,7 @@ namespace VikingEngine.DSSWars.Event
                                 }
                             };
 
-                            int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize;
+                            int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize * 2;
                             for (int i = 0; i < rndCount; ++i)
                             {
                                 new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
@@ -463,7 +459,7 @@ namespace VikingEngine.DSSWars.Event
         }
     }
 
-    class StoryEvent_SouthShips : AbsStoryEvent
+    class StoryEvent_Mercenaries : AbsStoryEvent
     {
         City[] playerMostSouthCity;
         IntVector2[] spawnPos_Player;
@@ -476,7 +472,7 @@ namespace VikingEngine.DSSWars.Event
         public override void onStart()
         {
            init(
-            triggerTimeSpan_Minutes: new IntervalF(3.6f, 4.5f) * TimeExt.HourInMinutes,
+            triggerTimeSpan_Minutes: new IntervalF(7.6f, 8.5f) * TimeExt.HourInMinutes,
             nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 2f, DssConst.HeadCityStartMaxWorkForce * 4f));
         }
 
@@ -669,6 +665,240 @@ namespace VikingEngine.DSSWars.Event
         public override int OrderIndex()
         {
             return EventsOrder.Mercenaries;
+        }
+    }
+
+    class StoryEvent_Cohalition : AbsStoryEvent
+    {
+        public override void onStart()
+        {
+            base.onStart();
+
+            triggerTime.start(TimeLength.FromHours(Ref.rnd.Float(10.5f, 14f)));
+
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (p.faction.cities.Count >= p.nextDominationSize)
+                {
+                    p.nextDominationSize = p.faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+                }
+            }
+        }
+
+        public override bool asyncUpdate(float time)
+        {   
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (!p.cohalitionEvent)
+                {
+                    if (p.faction.cities.Count >= p.nextDominationSize)
+                    {
+                        collectAllianceAgainstPlayerDomination(p);
+                    }
+                    else if (!p.cohalitionWarning && p.faction.cities.Count >= p.nextDominationSize - 3)
+                    {
+                        cohalitionWarning(p);
+                    }
+                }
+            }
+
+            if (triggerTime.TimeOut())
+            {
+#if DEBUG
+                Ref.update.AddSyncAction(new SyncAction(() =>
+                {
+                    DssRef.state.localPlayers[0].hud.messages.Add(
+                        "Event Trigger", StoryEventType().ToString());
+                }));
+
+#endif
+                //calcAndRunEvent_async();
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    if (p.faction.cities.Count >= p.nextDominationSize)
+                    {
+                        if (!p.cohalitionEvent)
+                        {
+                            cohalitionWarning(p);
+                            collectAllianceAgainstPlayerDomination(p);
+                        }
+                    }
+                }
+                eventState = EventState.Done;
+            }
+
+            return eventState == EventState.Done;
+        }
+
+        void cohalitionWarning(LocalPlayer player)
+        {
+            player.cohalitionWarning = true;
+
+            Ref.update.AddSyncAction(new SyncAction(() =>
+            {
+                player.hud.messages.Add(DssRef.lang.EventMessage_EnemyAlliance_Title, DssRef.lang.EventMessage_EnemyAlliance);
+            }));
+        }
+
+        void collectAllianceAgainstPlayerDomination(LocalPlayer player)
+        {
+            player.cohalitionEvent = true;
+
+            var neighbor = DssRef.state.events.findAttackingNeighborFaction(player.faction);
+
+            if (neighbor == null)
+            {
+                return;
+            }
+
+            List<Faction> attackers = new List<Faction>() { neighbor };
+            int totalSize = neighbor.totalWorkForce;
+            List<Faction> search = adjacentFactions(neighbor);
+            List<Faction> has_searched = new List<Faction>();
+
+            int maxLoops = 100;
+            while (--maxLoops > 0 && totalSize < player.faction.totalWorkForce * 1.5f)
+            {
+                if (search.Count > 0)
+                {
+                    var faction = arraylib.RandomListMemberPop(search);
+                    bool bHasSearched = has_searched.Contains(faction);
+
+                    if (!bHasSearched &&
+                        DssRef.state.events.factionMayStartWar(faction, player.faction) &&
+                        !attackers.Contains(faction))
+                    {
+                        attackers.Add(faction);
+                        totalSize += faction.totalWorkForce;
+                    }
+
+                    if (!bHasSearched)
+                    {
+                        has_searched.Add(faction);
+                    }
+                }
+                else
+                {
+                    foreach (var faction in has_searched)
+                    {
+                        search.AddRange(adjacentFactions(faction));
+                    }
+                }
+            }
+
+            Faction attackLeader = null;
+            //Create an alliance
+            foreach (var faction in attackers)
+            {
+                foreach (var other in attackers)
+                {
+                    if (other != faction)
+                    {
+                        DssRef.diplomacy.SetRelationType(faction, other, RelationType.RelationType3_Ally);
+                    }
+                }
+
+                DssRef.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN1_Enemies);
+
+
+                if (attackLeader == null || faction.militaryStrength > attackLeader.militaryStrength)
+                {
+                    attackLeader = faction;
+                }
+            }
+
+            //Prepare leader
+            attackers.Remove(attackLeader);
+            attackers.Insert(0, attackLeader);
+            DssRef.diplomacy.GetOrCreateRelation(attackLeader, player.faction).SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+            attackLeader.player.setAggression(Players.AbsPlayer.AggressionLevel1_RevengeOnly);
+
+            Ref.update.AddSyncAction(new SyncAction(() =>
+            {
+                var city = attackLeader.mainCity;
+
+                var meleeProfile = new ConscriptProfile()
+                {
+                    weapon = Resource.ItemResourceType.Pike,
+                    armorLevel = Resource.ItemResourceType.IronArmor,
+                    training = TrainingLevel.Basic,
+                    specialization = SpecializationType.Traditional,
+                };
+                var rangedProfile = new ConscriptProfile()
+                {
+                    weapon = Resource.ItemResourceType.Crossbow,
+                    armorLevel = Resource.ItemResourceType.PaddedArmor,
+                    training = TrainingLevel.Basic,
+                    specialization = SpecializationType.Traditional,
+                };
+
+                city.conscriptArmy(meleeProfile, city.defaultConscriptPos(), 3 + (int)DssRef.difficulty.bossSize);
+                city.conscriptArmy(rangedProfile, city.defaultConscriptPos(), 3 + (int)DssRef.difficulty.bossSize);
+
+                if (DssRef.difficulty.bossSize >= BossSize.Large)
+                {
+                    var cannonProfile = new ConscriptProfile()
+                    {
+                        weapon = Resource.ItemResourceType.ManCannonBronze,
+                        armorLevel = Resource.ItemResourceType.PaddedArmor,
+                        training = TrainingLevel.Basic,
+                        specialization = SpecializationType.Siege,
+                    };
+                    city.conscriptArmy(cannonProfile, city.defaultConscriptPos(), 1 + (int)DssRef.difficulty.bossSize);
+                }
+
+                //player.hud.messages.Add(DssRef.lang.EventMessage_EnemyAlliance_Title, DssRef.lang.EventMessage_EnemyAlliance);
+            }));
+
+            new Timer.TimedAction2ArgTrigger_InGame<List<Faction>, LocalPlayer>((attackers, player) =>
+            {
+                attackers.First().player.setAggression(Players.AbsPlayer.AggressionLevel3_FocusedAttacks);
+                foreach (var faction in attackers)
+                {
+                    faction.player.setMinimumAggression(Players.AbsPlayer.AggressionLevel2_RandomAttacks);
+                    DssRef.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN3_War);
+                }
+
+                player.hud.messages.Add(DssRef.todoLang.EventMessage_Event_Title, DssRef.todoLang.EventMessage_TheCohalition);
+            }, attackers, player, TimeExt.MinuteInSeconds * DssConst.DominationWarTimeDelay_Minutes.GetRandom());
+
+
+            List<Faction> adjacentFactions(Faction faction)
+            {
+                List<Faction> factions = new List<Faction>();
+                var citiesC = faction.cities.counter();
+                while (citiesC.Next())
+                {
+                    foreach (var n in citiesC.sel.neighborCities)
+                    {
+                        var ncity = DssRef.world.cities[n];
+                        var nCityFaction = ncity.GetFaction();
+
+                        if (nCityFaction != faction &&
+                            nCityFaction.player.IsBot() &&
+                            !factions.Contains(nCityFaction))
+                        {
+                            factions.Add(nCityFaction);
+                        }
+                    }
+                }
+
+                return factions;
+            }
+        }
+
+        public override void writeGameState(BinaryWriter w)
+        {
+            base.writeGameState(w);
+        }
+
+        public override int OrderIndex()
+        {
+            return EventsOrder.Cohalition;
+        }
+        public override EventType StoryEventType()
+        {
+            return EventType.Cohalition;
         }
     }
 
@@ -897,8 +1127,9 @@ namespace VikingEngine.DSSWars.Event
         public const int WarmanagerDelay = 3;
         public const int Barbarians = 4;
         public const int Mercenaries = 5;
-        public const int DarkLordWarning = 6;
-        public const int DarkLord = 7;
+        public const int Cohalition = 6;
+        public const int DarkLordWarning = 7;
+        public const int DarkLord = 8;
         //public const int Factories = 7;
         //public const int FactoriesDestroyed = 8;
         //public const int DarkLordInPerson = 9;
@@ -918,6 +1149,7 @@ namespace VikingEngine.DSSWars.Event
         
         Barbarians,
         Mercenaries,
+        Cohalition,
         BossWarning,
         Boss,
         //Horde,

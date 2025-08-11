@@ -302,6 +302,7 @@ namespace VikingEngine.DSSWars
 
         public static int Casual_Farm2TaxIncreasePercUnits_copp = 5;
         public static int Casual_Farm3TaxIncreasePercUnits_copp = 10;
+        
         //EVENTS
         public static Range DominationSizeIncrease = new Range(5, 7);
         public static IntervalF DominationWarTimeDelay_Minutes = new IntervalF(10, 20);

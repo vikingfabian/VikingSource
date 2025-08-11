@@ -251,7 +251,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     var citiesC = player.faction.cities.counter();
 
-                    for (CityType type = CityType.Factory; type >= CityType.Village; type--)
+                    for (CityType type = CityType.Capital; type >= CityType.Village; type--)
                     {
                         citiesC.Reset();
                         while (citiesC.Next())

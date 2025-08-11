@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Data
 
         static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200 };
         public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150 };
-        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
+        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
 
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
