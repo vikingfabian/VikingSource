@@ -5,9 +5,9 @@ Change Log:
 * Autobuild crash fix
 
 
-x removed scripted cohalition
+x scripted cohalition only happens once in the story
 * cpu players have diplomacy, and will seek alliances using a "my enemy's enemy" logic, happens when under threat by a bigger faction, or when attacking the same faction.
-x cpu alliances between a huge and small faction will make them join as one nation
+* cpu alliances between a huge and small faction will make them join as one nation
 * alliances will break when their common enemy is gone
 x bots cannot drag players into more wars after alliance
 

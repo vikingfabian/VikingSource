@@ -6,6 +6,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.XP;
+using VikingEngine.LootFest.Players;
 
 
 namespace VikingEngine.DSSWars.Players
@@ -1278,7 +1279,7 @@ namespace VikingEngine.DSSWars.Players
 
                 decisionTimerSizeCheck();
 
-                //diplomacyCheck(wars);
+                diplomacyCheck(wars);
             }
         }
 
@@ -1342,16 +1343,37 @@ namespace VikingEngine.DSSWars.Players
                 {
                     int newAlly = arraylib.RandomListMember(DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances);
                     var allyFaction = DssRef.world.factions.GetIndex_Safe(newAlly);
-                    if (DssRef.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(faction, allyFaction))
+                    if (allyFaction != null && DssRef.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(faction, allyFaction))
                     {
-                        DssRef.diplomacy.SetRelationType(faction, DssRef.world.factions.GetIndex_Safe(newAlly), RelationType.RelationType3_Ally).allyAgainst = enemyFaction.myIndex;
+                        const int TinyFaction = 2;
+                        const int LargeFaction = 8;
+
+                        if (allyFaction.cities.Count <= TinyFaction && faction.cities.Count >= LargeFaction)
+                        {
+
+                            allyFaction.mergeTo(faction);
+#if DEBUG
+                            //Ref.update.AddSyncAction(new SyncAction(() =>
+                            //{
+                            //    DssRef.state.LocalHost().hud.messages.Add("Bot merge", $"between {allyFaction.PlayerName} and {faction.PlayerName}, reason ({(reasonWar ? "share war" : "threat")})");
+                            //}));
+#endif
+                        }
+                        //else if (faction.cities.Count <= TinyFaction && allyFaction.cities.Count >= LargeFaction)
+                        //{
+
+                        //}
+                        else
+                        {
+                            DssRef.diplomacy.SetRelationType(faction, allyFaction, RelationType.RelationType3_Ally).allyAgainst = enemyFaction.myIndex;
 
 #if DEBUG
-                        Ref.update.AddSyncAction(new SyncAction(() =>
-                        {
-                            DssRef.state.LocalHost().hud.messages.Add("Bot alliance", $"between {allyFaction.PlayerName} and {faction.PlayerName}, reason ({(reasonWar ? "share war" : "threat")})");
-                        }));
+                            //Ref.update.AddSyncAction(new SyncAction(() =>
+                            //{
+                            //    DssRef.state.LocalHost().hud.messages.Add("Bot alliance", $"between {allyFaction.PlayerName} and {faction.PlayerName}, reason ({(reasonWar ? "share war" : "threat")})");
+                            //}));
 #endif
+                        }
                     }
                 }
             }
