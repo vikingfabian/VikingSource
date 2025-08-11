@@ -642,7 +642,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN2_Truce)
                     {
                         var opponent = faction.diplomaticRelations[relIx].opponent(faction);
-                        if (opponent.player.IsAi())
+                        if (opponent.player.IsBot())
                         {
                             ++warCount;
                             opposingSize += opponent.citiesEconomy.tax(null, out _);
@@ -1769,7 +1769,7 @@ namespace VikingEngine.DSSWars.Players
 
         public override bool IsLocal => true;
 
-        public override bool IsAi()
+        public override bool IsBot()
         {
             return false;
         }

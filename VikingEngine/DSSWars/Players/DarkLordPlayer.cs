@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Players
     {
         List<Faction> darkLordAllies;
         int maxDiplomacy;
-        int diplomacyPoints = 0;
+        
         bool hasEntered = false;
 
         public int factoriesLeft;

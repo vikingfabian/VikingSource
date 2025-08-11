@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             void execute()
             {
-                if ( GetPlayer().IsAi())
+                if ( GetPlayer().IsBot())
                 {
                     autoColumnWidth();
                 }

@@ -1,8 +1,17 @@
 ﻿UPDATE
 Change Log:
+* fixed get soldier crash
+* fixed empty army reference crash 
+* Autobuild crash fix
 * Added story mode
 * Barbarian event in story mode
 
+
+x scripted cohalition only happens once in the story
+* cpu players have diplomacy, and will seek alliances using a "my enemy's enemy" logic, happens when under threat by a bigger faction, or when attacking the same faction.
+* cpu alliances between a huge and small faction will make them join as one nation
+* alliances will break when their common enemy is gone
+x bots cannot drag players into more wars after alliance
 
 #Pics
 build building icon
@@ -170,3 +179,12 @@ https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
 #Export
 cd VikingEngine
 dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+
+#LINUX
+dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
+
+(högerklick i Publish "open git bash here")
+chmod +x VikingEngine
+
+tar -czf VikingEngine-linux-x64.tar.gz -C bin/Release/net8.0/linux-x64/publish .
+(hamnar i Repo\VikingSource\VikingEngine)
