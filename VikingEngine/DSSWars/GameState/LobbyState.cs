@@ -737,7 +737,7 @@ namespace VikingEngine.DSSWars
 
             HudLib.WishListButton(content);
 
-            if (true)
+            if (false)
             {
                 content.newParagraph();
 

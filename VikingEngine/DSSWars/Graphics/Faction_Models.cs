@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Text;
@@ -15,8 +16,8 @@ namespace VikingEngine.DSSWars
 {
     partial class Faction
     {
-        Dictionary<int, Graphics.VoxelModel> models_loaded =
-           new Dictionary<int, Graphics.VoxelModel>();
+        ConcurrentDictionary<int, Graphics.VoxelModel> models_loaded =
+           new ConcurrentDictionary<int, Graphics.VoxelModel>();
 
         List<int> processStarted = new List<int>(8);
 
@@ -105,7 +106,7 @@ namespace VikingEngine.DSSWars
                                 {
                                     if (!models_loaded.ContainsKey(id))
                                     {
-                                        models_loaded.Add(id, model);
+                                        models_loaded.TryAdd(id, model);
                                     }
                                 }
                             }
@@ -154,12 +155,6 @@ namespace VikingEngine.DSSWars
                     try
                     {
                         int numLoops = 0;
-//#if DEBUG
-//                        if (!DssRef.models.rawModels.ContainsKey(name))
-//                        {
-//                            lib.DoNothing();
-//                        }
-//#endif
                         var grid = DssRef.models.rawModels[name];
 
 
@@ -221,7 +216,7 @@ namespace VikingEngine.DSSWars
                 {
                     if (!models_loaded.ContainsKey((int)name))
                     {
-                        models_loaded.Add((int)name, model);
+                        models_loaded.TryAdd((int)name, model);
                     }
                 }
             }
@@ -242,155 +237,4 @@ namespace VikingEngine.DSSWars
         }
     }
 
-    //class FactionModelBuilder : Voxels.ModelBuilder
-    //{
-    //    static readonly IntVector3 TroopBannerStart = new IntVector3(4, 44, 2);
-    //    static readonly IntVector3 WavingFlagStart = new IntVector3(4, 44, 3);
-    //    static readonly IntVector3 WavingFlagStart_LargeFlag = new IntVector3(7, 39, 3);
-    //    static readonly IntVector3 HorseBannerStart = new IntVector3(3, 50, 0);
-    //    static readonly IntVector3 CityBannerStart = new IntVector3(6, 44, 0);
-    //    static readonly IntVector3 ArmyBannerStart = new IntVector3(1, 0, 1);
-    //    static readonly IntVector3 ArmyStandStart = new IntVector3(8, 32, 8);
-    //    static readonly IntVector3 ArmyShipStart = new IntVector3(8, 25, 8);
-    //    static readonly IntVector3 CityIconStart = new IntVector3(3, 2, 3);
-
-    //    //Faction faction;
-    //    //VoxelModelName name;
-
-    //    //public FactionModelBuilder(Faction faction, VoxelModelName name, VoxelObjGridDataAnimHD grid)
-    //    //   : base()
-    //    //{
-    //    //    this.faction = faction;
-    //    //    this.name = name;
-
-    //    //    VoxelObjGridDataAnimHD copy = grid.Clone();
-    //    //    copy.ReplaceMaterial(faction.profile.modelColorReplace);
-
-    //    //    switch (name)
-    //    //    {
-    //    //        case VoxelModelName.banner:
-    //    //            addFlagTexture(copy, TroopBannerStart, true);
-    //    //            break;
-    //    //        case VoxelModelName.horsebanner:
-    //    //            addFlagTexture(copy, HorseBannerStart, true);
-    //    //            break;
-    //    //        case VoxelModelName.citybanner:
-    //    //            addFlagTexture(copy, CityBannerStart, true);
-    //    //            break;
-    //    //        case VoxelModelName.armystand:
-    //    //            addFlagTexture(copy, ArmyStandStart, true);
-    //    //            break;
-    //    //        case VoxelModelName.armybanner:
-    //    //            addFlagTexture(copy, ArmyBannerStart, false);
-    //    //            break;
-    //    //        case VoxelModelName.cityicon:
-    //    //            addFlagTexture(copy, CityIconStart, false);
-    //    //            break;
-    //    //    }
-
-    //    //    var centerAdjust = grid.Frames[0].BottomCenterAdj();
-
-
-    //    //    buildVerticeDataHD(copy.Frames, centerAdjust);
-
-
-    //    //    new Timer.Action0ArgTrigger(synchedUpdate);            
-    //    //}
-
-    //    public Graphics.VoxelModel buildModel(Faction faction, VoxelModelName name, VoxelObjGridDataAnimHD grid)
-    //    {
-    //        //this.faction = faction;
-    //        //this.name = name;
-
-    //        VoxelObjGridDataAnimHD copy = grid.Clone();
-    //        copy.ReplaceMaterial(faction.flagProfile.modelColorReplace);
-            
-
-    //        switch (name)
-    //        {
-    //            case VoxelModelName.banner:
-    //                addFlagTexture(faction, copy, TroopBannerStart, true, 1);
-    //                addFlagTexture(faction, copy, TroopBannerStart, true, 2);
-    //                addFlagTexture(faction, copy, TroopBannerStart, true, 3);
-    //                break;
-    //            case VoxelModelName.wars_flag:
-    //                addFlagTexture(faction, copy, WavingFlagStart, true, 0);
-    //                addFlagTexture(faction, copy, WavingFlagStart, true, 1);
-
-    //                addFlagTexture(faction, copy, WavingFlagStart, true, 3);
-    //                addFlagTexture(faction, copy, WavingFlagStart, true, 4);
-    //                addFlagTexture(faction, copy, WavingFlagStart_LargeFlag, true, 5);
-
-    //                addFlagTexture(faction, copy, WavingFlagStart, true, 8);
-    //                break;
-    //            case VoxelModelName.horsebanner:
-    //                addFlagTexture(faction, copy, HorseBannerStart, true);
-    //                break;
-    //            case VoxelModelName.citybanner:
-    //                addFlagTexture(faction, copy, CityBannerStart, true);
-    //                break;
-    //            case VoxelModelName.armystand:
-    //                addFlagTexture(faction, copy, ArmyStandStart, true, 0);
-    //                addFlagTexture(faction, copy, ArmyShipStart, true, 1);
-    //                break;
-    //            case VoxelModelName.armystand_detail:
-    //                addFlagTexture(faction, copy, ArmyStandStart, true, 0);
-    //                break;
-    //            case VoxelModelName.armybanner:
-    //                addFlagTexture(faction, copy, ArmyBannerStart, false);
-    //                break;
-    //            case VoxelModelName.cityicon:
-    //                addFlagTexture(faction, copy, CityIconStart, false);
-    //                break;
-    //        }
-
-    //        var centerAdjust = grid.Frames[0].BottomCenterAdj();
-
-
-    //        buildVerticeDataHD_ColorNormal(copy.Frames, centerAdjust);
-
-    //        Graphics.VoxelModel model = modelFromVertices();
-
-    //        if (name == VoxelModelName.wars_flag)
-    //        {
-    //            model.Effect = FlagWaveEffect.GetSingletonSafe();
-    //        }
-
-    //        return model;
-    //    }
-    //    //void synchedUpdate()
-    //    //{
-    //    //    Graphics.VoxelModel model = modelFromVertices();
-
-    //    //    faction.onNewModel(name, model);
-    //    //}
-
-    //    void addFlagTexture(Faction faction, VoxelObjGridDataAnimHD grid, IntVector3 start, bool standing, int frame = 0)
-    //    {
-    //        if (faction.profile.blockColors != null)
-    //        {
-
-    //            var gridData = grid.Frames[frame];
-
-    //            var flagLoop = faction.profile.flagDesign.LoopInstance();
-    //            while (flagLoop.Next())
-    //            {
-    //                byte colId = faction.profile.flagDesign.Get(flagLoop.Position);
-    //                var blockCol = faction.profile.blockColors[colId];
-
-    //                IntVector3 gridPos = start;
-    //                gridPos.X += flagLoop.Position.X;
-    //                if (standing)
-    //                {
-    //                    gridPos.Y -= flagLoop.Position.Y; //inverted
-    //                }
-    //                else
-    //                {
-    //                    gridPos.Z += flagLoop.Position.Y;
-    //                }
-    //                gridData.Set(gridPos, blockCol);
-    //            }
-    //        }
-    //    }
-    //}
 }

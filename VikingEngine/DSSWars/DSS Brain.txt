@@ -3,7 +3,8 @@ Change Log:
 * fixed get soldier crash
 * fixed empty army reference crash 
 * Autobuild crash fix
-
+* fixed a rare multithread model process crash
+* removed battle trials mode
 
 x removed scripted cohalition
 * cpu players have diplomacy, and will seek alliances using a "my enemy's enemy" logic, happens when under threat by a bigger faction, or when attacking the same faction.
