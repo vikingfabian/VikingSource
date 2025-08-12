@@ -135,8 +135,8 @@ namespace VikingEngine
 
         public static readonly bool ReleaseBuild = DebugLevel > BuildDebugLevel.DebugDemo;
 
-        public static readonly bool SteamAPI =
-            DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_SteamAPI;
+        public static readonly bool SteamAPI = false;
+            //DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_SteamAPI;
 
 
         public static bool PlayMusic =
