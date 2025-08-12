@@ -12,6 +12,7 @@ Change Log:
 * bots cannot drag players into more wars after alliance
 
  x barbarian reward
+ x clean up microscopic factions
 
 Event timers (are slightly random)
 - Ai delay: 8 minutes

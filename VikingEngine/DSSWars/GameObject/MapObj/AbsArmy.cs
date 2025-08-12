@@ -5,6 +5,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Interface;
@@ -13,6 +14,8 @@ using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.GameObject
 {
+    
+
     abstract partial class AbsArmy : AbsMapObject
     {
         protected bool army_isIdle = true;
@@ -24,6 +27,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int soldiersCount = 0;
         public int mostCenterGroup = -1;
         public bool inBattle = false;
+        InBattleWith inBattleWith = new InBattleWith();
 
         public void AddSoldierGroup(SoldierGroup group)
         {
@@ -51,12 +55,21 @@ namespace VikingEngine.DSSWars.GameObject
         {
             int mostCenter = -1;
             float distanctToCenter = float.MaxValue;
+            InBattleWith battles;
+            if (inBattle)
+            {
+                battles = inBattleWith;
+                battles.groupsInBattle = 0;
+            }
+            else
+            {
+                battles = new InBattleWith();
+            }
 
-            int groupsInBattle = 0;
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
-                groupsC.sel.asyncBattleUpdate(ref groupsInBattle);
+                groupsC.sel.asyncBattleUpdate(ref battles);
                 float dist = (groupsC.sel.position - position).Length();
                 if (dist < distanctToCenter)
                 {
@@ -65,16 +78,18 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+            inBattleWith = battles;
             mostCenterGroup = mostCenter;
 
             if (inBattle)
             {
-                if (groupsInBattle == 0)
+                if (battles.groupsInBattle == 0)
                 {
+                    DssRef.state.events.onBattleEnd_async(this, inBattleWith);
                     inBattle = false;
                 }
             }
-            else if (groupsInBattle >= 2)
+            else if (battles.groupsInBattle >= 2)
             {
                 inBattle = true;
                 if (GetPlayer().IsLocalPlayer())

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;
 
@@ -291,6 +292,58 @@ namespace VikingEngine.DSSWars.Event
             //{
             //    Ref.TotalGameTimeSec = r.ReadSingle();
             //}
+        }
+
+        public void onBattleEnd_async(AbsArmy army, InBattleWith inBattleWith)
+        {
+            if (army.GetPlayer().IsLocalPlayer() &&
+                inBattleWith.ContainsFaction(DssRef.settings.Faction_Barbarian) && 
+                Bound.IsWithin(StoryIndex(), EventsOrder.Barbarians, EventsOrder.Barbarians +1))
+            {
+                army.GetPlayer().GetLocalPlayer().barbarianKiller = true;
+            }
+        }
+
+        public void onFactionDestroyed(Faction faction)
+        {
+            //Happens in one second update
+            if (faction.myIndex == DssRef.settings.Faction_Barbarian)
+            {
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    if (p.barbarianKiller)
+                    { 
+                        p.barbarianKiller = false;
+
+                        IntVector2 onTile = p.faction.mainCity.ArmySpawnTilePos();
+                        var mainArmy = p.faction.NewArmy(onTile);
+                        {
+                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                            {
+                                conscript = new ConscriptProfile()
+                                {
+                                    weapon = Resource.ItemResourceType.KnightsLance,
+                                    armorLevel = Resource.ItemResourceType.FullPlateArmor,
+                                    training = TrainingLevel.Champion,
+                                    specialization = SpecializationType.HonorGuard,
+                                }
+                            };
+
+                            for (int i = 0; i < 4; ++i)
+                            {
+                                new SoldierGroup(mainArmy, SoldierProfile, mainArmy.position);
+                            }
+                        }
+                        mainArmy.tagBack = CityTagBack.Blue;
+                        mainArmy.tagArt = ArmyTagArt.LevelMaster;
+                        mainArmy.setAsStartArmy();
+
+                        p.hud.messages.Add(DssRef.todoLang.EventMessage_DarkHordeKiller_Title, DssRef.todoLang.EventMessage_DarkHordeKiller_Message);
+                    }
+
+                    
+                }
+            }
         }
 
         //void prepareNext()

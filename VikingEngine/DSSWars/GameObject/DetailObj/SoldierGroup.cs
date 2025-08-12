@@ -1,22 +1,23 @@
 ﻿//#define VISUAL_NODES
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Interface;
-using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Command;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
@@ -1725,11 +1726,15 @@ namespace VikingEngine.DSSWars.GameObject
             isWalkingIntoOtherGroup = false;
         }
 
-        public void asyncBattleUpdate(ref int groupsInBattle)
+        public void asyncBattleUpdate(ref InBattleWith battles)
         {
             if (state == GroupState.Battle)
             {
-                groupsInBattle++;
+                battles.groupsInBattle++;
+                if (attackTarget_soldierGroupOrCity.TryGetTarget(out var tMapObj))
+                {
+                    battles.add(tMapObj.factionIndex);
+                }
             }
             
             var soldiers_sp = soldiers;        

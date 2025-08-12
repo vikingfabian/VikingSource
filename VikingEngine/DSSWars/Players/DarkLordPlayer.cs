@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Players
             //    Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
             //}
 
-            faction.money.copper = DssConst.HeadCityStartMaxWorkForce * 1000;
+            faction.money.copper = DssConst.HeadCityStartMaxWorkForce * 100000;
 
             this.darkLordAllies = darkLordAllies;
             Faction greenwood = DssRef.world.factions.Array[DssRef.settings.Faction_GreenWood];
@@ -140,6 +140,7 @@ namespace VikingEngine.DSSWars.Players
             diplomacyPoints /= 4;
 
             hasEntered = true;
+            protectedFromDelete = false;
         }
 
         //public override void Update()

@@ -90,6 +90,7 @@ namespace VikingEngine.DSSWars.Players
         public bool viewArmyTagsOnMap = true;
         
         public int nextDominationSize;
+        public bool barbarianKiller = false;
         public bool cohalitionEvent = false;
         public bool cohalitionWarning = false;
 
@@ -353,6 +354,7 @@ namespace VikingEngine.DSSWars.Players
 
             w.Write((ushort)nextDominationSize);
             w.Write(cohalitionEvent);
+            w.Write(barbarianKiller);
 
 
             w.Write((ushort)pins.Count);
@@ -450,6 +452,7 @@ namespace VikingEngine.DSSWars.Players
             else
             {
                 cohalitionEvent = r.ReadBoolean();
+                barbarianKiller = r.ReadBoolean();
             }
 
             if (subversion > 53)
@@ -592,7 +595,6 @@ namespace VikingEngine.DSSWars.Players
             if (faction.cities.Count > 0)
             {
                 IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
-
                 var mainArmy = faction.NewArmy(onTile);
                 mainArmy.tagBack = CityTagBack.Blue;
                 mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
@@ -815,7 +817,7 @@ namespace VikingEngine.DSSWars.Players
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
-                    //battleLineUpTest2(false);
+                    battleLineUpTest2(true);
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
                     //Debug.Log(tile.ToString());
@@ -1168,7 +1170,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 6; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -1185,7 +1187,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 8; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -1203,7 +1205,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 6; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -1221,7 +1223,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 8; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -1239,7 +1241,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 8; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }

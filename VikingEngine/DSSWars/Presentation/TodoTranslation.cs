@@ -16,6 +16,10 @@ namespace VikingEngine.DSSWars.Presentation
         public string EventMessage_TheCohalition => "The cohalition";
 
         public string EventMessage_DarkHorde => "Dark hordes";
+
+        public string EventMessage_DarkHordeKiller_Title => "Dark horde killer";
+        public string EventMessage_DarkHordeKiller_Message => "Champion knigts have joined your service";
+
     }
 
 }

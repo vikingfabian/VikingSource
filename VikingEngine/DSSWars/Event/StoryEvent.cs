@@ -559,6 +559,7 @@ namespace VikingEngine.DSSWars.Event
                 enemyFac.player.GetAiPlayer().nextDecisionTimer.MilliSeconds = float.MaxValue;
                 new SouthHaraStartAi(enemyFac);
 
+                enemyFac.player.protectedFromDelete = false;
                 //playerMostSouthCity = null;
                 //spawnPos_Player = null;
             }));
@@ -1002,9 +1003,6 @@ namespace VikingEngine.DSSWars.Event
                 if (arraylib.HasMembers(darkLordAvailableFactions))
                 {
                     DssRef.settings.darkLordPlayer.EnterMap(arraylib.RandomListMember(darkLordAvailableFactions), darkLordAllies);
-
-                    //darkLordAllies = null;
-                    //darkLordAvailableFactions = null;
 
                     var greenwood = DssRef.world.factions[DssRef.settings.Faction_GreenWood];
 

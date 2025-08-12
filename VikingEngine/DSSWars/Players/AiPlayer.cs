@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.Players
            //w.Write(IsPlayerNeighbor);
             w.Write((byte)aggressionLevel);
             //w.Write(protectedPlayer);  
-            var bools = new EightBit(IsPlayerNeighbor, protectedPlayer, personality_loner);
+            var bools = new EightBit(IsPlayerNeighbor, protectedPlayer, personality_loner, protectedFromDelete);
             bools.write(w);
 
             w.Write(Bound.Byte(diplomacyPoints));
@@ -431,6 +431,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_DarkLord;
                     faction.displayInFullOverview = true;
+                    protectedFromDelete = true;
 
                     techSetup();
                     faction.technology.advancedBuilding.points = TechnologyTemplate.FactionUnlock;
@@ -461,6 +462,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.diplomaticSide = DiplomaticSide.Dark;
 
                     DssRef.settings.Faction_Barbarian = faction.myIndex;
+                    protectedFromDelete = true;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_Barbarian;
@@ -557,6 +559,7 @@ namespace VikingEngine.DSSWars.Players
                     aiConscript = AiConscript.Orcs;
                     faction.diplomaticSide = DiplomaticSide.Dark;
                     DssRef.settings.Faction_SouthHara = faction.myIndex;
+                    protectedFromDelete = true;
 
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.1f;

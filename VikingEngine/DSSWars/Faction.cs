@@ -59,6 +59,7 @@ namespace VikingEngine.DSSWars
 
         public float militaryStrength = 0;
         public bool hasDeserters = true;
+        
 
         public XP.TechnologyTemplate technology;
 
@@ -518,10 +519,10 @@ namespace VikingEngine.DSSWars
 
             if (armies.Count == 0 && cities.Count == 0)
             {
-                bool protectedFaction = factiontype == FactionType.DarkLord ||
-                    (factiontype == FactionType.SouthHara && DssRef.state.events.StoryIndex() < EventsOrder.Mercenaries);
+                //bool protectedFaction = factiontype == FactionType.DarkLord ||
+                //    (factiontype == FactionType.SouthHara && DssRef.state.events.StoryIndex() < EventsOrder.Mercenaries);
                                     
-                if (!protectedFaction)
+                if (!player.protectedFromDelete)
                 {
                     DeleteMe();
                 }
@@ -1008,6 +1009,7 @@ namespace VikingEngine.DSSWars
             if (isAlive)
             {
                 isAlive = false;
+                DssRef.state.events.onFactionDestroyed(this);
                 DssRef.diplomacy.onFactionDeath(this);
 
                 if (factiontype == FactionType.Player)
