@@ -343,7 +343,9 @@ namespace VikingEngine.DSSWars.Event
                         }
                     }
 
-                    if (check.GetPlayer().IsBot() && 
+                    var player = check.GetPlayer();
+                    if (player.IsBot() &&
+                        player.faction.diplomaticSide != DiplomaticSide.Dark &&
                         check.cityType < CityType.Capital &&
                         DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
                     {
@@ -440,6 +442,8 @@ namespace VikingEngine.DSSWars.Event
                         }
                         barbarianArmy.refreshPositions(true);
                         barbarianArmy.setAsStartArmy();
+
+                        enemyFac.player.protectedFromDelete = false;
 
                         return;
                     }

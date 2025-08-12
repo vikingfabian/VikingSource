@@ -106,6 +106,7 @@ namespace VikingEngine.DSSWars
         public static float TrainingAttackSpeed_Basic = 1f;
         public static float TrainingAttackSpeed_Skillful = 1.5f;
         public static float TrainingAttackSpeed_Professional = 2f;
+        public static float TrainingAttackSpeed_Champion = 2.5f;
 
         public static float TrainingTimeSec_Minimal = 30;
         public static float TrainingTimeSec_Basic = 60;

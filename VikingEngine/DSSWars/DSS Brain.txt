@@ -10,8 +10,8 @@ Change Log:
 * alliances will break when their common enemy is gone
 * some bots have "loner" and will avoid alliances
 * bots cannot drag players into more wars after alliance
+* barbarian killer reward
 
- x barbarian reward
  x clean up microscopic factions
 
 Event timers (are slightly random)

@@ -448,86 +448,88 @@ namespace VikingEngine.DSSWars
 
         public void oneSecUpdate()
         {
-            CityTradeImport = CityTradeImportCounting;
-            CityTradeExport = CityTradeExportCounting;
-            CityTradeImportCounting -= CityTradeImport;
-            CityTradeExportCounting -= CityTradeExport;
-
-            //double tax = citiesEconomy.tax(null);
-            double incomeMultiplier = 1;
-            if (player.IsBot())
+            if (isAlive)
             {
-                if (DssRef.state.events.RunAi() == false)
+                CityTradeImport = CityTradeImportCounting;
+                CityTradeExport = CityTradeExportCounting;
+                CityTradeImportCounting -= CityTradeImport;
+                CityTradeExportCounting -= CityTradeExport;
+
+                //double tax = citiesEconomy.tax(null);
+                double incomeMultiplier = 1;
+                if (player.IsBot())
                 {
-                    incomeMultiplier = 0.1;
-                }
-                else if (player.aggressionLevel > AbsPlayer.AggressionLevel0_Passive)
-                {
-                    incomeMultiplier = DssRef.difficulty.aiEconomyMultiplier;
-                }
-            }
-            else
-            {
-                lib.DoNothing();
-            }
-
-            double income = 0;
-            Money citiesTotalCopper = Money.Zero;
-
-            //if (nobelHouseCount > 0)
-            //{ 
-            //    lib.DoNothing();
-            //}
-            
-            //resources_oneSecUpdate();
-            player.oneSecUpdate();
-
-            embassyCount = 0;
-            var citiesC = cities.counter();
-            while (citiesC.Next())
-            {
-                if (citiesC.sel.factionIndex == myIndex)
-                {
-                    citiesC.sel.oneSecUpdate();
-                    embassyCount += citiesC.sel.buildingStructure.Embassy_count;
-
-                    income += citiesC.sel.income_oneSecUpdate(incomeMultiplier);
-                    citiesTotalCopper.copper += citiesC.sel.money.copper;
+                    if (DssRef.state.events.RunAi() == false)
+                    {
+                        incomeMultiplier = 0.1;
+                    }
+                    else if (player.aggressionLevel > AbsPlayer.AggressionLevel0_Passive)
+                    {
+                        incomeMultiplier = DssRef.difficulty.aiEconomyMultiplier;
+                    }
                 }
                 else
                 {
-                    citiesC.RemoveAtCurrent();
-                    refreshMainCity();
+                    lib.DoNothing();
                 }
-            }
 
+                double income = 0;
+                Money citiesTotalCopper = Money.Zero;
 
-            if (DssRef.storage.centralGold)
-            {
-                money.copper += Convert.ToInt32(income);
-            }
-            else
-            {
-                money = citiesTotalCopper;
-            }
+                //if (nobelHouseCount > 0)
+                //{ 
+                //    lib.DoNothing();
+                //}
 
-            //int income = Convert.ToInt32(tax - citiesEconomy.cityGuardUpkeep - DssLib.NobleHouseUpkeep * nobelHouseCount);            
-            //gold += income;
+                //resources_oneSecUpdate();
+                player.oneSecUpdate();
 
-            previuosMoney = storeMoney;
-            storeMoney = money;
-
-            if (armies.Count == 0 && cities.Count == 0)
-            {
-                //bool protectedFaction = factiontype == FactionType.DarkLord ||
-                //    (factiontype == FactionType.SouthHara && DssRef.state.events.StoryIndex() < EventsOrder.Mercenaries);
-                                    
-                if (!player.protectedFromDelete)
+                embassyCount = 0;
+                var citiesC = cities.counter();
+                while (citiesC.Next())
                 {
-                    DeleteMe();
+                    if (citiesC.sel.factionIndex == myIndex)
+                    {
+                        citiesC.sel.oneSecUpdate();
+                        embassyCount += citiesC.sel.buildingStructure.Embassy_count;
+
+                        income += citiesC.sel.income_oneSecUpdate(incomeMultiplier);
+                        citiesTotalCopper.copper += citiesC.sel.money.copper;
+                    }
+                    else
+                    {
+                        citiesC.RemoveAtCurrent();
+                        refreshMainCity();
+                    }
+                }
+
+
+                if (DssRef.storage.centralGold)
+                {
+                    money.copper += Convert.ToInt32(income);
+                }
+                else
+                {
+                    money = citiesTotalCopper;
+                }
+
+                //int income = Convert.ToInt32(tax - citiesEconomy.cityGuardUpkeep - DssLib.NobleHouseUpkeep * nobelHouseCount);            
+                //gold += income;
+
+                previuosMoney = storeMoney;
+                storeMoney = money;
+
+                if (armies.Count == 0 && cities.Count == 0)
+                {
+                    //bool protectedFaction = factiontype == FactionType.DarkLord ||
+                    //    (factiontype == FactionType.SouthHara && DssRef.state.events.StoryIndex() < EventsOrder.Mercenaries);
+
+                    if (!player.protectedFromDelete)
+                    {
+                        DeleteMe();
+                    }
                 }
             }
-        
         }
 
         public void asynchAiPlayersUpdate(float time)

@@ -1126,7 +1126,7 @@ namespace VikingEngine.DSSWars.Players
 
             Faction enemyFac = DssRef.world.factions[DssRef.settings.Faction_DarkFollower];
             DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            DssRef.diplomacy.declareWar(faction, enemyFac);
+            //DssRef.diplomacy.declareWar(faction, enemyFac);
 
 
             IntVector2 position = gameControls.map.tilePosition;

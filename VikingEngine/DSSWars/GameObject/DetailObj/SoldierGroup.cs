@@ -1731,7 +1731,8 @@ namespace VikingEngine.DSSWars.GameObject
             if (state == GroupState.Battle)
             {
                 battles.groupsInBattle++;
-                if (attackTarget_soldierGroupOrCity.TryGetTarget(out var tMapObj))
+
+                if (attackTarget_soldierGroupOrCity != null && attackTarget_soldierGroupOrCity.TryGetTarget(out var tMapObj))
                 {
                     battles.add(tMapObj.factionIndex);
                 }

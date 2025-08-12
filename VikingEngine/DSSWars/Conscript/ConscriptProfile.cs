@@ -517,6 +517,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case TrainingLevel.Basic: return DssConst.TrainingAttackSpeed_Basic;
                 case TrainingLevel.Skillful: return DssConst.TrainingAttackSpeed_Skillful;
                 case TrainingLevel.Professional: return DssConst.TrainingAttackSpeed_Professional;
+                case TrainingLevel.Champion: return DssConst.TrainingAttackSpeed_Champion;
                 default: throw new NotImplementedException();
             }
         }

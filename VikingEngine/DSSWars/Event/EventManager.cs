@@ -325,7 +325,7 @@ namespace VikingEngine.DSSWars.Event
                                     weapon = Resource.ItemResourceType.KnightsLance,
                                     armorLevel = Resource.ItemResourceType.FullPlateArmor,
                                     training = TrainingLevel.Champion,
-                                    specialization = SpecializationType.HonorGuard,
+                                    specialization = SpecializationType.Traditional,
                                 }
                             };
 
