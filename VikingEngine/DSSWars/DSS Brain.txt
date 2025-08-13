@@ -1,8 +1,6 @@
 ﻿UPDATE
 Change Log:
-* handles get random from empty list
-* Create folder fail is silenced
-* removed saving after tutorial complete in demo
+* 
 
 x removed scripted cohalition
 * cpu players have diplomacy, and will seek alliances using a "my enemy's enemy" logic, happens when under threat by a bigger faction, or when attacking the same faction.
