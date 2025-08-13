@@ -1,6 +1,5 @@
 ﻿UPDATE
 Change Log:
-* 
 
 * Added story mode
 * Barbarian event in story mode
@@ -11,8 +10,11 @@ Change Log:
 * some bots have "loner" and will avoid alliances
 * bots cannot drag players into more wars after alliance
 * barbarian killer reward
+* does a clean up microscopic factions
 
- x clean up microscopic factions
+
+x defeat boss event
+
 
 Event timers (are slightly random)
 - Ai delay: 8 minutes

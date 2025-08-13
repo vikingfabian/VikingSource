@@ -455,7 +455,6 @@ namespace VikingEngine.DSSWars
                 CityTradeImportCounting -= CityTradeImport;
                 CityTradeExportCounting -= CityTradeExport;
 
-                //double tax = citiesEconomy.tax(null);
                 double incomeMultiplier = 1;
                 if (player.IsBot())
                 {
@@ -476,12 +475,6 @@ namespace VikingEngine.DSSWars
                 double income = 0;
                 Money citiesTotalCopper = Money.Zero;
 
-                //if (nobelHouseCount > 0)
-                //{ 
-                //    lib.DoNothing();
-                //}
-
-                //resources_oneSecUpdate();
                 player.oneSecUpdate();
 
                 embassyCount = 0;
@@ -513,20 +506,25 @@ namespace VikingEngine.DSSWars
                     money = citiesTotalCopper;
                 }
 
-                //int income = Convert.ToInt32(tax - citiesEconomy.cityGuardUpkeep - DssLib.NobleHouseUpkeep * nobelHouseCount);            
-                //gold += income;
-
                 previuosMoney = storeMoney;
                 storeMoney = money;
 
-                if (armies.Count == 0 && cities.Count == 0)
+                if (cities.Count == 0)
                 {
-                    //bool protectedFaction = factiontype == FactionType.DarkLord ||
-                    //    (factiontype == FactionType.SouthHara && DssRef.state.events.StoryIndex() < EventsOrder.Mercenaries);
-
-                    if (!player.protectedFromDelete)
+                    if (armies.Count == 0)
                     {
-                        DeleteMe();
+                        if (!player.protectedFromDelete)
+                        {
+                            DeleteMe();
+                        }
+                    }
+                    else if (militaryStrength < 1)
+                    {
+                        var armiesC = armies.counter();
+                        while (armiesC.Next())
+                        { 
+                            armiesC.sel.DeleteMe(DeleteReason.Desert, true);
+                        }
                     }
                 }
             }
