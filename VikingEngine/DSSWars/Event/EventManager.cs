@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Event
 
         List<AbsStoryEvent> mainStory = new List<AbsStoryEvent>();
 
-        int maxWars = 0;
+        public int maxWars = 0;
 
         public EventManager()
         {//eventTriggerGameTimeSec = DssRef.difficulty.aiDelayTimeSec;

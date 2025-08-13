@@ -58,6 +58,8 @@ namespace VikingEngine.DSSWars.Data
         public int FoodEnergySett;
         public int PlayerBonusGold = 0;
 
+        
+
         public Difficulty(int difficulty = DefaultOption)
         {
             set(difficulty);
