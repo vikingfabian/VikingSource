@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ;
@@ -19,10 +20,10 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         EndSceneLeftDisplayMain left;
         EndSceneCenterDisplayMain center;
         EndSceneRightDisplayMain right;
-        public EndSceneDisplay(GameEndReason endReason, bool bossVictory, Action watchEpilogue)
+        public EndSceneDisplay(GameEndReason endReason, VictoryType vType, Action watchEpilogue)
         { 
             left = new EndSceneLeftDisplayMain();
-            center = new EndSceneCenterDisplayMain(endReason, bossVictory, watchEpilogue);
+            center = new EndSceneCenterDisplayMain(endReason, vType, watchEpilogue);
             right = new EndSceneRightDisplayMain();
 
             center.beginMove(0);
@@ -87,10 +88,10 @@ namespace VikingEngine.DSSWars.Interface.CutScene
     {
         EndSceneCenterDisplayPart part;
 
-        public EndSceneCenterDisplayMain(GameEndReason endReason, bool bossVictory, Action watchEpilogue)
+        public EndSceneCenterDisplayMain(GameEndReason endReason, VictoryType vType, Action watchEpilogue)
             : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].gameControls.input)
         {
-            part = new EndSceneCenterDisplayPart(endReason, bossVictory, this, watchEpilogue);
+            part = new EndSceneCenterDisplayPart(endReason, vType, this, watchEpilogue);
 
             parts = new List<HUD.RichBox.RichboxGuiPart>()
             {
@@ -101,7 +102,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
     class EndSceneCenterDisplayPart : RichboxGuiPart
     {
-        public EndSceneCenterDisplayPart(GameEndReason endReason, bool bossVictory, RichboxGui gui, Action watchEpilogue)
+        public EndSceneCenterDisplayPart(GameEndReason endReason, VictoryType vType, RichboxGui gui, Action watchEpilogue)
             : base(gui)
         {
             switch (endReason)
@@ -109,14 +110,24 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                 case GameEndReason.Victory:
                     content.h1(DssRef.lang.EndScreen_VictoryTitle).overrideColor = Color.Yellow;
 
-                    if (bossVictory)
-                    {
-                        content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
+                    switch (vType)
+                    { 
+                        case VictoryType.DefeatBoss:
+                            content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
+                            break;
+                        case VictoryType.Domination:
+                            content.text(DssRef.lang.EndScreen_DominationVictoryQuote);
+                            break;
                     }
-                    else
-                    {
-                        content.text(DssRef.lang.EndScreen_DominationVictoryQuote);
-                    }
+
+                    //if (bossVictory)
+                    //{
+                    //    content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
+                    //}
+                    //else
+                    //{
+                    //    content.text(DssRef.lang.EndScreen_DominationVictoryQuote);
+                    //}
                     break;
                 
                 case GameEndReason.Defeat:
@@ -130,11 +141,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             }
 
             content.newParagraph();
-            if (endReason == GameEndReason.Victory && bossVictory && !PlatformSettings.STEAM_DEMO)
-            {
-                content.Button(DssRef.lang.EndScreen_WatchEpilogue, new RbAction(watchEpilogue), null, true);
+            //if (endReason == GameEndReason.Victory && bossVictory && !PlatformSettings.STEAM_DEMO)
+            //{
+            //    content.Button(DssRef.lang.EndScreen_WatchEpilogue, new RbAction(watchEpilogue), null, true);
                 
-            }
+            //}
             if (!PlatformSettings.STEAM_DEMO)
             {
                 content.newLine();

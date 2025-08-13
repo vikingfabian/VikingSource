@@ -24,6 +24,8 @@ namespace VikingEngine.DSSWars.Event
 
         List<AbsStoryEvent> mainStory = new List<AbsStoryEvent>();
 
+        int maxWars = 0;
+
         public EventManager()
         {//eventTriggerGameTimeSec = DssRef.difficulty.aiDelayTimeSec;
         }
@@ -47,7 +49,7 @@ namespace VikingEngine.DSSWars.Event
         }
         protected void viewEndScreen(GameEndReason endReason)
         {
-            new EndScene(endReason, false);
+            new EndScene(endReason, VictoryType.None);
         }
 
         public AbsStoryEvent CurrentEvent()
@@ -157,6 +159,7 @@ namespace VikingEngine.DSSWars.Event
                             new StoryEvent_Cohalition(),
                             new StoryEvent_DarkLordWarning(),
                             new StoryEvent_DarkLord(),
+                            new StoryEvent_DefeatTheBoss(),
                         }, false);
                     }
                 }
@@ -233,7 +236,7 @@ namespace VikingEngine.DSSWars.Event
             }
 
             dyingFactionsTimer.write(w);
-
+            w.Write((ushort)maxWars);
             
             
         }
@@ -273,7 +276,7 @@ namespace VikingEngine.DSSWars.Event
                 //NEW
                 mainStory.Clear();
                 int mainStoryCount = r.ReadByte();
-                for (int i = 0; i < mainStory.Count; ++i)
+                for (int i = 0; i < mainStoryCount; ++i)
                 {
                     var type = (EventType)r.ReadByte();
                     var ev = CreateEvent(type);
@@ -288,10 +291,10 @@ namespace VikingEngine.DSSWars.Event
             dyingFactionsTimer.read(r);
             dyingFactionsTimer.MilliSeconds = Bound.Min(dyingFactionsTimer.MilliSeconds, 1);
 
-            //if (subVersion < 47)
-            //{
-            //    Ref.TotalGameTimeSec = r.ReadSingle();
-            //}
+            if (subVersion >= 72)
+            { 
+                maxWars = r.ReadUInt16();
+            }
         }
 
         public void onBattleEnd_async(AbsArmy army, InBattleWith inBattleWith)
@@ -312,7 +315,7 @@ namespace VikingEngine.DSSWars.Event
                 foreach (var p in DssRef.state.localPlayers)
                 {
                     if (p.barbarianKiller)
-                    { 
+                    {
                         p.barbarianKiller = false;
 
                         IntVector2 onTile = p.faction.mainCity.ArmySpawnTilePos();
@@ -341,8 +344,12 @@ namespace VikingEngine.DSSWars.Event
                         p.hud.messages.Add(DssRef.todoLang.EventMessage_DarkHordeKiller_Title, DssRef.todoLang.EventMessage_DarkHordeKiller_Message);
                     }
 
-                    
+
                 }
+            }
+            else if (faction == DssRef.settings.darkLordPlayer.faction)
+            {
+                victory(VictoryType.DefeatBoss);
             }
         }
 
@@ -528,24 +535,7 @@ namespace VikingEngine.DSSWars.Event
 
         
 
-        public void OnPlayerDeclareWar()
-        {
-            const int DelayReduceToSec = 10;
-
-            var ev = mainStory.FirstOrDefault();
-            if (ev != null)
-            {
-                if (ev.RunWarManager() == false)
-                {
-                    if (ev.triggerTime.length.seconds > DelayReduceToSec)
-                    {
-                        ev.triggerTime.start(DelayReduceToSec);
-                    }
-                }
-            }
-
-            
-        }
+       
 
         //public void onFactoryBuilt(City city)
         //{
@@ -642,30 +632,62 @@ namespace VikingEngine.DSSWars.Event
 
         public void onAllDarkCitiesDestroyed()
         {
-            if (mainStory.Count > 0)
-            {
-                if (DssRef.settings.darkLordPlayer.darkLordUnit == null)
-                {
-                    DssRef.achieve.UnlockAchievement(AchievementIndex.no_darklord);
-                }
-                victory(true);
-            }
+            //if (mainStory.Count > 0)
+            //{
+                //if (DssRef.settings.darkLordPlayer.darkLordUnit == null)
+                //{
+                //    DssRef.achieve.UnlockAchievement(AchievementIndex.no_darklord);
+                //}
+                victory(VictoryType.DefeatBoss);
+            //}
         }
 
         public void onWorldDomination()
         {
-            victory(false);
+            victory( VictoryType.Domination);
         }
 
-        void victory(bool bossVictory)
+        void victory(VictoryType vType)
         {
             if (mainStory.Count > 0)
             {
                 mainStory.Clear();
                 DssRef.achieve.onVictory();
 
-                new EndScene( GameEndReason.Victory, bossVictory);
+                new EndScene( GameEndReason.Victory, vType);
             }
+        }
+
+        public void onPlayerEnterWar(Players.LocalPlayer player, bool isAggressor)
+        {
+            if (isAggressor)
+            {
+                const int DelayReduceToSec = 10;
+
+                var ev = mainStory.FirstOrDefault();
+                if (ev != null)
+                {
+                    if (ev.RunWarManager() == false)
+                    {
+                        if (ev.triggerTime.length.seconds > DelayReduceToSec)
+                        {
+                            ev.triggerTime.start(DelayReduceToSec);
+                        }
+                    }
+                }
+
+                ++player.statistics.WarsStartedByYou;
+            }
+            else
+            {
+                ++player.statistics.WarsStartedByEnemy;
+            }
+
+            Task.Run(() =>
+            {
+                int wars = player.faction.CountWars();
+                maxWars = Math.Max(maxWars, wars);
+            });
         }
 
         public void onPlayerDeath()
@@ -680,7 +702,7 @@ namespace VikingEngine.DSSWars.Event
                     }
                 }
 
-                new EndScene(GameEndReason.Defeat, false);
+                new EndScene(GameEndReason.Defeat,  VictoryType.None);
             }
         }
 
@@ -708,14 +730,10 @@ namespace VikingEngine.DSSWars.Event
                     return new StoryEvent_DarkLordWarning();
                 case EventType.Boss:
                     return new StoryEvent_DarkLord();
-                //case EventType.Factories:
-                //    return new StoryEvent_Factories();
-                //case EventType.FactoriesDestroyed:
-                //    return new StoryEvent_FactoriesDestroyed();
-                //case EventType.DarkLordInPerson:
-                //    return new StoryEvent_DarkLordInPerson();
-                //case EventType.KillTheDarkLord:
-                //    return new StoryEvent_KillTheDarkLord();
+                case EventType.DefeatTheBoss:
+                    return new StoryEvent_DefeatTheBoss();
+                
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, "Unhandled event type.");
             }
@@ -724,6 +742,15 @@ namespace VikingEngine.DSSWars.Event
 
     }
 
+
+    enum VictoryType
+    { 
+        None = 0,
+        DefeatBoss,
+        WorldPeace,
+        Domination,
+        DarkSide,
+    }
     //enum BossTimeSettings
     //{ 
     //    Immediate,

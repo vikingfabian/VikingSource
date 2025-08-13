@@ -377,9 +377,9 @@ namespace VikingEngine.DSSWars
                 {
                     int cost = DeclareWarCost(prevRelation);
                     var player = attacker.player.GetLocalPlayer();
-                    ++player.statistics.WarsStartedByYou;
+                    //++player.statistics.WarsStartedByYou;
                     player.diplomaticPoints.pay(cost, true);
-                    DssRef.state.events?.OnPlayerDeclareWar();
+                    DssRef.state.events?.onPlayerEnterWar(player, true);
 
                     if (prevRelation >= RelationType.RelationType1_Peace)
                     {
@@ -396,10 +396,14 @@ namespace VikingEngine.DSSWars
                         var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
                         PtoP.suggestingNewRelation = false;
                     }
+
+                    
                 }
                 if (defender.player.IsLocalPlayer())
-                { 
-                    ++defender.player.GetLocalPlayer().statistics.WarsStartedByEnemy;
+                {
+                    var player = defender.player.GetLocalPlayer();
+                    //++player.statistics.WarsStartedByEnemy;
+                    DssRef.state.events?.onPlayerEnterWar(player, false);
                 }
             }
         }

@@ -11,9 +11,7 @@ Change Log:
 * bots cannot drag players into more wars after alliance
 * barbarian killer reward
 * does a clean up microscopic factions
-
-
-x defeat boss event
+* defeat boss event
 
 
 Event timers (are slightly random)

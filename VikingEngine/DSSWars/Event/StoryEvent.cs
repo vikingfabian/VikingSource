@@ -720,14 +720,13 @@ namespace VikingEngine.DSSWars.Event
                 //calcAndRunEvent_async();
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    if (p.faction.cities.Count >= p.nextDominationSize)
-                    {
+                    
                         if (!p.cohalitionEvent)
                         {
                             cohalitionWarning(p);
                             collectAllianceAgainstPlayerDomination(p);
                         }
-                    }
+                    
                 }
                 eventState = EventState.Done;
             }
@@ -950,7 +949,7 @@ namespace VikingEngine.DSSWars.Event
             init(false, TimeLength.FromHours(1f));
         }
 
-        protected override void asyncPrepare(ref float time)
+        void asyncPrepare()
         {
             Rectangle2 mapCenter = new Rectangle2(IntVector2.Zero, DssRef.world.Size);
             mapCenter.AddRadius(-mapCenter.Height / 8);
@@ -1002,6 +1001,8 @@ namespace VikingEngine.DSSWars.Event
         }
         protected override void calcAndRunEvent_async()
         {
+            asyncPrepare();
+
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
                 if (arraylib.HasMembers(darkLordAvailableFactions))
@@ -1121,6 +1122,23 @@ namespace VikingEngine.DSSWars.Event
     //    }
     //}
 
+    class StoryEvent_DefeatTheBoss : AbsStoryEvent
+    {
+        public override EventType StoryEventType()
+        {
+            return Event.EventType.DefeatTheBoss;
+        }
+
+        protected override bool TimedEvent()
+        {
+            return false;
+        }
+        public override int OrderIndex()
+        {
+            return EventsOrder.DefeatTheBoss;
+        }
+    }
+
     static class EventsOrder
     {
         //Do NOT use for save
@@ -1132,6 +1150,7 @@ namespace VikingEngine.DSSWars.Event
         public const int Cohalition = 6;
         public const int DarkLordWarning = 7;
         public const int DarkLord = 8;
+        public const int DefeatTheBoss = 9;
         //public const int Factories = 7;
         //public const int FactoriesDestroyed = 8;
         //public const int DarkLordInPerson = 9;
@@ -1154,6 +1173,7 @@ namespace VikingEngine.DSSWars.Event
         Cohalition,
         BossWarning,
         Boss,
+        DefeatTheBoss,
         //Horde,
     }
 

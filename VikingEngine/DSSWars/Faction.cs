@@ -1143,6 +1143,22 @@ namespace VikingEngine.DSSWars
             return opponents;
         }
 
+        public int CountWars()
+        {
+            int count = 0;
+            for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
+            {
+                if (diplomaticRelations[relIx] != null &&
+                    relIx != myIndex &&
+                   diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN3_War)
+                {
+                    ++count;
+                }
+            }
+
+            return count;
+        }
+
 
         /// <returns>Combined strength of allied nations (myself not included)</returns>
         public float CollectAllianceStrength()

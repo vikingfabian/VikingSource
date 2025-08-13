@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.Engine;
 using VikingEngine.Timer;
 
@@ -17,17 +18,17 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         Graphics.Image blackout;
         Texture2D bgTex = null;
         Graphics.ImageAdvanced bgImage = null;
-        bool bossVictory;
+        VictoryType vType;
         GameEndReason endReason;
         EndSceneDisplay display;
 
         DoomEpilogue doomEpilouge;
 
-        public EndScene(GameEndReason endReason, bool bossVictory)
+        public EndScene(GameEndReason endReason, VictoryType vType)
             : base()
         {
             this.endReason = endReason;
-            this.bossVictory = bossVictory;
+            this.vType = vType;
             VectorRect area = Screen.Area;
             area.AddRadius(5);
             blackout = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, HudLib.CutSceneBgLayer+1);
@@ -157,7 +158,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
         void initDisplay()
         {
-            display = new EndSceneDisplay(endReason, bossVictory, watchEpilogue);
+            display = new EndSceneDisplay(endReason, vType, watchEpilogue);
         }
 
         public override void Close()
