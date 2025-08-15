@@ -36,22 +36,22 @@ namespace VikingEngine.DSSWars.Data
         //    }
         //}
 
-        public void onCultureBuild(bool archer)
-        {
-            if (archer)
-            {
-                archerCultureBuild = true;
-            }
-            else
-            {
-                warriorCultureBuild = true;
-            }
+        //public void onCultureBuild(bool archer)
+        //{
+        //    if (archer)
+        //    {
+        //        archerCultureBuild = true;
+        //    }
+        //    else
+        //    {
+        //        warriorCultureBuild = true;
+        //    }
 
-            if (archerCultureBuild && warriorCultureBuild)
-            {
-                DssRef.achieve.UnlockAchievement_async(AchievementIndex.soldier_culture);
-            }
-        }
+        //    if (archerCultureBuild && warriorCultureBuild)
+        //    {
+        //        DssRef.achieve.UnlockAchievement_async(AchievementIndex.soldier_culture);
+        //    }
+        //}
 
         public void writeGameState(System.IO.BinaryWriter w)
         {

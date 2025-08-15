@@ -1738,15 +1738,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             workForce.amount = Bound.Max(workForce.amount + addWorkers, HousingCount_Workers);
 
-            if (workForce.amount > Achievements.LargePopulationCount &&
-                 !DssRef.achieve.largePopulation &&
-                 GetFaction().player.IsLocalPlayer())
-            {
-                DssRef.achieve.largePopulation = true;
-                DssRef.achieve.UnlockAchievement(AchievementIndex.large_population);
-            }
-
-            
+                        
             nextWater.value += waterAddPerSec;
             maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
             res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);

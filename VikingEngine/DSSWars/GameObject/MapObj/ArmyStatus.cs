@@ -21,11 +21,11 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (result.Count >= Achievements.AllUnitTypesCount &&
-                faction.player.IsLocalPlayer())
-            {
-                DssRef.achieve.UnlockAchievement(AchievementIndex.all_unit_types);
-            }
+            //if (result.Count >= Achievements.AllUnitTypesCount &&
+            //    faction.player.IsLocalPlayer())
+            //{
+            //    DssRef.achieve.UnlockAchievement(AchievementIndex.all_unit_types);
+            //}
 
             return result;
         }

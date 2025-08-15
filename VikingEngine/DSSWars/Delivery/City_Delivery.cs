@@ -126,12 +126,12 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     var resource = othercity.GetGroupedResource(status.inProgress.type);
 
-                                    if (status.inProgress.type == ItemResourceType.Food_G &&
-                                        resource.amount <= 2 &&
-                                        GetPlayer().IsLocalPlayer())
-                                    {
-                                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.deliver_food);
-                                    }
+                                    //if (status.inProgress.type == ItemResourceType.Food_G &&
+                                    //    resource.amount <= 2 &&
+                                    //    GetPlayer().IsLocalPlayer())
+                                    //{
+                                    //    DssRef.achieve.UnlockAchievement_async(AchievementIndex.foo);
+                                    //}
                                     
                                     resource.amount += status.inProgress.SendAmount;
                                     resource.deliverCount -= status.inProgress.SendAmount;

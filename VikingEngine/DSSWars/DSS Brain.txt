@@ -1,6 +1,9 @@
 ﻿UPDATE
 Change Log:
+* peace victory added
+* domination victory improved
 
+STORY
 * Added story mode
 * Barbarian event in story mode
 * scripted cohalition only happens once in the story
@@ -13,7 +16,6 @@ Change Log:
 * does a clean up microscopic factions
 * defeat boss event
 
-
 Event timers (are slightly random)
 - Ai delay: 8 minutes
 - Ai peace time: 15 min
@@ -25,6 +27,10 @@ Event timers (are slightly random)
 - Boss; 1 hour
 Plus the boss fight: about 10 hours
 (total: about 60 hours)
+
+ACHIEVEMENTS
+* not available in peaceful/spectator modes
+
 
 
 #Pics

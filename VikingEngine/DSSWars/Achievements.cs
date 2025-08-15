@@ -28,25 +28,52 @@ namespace VikingEngine.DSSWars
         const int FactionUniqueUnitTypeCount = 4;
         bool[] factionUniquePurchase = new bool[FriendshipAllyCount];
 
-        public const int LargePopulationCount = 5000;
-        public bool largePopulation = false;
+        public const int LargePopulationCount_Tier1 = 5000;
+        public const int LargePopulationCount_Tier2 = 20000;
+        public const int LargePopulationCount_Tier3 = 50000;
+        
 
-        public const int AllUnitTypesCount = 6;
-
-
-
-        public Achievements() 
+        public Achievements()
         {
             DssRef.achieve = this;
             difficultyPerc = DssRef.difficulty.TotalDifficulty();
         }
+
+        public void asyncUpdate()
+        {
+            if (Ref.peRnd.ChanceF(0.1f))
+            {
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    var citiesC = p.faction.cities.counter();
+                    while (citiesC.Next())
+                    {
+                        if (citiesC.sel.workForce.amount > LargePopulationCount_Tier1)
+                        {
+                            DssRef.achieve.UnlockAchievement(AchievementIndex.large_population_tier1);
+
+                            if (citiesC.sel.workForce.amount > LargePopulationCount_Tier2)
+                            {
+                                DssRef.achieve.UnlockAchievement(AchievementIndex.large_population_tier2);
+
+                                if (citiesC.sel.workForce.amount > LargePopulationCount_Tier3)
+                                {
+                                    DssRef.achieve.UnlockAchievement(AchievementIndex.large_population_tier3);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public void UnlockAchievement(AchievementIndex achievement)
         {
 #if DEMO
             return;
 #endif
 #if DEBUG
-            //System.Diagnostics.Debug.WriteLine("[!] Achievement: " + achievement.ToString());
+            System.Diagnostics.Debug.WriteLine("[!] Achievement: " + achievement.ToString());
 #endif
             if (Ref.steam.isInitialized)
             {
@@ -95,6 +122,13 @@ namespace VikingEngine.DSSWars
 
         public void onVictory(VictoryType victoryType)
         {
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful ||
+                DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
+            {
+                //Modes not available 
+                return;
+            }
+
             switch (victoryType)
             {
                 case VictoryType.DefeatBoss:
@@ -114,10 +148,10 @@ namespace VikingEngine.DSSWars
                     UnlockAchievement(AchievementIndex.warstarter_tier1);
                     if (p.statistics.WarsStartedByYou >= 20)
                     {
-                        UnlockAchievement(AchievementIndex.warstarter_tier1);
+                        UnlockAchievement(AchievementIndex.warstarter_tier2);
                         if (p.statistics.WarsStartedByYou >= 40)
                         {
-                            UnlockAchievement(AchievementIndex.warstarter_tier1);
+                            UnlockAchievement(AchievementIndex.warstarter_tier3);
                         }
                     }
                 }
@@ -274,12 +308,28 @@ namespace VikingEngine.DSSWars
         victory_domination_story_100,
 
         /// <summary>
+        /// Grab the whole world to yourself - in story, large world size, min 75%
+        /// </summary>
+        massive_victory_domination,
+
+        /// <summary>
         /// reach victory without starting a single war
         /// </summary>
         no_war_started_any,//i
         no_war_started_50,
         no_war_started_100,
         no_war_started_150,
+
+        /// <summary>
+        /// reach world peace victory without starting a single war
+        /// </summary>
+        peace_and_love_any,
+        peace_and_love_100,
+
+        /// <summary>
+        /// reach world peace victory without starting a single war, large world size, min 75%
+        /// </summary>
+        massive_peace_and_love,
 
         /// <summary>
         /// reach victory, and have started (10, 20, 40) wars, min 75%
@@ -352,7 +402,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Large population: Reach a workforce of a 5000 men in one city, then 20k, then 50k
         /// </summary>
-        large_population_tier1,
+        large_population_tier1,//i
         large_population_tier2,
         large_population_tier3,
 

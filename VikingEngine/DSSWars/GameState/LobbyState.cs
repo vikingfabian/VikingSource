@@ -1340,7 +1340,7 @@ namespace VikingEngine.DSSWars
 
             DropDownBuilder modeOptions = new DropDownBuilder("mode");
             {
-                foreach (var mode in Difficulty.AvailableModes)//for (GameMode mode = 0; mode < GameMode.NUM; ++mode)
+                foreach (var mode in Difficulty.AvailableModes)
                 {
                     gameModeText(mode, out string caption, out string desc);
                     modeOptions.AddOption(caption, mode == DssRef.difficulty.setting_gameMode, mode == Difficulty.DefaultMode,
@@ -1757,11 +1757,11 @@ namespace VikingEngine.DSSWars
                     break;
                 case GameModeMainType.Peaceful:
                     caption = DssRef.lang.Settings_Mode_Peaceful;
-                    desc = DssRef.lang.Settings_Mode_Peaceful_Description;
+                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
                     break;
                 case GameModeMainType.Spectator:
                     caption = DssRef.lang.Settings_Mode_Spectator;
-                    desc = DssRef.lang.Settings_Mode_Spectator_Description;
+                    desc = DssRef.lang.Settings_Mode_Spectator_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
                     break;
             }
         }

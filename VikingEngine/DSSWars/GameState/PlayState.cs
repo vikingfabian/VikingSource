@@ -727,7 +727,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            //doubleTaskTest--;
+            DssRef.achieve.asyncUpdate();
 
             return exitThreads;
 

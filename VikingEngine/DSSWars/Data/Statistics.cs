@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Data
@@ -53,19 +55,29 @@ namespace VikingEngine.DSSWars.Data
 
         }
 
-        public void onDecorBuild_async(bool statue)
+        public void onDecorBuild_async(TerrainDecorType decorType)
         {
             decorBuilt++;
-            if (statue)
-            {
-                DssRef.achieve.UnlockAchievement_async(AchievementIndex.statue);
-                statuesBuilt++;
-            }
 
+            switch (decorType)
+            {
+                case TerrainDecorType.Statue_Horse:
+                case TerrainDecorType.Statue_Leader:
+                case TerrainDecorType.Statue_Pillar:
+                case TerrainDecorType.Statue_Lion:
+                    statuesBuilt++;
+                    break;
+
+                case TerrainDecorType.Statue_ThePlayer:
+                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.statue_of_player);
+                    statuesBuilt++;
+                    break;
+            }
+            
             if (decorBuilt >= Achievements.DecorationsTotalCount &&
                 statuesBuilt >= Achievements.DecorationsStatueCount)
             {
-                DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations);
+                DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations_tier1);
             }
         }
 

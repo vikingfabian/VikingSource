@@ -73,6 +73,7 @@
     <None Remove="Content\Modding\ModConst.txt" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
+    <None Remove="VikingEngine-linux-x64.tar.gz" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Content\Modding\ModConst.txt" />

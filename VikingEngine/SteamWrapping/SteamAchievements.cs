@@ -92,8 +92,7 @@ namespace VikingEngine.SteamWrapping
         {
             if (isInitialized)
             {
-                var achievement = achievements[enumValue];
-                if (!achievement.achieved)
+                if (!achievements[enumValue].achieved)
                 {
                     Ref.update.AddSyncAction(new SyncAction(() => { SetAchievement(enumValue); }));
                     return true;

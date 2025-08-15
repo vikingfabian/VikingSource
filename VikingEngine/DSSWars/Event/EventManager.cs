@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Event
         virtual public void asyncUpdate(float time)
         {
             if (DssRef.state.localPlayers[0].tutorial != null)// ||
-                //!DssRef.difficulty.runEvents)
+                                                              //!DssRef.difficulty.runEvents)
             {
                 return;
             }
@@ -93,6 +93,68 @@ namespace VikingEngine.DSSWars.Event
             asyncUpdateTooPeaceful(time);
 
             //asyncCheckPlayerDominance();
+
+            if (Ref.peRnd.ChanceF(0.1f))
+            {
+                asyncCheckVictory();
+            }
+        }
+
+        void asyncCheckVictory()
+        {
+            int dominationCount = DssRef.storage.mapSize > MapSize.Small ? 5 : 3;
+
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                bool worldPeace = true;
+
+                var relations = p.faction.diplomaticRelations;
+
+                for (int relIx = 0; relIx < relations.Length; ++relIx)
+                {
+                    if (relIx != p.faction.myIndex)
+                    {
+                        Faction otherFaction = DssRef.world.factions.GetIndex_Safe(relIx);
+
+                        if (otherFaction.isAlive &&
+                            (relations[relIx] == null || (relations[relIx].Relation < RelationType.RelationType1_Peace && relations[relIx].SpeakTerms != SpeakTerms.SpeakTermsN2_None))
+                            )
+                        {
+                            worldPeace = false;
+                            break;
+                        }
+                    }
+                }
+                if (worldPeace)
+                {
+                    Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.WorldPeace));
+                    return;
+                }
+
+
+                bool domination = true;
+
+                int missingCities = 0;
+                foreach (var city in DssRef.world.cities)
+                {
+                    if (city.factionIndex != p.faction.myIndex)
+                    {
+                        missingCities++;
+                        if (missingCities > dominationCount)
+                        { 
+                            domination = false;
+                            break;
+                        }
+                    }
+                }
+                if (domination)
+                {
+                    Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.Domination));
+                    return;
+                }
+
+            }            
+            
         }
 
         //void asyncCheckPlayerDominance()
@@ -642,19 +704,19 @@ namespace VikingEngine.DSSWars.Event
             //}
         }
 
-        public void onWorldDomination()
-        {
-            victory( VictoryType.Domination);
-        }
+        //public void onWorldDomination()
+        //{
+        //    victory( VictoryType.Domination);
+        //}
 
         void victory(VictoryType vType)
         {
             if (mainStory.Count > 0)
             {
                 mainStory.Clear();
-                DssRef.achieve.onVictory();
+                DssRef.achieve.onVictory(vType);
 
-                new EndScene( GameEndReason.Victory, vType);
+                new EndScene(GameEndReason.Victory, vType);
             }
         }
 

@@ -713,10 +713,10 @@ namespace VikingEngine.DSSWars.Players
                 }                
             }
 
-            if (faction.cities.Count >= DssRef.world.cities.Count - 5)
-            {
-                DssRef.state.events.onWorldDomination();
-            }
+            //if (faction.cities.Count >= DssRef.world.cities.Count - 5)
+            //{
+            //    DssRef.state.events.onWorldDomination();
+            //}
         }
 
         //public void enterBattle(Battle.BattleGroup battleGroup, AbsMapObject playerUnit)
@@ -743,10 +743,10 @@ namespace VikingEngine.DSSWars.Players
         {
             base.onNewRelation(otherFaction, rel, previousRelation);
 
-            if (rel.Relation == RelationType.RelationType3_Ally)
-            {
-                DssRef.achieve.onAlly(faction, otherFaction);
-            }
+            //if (rel.Relation == RelationType.RelationType3_Ally)
+            //{
+            //    DssRef.achieve.onAlly(faction, otherFaction);
+            //}
 
             if ((rel.Relation <= RelationType.RelationTypeN3_War &&
                 otherFaction.factiontype != FactionType.SouthHara)
