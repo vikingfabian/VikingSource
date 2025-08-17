@@ -734,18 +734,18 @@ namespace VikingEngine.DSSWars.GameObject
                 case TerrainMainType.Decor:
                     if (build)
                     {
-                        bool statue = false;
-                        switch ((TerrainDecorType)subType)
-                        {
-                            case TerrainDecorType.Statue_ThePlayer:
-                                statue = true;
-                                break;
-                        }
+                        //bool statue = false;
+                        //switch ((TerrainDecorType)subType)
+                        //{
+                        //    case TerrainDecorType.Statue_ThePlayer:
+                        //        statue = true;
+                        //        break;
+                        //}
 
                         var cityPlayer = GetPlayer();
                         if (cityPlayer.IsLocalPlayer())
                         {
-                            cityPlayer.GetLocalPlayer().statistics.onDecorBuild_async(statue);
+                            cityPlayer.GetLocalPlayer().statistics.onDecorBuild_async((TerrainDecorType)subType);
                         }
                     }
                     break;

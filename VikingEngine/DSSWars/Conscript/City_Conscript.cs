@@ -141,15 +141,15 @@ namespace VikingEngine.DSSWars.GameObject
                                                 DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
                                             }
 
-                                            switch (Culture)
-                                            {
-                                                case CityCulture.Archers:
-                                                    DssRef.state.progress.onCultureBuild(true);
-                                                    break;
-                                                case CityCulture.Warriors:
-                                                    DssRef.state.progress.onCultureBuild(false);
-                                                    break;
-                                            }
+                                            //switch (Culture)
+                                            //{
+                                            //    case CityCulture.Archers:
+                                            //        DssRef.state.progress.onCultureBuild(true);
+                                            //        break;
+                                            //    case CityCulture.Warriors:
+                                            //        DssRef.state.progress.onCultureBuild(false);
+                                            //        break;
+                                            //}
                                         }
                                     }
                                 }

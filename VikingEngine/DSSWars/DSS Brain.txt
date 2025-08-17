@@ -32,6 +32,17 @@ ACHIEVEMENTS
 * not available in peaceful/spectator modes
 
 
+Language change log:
+* Russian manual corrections
+* Russian new words
+* French manual translation
+* Turkish manual translations
+* Turkish new words
+
+! French factions not translated (see French_Factions.cs)
+! French new words are missing (see bottom of French.cs)
+! Turkish factions not translated (see Turkish_Factions.cs)
+
 
 #Pics
 build building icon
