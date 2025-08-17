@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed a multicore shared list bug
 
 x removed scripted cohalition
 * cpu players have diplomacy, and will seek alliances using a "my enemy's enemy" logic, happens when under threat by a bigger faction, or when attacking the same faction.

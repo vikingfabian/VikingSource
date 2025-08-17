@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (CityStructure.Find(this, buildData.mainType, buildData.subType, out IntVector2 sameBuilding))
                 {
-                    findAdjacentFreeSpot(sameBuilding, ref buildPos);
+                    findAdjacentFreeSpot(Casual_EdgeRandomizer, sameBuilding, ref buildPos);
                 }
 
                 if (buildPos.X < 0)
