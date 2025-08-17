@@ -106,6 +106,7 @@ namespace VikingEngine.DSSWars.Event
 
             foreach (var p in DssRef.state.localPlayers)
             {
+                int allyCount = 0;
                 bool worldPeace = true;
 
                 var relations = p.faction.diplomaticRelations;
@@ -116,15 +117,35 @@ namespace VikingEngine.DSSWars.Event
                     {
                         Faction otherFaction = DssRef.world.factions.GetIndex_Safe(relIx);
 
-                        if (otherFaction.isAlive &&
-                            (relations[relIx] == null || (relations[relIx].Relation < RelationType.RelationType1_Peace && relations[relIx].SpeakTerms != SpeakTerms.SpeakTermsN2_None))
-                            )
+                        if (otherFaction.isAlive)
                         {
-                            worldPeace = false;
-                            break;
+                            RelationType relation = RelationType.RelationType0_Neutral;
+
+                            if (relations[relIx] != null)
+                            {
+                                relation = relations[relIx].Relation;
+                            }
+
+                            if (relation >= RelationType.RelationType3_Ally)
+                            {
+                                allyCount++;
+                            }
+
+                            if (relation < RelationType.RelationType1_Peace && relations[relIx].SpeakTerms != SpeakTerms.SpeakTermsN2_None)
+                            {
+                                worldPeace = false;
+                                //break;
+                            }
                         }
                     }
                 }
+
+                if (allyCount > p.previousAllyCount)
+                { 
+                    p.previousAllyCount = allyCount;
+
+                }
+
                 if (worldPeace)
                 {
                     Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.WorldPeace));

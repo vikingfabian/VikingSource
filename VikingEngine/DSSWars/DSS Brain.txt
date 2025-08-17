@@ -29,6 +29,7 @@ Plus the boss fight: about 10 hours
 (total: about 60 hours)
 
 ACHIEVEMENTS
+* Higher tier achievements will unlock all lower tiers below it. 
 * not available in peaceful/spectator modes
 
 
@@ -50,7 +51,7 @@ Turkish, portugual flag
 
 #must do#
 x blood splatter effect is broken?
-x add french
+x deal with custom map size (achievements)
 
 #Todo#
 x guard to wall tutorial
@@ -61,7 +62,6 @@ x small map editor size crash
 x Pen stroke size on map editor
 x Guards are never clearing move orders
 x Merge army button dont update the hud
-x Archers are weirdly delayed
 x Should try prioritise towers for guards
 x Guard controls suck
 

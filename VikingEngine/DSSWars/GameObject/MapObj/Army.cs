@@ -504,6 +504,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             ArmyStatus status = new ArmyStatus();
             var groupsCounter = groups.counter();
+
             while (groupsCounter.Next())
             {
                 ++status.typeCount[(int)groupsCounter.sel.soldierConscript.filterType()];
@@ -1135,14 +1136,11 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.CrashIfThreaded();
 
             if (reason == DeleteReason.EmptyGroup &&
-                isShip && 
-                GetFaction().grouptype == FactionGroupType.Nordic)
+                isShip &&
+                GetFaction().factiontype == FactionType.SouthHara &&
+                myIndex == 0)
             {
-                //var battle = battles.First();
-                //if (battle != null && battle.faction.player.IsPlayer())
-                //{
-                //    DssRef.achieve.UnlockAchievement(AchievementIndex.viking_naval);
-                //}
+                DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
             }
 
             var counter = groups.counter();

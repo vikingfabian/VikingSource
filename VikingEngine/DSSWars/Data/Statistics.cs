@@ -78,6 +78,18 @@ namespace VikingEngine.DSSWars.Data
                 statuesBuilt >= Achievements.DecorationsStatueCount)
             {
                 DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations_tier1);
+
+                if (decorBuilt >= Achievements.DecorationsTotalCount * 2 &&
+                    statuesBuilt >= Achievements.DecorationsStatueCount * 2)
+                {
+                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations_tier2);
+
+                    if (decorBuilt >= Achievements.DecorationsTotalCount * 4 &&
+                        statuesBuilt >= Achievements.DecorationsStatueCount * 4)
+                    {
+                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations_tier3);
+                    }
+                }
             }
         }
 

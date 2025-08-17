@@ -55,6 +55,7 @@ namespace VikingEngine.DSSWars.Players
 
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
+        public int previousAllyCount = 0;
         public int diplomaticPoints_softMax;
 
         public Data.Statistics statistics = new Data.Statistics();

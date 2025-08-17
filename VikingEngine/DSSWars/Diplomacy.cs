@@ -390,6 +390,11 @@ namespace VikingEngine.DSSWars
                         relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance, SpeakTermsOnWar_NoneChance);
                     }
 
+                    if (prevRelation >= RelationType.RelationType3_Ally)
+                    {
+                        DssRef.achieve.UnlockAchievement(AchievementIndex.traitor);
+                    }
+
                     if (defender.player.IsLocalPlayer())
                     {
                         var otherPlayer = defender.player.GetLocalPlayer();

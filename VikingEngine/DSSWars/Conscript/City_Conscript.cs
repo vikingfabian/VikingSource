@@ -134,11 +134,25 @@ namespace VikingEngine.DSSWars.GameObject
                                                 DssRef.stats.guardsRecruited++;
                                             }
 
-                                            if (status.inProgress.weapon == ItemResourceType.KnightsLance &&
-                                                (status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
-                                                status.inProgress.training == TrainingLevel.Professional)
+                                            switch (status.inProgress.weapon)
                                             {
-                                                DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
+                                                case ItemResourceType.LongSword:
+                                                    if (status.inProgress.armorLevel == ItemResourceType.LightPlateArmor ||
+                                                        status.inProgress.armorLevel == ItemResourceType.FullPlateArmor)
+                                                    {
+                                                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.men_of_steel);
+                                                    }
+                                                    break;
+                                                case ItemResourceType.KnightsLance:
+                                                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
+                                                    break;
+                                            }
+                                            if (status.inProgress.weapon == ItemResourceType.KnightsLance)
+                                                //&&
+                                                //(status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
+                                                //status.inProgress.training == TrainingLevel.Professional)
+                                            {
+                                                
                                             }
 
                                             //switch (Culture)

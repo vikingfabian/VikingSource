@@ -7,6 +7,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -45,22 +46,137 @@ namespace VikingEngine.DSSWars
             {
                 foreach (var p in DssRef.state.localPlayers)
                 {
+                    if (p.faction.militaryStrength > 100)
+                    {
+                        UnlockAchievement_async(AchievementIndex.military_might_tier1);
+
+                        if (p.faction.militaryStrength > 200)
+                        {
+                            UnlockAchievement_async(AchievementIndex.military_might_tier2);
+
+                            if (p.faction.militaryStrength > 400)
+                            {
+                                UnlockAchievement_async(AchievementIndex.military_might_tier3);
+
+
+                            }
+                        }
+                    }
+
+                    if (p.faction.money.copper > int.MaxValue)
+                    {
+                        UnlockAchievement_async(AchievementIndex.gold_64bit);
+                    }
+
                     var citiesC = p.faction.cities.counter();
                     while (citiesC.Next())
                     {
                         if (citiesC.sel.workForce.amount > LargePopulationCount_Tier1)
                         {
-                            DssRef.achieve.UnlockAchievement(AchievementIndex.large_population_tier1);
+                            UnlockAchievement_async(AchievementIndex.large_population_tier1);
 
                             if (citiesC.sel.workForce.amount > LargePopulationCount_Tier2)
                             {
-                                DssRef.achieve.UnlockAchievement(AchievementIndex.large_population_tier2);
+                                UnlockAchievement_async(AchievementIndex.large_population_tier2);
 
                                 if (citiesC.sel.workForce.amount > LargePopulationCount_Tier3)
                                 {
-                                    DssRef.achieve.UnlockAchievement(AchievementIndex.large_population_tier3);
+                                    UnlockAchievement_async(AchievementIndex.large_population_tier3);
                                 }
                             }
+                        }
+
+                        int posted = 0;
+                        int posted_stone = 0;
+
+
+                        var groupsC = citiesC.sel.groups.counter();
+                        while (groupsC.Next())
+                        {
+                            int post = groupsC.sel.GetGuardGroup().assignedToPost_IdAndPosition;
+                            if (post > 0)
+                            {
+                                posted++;
+
+                                switch ((TerrainWallType)DssRef.world.subTileGrid.Get(conv.IntToIntVector2(post)).subTerrain)
+                                {
+                                    case TerrainWallType.StoneGate:
+                                    case TerrainWallType.StoneWallGreen:
+                                    case TerrainWallType.StoneWall:
+                                    case TerrainWallType.StoneTower:
+                                    case TerrainWallType.StoneWallWoodHouse:
+                                        posted_stone++;
+                                        break;
+                                }
+                            }
+                        }
+                        //20 posted guards, then 40, then 80
+                        if (posted >= 20)
+                        {
+                            UnlockAchievement_async(AchievementIndex.fortress_tier1);
+
+                            if (posted >= 40)
+                            {
+                                UnlockAchievement_async(AchievementIndex.fortress_tier2);
+
+                                if (posted >= 80)
+                                {
+                                    UnlockAchievement_async(AchievementIndex.fortress_tier3);
+
+                                }
+                            }
+
+                            if (posted_stone >= 20)
+                            {
+                                UnlockAchievement_async(AchievementIndex.stone_fortress_tier1);
+
+                                if (posted_stone >= 40)
+                                {
+                                    UnlockAchievement_async(AchievementIndex.stone_fortress_tier2);
+
+                                    if (posted_stone >= 80)
+                                    {
+                                        UnlockAchievement_async(AchievementIndex.stone_fortress_tier3);
+
+                                    }
+                                }
+                            }
+                        }
+
+                        
+                    }
+
+                    var armiesC = p.faction.armies.counter();
+                    while (armiesC.Next())
+                    {
+                        int vikings = 0;
+                        int farmers = 0;
+
+                        var groupsC = armiesC.sel.groups.counter();
+                        while (groupsC.Next())
+                        {
+                            switch (groupsC.sel.soldierConscript.conscript.weapon)
+                            {
+                                case Resource.ItemResourceType.SharpStick:
+                                case Resource.ItemResourceType.SlingShot:
+                                    farmers++; 
+                                    break;
+                            }
+
+                            if (groupsC.sel.isShip && groupsC.sel.soldierConscript.conscript.specialization == SpecializationType.Sea)
+                            { 
+                                vikings++;
+                            }
+                        }
+
+                        if (farmers >= 16)
+                        {
+                            UnlockAchievement_async(AchievementIndex.folkmen_rise);
+                        }
+
+                        if (vikings >= 16)
+                        {
+                            UnlockAchievement_async(AchievementIndex.vikings);
                         }
                     }
                 }
@@ -100,9 +216,9 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void UnlockAchievement_on25_50_100_150(AchievementIndex achievement25, AchievementIndex achievement50, AchievementIndex achievement100, AchievementIndex achievement150)
+        public void UnlockAchievement_onAny_50_100_150(AchievementIndex achievementAny, AchievementIndex achievement50, AchievementIndex achievement100, AchievementIndex achievement150)
         {
-            UnlockAchievement(achievement25);
+            UnlockAchievement(achievementAny);
 
             if (difficultyPerc >= 50)
             {
@@ -120,6 +236,41 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public void UnlockAchievement_onAny_100(AchievementIndex achievementAny, AchievementIndex achievement100)
+        {
+            UnlockAchievement(achievementAny);
+
+            if (difficultyPerc >= 100)
+            {
+                UnlockAchievement(achievement100);
+            }
+        }
+
+        public void UnlockAchievement_on75(AchievementIndex achievement)
+        {
+            if (difficultyPerc >= 75)
+            {
+                UnlockAchievement(achievement);
+            }
+        }
+
+        public void onAllyCount(int allies)
+        {
+            if (allies >= 4)
+            {
+                UnlockAchievement_async(AchievementIndex.friendship_tier1);
+                if (allies >= 8)
+                {
+                    UnlockAchievement_async(AchievementIndex.friendship_tier2);
+                    if (allies >= 16)
+                    {
+                        UnlockAchievement_async(AchievementIndex.friendship_tier3);
+
+                    }
+                }
+            }
+        }
+
         public void onVictory(VictoryType victoryType)
         {
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful ||
@@ -132,7 +283,38 @@ namespace VikingEngine.DSSWars
             switch (victoryType)
             {
                 case VictoryType.DefeatBoss:
-                    UnlockAchievement_on25_50_100_150(AchievementIndex.victory_boss_any, AchievementIndex.victory_boss_50, AchievementIndex.victory_boss_100, AchievementIndex.victory_boss_150);
+                    UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_boss_any, AchievementIndex.victory_boss_50, AchievementIndex.victory_boss_100, AchievementIndex.victory_boss_150);
+                    break;
+                case VictoryType.WorldPeace:
+                    UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_worldpeace_any, AchievementIndex.victory_worldpeace_50, AchievementIndex.victory_worldpeace_100, AchievementIndex.victory_worldpeace_150);
+
+
+                    break;
+                case VictoryType.Domination:
+                    UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_mini_domination_sandbox_any, AchievementIndex.victory_mini_domination_sandbox_50, AchievementIndex.victory_mini_domination_sandbox_100, AchievementIndex.victory_mini_domination_sandbox_150);
+
+                    if (DssRef.world.metaData.mapSize >= MapSize.Medium)
+                    {
+                        UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_domination_sandbox_any, AchievementIndex.victory_domination_sandbox_50, AchievementIndex.victory_domination_sandbox_100, AchievementIndex.victory_domination_sandbox_150);  
+                    }
+
+                    if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+                    {
+                        if (DssRef.world.metaData.mapSize < MapSize.Medium)
+                        {
+                            UnlockAchievement_onAny_100(AchievementIndex.victory_mini_domination_story_any, AchievementIndex.victory_mini_domination_story_100);
+                        }
+                        else
+                        {
+                            UnlockAchievement_onAny_100(AchievementIndex.victory_domination_story_any, AchievementIndex.victory_domination_story_100);
+
+                            if (DssRef.world.metaData.mapSize >= MapSize.Large)
+                            {
+                                UnlockAchievement_on75(AchievementIndex.massive_victory_domination);
+                            }
+                        }
+                    }
+
                     break;
             }
 
@@ -141,7 +323,17 @@ namespace VikingEngine.DSSWars
             {
                 if (p.statistics.WarsStartedByYou == 0)
                 {
-                    UnlockAchievement_on25_50_100_150(AchievementIndex.no_war_started_any, AchievementIndex.no_war_started_50, AchievementIndex.no_war_started_100, AchievementIndex.no_war_started_150);
+                    UnlockAchievement_onAny_50_100_150(AchievementIndex.no_war_started_any, AchievementIndex.no_war_started_50, AchievementIndex.no_war_started_100, AchievementIndex.no_war_started_150);
+
+                    if (victoryType == VictoryType.WorldPeace)
+                    {
+                        UnlockAchievement_onAny_100(AchievementIndex.peace_and_love_any, AchievementIndex.peace_and_love_100);
+
+                        if (DssRef.world.metaData.mapSize >= MapSize.Large)
+                        {
+                            UnlockAchievement_on75(AchievementIndex.massive_peace_and_love);
+                        }
+                    }
                 }
                 else if (p.statistics.WarsStartedByYou >= 10)
                 {
@@ -183,7 +375,7 @@ namespace VikingEngine.DSSWars
                     {
                         if (groupsC.sel.soldierConscript.conscript.specialization == SpecializationType.HonorGuard)//.type == GameObject.UnitType.HonorGuard)
                         {
-                            UnlockAchievement_on25_50_100_150(AchievementIndex.honorguards_any, AchievementIndex.honorguards_50, AchievementIndex.honorguards_100, AchievementIndex.honorguards_150);
+                            UnlockAchievement_onAny_50_100_150(AchievementIndex.honorguards_any, AchievementIndex.honorguards_50, AchievementIndex.honorguards_100, AchievementIndex.honorguards_150);
                             return;
                         }
                     }
@@ -274,7 +466,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// have good relations with all nations who speaks to you
         /// </summary>
-        victory_worldpeace_any,
+        victory_worldpeace_any,//i
         victory_worldpeace_50,
         victory_worldpeace_100,
         victory_worldpeace_150,
@@ -282,7 +474,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Grab the whole world to yourself - in sandbox
         /// </summary>
-        victory_mini_domination_sandbox_any,
+        victory_mini_domination_sandbox_any,//i
         victory_mini_domination_sandbox_50,
         victory_mini_domination_sandbox_100,
         victory_mini_domination_sandbox_150,
@@ -290,7 +482,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Grab the whole world to yourself - in sandbox, medium world size
         /// </summary>
-        victory_domination_sandbox_any,
+        victory_domination_sandbox_any,//i
         victory_domination_sandbox_50,
         victory_domination_sandbox_100,
         victory_domination_sandbox_150,
@@ -298,19 +490,19 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Grab the whole world to yourself - in story
         /// </summary>
-        victory_mini_domination_story_any,
+        victory_mini_domination_story_any,//i
         victory_mini_domination_story_100,
 
         /// <summary>
         /// Grab the whole world to yourself - in story, medium world size
         /// </summary>
-        victory_domination_story_any,
+        victory_domination_story_any,//i
         victory_domination_story_100,
 
         /// <summary>
         /// Grab the whole world to yourself - in story, large world size, min 75%
         /// </summary>
-        massive_victory_domination,
+        massive_victory_domination,//i
 
         /// <summary>
         /// reach victory without starting a single war
@@ -323,13 +515,13 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// reach world peace victory without starting a single war
         /// </summary>
-        peace_and_love_any,
+        peace_and_love_any,//i
         peace_and_love_100,
 
         /// <summary>
         /// reach world peace victory without starting a single war, large world size, min 75%
         /// </summary>
-        massive_peace_and_love,
+        massive_peace_and_love,//i
 
         /// <summary>
         /// reach victory, and have started (10, 20, 40) wars, min 75%
@@ -348,7 +540,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// have 4 allies, then 8, then 16
         /// </summary>
-        friendship_tier1,
+        friendship_tier1,//i
         friendship_tier2,
         friendship_tier3,
 
@@ -363,12 +555,12 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Declare war on an ally.
         /// </summary>
-        traitor,
+        traitor,//i
 
         /// <summary>
         /// destroy the mercenaries on sea
         /// </summary>
-        early_hara,
+        early_hara,//i
 
 
         /// <summary>
@@ -377,9 +569,9 @@ namespace VikingEngine.DSSWars
         statue_of_player,
 
         /// <summary>
-        /// Decorations: Constuct 20 decorative buildings, including at least 4 statues
+        /// Decorations: Constuct 20 decorative buildings, including at least 4 statues, then 40/8, then 80/16
         /// </summary>
-        decorations_tier1,
+        decorations_tier1,//i
         decorations_tier2,
         decorations_tier3,
 
@@ -387,17 +579,17 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Knights: Produce cavalry knights
         /// </summary>
-        knights,
+        knights,//i
 
         /// <summary>
         /// Men of steel: Produce soldiers with steel sword and armor.
         /// </summary>
-        men_of_steel,
+        men_of_steel,//i
 
         /// <summary>
         /// Knights of Lunimari: Produce an army with fully mithril equipped swordsmen and archers
         /// </summary>
-        knights_of_lumini,
+        knights_of_lumini,//i
 
         /// <summary>
         /// Large population: Reach a workforce of a 5000 men in one city, then 20k, then 50k
@@ -407,30 +599,30 @@ namespace VikingEngine.DSSWars
         large_population_tier3,
 
         /// <summary>
-        /// Fortress: Own a city with 20 posted guards, then 40, then 60
+        /// Fortress: Own a city with 20 posted guards, then 40, then 80
         /// </summary>
-        fortress_tier1,
+        fortress_tier1,//i
         fortress_tier2,
         fortress_tier3,
 
         /// <summary>
-        /// Stone Fortress: Own a city with 20 stone wall posted guards, then 40, then 60
+        /// Stone Fortress: Own a city with 20 stone wall posted guards, then 40, then 80
         /// </summary>
-        stone_fortress_tier1,
+        stone_fortress_tier1,//i
         stone_fortress_tier2,
         stone_fortress_tier3,
 
         /// <summary>
         /// Military might: Have an army power greater than 100, then 200, then 400
         /// </summary>
-        military_might_tier1,
+        military_might_tier1,//i
         military_might_tier2,
         military_might_tier3,
 
         /// <summary>
         /// Go 64bit: break the 16 bit limit of gold.
         /// </summary>
-        gold_64bit,
+        gold_64bit,//i
 
         /// <summary>
         /// The Ottoman - defeat a city with bronze siege cannons
@@ -457,12 +649,12 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// The people rise: 16 group army of only folkmen and slingers
         /// </summary>
-        folkmen_rise,
+        folkmen_rise,//i
 
         /// <summary>
         /// Vikings: Have a fleet with 16 ships with sea specialization.
         /// </summary>
-        vikings,
+        vikings,//i
 
         /// <summary>
         /// Slaughtered: Loose 100 soldiers in a battle
@@ -485,6 +677,10 @@ namespace VikingEngine.DSSWars
         barbarian_bane_any,
         barbarian_bane_100,
 
+        /// <summary>
+        /// Deliver gold
+        /// </summary>
+        gold_deliver,
 
         NUM_ACHIEVEMENTS
     }
