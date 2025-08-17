@@ -38,6 +38,8 @@ build building icon
 Turkish, portugual flag
 
 #must do#
+x blood splatter effect is broken?
+x add french
 
 #Todo#
 x guard to wall tutorial
