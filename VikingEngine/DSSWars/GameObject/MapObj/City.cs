@@ -97,6 +97,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         int starvingTimeSeconds = 0;
 
+        public int previousOwner = -1;
         public float capturePoints = 0;
 
 
@@ -2982,6 +2983,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (owner != null)
                 {
+                    previousOwner = owner.myIndex;
+                    owner.lostCity_Time1 = owner.lostCity_Time0;
+                    owner.lostCity_Time0 = this.myIndex;
                     owner.remove(this);
                 }
 
@@ -2995,7 +2999,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 
                 OnNewOwner(newFaction);
-                //guardCount = Bound.Min(guardCount, 1);
             }
         }
 

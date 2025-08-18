@@ -103,8 +103,13 @@ namespace VikingEngine.DSSWars.XP
                 var citiesC = factionsC.sel.cities.counter();
                 while (citiesC.Next())
                 {
-                    citiesC.sel.workTemplate.applyUnlock(citiesC.sel.technology.GetUnlocks(false));
+                    var unlocks = citiesC.sel.technology.GetUnlocks(false);
+                    citiesC.sel.workTemplate.applyUnlock(unlocks);
                     factionTech.countUnlocks(citiesC.sel.technology);
+                    if (unlocks.allUnlocked && factionsC.sel.player.IsLocalPlayer())
+                    {
+                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.techtree);
+                    }
                 }
 
                 factionsC.sel.technology = factionTech;

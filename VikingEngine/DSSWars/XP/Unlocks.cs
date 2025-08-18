@@ -10,6 +10,8 @@ namespace VikingEngine.DSSWars.XP
 {
     struct Unlocks
     {
+        public bool allUnlocked;
+
         public bool building_stoneBuildings;
         public bool coinMaking;
 

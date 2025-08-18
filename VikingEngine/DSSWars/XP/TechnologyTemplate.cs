@@ -262,30 +262,79 @@ namespace VikingEngine.DSSWars.XP
         public Unlocks GetUnlocks(bool factionView)
         {
             Unlocks unlocks = new Unlocks();
+            unlocks.allUnlocked = true;
 
             if (advancedBuilding.points >= (factionView ? 1 : AdvancedBuildingUnlock))
+            {
                 unlocks.UnlockAdvancedBuilding();
+            }
+            else
+            {
+                unlocks.allUnlocked = false;
+            }
 
             if (advancedFarming.points >= (factionView ? 1 : AdvancedFarmingUnlock))
+            {
                 unlocks.UnlockAdvancedFarming();
+            }
+            else
+            {
+                unlocks.allUnlocked = false;
+            }
 
             if (advancedCasting.points >= (factionView ? 1 : AdvancedCastingUnlock))
+            {
                 unlocks.UnlockAdvancedCasting();
+            }
+            else
+            {
+                unlocks.allUnlocked = false;
+            }
 
             if (iron.points >= (factionView ? 1 : IronUnlock))
+            {
                 unlocks.UnlockIron();
+            }
+            else
+            {
+                unlocks.allUnlocked = false;
+            }
 
             if (steel.points >= (factionView ? 1 : SteelUnlock))
+            {
                 unlocks.UnlockSteel();
+            }
+            else
+            {
+                unlocks.allUnlocked = false;
+            }
 
             if (catapult.points >= (factionView ? 1 : CatapultUnlock))
+            {
                 unlocks.UnlockCatapult();
+            }
+            else
+            {
+                unlocks.allUnlocked = false;
+            }
 
             if (blackPowder.points >= (factionView ? 1 : BlackPowderUnlock))
+            {
                 unlocks.UnlockBlackPowder();
+            }
+            else
+            {
+                unlocks.allUnlocked = false;
+            }
 
             if (gunPowder.points >= (factionView ? 1 : GunPowderUnlock))
+            {
                 unlocks.UnlockGunPowder();
+            }
+            else
+            {
+                unlocks.allUnlocked = false;
+            }
 
             return unlocks;
         }

@@ -59,7 +59,10 @@ namespace VikingEngine.DSSWars
 
         public float militaryStrength = 0;
         public bool hasDeserters = true;
-        
+
+        public int lostCity_Time0 = -1;
+        public int lostCity_Time1 = -1;
+
 
         public XP.TechnologyTemplate technology;
 

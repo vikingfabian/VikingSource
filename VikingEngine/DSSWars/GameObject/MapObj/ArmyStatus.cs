@@ -28,15 +28,15 @@ namespace VikingEngine.DSSWars.GameObject
                     DssRef.achieve.UnlockAchievement(AchievementIndex.knights_of_lumini);
                 }
 
-                int farmers = 0;
-                if (result.TryGetValue(UnitFilterType.SharpStick, out int folkmen))
-                {
-                    farmers = folkmen;
-                }
-                if (result.TryGetValue(UnitFilterType.Skirmisher, out int folkmen))
-                {
-                    farmers = folkmen;
-                }
+                //int farmers = 0;
+                //if (result.TryGetValue(UnitFilterType.SharpStick, out int folkmen))
+                //{
+                //    farmers = folkmen;
+                //}
+                //if (result.TryGetValue(UnitFilterType.Skirmisher, out int folkmen))
+                //{
+                //    farmers = folkmen;
+                //}
             }
 
             //if (result.Count >= Achievements.AllUnitTypesCount &&

@@ -23,6 +23,16 @@ namespace VikingEngine.DSSWars
         public const int DecorationsTotalCount = 20;
         public const int DecorationsStatueCount = 4;
 
+        /// <summary>
+        /// Slaughtered: Loose 100 soldiers in a battle
+        /// </summary>
+        public const int SlaughteredCount = 100;
+
+        /// <summary>
+        /// Defeating victory: Win after loosing 40 military strength
+        /// </summary>
+        public const float Defeating_victory_strengthLost = 40;
+
         public const int FriendshipAllyCount = 8;
         double difficultyPerc;
 
@@ -316,6 +326,11 @@ namespace VikingEngine.DSSWars
                     }
 
                     break;
+            }
+
+            if (!DssRef.difficulty.setting_allowPauseCommand)
+            { 
+                UnlockAchievement_onAny_50_100_150(AchievementIndex.no_pause_any, AchievementIndex.no_pause_50, AchievementIndex.no_pause_100, AchievementIndex.no_pause_150);
             }
 
 
@@ -627,24 +642,24 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// The Ottoman - defeat a city with bronze siege cannons
         /// </summary>
-        ottoman,
+        ottoman,//i
 
         /// <summary>
-        /// Purge: Wipe out 1 nation, then 4, then 8
+        /// Purge: Wipe out 1 nation, then 4, then 12. story, 75% difficulty
         /// </summary>
-        purge_nation_tier1,
+        purge_nation_tier1,//i
         purge_nation_tier2,
         purge_nation_tier3,
 
         /// <summary>
         /// Max out - casual: gain all tech using casual controls
         /// </summary>
-        maxout_casual,
+        maxout_casual,//i
 
         /// <summary>
         ///  fully research all technologies
         /// </summary>
-        techtree,
+        techtree,//i
 
         /// <summary>
         /// The people rise: 16 group army of only folkmen and slingers
@@ -659,28 +674,38 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Slaughtered: Loose 100 soldiers in a battle
         /// </summary>
-        slaughtered,
+        slaughtered,//i
 
         /// <summary>
         /// Defeating victory: Win after loosing 40 military strength
         /// </summary>
-        defeating_victory,
+        defeating_victory,//i
 
         /// <summary>
         /// Rear flanking: Make a cavalry charge against siege weapons
         /// </summary>
-        rear_flanking,
+        rear_flanking,//i
 
         /// <summary>
         /// Bane of the barbarians: get the Dark Horde reward 
         /// </summary>
-        barbarian_bane_any,
+        barbarian_bane_any,//i
         barbarian_bane_100,
 
         /// <summary>
         /// Deliver gold
         /// </summary>
-        gold_deliver,
+        gold_deliver,//i
+
+        /// <summary>
+        /// Reach victory with locked pause command 
+        /// </summary>
+        no_pause_any,//i
+        no_pause_50,
+        no_pause_100,
+        no_pause_150,
+
+
 
         NUM_ACHIEVEMENTS
     }

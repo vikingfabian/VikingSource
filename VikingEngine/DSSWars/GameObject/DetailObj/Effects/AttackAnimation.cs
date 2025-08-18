@@ -5,6 +5,7 @@ using System.Text;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -177,6 +178,26 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage, blockReduce, soldierData.attackSplashCount);
+                    }
+                }
+
+                if (this.GetFaction().player.IsLocalPlayer())
+                {
+                    switch (group.soldierConscript.conscript.weapon)
+                    {
+                        case Resource.ItemResourceType.KnightsLance:
+                            if (ItemPropertyColl.Get(target.group.soldierConscript.conscript.weapon).Filter_IsSiegeWeapon)
+                            { 
+                                DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
+                            }                           
+                            break;
+
+                        case ItemResourceType.SiegeCannonBronze:
+                            if (target.group.InGuardPost())
+                            {
+                                DssRef.achieve.UnlockAchievement(AchievementIndex.ottoman);
+                            }
+                            break;
                     }
                 }
             }

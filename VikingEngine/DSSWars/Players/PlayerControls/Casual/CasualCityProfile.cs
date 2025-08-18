@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Content;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
     struct CasualCityProfile
     {
+        public const int Projectile1_Catapult = 1;
+        public const int Projectile2_BlackPowder = 2;
+        public const int ProjectileMax_GunPowder = 3;
+
+        public const int ArmorMax_Steel = 2;
+        public const int SwordMax_Steel = 2;
+        public const int FarmingMax = 2;
+
+
+
         public int maxHuts;
         public SoldierPurchaseOption guard;
 
@@ -31,6 +42,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public int unlock_projectile;
         public int unlock_farming;
         //bool armorBonus;
+
+        public void onCasualUpgrade()
+        {
+            if (unlock_armor == ArmorMax_Steel &&
+                unlock_sword == SwordMax_Steel &&
+                unlock_projectile == ProjectileMax_GunPowder &&
+                unlock_farming == FarmingMax)
+            {
+                DssRef.achieve.UnlockAchievement(AchievementIndex.maxout_casual);
+            }
+        }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {

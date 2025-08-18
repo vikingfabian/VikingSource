@@ -713,6 +713,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Ballista;
                 soldier.modelData.modelType = ModelType.Warmashine;
+                weapon.Filter_IsSiegeWeapon = true;
             }
 
             {
@@ -778,6 +779,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Catapult;
                 soldier.modelData.modelType = ModelType.Warmashine;
+                weapon.Filter_IsSiegeWeapon = true;
             }
             {
                 var weapon = Get(ItemResourceType.SiegeCannonBronze);
@@ -811,6 +813,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.SiegeCannonBronze;
                 soldier.modelData.modelType = ModelType.Warmashine;
+                weapon.Filter_IsSiegeWeapon = true;
             }
             {
                 var weapon = Get(ItemResourceType.ManCannonBronze);
@@ -877,6 +880,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.SiegeCannonIron;
                 soldier.modelData.modelType = ModelType.Warmashine;
+                weapon.Filter_IsSiegeWeapon = true;
             }
 
             {
@@ -1022,6 +1026,7 @@ namespace VikingEngine.DSSWars.Resource
         public CraftBlueprint bp2;
 
         public SoldierData soldierData = new SoldierData();
+        public bool Filter_IsSiegeWeapon = false;
 
         public ItemProperties(ItemResourceType type, float weight, CraftBlueprint bp1, CraftBlueprint bp2)
         {   

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
@@ -392,6 +393,7 @@ namespace VikingEngine.DSSWars.Event
 
         public void onFactionDestroyed(Faction faction)
         {
+
             //Happens in one second update
             if (faction.myIndex == DssRef.settings.Faction_Barbarian)
             {
@@ -425,6 +427,8 @@ namespace VikingEngine.DSSWars.Event
                         mainArmy.setAsStartArmy();
 
                         p.hud.messages.Add(DssRef.todoLang.EventMessage_DarkHordeKiller_Title, DssRef.todoLang.EventMessage_DarkHordeKiller_Message);
+
+                        DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.barbarian_bane_any, AchievementIndex.barbarian_bane_100);
                     }
 
 
@@ -434,6 +438,46 @@ namespace VikingEngine.DSSWars.Event
             {
                 victory(VictoryType.DefeatBoss);
             }
+
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (DssRef.diplomacy.InWar(faction, p.faction))
+                {
+                    var citiesC = p.faction.cities.counter();
+                    while (citiesC.Next())
+                    {
+                        if (citiesC.sel.previousOwner == faction.myIndex && 
+                            (citiesC.sel.myIndex == faction.lostCity_Time0 || citiesC.sel.myIndex == faction.lostCity_Time1))
+                        { //Credited with killing off the faction
+                            p.factionsTerminated++;
+
+                            if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+                            {
+                                switch (p.factionsTerminated)
+                                {
+                                    case 0:
+                                        DssRef.achieve.UnlockAchievement_on75(AchievementIndex.purge_nation_tier1);
+                                        break;
+                                    case 4:
+                                        DssRef.achieve.UnlockAchievement_on75(AchievementIndex.purge_nation_tier2);
+                                        break;
+                                    case 12:
+                                        DssRef.achieve.UnlockAchievement_on75(AchievementIndex.purge_nation_tier3);
+                                        break;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        BlueScreen.ThreadException = e;
+                //    }
+                //});
         }
 
         //void prepareNext()

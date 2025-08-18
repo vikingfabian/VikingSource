@@ -26,6 +26,10 @@ namespace VikingEngine.DSSWars.GameObject
         public bool walkGoalAsShip = false;
         public int soldiersCount = 0;
         public int mostCenterGroup = -1;
+
+        protected int soldierCountBeforeBattle = -1;
+        protected float strengthBeforeBattle = -1;
+
         public bool inBattle = false;
         InBattleWith inBattleWith = new InBattleWith();
 
@@ -87,18 +91,29 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     DssRef.state.events.onBattleEnd_async(this, inBattleWith);
                     inBattle = false;
+                    if (GetPlayer().IsLocalPlayer())
+                    {
+                        float strengthLost = strengthBeforeBattle - strengthValue;
+                        if (strengthLost >= Achievements.Defeating_victory_strengthLost && groups.Count > 0)
+                        {
+                            DssRef.achieve.UnlockAchievement_async(AchievementIndex.defeating_victory);
+                        }
+
+                        int menLost = soldierCountBeforeBattle - soldiersCount;
+                        if (menLost >= Achievements.SlaughteredCount)
+                        {
+                            DssRef.achieve.UnlockAchievement_async(AchievementIndex.slaughtered);
+                        }
+                    }
                 }
             }
             else if (battles.groupsInBattle >= 2)
             {
                 inBattle = true;
+                strengthBeforeBattle = strengthValue;
+                soldierCountBeforeBattle = soldiersCount;
                 if (GetPlayer().IsLocalPlayer())
                 {
-                    //if (this.IsCity())
-                    //{ 
-                    //    if (GetCity().capturePoints 
-                    //}
-
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
                         var localplayer = GetPlayer().GetLocalPlayer();

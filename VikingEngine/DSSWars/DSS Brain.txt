@@ -52,6 +52,7 @@ Turkish, portugual flag
 #must do#
 x blood splatter effect is broken?
 x deal with custom map size (achievements)
+x more costly casual soldiers
 
 #Todo#
 x guard to wall tutorial

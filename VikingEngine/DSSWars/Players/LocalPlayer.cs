@@ -91,6 +91,7 @@ namespace VikingEngine.DSSWars.Players
         public bool viewArmyTagsOnMap = true;
         
         public int nextDominationSize;
+        public int factionsTerminated = 0;
         public bool barbarianKiller = false;
         public bool cohalitionEvent = false;
         public bool cohalitionWarning = false;
@@ -356,6 +357,7 @@ namespace VikingEngine.DSSWars.Players
             w.Write((ushort)nextDominationSize);
             w.Write(cohalitionEvent);
             w.Write(barbarianKiller);
+            w.Write((ushort)factionsTerminated);
 
 
             w.Write((ushort)pins.Count);
@@ -454,6 +456,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 cohalitionEvent = r.ReadBoolean();
                 barbarianKiller = r.ReadBoolean();
+                factionsTerminated = r.ReadUInt16();
             }
 
             if (subversion > 53)
