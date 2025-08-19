@@ -993,7 +993,7 @@ namespace VikingEngine.DSSWars
         void openMapEditor()
         {
             mapBackgroundLoading?.Abort();
-            new MapEditor_Generator();
+            new MapEditor_GeneratorScene();
         }
 
         void startBattleLab()

@@ -378,7 +378,7 @@ namespace VikingEngine.DSSWars
             if (bReturn)
             {
                 content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
-                    new RbImage( SpriteName.MenuIconResume),
+                    new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_ReturnToPrevious)
                     }, new RbAction(menu.menuBack)));

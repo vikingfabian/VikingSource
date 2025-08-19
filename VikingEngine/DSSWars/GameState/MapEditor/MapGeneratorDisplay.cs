@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
@@ -26,10 +27,14 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         static readonly List<float> MapSizeAdd = new List<float> { 8, 64, 1024 };
 
         RichMenu menu;
-        MapEditor_Generator state;
+        MapEditor_GeneratorScene state;
         MapGeneratorTab tab=0;
         public Vector2 topRight;
-        public MapGeneratorDisplay(MapEditor_Generator state) 
+
+        public ImageGroup2D loadingDisplay;
+        
+
+        public MapGeneratorDisplay(MapEditor_GeneratorScene state) 
         { 
             this.state = state;
 
@@ -41,8 +46,24 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             topRight = area.RightTop;
             topRight.X += Engine.Screen.BorderWidth;
 
-            menu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top1, new PlayerData(PlayerData.AllPlayers));
-            menu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top1_Back);
+            menu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top2, new PlayerData(PlayerData.AllPlayers));
+            menu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top2_Back);
+
+
+            TextG loadingText = new TextG(LoadedFont.Regular, Engine.Screen.Area.PercentToPosition(0.5f, 0.2f), Screen.TextSizeV2 * 2f, Align.CenterAll, DssRef.lang.Hud_Loading, Color.White, ImageLayers.Top0_Front, true);
+            var loadArea = loadingText.GetArea();
+            loadArea.Size.X += Screen.IconSize * 0.5f;
+            Graphics.Image loadingSpinner =new Image(SpriteName.WhiteArea, loadArea.RightCenter, Screen.IconSizeV2 * 0.6f, ImageLayers.Top1_Front, true);
+            loadArea.Size.X += Screen.IconSize * 0.5f;
+            loadArea.AddRadius(Screen.IconSize * 0.5f);
+
+            Graphics.Image loadingBg = new Image(SpriteName.WhiteArea, loadArea.Position, loadArea.Size, ImageLayers.Top1_Back, false);
+            loadingBg.ColorAndAlpha(Color.Black, 0.2f);
+
+            new Motion2d(MotionType.ROTATE, loadingSpinner, new Vector2(MathHelper.Tau * 0.5f), MotionRepeate.Loop, 1000, true);
+
+            loadingDisplay = new ImageGroup2D(new List<AbsDraw2D> { loadingText, loadingSpinner, loadingBg });
+            loadingDisplay.Hide();
 
             refreshMenu();
         }

@@ -16,6 +16,8 @@ namespace VikingEngine.DSSWars.Interface
 {
     class DiplomacyDisplay
     {
+        static readonly RelationType[] RelationOptionsAsGod = { RelationType.RelationTypeN3_War, RelationType.RelationType1_Peace, RelationType.RelationType3_Ally };
+
         Players.LocalPlayer player;
         DiplomaticRelation selectedRelation;
         Faction otherfaction;
@@ -47,27 +49,64 @@ namespace VikingEngine.DSSWars.Interface
         public void toHud(RichBoxContent content, Faction faction, bool selection)
         {
             otherfaction = faction;
-            selectedRelation = player.faction.diplomaticRelations[faction.myIndex];
-            againstDark = faction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
-            if (selectedRelation == null)
-            {
-               selectedRelation = DssRef.diplomacy.SetRelationType(player.faction, faction, RelationType.RelationType0_Neutral, true);
-            }
 
-            if ( selectedRelation != null)
-            {
-                FactionRelationDisplay(faction, selectedRelation.Relation, content);
-
-                content.newLine();
-
-                if (otherfaction.player.IsBot())
+            
+                selectedRelation = player.faction.diplomaticRelations[faction.myIndex];
+                againstDark = faction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
+                if (selectedRelation == null)
                 {
-                    playerToAi();
+                    selectedRelation = DssRef.diplomacy.SetRelationType(player.faction, faction, RelationType.RelationType0_Neutral, true);
                 }
-                else
+
+                if (selectedRelation != null)
                 {
-                    playerToPlayer(content);
+                    FactionRelationDisplay(faction, selectedRelation.Relation, content);
+
+                    content.newLine();
+                    if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
+                    {
+                        if (otherfaction.player.IsBot())
+                        {
+                            playerToAi();
+                        }
+                        else
+                        {
+                            playerToPlayer(content);
+                        }
+                    }
                 }
+            
+
+            if (player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)
+            {
+                content.newParagraph();
+                content.h2(DssRef.lang.Diplomacy_RelationWithOthers).overrideColor = HudLib.TitleColor_Label;
+
+                for (int i = 1; i < player.gameControls.diplomacy.previousFactionsLookedAt.Count; i++)
+                {
+                    content.newLine();
+                    var thirdPartFaction = player.gameControls.diplomacy.previousFactionsLookedAt[i];
+                    var relation = DssRef.diplomacy.GetRelationType(otherfaction, thirdPartFaction);
+
+                    content.Add(thirdPartFaction.FlagTextureToHud());
+                    content.Add(new RbText(thirdPartFaction.PlayerName));
+
+                    content.Add(new RbText(": "));
+                    content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                    content.Add(new RbText(Diplomacy.RelationString(relation)));
+
+                    if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+                    {
+                        content.space();
+                        foreach (var forceRelation in RelationOptionsAsGod)
+                        {
+                            content.Add(new ArtButton(RbButtonStyle.Primary,
+                                new List<AbsRichBoxMember> { new RbImage(Diplomacy.RelationSprite(forceRelation)) },
+                                new RbAction3Arg<RelationType, Faction, Faction>(setRelation_AsGod, forceRelation, otherfaction, thirdPartFaction),
+                                new RbTooltip_Text(Diplomacy.RelationString(forceRelation))));
+                    } }
+                }
+
             }
 
             void playerToAi()
@@ -175,27 +214,13 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new RbText(DssRef.lang.Diplomacy_LightSide));//"Is light side ally"));
                 }
 
-                if (player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)
-                {
-                    content.newParagraph();
-                    content.h2(DssRef.lang.Diplomacy_RelationWithOthers).overrideColor = HudLib.TitleColor_Label;
-
-                    for (int i = 1; i < player.gameControls.diplomacy.previousFactionsLookedAt.Count; i++)
-                    {
-                        content.newLine();
-                        var thirdPartFaction = player.gameControls.diplomacy.previousFactionsLookedAt[i];
-                        var relation = DssRef.diplomacy.GetRelationType(otherfaction, thirdPartFaction);
-
-                        content.Add(thirdPartFaction.FlagTextureToHud());
-                        content.Add(new RbText(thirdPartFaction.PlayerName));
-
-                        content.Add(new RbText(": "));
-                        content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
-                        content.Add(new RbText(Diplomacy.RelationString(relation)));
-                    }
                 
-                }
             }
+        }
+
+        void setRelation_AsGod(RelationType relation, Faction faction1, Faction faction2)
+        {
+            DssRef.diplomacy.SetRelationType(faction1, faction2, relation);
         }
 
         public static void FactionRelationDisplay(Faction faction, RelationType relation, RichBoxContent content)
@@ -206,18 +231,21 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
             content.space(0.5f);
             content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
-            
+
             content.Add(new RbSeperationLine());
 
             FactionSize(faction, content, false);
 
             content.newParagraph();
 
-            var relType = new RbText(DssRef.lang.Diplomacy_RelationType + ": ");
-            relType.overrideColor = HudLib.TitleColor_TypeName;
-            content.Add(relType);
-            content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
-            content.Add(new RbText(Diplomacy.RelationString(relation)));
+            if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
+            {
+                var relType = new RbText(DssRef.lang.Diplomacy_RelationType + ": ");
+                relType.overrideColor = HudLib.TitleColor_TypeName;
+                content.Add(relType);
+                content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                content.Add(new RbText(Diplomacy.RelationString(relation)));
+            }
         }
 
         public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)

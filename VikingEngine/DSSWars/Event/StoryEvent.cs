@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
-            init(false, TimeLength.FromMinutes(20));
+            init(false, TimeLength.FromMinutes(40));
         }
         public override bool RunWarManager()
         {

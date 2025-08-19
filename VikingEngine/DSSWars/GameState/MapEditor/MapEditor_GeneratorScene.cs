@@ -8,7 +8,7 @@ using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
 {
-    class MapEditor_Generator : AbsDssState
+    class MapEditor_GeneratorScene : AbsDssState
     {
         public Map.Generate.MapGenerateSettings GenerateSettings;
         MapGeneratorDisplay display;
@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         MapGenerator_BackgroundLoading mapBackgroundLoading;
         bool loadingState = false;
         public CustomMapStorage mapStorage = new CustomMapStorage();
-        public MapEditor_Generator()
+        public MapEditor_GeneratorScene()
             :base() 
         {
             userStorage = new MapEditorUserStorage();
@@ -37,6 +37,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                 if (mapBackgroundLoading.Complete())
                 {
                     loadingState = false;
+                    display.loadingDisplay.Hide();
                     map.generate();
                     display.refreshMenu();
                 }
@@ -70,6 +71,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         public void generatePass(GenerateMapPass pass)
         {
             loadingState = true;
+            display.loadingDisplay.Show();
 
             if (pass == GenerateMapPass.Clear || pass == GenerateMapPass.AllTerrain)
             {

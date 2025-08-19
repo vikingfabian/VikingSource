@@ -1,11 +1,17 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed loading key settings bug
+* Event timers: War manager start: +20min
+* Fixed map editor crashing
+* map editor loading bar
+
+Spectator mode
+* improved diplomacy display, and it has god powers
 
 Event timers (are slightly random)
 - Ai delay: 8 minutes
 - Ai peace time: 15 min
-- War manager start: 20min
+- War manager start: 40min
 - Barbarians: 3 hours
 - Mercenaries: 8 hours (total 12 hours by now)
 - The cohalition: 12 hours (or when the player grabs 5 to 7 cities)
@@ -27,7 +33,6 @@ Casual:
 build building icon
 
 #must do#
-x key setup does not save
 x map editor improvements
 x god mode improvements
 x deal with custom map size (achievements)

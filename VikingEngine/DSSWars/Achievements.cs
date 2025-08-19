@@ -36,8 +36,8 @@ namespace VikingEngine.DSSWars
         public const int FriendshipAllyCount = 8;
         double difficultyPerc;
 
-        const int FactionUniqueUnitTypeCount = 4;
-        bool[] factionUniquePurchase = new bool[FriendshipAllyCount];
+        //const int FactionUniqueUnitTypeCount = 4;
+        //bool[] factionUniquePurchase = new bool[FriendshipAllyCount];
 
         public const int LargePopulationCount_Tier1 = 5000;
         public const int LargePopulationCount_Tier2 = 20000;
@@ -67,8 +67,6 @@ namespace VikingEngine.DSSWars
                             if (p.faction.militaryStrength > 400)
                             {
                                 UnlockAchievement_async(AchievementIndex.military_might_tier3);
-
-
                             }
                         }
                     }

@@ -144,8 +144,8 @@ namespace VikingEngine.DSSWars
             part++;
             DssRef.storage.meta.CreateImportFolders();
             part++;
-            Ref.gamesett.Load();
-            part++;
+            //Ref.gamesett.Load();
+            //part++;
             new Presentation.Translation().setupLanguage(true);
             part++;
 

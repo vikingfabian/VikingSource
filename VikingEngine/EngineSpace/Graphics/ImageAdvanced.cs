@@ -113,7 +113,7 @@ namespace VikingEngine.Graphics
 
         public override void Draw(int cameraIndex)
         {
-            if (visible)
+            if (visible && Texture != null)
             {
                 drawScale.X = size.X / ImageSource.Width;
                 drawScale.Y = size.Y / ImageSource.Height;
