@@ -667,6 +667,7 @@ namespace VikingEngine.DSSWars
             }
             content.Button("start", new RbAction(startGame), null, true);
             content.Button("map editor", new RbAction(openMapEditor), null, true);
+            content.Button("map2", new RbAction(map2), null, true);
 
             content.Button("battle lab", new RbAction(startBattleLab), null, true);
             content.Button("trial", new RbAction(startTrial), null, true);
@@ -2196,6 +2197,11 @@ namespace VikingEngine.DSSWars
             storeMenuStack();
 
             new StartEditor(0, true, EditorType.Files);
+        }
+
+        void map2()
+        {
+            new StartEditor(0, true, EditorType.Map2);
         }
 
         void mapFileGenerator()

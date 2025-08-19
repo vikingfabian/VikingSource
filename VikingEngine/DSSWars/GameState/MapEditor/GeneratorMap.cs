@@ -55,5 +55,29 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
         }
+
+        public void generate2(Map.Map2.WorldData2 world)
+        {
+            texture.texture = new Graphics.PixelTexture(world.tileGrid.Size);
+
+            var loop = world.tileGrid.LoopInstance();
+            while (loop.Next())
+            {
+                var t = world.tileGrid.Get(loop.Position);
+                texture.texture.SetPixel(loop.Position, t.color);
+            }
+            texture.texture.ApplyPixelsToTexture();
+            //if (arraylib.HasMembers(DssRef.world.cities))
+            //{
+            //    texture.RefreshWorld_FactionCol();
+            //}
+            //else
+            //{
+            //    texture.RefreshWorld_TerrainCol();
+            //}
+            image.Texture = texture.texture;
+            image.SetFullTextureSource();
+            textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
+        }
     }
 }
