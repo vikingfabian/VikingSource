@@ -1,21 +1,6 @@
 ﻿UPDATE
 Change Log:
-* peace victory added
-* domination victory improved
-* fixed: Occational camera stuck when toggling cities
-
-STORY
-* Added story mode
-* Barbarian event in story mode
-* scripted cohalition only happens once in the story
-* cpu players have diplomacy, and will seek alliances using a "my enemy's enemy" logic, happens when under threat by a bigger faction, or when attacking the same faction.
-* cpu alliances between a huge and small faction will make them join as one nation
-* bot alliances will break when their common enemy is gone
-* some bots have "loner" and will avoid alliances
-* bots cannot drag players into more wars after alliance
-* barbarian killer reward
-* does a clean up microscopic factions
-* defeat boss event
+* 
 
 Event timers (are slightly random)
 - Ai delay: 8 minutes
@@ -30,22 +15,13 @@ Plus the boss fight: about 10 hours
 (total: about 60 hours)
 
 ACHIEVEMENTS
-* Higher tier achievements will unlock all lower tiers below it. 
-* not available in peaceful/spectator modes
+* 
 
 Language change log:
-* Russian manual corrections
-* Russian new words
-* French manual translation
-* Turkish manual translations
-* Turkish new words
-
-! French factions not translated (see French_Factions.cs)
-! French new words are missing (see bottom of French.cs)
-! Turkish factions not translated (see Turkish_Factions.cs)
+*
 
 Casual:
-* All soldier prices are increased x3
+* 
 
 #Pics
 build building icon
