@@ -24,7 +24,7 @@ ACHIEVEMENTS
 * 
 
 Language change log:
-*
+* Turkish factions complete
 
 Casual:
 * 

@@ -8,81 +8,79 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Turkish
     {
-        //!NOT TRANSLATED
-
         /// <summary>
         /// The faction names are fantasy names designed to sound historic, they don't have to be directly translated as long as they keep some of their essense
         /// </summary>
-        public override string FactionName_Starshield => "Starshield";
-        public override string FactionName_Bluepeak => "Blue Peak";
+        public override string FactionName_Starshield => "Yıldız Kalkanı";
+        public override string FactionName_Bluepeak => "Mavi Tepe";
         public override string FactionName_Hoft => "Hoft";
-        public override string FactionName_RiverStallion => "River Stallion";
+        public override string FactionName_RiverStallion => "Nehir Aygırı";
         public override string FactionName_Sivo => "Sivo";
 
-        public override string FactionName_AelthrenConclave => "Aelthren Conclave";
-        public override string FactionName_VrakasundEnclave => "Vrakasund Enclave";
+        public override string FactionName_AelthrenConclave => "Aelthren Konseyi";
+        public override string FactionName_VrakasundEnclave => "Vrakasund Yerleşkesi";
         public override string FactionName_Tormürd => "Tormürd";
-        public override string FactionName_ElderysFyrd => "Elderys Fyrd";
+        public override string FactionName_ElderysFyrd => "Elderys Lejyonu";
         public override string FactionName_Hólmgar => "Hólmgar";
-        public override string FactionName_RûnothalOrder => "Rûnothal Order";
-        public override string FactionName_GrimwardEotain => "Grimward Eotain";
-        public override string FactionName_SkaeldraHaim => "Skaeldra Haim";
-        public override string FactionName_MordwynnCompact => "Mordwynn Compact";
-        public override string FactionName_AethmireSovren => "Aethmire Sovren";
+        public override string FactionName_RûnothalOrder => "Rûnothal Tarikatı";
+        public override string FactionName_GrimwardEotain => "Gaddaryurt Eotain";
+        public override string FactionName_SkaeldraHaim => "Skaeldra Yurdu";
+        public override string FactionName_MordwynnCompact => "Mordwynn Birliği";
+        public override string FactionName_AethmireSovren => "Aethmire Hükümdarlığı";
 
-        public override string FactionName_ThurlanKin => "Thurlan Kin";
-        public override string FactionName_ValestennOrder => "Valestenn Order";
-        public override string FactionName_Mournfold => "Mournfold";
-        public override string FactionName_OrentharTribes => "Orenthar Tribes";
-        public override string FactionName_SkarnVael => "Skarn Vael";
-        public override string FactionName_Glimmerfell => "Glimmerfell";
-        public override string FactionName_BleakwaterFold => "Bleakwater Fold";
-        public override string FactionName_Oathmaeren => "Oathmaeren";
-        public override string FactionName_Elderforge => "Elderforge";
-        public override string FactionName_MarhollowCartel => "Marhollow Cartel";
+        public override string FactionName_ThurlanKin => "Thurlan Hanedanı";
+        public override string FactionName_ValestennOrder => "Valestenn Tarikatı";
+        public override string FactionName_Mournfold => "Yas Diyarı";
+        public override string FactionName_OrentharTribes => "Orenthar Kabileleri";
+        public override string FactionName_SkarnVael => "Skarn Vadisi";
+        public override string FactionName_Glimmerfell => "Işıltı Vadisi";
+        public override string FactionName_BleakwaterFold => "Karasu Yurdu";
+        public override string FactionName_Oathmaeren => "Yeminliler";
+        public override string FactionName_Elderforge => "Kadim Dökümhane";
+        public override string FactionName_MarhollowCartel => "Marhollow Karteli";
 
-        public override string FactionName_TharvaniDominion => "Tharvani Dominion";
-        public override string FactionName_KystraAscendancy => "Kystra Ascendancy";
-        public override string FactionName_GildenmarkUnion => "Gildenmark Union";
-        public override string FactionName_AurecanEmpire => "Aurecan Empire";
-        public override string FactionName_BronzeReach => "Bronze Reach";
-        public override string FactionName_ElbrethGuild => "Elbreth Guild";
-        public override string FactionName_ValosianSenate => "Valosian Senate";
-        public override string FactionName_IronmarchCompact => "Ironmarch Compact";
-        public override string FactionName_KaranthCollective => "Karanth Collective";
-        public override string FactionName_VerdicAlliance => "Verdic Alliance";
+        public override string FactionName_TharvaniDominion => "Tharvani Hakimiyeti";
+        public override string FactionName_KystraAscendancy => "Kystra'nın Yükselenleri";
+        public override string FactionName_GildenmarkUnion => "Yıldızizi Birliği";
+        public override string FactionName_AurecanEmpire => "Aurecan İmparatorluğu";
+        public override string FactionName_BronzeReach => "Tunç Diyar";
+        public override string FactionName_ElbrethGuild => "Elbreth Loncası";
+        public override string FactionName_ValosianSenate => "Valos Senatosu";
+        public override string FactionName_IronmarchCompact => "Demirmarş Paktı";
+        public override string FactionName_KaranthCollective => "Karanth Kollektifi";
+        public override string FactionName_VerdicAlliance => "Verdic İttifakı";
 
-        public override string FactionName_OrokhCircles => "Orokh Circles";
-        public override string FactionName_TannagHorde => "Tannag Horde";
-        public override string FactionName_BraghkRaiders => "Braghk Raiders";
-        public override string FactionName_ThurvanniStonekeepers => "Thurvanni Stonekeepers";
-        public override string FactionName_KolvrenHunters => "Kolvren Hunters";
-        public override string FactionName_JorathBloodbound => "Jorath Bloodbound";
-        public override string FactionName_UlrethSkycallers => "Ulreth Skycallers";
-        public override string FactionName_GharjaRavagers => "Ghar'ja Ravagers";
-        public override string FactionName_RavkanShield => "Ravkan Shield";
-        public override string FactionName_FenskaarTidewalkers => "Fenskaar Tidewalkers";
+        public override string FactionName_OrokhCircles => "Orokh Meclisli";
+        public override string FactionName_TannagHorde => "Tannag Sürüsü";
+        public override string FactionName_BraghkRaiders => "Braghk Akıncıları";
+        public override string FactionName_ThurvanniStonekeepers => "Thurvanni'nin Taşbekçileri";
+        public override string FactionName_KolvrenHunters => "Kolvren Avcıları";
+        public override string FactionName_JorathBloodbound => "Jorath Kanbağı";
+        public override string FactionName_UlrethSkycallers => "Ulreth Gökdavetçileri";
+        public override string FactionName_GharjaRavagers => "Ghar’ja Yağmacıları";
+        public override string FactionName_RavkanShield => "Ravkan'ın Kalkanı";
+        public override string FactionName_FenskaarTidewalkers => "Fenskaar'ın Medcezir Bekçileri";
 
 
-        public override string FactionName_HroldaniStormguard => "Hroldani Stormguard";
-        public override string FactionName_SkirnirWolfkin => "Skirnir Wolfkin";
-        public override string FactionName_ThalgarBearclaw => "Thalgar Bearclaw";
-        public override string FactionName_VarnokRimeguard => "Varnok Rimeguard";
-        public override string FactionName_KorrakFirehand => "Korrak Firehand";
-        public override string FactionName_MoongladeGat => "Moonglade Gat";
-        public override string FactionName_DraskarSons => "Draskar Sons";
-        public override string FactionName_YrdenFlamekeepers => "Yrden Flamekeepers";
-        public override string FactionName_BrundirWarhorns => "Brundir Warhorns";
-        public override string FactionName_OltunBonecarvers => "Oltun Bonecarvers";
-        public override string FactionName_HaskariEmber => "Haskari Ember";
-        public override string FactionName_ZalfrikThunderborn => "Zalfrik Thunderborn";
-        public override string FactionName_BjorunStonetender => "Bjorun Stonetender";
-        public override string FactionName_MyrdarrIcewalkers => "Myrdarr Icewalkers";
-        public override string FactionName_SkelvikSpear => "Skelvik Spear";
-        public override string FactionName_VaragThroatcallers => "Varag Throatcallers";
+        public override string FactionName_HroldaniStormguard => "Hroldani'nin Fırtına Bekçileri";
+        public override string FactionName_SkirnirWolfkin => "Skirnir'in Kurt Soyu";
+        public override string FactionName_ThalgarBearclaw => "Ayıpençesi Thalgar";
+        public override string FactionName_VarnokRimeguard => "Varnok'un Ayaz Bekçileri";
+        public override string FactionName_KorrakFirehand => "Ateşeli Korrak";
+        public override string FactionName_MoongladeGat => "Mehtap Korusu";
+        public override string FactionName_DraskarSons => "Draskar'ın Oğulları";
+        public override string FactionName_YrdenFlamekeepers => "Yrden Alev Muhafızları";
+        public override string FactionName_BrundirWarhorns => "Brundir’in Cenk Nefirleri";
+        public override string FactionName_OltunBonecarvers => "Kemik Oyan Oltun";
+        public override string FactionName_HaskariEmber => "Haskari Kor";
+        public override string FactionName_ZalfrikThunderborn => "Yıldırımdoğan Zalfrik";
+        public override string FactionName_BjorunStonetender => "Taşdöven Bjorun";
+        public override string FactionName_MyrdarrIcewalkers => "Buzgezen Myrdarr";
+        public override string FactionName_SkelvikSpear => "Skelvik'in Mızrağı";
+        public override string FactionName_VaragThroatcallers => "Varag'ın Gırtlak Nâdîleri";
         public override string FactionName_Durakai => "Durakai";
-        public override string FactionName_FjornfellWarhowl => "Fjornfell Warhowl";
-        public override string FactionName_AshgroveWard => "Ashgrove Ward";
-        public override string FactionName_HragmarHorncarvers => "Hragmar Horncarvers";
+        public override string FactionName_FjornfellWarhowl => "Cenk Ulusu Fjornfell";
+        public override string FactionName_AshgroveWard => "Külkorusu Muhafızlığı";
+        public override string FactionName_HragmarHorncarvers => "Boynuz Oyan Hragmar";
     }
 }
