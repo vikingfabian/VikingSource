@@ -33,6 +33,16 @@ namespace VikingEngine.DSSWars
         public IntroState(bool isReset)
             : base(isReset)
         {
+            //PcgRandom random = new PcgRandom();
+            //for (int i = 0; i < 1000000000; i++)
+            //{
+            //    int result = random.Int(0);
+            //    if (result != 0)
+            //    {
+            //        lib.DoNothing();
+            //    }
+            //}
+
         }
         protected override void preLoading()
         {

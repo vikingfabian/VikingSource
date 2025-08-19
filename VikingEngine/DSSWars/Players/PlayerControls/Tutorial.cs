@@ -1436,7 +1436,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             bool createStartUnits = DssRef.storage.runTutorial_1short_2normal == 2 && 
                 missions.sel < TutorialMission.AttackBarbarian;
             DssRef.storage.runTutorial_1short_2normal = 0;
-            DssRef.storage.Save(null);
+
+            if (!PlatformSettings.STEAM_DEMO)
+            {
+                DssRef.storage.Save(null);
+            }
 
             Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
             enemyFac.player.GetAiPlayer().armyAi_enabled = true;
@@ -1449,16 +1453,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 startUnits();
             }
-            //{
-            //    var factionC = DssRef.world.factions.counter();
-            //    while (factionC.Next())
-            //    {
-            //        factionC.sel.player.createStartupBarracks();
-            //        factionC.sel.player.createStartUnits();
-
-            //    }
-            //}
-
+            
             player.hud.messages.blockFoodWarning(false);
             DssRef.state.events.onTutorialEnd();
         }

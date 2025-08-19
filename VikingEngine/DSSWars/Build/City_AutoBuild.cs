@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars.GameObject
     partial class City
     {
         static ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
+        static ForXYEdgeLoopRandomPicker Casual_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
         static List<BuildAndExpandType> AutoBuildList = new List<BuildAndExpandType>(4);
         static RandomObjects_Int AutoBuild_RandomBuild = new RandomObjects_Int();
         static List<BuildAndExpandType> AutoBuild_available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
@@ -122,7 +123,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
                         if (prevPos.X > 0)
                         {
-                            findAdjacentFreeSpot(prevPos, ref pos);
+                            findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
                         }
                     }
                     
@@ -151,17 +152,17 @@ namespace VikingEngine.DSSWars.GameObject
             //}
         }
 
-        void findAdjacentFreeSpot(IntVector2 center, ref IntVector2 result)
+        void findAdjacentFreeSpot(ForXYEdgeLoopRandomPicker edgeRandomizer, IntVector2 center, ref IntVector2 result)
         {
             for (int r = 1; r <= 2; r++)
             {
-                Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+                edgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
 
-                while (Auto_EdgeRandomizer.Next())
+                while (edgeRandomizer.Next())
                 {
-                    if (CityStructure.WorkInstance.MayAutoBuildHere(this, Auto_EdgeRandomizer.Position))
+                    if (CityStructure.WorkInstance.MayAutoBuildHere(this, edgeRandomizer.Position))
                     {
-                        result = Auto_EdgeRandomizer.Position;
+                        result = edgeRandomizer.Position;
                         return;
                     }
                 }

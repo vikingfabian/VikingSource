@@ -8,6 +8,7 @@ namespace VikingEngine
 {
     struct FileCheck
     {
+        public bool createFolderFail;
         bool hasStart;
         bool hasEnd;
         int readVersion;
@@ -28,6 +29,10 @@ namespace VikingEngine
 
         public override string ToString()
         {
+            if (createFolderFail)
+            {
+                return "DirFail";
+            }
             return $"{(hasStart ? 'T' : 'F')}-{(hasEnd ? 'T' : 'F')}: {readVersion}/{buildVersion}";
         }
     }

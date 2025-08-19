@@ -138,7 +138,16 @@ namespace VikingEngine.DSSWars.Data
 
         public void Save(IStreamIOCallback callBack)
         {
-            System.IO.Directory.CreateDirectory(path.CompleteDirectory);
+            try
+            {
+                System.IO.Directory.CreateDirectory(path.CompleteDirectory);
+            }
+            catch (Exception ex)
+            {
+                IOLib.fileCheck_gamestorage.createFolderFail = false;
+                IOLib.fileCheck_gamestorage.exception = ex;
+                return;
+            }
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
 

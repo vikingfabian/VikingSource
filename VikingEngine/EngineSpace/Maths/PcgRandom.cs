@@ -113,10 +113,23 @@ namespace VikingEngine
 
         override public int Int(int exMax)
         {
+            // 1) handle bad input
+            if (exMax <= 0) return 0;
+
+            // 2) get a raw value
             int result = (int)Uint((uint)exMax);
-            if (result < 0) result = -result;
-            if (result == exMax) return exMax -1;
-            
+
+            // 3) fix negatives, including int.MinValue
+            if (result < 0)
+            {
+                // int.MinValue cannot be negated; clamp it
+                if (result == int.MinValue) result = 0;
+                else result = -result;
+            }
+
+            // 4) enforce exclusive upper bound
+            if (result >= exMax) result = exMax - 1;
+
             return result;
         }
 
