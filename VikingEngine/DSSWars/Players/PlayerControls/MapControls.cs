@@ -22,7 +22,6 @@ namespace VikingEngine.DSSWars.Players
         int currentTiltYAngleOption = 0;
         const float TiltYUpAngle = -0.2f;
 
-
         const float CamMaxRotation = 0.7f;
         const float CamStartRotation = MathHelper.PiOver2;
         IntervalF ZoomRange = MapLayerManager.FullZoomRange;
@@ -1326,16 +1325,18 @@ namespace VikingEngine.DSSWars.Players
                 goal.Y = 0;
                 goal.Z += 0.5f;
                 Vector3 diff = goal - camera.LookTarget;
+                diff.Y = 0;
                 if (VectorExt.HasValue(diff))
                 {
                     float panSpeed = 0.003f * Ref.DeltaTimeMs * camera.targetZoom;
-
-                    if (panSpeed >= diff.Length())
+                    float length = diff.Length();
+                    if (panSpeed >= length)
                     {
                         camera.LookTarget = goal;
                     }
                     else
                     {
+                        
                         diff.Normalize();
                         Vector3 move = diff * panSpeed;
                         if (!Debug.CorruptValue(move))

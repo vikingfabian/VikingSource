@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Event
         public int maxWars = 0;
 
         public EventManager()
-        {//eventTriggerGameTimeSec = DssRef.difficulty.aiDelayTimeSec;
+        {
         }
 
         virtual public void onGameStarted()
@@ -118,13 +118,15 @@ namespace VikingEngine.DSSWars.Event
                     {
                         Faction otherFaction = DssRef.world.factions.GetIndex_Safe(relIx);
 
-                        if (otherFaction.isAlive)
+                        if (otherFaction != null && otherFaction.isAlive)
                         {
                             RelationType relation = RelationType.RelationType0_Neutral;
+                            SpeakTerms speak = SpeakTerms.SpeakTerms0_Normal;
 
                             if (relations[relIx] != null)
                             {
                                 relation = relations[relIx].Relation;
+                                speak = relations[relIx].SpeakTerms;
                             }
 
                             if (relation >= RelationType.RelationType3_Ally)
@@ -132,7 +134,7 @@ namespace VikingEngine.DSSWars.Event
                                 allyCount++;
                             }
 
-                            if (relation < RelationType.RelationType1_Peace && relations[relIx].SpeakTerms != SpeakTerms.SpeakTermsN2_None)
+                            if (relation < RelationType.RelationType1_Peace && speak != SpeakTerms.SpeakTermsN2_None)
                             {
                                 worldPeace = false;
                                 //break;

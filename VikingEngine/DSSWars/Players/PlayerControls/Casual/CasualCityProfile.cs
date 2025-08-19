@@ -11,8 +11,6 @@ using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 {
-    
-
     struct CasualCityProfile
     {
         public const int Projectile1_Catapult = 1;
@@ -22,8 +20,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public const int ArmorMax_Steel = 2;
         public const int SwordMax_Steel = 2;
         public const int FarmingMax = 2;
-
-
 
         public int maxHuts;
         public SoldierPurchaseOption guard;
@@ -41,7 +37,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public int unlock_sword;
         public int unlock_projectile;
         public int unlock_farming;
-        //bool armorBonus;
 
         public void onCasualUpgrade()
         {
@@ -102,7 +97,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
         public void InitCulture(City city, CityAreaCulture culture)
         {
-            guard = new SoldierPurchaseOption(100, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
+            guard = new SoldierPurchaseOption(300, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
             folkmen = new SoldierPurchaseOption(1, ItemResourceType.NONE,ItemResourceType.SharpStick, TrainingLevel.Minimal);
             meleeMen = new SoldierPurchaseOption(1, ItemResourceType.HeavyPaddedArmor, ItemResourceType.ShortSword, TrainingLevel.Basic);
             rangedMen = new SoldierPurchaseOption(1, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
@@ -135,22 +130,22 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 switch (city.cityType)
                 {
                     case CityType.Village:
-                        folkmen.price = 80;
+                        folkmen.price = 250;
                         break;
                     case CityType.Town:
-                        folkmen.price = 100;
+                        folkmen.price = 300;
                         break;
                     case CityType.Capital:
-                        folkmen.price = 140;
+                        folkmen.price = 500;
                         break;
                 }
             }
 
-            if (shipmen.Available) shipmen.price = 400;
-            if (meleeMen.Available) meleeMen.price = 400;
-            if (rangedMen.Available) rangedMen.price = 400;
-            if (riderMen.Available) riderMen.price = 1000;
-            if (siegeMen.Available) siegeMen.price = 400;
+            if (shipmen.Available) shipmen.price = 1200;
+            if (meleeMen.Available) meleeMen.price = 1200;
+            if (rangedMen.Available) rangedMen.price = 1200;
+            if (riderMen.Available) riderMen.price = 3000;
+            if (siegeMen.Available) siegeMen.price = 1200;
 
             switch (city.Culture)
             {
@@ -183,25 +178,25 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 case 1:
                     guard.armor = ItemResourceType.HeavyIronArmor;
-                    guard.upgradePrice += 100;
+                    guard.upgradePrice += 300;
 
                     meleeMen.armor = ItemResourceType.HeavyIronArmor;
-                    meleeMen.upgradePrice += 200;
+                    meleeMen.upgradePrice += 600;
 
                     rangedMen.armor = ItemResourceType.IronArmor;
-                    rangedMen.upgradePrice += 200;
+                    rangedMen.upgradePrice += 600;
                     break;
 
 
                 case 2:
                     guard.armor = ItemResourceType.FullPlateArmor;
-                    guard.upgradePrice += 200;
+                    guard.upgradePrice += 600;
 
                     meleeMen.armor = ItemResourceType.FullPlateArmor;
-                    meleeMen.upgradePrice += 400;
+                    meleeMen.upgradePrice += 1200;
 
                     rangedMen.armor = ItemResourceType.LightPlateArmor;
-                    rangedMen.upgradePrice += 600;
+                    rangedMen.upgradePrice += 1800;
                     break;
             }
 
@@ -209,11 +204,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 case 1:
                     meleeMen.weapon = ItemResourceType.Sword;
-                    meleeMen.upgradePrice += 200;
+                    meleeMen.upgradePrice += 600;
                     break;
                 case 2:
                     meleeMen.weapon = ItemResourceType.LongSword;
-                    meleeMen.upgradePrice +=400;
+                    meleeMen.upgradePrice += 1200;
                     break;
             }
 
@@ -221,35 +216,35 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 case 1:
                     guard.weapon = ItemResourceType.Crossbow;
-                    guard.upgradePrice += 50;
+                    guard.upgradePrice += 150;
 
                     rangedMen.weapon = ItemResourceType.Crossbow;
-                    rangedMen.upgradePrice +=200;
+                    rangedMen.upgradePrice +=600;
 
                     siegeMen.weapon = ItemResourceType.Catapult;
-                    siegeMen.upgradePrice += 100;
+                    siegeMen.upgradePrice += 300;
                     break;
 
                 case 2:
                     guard.weapon = ItemResourceType.HandCulverin;
-                    guard.upgradePrice += 100;
+                    guard.upgradePrice += 300;
 
                     rangedMen.weapon = ItemResourceType.HandCulverin;
-                    rangedMen.upgradePrice += 400;
+                    rangedMen.upgradePrice += 1200;
 
                     siegeMen.weapon = ItemResourceType.ManCannonBronze;
-                    siegeMen.upgradePrice += 300;
+                    siegeMen.upgradePrice += 900;
                     break;
 
                 case 3:
                     guard.weapon = ItemResourceType.Rifle;
-                    guard.upgradePrice += 200;
+                    guard.upgradePrice += 600;
 
                     rangedMen.weapon = ItemResourceType.Rifle;
-                    rangedMen.upgradePrice += 600;
+                    rangedMen.upgradePrice += 1800;
 
                     siegeMen.weapon = ItemResourceType.ManCannonIron;
-                    siegeMen.upgradePrice += 500;
+                    siegeMen.upgradePrice += 1500;
                     break;
             }
         }

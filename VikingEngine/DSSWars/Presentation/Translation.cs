@@ -19,10 +19,13 @@ namespace VikingEngine.DSSWars.Presentation
             return new List<LanguageType> { 
                 LanguageType.English,
                 LanguageType.German,
-                LanguageType.Chinese,
-                LanguageType.Japanese,
-                LanguageType.Russian,
+                LanguageType.French,
                 LanguageType.Spanish,
+                LanguageType.Turkish,
+                LanguageType.Russian,
+                LanguageType.Chinese,
+                LanguageType.Japanese,              
+                
             };
         }
 
@@ -47,6 +50,12 @@ namespace VikingEngine.DSSWars.Presentation
 
                 case LanguageType.Spanish:
                     return SpriteName.LangButton_Spanish;
+
+                case LanguageType.French:
+                    return SpriteName.LangButton_Frensh;
+           
+                case LanguageType.Turkish:
+                    return SpriteName.LangButton_Turkish;
 
                 default:
                     throw new NotImplementedException();
@@ -124,6 +133,18 @@ namespace VikingEngine.DSSWars.Presentation
                 case LanguageType.Spanish:
                     DssRef.lang = new Spanish();
                     Ref.langOpt = new OptionsLanguage_Spanish();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.Turkish:
+                    DssRef.lang = new Turkish();
+                    Ref.langOpt = new OptionsLanguage_Turkish();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.French:
+                    DssRef.lang = new French();
+                    Ref.langOpt = new OptionsLanguage_French();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
             }

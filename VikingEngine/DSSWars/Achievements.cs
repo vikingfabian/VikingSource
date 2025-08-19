@@ -581,7 +581,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Glory to me: contruct the "sword raising player" statue
         /// </summary>
-        statue_of_player,
+        statue_of_player,//i
 
         /// <summary>
         /// Decorations: Constuct 20 decorative buildings, including at least 4 statues, then 40/8, then 80/16

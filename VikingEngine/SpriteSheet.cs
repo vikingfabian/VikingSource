@@ -2787,7 +2787,7 @@ namespace VikingEngine
                     add(SpriteName.WarsTutorialCity, 2, 2);
                     add(SpriteName.WarsTutorialSoldiers, 2, 2);
                     add(SpriteName.WarsRelationEnemy, 2, 2);
-                    
+                    add(SpriteName.LangButton_Turkish, 8, 2);
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 

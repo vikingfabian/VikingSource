@@ -898,6 +898,7 @@ namespace VikingEngine
         German,
         Japanese,
         French,
+        Turkish,
     }
 
     enum ThreeOptions

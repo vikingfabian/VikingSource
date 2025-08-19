@@ -217,7 +217,7 @@ namespace VikingEngine
         LangButton_Japanese,
         LangButton_Frensh,
         LangButton_Chinese,
-
+        LangButton_Turkish,
 
         IconBuildArrow,
         IconBuildSelection,

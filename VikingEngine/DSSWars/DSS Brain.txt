@@ -2,6 +2,7 @@
 Change Log:
 * peace victory added
 * domination victory improved
+* fixed: Occational camera stuck when toggling cities
 
 STORY
 * Added story mode
@@ -9,7 +10,7 @@ STORY
 * scripted cohalition only happens once in the story
 * cpu players have diplomacy, and will seek alliances using a "my enemy's enemy" logic, happens when under threat by a bigger faction, or when attacking the same faction.
 * cpu alliances between a huge and small faction will make them join as one nation
-* alliances will break when their common enemy is gone
+* bot alliances will break when their common enemy is gone
 * some bots have "loner" and will avoid alliances
 * bots cannot drag players into more wars after alliance
 * barbarian killer reward
@@ -32,7 +33,6 @@ ACHIEVEMENTS
 * Higher tier achievements will unlock all lower tiers below it. 
 * not available in peaceful/spectator modes
 
-
 Language change log:
 * Russian manual corrections
 * Russian new words
@@ -44,15 +44,18 @@ Language change log:
 ! French new words are missing (see bottom of French.cs)
 ! Turkish factions not translated (see Turkish_Factions.cs)
 
+Casual:
+* All soldier prices are increased x3
 
 #Pics
 build building icon
-Turkish, portugual flag
 
 #must do#
-x blood splatter effect is broken?
+x key setup does not save
+x map editor improvements
+x god mode improvements
 x deal with custom map size (achievements)
-x more costly casual soldiers
+x full game achievements + translations
 
 #Todo#
 x guard to wall tutorial
@@ -65,6 +68,7 @@ x Guards are never clearing move orders
 x Merge army button dont update the hud
 x Should try prioritise towers for guards
 x Guard controls suck
+x loading bar in map editor
 
 x casual missing some way to increase Diplomacy
 x Soldiers update their target too often (shaking)
@@ -177,26 +181,11 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish, German
+English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish
 
 
-#Todo (DSS 2)#
-1. better presentation
-2. 50 hour playtime
-3. maybe multiplayer
 
--Select leader type
--Dynamic shadows shader
--New end boss
--Story intro
--Lots of named factions
 https://discord.com/verification
-"adding your game category to youtube & twitch"
-
--steam stats
--Min 7K wishlists
-- kolla steam db releases
-
 
 Pigeon bombs
 https://discord.com/channels/405016249127665664/405016249660211213/1398608516767420548
