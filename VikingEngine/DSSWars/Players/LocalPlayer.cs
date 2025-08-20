@@ -152,6 +152,8 @@ namespace VikingEngine.DSSWars.Players
 
             faction.addGold_factionWide(10000);
 
+            
+
             //cityTab = profile.casualControls? MenuTab.Casual_Recruit : CityMenu.Tabs[0];
         }
 

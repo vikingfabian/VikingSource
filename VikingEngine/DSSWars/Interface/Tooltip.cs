@@ -240,7 +240,7 @@ namespace VikingEngine.DSSWars.Interface
                         break;
 
                     case Players.SelectTileResult.Wall:
-                        title = new RbText("Guard post");
+                        title = new RbText(DssRef.lang.Defence_GuardPost);
                         content.Add(title);
                         break;
 

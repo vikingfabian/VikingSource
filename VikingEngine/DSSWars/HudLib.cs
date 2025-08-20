@@ -65,8 +65,10 @@ namespace VikingEngine.DSSWars
 
         public const ImageLayers GUILayer = ImageLayers.Lay4;
 
-        
-        
+        public static readonly Color GodPower_ColorBg = new Color(80, 0, 80);//(R:139,G:0,B:139,A:255)
+        public static readonly Color GodPower_Color = Color.LightPink;
+
+
 
         public const ImageLayers PopMenuLayer = ImageLayers.Lay5_Back;
 

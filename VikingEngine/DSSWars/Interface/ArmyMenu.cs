@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.Interface
                     List<MenuTab> availableTabs = player.AvailableArmyTabs();
                     for (int i = 0; i < availableTabs.Count; ++i)
                     {
-                        var text = new RbText(LangLib.Tab(availableTabs[i], out string description));
+                        var text = new RbText(LangLib.Tab(availableTabs[i], out string description, out _));
                         text.overrideColor = HudLib.RbSettings.tabSelected.Color;
 
                         AbsRbAction enter = null;

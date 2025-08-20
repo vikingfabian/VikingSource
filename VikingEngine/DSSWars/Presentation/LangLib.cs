@@ -17,6 +17,7 @@ using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO;
 using VikingEngine.ToGG.MoonFall;
+using Microsoft.Xna.Framework;
 
 namespace VikingEngine.DSSWars.Presentation
 {
@@ -788,8 +789,10 @@ namespace VikingEngine.DSSWars.Presentation
             }
         }
 
-        public static string Tab(MenuTab tab, out string description)
+        public static string Tab(MenuTab tab, out string description, out Color? color)
         {
+            color = null;
+
             switch (tab)
             {
                 case MenuTab.Info:
@@ -845,6 +848,11 @@ namespace VikingEngine.DSSWars.Presentation
                 case MenuTab.Help:
                     description = null;
                     return DssRef.lang.Help_Title;
+
+                case MenuTab.God_Recruit:
+                    color = HudLib.GodPower_ColorBg;
+                    description = null;
+                    return DssRef.lang.MenuTab_Recruit;
 
                 case MenuTab.Casual_Recruit:
                     description = null;

@@ -7,6 +7,14 @@ Change Log:
 
 Spectator mode
 * improved diplomacy display, and it has god powers
+* can control any army
+* city build/destroy controls
+* add any soldiers
+
+Language change log:
+* Turkish factions complete
+
+
 
 Event timers (are slightly random)
 - Ai delay: 8 minutes

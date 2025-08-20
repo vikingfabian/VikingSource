@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
@@ -35,10 +36,7 @@ namespace VikingEngine.DSSWars.Interface
 {
     class CityMenu
     {
-        public static readonly List<MenuTab> Tabs = new List<MenuTab>() { 
-            MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket, 
-            MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Defence, MenuTab.Progress,
-            MenuTab.Tag,MenuTab.Help,};
+        public static List<MenuTab> Tabs;
 
         protected Players.LocalPlayer player;
         protected City city;
@@ -52,6 +50,24 @@ namespace VikingEngine.DSSWars.Interface
             AutomationFocus.Export,
             AutomationFocus.Military
         };
+
+        public static void InitGame()
+        {
+            Tabs = new List<MenuTab>() {
+                MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket,
+                MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Defence, MenuTab.Progress,
+                MenuTab.Tag};
+
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
+            {
+                Tabs.Insert(1, MenuTab.God_Recruit);
+            }
+            else
+            {
+                Tabs.Add(MenuTab.Help);
+            }
+        }
+
         public CityMenu(Players.LocalPlayer player, City city, RichBoxContent content)
         {
             this.player = player;
@@ -87,8 +103,16 @@ namespace VikingEngine.DSSWars.Interface
                 List<MenuTab> availableTabs = player.AvailableCityTabs();
                 for (int i = 0; i < availableTabs.Count; ++i)
                 {
-                    var text = new RbText(LangLib.Tab(availableTabs[i], out string description));
-                    text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+                    var text = new RbText(LangLib.Tab(availableTabs[i], out string description, out var tabColor));
+
+                    if (tabColor == null)
+                    {
+                        text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+                    }
+                    else
+                    {
+                        text.overrideColor = tabColor;
+                    }
 
                     AbsRbAction enter = null;
                     if (description != null)
@@ -178,6 +202,10 @@ namespace VikingEngine.DSSWars.Interface
                         helpTab(content);
                         break;
 
+                    case MenuTab.God_Recruit:
+                        godRecruitTab(content);
+                        break;
+
                     case MenuTab.Casual_Recruit:                        
                         casualRecruitTab(content);
                         break;
@@ -190,6 +218,41 @@ namespace VikingEngine.DSSWars.Interface
         }
 
         static readonly int[] RecruitTabCounts = [2, 5, 10, 25];
+
+
+        void godRecruitTab(RichBoxContent content)
+        {
+            GodConscript.ToHud(content, addSoldier);
+
+            void addSoldier(int count)
+            {
+                SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                {
+                    conscript = new ConscriptProfile()
+                    {
+                        weapon = BattleLabStorage.Singleton.setup.selectedWeapon,
+                        armorLevel = Resource.ItemResourceType.PaddedArmor,
+                        training = TrainingLevel.Basic,
+                        specialization = SpecializationType.Traditional,
+                    }
+                };
+
+                var army = city.recruitToClosestArmy();
+
+                if (army == null)
+                {
+                    army = city.GetFaction().NewArmy(city.recruitToTile);
+                }
+
+                for (int i = 0; i < count; ++i)
+                {                    
+                    new SoldierGroup(army, SoldierProfile, army.position);                    
+                }
+
+                army.setAsStartArmy();
+                //army.GetArmy().OnSoldierPurchaseCompleted();
+            }
+        }
 
         void casualRecruitTab(RichBoxContent content)
         {
@@ -2612,6 +2675,8 @@ namespace VikingEngine.DSSWars.Interface
         Mix,
         Help,
         Defence,
+
+        God_Recruit,
 
         Casual_Recruit,
         Casual_Build,

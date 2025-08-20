@@ -100,10 +100,10 @@ namespace VikingEngine.DSSWars.Interface
                         content.space();
                         foreach (var forceRelation in RelationOptionsAsGod)
                         {
-                            content.Add(new ArtButton(RbButtonStyle.Primary,
+                            content.Add(new RbButton(
                                 new List<AbsRichBoxMember> { new RbImage(Diplomacy.RelationSprite(forceRelation)) },
                                 new RbAction3Arg<RelationType, Faction, Faction>(setRelation_AsGod, forceRelation, otherfaction, thirdPartFaction),
-                                new RbTooltip_Text(Diplomacy.RelationString(forceRelation))));
+                                new RbTooltip_Text(Diplomacy.RelationString(forceRelation)), true, HudLib.GodPower_ColorBg));
                     } }
                 }
 

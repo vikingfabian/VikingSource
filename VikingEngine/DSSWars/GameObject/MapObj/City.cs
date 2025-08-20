@@ -2297,7 +2297,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.newLine();
             //if (args.ShowFull)
             {
-                if (GetFaction() == args.player.faction)
+                if (GetFaction() == args.player.faction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
                 {
                     CityDetailsHud(true, args.player, args.content);
                     new Interface.CityMenu(args.player, this, args.content);

@@ -14,12 +14,14 @@ using System.Reflection;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Interface;
-using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
+using VikingEngine.DSSWars.GameState.BattleLab;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
@@ -29,7 +31,6 @@ using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.MoonFall;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using VikingEngine.DSSWars.Players.Profile;
 //
 
 namespace VikingEngine.DSSWars
@@ -90,6 +91,11 @@ namespace VikingEngine.DSSWars
             else
             {
                 new LoadScene(loadMeta);
+            }
+
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
+            {
+                BattleLabStorage.Singleton = new BattleLabStorage();
             }
         }
 

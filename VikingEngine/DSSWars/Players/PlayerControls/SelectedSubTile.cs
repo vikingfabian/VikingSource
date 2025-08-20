@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Players
             upgrade = false;
             if (city != null)
             {
-                if (city.GetPlayer() == player)
+                if (city.GetPlayer() == player || DssRef.difficulty.GodPowers())
                 {
                     if (subTile.MayBuild(player.gameControls.build.placeBuildingType, out upgrade))
                     {
@@ -266,7 +266,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     city = tile.City();
                     
-                        if (city.GetPlayer() == player)
+                        if (city.GetPlayer() == player || DssRef.difficulty.GodPowers())
                         {
                             if (subTilePos != city.cityStorageCenter && subTilePos != city.cityHallSubtilePos) //center tile is protected
                             {

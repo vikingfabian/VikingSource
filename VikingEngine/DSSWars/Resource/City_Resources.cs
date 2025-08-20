@@ -1351,16 +1351,18 @@ namespace VikingEngine.DSSWars.GameObject
                 
             }
 
-#if DEBUG
-            if (StartupSettings.EndlessResources)
-            {
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("=0") },
-                   new RbAction(() => { city.AddGroupedResource(item, -city.GetGroupedResource(item).amount); })));
 
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("+100") },
-                    new RbAction(() => { city.AddGroupedResource(item, 100); })));
+            if (DssRef.difficulty.GodPowers())
+            {
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
+                   new RbAction(() => { city.AddGroupedResource(item, -city.GetGroupedResource(item).amount); }),
+                   null, true, HudLib.GodPower_ColorBg));
+
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
+                    new RbAction(() => { city.AddGroupedResource(item, 100); }, null), 
+                    null, true, HudLib.GodPower_ColorBg));
             }
-#endif
+
         }
 
         public static void BufferIconInfo(RichBoxContent content, bool safeguard)

@@ -70,9 +70,20 @@ namespace VikingEngine.DSSWars.Build
                 var mayBuild = SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city);
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
+
                     if (commit)
                     {
-                        if (/*city.availableBuildQueue(player) && */placeBuildingOption().blueprint.meetsRequirements(city))
+                        if (DssRef.difficulty.GodPowers())
+                        {
+                            var build = BuildLib.BuildOptions[(int)placeBuildingType];
+                            SubTile subTile = DssRef.world.subTileGrid.Get(subTilePos);
+                            if (build.execute_async(city, subTilePos, ref subTile, upgrade))
+                            {
+                                EditSubTile edit = new EditSubTile(subTilePos, subTile, true, true, false);
+                                edit.Submit();
+                            }
+                        }
+                        else if (placeBuildingOption().blueprint.meetsRequirements(city))
                         {
                             player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.buildOrder.value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
                         }
@@ -100,7 +111,14 @@ namespace VikingEngine.DSSWars.Build
                 {
                     if (commit)
                     {
-                        player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.buildOrder.value, true, city, subTilePos), ActionOnConflict.Toggle);
+                        if (DssRef.difficulty.GodPowers())
+                        {
+                            BuildLib.Demolish(city, subTilePos);
+                        }
+                        else
+                        {
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.buildOrder.value, true, city, subTilePos), ActionOnConflict.Toggle);
+                        }
                     }
 
                     return true;
