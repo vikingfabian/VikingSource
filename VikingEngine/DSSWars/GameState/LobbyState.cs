@@ -1761,7 +1761,7 @@ namespace VikingEngine.DSSWars
                     break;
                 case GameModeMainType.Spectator:
                     caption = DssRef.lang.Settings_Mode_Spectator;
-                    desc = DssRef.lang.Settings_Mode_Spectator_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
+                    desc = DssRef.todoLang.Settings_Mode_Spectator_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
                     break;
             }
         }

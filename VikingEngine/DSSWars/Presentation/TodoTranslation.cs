@@ -21,6 +21,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string EventMessage_DarkHordeKiller_Message => "Champion knigts have joined your service";
 
         public string Settings_Mode_No_Achivements => "Achivements are not available.";
+
+        public string Settings_Mode_Spectator_Description => "Just watch, or interfere with god powers.";
     }
 
 }

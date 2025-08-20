@@ -13,8 +13,8 @@ Spectator mode
 
 Language change log:
 * Turkish factions complete
-
-
+* French new translations done
+x (in progress) Portuguese - machine translated
 
 Event timers (are slightly random)
 - Ai delay: 8 minutes
@@ -31,8 +31,6 @@ Plus the boss fight: about 10 hours
 ACHIEVEMENTS
 * 
 
-Language change log:
-* Turkish factions complete
 
 Casual:
 * 
@@ -170,8 +168,12 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish
+English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Portuguese
 
+Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
+Brazilians are used to English in gaming, use a “hybrid” translation.
+Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
+The game is a strategy wargame, with medieval and low fantasy theme.
 
 
 https://discord.com/verification
