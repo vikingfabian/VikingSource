@@ -1359,7 +1359,7 @@ namespace VikingEngine.DSSWars.GameObject
                    null, true, HudLib.GodPower_ColorBg));
 
                 content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
-                    new RbAction(() => { city.AddGroupedResource(item, 100); }, null), 
+                    new RbAction(() => { city.AddGroupedResource(item, 100); }), 
                     null, true, HudLib.GodPower_ColorBg));
             }
 

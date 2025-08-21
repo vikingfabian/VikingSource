@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.space(0.5f);
                 }
                
-                var tabGroup = new ArtTabgroup(tabs, tabSel, player.cityTabClick, null, SoundLib.menutab, null);
+                var tabGroup = new ArtTabgroup(tabs, tabSel, player.cityTabClick);
                 if (viewControllerTabs)
                 {
                     tabGroup.endAttach = new List<AbsRichBoxMember> { new RbSpace(0.5f), new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor } };
@@ -516,7 +516,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<ProgressSubTab>((ProgressSubTab resourcesSubTab) =>
                     {
                         player.progressSubTab = resourcesSubTab;
-                    }, workSubTab, SoundLib.menutab), new RbTooltip_Text(description));
+                    }, workSubTab, RbSoundType.Tab), new RbTooltip_Text(description));
                 //subTab.setGroupSelectionColor(HudLib.RbSettings, player.progressSubTab == workSubTab);
                 content.Add(subTab);
                 //content.space();
@@ -582,7 +582,7 @@ namespace VikingEngine.DSSWars.Interface
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, SoundLib.menutab));
+                        }, resourcesSubTab, RbSoundType.Tab));
                     //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
                     content.space();
@@ -1134,7 +1134,7 @@ namespace VikingEngine.DSSWars.Interface
                         {
                             player.mixTabEditType = MixTabEditType.Stockpile;
                             player.mixTabItem = item;
-                        }, SoundLib.menu), 
+                        }, RbSoundType.Default), 
                         new RbAction(()=> {
                             var content = new RichBoxContent();
                             content.text(DssRef.lang.Resource_Tab_Stockpile);
@@ -1162,7 +1162,7 @@ namespace VikingEngine.DSSWars.Interface
                     player.mixTabEditType = MixTabEditType.WorkPrio;
                     player.mixWorkType = workPriorityType;
                     player.mixTabItem = item;
-                }, SoundLib.menu),
+                }, RbSoundType.Default),
                 new RbAction(()=> 
                 {
                     var content = new RichBoxContent();
@@ -1185,7 +1185,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     player.mixTabEditType = MixTabEditType.BlackMarket;
                     player.mixTabItem = item;
-                }, SoundLib.menu),
+                }, RbSoundType.Default),
                 new RbAction(() =>
                 {
                     var content = new RichBoxContent();
@@ -1275,7 +1275,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<ExperienceOrDistancePrio>((ExperienceOrDistancePrio val) =>
                     {
                         city.experenceOrDistance = val;
-                    }, prio, SoundLib.menu));
+                    }, prio, RbSoundType.Default));
                 content.Add(option);
             }
             
@@ -1323,7 +1323,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<TagSubTab>((TagSubTab subTabType) =>
                     {
                         player.tagSubTab = subTabType;
-                    }, subTabType, SoundLib.menutab), new RbTooltip_Text(description));
+                    }, subTabType, RbSoundType.Tab), new RbTooltip_Text(description));
                 content.Add(subTab);
             }
             content.newParagraph();
@@ -1403,7 +1403,7 @@ namespace VikingEngine.DSSWars.Interface
                                 new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                                 {
                                     player.resourcesSubTab = resourcesSubTab;
-                                }, resourcesSubTab, SoundLib.menutab), new RbTooltip_Text(DssRef.lang.Work_SelectCategory));
+                                }, resourcesSubTab, RbSoundType.Tab), new RbTooltip_Text(DssRef.lang.Work_SelectCategory));
                             //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                             content.Add(subTab);
                         }
@@ -1547,7 +1547,7 @@ namespace VikingEngine.DSSWars.Interface
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, SoundLib.menutab), new RbTooltip_Text(DssRef.lang.Work_SelectCategory));
+                        }, resourcesSubTab, RbSoundType.Tab), new RbTooltip_Text(DssRef.lang.Work_SelectCategory));
                     //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
 
@@ -2094,7 +2094,7 @@ namespace VikingEngine.DSSWars.Interface
             //            res.goalBuffer = Bound.Set(res.goalBuffer + change, DssConst.StockPileMinBound, DssConst.StockPileMaxBound);
             //            city.SetGroupedResource(item, res);
 
-            //        }, change, SoundLib.menu), hover));
+            //        }, change, RbSoundType.Default), hover));
 
             //    content.space();
             //}
@@ -2112,7 +2112,7 @@ namespace VikingEngine.DSSWars.Interface
             //            res.goalBuffer = Bound.Set(res.goalBuffer + change, DssConst.StockPileMinBound, DssConst.StockPileMaxBound);
             //            city.SetGroupedResource(item, res);
 
-            //        }, change, SoundLib.menu), hover));
+            //        }, change, RbSoundType.Default), hover));
             //}
         }
 
@@ -2127,7 +2127,7 @@ namespace VikingEngine.DSSWars.Interface
         //                            new RbImage(SpriteName.unitEmoteLove),
         //                            new RbText(DssRef.lang.CityOption_Repair),
         //                        },
-        //                new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
+        //                new RbAction1Arg<bool>(buyRepairAction, true, RbSoundType.Buy),
         //                new RbTooltip(buyRepairToolTip, true),
         //                city.buyRepair(false, true)));
         //        }
@@ -2140,7 +2140,7 @@ namespace VikingEngine.DSSWars.Interface
         //        //            new RichBoxImage(SpriteName.birdFireball),
         //        //            new RichBoxText(DssRef.lang.CityOption_BurnItDown),
         //        //        },
-        //        //        new RbAction(city.burnItDown, SoundLib.menu),
+        //        //        new RbAction(city.burnItDown, RbSoundType.Default),
         //        //        new RbAction(burnToolTip),
         //        //         city.damages.value < city.MaxDamages()));
 
@@ -2153,7 +2153,7 @@ namespace VikingEngine.DSSWars.Interface
         //                            new RbImage(SpriteName.WarsGuardAdd),
         //                            new RbText( DssRef.lang.CityOption_ExpandGuardSize),
         //                        },
-        //                new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+        //                new RbAction1Arg<int>(buyCityGuardsAction, count, RbSoundType.Buy),
         //                new RbTooltip(buyGuardSizeToolTip, count),
         //                city.buyCityGuards(false, count)));
         //        }
@@ -2163,7 +2163,7 @@ namespace VikingEngine.DSSWars.Interface
         //            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { 
         //                    new RbText(string.Format(DssRef.lang.Hud_XTimes, count)) 
         //                },
-        //                new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+        //                new RbAction1Arg<int>(buyCityGuardsAction, count, RbSoundType.Buy),
         //                new RbTooltip(buyGuardSizeToolTip, count),
         //                city.buyCityGuards(false, count)));
         //        }
@@ -2175,14 +2175,14 @@ namespace VikingEngine.DSSWars.Interface
         //                            new RbImage(SpriteName.WarsGuard),
         //                            new RbText( DssRef.lang.CityOption_LowerGuardSize),
         //                        },
-        //                new RbAction1Arg<int>(city.releaseGuardSize, count * DssConst.ExpandGuardSize, SoundLib.menuBuy),
+        //                new RbAction1Arg<int>(city.releaseGuardSize, count * DssConst.ExpandGuardSize, RbSoundType.Buy),
         //                new RbTooltip(releaseGuardSizeToolTip, count),
         //                city.canReleaseGuardSize(count)));
         //        }
         //        //if (!city.nobelHouse && city.canEverGetNobelHouse())
         //        //{
         //        //    content.Button(DssRef.lang.Building_NobleHouse,
-        //        //            new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
+        //        //            new RbAction(city.buyNobelHouseAction, RbSoundType.Buy),
         //        //            new RbAction(buyNobelhouseTooltip),
         //        //            city.canBuyNobelHouse());
         //        //}
@@ -2246,7 +2246,7 @@ namespace VikingEngine.DSSWars.Interface
         //                {
         //                new RichBoxText(recruitText),
         //                },
-        //                new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, 1, player, SoundLib.menuBuy),
+        //                new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, 1, player, RbSoundType.Buy),
         //                new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
         //                canBuySoldiers(opt.unitType, 1)));
 
@@ -2260,7 +2260,7 @@ namespace VikingEngine.DSSWars.Interface
         //            void multiBuy(int multiCount)
         //            {
         //                content.Button(string.Format(DssRef.lang.Hud_XTimes, multiCount),
-        //                    new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, multiCount, player, SoundLib.menuBuy),
+        //                    new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, multiCount, player, RbSoundType.Buy),
         //                    new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, multiCount),
         //                    canBuySoldiers(opt.unitType, multiCount));
         //            }
@@ -2281,14 +2281,14 @@ namespace VikingEngine.DSSWars.Interface
         //        new RichBoxImage(SpriteName.WarsSoldierIcon),
         //        new RichBoxText( string.Format(DssRef.lang.CityOption_BuyXMercenaries, DssLib.MercenaryPurchaseCount)),
         //    },
-        //            new RbAction1Arg<int>(buyMercenaryAction, 1, SoundLib.menuBuy),
+        //            new RbAction1Arg<int>(buyMercenaryAction, 1, RbSoundType.Buy),
         //            new RbAction1Arg<int>(buyMercenaryToolTip, 1),
         //            city.buyMercenary(false, 1)));
 
         //        content.Add(new RichBoxSpace());
 
         //        content.Button((DssLib.MercenaryPurchaseCount * 5).ToString(),
-        //            new RbAction1Arg<int>(buyMercenaryAction, 5, SoundLib.menuBuy),
+        //            new RbAction1Arg<int>(buyMercenaryAction, 5, RbSoundType.Buy),
         //            new RbAction1Arg<int>(buyMercenaryToolTip, 5),
         //            city.buyMercenary(false, 5));
 
@@ -2301,7 +2301,7 @@ namespace VikingEngine.DSSWars.Interface
         //                            new RichBoxImage(SpriteName.unitEmoteLove),
         //                            new RichBoxText(DssRef.lang.CityOption_Repair),
         //                        },
-        //                new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
+        //                new RbAction1Arg<bool>(buyRepairAction, true, RbSoundType.Buy),
         //                new RbAction1Arg<bool>(buyRepairToolTip, true),
         //                city.buyRepair(false, true)));
         //        }
@@ -2311,7 +2311,7 @@ namespace VikingEngine.DSSWars.Interface
         //        //            new RichBoxImage(SpriteName.WarsWorkerAdd),
         //        //            new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
         //        //        },
-        //        //        new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
+        //        //        new RbAction1Arg<int>(buyWorkforceAction, 1, RbSoundType.Buy),
         //        //        new RbAction1Arg<int>(buyWorkforceToolTip, 1),
         //        //        city.buyWorkforce(false, 1)));
         //        //}
@@ -2325,7 +2325,7 @@ namespace VikingEngine.DSSWars.Interface
         //        //            new RichBoxImage(SpriteName.birdFireball),
         //        //            new RichBoxText(DssRef.lang.CityOption_BurnItDown),
         //        //        },
-        //        //        new RbAction(city.burnItDown, SoundLib.menu),
+        //        //        new RbAction(city.burnItDown, RbSoundType.Default),
         //        //        new RbAction(burnToolTip),
         //        //         city.damages.value < city.MaxDamages()));
 
@@ -2338,7 +2338,7 @@ namespace VikingEngine.DSSWars.Interface
         //                            new RichBoxImage(SpriteName.WarsGuardAdd),
         //                            new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
         //                        },
-        //                new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+        //                new RbAction1Arg<int>(buyCityGuardsAction, count, RbSoundType.Buy),
         //                new RbAction1Arg<int>(buyGuardSizeToolTip, count),
         //                city.buyCityGuards(false, count)));
         //        }
@@ -2346,7 +2346,7 @@ namespace VikingEngine.DSSWars.Interface
         //        {
         //            int count = 5;
         //            content.Button(string.Format(DssRef.lang.Hud_XTimes, count),
-        //            new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+        //            new RbAction1Arg<int>(buyCityGuardsAction, count, RbSoundType.Buy),
         //            new RbAction1Arg<int>(buyGuardSizeToolTip, count),
         //            city.buyCityGuards(false, count));
         //        }
@@ -2356,7 +2356,7 @@ namespace VikingEngine.DSSWars.Interface
         //        if (!city.nobelHouse && city.canEverGetNobelHouse())
         //        {
         //            content.Button(DssRef.lang.Building_NobleHouse,
-        //                    new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
+        //                    new RbAction(city.buyNobelHouseAction, RbSoundType.Buy),
         //                    new RbAction(buyNobelhouseTooltip),
         //                    city.canBuyNobelHouse());
         //        }

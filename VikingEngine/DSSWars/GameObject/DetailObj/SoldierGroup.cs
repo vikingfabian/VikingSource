@@ -1109,7 +1109,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     var button = new ArtOption(w == tArmy.armyColumnWidth, 
                         new List<AbsRichBoxMember> { new RbText(w.ToString()) },
-                        new RbAction1Arg<int>(tArmy.armyColumnWidthClick, w, SoundLib.menu));
+                        new RbAction1Arg<int>(tArmy.armyColumnWidthClick, w, RbSoundType.Default));
                     
                     args.content.Add(button);
                 }

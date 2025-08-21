@@ -15,12 +15,12 @@ namespace VikingEngine.HUD.RichBox
     {
         List<RbTabMember> members;
         public Image pointer;
-        public RbTabgroup(List<RbTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundProfile clickSound = null, RbSoundProfile hoverSound = null, Color? overrideBgColor = null)
+        public RbTabgroup(List<RbTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundType clickSound =  RbSoundType.Tab, Color? overrideBgColor = null)
         {
             this.members = members;
             for (int i = 0; i < members.Count; i++)
             {   
-                members[i].initGroup(i, selected, click, enter, clickSound, hoverSound, overrideBgColor);
+                members[i].initGroup(i, selected, click, enter, clickSound, overrideBgColor);
             }            
         }
 
@@ -62,7 +62,7 @@ namespace VikingEngine.HUD.RichBox
             this.enter = enterAction;
         }
 
-        public void initGroup(int index, int selectedIx, Action<int> click, Action<int> enter, RbSoundProfile clickSound, RbSoundProfile hoverSound, Color? overrideBgColor)
+        public void initGroup(int index, int selectedIx, Action<int> click, Action<int> enter, RbSoundType clickSound, Color? overrideBgColor)
         { 
             this.selected = index == selectedIx;
             this.overrideBgColor = overrideBgColor;
@@ -71,14 +71,14 @@ namespace VikingEngine.HUD.RichBox
             {
                 this.click = new RbAction1Arg<int>(click, index, clickSound);
             }
-            if (enter != null)
-            {
-                this.enter = new RbAction1Arg<int>(enter, index, hoverSound);
-            }
-            else
-            { 
-                this.enter = new RbSoundAction(hoverSound);
-            }
+            //if (enter != null)
+            //{
+            //    this.enter = new RbAction1Arg<int>(enter, index, hoverSound);
+            //}
+            //else
+            //{ 
+            //    this.enter = new RbSoundAction(hoverSound);
+            //}
         }
 
         public override void Create(RichBoxGroup group)

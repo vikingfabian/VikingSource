@@ -1508,7 +1508,7 @@ namespace VikingEngine.DSSWars.Work
                 {
                     HudLib.FollowFactionButton(followFaction,
                         faction.workTemplate.GetWorkPriority(priorityType).value,
-                        new RbAction2Arg<WorkPriorityType, City>(faction.workFollowFactionClick, priorityType, city, followFaction ? SoundLib.menuBack : SoundLib.menu),
+                        new RbAction2Arg<WorkPriorityType, City>(faction.workFollowFactionClick, priorityType, city, followFaction ? RbSoundType.Back : RbSoundType.Default),
                         player, content);
                 }
 
@@ -1546,7 +1546,7 @@ namespace VikingEngine.DSSWars.Work
                     var button = new ArtToggle(prio == value, new List<AbsRichBoxMember> {
                                 new RbText(prio.ToString())
                             },
-                        new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city, SoundLib.menu),
+                        new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city, RbSoundType.Default),
                         prioText == null ? null : new RbTooltip_Text(prioText));
                     //button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
                     content.Add(button);

@@ -383,7 +383,7 @@ namespace VikingEngine.DSSWars
                     new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_ReturnToPrevious)
-                    }, new RbAction(menu.menuBack)));
+                    }, new RbAction(menu.menuBack, RbSoundType.Back)));
             }
             if (close != null)
             {
@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars
                     new RbImage( SpriteName.WarsHudIconExit, 0.8f),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_Close)
-                    }, new RbAction(close)));
+                    }, new RbAction(close, RbSoundType.Back)));
             }
             content.newParagraph();
         }
@@ -594,6 +594,7 @@ namespace VikingEngine.DSSWars
            var button = new RbButton(new List<AbsRichBoxMember>
                     { new RbSpace(), x,new RbSpace(), },
                     click);
+            click.sound = RbSoundType.Back;
             button.overrideBgColor = Color.DarkRed;
 
             content.Add(button);

@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         {
                             new RbImage(ResourceLib.Icon(weapon))
                         },
-                    new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, SoundLib.menu)
+                    new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Default)
                     );
                     content.Add(button);
                 }
@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         {
                             new RbImage(armorIcon)
                         },
-                    new RbAction1Arg<ArmorLevel>((ArmorLevel armor) => { soldierPreview.soldierModelData.armor = armor; refreshPreview(); }, armorLevel, SoundLib.menu)
+                    new RbAction1Arg<ArmorLevel>((ArmorLevel armor) => { soldierPreview.soldierModelData.armor = armor; refreshPreview(); }, armorLevel, RbSoundType.Default)
                     );
                 content.Add(button);
             }

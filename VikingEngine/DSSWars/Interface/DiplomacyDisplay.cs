@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.Interface
                             new RbImage(SpriteName.WarsRelationTruce),
                             new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Truce)),//"Forge truce"),
                         },
-                        new RbAction1Arg<bool>(peaceAction, false, SoundLib.menuBuy),
+                        new RbAction1Arg<bool>(peaceAction, false, RbSoundType.Buy),
                         new RbTooltip(peaceTooltip, false),
                         canForgePeace(false)));
 
@@ -145,7 +145,7 @@ namespace VikingEngine.DSSWars.Interface
                             new RbImage(SpriteName.WarsRelationTruce),
                             new RbText(DssRef.lang.Diplomacy_ExtendTruceAction),//"Extend truce"),
                         },
-                            new RbAction(extendTruceAction, SoundLib.menuBuy),
+                            new RbAction(extendTruceAction, RbSoundType.Buy),
                             new RbTooltip(extendTruceTooltip),
                             canExtendTruce()));
                     }
@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.Interface
                             new RbImage(SpriteName.WarsRelationPeace),
                             new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Peace)),//"Forge peace"),
                         },
-                            new RbAction1Arg<bool>(peaceAction, true, SoundLib.menuBuy),
+                            new RbAction1Arg<bool>(peaceAction, true, RbSoundType.Buy),
                             new RbTooltip(peaceTooltip, true),
                             canForgePeace(true)));
                     }
@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.Interface
                             new RbImage(SpriteName.WarsRelationGood),
                             new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Good)),//"Forge good relations"),
                         },
-                            new RbAction1Arg<bool>(allianceAction, false, SoundLib.menuBuy),
+                            new RbAction1Arg<bool>(allianceAction, false, RbSoundType.Buy),
                             new RbTooltip(allianceTooltip, false),
                             canForgeAlliance(false)));
                     }
@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.Interface
                                 new RbImage(SpriteName.WarsRelationAlly),
                                 new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Ally)),//"Forge alliance"),
                             },
-                            new RbAction1Arg<bool>(allianceAction, true, SoundLib.menuBuy),
+                            new RbAction1Arg<bool>(allianceAction, true, RbSoundType.Buy),
                             new RbTooltip(allianceTooltip, true),
                             canForgeAlliance(true)));
                     }
@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.Interface
                             {
                                 new RbText(DssRef.lang.Diplomacy_AbsorbServant),//"Absorb as servant"),
                             },
-                            new RbAction(servantAction, SoundLib.menuBuy),
+                            new RbAction(servantAction, RbSoundType.Buy),
                             new RbTooltip(servantTooltip),
                             canMakeServant()));
                     }
@@ -291,7 +291,7 @@ namespace VikingEngine.DSSWars.Interface
                             //new RichBoxImage(SpriteName.WarsRelationPeace),
                             new RbText(Ref.langOpt.Hud_Cancel),
                         },
-                        new RbAction(cancelToPlayerRelation, SoundLib.menuBuy)));
+                        new RbAction(cancelToPlayerRelation, RbSoundType.Buy)));
                 }
                 else
                 {
@@ -300,7 +300,7 @@ namespace VikingEngine.DSSWars.Interface
                             //new RichBoxImage(SpriteName.WarsRelationPeace),
                             new RbText(DssRef.lang.Diplomacy_AcceptRelationOffer),
                         },
-                       new RbAction(acceptToPlayerRelation, SoundLib.menuBuy)));
+                       new RbAction(acceptToPlayerRelation, RbSoundType.Buy)));
                 }
             }
             else
@@ -314,7 +314,7 @@ namespace VikingEngine.DSSWars.Interface
                             new RbImage(SpriteName.WarsRelationPeace),
                             new RbText(DssRef.lang.Diplomacy_OfferPeace),
                         },
-                        new RbAction(offerToPlayerRelation, SoundLib.menuBuy)));
+                        new RbAction(offerToPlayerRelation, RbSoundType.Buy)));
                 }
                 else if (selectedRelation.Relation < RelationType.RelationType3_Ally)
                 {
@@ -325,7 +325,7 @@ namespace VikingEngine.DSSWars.Interface
                             new RbImage(SpriteName.WarsRelationAlly),
                             new RbText(DssRef.lang.Diplomacy_OfferAlliance),
                         },
-                        new RbAction(offerToPlayerRelation, SoundLib.menuBuy)));
+                        new RbAction(offerToPlayerRelation, RbSoundType.Buy)));
                 }
             }
         }

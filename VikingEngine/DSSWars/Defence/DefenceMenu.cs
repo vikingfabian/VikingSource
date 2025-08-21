@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Defence
                 content.space();
                 content.Add(new RbText(DssRef.lang.Defence_GuardPost + " " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_Head));
                 content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedDefenceBuilding = -1; }, SoundLib.menuBack));
+                HudLib.CloseButton(content, new RbAction(() => { city.selectedDefenceBuilding = -1; }, RbSoundType.Back));
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Defence_AutoAssign) }, autoAssignProperty, new RbTooltip_Text(DssRef.lang.Defence_AutoAssign_Description)));

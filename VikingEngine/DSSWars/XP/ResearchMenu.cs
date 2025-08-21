@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.XP
                 title.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(title);
                 content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedResearchBuilding = -1; }, SoundLib.menuBack));
+                HudLib.CloseButton(content, new RbAction(() => { city.selectedResearchBuilding = -1; }, RbSoundType.Back));
 
                 content.newParagraph();
                 HudLib.BulletPoint(content);

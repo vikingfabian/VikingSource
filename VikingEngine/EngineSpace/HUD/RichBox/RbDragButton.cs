@@ -145,24 +145,46 @@ namespace VikingEngine.HUD.RichBox
                     change *= settings.step;
                 }
 
+                bool hasChanged = false;
+
                 if (valueType == DragValueType.Int)
                 {
                     int value = intValue.Invoke(false, 0);
 
+                    int prev = value;
                     value = Convert.ToInt32(Bound.Set(value + change, settings.min, settings.max));
-                    intValue.Invoke(true, value);
+                    if (prev != value)
+                    {
+                        intValue.Invoke(true, value);
 
-                    textPointer.pointer.TextString = TextLib.LargeNumber(value);
+                        textPointer.pointer.TextString = TextLib.LargeNumber(value);
+
+                        hasChanged = true;
+                    }
                 }
                 else
                 {
                     float value = floatValue.Invoke(false, 0);
 
-
+                    float prev = value;
                     value = Bound.Set(value + change, settings.min, settings.max);
-                    floatValue.Invoke(true, value);
+                    if (prev != value)
+                    {
+                        floatValue.Invoke(true, value);
 
-                    textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
+                        textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
+
+                        hasChanged = true;
+                    }
+                }
+
+                if (hasChanged)
+                {
+                    (change > 0 ? DSSWars.SoundLib.scroll_forward : DSSWars.SoundLib.scroll_back).Play();
+                }
+                else
+                { 
+                    DSSWars.SoundLib.soft_buzz_error.Play();
                 }
             }
         }

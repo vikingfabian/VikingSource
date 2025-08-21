@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars
                     new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                     {
                         player.resourcesSubTab = resourcesSubTab;
-                    }, resourcesSubTab, SoundLib.menutab));
+                    }, resourcesSubTab, RbSoundType.Tab));
                 //subTab.setGroupSelectionColor(HudLib.RbSettings, );
                 content.Add(subTab);
                 //content.space();
@@ -338,7 +338,7 @@ namespace VikingEngine.DSSWars
                     new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                     {
                         p.resourcesSubTab = resourcesSubTab;
-                    }, resourcesSubTab, SoundLib.menutab));
+                    }, resourcesSubTab, RbSoundType.Tab));
                 //subTab.setGroupSelectionColor(HudLib.RbSettings, p.resourcesSubTab == resourcesSubTab);
                 content.Add(subTab);
                 //content.space(resourcesSubTab == ResourcesSubTab.Work_Armor ? 2 : 1);
