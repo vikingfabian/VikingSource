@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars
     {
         public static readonly string SoundDir = DssLib.ContentDir + "Sound" + DataStream.FilePath.Dir;
 
-        public static SoundContainerBase click, hover, hover_disabled, clicktab, hovertab, back, buy, wrong,
+        public static SoundContainerBase click, hover, hover_disabled, clicktab, hovertab, back, buy, wrong, start_build_contruct, start_destroy_contruct,
             copy, paste, start, stop,
             select_army, select_city, select_faction,
             ordermove, orderstop, message, trophy,
@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars
 
            bow, sword, spear, throwblade, throwitem, clothHit, crossbow, heavyballista, reloadballista,
            blade_light, blade_medium, blade_heavy, spear_whoosh,
-            musket, cannon, block_attack, wood_bonk,
+           musket, cannon, block_attack, wood_bonk,
             
            painvoice, fleshgore;
 
@@ -37,7 +37,6 @@ namespace VikingEngine.DSSWars
 
         public static void LoadContent()
         {
-
             click = new SoundContainerSingle(SoundDir + "click", 0.7f);
             hover = new SoundContainerMultiple([SoundDir + "button_hover1", SoundDir + "button_hover2"], 0.7f);
             hover_disabled = new SoundContainerSingle(SoundDir + "hover_disabled", 0.7f);
@@ -46,6 +45,8 @@ namespace VikingEngine.DSSWars
             back = new SoundContainerSingle(SoundDir + "back", 0.05f);
             buy = new SoundContainerSingle(SoundDir + "buy");
             wrong = new SoundContainerSingle(SoundDir + "wrong", 0.6f);
+            start_build_contruct = new SoundContainerSingle(SoundDir + "start_build_contruct", 0.6f);
+            start_destroy_contruct = new SoundContainerSingle(SoundDir + "start_destroy_contruct", 0.8f);
 
             copy = new SoundContainerSingle(SoundDir + "copy", 1f);
             paste = new SoundContainerSingle(SoundDir + "paste", 1f);
@@ -125,9 +126,6 @@ namespace VikingEngine.DSSWars
             tabHoverAction = new RbSoundAction(menutabHover);
 
             Engine.LoadContent.LoadSound(LoadedSound.out_of_ammo, SoundDir + "out_of_ammo");
-
-
-
             
             Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
         }

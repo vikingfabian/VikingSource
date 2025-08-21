@@ -24,6 +24,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Players;
+using VikingEngine.Sound;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.ToGG.MoonFall;
@@ -73,6 +74,8 @@ namespace VikingEngine.DSSWars.Build
 
                     if (commit)
                     {
+                        //SoundLib.start_build_contruct.Play();
+
                         if (DssRef.difficulty.GodPowers())
                         {
                             var build = BuildLib.BuildOptions[(int)placeBuildingType];
@@ -111,6 +114,8 @@ namespace VikingEngine.DSSWars.Build
                 {
                     if (commit)
                     {
+                        //SoundLib.start_destroy_contruct.Play();
+
                         if (DssRef.difficulty.GodPowers())
                         {
                             BuildLib.Demolish(city, subTilePos);
@@ -119,6 +124,10 @@ namespace VikingEngine.DSSWars.Build
                         {
                             player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.buildOrder.value, true, city, subTilePos), ActionOnConflict.Toggle);
                         }
+                    }
+                    else
+                    {
+                        //SoundLib.woodcut.Play();
                     }
 
                     return true;
@@ -312,10 +321,33 @@ namespace VikingEngine.DSSWars.Build
 
             if (player.gameControls.input.mouseSelect.UpEvent)
             {
+                bool anySucccess = false;
+                int soundIndex = 0;
+                SoundContainerBase sound = buildMode == SelectTileResult.Build? SoundLib.start_build_contruct : SoundLib.start_destroy_contruct;
                 foreach (var sel in selection)
                 {
-                    actOnTile(sel.position, true, out _, out _);
+                    bool success = actOnTile(sel.position, true, out _, out _);
+
+                    if (success)
+                    {
+                        anySucccess = true;
+                        if (soundIndex == 0)
+                        {
+                            sound.Play();
+                        }
+                        else if (soundIndex < 2)
+                        {
+                            sound.PlayDelayed(90 * soundIndex);
+                        }
+                        soundIndex++;
+                    }
                 }
+
+                if (!anySucccess)
+                {
+                    SoundLib.wrong.Play();
+                }
+
                 deleteSelection();
                 buildKeyDown = false;
             }

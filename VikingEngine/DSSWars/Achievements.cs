@@ -202,7 +202,7 @@ namespace VikingEngine.DSSWars
             }
             else if (PlatformSettings.DebugLevel < BuildDebugLevel.Release)
             {
-                DssRef.state.localPlayers[0].hud.messages.Add("Achivement", achievement.ToString());
+                DssRef.state.localPlayers?[0].hud.messages.Add("Achivement", achievement.ToString());
             }
         }
 

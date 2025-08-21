@@ -62,6 +62,12 @@ namespace VikingEngine.Sound
         {
             Play(Pan.Center);
         }
+
+        public void PlayDelayed(float milliseconds)
+        {
+            new Timer.TimedAction1ArgTrigger<Pan>(Play, Pan.Center, milliseconds);
+        }
+
         public void Play(Vector3 position)
         {
             if (SoundStackManager.Available())

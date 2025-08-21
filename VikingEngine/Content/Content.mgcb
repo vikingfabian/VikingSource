@@ -1456,6 +1456,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/spearwhoosh (4).wav
 
+#begin DSS/Sound/start_build_contruct.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/start_build_contruct.wav
+
+#begin DSS/Sound/start_destroy_contruct.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/start_destroy_contruct.wav
+
 #begin DSS/Sound/start.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
