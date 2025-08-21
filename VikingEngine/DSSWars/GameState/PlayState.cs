@@ -45,19 +45,13 @@ namespace VikingEngine.DSSWars
     {
         public int nextGroupId = 0;
        
-       
         bool isReady= false;
         public bool PartyMode = false;   
-        
-        
         
         TechnologyManager technologyManager = new TechnologyManager();
         bool bResourceMinuteUpdate = true;
         bool slowMinuteUpdate = true;
         bool netMapUpdate = false;
-
-        
-        
 
         public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
             : base()
@@ -97,6 +91,8 @@ namespace VikingEngine.DSSWars
             {
                 BattleLabStorage.Singleton = new BattleLabStorage();
             }
+
+            DssRef.achieve.UnlockAchievement(AchievementIndex.first_game);
         }
 
         public void initGameState_client()

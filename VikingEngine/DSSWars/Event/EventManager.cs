@@ -440,6 +440,20 @@ namespace VikingEngine.DSSWars.Event
             {
                 victory(VictoryType.DefeatBoss);
             }
+            else if (faction.myIndex == DssRef.settings.Faction_UnitedKingdom)
+            {
+                if (IsStoryBeforeBoss() && DssRef.diplomacy.InWarWithPlayer(faction))
+                {
+                    DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_uk_any, AchievementIndex.early_uk_100);
+                }
+            }
+            else if (faction.myIndex == DssRef.settings.Faction_DarkFollower)
+            {
+                if (IsStoryBeforeBoss() && DssRef.diplomacy.InWarWithPlayer(faction))
+                {
+                    DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_dread_any, AchievementIndex.early_dread_100);
+                }
+            }
 
             foreach (var p in DssRef.state.localPlayers)
             {
@@ -474,12 +488,21 @@ namespace VikingEngine.DSSWars.Event
                 }
             }
 
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        BlueScreen.ThreadException = e;
-                //    }
-                //});
+                
+            
+        }
+
+        bool IsStoryBeforeBoss()
+        {
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+            {
+                var current = CurrentEvent();
+                if (current != null && current.OrderIndex() < EventsOrder.DarkLord)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         //void prepareNext()

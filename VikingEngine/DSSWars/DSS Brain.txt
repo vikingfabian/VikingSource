@@ -4,8 +4,10 @@ Change Log:
 * Event timers: War manager start: +20min
 * Fixed map editor crashing
 * map editor loading bar
+* ai diplomacy: wont let inwar ally with faction under threat (unless enemy), there is 0.5% chance to break this rule
+* ai diplomacy: alliance will empty diplomacy points on both parties
 
-Spectator mode
+Spectator mode:
 * improved diplomacy display, and it has god powers
 * can control any army
 * city build/destroy controls
@@ -16,6 +18,30 @@ Language change log:
 * French new translations done
 * French factions complete
 x (in progress) Portuguese - machine translated
+
+ACHIEVEMENTS
+* added the 4 missing achievements on Steam
+* Added 5 new:
+/// <summary>
+/// Destroy servants of dread, before the end boss
+/// </summary>
+early_dread_any,//i
+early_dread_100,
+
+/// <summary>
+/// Destroy the united kingdom, before the end boss
+/// </summary>
+early_uk_any,//i
+early_uk_100,
+
+/// <summary>
+/// just to test that achivements run
+/// </summary>
+first_game,//i
+
+Casual:
+* Increased upkeep from 0.2 to 0.3
+
 
 Event timers (are slightly random)
 - Ai delay: 8 minutes
@@ -29,20 +55,10 @@ Event timers (are slightly random)
 Plus the boss fight: about 10 hours
 (total: about 60 hours)
 
-ACHIEVEMENTS
-* 
-
-
-Casual:
-* 
-
 #Pics
 build building icon
 
 #must do#
-x map editor improvements
-x god mode improvements
-x deal with custom map size (achievements)
 x full game achievements + translations
 
 #Todo#
@@ -82,7 +98,7 @@ x go fullscreen in langugage select screen
 x Declaring war needs warning
 x save custom map, cant load, should save in user content folder
 x a player onboarding, extended tutorial
-
+X a tab so you can see who you are at war with
 -låt inte dread anfalla spelaren
 -lock camera on army
 -show all resources option

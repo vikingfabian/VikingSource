@@ -247,6 +247,19 @@ namespace VikingEngine.DSSWars
             }
             return false;
         }
+
+        public bool InWarWithPlayer(Faction faction)
+        {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (InWar(p.faction, faction))
+                { 
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public bool InWar(Faction faction1, Faction faction2)
         {
             if (faction1 == null || faction2 == null)

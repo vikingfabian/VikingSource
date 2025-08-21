@@ -1322,8 +1322,10 @@ namespace VikingEngine.DSSWars.Players
                         if (threats.Count > 0)
                         {
                             Faction enemyFaction = DssRef.world.factions.GetIndex_Safe(arraylib.RandomListMember(threats));
-
-                            findAlliances(enemyFaction, false);
+                            if (!DssRef.diplomacy.InWar(faction, enemyFaction))
+                            {
+                                findAlliances(enemyFaction, false);
+                            }
                         }
                     }
                 }
@@ -1345,7 +1347,7 @@ namespace VikingEngine.DSSWars.Players
                         if (relation >= RelationType.RelationType0_Neutral &&
                             relation < RelationType.RelationType3_Ally &&
                             this.faction.SameOrNeutralSide(factions.sel.diplomaticSide) &&
-                            shareWarOrThreat(factions.sel, enemyFaction.myIndex))
+                            shareWarOrThreat(factions.sel, enemyFaction.myIndex, reasonWar))
                         {
                             DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Add(factions.CurrentIndex);
                         }
@@ -1372,14 +1374,10 @@ namespace VikingEngine.DSSWars.Players
                             //}));
 #endif
                         }
-                        //else if (faction.cities.Count <= TinyFaction && allyFaction.cities.Count >= LargeFaction)
-                        //{
-
-                        //}
                         else
                         {
                             DssRef.diplomacy.SetRelationType(faction, allyFaction, RelationType.RelationType3_Ally).allyAgainst = enemyFaction.myIndex;
-
+                            allyFaction.player.GetAiPlayer().diplomacyPoints = 0;
 #if DEBUG
                             //Ref.update.AddSyncAction(new SyncAction(() =>
                             //{
@@ -1391,21 +1389,24 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            bool shareWarOrThreat(Faction maybeFriendFaction, int enemyFactionIx)
+            bool shareWarOrThreat(Faction maybeFriendFaction, int enemyFactionIx, bool reasonWar)
             {
-                if (DssRef.diplomacy.aiPlayerAsynchUpdate_collectWars(maybeFriendFaction).Contains(enemyFactionIx))
+                var relation = DssRef.diplomacy.GetRelationType(maybeFriendFaction, DssRef.world.factions.GetIndex_Safe(enemyFactionIx));
+                if (relation <= RelationType.RelationTypeN1_Enemies)
                 {
                     return true;
                 }
 
-                var maybeFriendBot = maybeFriendFaction.player.GetAiPlayer();
-                if (maybeFriendBot.aggressionLevel >= AggressionLevel2_RandomAttacks &&
-                    !maybeFriendBot.personality_loner &&
-                    DssRef.diplomacy.aiPlayerAsynchUpdate_collectThreats(maybeFriendFaction).Contains(enemyFactionIx))
+                if (!reasonWar || Ref.rnd.Chance(0.005))
                 {
-                    return true;
+                    var maybeFriendBot = maybeFriendFaction.player.GetAiPlayer();
+                    if (maybeFriendBot.aggressionLevel >= AggressionLevel2_RandomAttacks &&
+                        !maybeFriendBot.personality_loner &&
+                        DssRef.diplomacy.aiPlayerAsynchUpdate_collectThreats(maybeFriendFaction).Contains(enemyFactionIx))
+                    {
+                        return true;
+                    }
                 }
-                
                 return false;
             }
         }
