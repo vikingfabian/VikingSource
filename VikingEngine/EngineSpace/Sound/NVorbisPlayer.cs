@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Sentry.MeasurementUnit;
 
 namespace VikingEngine.EngineSpace.Sound
 {
@@ -87,17 +88,19 @@ namespace VikingEngine.EngineSpace.Sound
         /// <summary>
         /// Begin playing an OGG file from a path. Any current track is stopped immediately.
         /// </summary>
-        public void Play(string oggPath, double? loopStartSec = null, double? loopEndSec = null, bool isRepeating = true, bool startPaused = false)
+        public TimeSpan Play(string oggPath, double? loopStartSec = null, double? loopEndSec = null, bool isRepeating = true, bool startPaused = false)
         {
             if (string.IsNullOrWhiteSpace(oggPath)) throw new ArgumentNullException(nameof(oggPath));
-            Play(File.OpenRead(oggPath), ownsStream: true, loopStartSec, loopEndSec, isRepeating, startPaused);
+            return Play(File.OpenRead(oggPath), ownsStream: true, loopStartSec, loopEndSec, isRepeating, startPaused);
         }
 
         /// <summary>
         /// Begin playing from a provided stream (must be readable & seekable). If ownsStream=true the player will dispose it.
         /// </summary>
-        public void Play(Stream oggStream, bool ownsStream, double? loopStartSec = null, double? loopEndSec = null, bool isRepeating = true, bool startPaused = false)
+        public TimeSpan Play(Stream oggStream, bool ownsStream, double? loopStartSec = null, double? loopEndSec = null, bool isRepeating = true, bool startPaused = false)
         {
+            TimeSpan duration;
+
             lock (_lock)
             {
                 StopInternal(hardStop: true);
@@ -111,8 +114,16 @@ namespace VikingEngine.EngineSpace.Sound
                     IsRepeating = isRepeating,
                     StartPaused = startPaused
                 };
+
+                // Quick peek at duration using a temporary VorbisReader
+                using var peek = new VorbisReader(oggStream, false);
+                duration = peek.TotalTime;
+
+                // Reset stream to beginning so StreamingLoop can open it again
+                oggStream.Seek(0, SeekOrigin.Begin);
             }
             _wake.Set();
+            return duration;
         }
 
         public void Pause()

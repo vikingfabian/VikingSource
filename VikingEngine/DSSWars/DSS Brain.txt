@@ -3,7 +3,7 @@ Change Log:
 * Fixed the broken textures
 * Added better covarage of Ui Sounds
 * Added three old songs that was made for Lootfest 3, by Martin Grönlund
-* Enabled the music, lets hope it works now
+* Wrote a custom music player
 
 Spectator mode:
 x fixed: spectator mode can enable the tutorial, making the screen stuck. 
@@ -36,6 +36,7 @@ build building icon
 x full game achievements + translations
 
 #Todo#
+x dispose texture2d
 x guard to wall tutorial
 x the ui scale might be overtuned, 0.5 feels more like 0.05
 X match casual to save
