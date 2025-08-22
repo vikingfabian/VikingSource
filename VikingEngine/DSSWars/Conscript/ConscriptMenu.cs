@@ -172,14 +172,14 @@ namespace VikingEngine.DSSWars.Conscript
                             new RbImage(SpriteName.WarsArmy),
                             new RbSpace(),
                             new RbText(DssRef.lang.Conscript_Soldiers_ArmyType) },
-                        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_ArmyType_Description)));
+                        new RbAction1Arg<bool>(guardTabClick, false, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_ArmyType_Description)));
                     content.Add(new ArtOption(guardTab,
 
                         new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.WarsGuard),
                             new RbSpace(),
                             new RbText(DssRef.lang.Conscript_Soldiers_GuardType) },
-                        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_GuardType_Description)));
+                        new RbAction1Arg<bool>(guardTabClick, true, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_GuardType_Description)));
                 }
 
                 content.newParagraph();
@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.Conscript
                     }
 
                     var button = new ArtOption(weapon == currentStatus.profile.weapon,buttonContent,
-                    new RbAction1Arg<ItemResourceType>(weaponClick, weapon, RbSoundType.Default),
+                    new RbAction1Arg<ItemResourceType>(weaponClick, weapon, RbSoundType.Option),
                     new RbTooltip(weaponTooltip, weapon)
                     );
                     //button.setGroupSelectionColor(HudLib.RbSettings, weapon == currentStatus.profile.weapon);
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.Conscript
                     //buttonContent.Add(new RbText(LangLib.Item(armorLvl)));
 
                     var button = new ArtOption(armorLvl == currentStatus.profile.armorLevel,buttonContent,
-                        new RbAction1Arg<ItemResourceType>(armorClick, armorLvl, RbSoundType.Default),
+                        new RbAction1Arg<ItemResourceType>(armorClick, armorLvl, RbSoundType.Option),
                     new RbTooltip(armorTooltip, armorLvl));
                     //button.setGroupSelectionColor(HudLib.RbSettings, armorLvl == currentStatus.profile.armorLevel);
                     content.Add(button);
@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars.Conscript
                     var button = new ArtOption(training == currentStatus.profile.training,new List<AbsRichBoxMember>{
                         new RbImage(LangLib.Training_Icon(training)),
                         new RbText( LangLib.Training(training))
-                    }, new RbAction1Arg<TrainingLevel>(trainingClick, training, RbSoundType.Default),
+                    }, new RbAction1Arg<TrainingLevel>(trainingClick, training, RbSoundType.Option),
                     new RbTooltip(trainingTooltip, new TrainingTooltipArgs() { training = training, buildtype = currentStatus.type }));
                     
                     content.Add(button);
@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.Conscript
                             new RbImage(specIcon, 0.8f),
                             new RbSpace(0.5f),
                             new RbText(specText)
-                        }, new RbAction1Arg<SpecializationType>(specializationClick, specialization, RbSoundType.Default));
+                        }, new RbAction1Arg<SpecializationType>(specializationClick, specialization, RbSoundType.Option));
                         //button.setGroupSelectionColor(HudLib.RbSettings, specialization == currentStatus.profile.specialization);
                         content.Add(button);
                     }

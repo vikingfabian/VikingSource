@@ -677,7 +677,7 @@ namespace VikingEngine.DSSWars.Build
                         }, new RbAction(() =>
                         {
                             city.autoExpandFarmType = opt;
-                        }));
+                        }, RbSoundType.Option));
                             //optButton.setGroupSelectionColor(HudLib.RbSettings, opt == city.autoExpandFarmType);
                             content.Add(optButton);
                             content.space();
@@ -730,7 +730,7 @@ namespace VikingEngine.DSSWars.Build
                     }
 
                     var button = new ArtToggle(buildMode == SelectTileResult.Build && placeBuildingType == opt, buttonContent,
-                    new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt),
+                    new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, RbSoundType.Option),
                     new RbTooltip(buildingTooltip, opt));
 
 
@@ -758,7 +758,7 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(new ArtToggle(buildMode == SelectTileResult.Demolish, new List<AbsRichBoxMember>
             {
                 new RbText(DssRef.lang.Build_DestroyBuilding)
-            }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish)));
+            }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, RbSoundType.Option)));
 
                 content.space();
 
@@ -817,7 +817,7 @@ namespace VikingEngine.DSSWars.Build
                     }
 
                     content.Add(new ArtOption(shape == toolShape, new List<AbsRichBoxMember> { new RbImage(icon) },
-                        new RbAction1Arg<MapPaintToolShape>((MapPaintToolShape shape) => { toolShape = shape; }, shape),
+                        new RbAction1Arg<MapPaintToolShape>((MapPaintToolShape shape) => { toolShape = shape; }, shape, RbSoundType.Option),
                         new RbTooltip_Text(caption)));
                 }
 

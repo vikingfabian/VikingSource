@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             {
                 content.Add(new ArtOption(tool == sett.paintSettings.drawTool,
                     new List<AbsRichBoxMember> { new RbImage(VoxelDesignerInterface.ToolIcon(tool)) },
-                    new RbAction1Arg<PaintToolType>((toolType) => { designer.Settings.paintSettings.drawTool = toolType; }, tool)));
+                    new RbAction1Arg<PaintToolType>((toolType) => { designer.Settings.paintSettings.drawTool = toolType; }, tool, RbSoundType.Option)));
             }
 
             const float TabLength = 0.3f;
@@ -348,7 +348,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 content.Add(new ArtToggle(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.EditorLayer),
                     new RbText(TextLib.IndexToString(layerIx)) },
-                    new RbAction1Arg<int>(selectLayer, layerIx)));
+                    new RbAction1Arg<int>(selectLayer, layerIx, RbSoundType.Option)));
             }
 
             content.Add(new RbSeperationLine());
@@ -532,15 +532,15 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 content.newLine();
                 var layer = designer.voxelProject.layers.list[layerIx];
                 content.Add(new ArtToggle(layer.visible, new List<AbsRichBoxMember> { new RbImage(SpriteName.lineofsightEye) },
-                     new RbAction1Arg<int>(toggleLayerVisible, layerIx), new RbTooltip_Text(DssRef.lang.Editor_ToggleVisible)));
+                     new RbAction1Arg<int>(toggleLayerVisible, layerIx, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Editor_ToggleVisible)));
                 content.Add(new ArtOption(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.EditorLayer),
                     new RbText(string.Format( DssRef.lang.Editor_LayerNumber, TextLib.IndexToString(layerIx))) },
-                    new RbAction1Arg<int>(selectLayer, layerIx)));
+                    new RbAction1Arg<int>(selectLayer, layerIx, RbSoundType.Option)));
                 content.Add(new ArtToggle(layer.animatedLayer, new List<AbsRichBoxMember> {  
                     new RbText(layer.animationFrames.Frames.Count.ToString()),
                     new RbImage(layer.animatedLayer? SpriteName.VoxelEditorAllFrames : SpriteName.VoxelEditorFrameLocked) },
-                    new RbAction1Arg<int>(toggleLayerAnimated, layerIx), new RbTooltip_Text(DssRef.lang.Editor_ToggleAnimatedLayer)));
+                    new RbAction1Arg<int>(toggleLayerAnimated, layerIx, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Editor_ToggleAnimatedLayer)));
             }
 
             content.newParagraph();
@@ -903,7 +903,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             foreach (Color color in bgcolors)
             {
                 content.Add(new ArtOption(color == Ref.draw.ClrColor, new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 0.8f, color) },
-                    new RbAction1Arg<Color>((col) => { Ref.draw.ClrColor = col; }, color)));
+                    new RbAction1Arg<Color>((col) => { Ref.draw.ClrColor = col; }, color, RbSoundType.Option)));
             }
 
             content.newLine();
@@ -981,7 +981,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             {
                 content.newLine();
                 content.Add(new ArtOption(material == designer.SelectedMaterial.material,
-                    new List<AbsRichBoxMember> { new RbText(material.ToString()) }, new RbAction1Arg<MaterialProperty>(designer.pickMaterialLink, material)));
+                    new List<AbsRichBoxMember> { new RbText(material.ToString()) }, new RbAction1Arg<MaterialProperty>(designer.pickMaterialLink, material, RbSoundType.Option)));
 
             }
 

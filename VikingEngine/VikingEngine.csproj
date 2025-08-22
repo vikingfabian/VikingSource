@@ -70,6 +70,7 @@
     <Compile Remove="EngineSpace\Translation\OptionsLanguage_Swedish.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Content\DSS\Music\Endless Plains.mp3" />
     <None Remove="Content\Modding\ModConst.txt" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />

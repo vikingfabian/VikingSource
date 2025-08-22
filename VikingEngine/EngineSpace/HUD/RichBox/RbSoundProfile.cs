@@ -58,10 +58,16 @@ namespace VikingEngine.HUD.RichBox
                     return DSSWars.SoundLib.menu;
                 default:
                     return null;
+                case RbSoundType.Option:
+                    return DSSWars.SoundLib.menuOption;
+                case RbSoundType.Deselect:
+                    return DSSWars.SoundLib.menuOptionDeselect;
                 case RbSoundType.Tab:
                     return DSSWars.SoundLib.menutab;
                 case RbSoundType.Back:
                     return DSSWars.SoundLib.menuBack;
+                case RbSoundType.Expand:
+                    return DSSWars.SoundLib.menuExpand;
                 case RbSoundType.Buy:
                     return DSSWars.SoundLib.menuBuy;
                 case RbSoundType.Copy:
@@ -79,7 +85,10 @@ namespace VikingEngine.HUD.RichBox
     enum RbSoundType
     { 
         Default,
+        Option,
+        Deselect,
         Tab,
+        Expand,
         Back,
         Buy,
         Copy,

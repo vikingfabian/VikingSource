@@ -91,6 +91,12 @@
 /processorParam:Quality=Best
 /build:DSS/Music/Elysian_Dreamscape.ogg
 
+#begin DSS/Music/Endless Plains.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Endless Plains.ogg
+
 #begin DSS/Music/Epic Shadows of the Fallen.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -120,6 +126,18 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/Legends of Valor.ogg
+
+#begin DSS/Music/MissingCardinals.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/MissingCardinals.ogg
+
+#begin DSS/Music/Mysterious Grotto.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Mysterious Grotto.ogg
 
 #begin DSS/Music/Pixelated Battlefields.ogg
 /importer:OggImporter

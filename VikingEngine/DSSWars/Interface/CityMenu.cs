@@ -123,7 +123,7 @@ namespace VikingEngine.DSSWars.Interface
                             content.text(description).overrideColor = HudLib.InfoYellow_Light;
 
                             player.hud.tooltip.create(player, content, true);
-                        });
+                        }, RbSoundType.NUM_NONE);
                     }
 
                     tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
@@ -582,7 +582,7 @@ namespace VikingEngine.DSSWars.Interface
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, RbSoundType.Tab));
+                        }, resourcesSubTab, RbSoundType.Option));
                     //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
                     content.space();
@@ -1275,7 +1275,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<ExperienceOrDistancePrio>((ExperienceOrDistancePrio val) =>
                     {
                         city.experenceOrDistance = val;
-                    }, prio, RbSoundType.Default));
+                    }, prio, RbSoundType.Option));
                 content.Add(option);
             }
             
@@ -1341,7 +1341,7 @@ namespace VikingEngine.DSSWars.Interface
                         var button = new ArtToggle(back == city.tagBack, new List<AbsRichBoxMember>
                         {
                     new RbImage(Data.CityTag.BackSprite(back), 0.8f)
-                            }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { city.tagBack = back; }, back));
+                            }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { city.tagBack = back; }, back, back == CityTagBack.NONE ? RbSoundType.Deselect : RbSoundType.Option));
                         content.Add(button);
 
                         if (back == CityTagBack.NONE)
@@ -1357,7 +1357,7 @@ namespace VikingEngine.DSSWars.Interface
                         {
                             var button = new ArtToggle(art == city.tagArt, new List<AbsRichBoxMember> {
                     new RbImage(Data.CityTag.ArtSprite(art))
-                    }, new RbAction1Arg<CityTagArt>((CityTagArt art) => { city.tagArt = art; }, art));
+                    }, new RbAction1Arg<CityTagArt>((CityTagArt art) => { city.tagArt = art; }, art, art == CityTagArt.None ? RbSoundType.Deselect : RbSoundType.Option));
                             content.Add(button);
                         }
                     }

@@ -269,7 +269,7 @@ namespace VikingEngine.Sound
             {
                 if (currentSong == null)
                     return 0f;
-                return currentSong.volume * Ref.gamesett.MusicVol();
+                return Bound.Max( currentSong.volume * Ref.gamesett.MusicVol(), 1f);
             }
         }
 
@@ -349,8 +349,8 @@ namespace VikingEngine.Sound
             
             MediaPlayer.Stop();
 
-            currentMedia?.Dispose();
-            currentMedia = null;
+            //currentMedia?.Dispose();
+            //currentMedia = null;
         }
     }
 

@@ -160,7 +160,7 @@ namespace VikingEngine.DSSWars.Delivery
                             var button = new ArtToggle(item == currentStatus.profile.type, new List<AbsRichBoxMember>{
                                 new RbImage(ResourceLib.Icon(item))   
                             },
-                            new RbAction1Arg<ItemResourceType>(itemClick, item, RbSoundType.Default),
+                            new RbAction1Arg<ItemResourceType>(itemClick, item, RbSoundType.Option),
                             new RbTooltip((RichBoxContent content, object tag) =>
                                 {
                                     //RichBoxContent content = new RichBoxContent();
@@ -206,7 +206,7 @@ namespace VikingEngine.DSSWars.Delivery
                         buttonContent.Add(new RbText(cities_c.sel.TypeName()));
 
                         var button = new ArtToggle(cities_c.sel.myIndex == currentStatus.profile.toCity, buttonContent, 
-                            new RbAction1Arg<int>(cityClick, cities_c.sel.myIndex, RbSoundType.Default), 
+                            new RbAction1Arg<int>(cityClick, cities_c.sel.myIndex, RbSoundType.Option), 
                             new RbTooltip((RichBoxContent content, object tag /*City toCity*/) =>
                             {
                                 City toCity = (City)tag;
@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.Delivery
                         new List<AbsRichBoxMember>{
                             new RbImage(SpriteName.AutomationGearIcon)
                             }, 
-                            new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto, RbSoundType.Default), 
+                            new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto, RbSoundType.Option), 
                             new RbTooltip((RichBoxContent content, object tag) =>
                             {
                                 //RichBoxContent content = new RichBoxContent();
@@ -308,7 +308,7 @@ namespace VikingEngine.DSSWars.Delivery
                             DeliveryStatus currentStatus = get();
                             currentStatus.profile.SendAmount = amount;
                             set(currentStatus);
-                        }, RbSoundType.Default));
+                        }, RbSoundType.Option));
 
                     //button.setGroupSelectionColor(HudLib.RbSettings, amount == currentStatus.profile.SendAmount);
 

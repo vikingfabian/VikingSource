@@ -1546,7 +1546,7 @@ namespace VikingEngine.DSSWars.Work
                     var button = new ArtToggle(prio == value, new List<AbsRichBoxMember> {
                                 new RbText(prio.ToString())
                             },
-                        new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city, RbSoundType.Default),
+                        new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city, RbSoundType.Option),
                         prioText == null ? null : new RbTooltip_Text(prioText));
                     //button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
                     content.Add(button);

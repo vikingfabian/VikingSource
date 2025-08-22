@@ -1,17 +1,15 @@
 ﻿UPDATE
 Change Log:
 * Fixed the broken textures
-
-* Ui Sounds added
+* Added better covarage of Ui Sounds
+* Added three old songs that was made for Lootfest 3, by Martin Grönlund
+* Enabled the music, lets hope it works now
 
 Spectator mode:
-* 
+x fixed: spectator mode can enable the tutorial, making the screen stuck. 
 
 Language change log:
-* Turkish factions complete
-* French new translations done
-* French factions complete
-x (in progress) Portuguese - machine translated
+* 
 
 ACHIEVEMENTS
 * 

@@ -2400,7 +2400,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     automationFocus = focus;
                                     nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
-                                }, RbSoundType.Default), 
+                                }, RbSoundType.Option), 
                                 new RbTooltip(automationToolTip, focus));
 
                             content.Add(button);
@@ -2438,7 +2438,7 @@ namespace VikingEngine.DSSWars.GameObject
                                        new RbAction(() =>
                                        {
                                            exportAutoType = type;
-                                       }, RbSoundType.Default),null);
+                                       }, RbSoundType.Option),null);
 
                                     content.Add(button);
                                 }
@@ -2471,7 +2471,7 @@ namespace VikingEngine.DSSWars.GameObject
                                        new RbAction1Arg<WarAutoQuality>((WarAutoQuality quality) =>
                                        {
                                            warAutoQuality = quality;
-                                       }, quality, RbSoundType.Default), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
+                                       }, quality, RbSoundType.Option), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
 
                                     content.Add(button);
                                 }
@@ -2515,7 +2515,7 @@ namespace VikingEngine.DSSWars.GameObject
                                        new RbAction1Arg<WarAutoWeaponType>((WarAutoWeaponType weaponType) =>
                                        {
                                            warAutoWeaponType = weaponType;
-                                       }, weaponType, RbSoundType.Default));
+                                       }, weaponType, RbSoundType.Option));
 
                                     content.Add(button);
                                 }

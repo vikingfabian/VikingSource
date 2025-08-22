@@ -507,7 +507,7 @@ namespace VikingEngine.DSSWars
                 sprite = SpriteName.WarsFollowFactionNo;
                 //buttonStyle = RbButtonStyle.OptionNotSelected;
             }
-
+            action.sound = RbSoundType.Option;
 
             var followFactionButton = new ArtToggle(followFaction, new List<AbsRichBoxMember> { new RbImage(sprite) },
                         action, //new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));

@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Conscript
                 foreach (var wep in group)
                 {
                     content.Add(new ArtToggle(wep == BattleLabStorage.Singleton.setup.selectedWeapon, new List<AbsRichBoxMember> { new RbImage(ResourceLib.Icon(wep)) },
-                        new RbAction1Arg<ItemResourceType>(selectWeapon, wep), new RbTooltip_Text(LangLib.Item(wep))));
+                        new RbAction1Arg<ItemResourceType>(selectWeapon, wep, RbSoundType.Option), new RbTooltip_Text(LangLib.Item(wep))));
                 }
             }
 

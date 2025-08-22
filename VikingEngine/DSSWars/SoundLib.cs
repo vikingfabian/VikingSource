@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars
     {
         public static readonly string SoundDir = DssLib.ContentDir + "Sound" + DataStream.FilePath.Dir;
 
-        public static SoundContainerBase click, menu_expand, option_select, option_deselect, /*hover,*/ hover_disabled, clicktab,/* hovertab,*/ back, 
+        public static SoundContainerBase click, ui_expand, option_select, option_deselect, /*hover,*/ hover_disabled, clicktab,/* hovertab,*/ back, 
             scroll_back, scroll_forward,
             buy, wrong, soft_buzz_error, start_build_contruct, start_destroy_contruct,
             copy, paste, start, stop,
@@ -33,15 +33,15 @@ namespace VikingEngine.DSSWars
             
            painvoice, fleshgore;
 
-        public static RbSoundProfile menu, menuHover, menutab, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop;
+        public static RbSoundProfile menu, menuHover, menuOption, menuOptionDeselect, menutab, menuExpand, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop;
 
         public static RbSoundAction buttonHoverAction, tabHoverAction;
 
         public static void LoadContent()
         {
             click = new SoundContainerSingle(SoundDir + "click", 0.7f);
-            menu_expand = new SoundContainerSingle(SoundDir + "menu_expand", 0.7f);
-            option_select = new SoundContainerSingle(SoundDir + "option_select", 0.7f);
+            ui_expand = new SoundContainerSingle(SoundDir + "menu_expand", 0.7f);
+            option_select = new SoundContainerSingle(SoundDir + "option_select", 0.2f);
             option_deselect = new SoundContainerSingle(SoundDir + "option_deselect", 0.7f);
             //hover = new SoundContainerMultiple([SoundDir + "button_hover1", SoundDir + "button_hover2"], 0.7f);
             hover_disabled = new SoundContainerSingle(SoundDir + "hover_disabled", 0.7f);
@@ -119,8 +119,11 @@ namespace VikingEngine.DSSWars
             painvoice = new SoundContainerMultiple([SoundDir + "Dwarf Pain 1", SoundDir + "Dwarf Pain 2", SoundDir + "Dwarf Pain 3", SoundDir + "Dwarf Pain 4", SoundDir + "Dwarf Pain 5", SoundDir + "Dwarf Pain 6" ], 0.4f, 0.6f);
             fleshgore =new SoundContainerMultiple([SoundDir + "flesh_gore (1)",SoundDir + "flesh_gore (2)",SoundDir + "flesh_gore (3)",SoundDir + "flesh_gore (4)",SoundDir + "flesh_gore (5)",SoundDir + "flesh_gore (6)",SoundDir + "flesh_gore (7)",SoundDir + "flesh_gore (8)",SoundDir + "flesh_gore (9)",SoundDir + "flesh_gore (10)",SoundDir + "flesh_gore (11)",SoundDir + "flesh_gore (12)",SoundDir + "flesh_gore (13)"], 0.1f, 0.5f);
             menu = new RbSoundProfile(click, wrong);
+            menuOption = new RbSoundProfile(option_select, wrong);
+            menuOptionDeselect = new RbSoundProfile(option_deselect, wrong);
             //menuHover = new RbSoundProfile(hover, hover_disabled);
             menutab = new RbSoundProfile(clicktab, wrong);
+            menuExpand = new RbSoundProfile(ui_expand, wrong);
             //menutabHover = new RbSoundProfile(hovertab, hover_disabled);
             menuBack = new RbSoundProfile(back);
             menuBuy = new RbSoundProfile(buy, wrong);

@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.ToGG.HeroQuest.Players.Ai;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.ToggEngine.Map;
 
@@ -252,7 +253,7 @@ namespace VikingEngine.DSSWars.Interface
             HudLib.Label(content, string.Format(DssRef.lang.ArmyOption_SendToX, string.Empty));
             content.newLine();
             var newArmyButton = new ArtOption(player.hud.objMenu.otherArmy == null, new List<AbsRichBoxMember> { new RbText(DssRef.lang.ArmyOption_NewArmy) },
-                new RbAction1Arg<Army>(selectArmyTrade, null, RbSoundType.Tab));
+                new RbAction1Arg<Army>(selectArmyTrade, null, RbSoundType.Option));
             //newArmyButton.setGroupSelectionColor(HudLib.RbSettings, player.hud.objMenu.otherArmy == null);
             content.Add(newArmyButton);
 
@@ -270,7 +271,7 @@ namespace VikingEngine.DSSWars.Interface
                 buttonContent.Add(new RbText(otherArmy.TypeName()));
 
                 var button = new ArtOption(player.hud.objMenu.otherArmy == otherArmy, buttonContent,
-                new RbAction1Arg<AbsArmy>(selectArmyTrade, otherArmy, RbSoundType.Tab));
+                new RbAction1Arg<AbsArmy>(selectArmyTrade, otherArmy, RbSoundType.Option));
                 //button.setGroupSelectionColor(HudLib.RbSettings, player.hud.objMenu.otherArmy == otherArmy);
                 content.Add(button);
             }
@@ -414,7 +415,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 var button = new ArtToggle(back == army.tagBack, new List<AbsRichBoxMember> {
                     new RbImage(Data.CityTag.BackSprite(back))
-                }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { army.tagBack = back; }, back));
+                }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { army.tagBack = back; }, back, back == CityTagBack.NONE? RbSoundType.Deselect : RbSoundType.Option));
                 //button.setGroupSelectionColor(HudLib.RbSettings, back == army.tagBack);
                 content.Add(button);
 
@@ -435,7 +436,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     var button = new ArtToggle(art == army.tagArt, new List<AbsRichBoxMember> {
                     new RbImage(Data.CityTag.ArtSprite(art))
-                    }, new RbAction1Arg<ArmyTagArt>((ArmyTagArt art) => { army.tagArt = art; }, art));
+                    }, new RbAction1Arg<ArmyTagArt>((ArmyTagArt art) => { army.tagArt = art; }, art, art == ArmyTagArt.None ? RbSoundType.Deselect : RbSoundType.Option));
                     //button.setGroupSelectionColor(HudLib.RbSettings, art == army.tagArt);
                     content.Add(button);
                     //content.space();

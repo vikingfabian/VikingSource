@@ -24,6 +24,8 @@ namespace VikingEngine.HUD.RichBox.Artistic
             bool value = !property.Invoke(propertyTag, false, false);
             property.Invoke(propertyTag, true, value);
 
+            (value? DSSWars.SoundLib.option_select : DSSWars.SoundLib.option_deselect).Play();
+
             if (checkImage != null)
             {
                 checkImage.pointer.SetSpriteName(value ? checkOn : checkOff);

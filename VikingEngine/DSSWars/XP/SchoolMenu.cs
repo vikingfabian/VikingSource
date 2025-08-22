@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.XP
                     };
 
                     var button = new ArtOption(exp == currentStatus.learnExperience,buttonContent,
-                       new RbAction1Arg<WorkExperienceType>(experienceClick, exp, RbSoundType.Default),
+                       new RbAction1Arg<WorkExperienceType>(experienceClick, exp, RbSoundType.Option),
                    new RbTooltip(expTooltip, exp));
                     //button.setGroupSelectionColor(HudLib.RbSettings, );
                     content.Add(button);
@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.XP
                     };
 
                         var button = new ArtOption(level == currentStatus.toLevel,buttonContent,
-                           new RbAction1Arg<ExperienceLevel>(toLevelClick, level, RbSoundType.Default),
+                           new RbAction1Arg<ExperienceLevel>(toLevelClick, level, RbSoundType.Option),
                        new RbTooltip(lvlToolTip, level));
                         //button.setGroupSelectionColor(HudLib.RbSettings, );
                         content.Add(button);

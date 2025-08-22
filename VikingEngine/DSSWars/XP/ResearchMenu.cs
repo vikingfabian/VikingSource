@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.XP
                                 new RbImage(techicon),
                                 new RbSpace(),
                                 new RbText(techname),
-                            }, new RbAction1Arg<TechnologyTreeType>((TechnologyTreeType type) => { player.selectedTech = type; }, techType)));
+                            }, new RbAction1Arg<TechnologyTreeType>((TechnologyTreeType type) => { player.selectedTech = type; }, techType, RbSoundType.Option)));
                         }
 
                         content.newLine();

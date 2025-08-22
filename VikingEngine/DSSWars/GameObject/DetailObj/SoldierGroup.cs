@@ -1109,7 +1109,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     var button = new ArtOption(w == tArmy.armyColumnWidth, 
                         new List<AbsRichBoxMember> { new RbText(w.ToString()) },
-                        new RbAction1Arg<int>(tArmy.armyColumnWidthClick, w, RbSoundType.Default));
+                        new RbAction1Arg<int>(tArmy.armyColumnWidthClick, w, RbSoundType.Option));
                     
                     args.content.Add(button);
                 }
@@ -1154,7 +1154,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var button = new ArtToggle(armyGridPlacement2.X == colX && armyGridPlacement2.Y == rowY, new List<AbsRichBoxMember> {
                         new RbText(caption)
                     },
-                        new RbAction2Arg<int, int>(setNewArmyPlacement, colX, rowY), null);
+                        new RbAction2Arg<int, int>(setNewArmyPlacement, colX, rowY, RbSoundType.Option), null);
 
                         args.content.Add(button);
                     }

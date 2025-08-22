@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.Interface
                     int speed = player.gameControls.GameSpeedOptions[i];
                     content.Add(new ArtOption(Ref.TargetGameTimeSpeed == speed,
                         new List<AbsRichBoxMember> { new RbText(speed.ToString()) },
-                        new RbAction1Arg<int>(gameSpeedClick, speed),
+                        new RbAction1Arg<int>(gameSpeedClick, speed, RbSoundType.Option),
                         new RbTooltip((RichBoxContent content, object tag) =>
                         {
                             content.Add(new RbImage(player.gameControls.input.GameSpeed.Icon));
