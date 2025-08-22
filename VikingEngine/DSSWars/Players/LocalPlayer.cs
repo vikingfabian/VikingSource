@@ -491,7 +491,8 @@ namespace VikingEngine.DSSWars.Players
         {
             if ((newGame || PlatformSettings.STEAM_DEMO) && 
                 DssRef.storage.runTutorial_1short_2normal != 0 &&
-                DssRef.state.PlayType() == PlayStateType.Play)
+                DssRef.state.PlayType() == PlayStateType.Play &&
+                DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
                 tutorial = new PlayerControls.Tutorial(this);
             }

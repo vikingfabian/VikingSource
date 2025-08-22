@@ -10,6 +10,7 @@ using VikingEngine.EngineSpace.Graphics.DeferredRendering;
 using VikingEngine.ToGG.Commander.UnitsData;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.ToggEngine;
+using VikingEngine.DSSWars.GameState.VoxelEditor;
 
 namespace VikingEngine.DSSWars
 {
@@ -65,6 +66,11 @@ namespace VikingEngine.DSSWars
             drawBatch = new DrawBatchCollection();
         }
 
+        public override void DeleteMe()
+        {
+            base.DeleteMe();
+            overviewMapTarget.Dispose();
+        }
         //public static void LoadContent()
         //{
         //    depthWriter = Engine.LoadContent.LoadShader("DeferredRenderer\\DepthWriter");

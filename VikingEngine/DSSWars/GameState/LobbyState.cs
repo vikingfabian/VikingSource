@@ -1351,8 +1351,11 @@ namespace VikingEngine.DSSWars
 
             content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
 
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
+            if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+            {
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
+            }
 
             if (!continueCustomMap)
             {

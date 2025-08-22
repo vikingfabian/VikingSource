@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             var faction = GetFaction();
 
-            bool fullUpdate = DssRef.state.host || faction.player.IsLocalPlayer();
+            bool hostUpdate = DssRef.state.host || faction.player.IsLocalPlayer();
 
             CityStructure.WorkInstance.newCity = true;
             //WaitingHighSkillJobs.Clear();
@@ -461,7 +461,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 //PICK UP
-                if (fullUpdate)
+                if (hostUpdate)
                 {
                     if (workTemplate.move.HasPrio() || woodSafeGuard)
                     {
@@ -780,7 +780,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (fullUpdate)
+                if (hostUpdate)
                 {
                     workAutoBuild(fuelSafeGuard, rawFoodSafeGuard);
                 }
