@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Media;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.EngineSpace.Sound;
 
 namespace VikingEngine.Sound
 {
@@ -31,9 +33,16 @@ namespace VikingEngine.Sound
         public bool keepPlaying = true;
         public bool useDelay = true;
 
+        static NVorbisPlayer player;
 
         public MusicPlayer()
         {
+            player = new NVorbisPlayer
+            {
+                Volume = 1f,
+                IsRepeating = false
+            };
+
             if (Ref.music != null)
             {
                 throw new Exception("Two music players");
@@ -187,10 +196,11 @@ namespace VikingEngine.Sound
                         }
                         break;
                     case PlaySongState.FadeOut:
-                        MediaPlayer.Volume -= fadeSoundSpeed * Ref.DeltaTimeMs;
+                        //MediaPlayer.Volume -= fadeSoundSpeed * Ref.DeltaTimeMs;
+                        player.Volume -= fadeSoundSpeed * Ref.DeltaTimeMs;
                         if (currentSong != null)
                         {
-                            if (MediaPlayer.Volume <= 0 || MediaPlayer.State != MediaState.Playing || (!currentSong.seamlessLoop && playTime.TimeOut))
+                            if (player.Volume <= 0 || !player.IsPlaying || (!currentSong.seamlessLoop && playTime.TimeOut))
                             {
                                 onSongComplete();
                             }
@@ -201,10 +211,10 @@ namespace VikingEngine.Sound
                         }
                         break;
                     case PlaySongState.FadeIn:
-                        MediaPlayer.Volume += fadeSoundSpeed * Ref.DeltaTimeMs;
-                        if (MediaPlayer.Volume >= currentVolume)
+                        player.Volume += fadeSoundSpeed * Ref.DeltaTimeMs;
+                        if (player.Volume >= currentVolume)
                         {
-                            MediaPlayer.Volume = currentVolume;
+                            player.Volume = currentVolume;
                             playSongState = PlaySongState.Playing;
                         }
 
@@ -247,7 +257,7 @@ namespace VikingEngine.Sound
                     }
                     else
                     {
-                        MediaPlayer.Volume = currentVolume;
+                        player.Volume = currentVolume;
                         playSongState = PlaySongState.Playing;
                     }
                 }
@@ -294,11 +304,11 @@ namespace VikingEngine.Sound
         {
             if (currentSong != null)
             {
-                 MediaPlayer.Volume = currentVolume;
+                player.Volume = currentVolume;
             }
             else
             {
-                MediaPlayer.Volume = Ref.gamesett.MusicVol() * SongVolumeAdjust;
+                player.Volume = Ref.gamesett.MusicVol() * SongVolumeAdjust;
             }
         }
 
@@ -309,7 +319,7 @@ namespace VikingEngine.Sound
 
         public bool IsPlaying()
         {
-            return playSongState == PlaySongState.Playing && MediaPlayer.Volume > 0;
+            return playSongState == PlaySongState.Playing && player.Volume > 0;
         }
 
         public bool IsPlayingNowOrSoon()
@@ -330,7 +340,7 @@ namespace VikingEngine.Sound
                     //MediaPlayer.Stop();
 
                     currentMedia = s;
-                    MediaPlayer.Play(s);
+                    player.Play(s);
 
                     //MediaPlayer.Play(s);
                     MediaPlayer.IsRepeating = loop;
