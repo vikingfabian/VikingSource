@@ -8,6 +8,7 @@ Change Log:
 
 Spectator mode:
 * fixed: spectator mode can enable the tutorial, making the screen stuck. 
+* added x20 speed 
 
 Language change log:
 * 
@@ -41,6 +42,7 @@ x full game achievements + translations
 
 #Todo#
 Spectator mode:
+x have a button to make all masters guilds to focus on diffrent things
 x plants, trees, mines
 x change water income
 - Hunger struck (empty all energy bars of every worker in a province).

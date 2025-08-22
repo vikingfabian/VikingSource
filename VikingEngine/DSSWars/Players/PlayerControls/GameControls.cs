@@ -61,7 +61,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 map.setCameraPos(player.faction.mainCity.tilePos);
             }
 
-            if (DssRef.storage.speed5x)
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
+            {
+                GameSpeedOptions = new int[] { 1, 2, 5, 20 };
+            }
+            else if (DssRef.storage.speed5x)
             {
                 GameSpeedOptions = new int[] { 1, 2, DssConst.MaxSpeedOption };
             }

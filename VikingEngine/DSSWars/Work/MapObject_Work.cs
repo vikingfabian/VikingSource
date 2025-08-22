@@ -46,12 +46,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         void addMissingWorkerUnits()
         {
-            
-            for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
+            lock (workerStatuses.array)
             {
-                if (workerStatuses[i].work != WorkType.IsDeleted)
+                for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
                 {
-                    workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                    if (workerStatuses[i].work != WorkType.IsDeleted)
+                    {
+                        workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                    }
                 }
             }
         }
@@ -91,12 +93,18 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void getWorkerStatus(int index, ref WorkerStatus status)
         {
-            status = workerStatuses[index];
+            lock (workerStatuses.array)
+            {
+                status = workerStatuses[index];
+            }
         }
 
         public void setWorkerStatus(int index, ref WorkerStatus status)
         {
-            workerStatuses[index] = status;
+            lock (workerStatuses.array)
+            {
+                workerStatuses[index] = status;
+            }
         }
     }
 }

@@ -310,7 +310,7 @@ namespace VikingEngine.DSSWars
                     m.onGameStart(newGame);
                 }
 
-                if (newGame && DssRef.storage.runTutorial_1short_2normal != 2)
+                if (newGame && (DssRef.storage.runTutorial_1short_2normal != 2 || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
                 {
                     initStartUnits();
                 }
