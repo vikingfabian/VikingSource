@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
@@ -8,8 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -17,7 +19,6 @@ using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO;
 using VikingEngine.ToGG.MoonFall;
-using Microsoft.Xna.Framework;
 
 namespace VikingEngine.DSSWars.Presentation
 {
@@ -27,6 +28,30 @@ namespace VikingEngine.DSSWars.Presentation
         //{ 
 
         //}
+        public static void GameModeText(GameModeMainType mode, out string caption, out string desc)
+        {
+            caption = null;
+            desc = null;
+            switch (mode)
+            {
+                case GameModeMainType.FullStory:
+                    caption = DssRef.lang.Settings_Mode_Story;
+                    desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
+                    break;
+                case GameModeMainType.Sandbox:
+                    caption = DssRef.lang.Settings_Mode_Sandbox;
+                    desc = DssRef.lang.Settings_Mode_IncludeAttacks;
+                    break;
+                case GameModeMainType.Peaceful:
+                    caption = DssRef.lang.Settings_Mode_Peaceful;
+                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
+                    break;
+                case GameModeMainType.Spectator:
+                    caption = DssRef.lang.Settings_Mode_Spectator;
+                    desc = DssRef.todoLang.Settings_Mode_Spectator_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
+                    break;
+            }
+        }
         public static void WorkNameIcon(WorkPriorityType type, out string name, out SpriteName workIcon, out SpriteName typeIcon)
         {
             switch (type)

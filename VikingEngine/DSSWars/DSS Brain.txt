@@ -1,14 +1,9 @@
 ﻿UPDATE
 Change Log:
-* Fixed the broken textures
-* Added better covarage of Ui Sounds
-* Added three old songs that was made for Lootfest 3, by Martin Grönlund
-* Wrote a custom music player
-* Fixed rendertarget memory leak
+* Added game mode to save meta
 
 Spectator mode:
-* fixed: spectator mode can enable the tutorial, making the screen stuck. 
-* added x20 speed 
+* 
 
 Language change log:
 * 
@@ -35,7 +30,7 @@ Plus the boss fight: about 10 hours
 build building icon
 
 #must do#
-x nya sentry buggar
+x test all achievements
 x full game achievements + translations
 
 

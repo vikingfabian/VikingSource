@@ -1748,7 +1748,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
             tilePos = WP.ToTilePos(position);
-            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY();
+            if (DssRef.world.tileBounds.IntersectPoint(tilePos))
+            {
+                position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY();
+            }
         }
 
         public void asyncPathUpdate(int pathThreadIndex)

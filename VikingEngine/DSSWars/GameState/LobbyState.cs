@@ -1342,7 +1342,7 @@ namespace VikingEngine.DSSWars
             {
                 foreach (var mode in Difficulty.AvailableModes)
                 {
-                    gameModeText(mode, out string caption, out string desc);
+                   LangLib.GameModeText(mode, out string caption, out string desc);
                     modeOptions.AddOption(caption, mode == DssRef.difficulty.setting_gameMode, mode == Difficulty.DefaultMode,
                         new RbAction1Arg<GameModeMainType>(gameModeClick, mode), new RbTooltip_Text(desc));
                 }
@@ -1744,30 +1744,7 @@ namespace VikingEngine.DSSWars
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_craftMulti, value);
         }
 
-        void gameModeText(GameModeMainType mode, out string caption, out string desc)
-        {
-            caption = null;
-            desc = null;
-            switch (mode)
-            {
-                case GameModeMainType.FullStory:
-                    caption = DssRef.lang.Settings_Mode_Story;
-                    desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
-                    break;
-                case GameModeMainType.Sandbox:
-                    caption = DssRef.lang.Settings_Mode_Sandbox;
-                    desc = DssRef.lang.Settings_Mode_IncludeAttacks;
-                    break;
-                case GameModeMainType.Peaceful:
-                    caption = DssRef.lang.Settings_Mode_Peaceful;
-                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
-                    break;
-                case GameModeMainType.Spectator:
-                    caption = DssRef.lang.Settings_Mode_Spectator;
-                    desc = DssRef.todoLang.Settings_Mode_Spectator_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
-                    break;
-            }
-        }
+       
        
 
         void selectGameModeMenu()
@@ -1776,7 +1753,7 @@ namespace VikingEngine.DSSWars
             {
                 for (GameModeMainType mode = 0; mode < GameModeMainType.NUM; ++mode)
                 {
-                    gameModeText(mode, out string caption, out string desc);
+                    LangLib.GameModeText(mode, out string caption, out string desc);
 
                     new GuiTextButton(caption, desc,
                         new GuiAction1Arg<GameModeMainType>(gameModeClick, mode), false, layout);
