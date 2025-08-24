@@ -1358,7 +1358,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     int newAlly = arraylib.RandomListMember(DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances);
                     var allyFaction = DssRef.world.factions.GetIndex_Safe(newAlly);
-                    if (allyFaction != null && DssRef.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(faction, allyFaction))
+                    if (allyFaction != null && DssRef.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(faction, allyFaction, enemyFaction))
                     {
                         const int TinyFaction = 2;
                         const int LargeFaction = 8;

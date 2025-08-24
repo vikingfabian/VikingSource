@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
                 {
-                    if (myIndex == 3 || debugTagged)
+                    if (myIndex == 715 || debugTagged)
                     {
                         lib.DoNothing();
                     }
@@ -798,14 +798,7 @@ namespace VikingEngine.DSSWars.GameObject
                         foreach (var item in types)
                         {
                             WorkPriority template = workTemplate.GetWorkPriority(item);
-                            //if (checkMaxStock)
-                            //{
-                            //    template = workTemplate.GetWorkPriorityAndStockCheck(item, out waitForFullStock);
-                            //}
-                            //else
-                            //{
-                            //template = workTemplate.GetWorkPriority(item);
-                            //}
+                            
 
                             if (template.value > topPrioValue)
                             {

@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Event
 
         Time dyingFactionsTimer = Time.Zero;
 
-        Time toPeacefulCheckTimer = new Time(3, TimeUnit.Minutes);
+        Time toPeacefulCheckTimer = new Time(Ref.rnd.Float(30, 45), TimeUnit.Minutes);
 
         List<AbsStoryEvent> mainStory = new List<AbsStoryEvent>();
 
@@ -483,6 +483,11 @@ namespace VikingEngine.DSSWars.Event
 
                                 }
                             }
+
+                            if (p.firstAttacker == faction.myIndex)
+                            { 
+                                DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.destroy_first_attacker_any, AchievementIndex.destroy_first_attacker_100);
+                            }
                         }
                     }
                 }
@@ -593,7 +598,7 @@ namespace VikingEngine.DSSWars.Event
                 if (toPeacefulCheckTimer.CountDown(time) &&
                     DssRef.difficulty.toPeacefulPercentage > 0)
                 {
-                    toPeacefulCheckTimer = new Time(30, TimeUnit.Minutes);
+                    toPeacefulCheckTimer = new Time(Ref.rnd.Float(1.5f, 3f), TimeUnit.Hours);
 
                     foreach (var p in DssRef.state.localPlayers)
                     {
@@ -810,7 +815,7 @@ namespace VikingEngine.DSSWars.Event
             }
         }
 
-        public void onPlayerEnterWar(Players.LocalPlayer player, bool isAggressor)
+        public void onPlayerEnterWar(Players.LocalPlayer player, Faction other, bool isAggressor)
         {
             if (isAggressor)
             {
@@ -833,6 +838,11 @@ namespace VikingEngine.DSSWars.Event
             else
             {
                 ++player.statistics.WarsStartedByEnemy;
+
+                if (player.firstAttacker != ushort.MaxValue)
+                { 
+                    player.firstAttacker = other.myIndex;
+                }
             }
 
             Task.Run(() =>

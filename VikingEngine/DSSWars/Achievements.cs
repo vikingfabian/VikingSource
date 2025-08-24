@@ -717,6 +717,13 @@ namespace VikingEngine.DSSWars
         /// </summary>
         first_game,//i
 
+        /// <summary>
+        /// Terminate the first faction to attack you
+        /// </summary>
+        destroy_first_attacker_any,
+        destroy_first_attacker_100,
+
+
         NUM_ACHIEVEMENTS
     }
 }

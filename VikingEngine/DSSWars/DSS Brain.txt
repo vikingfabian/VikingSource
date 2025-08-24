@@ -1,6 +1,10 @@
 ﻿UPDATE
 Change Log:
-* 
+* HUD improvements
+* The war manager is creating wars against you 5 times slower
+* Added 15 minutes to the war delay event, plus 15min on the first attacker
+* ai wont ally if it adds more enemies (than the common enemy)
+* fixed music crash
 
 Spectator mode:
 * 
@@ -9,14 +13,19 @@ Language change log:
 * Updated Steam ai description: "Localizations are a mix of manual and machine translation."
 
 ACHIEVEMENTS
-* 
+* Added 2:
+/// <summary>
+/// Terminate the first faction to attack you
+/// </summary>
+destroy_first_attacker_any,
+destroy_first_attacker_100,
 
 Casual:
 * 
 
 Event timers (are slightly random)
 - Ai delay: 8 minutes
-- Ai peace time: 15 min
+- Ai peace time: 30 min
 - War manager start: 40min
 - Barbarians: 3 hours
 - Mercenaries: 8 hours (total 12 hours by now)
@@ -30,13 +39,19 @@ Plus the boss fight: about 10 hours
 build building icon
 
 #must do#
+x broken music message gone
+X the first attack (event)
+x music should not play when master = 0
+x block black market food behind logistics
+x god building placements flame
 x test all achievements
 x full game achievements + translations
 
 
 
+
 #Todo#
-Spectator mode:
+x clickable cities in diplomacy
 x have a button to make all masters guilds to focus on diffrent things
 
 x guard to wall tutorial

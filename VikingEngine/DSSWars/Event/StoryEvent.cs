@@ -260,7 +260,7 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
-            init(false, TimeLength.FromMinutes(15));
+            init(false, TimeLength.FromMinutes(30));
         }
         public override bool RunAi()
         {

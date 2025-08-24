@@ -228,8 +228,10 @@ namespace VikingEngine.DSSWars.Delivery
 
             return result;
         }
-        public string longTimeProgress(City from)
+        public string longTimeProgress(City from, out bool hasValue)
         {
+            hasValue = true;
+
             string remaining;
             if (active == DeliveryActiveStatus.Delivering)
             {
@@ -243,6 +245,7 @@ namespace VikingEngine.DSSWars.Delivery
                 }
                 else
                 {
+                    hasValue = false;
                     remaining = TextLib.Error;
                 }
             }

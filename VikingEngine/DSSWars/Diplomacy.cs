@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars
             return aiPlayerAsynchUpdate_collectAlliances;
         }
 
-        public bool aiPlayerAsynchUpdate_mayAlly_checkConflict(Faction faction1, Faction faction2)
+        public bool aiPlayerAsynchUpdate_mayAlly_checkConflict(Faction faction1, Faction faction2, Faction enemyFaction)
         {
             List<int> allies = aiPlayerAsynchUpdate_GetAllied(faction1);
 
@@ -201,6 +201,18 @@ namespace VikingEngine.DSSWars
                     {
                         return false;
                     }
+                }
+            }
+
+            var wars1 = collectWars(faction1);
+            var wars2 = collectWars(faction2);
+
+            foreach (int war in wars1)
+            {
+                //Dont get dragged into more wars
+                if (war != enemyFaction.myIndex && !wars2.Contains(war))
+                {
+                    return false;
                 }
             }
 
@@ -392,7 +404,7 @@ namespace VikingEngine.DSSWars
                     var player = attacker.player.GetLocalPlayer();
                     //++player.statistics.WarsStartedByYou;
                     player.diplomaticPoints.pay(cost, true);
-                    DssRef.state.events?.onPlayerEnterWar(player, true);
+                    DssRef.state.events?.onPlayerEnterWar(player, defender, true);
 
                     if (prevRelation >= RelationType.RelationType1_Peace)
                     {
@@ -421,7 +433,7 @@ namespace VikingEngine.DSSWars
                 {
                     var player = defender.player.GetLocalPlayer();
                     //++player.statistics.WarsStartedByEnemy;
-                    DssRef.state.events?.onPlayerEnterWar(player, false);
+                    DssRef.state.events?.onPlayerEnterWar(player, attacker, false);
                 }
             }
         }

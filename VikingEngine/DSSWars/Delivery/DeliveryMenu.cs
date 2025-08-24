@@ -465,11 +465,13 @@ namespace VikingEngine.DSSWars.Delivery
                         }
                     }
 
-                    //if (isSending)
+                    string timeString = currentStatus.longTimeProgress(city, out bool hasTime);
+                    if (hasTime)
                     {
+
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(currentStatus.longTimeProgress(city), isSending ? null : HudLib.SecondaryTextColor));
+                        content.Add(new RbText(timeString, isSending ? null : HudLib.SecondaryTextColor));
                     }
                 }
             }
