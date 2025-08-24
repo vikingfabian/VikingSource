@@ -1,18 +1,9 @@
 ﻿UPDATE
 Change Log:
-* Added game mode to save meta
-* Doubled the cost of animal pens
-* Can plant trees (unlocked by the wood cutter)
-* fixed: to switch to another map size it takes 2 attempts
-* (maybe) fixed crashing in 20x spectator speed 
+* 
 
 Spectator mode:
-* place trees and mines
-* change water income
-* set all resources at once
-* set tech unlocks
-* set worker xp
-
+* 
 
 Language change log:
 * Updated Steam ai description: "Localizations are a mix of manual and machine translation."
@@ -47,17 +38,6 @@ x full game achievements + translations
 #Todo#
 Spectator mode:
 x have a button to make all masters guilds to focus on diffrent things
-
-x change water income
-- Hunger struck (empty all energy bars of every worker in a province).
-- Harvest-blessing? Harvest resources around cursor in x range (wood and stone only?) you can use the same range system that you use with saw mills and stone cutters? But then on the mouse cursor.
-- Stupidly smart -> Increase average experience level of all skills in a province.
-- Smartly stupid -> Decrease average experience level of all skills in a province.
-- Valley-O-Plenty -> Fill the storage up with 100 of all resources in a tab, so only minerals, only weapons, only armor, etc.
-- EUREKA! -> this happens when you select one unresearched tech, it instantly researches it for the select province.
-- SPILLED IT?! -> This forgets the select tech. So the buildings also stop working etc. etc.
-- EXODUS! -> Make people emmigrate out of the province. Can be used to tank enemy economy by proxy.
-- I'm tired, boss. -> Stun all workers in a province for 10 seconds.
 
 x guard to wall tutorial
 x the ui scale might be overtuned, 0.5 feels more like 0.05
