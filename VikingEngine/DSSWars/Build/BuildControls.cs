@@ -590,7 +590,13 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Decor,
                 BuildCategoryTab.Upgrade,
                 BuildCategoryTab.Filter,
+
             };
+
+            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+            {
+                buildCategories.Insert(buildCategories.Count -1, BuildCategoryTab.GodPower);
+            }
 
             if (city.buildingStructure.buildingLevel_logistics > 0)
             {
@@ -626,6 +632,10 @@ namespace VikingEngine.DSSWars.Build
                     case BuildCategoryTab.Upgrade:
                         tabIcon = SpriteName.warsBuildCategoryUpgrades;
                         category = DssRef.lang.BuildCategory_Upgrade;
+                        break;
+                    case BuildCategoryTab.GodPower:
+                        tabIcon = SpriteName.WarsGodPowerIcon;
+                        category = DssRef.todoLang.GodPower;
                         break;
                     default:
                         tabIcon = SpriteName.warsBuildCategoryAutomation;
@@ -987,6 +997,20 @@ namespace VikingEngine.DSSWars.Build
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(string.Format(DssRef.lang.BuildHud_BonusRadius, DssConst.WoodCutter_BonusRadius)));
+
+                    content.newParagraph();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.lang.Hud_Unlock + ": "));
+                    content.Add(new RbImage(SpriteName.WarsBuild_TreeSeedlingSoft));
+                    content.Add(new RbText(DssRef.todoLang.Building_TreeSprout_Soft));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.lang.Hud_Unlock + ": "));
+                    content.Add(new RbImage(SpriteName.WarsBuild_TreeSeedlingHard));
+                    content.Add(new RbText(DssRef.todoLang.Building_TreeSprout_Hard));
+                   
+
                     break;
 
                 case BuildAndExpandType.StoneCutter:
@@ -1099,7 +1123,6 @@ namespace VikingEngine.DSSWars.Build
 
                 case BuildAndExpandType.HempFarm:
                     farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount));
-
                     break;
 
                 case BuildAndExpandType.HempFarmUpgraded:

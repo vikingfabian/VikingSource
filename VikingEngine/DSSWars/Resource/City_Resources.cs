@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.RawFood_Group,
              ItemResourceType.Wood_Group,
              ItemResourceType.Stone_G,
+              ItemResourceType.Palisade,
              ItemResourceType.Toolkit,
             ItemResourceType.Wagon2Wheel,
             ItemResourceType.Wagon4Wheel,
@@ -57,7 +58,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             ItemResourceType.Bronze,
             ItemResourceType.CastIron,
-            //ItemResourceType.BloomeryIron,
+            ItemResourceType.BloomeryIron,
+            ItemResourceType.Steel,
             ItemResourceType.Mithril,
         };
         public static readonly ItemResourceType[] MovableCityResource_WeaponMelee =
@@ -99,8 +101,6 @@ namespace VikingEngine.DSSWars.GameObject
             ItemResourceType.SiegeCannonIron,
             ItemResourceType.ManCannonIron,
 
-            
-
         };
 
         public static readonly ItemResourceType[] MovableCityResource_Armor =
@@ -123,8 +123,8 @@ namespace VikingEngine.DSSWars.GameObject
         public MinuteStats soldResources = new MinuteStats();
 
         //public int water = Maxwater;
-        int waterBuffer = 2;
-        int waterSpendOrders = 0;
+        //int waterBuffer = 2;
+        //int waterSpendOrders = 0;
 
         public int maxWaterBase = DssConst.Maxwater;
         public int maxWaterTotal = DssConst.Maxwater;
@@ -1354,13 +1354,13 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (DssRef.difficulty.GodPowers())
             {
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
+                content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
                    new RbAction(() => { city.AddGroupedResource(item, -city.GetGroupedResource(item).amount); }),
-                   null, true, HudLib.GodPower_ColorBg));
+                   null, true));
 
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
+                content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
                     new RbAction(() => { city.AddGroupedResource(item, 100); }), 
-                    null, true, HudLib.GodPower_ColorBg));
+                    null, true));
             }
 
         }

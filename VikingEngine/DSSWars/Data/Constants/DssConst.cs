@@ -242,6 +242,8 @@ namespace VikingEngine.DSSWars
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
         public static int WheatFoodAmount = 30;
+        public static int AnimalFoodAmount = 60;
+
         //public static int DefaultItemFuelAmount = 25;
         public static int RapeSeedFuelAmount = 15;
         public static int HempLinenAndFuelAmount = 8;

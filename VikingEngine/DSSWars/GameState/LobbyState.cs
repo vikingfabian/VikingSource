@@ -1894,6 +1894,8 @@ namespace VikingEngine.DSSWars
             DssRef.storage.mapSize = value;
             DssRef.storage.Save(null);
             underMenu.CloseDropDown();
+
+            restartBackgroundLoading();
         }
 
         void crashTest()

@@ -128,6 +128,24 @@ namespace VikingEngine.DSSWars.Build
         ResearchCenter,
         BookPress,
 
+        TreeSeedlingSoft,
+        TreeSeedlingHard,
+
+        TreeSoft,
+        TreeHard,
+
+        StonesMine,
+        CoalMine,
+        StoneBlockMine,
+        IronOreMine,
+        TinOreMine,
+        CopperOreMine,
+        SilverOreMine,
+        GoldOreMine,
+        LeadOreMine,
+        MithrilMine,
+        SulfurMine,
+
         NUM_NONE,
     }
     static class BuildLib
@@ -227,7 +245,14 @@ namespace VikingEngine.DSSWars.Build
             }
 
             list.Add(BuildAndExpandType.HenPen);
-                       
+
+            if (city.buildingStructure.WoodCutter_count > 0 ||
+                unlockAll)
+            {
+                list.Add(BuildAndExpandType.TreeSeedlingSoft);
+                list.Add(BuildAndExpandType.TreeSeedlingHard);
+            }
+
             if (unlocks.building_stoneBuildings)
             {
                 list.Add(BuildAndExpandType.Nobelhouse);
@@ -382,9 +407,28 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.FlagPole_Streamer);
                 list.Add(BuildAndExpandType.FlagPole_Triangle);
             }
+
+            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+            {
+                list.Add(BuildAndExpandType.TreeSoft);
+                list.Add(BuildAndExpandType.TreeHard);
+
+                //list.Add(BuildAndExpandType.StonesMine);
+                list.Add(BuildAndExpandType.CoalMine);
+                //list.Add(BuildAndExpandType.StoneBlockMine);
+                list.Add(BuildAndExpandType.IronOreMine);
+                list.Add(BuildAndExpandType.TinOreMine);
+                list.Add(BuildAndExpandType.CopperOreMine);
+                list.Add(BuildAndExpandType.SilverOreMine);
+                list.Add(BuildAndExpandType.GoldOreMine);
+                list.Add(BuildAndExpandType.LeadOreMine);
+                list.Add(BuildAndExpandType.MithrilMine);
+                list.Add(BuildAndExpandType.SulfurMine);
+            }
+
         }
 
-        
+
 
         public static void Init()
         {
@@ -538,6 +582,15 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.RapeSeedFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarmUpgraded, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarmUpgrade, true, 
                 BuildCategoryTab.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.TreeSeedlingSoft, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoftSprout, SpriteName.WarsBuild_TreeSeedlingSoft, CraftBuildingLib.TreeSeedlingSoft, false,
+                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.TreeSeedlingHard, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeHardSprout, SpriteName.WarsBuild_TreeSeedlingHard, CraftBuildingLib.TreeSeedlingHard, false,
+               BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
+               MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
 
             new BuildOption(BuildAndExpandType.DirtRoad, TerrainMainType.Road, (int)TerrainRoadType.DirtRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
@@ -780,6 +833,61 @@ namespace VikingEngine.DSSWars.Build
                  MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
 
+            new BuildOption(BuildAndExpandType.TreeSoft, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft, SpriteName.WarsBuild_TreeSoft, CraftBuildingLib.TreeSoft, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.TreeHard, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeHard, SpriteName.WarsBuild_TreeHard, CraftBuildingLib.TreeHard, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            // Mines
+            new BuildOption(BuildAndExpandType.StonesMine, TerrainMainType.Mine, (int)TerrainMineType.Stones, SpriteName.WarsResource_Stone, CraftBuildingLib.StonesMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.CoalMine, TerrainMainType.Mine, (int)TerrainMineType.Coal, SpriteName.WarsResource_Fuel, CraftBuildingLib.CoalMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.StoneBlockMine, TerrainMainType.Mine, (int)TerrainMineType.StoneBlock, SpriteName.WarsResource_Stone, CraftBuildingLib.StoneBlockMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.IronOreMine, TerrainMainType.Mine, (int)TerrainMineType.IronOre, SpriteName.WarsResource_Iron, CraftBuildingLib.IronOreMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.TinOreMine, TerrainMainType.Mine, (int)TerrainMineType.TinOre, SpriteName.WarsResource_Tin, CraftBuildingLib.TinOreMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.CopperOreMine, TerrainMainType.Mine, (int)TerrainMineType.CopperOre, SpriteName.WarsResource_Copper, CraftBuildingLib.CopperOreMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.SilverOreMine, TerrainMainType.Mine, (int)TerrainMineType.SilverOre, SpriteName.WarsResource_Silver, CraftBuildingLib.SilverOreMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.GoldOreMine, TerrainMainType.Mine, (int)TerrainMineType.GoldOre, SpriteName.WarsResource_Gold, CraftBuildingLib.GoldOreMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.LeadOreMine, TerrainMainType.Mine, (int)TerrainMineType.LeadOre, SpriteName.WarsResource_Lead, CraftBuildingLib.LeadOreMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.MithrilMine, TerrainMainType.Mine, (int)TerrainMineType.Mithril, SpriteName.WarsResource_Mithril, CraftBuildingLib.MithrilMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.SulfurMine, TerrainMainType.Mine, (int)TerrainMineType.Sulfur, SpriteName.WarsResource_Sulfur, CraftBuildingLib.SulfurMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+
+
         }
 
         public static BuildAndExpandType BuildTypeFromTerrain(TerrainMainType main, int sub)
@@ -910,6 +1018,7 @@ namespace VikingEngine.DSSWars.Build
         Upgrade,
         Automation,
         Filter,
+        GodPower,
         NUM
     }
 

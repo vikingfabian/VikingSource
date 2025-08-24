@@ -1070,7 +1070,7 @@ namespace VikingEngine.DSSWars.Players
 
         void checkSelectionAlive()
         {
-            if (selection.obj != null && selection.obj.aliveAndBelongTo(player.faction) == false)
+            if (selection.obj != null && selection.obj.aliveAndBelongTo(player.faction) == false && !DssRef.difficulty.GodPowers())
             { 
                 player.gameControls.clearSelection();
             }

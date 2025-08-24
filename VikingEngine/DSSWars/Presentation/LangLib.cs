@@ -1013,6 +1013,11 @@ namespace VikingEngine.DSSWars.Presentation
                         case TerrainSubFoilType.DryWood:
                             return DssRef.lang.Resource_TypeName_Wood;
 
+                        case TerrainSubFoilType.TreeSoftSprout:
+                            return DssRef.todoLang.Building_TreeSprout_Soft;
+                        case TerrainSubFoilType.TreeHardSprout:
+                            return DssRef.todoLang.Building_TreeSprout_Hard;
+
                         case TerrainSubFoilType.StoneBlock:
                         case TerrainSubFoilType.Stones:
                             return DssRef.lang.Resource_TypeName_Stone;
@@ -1269,6 +1274,8 @@ namespace VikingEngine.DSSWars.Presentation
 
                 case TerrainBuildingType.ImmigrationTent:
                     return string.Format(DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity);
+
+                
 
                 default:
                     return TextLib.Error;

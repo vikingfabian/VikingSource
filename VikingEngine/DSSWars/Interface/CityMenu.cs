@@ -1629,26 +1629,37 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
                     content.Add(new RbText(TextLib.OneDecimal(city.waterAddPerSec)));
                     content.space();
+                    if (DssRef.difficulty.GodPowers())
+                    {
+                        content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
+                           new RbAction(() => { city.waterAddPerSec = 0; }),
+                           null, true));
+
+                        content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("+0.1", HudLib.GodPower_Color) },
+                            new RbAction(() => { city.waterAddPerSec += 0.1f; }),
+                            null, true));
+                    }
+
                     HudLib.InfoButton(content,
-                       new RbTooltip((RichBoxContent content, object tag) =>                       
+                       new RbTooltip((RichBoxContent content, object tag) =>
                        {
-                        //RichBoxContent content = new RichBoxContent();
-                        content.h2(TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Water)).overrideColor = HudLib.TitleColor_Label;
-                        content.newLine();
-                        content.Add(new RbImage(SpriteName.WarsResource_Water));
-                        content.Add(new RbText( string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
+                           //RichBoxContent content = new RichBoxContent();
+                           content.h2(TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Water)).overrideColor = HudLib.TitleColor_Label;
+                           content.newLine();
+                           content.Add(new RbImage(SpriteName.WarsResource_Water));
+                           content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
 
-                        content.text(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal));
+                           content.text(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal));
 
-                        content.newLine();
-                        content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
-                        content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal( city.waterAddPerSec))));
+                           content.newLine();
+                           content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
+                           content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal(city.waterAddPerSec))));
 
-                        content.newParagraph();
-                        HudLib.Description(content, DssRef.lang.Resource_WaterAddLimit);
+                           content.newParagraph();
+                           HudLib.Description(content, DssRef.lang.Resource_WaterAddLimit);
 
-                        //player.hud.tooltip.create(player, content, true);
-                    }));
+                           //player.hud.tooltip.create(player, content, true);
+                       }));
 
                     bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
 
@@ -1663,18 +1674,19 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Food1, CraftResourceLib.Food2);
                     content.space();
 
-                    content.Add(new ArtToggle(city.res_food_safeguard,new List<AbsRichBoxMember> {
+                    content.Add(new ArtToggle(city.res_food_safeguard, new List<AbsRichBoxMember> {
                             new RbImage(city.res_food_safeguard? SpriteName.WarsProtectedStockpileOn : SpriteName.WarsProtectedStockpileOff, 0.7f),
                         },
-                    new RbAction(() =>{
+                    new RbAction(() =>
+                    {
                         city.res_food_safeguard = !city.res_food_safeguard;
                     }),
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
-                         
+
                         content.text(string.Format(DssRef.lang.Resource_FoodSafeGuard_Description, DssConst.WorkSafeGuardAmount)).overrideColor = HudLib.InfoYellow_Light;
-                        content.text(city.res_food_safeguard? DssRef.lang.Hud_On : DssRef.lang.Hud_Off);
-                        
+                        content.text(city.res_food_safeguard ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off);
+
                     })));
 
                     city.res_beer.toMenu(content, ItemResourceType.Beer, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
@@ -1690,7 +1702,7 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Fuel1, null, true);
                     content.space();
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
-                    
+
 
                     city.res_Palisade.toMenu(content, ItemResourceType.Palisade, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Palisade);
@@ -1713,24 +1725,8 @@ namespace VikingEngine.DSSWars.Interface
                     city.res_LedBullet.toMenu(content, ItemResourceType.LedBullet, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.LedBullets);
 
-                    
-                    //content.Add(new RbSeperationLine());
-                    //GroupedResource.BufferIconInfo(content, false);
-                    //if (foodSafeGuard)
-                    //{
-                    //    GroupedResource.BufferIconInfo(content, true);
-                    //}
-                    //ResourceLib.ConvertGoldOre.toMenu(content, city, false, true, false, false);
-                    //{
-                    //    content.newLine();
-                    //    content.Add(new RbText(1.ToString()));
-                    //    content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
-                    //    content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
-                    //    var arrow = new RbImage(SpriteName.pjNumArrowR);
-                    //    arrow.color = Color.CornflowerBlue;
-                    //    content.Add(arrow);
-                    //    content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount,DssRef.difficulty.FoodEnergySett)));
-                    //}
+                    godPowerSetAllResources(content, City.MovableCityResource_Misc);
+
                     break;
 
                 case ResourcesSubTab.Overview_Metals:
@@ -1797,6 +1793,9 @@ namespace VikingEngine.DSSWars.Interface
 
                     city.res_Mithril.toMenu(content, ItemResourceType.Mithril, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Mithril);
+
+
+                    godPowerSetAllResources(content, City.MovableCityResource_Metals);
                     break;
 
                 case ResourcesSubTab.Overview_Weapons:
@@ -1832,7 +1831,10 @@ namespace VikingEngine.DSSWars.Interface
 
                     city.res_MithrilSword.toMenu(content, ItemResourceType.MithrilSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.MithrilSword);
-                   
+
+
+                    godPowerSetAllResources(content, City.MovableCityResource_WeaponMelee);
+
                     break;
 
                 case ResourcesSubTab.Overview_Projectile:
@@ -1890,6 +1892,9 @@ namespace VikingEngine.DSSWars.Interface
                     city.res_SiegeCannonIron.toMenu(content, ItemResourceType.ManCannonIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ManCannonIron);
 
+
+                    godPowerSetAllResources(content, City.MovableCityResource_WeaponRanged);
+
                     break;
 
                 case ResourcesSubTab.Overview_Armor:
@@ -1917,6 +1922,9 @@ namespace VikingEngine.DSSWars.Interface
 
                     city.res_MithrilArmor.toMenu(content, ItemResourceType.MithrilArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.MithrilArmor);
+
+
+                    godPowerSetAllResources(content, City.MovableCityResource_Armor);
                     break;
 
                 case ResourcesSubTab.Stockpile_Resources:
@@ -2057,6 +2065,37 @@ namespace VikingEngine.DSSWars.Interface
                 content.space();
                
                 stockPileEdit(content, item, res);
+            }
+        }
+
+        private void godPowerSetAllResources(RichBoxContent content, ItemResourceType[] Resources)
+        {
+            if (DssRef.difficulty.GodPowers())
+            {
+                content.newParagraph();
+                //ItemResourceType[] Resources = City.MovableCityResource_Misc;
+
+                HudLib.Label(content, DssRef.todoLang.GeneralSetting_SetAll);
+                content.space();
+                content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
+                   new RbAction(() =>
+                   {
+                       foreach (var res in Resources)
+                       {
+                           city.AddGroupedResource(res, -city.GetGroupedResource(res).amount);
+                       }
+                   }),
+                   null, true));
+
+                content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
+                   new RbAction(() =>
+                   {
+                       foreach (var res in Resources)
+                       {
+                           city.AddGroupedResource(res, 100);
+                       }
+                   }),
+                null, true));
             }
         }
 

@@ -28,14 +28,14 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.newParagraph();
 
-            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_AddX, 1), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, 1), null, true, HudLib.GodPower_ColorBg));
+            content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_AddX, 1), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, 1), null, true));
             {
                 const int AddCount = 5;
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, AddCount), null, true, HudLib.GodPower_ColorBg));
+                content.Add(new ArtButton(  RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, AddCount), null, true));
             }
             {
                 const int AddCount = 20;
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, AddCount), null, true, HudLib.GodPower_ColorBg));
+                content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, AddCount), null, true));
             }
 
             void selectWeapon(ItemResourceType item)

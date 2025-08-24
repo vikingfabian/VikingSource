@@ -23,6 +23,13 @@ namespace VikingEngine.DSSWars.Presentation
         public string Settings_Mode_No_Achivements => "Achivements are not available.";
 
         public string Settings_Mode_Spectator_Description => "Just watch, or interfere with god powers.";
+        public string GodPower => "God power";
+
+        public string Building_TreeSprout_Description => "Plant a tree";
+        public string Building_TreeSprout_Soft => "Soft tree sprout";
+        public string Building_TreeSprout_Hard => "Hard tree sprout";
+
+        public string GeneralSetting_SetAll => "Apply to all";
     }
 
 }

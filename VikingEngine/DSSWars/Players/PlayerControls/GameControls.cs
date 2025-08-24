@@ -728,6 +728,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             soldier = new SoldierControls(new List<SoldierGroup> { map.selection.obj.GetSoldierGroup() });
                         }
                         break;
+                    case GameObjectType.Worker:
+                        SoundLib.select_city.Play();
+                        break;
                         //case GameObjectType.Faction:
                         //    SoundLib.select_faction.Play();
                         //    break;

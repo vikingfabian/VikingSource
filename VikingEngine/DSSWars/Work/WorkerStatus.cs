@@ -723,21 +723,21 @@ namespace VikingEngine.DSSWars.Work
             return 0;
         }
 
-        void addExperience(XP.WorkExperienceType type, City city)
+        public void addExperience(XP.WorkExperienceType type, City city, byte add = 0)
         {
             if (type != XP.WorkExperienceType.NONE)
             {
                 if (type == xpType1)
                 {
-                    addTo(ref type, ref xp1);
+                    addTo(ref type, ref xp1, add);
                 }
                 else if (type == xpType2)
                 {
-                    addTo(ref type, ref xp2);
+                    addTo(ref type, ref xp2, add);
                 }
                 else if (type == xpType3)
                 {
-                    addTo(ref type, ref xp3);
+                    addTo(ref type, ref xp3, add);
                 }
                 else
                 {
@@ -760,17 +760,17 @@ namespace VikingEngine.DSSWars.Work
                         case 0:
                             xpType1 = type;
                             xp1 = 0;
-                            addTo(ref type, ref xp1);
+                            addTo(ref type, ref xp1, add);
                             break;
                         case 1:
                             xpType2 = type;
                             xp2 = 0;
-                            addTo(ref type, ref xp2); 
+                            addTo(ref type, ref xp2, add); 
                             break;
                         case 2:
                             xpType3 = type;
                             xp3 = 0;
-                            addTo(ref type, ref xp3); 
+                            addTo(ref type, ref xp3, add); 
                             break;
                     }
                 }
@@ -778,35 +778,38 @@ namespace VikingEngine.DSSWars.Work
 
 
 
-            void addTo(ref XP.WorkExperienceType type, ref byte xp)
+            void addTo(ref XP.WorkExperienceType type, ref byte xp, byte add = 0)
             {
                 bool expert = false;
                 bool master = false;
-                byte add = 0;
                 ExperienceLevel level = XpLib.ToLevel(xp);
-                switch (level)
-                { 
-                    case ExperienceLevel.Beginner_1:
-                        add = WorkLib.WorkToXPTable[(int)type];
-                        add += 1;
-                        break;
-                    case ExperienceLevel.Expert_3:
-                        expert = true;
-                        if (Ref.peRnd.Chance(0.5))
-                        {
+
+                if (add == 0)
+                {
+                    switch (level)
+                    {
+                        case ExperienceLevel.Beginner_1:
                             add = WorkLib.WorkToXPTable[(int)type];
-                        }
-                        break;
-                    case ExperienceLevel.Master_4:
-                        master = true;
-                        if (Ref.peRnd.Chance(0.1))
-                        {
-                            add = WorkLib.WorkToXPTable[(int)type];
-                        }
-                        break;
-                    case ExperienceLevel.Legendary_5:
-                        //add = 0;
-                        break;
+                            add += 1;
+                            break;
+                        case ExperienceLevel.Expert_3:
+                            expert = true;
+                            if (Ref.peRnd.Chance(0.5))
+                            {
+                                add = WorkLib.WorkToXPTable[(int)type];
+                            }
+                            break;
+                        case ExperienceLevel.Master_4:
+                            master = true;
+                            if (Ref.peRnd.Chance(0.1))
+                            {
+                                add = WorkLib.WorkToXPTable[(int)type];
+                            }
+                            break;
+                        case ExperienceLevel.Legendary_5:
+                            //add = 0;
+                            break;
+                    }
                 }
                 xp += add;
                 ExperienceLevel nextlevel = XpLib.ToLevel(xp);

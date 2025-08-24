@@ -2386,6 +2386,7 @@ namespace VikingEngine
         WarsHudSecondaryButtonDisabled,
         WarsHudOutlineButton,
         WarsHudPopUpButton,
+        WarsHudGodPowerButton,
 
         WarsHudOptionSelected,
         WarsHudOptionNotSelected,
@@ -2544,6 +2545,7 @@ namespace VikingEngine
         WarsFollowFactionNo,
         WarsBogIron,
         WarsBedIcon,
+        WarsGodPowerIcon,
 
         WarsUnitLevelMinimal,
         WarsUnitLevelBasic,
@@ -2710,6 +2712,10 @@ namespace VikingEngine
         WarsBuild_Tent,
         WarsBuild_ResearchCenter,
         WarsBuild_Bookpress,
+        WarsBuild_TreeHard,
+        WarsBuild_TreeSoft,
+        WarsBuild_TreeSeedlingHard,
+        WarsBuild_TreeSeedlingSoft,
 
         WarsFlagType_LongBanner,
         WarsFlagType_Banner,
