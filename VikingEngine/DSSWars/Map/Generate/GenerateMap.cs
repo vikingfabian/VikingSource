@@ -645,8 +645,6 @@ namespace VikingEngine.DSSWars.Map.Generate
         void newChain(out float radius, out Rotation1D growDir, out int chainLength,
             out Rotation1D heightCenter, out float heightCenterLength, MapGenerateSettings generateSettings)
         {
-
-
             radius = lib.SmallestValue(generateSettings.startRadiusRange.GetRandom(world.rnd), generateSettings.startRadiusRange.GetRandom(world.rnd));
             growDir = Rotation1D.Random(world.rnd);
             chainLength = generateSettings.chainLengthRange.GetRandom(world.rnd);
@@ -654,6 +652,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             heightCenter = Rotation1D.Random(world.rnd);
             heightCenterLength = world.rnd.Float(0.7f);
         }
+
         static readonly IntervalF digLinkPosDiffRange = new IntervalF(0.5f, 2);
         void generateDigChains(MapGenerateSettings generateSettings)
         {

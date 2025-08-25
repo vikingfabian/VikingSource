@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.Joust;
 
