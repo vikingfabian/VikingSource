@@ -24,6 +24,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Players;
+using VikingEngine.Sound;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.ToGG.MoonFall;
@@ -70,9 +71,24 @@ namespace VikingEngine.DSSWars.Build
                 var mayBuild = SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city);
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
+
                     if (commit)
                     {
-                        if (/*city.availableBuildQueue(player) && */placeBuildingOption().blueprint.meetsRequirements(city))
+                        //SoundLib.start_build_contruct.Play();
+
+                        if (DssRef.difficulty.GodPowers())
+                        {
+                            var build = BuildLib.BuildOptions[(int)placeBuildingType];
+                            SubTile subTile = DssRef.world.subTileGrid.Get(subTilePos);
+                            if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
+                            {
+                                EditSubTile edit = new EditSubTile(subTilePos, subTile, true, true, false);
+                                edit.Submit();
+                            }
+
+                            new GodBuild(subTilePos);
+                        }
+                        else if (placeBuildingOption().blueprint.meetsRequirements(city))
                         {
                             player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.buildOrder.value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
                         }
@@ -100,7 +116,21 @@ namespace VikingEngine.DSSWars.Build
                 {
                     if (commit)
                     {
-                        player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.buildOrder.value, true, city, subTilePos), ActionOnConflict.Toggle);
+                        //SoundLib.start_destroy_contruct.Play();
+
+                        if (DssRef.difficulty.GodPowers())
+                        {
+                            BuildLib.Demolish(city, subTilePos);
+                            new GodBuild(subTilePos);
+                        }
+                        else
+                        {
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.buildOrder.value, true, city, subTilePos), ActionOnConflict.Toggle);
+                        }
+                    }
+                    else
+                    {
+                        //SoundLib.woodcut.Play();
                     }
 
                     return true;
@@ -294,10 +324,33 @@ namespace VikingEngine.DSSWars.Build
 
             if (player.gameControls.input.mouseSelect.UpEvent)
             {
+                bool anySucccess = false;
+                int soundIndex = 0;
+                SoundContainerBase sound = buildMode == SelectTileResult.Build? SoundLib.start_build_contruct : SoundLib.start_destroy_contruct;
                 foreach (var sel in selection)
                 {
-                    actOnTile(sel.position, true, out _, out _);
+                    bool success = actOnTile(sel.position, true, out _, out _);
+
+                    if (success)
+                    {
+                        anySucccess = true;
+                        if (soundIndex == 0)
+                        {
+                            sound.Play();
+                        }
+                        else if (soundIndex < 2)
+                        {
+                            sound.PlayDelayed(90 * soundIndex);
+                        }
+                        soundIndex++;
+                    }
                 }
+
+                if (!anySucccess)
+                {
+                    SoundLib.wrong.Play();
+                }
+
                 deleteSelection();
                 buildKeyDown = false;
             }
@@ -540,7 +593,13 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Decor,
                 BuildCategoryTab.Upgrade,
                 BuildCategoryTab.Filter,
+
             };
+
+            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+            {
+                buildCategories.Insert(buildCategories.Count -1, BuildCategoryTab.GodPower);
+            }
 
             if (city.buildingStructure.buildingLevel_logistics > 0)
             {
@@ -577,6 +636,10 @@ namespace VikingEngine.DSSWars.Build
                         tabIcon = SpriteName.warsBuildCategoryUpgrades;
                         category = DssRef.lang.BuildCategory_Upgrade;
                         break;
+                    case BuildCategoryTab.GodPower:
+                        tabIcon = SpriteName.WarsGodPowerIcon;
+                        category = DssRef.todoLang.GodPower;
+                        break;
                     default:
                         tabIcon = SpriteName.warsBuildCategoryAutomation;
                         category = DssRef.lang.Automation_Title;
@@ -585,7 +648,7 @@ namespace VikingEngine.DSSWars.Build
                 }
                 var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                     new List<AbsRichBoxMember> { new RbImage(tabIcon) },
-                    new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, SoundLib.menutab),
+                    new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, RbSoundType.Tab),
                     new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_category, category)));
                 content.Add(tabButton);
             }
@@ -627,7 +690,7 @@ namespace VikingEngine.DSSWars.Build
                         }, new RbAction(() =>
                         {
                             city.autoExpandFarmType = opt;
-                        }, SoundLib.menu));
+                        }, RbSoundType.Option));
                             //optButton.setGroupSelectionColor(HudLib.RbSettings, opt == city.autoExpandFarmType);
                             content.Add(optButton);
                             content.space();
@@ -680,7 +743,7 @@ namespace VikingEngine.DSSWars.Build
                     }
 
                     var button = new ArtToggle(buildMode == SelectTileResult.Build && placeBuildingType == opt, buttonContent,
-                    new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, SoundLib.menu),
+                    new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, RbSoundType.Option),
                     new RbTooltip(buildingTooltip, opt));
 
 
@@ -708,7 +771,7 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(new ArtToggle(buildMode == SelectTileResult.Demolish, new List<AbsRichBoxMember>
             {
                 new RbText(DssRef.lang.Build_DestroyBuilding)
-            }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, SoundLib.menu)));
+            }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, RbSoundType.Option)));
 
                 content.space();
 
@@ -719,7 +782,7 @@ namespace VikingEngine.DSSWars.Build
                     new RbText(DssRef.lang.Hud_EndSessionIcon),
                     new RbSpace(),
                     },
-                        new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None, SoundLib.menuBack));
+                        new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None, RbSoundType.Back));
                     button.setGroupSelectionColor(HudLib.RbSettings, false);
                     content.Add(button);
                     content.space();
@@ -767,7 +830,7 @@ namespace VikingEngine.DSSWars.Build
                     }
 
                     content.Add(new ArtOption(shape == toolShape, new List<AbsRichBoxMember> { new RbImage(icon) },
-                        new RbAction1Arg<MapPaintToolShape>((MapPaintToolShape shape) => { toolShape = shape; }, shape),
+                        new RbAction1Arg<MapPaintToolShape>((MapPaintToolShape shape) => { toolShape = shape; }, shape, RbSoundType.Option),
                         new RbTooltip_Text(caption)));
                 }
 
@@ -784,7 +847,7 @@ namespace VikingEngine.DSSWars.Build
                     new RbAction(() =>
                     {
                         player.orders.clearAll(city);
-                    }, SoundLib.menuBack), null, orderLength > 0));
+                    }, RbSoundType.Back), null, orderLength > 0));
                 content.newLine();
                 content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength), HudLib.InfoYellow_Light);
 
@@ -808,7 +871,7 @@ namespace VikingEngine.DSSWars.Build
                             new RbImage(SpriteName.WarsBuild_Logistics),
                             new RbSpace(),
                             upgradeText },
-                            new RbAction(city.upgradeLogistics, SoundLib.menuBuy), new RbTooltip((RichBoxContent content, object tag) =>
+                            new RbAction(city.upgradeLogistics, RbSoundType.Buy), new RbTooltip((RichBoxContent content, object tag) =>
                         {
                             var cityFaction = city.GetFaction();
 
@@ -855,7 +918,7 @@ namespace VikingEngine.DSSWars.Build
                             new RbAction(() =>
                             {
                                 autoPlaceBuilding(city, count);
-                            }, SoundLib.menuBuy), null, buildOpt != null/* && (count <= max - current)*/));
+                            }, RbSoundType.Buy), null, buildOpt != null/* && (count <= max - current)*/));
                     //}
                 }
             }
@@ -937,6 +1000,20 @@ namespace VikingEngine.DSSWars.Build
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(string.Format(DssRef.lang.BuildHud_BonusRadius, DssConst.WoodCutter_BonusRadius)));
+
+                    content.newParagraph();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.lang.Hud_Unlock + ": "));
+                    content.Add(new RbImage(SpriteName.WarsBuild_TreeSeedlingSoft));
+                    content.Add(new RbText(DssRef.todoLang.Building_TreeSprout_Soft));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.lang.Hud_Unlock + ": "));
+                    content.Add(new RbImage(SpriteName.WarsBuild_TreeSeedlingHard));
+                    content.Add(new RbText(DssRef.todoLang.Building_TreeSprout_Hard));
+                   
+
                     break;
 
                 case BuildAndExpandType.StoneCutter:
@@ -1049,7 +1126,6 @@ namespace VikingEngine.DSSWars.Build
 
                 case BuildAndExpandType.HempFarm:
                     farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount));
-
                     break;
 
                 case BuildAndExpandType.HempFarmUpgraded:

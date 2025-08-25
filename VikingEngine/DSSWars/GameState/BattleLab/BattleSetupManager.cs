@@ -106,32 +106,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 {
                     tabs.Add(new ArtTabMember(new List<AbsRichBoxMember> { new RbText(PlayerOptionName(i)) }));
                 }
-               
+
                 content.Add(new ArtTabgroup(tabs, Setup.selectedPlayer,
                     new Action<int>((int ix) => { Setup.selectedPlayer = ix; })));
-
-                var weapons_groups = ConscriptMenu.AllConstriptWeapons();
-                foreach (var group in weapons_groups)
-                {
-                    content.newLine();
-                    foreach (var wep in group)
-                    {
-                        content.Add(new ArtToggle(wep == Setup.selectedWeapon, new List<AbsRichBoxMember> { new RbImage(ResourceLib.Icon(wep)) },
-                            new RbAction1Arg<ItemResourceType>(selectWeapon, wep), new RbTooltip_Text(LangLib.Item(wep))));
-                    }
-                }
-
-                content.newParagraph();
-
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_AddX, 1)) }, new RbAction1Arg<int>(addSoldier, 1)));
-                {
-                    const int AddCount = 5;
-                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount)) }, new RbAction1Arg<int>(addSoldier, AddCount)));
-                }
-                {
-                    const int AddCount = 20;
-                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount)) }, new RbAction1Arg<int>(addSoldier, AddCount)));
-                }
+                GodConscript.ToHud(content, addSoldier);
 
                 content.newParagraph();
                 content.Add(new RbSeperationLine());
@@ -148,10 +126,12 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                     attackerOptions.Build(content, SpriteName.WarsBattleIcon, DssRef.lang.BattleLab_Attacker, menu);
                 }
             }
-            
+
 
             return true;
         }
+
+        
 
         string PlayerOptionName(int player)
         {
@@ -171,10 +151,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             }
         }
 
-        void selectWeapon(ItemResourceType item)
-        {
-            Setup.selectedWeapon = item;
-        }
+        
 
         void addSoldier(int count)
         {

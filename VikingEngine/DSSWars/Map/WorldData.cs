@@ -112,12 +112,28 @@ namespace VikingEngine.DSSWars
 
             if (generateSettings.bCustomSize)
             {
+                metaData.mapSize = CustomMapSizeToSize(generateSettings.customMapSize);
                 refreshSize(generateSettings.customMapSize);
             }
             else
             {
                 refreshSize(SizeDimentions(metaData.mapSize));
             }
+        }
+
+        public static MapSize CustomMapSizeToSize(IntVector2 size)
+        {
+            var area = size.Area();
+
+            for (MapSize sz = MapSize.Small; sz < MapSize.Epic; sz++)
+            {
+                if (SizeDimentions(sz).Area() > area)
+                {
+                    return sz - 1;
+                }
+            }
+
+            return MapSize.Epic;
         }
 
         public static IntVector2 SizeDimentions(MapSize mapSize)
@@ -1018,6 +1034,29 @@ namespace VikingEngine.DSSWars
                 FactionType.AshgroveWard,
                 FactionType.HragmarHorncarvers,
 
+                FactionType.SylvaranGlade,
+                FactionType.DrelmirePact,
+                FactionType.KhazrunForgeclan,
+                FactionType.VeylanHorselords,
+                FactionType.ThalosCovenant,
+                FactionType.NerathianTideguard,
+                FactionType.SkaruunExiles,
+                FactionType.DraktharDominion,
+                FactionType.MalrekIronbound,
+
+                FactionType.Starshield,    //
+                FactionType.Bluepeak,      //
+                FactionType.Hoft,          //
+                FactionType.BranthollowBarony,   //
+                FactionType.DunwadeHold,         //
+                FactionType.CaerwynMarches,      //
+                FactionType.StonevaleFreehold,   //
+                FactionType.GlenmereLordship,    //
+                FactionType.ArveldonPrincipality,//
+                FactionType.WestmereReaches,     //
+                FactionType.ThornwickWardens,    //
+                FactionType.EvermereFief,        //
+                FactionType.BryndralHollow       //
             };
         }
 

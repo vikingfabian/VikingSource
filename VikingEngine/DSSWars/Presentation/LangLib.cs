@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
@@ -8,8 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -26,6 +28,30 @@ namespace VikingEngine.DSSWars.Presentation
         //{ 
 
         //}
+        public static void GameModeText(GameModeMainType mode, out string caption, out string desc)
+        {
+            caption = null;
+            desc = null;
+            switch (mode)
+            {
+                case GameModeMainType.FullStory:
+                    caption = DssRef.lang.Settings_Mode_Story;
+                    desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
+                    break;
+                case GameModeMainType.Sandbox:
+                    caption = DssRef.lang.Settings_Mode_Sandbox;
+                    desc = DssRef.lang.Settings_Mode_IncludeAttacks;
+                    break;
+                case GameModeMainType.Peaceful:
+                    caption = DssRef.lang.Settings_Mode_Peaceful;
+                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
+                    break;
+                case GameModeMainType.Spectator:
+                    caption = DssRef.lang.Settings_Mode_Spectator;
+                    desc = DssRef.todoLang.Settings_Mode_Spectator_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
+                    break;
+            }
+        }
         public static void WorkNameIcon(WorkPriorityType type, out string name, out SpriteName workIcon, out SpriteName typeIcon)
         {
             switch (type)
@@ -788,8 +814,10 @@ namespace VikingEngine.DSSWars.Presentation
             }
         }
 
-        public static string Tab(MenuTab tab, out string description)
+        public static string Tab(MenuTab tab, out string description, out Color? color)
         {
+            color = null;
+
             switch (tab)
             {
                 case MenuTab.Info:
@@ -845,6 +873,11 @@ namespace VikingEngine.DSSWars.Presentation
                 case MenuTab.Help:
                     description = null;
                     return DssRef.lang.Help_Title;
+
+                case MenuTab.God_Recruit:
+                    color = HudLib.GodPower_ColorBg;
+                    description = null;
+                    return DssRef.lang.MenuTab_Recruit;
 
                 case MenuTab.Casual_Recruit:
                     description = null;
@@ -979,6 +1012,11 @@ namespace VikingEngine.DSSWars.Presentation
                         case TerrainSubFoilType.TreeSoft:
                         case TerrainSubFoilType.DryWood:
                             return DssRef.lang.Resource_TypeName_Wood;
+
+                        case TerrainSubFoilType.TreeSoftSprout:
+                            return DssRef.todoLang.Building_TreeSprout_Soft;
+                        case TerrainSubFoilType.TreeHardSprout:
+                            return DssRef.todoLang.Building_TreeSprout_Hard;
 
                         case TerrainSubFoilType.StoneBlock:
                         case TerrainSubFoilType.Stones:
@@ -1236,6 +1274,8 @@ namespace VikingEngine.DSSWars.Presentation
 
                 case TerrainBuildingType.ImmigrationTent:
                     return string.Format(DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity);
+
+                
 
                 default:
                     return TextLib.Error;

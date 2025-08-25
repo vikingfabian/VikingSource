@@ -95,6 +95,9 @@ namespace VikingEngine.DSSWars
                     case GameModeMainType.Peaceful:
                         DssRef.stats.startNewPeaceful.addOne();
                         break;
+                    case GameModeMainType.Spectator:
+                        DssRef.stats.startNewSpectator.addOne();
+                        break;
                 }
 
                 switch (DssRef.difficulty.PercDifficulty)
@@ -126,23 +129,26 @@ namespace VikingEngine.DSSWars
 
                 }
 
-                switch (DssRef.storage.runTutorial_1short_2normal)
+                if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
-                    case 0:
-                        if (PlatformSettings.STEAM_DEMO)
-                        {
-                            DssRef.stats.startNewDemo.addOne();
-                        }
-                        break;
+                    switch (DssRef.storage.runTutorial_1short_2normal)
+                    {
+                        case 0:
+                            if (PlatformSettings.STEAM_DEMO)
+                            {
+                                DssRef.stats.startNewDemo.addOne();
+                            }
+                            break;
 
-                    case 1:
-                        DssRef.stats.startShortTutorial.addOne();
-                        break;
+                        case 1:
+                            DssRef.stats.startShortTutorial.addOne();
+                            break;
 
-                    case 2:
-                        DssRef.stats.startTutorial.addOne();
-                        break;
+                        case 2:
+                            DssRef.stats.startTutorial.addOne();
+                            break;
 
+                    }
                 }
 
                 if (DssRef.storage.playerCount > 1)

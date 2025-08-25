@@ -847,7 +847,7 @@ namespace VikingEngine.DSSWars
             content.Add(new RbNewLine_AtHeight(topMenu.richboxArea.Height - topMenu.richBox.lineSpacing * 2f));
             {
                 content.newParagraph();
-                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconExit, 0.7f), new RbTab(ButtonTextTabbing), new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exitGame), null);
+                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconExit, 0.7f), new RbTab(ButtonTextTabbing), new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exitGame, RbSoundType.Back), null);
                 //btn.fillWidth = true;
                 content.Add(btn);
             }
@@ -1343,7 +1343,7 @@ namespace VikingEngine.DSSWars
             {
                 foreach (var mode in Difficulty.AvailableModes)
                 {
-                    gameModeText(mode, out string caption, out string desc);
+                   LangLib.GameModeText(mode, out string caption, out string desc);
                     modeOptions.AddOption(caption, mode == DssRef.difficulty.setting_gameMode, mode == Difficulty.DefaultMode,
                         new RbAction1Arg<GameModeMainType>(gameModeClick, mode), new RbTooltip_Text(desc));
                 }
@@ -1352,8 +1352,11 @@ namespace VikingEngine.DSSWars
 
             content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
 
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
+            if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+            {
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
+            }
 
             if (!continueCustomMap)
             {
@@ -1742,30 +1745,7 @@ namespace VikingEngine.DSSWars
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_craftMulti, value);
         }
 
-        void gameModeText(GameModeMainType mode, out string caption, out string desc)
-        {
-            caption = null;
-            desc = null;
-            switch (mode)
-            {
-                case GameModeMainType.FullStory:
-                    caption = DssRef.lang.Settings_Mode_Story;
-                    desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
-                    break;
-                case GameModeMainType.Sandbox:
-                    caption = DssRef.lang.Settings_Mode_Sandbox;
-                    desc = DssRef.lang.Settings_Mode_IncludeAttacks;
-                    break;
-                case GameModeMainType.Peaceful:
-                    caption = DssRef.lang.Settings_Mode_Peaceful;
-                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
-                    break;
-                case GameModeMainType.Spectator:
-                    caption = DssRef.lang.Settings_Mode_Spectator;
-                    desc = DssRef.lang.Settings_Mode_Spectator_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
-                    break;
-            }
-        }
+       
        
 
         void selectGameModeMenu()
@@ -1774,7 +1754,7 @@ namespace VikingEngine.DSSWars
             {
                 for (GameModeMainType mode = 0; mode < GameModeMainType.NUM; ++mode)
                 {
-                    gameModeText(mode, out string caption, out string desc);
+                    LangLib.GameModeText(mode, out string caption, out string desc);
 
                     new GuiTextButton(caption, desc,
                         new GuiAction1Arg<GameModeMainType>(gameModeClick, mode), false, layout);
@@ -1915,6 +1895,8 @@ namespace VikingEngine.DSSWars
             DssRef.storage.mapSize = value;
             DssRef.storage.Save(null);
             underMenu.CloseDropDown();
+
+            restartBackgroundLoading();
         }
 
         void crashTest()
@@ -2154,12 +2136,18 @@ namespace VikingEngine.DSSWars
         public override void LostFocus()
         {
             base.LostFocus();
-            lobbyAmbienceLoop?.StopAndUnload();
+            
         }
+
+        public override void DeleteMe()
+        {
+            base.DeleteMe();
+        }
+
         public override void OnDestroy()
         {
             base.OnDestroy();
-           
+            lobbyAmbienceLoop?.StopAndUnload();
         }
         
 

@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             HudLib.WishListButton(content);
 
             content.newLine();
-            content.Button(DssRef.lang.GameMenu_ExitGame, new RbAction(DssRef.state.exit), null, true);
+            content.Button(DssRef.lang.GameMenu_ExitGame, new RbAction(DssRef.state.exit, RbSoundType.Back), null, true);
 
             Vector2 pos = Engine.Screen.SafeArea.CenterTop;
             pos.X -= HudLib.cutsceneGui.width * 0.5f;

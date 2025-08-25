@@ -90,6 +90,7 @@ namespace VikingEngine.DSSWars.Players
         public bool viewCityTagsOnMap = true;
         public bool viewArmyTagsOnMap = true;
         
+        public int firstAttacker = ushort.MaxValue;
         public int nextDominationSize;
         public int factionsTerminated = 0;
         public bool barbarianKiller = false;
@@ -151,6 +152,8 @@ namespace VikingEngine.DSSWars.Players
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
 
             faction.addGold_factionWide(10000);
+
+            
 
             //cityTab = profile.casualControls? MenuTab.Casual_Recruit : CityMenu.Tabs[0];
         }
@@ -354,6 +357,7 @@ namespace VikingEngine.DSSWars.Players
             w.Write(viewCityTagsOnMap);
             w.Write(viewArmyTagsOnMap);
 
+            w.Write((ushort)firstAttacker);
             w.Write((ushort)nextDominationSize);
             w.Write(cohalitionEvent);
             w.Write(barbarianKiller);
@@ -370,6 +374,7 @@ namespace VikingEngine.DSSWars.Players
             storedCameraPos.writeGameState(w);
 
             hud.pins.writeGameState(w);
+
 
             //gameControls.build.buildPriority.writeGameState(w, false);
 
@@ -446,7 +451,11 @@ namespace VikingEngine.DSSWars.Players
 
             viewCityTagsOnMap = r.ReadBoolean();
             viewArmyTagsOnMap = r.ReadBoolean();
-                        
+
+            if (subversion >= 73)
+            { 
+                firstAttacker = r.ReadUInt16();
+            }
             nextDominationSize = r.ReadUInt16();
             if (subversion < 72)
             {
@@ -489,7 +498,8 @@ namespace VikingEngine.DSSWars.Players
         {
             if ((newGame || PlatformSettings.STEAM_DEMO) && 
                 DssRef.storage.runTutorial_1short_2normal != 0 &&
-                DssRef.state.PlayType() == PlayStateType.Play)
+                DssRef.state.PlayType() == PlayStateType.Play &&
+                DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
                 tutorial = new PlayerControls.Tutorial(this);
             }

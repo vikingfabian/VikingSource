@@ -134,7 +134,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
             }
             menuCaption.Add(new RbImage(SpriteName.WarsHudDropDownArrow));
 
-            content.Add(new ArtButton(RbButtonStyle.DropDownSelected, menuCaption, new RbAction1Arg<string>(openClose, name)));
+            content.Add(new ArtButton(RbButtonStyle.DropDownSelected, menuCaption, new RbAction1Arg<string>(openClose, name, RbSoundType.Expand)));
             if (injectAfter != null)
             {
                 content.AddRange(injectAfter);
@@ -163,6 +163,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
                     content.Add(new RbImage(dot));
                     content.Add(new RbSpace());
                     AbsRbAction tooltip = optionsTooltip != null ? optionsTooltip[i] : null;
+                    onSelect[i].sound = RbSoundType.Option;
                     content.Add(new ArtButton(style, options[i], onSelect[i], optionsTooltip[i]));
                 }
                 //content.newLine();

@@ -5,13 +5,15 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars.Work
@@ -520,6 +522,57 @@ namespace VikingEngine.DSSWars.Work
 
             args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
 
+            if (DssRef.difficulty.GodPowers() && GetCity() != null)
+            {
+                args.content.newParagraph();
+                Color? fontColor = DssRef.difficulty.GodPowers()? HudLib.GodPower_Color : null;
+                foreach (var exp in XpLib.ExperienceTypes)
+                {
+                    LangLib.ExperienceType(exp, out string text, out SpriteName icon);
+                    
+
+                    var buttonContent = new List<AbsRichBoxMember>()
+                    {
+                        new RbImage(icon),
+                        new RbSpace(),
+                        new RbText(text, fontColor),
+                    };
+
+                    args.content.Add(new ArtButton(RbButtonStyle.GodPower, buttonContent, new RbAction1Arg<WorkExperienceType>(
+                        (WorkExperienceType xp) =>
+                    {
+                        var current = status.getXpFor(xp);
+                        int maxAdd = DssConst.WorkLevel_Master - current;
+
+                        if (maxAdd > 0)
+                        {
+                            status.addExperience(xp, args.player.gameControls.map.selection.obj.GetCity(), (byte)Bound.Max(DssConst.WorkLevel_Expert, maxAdd));
+                        }
+                    }, exp)));
+                    args.content.space();
+                    // var button = new ArtOption(exp == currentStatus.learnExperience, buttonContent,
+                    //    new RbAction1Arg<WorkExperienceType>(experienceClick, exp, RbSoundType.Option),
+                    //new RbTooltip(expTooltip, exp));
+                    // //button.setGroupSelectionColor(HudLib.RbSettings, );
+                    // content.Add(button);
+                    //content.space();
+                }
+
+                args.content.newLine();
+                HudLib.Label(args.content, DssRef.todoLang.GeneralSetting_SetAll);
+                args.content.space();
+                args.content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsUnitLevelMinimal),  new RbSpace(), new RbText(DssRef.lang.ExperienceLevel_1, HudLib.GodPower_Color),  
+                },
+                    new RbAction(() => {
+                        
+                        status.xp1 = 0;
+                        status.xp2 = 0;
+                        status.xp3 = 0;
+
+                    })));
+            }
+
 #if DEBUG
             args.content.text(string.Format("XP1: {0} {1}", status.xpType1, status.xp1));
             args.content.text(string.Format("XP2: {0} {1}", status.xpType2, status.xp2));
@@ -559,6 +612,10 @@ namespace VikingEngine.DSSWars.Work
         public override Faction GetFaction()
         {
             return parentMapObject.GetFaction();
+        }
+        public override City GetCity()
+        {
+            return parentMapObject.GetCity();
         }
         //public override Faction GetFaction()
         //{

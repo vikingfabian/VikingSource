@@ -104,6 +104,7 @@ namespace VikingEngine.Engine
             graphicsDeviceManager.ApplyChanges();
             defaultViewport = Engine.Draw.graphicsDeviceManager.GraphicsDevice.Viewport;
 
+            MainRenderTarget?.Dispose();
             MainRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 
                 Screen.RenderingResolution.X, Screen.RenderingResolution.Y, 
                 false, SurfaceFormat.Color, DepthFormat.Depth24);
@@ -161,7 +162,7 @@ namespace VikingEngine.Engine
             // NOTE(Martin): Ends here
         }
 
-        public void DeleteMe()
+        virtual public void DeleteMe()
         {
             spriteBatch.GraphicsDevice.DeviceLost -= this.onLostSpiteBatch;
         }

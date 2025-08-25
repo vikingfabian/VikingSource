@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Interface.Component
             {
                 var button = new ArtToggle(length == currentQue, new List<AbsRichBoxMember>{
                        new RbText( length.ToString())
-                    }, new RbAction1Arg<int>(queClick, length, length == 0 ? SoundLib.menuStop : SoundLib.menuStart));
+                    }, new RbAction1Arg<int>(queClick, length, length == 0 ? RbSoundType.Stop : RbSoundType.Start));
                 //button.setGroupSelectionColor(HudLib.RbSettings, length == currentQue);
                 content.Add(button);
                 //content.space();
@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Interface.Component
             {
                 var button = new ArtToggle(currentQue > maxQue, new List<AbsRichBoxMember>{
                        new RbText(DssRef.lang.Hud_NoLimit)
-                    }, new RbAction1Arg<int>(queClick, 255, SoundLib.menuStart));
+                    }, new RbAction1Arg<int>(queClick, 255, RbSoundType.Start));
                 //button.setGroupSelectionColor(HudLib.RbSettings, currentQue > maxQue);
                 content.Add(button);
             }

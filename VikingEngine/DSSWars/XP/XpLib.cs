@@ -70,6 +70,7 @@ namespace VikingEngine.DSSWars.XP
         CraftWeapon,
         CraftFuel,
         Chemistry,
+        //GodPower,
         NUM
     }
     enum TechnologyTreeType

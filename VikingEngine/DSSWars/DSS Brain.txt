@@ -1,16 +1,44 @@
 ﻿UPDATE
 Change Log:
-* Fixed loading key settings bug
-* Event timers: War manager start: +20min
-* Fixed map editor crashing
-* map editor loading bar
+* HUD improvements
+* ai wont ally if it adds more enemies (than the common enemy)
+* fixed music crash
+* fixed merge alliance crash
+* fixed: After changing gold mine priority on global scale it does not affect the cities.
+* fixed: flag changes to players flag when controlling an army in god mode
+* Added 20 named factions
+* fixed: the countries change flag after save/load
 
-Spectator mode
-* improved diplomacy display, and it has god powers
+Story:
+* The war manager is creating wars against you 5 times slower
+* Added 15 minutes to the war delay event, plus 15min on the first attacker
+* added "The first attack" to the story
+
+ACHIEVEMENTS
+* Added 2:
+/// <summary>
+/// Terminate the first faction to 
+attack you
+/// </summary>
+destroy_first_attacker_any,
+destroy_first_attacker_100,
+
+Spectator mode:
+* god fire effect
+* placing buildings dont use resources
+
+Language change log:
+* Updated Steam ai description: "Localizations are a mix of manual and machine translation."
+
+
+
+Casual:
+* 
 
 Event timers (are slightly random)
 - Ai delay: 8 minutes
-- Ai peace time: 15 min
+- Ai peace time: 30 min
+- The first attack: 50min
 - War manager start: 40min
 - Barbarians: 3 hours
 - Mercenaries: 8 hours (total 12 hours by now)
@@ -18,27 +46,27 @@ Event timers (are slightly random)
 - Boss warning: 25 hours
 - Boss; 1 hour
 Plus the boss fight: about 10 hours
-(total: about 60 hours)
-
-ACHIEVEMENTS
-* 
-
-Language change log:
-* Turkish factions complete
-
-Casual:
-* 
+(total: about 65 hours)
 
 #Pics
 build building icon
 
 #must do#
-x map editor improvements
-x god mode improvements
-x deal with custom map size (achievements)
+x editor flag, always saves to 0
+x ambience is heard on zero volume
+x broken music message gone
+x music should not play when master = 0
+x block black market food behind logistics
+x test all achievements
 x full game achievements + translations
+x italian
+
+
 
 #Todo#
+x clickable cities in diplomacy
+x have a button to make all masters guilds to focus on diffrent things
+
 x guard to wall tutorial
 x the ui scale might be overtuned, 0.5 feels more like 0.05
 X match casual to save
@@ -75,7 +103,7 @@ x go fullscreen in langugage select screen
 x Declaring war needs warning
 x save custom map, cant load, should save in user content folder
 x a player onboarding, extended tutorial
-
+X a tab so you can see who you are at war with
 -låt inte dread anfalla spelaren
 -lock camera on army
 -show all resources option
@@ -162,8 +190,12 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish
+English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Portuguese
 
+Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
+Brazilians are used to English in gaming, use a “hybrid” translation.
+Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
+The game is a strategy wargame, with medieval and low fantasy theme.
 
 
 https://discord.com/verification

@@ -65,8 +65,10 @@ namespace VikingEngine.DSSWars
 
         public const ImageLayers GUILayer = ImageLayers.Lay4;
 
-        
-        
+        public static readonly Color GodPower_ColorBg = new Color(80, 0, 80);//(R:139,G:0,B:139,A:255)
+        public static readonly Color GodPower_Color = Color.LightPink;
+
+
 
         public const ImageLayers PopMenuLayer = ImageLayers.Lay5_Back;
 
@@ -137,6 +139,10 @@ namespace VikingEngine.DSSWars
             RbSettings.artSecondaryButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudSecondaryButton, 1, 8, nineTextureEdge, true, true)
             {
                 disableTexture = SpriteName.WarsHudSecondaryButtonDisabled
+            };
+            RbSettings.artGodPowerButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudGodPowerButton, 1, 8, nineTextureEdge, true, true)
+            {
+                disableTexture = SpriteName.WarsHudPrimaryButtonDisabled
             };
             RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudOutlineButton, 1, 8, 1f, true, true);
             RbSettings.artHoverAreaTex = new HUD.NineSplitSettings(SpriteName.WarsHudHoverArea, 1, 8, 1f, true, true);
@@ -381,7 +387,7 @@ namespace VikingEngine.DSSWars
                     new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_ReturnToPrevious)
-                    }, new RbAction(menu.menuBack)));
+                    }, new RbAction(menu.menuBack, RbSoundType.Back)));
             }
             if (close != null)
             {
@@ -389,7 +395,7 @@ namespace VikingEngine.DSSWars
                     new RbImage( SpriteName.WarsHudIconExit, 0.8f),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_Close)
-                    }, new RbAction(close)));
+                    }, new RbAction(close, RbSoundType.Back)));
             }
             content.newParagraph();
         }
@@ -505,7 +511,7 @@ namespace VikingEngine.DSSWars
                 sprite = SpriteName.WarsFollowFactionNo;
                 //buttonStyle = RbButtonStyle.OptionNotSelected;
             }
-
+            action.sound = RbSoundType.Option;
 
             var followFactionButton = new ArtToggle(followFaction, new List<AbsRichBoxMember> { new RbImage(sprite) },
                         action, //new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));
@@ -592,6 +598,7 @@ namespace VikingEngine.DSSWars
            var button = new RbButton(new List<AbsRichBoxMember>
                     { new RbSpace(), x,new RbSpace(), },
                     click);
+            click.sound = RbSoundType.Back;
             button.overrideBgColor = Color.DarkRed;
 
             content.Add(button);

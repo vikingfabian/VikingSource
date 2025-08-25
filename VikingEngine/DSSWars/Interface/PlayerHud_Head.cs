@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars.Interface
                     new List<AbsRichBoxMember>
                     {
                         new RbImage(icon)
-                    }, new RbAction1Arg<MenuTab>(TabClick, tab), new RbTooltip(TabTip, tab)));
+                    }, new RbAction1Arg<MenuTab>(TabClick, tab, RbSoundType.Option), new RbTooltip(TabTip, tab)));
             }
 
             if (viewControllerTabs)
@@ -276,7 +276,7 @@ namespace VikingEngine.DSSWars.Interface
         void TabTip(RichBoxContent content, object tag)
         {
             var tab = (MenuTab)tag;
-            string name = LangLib.Tab(tab, out string description);
+            string name = LangLib.Tab(tab, out string description, out _);
             content.h1(name, HudLib.TitleColor_Head);
             content.h2(DssRef.lang.FactionSettings_Titel);
             content.newLine();

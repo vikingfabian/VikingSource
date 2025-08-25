@@ -36,9 +36,6 @@ namespace VikingEngine.DSSWars
         public const int FriendshipAllyCount = 8;
         double difficultyPerc;
 
-        //const int FactionUniqueUnitTypeCount = 4;
-        //bool[] factionUniquePurchase = new bool[FriendshipAllyCount];
-
         public const int LargePopulationCount_Tier1 = 5000;
         public const int LargePopulationCount_Tier2 = 20000;
         public const int LargePopulationCount_Tier3 = 50000;
@@ -205,7 +202,7 @@ namespace VikingEngine.DSSWars
             }
             else if (PlatformSettings.DebugLevel < BuildDebugLevel.Release)
             {
-                DssRef.state.localPlayers[0].hud.messages.Add("Achivement", achievement.ToString());
+                DssRef.state.localPlayers?[0].hud.messages.Add("Achivement", achievement.ToString());
             }
         }
 
@@ -703,6 +700,28 @@ namespace VikingEngine.DSSWars
         no_pause_100,
         no_pause_150,
 
+        /// <summary>
+        /// Destroy servants of dread, before the end boss
+        /// </summary>
+        early_dread_any,//i
+        early_dread_100,
+
+        /// <summary>
+        /// Destroy the united kingdom, before the end boss
+        /// </summary>
+        early_uk_any,//i
+        early_uk_100,
+
+        /// <summary>
+        /// just to test that achivements run
+        /// </summary>
+        first_game,//i, t
+
+        /// <summary>
+        /// Terminate the first faction to attack you
+        /// </summary>
+        destroy_first_attacker_any,//i
+        destroy_first_attacker_100,
 
 
         NUM_ACHIEVEMENTS

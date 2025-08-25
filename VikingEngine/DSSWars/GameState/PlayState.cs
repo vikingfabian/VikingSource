@@ -14,12 +14,14 @@ using System.Reflection;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Interface;
-using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
+using VikingEngine.DSSWars.GameState.BattleLab;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
@@ -29,7 +31,6 @@ using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.MoonFall;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using VikingEngine.DSSWars.Players.Profile;
 //
 
 namespace VikingEngine.DSSWars
@@ -44,19 +45,13 @@ namespace VikingEngine.DSSWars
     {
         public int nextGroupId = 0;
        
-       
         bool isReady= false;
         public bool PartyMode = false;   
-        
-        
         
         TechnologyManager technologyManager = new TechnologyManager();
         bool bResourceMinuteUpdate = true;
         bool slowMinuteUpdate = true;
         bool netMapUpdate = false;
-
-        
-        
 
         public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
             : base()
@@ -91,6 +86,13 @@ namespace VikingEngine.DSSWars
             {
                 new LoadScene(loadMeta);
             }
+
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
+            {
+                BattleLabStorage.Singleton = new BattleLabStorage();
+            }
+
+            DssRef.achieve.UnlockAchievement(AchievementIndex.first_game);
         }
 
         public void initGameState_client()
@@ -308,7 +310,7 @@ namespace VikingEngine.DSSWars
                     m.onGameStart(newGame);
                 }
 
-                if (newGame && DssRef.storage.runTutorial_1short_2normal != 2)
+                if (newGame && (DssRef.storage.runTutorial_1short_2normal != 2 || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
                 {
                     initStartUnits();
                 }

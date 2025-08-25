@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbSeperationLine());
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_ExitGame) }, new RbAction(exit))
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_ExitGame) }, new RbAction(exit, RbSoundType.Back))
             {
                 fillWidth = true
             });
@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.Interface
                 DssRef.settings.playType == GameState.PlayStateType.Play)
             {
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_SaveAndExit) }, new RbAction(saveAndExit))
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_SaveAndExit) }, new RbAction(saveAndExit, RbSoundType.Back))
                 {
                     fillWidth = true
                 });

@@ -242,6 +242,8 @@ namespace VikingEngine.DSSWars
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
         public static int WheatFoodAmount = 30;
+        public static int AnimalFoodAmount = 60;
+
         //public static int DefaultItemFuelAmount = 25;
         public static int RapeSeedFuelAmount = 15;
         public static int HempLinenAndFuelAmount = 8;
@@ -258,7 +260,7 @@ namespace VikingEngine.DSSWars
         public static int FoodEnergy = 100;
         public static int PlantWaterCost = 1;
 
-        public static float CasualSoldierDefaultCost_Copp = 2f * TaxPerWorker_copp / SoldierGroup_DefaultCount;
+        public static float CasualSoldierDefaultCost_Copp = 3f * TaxPerWorker_copp / SoldierGroup_DefaultCount;
         //public static int PlantFoodCost = 6;
 
         public static int WorkSafeGuardAmount = 10;

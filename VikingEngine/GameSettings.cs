@@ -23,7 +23,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 23;
+        const int Version = 24;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -143,6 +143,10 @@ namespace VikingEngine
             Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
 
             MusicMasterVolume = r.ReadSingle();
+            if (version == 23)
+            {
+                MusicMasterVolume = 1f;
+            }
             SoundVolume = r.ReadSingle();
             VibrationLevel = r.ReadByte();            
             
@@ -191,7 +195,7 @@ namespace VikingEngine
 
             Debug.ReadCheck(r);
 
-            MusicMasterVolume = 0;
+            //MusicMasterVolume = 0;
         }
 
         public void write(System.IO.BinaryWriter w)

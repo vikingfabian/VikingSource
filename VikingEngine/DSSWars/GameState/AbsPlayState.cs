@@ -55,6 +55,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             DssRef.state = this;
             DssRef.storage.profileStorage.refreshProfiles();
+            CityMenu.InitGame();
         }
 
         

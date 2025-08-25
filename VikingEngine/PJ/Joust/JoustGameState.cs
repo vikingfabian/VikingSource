@@ -253,7 +253,8 @@ namespace VikingEngine.PJ.Joust
         {
             state = State.AnnounceWinner;
 
-            MusicPlayer.StopMusic();
+            //MusicPlayer.StopMusic();
+            Ref.music?.StopMusic();
 
             foreach (var m in endLevelAchievements)
             {

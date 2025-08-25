@@ -2220,7 +2220,8 @@ namespace VikingEngine
                 add(SpriteName.HudPinIcon);
                 add(SpriteName.warsBuildCategoryAdvanced);
                 add(SpriteName.warsBuildCategorySearch);
-
+                add(SpriteName.WarsHudGodPowerButton);
+                add(SpriteName.WarsGodPowerIcon);
             }
 
             currentIndex = numTilesWidth * 87;
@@ -2235,6 +2236,12 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_Tent, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_Bookpress, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_ResearchCenter, currentIndex, 3, 3);
+                
+                add(SpriteName.WarsBuild_TreeHard, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_TreeSoft, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_TreeSeedlingHard, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_TreeSeedlingSoft, currentIndex, 3, 3);
+
             }
             currentIndex = numTilesWidth * 90;
             {

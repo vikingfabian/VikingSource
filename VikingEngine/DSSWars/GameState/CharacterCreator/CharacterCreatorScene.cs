@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         {
                             new RbImage(ResourceLib.Icon(weapon))
                         },
-                    new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, SoundLib.menu)
+                    new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
                     );
                     content.Add(button);
                 }
@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         {
                             new RbImage(armorIcon)
                         },
-                    new RbAction1Arg<ArmorLevel>((ArmorLevel armor) => { soldierPreview.soldierModelData.armor = armor; refreshPreview(); }, armorLevel, SoundLib.menu)
+                    new RbAction1Arg<ArmorLevel>((ArmorLevel armor) => { soldierPreview.soldierModelData.armor = armor; refreshPreview(); }, armorLevel, RbSoundType.Option)
                     );
                 content.Add(button);
             }
@@ -252,7 +252,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                     }, frame)));
             }
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameNext) }, new RbAction1Arg<bool>(soldierPreview.nextFrame, true)));
-            content.Add(new ArtOption(bAutoAnimate, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon) }, new RbAction(() => { bAutoAnimate = true; })));
+            content.Add(new ArtOption(bAutoAnimate, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon) }, new RbAction(() => { bAutoAnimate = true; }, RbSoundType.Option)));
 
             optMenu.Refresh(content);
         }
@@ -328,7 +328,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                             SetProfile(profile);
 
                             refreshPreview();
-                        }, i)));
+                        }, i, RbSoundType.Option)));
                 }
                 //content.newLine();
                 //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -350,7 +350,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         SetProfile(profile);
 
                         refreshPreview();
-                    }, i)));
+                    }, i, RbSoundType.Option)));
             }
             //content.newLine();
             //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
@@ -371,7 +371,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         SetProfile(profile);
 
                         refreshPreview();
-                    }, i)));
+                    }, i, RbSoundType.Option)));
             }
             //content.newLine();
             //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -392,7 +392,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         SetProfile(profile);
 
                         refreshPreview();
-                    }, i)));
+                    }, i, RbSoundType.Option)));
             }
 
             content.newParagraph();
@@ -408,7 +408,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                     SetProfile(profile);
 
                     refreshPreview();
-                }, -1)));
+                }, -1, RbSoundType.Option)));
             for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_addons].Frames.Count; i++)
             {                
                 content.Add(new ArtOption(i == profile.accessoryBack, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.lang.Character_Back, i)) },
@@ -420,7 +420,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         SetProfile(profile);
 
                         refreshPreview();
-                    }, i)));
+                    }, i, RbSoundType.Option)));
             }
 
 
@@ -436,7 +436,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                     SetProfile(profile);
 
                     refreshPreview();
-                }, -1)));
+                }, -1, RbSoundType.Option)));
             for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_face_access].Frames.Count; i++)
             {
                 content.Add(new ArtOption(i == profile.accessoryFace, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.lang.Character_Face, i)) },
@@ -448,7 +448,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         SetProfile(profile);
 
                         refreshPreview();
-                    }, i)));
+                    }, i, RbSoundType.Option)));
             }
             //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
             //    new RbImage(SpriteName.pjNumPlus, 1, Color.Green),

@@ -321,7 +321,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// Display a short string of date as Year, Month, Day
         /// </summary>
         public override string Hud_Date => "Y{0} M{1} D{2}";
-        
+
         /// <summary>
         /// Display a short string of timespan as Hour, Minutes, Seconds
         /// </summary>
@@ -1199,7 +1199,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_MoveInput => "Ordre de déplacement";
 
 
-        
+
         /// <summary>
         /// Versus. Text describing the two armies that will go into battle
         /// </summary>
@@ -1217,7 +1217,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string Settings_ButtonMapping => "Raccourcis";
 
-       
+
 
         /// <summary>
         /// Input type, standard PC input
@@ -1804,7 +1804,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LobbyDemoMode_Demo => "Démo";
 
         public override string Lobby_Tutorial => "Tutoriel";
-        
+
         public override string LobbyDemoMode_ShortTutorial => "Tutoriel Rapide";
         public override string LobbyDemoMode_LongTutorial => "Tutoriel étendu";
 
@@ -1874,7 +1874,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Info_TotalFoodSpending => "Dépenses totales de nourriture";
 
         public override string Info_FooodAndDeliveryLocation => "Par défaut, les ouvriers se rendent à l'hotel de ville pour manger ou déposer des objets";
-        
+
         public override string Delivery_SendChunk => "Objets par livraison";
         public override string Delivery_SpeedBonus => "Bonus de vitesse: {0}%";
 
@@ -2427,42 +2427,42 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildingType_ResearchCenter_Description => "Ajoute {0} points de technologie bonus quand un ouvrier monte de niveau dans ce domaine.";
 
         //DEMO PATCH 5
-        
-         public override string Editor_CropSelection => "Rogner la sélection";
 
-         public override string Immigrants_DisbandedSoldiers => "Les soldats abandonnés migreront";
-         public override string Immigrants_RefillWorkers => "Remplit rapidement la force ouvrière";
-         public override string Immigrants_UnhousedAreLost => "Les immigrants sans logement disparaîtront après un temps";
-         public override string Editor_VoxelCount => "{0} voxels";
+        public override string Editor_CropSelection => "Rogner la sélection";
 
-         public override string Editor_Layers_Titel => "Couches";
-         public override string Editor_Layers_All => "Toutes les couches";
-         public override string Editor_LayerNumber => "Couche {0}";
+        public override string Immigrants_DisbandedSoldiers => "Les soldats abandonnés migreront";
+        public override string Immigrants_RefillWorkers => "Remplit rapidement la force ouvrière";
+        public override string Immigrants_UnhousedAreLost => "Les immigrants sans logement disparaîtront après un temps";
+        public override string Editor_VoxelCount => "{0} voxels";
 
-         public override string Editor_Layer_AddEmpty => "Ajouter couche vide";
-         public override string Editor_Layer_AddCopy => "Dupliquer la couche";
-         public override string Editor_Layer_Remove => "Retirer la couche";
-         public override string Editor_Layer_MergeDown => "Fusionner bas";
-         public override string Editor_IsAnimated => "Animé";
-         public override string Editor_ToggleVisible => "Active la visibilité";
-         public override string Editor_ToggleAnimatedLayer => "Active la couche d'animation";
-         public override string Editor_Projects => "Fichiers du projet";
-         public override string ProfileEditor_ReplaceMaterial => "Couleur du profil: {0}";
+        public override string Editor_Layers_Titel => "Couches";
+        public override string Editor_Layers_All => "Toutes les couches";
+        public override string Editor_LayerNumber => "Couche {0}";
 
-         public override string ProfileEditor_ProfileColors_Label => "Couleurs du profil";
-         public override string ProfileEditor_TunicColor => "Couleur de la tunique";
-         public override string ProfileEditor_PantsColor => "Couleur du pantalon";
-         public override string ProfileEditor_LeaderColor => "Couleur du dirigeant";
+        public override string Editor_Layer_AddEmpty => "Ajouter couche vide";
+        public override string Editor_Layer_AddCopy => "Dupliquer la couche";
+        public override string Editor_Layer_Remove => "Retirer la couche";
+        public override string Editor_Layer_MergeDown => "Fusionner bas";
+        public override string Editor_IsAnimated => "Animé";
+        public override string Editor_ToggleVisible => "Active la visibilité";
+        public override string Editor_ToggleAnimatedLayer => "Active la couche d'animation";
+        public override string Editor_Projects => "Fichiers du projet";
+        public override string ProfileEditor_ReplaceMaterial => "Couleur du profil: {0}";
 
-         public override string MapStartAs_Water => "Eau";
-         public override string MapStartAs_Land => "Terre";
-         public override string MapStartAs_Circle => "Cercle";
+        public override string ProfileEditor_ProfileColors_Label => "Couleurs du profil";
+        public override string ProfileEditor_TunicColor => "Couleur de la tunique";
+        public override string ProfileEditor_PantsColor => "Couleur du pantalon";
+        public override string ProfileEditor_LeaderColor => "Couleur du dirigeant";
 
-         public override string Hud_NeedToBeAssigned => "Besoin d'être assigné";
-         public override string Hud_CommitAssignment => "Assigner";
-         public override string Technology_NoAvailableResearch => "Pas de recherche disponible";
+        public override string MapStartAs_Water => "Eau";
+        public override string MapStartAs_Land => "Terre";
+        public override string MapStartAs_Circle => "Cercle";
 
-         public override string Research_Tab => "Recherche";
+        public override string Hud_NeedToBeAssigned => "Besoin d'être assigné";
+        public override string Hud_CommitAssignment => "Assigner";
+        public override string Technology_NoAvailableResearch => "Pas de recherche disponible";
+
+        public override string Research_Tab => "Recherche";
 
         //5.2
         public override string BuildCategory_General => "Général";
@@ -2471,78 +2471,78 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildCategory_Upgrade => "Amélioration";
         public override string Work_NoMines => "Pas de mines";
 
-        //BELOW NOT TRANSLATED
+ 
         //NEXT FEST DEMO
-        public override string HUD_DisplayName => "Display name";
-        public override string HUD_Filter => "Filter";
-        public override string HUD_Scale => "Scale";
+        public override string HUD_DisplayName => "Nom d'affichage";
+        public override string HUD_Filter => "Filtre";
+        public override string HUD_Scale => "Echelle";
         public override string HUD_Tags => "Tags";
-        public override string HUD_ClickToCancel => "Click to cancel";
+        public override string HUD_ClickToCancel => "Cliquez pour annuler";
 
-        public override string ObjectTag_Description => "Add a symbol on the map";
-        public override string HudPins => "HUD pins";
-        public override string HudPins_Description => "Stick information to the screen";
+        public override string ObjectTag_Description => "Ajoute un symbole sur la carte";
+        public override string HudPins => "Repères sur l'HUD";
+        public override string HudPins_Description => "Accrocher des informations sur l'HUD";
 
-        public override string Lobby_PlayerProfileNumbered => "Profile {0}";
-        public override string Lobby_CharacterCreationNumbered => "Character {0}";
-        public override string Lobby_PlayerProfileEdit => "Edit player profile";
+        public override string Lobby_PlayerProfileNumbered => "Profil {0}";
+        public override string Lobby_CharacterCreationNumbered => "Personnage {0}";
+        public override string Lobby_PlayerProfileEdit => "Modifier le profil du joueur";
 
-        public override string Editor_ConvertAnimationToLayers => "Convert animation to layers";
-        public override string Editor_StampAllFrames => "Stamp on all frames";
+        public override string Editor_ConvertAnimationToLayers => "Convertir les animations en images";
+        public override string Editor_StampAllFrames => "Tamponner sur toutes les images";
 
-        public override string Editor_DisplayOptions => "Display options";
-        public override string Editor_CharacterCreator => "Character creator";
-        public override string Editor_CharacterCreator_Description => "Military model appearance editor";
-        public override string Editor_HatGenre => "Hat display mode";
-        public override string Editor_HatGenre_FollowWeapon => "Follow weapon";
-        public override string Editor_HatGenre_Uniform => "Uniform";
-        public override string Editor_CopyPasteSelectedColor => "Copy from selected color";
+        public override string Editor_DisplayOptions => "Options d'affichage";
+        public override string Editor_CharacterCreator => "Créateur de personnage";
+        public override string Editor_CharacterCreator_Description => "Editeur d'apparence des modèles militaires";
+        public override string Editor_HatGenre => "Mode d'affichage des chapeaux";
+        public override string Editor_HatGenre_FollowWeapon => "Suivre l'arme";
+        public override string Editor_HatGenre_Uniform => "Uniforme";
+        public override string Editor_CopyPasteSelectedColor => "Copier la couleur sélectionnée";
 
-        public override string Character_Accessories => "Accessories";
-        public override string Character_Hat => "Hat";
-        public override string Character_Head => "Head";
-        public override string Character_Body => "Body";
-        public override string Character_Arms => "Arms";
-        public override string Character_Back => "Back";
-        public override string Character_Face => "Face";
+        public override string Character_Accessories => "Accessoires";
+        public override string Character_Hat => "Chapeau";
+        public override string Character_Head => "Tête";
+        public override string Character_Body => "Corps";
+        public override string Character_Arms => "Bras";
+        public override string Character_Back => "Dos";
+        public override string Character_Face => "Visage";
 
-        public override string BuildingType_Tavern => "Common Hall";
+        public override string BuildingType_Tavern => "Réfectoire";
 
-        public override string Settings_CraftMultiplier => "Craft time multiplier";
-        public override string Settings_ChildMultiplier_Description => "Increases the speed at which new workers are added";
+        public override string Settings_CraftMultiplier => "Multiplicateur de temps de fabrication";
+        public override string Settings_ChildMultiplier_Description => "Augmente la vitesse à laquelle les ouvriers sont produits";
 
-        public override string Settings_CasualControls => "Casual player controls";
-        public override string Settings_CasualControls_Description => "Simplifies gameplay by reducing choices to key decisions. Only money is used as a resource.";
+        public override string Settings_CasualControls => "Contrôles pour joueur occasionnel";
+        public override string Settings_CasualControls_Description => "Simplifie le jeu en réduisant les choix possibles.";
 
-        public override string Settings_AdvancedControls => "Advanced controls";
-        public override string Settings_AdvancedControls_Description => "The full resource management experience.";
+        public override string Settings_AdvancedControls => "Contrôles avancés";
+        public override string Settings_AdvancedControls_Description => "L'expérience complète de gestion de ressources.";
 
-        public override string WarsResourceGroup_Metal => "Metal";
-        public override string Work_Craft => "Craft";
-        public override string Work_OnlyCraftOnFullStock => "Only craft on full stockpile";
+        public override string WarsResourceGroup_Metal => "Métal";
+        public override string Work_Craft => "Fabriquer";
+        public override string Work_OnlyCraftOnFullStock => "Ne fabriquer que quand la réserve est pleine";
 
-        public override string ExperienceType_Smelting => "Smelting";
-        public override string Category_Optimize => "Optimize";
-        public override string BuildCategory_Road => "Road";
-        public override string XP_UnlockBuildPrio => "Unlock build priority: {0}";
-        public override string Technology_ModernFarming => "Modern farming";
+        public override string ExperienceType_Smelting => "Fonte";
+        public override string Category_Optimize => "Optimiser";
+        public override string BuildCategory_Road => "Route";
+        public override string XP_UnlockBuildPrio => "Débloque la priorité de bâtiment: {0}";
+        public override string Technology_ModernFarming => "Fermes modernes";
 
-        public override string ExportImportDescription => "For sharing save files with other player, all files are this folder: {0}";
+        public override string ExportImportDescription => "Pour partager les fichiers de sauvegardes avec d'autres joueurs, tous les fichiers sont dans ce dossier: {0}";
 
-        public override string CityCultureDescription => "Culuture will give it a special bonus to the city";
+        public override string CityCultureDescription => "La culture donnera un bonus spécial à cette ville";
 
         public override string UnitType_CloseRangeRifle => "Arquebusier";
-        public override string UnitType_LongRangeRifle => "Musketeer";
-        public override string UnitType_Skirmisher => "Skirmisher";
+        public override string UnitType_LongRangeRifle => "Mousquetaire";
+        public override string UnitType_Skirmisher => "Escarmoucheur";
 
         //From lumen (light)
-        public override string UnitType_MithrilArcher => "Lunari archer";
-        public override string UnitType_MithrilSwordsman => "Lunari knight";
+        public override string UnitType_MithrilArcher => "Archer lunari";
+        public override string UnitType_MithrilSwordsman => "Chevalier lunari";
 
-        public override string Defence_AutoAssign_Towers => "Assign towers";
+        public override string Defence_AutoAssign_Towers => "Assigner les tours";
 
-        public override string EventMessage_DesertersText_Food => "Hungry soldiers are deserting from your army";
+        public override string EventMessage_DesertersText_Food => "Des soldats affamés désertent votre armée";
 
-        public override string Tutorial_CasualRecruitSoldiers => "Purchase one soldier group";
+        public override string Tutorial_CasualRecruitSoldiers => "Acheter un groupe d'armées";
     }
 }

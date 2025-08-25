@@ -158,7 +158,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.Add(title);
                 
                 content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedConscript = -1; }, SoundLib.menuBack));
+                HudLib.CloseButton(content, new RbAction(() => { city.selectedConscript = -1; }, RbSoundType.Back));
 
 
                 content.newParagraph();
@@ -172,14 +172,14 @@ namespace VikingEngine.DSSWars.Conscript
                             new RbImage(SpriteName.WarsArmy),
                             new RbSpace(),
                             new RbText(DssRef.lang.Conscript_Soldiers_ArmyType) },
-                        new RbAction1Arg<bool>(guardTabClick, false), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_ArmyType_Description)));
+                        new RbAction1Arg<bool>(guardTabClick, false, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_ArmyType_Description)));
                     content.Add(new ArtOption(guardTab,
 
                         new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.WarsGuard),
                             new RbSpace(),
                             new RbText(DssRef.lang.Conscript_Soldiers_GuardType) },
-                        new RbAction1Arg<bool>(guardTabClick, true), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_GuardType_Description)));
+                        new RbAction1Arg<bool>(guardTabClick, true, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_GuardType_Description)));
                 }
 
                 content.newParagraph();
@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.Conscript
                     }
 
                     var button = new ArtOption(weapon == currentStatus.profile.weapon,buttonContent,
-                    new RbAction1Arg<ItemResourceType>(weaponClick, weapon, SoundLib.menu),
+                    new RbAction1Arg<ItemResourceType>(weaponClick, weapon, RbSoundType.Option),
                     new RbTooltip(weaponTooltip, weapon)
                     );
                     //button.setGroupSelectionColor(HudLib.RbSettings, weapon == currentStatus.profile.weapon);
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.Conscript
                     //buttonContent.Add(new RbText(LangLib.Item(armorLvl)));
 
                     var button = new ArtOption(armorLvl == currentStatus.profile.armorLevel,buttonContent,
-                        new RbAction1Arg<ItemResourceType>(armorClick, armorLvl, SoundLib.menu),
+                        new RbAction1Arg<ItemResourceType>(armorClick, armorLvl, RbSoundType.Option),
                     new RbTooltip(armorTooltip, armorLvl));
                     //button.setGroupSelectionColor(HudLib.RbSettings, armorLvl == currentStatus.profile.armorLevel);
                     content.Add(button);
@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars.Conscript
                     var button = new ArtOption(training == currentStatus.profile.training,new List<AbsRichBoxMember>{
                         new RbImage(LangLib.Training_Icon(training)),
                         new RbText( LangLib.Training(training))
-                    }, new RbAction1Arg<TrainingLevel>(trainingClick, training, SoundLib.menu),
+                    }, new RbAction1Arg<TrainingLevel>(trainingClick, training, RbSoundType.Option),
                     new RbTooltip(trainingTooltip, new TrainingTooltipArgs() { training = training, buildtype = currentStatus.type }));
                     
                     content.Add(button);
@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.Conscript
                             new RbImage(specIcon, 0.8f),
                             new RbSpace(0.5f),
                             new RbText(specText)
-                        }, new RbAction1Arg<SpecializationType>(specializationClick, specialization, SoundLib.menu));
+                        }, new RbAction1Arg<SpecializationType>(specializationClick, specialization, RbSoundType.Option));
                         //button.setGroupSelectionColor(HudLib.RbSettings, specialization == currentStatus.profile.specialization);
                         content.Add(button);
                     }
@@ -349,13 +349,13 @@ namespace VikingEngine.DSSWars.Conscript
                 content.Add(new RbImage(player.gameControls.input.Copy.Icon));
                 content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember> {                    
                     new RbText(DssRef.lang.Hud_CopySetup) },
-                    new RbAction1Arg<LocalPlayer>(city.copyConscript, player, SoundLib.menuCopy)));
+                    new RbAction1Arg<LocalPlayer>(city.copyConscript, player, RbSoundType.Copy)));
 
                 content.space();
                 content.Add(new RbImage(player.gameControls.input.Paste.Icon));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {                   
                     new RbText(DssRef.lang.Hud_Paste) },
-                    new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, SoundLib.menuPaste)));
+                    new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, RbSoundType.Paste)));
 
                 //if (currentStatus.active != ConscriptActiveStatus.Idle)
                 //{
@@ -427,7 +427,7 @@ namespace VikingEngine.DSSWars.Conscript
                         caption,
                         new RbNewLine(),
                          new RbText(currentProfile.shortActiveString(), HudLib.InfoYellow_Dark),
-                    }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
+                    }, new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
 
 
                     }

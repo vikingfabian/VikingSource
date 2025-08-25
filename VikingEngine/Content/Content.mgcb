@@ -91,6 +91,12 @@
 /processorParam:Quality=Best
 /build:DSS/Music/Elysian_Dreamscape.ogg
 
+#begin DSS/Music/Endless Plains.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Endless Plains.ogg
+
 #begin DSS/Music/Epic Shadows of the Fallen.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -120,6 +126,18 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/Legends of Valor.ogg
+
+#begin DSS/Music/MissingCardinals.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/MissingCardinals.ogg
+
+#begin DSS/Music/Mysterious Grotto.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Mysterious Grotto.ogg
 
 #begin DSS/Music/Pixelated Battlefields.ogg
 /importer:OggImporter
@@ -1318,6 +1336,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/load_ballista.wav
 
+#begin DSS/Sound/menu_expand.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_expand.wav
+
 #begin DSS/Sound/musket1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1335,6 +1359,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/musket3.wav
+
+#begin DSS/Sound/option_deselect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/option_deselect.wav
+
+#begin DSS/Sound/option_select.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/option_select.wav
 
 #begin DSS/Sound/ordermove.wav
 /importer:WavImporter
@@ -1390,6 +1426,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/reload_ballista2.wav
 
+#begin DSS/Sound/scroll_back.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/scroll_back.wav
+
+#begin DSS/Sound/scroll_forward.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/scroll_forward.wav
+
 #begin DSS/Sound/scythe.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1426,6 +1474,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/ship_knirr2.wav
 
+#begin DSS/Sound/soft_buzz_error.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/soft_buzz_error.wav
+
 #begin DSS/Sound/spear.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1455,6 +1509,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/spearwhoosh (4).wav
+
+#begin DSS/Sound/start_build_contruct.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/start_build_contruct.wav
+
+#begin DSS/Sound/start_destroy_contruct.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/start_destroy_contruct.wav
 
 #begin DSS/Sound/start.wav
 /importer:WavImporter
@@ -2400,6 +2466,9 @@
 
 #begin VoxelModel/LfWars/fol_tree_soft.vox
 /copy:VoxelModel/LfWars/fol_tree_soft.vox
+
+#begin VoxelModel/LfWars/godfire.vox
+/copy:VoxelModel/LfWars/godfire.vox
 
 #begin VoxelModel/LfWars/Hen.vox
 /copy:VoxelModel/LfWars/Hen.vox

@@ -2297,7 +2297,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.newLine();
             //if (args.ShowFull)
             {
-                if (GetFaction() == args.player.faction)
+                if (GetFaction() == args.player.faction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
                 {
                     CityDetailsHud(true, args.player, args.content);
                     new Interface.CityMenu(args.player, this, args.content);
@@ -2400,7 +2400,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     automationFocus = focus;
                                     nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
-                                }, SoundLib.menu), 
+                                }, RbSoundType.Option), 
                                 new RbTooltip(automationToolTip, focus));
 
                             content.Add(button);
@@ -2438,7 +2438,7 @@ namespace VikingEngine.DSSWars.GameObject
                                        new RbAction(() =>
                                        {
                                            exportAutoType = type;
-                                       }, SoundLib.menu),null);
+                                       }, RbSoundType.Option),null);
 
                                     content.Add(button);
                                 }
@@ -2471,7 +2471,7 @@ namespace VikingEngine.DSSWars.GameObject
                                        new RbAction1Arg<WarAutoQuality>((WarAutoQuality quality) =>
                                        {
                                            warAutoQuality = quality;
-                                       }, quality, SoundLib.menu), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
+                                       }, quality, RbSoundType.Option), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
 
                                     content.Add(button);
                                 }
@@ -2515,7 +2515,7 @@ namespace VikingEngine.DSSWars.GameObject
                                        new RbAction1Arg<WarAutoWeaponType>((WarAutoWeaponType weaponType) =>
                                        {
                                            warAutoWeaponType = weaponType;
-                                       }, weaponType, SoundLib.menu));
+                                       }, weaponType, RbSoundType.Option));
 
                                     content.Add(button);
                                 }

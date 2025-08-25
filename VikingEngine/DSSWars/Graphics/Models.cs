@@ -230,6 +230,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.horse_white, false);
             loadVoxelModel(VoxelModelName.wars_shipmelee, false);
             loadVoxelModel(VoxelModelName.buildarea, false);
+            loadVoxelModel(VoxelModelName.godfire, false);
             loadVoxelModel(VoxelModelName.wars_borderstick, false);
 
             foreach (var model in DetailMapTile.LoadModel())

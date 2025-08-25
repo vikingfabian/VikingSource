@@ -306,7 +306,7 @@
 //                    //            new RichBoxImage(SpriteName.MenuPixelIconSettings),
 //                    //            new HUD.RichBox.RichBoxText(DssRef.lang.Automation_Title),
 //                    //    },
-//                    //    new RbAction1Arg<string>(player.hud.displays.SetMenuState, AutomationMenuState, SoundLib.menu),
+//                    //    new RbAction1Arg<string>(player.hud.displays.SetMenuState, AutomationMenuState, RbSoundType.Default),
 //                    //    null);
 //                    //content.Add(automationButton);
 //                    //content.Button(SpriteName.MenuPixelIconSettings, "Automation", new RbAction(DssRef.state.exit), null, true);

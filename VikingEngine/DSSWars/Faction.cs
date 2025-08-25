@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars
         public DiplomaticSide diplomaticSide = DiplomaticSide.None;
 
         public bool textureLoaded = false;
-        public Vector2 FlagTextureTargetSheetPos;
+        //public Vector2 FlagTextureTargetSheetPos;
         public ModelTextureSettings FlagTexture = ModelTextureSettings.Default;
 
         public SpottedArray<Army> armies;
@@ -1336,9 +1336,106 @@ namespace VikingEngine.DSSWars
         HragmarHorncarvers,
 
         Barbarians,
-    }
 
-    enum FactionGroupType
+        /// <summary>
+        /// Wood-elves who guard enchanted forests. Secretive, druidic, tied to nature spirits.
+        /// </summary>
+        SylvaranGlade,
+
+        /// <summary>
+        /// Marsh-dwellers, human clans who thrive in bogs and waterways, masters of ambush.
+        /// </summary>
+        DrelmirePact,
+
+        /// <summary>
+        /// Stubborn mountain dwarves, famed for masterwork steel and siegecraft.
+        /// </summary>
+        KhazrunForgeclan,
+
+        /// <summary>
+        /// Nomadic steppe riders, swift raiders and proud cavalry culture.
+        /// </summary>
+        VeylanHorselords,
+
+        /// <summary>
+        /// A human religious order devoted to the Eternal Flame. Zealous and uncompromising.
+        /// </summary>
+        ThalosCovenant,
+
+        /// <summary>
+        /// Coastal defenders, human mariners and sea-watchers, sworn to protect against pirates.
+        /// </summary>
+        NerathianTideguard,
+
+        /// <summary>
+        /// Desert-dwellers, scarred nomads once driven from their homeland. Fierce survivalists.
+        /// </summary>
+        SkaruunExiles,
+
+        /// <summary>
+        /// Dragon-worshipping cult/kingdom, ruled by dragonblooded warlords.
+        /// </summary>
+        DraktharDominion,
+
+        /// <summary>
+        /// Brutal mercenary brotherhood, sellswords bound by strict contracts.
+        /// </summary>
+        MalrekIronbound,
+
+        /// <summary>
+        /// A modest barony nestled in fertile valleys, proud of its ancient stone keeps.
+        /// </summary>
+        BranthollowBarony,
+
+        /// <summary>
+        /// Grain-rich plains kingdom, known for horse-breeding and wheat harvests.
+        /// </summary>
+        DunwadeHold,
+
+        /// <summary>
+        /// Borderland march-lords, stern folk living in fortified towns along contested lands.
+        /// </summary>
+        CaerwynMarches,
+
+        /// <summary>
+        /// Mining folk in a rugged valley, semi-independent but loyal to their lords.
+        /// </summary>
+        StonevaleFreehold,
+
+        /// <summary>
+        /// Small forested domain, famed for herbalists and bowmen.
+        /// </summary>
+        GlenmereLordship,
+
+        /// <summary>
+        /// A minor princely house clinging to its old glory, proud but weakened.
+        /// </summary>
+        ArveldonPrincipality,
+
+        /// <summary>
+        /// Coastal duchy of fisherfolk and shipwrights, always at odds with pirates.
+        /// </summary>
+        WestmereReaches,
+
+        /// <summary>
+        /// Small marcher state, thorny hedges and palisades mark their borders.
+        /// </summary>
+        ThornwickWardens,
+
+        /// <summary>
+        /// A sleepy lakeside domain, romanticized in ballads but of little power.
+        /// </summary>
+        EvermereFief,
+
+        /// <summary>
+        /// Forest hillfolk, stubborn and hearty, famed for boar-hunting feasts.
+        /// </summary>
+        BryndralHollow
+    
+
+}
+
+enum FactionGroupType
     {
         Other,
         Nordic,

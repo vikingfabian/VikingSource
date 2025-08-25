@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Delivery
                 title.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(title);
                 content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedDelivery = -1; }, SoundLib.menuBack));
+                HudLib.CloseButton(content, new RbAction(() => { city.selectedDelivery = -1; }, RbSoundType.Back));
                 
                 content.newParagraph();
 
@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.Delivery
                             new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                             {
                                 player.resourcesSubTab = resourcesSubTab;
-                            }, resourcesSubTab, SoundLib.menutab));
+                            }, resourcesSubTab, RbSoundType.Tab));
                         
                         //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                         content.Add(subTab);
@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Delivery
                                 player.resourcesSubTab = resourcesSubTab;
                                 itemClick(ItemResourceType.AutomatedItem);
 
-                            }, ResourcesSubTab.Auto, SoundLib.menutab),
+                            }, ResourcesSubTab.Auto, RbSoundType.Tab),
                             new RbTooltip((RichBoxContent content, object tag) =>
                             {
                                 //RichBoxContent content = new RichBoxContent();
@@ -160,7 +160,7 @@ namespace VikingEngine.DSSWars.Delivery
                             var button = new ArtToggle(item == currentStatus.profile.type, new List<AbsRichBoxMember>{
                                 new RbImage(ResourceLib.Icon(item))   
                             },
-                            new RbAction1Arg<ItemResourceType>(itemClick, item, SoundLib.menu),
+                            new RbAction1Arg<ItemResourceType>(itemClick, item, RbSoundType.Option),
                             new RbTooltip((RichBoxContent content, object tag) =>
                                 {
                                     //RichBoxContent content = new RichBoxContent();
@@ -206,7 +206,7 @@ namespace VikingEngine.DSSWars.Delivery
                         buttonContent.Add(new RbText(cities_c.sel.TypeName()));
 
                         var button = new ArtToggle(cities_c.sel.myIndex == currentStatus.profile.toCity, buttonContent, 
-                            new RbAction1Arg<int>(cityClick, cities_c.sel.myIndex, SoundLib.menu), 
+                            new RbAction1Arg<int>(cityClick, cities_c.sel.myIndex, RbSoundType.Option), 
                             new RbTooltip((RichBoxContent content, object tag /*City toCity*/) =>
                             {
                                 City toCity = (City)tag;
@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.Delivery
                         new List<AbsRichBoxMember>{
                             new RbImage(SpriteName.AutomationGearIcon)
                             }, 
-                            new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto, SoundLib.menu), 
+                            new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto, RbSoundType.Option), 
                             new RbTooltip((RichBoxContent content, object tag) =>
                             {
                                 //RichBoxContent content = new RichBoxContent();
@@ -308,7 +308,7 @@ namespace VikingEngine.DSSWars.Delivery
                             DeliveryStatus currentStatus = get();
                             currentStatus.profile.SendAmount = amount;
                             set(currentStatus);
-                        }, SoundLib.menu));
+                        }, RbSoundType.Option));
 
                     //button.setGroupSelectionColor(HudLib.RbSettings, amount == currentStatus.profile.SendAmount);
 
@@ -348,7 +348,7 @@ namespace VikingEngine.DSSWars.Delivery
                     //new RbImage(player.input.Copy.Icon),
                     //new RbSpace(0.5f),
                     new RbText(DssRef.lang.Hud_CopySetup) },
-                    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, SoundLib.menuCopy)));
+                    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, RbSoundType.Copy)));
 
                 content.space();
                 content.Add(new RbImage(player.gameControls.input.Paste.Icon));
@@ -357,7 +357,7 @@ namespace VikingEngine.DSSWars.Delivery
                     //new RbSpace(0.5f),
                     new RbText(DssRef.lang.Hud_Paste)
                 },
-                new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, SoundLib.menuPaste)));
+                new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste)));
 
                 
             }
@@ -421,7 +421,7 @@ namespace VikingEngine.DSSWars.Delivery
                         }
 
                         content.Add(new ArtButton( RbButtonStyle.Primary, buttonContent,
-                            new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
+                            new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
 
                     }
                 }
@@ -465,11 +465,13 @@ namespace VikingEngine.DSSWars.Delivery
                         }
                     }
 
-                    //if (isSending)
+                    string timeString = currentStatus.longTimeProgress(city, out bool hasTime);
+                    if (hasTime)
                     {
+
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(currentStatus.longTimeProgress(city), isSending ? null : HudLib.SecondaryTextColor));
+                        content.Add(new RbText(timeString, isSending ? null : HudLib.SecondaryTextColor));
                     }
                 }
             }

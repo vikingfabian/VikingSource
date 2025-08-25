@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Resource
                         new RbImage(ResourceLib.Icon(resourceType)),
                         new RbText(name),
                     },
-                new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
+                new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
                 tooltip(count), player.faction.hasGold(cost, city));
 
                 content.Add(button);
@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.Resource
                         {
                             new RbText(string.Format(DssRef.lang.Hud_XTimes, count)),
                         },
-                    new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
+                    new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
                     tooltip(count), player.faction.hasGold(cost * count, city));
                     content.Add(xbutton);
                     //content.space();

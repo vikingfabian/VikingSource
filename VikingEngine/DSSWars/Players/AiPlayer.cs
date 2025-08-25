@@ -61,6 +61,8 @@ namespace VikingEngine.DSSWars.Players
             bools.write(w);
 
             w.Write(Bound.Byte(diplomacyPoints));
+
+            profile.writeBot(w);
         }
         public override void readGameState(BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -70,6 +72,11 @@ namespace VikingEngine.DSSWars.Players
             if (subversion >= 72)
             {
                 diplomacyPoints = r.ReadByte();
+            }
+            if (subversion >= 74)
+            {
+                profile.readBot(r);
+                SetProfile(profile);
             }
         }
 
@@ -81,7 +88,121 @@ namespace VikingEngine.DSSWars.Players
             SetProfile(new Profile.PlayerProfile(faction.factiontype, DssRef.world.metaData));
        
             switch (faction.factiontype)
-            {               
+            {
+                case FactionType.BranthollowBarony:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_BranthollowBarony;
+                    break;
+
+                case FactionType.DunwadeHold:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_DunwadeHold;
+                    break;
+
+                case FactionType.CaerwynMarches:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_CaerwynMarches;
+                    break;
+
+                case FactionType.StonevaleFreehold:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_StonevaleFreehold;
+                    break;
+
+                case FactionType.GlenmereLordship:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_GlenmereLordship;
+                    break;
+
+                case FactionType.ArveldonPrincipality:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_ArveldonPrincipality;
+                    break;
+
+                case FactionType.WestmereReaches:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_WestmereReaches;
+                    break;
+
+                case FactionType.ThornwickWardens:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_ThornwickWardens;
+                    break;
+
+                case FactionType.EvermereFief:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_EvermereFief;
+                    break;
+
+                case FactionType.BryndralHollow:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_BryndralHollow;
+                    break;
+
+                case FactionType.SylvaranGlade:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_SylvaranGlade;
+                    break;
+
+                case FactionType.DrelmirePact:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_DrelmirePact;
+                    break;
+
+                case FactionType.KhazrunForgeclan:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_KhazrunForgeclan;
+                    break;
+
+                case FactionType.VeylanHorselords:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_VeylanHorselords;
+                    break;
+
+                case FactionType.ThalosCovenant:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_ThalosCovenant;
+                    break;
+
+                case FactionType.NerathianTideguard:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_NerathianTideguard;
+                    break;
+
+                case FactionType.SkaruunExiles:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_SkaruunExiles;
+                    break;
+
+                case FactionType.DraktharDominion:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_DraktharDominion;
+                    break;
+
+                case FactionType.MalrekIronbound:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_MalrekIronbound;
+                    break;
+
                 case FactionType.Starshield:
                     defaultSetup();
                     techSetup();
@@ -1322,8 +1443,10 @@ namespace VikingEngine.DSSWars.Players
                         if (threats.Count > 0)
                         {
                             Faction enemyFaction = DssRef.world.factions.GetIndex_Safe(arraylib.RandomListMember(threats));
-
-                            findAlliances(enemyFaction, false);
+                            if (!DssRef.diplomacy.InWar(faction, enemyFaction))
+                            {
+                                findAlliances(enemyFaction, false);
+                            }
                         }
                     }
                 }
@@ -1345,7 +1468,7 @@ namespace VikingEngine.DSSWars.Players
                         if (relation >= RelationType.RelationType0_Neutral &&
                             relation < RelationType.RelationType3_Ally &&
                             this.faction.SameOrNeutralSide(factions.sel.diplomaticSide) &&
-                            shareWarOrThreat(factions.sel, enemyFaction.myIndex))
+                            shareWarOrThreat(factions.sel, enemyFaction.myIndex, reasonWar))
                         {
                             DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Add(factions.CurrentIndex);
                         }
@@ -1356,15 +1479,14 @@ namespace VikingEngine.DSSWars.Players
                 {
                     int newAlly = arraylib.RandomListMember(DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances);
                     var allyFaction = DssRef.world.factions.GetIndex_Safe(newAlly);
-                    if (allyFaction != null && DssRef.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(faction, allyFaction))
+                    if (allyFaction != null && DssRef.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(faction, allyFaction, enemyFaction))
                     {
                         const int TinyFaction = 2;
                         const int LargeFaction = 8;
 
                         if (allyFaction.cities.Count <= TinyFaction && faction.cities.Count >= LargeFaction)
                         {
-
-                            allyFaction.mergeTo(faction);
+                            Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(allyFaction.mergeTo, faction));
 #if DEBUG
                             //Ref.update.AddSyncAction(new SyncAction(() =>
                             //{
@@ -1372,14 +1494,10 @@ namespace VikingEngine.DSSWars.Players
                             //}));
 #endif
                         }
-                        //else if (faction.cities.Count <= TinyFaction && allyFaction.cities.Count >= LargeFaction)
-                        //{
-
-                        //}
                         else
                         {
                             DssRef.diplomacy.SetRelationType(faction, allyFaction, RelationType.RelationType3_Ally).allyAgainst = enemyFaction.myIndex;
-
+                            allyFaction.player.GetAiPlayer().diplomacyPoints = 0;
 #if DEBUG
                             //Ref.update.AddSyncAction(new SyncAction(() =>
                             //{
@@ -1391,21 +1509,24 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            bool shareWarOrThreat(Faction maybeFriendFaction, int enemyFactionIx)
+            bool shareWarOrThreat(Faction maybeFriendFaction, int enemyFactionIx, bool reasonWar)
             {
-                if (DssRef.diplomacy.aiPlayerAsynchUpdate_collectWars(maybeFriendFaction).Contains(enemyFactionIx))
+                var relation = DssRef.diplomacy.GetRelationType(maybeFriendFaction, DssRef.world.factions.GetIndex_Safe(enemyFactionIx));
+                if (relation <= RelationType.RelationTypeN1_Enemies)
                 {
                     return true;
                 }
 
-                var maybeFriendBot = maybeFriendFaction.player.GetAiPlayer();
-                if (maybeFriendBot.aggressionLevel >= AggressionLevel2_RandomAttacks &&
-                    !maybeFriendBot.personality_loner &&
-                    DssRef.diplomacy.aiPlayerAsynchUpdate_collectThreats(maybeFriendFaction).Contains(enemyFactionIx))
+                if (!reasonWar || Ref.rnd.Chance(0.005))
                 {
-                    return true;
+                    var maybeFriendBot = maybeFriendFaction.player.GetAiPlayer();
+                    if (maybeFriendBot.aggressionLevel >= AggressionLevel2_RandomAttacks &&
+                        !maybeFriendBot.personality_loner &&
+                        DssRef.diplomacy.aiPlayerAsynchUpdate_collectThreats(maybeFriendFaction).Contains(enemyFactionIx))
+                    {
+                        return true;
+                    }
                 }
-                
                 return false;
             }
         }

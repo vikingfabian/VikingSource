@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.Interface
                 gotoBattleButtonContent.Add(new RbText(city.TypeName()));
 
                 content.Add(new ArtButton( RbButtonStyle.Primary,gotoBattleButtonContent,
-                    new RbAction1Arg<AbsGameObject>(goToMapObject, city, SoundLib.menu)));
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, city, RbSoundType.Default)));
 
                 Add(content);
             }
@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.Interface
                 gotoBattleButtonContent.Add(new RbText(army.TypeName()));
 
                 content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                    new RbAction1Arg<AbsGameObject>(goToMapObject, army, SoundLib.menu)));
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, army, RbSoundType.Default)));
 
                 Add(content);
             }

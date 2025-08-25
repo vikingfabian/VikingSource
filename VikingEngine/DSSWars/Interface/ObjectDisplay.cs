@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Interface
                 if (gui.menuState.Count > 0) 
                 {
                     content.newLine();
-                    content.Button(Ref.langOpt.Hud_Back, new RbAction(gui.menuBack, SoundLib.menuBack), 
+                    content.Button(Ref.langOpt.Hud_Back, new RbAction(gui.menuBack, RbSoundType.Back), 
                         null, true);
                 }
                 endRefresh(pos, selected);

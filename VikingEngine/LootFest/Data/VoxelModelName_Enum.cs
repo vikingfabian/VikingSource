@@ -221,6 +221,7 @@ namespace VikingEngine.LootFest
         armystand_detail,
         cityicon,
         buildarea,
+        godfire,
         wars_borderstick,
         //city_tower24,
         city_flagpole,

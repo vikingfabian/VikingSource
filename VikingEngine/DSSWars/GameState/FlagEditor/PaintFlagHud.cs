@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     new RbImage(SpriteName.EditorToolPencil),
                     color,
                 },
-                new RbAction1Arg<ProfileColorType>(selectColorType, colorType), null, true));
+                new RbAction1Arg<ProfileColorType>(selectColorType, colorType, RbSoundType.Option), null, true));
 
             if (state.selectedColorType == colorType)
             {
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     new RbImage(SpriteName.EditorToolPencil),
                     color1,
                 },
-                new RbAction1Arg<ProfileColorType>(selectColorType, colorType1), null, true));
+                new RbAction1Arg<ProfileColorType>(selectColorType, colorType1, RbSoundType.Option), null, true));
 
             if (state.selectedColorType == colorType1)
             {
@@ -265,7 +265,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     new RbImage(SpriteName.EditorToolPencil),
                     color2,
                 },
-                new RbAction1Arg<ProfileColorType>(selectColorType, colorType2), null, true));
+                new RbAction1Arg<ProfileColorType>(selectColorType, colorType2, RbSoundType.Option), null, true));
 
             if (state.selectedColorType == colorType2)
             {
@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     new RbImage(SpriteName.IconColorPick),
                     color,
                     },
-                    new RbAction1Arg<ProfileColorType>(selectColorType, colorType[i]), null, true));
+                    new RbAction1Arg<ProfileColorType>(selectColorType, colorType[i], RbSoundType.Option), null, true));
 
                 if (state.selectedColorType == colorType[i])
                 {
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     new RbImage(SpriteName.IconColorPick),
                     color,
                 },
-                new RbAction1Arg<ProfileColorType>(selectColorType, colorType), null, true));
+                new RbAction1Arg<ProfileColorType>(selectColorType, colorType, RbSoundType.Option), null, true));
 
             if (state.selectedColorType == colorType)
             {

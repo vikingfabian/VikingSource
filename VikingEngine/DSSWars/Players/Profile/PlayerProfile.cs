@@ -140,6 +140,17 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         const int Version = 3;
 
+
+        public void writeBot(System.IO.BinaryWriter w)
+        {
+            flag.write(w);
+        }
+
+        public void readBot(System.IO.BinaryReader r)
+        {
+            flag.read(r);
+        }
+
         public void write(System.IO.BinaryWriter w)
         {
             write(w, false);
@@ -189,6 +200,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             if (TextLib.HasValue(name)) StreamLib.WriteString(w, name);
 
         }
+
 
         public void read(System.IO.BinaryReader r)
         {

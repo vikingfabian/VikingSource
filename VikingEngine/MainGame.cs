@@ -239,7 +239,8 @@ namespace VikingEngine
 
             //System.Threading.Thread.Sleep(16);
 
-            MusicPlayer.StopMusic();
+            //MusicPlayer.StopMusic();
+            Ref.music?.Dispose();
             Engine.XGuide.OnSuspend(true);
             //Ref.gamestate.onClosingApplication();
             base.UnloadContent();

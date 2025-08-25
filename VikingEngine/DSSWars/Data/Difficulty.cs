@@ -88,6 +88,11 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
+        public bool GodPowers()
+        { 
+            return setting_gameMode == GameModeMainType.Spectator  || StartupSettings.EndlessResources;
+        }
+
         public static void OptionsRb(RichBoxContent content, RichMenu menu, Action<int> callback)
         {
             DropDownBuilder mapSzOptions = new DropDownBuilder("difficulty");

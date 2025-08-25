@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int selectedConscript = -1;
         public List<BarracksStatus> conscriptBuildings = new List<BarracksStatus>();
         Time conscriptDelay = Time.Zero;
-        IntVector2 recruitToTile;
+        public IntVector2 recruitToTile;
         public void async_conscriptUpdate(float time)
         {
             if (conscriptDelay.HasTime)
@@ -295,6 +295,18 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return startPos;
+        }
+
+        public IntVector2 defaultConscriptSubtilePos()
+        {
+            if (conscriptBuildings.Count > 0)
+            {
+               return conv.IntToIntVector2(conscriptBuildings[0].idAndPosition);
+            }
+            else
+            {
+                return cityHallSubtilePos;
+            }
         }
 
         public void onConscriptChange()
