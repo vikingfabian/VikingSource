@@ -100,226 +100,34 @@ namespace VikingEngine.DSSWars.Build
             var sutile = new SubTile();
             city.executeBuildEffectsOnCity(false, subPos, ref sutile, mainType, subType);
 
-            //switch (mainType)
-            //{
-            //    case TerrainMainType.Building:
-            //        {
-            //            switch ((TerrainBuildingType)subType)
-            //            {
-
-            //                case TerrainBuildingType.WorkerHut:
-            //                    city.onWorkHutBuild(false, false);
-            //                    break;
-            //                case TerrainBuildingType.WorkerHutLarge:
-            //                    city.onWorkHutBuild(false, true);
-            //                    break;
-
-            //                case TerrainBuildingType.ServiceMenHouse_small:
-            //                    city.onServiceHouseBuild(false, false);
-            //                    break;
-            //                case TerrainBuildingType.ServiceMenHouse_Large:
-            //                    city.onServiceHouseBuild(false, true);
-            //                    break;
-
-            //                case TerrainBuildingType.GuardHouse_Small:
-            //                    city.onGuardHouseBuild(false, false);
-            //                    break;
-            //                case TerrainBuildingType.GuardHouse_Large:
-            //                    city.onGuardHouseBuild(false, true);
-            //                    break;
-
-            //                case TerrainBuildingType.SoldierBarracks:
-            //                case TerrainBuildingType.ArcherBarracks:
-            //                case TerrainBuildingType.WarmachineBarracks:
-            //                case TerrainBuildingType.KnightsBarracks:
-            //                case TerrainBuildingType.GunBarracks:
-            //                    city.destroyBarracks(subPos);
-            //                    break;
-
-            //                case TerrainBuildingType.Recruitment:
-            //                case TerrainBuildingType.RecruitmentLevel2:
-            //                case TerrainBuildingType.RecruitmentLevel3:
-            //                case TerrainBuildingType.Postal:
-            //                case TerrainBuildingType.PostalLevel2:
-            //                case TerrainBuildingType.PostalLevel3:
-            //                case TerrainBuildingType.GoldDeliveryLevel1:
-            //                case TerrainBuildingType.GoldDeliveryLevel2:
-            //                case TerrainBuildingType.GoldDeliveryLevel3:
-            //                    city.destroyDelivery(subPos);
-            //                    break;
-
-            //                case TerrainBuildingType.School:
-            //                    city.destroySchool(subPos);
-            //                    break;
-            //                case TerrainBuildingType.ResearchCenter:
-            //                case TerrainBuildingType.BookPress:
-            //                    city.destroyResearchBuilding(subPos);
-            //                    break;
-            //            }
-            //        }
-            //        break;
-            //    case TerrainMainType.Wall:
-            //        city.destroyDefenceBuilding_async(subPos);
-            //        break;
-            //}
         }
 
-        public bool execute_async(City city, IntVector2 subPos, ref SubTile subTile, bool upgrade)
+        public bool execute_async(City city, IntVector2 subPos, ref SubTile subTile, bool upgrade, bool payResources = true)
         {
-            //TODO handle upgrades
-
-
-            //switch (mainType)
-            //{
-            //    case TerrainMainType.Building:
-            //        {
-            //            switch ((TerrainBuildingType)subType)
-            //            {
-            //                case TerrainBuildingType.Logistics:
-            //                    if (city.buildingStructure.buildingLevel_logistics > 0)
-            //                    {
-            //                        //Already built
-            //                        return false;
-            //                    }
-
-            //                    if (city.CanBuildLogistics(2))
-            //                    {
-            //                        subTile.terrainAmount = 2;
-            //                    }
-            //                    city.buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
-            //                    break;
-
-
-            //                case TerrainBuildingType.WorkerHut:
-            //                    city.onWorkHutBuild(true, false);
-            //                    break;
-            //                case TerrainBuildingType.WorkerHutLarge:
-            //                    city.onWorkHutBuild(true, true);
-            //                    break;
-
-            //                case TerrainBuildingType.ServiceMenHouse_small:
-            //                    city.onServiceHouseBuild(true, false);
-            //                    break;
-            //                case TerrainBuildingType.ServiceMenHouse_Large:
-            //                    city.onServiceHouseBuild(true, true);
-            //                    break;
-
-            //                case TerrainBuildingType.GuardHouse_Small:
-            //                    city.onGuardHouseBuild(true, false);
-            //                    break;
-            //                case TerrainBuildingType.GuardHouse_Large:
-            //                    city.onGuardHouseBuild(true, true);
-            //                    break;
-
-
-
-            //                case TerrainBuildingType.SoldierBarracks:
-            //                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.SoldierBarracks));
-            //                    break;
-            //                case TerrainBuildingType.ArcherBarracks:
-            //                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.ArcherBarracks));
-            //                    break;
-            //                case TerrainBuildingType.WarmachineBarracks:
-            //                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.WarmachineBarracks));
-            //                    break;
-            //                case TerrainBuildingType.KnightsBarracks:
-            //                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.KnightsBarracks));
-            //                    break;
-            //                case TerrainBuildingType.GunBarracks:
-            //                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.GunBarracks));
-            //                    break;
-            //                case TerrainBuildingType.CannonBarracks:
-            //                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.CannonBarracks));
-            //                    break;
-
-            //                case TerrainBuildingType.Postal:
-            //                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 1, DeliveryStatus.DeliveryType_Resource));
-            //                    break;
-            //                case TerrainBuildingType.PostalLevel2:
-            //                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 2, DeliveryStatus.DeliveryType_Resource));
-            //                    break;
-            //                case TerrainBuildingType.PostalLevel3:
-            //                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 3, DeliveryStatus.DeliveryType_Resource));
-            //                    break;
-
-            //                case TerrainBuildingType.Recruitment:
-            //                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 1, DeliveryStatus.DeliveryType_Men));
-            //                    break;
-            //                case TerrainBuildingType.RecruitmentLevel2:
-            //                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 2, DeliveryStatus.DeliveryType_Men));
-            //                    break;
-            //                case TerrainBuildingType.RecruitmentLevel3:
-            //                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 3, DeliveryStatus.DeliveryType_Men));
-            //                    break;
-
-            //                case TerrainBuildingType.GoldDeliveryLevel1:
-            //                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 1, DeliveryStatus.DeliveryType_Gold));
-            //                    break;
-            //                case TerrainBuildingType.GoldDeliveryLevel2:
-            //                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 2, DeliveryStatus.DeliveryType_Gold));
-            //                    break;
-            //                case TerrainBuildingType.GoldDeliveryLevel3:
-            //                    Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 3, DeliveryStatus.DeliveryType_Gold));
-            //                    break;
-
-
-            //                case TerrainBuildingType.School:
-            //                    Ref.update.AddSyncAction(new SyncAction1Arg<IntVector2>(city.addSchool, subPos));
-            //                    break;
-
-            //                case TerrainBuildingType.ResearchCenter:
-            //                    city.addResearchBuilding(subPos, true);
-            //                    break;
-            //                case TerrainBuildingType.BookPress:
-            //                    city.addResearchBuilding(subPos, false);
-            //                    break;
-
-            //            }
-            //        }
-            //        break;
-
-            //    case TerrainMainType.Wall:
-            //        city.addDefenceBuilding_async(subPos);
-            //        break;
-
-            //    case TerrainMainType.Decor:
-            //        bool statue = false;
-            //        switch ((TerrainDecorType)subType)
-            //        {
-            //            case TerrainDecorType.Statue_ThePlayer:
-            //                statue = true;
-            //                break;
-            //        }
-
-            //        var cityPlayer = city.GetPlayer();
-            //        if (cityPlayer.IsLocalPlayer())
-            //        {
-            //            city.GetPlayer().GetLocalPlayer().statistics.onDecorBuild_async(statue);
-            //        }
-            //        break;
-            //}
+            
             if (city.executeBuildEffectsOnCity(true, subPos, ref subTile, mainType, subType))
             {
+                if (payResources)
+                {
+                    CraftBlueprint bp;
+                    if (altBlueprint != null && altBlueprint.hasResources(city))
+                    {
+                        bp = altBlueprint;
+                    }
+                    else
+                    {
+                        bp = blueprint;
+                    }
 
-                CraftBlueprint bp;
-                if (altBlueprint != null && altBlueprint.hasResources(city))
-                {
-                    bp = altBlueprint;
+                    if (upgrade)
+                    {
+                        bp.payResources(city);
+                    }
+                    else
+                    {
+                        bp.payResources_BuildAndUpgrade(city);
+                    }
                 }
-                else
-                {
-                    bp = blueprint;
-                }
-
-                if (upgrade)
-                {
-                    bp.payResources(city);
-                }
-                else
-                {
-                    bp.payResources_BuildAndUpgrade(city);
-                }
-
                 subTile.SetType(mainType, subType, 1);
                 return true;
 

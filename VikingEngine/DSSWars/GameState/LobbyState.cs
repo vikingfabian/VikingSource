@@ -2135,12 +2135,18 @@ namespace VikingEngine.DSSWars
         public override void LostFocus()
         {
             base.LostFocus();
-            lobbyAmbienceLoop?.StopAndUnload();
+            
         }
+
+        public override void DeleteMe()
+        {
+            base.DeleteMe();
+        }
+
         public override void OnDestroy()
         {
             base.OnDestroy();
-           
+            lobbyAmbienceLoop?.StopAndUnload();
         }
         
 

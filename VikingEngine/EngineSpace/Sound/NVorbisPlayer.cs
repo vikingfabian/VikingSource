@@ -294,88 +294,137 @@ namespace VikingEngine.EngineSpace.Sound
                 // Fill buffers if needed
                 while (_dsei.PendingBufferCount < QueueTarget && _run/* && _vorbis != null*/)
                 {
-                    var vorbis_sp = _vorbis;
-                    if (vorbis_sp == null)
+                    var vorbis = _vorbis;                 // snapshot decoder
+                    var dsei = _dsei;                   // snapshot device
+                    int sr = _sampleRate;             // snapshot sample rate
+                    int ch = _channels;               // snapshot channels
+
+                    if (vorbis == null || dsei == null || sr <= 0 || (ch != 1 && ch != 2))
+                        break;
+
+                    // Compute sizes from snapshots ONLY:
+                    int bytesPerSample = sizeof(short);
+                    int samplesPerBuffer = (int)(BufferMillis * sr / 1000.0); // per-channel samples
+                    int frameSamples = samplesPerBuffer * ch;             // interleaved total
+
+                    // Allocate (or reallocate) working buffers if needed:
+                    floatBuf ??= new float[frameSamples];
+                    if (floatBuf.Length < frameSamples) floatBuf = new float[frameSamples];
+                    pcm ??= new short[frameSamples];
+                    if (pcm.Length < frameSamples) pcm = new short[frameSamples];
+                    bytes ??= new byte[frameSamples * bytesPerSample];
+                    if (bytes.Length < frameSamples * bytesPerSample) bytes = new byte[frameSamples * bytesPerSample];
+
+                    // Read interleaved float samples:
+                    int read = vorbis.ReadSamples(floatBuf, 0, frameSamples);
+
+                    // ... (your end/loop-points code unchanged, but use 'vorbis' and 'sr/ch')
+
+                    // Convert and submit using snapshots:
+                    float gain = Math.Clamp(_fadeGain, 0f, 1f);
+                    for (int i = 0; i < read; i++)
+                    {
+                        float f = floatBuf[i] * gain;
+                        if (f < -1f) f = -1f; else if (f > 1f) f = 1f;
+                        pcm[i] = (short)(f * 32767f);
+                    }
+                    int byteCount = read * bytesPerSample;
+
+                    // (Optional) clamp to block align just in case:
+                    int blockAlign = ch * bytesPerSample;             // 2 bytes * channels
+                    byteCount -= (byteCount % blockAlign);
+
+                    Buffer.BlockCopy(pcm, 0, bytes, 0, byteCount);
+
+                    if (byteCount == 0)
                     {
                         break;
                     }
-                    else
-                    {
-                        int bytesPerSample = sizeof(short);
-                        int samplesPerBuffer = (int)(BufferMillis * _sampleRate / 1000.0);
-                        int frameSamples = samplesPerBuffer * _channels;
 
-                        floatBuf ??= new float[frameSamples];
-                        pcm ??= new short[frameSamples];
-                        bytes ??= new byte[frameSamples * bytesPerSample];
+                    dsei.SubmitBuffer(bytes, 0, byteCount);
+                    _buffersQueued++;
+                    //var vorbis_sp = _vorbis;
+                    //if (vorbis_sp == null)
+                    //{
+                    //    break;
+                    //}
+                    //else
+                    //{
+                    //    int bytesPerSample = sizeof(short);
+                    //    int samplesPerBuffer = (int)(BufferMillis * _sampleRate / 1000.0);
+                    //    int frameSamples = samplesPerBuffer * _channels;
 
-                        int read = vorbis_sp.ReadSamples(floatBuf, 0, frameSamples);
+                    //    floatBuf ??= new float[frameSamples];
+                    //    pcm ??= new short[frameSamples];
+                    //    bytes ??= new byte[frameSamples * bytesPerSample];
 
-                        if (read == 0)
-                        {
-                            // Hit end
-                            if (IsRepeating)
-                            {
-                                // Looping: either loop the whole file or to explicit loop points
-                                if (_loopStartSec.HasValue)
-                                    vorbis_sp.TimePosition = TimeSpan.FromSeconds(_loopStartSec.Value);
-                                else
-                                    vorbis_sp.TimePosition = TimeSpan.Zero;
-                                continue;
-                            }
-                            else
-                            {
-                                // Natural end — stop and notify on main thread context (we're already background; safe to call event)
-                                StopInternal(hardStop: false);
-                                MediaEnded?.Invoke();
-                                break;
-                            }
-                        }
+                    //    int read = vorbis_sp.ReadSamples(floatBuf, 0, frameSamples);
 
-                        // Apply loop end clamp (if set)
-                        if (_loopEndSec.HasValue)
-                        {
-                            double posEnd = vorbis_sp.TimePosition.TotalSeconds;
-                            double posStart = posEnd - (double)read / (_sampleRate * _channels);
-                            if (posEnd > _loopEndSec.Value)
-                            {
-                                // We read past loop end; trim the frame to just before loop end
-                                double extraSec = posEnd - _loopEndSec.Value;
-                                int samplesToTrim = (int)Math.Round(extraSec * _sampleRate * _channels);
-                                int trimmed = Math.Max(0, read - samplesToTrim);
-                                if (trimmed <= 0)
-                                {
-                                    // Force loop to start, then continue next iteration
-                                    if (_loopStartSec.HasValue)
-                                        vorbis_sp.TimePosition = TimeSpan.FromSeconds(_loopStartSec.Value);
-                                    else
-                                        vorbis_sp.TimePosition = TimeSpan.Zero;
-                                    continue;
-                                }
-                                read = trimmed;
+                    //    if (read == 0)
+                    //    {
+                    //        // Hit end
+                    //        if (IsRepeating)
+                    //        {
+                    //            // Looping: either loop the whole file or to explicit loop points
+                    //            if (_loopStartSec.HasValue)
+                    //                vorbis_sp.TimePosition = TimeSpan.FromSeconds(_loopStartSec.Value);
+                    //            else
+                    //                vorbis_sp.TimePosition = TimeSpan.Zero;
+                    //            continue;
+                    //        }
+                    //        else
+                    //        {
+                    //            // Natural end — stop and notify on main thread context (we're already background; safe to call event)
+                    //            StopInternal(hardStop: false);
+                    //            MediaEnded?.Invoke();
+                    //            break;
+                    //        }
+                    //    }
 
-                                // After we submit this trimmed buffer, rewind to loop start
-                                // by setting DecodedTime for the next iteration:
-                                if (_loopStartSec.HasValue)
-                                    vorbis_sp.TimePosition = TimeSpan.FromSeconds(_loopStartSec.Value);
-                                else
-                                    vorbis_sp.TimePosition = TimeSpan.Zero;
-                            }
-                        }
+                    //    // Apply loop end clamp (if set)
+                    //    if (_loopEndSec.HasValue)
+                    //    {
+                    //        double posEnd = vorbis_sp.TimePosition.TotalSeconds;
+                    //        double posStart = posEnd - (double)read / (_sampleRate * _channels);
+                    //        if (posEnd > _loopEndSec.Value)
+                    //        {
+                    //            // We read past loop end; trim the frame to just before loop end
+                    //            double extraSec = posEnd - _loopEndSec.Value;
+                    //            int samplesToTrim = (int)Math.Round(extraSec * _sampleRate * _channels);
+                    //            int trimmed = Math.Max(0, read - samplesToTrim);
+                    //            if (trimmed <= 0)
+                    //            {
+                    //                // Force loop to start, then continue next iteration
+                    //                if (_loopStartSec.HasValue)
+                    //                    vorbis_sp.TimePosition = TimeSpan.FromSeconds(_loopStartSec.Value);
+                    //                else
+                    //                    vorbis_sp.TimePosition = TimeSpan.Zero;
+                    //                continue;
+                    //            }
+                    //            read = trimmed;
 
-                        // Convert float [-1..1] to 16-bit PCM, applying fade gain
-                        float gain = Math.Clamp(_fadeGain, 0f, 1f);
-                        for (int i = 0; i < read; i++)
-                        {
-                            float f = floatBuf[i] * gain;
-                            f = f < -1f ? -1f : (f > 1f ? 1f : f);
-                            pcm[i] = (short)(f * short.MaxValue);
-                        }
+                    //            // After we submit this trimmed buffer, rewind to loop start
+                    //            // by setting DecodedTime for the next iteration:
+                    //            if (_loopStartSec.HasValue)
+                    //                vorbis_sp.TimePosition = TimeSpan.FromSeconds(_loopStartSec.Value);
+                    //            else
+                    //                vorbis_sp.TimePosition = TimeSpan.Zero;
+                    //        }
+                    //    }
 
-                        Buffer.BlockCopy(pcm, 0, bytes, 0, read * bytesPerSample);
-                        _dsei.SubmitBuffer(bytes, 0, read * bytesPerSample);
-                        _buffersQueued++;
-                    }
+                    //    // Convert float [-1..1] to 16-bit PCM, applying fade gain
+                    //    float gain = Math.Clamp(_fadeGain, 0f, 1f);
+                    //    for (int i = 0; i < read; i++)
+                    //    {
+                    //        float f = floatBuf[i] * gain;
+                    //        f = f < -1f ? -1f : (f > 1f ? 1f : f);
+                    //        pcm[i] = (short)(f * short.MaxValue);
+                    //    }
+
+                    //    Buffer.BlockCopy(pcm, 0, bytes, 0, read * bytesPerSample);
+                    //    _dsei.SubmitBuffer(bytes, 0, read * bytesPerSample);
+                    //    _buffersQueued++;
+                //}
                 }
 
                 // Sleep a tiny bit to avoid hot spinning

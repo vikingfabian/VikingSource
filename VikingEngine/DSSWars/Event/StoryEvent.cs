@@ -8,7 +8,6 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Event
 {
@@ -278,6 +277,42 @@ namespace VikingEngine.DSSWars.Event
         public override int OrderIndex()
         {
             return EventsOrder.AiWarDelay;
+        }
+    }
+
+    class StoryEvent_FirstAttack : AbsStoryEvent
+    {
+        public override EventType StoryEventType()
+        {
+            return Event.EventType.FirstAttack;
+        }
+        public override void onStart()
+        {
+            init(
+                triggerTimeSpan_Minutes: new IntervalF(40f, 60f),
+                nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 1f, DssConst.HeadCityStartMaxWorkForce * 2f));
+        }
+
+        protected override void calcAndRunEvent_async()
+        {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                var attacker = DssRef.state.events.findAttackingNeighborFaction_keepExpanding(p.faction);
+                if (attacker != null)
+                {
+                    attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
+                    DssRef.diplomacy.declareWar(attacker, p.faction);
+                }
+            }
+        }
+
+        public override bool RunWarManager()
+        {
+            return false;
+        }
+        public override int OrderIndex()
+        {
+            return EventsOrder.FirstAttack;
         }
     }
 
@@ -1144,13 +1179,14 @@ namespace VikingEngine.DSSWars.Event
         //Do NOT use for save
         public const int AiDelay = 1;
         public const int AiWarDelay = 2;
-        public const int WarmanagerDelay = 3;
-        public const int Barbarians = 4;
-        public const int Mercenaries = 5;
-        public const int Cohalition = 6;
-        public const int DarkLordWarning = 7;
-        public const int DarkLord = 8;
-        public const int DefeatTheBoss = 9;
+        public const int FirstAttack = 3;
+        public const int WarmanagerDelay = 4;
+        public const int Barbarians = 5;
+        public const int Mercenaries = 6;
+        public const int Cohalition = 7;
+        public const int DarkLordWarning = 8;
+        public const int DarkLord = 9;
+        public const int DefeatTheBoss = 10;
         //public const int Factories = 7;
         //public const int FactoriesDestroyed = 8;
         //public const int DarkLordInPerson = 9;
@@ -1166,6 +1202,7 @@ namespace VikingEngine.DSSWars.Event
     {        
         AiDelay,
         AiWarDelay,
+        FirstAttack,
         WarmanagerDelay,
         
         Barbarians,

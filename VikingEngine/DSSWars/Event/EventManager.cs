@@ -227,26 +227,33 @@ namespace VikingEngine.DSSWars.Event
             if (newGame)
             {
                 if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
-                {
-                    addStoryEvent(new List<AbsStoryEvent>
-                    {
-                        new StoryEvent_AiDelay(),
-                        new StoryEvent_AiWarDelay(),
-                        new StoryEvent_WarmanagerDelay(),
-                    }, true);
+                {                  
 
                     if (DssRef.difficulty.runStory &&
                         PlatformSettings.STEAM_DEMO == false)
                     {
                         addStoryEvent(new List<AbsStoryEvent>
                         {
+                            new StoryEvent_AiDelay(),
+                            new StoryEvent_AiWarDelay(),
+                            new StoryEvent_FirstAttack(),
+                            new StoryEvent_WarmanagerDelay(),
                             new StoryEvent_Barbarians(),
                             new StoryEvent_Mercenaries(),
                             new StoryEvent_Cohalition(),
                             new StoryEvent_DarkLordWarning(),
                             new StoryEvent_DarkLord(),
                             new StoryEvent_DefeatTheBoss(),
-                        }, false);
+                        }, true);
+                    }
+                    else
+                    {
+                        addStoryEvent(new List<AbsStoryEvent>
+                        {
+                            new StoryEvent_AiDelay(),
+                            new StoryEvent_AiWarDelay(),
+                            new StoryEvent_WarmanagerDelay(),
+                        }, true);
                     }
                 }
 
@@ -772,11 +779,58 @@ namespace VikingEngine.DSSWars.Event
             return null;
         }
 
+        public Faction findAttackingNeighborFaction_keepExpanding(Faction defender)
+        {
+            //var cities = defender.cities.toList();
+            bool[] factionsChecked = new bool[DssRef.world.factions.Array.Length];
+            List<Faction> factionsToCheck = new List<Faction>(8);
+            factionsToCheck.Add(defender);
+            factionsChecked[defender.myIndex] = true;
+
+            while (factionsToCheck.Count > 0)
+            {
+                int checkIx = Math.Min(Ref.rnd.Int(factionsToCheck.Count), Ref.rnd.Int(factionsToCheck.Count));
+                Faction check = arraylib.Pull(factionsToCheck, checkIx);
+
+                var cities = check.cities.toList();
+
+                while (cities.Count > 0)
+                {
+                    var city = arraylib.RandomListMemberPop(cities);
+
+                    if (city != null)
+                    {
+                        foreach (var cindex in city.neighborCities)
+                        {
+                            var otherfaction = DssRef.world.cities[cindex].GetFaction();
+                            if (otherfaction.myIndex != city.factionIndex &&
+                                !factionsChecked[otherfaction.myIndex])
+                            {
+                                if (factionMayStartWar(otherfaction, defender))
+                                {
+                                    return otherfaction;
+                                }
+                                else
+                                {
+                                    factionsToCheck.Add(otherfaction);
+                                    factionsChecked[otherfaction.myIndex] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         public bool factionMayStartWar(Faction attacker, Faction defender)
         {
             if ((attacker.factiontype == FactionType.DefaultAi || attacker.diplomaticSide == DiplomaticSide.Dark) &&
                 attacker.armies.Count > 0)
             {
+                if (attacker.myIndex == DssRef.settings.Faction_DarkFollower && defender.player.IsLocalPlayer())
+                { return false; }
+
                 var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
                 if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
                 {
@@ -880,6 +934,8 @@ namespace VikingEngine.DSSWars.Event
                     return new StoryEvent_AiDelay();
                 case EventType.AiWarDelay:
                     return new StoryEvent_AiWarDelay();
+                case EventType.FirstAttack:
+                    return new StoryEvent_FirstAttack();
                 case EventType.WarmanagerDelay:
                     return new StoryEvent_WarmanagerDelay();
                 case EventType.Barbarians:

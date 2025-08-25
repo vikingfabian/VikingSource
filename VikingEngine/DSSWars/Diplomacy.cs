@@ -219,7 +219,6 @@ namespace VikingEngine.DSSWars
             return true;
         }
 
-
         public List<int> collectWars(Faction aifaction)
         {
             List<int> wars = new List<int>();

@@ -2467,6 +2467,9 @@
 #begin VoxelModel/LfWars/fol_tree_soft.vox
 /copy:VoxelModel/LfWars/fol_tree_soft.vox
 
+#begin VoxelModel/LfWars/godfire.vox
+/copy:VoxelModel/LfWars/godfire.vox
+
 #begin VoxelModel/LfWars/Hen.vox
 /copy:VoxelModel/LfWars/Hen.vox
 

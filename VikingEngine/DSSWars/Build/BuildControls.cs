@@ -80,11 +80,13 @@ namespace VikingEngine.DSSWars.Build
                         {
                             var build = BuildLib.BuildOptions[(int)placeBuildingType];
                             SubTile subTile = DssRef.world.subTileGrid.Get(subTilePos);
-                            if (build.execute_async(city, subTilePos, ref subTile, upgrade))
+                            if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
                             {
                                 EditSubTile edit = new EditSubTile(subTilePos, subTile, true, true, false);
                                 edit.Submit();
                             }
+
+                            new GodBuild(subTilePos);
                         }
                         else if (placeBuildingOption().blueprint.meetsRequirements(city))
                         {
@@ -119,6 +121,7 @@ namespace VikingEngine.DSSWars.Build
                         if (DssRef.difficulty.GodPowers())
                         {
                             BuildLib.Demolish(city, subTilePos);
+                            new GodBuild(subTilePos);
                         }
                         else
                         {

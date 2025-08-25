@@ -1034,6 +1034,29 @@ namespace VikingEngine.DSSWars
                 FactionType.AshgroveWard,
                 FactionType.HragmarHorncarvers,
 
+                FactionType.SylvaranGlade,
+                FactionType.DrelmirePact,
+                FactionType.KhazrunForgeclan,
+                FactionType.VeylanHorselords,
+                FactionType.ThalosCovenant,
+                FactionType.NerathianTideguard,
+                FactionType.SkaruunExiles,
+                FactionType.DraktharDominion,
+                FactionType.MalrekIronbound,
+
+                FactionType.Starshield,    //
+                FactionType.Bluepeak,      //
+                FactionType.Hoft,          //
+                FactionType.BranthollowBarony,   //
+                FactionType.DunwadeHold,         //
+                FactionType.CaerwynMarches,      //
+                FactionType.StonevaleFreehold,   //
+                FactionType.GlenmereLordship,    //
+                FactionType.ArveldonPrincipality,//
+                FactionType.WestmereReaches,     //
+                FactionType.ThornwickWardens,    //
+                FactionType.EvermereFief,        //
+                FactionType.BryndralHollow       //
             };
         }
 

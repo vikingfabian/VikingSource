@@ -715,12 +715,12 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// just to test that achivements run
         /// </summary>
-        first_game,//i
+        first_game,//i, t
 
         /// <summary>
         /// Terminate the first faction to attack you
         /// </summary>
-        destroy_first_attacker_any,
+        destroy_first_attacker_any,//i
         destroy_first_attacker_100,
 
 

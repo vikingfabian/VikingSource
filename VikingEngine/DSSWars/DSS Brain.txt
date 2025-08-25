@@ -1,24 +1,36 @@
 ﻿UPDATE
 Change Log:
 * HUD improvements
-* The war manager is creating wars against you 5 times slower
-* Added 15 minutes to the war delay event, plus 15min on the first attacker
 * ai wont ally if it adds more enemies (than the common enemy)
 * fixed music crash
+* fixed merge alliance crash
+* fixed: After changing gold mine priority on global scale it does not affect the cities.
+* fixed: flag changes to players flag when controlling an army in god mode
+* Added 20 named factions
+* fixed: the countries change flag after save/load
 
-Spectator mode:
-* 
-
-Language change log:
-* Updated Steam ai description: "Localizations are a mix of manual and machine translation."
+Story:
+* The war manager is creating wars against you 5 times slower
+* Added 15 minutes to the war delay event, plus 15min on the first attacker
+* added "The first attack" to the story
 
 ACHIEVEMENTS
 * Added 2:
 /// <summary>
-/// Terminate the first faction to attack you
+/// Terminate the first faction to 
+attack you
 /// </summary>
 destroy_first_attacker_any,
 destroy_first_attacker_100,
+
+Spectator mode:
+* god fire effect
+* placing buildings dont use resources
+
+Language change log:
+* Updated Steam ai description: "Localizations are a mix of manual and machine translation."
+
+
 
 Casual:
 * 
@@ -26,6 +38,7 @@ Casual:
 Event timers (are slightly random)
 - Ai delay: 8 minutes
 - Ai peace time: 30 min
+- The first attack: 50min
 - War manager start: 40min
 - Barbarians: 3 hours
 - Mercenaries: 8 hours (total 12 hours by now)
@@ -33,20 +46,20 @@ Event timers (are slightly random)
 - Boss warning: 25 hours
 - Boss; 1 hour
 Plus the boss fight: about 10 hours
-(total: about 60 hours)
+(total: about 65 hours)
 
 #Pics
 build building icon
 
 #must do#
+x editor flag, always saves to 0
+x ambience is heard on zero volume
 x broken music message gone
-X the first attack (event)
 x music should not play when master = 0
 x block black market food behind logistics
-x god building placements flame
 x test all achievements
 x full game achievements + translations
-
+x italian
 
 
 

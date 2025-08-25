@@ -484,7 +484,7 @@ namespace VikingEngine.DSSWars.Work
                 buildOrder.value = Bound.Max(factionTemplate.buildOrder.value, city.MaxBuildPrio());
             }
 
-            smeltgold.onFactionValueChange(factionTemplate.coinmaker_copper);
+            smeltgold.onFactionValueChange(factionTemplate.smeltgold);
             coinmaker_copper.onFactionValueChange(factionTemplate.coinmaker_copper);
             coinmaker_bronze.onFactionValueChange(factionTemplate.coinmaker_bronze);
             coinmaker_silver.onFactionValueChange(factionTemplate.coinmaker_silver);
