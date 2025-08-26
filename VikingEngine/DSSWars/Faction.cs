@@ -1430,12 +1430,40 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Forest hillfolk, stubborn and hearty, famed for boar-hunting feasts.
         /// </summary>
-        BryndralHollow
-    
+        BryndralHollow,
 
-}
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        Mendog,
 
-enum FactionGroupType
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        Minde,
+
+        /// <summary>
+        /// A proud family of royal knights
+        /// </summary>
+        FloKingdom,
+
+        /// <summary>
+        /// A macon family with the secrets to advanced buildings
+        /// </summary>
+        CarolusKeksenmark,
+
+        /// <summary>
+        /// Theme: A confederation of hobbit villages along winding streams, known for gardens, festivals, and fiercely defended borders when threatened.
+        /// </summary>
+        BramblebrookHill,
+
+        /// <summary>
+        /// Theme: Hill-dwelling hobbits in cozy burrows, famous for cider, storytelling, and their legendary hospitality (and occasional trickery).
+        /// </summary>
+        Tumblehill,
+    }
+
+    enum FactionGroupType
     {
         Other,
         Nordic,

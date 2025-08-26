@@ -131,7 +131,36 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public string FactionName_BryndralHollow => "Bryndral Hollow";
 
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        public string FactionName_Mendog => "Mendog";
 
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        public string FactionName_Minde=> "Minde";
+
+        /// <summary>
+        /// A proud family of royal knights
+        /// </summary>
+        public string FactionName_FloKingdom=> "Flo kingdom";
+
+        /// <summary>
+        /// A macon family with the secrets to advanced buildings
+        /// </summary>
+        public string FactionName_CarolusKeksenmark=> "Carolus Keksenmark";
+
+
+        /// <summary>
+        /// Theme: A confederation of hobbit villages along winding streams, known for gardens, festivals, and fiercely defended borders when threatened.
+        /// </summary>
+        public string FactionName_BramblebrookHill => "Bramblebrook Hill";
+
+        /// <summary>
+        /// Theme: Hill-dwelling hobbits in cozy burrows, famous for cider, storytelling, and their legendary hospitality (and occasional trickery).
+        /// </summary>
+        public string FactionName_Tumblehill => "Tumblehill";
     }
 
 }

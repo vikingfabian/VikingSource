@@ -148,6 +148,27 @@ namespace VikingEngine.DSSWars.Players
                     techSetup();
                     name = DssRef.todoLang.FactionName_BryndralHollow;
                     break;
+                case FactionType.Mendog:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_Mendog;
+                    break;
+                case FactionType.Minde:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_Minde;
+                    break;
+                case FactionType.FloKingdom:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_FloKingdom;
+                    break;
+                case FactionType.CarolusKeksenmark:
+                    defaultSetup();
+                    techSetup();
+
+                    name = DssRef.todoLang.FactionName_CarolusKeksenmark;
+                    break;
 
                 case FactionType.SylvaranGlade:
                     defaultSetup();
@@ -730,6 +751,20 @@ namespace VikingEngine.DSSWars.Players
                     techSetup();
                     break;
 
+                case FactionType.BramblebrookHill:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_BramblebrookHill;
+                    aggressionLevel = AggressionLevel0_Passive;
+                    faction.diplomaticSide = DiplomaticSide.Light;
+                    break;
+                case FactionType.Tumblehill:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_Tumblehill;
+                    aggressionLevel = AggressionLevel0_Passive;
+                    faction.diplomaticSide = DiplomaticSide.Light;
+                    break;
 
                 default:
                     throw new NotImplementedException("ai player " + faction.factiontype);

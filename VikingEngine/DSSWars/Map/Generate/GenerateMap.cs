@@ -1408,7 +1408,16 @@ namespace VikingEngine.DSSWars.Map.Generate
                 //region.ApplyFaction(DragonSlayer);
             }
 
-            
+            {
+                var faction = new Faction(world, FactionType.BramblebrookHill);
+                int size = MathExt.MultiplyInt(0.3, standardWorkForce);
+                region.GetStartFactionRegion(size, collection_pullNextCity(cityCultureCollection.LargeGreen), world, faction);
+            }
+            {
+                var faction = new Faction(world, FactionType.Tumblehill);
+                int size = MathExt.MultiplyInt(0.3, standardWorkForce);
+                region.GetStartFactionRegion(size, collection_pullNextCity(cityCultureCollection.LargeGreen), world, faction);
+            }
         }
 
         City collection_pullNextCity(List<City> collection)

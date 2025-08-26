@@ -1056,7 +1056,12 @@ namespace VikingEngine.DSSWars
                 FactionType.WestmereReaches,     //
                 FactionType.ThornwickWardens,    //
                 FactionType.EvermereFief,        //
-                FactionType.BryndralHollow       //
+                FactionType.BryndralHollow,       //
+
+                FactionType.Mendog,
+                FactionType.Minde,
+                FactionType.FloKingdom,
+                FactionType.CarolusKeksenmark,
             };
         }
 
