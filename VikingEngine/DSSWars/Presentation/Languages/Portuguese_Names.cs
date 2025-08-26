@@ -1,83 +1,76 @@
-﻿using System;
+// Auto-generated pt-BR localization — Army & City Name Generator word lists
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Presentation
 {
     partial class Portuguese
     {
-        //The name generator create unique names for the armies by combining random words
-        //Names does not require one-to-one translations, the number of names in the lists is not important, the game will adapt is there is more or less options
-
-        /// <summary>
-        /// A way to merge to random words
-        /// </summary>
-        public override string NameGenerator_AOfTheB => "{0} of the {1}";
+        /// <summary>A way to merge two random words</summary>
+        public override string NameGenerator_AOfTheB => "{0} de {1}";
 
         static readonly List<string> adjectives = new List<string> {
-            "Valiant", "Mystic", "Dark", "Golden", "Ancient", "Frozen", "Eternal",
-            "Shadowy", "Bright", "Crimson", "Fierce", "Glorious", "Noble", "Savage",
-            "Vengeful", "Brave", "Stormy", "Majestic", "Ruthless", "Cunning", "Radiant",
-            "Twilight", "Dawn", "Dusk", "Iron", "Silver", "Spectral", "Celestial", "Infernal",
-            "Enchanted", "Arcane", "Hidden", "Lost", "Forgotten", "Legendary", "Mythic",
-            "Silent", "Thundering", "Burning", "Shattered", "Wandering", "Ethereal", "Phantom",
-            "Emerald", "Ruby", "Sapphire", "Diamond", "Jade", "Strong"
+            "Valente", "Místico", "Sombrio", "Dourado", "Antigo", "Congelado", "Eterno",
+            "Sombrio", "Luminoso", "Carmesim", "Feroz", "Glorioso", "Nobre", "Selvagem",
+            "Vingativo", "Corajoso", "Tempestuoso", "Majestoso", "Implacável", "Astuto", "Radiante",
+            "Crepuscular", "Aurora", "Anoitecer", "de Ferro", "de Prata", "Espectral", "Celestial", "Infernal",
+            "Encantado", "Arcano", "Oculto", "Perdido", "Esquecido", "Lendário", "Mítico",
+            "Silencioso", "Trovejante", "Ardente", "Estilhaçado", "Errante", "Etéreo", "Fantasma",
+            "Esmeralda", "Rubi", "Safira", "Diamante", "Jade", "Forte"
         };
 
         static readonly List<string> colors = new List<string> {
-            "Red", "Black", "White", "Emerald", "Azure", "Scarlet", "Violet", "Indigo",
-            "Gold", "Silver", "Bronze", "Copper", "Sapphire", "Ruby", "Amethyst",
-            "Jade", "Cerulean", "Crimson", "Magenta", "Ebony", "Ivory", "Teal", "Turquoise",
-            "Maroon", "Olive", "Peach", "Grey", "Charcoal", "Lavender", "Lime", "Navy",
-            "Ochre", "Plum", "Quartz", "Salmon", "Tan", "Ultramarine", "Vermilion", "Wisteria",
-            "Xanadu", "Yellow", "Zaffre", "Azure", "Blue", "Green", "Honeydew",
-            "Iris", "Jasmine", "Khaki"
+            "Vermelho", "Preto", "Branco", "Esmeralda", "Azul-celeste", "Escarlate", "Violeta", "Anil",
+            "Dourado", "Prata", "Bronze", "Cobre", "Safira", "Rubi", "Ametista",
+            "Jade", "Cerúleo", "Carmesim", "Magenta", "Ébano", "Marfim", "Azul-petróleo", "Turquesa",
+            "Vinho", "Oliva", "Pêssego", "Cinza", "Carvão", "Lavanda", "Verde-limão", "Azul-marinho",
+            "Ocre", "Ameixa", "Quartzo", "Salmão", "Bege", "Ultramarino", "Vermilhão", "Glicínia",
+            "Xanadu", "Amarelo", "Azul-cobalto", "Azul", "Verde", "Verde-melão",
+            "Íris", "Jasmim", "Caqui"
         };
 
         static readonly List<string> creatures = new List<string> {
-            "Dragons", "Wolves", "Eagles", "Lions", "Knights", "Griffins", "Centaurs",
-            "Elves", "Dwarves", "Giants", "Angels", "Mermaids", "Unicorns",
-            "Phoenixes", "Stags", "Horses", "Falcons", "Tigers", "Bears", "Panthers",
-            "Eagles", "Hawks", "Dolphins", "Whales", "Elephants", "Leopards", "Cheetahs",
-            "Ravens", "Owls", "Peacocks", "Swans", "Foxes", "Deer",
-            "Paladins", "Sorcerers", "Mages", "Rogues", "Samurai", "Ninjas",
-            "Archers", "Rangers", "Clerics", "Priests", "Shamans", "Druids",
-            "Sphinxes", "Pegasus", "Cougars", "Jaguars", "Bulls", "Serpents"
+            "Dragões", "Lobos", "Águias", "Leões", "Cavaleiros", "Grifos", "Centauros",
+            "Elfos", "Anões", "Gigantes", "Anjos", "Sereias", "Unicórnios",
+            "Fênixes", "Cervos", "Cavalos", "Falcões", "Tigres", "Ursos", "Panteras",
+            "Águias", "Gaviões", "Golfinhos", "Baleias", "Elefantes", "Leopardos", "Chitas",
+            "Corvos", "Corujas", "Pavões", "Cisnes", "Raposas", "Veados",
+            "Paladinos", "Feiticeiros", "Magos", "Ladinos", "Samurais", "Ninjas",
+            "Arqueiros", "Patrulheiros", "Clérigos", "Sacerdotes", "Xamãs", "Druidas",
+            "Esfinges", "Pégasos", "Pumas", "Jaguares", "Touros", "Serpentes"
         };
 
         static readonly List<string> places = new List<string> {
-            "Forest", "Waste", "Ruin", "Oak", "Mountain", "Lake", "River", "Sea",
-            "Castle", "Tower", "Dungeon", "Cavern", "Palace", "Temple", "Shrine",
-            "Garden", "Village", "City", "Kingdom", "Empire", "Desert", "Glacier",
-            "Volcano", "Valley", "Cliff", "Fortress", "Harbor", "Isle", "Peninsula",
-            "Plain", "Quagmire", "Reef", "Savannah", "Tundra", "Underworld", "Vortex",
-            "Wellspring", "Grove", "Meadow", "Fjord", "Canyon", "Plateau", "Marsh",
-            "Swamp", "Forest Glade", "Moon", "Star", "Galaxy", "Nebula", "Asteroid",
-            "Comet", "Meteor", "Black Hole", "Void", "Nexus", "Dimension", "Sanctuary",
-            "Arena", "Coliseum", "Academy", "Library", "Archive"
+            "Floresta", "Ermo", "Ruína", "Carvalho", "Montanha", "Lago", "Rio", "Mar",
+            "Castelo", "Torre", "Masmorra", "Caverna", "Palácio", "Templo", "Santuário",
+            "Jardim", "Aldeia", "Cidade", "Reino", "Império", "Deserto", "Geleira",
+            "Vulcão", "Vale", "Penhasco", "Fortaleza", "Porto", "Ilha", "Península",
+            "Planície", "Lodaçal", "Recife", "Savana", "Tundra", "Submundo", "Vórtice",
+            "Nascente", "Bosque", "Prado", "Fiorde", "Cânion", "Platô", "Pântano",
+            "Brejo", "Clareira da Floresta", "Lua", "Estrela", "Galáxia", "Nebulosa", "Asteroide",
+            "Cometa", "Meteoro", "Buraco Negro", "Vazio", "Nexus", "Dimensão", "Santuário",
+            "Arena", "Coliseu", "Academia", "Biblioteca", "Arquivo"
         };
 
         static readonly List<string> titles = new List<string> {
-            "Legion", "Brigade", "Cohort", "Battalion", "Regiment", "Division", "Company",
-            "Squadron", "Platoon", "Troop", "Detachment", "Contingent", "Phalanx", "Squad",
-            "Team", "Unit", "Force", "Host", "Horde", "Army", "Navy", "Fleet", "Flotilla",
-            "Wing", "Group", "Pack", "Circle", "Council", "Assembly", "Guild", "Order",
-            "Fellowship", "Clan", "Tribe", "Kinship", "Dynasty", "Empire", "Kingsmen",
-            "Principality", "Duchy", "Barony", "Chapter", "Covenant", "Syndicate",
-            "Coalition", "Alliance", "Confederation", "Federation", "League", "Society",
-            "Academy", "Institute", "Men", "People", "Power"
+            "Legião", "Brigada", "Coorte", "Batalhão", "Regimento", "Divisão", "Companhia",
+            "Esquadrão", "Pelotão", "Tropa", "Destacamento", "Contingente", "Falange", "Esquadra",
+            "Equipe", "Unidade", "Força", "Hoste", "Horda", "Exército", "Marinha", "Frota", "Flotilha",
+            "Ala", "Grupo", "Matilha", "Círculo", "Conselho", "Assembleia", "Guilda", "Ordem",
+            "Sociedade", "Clã", "Tribo", "Linhagem", "Dinastia", "Império", "Homens do Rei",
+            "Principado", "Ducado", "Baronia", "Capítulo", "Pacto", "Sindicato",
+            "Coalizão", "Aliança", "Confederação", "Federação", "Liga", "Sociedade",
+            "Academia", "Instituto", "Homens", "Povo", "Poder"
         };
 
         static readonly List<string> symbols = new List<string> {
-            "Lily", "Tower", "Spear", "Shield", "Crown", "Sword", "Castle", "Star",
-            "Moon", "Sun", "Comet", "Flame", "Wave", "Mountain", "Tree", "Forest",
-            "River", "Stone", "Anvil", "Hammer", "Axe", "Bow", "Arrow", "Quiver",
-            "Helmet", "Gauntlet", "Armor", "Chain", "Key", "Ring", "Lock", "Book", "Scroll",
-            "Potion", "Orb", "Throne", "Banner", "Ring", "Gem", "Pyramid", "Obelisk",
-            "Tower", "Bridge", "Gate", "Wall", "Chalice", "Lantern", "Candle", "Bell",
-            "Feather", "Glass", "Compass"
+            "Lírio", "Torre", "Lança", "Escudo", "Coroa", "Espada", "Castelo", "Estrela",
+            "Lua", "Sol", "Cometa", "Chama", "Onda", "Montanha", "Árvore", "Floresta",
+            "Rio", "Pedra", "Bigorna", "Martelo", "Machado", "Arco", "Flecha", "Aljava",
+            "Elmo", "Manopla", "Armadura", "Corrente", "Chave", "Anel", "Fechadura", "Livro", "Pergaminho",
+            "Poção", "Orbe", "Trono", "Estandarte", "Anel", "Gema", "Pirâmide", "Obelisco",
+            "Torre", "Ponte", "Portão", "Muralha", "Cálice", "Lanterna", "Vela", "Sino",
+            "Pena", "Vidro", "Bússola"
         };
 
         /// <summary>
@@ -89,7 +82,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override List<string> NameGenerator_Army_Places => places;
         public override List<string> NameGenerator_Army_Titles => titles;
         public override List<string> NameGenerator_Army_Symbols => symbols;
-
 
         /*
         * The name generator create unique names for cities by combining random syllables
@@ -167,7 +159,5 @@ namespace VikingEngine.DSSWars.Presentation
         public override List<string> NameGenerator_City_EastTownSuffixes => eastTownSuffixes;
         public override List<string> NameGenerator_City_SouthSyllables => southSyllables;
         public override List<string> NameGenerator_City_SouthTownSuffixes => southTownSuffixes;
-
-
     }
 }

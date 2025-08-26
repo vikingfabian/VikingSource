@@ -218,6 +218,7 @@ namespace VikingEngine
         LangButton_Frensh,
         LangButton_Chinese,
         LangButton_Turkish,
+        LangButton_Italian,
 
         IconBuildArrow,
         IconBuildSelection,

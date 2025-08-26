@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.Presentation
                 LanguageType.French,
                 LanguageType.Spanish,
                 LanguageType.Portuguese,
+                LanguageType.Italian,
                 LanguageType.Turkish,
                 LanguageType.Russian,
                 LanguageType.Chinese,
@@ -57,7 +58,10 @@ namespace VikingEngine.DSSWars.Presentation
 
                 case LanguageType.French:
                     return SpriteName.LangButton_Frensh;
-           
+
+                case LanguageType.Italian:
+                    return SpriteName.LangButton_Italian;
+
                 case LanguageType.Turkish:
                     return SpriteName.LangButton_Turkish;
 
@@ -155,6 +159,12 @@ namespace VikingEngine.DSSWars.Presentation
                 case LanguageType.Portuguese:
                     DssRef.lang = new Portuguese();
                     Ref.langOpt = new OptionsLanguage_Portuguese();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.Italian:
+                    DssRef.lang = new Italian();
+                    Ref.langOpt = new OptionsLanguage_Italian();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
             }

@@ -1,140 +1,104 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+// Auto-generated pt-BR localization (hybrid) — Options / HUD
+// Theme: medieval / low fantasy, accessible gamer-friendly wording
+using System;
 using VikingEngine.EngineSpace.Translation;
 
 namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
+    // Keep a distinct class name so it can live side-by-side with English
     class OptionsLanguage_Portuguese : AbsOptionsLanguage
     {
+        public override string Hud_Cancel => "Cancelar";
+        public override string Hud_Back => "Voltar";
 
-
-        public override string Hud_Cancel => "Cancel";
-        public override string Hud_Back => "Back";
-
-        /// <summary>
-        /// Submenu for when the player will make destructive choices
-        /// </summary>
-        public override string Hud_AreYouSure => "Are you sure?";
+        /// <summary>Submenu for when the player will make destructive choices</summary>
+        public override string Hud_AreYouSure => "Tem certeza?";
 
         public override string Hud_OK => "OK";
-        public override string Hud_Yes => "Yes";
-        public override string Hud_No => "No";
+        public override string Hud_Yes => "Sim";
+        public override string Hud_No => "Não";
 
-        /// <summary>
-        /// Options menu title
-        /// </summary>
-        public override string Options_title => "Options";
+        /// <summary>Options menu title</summary>
+        public override string Options_title => "Opções";
 
-        /// <summary>
-        /// Game control input options, 0: current input
-        /// </summary>
-        public override string InputSelect => "Input: {0}";
+        /// <summary>Game control input options, 0: current input</summary>
+        public override string InputSelect => "Entrada: {0}";
 
-        /// <summary>
-        /// Type of game input
-        /// </summary>
-        public override string InputKeyboardMouse => "Keyboard & mouse";
+        /// <summary>Type of game input</summary>
+        public override string InputKeyboardMouse => "Teclado e mouse";
 
-        /// <summary>
-        /// Type of game input
-        /// </summary>
-        public override string InputController => "Controller";
+        /// <summary>Type of game input</summary>
+        public override string InputController => "Controle";
 
-        /// <summary>
-        /// No game input is selected
-        /// </summary>
-        public override string InputNotSet => "Not set";
+        /// <summary>No game input is selected</summary>
+        public override string InputNotSet => "Não definido";
 
-        /// <summary>
-        /// Label for checkbox. Option for local split screen gameplay.
-        /// </summary>
-        public override string VerticalSplitScreen => "Vertical screen split";
+        /// <summary>Label for checkbox. Option for local split screen gameplay.</summary>
+        public override string VerticalSplitScreen => "Dividir tela na vertical";
 
+        /// <summary>Label for sound slider</summary>
+        public override string SoundOption_MusicVolume => "Volume da música";
 
-        /// <summary>
-        /// Label for sound slider
-        /// </summary>
-        public override string SoundOption_MusicVolume => "Music Volume";
+        /// <summary>Label for sound slider</summary>
+        public override string SoundOption_SoundVolume => "Volume do som";
 
-        /// <summary>
-        /// Label for sound slider
-        /// </summary>
-        public override string SoundOption_SoundVolume => "Sound Volume";
-        
-        /// <summary>
-        /// Screen resolution
-        /// </summary>
-        public override string GraphicsOption_Resolution => "Resolution";
+        /// <summary>Screen resolution</summary>
+        public override string GraphicsOption_Resolution => "Resolução";
         public override string GraphicsOption_Resolution_PercentageOption => "{0}%";
 
-        /// <summary>
-        /// Display the game fullscreen or window mode
-        /// </summary>
-        public override string GraphicsOption_Fullscreen => "Fullscreen";
+        /// <summary>Display the game fullscreen or window mode</summary>
+        public override string GraphicsOption_Fullscreen => "Tela cheia";
 
-        /// <summary>
-        /// Oversize will make the game window be larger than the monitor, for multi monitor support
-        /// </summary>
-        public override string GraphicsOption_OversizeWidth => "Oversize width";
-        public override string GraphicsOption_PercentageOversizeWidth => "{0}% Width";
-        public override string GraphicsOption_OversizeHeight => "Oversize height";
-        public override string GraphicsOption_PercentageOversizeHeight => "{0}% Height";
-        public override string GraphicsOption_Oversize_None => "None";
+        /// <summary>Oversize will make the game window be larger than the monitor, for multi monitor support</summary>
+        public override string GraphicsOption_OversizeWidth => "Largura extra";
+        public override string GraphicsOption_PercentageOversizeWidth => "{0}% Largura";
+        public override string GraphicsOption_OversizeHeight => "Altura extra";
+        public override string GraphicsOption_PercentageOversizeHeight => "{0}% Altura";
+        public override string GraphicsOption_Oversize_None => "Nenhum";
 
-        /// <summary>
-        /// Specific resolutions for when recording to Youtube
-        /// </summary>
-        public override string GraphicsOption_RecordingPresets => "Recording presets";
+        /// <summary>Specific resolutions for when recording to YouTube</summary>
+        public override string GraphicsOption_RecordingPresets => "Presets de gravação";
 
-        /// <summary>
-        /// 0: height resolution
-        /// </summary>
-        public override string GraphicsOption_YoutubePreset => "Youtube {0}p";
+        /// <summary>0: height resolution</summary>
+        public override string GraphicsOption_YoutubePreset => "YouTube {0}p";
 
-        /// <summary>
-        /// Change size on text and icons
-        /// </summary>
-        public override string GraphicsOption_UiScale => "Ui Scale";
-
+        /// <summary>Change size on text and icons</summary>
+        public override string GraphicsOption_UiScale => "Escala da UI";
 
         //---
-        public override string ReversedStereo => "Reversed stereo";
-        public override string Option_Low => "Low";
-        public override string Option_Medium => "Medium";
-        public override string Option_High => "High";
-        public override string MouseSettings_Title => "Mouse input";
-        public override string KeyboardSettings_Title => "Key mapping";
-        public override string MouseButtonAction_None => "No action";
-        public override string MouseButtonAction_Select => "Select";
-        public override string MouseButtonAction_Pan => "Pan";
-        public override string MouseButtonAction_PanAndOrder => "Pan and Order";
-        public override string MouseButtonAction_Order => "Order";
-        public override string MouseButtonAction_Cancel => "Cancel";
+        public override string ReversedStereo => "Estéreo invertido";
+        public override string Option_Low => "Baixo";
+        public override string Option_Medium => "Médio";
+        public override string Option_High => "Alto";
+        public override string MouseSettings_Title => "Entrada do mouse";
+        public override string KeyboardSettings_Title => "Mapeamento de teclas";
+        public override string MouseButtonAction_None => "Sem ação";
+        public override string MouseButtonAction_Select => "Selecionar";
+        public override string MouseButtonAction_Pan => "Arrastar câmera";
+        public override string MouseButtonAction_PanAndOrder => "Arrastar e ordenar";
+        public override string MouseButtonAction_Order => "Ordenar";
+        public override string MouseButtonAction_Cancel => "Cancelar";
 
-        public override string MouseButton_Left => "Left Mouse";
-        public override string MouseButton_Right => "Right Mouse";
-        public override string MouseButton_Middle => "Middle Mouse";
-        public override string MouseButton_X1 => "X1 Button Mouse";
-        public override string MouseButton_X2 => "X2 Button Mouse";
+        public override string MouseButton_Left => "Botão esquerdo";
+        public override string MouseButton_Right => "Botão direito";
+        public override string MouseButton_Middle => "Botão do meio";
+        public override string MouseButton_X1 => "Botão X1 do mouse";
+        public override string MouseButton_X2 => "Botão X2 do mouse";
 
-        //DEMO PATCH 4
-        public override string MouseButtonAction_PanAndCancel => "Pan and Cancel";
-        public override string MouseButtonAction_PanAndOrderAndCancel => "Pan, Order, and Cancel";
+        // DEMO PATCH 4
+        public override string MouseButtonAction_PanAndCancel => "Arrastar e cancelar";
+        public override string MouseButtonAction_PanAndOrderAndCancel => "Arrastar, ordenar e cancelar";
 
-        public override string GraphicsOption_Shadows => "Shadows";
-        public override string GraphicsOption_ShadowType_ModelsToGround => "Models to Ground";
-        public override string GraphicsOption_ShadowType_ModelsToModels => "Models to Models";
+        public override string GraphicsOption_Shadows => "Sombras";
+        public override string GraphicsOption_ShadowType_ModelsToGround => "Modelos no chão";
+        public override string GraphicsOption_ShadowType_ModelsToModels => "Modelos em modelos";
 
-        public override string GraphicsOption_Shadow_MapResolution => "Shadow Map Resolution";
+        public override string GraphicsOption_Shadow_MapResolution => "Resolução do mapa de sombras";
 
-        //DEMO PATCH 5
-        public override string GraphicsOption_RecordingPresets_AddXPixels => "Add {0} pixels";
-        public override string Settings_KeyMapPanSpeed => "Pan speed";
-        public override string Settings_StoreCameraPosition => "Store camera position";
-        public override string Settings_LoadCameraPosition => "Load position";
-
+        // DEMO PATCH 5
+        public override string GraphicsOption_RecordingPresets_AddXPixels => "Adicionar {0} pixels";
+        public override string Settings_KeyMapPanSpeed => "Velocidade do pan";
+        public override string Settings_StoreCameraPosition => "Salvar posição da câmera";
+        public override string Settings_LoadCameraPosition => "Carregar posição";
     }
 }

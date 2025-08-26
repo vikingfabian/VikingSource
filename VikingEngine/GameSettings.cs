@@ -903,6 +903,7 @@ namespace VikingEngine
         Japanese,
         French,
         Turkish,
+        Italian,
     }
 
     enum ThreeOptions
