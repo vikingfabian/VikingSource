@@ -474,7 +474,7 @@ namespace VikingEngine.DSSWars.Work
             mining_gold.onFactionValueChange(factionTemplate.mining_gold);
             mining_mithril.onFactionValueChange(factionTemplate.mining_mithril);
             mining_sulfur.onFactionValueChange(factionTemplate.mining_sulfur);
-            mining_coal.onFactionValueChange(factionTemplate.mining_sulfur);
+            mining_coal.onFactionValueChange(factionTemplate.mining_coal);
 
             trading.onFactionValueChange(factionTemplate.trading);
             autoBuild.onFactionValueChange(factionTemplate.autoBuild);

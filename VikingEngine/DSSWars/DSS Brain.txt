@@ -1,25 +1,25 @@
 ﻿UPDATE
 Change Log:
-* Added 4 cameo factions
-* Added 2 named factions
-* Fixed event timer save error
-* Added more data drift checks
+* Fixed coal mine follow faction
+* Blocked lists from changing during save
+* Added more file health checks
+* Group movement of guards to walls
 
 ACHIEVEMENTS
-* Added 2
+* Fixed: friendship_tier1-3
+* Added 1
 /// <summary>
-/// Reach victory with both the "hill" factions still alive
+/// Ally with both the "hill" factions
 /// </summary>
-worth_saving_any,//i
-worth_saving_100,
-
-Language change log:
-* Updated Steam ai description: "Localizations are a mix of manual and machine translation."
-* Italian and Portoguese machine translations are complete
-
+worthy_friends,//i
 
 Story:
+* Added a random +-10min on "the first attack"
+
+Language change log:
 * 
+
+
 
 Spectator mode:
 * 
@@ -45,15 +45,16 @@ Plus the boss fight: about 10 hours
 build building icon
 
 #must do#
-x editor flag, always saves to 0
+x first attacker/manager must check good/evil
+x first attacker must check strength
+x coinmaker icon is broken
+
 x ambience is heard on zero volume
 x broken music message gone
 x music should not play when master = 0
 x block black market food behind logistics
 x test all achievements
 x full game achievements + translations
-x italian
-
 
 
 #Todo#

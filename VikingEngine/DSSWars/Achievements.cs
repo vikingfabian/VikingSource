@@ -748,7 +748,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Ally with both the "hill" factions
         /// </summary>
-        worthy_friends,//
+        worthy_friends,//i
 
 
         NUM_ACHIEVEMENTS

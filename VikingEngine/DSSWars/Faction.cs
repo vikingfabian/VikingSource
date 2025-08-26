@@ -137,20 +137,21 @@ namespace VikingEngine.DSSWars
             
             w.Write((ushort)factiontype);
             w.Write(money.copper);
+            Debug.WriteCheck(w);
 
-            w.Write((ushort)cities.Count);
-            var citiesC = cities.counter();
-            while (citiesC.Next())
+            var cityList = cities.toList();
+            w.Write((ushort)cityList.Count);
+            foreach(var city in cityList)
             {
-                w.Write((ushort)citiesC.sel.myIndex);
+                w.Write((ushort)city.myIndex);
             }
             Debug.WriteCheck(w);
 
-            w.Write((ushort)armies.Count); 
-            var armiesC = armies.counter();
-            while (armiesC.Next())
-            { 
-                armiesC.sel.writeGameState(w);
+            var armyList = armies.toList();
+            w.Write((ushort)armyList.Count);
+            foreach (var army in armyList)
+            {
+                army.writeGameState(w);
                 Debug.WriteCheck(w);
             }
 
@@ -182,17 +183,21 @@ namespace VikingEngine.DSSWars
             {
                 money.copper = r.ReadInt64();
             }
+            if (subVersion >= 77)
+            {
+                Debug.ReadCheck(r);
+            }
 
             int citiesCount = r.ReadUInt16();
             for (int i = 0; i < citiesCount; i++)
             {
                 int cityIx = r.ReadUInt16();
-                if (arraylib.InBound(DssRef.world.cities, cityIx))
-                {
+                //if (arraylib.InBound(DssRef.world.cities, cityIx))
+                //{
                     var city = DssRef.world.cities[cityIx];
                     //cities.Add(city);
                     city.setFaction(this, true);
-                }
+                //}
             }
             if (subVersion >= 76)
             { 
@@ -204,8 +209,7 @@ namespace VikingEngine.DSSWars
             {
                 var army = new Army();
                 army.readGameState(this, r, subVersion, pointers);
-                //armies.Add(army);
-
+                
                 if (subVersion >= 76)
                 {
                     Debug.ReadCheck(r);

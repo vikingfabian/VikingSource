@@ -104,9 +104,11 @@ namespace VikingEngine.DSSWars.Event
         void asyncCheckVictory()
         {
             int dominationCount = DssRef.storage.mapSize > MapSize.Small ? 5 : 3;
+            
 
             foreach (var p in DssRef.state.localPlayers)
             {
+                int hillFriends = 0;
                 int allyCount = 0;
                 bool worldPeace = true;
 
@@ -132,6 +134,11 @@ namespace VikingEngine.DSSWars.Event
                             if (relation >= RelationType.RelationType3_Ally)
                             {
                                 allyCount++;
+                                if (otherFaction.factiontype == FactionType.BramblebrookHill ||
+                                    otherFaction.factiontype == FactionType.Tumblehill)
+                                {
+                                    hillFriends++;
+                                }
                             }
 
                             if (relation < RelationType.RelationType1_Peace && speak != SpeakTerms.SpeakTermsN2_None)
@@ -146,7 +153,11 @@ namespace VikingEngine.DSSWars.Event
                 if (allyCount > p.previousAllyCount)
                 { 
                     p.previousAllyCount = allyCount;
-
+                    DssRef.achieve.onAllyCount(allyCount);
+                }
+                if (hillFriends >= 2)
+                {
+                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.worthy_friends);
                 }
 
                 if (worldPeace)
