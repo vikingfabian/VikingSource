@@ -229,7 +229,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 for (int link = 0; link < links; ++link)
                 {
                     sideCenter += dir.Direction(radius * world.rnd.Float(0.3f, 0.6f));
-                    placeDot(sideCenter, radius, 2, Color.Brown);
+                    placeDot(sideCenter, radius, 3, Color.Brown);
                 }
 
                 if (world.rnd.Chance(0.05))
