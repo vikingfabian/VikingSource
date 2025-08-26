@@ -144,12 +144,14 @@ namespace VikingEngine.DSSWars
             {
                 w.Write((ushort)citiesC.sel.myIndex);
             }
+            Debug.WriteCheck(w);
 
             w.Write((ushort)armies.Count); 
             var armiesC = armies.counter();
             while (armiesC.Next())
             { 
-                armiesC.sel.writeGameState(w); 
+                armiesC.sel.writeGameState(w);
+                Debug.WriteCheck(w);
             }
 
             writeRelations(w);
@@ -185,9 +187,16 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < citiesCount; i++)
             {
                 int cityIx = r.ReadUInt16();
-                var city = DssRef.world.cities[cityIx];
-                //cities.Add(city);
-                city.setFaction(this, true);
+                if (arraylib.InBound(DssRef.world.cities, cityIx))
+                {
+                    var city = DssRef.world.cities[cityIx];
+                    //cities.Add(city);
+                    city.setFaction(this, true);
+                }
+            }
+            if (subVersion >= 76)
+            { 
+                Debug.ReadCheck(r);
             }
 
             int armiesCount = r.ReadUInt16();
@@ -196,6 +205,11 @@ namespace VikingEngine.DSSWars
                 var army = new Army();
                 army.readGameState(this, r, subVersion, pointers);
                 //armies.Add(army);
+
+                if (subVersion >= 76)
+                {
+                    Debug.ReadCheck(r);
+                }
             }
 
             readRelations(r, subVersion);

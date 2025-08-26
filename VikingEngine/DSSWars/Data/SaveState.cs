@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 12;
-        public const int SubVersion = 74; 
+        public const int SubVersion = 76; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -144,8 +144,9 @@ namespace VikingEngine.DSSWars.Data
             Debug.ReadCheck(r);
             DssRef.world.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
-            DssRef.state.Game().readGameState(r, version.sub, pointers);
             DssRef.time.setTotalTime(meta.playTime);
+            DssRef.state.Game().readGameState(r, version.sub, pointers);
+            
         }
 
         public override void Time_Update(float time_ms)

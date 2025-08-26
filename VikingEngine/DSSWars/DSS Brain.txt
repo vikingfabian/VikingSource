@@ -1,7 +1,9 @@
 ﻿UPDATE
 Change Log:
-* Added 3 cameo factions
+* Added 4 cameo factions
 * Added 2 named factions
+* Fixed event timer save error
+* Added more data drift checks
 
 ACHIEVEMENTS
 * Added 2
@@ -11,6 +13,10 @@ ACHIEVEMENTS
 worth_saving_any,//i
 worth_saving_100,
 
+Language change log:
+* Updated Steam ai description: "Localizations are a mix of manual and machine translation."
+* Italian and Portoguese machine translations are complete
+
 
 Story:
 * 
@@ -18,9 +24,6 @@ Story:
 Spectator mode:
 * 
 
-Language change log:
-* Updated Steam ai description: "Localizations are a mix of manual and machine translation."
-* Italian and Portoguese machine translations are complete
 
 Casual:
 * 
