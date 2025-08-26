@@ -1,20 +1,12 @@
 ﻿UPDATE
 Change Log:
-* Fixed coal mine follow faction
-* Blocked lists from changing during save
-* Added more file health checks
-* Group movement of guards to walls
+* 
 
 ACHIEVEMENTS
-* Fixed: friendship_tier1-3
-* Added 1
-/// <summary>
-/// Ally with both the "hill" factions
-/// </summary>
-worthy_friends,//i
+* 
 
 Story:
-* Added a random +-10min on "the first attack"
+* 
 
 Language change log:
 * 
