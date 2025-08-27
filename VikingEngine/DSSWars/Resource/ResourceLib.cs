@@ -423,6 +423,15 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.AutomatedItem:
                     return SpriteName.AutomationGearIcon;
 
+                case ItemResourceType.CopperCoin:
+                    return SpriteName.WarsResource_CopperCoin;
+                case ItemResourceType.BronzeCoin:
+                    return SpriteName.WarsResource_BonzeCoin;
+                case ItemResourceType.SilverCoin:
+                    return SpriteName.WarsResource_SilverCoin;
+                case ItemResourceType.ElfCoin:
+                    return SpriteName.WarsResource_ElfCoin;
+
                 case ItemResourceType.NONE:
                     return SpriteName.BluePrintSquareFull;
 

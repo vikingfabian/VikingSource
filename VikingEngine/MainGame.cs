@@ -41,8 +41,7 @@ namespace VikingEngine
             TaskExt.CheckStorageQue();
 
             Ref.update.AbortThreads();
-            //Ref.asynchUpdate.AbortThreads();
-            //Engine.Storage.AbortSaveThread(true);
+
         }
 
         /* Fields */
@@ -237,9 +236,6 @@ namespace VikingEngine
             Ref.update.exitApplication = true;
             AbortAllThreads();
 
-            //System.Threading.Thread.Sleep(16);
-
-            //MusicPlayer.StopMusic();
             Ref.music?.Dispose();
             Engine.XGuide.OnSuspend(true);
             //Ref.gamestate.onClosingApplication();
@@ -247,6 +243,14 @@ namespace VikingEngine
 
             //Input.PlayerInputMap.StopAllVibration();
             Input.Mouse.Visible = true;
+
+            System.Threading.Tasks.Task.Delay(500).Wait();
+            //Call if one of the threads arent close after some time
+            if (Ref.update.HaveLiveThreads())
+            {
+                //System.ExecutionEngineException
+                Environment.FailFast("Forces shutdown on threads");
+            }
         }
 
         void bootUp()

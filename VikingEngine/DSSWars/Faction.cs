@@ -1479,6 +1479,11 @@ namespace VikingEngine.DSSWars
         /// Theme: Hill-dwelling hobbits in cozy burrows, famous for cider, storytelling, and their legendary hospitality (and occasional trickery).
         /// </summary>
         Tumblehill,
+
+        /// <summary>
+        /// Theme: A democracy run house with focus on politics and military might. Looks down on any outsiders.
+        /// </summary>
+        Etheleorthe,
     }
 
     enum FactionGroupType

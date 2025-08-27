@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string GeneralSetting_SetAll => "Apply to all";
 
+        public string Info_WhenFoodRunsOut => "When food runs out, cities and armies will automatically purchase it from the black market.";
 
         //Factions
         /// <summary>
@@ -161,6 +162,11 @@ namespace VikingEngine.DSSWars.Presentation
         /// Theme: Hill-dwelling hobbits in cozy burrows, famous for cider, storytelling, and their legendary hospitality (and occasional trickery).
         /// </summary>
         public string FactionName_Tumblehill => "Tumblehill";
+
+        /// <summary>
+        /// Theme: A democracy run house with focus on politics and military might. Looks down on any outsiders.
+        /// </summary>
+        public string FactionName_Etheleorthe => "Etheleorðe";
     }
 
 }

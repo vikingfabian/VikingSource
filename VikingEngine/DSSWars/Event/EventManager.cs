@@ -837,10 +837,20 @@ namespace VikingEngine.DSSWars.Event
         public bool factionMayStartWar(Faction attacker, Faction defender)
         {
             if ((attacker.factiontype == FactionType.DefaultAi || attacker.diplomaticSide == DiplomaticSide.Dark) &&
+                (attacker.diplomaticSide != DiplomaticSide.Light || defender.diplomaticSide == DiplomaticSide.Dark) &&
                 attacker.armies.Count > 0)
             {
-                if (attacker.myIndex == DssRef.settings.Faction_DarkFollower && defender.player.IsLocalPlayer())
-                { return false; }
+                if (defender.player.IsLocalPlayer())
+                {
+                    if (attacker.myIndex == DssRef.settings.Faction_DarkFollower)
+                    { return false; }
+
+                    if (attacker.militaryStrength < Math.Min(defender.militaryStrength * 0.25f, 6) ||
+                        attacker.militaryStrength > defender.militaryStrength * 3f)
+                    {
+                        return false;
+                    }
+                }
 
                 var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
                 if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)

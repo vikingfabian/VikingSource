@@ -3394,6 +3394,40 @@ namespace VikingEngine.DSSWars.Players.Profile
                         });
                     }
                     break;
+
+                case FactionType.Etheleorthe:
+                    {
+                        flag.factionFlavorType = FactionFlavorType.Warrior;
+
+
+                        flag.col0_Main = new Color(2, 45, 251);
+                        flag.col1_Detail1 = new Color(255, 255, 255);
+                        flag.col2_Detail2 = new Color(253, 212, 71);
+
+                        flag.col3_Skin = FlagAndColor.AiGraySkin;
+                        flag.col4_Hair = FlagAndColor.AiGrayHair;
+
+                        flag.flagDesign = new FlagDesign(new byte[]
+                        {
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 2, 0, 0, 0, 1, 1, 0, 0, 0, 2, 0, 0, 0,
+0, 0, 2, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 2, 0, 0,
+0, 0, 2, 0, 2, 1, 0, 1, 1, 0, 1, 2, 0, 2, 0, 0,
+0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 0, 2, 0, 2, 0,
+0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 0, 2, 0, 2, 0,
+0, 2, 0, 2, 0, 1, 1, 0, 1, 1, 1, 0, 2, 0, 2, 0,
+0, 0, 2, 0, 2, 1, 1, 0, 1, 1, 1, 2, 0, 2, 0, 0,
+1, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 1,
+0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0,
+0, 1, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 1, 0,
+0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                        });
+                    }
+                    break;
             }
         }
     }

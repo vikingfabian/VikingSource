@@ -319,6 +319,20 @@ namespace VikingEngine.Engine
             }
         }
 
+        public bool HaveLiveThreads()
+        {
+            var upateC = updateLists[(int)UpdateType.Full].counter();
+
+            while (upateC.Next())
+            {
+                var threadedUpdate = upateC.sel as AsynchUpdateable;
+                if (threadedUpdate != null && threadedUpdate.Alive())
+                    return true;
+            }
+
+            return false;
+        }
+
         public void Exit()
         {
             exitApplication = true;

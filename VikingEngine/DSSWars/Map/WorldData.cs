@@ -1044,9 +1044,6 @@ namespace VikingEngine.DSSWars
                 FactionType.DraktharDominion,
                 FactionType.MalrekIronbound,
 
-                FactionType.Starshield,    //
-                FactionType.Bluepeak,      //
-                FactionType.Hoft,          //
                 FactionType.BranthollowBarony,   //
                 FactionType.DunwadeHold,         //
                 FactionType.CaerwynMarches,      //
@@ -1062,6 +1059,7 @@ namespace VikingEngine.DSSWars
                 FactionType.Minde,
                 FactionType.FloKingdom,
                 FactionType.CarolusKeksenmark,
+                FactionType.Etheleorthe,
             };
         }
 

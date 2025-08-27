@@ -89,6 +89,12 @@ namespace VikingEngine.DSSWars.Players
        
             switch (faction.factiontype)
             {
+                case FactionType.Etheleorthe:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_Etheleorthe;
+                    aggressionLevel = AggressionLevel3_FocusedAttacks;
+                    break;
                 case FactionType.BranthollowBarony:
                     defaultSetup();
                     techSetup();
