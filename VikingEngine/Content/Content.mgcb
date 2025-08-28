@@ -2035,6 +2035,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/SeaNoiseEffect.fx
 
+#begin Shaders/ShadowEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/ShadowEffect.fx
+
 #begin Shaders/ShadowMap.fx
 /importer:EffectImporter
 /processor:EffectProcessor

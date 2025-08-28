@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 namespace VikingEngine.Graphics
 {
@@ -36,12 +37,12 @@ namespace VikingEngine.Graphics
             master.Frame = this.Frame;
             base.DrawDeferred(device, shader, view, cameraIndex);
         }
-        public override void DrawDeferredDepthOnly(Effect shader, int cameraIndex)
+        public override void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex)
         {
             if (master != null)
             {
                 master.Frame = this.Frame;
-                base.DrawDeferredDepthOnly(shader, cameraIndex);
+                base.DrawDeferredDepthOnly(shader, light, cameraIndex);
             }
         }
        

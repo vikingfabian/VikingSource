@@ -340,7 +340,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
                 Abs3DModel model = counter.sel as Abs3DModel;
                 if (model != null)
                 {
-                    model.DrawDeferredDepthOnly(shader, -1);
+                    //model.DrawDeferredDepthOnly(shader, -1);
                 }
             }
         }
@@ -351,7 +351,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
 
             if (DrawGround)
             {
-                heightmap.DrawDeferredDepthOnly(shader, -1);
+                //heightmap.DrawDeferredDepthOnly(shader, -1);
             }
 
             DrawRenderListMembersDepthOnly(device, shader, RenderLayer.Basic, DrawObjType.MeshGenerated);

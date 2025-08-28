@@ -35,7 +35,6 @@ namespace VikingEngine.DSSWars.GameState.ShaderLab
         {
             if (menu == null)
             {
-
                 var objectMenuArea = Screen.SafeArea;
                 objectMenuArea.Width = (int)(Engine.Screen.IconSize * 9f);
 
@@ -44,8 +43,6 @@ namespace VikingEngine.DSSWars.GameState.ShaderLab
 
                 bgTex.SetColor(ColorExt.GrayScale(0.9f));
                 mainMenu();
-
-
             }
         }
 

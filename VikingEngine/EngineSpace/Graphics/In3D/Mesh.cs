@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 //xna
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 namespace VikingEngine.Graphics
 {
@@ -126,8 +127,7 @@ namespace VikingEngine.Graphics
                 }
             }
         }
-
-        public override void DrawDeferredDepthOnly(Effect shader, int cameraIndex)
+        public override void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex)
         {
             if (VisibleInCamera(cameraIndex))
             {
@@ -152,8 +152,8 @@ namespace VikingEngine.Graphics
                         Matrix world = transforms[modelMesh.ParentBone.Index] * modelWorld;
 
                         // Set matrices and textures
-                        shader.Parameters["World"].SetValue(world);
-
+                        //shader.Parameters["World"].SetValue(world);
+                        shader.Parameters["ModelToLight"].SetValue(light.modelToLight(world));
                         // Apply pass
                         shader.CurrentTechnique.Passes[0].Apply();
 

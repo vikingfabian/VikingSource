@@ -5,15 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Engine;
-using VikingEngine.ToGG.ToggEngine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 namespace VikingEngine.DSSWars.GameState.ShaderLab
 {
     class LabDraw : Engine.Draw
     {
+        ShadowProcessor shadowProcessor;
         public LabDraw():base() 
         { 
             ClrColor = ColorExt.VeryDarkGray;
+            shadowProcessor = new ShadowProcessor();
         }
 
         protected override void drawEvent()
@@ -32,14 +34,23 @@ namespace VikingEngine.DSSWars.GameState.ShaderLab
             spriteBatch.GraphicsDevice.Clear(ClrColor);
             Draw2d((int)RenderLayer.Layer2);
 
-           
+            shadowProcessor.BeginShadowMapPass();
+            {
+                shadowProcessor.DrawRenderListMembersDepthOnly(0, Graphics.DrawObjType.Mesh, 0);
+            }
+            shadowProcessor.EndShadowMapPass();
+
             DrawGenerated(0, 0);
 
             Draw3d(0, 0);
 
+            
+
             ParticleHandler.Draw(Camera);
 
             Draw2d(0);
+
+            shadowProcessor.DrawDebug();
         }
     }
 }

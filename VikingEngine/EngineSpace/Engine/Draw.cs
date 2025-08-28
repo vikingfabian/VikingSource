@@ -306,6 +306,11 @@ namespace VikingEngine.Engine
             }
         }
 
+        public void SetMainRenderTarget()
+        {
+            graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget);
+        }
+
         public void settingsChanged2dImagesRefresh() 
         {
             SpottedArrayCounter<AbsDraw> renderList2D = new SpottedArrayCounter<AbsDraw>(renderList[0].GetList(Graphics.DrawObjType.Texture2D));
@@ -315,6 +320,12 @@ namespace VikingEngine.Engine
             }
         }
 
+        public void DebugDrawRenderTarget(RenderTarget2D renderTarget, Rectangle destination)
+        {
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+            spriteBatch.Draw(renderTarget, destination, Color.White);
+            spriteBatch.End();
+        }
 
         public void Draw2d(int layer)
         {

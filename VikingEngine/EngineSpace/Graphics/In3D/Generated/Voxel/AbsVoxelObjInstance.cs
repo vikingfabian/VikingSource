@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 namespace VikingEngine.Graphics
 {
@@ -110,14 +111,14 @@ namespace VikingEngine.Graphics
                 master.DrawDeferred(device, shader, view, cameraIndex);
             }
         }
-        public override void DrawDeferredDepthOnly(Effect shader, int cameraIndex)
+        public override void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex)
         {
             if (VisibleInCamera(cameraIndex))
             {
                 master.position = this.position;
                 master.Rotation = this.Rotation;
                 master.scale = this.scale;
-                master.DrawDeferredDepthOnly(shader, cameraIndex);
+                master.DrawDeferredDepthOnly(shader, light, cameraIndex);
             }
         }
         public override void SetMaster(VoxelModel master)

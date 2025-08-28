@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
-using VikingEngine.LootFest.Map.Terrain;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
+using VikingEngine.LootFest.Map.Terrain;
 
 
 namespace VikingEngine.Graphics
@@ -99,7 +100,7 @@ namespace VikingEngine.Graphics
                 }
             }
         }
-        public override void DrawDeferredDepthOnly(Effect shader, int cameraIndex)
+        public override void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex)
         {
             counter.Reset();
             while (counter.Next())

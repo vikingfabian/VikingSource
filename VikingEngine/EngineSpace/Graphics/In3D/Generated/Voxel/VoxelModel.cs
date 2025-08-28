@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 namespace VikingEngine.Graphics
 {
@@ -70,12 +71,47 @@ namespace VikingEngine.Graphics
             shader.CurrentTechnique.Passes[0].Apply();
             VB.Draw(Frame);
         }
-        public override void DrawDeferredDepthOnly(Effect shader, int cameraIndex)
+        public override void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex)
         {
+            //// Sun direction: straight down (from +Y toward -Y)
+            //Vector3 lightDirection = new Vector3(-0.1f, -1, -0.1f);
+
+            //// Light "position" isn’t important for directional light, 
+            //// but we place the camera above the scene looking down:
+            //Vector3 lightPos = new Vector3(0, 100, 0); // 100 units up
+            //Vector3 target = Vector3.Zero;           // look at scene center
+            //Vector3 up = Vector3.Up;        // choose a stable up (Y is up)
+
+            //// View matrix: light’s "camera"
+            //Matrix LightViewMatrix = Matrix.CreateLookAt(lightPos, target, up);
+
+            //// Projection matrix: orthographic (parallel rays, no perspective)
+            //float sceneWidth = 200;
+            //float sceneHeight = 200;
+            //float nearPlane = 1f;
+            //float farPlane = 500f;
+
+            //Matrix LightProjectionMatrix = Matrix.CreateOrthographic(sceneWidth, sceneHeight, nearPlane, farPlane);
+
+
             VB.SetBuffer();
-            shader.Parameters["World"].SetValue(Matrix.CreateScale(scale) *
+            //shader.Parameters["World"].SetValue(Matrix.CreateScale(scale) *
+            //    Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
+            //    Matrix.CreateTranslation(position));
+
+            // Build your object's world matrix (use your own transform data).
+            Matrix world =
+                Matrix.CreateScale(scale) *
                 Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
-                Matrix.CreateTranslation(position));
+                Matrix.CreateTranslation(position);
+
+            // Compute model->light (same as example, just no bones/meshes loop).
+            // Replace LightViewMatrix/LightProjectionMatrix with your actual values,
+            // e.g. _lightViewMatrix / _lightProjectionMatrix if those live on your effect/base.
+            
+
+            // Send to the shader and draw.
+            shader.Parameters["ModelToLight"].SetValue(light.modelToLight(world));
             shader.CurrentTechnique.Passes[0].Apply();
             VB.Draw(Frame);
         }

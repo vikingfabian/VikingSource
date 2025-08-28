@@ -59,10 +59,6 @@ namespace VikingEngine.DSSWars
         {
             overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
-            //shadowEffect = new EffectVertexColorShadow();
-            //TODO SurfaceFormat.Single
-            //shadowMapRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 2048, 2048, false, SurfaceFormat.Color, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
-
             drawBatch = new DrawBatchCollection();
         }
 
@@ -71,14 +67,7 @@ namespace VikingEngine.DSSWars
             base.DeleteMe();
             overviewMapTarget.Dispose();
         }
-        //public static void LoadContent()
-        //{
-        //    depthWriter = Engine.LoadContent.LoadShader("DeferredRenderer\\DepthWriter");
-        //    depthWriter.CurrentTechnique = depthWriter.Techniques[0];
-
-        //    //shadowEffect = Engine.LoadContent.LoadShader("VoxelShadows");
-        //}
-
+       
         protected override void drawEvent()
         {
             Viewport saveView = graphicsDeviceManager.GraphicsDevice.Viewport;
@@ -262,7 +251,7 @@ namespace VikingEngine.DSSWars
 
              graphicsDeviceManager.GraphicsDevice.SetRenderTarget(shadowEffect.shadowMapRenderTarget);
             DrawRenderListMembersDepthOnly(EffectVertexColorShadow.depthWriter, UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
-            drawBatch.DrawDepth(cameraIndex, EffectVertexColorShadow.depthWriter);
+            //drawBatch.DrawDepth(cameraIndex, EffectVertexColorShadow.depthWriter);
 
             if (viewDepth == null)
             {
@@ -286,7 +275,7 @@ namespace VikingEngine.DSSWars
                 Abs3DModel model = counter.sel as Abs3DModel;
                 if (model != null)
                 {
-                    model.DrawDeferredDepthOnly(shader, cameraIndex);
+                    //model.DrawDeferredDepthOnly(shader, cameraIndex);
                 }
             }
         }
