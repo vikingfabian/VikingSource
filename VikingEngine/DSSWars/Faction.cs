@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars
                 //{
                     var city = DssRef.world.cities[cityIx];
                     //cities.Add(city);
-                    city.setFaction(this, true);
+                    city.setFaction(this, true, false);
                 //}
             }
             if (subVersion >= 76)
@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars
                     mainCity = city;
                 }
                 cities.Add(city);
-                city.setFaction(this, duringStartUp);
+                city.setFaction(this, duringStartUp, false);
             }
             else
             {
@@ -393,7 +393,7 @@ namespace VikingEngine.DSSWars
                 if (!cities.Contains(city))
                 {
                     cities.Add(city);
-                    city.setFaction(this, duringStartUp);
+                    city.setFaction(this, duringStartUp, false);
                     if (!duringStartUp)
                     {
                         player.OnCityCapture(city);
@@ -986,7 +986,7 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.setFaction(masterFaction, false);
+                armiesC.sel.setFaction(masterFaction, false, true);
             }
 
             armies.Clear();
@@ -994,7 +994,7 @@ namespace VikingEngine.DSSWars
             var citiesC = cities.counter();
             while (citiesC.Next())
             { 
-                citiesC.sel.setFaction(masterFaction, false);
+                citiesC.sel.setFaction(masterFaction, false, true);                
             }
 
             cities.Clear();

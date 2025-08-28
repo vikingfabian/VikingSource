@@ -1802,7 +1802,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
                             }
 
-                            setFaction(newOwner, false);
+                            setFaction(newOwner, false, false);
                         }));
                     }
                 }
@@ -2976,7 +2976,7 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public override void setFaction(Faction newFaction, bool duringStartup)
+        public override void setFaction(Faction newFaction, bool duringStartup, bool convert)
         {
             Faction owner = GetFaction_Safe();
             if (owner != newFaction)
@@ -2997,8 +2997,21 @@ namespace VikingEngine.DSSWars.GameObject
                     newFaction.AddCity(this, false);
                     EditSubTile.OntileChange(tilePos);
                 }
-                
+
                 OnNewOwner(newFaction);
+
+                if (convert)
+                {
+                    convertSoldiersToFaction(newFaction);
+                }
+                else
+                {
+                    var counter = groups.counter();
+                    while (counter.Next())
+                    {
+                        counter.sel.DeleteMe(DeleteReason.Disband, false);
+                    }
+                }
             }
         }
 
