@@ -1,27 +1,18 @@
 ﻿UPDATE
 Change Log:
-* fixed: coinmaker icon is broken
-* the application is now hard crashing if the cores dont close within 500ms, so it wont freeze on close.
-* removed food from the black market
-* fixed the doublette factions
-* added 1 cameo faction
+* 
 
 Story:
-* The war manager attacks checks military power, has to be between 25% and 300% of the player's
-* The war manager dont use light-side factions to attack
+* 
 
 ACHIEVEMENTS
 * 
 
-
 Language change log:
 * 
 
-
-
 Spectator mode:
 * 
-
 
 Casual:
 * 
@@ -43,11 +34,10 @@ Plus the boss fight: about 10 hours
 build building icon
 
 #must do#
-x merge factions bug, the guards dont convert
+
 x ambience is heard on zero volume
 x broken music message gone
 x music should not play when master = 0
-x block black market food behind logistics
 x test all achievements
 x full game achievements + translations
 
