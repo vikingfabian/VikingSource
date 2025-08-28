@@ -41,7 +41,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         // Shadow map resolution
         private int _shadowMapSize = 2048;
 
-        LightProjection light;
+        public LightProjection light;
         Rectangle debugDrawArea;
 
         public ShadowProcessor() 
@@ -90,9 +90,9 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
 
             //    // Set render target to shadow map.
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetRenderTarget(_shadowMap);
-
+            Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             //    // Clear with white (meaning far depth).
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice.Clear(Color.White);
+            Engine.Draw.graphicsDeviceManager.GraphicsDevice.Clear(Color.White);
 
                shader.CurrentTechnique = shader.Techniques["RenderDepth"];
         }

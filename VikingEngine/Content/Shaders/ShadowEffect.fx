@@ -126,15 +126,7 @@ float4 ApplyLightingModel(V2P input, float4 color)
         shadowScalar * specularColor, color.a);
 }
 
-V2PDepth VSDepthMap(VSInputDepth input)
-{
-    V2PDepth output;
-        
-    output.Position = mul(input.Position, ModelToLight);
-    output.Depth = output.Position.z / output.Position.w;
-    
-    return output;
-};
+
 
 V2P VShader(VSInput input)
 {
@@ -145,11 +137,11 @@ V2P VShader(VSInput input)
     output.Color = Color;
     
     float4 lightPosition = mul(input.Position, ModelToLight);
-    float2 shadowMapCoord = mad(lightPosition.xy / lightPosition.w, 0.5f, float2(0.5f, 0.5f));
+    float2 shadowMapCoord = mad(lightPosition.xz / lightPosition.w, 0.5f, float2(0.5f, 0.5f));
     shadowMapCoord.y = 1.0f - shadowMapCoord.y;
     
     output.SMPosition = shadowMapCoord;
-    output.SMDepth = lightPosition.z / lightPosition.w;
+    output.SMDepth = lightPosition.y / lightPosition.w;
     
     output.ViewNormal = mul(input.Normal, NormalToView);
     output.TextureCoords = input.TextureCoords;
@@ -157,17 +149,29 @@ V2P VShader(VSInput input)
     return output;
 }
 
+float4 PShaderTextureColor(V2P input) : COLOR
+{
+    float4 diffuse = input.Color * tex2D(TextureSampler, input.TextureCoords);
+    return ApplyLightingModel(input, diffuse);
+}
+
+V2PDepth VSDepthMap(VSInputDepth input)
+{
+    V2PDepth output;
+        
+    output.Position = mul(input.Position, ModelToLight);
+    output.Depth = output.Position.z / output.Position.w;
+    
+    return output;
+};
+
 float4 PSDepthMap(V2PDepth input) : COLOR
 {
     // Add a little bias to the final depth to avoid shadow acne.
-    return float4(input.Depth + 0.001, 0, 0, 1);
+    return float4(input.Depth, input.Depth, input.Depth, 1);
 }
 
-float4 PShaderTextureColor(V2P input) : COLOR
-{
-    float4 diffuse = input.Color * tex2D(TextureSampler, input.TextureCoords);   
-    return ApplyLightingModel(input, diffuse);
-}
+
 
 technique RenderDepth
 {

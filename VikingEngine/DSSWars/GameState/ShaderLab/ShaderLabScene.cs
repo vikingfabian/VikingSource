@@ -18,12 +18,16 @@ namespace VikingEngine.DSSWars.GameState.ShaderLab
     class ShaderLabScene : Engine.GameState
     {
         RichMenu menu;
+        Mesh movable;
         public ShaderLabScene()
             : base()
         {
             openMenu();
 
             new Mesh(LoadedMesh.cube_repeating, Vector3.Zero, Vector3.One, TextureEffectType.Flat, SpriteName.cmdTileGrass1, Color.White);
+
+            movable = new Mesh(LoadedMesh.cube_repeating, new Vector3(-2, 1, -4), Vector3.One, TextureEffectType.Flat, SpriteName.cmdTileGrass1, Color.White);
+
 
             new Mesh(LoadedMesh.cube_repeating, new Vector3(0, -2, 0), new Vector3(10, 1, 10), TextureEffectType.Flat, SpriteName.cmdTileEmpty, Color.White);
         }
@@ -45,7 +49,12 @@ namespace VikingEngine.DSSWars.GameState.ShaderLab
                 mainMenu();
             }
         }
+        public override void Time_Update(float time)
+        {
+            base.Time_Update(time);
 
+            movable.position += VectorExt.V2toV3XZ(Ref.gamesett.keyboardMap.move.directionAndTime * 0.01f);
+        }
 
 
         void mainMenu()

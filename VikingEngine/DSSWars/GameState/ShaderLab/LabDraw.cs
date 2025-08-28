@@ -22,12 +22,18 @@ namespace VikingEngine.DSSWars.GameState.ShaderLab
         {
             Camera.CurrentZoom = 10;
             Camera.Tilt = new Vector2(MathHelper.PiOver2 - 0.6f, MathHelper.PiOver4 + 0.1f);
+            Camera.CurrentZoom = 20;
             Camera.Time_Update(Ref.DeltaTimeMs);
             Camera.FieldOfView = 20f;
-            Camera.FarPlane = 400;
+            Camera.FarPlane = 1000;
             Camera.NearPlane = 0.01f;
             Camera.RecalculateMatrices();
+
             //Camera.updateBillboard();
+
+            shadowProcessor.light.distance = 300;
+            shadowProcessor.light.refresh();
+
 
             Ref.draw.AddToContainer = null;
 

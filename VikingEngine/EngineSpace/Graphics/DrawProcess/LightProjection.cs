@@ -11,10 +11,20 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
     {
         Matrix LightViewMatrix;
         Matrix LightProjectionMatrix;
+
+        Vector3 lightDirection = new Vector3(-0.1f, -1f, -0.1f);
+        public float distance = 500f;
+        Vector3 target = Vector3.Zero;   // center of the scene (adjust as needed)
+
         public LightProjection(int shadowMapSize)
         {
+            refresh();
+        }
+
+        public void refresh()
+        {
             // 1) Normalize and validate light direction
-            Vector3 lightDirection = new Vector3(-0.1f, -1f, -0.1f);
+
             if (lightDirection.LengthSquared() < 1e-8f)
                 lightDirection = Vector3.Down; // fallback
             lightDirection.Normalize();
@@ -25,17 +35,17 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
                 up = Vector3.Right; // fallback if nearly parallel
 
             // 3) Build a view: place the "camera" back along the light ray
-            Vector3 target = Vector3.Zero;   // center of the scene (adjust as needed)
-            float distance = 100f;           // how far "above" the scene the sun camera sits
+
+            // how far "above" the scene the sun camera sits
             Vector3 lightPos = target - lightDirection * distance;
 
             LightViewMatrix = Matrix.CreateLookAt(lightPos, target, up);
 
             // 4) Orthographic projection for directional (parallel) light
-            float sceneWidth = shadowMapSize;   // world units to cover; tune per your scene
-            float sceneHeight = shadowMapSize;
-            float nearPlane = 1f;
-            float farPlane = 500f;
+            float sceneWidth = 100;   // world units to cover; tune per your scene
+            float sceneHeight = 100;
+            float nearPlane = distance - 10;
+            float farPlane = distance + 4;
 
             LightProjectionMatrix = Matrix.CreateOrthographic(sceneWidth, sceneHeight, nearPlane, farPlane);
         }
