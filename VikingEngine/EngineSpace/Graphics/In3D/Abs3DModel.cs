@@ -59,7 +59,7 @@ namespace VikingEngine.Graphics
 
         /* Methods */
         public abstract void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex);
-        public abstract void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex);
+        public abstract void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex);
 
 #region CAMERA CULLING
         private static BoundingSphere boundingSphere = new BoundingSphere();

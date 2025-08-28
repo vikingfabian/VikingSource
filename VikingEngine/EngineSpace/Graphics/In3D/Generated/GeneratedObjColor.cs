@@ -105,7 +105,7 @@ namespace VikingEngine.Graphics
             shader.CurrentTechnique.Passes[0].Apply();
             vertexAndIndexBuffers.Draw();
         }
-        public override void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex)
+        public override void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex)
         {
             vertexAndIndexBuffers.SetBuffer();
             shader.CurrentTechnique.Passes[0].Apply();

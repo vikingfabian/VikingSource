@@ -25,7 +25,7 @@ float Shininess; // Controls the size/tightness of specular highlights
 float AmbientIntensity; // Controls the intensity of ambient light
 float EdgeFadeScale;
 
-static const int ShadowSamples = 64;
+static const int ShadowSamples = 32;
 
 texture ShadowMap;
 sampler2D ShadowMapSampler = sampler_state
@@ -109,7 +109,7 @@ float4 ApplyLightingModel(V2P input, float4 color)
     {
         float4 seed = float4(i, input.ViewPosition.xyz);
         
-        float2 samplePosition = input.SMPosition + (randomOffset(seed) / 500.0f);
+        float2 samplePosition = input.SMPosition + (randomOffset(seed) / 700.0f); //The divition controls the fade radius
         
         float2 edgeDist = min(samplePosition, 1.0 - samplePosition);
         float edgeFade = saturate(min(edgeDist.x, edgeDist.y) * EdgeFadeScale); 
@@ -137,11 +137,11 @@ V2P VShader(VSInput input)
     output.Color = Color;
     
     float4 lightPosition = mul(input.Position, ModelToLight);
-    float2 shadowMapCoord = mad(lightPosition.xz / lightPosition.w, 0.5f, float2(0.5f, 0.5f));
+    float2 shadowMapCoord = mad(lightPosition.xy / lightPosition.w, 0.5f, float2(0.5f, 0.5f));
     shadowMapCoord.y = 1.0f - shadowMapCoord.y;
     
     output.SMPosition = shadowMapCoord;
-    output.SMDepth = lightPosition.y / lightPosition.w;
+    output.SMDepth = lightPosition.z / lightPosition.w;
     
     output.ViewNormal = mul(input.Normal, NormalToView);
     output.TextureCoords = input.TextureCoords;
@@ -168,10 +168,57 @@ V2PDepth VSDepthMap(VSInputDepth input)
 float4 PSDepthMap(V2PDepth input) : COLOR
 {
     // Add a little bias to the final depth to avoid shadow acne.
-    return float4(input.Depth, input.Depth, input.Depth, 1);
+    return float4(input.Depth + 0.0015, 0, 0, 1);
 }
 
+// --- NEW: vertex-color input
+struct VSInputVC
+{
+    float4 Position : SV_POSITION;
+    float3 Normal : NORMAL0;
+    float4 VertexColor : COLOR0;
+};
 
+// --- NEW: vertex-color VS
+V2P VShaderVertexColor(VSInputVC input)
+{
+    V2P output;
+
+    output.ViewPosition = mul(input.Position, ModelToView);
+    output.Position = mul(input.Position, ModelToScreen);
+
+    // Optional: tint vertex color by the global 'Color' parameter
+    output.Color = input.VertexColor * Color;
+
+    float4 lightPosition = mul(input.Position, ModelToLight);
+    float2 shadowMapCoord = mad(lightPosition.xy / lightPosition.w, 0.5f, float2(0.5f, 0.5f));
+    shadowMapCoord.y = 1.0f - shadowMapCoord.y;
+
+    output.SMPosition = shadowMapCoord;
+    output.SMDepth = lightPosition.z / lightPosition.w;
+
+    output.ViewNormal = mul(input.Normal, NormalToView);
+    output.TextureCoords = float2(0.0f, 0.0f); // not used in this path
+
+    return output;
+}
+
+// --- NEW: vertex-color PS
+float4 PShaderVertexColor(V2P input) : COLOR
+{
+    // Use the interpolated vertex color as the base
+    return ApplyLightingModel(input, input.Color);
+}
+
+// --- NEW: technique
+technique RenderVertexColor
+{
+    pass P0
+    {
+        VertexShader = compile VS_SHADERMODEL VShaderVertexColor();
+        PixelShader = compile PS_SHADERMODEL PShaderVertexColor();
+    }
+}
 
 technique RenderDepth
 {

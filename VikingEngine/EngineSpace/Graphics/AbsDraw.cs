@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.ToGG;
 
 namespace VikingEngine.Graphics
@@ -64,6 +65,8 @@ namespace VikingEngine.Graphics
         public abstract AbsDraw CloneMe();
         public abstract void Draw(int cameraIndex);
         public virtual void DrawShadow(int cameraIndex, AbsEffect shader) { }
+
+        public virtual void DrawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light) { }
         public abstract void UpdateCulling();
 
         public virtual void DrawInDynamicCam(Vector2 camPos)

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 //xna
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Sentry.Protocol;
 using System;
 using System.Collections.Generic;
 using VikingEngine.EngineSpace.Graphics.DrawProcess;
@@ -127,7 +128,7 @@ namespace VikingEngine.Graphics
                 }
             }
         }
-        public override void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex)
+        public override void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex)
         {
             if (VisibleInCamera(cameraIndex))
             {
@@ -154,6 +155,57 @@ namespace VikingEngine.Graphics
                         // Set matrices and textures
                         //shader.Parameters["World"].SetValue(world);
                         shader.Parameters["ModelToLight"].SetValue(light.modelToLight(world));
+                        // Apply pass
+                        shader.CurrentTechnique.Passes[0].Apply();
+
+                        // Draw mesh
+                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, part.StartIndex, part.PrimitiveCount);
+                    }
+                }
+            }
+        }
+
+        public override void DrawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
+        {
+            if (VisibleInCamera(cameraIndex))
+            {
+                Model model = Engine.LoadContent.Mesh(LoadedMeshType);
+
+                //Matrix[] transforms = new Matrix[model.Bones.Count];
+                //model.CopyAbsoluteBoneTransformsTo(transforms);
+
+                Matrix modelWorld = Matrix.CreateScale(Scale) *
+                        Matrix.CreateFromQuaternion(QuatRotation) *
+                        Matrix.CreateTranslation(Position);
+                shader.Parameters["Texture"]?.SetValue(texture);
+                shader.Parameters["Color"]?.SetValue(Color.ToVector4());
+
+
+                foreach (ModelMesh modelMesh in model.Meshes)
+                {
+                    foreach (ModelMeshPart part in modelMesh.MeshParts)
+                    {
+                        // Set matrices
+                        Matrix world = /*transforms[modelMesh.ParentBone.Index] **/ modelWorld;
+
+                        Matrix worldViewMatrix = world * camera.ViewMatrix;
+                        Matrix worldViewProjMatrix = world * camera.ViewProjection;
+                        Matrix lightWorldViewProjMatrix = world * light.ViewProjection;
+
+                        Matrix temp = worldViewMatrix;
+                        temp.Translation = Vector3.Zero;
+                        Matrix worldViewIT = Matrix.Transpose(Matrix.Invert(temp));
+
+                        shader.Parameters["NormalToView"]?.SetValue(worldViewIT);
+                        shader.Parameters["ModelToScreen"]?.SetValue(worldViewProjMatrix);
+                        shader.Parameters["ModelToLight"]?.SetValue(lightWorldViewProjMatrix);
+                        shader.Parameters["ModelToView"]?.SetValue(worldViewMatrix);
+
+
+                        // Set buffers
+                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetVertexBuffer(part.VertexBuffer, part.VertexOffset);
+                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.Indices = part.IndexBuffer;
+
                         // Apply pass
                         shader.CurrentTechnique.Passes[0].Apply();
 

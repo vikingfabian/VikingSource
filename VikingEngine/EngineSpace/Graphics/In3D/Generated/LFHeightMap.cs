@@ -100,7 +100,7 @@ namespace VikingEngine.Graphics
                 }
             }
         }
-        public override void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex)
+        public override void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex)
         {
             counter.Reset();
             while (counter.Next())

@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine.EngineSpace.Graphics.DrawProcess
 {
     class LightProjection
     {
-        Matrix LightViewMatrix;
-        Matrix LightProjectionMatrix;
-
+       public Matrix LightViewMatrix;
+       public Matrix LightProjectionMatrix;
+        public Matrix ViewProjection;
+        public Vector3 lightPos;
         Vector3 lightDirection = new Vector3(-0.1f, -1f, -0.1f);
         public float distance = 500f;
         Vector3 target = Vector3.Zero;   // center of the scene (adjust as needed)
@@ -37,7 +39,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             // 3) Build a view: place the "camera" back along the light ray
 
             // how far "above" the scene the sun camera sits
-            Vector3 lightPos = target - lightDirection * distance;
+            lightPos = target - lightDirection * distance;
 
             LightViewMatrix = Matrix.CreateLookAt(lightPos, target, up);
 
@@ -48,6 +50,8 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             float farPlane = distance + 4;
 
             LightProjectionMatrix = Matrix.CreateOrthographic(sceneWidth, sceneHeight, nearPlane, farPlane);
+
+            ViewProjection = LightViewMatrix * LightProjectionMatrix;
         }
 
         public Matrix modelToLight(Matrix world)

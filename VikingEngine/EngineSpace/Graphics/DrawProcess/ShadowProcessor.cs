@@ -14,22 +14,22 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         //private GraphicsDevice _graphicsDevice;
         private RenderTarget2D _shadowMap;
         private Effect shader;
-        private SpriteBatch _spriteBatch;
+        
 
         // Light properties
-        public Vector3 LightDirection { get; set; }
-        public Vector3 LightPosition
-        {
-            get
-            {
-                return TargetPosition + (LightDirection * 800.0f);
-            }
-        }
+        //public Vector3 LightDirection { get; set; }
+        //public Vector3 LightPosition
+        //{
+        //    get
+        //    {
+        //        return TargetPosition + (LightDirection * 800.0f);
+        //    }
+        //}
 
         public float SpecularIntensity { get; set; }
         public float Shininess { get; set; }
-        public float SunIntensity { get; set; }
-        public Vector3 SunColor { get; set; }
+        //public float SunIntensity { get; set; }
+        //public Vector3 SunColor { get; set; }
 
         public Vector3 TargetPosition { get; set; }
         public Vector3 UpVector { get; set; } = Vector3.Up;
@@ -104,13 +104,15 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
 
         public void DrawRenderListMembersDepthOnly(int layer, DrawObjType objType, int cameraIndex)
         {
+            Engine.Draw.PreviousVertexBuffer = -1;
+
             SpottedArrayCounter<AbsDraw> counter = new SpottedArrayCounter<AbsDraw>(Ref.draw.renderList[layer].GetList(objType));
             while (counter.Next())
             {
                 Abs3DModel model = counter.sel as Abs3DModel;
                 if (model != null)
                 {
-                    model.DrawDeferredDepthOnly(shader, light, cameraIndex);
+                    model.DrawDepthOnly(shader, light, cameraIndex);
                 }
             }
         }
@@ -121,164 +123,53 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             Ref.draw.DebugDrawRenderTarget(_shadowMap, area.Rectangle);
         }
 
-        //public void EndShadowMapPass()
-        //{
-        //    Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetRenderTarget(null);
-        //}
 
-        //public void DrawEntityToShadowMap(Mesh obj)
-        //{
-        //    //var model = Engine.LoadContent.Models[(int)entity.LoadedMeshType];
-        //    //if (model == null || !entity.Visible)
-        //    //    return;
+        public void DrawModelsWithShadow(int layer, DrawObjType objType, AbsCamera camera, int cameraIndex)
+        {
+            Engine.Draw.PreviousVertexBuffer = -1;
 
-        //    //// Set the state needed to draw to the shadow map.
-        //    //_graphicsDevice.BlendState = BlendState.Opaque;
-        //    //_graphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-        //    //_graphicsDevice.DepthStencilState = DepthStencilState.Default;
+            var SunColor = new Vector3(1.0f, 0.9f, 0.9f);
+            var SunIntensity = 1.1f;
 
-        //    //var world = entity.WorldMatrix;
+            Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
+            Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-        //    //var modelToLight = _shadowEffect.Parameters["ModelToLight"];
-        //    //var passes = _shadowEffect.CurrentTechnique.Passes;
+            var modelToLight = shader.Parameters["ModelToLight"];
 
-        //    //Matrix[] transforms = new Matrix[model.Bones.Count];
-        //    //model.CopyAbsoluteBoneTransformsTo(transforms);
-        //    //foreach (ModelMesh mesh in model.Meshes)
-        //    //{
-        //    //    var meshWorld = transforms[mesh.ParentBone.Index] * entity.MeshTransforms[mesh.ParentBone.Index] * world;
+            var lp = Vector3.Normalize(Vector3.TransformNormal(light.lightPos, camera.ViewMatrix));
+            float SpecularIntensity = 0.5f; // Intensity of specular highlights
+            float Shininess = 16f; // Power of the specular highlights
 
-        //    //    modelToLight.SetValue(meshWorld * _lightViewMatrix * _lightProjectionMatrix);
+            switch (objType)
+            {
+               default:
+                    shader.CurrentTechnique = shader.Techniques["RenderTextured"];
+                    break;
+                case DrawObjType.MeshGenerated:
+                    shader.CurrentTechnique = shader.Techniques["RenderVertexColor"];
+                    break;
+            }
+            shader.Parameters["LightPosition"]?.SetValue(lp);
+            shader.Parameters["LightColor"]?.SetValue(SunColor * SunIntensity);
+            shader.Parameters["AmbientIntensity"]?.SetValue(0.8f);
+            //effect.Parameters["Color"]?.SetValue(color.ToVector4());
+            shader.Parameters["SpecularIntensity"]?.SetValue(SpecularIntensity);
+            shader.Parameters["Shininess"]?.SetValue(Shininess);
+            shader.Parameters["ShadowMap"]?.SetValue(_shadowMap);
+            shader.Parameters["EdgeFadeScale"]?.SetValue(10.0f);
+            shader.Parameters["ShadowMap"]?.SetValue(_shadowMap);
 
-        //    //    foreach (ModelMeshPart part in mesh.MeshParts)
-        //    //    {
-        //    //        _graphicsDevice.SetVertexBuffer(part.VertexBuffer);
-        //    //        _graphicsDevice.Indices = part.IndexBuffer;
+            SpottedArrayCounter<AbsDraw> counter = new SpottedArrayCounter<AbsDraw>(Ref.draw.renderList[layer].GetList(objType));
+            while (counter.Next())
+            {
+                Abs3DModel model = counter.sel as Abs3DModel;
+                if (model != null)
+                {
+                    model.DrawWithShadow(cameraIndex, camera, shader, light);
+                }
+            }
+        }
 
-        //    //        foreach (EffectPass pass in passes)
-        //    //        {
-        //    //            pass.Apply();
-        //    //            _graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, part.VertexOffset, part.StartIndex, part.PrimitiveCount);
-        //    //        }
-        //    //    }
-        //    //}
-
-
-        //    Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
-        //    Engine.Draw.graphicsDeviceManager.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-        //    Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
-        //    var model = Engine.LoadContent.Models[(int)obj.LoadedMeshType]; //Engine.LoadContent.Mesh(obj.LoadedMeshType);
-
-        //    var modelListMesh = model.Meshes[0];
-        //    obj.CalcWorldMatrix(modelListMesh);
-        //    //var world = entity.WorldMatrix;
-
-        //    var modelToLight = shader.Parameters["ModelToLight"];
-        //    var passes = shader.CurrentTechnique.Passes;
-
-        //    //for (modelMeshIx = 0; modelMeshIx < model.Meshes.Count; modelMeshIx++)
-        //    //{
-
-
-        //    //for (int meshPartIx = 0; meshPartIx < modelListMesh.MeshParts.Count; meshPartIx++)
-        //    //{ 
-        //    modelListMesh.MeshParts[0].Effect = shader;
-        //    //}
-        //    modelListMesh.Draw();
-        //    //}
-        //}
-
-        //public void DrawModelWithShadow(Entity entity, Camera camera, bool blendPass)
-        //{
-        //    Model model = entity.Model;
-        //    if (model == null || !entity.Visible)
-        //        return;
-
-        //    var color = Color.White;
-        //    if (entity is not Player)
-        //    {
-        //        var FadeNear = 200.0f;
-        //        var FadeFar = 300.0f;
-        //        float d = Vector3.Distance(camera.Position, entity.Position);
-        //        float alpha = 1.0f - MathHelper.Clamp((d - FadeFar) / (FadeNear - FadeFar), 0.0f, 1.0f);
-        //        color.A = (byte)Math.Ceiling(255 * alpha);
-        //    }
-
-        //    if (color.A == 255)
-        //    {
-        //        if (blendPass)
-        //            return;
-
-        //        _graphicsDevice.BlendState = BlendState.Opaque;
-        //        _graphicsDevice.DepthStencilState = DepthStencilState.Default;
-        //    }
-        //    else
-        //    {
-        //        if (!blendPass)
-        //            return;
-
-        //        _graphicsDevice.BlendState = BlendState.NonPremultiplied;
-        //        _graphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
-        //    }
-        //    _graphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-        //    _graphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
-
-        //    var view = camera.ViewMatrix;
-        //    var world = entity.WorldMatrix;
-
-        //    var lp = Vector3.Normalize(Vector3.TransformNormal(LightPosition, view));
-
-        //    Effect effect = shader;
-        //    effect.CurrentTechnique = effect.Techniques["RenderTextured"];
-        //    effect.Parameters["LightPosition"]?.SetValue(lp);
-        //    effect.Parameters["LightColor"]?.SetValue(SunColor * SunIntensity);
-        //    effect.Parameters["AmbientIntensity"]?.SetValue(0.8f);
-        //    effect.Parameters["Color"]?.SetValue(color.ToVector4());
-        //    effect.Parameters["SpecularIntensity"]?.SetValue(entity.SpecularIntensity);
-        //    effect.Parameters["Shininess"]?.SetValue(entity.Shininess);
-        //    effect.Parameters["ShadowMap"]?.SetValue(_shadowMap);
-        //    effect.Parameters["EdgeFadeScale"]?.SetValue(10.0f);
-        //    effect.Parameters["ShadowMap"]?.SetValue(_shadowMap);
-
-        //    Matrix[] transforms = new Matrix[model.Bones.Count];
-        //    model.CopyAbsoluteBoneTransformsTo(transforms);
-        //    foreach (ModelMesh mesh in model.Meshes)
-        //    {
-        //        // Calculate the world matrix for the mesh
-        //        Matrix meshWorld = transforms[mesh.ParentBone.Index] * entity.MeshTransforms[mesh.ParentBone.Index] * world;
-
-        //        // Calculate all the necessary matrices
-        //        Matrix worldViewMatrix = meshWorld * view;
-        //        Matrix worldViewProjMatrix = meshWorld * view * camera.ProjectionMatrix;
-        //        Matrix lightWorldViewProjMatrix = meshWorld * _lightViewMatrix * _lightProjectionMatrix;
-
-        //        // Calculate normal matrix (inverse transpose of the world-view matrix)
-        //        Matrix temp = worldViewMatrix;
-        //        temp.Translation = Vector3.Zero;
-        //        Matrix worldViewIT = Matrix.Transpose(Matrix.Invert(temp));
-
-        //        effect.Parameters["NormalToView"]?.SetValue(worldViewIT);
-        //        effect.Parameters["ModelToScreen"]?.SetValue(worldViewProjMatrix);
-        //        effect.Parameters["ModelToLight"]?.SetValue(lightWorldViewProjMatrix);
-        //        effect.Parameters["ModelToView"]?.SetValue(worldViewMatrix);
-
-        //        foreach (ModelMeshPart part in mesh.MeshParts)
-        //        {
-        //            // Get the texture from the original effect.
-        //            BasicEffect originalEffect = part.Effect as BasicEffect;
-        //            effect.Parameters["Texture"]?.SetValue(originalEffect.Texture);
-
-        //            _graphicsDevice.SetVertexBuffer(part.VertexBuffer);
-        //            _graphicsDevice.Indices = part.IndexBuffer;
-
-        //            foreach (EffectPass pass in shader.CurrentTechnique.Passes)
-        //            {
-        //                pass.Apply();
-        //                _graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, part.VertexOffset, part.StartIndex, part.PrimitiveCount);
-        //            }
-        //        }
-        //    }
     }
     
 }

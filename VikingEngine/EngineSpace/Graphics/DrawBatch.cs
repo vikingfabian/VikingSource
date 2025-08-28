@@ -77,7 +77,7 @@ namespace VikingEngine.Graphics
 
                 foreach (var model in list)
                 {
-                    (model as Abs3DModel)?.DrawDeferredDepthOnly(shader, light, cameraIndex);
+                    (model as Abs3DModel)?.DrawDepthOnly(shader, light, cameraIndex);
                 }
             }
         }

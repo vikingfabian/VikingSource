@@ -10,6 +10,7 @@ namespace VikingEngine
         NO_IMAGE = 0,
 
         WhiteArea,
+        TestTexture,
         WhiteArea_LFtiles,
         //WarsWaterTexture,
         WhiteCirkle,

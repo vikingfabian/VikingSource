@@ -100,6 +100,18 @@ namespace VikingEngine.Graphics
 
             }
         }
+
+        public override void DrawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
+        {
+            if (VisibleInCamera(cameraIndex))
+            {
+                master.position = this.position;
+                master.Rotation = this.Rotation;
+                master.scale = this.scale;
+                master.DrawWithShadow(cameraIndex, camera, shader, light);
+            }
+        }
+
         public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
         {
             if (VisibleInCamera(cameraIndex))
@@ -111,14 +123,14 @@ namespace VikingEngine.Graphics
                 master.DrawDeferred(device, shader, view, cameraIndex);
             }
         }
-        public override void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex)
+        public override void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex)
         {
             if (VisibleInCamera(cameraIndex))
             {
                 master.position = this.position;
                 master.Rotation = this.Rotation;
                 master.scale = this.scale;
-                master.DrawDeferredDepthOnly(shader, light, cameraIndex);
+                master.DrawDepthOnly(shader, light, cameraIndex);
             }
         }
         public override void SetMaster(VoxelModel master)

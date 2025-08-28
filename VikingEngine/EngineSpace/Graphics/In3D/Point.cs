@@ -37,7 +37,7 @@ namespace VikingEngine.Graphics
         { }
         public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
         { }
-        public override void DrawDeferredDepthOnly(Effect shader, LightProjection light, int cameraIndex)
+        public override void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex)
         { }
         public override void copyAllDataFrom(AbsDraw master)
         {
