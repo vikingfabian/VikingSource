@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed city writing outside UShort value
 
 Story:
 * 

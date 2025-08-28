@@ -51,6 +51,26 @@ namespace VikingEngine
             return (byte)value;
         }
 
+        public static ushort UShort(int value)
+        {
+            if (value < ushort.MinValue)
+                return ushort.MinValue;
+            if (value > ushort.MaxValue)
+                return ushort.MaxValue;
+
+            return (ushort)value;
+        }
+
+        public static short Short(int value)
+        {
+            if (value < short.MinValue)
+                return short.MinValue;
+            if (value > short.MaxValue)
+                return short.MaxValue;
+
+            return (short)value;
+        }
+
         public static byte Byte_OutIsMaxVal(int value)
         {
             if (value < byte.MinValue || value > byte.MaxValue)

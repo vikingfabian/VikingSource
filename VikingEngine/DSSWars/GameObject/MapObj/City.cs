@@ -462,20 +462,20 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write(Convert.ToUInt16(workForce.amount));
-            w.Write(Convert.ToUInt16(HousingCount_Workers));
-            w.Write(Convert.ToUInt16(HousingCount_Guard));
-            w.Write(Convert.ToInt16(freeServiceMen.amount));
-            w.Write(Convert.ToInt16(workingAndFreeServiceMen));
+            w.Write(Bound.UShort(workForce.amount));
+            w.Write(Bound.UShort(HousingCount_Workers));
+            w.Write(Bound.UShort(HousingCount_Guard));
+            w.Write(Bound.Short(freeServiceMen.amount));
+            w.Write(Bound.Short(workingAndFreeServiceMen));
             cityHallSubtilePos.writeUshort(w);
             cityStorageCenter.writeUshort(w);
 
             childrenAge0.write16bit(w);
-            w.Write((ushort)childrenAge1);
+            w.Write(Bound.UShort(childrenAge1));
 
             immigrants.write16bit(w);
 
-            w.Write((byte)maxWaterBase);
+            w.Write(Bound.Byte(maxWaterBase));
             w.Write(waterAddPerSec);
             workTemplate.writeGameState(w, true);
 
