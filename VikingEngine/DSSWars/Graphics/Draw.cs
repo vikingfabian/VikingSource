@@ -167,16 +167,21 @@ namespace VikingEngine.DSSWars
 
 
                     //SHADOW
-                    if (Ref.gamesett.modelShadow)
-                    {
+                    //if (Ref.gamesett.modelShadow)
+                    //{
+                    //    shadowProcessor.BeginShadowMapPass();
+                    //    {
+                    //        shadowProcessor.DrawRenderListMembersDepthOnly(UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
 
-                    }
-                    else
-                    {
+                    //    }
+                    //    shadowProcessor.EndShadowMapPass();
+                    //}
+                    //else
+                    //{
                         DrawGenerated(UnitDetailLayer, cameraIndex);
                         DssRef.state.detailMap.updateAndDraw(cameraIndex);
                         drawBatch.RemoveAndDraw(cameraIndex);
-                    }
+                    //}
                     Draw3d(UnitDetailLayer, cameraIndex);
                     localPlayer.DrawDetalLayer_Mesh(cameraIndex);
                     

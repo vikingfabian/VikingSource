@@ -87,48 +87,48 @@ namespace VikingEngine.Graphics
             }
         }
 
-        public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
-        {
-            if (VisibleInCamera(cameraIndex))
-            {
-                shader.Parameters["SourcePos"].SetValue(TextureSource.SourceF.Position);
-                shader.Parameters["SourceSize"].SetValue(TextureSource.SourceF.Size);
-                shader.Parameters["Texture"].SetValue(texture);
+        //public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //{
+        //    if (VisibleInCamera(cameraIndex))
+        //    {
+        //        shader.Parameters["SourcePos"].SetValue(TextureSource.SourceF.Position);
+        //        shader.Parameters["SourceSize"].SetValue(TextureSource.SourceF.Size);
+        //        shader.Parameters["Texture"].SetValue(texture);
 
-                Model model = Engine.LoadContent.Mesh(LoadedMeshType);
+        //        Model model = Engine.LoadContent.Mesh(LoadedMeshType);
 
-                Matrix[] transforms = new Matrix[model.Bones.Count];
-                model.CopyAbsoluteBoneTransformsTo(transforms);
+        //        Matrix[] transforms = new Matrix[model.Bones.Count];
+        //        model.CopyAbsoluteBoneTransformsTo(transforms);
 
-                Matrix modelWorld = Matrix.CreateScale(Scale) *
-                            Matrix.CreateFromQuaternion(QuatRotation) *
-                            Matrix.CreateTranslation(Position);
+        //        Matrix modelWorld = Matrix.CreateScale(Scale) *
+        //                    Matrix.CreateFromQuaternion(QuatRotation) *
+        //                    Matrix.CreateTranslation(Position);
 
-                foreach (ModelMesh modelMesh in model.Meshes)
-                {
-                    foreach (ModelMeshPart part in modelMesh.MeshParts)
-                    {
-                        // Set buffers
-                        device.SetVertexBuffer(part.VertexBuffer, part.VertexOffset);
-                        device.Indices = part.IndexBuffer;
+        //        foreach (ModelMesh modelMesh in model.Meshes)
+        //        {
+        //            foreach (ModelMeshPart part in modelMesh.MeshParts)
+        //            {
+        //                // Set buffers
+        //                device.SetVertexBuffer(part.VertexBuffer, part.VertexOffset);
+        //                device.Indices = part.IndexBuffer;
 
-                        // Set matrices
-                        Matrix world = transforms[modelMesh.ParentBone.Index] * modelWorld;
+        //                // Set matrices
+        //                Matrix world = transforms[modelMesh.ParentBone.Index] * modelWorld;
 
-                        // Set matrices and textures
-                        shader.Parameters["World"].SetValue(world);
-                        shader.Parameters["WorldViewIT"].SetValueTranspose(Matrix.Invert(world * view));
+        //                // Set matrices and textures
+        //                shader.Parameters["World"].SetValue(world);
+        //                shader.Parameters["WorldViewIT"].SetValueTranspose(Matrix.Invert(world * view));
 
-                        // Apply pass
-                        shader.CurrentTechnique.Passes[0].Apply();
+        //                // Apply pass
+        //                shader.CurrentTechnique.Passes[0].Apply();
 
-                        // Draw mesh
-                        device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, part.StartIndex, part.PrimitiveCount);
-                    }
-                }
-            }
-        }
-        public override void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex)
+        //                // Draw mesh
+        //                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, part.StartIndex, part.PrimitiveCount);
+        //            }
+        //        }
+        //    }
+        //}
+        public override void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex)
         {
             if (VisibleInCamera(cameraIndex))
             {

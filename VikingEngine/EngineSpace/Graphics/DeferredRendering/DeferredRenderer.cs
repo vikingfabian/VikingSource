@@ -373,7 +373,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
 
             if (DrawGround)
             {
-                heightmap.DrawDeferred(device, gBuf, view, playerIndex);
+                //heightmap.DrawDeferred(device, gBuf, view, playerIndex);
             }
             device.Textures[0] = Engine.LoadContent.Texture(VikingEngine.LootFest.LfLib.BlockTexture);
             DrawRenderListMembers(device, gBuf, view, playerIndex, RenderLayer.Basic, DrawObjType.MeshGenerated);

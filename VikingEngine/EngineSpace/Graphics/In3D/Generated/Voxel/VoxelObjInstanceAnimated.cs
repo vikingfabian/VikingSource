@@ -32,25 +32,25 @@ namespace VikingEngine.Graphics
                 base.DrawWithShadow(cameraIndex, camera, shader, light);
             }
         }
-        public override void DrawShadow(int cameraIndex, AbsEffect shader)
+        //public override void DrawShadow(int cameraIndex, AbsEffect shader)
+        //{
+        //    if (master != null)
+        //    {
+        //        master.Frame = this.Frame;
+        //        base.DrawShadow(cameraIndex,  shader);
+        //    }
+        //}
+        //public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //{
+        //    master.Frame = this.Frame;
+        //    base.DrawDeferred(device, shader, view, cameraIndex);
+        //}
+        public override void DrawDepthOnly(bool drawDepth ,Effect shader, LightProjection light, int cameraIndex)
         {
             if (master != null)
             {
                 master.Frame = this.Frame;
-                base.DrawShadow(cameraIndex,  shader);
-            }
-        }
-        public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
-        {
-            master.Frame = this.Frame;
-            base.DrawDeferred(device, shader, view, cameraIndex);
-        }
-        public override void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex)
-        {
-            if (master != null)
-            {
-                master.Frame = this.Frame;
-                base.DrawDepthOnly(shader, light, cameraIndex);
+                base.DrawDepthOnly( drawDepth,shader, light, cameraIndex);
             }
         }
        
