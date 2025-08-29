@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Fixed city writing outside UShort value
+* Fixed: The game mode from save does not take effect
 
 Story:
 * 

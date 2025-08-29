@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             HudLib.Init();
 
             initPlayers();
-            baseInit();
+            postPlayerInit();
             initScenario();
 
             LocalHost().gameControls.map.battleModeCamBound();

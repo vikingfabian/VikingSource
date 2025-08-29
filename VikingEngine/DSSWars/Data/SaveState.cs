@@ -9,6 +9,7 @@ using Valve.Steamworks;
 using VikingEngine.DataStream;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Data;
 using VikingEngine.PJ.Strategy;
@@ -139,6 +140,7 @@ namespace VikingEngine.DSSWars.Data
 
             //STATE
             DssRef.storage.read(r, true);
+            CityMenu.InitGame();
             Debug.ReadCheck(r);
             DssRef.settings.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);

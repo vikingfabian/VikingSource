@@ -51,6 +51,11 @@ namespace VikingEngine
             return (byte)value;
         }
 
+        public static ushort UShort(double value)
+        {
+            return UShort((int)value);
+        }
+
         public static ushort UShort(int value)
         {
             if (value < ushort.MinValue)

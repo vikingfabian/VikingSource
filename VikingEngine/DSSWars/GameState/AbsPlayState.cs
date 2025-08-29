@@ -54,8 +54,7 @@ namespace VikingEngine.DSSWars.GameState
             :base() 
         {
             DssRef.state = this;
-            DssRef.storage.profileStorage.refreshProfiles();
-            CityMenu.InitGame();
+            
         }
 
         
@@ -83,7 +82,13 @@ namespace VikingEngine.DSSWars.GameState
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.Lowest);
         }
 
-        protected void baseInit()
+        protected void prePlayerInit()
+        {
+            DssRef.storage.profileStorage.refreshProfiles();
+            CityMenu.InitGame();
+        }
+
+        protected void postPlayerInit()
         {
             DssRef.ambience.gameStart();
             culling = new Culling();
@@ -96,6 +101,8 @@ namespace VikingEngine.DSSWars.GameState
             {
                 p.hud.initMap();
             }
+
+            
         }
 
         public ConcurrentStack<Graphics.VoxelModelInstance> modelPool(bool detail)
