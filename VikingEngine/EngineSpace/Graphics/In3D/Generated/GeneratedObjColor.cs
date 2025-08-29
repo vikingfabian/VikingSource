@@ -98,14 +98,14 @@ namespace VikingEngine.Graphics
                 }
             }
         }
-        public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
-        {
-            device.Textures[0] = Engine.LoadContent.Texture(spriteSheet);
-            vertexAndIndexBuffers.SetBuffer();
-            shader.CurrentTechnique.Passes[0].Apply();
-            vertexAndIndexBuffers.Draw();
-        }
-        public override void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex)
+        //public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //{
+        //    device.Textures[0] = Engine.LoadContent.Texture(spriteSheet);
+        //    vertexAndIndexBuffers.SetBuffer();
+        //    shader.CurrentTechnique.Passes[0].Apply();
+        //    vertexAndIndexBuffers.Draw();
+        //}
+        public override void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex)
         {
             vertexAndIndexBuffers.SetBuffer();
             shader.CurrentTechnique.Passes[0].Apply();

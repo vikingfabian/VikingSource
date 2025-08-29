@@ -25,7 +25,7 @@ float Shininess; // Controls the size/tightness of specular highlights
 float AmbientIntensity; // Controls the intensity of ambient light
 float EdgeFadeScale;
 
-static const int ShadowSamples = 32;
+static const int ShadowSamples = 64;
 
 texture ShadowMap;
 sampler2D ShadowMapSampler = sampler_state

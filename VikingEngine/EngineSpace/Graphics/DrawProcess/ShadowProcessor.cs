@@ -9,27 +9,14 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
 {
     class ShadowProcessor
     {
-        //const bool DebugMode = true;
 
-        //private GraphicsDevice _graphicsDevice;
-        private RenderTarget2D _shadowMap;
-        private Effect shader;
         
-
-        // Light properties
-        //public Vector3 LightDirection { get; set; }
-        //public Vector3 LightPosition
-        //{
-        //    get
-        //    {
-        //        return TargetPosition + (LightDirection * 800.0f);
-        //    }
-        //}
-
+        
+        private RenderTarget2D _shadowMap;
+        Effect shader;
+        
         public float SpecularIntensity { get; set; }
         public float Shininess { get; set; }
-        //public float SunIntensity { get; set; }
-        //public Vector3 SunColor { get; set; }
 
         public Vector3 TargetPosition { get; set; }
         public Vector3 UpVector { get; set; } = Vector3.Up;
@@ -47,14 +34,14 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         public ShadowProcessor() 
         {
             CreateRenderTargets();
-            LoadContent(); //temporary
-
+            //LoadContent(); //temporary
+            shader = Engine.Draw.shadowEffect;
             light = new LightProjection(_shadowMapSize);
         }
-        public void LoadContent()
-        {
-            shader = Engine.LoadContent.LoadShader("ShadowEffect");
-        }
+        //public void LoadContent()
+        //{
+        //    shader = Engine.LoadContent.LoadShader("ShadowEffect");
+        //}
 
         private void CreateRenderTargets()
         {
@@ -68,33 +55,14 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         }
 
 
-        //private void UpdateLightMatrices()
-        //{
-        //    // Create view matrix from light's perspective
-        //    _lightViewMatrix = Matrix.CreateLookAt(
-        //        LightPosition,
-        //        TargetPosition, // look at target
-        //        UpVector);
-
-        //    // Create orthographic projection for directional light
-        //    _lightProjectionMatrix = Matrix.CreateOrthographic(
-        //        2048, 2048, 0.1f, 5000f);
-        //}
-
-
-
         public void BeginShadowMapPass()
         {
-            //    // Update light matrices based on current light position.
-            //    UpdateLightMatrices();
-
-            //    // Set render target to shadow map.
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetRenderTarget(_shadowMap);
+            Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetRenderTarget(_shadowMap);
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            //    // Clear with white (meaning far depth).
+
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.Clear(Color.White);
 
-               shader.CurrentTechnique = shader.Techniques["RenderDepth"];
+            shader.CurrentTechnique = shader.Techniques["RenderDepth"];
         }
 
         public void EndShadowMapPass()
@@ -112,7 +80,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
                 Abs3DModel model = counter.sel as Abs3DModel;
                 if (model != null)
                 {
-                    model.DrawDepthOnly(shader, light, cameraIndex);
+                    model.DrawDepthOnly(true, shader, light, cameraIndex);
                 }
             }
         }
@@ -149,10 +117,10 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
                     shader.CurrentTechnique = shader.Techniques["RenderVertexColor"];
                     break;
             }
+
             shader.Parameters["LightPosition"]?.SetValue(lp);
             shader.Parameters["LightColor"]?.SetValue(SunColor * SunIntensity);
             shader.Parameters["AmbientIntensity"]?.SetValue(0.8f);
-            //effect.Parameters["Color"]?.SetValue(color.ToVector4());
             shader.Parameters["SpecularIntensity"]?.SetValue(SpecularIntensity);
             shader.Parameters["Shininess"]?.SetValue(Shininess);
             shader.Parameters["ShadowMap"]?.SetValue(_shadowMap);
@@ -170,6 +138,20 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             }
         }
 
+        public void Dispose()
+        {
+            _shadowMap?.Dispose();
+            _shadowMap = null;
+        }
+
+    }
+
+    enum ShadowResolution
+    { 
+        Low_1024,
+        Medium_2048,
+        High_4096,
+        NUM
     }
     
 }

@@ -64,7 +64,7 @@ namespace VikingEngine.Graphics
         /* Methods */
         public abstract AbsDraw CloneMe();
         public abstract void Draw(int cameraIndex);
-        public virtual void DrawShadow(int cameraIndex, AbsEffect shader) { }
+        //public virtual void DrawShadow(int cameraIndex, AbsEffect shader) { }
 
         public virtual void DrawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light) { }
         public abstract void UpdateCulling();

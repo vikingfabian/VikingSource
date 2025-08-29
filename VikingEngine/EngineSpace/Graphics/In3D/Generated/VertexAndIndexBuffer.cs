@@ -82,9 +82,9 @@ namespace VikingEngine.Graphics
             throw new NotImplementedException();
         }
         
-        public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
-        { }
-        public override void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex)
+        //public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //{ }
+        public override void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex)
         { }
         public override void copyAllDataFrom(AbsDraw master)
         {

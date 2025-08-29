@@ -47,6 +47,9 @@ namespace VikingEngine
         public InputMap controllerMap;
         public InputMap keyboardMap;
         public bool ModelLightShaderEffect = true;
+        public bool modelShadow = true;
+        public bool modelShadow_Soft = true;
+
         public bool ParticlesEffect = true;
         public bool panOnZoom = true;
         public int controlLayout = 0;

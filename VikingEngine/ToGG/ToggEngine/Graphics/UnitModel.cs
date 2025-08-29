@@ -240,7 +240,7 @@ namespace VikingEngine.ToGG
             }
 
             shadow = new Graphics.VoxelModel(true);
-            shadow.Effect = Ref.draw.getEffect(TextureEffectType.Shadow);
+            shadow.Effect = Ref.draw.getEffect(TextureEffectType.BillboardShadow);
             shadow.BuildFromPolygons(new Graphics.PolygonsAndTrianglesColor(shadowPolygons, null),
                 new List<int> { shadowPolygons.Count }, Texture);
 

@@ -327,7 +327,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
                 Abs3DModel model = counter.sel as Abs3DModel;
                 if (model != null)
                 {
-                    model.DrawDeferred(device, shader, view, playerIndex);
+                    //model.DrawDeferred(device, shader, view, playerIndex);
                 }
             }
         }

@@ -47,8 +47,7 @@ namespace VikingEngine.DSSWars.GameState.ShaderLab
             shadowProcessor.BeginShadowMapPass();
             {
                 shadowProcessor.DrawRenderListMembersDepthOnly(0, Graphics.DrawObjType.Mesh, 0);
-                shadowProcessor.DrawRenderListMembersDepthOnly(0, Graphics.DrawObjType.MeshGenerated, 0);
-                
+                shadowProcessor.DrawRenderListMembersDepthOnly(0, Graphics.DrawObjType.MeshGenerated, 0);                
             }
             shadowProcessor.EndShadowMapPass();
 

@@ -77,30 +77,30 @@ namespace VikingEngine.Graphics
         public override void Draw(int cameraIndex) { throw new NotImplementedException(); }
         public override AbsDraw CloneMe() { throw new NotImplementedException(); }
         public override void updateBoundingSphere(ref BoundingSphere boundingSphere) { throw new NotImplementedException(); }
-        public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
-        {
-            shader.Parameters["SourcePos"].SetValue(Vector2.Zero);
-            shader.Parameters["SourceSize"].SetValue(Vector2.One);
-            shader.Parameters["Texture"].SetValue(LoadContent.Texture(LfLib.BlockTexture));
+        //public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //{
+        //    shader.Parameters["SourcePos"].SetValue(Vector2.Zero);
+        //    shader.Parameters["SourceSize"].SetValue(Vector2.One);
+        //    shader.Parameters["Texture"].SetValue(LoadContent.Texture(LfLib.BlockTexture));
 
-            counter.Reset();
-            while (counter.Next())
-            {
-                VertexAndIndexBuffer buf = counter.sel.Mesh;
-                if (buf.VisibleInCamera(cameraIndex))
-                {
-                    buf.SetBuffer();
+        //    counter.Reset();
+        //    while (counter.Next())
+        //    {
+        //        VertexAndIndexBuffer buf = counter.sel.Mesh;
+        //        if (buf.VisibleInCamera(cameraIndex))
+        //        {
+        //            buf.SetBuffer();
 
-                    Matrix world = Matrix.CreateTranslation(buf.Position);
-                    shader.Parameters["World"].SetValue(world);
-                    shader.Parameters["WorldViewIT"].SetValueTranspose(Matrix.Invert(world * view));
+        //            Matrix world = Matrix.CreateTranslation(buf.Position);
+        //            shader.Parameters["World"].SetValue(world);
+        //            shader.Parameters["WorldViewIT"].SetValueTranspose(Matrix.Invert(world * view));
 
-                    shader.CurrentTechnique.Passes[0].Apply();
-                    buf.Draw();
-                }
-            }
-        }
-        public override void DrawDepthOnly(Effect shader, LightProjection light, int cameraIndex)
+        //            shader.CurrentTechnique.Passes[0].Apply();
+        //            buf.Draw();
+        //        }
+        //    }
+        //}
+        public override void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex)
         {
             counter.Reset();
             while (counter.Next())
