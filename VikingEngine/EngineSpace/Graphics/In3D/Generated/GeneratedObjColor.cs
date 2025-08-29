@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
 
 
@@ -97,14 +98,14 @@ namespace VikingEngine.Graphics
                 }
             }
         }
-        public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
-        {
-            device.Textures[0] = Engine.LoadContent.Texture(spriteSheet);
-            vertexAndIndexBuffers.SetBuffer();
-            shader.CurrentTechnique.Passes[0].Apply();
-            vertexAndIndexBuffers.Draw();
-        }
-        public override void DrawDeferredDepthOnly(Effect shader, int cameraIndex)
+        //public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //{
+        //    device.Textures[0] = Engine.LoadContent.Texture(spriteSheet);
+        //    vertexAndIndexBuffers.SetBuffer();
+        //    shader.CurrentTechnique.Passes[0].Apply();
+        //    vertexAndIndexBuffers.Draw();
+        //}
+        public override void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex)
         {
             vertexAndIndexBuffers.SetBuffer();
             shader.CurrentTechnique.Passes[0].Apply();

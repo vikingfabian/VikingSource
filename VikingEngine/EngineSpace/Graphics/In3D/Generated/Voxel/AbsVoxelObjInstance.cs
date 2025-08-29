@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 namespace VikingEngine.Graphics
 {
@@ -76,48 +77,60 @@ namespace VikingEngine.Graphics
                 
             }
         }
-        public override void DrawShadow(int cameraIndex, AbsEffect shader)
-        {
-            if (VisibleInCamera(cameraIndex))
-            {
-                master.position = this.position;
-                master.Rotation = this.Rotation;
-                master.scale = this.scale;
-                //master.Transparentsy = 
-                if (white)
-                {
-                    //master.DrawShadow(shader);
-                    master.DrawShadow(cameraIndex, shader);
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                    //master.Effect.SetColor(color);
-                    //master.DrawShadow(Effect shader)
-                    //master.Effect.SetColor(Vector3.One);
-                }
+        //public override void DrawShadow(int cameraIndex, AbsEffect shader)
+        //{
+        //    if (VisibleInCamera(cameraIndex))
+        //    {
+        //        master.position = this.position;
+        //        master.Rotation = this.Rotation;
+        //        master.scale = this.scale;
+        //        //master.Transparentsy = 
+        //        if (white)
+        //        {
+        //            //master.DrawShadow(shader);
+        //            master.DrawShadow(cameraIndex, shader);
+        //        }
+        //        else
+        //        {
+        //            throw new NotImplementedException();
+        //            //master.Effect.SetColor(color);
+        //            //master.DrawShadow(Effect shader)
+        //            //master.Effect.SetColor(Vector3.One);
+        //        }
 
-            }
-        }
-        public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
-        {
-            if (VisibleInCamera(cameraIndex))
-            {
-                device.Textures[0] = Engine.LoadContent.Texture(VikingEngine.LootFest.LfLib.BlockTexture);
-                master.position = this.position;
-                master.Rotation = this.Rotation;
-                master.scale = this.scale;
-                master.DrawDeferred(device, shader, view, cameraIndex);
-            }
-        }
-        public override void DrawDeferredDepthOnly(Effect shader, int cameraIndex)
+        //    }
+        //}
+
+        public override void DrawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
         {
             if (VisibleInCamera(cameraIndex))
             {
                 master.position = this.position;
                 master.Rotation = this.Rotation;
                 master.scale = this.scale;
-                master.DrawDeferredDepthOnly(shader, cameraIndex);
+                master.DrawWithShadow(cameraIndex, camera, shader, light);
+            }
+        }
+
+        //public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //{
+        //    if (VisibleInCamera(cameraIndex))
+        //    {
+        //        device.Textures[0] = Engine.LoadContent.Texture(VikingEngine.LootFest.LfLib.BlockTexture);
+        //        master.position = this.position;
+        //        master.Rotation = this.Rotation;
+        //        master.scale = this.scale;
+        //        master.DrawDeferred(device, shader, view, cameraIndex);
+        //    }
+        //}
+        public override void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex)
+        {
+            if (VisibleInCamera(cameraIndex))
+            {
+                master.position = this.position;
+                master.Rotation = this.Rotation;
+                master.scale = this.scale;
+                master.DrawDepthOnly(drawDepth, shader, light, cameraIndex);
             }
         }
         public override void SetMaster(VoxelModel master)

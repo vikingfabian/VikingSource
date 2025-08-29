@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 namespace VikingEngine.Graphics
 {
@@ -68,7 +69,7 @@ namespace VikingEngine.Graphics
         //        batch.preremoved++;
         //    }
         //}
-        public void DrawDepth(int cameraIndex, Effect shader)
+        public void DrawDepth(int cameraIndex, LightProjection light, Effect shader)
         {
             foreach (var kv in batches)
             {
@@ -76,7 +77,7 @@ namespace VikingEngine.Graphics
 
                 foreach (var model in list)
                 {
-                    (model as Abs3DModel)?.DrawDeferredDepthOnly(shader, cameraIndex);
+                    (model as Abs3DModel)?.DrawDepthOnly(true, shader, light, cameraIndex);
                 }
             }
         }

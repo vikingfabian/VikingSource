@@ -37,7 +37,7 @@ namespace VikingEngine.Engine
         //public static GraphicsDevice GraphicsDevice;
         public static Viewport defaultViewport;
         public static bool horizontalSplit = true;
-        public static Effect effectBR, effectFlag;//effectSeaNoise;
+        public static Effect effectBR, effectFlag, shadowEffect;//effectSeaNoise;
         //public static Effect PixelShader;
         public static Graphics.CustomEffect[] TextureEffects;
         static protected RenderTarget2D MainRenderTarget;
@@ -66,15 +66,16 @@ namespace VikingEngine.Engine
 
             effectBR = LoadContent.LoadShader("Effect");
             effectFlag = LoadContent.LoadShader("FlagWaveEffect");
-            
+            shadowEffect = Engine.LoadContent.LoadShader("ShadowEffect");
+
             //effectSeaNoise = LoadContent.LoadShader("SeaNoiseEffect");
 
             TextureEffects = new VikingEngine.Graphics.CustomEffect[(int)Graphics.TextureEffectType.NUM_NON];
 
             TextureEffects[(int)Graphics.TextureEffectType.Flat] = new Graphics.CustomEffect("Flat", false);
             TextureEffects[(int)Graphics.TextureEffectType.SeaNoise] = new Graphics.SeaNoiseEffect();
-            TextureEffects[(int)Graphics.TextureEffectType.Shadow] = new Graphics.CustomEffect("Shadow", false);
-            TextureEffects[(int)Graphics.TextureEffectType.MonoShadow] = new Graphics.CustomEffect("RenderTextured", false);
+            TextureEffects[(int)Graphics.TextureEffectType.BillboardShadow] = new Graphics.CustomEffect("Shadow", false);
+            //TextureEffects[(int)Graphics.TextureEffectType.MonoShadow] = new Graphics.CustomEffect("RenderTextured", false);
 #if TOGG
             TextureEffects[(int)Graphics.TextureEffectType.FlatNoOpacity] = new Graphics.CustomEffect("FlatNoOpacity", false);
             
@@ -306,6 +307,11 @@ namespace VikingEngine.Engine
             }
         }
 
+        public void SetMainRenderTarget()
+        {
+            graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget);
+        }
+
         public void settingsChanged2dImagesRefresh() 
         {
             SpottedArrayCounter<AbsDraw> renderList2D = new SpottedArrayCounter<AbsDraw>(renderList[0].GetList(Graphics.DrawObjType.Texture2D));
@@ -315,6 +321,12 @@ namespace VikingEngine.Engine
             }
         }
 
+        public void DebugDrawRenderTarget(RenderTarget2D renderTarget, Rectangle destination)
+        {
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+            spriteBatch.Draw(renderTarget, destination, Color.White);
+            spriteBatch.End();
+        }
 
         public void Draw2d(int layer)
         {

@@ -327,7 +327,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
                 Abs3DModel model = counter.sel as Abs3DModel;
                 if (model != null)
                 {
-                    model.DrawDeferred(device, shader, view, playerIndex);
+                    //model.DrawDeferred(device, shader, view, playerIndex);
                 }
             }
         }
@@ -340,7 +340,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
                 Abs3DModel model = counter.sel as Abs3DModel;
                 if (model != null)
                 {
-                    model.DrawDeferredDepthOnly(shader, -1);
+                    //model.DrawDeferredDepthOnly(shader, -1);
                 }
             }
         }
@@ -351,7 +351,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
 
             if (DrawGround)
             {
-                heightmap.DrawDeferredDepthOnly(shader, -1);
+                //heightmap.DrawDeferredDepthOnly(shader, -1);
             }
 
             DrawRenderListMembersDepthOnly(device, shader, RenderLayer.Basic, DrawObjType.MeshGenerated);
@@ -373,7 +373,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
 
             if (DrawGround)
             {
-                heightmap.DrawDeferred(device, gBuf, view, playerIndex);
+                //heightmap.DrawDeferred(device, gBuf, view, playerIndex);
             }
             device.Textures[0] = Engine.LoadContent.Texture(VikingEngine.LootFest.LfLib.BlockTexture);
             DrawRenderListMembers(device, gBuf, view, playerIndex, RenderLayer.Basic, DrawObjType.MeshGenerated);

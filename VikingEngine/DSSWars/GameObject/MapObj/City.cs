@@ -462,98 +462,110 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write(Bound.UShort(workForce.amount));
-            w.Write(Bound.UShort(HousingCount_Workers));
-            w.Write(Bound.UShort(HousingCount_Guard));
-            w.Write(Bound.Short(freeServiceMen.amount));
-            w.Write(Bound.Short(workingAndFreeServiceMen));
-            cityHallSubtilePos.writeUshort(w);
-            cityStorageCenter.writeUshort(w);
-
-            childrenAge0.write16bit(w);
-            w.Write(Bound.UShort(childrenAge1));
-
-            immigrants.write16bit(w);
-
-            w.Write(Bound.Byte(maxWaterBase));
-            w.Write(waterAddPerSec);
-            workTemplate.writeGameState(w, true);
-
-            writeResources(w);
-
-            writeWorkerStatuses(w, false);
-
-            w.Write((ushort)conscriptBuildings.Count);
-            foreach (var barracks in conscriptBuildings)
+            try
             {
-                barracks.writeGameState(w);
-            }
+                w.Write(Bound.UShort(workForce.amount));
+                w.Write(Bound.UShort(HousingCount_Workers));
+                w.Write(Bound.UShort(HousingCount_Guard));
+                w.Write(Bound.Short(freeServiceMen.amount));
+                w.Write(Bound.Short(workingAndFreeServiceMen));
+                cityHallSubtilePos.writeUshort(w);
+                cityStorageCenter.writeUshort(w);
 
-            w.Write((ushort)deliveryServices.Count);
-            foreach (var delivery in deliveryServices)
-            {
-                delivery.writeGameState(w);
-            }
+                childrenAge0.write16bit(w);
+                w.Write(Bound.UShort(childrenAge1));
 
-            w.Write((ushort)schoolBuildings.Count);
-            foreach (var school in schoolBuildings)
-            { school.writeGameState(w); }
+                immigrants.write16bit(w);
 
-            if (arraylib.HasMembers(researchBuildings))
-            {
-                w.Write((ushort)researchBuildings.Count);
-                foreach (var research in researchBuildings)
-                { 
-                    research.writeGameState(w);
+                w.Write(Bound.Byte(maxWaterBase));
+                w.Write(waterAddPerSec);
+                workTemplate.writeGameState(w, true);
+
+                writeResources(w);
+
+                writeWorkerStatuses(w, false);
+
+                w.Write((ushort)conscriptBuildings.Count);
+                foreach (var barracks in conscriptBuildings)
+                {
+                    barracks.writeGameState(w);
                 }
+
+                w.Write((ushort)deliveryServices.Count);
+                foreach (var delivery in deliveryServices)
+                {
+                    delivery.writeGameState(w);
+                }
+
+                w.Write((ushort)schoolBuildings.Count);
+                foreach (var school in schoolBuildings)
+                { school.writeGameState(w); }
+
+                if (arraylib.HasMembers(researchBuildings))
+                {
+                    w.Write((ushort)researchBuildings.Count);
+                    foreach (var research in researchBuildings)
+                    {
+                        research.writeGameState(w);
+                    }
+                }
+                else
+                {
+                    w.Write(ushort.MinValue);
+                }
+
+
+                writeGroups(w);
+
+                w.Write((ushort)defenceBuildings.Count);
+                for (int i = 0; i < defenceBuildings.Count; ++i)//each (var defence in defenceBuildings)
+                {
+                    defenceBuildings.array[i].writeGameState(w);
+                }
+
+
+                w.Write(autoBuild_Work);
+                w.Write(autoBuild_Farm);
+                w.Write((byte)autoExpandFarmType);
+
+                w.Write((byte)tagBack);
+                if (tagBack != CityTagBack.NONE)
+                {
+                    w.Write((ushort)tagArt);
+                }
+
+                w.Write(res_food_safeguard);
+
+                technology.writeGameState(w, false);
+                w.Write(money.copper);
+                w.Write(automateCity);
+                w.Write((byte)automationFocus);
+                w.Write((byte)warAutoQuality);
+                w.Write((byte)warAutoWeaponType);
+
+                name.write(w);
+
+                casualCityProfile.writeGameState(w);
+                if (casualProgress == null)
+                {
+                    w.Write(false);
+                }
+                else
+                {
+                    w.Write(true);
+                    casualProgress.writeGameState(w);
+                }
+                Debug.WriteCheck(w);
+
+                //throw new Exception("test");
             }
-            else
-            { 
-                w.Write(ushort.MinValue);
-            }
-            
-      
-            writeGroups(w);
-  
-            w.Write((ushort)defenceBuildings.Count);
-            for (int i = 0; i < defenceBuildings.Count; ++i)//each (var defence in defenceBuildings)
+            catch (Exception e)
             {
-                defenceBuildings.array[i].writeGameState(w);
+                BlueScreen.AttachMessage =
+                   $"workforce {workForce.amount}, HousingCount_Workers {HousingCount_Workers}, HousingCount_Guard {HousingCount_Guard}, cityHallSubtilePos {cityHallSubtilePos}, cityStorageCenter {cityStorageCenter}, childrenAge0 {childrenAge0}, childrenAge1 {childrenAge1}, immigrants {immigrants}, ";
+
+                BlueScreen.ThreadException = e;
             }
- 
-
-            w.Write(autoBuild_Work);
-            w.Write(autoBuild_Farm);
-            w.Write((byte)autoExpandFarmType);
-
-            w.Write((byte)tagBack);
-            if (tagBack != CityTagBack.NONE)
-            {
-                w.Write((ushort)tagArt);
-            }
-
-            w.Write(res_food_safeguard);
-
-            technology.writeGameState(w, false);
-            w.Write(money.copper);
-            w.Write(automateCity);
-            w.Write((byte)automationFocus);
-            w.Write((byte)warAutoQuality);
-            w.Write((byte)warAutoWeaponType);
-
-            name.write(w);
-
-            casualCityProfile.writeGameState(w);
-            if (casualProgress == null)
-            {
-                w.Write(false);
-            }
-            else
-            {
-                w.Write(true);
-                casualProgress.writeGameState(w);
-            }
-            Debug.WriteCheck(w);
         }
 
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)

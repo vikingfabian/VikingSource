@@ -2035,6 +2035,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/SeaNoiseEffect.fx
 
+#begin Shaders/ShadowEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/ShadowEffect.fx
+
 #begin Shaders/ShadowMap.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -2094,6 +2100,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Texture/particle3.tga
+
+#begin Texture/test_texture.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Texture/test_texture.png
 
 #begin Texture/whitearea256.tga
 /importer:TextureImporter

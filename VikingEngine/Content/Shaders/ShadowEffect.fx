@@ -1,3 +1,5 @@
+//From the monogame 3d platformer
+
 #if OPENGL
     #define SV_POSITION POSITION
     #define VS_SHADERMODEL vs_3_0
@@ -107,7 +109,7 @@ float4 ApplyLightingModel(V2P input, float4 color)
     {
         float4 seed = float4(i, input.ViewPosition.xyz);
         
-        float2 samplePosition = input.SMPosition + (randomOffset(seed) / 500.0f);
+        float2 samplePosition = input.SMPosition + (randomOffset(seed) / 700.0f); //The divition controls the fade radius
         
         float2 edgeDist = min(samplePosition, 1.0 - samplePosition);
         float edgeFade = saturate(min(edgeDist.x, edgeDist.y) * EdgeFadeScale); 
@@ -124,15 +126,7 @@ float4 ApplyLightingModel(V2P input, float4 color)
         shadowScalar * specularColor, color.a);
 }
 
-V2PDepth VSDepthMap(VSInputDepth input)
-{
-    V2PDepth output;
-        
-    output.Position = mul(input.Position, ModelToLight);
-    output.Depth = output.Position.z / output.Position.w;
-    
-    return output;
-};
+
 
 V2P VShader(VSInput input)
 {
@@ -155,16 +149,75 @@ V2P VShader(VSInput input)
     return output;
 }
 
+float4 PShaderTextureColor(V2P input) : COLOR
+{
+    float4 diffuse = input.Color * tex2D(TextureSampler, input.TextureCoords);
+    return ApplyLightingModel(input, diffuse);
+}
+
+V2PDepth VSDepthMap(VSInputDepth input)
+{
+    V2PDepth output;
+        
+    output.Position = mul(input.Position, ModelToLight);
+    output.Depth = output.Position.z / output.Position.w;
+    
+    return output;
+};
+
 float4 PSDepthMap(V2PDepth input) : COLOR
 {
     // Add a little bias to the final depth to avoid shadow acne.
-    return float4(input.Depth + 0.001, 0, 0, 1);
+    return float4(input.Depth + 0.0015, 0, 0, 1);
 }
 
-float4 PShaderTextureColor(V2P input) : COLOR
+// --- NEW: vertex-color input
+struct VSInputVC
 {
-    float4 diffuse = input.Color * tex2D(TextureSampler, input.TextureCoords);   
-    return ApplyLightingModel(input, diffuse);
+    float4 Position : SV_POSITION;
+    float3 Normal : NORMAL0;
+    float4 VertexColor : COLOR0;
+};
+
+// --- NEW: vertex-color VS
+V2P VShaderVertexColor(VSInputVC input)
+{
+    V2P output;
+
+    output.ViewPosition = mul(input.Position, ModelToView);
+    output.Position = mul(input.Position, ModelToScreen);
+
+    // Optional: tint vertex color by the global 'Color' parameter
+    output.Color = input.VertexColor * Color;
+
+    float4 lightPosition = mul(input.Position, ModelToLight);
+    float2 shadowMapCoord = mad(lightPosition.xy / lightPosition.w, 0.5f, float2(0.5f, 0.5f));
+    shadowMapCoord.y = 1.0f - shadowMapCoord.y;
+
+    output.SMPosition = shadowMapCoord;
+    output.SMDepth = lightPosition.z / lightPosition.w;
+
+    output.ViewNormal = mul(input.Normal, NormalToView);
+    output.TextureCoords = float2(0.0f, 0.0f); // not used in this path
+
+    return output;
+}
+
+// --- NEW: vertex-color PS
+float4 PShaderVertexColor(V2P input) : COLOR
+{
+    // Use the interpolated vertex color as the base
+    return ApplyLightingModel(input, input.Color);
+}
+
+// --- NEW: technique
+technique RenderVertexColor
+{
+    pass P0
+    {
+        VertexShader = compile VS_SHADERMODEL VShaderVertexColor();
+        PixelShader = compile PS_SHADERMODEL PShaderVertexColor();
+    }
 }
 
 technique RenderDepth

@@ -79,5 +79,10 @@ namespace VikingEngine
         {
             value = r.ReadUInt16();
         }
+
+        public override string ToString()
+        {
+            return value.ToString();
+        }
     }
 }

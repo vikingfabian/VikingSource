@@ -1,6 +1,8 @@
 ﻿UPDATE
 Change Log:
 * Fixed: The game mode from save does not take effect
+* Added the ability to attach message to crashes
+* Will write the city variables to crash log
 
 Story:
 * 
