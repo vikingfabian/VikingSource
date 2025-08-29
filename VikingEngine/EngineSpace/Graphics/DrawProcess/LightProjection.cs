@@ -10,16 +10,26 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
 {
     class LightProjection
     {
-       public Matrix LightViewMatrix;
-       public Matrix LightProjectionMatrix;
+        public Matrix LightViewMatrix;
+        public Matrix LightProjectionMatrix;
         public Matrix ViewProjection;
         public Vector3 lightPos;
-        Vector3 lightDirection = new Vector3(-0.1f, -1f, -0.1f);
+        Vector3 lightDirection = new Vector3(-0.2f, -1f, -0.2f);
         public float distance = 500f;
         Vector3 target = Vector3.Zero;   // center of the scene (adjust as needed)
+        float sceneWidth = 100;   // world units to cover; tune per your scene
+        float sceneHeight = 100;
 
         public LightProjection(int shadowMapSize)
         {
+            refresh();
+        }
+
+        public void updateScene(Vector3 target, float sceneWidth, float sceneHeight)
+        { 
+            this.target = target;
+            this.sceneWidth = sceneWidth;
+            this.sceneHeight = sceneHeight;
             refresh();
         }
 
@@ -44,8 +54,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             LightViewMatrix = Matrix.CreateLookAt(lightPos, target, up);
 
             // 4) Orthographic projection for directional (parallel) light
-            float sceneWidth = 100;   // world units to cover; tune per your scene
-            float sceneHeight = 100;
+            
             float nearPlane = distance - 10;
             float farPlane = distance + 4;
 

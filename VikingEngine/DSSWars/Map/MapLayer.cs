@@ -145,7 +145,7 @@ namespace VikingEngine.DSSWars.Map
             if (prevLayer != null)
             {
                 prevLayer.opacity -= 3f * Ref.DeltaTimeSec;
-                if (prevLayer.opacity <= 0)
+                if (prevLayer.opacity <= 0.2f)
                 {
                     prevLayer.opacity = 0;
                     prevLayer = null;

@@ -81,7 +81,7 @@ namespace VikingEngine.Graphics
                 }
             }
         }
-        public void RemoveAndDraw(int cameraIndex)
+        public void RemoveAndDraw(bool shadow, int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
         {
             while (loadingQueue.TryPeek(out var model)
                 && model.master != null)
@@ -108,7 +108,14 @@ namespace VikingEngine.Graphics
                     var model = list[i];
                     if (model.InRenderList)
                     {
-                        model.Draw(cameraIndex);
+                        if (shadow)
+                        {
+                            model.DrawWithShadow(cameraIndex, camera, shader, light);
+                        }
+                        else
+                        {
+                            model.Draw(cameraIndex);
+                        }
                     }
                     else
                     {

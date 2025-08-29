@@ -561,7 +561,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        const float ModelGroundYAdj = 0.02f;
+        const float ModelGroundYAdj = 0.004f;
         protected void updateGroudY(bool set)
         {
             if (UnitType == UnitType.CityGuard)

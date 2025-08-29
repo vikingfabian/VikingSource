@@ -76,44 +76,57 @@ namespace VikingEngine.Graphics
         //}
         public override void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex)
         {
-            VB.SetBuffer();
-           
-            Matrix world =
-                Matrix.CreateScale(scale) *
-                Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
-                Matrix.CreateTranslation(position);
+            if (drawDepth)
+            {
+                if (VB != null)
+                {
+                    VB.SetBuffer();
 
-            // Send to the shader and draw.
-            shader.Parameters["ModelToLight"].SetValue(light.modelToLight(world));
-            shader.CurrentTechnique.Passes[0].Apply();
-            VB.Draw(Frame);
+                    Matrix world =
+                        Matrix.CreateScale(scale) *
+                        Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
+                        Matrix.CreateTranslation(position);
+
+                    // Send to the shader and draw.
+                    shader.Parameters["ModelToLight"].SetValue(light.modelToLight(world));
+                    shader.CurrentTechnique.Passes[0].Apply();
+                    VB.Draw(Frame);
+                }
+            }
+            else
+            {
+                Effect.DrawVB(Frame, this, VB);
+            }
         }
 
         public override void DrawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
         {
-            VB.SetBuffer();
-            Matrix modelWorld = Matrix.CreateScale(scale) *
-                        Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
-                        Matrix.CreateTranslation(position);
-            shader.Parameters["Texture"]?.SetValue(LoadContent.Texture(LoadedTexture.WhiteArea));
-            shader.Parameters["Color"]?.SetValue(Color.ToVector4());
+            if (VB != null)
+            {
+                VB.SetBuffer();
+                Matrix modelWorld = Matrix.CreateScale(scale) *
+                            Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
+                            Matrix.CreateTranslation(position);
+                //shader.Parameters["Texture"]?.SetValue(LoadContent.Texture(LoadedTexture.WhiteArea));
+                shader.Parameters["Color"]?.SetValue(Color.ToVector4());
 
-            Matrix world = /*transforms[modelMesh.ParentBone.Index] **/ modelWorld;
-            Matrix worldViewMatrix = world * camera.ViewMatrix;
-            Matrix worldViewProjMatrix = world * camera.ViewProjection;
-            Matrix lightWorldViewProjMatrix = world * light.ViewProjection;
+                Matrix world = /*transforms[modelMesh.ParentBone.Index] **/ modelWorld;
+                Matrix worldViewMatrix = world * camera.ViewMatrix;
+                Matrix worldViewProjMatrix = world * camera.ViewProjection;
+                Matrix lightWorldViewProjMatrix = world * light.ViewProjection;
 
-            Matrix temp = worldViewMatrix;
-            temp.Translation = Vector3.Zero;
-            Matrix worldViewIT = Matrix.Transpose(Matrix.Invert(temp));
+                Matrix temp = worldViewMatrix;
+                temp.Translation = Vector3.Zero;
+                Matrix worldViewIT = Matrix.Transpose(Matrix.Invert(temp));
 
-            shader.Parameters["NormalToView"]?.SetValue(worldViewIT);
-            shader.Parameters["ModelToScreen"]?.SetValue(worldViewProjMatrix);
-            shader.Parameters["ModelToLight"]?.SetValue(lightWorldViewProjMatrix);
-            shader.Parameters["ModelToView"]?.SetValue(worldViewMatrix);
+                shader.Parameters["NormalToView"]?.SetValue(worldViewIT);
+                shader.Parameters["ModelToScreen"]?.SetValue(worldViewProjMatrix);
+                shader.Parameters["ModelToLight"]?.SetValue(lightWorldViewProjMatrix);
+                shader.Parameters["ModelToView"]?.SetValue(worldViewMatrix);
 
-            shader.CurrentTechnique.Passes[0].Apply();
-            VB.Draw(Frame);
+                shader.CurrentTechnique.Passes[0].Apply();
+                VB.Draw(Frame);
+            }
         }
 
         /* Novelty methods */

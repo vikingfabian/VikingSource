@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             new GameTime();
             HudLib.Init();
 
+            prePlayerInit();
             initPlayers();
             postPlayerInit();
             initScenario();

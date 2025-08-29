@@ -54,9 +54,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             model.position = soldier.position;
 
-            shadowPlane.Position = model.position + shadowOffset;
-            shadowPlane.Rotation = model.Rotation;
-
+            if (shadowPlane != null)
+            {
+                shadowPlane.Position = model.position + shadowOffset;
+                shadowPlane.Rotation = model.Rotation;
+            }
 
             selectionArea.Center = soldier.posXZ();//bound.Center;
             selectionArea.Center.Y -= 0.5f;
@@ -88,13 +90,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
             model.position = soldier.position;
 
-            shadowPlane = new Graphics.Mesh(LoadedMesh.plane, soldier.position,
-                 soldier.soldierData.ShadowModelScale(), Graphics.TextureEffectType.Flat,
-                 SpriteName.LittleUnitShadow, Color.Black);
+            if (!Ref.gamesett.modelShadow)
+            {
+                shadowPlane = new Graphics.Mesh(LoadedMesh.plane, soldier.position,
+                     soldier.soldierData.ShadowModelScale(), Graphics.TextureEffectType.Flat,
+                     SpriteName.LittleUnitShadow, Color.Black);
+                shadowPlane.Opacity = 0.5f;
+            }
 
 
-
-            shadowPlane.Opacity = 0.5f;
+            
 
             
             selectionArea = new Circle(Vector2.Zero, 1.2f);

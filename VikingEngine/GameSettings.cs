@@ -12,6 +12,7 @@ using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.PJ.Strategy;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 
 namespace VikingEngine
@@ -49,6 +50,7 @@ namespace VikingEngine
         public bool ModelLightShaderEffect = true;
         public bool modelShadow = true;
         public bool modelShadow_Soft = true;
+        public ShadowResolution shadowResolution = ShadowResolution.Medium_2048;
 
         public bool ParticlesEffect = true;
         public bool panOnZoom = true;
@@ -347,6 +349,17 @@ namespace VikingEngine
             return ModelLightShaderEffect;
         }
 
+        public bool shadowProperty(object tag, bool set, bool val)
+        {
+            if (set)
+            {
+                modelShadow = val;
+                settingsHasChanged = true;
+            }
+
+            return modelShadow;
+        }
+
         public bool particlesProperty(object tag, bool set, bool val)
         {
             if (set)
@@ -568,8 +581,22 @@ namespace VikingEngine
         public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ModelLight) },
-                modelLightProperty));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_ModelShadow) },
+                shadowProperty));
+
+            if (modelShadow)
+            {
+                DropDownBuilder shadowMapSizeDropDown = new DropDownBuilder("shadow map sz");
+                for (ShadowResolution resolution = 0; resolution < ShadowResolution.NUM; resolution++)
+                {
+                    shadowMapSizeDropDown.AddOption(
+            } }
+            else
+            {
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ModelLight) },
+                    modelLightProperty));
+            }
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_Particles) },
                 particlesProperty));

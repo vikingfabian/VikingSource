@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars
             if (hasFadingLayer)
             { //Draw overview to rendertarget
                 graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-                SetRenderTarget(true, overviewMapTarget, ColorExt.Empty);
+                SetRenderTarget(true, overviewMapTarget, Color.White);
                 
                 for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
                 {
@@ -120,7 +120,9 @@ namespace VikingEngine.DSSWars
 
             if (hasFadingLayer)
             { //Draw overview rendertarget
-                
+                //Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+
                 for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
                 {
                     Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
@@ -165,34 +167,44 @@ namespace VikingEngine.DSSWars
             {
                 case Map.MapDetailLayerType.UnitDetail1:
 
-
                     //SHADOW
-                    //if (Ref.gamesett.modelShadow)
-                    //{
-                    //    shadowProcessor.BeginShadowMapPass();
-                    //    {
-                    //        shadowProcessor.DrawRenderListMembersDepthOnly(UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
+                    if (Ref.gamesett.modelShadow)
+                    {
+                        var area = DssRef.state.culling.players[p.localPlayerIndex].GetState().enterArea;
+                        shadowProcessor.light.updateScene(Camera.goalLookTarget, area.Width, area.Height);
+                        shadowProcessor.BeginShadowMapPass();
+                        {
+                            shadowProcessor.DrawRenderListMembersDepthOnly(UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
+                            DssRef.state.detailMap.updateAndDraw(true, shadowProcessor.shader, shadowProcessor.light, cameraIndex);
+                            drawBatch.DrawDepth(cameraIndex, shadowProcessor.light, shadowProcessor.shader);
+                        }
+                        graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
 
-                    //    }
-                    //    shadowProcessor.EndShadowMapPass();
-                    //}
-                    //else
-                    //{
+                        shadowProcessor.DrawModelsWithShadow(UnitDetailLayer, Graphics.DrawObjType.MeshGenerated, Camera, cameraIndex);
+                        DssRef.state.detailMap.drawWithShadow(cameraIndex, Camera, shadowProcessor.shader, shadowProcessor.light);
+                        drawBatch.RemoveAndDraw(true, cameraIndex, Camera, shadowProcessor.shader, shadowProcessor.light);
+                    }
+                    else
+                    {
                         DrawGenerated(UnitDetailLayer, cameraIndex);
-                        DssRef.state.detailMap.updateAndDraw(cameraIndex);
-                        drawBatch.RemoveAndDraw(cameraIndex);
-                    //}
+                        DssRef.state.detailMap.updateAndDraw(false, shadowProcessor.shader, shadowProcessor.light, cameraIndex);
+                        drawBatch.RemoveAndDraw(false, cameraIndex, Camera, null, null);
+                    }
+                    Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                    Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     Draw3d(UnitDetailLayer, cameraIndex);
                     localPlayer.DrawDetalLayer_Mesh(cameraIndex);
                     
                     Engine.ParticleHandler.Draw(p.view.Camera);
-                    Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                    //Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     
                     break;
 
                 case Map.MapDetailLayerType.TerrainOverview2:
+                    Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
                     DssRef.state.detailMap.Update_outOfFocus();
                     DrawGenerated(TerrainLayer, cameraIndex);
+                    Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     Draw3d(TerrainLayer, cameraIndex);
                     localPlayer.DrawMidLayer_Mesh(cameraIndex);
                     break;

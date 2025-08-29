@@ -13,7 +13,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         
         
         private RenderTarget2D _shadowMap;
-        Effect shader;
+        public Effect shader;
         
         public float SpecularIntensity { get; set; }
         public float Shininess { get; set; }
@@ -21,15 +21,10 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         public Vector3 TargetPosition { get; set; }
         public Vector3 UpVector { get; set; } = Vector3.Up;
 
-        // Matrices
-        private Matrix _lightViewMatrix;
-        private Matrix _lightProjectionMatrix;
-
         // Shadow map resolution
         private int _shadowMapSize = 2048;
 
         public LightProjection light;
-        Rectangle debugDrawArea;
 
         public ShadowProcessor() 
         {
@@ -65,10 +60,10 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             shader.CurrentTechnique = shader.Techniques["RenderDepth"];
         }
 
-        public void EndShadowMapPass()
-        {
-            Ref.draw.SetMainRenderTarget();
-        }
+        //public void EndShadowMapPass()
+        //{
+        //    Ref.draw.SetMainRenderTarget();
+        //}
 
         public void DrawRenderListMembersDepthOnly(int layer, DrawObjType objType, int cameraIndex)
         {
@@ -97,7 +92,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             Engine.Draw.PreviousVertexBuffer = -1;
 
             var SunColor = new Vector3(1.0f, 0.9f, 0.9f);
-            var SunIntensity = 1.1f;
+            var SunIntensity = 0.5f;
 
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -105,8 +100,8 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             var modelToLight = shader.Parameters["ModelToLight"];
 
             var lp = Vector3.Normalize(Vector3.TransformNormal(light.lightPos, camera.ViewMatrix));
-            float SpecularIntensity = 0.5f; // Intensity of specular highlights
-            float Shininess = 16f; // Power of the specular highlights
+            float SpecularIntensity = 0.3f; // Intensity of specular highlights
+            float Shininess = 8f; // Power of the specular highlights
 
             switch (objType)
             {
@@ -142,6 +137,19 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         {
             _shadowMap?.Dispose();
             _shadowMap = null;
+        }
+
+        public static int Resolution(ShadowResolution shadowResolution)
+        {
+            switch (shadowResolution)
+            {
+                default:
+                    return 1024;
+                case ShadowResolution.Medium_2048:
+                    return 2048;
+                case ShadowResolution.High_4096:
+                    return 4096;
+            }
         }
 
     }
