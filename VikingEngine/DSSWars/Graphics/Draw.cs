@@ -46,13 +46,18 @@ namespace VikingEngine.DSSWars
         public const int TerrainLayer = 1;
         public const int MinimapLayer = 2;
         ShadowProcessor shadowProcessor = new ShadowProcessor();
-
+        OceanProcess oceanProcess;
         public DrawGame()
             : base()
         {
             overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
             drawBatch = new DrawBatchCollection();
+        }
+
+        public void initMapShaders()
+        {
+            oceanProcess = DssRef.state.detailMap.createOceanProcess();
         }
 
         public override void OnShaderChange(ShaderChangeType changeType)
@@ -160,7 +165,7 @@ namespace VikingEngine.DSSWars
         {
             if (Ref.gamesett.modelShadow)
             {
-                shadowProcessor.SunColor = DssRef.time.shadow_SunColor;
+                shadowProcessor.light.SunColor = DssRef.time.shadow_SunColor;
                 shadowProcessor.light.lightDirection = DssRef.time.shadow_LightDirection;
             }
             else
@@ -212,6 +217,7 @@ namespace VikingEngine.DSSWars
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     Draw3d(UnitDetailLayer, cameraIndex);
+                    oceanProcess.draw(UnitDetailLayer, Camera, cameraIndex, shadowProcessor.light, shadowProcessor._shadowMap);
                     localPlayer.DrawDetalLayer_Mesh(cameraIndex);
                     
                     Engine.ParticleHandler.Draw(p.view.Camera);

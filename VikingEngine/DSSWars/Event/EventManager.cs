@@ -300,13 +300,16 @@ namespace VikingEngine.DSSWars.Event
 
             foreach (var m in events)
             {
-                mainStory.Append(m);
+                mainStory.Enqueue(m);
             }
             
             if (replace)
             {
-                
-                mainStory.First().onStart();
+
+                if (mainStory.TryPeek(out var first))
+                {
+                    first.onStart();
+                }
             }
         }
 
@@ -392,7 +395,7 @@ namespace VikingEngine.DSSWars.Event
                 {
                     var type = (EventType)r.ReadByte();
                     var ev = CreateEvent(type);
-                    mainStory.Append(ev);
+                    mainStory.Enqueue(ev);
                     if (r.ReadBoolean())
                     {
                         ev.readGameState(r, subVersion, pointers);

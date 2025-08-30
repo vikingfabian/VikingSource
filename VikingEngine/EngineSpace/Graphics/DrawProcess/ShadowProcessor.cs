@@ -11,10 +11,10 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
     class ShadowProcessor
     {
         
-        private RenderTarget2D _shadowMap;
+        public RenderTarget2D _shadowMap;
         public Effect shader;
         
-        public Vector3 SunColor = new Vector3(0.5f, 0.45f, 0.45f);
+        
 
         // Shadow map resolution
         private int _shadowMapSize = 2048;
@@ -96,7 +96,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            var modelToLight = shader.Parameters["ModelToLight"];
+            //var modelToLight = shader.Parameters["ModelToLight"];
 
             var lp = Vector3.Normalize(Vector3.TransformNormal(light.lightPos, camera.ViewMatrix));
             float SpecularIntensity = 0.3f; // Intensity of specular highlights
@@ -113,7 +113,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             }
 
             shader.Parameters["LightPosition"]?.SetValue(lp);
-            shader.Parameters["LightColor"]?.SetValue(SunColor * Ref.gamesett.modelBrightness);
+            shader.Parameters["LightColor"]?.SetValue(light.SunColor * Ref.gamesett.modelBrightness);
             shader.Parameters["AmbientIntensity"]?.SetValue(0.8f * Ref.gamesett.modelBrightness);
             shader.Parameters["SpecularIntensity"]?.SetValue(SpecularIntensity * Ref.gamesett.modelBrightness);
             shader.Parameters["Shininess"]?.SetValue(Shininess * Ref.gamesett.modelBrightness);

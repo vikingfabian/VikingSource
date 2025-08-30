@@ -72,6 +72,8 @@
   <ItemGroup>
     <None Remove="Content\DSS\Music\Endless Plains.mp3" />
     <None Remove="Content\Modding\ModConst.txt" />
+    <None Remove="Content\Shaders\OceanEffect.fx" />
+    <None Remove="Content\Shaders\OceanShaderTest.fx" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
     <None Remove="VikingEngine-linux-x64.tar.gz" />

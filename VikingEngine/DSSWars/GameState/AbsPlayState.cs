@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.Network;
@@ -96,6 +97,7 @@ namespace VikingEngine.DSSWars.GameState
             factionsMap = new MapLayer_Factions();
             overviewMap = new Map.MapLayer_Overview(factionsMap);
             detailMap = new Map.MapLayer_Detail();
+            ((DrawGame)draw).initMapShaders();
 
             foreach (var p in localPlayers)
             {

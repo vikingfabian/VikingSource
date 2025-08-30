@@ -18,6 +18,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         public Vector3 lightPos;
         public Vector3 lightDirection = new Vector3(-0.2f, -1f, -0.2f);
         public Vector3 TargetAdj = new Vector3(0, 0, 1);
+        public Vector3 SunColor = new Vector3(0.5f, 0.45f, 0.45f);
         public float distance = 500f;
         Vector3 target = Vector3.Zero;   // center of the scene (adjust as needed)
         float sceneWidth = 100;   // world units to cover; tune per your scene

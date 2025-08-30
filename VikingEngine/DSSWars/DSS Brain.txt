@@ -1,9 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Fixed: The game mode from save does not take effect
-* Shadow effect
-* light intensity slider
-* made the story events thread safe
+* 
 
 
 Story:

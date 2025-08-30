@@ -40,6 +40,11 @@ namespace VikingEngine.DSSWars.Map
 
         }
 
+        public OceanProcess createOceanProcess()
+        {
+            return new OceanProcess(waterSurface);
+        }
+
         public void refreshLoadSpeed()
         {
             switch (Ref.gamesett.MapLoadingSpeed)
