@@ -14,9 +14,6 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         private RenderTarget2D _shadowMap;
         public Effect shader;
         
-        //public Vector3 TargetPosition { get; set; }
-        //public Vector3 UpVector { get; set; } = Vector3.Up;
-
         public Vector3 SunColor = new Vector3(0.5f, 0.45f, 0.45f);
 
         // Shadow map resolution
@@ -151,6 +148,8 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
                     return 2048;
                 case ShadowResolution.High_4096:
                     return 4096;
+                case ShadowResolution.VeryHigh_8192:
+                    return 8196;
             }
         }
 
@@ -161,6 +160,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         Low_1024,
         Medium_2048,
         High_4096,
+        VeryHigh_8192,
         NUM
     }
     

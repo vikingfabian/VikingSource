@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace VikingEngine.DSSWars.Event
 
         Time toPeacefulCheckTimer = new Time(Ref.rnd.Float(30, 45), TimeUnit.Minutes);
 
-        List<AbsStoryEvent> mainStory = new List<AbsStoryEvent>();
+        ConcurrentQueue<AbsStoryEvent> mainStory = new ConcurrentQueue<AbsStoryEvent>();
 
         public int maxWars = 0;
 
@@ -81,10 +82,10 @@ namespace VikingEngine.DSSWars.Event
             {
                 if (ev.asyncUpdate(time))
                 {
-                    mainStory.RemoveAt(0);
-                    if (mainStory.Count > 0)
+                    mainStory.TryDequeue(out _);// .RemoveAt(0);
+                    if (mainStory.TryPeek(out var next))
                     {
-                        mainStory.First().onStart();
+                        next.onStart();
                     }
                 }
             }
@@ -294,12 +295,18 @@ namespace VikingEngine.DSSWars.Event
         {
             if (replace)
             {
-                mainStory = events;
-                mainStory.First().onStart();
+                mainStory.Clear();
             }
-            else
+
+            foreach (var m in events)
             {
-                mainStory.AddRange(events);
+                mainStory.Append(m);
+            }
+            
+            if (replace)
+            {
+                
+                mainStory.First().onStart();
             }
         }
 
@@ -322,11 +329,12 @@ namespace VikingEngine.DSSWars.Event
             //IOLib.WriteObjectList(w, darkLordAvailableFactions);
             //IOLib.WriteObjectList(w, darkLordAllies);
 
+            var storyArray = mainStory.ToArray();
             w.Write((byte)mainStory.Count);
 
-            for (int i = 0; i < mainStory.Count; ++i)
+            for (int i = 0; i < storyArray.Length; ++i)
             {
-                var ev = mainStory[i];
+                var ev = storyArray[i];
                 w.Write((byte)ev.StoryEventType());
                 if (ev.HasSaveData())
                 {
@@ -384,7 +392,7 @@ namespace VikingEngine.DSSWars.Event
                 {
                     var type = (EventType)r.ReadByte();
                     var ev = CreateEvent(type);
-                    mainStory.Add(ev);
+                    mainStory.Append(ev);
                     if (r.ReadBoolean())
                     {
                         ev.readGameState(r, subVersion, pointers);
