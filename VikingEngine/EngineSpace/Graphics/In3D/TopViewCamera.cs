@@ -64,6 +64,12 @@ namespace VikingEngine.Graphics
             moveTowards(goalLookTarget);            
         }
 
+        public override Vector3 Right()
+        {
+            Vector2 dir = lib.AngleToV2(tilt.X, 1f);
+            return VectorExt.V2toV3XZ(dir);
+        }
+
         public void moveTowards(Vector3 goal)
         {
             Vector3 diff = goal - lookTarget;

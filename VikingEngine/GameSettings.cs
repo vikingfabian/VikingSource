@@ -24,7 +24,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 24;
+        const int Version = 25;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -44,12 +44,15 @@ namespace VikingEngine
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
         public bool graphicsHasChanged = false;
         public bool settingsHasChanged = false;
+        public bool shaderHasChanged = false;
         public LanguageType language = LanguageType.NONE;
         public InputMap controllerMap;
         public InputMap keyboardMap;
         public bool ModelLightShaderEffect = true;
         public bool modelShadow = true;
-        public bool modelShadow_Soft = true;
+        //public bool modelShadow_Soft = true;
+        public bool waterFoam = true;
+        public float modelBrightness = 1f;
         public ShadowResolution shadowResolution = ShadowResolution.Medium_2048;
 
         public bool ParticlesEffect = true;
@@ -129,6 +132,12 @@ namespace VikingEngine
             w.Write(ParticlesEffect);
 
             w.Write(lowLatencyGarbageCollecting);
+
+            w.Write((byte)shadowResolution);
+            w.Write(modelShadow);
+            w.Write(waterFoam);
+            w.Write(modelBrightness);
+
             Debug.WriteCheck(w);
         }
 
@@ -153,31 +162,31 @@ namespace VikingEngine
                 MusicMasterVolume = 1f;
             }
             SoundVolume = r.ReadSingle();
-            VibrationLevel = r.ReadByte();            
-            
+            VibrationLevel = r.ReadByte();
+
             UiScale = r.ReadSingle();
             if (UiScale < 0.5f)
             {
                 UiScale = 1f;
             }
-            language = (LanguageType)r.ReadByte(); 
-            
+            language = (LanguageType)r.ReadByte();
+
             dyslexiaFont = r.ReadBoolean();
 
             controllerMap.read(r);
             keyboardMap.read(r);
-            
+
 
             bannedPeers.read(r, version);
 
             ModelLightShaderEffect = r.ReadBoolean();
-            
+
             MasterVolume = r.ReadSingle();
             AmbientVolume = r.ReadSingle();
 
             MapLoadingSpeed = (ThreeOptions)r.ReadByte();
             Blood = r.ReadInt32();
-            
+
             panOnZoom = r.ReadBoolean();
             controlLayout = r.ReadInt32();
             scrollWheelSensitivity_menu = r.ReadSingle();
@@ -187,16 +196,24 @@ namespace VikingEngine
                 keyPanSpeed = r.ReadSingle();
             }
 
-            
+
             BattleMelodyVolume = r.ReadSingle();
-            
+
             ParticlesEffect = r.ReadBoolean();
 
 
             if (version >= 23)
-            { 
+            {
                 lowLatencyGarbageCollecting = r.ReadBoolean();
             }
+
+            if (version >= 25)
+            {
+                shadowResolution = (ShadowResolution)r.ReadByte();
+                modelShadow = r.ReadBoolean();
+                waterFoam = r.ReadBoolean();
+                modelBrightness = r.ReadSingle();
+            } 
 
             Debug.ReadCheck(r);
 
@@ -360,6 +377,15 @@ namespace VikingEngine
             return modelShadow;
         }
 
+        public float brightnessProperty(bool set, float value)
+        {
+            if (set)
+            {
+                modelBrightness = value;
+                settingsHasChanged = true;
+            }
+            return modelBrightness;
+        }
         public bool particlesProperty(object tag, bool set, bool val)
         {
             if (set)
@@ -379,35 +405,8 @@ namespace VikingEngine
             new GuiSectionSeparator(layout);
             graphicsOptions(layout);
         }
-        //public void optionsMenu(RichBoxContent content, RichMenu menu)
-        //{
-        //    content.h2("Sound", HudLib.TitleColor_Head);
-        //    volumeOptions(content);
+        
 
-        //    content.newParagraph();
-        //    content.h2("Monitor settings", HudLib.TitleColor_Head);
-        //    graphicsOptions(content, menu);
-
-        //    content.newParagraph();
-        //    content.h2("Graphics options", HudLib.TitleColor_Head);
-        //    content.newLine();
-        //    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Model light effect") },
-        //        modelLightProperty));
-        //    DropDownBuilder mapLoadingDropDown = new DropDownBuilder("mapload");
-        //    {
-        //        for (ThreeOptions opt = 0; opt < ThreeOptions.NUM; opt++)
-        //        {
-        //            mapLoadingDropDown.AddOption(Ref.langOpt.ThreeOption(opt),
-        //                opt == MapLoadingSpeed, opt == ThreeOptions.Medium, new RbAction1Arg<ThreeOptions>((ThreeOptions value) =>
-        //                {
-        //                    MapLoadingSpeed = value;
-        //                    settingsHasChanged = true;
-        //                    menu.CloseDropDown();
-        //                }, opt), null);
-        //        }
-        //        mapLoadingDropDown.Build(content, "Map loading speed", menu);
-        //    }
-        //}
         public void quickOptionsMenu(GuiLayout layout)
         {
             volumeOptions(layout);
@@ -587,10 +586,27 @@ namespace VikingEngine
             if (modelShadow)
             {
                 DropDownBuilder shadowMapSizeDropDown = new DropDownBuilder("shadow map sz");
-                for (ShadowResolution resolution = 0; resolution < ShadowResolution.NUM; resolution++)
                 {
-                    shadowMapSizeDropDown.AddOption(
-            } }
+                    for (ShadowResolution resolution = 0; resolution < ShadowResolution.NUM; resolution++)
+                    {
+                        shadowMapSizeDropDown.AddOption(ShadowProcessor.Resolution(resolution).ToString(), resolution == shadowResolution,
+                            resolution == ShadowResolution.Medium_2048, new RbAction1Arg<ShadowResolution>((ShadowResolution res) =>
+                            {
+                                shadowResolution = res;
+                                settingsHasChanged = true;
+                                Ref.draw.OnShaderChange(ShaderChangeType.ShadowMap);
+                                menu.CloseDropDown();
+                            }, resolution), null);
+
+                    }
+                }
+                shadowMapSizeDropDown.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Settings_ModelShadowMapSize, menu);
+
+                content.newLine();
+                HudLib.Label(content, DssRef.todoLang.Settings_Brightness); content.space();
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, new DragButtonSettings(0.2f, 2f, 0.1f),
+                    brightnessProperty);
+            }
             else
             {
                 content.newLine();

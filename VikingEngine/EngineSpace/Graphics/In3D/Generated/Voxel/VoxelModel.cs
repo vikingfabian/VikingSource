@@ -101,7 +101,11 @@ namespace VikingEngine.Graphics
 
         public override void DrawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
         {
-            if (VB != null)
+            if (customShader)
+            {
+                Effect.DrawVB(Frame, this, VB);
+            }
+            else if (VB != null)
             {
                 VB.SetBuffer();
                 Matrix modelWorld = Matrix.CreateScale(scale) *

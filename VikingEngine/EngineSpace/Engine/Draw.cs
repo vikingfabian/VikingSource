@@ -485,6 +485,9 @@ namespace VikingEngine.Engine
         virtual protected void drawInContainersEvent()
         { }
 
+        virtual public void OnShaderChange(ShaderChangeType changeType)
+        { }
+
         virtual protected void drawEvent()
         {
             RenderBasicOneLayer();
@@ -674,5 +677,10 @@ namespace VikingEngine.Engine
             this.add = add;
             this.layer = Ref.draw.CurrentRenderLayer;
         }
+    }
+
+    enum ShaderChangeType
+    {
+        ShadowMap,
     }
 }

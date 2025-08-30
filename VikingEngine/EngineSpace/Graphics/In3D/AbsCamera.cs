@@ -48,6 +48,11 @@ namespace VikingEngine.Graphics
             }
         }
 
+        virtual public Vector3 Right()
+        { 
+            throw new NotImplementedException();
+        }
+
         public void MoveLookTargetXZ(Vector2 move)
         {
             lookTarget.X += move.X;

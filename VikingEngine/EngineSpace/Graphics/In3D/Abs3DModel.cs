@@ -22,7 +22,6 @@ namespace VikingEngine.Graphics
 #if DEBUG
         public string DebugName = null;
 #endif
-        /* Static */
         public static void ModelData(Model model)
         {
             ModelMeshPart part = model.Meshes[0].MeshParts[0];
@@ -35,11 +34,11 @@ namespace VikingEngine.Graphics
 
         }
 
-        /* Fields */
         public Vector4 colorAndAlpha = Vector4.One;
         public RotationQuarterion Rotation = RotationQuarterion.Identity;
 
-        /* Constructors */
+        public bool customShader = false;
+
         public Abs3DModel(bool add)
             : base(add)
         { }

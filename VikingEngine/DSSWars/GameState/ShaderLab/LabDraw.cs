@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.GameState.ShaderLab
             //Camera.updateBillboard();
 
             shadowProcessor.light.distance = 300;
-            shadowProcessor.light.refresh();
+            shadowProcessor.light.refresh(Camera);
 
 
             Ref.draw.AddToContainer = null;

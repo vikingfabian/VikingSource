@@ -15,11 +15,6 @@ using VikingEngine.ToGG.ToggEngine;
 
 namespace VikingEngine.DSSWars
 {
-    //interface IDrawLayer
-    //{ 
-        
-    //}
-
     class DrawMenu : Engine.Draw
     {
         public DrawMenu()
@@ -60,6 +55,16 @@ namespace VikingEngine.DSSWars
             drawBatch = new DrawBatchCollection();
         }
 
+        public override void OnShaderChange(ShaderChangeType changeType)
+        {
+            switch (changeType)
+            {
+                case ShaderChangeType.ShadowMap:
+                    shadowProcessor.refreshMapSize();
+                    break;
+            }
+        }
+
         public override void DeleteMe()
         {
             base.DeleteMe();
@@ -72,14 +77,12 @@ namespace VikingEngine.DSSWars
             bool hasFadingLayer = false;
 
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            
-            EffectBasicVertexColor.Singleton.basicEffect.AmbientLightColor = DssRef.time.ShaderDayLight_Objects;
-            Map.MapLayer_Detail.ModelEffect.SetColor(DssRef.time.ShaderDayLight_Map);
+            updateLights();
 
             for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
             {
                 Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
-                
+
                 Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
                 if (drawUnits.prevLayer != null)
                 {
@@ -93,7 +96,7 @@ namespace VikingEngine.DSSWars
             { //Draw overview to rendertarget
                 graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                 SetRenderTarget(true, overviewMapTarget, Color.White);
-                
+
                 for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
                 {
                     EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
@@ -103,12 +106,12 @@ namespace VikingEngine.DSSWars
                     {
                         drawDetailLayer(cameraIndex, drawUnits.prevLayer, overviewMapTarget);
                     }
-                }                
+                }
             }
 
             graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget);
             graphicsDeviceManager.GraphicsDevice.Clear(ClrColor);
-            
+
             for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
             {
                 EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
@@ -116,7 +119,7 @@ namespace VikingEngine.DSSWars
 
                 drawDetailLayer(cameraIndex, drawUnits.current, MainRenderTarget);
             }
-            
+
 
             if (hasFadingLayer)
             { //Draw overview rendertarget
@@ -137,7 +140,7 @@ namespace VikingEngine.DSSWars
                         spriteBatch.End();
                     }
                 }
-                
+
             }
 
 
@@ -146,9 +149,25 @@ namespace VikingEngine.DSSWars
             //    DssRef.state.localPlayers[cameraIndex].bUpdateDetailLayer = DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer;
             //}
 
-            
+
             graphicsDeviceManager.GraphicsDevice.Viewport = saveView;
             Draw2d(0);
+
+            //shadowProcessor.DrawDebug();
+        }
+
+        void updateLights()
+        {
+            if (Ref.gamesett.modelShadow)
+            {
+                shadowProcessor.SunColor = DssRef.time.shadow_SunColor;
+                shadowProcessor.light.lightDirection = DssRef.time.shadow_LightDirection;
+            }
+            else
+            {
+                EffectBasicVertexColor.Singleton.basicEffect.AmbientLightColor = DssRef.time.ShaderDayLight_Objects;
+                Map.MapLayer_Detail.ModelEffect.SetColor(DssRef.time.ShaderDayLight_Map);
+            }
         }
 
         void drawDetailLayer(int cameraIndex, Map.MapLayer lay, RenderTarget2D previousTarget)
@@ -171,7 +190,7 @@ namespace VikingEngine.DSSWars
                     if (Ref.gamesett.modelShadow)
                     {
                         var area = DssRef.state.culling.players[p.localPlayerIndex].GetState().enterArea;
-                        shadowProcessor.light.updateScene(Camera.goalLookTarget, area.Width, area.Height);
+                        shadowProcessor.light.updateScene(Camera, area.Width, area.Height);
                         shadowProcessor.BeginShadowMapPass();
                         {
                             shadowProcessor.DrawRenderListMembersDepthOnly(UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
@@ -215,6 +234,8 @@ namespace VikingEngine.DSSWars
                     Draw3d(MinimapLayer, cameraIndex);
                     break;                    
             }
+
+            
         }
 
         protected override int renderLayerCount

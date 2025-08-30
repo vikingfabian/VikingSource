@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using VikingEngine.DSSWars;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.ToggEngine;
@@ -9,17 +10,14 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
 {
     class ShadowProcessor
     {
-
-        
         
         private RenderTarget2D _shadowMap;
         public Effect shader;
         
-        public float SpecularIntensity { get; set; }
-        public float Shininess { get; set; }
+        //public Vector3 TargetPosition { get; set; }
+        //public Vector3 UpVector { get; set; } = Vector3.Up;
 
-        public Vector3 TargetPosition { get; set; }
-        public Vector3 UpVector { get; set; } = Vector3.Up;
+        public Vector3 SunColor = new Vector3(0.5f, 0.45f, 0.45f);
 
         // Shadow map resolution
         private int _shadowMapSize = 2048;
@@ -28,18 +26,22 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
 
         public ShadowProcessor() 
         {
-            CreateRenderTargets();
+            refreshMapSize();
             //LoadContent(); //temporary
             shader = Engine.Draw.shadowEffect;
-            light = new LightProjection(_shadowMapSize);
+            light = new LightProjection();
         }
-        //public void LoadContent()
-        //{
-        //    shader = Engine.LoadContent.LoadShader("ShadowEffect");
-        //}
+
+        public void refreshMapSize()
+        {
+            _shadowMapSize = Resolution(Ref.gamesett.shadowResolution);
+            CreateRenderTargets();
+        }
 
         private void CreateRenderTargets()
         {
+            _shadowMap?.Dispose();
+
             _shadowMap = new RenderTarget2D(
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice,
                 _shadowMapSize,
@@ -91,8 +93,8 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
         {
             Engine.Draw.PreviousVertexBuffer = -1;
 
-            var SunColor = new Vector3(1.0f, 0.9f, 0.9f);
-            var SunIntensity = 0.5f;
+            
+            //var SunIntensity = 0.5f;
 
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -114,10 +116,10 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
             }
 
             shader.Parameters["LightPosition"]?.SetValue(lp);
-            shader.Parameters["LightColor"]?.SetValue(SunColor * SunIntensity);
-            shader.Parameters["AmbientIntensity"]?.SetValue(0.8f);
-            shader.Parameters["SpecularIntensity"]?.SetValue(SpecularIntensity);
-            shader.Parameters["Shininess"]?.SetValue(Shininess);
+            shader.Parameters["LightColor"]?.SetValue(SunColor * Ref.gamesett.modelBrightness);
+            shader.Parameters["AmbientIntensity"]?.SetValue(0.8f * Ref.gamesett.modelBrightness);
+            shader.Parameters["SpecularIntensity"]?.SetValue(SpecularIntensity * Ref.gamesett.modelBrightness);
+            shader.Parameters["Shininess"]?.SetValue(Shininess * Ref.gamesett.modelBrightness);
             shader.Parameters["ShadowMap"]?.SetValue(_shadowMap);
             shader.Parameters["EdgeFadeScale"]?.SetValue(10.0f);
             shader.Parameters["ShadowMap"]?.SetValue(_shadowMap);

@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Settings_ModelShadow => "Shadows";
         public string Settings_ModelShadowMapSize => "Shadows map size";
+        public string Settings_Brightness => "Brightness";
 
         public string Settings_Mode_No_Achivements => "Achivements are not available.";
 
