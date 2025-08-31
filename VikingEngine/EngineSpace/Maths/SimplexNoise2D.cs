@@ -6,6 +6,26 @@ using System.Text;
 
 namespace VikingEngine.EngineSpace.Maths
 {
+    struct NoiseOptions
+    {
+        public static NoiseOptions None = new NoiseOptions() { useNoise = false };
+
+        public bool useNoise;
+        public float smoothness;
+        public float ocatves;
+        public float persistence;
+        public float scale;
+
+        public NoiseOptions(bool useNoise, float smoothness, float octaves, float persistence, float scale)
+        {
+            this.useNoise = useNoise;
+
+            this.smoothness = smoothness;
+            this.ocatves = octaves;
+            this.persistence = persistence;
+            this.scale = scale;
+        }
+    }
     class SimplexNoise2D
     {
         /* Constants */
@@ -27,6 +47,11 @@ namespace VikingEngine.EngineSpace.Maths
                 perm[i] = val;
                 perm[i + PERMUTATION_COUNT] = val;
             }
+        }
+
+        public float OctaveNoise2D(NoiseOptions options, float x, float y)
+        { 
+            return OctaveNoise2D(options.ocatves, options.persistence, options.scale, x, y);
         }
 
         public float OctaveNoise2D_Normal(float octaves, float persistence, float scale, float x, float y)
