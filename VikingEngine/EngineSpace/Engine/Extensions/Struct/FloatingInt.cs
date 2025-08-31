@@ -72,12 +72,17 @@ namespace VikingEngine
 
         public void write16bit(System.IO.BinaryWriter w)
         {
-            w.Write(Convert.ToUInt16(value));
+            w.Write(Bound.UShort(value));
         }
 
         public void read16bit(System.IO.BinaryReader r)
         {
             value = r.ReadUInt16();
+        }
+
+        public override string ToString()
+        {
+            return value.ToString();
         }
     }
 }

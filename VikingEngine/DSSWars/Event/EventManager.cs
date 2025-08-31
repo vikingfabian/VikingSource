@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace VikingEngine.DSSWars.Event
 
         Time toPeacefulCheckTimer = new Time(Ref.rnd.Float(30, 45), TimeUnit.Minutes);
 
-        List<AbsStoryEvent> mainStory = new List<AbsStoryEvent>();
+        ConcurrentQueue<AbsStoryEvent> mainStory = new ConcurrentQueue<AbsStoryEvent>();
 
         public int maxWars = 0;
 
@@ -81,10 +82,10 @@ namespace VikingEngine.DSSWars.Event
             {
                 if (ev.asyncUpdate(time))
                 {
-                    mainStory.RemoveAt(0);
-                    if (mainStory.Count > 0)
+                    mainStory.TryDequeue(out _);// .RemoveAt(0);
+                    if (mainStory.TryPeek(out var next))
                     {
-                        mainStory.First().onStart();
+                        next.onStart();
                     }
                 }
             }
@@ -104,9 +105,11 @@ namespace VikingEngine.DSSWars.Event
         void asyncCheckVictory()
         {
             int dominationCount = DssRef.storage.mapSize > MapSize.Small ? 5 : 3;
+            
 
             foreach (var p in DssRef.state.localPlayers)
             {
+                int hillFriends = 0;
                 int allyCount = 0;
                 bool worldPeace = true;
 
@@ -132,6 +135,11 @@ namespace VikingEngine.DSSWars.Event
                             if (relation >= RelationType.RelationType3_Ally)
                             {
                                 allyCount++;
+                                if (otherFaction.factiontype == FactionType.BramblebrookHill ||
+                                    otherFaction.factiontype == FactionType.Tumblehill)
+                                {
+                                    hillFriends++;
+                                }
                             }
 
                             if (relation < RelationType.RelationType1_Peace && speak != SpeakTerms.SpeakTermsN2_None)
@@ -146,7 +154,11 @@ namespace VikingEngine.DSSWars.Event
                 if (allyCount > p.previousAllyCount)
                 { 
                     p.previousAllyCount = allyCount;
-
+                    DssRef.achieve.onAllyCount(allyCount);
+                }
+                if (hillFriends >= 2)
+                {
+                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.worthy_friends);
                 }
 
                 if (worldPeace)
@@ -283,12 +295,21 @@ namespace VikingEngine.DSSWars.Event
         {
             if (replace)
             {
-                mainStory = events;
-                mainStory.First().onStart();
+                mainStory.Clear();
             }
-            else
+
+            foreach (var m in events)
             {
-                mainStory.AddRange(events);
+                mainStory.Enqueue(m);
+            }
+            
+            if (replace)
+            {
+
+                if (mainStory.TryPeek(out var first))
+                {
+                    first.onStart();
+                }
             }
         }
 
@@ -311,11 +332,12 @@ namespace VikingEngine.DSSWars.Event
             //IOLib.WriteObjectList(w, darkLordAvailableFactions);
             //IOLib.WriteObjectList(w, darkLordAllies);
 
+            var storyArray = mainStory.ToArray();
             w.Write((byte)mainStory.Count);
 
-            for (int i = 0; i < mainStory.Count; ++i)
+            for (int i = 0; i < storyArray.Length; ++i)
             {
-                var ev = mainStory[i];
+                var ev = storyArray[i];
                 w.Write((byte)ev.StoryEventType());
                 if (ev.HasSaveData())
                 {
@@ -373,7 +395,7 @@ namespace VikingEngine.DSSWars.Event
                 {
                     var type = (EventType)r.ReadByte();
                     var ev = CreateEvent(type);
-                    mainStory.Add(ev);
+                    mainStory.Enqueue(ev);
                     if (r.ReadBoolean())
                     {
                         ev.readGameState(r, subVersion, pointers);
@@ -826,10 +848,20 @@ namespace VikingEngine.DSSWars.Event
         public bool factionMayStartWar(Faction attacker, Faction defender)
         {
             if ((attacker.factiontype == FactionType.DefaultAi || attacker.diplomaticSide == DiplomaticSide.Dark) &&
+                (attacker.diplomaticSide != DiplomaticSide.Light || defender.diplomaticSide == DiplomaticSide.Dark) &&
                 attacker.armies.Count > 0)
             {
-                if (attacker.myIndex == DssRef.settings.Faction_DarkFollower && defender.player.IsLocalPlayer())
-                { return false; }
+                if (defender.player.IsLocalPlayer())
+                {
+                    if (attacker.myIndex == DssRef.settings.Faction_DarkFollower)
+                    { return false; }
+
+                    if (attacker.militaryStrength < Math.Min(defender.militaryStrength * 0.25f, 6) ||
+                        attacker.militaryStrength > defender.militaryStrength * 3f)
+                    {
+                        return false;
+                    }
+                }
 
                 var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
                 if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)

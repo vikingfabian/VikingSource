@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars
             localPlayers.Add(local);
             local.assignPlayer(0, 1, false);
 
-            baseInit();
+            postPlayerInit();
             technologyManager.initGame(false);
 
             events = new Event.EventManager();
@@ -130,6 +130,7 @@ namespace VikingEngine.DSSWars
             new GameTime();
             HudLib.Init();
 
+            prePlayerInit();
             //Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             initPlayers(newGame, pointers);
 
@@ -138,7 +139,7 @@ namespace VikingEngine.DSSWars
             //factionsMap = new MapLayer_Factions();
             //overviewMap = new Map.MapLayer_Overview(factionsMap);
             //detailMap = new Map.MapLayer_Detail();
-            baseInit();
+            postPlayerInit();
             technologyManager.initGame(newGame);
 
             if (PlatformSettings.STEAM_DEMO &&

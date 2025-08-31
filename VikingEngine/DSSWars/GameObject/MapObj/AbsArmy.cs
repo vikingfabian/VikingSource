@@ -45,16 +45,22 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.CrashIfThreaded();
             groups.RemoveAt_EqualSafeCheck(group, group.myIndex);            
         }
-        public override void setFaction(Faction newFaction, bool duringStartup)
+        public override void setFaction(Faction newFaction, bool duringStartup, bool convert)
         {
-            base.setFaction(newFaction, duringStartup);
+            base.setFaction(newFaction, duringStartup, convert);
 
+            convertSoldiersToFaction(newFaction);
+        }
+
+        public void convertSoldiersToFaction(Faction newFaction)
+        {
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
                 groupsC.sel.factionIndex = newFaction.myIndex;
             }
         }
+
         public void asyncBattleUpdate()
         {
             int mostCenter = -1;

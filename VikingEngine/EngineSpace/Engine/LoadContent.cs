@@ -69,6 +69,7 @@ namespace VikingEngine.Engine
             Textures[0] = Content.Load<Texture2D>(TexturePath + "noimage");
             Textures[(int)LoadedTexture.TargetColor0] = Content.Load<Texture2D>(TexturePath + "noimage");
             Textures[(int)LoadedTexture.WhiteArea] = Content.Load<Texture2D>(TexturePath + "whitearea256");
+            Textures[(int)LoadedTexture.TestTexture] = Content.Load<Texture2D>(TexturePath + "test_texture");
             effectList[(int)LoadedEffect.ParticleEffect] = LoadShader(LoadedEffect.ParticleEffect.ToString());
             BaseContentLoaded = true;
         }
@@ -279,6 +280,7 @@ namespace VikingEngine
         TargetColor0,
         ptrace,
         WhiteArea,
+        TestTexture,
         particle3,
         ccg_piece_particle,
         realistic_particle,

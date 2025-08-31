@@ -101,12 +101,20 @@ namespace VikingEngine
 
         public override void AbortThreads()
         {
-            end = true;
-            resetEvent.Set();
+            
+                end = true;
+                resetEvent.Set();
 
 #if DEBUG
-            thread?.Join();
+                thread?.Join();
 #endif
+            
+
+        }
+
+        public bool Alive()
+        { 
+            return thread != null && thread.IsAlive;
         }
 
         public override string ToString()

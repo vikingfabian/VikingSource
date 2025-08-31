@@ -21,10 +21,11 @@ namespace VikingEngine.DSSWars.Resource
         {
             ItemResourceType.Wood_Group,
             ItemResourceType.Stone_G,
+            ItemResourceType.Iron_G,
             ItemResourceType.RawFood_Group,
             ItemResourceType.SkinLinen_Group,
-            ItemResourceType.Food_G,
-            ItemResourceType.Iron_G,
+            //ItemResourceType.Food_G,
+            
         };
         static readonly int[] PurchaseCount = { 20, 100, 500 };
 
@@ -83,6 +84,17 @@ namespace VikingEngine.DSSWars.Resource
                     content.Add(new RbSeperationLine());
                 }
             }
+
+            content.newLine();
+            content.Add(new RbImage(SpriteName.rtsUpkeep));
+            content.Add(new RbText(Cost_Food.ToString()));
+            content.Add(new RbTab(0.2f));
+            content.Add(new RbImage(SpriteName.WarsResource_Food));
+            content.space();
+            content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+            content.space();
+            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.todoLang.Info_WhenFoodRunsOut));
+
         }
 
         public static void ResourceToHud(ItemResourceType item, LocalPlayer player, RichBoxContent content, City city)

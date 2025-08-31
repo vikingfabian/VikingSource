@@ -10,6 +10,7 @@ namespace VikingEngine
         NO_IMAGE = 0,
 
         WhiteArea,
+        TestTexture,
         WhiteArea_LFtiles,
         //WarsWaterTexture,
         WhiteCirkle,
@@ -218,6 +219,7 @@ namespace VikingEngine
         LangButton_Frensh,
         LangButton_Chinese,
         LangButton_Turkish,
+        LangButton_Italian,
 
         IconBuildArrow,
         IconBuildSelection,

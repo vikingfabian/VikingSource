@@ -9,6 +9,7 @@ using Valve.Steamworks;
 using VikingEngine.DataStream;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Data;
 using VikingEngine.PJ.Strategy;
@@ -20,7 +21,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 12;
-        public const int SubVersion = 74; 
+        public const int SubVersion = 77; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -139,13 +140,15 @@ namespace VikingEngine.DSSWars.Data
 
             //STATE
             DssRef.storage.read(r, true);
+            CityMenu.InitGame();
             Debug.ReadCheck(r);
             DssRef.settings.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
             DssRef.world.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
-            DssRef.state.Game().readGameState(r, version.sub, pointers);
             DssRef.time.setTotalTime(meta.playTime);
+            DssRef.state.Game().readGameState(r, version.sub, pointers);
+            
         }
 
         public override void Time_Update(float time_ms)

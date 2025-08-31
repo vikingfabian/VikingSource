@@ -1407,7 +1407,16 @@ namespace VikingEngine.DSSWars.Map.Generate
                 //region.ApplyFaction(DragonSlayer);
             }
 
-            
+            {
+                var faction = new Faction(world, FactionType.BramblebrookHill);
+                int size = MathExt.MultiplyInt(0.3, standardWorkForce);
+                region.GetStartFactionRegion(size, collection_pullNextCity(cityCultureCollection.LargeGreen), world, faction);
+            }
+            {
+                var faction = new Faction(world, FactionType.Tumblehill);
+                int size = MathExt.MultiplyInt(0.3, standardWorkForce);
+                region.GetStartFactionRegion(size, collection_pullNextCity(cityCultureCollection.LargeGreen), world, faction);
+            }
         }
 
         City collection_pullNextCity(List<City> collection)
@@ -1574,15 +1583,15 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                     float edgeHeight(int x, int y)
                     {
-                        float result = groundY;
+                        float edgeY = groundY;
                         Tile nTile;
                         if (world.tileGrid.TryGet(loopx + x, loopy + y, out nTile))
                         {
-                            result = nTile.GroundY();
-                            result = 0.8f * groundY + 0.2f * result;
+                            edgeY = nTile.GroundY();
+                            edgeY = 0.7f * groundY + 0.3f * edgeY;
                         }
 
-                        return result;
+                        return edgeY;
                     }
 
                     void subTile(int x, int y, float topY, TerrainMainType tiletype, int subType)
@@ -1626,6 +1635,11 @@ namespace VikingEngine.DSSWars.Map.Generate
                         if (heightSett.mountainPeak != null)
                         {
                             topY += heightSett.mountainPeak[x, y];
+                        }
+
+                        if (tile.IsWater())
+                        {
+                            Bound.Max(ref topY, Tile.WaterSurfaceY - Height.DefaultGroundYoffset * 0.5f);
                         }
 
                         var subTile = new SubTile(tiletype, subType, rndColor, topY);

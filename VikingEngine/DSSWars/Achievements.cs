@@ -374,6 +374,22 @@ namespace VikingEngine.DSSWars
                 }
             }
 
+            int hill_Factions = 0;
+            var factionsC = DssRef.world.factions.counter();
+            while (factionsC.Next())
+            {
+                if (factionsC.sel.factiontype == FactionType.BramblebrookHill ||
+                    factionsC.sel.factiontype == FactionType.Tumblehill)
+                {
+                    ++hill_Factions;
+                }
+            }
+
+            if (hill_Factions >= 2)
+            {
+                UnlockAchievement_onAny_100(AchievementIndex.worth_saving_any, AchievementIndex.worth_saving_100);
+            }
+
 
             void findHonorGuard(Players.LocalPlayer p)
             {
@@ -722,6 +738,17 @@ namespace VikingEngine.DSSWars
         /// </summary>
         destroy_first_attacker_any,//i
         destroy_first_attacker_100,
+
+        /// <summary>
+        /// Reach victory with both the "hill" factions still alive
+        /// </summary>
+        worth_saving_any,//i
+        worth_saving_100,
+
+        /// <summary>
+        /// Ally with both the "hill" factions
+        /// </summary>
+        worthy_friends,//i
 
 
         NUM_ACHIEVEMENTS

@@ -1,13 +1,14 @@
 ﻿
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.Engine;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using VikingEngine.EngineSpace.Graphics.DeferredRendering.Lights;
 using VikingEngine.EngineSpace.Graphics.DeferredRendering;
+using VikingEngine.EngineSpace.Graphics.DeferredRendering.Lights;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 namespace VikingEngine.Graphics
 {
@@ -21,7 +22,6 @@ namespace VikingEngine.Graphics
 #if DEBUG
         public string DebugName = null;
 #endif
-        /* Static */
         public static void ModelData(Model model)
         {
             ModelMeshPart part = model.Meshes[0].MeshParts[0];
@@ -34,11 +34,11 @@ namespace VikingEngine.Graphics
 
         }
 
-        /* Fields */
         public Vector4 colorAndAlpha = Vector4.One;
         public RotationQuarterion Rotation = RotationQuarterion.Identity;
 
-        /* Constructors */
+        public bool customShader = false;
+
         public Abs3DModel(bool add)
             : base(add)
         { }
@@ -57,8 +57,8 @@ namespace VikingEngine.Graphics
         }
 
         /* Methods */
-        public abstract void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex);
-        public abstract void DrawDeferredDepthOnly(Effect shader, int cameraIndex);
+        //public abstract void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex);
+        public abstract void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex);
 
 #region CAMERA CULLING
         private static BoundingSphere boundingSphere = new BoundingSphere();

@@ -137,19 +137,22 @@ namespace VikingEngine.DSSWars
             
             w.Write((ushort)factiontype);
             w.Write(money.copper);
+            Debug.WriteCheck(w);
 
-            w.Write((ushort)cities.Count);
-            var citiesC = cities.counter();
-            while (citiesC.Next())
+            var cityList = cities.toList();
+            w.Write((ushort)cityList.Count);
+            foreach(var city in cityList)
             {
-                w.Write((ushort)citiesC.sel.myIndex);
+                w.Write((ushort)city.myIndex);
             }
+            Debug.WriteCheck(w);
 
-            w.Write((ushort)armies.Count); 
-            var armiesC = armies.counter();
-            while (armiesC.Next())
-            { 
-                armiesC.sel.writeGameState(w); 
+            var armyList = armies.toList();
+            w.Write((ushort)armyList.Count);
+            foreach (var army in armyList)
+            {
+                army.writeGameState(w);
+                Debug.WriteCheck(w);
             }
 
             writeRelations(w);
@@ -180,14 +183,25 @@ namespace VikingEngine.DSSWars
             {
                 money.copper = r.ReadInt64();
             }
+            if (subVersion >= 77)
+            {
+                Debug.ReadCheck(r);
+            }
 
             int citiesCount = r.ReadUInt16();
             for (int i = 0; i < citiesCount; i++)
             {
                 int cityIx = r.ReadUInt16();
-                var city = DssRef.world.cities[cityIx];
-                //cities.Add(city);
-                city.setFaction(this, true);
+                //if (arraylib.InBound(DssRef.world.cities, cityIx))
+                //{
+                    var city = DssRef.world.cities[cityIx];
+                    //cities.Add(city);
+                    city.setFaction(this, true, false);
+                //}
+            }
+            if (subVersion >= 76)
+            { 
+                Debug.ReadCheck(r);
             }
 
             int armiesCount = r.ReadUInt16();
@@ -195,7 +209,11 @@ namespace VikingEngine.DSSWars
             {
                 var army = new Army();
                 army.readGameState(this, r, subVersion, pointers);
-                //armies.Add(army);
+                
+                if (subVersion >= 76)
+                {
+                    Debug.ReadCheck(r);
+                }
             }
 
             readRelations(r, subVersion);
@@ -367,7 +385,7 @@ namespace VikingEngine.DSSWars
                     mainCity = city;
                 }
                 cities.Add(city);
-                city.setFaction(this, duringStartUp);
+                city.setFaction(this, duringStartUp, false);
             }
             else
             {
@@ -375,7 +393,7 @@ namespace VikingEngine.DSSWars
                 if (!cities.Contains(city))
                 {
                     cities.Add(city);
-                    city.setFaction(this, duringStartUp);
+                    city.setFaction(this, duringStartUp, false);
                     if (!duringStartUp)
                     {
                         player.OnCityCapture(city);
@@ -968,7 +986,7 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.setFaction(masterFaction, false);
+                armiesC.sel.setFaction(masterFaction, false, true);
             }
 
             armies.Clear();
@@ -976,7 +994,7 @@ namespace VikingEngine.DSSWars
             var citiesC = cities.counter();
             while (citiesC.Next())
             { 
-                citiesC.sel.setFaction(masterFaction, false);
+                citiesC.sel.setFaction(masterFaction, false, true);                
             }
 
             cities.Clear();
@@ -1430,12 +1448,45 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Forest hillfolk, stubborn and hearty, famed for boar-hunting feasts.
         /// </summary>
-        BryndralHollow
-    
+        BryndralHollow,
 
-}
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        Mendog,
 
-enum FactionGroupType
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        Minde,
+
+        /// <summary>
+        /// A proud family of royal knights
+        /// </summary>
+        FloKingdom,
+
+        /// <summary>
+        /// A macon family with the secrets to advanced buildings
+        /// </summary>
+        CarolusKeksenmark,
+
+        /// <summary>
+        /// Theme: A confederation of hobbit villages along winding streams, known for gardens, festivals, and fiercely defended borders when threatened.
+        /// </summary>
+        BramblebrookHill,
+
+        /// <summary>
+        /// Theme: Hill-dwelling hobbits in cozy burrows, famous for cider, storytelling, and their legendary hospitality (and occasional trickery).
+        /// </summary>
+        Tumblehill,
+
+        /// <summary>
+        /// Theme: A democracy run house with focus on politics and military might. Looks down on any outsiders.
+        /// </summary>
+        Etheleorthe,
+    }
+
+    enum FactionGroupType
     {
         Other,
         Nordic,

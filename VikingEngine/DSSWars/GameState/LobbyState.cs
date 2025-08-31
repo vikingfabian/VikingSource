@@ -198,6 +198,9 @@ namespace VikingEngine.DSSWars
                         var playerData = DssRef.storage.localPlayers.First();
                         DssRef.storage.profileStorage.selectedIx = playerData.profileIndex;
 
+                        //var profile = DssRef.storage.profileStorage.Selected();
+                        DssRef.storage.flagStorage.selectedIx = playerData.Profile().flag.StorageIndex;//profile.flag.StorageIndex;
+
                         RichBoxContent content = new RichBoxContent();
 
                         content.h1(DssRef.lang.Lobby_Category_Editor, HudLib.TitleColor_Head);
@@ -233,6 +236,7 @@ namespace VikingEngine.DSSWars
 
                 case UnderMenu_ListExtra:
                     {
+
                         RichBoxContent content = new RichBoxContent();
 
                         content.h1(DssRef.lang.Lobby_Category_ExtraModes, HudLib.TitleColor_Head);

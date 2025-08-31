@@ -91,5 +91,10 @@ namespace VikingEngine.DSSWars.Resource
                 return TextLib.LargeNumber((long)gold);
             }
         }
+
+        public override string ToString()
+        {
+            return "Gold: " + GetGold().ToString();
+        }
     }
 }

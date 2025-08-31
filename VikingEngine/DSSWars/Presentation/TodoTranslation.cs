@@ -20,6 +20,10 @@ namespace VikingEngine.DSSWars.Presentation
         public string EventMessage_DarkHordeKiller_Title => "Dark horde killer";
         public string EventMessage_DarkHordeKiller_Message => "Champion knigts have joined your service";
 
+        public string Settings_ModelShadow => "Shadows";
+        public string Settings_ModelShadowMapSize => "Shadows map size";
+        public string Settings_Brightness => "Brightness";
+
         public string Settings_Mode_No_Achivements => "Achivements are not available.";
 
         public string Settings_Mode_Spectator_Description => "Just watch, or interfere with god powers.";
@@ -31,6 +35,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string GeneralSetting_SetAll => "Apply to all";
 
+        public string Info_WhenFoodRunsOut => "When food runs out, cities and armies will automatically purchase it from the black market.";
 
         //Factions
         /// <summary>
@@ -131,7 +136,41 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public string FactionName_BryndralHollow => "Bryndral Hollow";
 
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        public string FactionName_Mendog => "Mendog";
 
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        public string FactionName_Minde=> "Minde";
+
+        /// <summary>
+        /// A proud family of royal knights
+        /// </summary>
+        public string FactionName_FloKingdom=> "Flo kingdom";
+
+        /// <summary>
+        /// A macon family with the secrets to advanced buildings
+        /// </summary>
+        public string FactionName_CarolusKeksenmark=> "Carolus Keksenmark";
+
+
+        /// <summary>
+        /// Theme: A confederation of hobbit villages along winding streams, known for gardens, festivals, and fiercely defended borders when threatened.
+        /// </summary>
+        public string FactionName_BramblebrookHill => "Bramblebrook Hill";
+
+        /// <summary>
+        /// Theme: Hill-dwelling hobbits in cozy burrows, famous for cider, storytelling, and their legendary hospitality (and occasional trickery).
+        /// </summary>
+        public string FactionName_Tumblehill => "Tumblehill";
+
+        /// <summary>
+        /// Theme: A democracy run house with focus on politics and military might. Looks down on any outsiders.
+        /// </summary>
+        public string FactionName_Etheleorthe => "Etheleorðe";
     }
 
 }

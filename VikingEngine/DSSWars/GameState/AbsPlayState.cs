@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.Network;
@@ -54,8 +55,7 @@ namespace VikingEngine.DSSWars.GameState
             :base() 
         {
             DssRef.state = this;
-            DssRef.storage.profileStorage.refreshProfiles();
-            CityMenu.InitGame();
+            
         }
 
         
@@ -83,7 +83,13 @@ namespace VikingEngine.DSSWars.GameState
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.Lowest);
         }
 
-        protected void baseInit()
+        protected void prePlayerInit()
+        {
+            DssRef.storage.profileStorage.refreshProfiles();
+            CityMenu.InitGame();
+        }
+
+        protected void postPlayerInit()
         {
             DssRef.ambience.gameStart();
             culling = new Culling();
@@ -91,11 +97,14 @@ namespace VikingEngine.DSSWars.GameState
             factionsMap = new MapLayer_Factions();
             overviewMap = new Map.MapLayer_Overview(factionsMap);
             detailMap = new Map.MapLayer_Detail();
+            ((DrawGame)draw).initMapShaders();
 
             foreach (var p in localPlayers)
             {
                 p.hud.initMap();
             }
+
+            
         }
 
         public ConcurrentStack<Graphics.VoxelModelInstance> modelPool(bool detail)

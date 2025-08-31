@@ -193,14 +193,14 @@ namespace VikingEngine.DSSWars.Defence
             }
         }
 
-        public override void update(float time, bool fullUpdate)
-        {
-            if (attackTarget_soldierGroupOrCity != null)
-            {
-                lib.DoNothing();
-            }
-            base.update(time, fullUpdate);
-        }
+        //public override void update(float time, bool fullUpdate)
+        //{
+        //    if (attackTarget_soldierGroupOrCity != null)
+        //    {
+        //        lib.DoNothing();
+        //    }
+        //    base.update(time, fullUpdate);
+        //}
 
         public override void setGroundY()
         {

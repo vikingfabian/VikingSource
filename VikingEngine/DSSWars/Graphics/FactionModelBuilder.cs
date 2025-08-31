@@ -77,6 +77,7 @@ namespace VikingEngine.DSSWars
             if (name == VoxelModelName.wars_flag)
             {
                 model.Effect = FlagWaveEffect.GetSingletonSafe();
+                model.customShader = true;
             }
 
             return model;

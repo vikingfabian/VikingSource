@@ -6,6 +6,7 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.LootFest.Players;
@@ -41,6 +42,14 @@ namespace VikingEngine.DSSWars.Map
 #endif
             this.color = color;
             this.groundY = groundY;
+
+            //if (groundY < Tile.WaterSurfaceY + Height.DefaultGroundYoffset * 0.5f)
+            //{
+                
+            //    this.groundY = Bound.Max(groundY, Tile.WaterSurfaceY - Height.DefaultGroundYoffset * 0.5f);
+                    
+            //}
+
             this.mainTerrain = type;
             this.subTerrain = subType;
         }

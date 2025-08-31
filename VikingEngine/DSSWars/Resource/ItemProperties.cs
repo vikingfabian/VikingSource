@@ -412,7 +412,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 soldier.modelName = LootFest.VoxelModelName.war_knight;
                 soldier.modelVariationCount = 3;
-                soldier.modelScale *= 1.06f;
+                soldier.modelScale *= 0.75f;
                 soldier.icon = SpriteName.WarsUnitIcon_Knight;
 
                 soldier.upkeepMultiplier = 3;//DssLib.SoldierDefaultEnergyUpkeep * 3;
