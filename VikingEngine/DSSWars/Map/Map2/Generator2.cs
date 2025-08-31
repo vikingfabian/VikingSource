@@ -7,10 +7,38 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.EngineSpace.Maths;
+using VikingEngine.LootFest.Map.Terrain;
 using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars.Map.Map2
 {
+    struct DrawMapOptions
+    {
+        public bool add;
+        public float centerHeight;
+        public float edgeHeight;
+
+        public float radius;
+        public float flatRadius;
+        public float hillRadius;
+        public float flatness;
+
+        public void refreshRadius()
+        {
+            flatRadius = radius * flatness;
+            hillRadius = radius - flatRadius;
+
+            if (centerHeight > 0)
+            {
+                edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * centerHeight), Height.AboveWater_Tile2Y);
+            }
+            else
+            {
+                edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * centerHeight), 0);
+            }
+        }
+    }
+
     class Generator2
     {
         static readonly IntervalF digLinkPosDiffRange = new IntervalF(0.5f, 2);
@@ -20,11 +48,10 @@ namespace VikingEngine.DSSWars.Map.Map2
         MapGenerateSettings generateSettings = new MapGenerateSettings();
         EngineSpace.Maths.SimplexNoise2D noiseMap;
         List<Task> tasks = new List<Task>(64);
-       
+        Biom biom;
         public void generate()
         {
-            
-
+            biom = DssRef.map.bioms.bioms[(int)BiomType.Green];
             Task.Run(async () =>
             {
                 world = new WorldData2(MapSize.Medium);
@@ -35,31 +62,13 @@ namespace VikingEngine.DSSWars.Map.Map2
                 while (world.tileGrid.LoopNext())
                 {
                     var tile = world.tileGrid.Get(world.tileGrid.LoopPosition);
-                    tile.color = Color.Blue;
+                    tile.color = Color.Black;
                     world.tileGrid.Set(world.tileGrid.LoopPosition, tile);
                 }
 
-
-                //for (int buildDig = 0; buildDig < 4; buildDig++)
-                //{
-
-
-                //    for (int i = 0; i < 30; i++)
-                //    {
-                //        generateDigChains();
-                //    }
-
-                //    for (int i = 0; i < 60; i++)
-                //    {
-                //        generateLandChains(100);
-                //    }
-                //}
-
-                //for (int i = 0; i < 30; i++)
-                //{
-                //    generateMountainChains();
-                //}
-
+                //testDot();
+                ////Test in one thread
+                //generateLandChains(200);
 
                 for (int i = 0; i < 20; i++)
                 {
@@ -107,14 +116,41 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             generateLandChains(center, MaxRadius);
         }
+
+        void testDot()
+        {
+            Vector2 center = world.tileGrid.Size.Vec * 0.5f;
+
+            float MaxRadius = 50;
+            DrawMapOptions draw = new DrawMapOptions()
+            {
+                add = true,
+                radius = world.rnd.Float(MaxRadius * 0.05f, MaxRadius),
+                flatness = 0.75f,
+                centerHeight = Height.MaxLand_Tile2Y,
+            };
+
+            placeDotWithOptions(world.rnd,center, draw, 0, generateNoise(world.rnd, false));
+        }
+
         void generateLandChains(Vector2 center, float MaxRadius)
         {
             //const float MaxRadius = 300;
             Range chainLengthRange2 = new Range(3, 18);
 
             Rotation1D growDir = Rotation1D.Random(world.rnd);
-            
-            float radius = world.rnd.Float(MaxRadius * 0.05f , MaxRadius);
+
+
+            DrawMapOptions draw = new DrawMapOptions()
+            {
+                add = true,
+                radius = world.rnd.Float(MaxRadius * 0.05f, MaxRadius),
+                flatness = 0.75f,
+                centerHeight = Height.MaxLand_Tile2Y,
+            };
+            draw = drawAddCalc(center, draw);
+
+            //float radius = world.rnd.Float(MaxRadius * 0.05f , MaxRadius);
             float smoothness = world.rnd.Float();
             int connectedChains = world.rnd.Int(1, 2);
 
@@ -124,20 +160,20 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                 for (int link = 0; link < chainLength; ++link)
                 {
-                    startTask_placeDotWithOptions(center + world.rnd.vector2_cirkle(8), radius, 2, Color.Green, 2, generateNoise(world.rnd, false));
+                    startTask_placeDotWithOptions(center + world.rnd.vector2_cirkle(8), draw, 2, generateNoise(world.rnd, false));
 
                     if (world.rnd.Chance(0.2))
                     {
                         growDir.Add(world.rnd.Plus_MinusF(0.2f));
                     }
-                    radius = Bound.Set(radius + world.rnd.Plus_MinusF(8f), 16, MaxRadius);
+                    draw.radius = Bound.Set(draw.radius + world.rnd.Plus_MinusF(8f), 16, MaxRadius);
 
-                    center += growDir.Direction(radius * world.rnd.Float(0.3f, 0.5f));
+                    center += growDir.Direction(draw.radius * world.rnd.Float(0.3f, 0.5f));
 
                 }
 
                 growDir.Add(world.rnd.Plus_MinusF(0.2f));
-                center += growDir.Direction(world.rnd.Float(100f, 200f) + radius);
+                center += growDir.Direction(world.rnd.Float(100f, 200f) + draw.radius);
 
                 if (!world.tileGrid.InBounds(new IntVector2(center)))
                 {
@@ -150,12 +186,12 @@ namespace VikingEngine.DSSWars.Map.Map2
                 int islandCount = world.rnd.Int(1, 8);
                 for (int i = 0; i < islandCount; ++i)
                 {
-                    generateIsland(center, radius, 2, Color.Green);
+                    generateIsland(center, draw.radius);
                 }
             }
         }
 
-        void generateIsland(Vector2 landCenter, float landRadius, int height, Color color)
+        void generateIsland(Vector2 landCenter, float landRadius)
         {
             if (landRadius > 8)
             {
@@ -172,8 +208,18 @@ namespace VikingEngine.DSSWars.Map.Map2
                     center = landCenter + world.rnd.vector2_cirkle(distance);
                 } while (!world.tileGrid.TryGet(new IntVector2(center), out var tile) || tile.groundY > 0);
 
-                float radius = world.rnd.Float(0.1f, 0.4f) * landRadius;
-                placeDotWithOptions(world.rnd, center, radius, height, color, 1, generateNoise(world.rnd, true));
+                DrawMapOptions draw = new DrawMapOptions()
+                {
+                    add = true,
+                    radius = world.rnd.Float(0.1f, 0.4f) * landRadius,
+                    flatness = 0.75f,
+                    centerHeight = Height.MaxLand_Tile2Y,
+                };
+                draw = drawAddCalc(center, draw);
+
+                //float height = Height.MaxLand_Tile2Y;
+                //float radius = world.rnd.Float(0.1f, 0.4f) * landRadius;
+                startTask_placeDotWithOptions(center, draw, 1, generateNoise(world.rnd, true));
             }
         }
 
@@ -210,9 +256,16 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             Rotation1D growDir = Rotation1D.Random(world.rnd);
 
-            float radius = Math.Min( world.rnd.Float(MinRadius, MaxRadius), world.rnd.Float(MinRadius, MaxRadius));
+            DrawMapOptions draw = new DrawMapOptions()
+            {
+                add = true,
+                radius = Math.Min(world.rnd.Float(MinRadius, MaxRadius), world.rnd.Float(MinRadius, MaxRadius)),
+                flatness = 0.0f,
+                centerHeight = -Height.DefaultGroundYoffset * 3,
+            };
+            draw = drawAddCalc(center, draw);
 
-            int fractal = radius > 30 ? 2 : 1;
+            int fractal = draw.radius > 30 ? 2 : 1;
 
             int connectedChains = world.rnd.Int(1, 4);
             float smoothness = world.rnd.Float();
@@ -224,20 +277,20 @@ namespace VikingEngine.DSSWars.Map.Map2
                 for (int link = 0; link < chainLength; ++link)
                 {
 
-                    startTask_placeDotWithOptions(center + world.rnd.vector2_cirkle(8), radius, 0, Color.Blue, fractal, generateNoise(world.rnd, false));
+                    startTask_placeDotWithOptions(center + world.rnd.vector2_cirkle(8), draw, fractal, generateNoise(world.rnd, false));
 
                     if (world.rnd.Chance(0.2))
                     {
                         growDir.Add(world.rnd.Plus_MinusF(0.2f));
                     }
-                    radius = Bound.Set(radius + world.rnd.Plus_MinusF(8f), 4, MaxRadius);
+                    draw.radius = Bound.Set(draw.radius + world.rnd.Plus_MinusF(8f), 4, MaxRadius);
 
-                    center += growDir.Direction(radius * world.rnd.Float(0.3f, 0.5f));
+                    center += growDir.Direction(draw.radius * world.rnd.Float(0.3f, 0.5f));
 
                 }
 
                 growDir.Add(world.rnd.Plus_MinusF(0.2f));
-                center += growDir.Direction(world.rnd.Float(100f, 200f) + radius);
+                center += growDir.Direction(world.rnd.Float(100f, 200f) + draw.radius);
 
                 if (!world.tileGrid.InBounds(new IntVector2(center)))
                 {
@@ -256,7 +309,15 @@ namespace VikingEngine.DSSWars.Map.Map2
             Rotation1D rightDir = Rotation1D.D0;
             refreshDirs();
 
-            float radius = world.rnd.Float(4f, 16);
+            DrawMapOptions drawMountain = new DrawMapOptions()
+            {
+                add = false,
+                radius = world.rnd.Float(4f, 16),
+                flatness = 0.0f,
+                centerHeight = Height.MountainLowPeak_Tile2Y,
+            };
+
+            drawMountain.refreshRadius();
 
             int leftSide = world.rnd.Int(2, 4);
             int rightSide = world.rnd.Int(2, 4);
@@ -273,19 +334,19 @@ namespace VikingEngine.DSSWars.Map.Map2
                     sideLinks(ref leftSide, leftDir, growSides);
                     sideLinks(ref rightSide, rightDir, growSides);
 
-                    placeDot(world.rnd, center, radius, 4, Color.Gray);
+                    placeDot(world.rnd, center, drawMountain);
 
                     if (world.rnd.Chance(0.2))
                     {
                         growDir.Add(world.rnd.Plus_MinusF(0.2f));
                         refreshDirs();
                     }
-                    radius = Bound.Set(radius + world.rnd.Plus_MinusF(2f), 8, 50);
+                    drawMountain.radius = Bound.Set(drawMountain.radius + world.rnd.Plus_MinusF(2f), 8, 50);
 
-                    center += growDir.Direction(radius * world.rnd.Float(0.3f, 0.5f));
+                    center += growDir.Direction(drawMountain.radius * world.rnd.Float(0.3f, 0.5f));
 
                     //Forward check, no crossing
-                    Vector2 forwardCheckPos = center + growDir.Direction(radius);
+                    Vector2 forwardCheckPos = center + growDir.Direction(drawMountain.radius);
                     if (world.tileGrid.TryGet(new IntVector2(forwardCheckPos), out var forwardTile))
                     {
                         if (forwardTile.groundY > 3)
@@ -296,7 +357,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
 
                 growDir.Add(world.rnd.Plus_MinusF(0.2f));
-                center += growDir.Direction(world.rnd.Float(100f, 200f) + radius);
+                center += growDir.Direction(world.rnd.Float(100f, 200f) + drawMountain.radius);
 
                 if (!world.tileGrid.InBounds(new IntVector2(center)))
                 {
@@ -319,8 +380,14 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                 for (int link = 0; link < links; ++link)
                 {
-                    sideCenter += dir.Direction(radius * world.rnd.Float(0.3f, 0.6f));
-                    startTask_placeDotWithOptions(sideCenter, radius, 3, Color.Brown, 2, generateNoise(world.rnd, false));
+                    DrawMapOptions drawMoutainSide = drawMountain;
+                    drawMoutainSide.add = true;
+                    drawMoutainSide.flatness = 0.2f;
+                    drawMoutainSide.centerHeight = Height.MountainStart_Tile2Y;
+                    drawMoutainSide = drawAddCalc(center, drawMoutainSide);
+
+                    sideCenter += dir.Direction(drawMountain.radius * world.rnd.Float(0.3f, 0.6f));
+                    startTask_placeDotWithOptions(sideCenter, drawMoutainSide, 2, generateNoise(world.rnd, false));
                 }
 
                 if (world.rnd.Chance(0.05))
@@ -342,105 +409,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                     links = Bound.Set(links, 2, 30);
                 }
             }
-
-
-
-           
         }
 
-        //static float Smoothstep(float a, float b, float x)
-        //{
-        //    float t = Math.Clamp((x - a) / (b - a), 0f, 1f);
-        //    return t * t * (3f - 2f * t);
-        //}
-        //void placeDot_noise(Vector2 center, float radius, float height, Color color, float smoothness)
-        //{
-        //    // How wide the “noisy rim” is (as a fraction of radius)
-        //    float rimStart = 0.6f; // interior up to 60% stays fully solid
-        //                           // Max jitter of the edge in world units; scale by smoothness
-        //    float maxJitter = MathHelper.Lerp(0f, radius * 0.25f, smoothness); // tweak 0.25f as you like
-
-        //    // Noise frequency: scale with radius so big dots don’t get micro-speckle
-        //    float baseFreq = 1.0f / Math.Max(4f, radius); // larger radius => lower frequency
-
-        //    Rectangle2 area = new Rectangle2(new IntVector2(center), (int)radius + 2);
-        //    ForXYLoop loopArea = new ForXYLoop(area);
-
-        //    while (loopArea.Next())
-        //    {
-        //        if (!world.tileGrid.InBounds(loopArea.Position)) continue;
-
-        //        Vector2 pos = loopArea.Position.Vec;
-        //        float dist = (pos - center).Length();
-        //        if (dist > radius + maxJitter) continue; // quick reject
-
-        //        float rPerc = dist / radius;
-
-        //        // Fade noise from 0 at rimStart to 1 at the edge
-        //        float rimFalloff = Smoothstep(rimStart, 1.0f, rPerc);
-
-        //        // fBm / octave noise in [-1, 1]
-        //        float n = noiseMap.OctaveNoise2D(
-        //            4,        // octaves
-        //            0.5f,     // persistence
-        //            2.0f,     // lacunarity
-        //            pos.X * baseFreq,
-        //            pos.Y * baseFreq
-        //        );
-
-        //        // Jitter only near the rim
-        //        float jitter = n * maxJitter * rimFalloff;
-
-        //        // Perturbed radius
-        //        float perturbedRadius = radius + jitter;
-
-        //        if (dist <= perturbedRadius)
-        //        {
-        //            ref var tile = ref world.tileGrid.GetRef(loopArea.Position);
-        //            if (height <= 0 || height > tile.groundY)
-        //            {
-        //                tile.groundY = height;
-        //                tile.color = color;
-        //            }
-        //        }
-        //    }
-        //}
 
         
-
-        void placeDot_noise(PcgRandom rnd, Vector2 center, float radius, float height, Color color, NoiseOptions noiseOpt)
-        {
-            float noiseCap = new IntervalF(0.9f, 0.3f).GetFromPercent(noiseOpt.smoothness);
-            float radiusPercCap = new IntervalF(0.4f, 0.7f).GetFromPercent(noiseOpt.smoothness);
-            float percFallOffRadius = 1f - radiusPercCap;
-
-            Rectangle2 area = new Rectangle2(new IntVector2(center), (int)radius + 1);
-            ForXYLoop loopArea = new ForXYLoop(area);
-            while (loopArea.Next())
-            {
-                if (world.tileGrid.InBounds(loopArea.Position))
-                {
-                    Vector2 posDiff = loopArea.Position.Vec - center;
-                    float distFromCenter = (posDiff).Length();
-                    if (distFromCenter <= radius)
-                    {
-                        float radiusPerc = distFromCenter / radius;
-                        float noise = noiseMap.OctaveNoise2D(noiseOpt,/*4, 0.8f, 4f,*/ -loopArea.Position.X, loopArea.Position.Y);
-
-                        if (radiusPerc < radiusPercCap || Math.Abs(noise) > (( radiusPerc - radiusPercCap) / percFallOffRadius) * noiseCap)
-                        {
-                            float percentDist = distFromCenter / radius;
-                            ref var tile = ref world.tileGrid.GetRef(loopArea.Position);
-                            if (height <= 0 || height > tile.groundY)
-                            {
-                                tile.groundY = height;
-                                tile.color = color;
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         NoiseOptions generateNoise(PcgRandom rnd, bool use)
         { 
@@ -448,46 +420,49 @@ namespace VikingEngine.DSSWars.Map.Map2
             return noiseOptions;
         }
 
-        void startTask_placeDotWithOptions(Vector2 center, float radius, float height, Color color, int fractalDots, NoiseOptions noiseOptions)
+        void startTask_placeDotWithOptions(Vector2 center, DrawMapOptions draw, int fractalDots, NoiseOptions noiseOptions)
         {
-            tasks.Add( Task.Run(() =>
+            tasks.Add(Task.Run(() =>
             {
                 PcgRandom rnd = new PcgRandom(world.rnd.Ushort());
-                placeDotWithOptions(rnd, center, radius, height, color, fractalDots, noiseOptions);
+                placeDotWithOptions(rnd, center, draw, fractalDots, noiseOptions);
             }));
         }
 
-        void placeDotWithOptions(PcgRandom rnd, Vector2 center, float radius, float height, Color color, int fractalDots, NoiseOptions noiseOptions)
+        void placeDotWithOptions(PcgRandom rnd, Vector2 center, DrawMapOptions draw, int fractalDots, NoiseOptions noiseOptions)
         {
             if (noiseOptions.useNoise)
             {
-                placeDot_noise(rnd, center, radius, height, color, noiseOptions);
+                placeDot_noise(rnd, center, draw, noiseOptions);
             }
             else
             {
-                placeDot(rnd, center, radius, height, color);
+                placeDot(rnd, center, draw);
             }
 
-            if (fractalDots > 0 && radius > 6)
+            if (fractalDots > 0 && draw.radius > 6)
             {
                 int fractalCount = world.rnd.Int(4, 12);
-                IntervalF radiusRange = new IntervalF(0.3f, 0.75f) * radius;
-                IntervalF offsetRange = new IntervalF(0.7f, 1.1f) * radius;
+                IntervalF radiusRange = new IntervalF(0.3f, 0.75f) * draw.radius;
+                IntervalF offsetRange = new IntervalF(0.7f, 1.1f) * draw.radius;
 
                 for (int i = 0; i < fractalCount; ++i)
                 {
                     Vector2 offset = world.rnd.vector2_cirkle(offsetRange.GetRandom(rnd));
                     noiseOptions.useNoise = true;
-                    placeDotWithOptions(rnd, center + offset, radiusRange.GetRandom(rnd), height, color, fractalDots - 1, noiseOptions);
+                    draw.radius = radiusRange.GetRandom(rnd);
+                    placeDotWithOptions(rnd, center + offset, draw, fractalDots - 1, noiseOptions);
                 }
 
             }
         }
 
 
-        void placeDot(PcgRandom rnd, Vector2 center, float radius, float height, Color color)
+        void placeDot(PcgRandom rnd, Vector2 center, DrawMapOptions draw)
         {
-            Rectangle2 area = new Rectangle2(new IntVector2(center), (int)radius + 1);
+            
+            draw.refreshRadius();
+            Rectangle2 area = new Rectangle2(new IntVector2(center), (int)draw.radius + 1);
             ForXYLoop loopArea = new ForXYLoop(area);
             while (loopArea.Next())
             {
@@ -495,21 +470,76 @@ namespace VikingEngine.DSSWars.Map.Map2
                 {
                     Vector2 posDiff = loopArea.Position.Vec - center;
                     float distFromCenter = (posDiff).Length();
-                    if (distFromCenter <= radius)
+                    if (distFromCenter <= draw.radius)
                     {                        
-                        float percentDist = distFromCenter / radius;
-                        ref var tile = ref world.tileGrid.GetRef(loopArea.Position);
-                        if (height <= 0 || height > tile.groundY)
-                        {
-                            tile.groundY = height;
-                            tile.color = color;
-                        }
-                       
+                        //float percentDist = distFromCenter / draw.radius;
+                        placeTile(loopArea.Position, drawHeight(distFromCenter, draw));
                     }
                 }
             }
-
+        }
+        void placeDot_noise(PcgRandom rnd, Vector2 center, DrawMapOptions draw, NoiseOptions noiseOpt)
+        {
             
+            draw.refreshRadius();
+            float noiseCap = new IntervalF(0.9f, 0.3f).GetFromPercent(noiseOpt.smoothness);
+            float radiusPercCap = new IntervalF(0.4f, 0.7f).GetFromPercent(noiseOpt.smoothness);
+            float percFallOffRadius = 1f - radiusPercCap;
+
+            Rectangle2 area = new Rectangle2(new IntVector2(center), (int)draw.radius + 1);
+            ForXYLoop loopArea = new ForXYLoop(area);
+            while (loopArea.Next())
+            {
+                if (world.tileGrid.InBounds(loopArea.Position))
+                {
+                    Vector2 posDiff = loopArea.Position.Vec - center;
+                    float distFromCenter = (posDiff).Length();
+                    if (distFromCenter <= draw.radius)
+                    {
+                        float radiusPerc = distFromCenter / draw.radius;
+                        float noise = noiseMap.OctaveNoise2D(noiseOpt,/*4, 0.8f, 4f,*/ -loopArea.Position.X, loopArea.Position.Y);
+
+                        if (radiusPerc < radiusPercCap || Math.Abs(noise) > ((radiusPerc - radiusPercCap) / percFallOffRadius) * noiseCap)
+                        {
+                            //float percentDist = distFromCenter / draw.radius;
+                            placeTile(loopArea.Position, drawHeight(distFromCenter, draw));
+                        }
+                    }
+                }
+            }
+        }
+
+        DrawMapOptions drawAddCalc(Vector2 center, DrawMapOptions draw)
+        {
+            if (draw.add && world.tileGrid.TryGet(new IntVector2(center), out var tile))
+            {
+                draw.centerHeight += tile.groundY * 0.25f;
+            }
+                return draw;
+            
+        }
+
+        float drawHeight(float distFromCenter, DrawMapOptions draw)
+        {
+            if (distFromCenter < draw.flatRadius)
+            {
+                return draw.centerHeight;
+            }
+            else
+            { 
+                float percTowardsEdge = (distFromCenter - draw.flatRadius) / draw.hillRadius;
+                return draw.centerHeight * (1f -percTowardsEdge) + draw.edgeHeight * percTowardsEdge;                
+            }
+        }
+
+        void placeTile(IntVector2 pos, float height)
+        { 
+            ref var tile = ref world.tileGrid.GetRef(pos);
+            if (height <= Height.LowWater_Tile2Y || height > tile.groundY)
+            {
+                tile.groundY = height;
+                tile.color = biom.Tile2Color(height);
+            }
         }
 
         public bool complete()

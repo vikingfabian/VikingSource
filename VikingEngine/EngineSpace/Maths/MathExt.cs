@@ -239,6 +239,13 @@ namespace VikingEngine
             return (float)((int)x);
         }
 
+        public static int SplitFloat(float value, out float fractionalPart)
+        {
+            int integerPart = (int)value;
+            fractionalPart = value - integerPart;
+            return integerPart;
+        }
+
         public static float Log2(float x)
         {
             return (float)Math.Log(x, 2);
