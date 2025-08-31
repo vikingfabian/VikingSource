@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.Map
             waterSurface.Opacity = SurfaceTrans;
 
             int drawLayer = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
-            if (!detailLayer)
+            //if (!detailLayer)
             {
                 waterSurface.AddToRender(drawLayer);
             }

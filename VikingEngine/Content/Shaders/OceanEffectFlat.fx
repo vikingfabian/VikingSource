@@ -90,7 +90,7 @@ float4 PS_Flat(VS_OUT input) : COLOR0
     float sampledDepth = tex2D(SceneDepthSampler, input.SMPosition).x;
     
     float diff = abs(sampledDepth - input.SMDepth);
-    if (diff < 0.005)
+    if (diff < 0.002)
     {   
         return float4(1, 1, 1, 1);
     }

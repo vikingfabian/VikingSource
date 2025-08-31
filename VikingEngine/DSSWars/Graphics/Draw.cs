@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars
         public const int TerrainLayer = 1;
         public const int MinimapLayer = 2;
         ShadowProcessor shadowProcessor = new ShadowProcessor();
-        OceanProcess oceanProcess;
+        //OceanProcess oceanProcess;
         public DrawGame()
             : base()
         {
@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars
 
         public void initMapShaders()
         {
-            oceanProcess = DssRef.state.detailMap.createOceanProcess();
+            //oceanProcess = DssRef.state.detailMap.createOceanProcess();
         }
 
         public override void OnShaderChange(ShaderChangeType changeType)
@@ -217,7 +217,7 @@ namespace VikingEngine.DSSWars
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     Draw3d(UnitDetailLayer, cameraIndex);
-                    oceanProcess.draw(UnitDetailLayer, Camera, cameraIndex, shadowProcessor.light, shadowProcessor._shadowMap);
+                    //oceanProcess.draw(UnitDetailLayer, Camera, cameraIndex, shadowProcessor.light, shadowProcessor._shadowMap);
                     localPlayer.DrawDetalLayer_Mesh(cameraIndex);
                     
                     Engine.ParticleHandler.Draw(p.view.Camera);
