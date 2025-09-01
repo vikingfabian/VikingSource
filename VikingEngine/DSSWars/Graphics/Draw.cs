@@ -218,6 +218,7 @@ namespace VikingEngine.DSSWars
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     Draw3d(UnitDetailLayer, cameraIndex);
                     //oceanProcess.draw(UnitDetailLayer, Camera, cameraIndex, shadowProcessor.light, shadowProcessor._shadowMap);
+                    DssRef.state.detailMap.drawWaterEdges(cameraIndex);
                     localPlayer.DrawDetalLayer_Mesh(cameraIndex);
                     
                     Engine.ParticleHandler.Draw(p.view.Camera);

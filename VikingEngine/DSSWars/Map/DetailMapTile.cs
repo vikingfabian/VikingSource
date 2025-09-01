@@ -3,12 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.EngineSpace;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Map.Terrain;
 
 namespace VikingEngine.DSSWars.Map
@@ -64,7 +63,9 @@ namespace VikingEngine.DSSWars.Map
            
         public IntVector2 pos;
         VerticeDataColorTexture verticeData;
+        VerticeDataColorTexture waterEdgeVerticeData;
         public Graphics.VoxelModel model = new Graphics.VoxelModel(false);
+        public Graphics.VoxelModel waterEdgeModel = new Graphics.VoxelModel(false);
         StructList<FoliageModel> foliageModels = new StructList<FoliageModel>(32);
         List<AnimalData> animalData;
         bool hasPolygons;
@@ -76,7 +77,10 @@ namespace VikingEngine.DSSWars.Map
         public DetailMapTile()
         {            
             model.Effect = MapLayer_Detail.ModelEffect;
-            model.Visible = false;            
+            model.Visible = false;
+
+            waterEdgeModel.Effect = MapLayer_Detail.ModelEffect;
+            waterEdgeModel.Visible = false;
         }
         
         public void generateModel_async(IntVector2 pos, Tile tile)
@@ -87,12 +91,14 @@ namespace VikingEngine.DSSWars.Map
             if (hasPolygons)
             {
                 model.position = WP.ToWorldPos(pos);
+                waterEdgeModel.position = model.position;
 
 #if DEBUG
                 model.DebugName = "Detail map tile " + pos.ToString();
+                waterEdgeModel.DebugName = "Detail map - water edge" + pos.ToString();
 #endif
 
-                DssRef.state.detailMap.polygons.Clear();
+                DssRef.state.detailMap.terrainPolygons.Clear();
 
                 Vector2 topLeft = VectorExt.V2NegHalf;
                 IntVector2 subTileStart = pos * WorldData.TileSubDivitions;
@@ -186,8 +192,15 @@ namespace VikingEngine.DSSWars.Map
                     }
                 }
 
+
                 verticeData = PolygonLib.BuildVDFromPolygons(
-                    new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.polygons, null));
+                    new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.terrainPolygons, null));
+
+                if (tile.IsLand())
+                {
+                    generateWaterEdge_async(pos, tile);
+                }
+                
 
                 void block(Vector2 subTopLeft, SpriteName texture, Color color, ref SubTile subTile)
                 {
@@ -236,13 +249,45 @@ namespace VikingEngine.DSSWars.Map
                     front.V3ne.Color = bottomCol;
 
 
-                    DssRef.state.detailMap.polygons.Add(top);
-                    DssRef.state.detailMap.polygons.Add(front);
-                    DssRef.state.detailMap.polygons.Add(left);
-                    DssRef.state.detailMap.polygons.Add(right);
+                    DssRef.state.detailMap.terrainPolygons.Add(top);
+                    DssRef.state.detailMap.terrainPolygons.Add(front);
+                    DssRef.state.detailMap.terrainPolygons.Add(left);
+                    DssRef.state.detailMap.terrainPolygons.Add(right);
                 }
 
                
+            }
+        }
+
+        public void generateWaterEdge_async(IntVector2 pos, Tile tile)
+        {
+            //const float WaveModelWidth = 0.25f;
+            //const float WaveModelHalSize = WaveModelWidth * 0.5f;
+
+            DssRef.state.detailMap.waterEdgePolygons.Clear();
+
+            for (Dir4 dir = 0; dir < Dir4.NUM_NON; ++dir)//each (var dir in IntVector2.Dir4Array)
+            {
+                IntVector2 dirVec = IntVector2.Dir4Array[(int)dir];
+                if (DssRef.world.tileGrid.TryGet(pos + dirVec, out var nTile) && nTile.IsWater())
+                {
+                    Vector2 center = dirVec.Vec * (0.5f + WorldData.SubTileHalfWidth);
+
+                    var top = Graphics.PolygonColor.QuadXZ(
+                       center - new Vector2(WorldData.SubTileHalfWidth),
+                       WorldData.SubTileWidthV2, false, 0,
+                       SpriteName.WarsResource_Food,
+                       dir,
+                       Color.White);
+
+                    DssRef.state.detailMap.waterEdgePolygons.Add(top);
+                }
+            }
+
+            if (DssRef.state.detailMap.waterEdgePolygons.Count > 0)
+            {
+                waterEdgeVerticeData = PolygonLib.BuildVDFromPolygons(
+                   new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.waterEdgePolygons, null));
             }
         }
 
@@ -336,7 +381,7 @@ namespace VikingEngine.DSSWars.Map
 
                             straw.setSprite(SpriteName.WhiteArea_LFtiles, Dir4.N);
 
-                            DssRef.state.detailMap.polygons.Add(straw);
+                            DssRef.state.detailMap.terrainPolygons.Add(straw);
                         }
                     }
                     break;
@@ -351,7 +396,7 @@ namespace VikingEngine.DSSWars.Map
                                 
                             Color color = ColorExt.ChangeBrighness(tileColor, rnd.Int(-6, 20));
 
-                            DssRef.state.detailMap.polygons.Add(
+                            DssRef.state.detailMap.terrainPolygons.Add(
                                 PolygonColor.QuadXZ(pos, SandSize, true,
                                 center.Y + 0.001f, SpriteName.WhiteArea_LFtiles, Dir4.N,
                                 color));
@@ -1098,6 +1143,20 @@ namespace VikingEngine.DSSWars.Map
                 
                 PolygonLib.VerticeDataPool.Push(verticeData);
                 verticeData = null;
+
+                if (waterEdgeVerticeData != null && waterEdgeVerticeData.Vertices.count > 0)
+                {
+                    waterEdgeModel.BuildFromVerticeData(waterEdgeVerticeData,
+                    new List<int> { waterEdgeVerticeData.DrawData.numTriangles / 2 },
+                    Texture);
+
+                    PolygonLib.VerticeDataPool.Push(waterEdgeVerticeData);
+                    waterEdgeVerticeData = null;
+
+                    waterEdgeModel.Visible = true;
+                }
+
+                model.Visible = true;
             }
 
             for (int i = 0; i < foliageModels.Count; ++i)
@@ -1114,9 +1173,9 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            model.Visible = true;
 
             renderState = DetailMapTileState.InRender;
+
             //return add;
         }
         public void recycle()
@@ -1128,6 +1187,10 @@ namespace VikingEngine.DSSWars.Map
         public void DeleteMe()
         {
             model.Visible = false;
+            if (waterEdgeModel != null)
+            {
+                waterEdgeModel.Visible = false;
+            }
 
             for (int i = 0; i < foliageModels.Count; ++i)
             {

@@ -19,7 +19,8 @@ namespace VikingEngine.DSSWars.Map
 
         const int MaxRemoveCount = 32;
         int MaxSychToRenderCount;
-        public List<Graphics.PolygonColor> polygons = new List<Graphics.PolygonColor>(256);
+        public List<Graphics.PolygonColor> terrainPolygons = new List<Graphics.PolygonColor>(256);
+        public List<Graphics.PolygonColor> waterEdgePolygons = new List<Graphics.PolygonColor>(64);
 
         public static Graphics.CustomEffect_NoColor ModelEffect = new Graphics.CustomEffect_NoColor("FlatVerticeColor", false);
         
@@ -97,6 +98,20 @@ namespace VikingEngine.DSSWars.Map
                 if (tilesC.sel.renderState == DetailMapTileState.InRender)
                 {
                     tilesC.sel.model.DrawWithShadow(cameraIndex, camera, shader, light);
+                }
+            }
+        }
+
+        public void drawWaterEdges(int cameraIndex)
+        {
+            ModelEffect.SetColor(Vector4.One);
+
+            var tilesC = tiles.counter();
+            while (tilesC.Next())
+            {
+                if (tilesC.sel.renderState == DetailMapTileState.InRender)
+                {
+                    tilesC.sel.waterEdgeModel?.Draw(cameraIndex);
                 }
             }
         }
