@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Map.Map2
     struct DrawMapOptions
     {
         public bool add;
+        public float addHeight;
         public float centerHeight;
         public float edgeHeight;
 
@@ -28,14 +29,21 @@ namespace VikingEngine.DSSWars.Map.Map2
             flatRadius = radius * flatness;
             hillRadius = radius - flatRadius;
 
-            if (centerHeight > 0) //add
+            if (addHeight > 0) //add
             {
-                edgeHeight = centerHeight - (hillRadius * 0.1f * centerHeight);
+                edgeHeight = centerHeight - (hillRadius * 0.1f * addHeight);
             }
             else
             {
-                edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * centerHeight), Generator2.Height_WaterBottom);
+                edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * addHeight), Generator2.Height_WaterBottom);
             }
+            //centerHeight = addHeight;
+        }
+
+        public void adjustHeight(float add)
+        {
+            centerHeight += add;
+            edgeHeight += add;
         }
     }
 
@@ -59,6 +67,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         const float Height_WaterPlane = 0;
         public const float Height_WaterBottom = Height_WaterPlane - 0.3f;
+        const float Height_LowGround = Height_WaterPlane + 0.1f;
         const float Height_DefaultGround = Height_WaterPlane + 0.2f;
         const float Height_MountainPeek = Height_DefaultGround + 0.4f;
 
@@ -90,14 +99,18 @@ namespace VikingEngine.DSSWars.Map.Map2
                     world.tileGrid.Set(world.tileGrid.LoopPosition, tile);
                 }
 
-                testDot();
+                //testDot();
                 ////Test in one thread
                 //generateLandChains(200);
 
-                //for (int i = 0; i < 20; i++)
-                //{
-                //    generateLandChains(200);
-                //}
+                for (int i = 0; i < 20; i++)
+                {
+                    generateLandChains(200);
+                }
+                await Task.WhenAll(tasks);
+                tasks.Clear();
+
+
                 //int mountainCount = world.rnd.Int(3, 6);
 
                 //for (int i = 0; i < mountainCount; i++)
@@ -155,10 +168,10 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             DrawMapOptions draw = new DrawMapOptions()
             {
-                add = true,
+                add = false,
                 radius = 50,
-                flatness = 0.5f,
-                centerHeight = LayerAddHeight,
+                flatness = 0.25f,
+                addHeight = Height_MountainPeek,
             };
 
             placeDotWithOptions(world.rnd,center, draw, 0, generateNoise(world.rnd, false));
@@ -176,8 +189,8 @@ namespace VikingEngine.DSSWars.Map.Map2
             {
                 add = true,
                 radius = world.rnd.Float(MaxRadius * 0.05f, MaxRadius),
-                flatness = 0.5f,
-                centerHeight = LayerAddHeight,
+                flatness = world.rnd.Float(0.2f, 0.5f),
+                addHeight = LayerAddHeight * world.rnd.Float(0.8f, 2f),
             };
             draw = drawAddCalc(center, draw);
 
@@ -197,9 +210,15 @@ namespace VikingEngine.DSSWars.Map.Map2
                     {
                         growDir.Add(world.rnd.Plus_MinusF(0.2f));
                     }
+                    if (world.rnd.Chance(0.2))
+                    {
+                        draw.adjustHeight(world.rnd.Plus_MinusF(0.03f));
+                    }
+                    //draw.adjustHeight(0.1f);
                     draw.radius = Bound.Set(draw.radius + world.rnd.Plus_MinusF(8f), 16, MaxRadius);
 
-                    center += growDir.Direction(draw.radius * world.rnd.Float(0.3f, 0.5f));
+                    draw.refreshRadius();
+                    center += growDir.Direction(draw.flatRadius * world.rnd.Float(0.2f, 0.4f));
 
                 }
 
@@ -212,9 +231,9 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
             }
 
-            if (world.rnd.Chance(0.2))
+            if (world.rnd.Chance(0.8))
             {
-                int islandCount = world.rnd.Int(1, 8);
+                int islandCount = world.rnd.Int(1, 6);
                 for (int i = 0; i < islandCount; ++i)
                 {
                     generateIsland(center, draw.radius);
@@ -235,7 +254,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     {
                         return;
                     }
-                    float distance = world.rnd.Float(1.2f, 8f) * landRadius;
+                    float distance = world.rnd.Float(1.2f, 4f) * landRadius;
                     center = landCenter + world.rnd.vector2_cirkle(distance);
                 } while (!world.tileGrid.TryGet(new IntVector2(center), out var tile) || tile.groundY > 0);
 
@@ -243,8 +262,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                 {
                     add = true,
                     radius = world.rnd.Float(0.1f, 0.4f) * landRadius,
-                    flatness = 0.75f,
-                    centerHeight = Height_DefaultGround,
+                    flatness = 0.4f,
+                    addHeight = LayerAddHeight * 0.5f,
                 };
                 draw = drawAddCalc(center, draw);
 
@@ -292,7 +311,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 add = true,
                 radius = Math.Min(world.rnd.Float(MinRadius, MaxRadius), world.rnd.Float(MinRadius, MaxRadius)),
                 flatness = 0.0f,
-                centerHeight = -Height.DefaultGroundYoffset * 3,
+                addHeight = -Height.DefaultGroundYoffset * 3,
             };
             draw = drawAddCalc(center, draw);
 
@@ -345,7 +364,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 add = false,
                 radius = world.rnd.Float(4f, 16),
                 flatness = 0.0f,
-                centerHeight = Height_MountainPeek,
+                addHeight = Height_MountainPeek,
             };
 
             drawMountain.refreshRadius();
@@ -414,7 +433,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     DrawMapOptions drawMoutainSide = drawMountain;
                     //drawMoutainSide.add = true;
                     drawMoutainSide.flatness = 0.2f;
-                    drawMoutainSide.centerHeight *= 0.7f;
+                    drawMoutainSide.addHeight *= 0.7f;
                     drawMoutainSide = drawAddCalc(center, drawMoutainSide);
 
                     sideCenter += dir.Direction(drawMountain.radius * world.rnd.Float(0.3f, 0.6f));
@@ -473,16 +492,20 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             if (fractalDots > 0 && draw.radius > 6)
             {
+                draw.refreshRadius();
+
                 int fractalCount = world.rnd.Int(4, 12);
                 IntervalF radiusRange = new IntervalF(0.3f, 0.75f) * draw.radius;
-                IntervalF offsetRange = new IntervalF(0.7f, 1.1f) * draw.radius;
+                IntervalF offsetRange = new IntervalF(0.7f, 1.1f) * draw.flatRadius;
 
                 for (int i = 0; i < fractalCount; ++i)
                 {
                     Vector2 offset = world.rnd.vector2_cirkle(offsetRange.GetRandom(rnd));
                     noiseOptions.useNoise = true;
-                    draw.radius = radiusRange.GetRandom(rnd);
-                    placeDotWithOptions(rnd, center + offset, draw, fractalDots - 1, noiseOptions);
+                    DrawMapOptions drawFractal = draw;
+                    drawFractal.radius = radiusRange.GetRandom(rnd);
+                   
+                    placeDotWithOptions(rnd, center + offset, drawFractal, fractalDots - 1, noiseOptions);
                 }
 
             }
@@ -504,7 +527,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     if (distFromCenter <= draw.radius)
                     {                        
                         //float percentDist = distFromCenter / draw.radius;
-                        placeTile(loopArea.Position, drawHeight(distFromCenter, draw), draw.centerHeight > 0);
+                        placeTile(loopArea.Position, drawHeight(distFromCenter, draw), draw.addHeight > 0);
                     }
                 }
             }
@@ -514,7 +537,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             
             draw.refreshRadius();
             float noiseCap = new IntervalF(0.9f, 0.3f).GetFromPercent(noiseOpt.smoothness);
-            float radiusPercCap = new IntervalF(0.4f, 0.7f).GetFromPercent(noiseOpt.smoothness);
+            float radiusPercCap = new IntervalF(0.2f, 0.5f).GetFromPercent(noiseOpt.smoothness);
             float percFallOffRadius = 1f - radiusPercCap;
 
             Rectangle2 area = new Rectangle2(new IntVector2(center), (int)draw.radius + 1);
@@ -528,12 +551,22 @@ namespace VikingEngine.DSSWars.Map.Map2
                     if (distFromCenter <= draw.radius)
                     {
                         float radiusPerc = distFromCenter / draw.radius;
-                        float noise = noiseMap.OctaveNoise2D(noiseOpt,/*4, 0.8f, 4f,*/ -loopArea.Position.X, loopArea.Position.Y);
 
-                        if (radiusPerc < radiusPercCap || Math.Abs(noise) > ((radiusPerc - radiusPercCap) / percFallOffRadius) * noiseCap)
+                        float height = drawHeight(distFromCenter, draw);
+
+                        if (radiusPerc < radiusPercCap)// ||  ((radiusPerc - radiusPercCap) / percFallOffRadius) * noiseCap)
                         {
                             //float percentDist = distFromCenter / draw.radius;
-                            placeTile(loopArea.Position, drawHeight(distFromCenter, draw), draw.centerHeight > 0);
+                            placeTile(loopArea.Position, height, draw.addHeight > 0);
+                        }
+                        else
+                        {
+                            float noise = noiseMap.OctaveNoise2D_Normal(noiseOpt, -loopArea.Position.X, loopArea.Position.Y) * 1.2f;
+
+                            //float noiseEffect = (radiusPerc - radiusPercCap) / percFallOffRadius;
+                            //noise *= noiseEffect;
+                            height = height * noise + draw.edgeHeight * (1- noise);
+                            placeTile(loopArea.Position, height, draw.addHeight > 0);
                         }
                     }
                 }
@@ -544,9 +577,19 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             if (draw.add && world.tileGrid.TryGet(new IntVector2(center), out var tile))
             {
-                draw.centerHeight += tile.groundY * 0.25f;
+                draw.centerHeight = draw.addHeight + tile.groundY;
+
+                if (draw.addHeight > 0 && draw.centerHeight < Height_LowGround)
+                {
+                    draw.addHeight += Height_LowGround;
+                    draw.centerHeight = draw.addHeight + tile.groundY;
+                    draw.radius += 0.5f;
+                    draw.flatness *= 0.5f;
+
+                }
+
             }
-                return draw;
+            return draw;
             
         }
 
@@ -586,15 +629,20 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void tileColor(ref Tile2 tile)
         {
+            if (tile.groundY > Height_WaterBottom)
+            {
+                lib.DoNothing();
+            }
             if (tile.groundY < 0)
             {
                 float depth = 1f - tile.groundY / Height_WaterBottom;
-                tile.color = new Color(depth, depth, 1f);
+                tile.color = new Color(depth * 0.5f, depth * 0.5f, depth * 0.5f + 0.2f);
             }
             else
             {
                 float depth = tile.groundY / Height_MountainPeek;
-                tile.color = new Color(depth, 1f, depth);
+                depth *= 0.75f;
+                tile.color = new Color(depth, depth + 0.2f, depth);
             }
         }
 

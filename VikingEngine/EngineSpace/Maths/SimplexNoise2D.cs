@@ -54,6 +54,11 @@ namespace VikingEngine.EngineSpace.Maths
             return OctaveNoise2D(options.ocatves, options.persistence, options.scale, x, y);
         }
 
+        public float OctaveNoise2D_Normal(NoiseOptions options, float x, float y)
+        {
+            return OctaveNoise2D_Normal(options.ocatves, options.persistence, options.scale, x, y);
+        }
+
         public float OctaveNoise2D_Normal(float octaves, float persistence, float scale, float x, float y)
         {
             return (OctaveNoise2D(octaves, persistence, scale, x, y) + 1f) / 2f;
