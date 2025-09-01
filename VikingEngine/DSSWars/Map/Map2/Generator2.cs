@@ -179,7 +179,6 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateLandChains(Vector2 center, float MaxRadius)
         {
-            //const float MaxRadius = 300;
             Range chainLengthRange2 = new Range(3, 18);
 
             Rotation1D growDir = Rotation1D.Random(world.rnd);
@@ -194,7 +193,6 @@ namespace VikingEngine.DSSWars.Map.Map2
             };
             draw = drawAddCalc(center, draw);
 
-            //float radius = world.rnd.Float(MaxRadius * 0.05f , MaxRadius);
             float smoothness = world.rnd.Float();
             int connectedChains = world.rnd.Int(1, 2);
 
@@ -214,7 +212,6 @@ namespace VikingEngine.DSSWars.Map.Map2
                     {
                         draw.adjustHeight(world.rnd.Plus_MinusF(0.03f));
                     }
-                    //draw.adjustHeight(0.1f);
                     draw.radius = Bound.Set(draw.radius + world.rnd.Plus_MinusF(8f), 16, MaxRadius);
 
                     draw.refreshRadius();
@@ -267,8 +264,6 @@ namespace VikingEngine.DSSWars.Map.Map2
                 };
                 draw = drawAddCalc(center, draw);
 
-                //float height = Height.MaxLand_Tile2Y;
-                //float radius = world.rnd.Float(0.1f, 0.4f) * landRadius;
                 startTask_placeDotWithOptions(center, draw, 1, generateNoise(world.rnd, true));
             }
         }
