@@ -115,6 +115,12 @@ namespace VikingEngine
             return value;
         }
 
+        public static double Max(double value, double max)
+        {
+            if (value > max) { return max; }
+            return value;
+        }
+
         public static void Max(ref float value, float max)
         {
             if (value > max)
