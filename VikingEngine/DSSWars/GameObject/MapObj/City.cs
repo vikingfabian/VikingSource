@@ -1570,7 +1570,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 overviewModel = faction.AutoLoadModelInstance(
                    LootFest.VoxelModelName.cityicon, IconScale());
-                overviewModel.AddToRender(DrawGame.TerrainLayer);
+                overviewModel.AddToRender(DrawGame.MidLayer);
                 overviewModel.position = position;
             }
         }

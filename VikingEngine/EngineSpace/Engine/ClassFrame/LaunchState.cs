@@ -12,6 +12,7 @@ using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
+using VikingEngine.ToGG.HeroQuest.Display;
 
 namespace VikingEngine.Engine
 {
@@ -43,11 +44,13 @@ namespace VikingEngine.Engine
         bool loadingDefaltContentComplete = false;
         bool loadingContentComplete = false;
         bool loadingDataComplete = false;
+        bool dataProcessComplete = false;
         WaitForCloudSynch waitForCloudSynch = new WaitForCloudSynch();
 
         protected int mainPart = 0;
         protected int contentPart = 0;
         protected int storagePart = 0;
+        protected int dataProcessPart = 0;
         int updateCounter = 0;
 
         string exceptionString;
@@ -171,7 +174,19 @@ namespace VikingEngine.Engine
                     {
                         exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
                     }
-                });                
+                });
+                new Timer.AsynchActionTrigger(() =>
+                {
+                    try
+                    {
+                        asyncDataProcessLoading(ref dataProcessPart);
+                        dataProcessComplete = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -203,7 +218,7 @@ namespace VikingEngine.Engine
         abstract protected void preLoading();
         abstract protected void asyncContentLoading(ref int part);
         abstract protected void asyncStorageLoading(ref int part);
-
+        abstract protected void asyncDataProcessLoading(ref int part);
         abstract protected void asyncLoading_OnRestart(ref int part);
         abstract protected void launch();
 
@@ -239,7 +254,7 @@ namespace VikingEngine.Engine
                 {
                     if (waitForCloudSynch.update())
                     {
-                        if (loadingContentComplete && loadingDataComplete)
+                        if (loadingContentComplete && loadingDataComplete && dataProcessComplete)
                         {
                             launch();
                         }
@@ -253,7 +268,7 @@ namespace VikingEngine.Engine
                     { 
                         updateCounter = 0;
                     }
-                    progressString.TextString = $"State{(int)load}, m{mainPart}, c{contentPart}, s{storagePart}, u{updateCounter}";
+                    progressString.TextString = $"State{(int)load}, m{mainPart}, c{contentPart}, s{storagePart}, d{dataProcessPart}, u{updateCounter}";
                 }
             }
             catch (Exception ex)
@@ -290,8 +305,8 @@ namespace VikingEngine.Engine
 
                 if (load > LoadState.Font)
                 {
-                    new Graphics.TextBoxSimple(LoadedFont.Console, Vector2.Zero, Vector2.One, Graphics.Align.Zero, exceptionString,
-                        Color.White, ImageLayers.AbsoluteTopLayer, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width);
+                    new Graphics.TextBoxSimple(LoadedFont.Console, new Vector2(20), Vector2.One, Graphics.Align.Zero, exceptionString,
+                        Color.White, ImageLayers.AbsoluteTopLayer, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8f);
                 }
             }
         }

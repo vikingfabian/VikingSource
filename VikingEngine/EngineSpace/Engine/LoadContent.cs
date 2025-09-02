@@ -284,7 +284,7 @@ namespace VikingEngine
         particle3,
         ccg_piece_particle,
         realistic_particle,
-
+        waterEdge,
 
         BirdJoustBG,
         cmdTiles,

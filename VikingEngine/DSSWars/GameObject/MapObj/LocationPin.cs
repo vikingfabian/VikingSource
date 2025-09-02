@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             overviewModel = GetFaction().AutoLoadModelInstance(
                LootFest.VoxelModelName.wars_flag, 1f, false);
-            overviewModel.AddToRender(DrawGame.TerrainLayer);
+            overviewModel.AddToRender(DrawGame.MidLayer);
             overviewModel.position = position;
         }
         public override void asynchCullingUpdate(float time, bool bStateA)

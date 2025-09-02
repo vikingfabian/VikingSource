@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Map
             factions = DssRef.world.factions.counter();
             model = new Graphics.VoxelModel(false);
             model.Effect = ModelEffect;
-            model.AddToRender(DrawGame.TerrainLayer);
+            model.AddToRender(DrawGame.MidLayer);
             model.Visible = false;
         }
 

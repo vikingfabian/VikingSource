@@ -70,6 +70,8 @@ namespace VikingEngine.DSSWars
             part++;
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
             part++;
+            Engine.LoadContent.LoadTexture(LoadedTexture.waterEdge, DssLib.ContentDir + "wave_mask1");
+            part++;
             Engine.LoadContent.LoadTextures(new List<LoadedTexture> {
                     LoadedTexture.particle3,
                     });
@@ -118,8 +120,14 @@ namespace VikingEngine.DSSWars
             part++;
             bgTex = LobbyState.LoadBg();
             part++;
-
+            WaterEdgeBuilder.Init();
+            part++;
             //DrawGame.LoadContent();
+        }
+
+        protected override void asyncDataProcessLoading(ref int part)
+        {
+            
         }
 
         protected override void asyncLoading_OnRestart(ref int part)

@@ -912,7 +912,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     overviewBanner = GetFaction().AutoLoadModelInstance(
                         OverviewBannerModelName, 1f);
-                    overviewBanner.AddToRender(DrawGame.TerrainLayer);
+                    overviewBanner.AddToRender(DrawGame.MidLayer);
 
                     updateModelsPosition();
                 }

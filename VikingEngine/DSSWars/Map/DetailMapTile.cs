@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Map
         VerticeDataColorTexture verticeData;
         VerticeDataColorTexture waterEdgeVerticeData;
         public Graphics.VoxelModel model = new Graphics.VoxelModel(false);
-        public Graphics.VoxelModel waterEdgeModel = new Graphics.VoxelModel(false);
+        public Graphics.VoxelModel waterEdgeModel = new Graphics.VoxelModel(false) { colorAndAlpha = new Vector4(1, 1, 1, 0.6f) };
         StructList<FoliageModel> foliageModels = new StructList<FoliageModel>(32);
         List<AnimalData> animalData;
         bool hasPolygons;
@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.Map
             model.Effect = MapLayer_Detail.ModelEffect;
             model.Visible = false;
 
-            waterEdgeModel.Effect = MapLayer_Detail.ModelEffect;
+            waterEdgeModel.Effect = WaveXzEffect.GetWaveSingletonSafe();
             waterEdgeModel.Visible = false;
         }
         
@@ -92,6 +92,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 model.position = WP.ToWorldPos(pos);
                 waterEdgeModel.position = model.position;
+                waterEdgeModel.PositionY = Tile.WaterSurfaceY + 0.01f;
 
 #if DEBUG
                 model.DebugName = "Detail map tile " + pos.ToString();
@@ -268,19 +269,19 @@ namespace VikingEngine.DSSWars.Map
 
             for (Dir4 dir = 0; dir < Dir4.NUM_NON; ++dir)//each (var dir in IntVector2.Dir4Array)
             {
-                IntVector2 dirVec = IntVector2.Dir4Array[(int)dir];
-                if (DssRef.world.tileGrid.TryGet(pos + dirVec, out var nTile) && nTile.IsWater())
+                
+                if (DssRef.world.tileGrid.TryGet(pos + IntVector2.Dir4Array[(int)dir], out var nTile) && nTile.IsWater())
                 {
-                    Vector2 center = dirVec.Vec * (0.5f + WorldData.SubTileHalfWidth);
+                    //Vector2 center = dirVec.Vec * (0.5f + WorldData.SubTileHalfWidth);
 
-                    var top = Graphics.PolygonColor.QuadXZ(
-                       center - new Vector2(WorldData.SubTileHalfWidth),
-                       WorldData.SubTileWidthV2, false, 0,
-                       SpriteName.WarsResource_Food,
-                       dir,
-                       Color.White);
-
-                    DssRef.state.detailMap.waterEdgePolygons.Add(top);
+                    //var top = Graphics.PolygonColor.QuadXZ(
+                    //   center - new Vector2(WorldData.SubTileHalfWidth),
+                    //   WorldData.SubTileWidthV2, false, 0,
+                    //   SpriteName.WarsResource_Food,
+                    //   dir,
+                    //   Color.White);
+                    
+                    DssRef.state.detailMap.waterEdgePolygons.AddRange(WaterEdgeBuilder.Get(dir));
                 }
             }
 
@@ -1148,12 +1149,13 @@ namespace VikingEngine.DSSWars.Map
                 {
                     waterEdgeModel.BuildFromVerticeData(waterEdgeVerticeData,
                     new List<int> { waterEdgeVerticeData.DrawData.numTriangles / 2 },
-                    Texture);
+                     LoadedTexture.waterEdge);
 
                     PolygonLib.VerticeDataPool.Push(waterEdgeVerticeData);
                     waterEdgeVerticeData = null;
 
                     waterEdgeModel.Visible = true;
+                    //waterEdgeModel.Color = Color.DarkGray;
                 }
 
                 model.Visible = true;

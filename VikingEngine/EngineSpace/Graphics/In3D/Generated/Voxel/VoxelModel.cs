@@ -46,6 +46,11 @@ namespace VikingEngine.Graphics
             }
         }
 
+        //public void Draw(int cameraIndex, Texture2D texture)
+        //{ 
+            
+        //}
+
         public void Draw()
         {
             Effect.DrawVB(Frame, this, VB);

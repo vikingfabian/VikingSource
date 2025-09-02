@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.Commander.UnitsData;
@@ -41,10 +42,10 @@ namespace VikingEngine.DSSWars.Map
 
         }
 
-        public OceanProcess createOceanProcess()
-        {
-            return new OceanProcess(waterSurface);
-        }
+        //public OceanProcess createOceanProcess()
+        //{
+        //    return new OceanProcess(waterSurface);
+        //}
 
         public void refreshLoadSpeed()
         {
@@ -104,14 +105,22 @@ namespace VikingEngine.DSSWars.Map
 
         public void drawWaterEdges(int cameraIndex)
         {
-            ModelEffect.SetColor(Vector4.One);
+            //LoadContent.Textures[(int)LoadedTexture.waterEdge] = texture;
+            WaveXzEffect.GetWaveSingletonSafe().beginDraw();
+
+            //ModelEffect.SetColor(Vector4.One);
 
             var tilesC = tiles.counter();
             while (tilesC.Next())
             {
                 if (tilesC.sel.renderState == DetailMapTileState.InRender)
                 {
-                    tilesC.sel.waterEdgeModel?.Draw(cameraIndex);
+                    var model = tilesC.sel.waterEdgeModel;
+                    if (model != null)
+                    {
+                        
+                        model.Draw(cameraIndex);
+                    }
                 }
             }
         }
@@ -123,8 +132,6 @@ namespace VikingEngine.DSSWars.Map
 
         public void asynchUpdate()
         {
-           
-
             var tileC = tiles.counter();
             while (tileC.Next())
             {

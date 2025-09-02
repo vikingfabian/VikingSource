@@ -50,7 +50,7 @@ struct VSInput
 {
     float4 Position : POSITION0; // Vertex position
     float3 Normal : NORMAL0; // Vertex normal
-    float4 Color : COLOR0; // Vertex color
+    float4 vcolor : COLOR0; // Vertex color
     //float2 TexCoord : TEXCOORD0; // (Optional) if you need textures
 };
 
@@ -61,9 +61,11 @@ struct VSOutput
 {
     float4 Position : SV_POSITION;
     float3 Normal : TEXCOORD0;
-    float4 Color : COLOR0;
+    float4 vcolor : COLOR0;
     //float2 TexCoord : TEXCOORD1;
 };
+
+
 
 //------------------------------------
 // Vertex Shader
@@ -111,7 +113,59 @@ VSOutput VS_Main(VSInput input)
 
     // Pass down the normal, color, and texcoords
     output.Normal = worldNormal;
-    output.Color = input.Color;
+    output.vcolor = input.vcolor;
+    //output.TexCoord = input.TexCoord;
+
+    return output;
+}
+
+//------------------------------------
+// Vertex Shader
+//------------------------------------
+VSOutput VS_WaveXZ(VSInput input)
+{
+    VSOutput output;
+    
+    // Transform the normal into world space (3x3 portion of World matrix).
+    float3 worldNormal = mul((float3x3) World, input.Normal);
+    worldNormal = normalize(worldNormal);
+
+    // Convert the position into world space
+    float4 worldPosition = mul(input.Position, World);
+
+    // 1) Compute a sine wave for the basic “flag wave.”
+    //    wave = sin( (x + time * speed) * frequency ) * amplitude
+    //    (Adjust x/y/z usage depending on your model orientation.)
+    // 2) Use a SECOND sine wave (AmplitudeModFrequency) to modulate the amplitude.
+    //
+    //    Let's define: amplitudeOsc = 0.5 + 0.5 * sin(Time * AmplitudeModFrequency)
+    //      => This will vary from 0.0 to 1.0 over time.
+    //    Then the final amplitude can be:
+    //
+    //      dynamicAmplitude = WaveAmplitude * (1 + AmplitudeModRange * (amplitudeOsc - 1))
+    //
+    //    Where amplitudeOsc goes from 0 to 1, so (amplitudeOsc - 1) goes from -1 to 0.
+    //    Another simpler approach is:
+    //      amplitudeOsc = 0.5 + 0.5 * sin(Time * AmplitudeModFrequency)
+    //      dynamicAmplitude = WaveAmplitude * (1.0 + AmplitudeModRange * (amplitudeOsc * 2 - 1))
+    //    ...but we can keep it a bit simpler.  
+    //    The below code modulates amplitude in a 50%-150% range if AmplitudeModRange=0.5.
+
+    float amplitudeOsc = 0.8 + 0.2 * sin(Time * AmplitudeModFrequency); // 0..1
+    float dynamicAmplitude = WaveAmplitude * amplitudeOsc; //* (1.0 + AmplitudeModRange * (amplitudeOsc * 2.0 - 1.0));
+
+    float wave = sin((worldPosition.x + worldPosition.z * 0.5) * WaveFrequency - Time * WaveSpeed) * dynamicAmplitude;
+
+    // Apply the wave to the Y position (or whichever axis suits your flag orientation)
+    worldPosition.x += wave;
+
+    // Final view-projection transform
+    float4 viewPosition = mul(worldPosition, View);
+    output.Position = mul(viewPosition, Projection);
+
+    // Pass down the normal, color, and texcoords
+    output.Normal = worldNormal;
+    output.vcolor = input.vcolor;
     //output.TexCoord = input.TexCoord;
 
     return output;
@@ -125,7 +179,7 @@ float4 PS_Main(VSOutput input) : COLOR0
    
 
     // Modulate by vertex color
-    float3 finalColor = input.Color.rgb; //lighting * input.Color.rgb;
+    float3 finalColor = input.vcolor.rgb; //lighting * input.Color.rgb;
 
     return float4(finalColor, 1);
 }
@@ -138,6 +192,15 @@ technique FlagWaveTechnique
     pass P0
     {
         VertexShader = compile VS_SHADERMODEL VS_Main();
+        PixelShader = compile PS_SHADERMODEL PS_Main();
+    }
+}
+
+technique WaveXZTechnique
+{
+    pass P0
+    {
+        VertexShader = compile VS_SHADERMODEL VS_WaveXZ();
         PixelShader = compile PS_SHADERMODEL PS_Main();
     }
 }

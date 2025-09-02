@@ -28,9 +28,9 @@ namespace VikingEngine.DSSWars.Map
 
             model.TextureSource = source;
 
-            Ref.draw.CurrentRenderLayer = DrawGame.MinimapLayer;
+            Ref.draw.CurrentRenderLayer = DrawGame.FarLayer;
             Ref.draw.AddToRenderList(this);
-            Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
+            Ref.draw.CurrentRenderLayer = DrawGame.MidLayer;
 
             if (init)
             {

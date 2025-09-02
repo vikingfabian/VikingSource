@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.Map
         public void SetNewModel()
         {
             currentModel?.DeleteMe();
-            nextModel.AddToRender(DrawGame.TerrainLayer);
+            nextModel.AddToRender(DrawGame.MidLayer);
             currentModel = nextModel;
         }
 

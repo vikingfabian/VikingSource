@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Map
     {
         public DebugMap()
         {
-            Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
+            Ref.draw.CurrentRenderLayer = DrawGame.MidLayer;
             
             ForXYLoop loop = new ForXYLoop(DssRef.world.Size);
             while (loop.Next())

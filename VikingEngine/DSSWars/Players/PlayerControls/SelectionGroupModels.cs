@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Players
         public SelectionGroupModels(int playerCam, bool detailLayer)
         {
             this.playerCam = playerCam;
-            layer = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
+            layer = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
         }
 
         public void Draw(int cameraIndex)

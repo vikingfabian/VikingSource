@@ -44,6 +44,8 @@ namespace VikingEngine
 
         public SpriteSheet()
         {
+            addTexture(SpriteName.WaterEdgeMask, 32, 32, LoadedTexture.waterEdge);
+
             this.Settings(4096, 128);
             this.TileSheetIx = LoadedTexture.SpriteSheet;
 

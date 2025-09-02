@@ -206,6 +206,7 @@ namespace VikingEngine
 
         ButtonDisabledCross,
         TextureWaterMap,
+        WaterEdgeMask,
         TextureHueSaturation,
         TextureDarknessGradient,
         ColorPickerCircle,

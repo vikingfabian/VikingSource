@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars
 
         public Texture2D[] waterTextures;
         public Texture2D[] seaTextures;
-        public Texture2D[] waterEdgeTextures;
+        //public Texture2D[] waterEdgeTextures;
 
         public Models()
         {
@@ -51,12 +51,12 @@ namespace VikingEngine.DSSWars
                 seaTextures[i - 1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "seatex_i" + i);
             }
 
-            const int WaterEdgeCount = 2;
-            waterEdgeTextures = new Texture2D[WaterEdgeCount];
-            for (int i = 1; i <= WaterEdgeCount; ++i)
-            {
-                waterEdgeTextures[i - 1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "wave_mask" + i);
-            }
+            //const int WaterEdgeCount = 2;
+            //waterEdgeTextures = new Texture2D[WaterEdgeCount];
+            //for (int i = 1; i <= WaterEdgeCount; ++i)
+            //{
+            //    waterEdgeTextures[i - 1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "wave_mask" + i);
+            //}
 
             //RAW
             List<VoxelModelName> loadRawModels = new List<VoxelModelName>
@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars
                 {                    
                     if (!detailLayer)
                     {
-                        int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
+                        int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
 
                         if (async)
                         {

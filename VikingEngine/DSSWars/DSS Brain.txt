@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* 
+* Optimized the startup to be faster
 
 
 Story:
