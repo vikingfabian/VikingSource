@@ -195,13 +195,17 @@ namespace VikingEngine.DSSWars.Data
     {
         public static readonly string PlayMapDir = DssLib.ContentDir + "PlayMap" + DataStream.FilePath.Dir;
 
-        const int Version = 4;
+        const int Version = 5;
         public const string FileEnd = ".sav";
         public DateTime saveDate;
         public TimeSpan playTime;
         public int localPlayerCount = 1;
         int difficulty;
         public GameModeMainType gameMode = GameModeMainType.NUM;
+        public float setting_foodMulti = -1;
+        public float setting_waterMulti = -1;
+        public float setting_childMulti = -1;
+        public float setting_craftMulti = -1;
 
         public int metaVersion = Version;
         public int stateVersion= SaveGamestate.Version;
@@ -256,6 +260,16 @@ namespace VikingEngine.DSSWars.Data
                 result += string.Format(DssRef.lang.Settings_TotalDifficulty, difficulty) + Environment.NewLine +
                     DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(worldmeta.mapSize) + Environment.NewLine;
             }
+
+            if (setting_foodMulti > 0)
+            {
+                result += string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(setting_foodMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(setting_waterMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(setting_childMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(setting_craftMulti)) + Environment.NewLine;
+
+            }
+
             if (localPlayerCount > 1)
             {
                 result += string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine;
@@ -286,6 +300,11 @@ namespace VikingEngine.DSSWars.Data
             localPlayerCount = DssRef.state.localPlayers.Count;
             difficulty = DssRef.difficulty.TotalDifficulty();
             gameMode = DssRef.difficulty.setting_gameMode;
+
+            setting_foodMulti = DssRef.difficulty.setting_foodMulti;
+            setting_waterMulti = DssRef.difficulty.setting_waterMulti;
+            setting_childMulti = DssRef.difficulty.setting_childMulti;
+            setting_craftMulti = DssRef.difficulty.setting_craftMulti;
             worldmeta = DssRef.world.metaData;
         }
 
@@ -313,6 +332,12 @@ namespace VikingEngine.DSSWars.Data
             w.Write(stateVersion);
 
             w.Write((byte)gameMode);
+
+            w.Write(setting_foodMulti);
+            w.Write(setting_waterMulti);
+            w.Write(setting_childMulti);
+            w.Write(setting_craftMulti);
+
             w.Write(autosave);
             w.Write((byte)index);
             w.Write(saveDate.Ticks); 
@@ -321,6 +346,8 @@ namespace VikingEngine.DSSWars.Data
             w.Write((short)difficulty);
 
             worldmeta.write(w);
+
+            Debug.WriteCheck(w);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -335,6 +362,14 @@ namespace VikingEngine.DSSWars.Data
             if (metaVersion >= 4)
             {
                 gameMode = (GameModeMainType)r.ReadByte();
+            }
+
+            if (metaVersion >= 5)
+            {
+                setting_foodMulti = r.ReadSingle();
+                setting_waterMulti = r.ReadSingle();
+                setting_childMulti = r.ReadSingle();
+                setting_craftMulti = r.ReadSingle();
             }
 
             if (metaVersion == 1)
@@ -353,6 +388,11 @@ namespace VikingEngine.DSSWars.Data
             difficulty = r.ReadInt16();
 
             worldmeta = new WorldMetaData(r);
+
+            if (metaVersion >= 5)
+            {
+                Debug.ReadCheck(r);
+            }
         }
 
         public int CompareTo(SaveStateMeta other)

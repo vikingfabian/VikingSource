@@ -377,6 +377,17 @@ namespace VikingEngine
             return modelShadow;
         }
 
+        public bool waterFoamProperty(object tag, bool set, bool val)
+        {
+            if (set)
+            {
+                waterFoam = val;
+                settingsHasChanged = true;
+            }
+
+            return waterFoam;
+        }
+
         public float brightnessProperty(bool set, float value)
         {
             if (set)
@@ -451,8 +462,8 @@ namespace VikingEngine
 
             if (Ref.music != null)
             {
-                content.newLine();
-                content.Add(new RbText(DssRef.lang.MusicIsBroken, HudLib.InfoYellow_Light));
+                //content.newLine();
+                //content.Add(new RbText(DssRef.lang.MusicIsBroken, HudLib.InfoYellow_Light));
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
@@ -613,6 +624,10 @@ namespace VikingEngine
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ModelLight) },
                     modelLightProperty));
             }
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_ModelWaterFoam) },
+                waterFoamProperty));
+
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_Particles) },
                 particlesProperty));

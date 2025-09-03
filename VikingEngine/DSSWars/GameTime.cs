@@ -94,6 +94,7 @@ namespace VikingEngine.DSSWars
                             secondsToMinute = 0;
                             ++totalMinutes;
                             oneMinute = true;
+                            DssRef.storage.totalGameTimeMinutes++;
                             DssRef.state.OneMinute_Update();
                         }
                         break;

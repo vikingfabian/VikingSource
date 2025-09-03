@@ -89,6 +89,7 @@ namespace VikingEngine.Graphics
         Poision,
         GoldenSparkle,
         BulletTrace,
+        WaterFoam,
         Fire,
         ExplosionFire,
         Smoke,

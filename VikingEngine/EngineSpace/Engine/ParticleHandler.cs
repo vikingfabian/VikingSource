@@ -56,6 +56,7 @@ namespace VikingEngine.Engine
                 Graphics.ParticleSystemType[] use = new Graphics.ParticleSystemType[]
                 {
                     Graphics.ParticleSystemType.BulletTrace,
+                    Graphics.ParticleSystemType.WaterFoam,
                     Graphics.ParticleSystemType.GoldenSparkle,
                     Graphics.ParticleSystemType.Fire,
                     Graphics.ParticleSystemType.ExplosionFire,
@@ -126,6 +127,18 @@ namespace VikingEngine.Engine
                 sys.AddParticles(new Graphics.ParticleInitData(Ref.peRnd.Vector3_Sq(center, radius)));
             }
             #endif
+        }
+
+        public static void AddParticleAreaFlat(Graphics.ParticleSystemType type, Vector3 center, float radius, int numParticles)
+        {
+#if USE_PARTICLES
+            addSystem(type);
+            ParticleSystemData sys = particleSystems[(int)type];
+            for (int i = 0; i < numParticles; i++)
+            {
+                sys.AddParticles(new Graphics.ParticleInitData(Ref.peRnd.Vector3_SqXZ(center, radius)));
+            }
+#endif
         }
 
         public static void AddParticleSphere(Graphics.ParticleSystemType type, Vector3 center, float radius, int numParticles)
@@ -222,8 +235,11 @@ namespace VikingEngine.Engine
                case Graphics.ParticleSystemType.GoldenSparkle:
                     System = new Graphics.GoldenSpark();
                     break;
-               case Graphics.ParticleSystemType.BulletTrace:
+                case Graphics.ParticleSystemType.BulletTrace:
                     System = new Graphics.BulletTrace();
+                    break;
+                case Graphics.ParticleSystemType.WaterFoam:
+                    System = new Graphics.WaterFoam();
                     break;
                 case Graphics.ParticleSystemType.RunningSmoke:
                     System = new Graphics.RunningSmoke();

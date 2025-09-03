@@ -20,6 +20,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string EventMessage_DarkHordeKiller_Title => "Dark horde killer";
         public string EventMessage_DarkHordeKiller_Message => "Champion knigts have joined your service";
 
+        public string Settings_ModelWaterFoam => "Water foam";
         public string Settings_ModelShadow => "Shadows";
         public string Settings_ModelShadowMapSize => "Shadows map size";
         public string Settings_Brightness => "Brightness";

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    class BulletTrace : ParticleSystem
+    class WaterFoam : ParticleSystem
     {
 //        const float StartScale =
 //#if DSS
@@ -15,7 +15,7 @@ namespace VikingEngine.Graphics
 //        const float EndScale = StartScale * 0.1f;
 
 
-        public BulletTrace()
+        public WaterFoam()
             : base()
         { }
 
@@ -23,13 +23,12 @@ namespace VikingEngine.Graphics
         
         protected override void InitializeSettings(ParticleSettings settings)
         {
+
             settings.Texture = LoadedTexture.particle3;
             settings.MaxParticles = 30000;
 
-            settings.Duration = TimeSpan.FromSeconds(3f);
+            settings.Duration = TimeSpan.FromSeconds(5f);
             settings.DurationRandomness = 0.1f;
-
-            //settings.Gravity = new Vector3(0.0f, -0.02f, 0.0f);
 
             const float Speed = 0.001f;
             settings.MinHorizontalVelocity = -Speed;
@@ -40,11 +39,11 @@ namespace VikingEngine.Graphics
 
             settings.EndVelocity = 0;
 
-            const float Rotate = 1.6f;
-            settings.MinRotateSpeed = -Rotate;
-            settings.MaxRotateSpeed = Rotate;
+            //const float Rotate = 1.6f;
+            //settings.MinRotateSpeed = -Rotate;
+            //settings.MaxRotateSpeed = Rotate;
 
-            const float MinSize = 0.006f;
+            const float MinSize = 0.009f;
             const float MaxSize = MinSize * 1.4f;
             settings.MinStartSize = MinSize;
             settings.MaxStartSize = MaxSize;
@@ -55,8 +54,9 @@ namespace VikingEngine.Graphics
 
             settings.Gravity = Vector3.Zero;
 
-            settings.MinColor = new Color(1, 1, 1, 0.4f);
-            settings.MaxColor = new Color(1, 1, 1, 0.5f);
+            settings.MinColor = new Color(1, 1, 1, 0.2f);
+            settings.MaxColor = new Color(1, 1, 1, 0.3f);
+
         }
     }
 }

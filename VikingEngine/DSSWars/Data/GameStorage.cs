@@ -22,7 +22,8 @@ namespace VikingEngine.DSSWars.Data
 {
     class GameStorage
     {
-        
+        public long totalGameTimeMinutes = 0;
+        public bool unlockedDangerousSettings = false;
 
         public const int MaxLocalPlayerCount = 4;
         public int playerCount = 1;
@@ -134,6 +135,14 @@ namespace VikingEngine.DSSWars.Data
             flagStorage.Load();
             characterStorage.Load();
             profileStorage.Load();
+
+            if (!unlockedDangerousSettings)
+            {
+                DssRef.difficulty.setting_foodMulti = 1;
+                DssRef.difficulty.setting_waterMulti = 1;
+                DssRef.difficulty.setting_childMulti = 1;
+                DssRef.difficulty.setting_craftMulti = 1;
+            }
         }
 
         public void Save(IStreamIOCallback callBack)
@@ -183,11 +192,9 @@ namespace VikingEngine.DSSWars.Data
             write(w, false);
         }
 
-        const int Version = 25;
+        const int Version = 26;
         public void write(System.IO.BinaryWriter w, bool gamestate = false)
         {
-           
-
             w.Write(Version);
 
             w.Write((int)mapSize);
@@ -213,6 +220,9 @@ namespace VikingEngine.DSSWars.Data
             w.Write(centralGold);
 
             mapSettings.write(w);
+
+            w.Write(totalGameTimeMinutes);
+            w.Write(unlockedDangerousSettings);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -243,7 +253,6 @@ namespace VikingEngine.DSSWars.Data
                     }
                 }
 
-
                 generateNewMaps = r.ReadBoolean();
                 autoSave = r.ReadBoolean();
 
@@ -271,6 +280,14 @@ namespace VikingEngine.DSSWars.Data
                 mapSettings.read(r, version);
 
                 generateNewMaps = true;//temp
+                
+
+                if (version >= 26)
+                {
+                    totalGameTimeMinutes = r.ReadInt64();
+                    unlockedDangerousSettings = r.ReadBoolean();
+                }
+
                 fileCheck.end();
 
 #if DEMO

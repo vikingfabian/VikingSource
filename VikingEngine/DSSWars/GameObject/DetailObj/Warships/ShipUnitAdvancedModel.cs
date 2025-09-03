@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (!DssRef.models.shipWaveModels.TryPop(out foamModel))
                 {
-                    foamModel = new Mesh(LoadedMesh.plane, Vector3.Zero, DssConst.Men_StandardModelScale * 2f * new Vector3(1, 1, 2), TextureEffectType.Flat,
+                    foamModel = new Mesh(LoadedMesh.plane, Vector3.Zero, DssConst.Men_StandardModelScale * 3f * new Vector3(0.96f, 1, 2), TextureEffectType.Flat,
                         SpriteName.WaterEdgeMask_ship, Color.White, false);
                     foamModel.Opacity = WaterEdgeBuilder.Opacity;
                     foamModel.position.Y = Tile.WaterFoamY - 0.005f;
@@ -114,7 +114,13 @@ namespace VikingEngine.DSSWars.GameObject
                 foamModel.position.Z = model.position.Z;
                 foamModel.Rotation = model.Rotation;
 
-                foamModel.scale = DssConst.Men_StandardModelScale * 3f * new Vector3(0.8f, 1, 2);
+                //foamModel.scale = DssConst.Men_StandardModelScale * 3f * new Vector3(0.96f, 1, 2);
+            }
+
+            if (soldier.state.walking && Ref.TimePassed16ms)
+            {
+                 Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, Tile.WaterFoamY),
+                    DssConst.Men_StandardModelScale * 0.8f, 6);
             }
 
             if (soundStamp.TimeOut())

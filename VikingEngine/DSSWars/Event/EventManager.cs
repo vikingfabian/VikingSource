@@ -47,12 +47,12 @@ namespace VikingEngine.DSSWars.Event
         protected void onDemoTimeUp()
         {
             DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, DssRef.lang.Demo_EndInOneMinuteDescription);
-            new Timer.TimedAction1ArgTrigger_InGame<GameEndReason>(viewEndScreen, GameEndReason.TimesUp, TimeExt.MinuteInSeconds * 1f);
+            new Timer.TimedAction2ArgTrigger_InGame<GameEndReason, VictoryType>(triggerGameEnd, GameEndReason.TimesUp, VictoryType.None, TimeExt.MinuteInSeconds * 1f);
         }
-        protected void viewEndScreen(GameEndReason endReason)
-        {
-            new EndScene(endReason, VictoryType.None);
-        }
+        //protected void viewEndScreen(GameEndReason endReason)
+        //{
+        //    new EndScene(endReason, VictoryType.None);
+        //}
 
         public AbsStoryEvent CurrentEvent()
         {
@@ -897,7 +897,7 @@ namespace VikingEngine.DSSWars.Event
                 mainStory.Clear();
                 DssRef.achieve.onVictory(vType);
 
-                new EndScene(GameEndReason.Victory, vType);
+                triggerGameEnd(GameEndReason.Victory, vType);
             }
         }
 
@@ -950,11 +950,26 @@ namespace VikingEngine.DSSWars.Event
                     }
                 }
 
-                new EndScene(GameEndReason.Defeat,  VictoryType.None);
+                //new EndScene(GameEndReason.Defeat,  VictoryType.None);
+                triggerGameEnd(GameEndReason.Defeat,  VictoryType.None);
             }
         }
 
-        
+        protected void triggerGameEnd(GameEndReason endReason, VictoryType vType)
+        {
+            new EndScene(endReason, vType);
+
+            if (!PlatformSettings.STEAM_DEMO &&
+                (endReason == GameEndReason.Victory || DssRef.time.TotalIngameTime().TotalHours > 10))
+            {
+                if (!DssRef.storage.unlockedDangerousSettings)
+                {
+                    DssRef.storage.unlockedDangerousSettings = true;
+                    DssRef.storage.Save(null);
+                }
+            }
+
+        }
 
        
 

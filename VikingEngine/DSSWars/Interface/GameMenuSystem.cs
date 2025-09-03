@@ -367,7 +367,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
-                if (lobby)
+                if (lobby && DssRef.storage.totalGameTimeMinutes >= 15)
                 {
                     content.newLine();
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
