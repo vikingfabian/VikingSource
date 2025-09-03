@@ -10,6 +10,7 @@ namespace VikingEngine.DSSWars
 {
     static class WaterEdgeBuilder
     {
+        public const float Opacity = 0.6f;
         static PolygonColor[][] WaterEdgeOrtho_Dir_List;
 
         public static PolygonColor[] Get(Dir4 dir)
@@ -33,7 +34,7 @@ namespace VikingEngine.DSSWars
                     north[i] = Graphics.PolygonColor.QuadXZ(
                            topLeft,
                            WorldData.SubTileWidthV2, false, 0,
-                           SpriteName.WaterEdgeMask,
+                           SpriteName.WaterEdgeMask_coast,
                            Dir4.E,
                            color);
                     topLeft.X += WorldData.SubTileWidth;
@@ -49,7 +50,7 @@ namespace VikingEngine.DSSWars
                     south[i] = Graphics.PolygonColor.QuadXZ(
                            topLeft,
                            WorldData.SubTileWidthV2, false, 0,
-                           SpriteName.WaterEdgeMask,
+                           SpriteName.WaterEdgeMask_coast,
                            Dir4.W,
                            color);
                     topLeft.X += WorldData.SubTileWidth;
@@ -66,7 +67,7 @@ namespace VikingEngine.DSSWars
                     west[i] = Graphics.PolygonColor.QuadXZ(
                            topLeft,
                            WorldData.SubTileWidthV2, false, 0,
-                           SpriteName.WaterEdgeMask,
+                           SpriteName.WaterEdgeMask_coast,
                            Dir4.S,
                            color);
                     topLeft.Y += WorldData.SubTileWidth;
@@ -83,7 +84,7 @@ namespace VikingEngine.DSSWars
                     east[i] = Graphics.PolygonColor.QuadXZ(
                            topLeft,
                            WorldData.SubTileWidthV2, false, 0,
-                           SpriteName.WaterEdgeMask,
+                           SpriteName.WaterEdgeMask_coast,
                            Dir4.N,
                            color);
                     topLeft.Y += WorldData.SubTileWidth;

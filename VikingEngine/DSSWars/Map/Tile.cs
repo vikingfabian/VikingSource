@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.GameObject;
@@ -559,6 +560,7 @@ namespace VikingEngine.DSSWars.Map
         };
 
         public const float WaterSurfaceY = -0.1f;
+        public const float WaterFoamY = WaterSurfaceY + 0.01f;
         public const float UnitMinY = WaterSurfaceY; //+ 0.02f;
         const float LayerHeight = 0.06f;
 

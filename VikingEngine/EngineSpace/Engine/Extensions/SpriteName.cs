@@ -206,7 +206,9 @@ namespace VikingEngine
 
         ButtonDisabledCross,
         TextureWaterMap,
-        WaterEdgeMask,
+        WaterEdgeMask_coast,
+        WaterEdgeMask_ship,
+
         TextureHueSaturation,
         TextureDarknessGradient,
         ColorPickerCircle,
@@ -221,7 +223,7 @@ namespace VikingEngine
         LangButton_Chinese,
         LangButton_Turkish,
         LangButton_Italian,
-
+ LangButton_Res1,
         IconBuildArrow,
         IconBuildSelection,
         IconBuildAdd,

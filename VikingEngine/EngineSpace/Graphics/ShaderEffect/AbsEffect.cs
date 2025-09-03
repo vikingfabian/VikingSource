@@ -7,7 +7,7 @@ namespace VikingEngine.Graphics
 {
     abstract class AbsEffect
     {
-        protected Effect shader = null;
+        public Effect shader = null;
 
         abstract public void Draw(Mesh obj);
 

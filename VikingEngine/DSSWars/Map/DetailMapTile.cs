@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Map
         VerticeDataColorTexture verticeData;
         VerticeDataColorTexture waterEdgeVerticeData;
         public Graphics.VoxelModel model = new Graphics.VoxelModel(false);
-        public Graphics.VoxelModel waterEdgeModel = new Graphics.VoxelModel(false) { colorAndAlpha = new Vector4(1, 1, 1, 0.6f) };
+        public Graphics.VoxelModel waterEdgeModel = new Graphics.VoxelModel(false) { colorAndAlpha = new Vector4(1, 1, 1, WaterEdgeBuilder.Opacity) };
         StructList<FoliageModel> foliageModels = new StructList<FoliageModel>(32);
         List<AnimalData> animalData;
         bool hasPolygons;
@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 model.position = WP.ToWorldPos(pos);
                 waterEdgeModel.position = model.position;
-                waterEdgeModel.PositionY = Tile.WaterSurfaceY + 0.01f;
+                waterEdgeModel.PositionY = Tile.WaterFoamY;
 
 #if DEBUG
                 model.DebugName = "Detail map tile " + pos.ToString();

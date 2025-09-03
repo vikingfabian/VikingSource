@@ -221,10 +221,14 @@ namespace VikingEngine.DSSWars
                     Draw3d(UnitDetailLayer, cameraIndex);
                     //oceanProcess.draw(UnitDetailLayer, Camera, cameraIndex, shadowProcessor.light, shadowProcessor._shadowMap);
 
-                    graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Additive;
-                    DssRef.state.detailMap.drawWaterEdges(cameraIndex);
-                    graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-                      
+                    if (Ref.gamesett.waterFoam)
+                    {
+                        graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Additive;
+                        DssRef.state.detailMap.drawWaterEdges(cameraIndex);
+                        //Draw3d(WaterEffectLayer, cameraIndex);
+                        WaveXzEffect.GetWaveSingletonSafe().DrawMeshes(WaterEffectLayer, cameraIndex);
+                        graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                    } 
                     localPlayer.DrawDetalLayer_Mesh(cameraIndex);
                     
                     Engine.ParticleHandler.Draw(p.view.Camera);

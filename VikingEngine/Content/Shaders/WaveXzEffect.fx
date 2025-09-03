@@ -25,19 +25,11 @@ float4x4 World : WORLD;
 float4x4 View : VIEW;
 float4x4 Projection : PROJECTION;
 float4 ColorAndAlpha = float4(1, 1, 1, 1);
+float2 SourcePos = float2(0, 0);
+float2 SourceSize = float2(1, 1);
 
 // Time value for animation (e.g., pass total game time here)
 float Time : TIME = 0.0;
-
-// Wave parameters
-float WaveSpeed = 2.0; // Speed of wave animation
-float WaveFrequency = 5.0; // Number of wave cycles per unit
-float WaveAmplitude = 0.5; // Base vertical distortion amplitude
-
-// Secondary wave to modulate amplitude over time
-float AmplitudeModFrequency = 1.0; // Speed of amplitude oscillation
-//float AmplitudeModRange = 0.5; // How far amplitude swings up/down from normal
-                                    // 0.5 = ±50% of WaveAmplitude
 
 texture ColorMap;
 sampler ColorMapSampler = sampler_state
@@ -82,11 +74,32 @@ struct VSOutput
     float3 worldPos : TEXCOORD2; // NEW
 };
 
+float WaveSpeed = 2.0; // Speed of wave animation
+float WaveFrequency = 5.0; // Number of wave cycles per unit
+float WaveAmplitude = 0.5; // Base vertical distortion amplitude
+
+// Secondary wave to modulate amplitude over time
+float AmplitudeModFrequency = 1.0; // Speed of amplitude oscillation
+
 VSOutput VS_FlatVertexColored(VSInput input)
 {
     VSOutput output = (VSOutput) 0;
     
     float4 worldPosition = mul(input.Position, World);
+    
+    float amplitudeOsc = 0.8 + 0.2 * sin(Time * AmplitudeModFrequency); // 0..1
+    float dynamicAmplitude = WaveAmplitude * amplitudeOsc; //* (1.0 + AmplitudeModRange * (amplitudeOsc * 2.0 - 1.0));
+
+    float sinValue = (worldPosition.x + worldPosition.y * 0.5) * WaveFrequency - Time * WaveSpeed;
+    float waveX = sin(sinValue) * dynamicAmplitude;
+    float waveZ = sin(sinValue + 1.5) * dynamicAmplitude;
+
+    // Apply the wave to the Y position (or whichever axis suits your flag orientation)
+    worldPosition.x += waveX;
+    
+    worldPosition.z += waveZ;
+    
+    
     float4 viewPosition = mul(worldPosition, View);
     output.Position = mul(viewPosition, Projection);
     
@@ -97,6 +110,8 @@ VSOutput VS_FlatVertexColored(VSInput input)
     return output;
 }
 
+
+
 // === Params you can tweak from C# ===
 float NoiseScale = 0.5; // spatial frequency (bigger = more detail per meter)
 float NoiseSpeed = 0.3; // animation speed
@@ -104,6 +119,7 @@ float NoiseStrength = 0.6; // how strongly noise tints the color (0..1+)
 int NoiseOctaves = 4; // 1..6 is typical
 float NoiseGain = 0.5; // amplitude falloff per octave
 float NoiseLacunarity = 2.0; // frequency growth per octave
+float cutOff = 0;
 
 // Optional: push colors toward a palette range (otherwise we just scale vcolor)
 float3 TintLo = float3(0.9, 0.9, 1.0); // low end (cool)
@@ -163,58 +179,6 @@ float fbm(float3 p, int octaves, float gain, float lacunarity)
     return sum; // ~[0,1] range depending on octaves/gain
 }
 
-//------------------------------------
-// Vertex Shader
-//------------------------------------
-//VSOutput VS_WaveXZ(VSInput input)
-//{
-//    VSOutput output;
-    
-//    // Transform the normal into world space (3x3 portion of World matrix).
-//    //float3 worldNormal = mul((float3x3) World, input.Normal);
-//    //worldNormal = normalize(worldNormal);
-
-//    // Convert the position into world space
-//    float4 worldPosition = mul(input.Position, World);
-
-//    // 1) Compute a sine wave for the basic “flag wave.”
-//    //    wave = sin( (x + time * speed) * frequency ) * amplitude
-//    //    (Adjust x/y/z usage depending on your model orientation.)
-//    // 2) Use a SECOND sine wave (AmplitudeModFrequency) to modulate the amplitude.
-//    //
-//    //    Let's define: amplitudeOsc = 0.5 + 0.5 * sin(Time * AmplitudeModFrequency)
-//    //      => This will vary from 0.0 to 1.0 over time.
-//    //    Then the final amplitude can be:
-//    //
-//    //      dynamicAmplitude = WaveAmplitude * (1 + AmplitudeModRange * (amplitudeOsc - 1))
-//    //
-//    //    Where amplitudeOsc goes from 0 to 1, so (amplitudeOsc - 1) goes from -1 to 0.
-//    //    Another simpler approach is:
-//    //      amplitudeOsc = 0.5 + 0.5 * sin(Time * AmplitudeModFrequency)
-//    //      dynamicAmplitude = WaveAmplitude * (1.0 + AmplitudeModRange * (amplitudeOsc * 2 - 1))
-//    //    ...but we can keep it a bit simpler.  
-//    //    The below code modulates amplitude in a 50%-150% range if AmplitudeModRange=0.5.
-
-//    float amplitudeOsc = 0.8 + 0.2 * sin(Time * AmplitudeModFrequency); // 0..1
-//    float dynamicAmplitude = WaveAmplitude * amplitudeOsc; //* (1.0 + AmplitudeModRange * (amplitudeOsc * 2.0 - 1.0));
-
-//    float wave = sin((worldPosition.x + worldPosition.z * 0.5) * WaveFrequency - Time * WaveSpeed) * dynamicAmplitude;
-
-//    // Apply the wave to the Y position (or whichever axis suits your flag orientation)
-//    worldPosition.x += wave;
-
-//    // Final view-projection transform
-//    float4 viewPosition = mul(worldPosition, View);
-//    output.Position = mul(viewPosition, Projection);
-
-//    // Pass down the normal, color, and texcoords
-//    output.TexCoord = input.TexCoord;
-//    //output.Normal = worldNormal;
-//    output.vcolor = input.vcolor;
-//    //output.TexCoord = input.TexCoord;
-
-//    return output;
-//}
 
 //------------------------------------
 // Pixel Shader
@@ -229,20 +193,25 @@ float4 PS_Main(VSOutput input) : COLOR0
 
     // Option A: just scale the incoming vertex color
     float factor = lerp(1.0 - NoiseStrength, 1.0 + NoiseStrength, saturate(n));
+    if (factor > cutOff)
+    {
     
-    
-    float4 texCol = tex2D(ColorMapSampler, input.TexCoord);
-   // return float4(texCol.rgb, 1);
-    float4 output = texCol * ColorAndAlpha * input.vcolor * factor;
+        float4 texCol = tex2D(ColorMapSampler, (input.TexCoord * SourceSize + SourcePos));
+  
+        float4 output = texCol * ColorAndAlpha * factor;
 
-    output.rgb *= ColorAndAlpha.a;
-    //clip(texCol.a - 0.5);
-
-    return output;
+        output.rgb *= ColorAndAlpha.a;
+  
+        return output;
+    }
+    else
+    {
+        return float4(0, 0, 0, 0);
+    }
     //float3 finalColor = input.vcolor.rgb;
 
     //return float4(finalColor, 1);
-}
+   }
 
 technique WaveXZTechnique
 {

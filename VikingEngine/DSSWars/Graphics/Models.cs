@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars
         public Texture2D[] waterTextures;
         public Texture2D[] seaTextures;
         //public Texture2D[] waterEdgeTextures;
+        public Stack<Mesh> shipWaveModels = new Stack<Mesh>(64);
 
         public Models()
         {

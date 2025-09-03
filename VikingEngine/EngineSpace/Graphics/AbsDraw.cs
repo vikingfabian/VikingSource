@@ -64,6 +64,7 @@ namespace VikingEngine.Graphics
         /* Methods */
         public abstract AbsDraw CloneMe();
         public abstract void Draw(int cameraIndex);
+        public virtual void DrawWave(int cameraIndex, Effect shader) { throw new NotImplementedException(); }
         //public abstract void Draw(Texture2D texture);
         //public virtual void DrawShadow(int cameraIndex, AbsEffect shader) { }
 

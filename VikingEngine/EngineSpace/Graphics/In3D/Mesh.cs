@@ -217,54 +217,27 @@ namespace VikingEngine.Graphics
             }
         }
 
-        public void DrawOcean(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
+        override public void DrawWave(int cameraIndex, Effect shader)
         {
             if (VisibleInCamera(cameraIndex))
             {
                 Model model = Engine.LoadContent.Mesh(LoadedMeshType);
-
-                //Matrix[] transforms = new Matrix[model.Bones.Count];
-                //model.CopyAbsoluteBoneTransformsTo(transforms);
-
-                //Matrix modelWorld = Matrix.CreateScale(Scale) *
-                //        Matrix.CreateFromQuaternion(QuatRotation) *
-                //        Matrix.CreateTranslation(Position);
-                //shader.Parameters["Texture"]?.SetValue(texture);
-                //shader.Parameters["Color"]?.SetValue(Color.ToVector4());
 
 
                 foreach (ModelMesh modelMesh in model.Meshes)
                 {
                     foreach (ModelMeshPart part in modelMesh.MeshParts)
                     {
-                        // Set matrices
-                        //Matrix world = /*transforms[modelMesh.ParentBone.Index] **/ modelWorld;
-
-                        //Matrix worldViewMatrix = world * camera.ViewMatrix;
-                        //Matrix worldViewProjMatrix = world * camera.ViewProjection;
-                        ////Matrix lightWorldViewProjMatrix = world * light.ViewProjection;
-
-                        ////Matrix temp = worldViewMatrix;
-                        ////temp.Translation = Vector3.Zero;
-                        ////Matrix worldViewIT = Matrix.Transpose(Matrix.Invert(temp));
-
-                        //shader.Parameters["ModelToScreen"]?.SetValue(worldViewProjMatrix);
-                        //shader.Parameters["ModelToView"]?.SetValue(worldViewMatrix);
                         shader.Parameters[Graphics.TextureSourceLib.ColorMap].SetValue(texture);
                         TextureSource.SetCustomShaderParameters(ref shader);
-                        //shader.Parameters["SourcePos"].SetValue(Vector2.Zero);
-                        //shader.Parameters["SourceSize"].SetValue(Vector2.One);
-
+                        
                         Ref.draw.worldMatrix = Matrix.CreateScale(scale) * Matrix.CreateFromQuaternion(Rotation.QuadRotation) * Matrix.CreateTranslation(position);//Matrix.CreateTranslation(obj.Position);
 
-                        //const string CameraPositionSetting = "CameraPosition";
-                        //shader.Parameters[CameraPositionSetting].SetValue(Ref.draw.Camera.Position);
-                        //shader.Parameters["world"].SetValue(Ref.draw.worldMatrix);
-                        Matrix lightWorldViewProjMatrix = Ref.draw.worldMatrix * light.ViewProjection;
-                        shader.Parameters["ModelToLight"]?.SetValue(lightWorldViewProjMatrix);
-                        shader.Parameters["wvp"].SetValue(Ref.draw.worldMatrix * Ref.draw.Camera.ViewProjection);
                         shader.Parameters[CustomEffect.ColorArgument]?.SetValue(colorAndAlpha);
-
+                        shader.Parameters["World"].SetValue(Matrix.CreateScale(scale) * Matrix.CreateFromQuaternion(Rotation.QuadRotation) * Matrix.CreateTranslation(position));
+                        shader.Parameters["View"].SetValue(Ref.draw.Camera.ViewMatrix);
+                        shader.Parameters["Projection"].SetValue(Ref.draw.Camera.Projection);
+                        
                         // Set buffers
                         Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetVertexBuffer(part.VertexBuffer, part.VertexOffset);
                         Engine.Draw.graphicsDeviceManager.GraphicsDevice.Indices = part.IndexBuffer;

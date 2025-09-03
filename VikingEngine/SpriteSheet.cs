@@ -44,7 +44,7 @@ namespace VikingEngine
 
         public SpriteSheet()
         {
-            addTexture(SpriteName.WaterEdgeMask, 32, 32, LoadedTexture.waterEdge);
+            addTexture(SpriteName.WaterEdgeMask_coast, 32, 32, LoadedTexture.waterEdge);
 
             this.Settings(4096, 128);
             this.TileSheetIx = LoadedTexture.SpriteSheet;
@@ -2798,6 +2798,9 @@ namespace VikingEngine
                     add(SpriteName.WarsRelationEnemy, 2, 2);
                     add(SpriteName.LangButton_Turkish, 8, 2);
                     add(SpriteName.LangButton_Italian, 8, 2);
+                    add(SpriteName.LangButton_Res1, 8, 2);
+
+                    add(SpriteName.WaterEdgeMask_ship, 1, 2);
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 
