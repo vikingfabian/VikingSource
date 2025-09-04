@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
@@ -30,19 +31,13 @@ namespace VikingEngine.DSSWars
     {
         Texture2D bgTex;
 
+        bool bSpriteSheetTexture = false;
+        //bool bLanguage = false;
+
+
         public IntroState(bool isReset)
             : base(isReset)
         {
-            //PcgRandom random = new PcgRandom();
-            //for (int i = 0; i < 1000000000; i++)
-            //{
-            //    int result = random.Int(0);
-            //    if (result != 0)
-            //    {
-            //        lib.DoNothing();
-            //    }
-            //}
-
         }
         protected override void preLoading()
         {
@@ -65,26 +60,16 @@ namespace VikingEngine.DSSWars
         }
 
         override protected void asyncContentLoading(ref int part)
-        {
-            
+        {            
             part++;
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
+            bSpriteSheetTexture = true;
             part++;
             Engine.LoadContent.LoadTexture(LoadedTexture.waterEdge, DssLib.ContentDir + "wave_mask1");
             part++;
             Engine.LoadContent.LoadTextures(new List<LoadedTexture> {
                     LoadedTexture.particle3,
-                    });
-            part++;
-            new SpriteSheet();
-            part++;
-            Block.Init();
-            part++;
-            FlagAndColor.Init();
-            part++;
-            ItemPropertyColl.Init();
-            part++;
-            WorkLib.Init();
+                    });            
             part++;
             DssRef.ambience = new Ambience();
             part++;
@@ -116,18 +101,44 @@ namespace VikingEngine.DSSWars
             part++;
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
             part++;
-            UserGeneratedContent.UGClib.GameInit();
+            UserGeneratedContent.UGClib.GameContentInit();
             part++;
             bgTex = LobbyState.LoadBg();
             part++;
-            WaterEdgeBuilder.Init();
-            part++;
+            
             //DrawGame.LoadContent();
         }
 
-        protected override void asyncDataProcessLoading(ref int part)
+        protected override async void asyncDataProcessLoading()
         {
-            
+            FlagDesign.Init();
+
+            Block.Init();
+            dataProcessPart++;
+            FlagAndColor.Init();
+            dataProcessPart++;
+
+            ItemPropertyColl.Init();
+            dataProcessPart++;
+            WorkLib.Init();
+            dataProcessPart++;
+            BuildLib.Init();
+            dataProcessPart++;
+           
+            int loops = 0;
+            while (!bSpriteSheetTexture)
+            {
+                if (++loops > 1000)
+                {
+                    throw new EndlessLoopException("asyncDataProcessLoading part " + dataProcessPart.ToString());
+                }
+                await Task.Delay(20);                
+            }
+
+            new SpriteSheet();
+            dataProcessPart++;
+            WaterEdgeBuilder.Init();
+            dataProcessPart++;
         }
 
         protected override void asyncLoading_OnRestart(ref int part)
@@ -144,20 +155,13 @@ namespace VikingEngine.DSSWars
         }
 
         override protected void asyncStorageLoading(ref int part)
-        {
-            FlagDesign.Init();
-            part++;
+        {  
             DssRef.storage = new Data.GameStorage();
             DssRef.storage.Load();
             part++;
             DssRef.storage.meta.CreateImportFolders();
             part++;
-            //Ref.gamesett.Load();
-            //part++;
             new Presentation.Translation().setupLanguage(true);
-            part++;
-
-            BuildLib.Init();
             part++;
             CasualBuild.Init();
             part++;
@@ -193,5 +197,6 @@ namespace VikingEngine.DSSWars
         {
             draw = new Draw2D();
         }
+
     }
 }

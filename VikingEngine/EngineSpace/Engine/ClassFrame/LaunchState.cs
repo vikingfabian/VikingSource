@@ -179,7 +179,7 @@ namespace VikingEngine.Engine
                 {
                     try
                     {
-                        asyncDataProcessLoading(ref dataProcessPart);
+                        asyncDataProcessLoading();
                         dataProcessComplete = true;
                     }
                     catch (Exception ex)
@@ -218,7 +218,7 @@ namespace VikingEngine.Engine
         abstract protected void preLoading();
         abstract protected void asyncContentLoading(ref int part);
         abstract protected void asyncStorageLoading(ref int part);
-        abstract protected void asyncDataProcessLoading(ref int part);
+        virtual protected async void asyncDataProcessLoading() { throw new NotImplementedException(); }
         abstract protected void asyncLoading_OnRestart(ref int part);
         abstract protected void launch();
 

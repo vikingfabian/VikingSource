@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.UserGeneratedContent
         public const string UGCFolder = "UserGeneratedContent";
         public static readonly string ModelReplaceFolder = Path.Combine(UGCFolder, "vox_replace");
 
-        public static void GameInit()
+        public static void GameContentInit()
         {
             DataStream.FilePath.CreateStorageFolder(UGCFolder);
             DataStream.FilePath.CreateStorageFolder(ModelReplaceFolder);
