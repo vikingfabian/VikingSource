@@ -1,13 +1,6 @@
 ﻿UPDATE
 Change Log:
-* water foam effect
-* broken music message gone
-* all mutiplier setting are hidden (and auto resets to default)
-* is now saving total playtime
-* must reach endgame win/lose after 10 hours to get the "dangerous" multipliers
-* must must play 15 minutes to use 5x
-* Optimized the startup to be faster
-
+* 
 
 Story:
 * 
