@@ -406,12 +406,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         ///  In game settings menu.Difficulty option. Block the ability to play the game while paused.
         /// </summary>
-        public override string Settings_AllowPause => "Allow pause and command Oyun duraksayınca emir verebilmek";
+        public override string Settings_AllowPause => "Oyun duraksatılmışken emir verebilme";
 
         /// <summary>
         ///  In game settings menu.Difficulty option. Have bosses that enter the game.
         /// </summary>
-        public override string Settings_BossEvents => "Boss events Baş Düşman etkinliği";
+        public override string Settings_BossEvents => "Baş Düşman etkinliği";
 
         /// <summary>
         ///  In game settings menu.Difficulty option. No Boss description.
@@ -1266,7 +1266,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_DefaultName => "Yapılar";
         public override string BuildingType_WorkerHut => "İşçi kulübesi";
-        //public override string BuildingType_Tavern => "Taverna";
+        public override string BuildingType_Tavern => "Taverna";
         public override string BuildingType_Brewery => "Biracı";
         public override string BuildingType_Postal => "Postane";
         public override string BuildingType_Recruitment => "Asker alım merkezi";
@@ -1936,10 +1936,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Technology_Title => "Teknoloji";
         public override string Technology_ShareField => "Paylaşılan teknoloji alanı";
 
-        public override string Technology_GainByNeigborRelation => "For each neighbor city with the technology. And your relation is {0}: {1} Teknolojiye sahip her komşu şehir için, ilişkiniz";
-        public override string Technology_ForEachMaster => "When a {0} reaches an experience level of {1}, in the technology field: {2} Bir {0}, {2} teknoloji alanında {1} deneyim seviyesine ulaştığında";
-        public override string Technology_CitySpread => "Your cities will share technology when adjacent: Şehirleriniz bitişik olduğunda teknoloji paylaşır: {0}";
-        public override string Technology_CityCapture => "Most technolgies are destroyed when a city is captured in battle Bir şehir savaşta ele geçirildiğinde teknolojilerin çoğu yok edilir.";
+        public override string Technology_GainByNeigborRelation => "{0} Teknolojiye sahip her komşu şehir için, ilişkiniz";
+        public override string Technology_ForEachMaster => "Bir {0}, {2} teknoloji alanında {1} deneyim seviyesine ulaştığında";
+        public override string Technology_CitySpread => "Şehirleriniz bitişik olduğunda teknoloji paylaşır: {0}";
+        public override string Technology_CityCapture => "Bir şehir savaşta ele geçirildiğinde teknolojilerin çoğu yok edilir.";
 
         public override string Technology_AdvancedBuildings => "Gelişmiş Yapılar";
         public override string Technology_AdvancedFarming => "Gelişmiş çiftçilik";
@@ -2468,7 +2468,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildCategory_Decoration => "Dekorasyon";
         public override string BuildCategory_Upgrade => "Geliştir";
         public override string Work_NoMines => "Hiç maden yok";
-        
+
         public override string HUD_DisplayName => "Görüntüleme adı";
         public override string HUD_Filter => "Filtre";
         public override string HUD_Scale => "Boyut";
@@ -2498,7 +2498,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_HatGenre_Uniform => "Üniforma";
         public override string Editor_CopyPasteSelectedColor => "Seçili rengi yapıştır";
 
-        public override string Character_Accessories=> "Aksesuar";
+        public override string Character_Accessories => "Aksesuar";
         public override string Character_Hat => "Şapka";
         public override string Character_Head => "Kafa";
         public override string Character_Body => "Gövde";
@@ -2506,11 +2506,11 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Character_Back => "Sırt";
         public override string Character_Face => "Yüz";
 
-        public override string BuildingType_Tavern => "Taverna";
+        //public override string BuildingType_Tavern => "Taverna";
 
         public override string Settings_CraftMultiplier => "Üretim hızı çarpanı";
         public override string Settings_ChildMultiplier_Description => "Yeni işçilerin eklenme hızını artırır";
-        
+
         public override string Settings_CasualControls => "Basit kontrol";
         public override string Settings_CasualControls_Description => "Kilit kararları azaltarak oynanışı basitleştirir. Yalnızca sikke bir kaynak olarak kalır.";
 
@@ -2545,7 +2545,5 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public override string Tutorial_CasualRecruitSoldiers => "Bir asker grubu alımı yap";
-
-
     }
 }

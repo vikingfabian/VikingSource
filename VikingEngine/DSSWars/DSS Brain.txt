@@ -9,7 +9,7 @@ ACHIEVEMENTS
 * 
 
 Language change log:
-* 
+* Turkish has been improved
 
 Spectator mode:
 * 
