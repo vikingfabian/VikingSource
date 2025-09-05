@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             var area = Screen.SafeArea;
             area.Width = Screen.IconSize * 8;
             
-            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.mapSize);
+            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.gameRuleset.mapSize);
 
             topRight = area.RightTop;
             topRight.X += Engine.Screen.BorderWidth;
@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                         {
                             for (MapSize sz = 0; sz < MapSize.NUM; ++sz)
                             {
-                                mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.mapSize == sz, defaultOptions.mapSize == sz,
+                                mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.gameRuleset.mapSize == sz, defaultOptions.gameRuleset.mapSize == sz,
                                     new RbAction1Arg<MapSize>(setMapSize, sz), null);
                             }
                             mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, menu);
@@ -300,8 +300,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         }
         public void setMapSize(MapSize value)
         {
-            DssRef.storage.mapSize = value;
-            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.mapSize);
+            DssRef.storage.gameRuleset.mapSize = value;
+            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.gameRuleset.mapSize);
             menu.CloseDropDown();
         }
 

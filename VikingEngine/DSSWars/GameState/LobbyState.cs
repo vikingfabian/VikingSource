@@ -1334,7 +1334,7 @@ namespace VikingEngine.DSSWars
                 {
                     for (MapSize sz = 0; sz < MapSize.Epic; ++sz)
                     {
-                        mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.mapSize == sz, defaultOptions.mapSize == sz,
+                        mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.gameRuleset.mapSize == sz, defaultOptions.gameRuleset.mapSize == sz,
                             new RbAction1Arg<MapSize>(setMapSize, sz), null);
                     }
                     mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, underMenu);
@@ -1387,7 +1387,7 @@ namespace VikingEngine.DSSWars
                 new RbTooltip_Text(DssRef.lang.Settings_CentralGold_Description)));
 
 
-            if (DssRef.storage.unlockedDangerousSettings)
+            if (DssRef.storage.metaProgression.unlockedDangerousSettings)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsResource_Food));
@@ -1799,7 +1799,7 @@ namespace VikingEngine.DSSWars
         {
 
             DssRef.difficulty = new Difficulty();
-            DssRef.storage.defaultGameSettings();
+            DssRef.storage.gameRuleset.defaultGameSettings();
             DssRef.storage.Save(null);
             //mainMenu();
             //newGameSettings();
@@ -1870,11 +1870,11 @@ namespace VikingEngine.DSSWars
         {
             if (set)
             {
-                DssRef.storage.centralGold = value;
+                DssRef.storage.gameRuleset.centralGold = value;
                 DssRef.storage.Save(null);
                 refreshDifficultyLevel();
             }
-            return DssRef.storage.centralGold;
+            return DssRef.storage.gameRuleset.centralGold;
         }
 
         public bool bossProperty(object tag, bool set, bool value)
@@ -1890,19 +1890,19 @@ namespace VikingEngine.DSSWars
 
         public MapSize mapSizeProperty(bool set, MapSize value)
         {
-            if (set && DssRef.storage.mapSize != value)
+            if (set && DssRef.storage.gameRuleset.mapSize != value)
             {
-                DssRef.storage.mapSize = value;
+                DssRef.storage.gameRuleset.mapSize = value;
                 DssRef.storage.Save(null);
 
                 restartBackgroundLoading();
             }
-            return DssRef.storage.mapSize;
+            return DssRef.storage.gameRuleset.mapSize;
         }
 
         public void setMapSize(MapSize value)
         {
-            DssRef.storage.mapSize = value;
+            DssRef.storage.gameRuleset.mapSize = value;
             DssRef.storage.Save(null);
             underMenu.CloseDropDown();
 

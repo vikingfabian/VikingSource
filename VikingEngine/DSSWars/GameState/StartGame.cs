@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars
                     DssRef.stats.keyboard_user.addOne();
                 }
 
-                switch (DssRef.storage.mapSize)
+                switch (DssRef.storage.gameRuleset.mapSize)
                 {
                     case MapSize.Tiny:
                     case MapSize.Small:

@@ -917,7 +917,7 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.SkinLinen_Group, 4),
         new UseResource(ItemResourceType.Bronze, 2),
             },
-           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Beginner_1
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Beginner_1, CraftRequirement.ArmorSmith
         );
 
         public static readonly CraftBlueprint MailArmor = new CraftBlueprint(
@@ -930,7 +930,7 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.Iron_G, 2),
             },
            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smith
+            CraftRequirement.ArmorSmith
         );
 
         public static readonly CraftBlueprint HeavyMailArmor = new CraftBlueprint(
@@ -943,7 +943,7 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.Iron_G, 6),
             },
            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Smith
+            CraftRequirement.ArmorSmith
         );
 
         public static readonly CraftBlueprint PlateArmor = new CraftBlueprint(
@@ -956,7 +956,7 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.Steel, 2),
             },
            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smith
+            CraftRequirement.ArmorSmith
         );
 
         public static readonly CraftBlueprint FullPlateArmor = new CraftBlueprint(
@@ -969,7 +969,7 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.Steel, 6),
             },
            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Smith
+            CraftRequirement.ArmorSmith
         );
 
         public static readonly CraftBlueprint MithrilArmor = new CraftBlueprint(
@@ -982,7 +982,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Mithril, 3),
            },
           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Master_4,
-           CraftRequirement.Smith
+           CraftRequirement.ArmorSmith
        );
 
         

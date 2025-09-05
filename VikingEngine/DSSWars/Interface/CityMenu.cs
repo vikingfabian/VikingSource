@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Interface
             this.player = player;
             this.city = city;
 
-            if (!DssRef.storage.centralGold)
+            if (!DssRef.storage.gameRuleset.centralGold)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));
@@ -2032,6 +2032,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     stockpile(ItemResourceType.HeavyPaddedArmor);
                     stockpile(ItemResourceType.PaddedArmor);
+                    stockpile(ItemResourceType.BronzeArmor);
                     stockpile(ItemResourceType.IronArmor);
                     stockpile(ItemResourceType.HeavyIronArmor);
                     stockpile(ItemResourceType.LightPlateArmor);

@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.Event
         public override void onStart()
         {
             init(
-                triggerTimeSpan_Minutes: new IntervalF(30f, 50f) + Ref.rnd.Float(20),
+                triggerTimeSpan_Minutes: new IntervalF(15f, 35f) + Ref.rnd.Float(20),
                 nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 1f, DssConst.HeadCityStartMaxWorkForce * 2f));
         }
 

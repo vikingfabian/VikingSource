@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars
             SaveGamestate.MainProgress++;
             events.writeGameState(w);
             SaveGamestate.MainProgress++;
-            progress.writeGameState(w);
+            //progress.writeGameState(w);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {

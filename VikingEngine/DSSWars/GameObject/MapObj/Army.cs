@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool payMoney(int cost)
         {
-            if (DssRef.storage.centralGold)
+            if (DssRef.storage.gameRuleset.centralGold)
             {
                 return GetFaction().payGold(cost, false, null);
             }
@@ -1048,7 +1048,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
 
-            if (!DssRef.storage.centralGold)
+            if (!DssRef.storage.gameRuleset.centralGold)
             {
                 var onCity = DssRef.world.tileGrid.Get(tilePos).City();
 

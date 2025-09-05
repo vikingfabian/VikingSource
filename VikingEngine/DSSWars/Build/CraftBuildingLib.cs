@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.ShortSword, ItemResourceType.Sword, ItemResourceType.LongSword,
             ItemResourceType.HandSpear,
             ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance,
-            ItemResourceType.IronArmor,
+            //ItemResourceType.IronArmor,
             ItemResourceType.Toolkit,
         };
 
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static readonly ItemResourceType[] CarpenterCraftTypes = {
             ItemResourceType.Palisade,
-            ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
+            ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
             ItemResourceType.MithrilBow,
             ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult, 
             ItemResourceType.Wagon2Wheel, ItemResourceType.Wagon4Wheel };

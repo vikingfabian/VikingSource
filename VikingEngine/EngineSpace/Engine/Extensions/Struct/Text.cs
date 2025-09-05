@@ -33,6 +33,17 @@ namespace VikingEngine
         {
             return String1 + ", " + String2;
         }
+        public void write(System.IO.BinaryWriter w)
+        {
+            StreamLib.WriteString(w, String1);
+            StreamLib.WriteString(w, String2);
+
+        }
+        public void read(System.IO.BinaryReader r)
+        { 
+            String1 = StreamLib.ReadString(r);
+            String2 = StreamLib.ReadString(r);
+        }
     }
     
     public struct ThreeStrings

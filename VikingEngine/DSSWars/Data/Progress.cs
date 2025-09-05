@@ -11,10 +11,10 @@ namespace VikingEngine.DSSWars.Data
     /// Track what happened during a game
     /// </summary>
     class Progress
-    {        
-       
-        bool archerCultureBuild = false;
-        bool warriorCultureBuild = false;
+    {
+
+        //bool archerCultureBuild = false;
+        //bool warriorCultureBuild = false;
         //int decorBuilt = 0;
         //int statuesBuilt = 0;
 
@@ -53,11 +53,11 @@ namespace VikingEngine.DSSWars.Data
         //    }
         //}
 
-        public void writeGameState(System.IO.BinaryWriter w)
-        {
-            w.Write(archerCultureBuild);
-            w.Write(warriorCultureBuild);
-        }
+        //public void writeGameState(System.IO.BinaryWriter w)
+        //{
+        //    w.Write(archerCultureBuild);
+        //    w.Write(warriorCultureBuild);
+        //}
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             if (subversion <= 16)
@@ -65,8 +65,11 @@ namespace VikingEngine.DSSWars.Data
                 int decorBuilt = r.ReadUInt16();
                 int statuesBuilt = r.ReadUInt16();
             }
-            archerCultureBuild = r.ReadBoolean();
-            warriorCultureBuild = r.ReadBoolean();
+            if (subversion <= 77)
+            {
+                var archerCultureBuild = r.ReadBoolean();
+                var warriorCultureBuild = r.ReadBoolean();
+            }
         }
     }
 }

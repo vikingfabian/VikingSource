@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 result *= 1.25;
             }
-            if (!DssRef.storage.centralGold)
+            if (!DssRef.storage.gameRuleset.centralGold)
             {
                 result *= 1.5;
             }

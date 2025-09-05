@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Event
 
         void asyncCheckVictory()
         {
-            int dominationCount = DssRef.storage.mapSize > MapSize.Small ? 5 : 3;
+            int dominationCount = DssRef.storage.gameRuleset.mapSize > MapSize.Small ? 5 : 3;
             
 
             foreach (var p in DssRef.state.localPlayers)
@@ -895,7 +895,7 @@ namespace VikingEngine.DSSWars.Event
             if (mainStory.Count > 0)
             {
                 mainStory.Clear();
-                DssRef.achieve.onVictory(vType);
+                
 
                 triggerGameEnd(GameEndReason.Victory, vType);
             }
@@ -962,13 +962,34 @@ namespace VikingEngine.DSSWars.Event
             if (!PlatformSettings.STEAM_DEMO &&
                 (endReason == GameEndReason.Victory || DssRef.time.TotalIngameTime().TotalHours > 10))
             {
-                if (!DssRef.storage.unlockedDangerousSettings)
+                if (!DssRef.storage.metaProgression.unlockedDangerousSettings)
                 {
-                    DssRef.storage.unlockedDangerousSettings = true;
-                    DssRef.storage.Save(null);
+                    DssRef.storage.metaProgression.unlockedDangerousSettings = true;
+                   
                 }
             }
 
+            if (endReason == GameEndReason.Victory)
+            {
+                DssRef.achieve.onVictory(vType);
+
+                int difficulty = Convert.ToInt32(DssRef.difficulty.TotalDifficulty() * 100);
+                switch (vType)
+                {
+                    case VictoryType.DefeatBoss:
+                        DssRef.storage.metaProgression.Act1_Victory_Boss.addVictory(difficulty);
+                        break;
+                    case VictoryType.Domination:
+                        DssRef.storage.metaProgression.Act1_Victory_Domination.addVictory(difficulty);
+                        break;
+                    case VictoryType.WorldPeace:
+                        DssRef.storage.metaProgression.Act1_Victory_WorldPeace.addVictory(difficulty);
+                        break;
+
+                }
+            }
+
+            DssRef.storage.Save(null);
         }
 
        

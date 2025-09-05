@@ -424,7 +424,7 @@ namespace VikingEngine.DSSWars
 
         public long GetGold(City city)
         {
-            if (DssRef.storage.centralGold)
+            if (DssRef.storage.gameRuleset.centralGold)
             {
                 return money.GetGold();
             }
@@ -436,7 +436,7 @@ namespace VikingEngine.DSSWars
 
         public bool hasGold(int cost, City city)
         {
-            if (DssRef.storage.centralGold)
+            if (DssRef.storage.gameRuleset.centralGold)
             {
                 return money.GetGold() >= cost;
             }
@@ -458,7 +458,7 @@ namespace VikingEngine.DSSWars
             //    lib.DoNothing();
             //}
 
-            if (DssRef.storage.centralGold)
+            if (DssRef.storage.gameRuleset.centralGold)
             {
                 if (allowDept || money.GetGold() >= cost)
                 {
@@ -478,7 +478,7 @@ namespace VikingEngine.DSSWars
         }
         public int payMoney_MuchAsPossible(int cost, City city)
         {
-            if (DssRef.storage.centralGold)
+            if (DssRef.storage.gameRuleset.centralGold)
             {
                 return money.payGold_MuchAsPossible(cost);//pay(ref gold);
             }
@@ -508,7 +508,7 @@ namespace VikingEngine.DSSWars
             //    lib.DoNothing();
             //}
 
-            if (DssRef.storage.centralGold)
+            if (DssRef.storage.gameRuleset.centralGold)
             {
                 money.AddGold(value);
             }

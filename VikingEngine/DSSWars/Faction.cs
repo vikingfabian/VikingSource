@@ -518,7 +518,7 @@ namespace VikingEngine.DSSWars
                 }
 
 
-                if (DssRef.storage.centralGold)
+                if (DssRef.storage.gameRuleset.centralGold)
                 {
                     money.copper += Convert.ToInt32(income);
                 }

@@ -270,7 +270,6 @@ namespace VikingEngine.DSSWars
                     if (allies >= 16)
                     {
                         UnlockAchievement_async(AchievementIndex.friendship_tier3);
-
                     }
                 }
             }
@@ -327,7 +326,6 @@ namespace VikingEngine.DSSWars
             { 
                 UnlockAchievement_onAny_50_100_150(AchievementIndex.no_pause_any, AchievementIndex.no_pause_50, AchievementIndex.no_pause_100, AchievementIndex.no_pause_150);
             }
-
 
             foreach (var p in DssRef.state.localPlayers)
             {

@@ -367,7 +367,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
-                if (lobby && DssRef.storage.totalGameTimeMinutes >= 15)
+                if (lobby && DssRef.storage.metaProgression.totalGameTimeMinutes >= 15)
                 {
                     content.newLine();
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
@@ -406,16 +406,16 @@ namespace VikingEngine.DSSWars.Interface
 
             
 
-            bool longerBuildQueueProperty(object tag, bool set, bool value)
-            {
-                if (set)
-                {
-                    DssRef.storage.longerBuildQueue = value;
+            //bool longerBuildQueueProperty(object tag, bool set, bool value)
+            //{
+            //    if (set)
+            //    {
+            //        DssRef.storage.longerBuildQueue = value;
 
-                    DssRef.storage.Save(null);
-                }
-                return DssRef.storage.longerBuildQueue;
-            }
+            //        DssRef.storage.Save(null);
+            //    }
+            //    return DssRef.storage.longerBuildQueue;
+            //}
         }
 
         static InputActionType CurrentEditInput;

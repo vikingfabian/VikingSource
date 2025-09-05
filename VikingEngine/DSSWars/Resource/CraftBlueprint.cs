@@ -375,6 +375,11 @@ namespace VikingEngine.DSSWars.Resource
                         reqText = DssRef.lang.BuildingType_Smith;
                         available = city.buildingStructure.Smith_count > 0;
                         break;
+                    case CraftRequirement.ArmorSmith:
+                        icon = SpriteName.WarsBuild_Armory;
+                        reqText = DssRef.lang.BuildingType_Armory;
+                        available = city.buildingStructure.Armory_count > 0;
+                        break;
                     case CraftRequirement.CoalPit:
                         icon = SpriteName.WarsBuild_CoalPit;
                         reqText = DssRef.lang.BuildingType_CoalPit;
@@ -453,6 +458,7 @@ namespace VikingEngine.DSSWars.Resource
         Brewery,
         Smelter,
         Smith,
+        ArmorSmith,
         Foundry,
         CoalPit,
         CoinMaker,
