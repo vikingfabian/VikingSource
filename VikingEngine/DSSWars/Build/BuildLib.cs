@@ -147,6 +147,7 @@ namespace VikingEngine.DSSWars.Build
         SulfurMine,
 
         NUM_NONE,
+        ALL,
     }
     static class BuildLib
     {
@@ -161,6 +162,14 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Brewery,
             BuildAndExpandType.School,
             BuildAndExpandType.ResearchCenter,
+        };
+
+        public static List<BuildAndExpandType> LogisticsUnlockBuildings_Level2 = new List<BuildAndExpandType>
+        {
+
+            BuildAndExpandType.GardenGrass,
+            BuildAndExpandType.PavemenFountain,
+            BuildAndExpandType.Statue_Leader,
         };
 
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];

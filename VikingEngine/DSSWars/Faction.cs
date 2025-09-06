@@ -944,7 +944,14 @@ namespace VikingEngine.DSSWars
                                         {
                                             //share worst relation
                                             RelationType worst = (RelationType)Math.Min((int)m.Relation, (int)thisAndThirdRelation.Relation);
-                                            DssRef.diplomacy.SetRelationType(this, thirdFaction, worst);
+                                            if (worst <= RelationType.RelationTypeN3_War)
+                                            {
+                                                DssRef.diplomacy.declareWar(this, thirdFaction);
+                                            }
+                                            else
+                                            {
+                                                DssRef.diplomacy.SetRelationType(this, thirdFaction, worst);
+                                            }
                                         }
                                     }
                                 }
@@ -957,6 +964,37 @@ namespace VikingEngine.DSSWars
                     }                    
                 }
             );
+        }
+
+        public void shareRelationWithAllAllies(Faction relationTo, RelationType relationType)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    DssRef.diplomacy.SetRelationType(this, relationTo, relationType);
+
+                    for (int relIndex = 0; relIndex < diplomaticRelations.Length; relIndex++)//each (var m in diplomaticRelations)
+                    {
+                        if (diplomaticRelations[relIndex] != null)
+                        {
+                            if (diplomaticRelations[relIndex].Relation >= RelationType.RelationType3_Ally && relIndex != this.factionIndex)
+                            {
+                                Faction ally = DssRef.world.factions.GetIndex_Safe(relIndex);
+
+                                if (ally != null)
+                                {
+                                    DssRef.diplomacy.SetRelationType(ally, relationTo, relationType);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+            });
         }
 
         public void stopAllAttacksAgainst(Faction otherFaction)

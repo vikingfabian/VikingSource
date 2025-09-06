@@ -229,6 +229,17 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void pasteConscriptToAll(LocalPlayer player)
+        {
+            for (int i = 0; i < conscriptBuildings.Count; ++i)
+            {
+                if (conscriptBuildings[i].type == player.conscriptSubTab)
+                {
+                    pasteConscript(player, i);
+                }
+            }
+        }
+
         public void pasteConscript(LocalPlayer player)
         {
             pasteConscript(player, selectedConscript);

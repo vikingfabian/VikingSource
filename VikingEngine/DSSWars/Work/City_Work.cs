@@ -135,24 +135,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     }
                     minMax.Next(ref status.subTileEnd);
-                    //IntVector2 pos = status.subTileEnd;
-                    //if (pos.X < minpos.X)
-                    //{
-                    //    minpos.X = pos.X;
-                    //}
-                    //if (pos.X > maxpos.X)
-                    //{
-                    //    maxpos.X = pos.X;
-                    //}
-
-                    //if (pos.Y < minpos.Y)
-                    //{
-                    //    minpos.Y = pos.Y;
-                    //}
-                    //if (pos.Y > maxpos.Y)
-                    //{
-                    //    maxpos.Y = pos.Y;
-                    //}
+                 
                 }
 
                 topskill_Farm = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Farm]);
@@ -196,8 +179,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (DssRef.time.totalMinutes < 1)
                         {
-                            newWorker.xpType1 = WorkExperienceType.Farm;
-                            newWorker.xp1 = DssConst.WorkXpToLevel;
+                            newWorker = newGameWorkerSkills(newWorker);
                         }
                         else if (Culture == CityCulture.Apprentices)
                         {
@@ -939,7 +921,87 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-            bool work_isFreeTile(IntVector2 subtile)
+        private WorkerStatus newGameWorkerSkills(WorkerStatus newWorker)
+        {
+            newWorker.xpType1 = WorkExperienceType.Farm;
+            newWorker.xp1 = DssConst.WorkXpToLevel;
+
+            if (Bound.IsWithin(workerStatuses.Count, 1, 2))
+            {
+                if (Ref.rnd.Chance(0.4f))
+                {
+                    newWorker.xpType2 = arraylib.RandomListMember(XpLib.ExperienceTypes);
+                    newWorker.xp2 = DssConst.WorkXpToLevel;
+                }
+            }
+            else if (workerStatuses.Count == 3)
+            {
+                WorkExperienceType cultureWork = WorkExperienceType.NONE;
+                switch (Culture)
+                {
+                    case CityCulture.FertileGround:
+                        cultureWork = WorkExperienceType.Farm;
+                        break;
+                    case CityCulture.AnimalBreeder:
+                        cultureWork = WorkExperienceType.AnimalCare;
+                        break;
+                    case CityCulture.Armorsmith:
+                        cultureWork = WorkExperienceType.CraftArmor;
+                        break;
+                    case CityCulture.Brewmaster:
+                        cultureWork = WorkExperienceType.Chemistry;
+                        break;
+                    case CityCulture.PitMasters:
+                        cultureWork = WorkExperienceType.CraftFuel;
+                        break;
+                    case CityCulture.BronzeCasters:
+                    case CityCulture.Smelters:
+                        cultureWork = WorkExperienceType.Smelting;
+                        break;
+                    case CityCulture.Builders:
+                        cultureWork = WorkExperienceType.HouseBuilding;
+                        break;
+                    case CityCulture.Miners:
+                        cultureWork = WorkExperienceType.Mining;
+                        break;
+                    case CityCulture.Networker:
+                        cultureWork = WorkExperienceType.Transport;
+                        break;
+                    case CityCulture.Archers:
+                        cultureWork = WorkExperienceType.Fletcher;
+                        break;
+                    case CityCulture.Stonemason:
+                        cultureWork = WorkExperienceType.StoneCutter;
+                        break;
+                    case CityCulture.SiegeEngineer:
+                    case CityCulture.Woodcutters:
+                        cultureWork = WorkExperienceType.WoodWork;
+                        break;
+
+                }
+
+                if (cultureWork != WorkExperienceType.NONE)
+                {
+                    if (Ref.rnd.Chance(0.5f))
+                    {
+                        newWorker.xpType2 = cultureWork;
+                        newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
+                    }
+                }
+                else
+                {
+                    if (Ref.rnd.Chance(0.05f))
+                    {
+                        newWorker.xpType2 = arraylib.RandomListMember(XpLib.ExperienceTypes);
+                        newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
+                    }
+                }
+            }
+
+            return newWorker;
+        }
+
+        bool work_isFreeTile(IntVector2 subtile)
             {
                 for (int i = 0; i < workerStatuses.Count; ++i)
                 {

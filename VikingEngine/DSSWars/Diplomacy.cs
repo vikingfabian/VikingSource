@@ -401,7 +401,7 @@ namespace VikingEngine.DSSWars
                 {
                     int cost = DeclareWarCost(prevRelation);
                     var player = attacker.player.GetLocalPlayer();
-                    //++player.statistics.WarsStartedByYou;
+
                     player.diplomaticPoints.pay(cost, true);
                     DssRef.state.events?.onPlayerEnterWar(player, defender, true);
 

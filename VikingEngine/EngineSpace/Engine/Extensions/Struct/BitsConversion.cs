@@ -371,4 +371,15 @@ namespace VikingEngine
             return Value1.ToString() + ", " + Value2.ToString();
         }
     }
+
+    struct IntPair
+    {
+        public int key, value;
+
+        public IntPair(int key, int value)
+        {
+            this.key = key;
+            this.value = value;
+        }
+    }
 }

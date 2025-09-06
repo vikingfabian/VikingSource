@@ -33,6 +33,7 @@ namespace VikingEngine.DSSWars
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
         public static readonly Color TitleColor_Head = new Color(104, 149, 219);
+        public static readonly Color TitleColor_Head2 = ColorExt.ChangeBrighness(TitleColor_Head, -20);
         public static readonly Color TitleColor_Action = Color.LightBlue;
         public static readonly Color TitleColor_Attack = Color.Red;
         public static readonly Color TitleColor_Name = Color.LightYellow;

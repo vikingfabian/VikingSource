@@ -6,6 +6,13 @@ Change Log:
 * removed armor crafting from smith, must be made in an Armory
 * Increased the time for training soliders
 * Lowered "The first attack" with 15minutes
+* will sprinkle in some skilled workers to have a bit more interesting start 
+* fixed: immigrants dont work
+* the bots may spend diplomacy for peace (only toward other bots)
+* why upgrade logistics, tooltip
+* getting war through alliance, is now treated as war declaration
+* tooltip: available resources on build order
+
 
 Language change log:
 * Turkish has been improved
@@ -25,8 +32,8 @@ Casual:
 * 
 
 Event timers (are slightly random)
-- Ai delay: 8 minutes
-- Ai peace time: 30 min
+- Bot delay: 8 minutes
+- Bot peace time: 30 min
 - The first attack: 35min
 - War manager start: 40min
 - Barbarians: 3 hours
@@ -41,10 +48,9 @@ Plus the boss fight: about 10 hours
 build building icon
 
 #must do#
-x should sprinkle in some skilled workers to have a bit more interesting start 
-x immigrants dont work
-x why upgrade logistics?
-x does ally count towards war declarations
+
+
++1/halt on all conscript
 
 x ambience is heard on zero volume
 x music should not play when master = 0

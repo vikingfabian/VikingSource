@@ -12,6 +12,7 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
+        public string Diplomacy_DeclareWarAgainst => "You will declare war against";
         public string EventMessage_Event_Title => "Event";
         public string EventMessage_TheCohalition => "The cohalition";
 
@@ -35,6 +36,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Building_TreeSprout_Hard => "Hard tree sprout";
 
         public string GeneralSetting_SetAll => "Apply to all";
+
+        public string Hud_All => "All";
 
         public string Info_WhenFoodRunsOut => "When food runs out, cities and armies will automatically purchase it from the black market.";
 

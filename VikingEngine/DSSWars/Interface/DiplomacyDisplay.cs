@@ -518,6 +518,11 @@ namespace VikingEngine.DSSWars.Interface
             {                
                 content.text(DssRef.lang.Diplomacy_AllyDescription).overrideColor = HudLib.InfoYellow_Light;
                 var opponents = otherfaction.CollectWars();
+                if (opponents.Count > 0)
+                {
+                    content.newLine();
+                    content.h2(DssRef.todoLang.Diplomacy_DeclareWarAgainst, HudLib.TitleColor_Label);
+                }
                 foreach (var m in opponents)
                 {
                     content.newLine();

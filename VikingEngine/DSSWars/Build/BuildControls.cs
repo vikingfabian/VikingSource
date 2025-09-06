@@ -885,11 +885,30 @@ namespace VikingEngine.DSSWars.Build
                             content.text(string.Format(DssRef.lang.BuildingType_Logistics_NationSizeRequirement, DssConst.Logistics2_PopulationRequirement)).overrideColor = cityFaction.totalWorkForce >= DssConst.Logistics2_PopulationRequirement ? HudLib.AvailableColor : HudLib.NotAvailableColor;
 
                             content.newParagraph();
+                            HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Gain);
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbImage(SpriteName.birdUnLock));
+                            
+                            content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildPrio, City.LevelToMaxBuildPrio(2))));
+                            
+                            foreach (var building in BuildLib.LogisticsUnlockBuildings_Level2)
+                            {
+                                var opt = BuildLib.BuildOptions[(int)building];
+                                content.newLine();
+                                HudLib.BulletPoint(content);
+                                content.Add(new RbText(DssRef.lang.XP_UnlockBuilding, HudLib.SecondaryTextColor));
+                                content.Add(new RbImage(opt.sprite));
+                                content.space();
+                                content.Add(new RbText(opt.Label()));
+                            }
+                            
+                            content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
                             content.newLine();
                             CraftBuildingLib.CraftLogisticsLevel2.listResources(content, city);
                             content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(cityFaction.totalWorkForce));
-                            //player.hud.tooltip.create(player, content, true);
+                            
                         }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
                     }
 
@@ -1012,7 +1031,7 @@ namespace VikingEngine.DSSWars.Build
                     content.Add(new RbText(DssRef.lang.Hud_Unlock + ": "));
                     content.Add(new RbImage(SpriteName.WarsBuild_TreeSeedlingHard));
                     content.Add(new RbText(DssRef.todoLang.Building_TreeSprout_Hard));
-                   
+
 
                     break;
 
@@ -1050,8 +1069,9 @@ namespace VikingEngine.DSSWars.Build
                         var opt = BuildLib.BuildOptions[(int)building];
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
+                        content.Add(new RbText(DssRef.lang.XP_UnlockBuilding, HudLib.SecondaryTextColor));
                         content.Add(new RbImage(opt.sprite));
+                        content.space();
                         content.Add(new RbText(opt.Label()));
                     }
                     content.newParagraph();
@@ -1285,22 +1305,7 @@ namespace VikingEngine.DSSWars.Build
             }
 
             //RESOURCES
-            content.Add(new RbSeperationLine());
-            content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
-            build.blueprint.listResources(content, city);
-            if (type == BuildAndExpandType.Logistics)
-            {
-                bool reachedBuffer = false;
-                city.res_food.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
-            }
-
-            if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)
-            {
-                content.newLine();
-
-                HudLib.Experience(content, build.blueprint.experienceType, city.GetTopSkill(build.blueprint.experienceType));
-            }
-
+            buildTooltip_YouOwn(city, content, type);
 
             void deliveryHud(int level)
             {
@@ -1373,7 +1378,27 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
         }
-         
+
+        public static void buildTooltip_YouOwn(City city, RichBoxContent content, BuildAndExpandType type)
+        {
+            var build = BuildLib.BuildOptions[(int)type];
+
+            content.Add(new RbSeperationLine());
+            content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn, HudLib.TitleColor_Head2);
+            build.blueprint.listResources(content, city);
+            if (type == BuildAndExpandType.Logistics)
+            {
+                bool reachedBuffer = false;
+                city.res_food.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
+            }
+
+            if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)
+            {
+                content.newLine();
+
+                HudLib.Experience(content, build.blueprint.experienceType, city.GetTopSkill(build.blueprint.experienceType));
+            }
+        }
 
 
         void mayCraftList(RichBoxContent content, City city, ItemResourceType[] types)

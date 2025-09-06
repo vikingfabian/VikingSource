@@ -108,6 +108,8 @@ namespace VikingEngine.DSSWars.Players.Orders
             content.space();
             content.Add(new RbText(priority.ToString()));
 
+            BuildControls.buildTooltip_YouOwn(city, content, buildingType);
+
             return content;
         }
 

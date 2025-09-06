@@ -1172,7 +1172,11 @@ namespace VikingEngine.DSSWars.Presentation
 
             return TextLib.Error + " (" + mainType.ToString() + " " + subType.ToString()+ ")";
         }
-
+        public static string BuildingName(BuildAndExpandType buildingType)
+        {
+            var build = BuildLib.BuildOptions[(int)buildingType];
+            return TerrainName(build.mainType, build.subType);
+        }
         public static string BuildingDescription(TerrainBuildingType buildingType)
         {
             switch (buildingType)

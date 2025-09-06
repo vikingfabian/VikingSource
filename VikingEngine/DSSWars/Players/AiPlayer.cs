@@ -1463,7 +1463,19 @@ namespace VikingEngine.DSSWars.Players
             {
                 diplomacyPoints = 0;
 
-                if (Ref.peRnd.Chance(0.1))
+                if (wars.Count > 0 && Ref.peRnd.Chance(0.6 - aggressionLevel * 0.1 + wars.Count * 0.05))
+                { 
+                    //Declare peace
+                    int opponent = arraylib.RandomListMember(wars);
+                    Faction enemyFaction = DssRef.world.factions.GetIndex_Safe(opponent);
+                    if (enemyFaction.player.IsBot() &&
+                        (wars.Count > 1 || this.faction.militaryStrength < enemyFaction.militaryStrength) &&
+                        !DssRef.diplomacy.InplayerAlliance(faction))
+                    {
+                        this.faction.shareRelationWithAllAllies(enemyFaction, RelationType.RelationType1_Peace);
+                    }
+                }
+                else if (Ref.peRnd.Chance(0.1))
                 {
                     if (wars.Count > 0 && Ref.peRnd.Chance(0.8))
                     {

@@ -2041,12 +2041,11 @@ namespace VikingEngine.DSSWars.GameObject
             RotationQuarterion rot;
             if (closestCity != null)
             {
-                double dist = WP.birdDistance(closestCity, tilePos);
-                double keep = lib.ValueOnPercentScale(12, 3, dist, true) * 0.7 + 0.1;
+                double keep = 0.8;
 
                 if (deserter && closestCity.factionIndex == this.factionIndex)
                 { 
-                    keep *= 0.6;
+                    keep = 0.5;
                 }
                 
                 double immigrants = soldierCount * keep;

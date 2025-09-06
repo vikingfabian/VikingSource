@@ -5,12 +5,14 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Interface.Component;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.Component;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Data;
@@ -408,32 +410,112 @@ namespace VikingEngine.DSSWars.Conscript
                 }
                 else
                 {
+                    int typeCount = 0;
+                    Span<bool> containsBarrack = stackalloc bool[ConscriptDataLib.BarrackTypes.Length];
+                    bool hasPreSelectedTab = false;
+                    for (int i = 0; i < city.conscriptBuildings.Count; ++i)
+                    {
+                        var type = city.conscriptBuildings[i].type;
+                        int containsIx = ConscriptDataLib.TypeToBarrackTypeIx[type];
+                        if (!containsBarrack[containsIx])
+                        {
+                            if (type == player.conscriptSubTab)
+                            {
+                                hasPreSelectedTab = true;
+                            }
+                            containsBarrack[containsIx] = true;
+                            typeCount++;
+                        }
+                    }
+
+                    if (!hasPreSelectedTab)
+                    {
+                        player.conscriptSubTab = BuildAndExpandType.ALL;
+                    }
+
+                    if (typeCount > 1)
+                    {
+                        content.newLine();
+                        SubTab(BuildAndExpandType.ALL);
+
+                        for (int i = 0; i < ConscriptDataLib.BarrackTypes.Length; ++i)
+                        {
+                            if (containsBarrack[i])
+                            {
+                                SubTab(ConscriptDataLib.BarrackTypes[i]);
+                            }
+                        }
+
+                        void SubTab(BuildAndExpandType filter)
+                        {
+                            var subTab = new ArtButton(player.conscriptSubTab == filter ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, new List<AbsRichBoxMember> 
+                            { 
+                                new RbText(filter == BuildAndExpandType.ALL? DssRef.todoLang.Hud_All : LangLib.BuildingName(filter))
+                            },
+                               new RbAction1Arg<BuildAndExpandType>((BuildAndExpandType filter) =>
+                               {
+                                   player.conscriptSubTab = filter;
+                               }, filter, RbSoundType.Tab));
+                            content.Add(subTab);
+                        }
+                    }
+
                     for (int i = 0; i < city.conscriptBuildings.Count; ++i)
                     {
                         content.newLine();
 
                         BarracksStatus currentProfile = city.conscriptBuildings[i];
-                        var caption = new RbText(
-                                LangLib.Item(currentProfile.profile.weapon) + ", " +
-                                LangLib.Item(currentProfile.profile.armorLevel)
-                            );
-                        caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>(){
-                        new RbImage(
-                            new SoldierConscriptProfile(){ conscript = currentProfile.profile }.Icon()
-                            ),
-                        new RbSpace(),
-                        caption,
-                        new RbNewLine(),
-                         new RbText(currentProfile.shortActiveString(), HudLib.InfoYellow_Dark),
-                    }, new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
+                        if (player.conscriptSubTab == BuildAndExpandType.ALL ||
+                            player.conscriptSubTab == currentProfile.type)
+                        {
+                            var caption = new RbText(
+                                    LangLib.Item(currentProfile.profile.weapon) + ", " +
+                                    LangLib.Item(currentProfile.profile.armorLevel)
+                                );
+                            caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>(){
+                                new RbImage(
+                                    new SoldierConscriptProfile(){ conscript = currentProfile.profile }.Icon()
+                                    ),
+                                new RbSpace(),
+                                caption,
+                                new RbNewLine(),
+                                 new RbText(currentProfile.shortActiveString(), HudLib.InfoYellow_Dark),
+                            }, new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
 
+                        }
+                    }
+
+                    //Apply to all options
+                    content.h2(DssRef.todoLang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
+                    HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("=0") }, new RbAction1Arg<int>(queueToAll, 0, RbSoundType.Stop)));
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+1") }, new RbAction1Arg<int>(queueToAll, 1, RbSoundType.Start)));
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_NoLimit) }, new RbAction1Arg<int>(queueToAll, 100, RbSoundType.Start)));
+
+                    if (player.conscriptSubTab != BuildAndExpandType.ALL)
+                    {
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                        new RbText(DssRef.lang.Hud_Paste) },
+                            new RbAction1Arg<LocalPlayer>(city.pasteConscriptToAll, player, RbSoundType.Paste)));
                     }
                 }
             }
 
+            void queueToAll(int count)
+            {
+                for (int i = 0; i < city.conscriptBuildings.Count; ++i)
+                {
+                    if (player.conscriptSubTab == BuildAndExpandType.ALL ||
+                        player.conscriptSubTab == city.conscriptBuildings[i].type)
+                    { 
+                        xx
+                    }
+                }
+            }
             void progress(BarracksStatus currentStatus)
             {
                 if (currentStatus.active != ConscriptActiveStatus.Idle)

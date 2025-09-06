@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Settings;
@@ -111,8 +112,10 @@ namespace VikingEngine.DSSWars
 
         protected override async void asyncDataProcessLoading()
         {
+            ConscriptDataLib.Init();
+            dataProcessPart++;
             FlagDesign.Init();
-
+            dataProcessPart++;
             Block.Init();
             dataProcessPart++;
             FlagAndColor.Init();
