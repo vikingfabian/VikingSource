@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.Component;
-using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.ToGG;
 using static System.Net.Mime.MediaTypeNames;
-using VikingEngine.DSSWars.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Delivery
 {
@@ -384,45 +387,145 @@ namespace VikingEngine.DSSWars.Delivery
                 }
                 else
                 {
+                    bool hasRecruit = false;
+                    bool hasGoldDeliver = false;
+                    bool hasPostal = false;
+
+                    for (int i = 0; i < city.deliveryServices.Count; ++i)
+                    {
+                        DeliveryStatus currentProfile = city.deliveryServices[i];
+
+                        if (currentProfile.IsRecruitment())
+                        {
+                            hasRecruit = true;
+                        }
+                        else if (currentProfile.IsGold())
+                        {
+                            hasGoldDeliver = true;
+                        }
+                        else
+                        {
+                            hasPostal = true;
+                        }
+                    }
+
+                    int typeCount = 0;
+                    if (hasRecruit) { typeCount++; }
+                    if (hasGoldDeliver) { typeCount++; }
+                    if (hasPostal) { typeCount++; }
+
+                    if (typeCount > 1)
+                    {
+                        content.newLine();
+                        SubTab(ItemResourceType.NUM);
+
+                        if (hasRecruit) { SubTab(ItemResourceType.Men); }
+                        if (hasRecruit) { SubTab(ItemResourceType.Gold); }
+                        if (hasRecruit) { SubTab(ItemResourceType.RESOURCES); }
+
+                        void SubTab(ItemResourceType filter)
+                        {
+                            List<AbsRichBoxMember> tabContent = new List<AbsRichBoxMember>(1);
+                            switch (filter)
+                            {
+                                case ItemResourceType.NUM:
+                                    tabContent.Add(new RbText(DssRef.todoLang.Hud_All));
+                                    break;
+                                case ItemResourceType.Men:
+                                    tabContent.Add(new RbText(DssRef.lang.BuildingType_Recruitment));
+                                    break;
+                                case ItemResourceType.Gold:
+                                    tabContent.Add(new RbText(DssRef.lang.BuildingType_GoldDelivery));
+                                    break;
+                                default:
+                                    tabContent.Add(new RbText(DssRef.lang.BuildingType_Postal));
+                                    break;
+                            }
+
+                            var subTab = new ArtButton(player.deliverySupTab == filter ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
+                                tabContent,
+                               new RbAction1Arg<ItemResourceType>((ItemResourceType filter) =>
+                               {
+                                   player.deliverySupTab = filter;
+                               }, filter, RbSoundType.Tab));
+                            content.Add(subTab);
+                        }
+                    }
+
                     for (int i = 0; i < city.deliveryServices.Count; ++i)
                     {
                         content.newLine();
 
                         DeliveryStatus currentProfile = city.deliveryServices[i];
+                        bool fitFilter = player.deliverySupTab == ItemResourceType.NUM;
 
                         string title;
                         SpriteName icon;
                         if (currentProfile.IsRecruitment())
                         {
+                            fitFilter |= player.deliverySupTab == ItemResourceType.Men;
                             icon = SpriteName.WarsWorker;
                             title = DssRef.lang.BuildingType_Recruitment;
                         }
+                        else if (currentProfile.IsGold())
+                        {
+                            fitFilter |= player.deliverySupTab == ItemResourceType.Gold;
+                            icon = SpriteName.WarsResource_Gold;
+                            title = DssRef.lang.BuildingType_GoldDelivery;
+                        }
                         else
                         {
+                            fitFilter |= player.deliverySupTab == ItemResourceType.RESOURCES;
                             icon = ResourceLib.Icon(currentProfile.profile.type);
                             title = DssRef.lang.BuildingType_Postal + ": " + currentProfile.profile.type.ToString();
                         }
+                        if (fitFilter)
+                        {
 
-                        var caption = new RbText(
-                                title
-                            );
-                        caption.overrideColor = HudLib.TitleColor_Label_Dark;
+                            var caption = new RbText(title);
+                            caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
-                        var buttonContent = new List<AbsRichBoxMember>(){
+                            var buttonContent = new List<AbsRichBoxMember>(){
                             new RbBeginTitle(2),
                             caption,
                             new RbNewLine(),
                             new RbText(currentProfile.shortActiveString(),  HudLib.InfoYellow_Dark)
                         };
 
-                        if (icon != SpriteName.NO_IMAGE)
-                        {
-                            buttonContent.Insert(1, new RbImage(icon));
+                            if (icon != SpriteName.NO_IMAGE)
+                            {
+                                buttonContent.Insert(1, new RbImage(icon));
+                            }
+
+                            content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent,
+                                new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
                         }
+                    }
+                    //Apply to all options
+                    content.h2(DssRef.todoLang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
+                    HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
+                    que.listToHud(player, content, queueToAll);
 
-                        content.Add(new ArtButton( RbButtonStyle.Primary, buttonContent,
-                            new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
+                    if (player.deliverySupTab != ItemResourceType.NUM)
+                    {
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                        new RbText(DssRef.lang.Hud_Paste) },
+                            new RbAction1Arg<LocalPlayer>(city.pasteDeliveryToAll, player, RbSoundType.Paste)));
+                    }
+                }
+            }
 
+            void queueToAll(int count)
+            {
+                for (int i = 0; i < city.deliveryServices.Count; ++i)
+                {
+                    if (player.deliverySupTab == ItemResourceType.NUM ||
+                        player.deliverySupTab == city.deliveryServices[i].GetFilterType())
+                    {
+                        var status = city.deliveryServices[i];
+                        status.que = count;
+                        city.deliveryServices[i] = status;
                     }
                 }
             }

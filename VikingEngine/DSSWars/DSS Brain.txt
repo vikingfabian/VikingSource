@@ -12,7 +12,10 @@ Change Log:
 * why upgrade logistics, tooltip
 * getting war through alliance, is now treated as war declaration
 * tooltip: available resources on build order
-
+* filter and "apply to all" options on barracks and delivery
+* The bots gain diplomacy 30 times slower
+* Reduced war manager check with 8 minutes
+* Fixed war manager timer crash
 
 Language change log:
 * Turkish has been improved
@@ -49,15 +52,13 @@ build building icon
 
 #must do#
 
-
-+1/halt on all conscript
-
 x ambience is heard on zero volume
 x music should not play when master = 0
 x test all achievements
 x full game achievements + translations
 
 #Todo#
+x advanced transport in logistics lvl2
 x save conscript progression (time)
 x clickable cities in diplomacy
 x have a button to make all masters guilds to focus on diffrent things

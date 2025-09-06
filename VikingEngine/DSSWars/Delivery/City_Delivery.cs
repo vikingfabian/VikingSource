@@ -308,6 +308,17 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void pasteDeliveryToAll(LocalPlayer player)
+        {
+            for (int i = 0; i < deliveryServices.Count; ++i)
+            {
+                if (deliveryServices[i].GetFilterType() == player.deliverySupTab)
+                {
+                    pasteDelivery(player, i);
+                }
+            }
+        }
+
         public void addDelivery(IntVector2 subPos, int level, ItemResourceType deliveryType)
         {
             DeliveryStatus deliveryStatus = new DeliveryStatus()

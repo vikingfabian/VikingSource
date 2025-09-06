@@ -195,7 +195,7 @@ namespace VikingEngine.DSSWars.Resource
 
         NUM,
 
-        
+        RESOURCES,
     }
 
     //enum ItemResourceType

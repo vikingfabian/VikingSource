@@ -63,6 +63,18 @@ namespace VikingEngine.DSSWars.Delivery
             return profile.type == ItemResourceType.Men;
         }
 
+        public ItemResourceType GetFilterType()
+        {
+            switch (profile.type)
+            { 
+                case ItemResourceType.Men:
+                case ItemResourceType.Gold:
+                    return profile.type;
+                default:
+                    return ItemResourceType.RESOURCES;
+            }
+        }
+
         public void checkCity(LocalPlayer player)
         {
             if (profile.toCity == DeliveryProfile.ToCityAuto)

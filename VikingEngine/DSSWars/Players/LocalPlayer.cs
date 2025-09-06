@@ -76,6 +76,7 @@ namespace VikingEngine.DSSWars.Players
         public ProgressSubTab progressSubTab = 0;
         public TagSubTab tagSubTab = 0;
         public BuildAndExpandType conscriptSubTab = BuildAndExpandType.ALL;
+        public ItemResourceType deliverySupTab = ItemResourceType.NUM;
         public MixTabEditType mixTabEditType = MixTabEditType.None;
         public WorkPriorityType mixWorkType = WorkPriorityType.NUM_NONE;
         public ItemResourceType mixTabItem = ItemResourceType.NONE;

@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Event
 
         Time dyingFactionsTimer = Time.Zero;
 
-        Time toPeacefulCheckTimer = new Time(Ref.rnd.Float(30, 45), TimeUnit.Minutes);
+        Time toPeacefulCheckTimer = new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
 
         ConcurrentQueue<AbsStoryEvent> mainStory = new ConcurrentQueue<AbsStoryEvent>();
 
@@ -106,7 +106,6 @@ namespace VikingEngine.DSSWars.Event
         {
             int dominationCount = DssRef.storage.gameRuleset.mapSize > MapSize.Small ? 5 : 3;
             
-
             foreach (var p in DssRef.state.localPlayers)
             {
                 int hillFriends = 0;

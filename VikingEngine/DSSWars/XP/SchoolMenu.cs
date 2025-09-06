@@ -101,7 +101,7 @@ namespace VikingEngine.DSSWars.XP
                             content.Add(new RbText(new Data.TimeLength(time - Ref.TotalGameTimeSec).LongString()));
                         }
                     }
-                    que.toHud(player, content, queClick, currentStatus.que, SchoolStatus.MaxQue, false);
+                    que.singleToHud(player, content, queClick, currentStatus.que, SchoolStatus.MaxQue, false);
                 }
 
             }

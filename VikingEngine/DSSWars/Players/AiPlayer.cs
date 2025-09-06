@@ -79,9 +79,7 @@ namespace VikingEngine.DSSWars.Players
                 SetProfile(profile);
             }
         }
-
         
-
         public AiPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
         {
@@ -1383,8 +1381,12 @@ namespace VikingEngine.DSSWars.Players
         {
             base.oneSecUpdate();
             ignorePlayerCapture = false;
-            diplomacyPoints++;
+            if (Ref.peRnd.ChanceF(0.1f))
+            {
+                diplomacyPoints++;
+            }
         }
+        
 
 
         override public void aiPlayerAsynchUpdate(float time)
@@ -1459,7 +1461,7 @@ namespace VikingEngine.DSSWars.Players
 
         void diplomacyCheck(List<int> wars)
         {
-            if (diplomacyPoints >= 30)
+            if (diplomacyPoints >= 100)
             {
                 diplomacyPoints = 0;
 

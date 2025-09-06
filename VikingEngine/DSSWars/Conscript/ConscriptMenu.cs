@@ -491,9 +491,10 @@ namespace VikingEngine.DSSWars.Conscript
                     //Apply to all options
                     content.h2(DssRef.todoLang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
                     HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
-                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("=0") }, new RbAction1Arg<int>(queueToAll, 0, RbSoundType.Stop)));
-                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+1") }, new RbAction1Arg<int>(queueToAll, 1, RbSoundType.Start)));
-                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_NoLimit) }, new RbAction1Arg<int>(queueToAll, 100, RbSoundType.Start)));
+                    que.listToHud(player, content, queueToAll);
+                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("=0") }, new RbAction1Arg<int>(queueToAll, 0, RbSoundType.Stop)));
+                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+1") }, new RbAction1Arg<int>(queueToAll, 1, RbSoundType.Start)));
+                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_NoLimit) }, new RbAction1Arg<int>(queueToAll, ProgressQue.NoLimit, RbSoundType.Start)));
 
                     if (player.conscriptSubTab != BuildAndExpandType.ALL)
                     {
@@ -511,11 +512,14 @@ namespace VikingEngine.DSSWars.Conscript
                 {
                     if (player.conscriptSubTab == BuildAndExpandType.ALL ||
                         player.conscriptSubTab == city.conscriptBuildings[i].type)
-                    { 
-                        xx
+                    {
+                        var status = city.conscriptBuildings[i];
+                        status.que = count;
+                        city.conscriptBuildings[i] = status;
                     }
                 }
             }
+
             void progress(BarracksStatus currentStatus)
             {
                 if (currentStatus.active != ConscriptActiveStatus.Idle)

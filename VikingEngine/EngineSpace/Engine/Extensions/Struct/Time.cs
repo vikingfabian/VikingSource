@@ -30,6 +30,9 @@ namespace VikingEngine
                 case TimeUnit.Minutes:
                     MilliSeconds = value * MinuteLength;
                     break;
+                case TimeUnit.Hours:
+                    MilliSeconds = value * MinuteLength * TimeExt.HourInMinutes;
+                    break;
                 default:
                     throw new NotImplementedException();
 
