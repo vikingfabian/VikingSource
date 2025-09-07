@@ -1,24 +1,12 @@
 ﻿UPDATE
 Change Log:
-* extra secure data storage for meta progression, back and forward compartible
-* the game will store your victories
-* did some resource tweaks
-* removed armor crafting from smith, must be made in an Armory
-* Increased the time for training soliders
-* Lowered "The first attack" with 15minutes
-* will sprinkle in some skilled workers to have a bit more interesting start 
-* fixed: immigrants dont work
-* the bots may spend diplomacy for peace (only toward other bots)
-* why upgrade logistics, tooltip
-* getting war through alliance, is now treated as war declaration
-* tooltip: available resources on build order
-* filter and "apply to all" options on barracks and delivery
-* The bots gain diplomacy 30 times slower
-* Reduced war manager check with 8 minutes
-* Fixed war manager timer crash
+* Reduced barbarian story event by 1.5 hours
+* Reduced Advanced Building research 60 to 50 points
+* Cut passive diplomacy add speed to 50%
+* improved research building hud
 
 Language change log:
-* Turkish has been improved
+*
 
 
 Story:
@@ -39,20 +27,20 @@ Event timers (are slightly random)
 - Bot peace time: 30 min
 - The first attack: 35min
 - War manager start: 40min
-- Barbarians: 3 hours
+- Barbarians: 1.5 hours
 - Mercenaries: 8 hours (total 12 hours by now)
 - The cohalition: 12 hours (or when the player grabs 5 to 7 cities)
 - Boss warning: 25 hours
 - Boss; 1 hour
 Plus the boss fight: about 10 hours
-(total: about 65 hours)
+(total: about 63 hours)
 
 #Pics
 build building icon
 
 #must do#
-
-x ambience is heard on zero volume
+x book press not unlocked from research completed
+x lobby ambience is heard on zero volume
 x music should not play when master = 0
 x test all achievements
 x full game achievements + translations

@@ -564,7 +564,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// have 4 allies, then 8, then 16
         /// </summary>
-        friendship_tier1,//i
+        friendship_tier1,//i, t
         friendship_tier2,
         friendship_tier3,
 

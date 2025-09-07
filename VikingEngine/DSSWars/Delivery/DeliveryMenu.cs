@@ -524,7 +524,14 @@ namespace VikingEngine.DSSWars.Delivery
                         player.deliverySupTab == city.deliveryServices[i].GetFilterType())
                     {
                         var status = city.deliveryServices[i];
-                        status.que = count;
+                        if (count == 1)
+                        {
+                            status.que++;
+                        }
+                        else
+                        {
+                            status.que = count;
+                        }
                         city.deliveryServices[i] = status;
                     }
                 }

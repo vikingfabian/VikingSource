@@ -347,7 +347,7 @@ namespace VikingEngine.DSSWars.Event
         public override void onStart()
         {
             init(
-                triggerTimeSpan_Minutes: new IntervalF(2f, 4f) * TimeExt.HourInMinutes,
+                triggerTimeSpan_Minutes: new IntervalF(1.2f, 2.4f) * TimeExt.HourInMinutes,
                 nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 1f, DssConst.HeadCityStartMaxWorkForce * 2f));
         }
 

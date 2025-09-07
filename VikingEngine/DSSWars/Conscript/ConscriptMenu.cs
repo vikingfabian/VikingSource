@@ -514,7 +514,14 @@ namespace VikingEngine.DSSWars.Conscript
                         player.conscriptSubTab == city.conscriptBuildings[i].type)
                     {
                         var status = city.conscriptBuildings[i];
-                        status.que = count;
+                        if (count == 1)
+                        {
+                            status.que++;
+                        }
+                        else
+                        {
+                            status.que = count;
+                        }
                         city.conscriptBuildings[i] = status;
                     }
                 }

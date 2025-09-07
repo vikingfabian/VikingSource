@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars
 
         public int ServantMaxCities = 2;
         public int DefaultMaxDiplomacy = 4;
-        public double DefaultDiplomacyPerSecond = 1.0 / 120.0;
+        public double DefaultDiplomacyPerSecond = 1.0 / 240.0;
         public double EmbassyAddDiplomacy = 1.0 / 480.0;
         public double EmbassyAddMaxDiplomacy = 0.25;
 

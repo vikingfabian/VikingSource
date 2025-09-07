@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.XP
 
                 content.newParagraph();
                 HudLib.BulletPoint(content);
-                string desc = building.isResearchCenter ? string.Format( DssRef.lang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter) : DssRef.lang.BuildingType_Bookpress_Description;
+                string desc = building.isResearchCenter ? string.Format( DssRef.lang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter) : string.Format( DssRef.lang.BuildingType_Bookpress_Description, DssRef.lang.BuildingType_ReseachCenter);
                 content.Add(new RbText( desc, HudLib.InfoYellow_Light));
 
 
@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.XP
                     content.Add(new RbText(techname));
                 }
                 content.newParagraph();
-                content.Add(new RbText("Tech cannot be reassigned until the research is done", HudLib.InfoYellow_Light));
+                content.Add(new RbText(DssRef.todoLang.Technology_CannotReassign, HudLib.InfoYellow_Light));
             }
             else
             {
@@ -124,8 +124,9 @@ namespace VikingEngine.DSSWars.XP
                                         new RbText(building.assignmentString(), HudLib.InfoYellow_Dark),
                                     };
 
-                                    
+
                                     //button.setGroupSelectionColor(HudLib.RbSettings, );
+                                    content.newLine();
                                     content.Add(new ArtButton(RbButtonStyle.Primary, 
                                         buttonContent, new RbAction1Arg<int>((int ix)=> { city.selectedResearchBuilding = ix; }, i)));
                                 }

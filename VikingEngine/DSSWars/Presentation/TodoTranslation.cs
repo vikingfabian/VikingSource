@@ -12,6 +12,7 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
+        public string Technology_CannotReassign => "Tech cannot be reassigned until the research is done";
         public string Diplomacy_DeclareWarAgainst => "You will declare war against";
         public string EventMessage_Event_Title => "Event";
         public string EventMessage_TheCohalition => "The cohalition";
