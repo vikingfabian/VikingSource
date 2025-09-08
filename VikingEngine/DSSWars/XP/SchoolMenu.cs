@@ -34,14 +34,19 @@ namespace VikingEngine.DSSWars.XP
             {
                 SchoolStatus currentStatus = city.schoolBuildings[city.selectedSchool];
                 LangLib.ExperienceType(currentStatus.learnExperience, out string expName, out SpriteName expIcon);
-                content.Add(new RbImage(expIcon));
-                content.space();
-                content.Add(new RbBeginTitle(1));
-                var title = new RbText(DssRef.lang.BuildingType_School + " " + currentStatus.idAndPosition.ToString());
-                title.overrideColor = HudLib.TitleColor_TypeName;
-                content.Add(title);
-                content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedSchool = -1; }, RbSoundType.Back));
+                //content.Add(new RbImage(expIcon));
+                //content.space();
+                //content.Add(new RbBeginTitle(1));
+                //var title = new RbText(DssRef.lang.BuildingType_School + " " + currentStatus.idAndPosition.ToString());
+                //title.overrideColor = HudLib.TitleColor_TypeName;
+                //content.Add(title);
+                //content.space();
+                //HudLib.CloseButton(content, new RbAction(() => { city.selectedSchool = -1; }, RbSoundType.Back));
+                HudLib.buildingMenuTitle(content,expIcon, DssRef.lang.BuildingType_School, currentStatus.idAndPosition, city.selectedSchool,
+                    city.schoolBuildings.Count, () => { city.selectedSchool = -1; },
+                    (int next) => {
+                        city.selectedSchool = Bound.SetRollover(city.selectedSchool + next, 0, city.schoolBuildings.Count - 1);
+                    });
 
                 content.newParagraph();
                 HudLib.Label(content, DssRef.lang.Experience_Title);

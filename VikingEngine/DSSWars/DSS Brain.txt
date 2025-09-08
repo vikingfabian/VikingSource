@@ -4,6 +4,12 @@ Change Log:
 * Reduced Advanced Building research 60 to 50 points
 * Cut passive diplomacy add speed to 50%
 * improved research building hud
+* next/previous buttons for building menues, plus other improvements
+* reduced Mercenaries: 8 to 4 hours 
+* reduced cohalition: 12 to 10 hours 
+* reduced the chance of bot peace to 33%
+* bots with opposite sides of good/evil, may not declare peace
+* fixed: reassign of completed research building
 
 Language change log:
 *
@@ -28,17 +34,20 @@ Event timers (are slightly random)
 - The first attack: 35min
 - War manager start: 40min
 - Barbarians: 1.5 hours
-- Mercenaries: 8 hours (total 12 hours by now)
-- The cohalition: 12 hours (or when the player grabs 5 to 7 cities)
+- Mercenaries: 4 hours (total 7 hours by now)
+- The cohalition: 10 hours (or when the player grabs 5 to 7 cities)
 - Boss warning: 25 hours
 - Boss; 1 hour
 Plus the boss fight: about 10 hours
-(total: about 63 hours)
+(total: about 57 hours)
 
 #Pics
 build building icon
 
 #must do#
+x Considering increasing the diplomatic cost to ally huge nations
+x barbarian killer not working
+x army flipping in cirkles
 x book press not unlocked from research completed
 x lobby ambience is heard on zero volume
 x music should not play when master = 0
@@ -46,6 +55,8 @@ x test all achievements
 x full game achievements + translations
 
 #Todo#
+x lägg toolkit och heavy wagon som advanced woodwork efter catapult
+x can cheese building over borders and using copy
 x advanced transport in logistics lvl2
 x save conscript progression (time)
 x clickable cities in diplomacy

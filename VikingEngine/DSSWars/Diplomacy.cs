@@ -108,6 +108,19 @@ namespace VikingEngine.DSSWars
             return false;
         }
 
+        public bool OppositeDiplomaticSides(Faction faction1, Faction faction2)
+        {
+            if (faction1.diplomaticSide == DiplomaticSide.Light)
+            {
+                return faction2.diplomaticSide == DiplomaticSide.Dark;
+            }
+            else if (faction1.diplomaticSide == DiplomaticSide.Dark)
+            {
+                return faction2.diplomaticSide == DiplomaticSide.Light;
+            }
+            return false;
+        }
+
         public List<int> aiPlayerAsynchUpdate_collectWars(Faction aifaction)
         {
             aiPlayerAsynchUpdate_wars.Clear();

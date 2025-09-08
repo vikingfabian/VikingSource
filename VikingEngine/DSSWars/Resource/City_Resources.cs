@@ -96,6 +96,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             ItemResourceType.Ballista,
             ItemResourceType.Manuballista,
+            ItemResourceType.Catapult,
             ItemResourceType.SiegeCannonBronze,
             ItemResourceType.ManCannonBronze,
             ItemResourceType.SiegeCannonIron,

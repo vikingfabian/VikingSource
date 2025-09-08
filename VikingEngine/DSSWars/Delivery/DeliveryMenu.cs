@@ -43,13 +43,38 @@ namespace VikingEngine.DSSWars.Delivery
                 DeliveryStatus currentStatus = get();
                 content.Add(new RbBeginTitle(1));
 
-                string typeName = currentStatus.IsRecruitment() ? DssRef.lang.BuildingType_Recruitment : DssRef.lang.BuildingType_Postal;
-                var title = new RbText(typeName + " " + currentStatus.idAndPosition.ToString());
-                title.overrideColor = HudLib.TitleColor_TypeName;
-                content.Add(title);
-                content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedDelivery = -1; }, RbSoundType.Back));
-                
+
+                SpriteName icon;
+                string caption;
+                switch (currentStatus.GetFilterType())
+                {
+                    case ItemResourceType.RESOURCES:
+                        icon = SpriteName.WarsBuild_Postal;
+                        caption = DssRef.lang.BuildingType_Postal;
+                        break;
+                    case ItemResourceType.Men:
+                        icon = SpriteName.WarsBuild_Recruitment;
+                        caption = DssRef.lang.BuildingType_Recruitment;
+                        break;
+                    default:
+                        icon = SpriteName.WarsBuild_GoldDeliver;
+                        caption = DssRef.lang.BuildingType_GoldDelivery;
+                        break;
+
+                }
+                //string typeName = currentStatus.IsRecruitment() ? DssRef.lang.BuildingType_Recruitment : DssRef.lang.BuildingType_Postal;
+                //var title = new RbText(typeName + " " + currentStatus.idAndPosition.ToString());
+                //title.overrideColor = HudLib.TitleColor_TypeName;
+                //content.Add(title);
+                //content.space();
+                //HudLib.CloseButton(content, new RbAction(() => { city.selectedDelivery = -1; }, RbSoundType.Back));
+                HudLib.buildingMenuTitle(content, icon, caption, currentStatus.idAndPosition,
+                    city.selectedDelivery, city.deliveryServices.Count,
+                    () => { city.selectedDelivery = -1; },
+                    (int next) => {
+                        city.selectedDelivery = Bound.SetRollover(city.selectedDelivery + next, 0, city.deliveryServices.Count - 1);
+                    });
+
                 content.newParagraph();
 
                 if (!currentStatus.IsRecruitment())
@@ -420,8 +445,8 @@ namespace VikingEngine.DSSWars.Delivery
                         SubTab(ItemResourceType.NUM);
 
                         if (hasRecruit) { SubTab(ItemResourceType.Men); }
-                        if (hasRecruit) { SubTab(ItemResourceType.Gold); }
-                        if (hasRecruit) { SubTab(ItemResourceType.RESOURCES); }
+                        if (hasGoldDeliver) { SubTab(ItemResourceType.Gold); }
+                        if (hasPostal) { SubTab(ItemResourceType.RESOURCES); }
 
                         void SubTab(ItemResourceType filter)
                         {
@@ -506,7 +531,7 @@ namespace VikingEngine.DSSWars.Delivery
                     HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
                     que.listToHud(player, content, queueToAll);
 
-                    if (player.deliverySupTab != ItemResourceType.NUM)
+                    if (player.deliverySupTab != ItemResourceType.NUM || typeCount == 1)
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {

@@ -115,12 +115,12 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 BarracksStatus currentStatus = get();
                 int menCostNext = currentStatus.profile.menCost();
-
-                content.Add(new RbImage(
-                            new SoldierConscriptProfile() { conscript = currentStatus.profile }.Icon()
-                            ));
-                content.space();
-                content.Add(new RbBeginTitle(1));
+                SpriteName icon =  new SoldierConscriptProfile() { conscript = currentStatus.profile }.Icon();
+                //content.Add(new RbImage(
+                            
+                //            ));
+                //content.space();
+                //content.Add(new RbBeginTitle(1));
 
                 string typeName = null; 
                 ItemResourceType[] weapons = null;
@@ -155,12 +155,17 @@ namespace VikingEngine.DSSWars.Conscript
                 }
 
 
-                var title = new RbText(typeName + " " + currentStatus.idAndPosition.ToString());
-                title.overrideColor = HudLib.TitleColor_TypeName;
-                content.Add(title);
-                
-                content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedConscript = -1; }, RbSoundType.Back));
+                //var title = new RbText(typeName + " " + currentStatus.idAndPosition.ToString());
+                //title.overrideColor = HudLib.TitleColor_TypeName;
+                //content.Add(title);
+
+                //content.space();
+                //HudLib.CloseButton(content, new RbAction(() => { city.selectedConscript = -1; }, RbSoundType.Back));
+                HudLib.buildingMenuTitle(content, icon, typeName, currentStatus.idAndPosition, city.selectedConscript,
+                    city.conscriptBuildings.Count, () => { city.selectedConscript = -1; },
+                    (int next) => {
+                        city.selectedConscript = Bound.SetRollover(city.selectedConscript + next, 0, city.conscriptBuildings.Count - 1);
+                    });
 
 
                 content.newParagraph();
@@ -469,18 +474,32 @@ namespace VikingEngine.DSSWars.Conscript
                         if (player.conscriptSubTab == BuildAndExpandType.ALL ||
                             player.conscriptSubTab == currentProfile.type)
                         {
-                            var caption = new RbText(
-                                    LangLib.Item(currentProfile.profile.weapon) + ", " +
-                                    LangLib.Item(currentProfile.profile.armorLevel)
-                                );
-                            caption.overrideColor = HudLib.TitleColor_Label_Dark;
+                            
+
+                            string caption;
+                            SpriteName icon;
+                            if (currentProfile.profile.specialization == SpecializationType.CityGuard)
+                            {
+                                icon = SpriteName.WarsGuard;
+                                caption = DssRef.lang.Conscript_Soldiers_GuardType;
+                            }
+                            else
+                            {
+                                icon = new SoldierConscriptProfile() { conscript = currentProfile.profile }.Icon();
+                                caption = DssRef.lang.Conscript_Soldiers_ArmyType;
+                            }
+
+                            //caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
                             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>(){
-                                new RbImage(
-                                    new SoldierConscriptProfile(){ conscript = currentProfile.profile }.Icon()
-                                    ),
+                                new RbImage(icon),
                                 new RbSpace(),
-                                caption,
+                                new RbText(caption, HudLib.TitleColor_Label_Dark),
+                                new RbSpace(),
+                                new RbImage(LangLib.Training_Icon(currentProfile.profile.training)),
+                                new RbImage(ResourceLib.Icon(currentProfile.profile.weapon)),
+                                new RbImage(ResourceLib.Icon(currentProfile.profile.armorLevel)),
+
                                 new RbNewLine(),
                                  new RbText(currentProfile.shortActiveString(), HudLib.InfoYellow_Dark),
                             }, new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
@@ -496,7 +515,8 @@ namespace VikingEngine.DSSWars.Conscript
                     //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+1") }, new RbAction1Arg<int>(queueToAll, 1, RbSoundType.Start)));
                     //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_NoLimit) }, new RbAction1Arg<int>(queueToAll, ProgressQue.NoLimit, RbSoundType.Start)));
 
-                    if (player.conscriptSubTab != BuildAndExpandType.ALL)
+                    if (player.conscriptSubTab != BuildAndExpandType.ALL ||
+                        typeCount == 1)
                     {
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {

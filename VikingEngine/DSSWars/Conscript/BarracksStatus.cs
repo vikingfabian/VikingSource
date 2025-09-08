@@ -297,9 +297,17 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
             content.space(0.5f);
-            content.Add(new RbImage(
-                            new SoldierConscriptProfile() { conscript = profile }.Icon()
-                            ));
+            SpriteName icon;
+            if (profile.specialization == SpecializationType.CityGuard)
+            {
+                icon = SpriteName.WarsGuard;
+            }
+            else
+            {
+                icon = new SoldierConscriptProfile() { conscript = profile }.Icon();
+            }
+
+            content.Add(new RbImage(icon));
             content.hspace();
             //ItemResourceType weaponitem = ConscriptProfile.WeaponItem(profile.weapon);
             content.Add(new RbImage(ResourceLib.Icon(weaponItem)));

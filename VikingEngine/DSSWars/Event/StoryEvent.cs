@@ -511,7 +511,7 @@ namespace VikingEngine.DSSWars.Event
         public override void onStart()
         {
            init(
-            triggerTimeSpan_Minutes: new IntervalF(7.6f, 8.5f) * TimeExt.HourInMinutes,
+            triggerTimeSpan_Minutes: new IntervalF(3.6f, 4.5f) * TimeExt.HourInMinutes,
             nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 2f, DssConst.HeadCityStartMaxWorkForce * 4f));
         }
 
@@ -714,7 +714,7 @@ namespace VikingEngine.DSSWars.Event
         {
             base.onStart();
 
-            triggerTime.start(TimeLength.FromHours(Ref.rnd.Float(10.5f, 14f)));
+            triggerTime.start(TimeLength.FromHours(Ref.rnd.Float(8.5f, 12f)));
 
             foreach (var p in DssRef.state.localPlayers)
             {

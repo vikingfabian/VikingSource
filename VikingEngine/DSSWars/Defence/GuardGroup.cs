@@ -234,10 +234,14 @@ namespace VikingEngine.DSSWars.Defence
 
         private void refillGuardUnits(AbsSoldierBuilder typeProfile, int count, bool createModels)
         {
+
             for (int i = 0; i < count; ++i)
             {
-                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], tilePos, ref soldierData, createModels);
-                unit.firstUpdate();
+                if (i < IntVector2.AllDiagonalsArray.Length)
+                {
+                    AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], tilePos, ref soldierData, createModels);
+                    unit.firstUpdate();
+                }
             }
         }
 

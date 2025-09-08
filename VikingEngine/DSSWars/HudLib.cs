@@ -233,6 +233,28 @@ namespace VikingEngine.DSSWars
             };
         }
 
+        public static void buildingMenuTitle(RichBoxContent content, SpriteName icon, string caption, int id, int index, int buildingCount, Action closeAction, Action<int> nextAction)
+        {
+            content.Add(new RbBeginTitle(1));
+
+            content.Add(new ArtButton(RbButtonStyle.Primary,
+                new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFramePrevious) }, new RbAction1Arg<int>(nextAction, -1, RbSoundType.Tab),
+                new RbTooltip_Text(DssRef.todoLang.Hud_Previous), buildingCount > 1));
+            content.Add(new RbImage(icon));
+            content.space();
+            content.Add(new RbText(caption, TitleColor_Head));
+            content.space();
+            content.Add(new RbText(index.ToString(), TitleColor_Name));
+            content.space();
+            CloseButton(content, new RbAction(closeAction, RbSoundType.Back));
+            content.Add(new RbTab(0.8f));
+            content.Add(new ArtButton(RbButtonStyle.Primary,
+                new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameNext) }, new RbAction1Arg<int>(nextAction, 1, RbSoundType.Tab),
+                new RbTooltip_Text(DssRef.lang.Hud_Next), buildingCount > 1));
+            content.newLine();
+            content.Add(new RbText(id.ToString(), SecondaryTextColor));
+        }
+
         public static void blueprintButton(City city, LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null, bool roomForAnotherButton = false)
         {
 

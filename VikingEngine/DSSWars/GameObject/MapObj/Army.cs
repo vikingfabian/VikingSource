@@ -704,17 +704,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void update()
         {
-            updateArmyMovement(Ref.DeltaGameTimeMs);
-
-            if (debugTagged || id == 12)
+            if (debugTagged || id == -1)
             {
                 lib.DoNothing();
             }
 
-            
-                updateDetailLevel();
-            
+            updateArmyMovement(Ref.DeltaGameTimeMs);
 
+            updateDetailLevel();
+            
             if (inRender_detailLayer)
             {
                 updateArmyMembers(Ref.DeltaGameTimeMs, true);               
@@ -790,7 +788,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void updateArmyMembers(float time, bool fullUpdate)
         {
-            if (id == 12)
+            if (debugTagged || id == -1)
             {
                 lib.DoNothing();
             }
@@ -811,7 +809,7 @@ namespace VikingEngine.DSSWars.GameObject
                         ++armyCenterCount;
                     }
 
-                    if (!IdleObjetive() && armyCenterCount > 0)
+                    if ((!IdleObjetive() || Ref.peRnd.ChanceF(0.05f)) && armyCenterCount > 0)
                     {
                         var newPosition = armyCenter / armyCenterCount;
 
@@ -1283,18 +1281,18 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
         
-        public Vector3 leadingPosition()
-        {
-            var leader = groups.First();
-            if (leader != null)
-            {
-                return leader.position;
-            }
-            else
-            {
-                return WP.ToWorldPos(tilePos);
-            }
-        }
+        //public Vector3 leadingPosition()
+        //{
+        //    var leader = groups.First();
+        //    if (leader != null)
+        //    {
+        //        return leader.position;
+        //    }
+        //    else
+        //    {
+        //        return WP.ToWorldPos(tilePos);
+        //    }
+        //}
 
         public void hungerDeserters()
         {

@@ -1461,23 +1461,24 @@ namespace VikingEngine.DSSWars.Players
 
         void diplomacyCheck(List<int> wars)
         {
-            if (diplomacyPoints >= 100)
+            if (diplomacyPoints >= 200)
             {
                 diplomacyPoints = 0;
 
-                if (wars.Count > 0 && Ref.peRnd.Chance(0.6 - aggressionLevel * 0.1 + wars.Count * 0.05))
+                if (wars.Count > 0 && Ref.peRnd.Chance(0.4 - aggressionLevel * 0.1 + wars.Count * 0.05))
                 { 
                     //Declare peace
                     int opponent = arraylib.RandomListMember(wars);
                     Faction enemyFaction = DssRef.world.factions.GetIndex_Safe(opponent);
                     if (enemyFaction.player.IsBot() &&
+                        !DssRef.diplomacy.OppositeDiplomaticSides(faction, enemyFaction) &&
                         (wars.Count > 1 || this.faction.militaryStrength < enemyFaction.militaryStrength) &&
                         !DssRef.diplomacy.InplayerAlliance(faction))
                     {
                         this.faction.shareRelationWithAllAllies(enemyFaction, RelationType.RelationType1_Peace);
                     }
                 }
-                else if (Ref.peRnd.Chance(0.1))
+                else if (Ref.peRnd.Chance(0.2))
                 {
                     if (wars.Count > 0 && Ref.peRnd.Chance(0.8))
                     {

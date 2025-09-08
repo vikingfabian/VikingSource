@@ -23,32 +23,68 @@ namespace VikingEngine.DSSWars.XP
             this.city = city;
             this.player = player;
 
+            var available = city.technology.availableTech();
+
+            lock (city.researchBuildings)
+            {
+                for (int i = 0; i < city.researchBuildings.Count; i++)
+                {
+                    var assigned = city.researchBuildings[i].assignedTech;
+                    if (assigned != TechnologyTreeType.NUM_NONE &&
+                        !available.Contains(assigned))
+                    {
+                        //Unlock
+                        var building = city.researchBuildings[i];
+                        building.assignedTech = TechnologyTreeType.NUM_NONE;
+                        city.researchBuildings[i] = building;
+                    }
+                }
+            }
+
             if (arraylib.InBound(city.researchBuildings, city.selectedResearchBuilding))
             {
                 var building = city.researchBuildings[city.selectedResearchBuilding];
-                content.Add(new RbBeginTitle(1));
+                //content.Add(new RbBeginTitle(1));
 
                 LangLib.ResearchType(building.isResearchCenter, out string caption, out SpriteName icon);
 
-                content.Add(new RbImage(icon));
-                content.space();
-                var title = new RbText(caption + " " + building.idAndPosition.ToString());
-                title.overrideColor = HudLib.TitleColor_TypeName;
-                content.Add(title);
-                content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedResearchBuilding = -1; }, RbSoundType.Back));
+                //content.Add(new RbImage(icon));
+                //content.space();
+                //var title = new RbText(caption + " " + building.idAndPosition.ToString());
+                //title.overrideColor = HudLib.TitleColor_TypeName;
+                //content.Add(title);
+                //content.space();
+                //HudLib.CloseButton(content, new RbAction(() => { city.selectedResearchBuilding = -1; }, RbSoundType.Back));
+                HudLib.buildingMenuTitle(content, icon, caption, building.idAndPosition, city.selectedResearchBuilding, city.researchBuildings.Count,
+                    () => { city.selectedResearchBuilding = -1; },
+                    (int next) => {
+                        city.selectedResearchBuilding = Bound.SetRollover(city.selectedResearchBuilding + next, 0, city.researchBuildings.Count - 1);
+                    });
 
                 content.newParagraph();
-                HudLib.BulletPoint(content);
-                string desc = building.isResearchCenter ? string.Format( DssRef.lang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter) : string.Format( DssRef.lang.BuildingType_Bookpress_Description, DssRef.lang.BuildingType_ReseachCenter);
-                content.Add(new RbText( desc, HudLib.InfoYellow_Light));
+                if (building.isResearchCenter)
+                {
+                    HudLib.BulletPoint(content);
+                    string desc = string.Format(DssRef.lang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter);
+                    content.Add(new RbText(desc, HudLib.InfoYellow_Light));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.todoLang.Hud_EffectWillStack, HudLib.InfoYellow_Light));
+                }
+                else
+                {
+                    HudLib.BulletPoint(content);
+                    string desc = string.Format(DssRef.lang.BuildingType_Bookpress_Description, DssRef.lang.BuildingType_ReseachCenter);
+                    content.Add(new RbText(desc, HudLib.InfoYellow_Light));
+                }
 
 
+                
                 content.newParagraph();
                 if (building.assignedTech == TechnologyTreeType.NUM_NONE)
                 {
-                    var available = city.technology.availableTech();
-
+                    
                     if (available.Count == 0)
                     {
                         content.newLine();

@@ -590,12 +590,12 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Glory to me: contruct the "sword raising player" statue
         /// </summary>
-        statue_of_player,//i
+        statue_of_player,//i, t
 
         /// <summary>
         /// Decorations: Constuct 20 decorative buildings, including at least 4 statues, then 40/8, then 80/16
         /// </summary>
-        decorations_tier1,//i
+        decorations_tier1,//i, t
         decorations_tier2,
         decorations_tier3,
 
@@ -603,7 +603,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Knights: Produce cavalry knights
         /// </summary>
-        knights,//i
+        knights,//i, t
 
         /// <summary>
         /// Men of steel: Produce soldiers with steel sword and armor.

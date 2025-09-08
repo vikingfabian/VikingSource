@@ -312,7 +312,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             for (int i = 0; i < deliveryServices.Count; ++i)
             {
-                if (deliveryServices[i].GetFilterType() == player.deliverySupTab)
+                if (player.deliverySupTab == deliveryServices[i].GetFilterType() ||
+                     player.deliverySupTab == ItemResourceType.NUM)
                 {
                     pasteDelivery(player, i);
                 }

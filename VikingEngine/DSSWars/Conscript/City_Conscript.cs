@@ -2,16 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Interface.Component;
-using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.Joust.DropItem;
@@ -233,7 +233,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             for (int i = 0; i < conscriptBuildings.Count; ++i)
             {
-                if (conscriptBuildings[i].type == player.conscriptSubTab)
+                if (player.conscriptSubTab == BuildAndExpandType.ALL ||
+                    player.conscriptSubTab == conscriptBuildings[i].type)
                 {
                     pasteConscript(player, i);
                 }

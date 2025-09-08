@@ -40,6 +40,10 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Hud_All => "All";
 
+        public string Hud_Previous => "Previuos";
+
+        public string Hud_EffectWillStack => "The effect will stack";
+
         public string Info_WhenFoodRunsOut => "When food runs out, cities and armies will automatically purchase it from the black market.";
 
         //Factions
