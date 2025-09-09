@@ -565,7 +565,7 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
                 case WorkExperienceType.Smelting:
                     name = DssRef.lang.ExperienceType_RefineOre;
-                    icon = SpriteName.WarsResource_CastIron;
+                    icon = SpriteName.WarsWorkSmelting;
                     break;
                 case WorkExperienceType.CastMetal:
                     name = DssRef.lang.ExperienceType_Casting;
@@ -579,10 +579,10 @@ namespace VikingEngine.DSSWars.Presentation
                     name = DssRef.lang.ExperienceType_CraftArmor;
                     icon = SpriteName.WarsResource_IronArmor;
                     break;
-                case WorkExperienceType.CraftWeapon:
-                    name = DssRef.lang.ExperienceType_CraftWeapon;
-                    icon = SpriteName.WarsResource_Sword;
-                    break;
+                //case WorkExperienceType.CraftWeapon:
+                //    name = DssRef.lang.ExperienceType_CraftWeapon;
+                //    icon = SpriteName.WarsResource_Sword;
+                //    break;
                 case WorkExperienceType.CraftFuel:
                     name = DssRef.lang.ExperienceType_CraftFuel;
                     icon = SpriteName.WarsResource_Fuel;

@@ -536,12 +536,14 @@ namespace VikingEngine.DSSWars.XP
                 case WorkExperienceType.AnimalCare:
                     return TechnologyTreeType.advancedFarming;
 
+                case WorkExperienceType.Mining:
                 case WorkExperienceType.Smelting:
                 case WorkExperienceType.CastMetal:
                     return TechnologyTreeType.advancedCasting;
-
-                case WorkExperienceType.Mining:
+               
                 case WorkExperienceType.CraftMetal:
+                //case WorkExperienceType.CraftWeapon:
+                case WorkExperienceType.CraftArmor:
                     return (iron.points < IronUnlock)
                         ? TechnologyTreeType.iron
                         : TechnologyTreeType.steel;

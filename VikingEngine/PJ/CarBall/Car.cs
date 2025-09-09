@@ -282,7 +282,7 @@ namespace VikingEngine.PJ.CarBall
             }
 
             sumVelocity = Velocity + pushForce;
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
             {
                 if (pushForce.Length() < minSpeed * 0.1f)
                 {

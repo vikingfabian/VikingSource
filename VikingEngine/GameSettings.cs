@@ -24,7 +24,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 25;
+        const int Version = 26;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -32,6 +32,7 @@ namespace VikingEngine
 
         public int ChunkLoadRadius = LootFest.Map.World.StandardOpenRadius;
         public ThreeOptions MapLoadingSpeed = ThreeOptions.Medium;
+        static readonly int[] FrameRateOptions = new int[] { 30, 60, 75, 100, 120, 144, 165, 240, 360 };
         public int FrameRate = 60;
         public int DetailLevel = 1;
         public bool AutoJoinToCoopLevel = true;
@@ -138,6 +139,8 @@ namespace VikingEngine
             w.Write(waterFoam);
             w.Write(modelBrightness);
 
+            w.Write(FrameRate);
+
             Debug.WriteCheck(w);
         }
 
@@ -213,10 +216,17 @@ namespace VikingEngine
                 modelShadow = r.ReadBoolean();
                 waterFoam = r.ReadBoolean();
                 modelBrightness = r.ReadSingle();
-            } 
+            }
+
+            if (version >= 26)
+            {
+                FrameRate = r.ReadInt32();
+               
+            }
 
             Debug.ReadCheck(r);
 
+             Engine.Update.SetFrameRate(FrameRate);
             //MusicMasterVolume = 0;
         }
 
@@ -631,6 +641,18 @@ namespace VikingEngine
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_Particles) },
                 particlesProperty));
+
+
+            DropDownBuilder frameRateOptions = new DropDownBuilder("fps");
+            {
+                foreach (var fps in FrameRateOptions)
+                {
+                    frameRateOptions.AddOption(fps.ToString(), fps == FrameRate, fps == 60,
+                        new RbAction1Arg<int>((int fps) => { FrameRate = fps; Engine.Update.SetFrameRate(FrameRate); settingsHasChanged = true; }, fps), null);
+
+                }
+                frameRateOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Settings_FrameRate, menu);
+            }
 
             DropDownBuilder mapLoadingDropDown = new DropDownBuilder("mapload");
             {

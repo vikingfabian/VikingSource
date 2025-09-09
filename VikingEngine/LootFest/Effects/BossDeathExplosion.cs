@@ -65,7 +65,7 @@ namespace VikingEngine.LootFest.Effects
                 for (int i = 0; i < cubes.Length; ++i)
                 {
                     cubes[i].Position = center + VectorExt.V2toV3XZ(dir.Direction(radius));
-                    if (Ref.TimePassed16ms)
+                    if (Ref.GameTimePassed16ms > 0)//if (Ref.TimePassed16ms)
                     {
                         Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.BulletTrace, cubes[i].Position);
                     }

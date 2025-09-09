@@ -243,7 +243,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void pasteConscript(LocalPlayer player)
         {
-            pasteConscript(player, selectedConscript);
+            if (selectedConscript < 0)
+            {
+                pasteConscriptToAll(player);
+            }
+            else
+            {
+                pasteConscript(player, selectedConscript);
+            }
         }
 
         public void pasteConscript(LocalPlayer player, int index)

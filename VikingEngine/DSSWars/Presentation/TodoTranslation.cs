@@ -26,8 +26,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string Settings_ModelShadow => "Shadows";
         public string Settings_ModelShadowMapSize => "Shadows map size";
         public string Settings_Brightness => "Brightness";
-
         public string Settings_Mode_No_Achivements => "Achivements are not available.";
+        public string Settings_FrameRate => "Frame rate";
+
 
         public string Settings_Mode_Spectator_Description => "Just watch, or interfere with god powers.";
         public string GodPower => "God power";

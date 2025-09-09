@@ -116,8 +116,8 @@ namespace VikingEngine.PJ.MiniGolf
         override public void update()
         {
             FieldSquare onSquare = GolfRef.field.tryGetSquare(image.Position);
-            
-            if (Ref.TimePassed16ms)
+
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             { //Friction update
                 float speed = velocity.Length();
                 if (speed < GolfRef.gamestate.MinSpeed)
@@ -345,7 +345,7 @@ namespace VikingEngine.PJ.MiniGolf
         void updateRotation()
         {
             image.Rotation += rotationSpeed * Ref.DeltaTimeSec;
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             {
                 if (Math.Abs(rotationSpeed) > 0.1f)
                 {
@@ -420,7 +420,7 @@ namespace VikingEngine.PJ.MiniGolf
             }
             else
             {
-                if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     diff.Normalize();
                     addForce(diff * GolfRef.gamestate.MaxClubForce * 0.015f, null);

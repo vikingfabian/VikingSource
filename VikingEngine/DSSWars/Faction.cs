@@ -466,11 +466,12 @@ namespace VikingEngine.DSSWars
             }
         }
 
-
+        
         public void oneSecUpdate()
         {
             if (isAlive)
             {
+
                 CityTradeImport = CityTradeImportCounting;
                 CityTradeExport = CityTradeExportCounting;
                 CityTradeImportCounting -= CityTradeImport;

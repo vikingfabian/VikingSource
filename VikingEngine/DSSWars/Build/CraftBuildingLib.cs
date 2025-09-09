@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.ShortSword, ItemResourceType.Sword, ItemResourceType.LongSword,
             ItemResourceType.HandSpear,
             ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance,
-            //ItemResourceType.IronArmor,
+            ItemResourceType.Steel,
             ItemResourceType.Toolkit,
         };
 

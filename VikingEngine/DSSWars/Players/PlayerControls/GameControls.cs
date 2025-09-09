@@ -657,6 +657,29 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             player.hud.needRefresh = true;
                         }
                         break;
+                    case MenuTab.Progress:
+                        switch (player.progressSubTab)
+                        {
+                            case ProgressSubTab.Schools:
+                                if (input.StopStart.DownEvent)
+                                {
+                                    bool start = city.toggleSchoolStop(city.selectedSchool);
+                                    player.hud.needRefresh = true;
+                                    (start ? SoundLib.start : SoundLib.stop).Play();
+                                }
+                                break;
+                            case ProgressSubTab.Research:
+                                if (input.StopStart.DownEvent)
+                                {
+                                    if (city.commitResearch(player))
+                                    {
+                                        player.hud.needRefresh = true;
+                                        SoundLib.start.Play();
+                                    }
+                                }
+                                break;
+                        }
+                        break;
                 }
             }
         }

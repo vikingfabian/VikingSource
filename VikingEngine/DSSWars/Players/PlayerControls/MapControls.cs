@@ -1131,7 +1131,7 @@ namespace VikingEngine.DSSWars.Players
                 float zdiff = targetZoom - camera.CurrentZoom;
                 if (Math.Abs(zdiff) > 2)
                 {
-                    camera.CurrentZoom += zdiff * 0.4f;
+                    camera.CurrentZoom += zdiff * 0.4f / Ref.UpdateTimes60FPS;
                 }
                 else
                 {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
@@ -577,7 +578,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public static int EndWarCost(RelationType relation, SpeakTerms speakterms, bool againstDark, bool peace_notTruce)
+        public static int EndWarCost(Faction toFaction, RelationType relation, SpeakTerms speakterms, bool againstDark, bool peace_notTruce)
         {
             int cost = 0;
             cost -= (int)relation; //2 or 3
@@ -587,6 +588,8 @@ namespace VikingEngine.DSSWars
             {
                 cost *= 2;
             }
+
+            cost += toFaction.WorkForceInCityCount() / 5;
 
             if (againstDark)
             {
@@ -613,12 +616,19 @@ namespace VikingEngine.DSSWars
             return baseCost * (player.statistics.ServantFactions + 1);
         }
 
-        public static int AllianceCost(RelationType relation, SpeakTerms speakterms, bool againstDark, bool ally_notFriend)
+        public static int AllianceCost(Faction toFaction, RelationType relation, SpeakTerms speakterms, bool againstDark, bool ally_notFriend)
         {
             RelationType toRelation = ally_notFriend ? RelationType.RelationType3_Ally : RelationType.RelationType2_Good;
             int diff = toRelation - relation; //1 or 2
 
-            int cost = diff * 2 + 1;
+            int cost = diff * 2 /*+ 1*/;
+
+            if (ally_notFriend)
+            { 
+                cost += 2;
+            }
+
+            cost += toFaction.WorkForceInCityCount() / 3;
             cost -= (int)speakterms;//0
 
             int minCost = 2;

@@ -22,7 +22,7 @@ namespace VikingEngine.Engine
 
         public LasyUpdatePart LasyUpdatePart = LasyUpdatePart.Part1;
         public float LazyUpdateTime = 0;
-        float time_16msCountDown = 0;
+        //float time_16msCountDown = 0;
         float gametime_16msCountDown = 0;
         public float TotalGameTime = 0;
         public bool exitApplication = false;
@@ -148,18 +148,18 @@ namespace VikingEngine.Engine
             lazyUpdateAccumulatedTime_next += time;
             TotalGameTime += time;
 
-            {//Calc Ref.TimePassed16ms
-                time_16msCountDown += time;
-                if (time_16msCountDown >= Time16ms)
-                {
-                    time_16msCountDown -= Time16ms;
-                    Ref.TimePassed16ms = true;
-                }
-                else
-                {
-                    Ref.TimePassed16ms = false;
-                }
-            }
+            //{//Calc Ref.TimePassed16ms
+            //    time_16msCountDown += time;
+            //    if (time_16msCountDown >= Time16ms)
+            //    {
+            //        time_16msCountDown -= Time16ms;
+            //        Ref.TimePassed16ms = true;
+            //    }
+            //    else
+            //    {
+            //        Ref.TimePassed16ms = false;
+            //    }
+            //}
 
             {//Calc Ref.GameTimePassed16ms
                 Ref.GameTimePassed16ms = 0;
@@ -299,6 +299,7 @@ namespace VikingEngine.Engine
         {
             Ref.main.TargetElapsedTime = new TimeSpan((long)(TimeSpan.TicksPerMillisecond * (1000.0 / (double)fps)));
             Ref.UpdateTimes30FPS = fps / 30;
+            Ref.UpdateTimes60FPS = fps / 60f;
             Ref.TargetDeltaTimeMs = (float)Ref.main.TargetElapsedTime.TotalMilliseconds;
 
         }

@@ -282,7 +282,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void pasteDelivery(LocalPlayer player)
         {
-            pasteDelivery(player, selectedDelivery);
+            if (selectedDelivery < 0)
+            {
+                pasteDeliveryToAll(player);
+            }
+            else
+            {
+                pasteDelivery(player, selectedDelivery);
+            }
         }
 
         public void pasteDelivery(LocalPlayer player, int index)

@@ -923,11 +923,11 @@ namespace VikingEngine.LootFest
                     new GuiCheckbox("Horizontal split", null, horiSplitProperty, layout);
                 // other graphics
                 new GuiTextButton("Camera", null, cameraSettings, true, layout);
-                new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Frame rate", new List<GuiOption<int>>
-                {
-                    new GuiOption<int>(30), new GuiOption<int>(60), new GuiOption<int>(90), 
-                    new GuiOption<int>(100), new GuiOption<int>(120), new GuiOption<int>(144)
-                }, frameRateProperty, layout);
+                //new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Frame rate", new List<GuiOption<int>>
+                //{
+                //    new GuiOption<int>(30), new GuiOption<int>(60), new GuiOption<int>(90), 
+                //    new GuiOption<int>(100), new GuiOption<int>(120), new GuiOption<int>(144)
+                //}, frameRateProperty, layout);
 
                 new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Detail level", new List<GuiOption<int>>
                 {
@@ -1127,15 +1127,15 @@ namespace VikingEngine.LootFest
             return GetSet.Do<int>(set, ref Ref.gamesett.DetailLevel, value);
         }
 
-        int frameRateProperty(bool set, int value)
-        {
-            if (set)
-            {
-                Ref.gamesett.FrameRate = value;
-                Engine.Update.SetFrameRate(Ref.gamesett.FrameRate);
-            }
-            return Ref.gamesett.FrameRate;
-        }
+        //int frameRateProperty(bool set, int value)
+        //{
+        //    if (set)
+        //    {
+        //        Ref.gamesett.FrameRate = value;
+        //        Engine.Update.SetFrameRate(Ref.gamesett.FrameRate);
+        //    }
+        //    return Ref.gamesett.FrameRate;
+        //}
 
         int chunkRadiusProperty(bool set, int value)
         {

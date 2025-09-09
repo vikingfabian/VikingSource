@@ -354,12 +354,14 @@ namespace VikingEngine.DSSWars.Conscript
 
                 content.newParagraph();
                 content.Add(new RbImage(player.gameControls.input.Copy.Icon));
+                content.hspace();
                 content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember> {                    
                     new RbText(DssRef.lang.Hud_CopySetup) },
                     new RbAction1Arg<LocalPlayer>(city.copyConscript, player, RbSoundType.Copy)));
 
                 content.space();
                 content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+                content.hspace();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {                   
                     new RbText(DssRef.lang.Hud_Paste) },
                     new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, RbSoundType.Paste)));
@@ -519,6 +521,8 @@ namespace VikingEngine.DSSWars.Conscript
                         typeCount == 1)
                     {
                         content.newLine();
+                        content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+                        content.hspace();
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbText(DssRef.lang.Hud_Paste) },
                             new RbAction1Arg<LocalPlayer>(city.pasteConscriptToAll, player, RbSoundType.Paste)));

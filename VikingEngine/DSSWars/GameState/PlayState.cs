@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars
 #endif
             
             this.host = host;
-            Engine.Update.SetFrameRate(60);
+            Engine.Update.SetFrameRate(Ref.gamesett.FrameRate);
 
             if (readWorld != null)
             {

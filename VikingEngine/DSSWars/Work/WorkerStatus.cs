@@ -106,6 +106,14 @@ namespace VikingEngine.DSSWars.Work
             xpType1 = (WorkExperienceType)r.ReadByte();
             xpType2 = (WorkExperienceType)r.ReadByte();
             xpType3 = (WorkExperienceType)r.ReadByte();
+
+            if (subversion < 80)
+            {
+                XpLib.AdjustVersion80Skill(ref xpType1);
+                XpLib.AdjustVersion80Skill(ref xpType2);
+                XpLib.AdjustVersion80Skill(ref xpType3);
+            }
+
             xp1 = r.ReadByte();
             xp2 = r.ReadByte();
             xp3 = r.ReadByte();

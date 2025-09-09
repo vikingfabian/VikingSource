@@ -579,12 +579,12 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Declare war on an ally.
         /// </summary>
-        traitor,//i
+        traitor,//i, t
 
         /// <summary>
         /// destroy the mercenaries on sea
         /// </summary>
-        early_hara,//i
+        early_hara,//i, t
 
 
         /// <summary>
@@ -646,7 +646,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Go 64bit: break the 16 bit limit of gold.
         /// </summary>
-        gold_64bit,//i
+        gold_64bit,//i, t
 
         /// <summary>
         /// The Ottoman - defeat a city with bronze siege cannons
@@ -656,7 +656,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Purge: Wipe out 1 nation, then 4, then 12. story, 75% difficulty
         /// </summary>
-        purge_nation_tier1,//i
+        purge_nation_tier1,//i, t
         purge_nation_tier2,
         purge_nation_tier3,
 
@@ -668,7 +668,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         ///  fully research all technologies
         /// </summary>
-        techtree,//i
+        techtree,//i, t
 
         /// <summary>
         /// The people rise: 16 group army of only folkmen and slingers
@@ -746,7 +746,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Ally with both the "hill" factions
         /// </summary>
-        worthy_friends,//i
+        worthy_friends,//i, t
 
 
         NUM_ACHIEVEMENTS

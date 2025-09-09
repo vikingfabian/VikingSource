@@ -114,6 +114,12 @@ namespace VikingEngine.DSSWars
         public ResourceOverview res_FullPlateArmor = new ResourceOverview();
         public ResourceOverview res_MithrilArmor = new ResourceOverview();
 
+        public int WorkForceInCityCount()
+        { 
+            return totalWorkForce / DssConst.HeadCityStartMaxWorkForce;
+        }
+        
+        
         public long GoldSecDiff()
         {
             return storeMoney.GetGold() - previuosMoney.GetGold();

@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Iron_G, 4),               
            },
           XP.WorkExperienceType.CastMetal,
-          XP.ExperienceLevel.Expert_3,
+          XP.ExperienceLevel.Practitioner_2,
            CraftRequirement.Foundry
        );
 
@@ -397,7 +397,7 @@ namespace VikingEngine.DSSWars.Resource
            );
         public static readonly CraftBlueprint WagonHeavy = new CraftBlueprint(
                 CraftResultType.Resource,
-                (int)ItemResourceType.Wagon2Wheel,
+                (int)ItemResourceType.Wagon4Wheel,
                1,
                new UseResource[]
                {
@@ -451,7 +451,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 1),
                 new UseResource(ItemResourceType.Stone_G, 1),
             },
-            XP.WorkExperienceType.CraftWeapon
+            XP.WorkExperienceType.CraftMetal
         );
 
         public static readonly CraftBlueprint BronzeSword = new CraftBlueprint(
@@ -463,7 +463,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Bronze, 3),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,
             CraftRequirement.Smith
         );
@@ -477,7 +477,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Iron_G, 3),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,
             CraftRequirement.Smith
         );
@@ -491,7 +491,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Iron_G, 4),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Expert_3,
             CraftRequirement.Smith
         );
@@ -505,7 +505,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Steel, 4),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
              XP.ExperienceLevel.Expert_3,
             CraftRequirement.Smith
         );
@@ -519,7 +519,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 5),
                 new UseResource(ItemResourceType.Iron_G, 1),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
              XP.ExperienceLevel.Beginner_1,
             CraftRequirement.Smith
         );
@@ -533,7 +533,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 5),
                 new UseResource(ItemResourceType.Bronze, 1),
            },
-           XP.WorkExperienceType.CraftWeapon,
+           XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Beginner_1,
            CraftRequirement.Smith
        );
@@ -548,7 +548,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Bronze, 1),
                 new UseResource(ItemResourceType.Mithril, 3),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
              XP.ExperienceLevel.Master_4,
             CraftRequirement.Smith
         );
@@ -563,7 +563,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 4),
                 new UseResource(ItemResourceType.Iron_G, 2),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,
             CraftRequirement.Smith
         );
@@ -577,7 +577,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 4),
                 new UseResource(ItemResourceType.Bronze, 2),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,
             CraftRequirement.Smith
         );
@@ -593,7 +593,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 5),
                 new UseResource(ItemResourceType.Iron_G, 5),
             },
-           XP.WorkExperienceType.CraftWeapon,
+           XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,
             CraftRequirement.Smith
         );
@@ -607,7 +607,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Steel, 5),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Expert_3,
             CraftRequirement.Smith
         );

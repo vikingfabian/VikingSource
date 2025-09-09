@@ -25,18 +25,21 @@ namespace VikingEngine.DSSWars.XP
 
             var available = city.technology.availableTech();
 
-            lock (city.researchBuildings)
+            if (city.researchBuildings != null)
             {
-                for (int i = 0; i < city.researchBuildings.Count; i++)
+                lock (city.researchBuildings)
                 {
-                    var assigned = city.researchBuildings[i].assignedTech;
-                    if (assigned != TechnologyTreeType.NUM_NONE &&
-                        !available.Contains(assigned))
+                    for (int i = 0; i < city.researchBuildings.Count; i++)
                     {
-                        //Unlock
-                        var building = city.researchBuildings[i];
-                        building.assignedTech = TechnologyTreeType.NUM_NONE;
-                        city.researchBuildings[i] = building;
+                        var assigned = city.researchBuildings[i].assignedTech;
+                        if (assigned != TechnologyTreeType.NUM_NONE &&
+                            !available.Contains(assigned))
+                        {
+                            //Unlock
+                            var building = city.researchBuildings[i];
+                            building.assignedTech = TechnologyTreeType.NUM_NONE;
+                            city.researchBuildings[i] = building;
+                        }
                     }
                 }
             }
@@ -112,13 +115,16 @@ namespace VikingEngine.DSSWars.XP
                         }
 
                         content.newLine();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_CommitAssignment) }, new RbAction(() =>
-                        {
-                            //Assign selected tech
-                            var building = city.researchBuildings[city.selectedResearchBuilding];
-                            building.assignedTech = player.selectedTech;
-                            city.researchBuildings[city.selectedResearchBuilding] = building;
-                        })));
+                        content.Add(new RbImage(player.gameControls.input.StopStart.Icon));
+                        content.space(0.5f);
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_CommitAssignment) },
+                            new RbAction1Arg<LocalPlayer>(city._commitResearch, player, RbSoundType.Start)));
+                        //{
+                        //    //Assign selected tech
+                        //    var building = city.researchBuildings[city.selectedResearchBuilding];
+                        //    building.assignedTech = player.selectedTech;
+                        //    city.researchBuildings[city.selectedResearchBuilding] = building;
+                        //)));
                     }
                 }
                 else

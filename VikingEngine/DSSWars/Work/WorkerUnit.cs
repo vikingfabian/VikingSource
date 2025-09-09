@@ -117,7 +117,7 @@ namespace VikingEngine.DSSWars.Work
 
                         if (isShip)
                         {
-                            if (Ref.TimePassed16ms && Ref.peRnd.ChanceF(0.3f))
+                            if (/*Ref.TimePassed16ms &&*/ Ref.peRnd.ChanceF(0.3f/Ref.UpdateTimes60FPS))
                             {
                                 Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, Tile.WaterSurfaceY),
                                     DssConst.Men_StandardModelScale * 0.2f, 4);

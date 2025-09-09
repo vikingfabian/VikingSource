@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.XP
             WorkExperienceType.CastMetal,
             WorkExperienceType.CraftMetal,
             WorkExperienceType.CraftArmor,
-            WorkExperienceType.CraftWeapon,
+            //WorkExperienceType.CraftWeapon,
             WorkExperienceType.CraftFuel,
             WorkExperienceType.Chemistry,
         };
@@ -37,6 +37,21 @@ namespace VikingEngine.DSSWars.XP
         public static string TechnologyName_BlackPowder()
         {
             return DssRef.lang.Resource_TypeName_BlackPowder;
+        }
+
+        public static void AdjustVersion80Skill(ref WorkExperienceType experienceType)
+        {
+            if (experienceType >= WorkExperienceType.CraftFuel)
+            {
+                if (experienceType == WorkExperienceType.CraftFuel)
+                {
+                    experienceType = WorkExperienceType.CraftMetal;
+                }
+                else
+                {
+                    --experienceType;
+                }
+            }
         }
 
         //    tech(technology.advancedBuilding, TechnologyTemplate.AdvancedBuildingUnlock, SpriteName.WarsBuild_Nobelhouse, DssRef.lang.Technology_AdvancedBuildings);
@@ -67,7 +82,7 @@ namespace VikingEngine.DSSWars.XP
         CastMetal,
         CraftMetal,
         CraftArmor,
-        CraftWeapon,
+        //CraftWeapon,
         CraftFuel,
         Chemistry,
         //GodPower,

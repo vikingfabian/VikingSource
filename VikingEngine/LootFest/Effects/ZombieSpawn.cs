@@ -25,7 +25,7 @@ namespace VikingEngine.LootFest.Effects
 
         public override void Time_Update(float time)
         {
-            if (Ref.TimePassed16ms && Ref.rnd.Chance(0.6f))
+            if (/*Ref.TimePassed16ms && */Ref.rnd.Chance(0.6f))
             {
                 new BouncingBlock2Dummie(position, Data.MaterialType.dirt_brown, 0.5f);
                 Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.Dust, position, 1f, 16);

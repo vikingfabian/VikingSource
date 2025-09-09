@@ -1239,7 +1239,7 @@ namespace VikingEngine.DSSWars.Interface
             experience(SpriteName.WarsWorkCasting, DssRef.lang.ExperienceType_Casting, city.topskill_Casting);
             experience(SpriteName.WarsResource_Iron, DssRef.lang.ExperienceType_CraftMetal, city.topskill_CraftMetal);
             experience(SpriteName.WarsResource_IronArmor, DssRef.lang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
-            experience(SpriteName.WarsResource_Sword, DssRef.lang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
+            //experience(SpriteName.WarsResource_Sword, DssRef.lang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
             experience(SpriteName.WarsResource_Fuel, DssRef.lang.ExperienceType_CraftFuel, city.topskill_CraftFuel);
             experience(SpriteName.WarsBuild_Chemist, DssRef.lang.ExperienceType_Chemist, city.topskill_Chemistry);
 

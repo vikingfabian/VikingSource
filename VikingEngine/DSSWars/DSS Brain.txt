@@ -1,32 +1,7 @@
 ﻿UPDATE
 Change Log:
-* Reduced barbarian story event by 1.5 hours
-* Reduced Advanced Building research 60 to 50 points
-* Cut passive diplomacy add speed to 50%
-* improved research building hud
-* next/previous buttons for building menues, plus other improvements
-* reduced Mercenaries: 8 to 4 hours 
-* reduced cohalition: 12 to 10 hours 
-* reduced the chance of bot peace to 33%
-* bots with opposite sides of good/evil, may not declare peace
-* fixed: reassign of completed research building
-
-Language change log:
-*
-
-
-Story:
 * 
 
-ACHIEVEMENTS
-* 
-
-
-Spectator mode:
-* 
-
-Casual:
-* 
 
 Event timers (are slightly random)
 - Bot delay: 8 minutes
@@ -43,11 +18,12 @@ Plus the boss fight: about 10 hours
 
 #Pics
 build building icon
+interact icons for buildings (play, next, previous,) 
 
 #must do#
-x Considering increasing the diplomatic cost to ally huge nations
+x 
 x barbarian killer not working
-x army flipping in cirkles
+
 x book press not unlocked from research completed
 x lobby ambience is heard on zero volume
 x music should not play when master = 0
@@ -55,6 +31,11 @@ x test all achievements
 x full game achievements + translations
 
 #Todo#
+xI want to move/set all spearmen at the front.
+x ship dont remove spear attack on death
+x disband guards
+x automatic army width
+x army flipping in cirkles
 x lägg toolkit och heavy wagon som advanced woodwork efter catapult
 x can cheese building over borders and using copy
 x advanced transport in logistics lvl2

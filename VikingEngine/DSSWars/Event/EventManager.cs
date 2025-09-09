@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Event
 
         Time dyingFactionsTimer = Time.Zero;
 
-        Time toPeacefulCheckTimer = new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
+        Time tooPeacefulCheckTimer = new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
 
         ConcurrentQueue<AbsStoryEvent> mainStory = new ConcurrentQueue<AbsStoryEvent>();
 
@@ -590,6 +590,11 @@ namespace VikingEngine.DSSWars.Event
             }
         }
 
+        public void testToPeacefulCheck()
+        {
+            tooPeacefulCheckTimer.setZero();
+        }
+
 
         void asyncUpdateDyingFactions(float time)
         { 
@@ -623,10 +628,10 @@ namespace VikingEngine.DSSWars.Event
             var storyevent = mainStory.FirstOrDefault();
             if (storyevent == null || storyevent.RunWarManager())
             {
-                if (toPeacefulCheckTimer.CountDown(time) &&
+                if (tooPeacefulCheckTimer.CountDown(time) &&
                     DssRef.difficulty.toPeacefulPercentage > 0)
                 {
-                    toPeacefulCheckTimer = new Time(Ref.rnd.Float(1.5f, 3f), TimeUnit.Hours);
+                    tooPeacefulCheckTimer = new Time(Ref.rnd.Float(1.5f, 3f), TimeUnit.Hours);
 
                     foreach (var p in DssRef.state.localPlayers)
                     {

@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
         public ExperienceLevel topskill_Casting = 0;
         public ExperienceLevel topskill_CraftMetal = 0;
         public ExperienceLevel topskill_CraftArmor = 0;
-        public ExperienceLevel topskill_CraftWeapon = 0;
+        //public ExperienceLevel topskill_CraftWeapon = 0;
         public ExperienceLevel topskill_CraftFuel = 0;
         public ExperienceLevel topskill_Chemistry = 0;
 
@@ -151,7 +151,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case WorkExperienceType.CastMetal: return topskill_Casting;
                 case WorkExperienceType.CraftMetal: return topskill_CraftMetal;
                 case WorkExperienceType.CraftArmor: return topskill_CraftArmor;
-                case WorkExperienceType.CraftWeapon: return topskill_CraftWeapon;
+                //case WorkExperienceType.CraftWeapon: return topskill_CraftWeapon;
                 case WorkExperienceType.CraftFuel: return topskill_CraftFuel;
                 case WorkExperienceType.Chemistry: return topskill_Chemistry;
 
@@ -231,6 +231,45 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public bool toggleSchoolStop(int index)
+        {
+            lock (schoolBuildings)
+            {
+                if (arraylib.InBound(schoolBuildings, index))
+                {
+                    var currentStatus = schoolBuildings[index];
+                    currentStatus.que++;
+                    if (currentStatus.que > 2)
+                    {
+                        currentStatus.que = 0;
+                    }
+                   
+                    schoolBuildings[index] = currentStatus;
+                    return currentStatus.que > 0;
+                }
+            }
+            return false;
+        }
+
+        public void _commitResearch(LocalPlayer player)
+        {
+            commitResearch(player);
+        }
+
+        public bool commitResearch(LocalPlayer player)
+        {
+            lock (researchBuildings)
+            {
+                var building = researchBuildings[selectedResearchBuilding];
+                if (building.assignedTech == TechnologyTreeType.NUM_NONE)
+                {
+                    building.assignedTech = player.selectedTech;
+                    researchBuildings[selectedResearchBuilding] = building;
+                    return true;
+                }
+            }
+            return false;
+        }
         //void onTechnologyGain(TechnologyTreeType techType, int gained, TechnologyGainReason reason)
         //{
         //    if (reason != TechnologyGainReason.BookPress)

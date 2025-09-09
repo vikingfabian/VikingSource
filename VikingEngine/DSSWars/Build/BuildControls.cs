@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Build
 
         public SelectTileResult buildMode = SelectTileResult.None;
         public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHut;
-        public MapPaintToolShape toolShape = MapPaintToolShape.Free;
+        public MapPaintToolShape toolShape = MapPaintToolShape.Area;
         LocalPlayer player;
         City city;
         

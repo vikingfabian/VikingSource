@@ -657,7 +657,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void toPeacefulCheck_asynch()
         {
-            if (faction.citiesEconomy.tax(null, out _) > 0)
+            if (faction.totalWorkForce > 0)
             {
                 int warCount = 0;
                 float opposingSize = 0;
@@ -828,12 +828,13 @@ namespace VikingEngine.DSSWars.Players
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
                     //battleLineUpTest2(true);
                     DssRef.state.events.TestNextEvent();
+                    //DssRef.state.events.testToPeacefulCheck();
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
-                    battleLineUpTest2(true);
+                    //battleLineUpTest2(true);
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
                     //Debug.Log(tile.ToString());

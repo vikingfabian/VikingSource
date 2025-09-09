@@ -372,6 +372,7 @@ namespace VikingEngine.DSSWars.Delivery
 
                 content.newParagraph();
                 content.Add(new RbImage(player.gameControls.input.Copy.Icon));
+                content.hspace();
                 content.Add(new ArtButton(  RbButtonStyle.Primary,new List<AbsRichBoxMember> {
                     //new RbImage(player.input.Copy.Icon),
                     //new RbSpace(0.5f),
@@ -380,6 +381,7 @@ namespace VikingEngine.DSSWars.Delivery
 
                 content.space();
                 content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+                content.hspace();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     //new RbImage(player.input.Paste.Icon),
                     //new RbSpace(0.5f),
@@ -534,6 +536,8 @@ namespace VikingEngine.DSSWars.Delivery
                     if (player.deliverySupTab != ItemResourceType.NUM || typeCount == 1)
                     {
                         content.newLine();
+                        content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+                        content.hspace();
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbText(DssRef.lang.Hud_Paste) },
                             new RbAction1Arg<LocalPlayer>(city.pasteDeliveryToAll, player, RbSoundType.Paste)));

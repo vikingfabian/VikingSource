@@ -149,7 +149,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
                 this.DeleteMe();
             }
 
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             {
                 //smoke
                 if (Ref.rnd.Chance(40))
