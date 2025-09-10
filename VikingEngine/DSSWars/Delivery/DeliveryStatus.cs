@@ -66,13 +66,18 @@ namespace VikingEngine.DSSWars.Delivery
         public ItemResourceType GetFilterType()
         {
             switch (profile.type)
-            { 
+            {
                 case ItemResourceType.Men:
                 case ItemResourceType.Gold:
                     return profile.type;
                 default:
                     return ItemResourceType.RESOURCES;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Deliver: {GetFilterType()}, {shortActiveString()}";
         }
 
         public void checkCity(LocalPlayer player)
@@ -181,7 +186,7 @@ namespace VikingEngine.DSSWars.Delivery
                 City city = DssRef.world.cities[cityIx];
                 if (profile.type == DeliveryType_Men)
                 {
-                    recieverHasAmountPlusDeliveries = city.HousingCount_Workers + city.workForce.deliverCount;
+                    recieverHasAmountPlusDeliveries = city.workForce.amount + city.workForce.deliverCount;
 
                     if (recieverHasAmountPlusDeliveries + DssConst.CityDeliveryChunkSize_Level1 > city.HousingCount_Workers)
                     {

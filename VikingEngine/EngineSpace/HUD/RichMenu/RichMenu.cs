@@ -352,10 +352,30 @@ namespace VikingEngine.HUD.RichMenu
         {
             if (interaction != null)
             {
-                if (interaction.updateController(pointer, this, false, out needRefresh, out _))
+                
+
+                if (interaction.updateController(pointer, this, false, out needRefresh, out _, out float pushScroll))
                 {
                     needRefresh = true;
                 }
+
+                if (scrollBar.IsVisible())
+                {
+                    if (scrollBar.updateControllerScroll(pointer.inputMap))
+                    {
+                        updateContentScroll();
+                    }
+                    else if (pushScroll != 0)
+                    {
+                        float scroll = scrollBar.scrollInput(-pushScroll);
+                        if (scroll != 0)
+                        {
+                            pointer.pointer.position.Y -= scroll;
+                            updateContentScroll();
+                        }
+                    }
+                }
+                
 
                 this.needRefresh |= needRefresh;
             }

@@ -1,6 +1,9 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed scroll with controller
+* Improved controller UI
+* Fixed men deliver through recruitment
+* changed achievement: Large population: Reach a workforce of a 4000 men in one city, then 10k, then 16k
 
 
 Event timers (are slightly random)
@@ -21,17 +24,19 @@ build building icon
 interact icons for buildings (play, next, previous,) 
 
 #must do#
-x 
+-increase cost for allies
+-have a chance of dropping speak relation for each time you ask of truce
 x barbarian killer not working
 
-x book press not unlocked from research completed
 x lobby ambience is heard on zero volume
 x music should not play when master = 0
 x test all achievements
 x full game achievements + translations
+x show victory type
 
 #Todo#
-xI want to move/set all spearmen at the front.
+x add tags to pins
+x I want to move/set all spearmen at the front.
 x ship dont remove spear attack on death
 x disband guards
 x automatic army width

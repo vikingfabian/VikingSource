@@ -267,6 +267,7 @@ namespace VikingEngine.HUD.RichBox
         }
         public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClick, out bool needRefresh, out bool endInteraction)
         {
+            
             float move = Input.Mouse.Position.X - prevMousePos.X;
             if (Math.Abs(move) > moveLengthForValueChange)
             {
@@ -296,8 +297,9 @@ namespace VikingEngine.HUD.RichBox
             return false;
         }
 
-        public override bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction)
+        public override bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll)
         {
+            pushScroll = 0;
             pointer.pointer.Visible = false;
 
             int steps = controllerStepping.update(pointer.inputMap.move.direction).X;

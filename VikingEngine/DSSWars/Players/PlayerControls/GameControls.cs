@@ -781,6 +781,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             map.cameraFocus = obj;
             mapSelect(obj.GetWorldObject());
+            if (input.inputSource.IsController && obj.gameobjectType() != GameObjectType.City)
+            {
+                setMenuFocus(false, false);
+            }
         }
 
         public void selectAreaCity()

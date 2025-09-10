@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_deliveryUpdate()
         {
-            if (debugTagged)
+            if (debugTagged || myIndex == 744)
             {
                 lib.DoNothing();
             }

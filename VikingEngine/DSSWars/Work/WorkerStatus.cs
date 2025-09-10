@@ -627,6 +627,10 @@ namespace VikingEngine.DSSWars.Work
                                 case ItemResourceType.ElfCoin:
                                     alwaysNeedMore = true;
                                     break;
+
+                                case ItemResourceType.TwoHandSword:
+                                    lib.DoNothing();
+                                    break;
                             }
 
                             city.AddGroupedResource(item, add);

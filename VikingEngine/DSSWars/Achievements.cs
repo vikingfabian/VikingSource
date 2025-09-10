@@ -36,9 +36,9 @@ namespace VikingEngine.DSSWars
         public const int FriendshipAllyCount = 8;
         double difficultyPerc;
 
-        public const int LargePopulationCount_Tier1 = 5000;
-        public const int LargePopulationCount_Tier2 = 20000;
-        public const int LargePopulationCount_Tier3 = 50000;
+        public const int LargePopulationCount_Tier1 = 4000;
+        public const int LargePopulationCount_Tier2 = 10000;
+        public const int LargePopulationCount_Tier3 = 16000;
         
 
         public Achievements()
@@ -616,7 +616,7 @@ namespace VikingEngine.DSSWars
         knights_of_lumini,//i
 
         /// <summary>
-        /// Large population: Reach a workforce of a 5000 men in one city, then 20k, then 50k
+        /// Large population: Reach a workforce of a 4000 men in one city, then 10k, then 16k
         /// </summary>
         large_population_tier1,//i
         large_population_tier2,
@@ -723,7 +723,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Destroy the united kingdom, before the end boss
         /// </summary>
-        early_uk_any,//i
+        early_uk_any,//i, t
         early_uk_100,
 
         /// <summary>

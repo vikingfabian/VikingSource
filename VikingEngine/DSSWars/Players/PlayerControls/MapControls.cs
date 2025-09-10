@@ -1157,7 +1157,7 @@ namespace VikingEngine.DSSWars.Players
         void rotateCameraInput()
         {
             const float XBuffer = 0.6f;
-            const float RotationSpeed = 0.0001f;
+            const float RotationSpeed = 0.00006f;
             const float TargetRotationSpeed = 0.005f;
 
             if (Math.Abs(player.gameControls.input.cameraTiltZoom.direction.X) > XBuffer)

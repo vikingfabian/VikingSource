@@ -2,10 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
+using VikingEngine.Input;
 using VikingEngine.PJ.Match3;
 
 namespace VikingEngine.HUD.RichMenu
@@ -190,13 +193,46 @@ namespace VikingEngine.HUD.RichMenu
         {
             if (Input.Mouse.Scroll)
             {
-                scrollResult = -valuerange.SetBounds(-scrollResult - Input.Mouse.ScrollValue * rowHeight * 0.1f * Ref.gamesett.scrollWheelSensitivity_menu);
-                sliderGroup.ParentY = slideRange * valuerange.GetValuePercentPos(-scrollResult);
-                selectionOutline?.Refresh(SliderArea(true));
+                //scrollResult = -valuerange.SetBounds(-scrollResult - Input.Mouse.ScrollValue * rowHeight * 0.1f * Ref.gamesett.scrollWheelSensitivity_menu);
+                //sliderGroup.ParentY = slideRange * valuerange.GetValuePercentPos(-scrollResult);
+                //selectionOutline?.Refresh(SliderArea(true));
+                scrollInput(Input.Mouse.ScrollValue * rowHeight * 0.1f * Ref.gamesett.scrollWheelSensitivity_menu);
                 return true;
             }
 
             return false;
+        }
+
+        public bool updateControllerScroll(InputMap inputMap)
+        {
+            //if (Input.Mouse.Scroll)
+            //{
+            float value = -Input.XInput.Instance(inputMap.inputSource.controllerIndex).JoyStickValue(ThumbStickType.Right).DirAndTime.Y * 1.5f * Ref.gamesett.scrollWheelSensitivity_menu;
+            if (value != 0)
+            {
+                scrollInput(value);
+                return true;
+            }
+
+            return false;
+                //return true;
+            //}
+
+            //return false;
+        }
+
+        public float scrollInput(float move)
+        {
+            var result = -valuerange.SetBounds(-scrollResult - move);
+            if (result != scrollResult)
+            {
+                float diff = scrollResult - result;
+                scrollResult = result;
+                sliderGroup.ParentY = slideRange * valuerange.GetValuePercentPos(-scrollResult);
+                selectionOutline?.Refresh(SliderArea(true));
+                return diff;
+            }
+            return 0;
         }
 
         void updateScrollBound()
