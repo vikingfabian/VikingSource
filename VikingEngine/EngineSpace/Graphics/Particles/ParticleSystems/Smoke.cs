@@ -30,7 +30,7 @@ namespace VikingEngine.Graphics
             //settings.Texture = LoadedTexture.psmoke;
             settings.Texture = LoadedTexture.particle3;
 
-            settings.MaxParticles = 2000;
+            settings.MaxParticles = 20000;
 
             // Create a wind effect by tilting the gravity vector sideways.
             settings.MinRotateSpeed = -1;

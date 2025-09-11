@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.GameState.ShaderLab
 
             shadowProcessor.DrawModelsWithShadow(0, Graphics.DrawObjType.MeshGenerated, Camera, 0);
 
-            //ParticleHandler.Draw(Camera);
+            ParticleHandler.Draw(Camera);
 
             Draw2d(0);
 

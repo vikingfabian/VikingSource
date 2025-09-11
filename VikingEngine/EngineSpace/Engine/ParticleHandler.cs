@@ -288,7 +288,7 @@ namespace VikingEngine.Engine
         /// <returns>If it is time to remove the system from update</returns>
         public bool Update(float time)
         {
-            System.Time_Update(time);
+            System.Update();
             Time -= time;
             if (Time <= 0)
             {

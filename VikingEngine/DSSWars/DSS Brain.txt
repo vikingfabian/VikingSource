@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed flickering of soldier models
+
 
 
 Event timers (are slightly random)

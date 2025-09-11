@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (battles.groupsInBattle == 0)
                 {
-                    DssRef.state.events.onBattleEnd_async(this, inBattleWith);
+                    DssRef.state.events?.onBattleEnd_async(this, inBattleWith);
                     inBattle = false;
                     if (GetPlayer().IsLocalPlayer())
                     {
