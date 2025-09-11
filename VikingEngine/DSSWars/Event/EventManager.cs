@@ -150,9 +150,9 @@ namespace VikingEngine.DSSWars.Event
                     }
                 }
 
-                if (allyCount > p.previousAllyCount)
+                if (allyCount != p.allyCount)
                 { 
-                    p.previousAllyCount = allyCount;
+                    p.allyCount = allyCount;
                     DssRef.achieve.onAllyCount(allyCount);
                 }
                 if (hillFriends >= 2)

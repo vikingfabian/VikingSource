@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars
         //DIPLOMACY
         public const int TruceTimeSec = 180;
         public static IntervalF PeaceSafeTimeSec = new IntervalF(10, 60) * TimeExt.MinuteInSeconds;
-
+        public static float DiplomacyExtraCostPerAlly = 0.5f;
         //SOLDIER
         public static int Soldier_DefaultHealth = 400;
         public static float Soldier_StandardAttackAndCoolDownTime = 1600;

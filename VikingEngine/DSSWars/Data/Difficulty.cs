@@ -180,11 +180,24 @@ namespace VikingEngine.DSSWars.Data
             return Convert.ToInt32(result);
         }
 
+        public bool AllyCountCost()
+        {
+            return diplomacyDifficulty > 0;
+        }
+        public bool UseTruceFailure(out float failChance)
+        {
+            if (diplomacyDifficulty > 0)
+            {
+                failChance = 0.15f + 0.05f * diplomacyDifficulty;
+                return true;
+            }
+            failChance = 0;
+            return false;
+        }
+
         public void refreshSettings()
         {
             FoodEnergySett = Convert.ToInt32(DssConst.FoodEnergy * setting_foodMulti);
-
-            
 
             switch (difficulty)
             {

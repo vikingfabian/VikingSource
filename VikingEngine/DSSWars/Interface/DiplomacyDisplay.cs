@@ -496,7 +496,7 @@ namespace VikingEngine.DSSWars.Interface
         void allianceAction(bool ally_notFriend)
         {
             //Faction otherfaction = selectedRelation.opponent(player.faction);
-            int cost = Diplomacy.AllianceCost(otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend);
+            int cost = Diplomacy.AllianceCost(player, otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend, out _);
 
             if (player.diplomaticPoints.pay(cost, false))
             {
@@ -518,17 +518,15 @@ namespace VikingEngine.DSSWars.Interface
 
         bool canForgeAlliance(bool ally_notFriend, out int cost)
         {
-            cost = Diplomacy.AllianceCost(otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend);
+            cost = Diplomacy.AllianceCost(player, otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend, out _);
             return player.diplomaticPoints.Int() >= cost;
         }
 
-        void allianceTooltip(RichBoxContent content, object tag)//bool ally_notFriend)
+        void allianceTooltip(RichBoxContent content, object tag)
         {
             bool ally_notFriend = (bool)tag;
-            int cost = Diplomacy.AllianceCost(otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend);
+            int cost = Diplomacy.AllianceCost(player, otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend, out int allyCountCost);
             RelationType toRelation = ally_notFriend ? RelationType.RelationType3_Ally : RelationType.RelationType2_Good;
-
-            //RichBoxContent content = new RichBoxContent();
 
             diplomacyCostToHud(cost, content);
 
@@ -564,14 +562,23 @@ namespace VikingEngine.DSSWars.Interface
             {
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(DssRef.lang.Diplomacy_GoodRelationDescription));//"Limits the ability to declare war.");
+                content.Add(new RbText(DssRef.lang.Diplomacy_GoodRelationDescription));
             }
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbText( string.Format(DssRef.lang.Diplomacy_BreakingRelationCost, Diplomacy.DeclareWarCost(toRelation))));
 
-            //player.hud.tooltip.create(player, content, true);
+            if (ally_notFriend && DssRef.difficulty.AllyCountCost())
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(
+            }
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_BreakingRelationCost, Diplomacy.DeclareWarCost(toRelation))));
+
         }
 
         void servantAction()

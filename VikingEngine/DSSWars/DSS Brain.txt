@@ -1,6 +1,13 @@
 ﻿UPDATE
 Change Log:
-* 
+* fixed conscript copy
+* fixed automate export options
+* increased cost for allies, +1 per 2, base cost reduced by one (not on easy)
+
+
+
+Translation:
+* translated shadow update
 
 
 Event timers (are slightly random)
@@ -23,8 +30,7 @@ interact icons for buildings (play, next, previous,)
 #must do#
 x move "apply to all" to menu top
 x City Automation: Click on Export and then click on Resources then Weapons, now neither of the items 'looks' slected.
--increase cost for allies
--have a chance of dropping speak relation for each time you ask of truce
+-have a chance of dropping speak relation for each time you ask of truce (not on easy)
 x translate demo
 x barbarian killer not working
 

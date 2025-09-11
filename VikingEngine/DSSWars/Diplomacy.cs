@@ -438,14 +438,11 @@ namespace VikingEngine.DSSWars
                         var otherPlayer = defender.player.GetLocalPlayer();
                         var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
                         PtoP.suggestingNewRelation = false;
-                    }
-
-                    
+                    }                    
                 }
                 if (defender.player.IsLocalPlayer())
                 {
                     var player = defender.player.GetLocalPlayer();
-                    //++player.statistics.WarsStartedByEnemy;
                     DssRef.state.events?.onPlayerEnterWar(player, attacker, false);
                 }
             }
@@ -616,17 +613,24 @@ namespace VikingEngine.DSSWars
             return baseCost * (player.statistics.ServantFactions + 1);
         }
 
-        public static int AllianceCost(Faction toFaction, RelationType relation, SpeakTerms speakterms, bool againstDark, bool ally_notFriend)
+        public static int AllianceCost(LocalPlayer player, Faction toFaction, RelationType relation, SpeakTerms speakterms, bool againstDark, bool ally_notFriend, out int allyCountCost)
         {
             RelationType toRelation = ally_notFriend ? RelationType.RelationType3_Ally : RelationType.RelationType2_Good;
             int diff = toRelation - relation; //1 or 2
 
             int cost = diff * 2 /*+ 1*/;
+            allyCountCost = 0;
 
             if (ally_notFriend)
-            { 
-                cost += 2;
+            {
+                cost += 1;
+
+                if (DssRef.difficulty.diplomacyDifficulty > 0)
+                {
+                    allyCountCost = (int)(player.allyCount * DssConst.DiplomacyExtraCostPerAlly);
+                }
             }
+            cost += allyCountCost;
 
             cost += toFaction.WorkForceInCityCount() / 3;
             cost -= (int)speakterms;//0
