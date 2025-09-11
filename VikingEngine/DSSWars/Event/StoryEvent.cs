@@ -394,7 +394,7 @@ namespace VikingEngine.DSSWars.Event
             {
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    p.hud.messages.Add(DssRef.todoLang.EventMessage_Event_Title, DssRef.todoLang.EventMessage_DarkHorde);
+                    p.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_DarkHorde);
                 }
 
                 foreach (var cityIx in attackCities)
@@ -898,7 +898,7 @@ namespace VikingEngine.DSSWars.Event
                     DssRef.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN3_War);
                 }
 
-                player.hud.messages.Add(DssRef.todoLang.EventMessage_Event_Title, DssRef.todoLang.EventMessage_TheCohalition);
+                player.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_TheCohalition);
             }, attackers, player, TimeExt.MinuteInSeconds * DssConst.DominationWarTimeDelay_Minutes.GetRandom());
 
 

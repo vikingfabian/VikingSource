@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.Resource
             content.space();
             content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
             content.space();
-            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.todoLang.Info_WhenFoodRunsOut));
+            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Info_WhenFoodRunsOut));
 
         }
 

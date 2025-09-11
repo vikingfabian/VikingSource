@@ -44,11 +44,11 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
                 case GameModeMainType.Peaceful:
                     caption = DssRef.lang.Settings_Mode_Peaceful;
-                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
+                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + " " + Ref.langOpt.Settings_Mode_No_Achivements;
                     break;
                 case GameModeMainType.Spectator:
                     caption = DssRef.lang.Settings_Mode_Spectator;
-                    desc = DssRef.todoLang.Settings_Mode_Spectator_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
+                    desc = DssRef.lang.Settings_Mode_Spectator_Description + " " + Ref.langOpt.Settings_Mode_No_Achivements;
                     break;
             }
         }
@@ -1014,9 +1014,9 @@ namespace VikingEngine.DSSWars.Presentation
                             return DssRef.lang.Resource_TypeName_Wood;
 
                         case TerrainSubFoilType.TreeSoftSprout:
-                            return DssRef.todoLang.Building_TreeSprout_Soft;
+                            return DssRef.lang.Building_TreeSprout_Soft;
                         case TerrainSubFoilType.TreeHardSprout:
-                            return DssRef.todoLang.Building_TreeSprout_Hard;
+                            return DssRef.lang.Building_TreeSprout_Hard;
 
                         case TerrainSubFoilType.StoneBlock:
                         case TerrainSubFoilType.Stones:

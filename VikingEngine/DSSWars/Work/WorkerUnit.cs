@@ -568,7 +568,7 @@ namespace VikingEngine.DSSWars.Work
                 }
 
                 args.content.newLine();
-                HudLib.Label(args.content, DssRef.todoLang.GeneralSetting_SetAll);
+                HudLib.Label(args.content, DssRef.lang.GeneralSetting_SetAll);
                 args.content.space();
                 args.content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsUnitLevelMinimal),  new RbSpace(), new RbText(DssRef.lang.ExperienceLevel_1, HudLib.GodPower_Color),  

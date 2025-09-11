@@ -638,7 +638,7 @@ namespace VikingEngine.DSSWars.Build
                         break;
                     case BuildCategoryTab.GodPower:
                         tabIcon = SpriteName.WarsGodPowerIcon;
-                        category = DssRef.todoLang.GodPower;
+                        category = DssRef.lang.GodPower;
                         break;
                     default:
                         tabIcon = SpriteName.warsBuildCategoryAutomation;
@@ -1024,13 +1024,13 @@ namespace VikingEngine.DSSWars.Build
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(DssRef.lang.Hud_Unlock + ": "));
                     content.Add(new RbImage(SpriteName.WarsBuild_TreeSeedlingSoft));
-                    content.Add(new RbText(DssRef.todoLang.Building_TreeSprout_Soft));
+                    content.Add(new RbText(DssRef.lang.Building_TreeSprout_Soft));
 
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(DssRef.lang.Hud_Unlock + ": "));
                     content.Add(new RbImage(SpriteName.WarsBuild_TreeSeedlingHard));
-                    content.Add(new RbText(DssRef.todoLang.Building_TreeSprout_Hard));
+                    content.Add(new RbText(DssRef.lang.Building_TreeSprout_Hard));
 
 
                     break;

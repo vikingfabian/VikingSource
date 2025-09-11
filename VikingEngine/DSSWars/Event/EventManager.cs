@@ -456,7 +456,7 @@ namespace VikingEngine.DSSWars.Event
                         mainArmy.tagArt = ArmyTagArt.LevelMaster;
                         mainArmy.setAsStartArmy();
 
-                        p.hud.messages.Add(DssRef.todoLang.EventMessage_DarkHordeKiller_Title, DssRef.todoLang.EventMessage_DarkHordeKiller_Message);
+                        p.hud.messages.Add(DssRef.lang.EventMessage_DarkHordeKiller_Title, DssRef.lang.EventMessage_DarkHordeKiller_Message);
 
                         DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.barbarian_bane_any, AchievementIndex.barbarian_bane_100);
                     }

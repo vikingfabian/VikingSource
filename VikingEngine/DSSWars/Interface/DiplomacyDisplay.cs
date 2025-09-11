@@ -546,7 +546,7 @@ namespace VikingEngine.DSSWars.Interface
                 if (opponents.Count > 0)
                 {
                     content.newLine();
-                    content.h2(DssRef.todoLang.Diplomacy_DeclareWarAgainst, HudLib.TitleColor_Label);
+                    content.h2(DssRef.lang.Diplomacy_DeclareWarAgainst, HudLib.TitleColor_Label);
                 }
                 foreach (var m in opponents)
                 {

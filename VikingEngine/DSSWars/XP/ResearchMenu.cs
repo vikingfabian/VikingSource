@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.XP
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.todoLang.Hud_EffectWillStack, HudLib.InfoYellow_Light));
+                    content.Add(new RbText(DssRef.lang.Hud_EffectWillStack, HudLib.InfoYellow_Light));
                 }
                 else
                 {
@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.XP
                     content.Add(new RbText(techname));
                 }
                 content.newParagraph();
-                content.Add(new RbText(DssRef.todoLang.Technology_CannotReassign, HudLib.InfoYellow_Light));
+                content.Add(new RbText(DssRef.lang.Technology_CannotReassign, HudLib.InfoYellow_Light));
             }
             else
             {
