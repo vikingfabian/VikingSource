@@ -12,33 +12,37 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        public string Technology_CannotReassign => "Tech cannot be reassigned until the research is done";
+        public string Settings_ModelWaterFoam => "Water foam";
+        public string Settings_ModelShadow => "Shadows";
+        public string Settings_ModelShadowMapSize => "Shadow map size";
+        public string Settings_Brightness => "Brightness";
+        public string Settings_Mode_No_Achivements => "Achievements are not available.";
+        public string Settings_FrameRate => "Frame rate";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public string Settings_ImportNoAchievement => "Block achievements for imported save files";
+
+
+
+
+        public string Technology_CannotReassign => "Tech cannot be reassigned until research is complete";
         public string Diplomacy_DeclareWarAgainst => "You will declare war against";
         public string Diplomacy_AllyCount => "Number of allies";
         public string Diplomacy_CostPerAlly => "Cost increases by {0} per ally";
 
         public string Event_ChanceOfFailure => "{0}% chance of failure";
         public string EventMessage_Event_Title => "Event";
-        public string EventMessage_TheCohalition => "The cohalition";
+        public string EventMessage_TheCohalition => "The Coalition";
 
-        public string EventMessage_DarkHorde => "Dark hordes";
-        public string EventMessage_DarkHordeKiller_Title => "Dark horde killer";
-        public string EventMessage_DarkHordeKiller_Message => "Champion knigts have joined your service";
+        public string EventMessage_DarkHorde => "Dark Horde";
+        public string EventMessage_DarkHordeKiller_Title => "Dark Horde Killer";
+        public string EventMessage_DarkHordeKiller_Message => "Champion knights have joined your service";
 
-        public string Settings_ModelWaterFoam => "Water foam";
-        public string Settings_ModelShadow => "Shadows";
-        public string Settings_ModelShadowMapSize => "Shadows map size";
-        public string Settings_Brightness => "Brightness";
-        public string Settings_Mode_No_Achivements => "Achivements are not available.";
-        public string Settings_FrameRate => "Frame rate";
-
-        /// <summary>
-        /// Steam Achievements
-        /// </summary>
-        public string Settings_ImportNoAchievement => "Block achievements on imported save files";
-
-        public string Settings_Mode_Spectator_Description => "Just watch, or interfere with god powers.";
-        public string GodPower => "God power";
+        
+        public string Settings_Mode_Spectator_Description => "Just watch, or interfere with God Powers.";
+        public string GodPower => "God Power";
 
         public string Building_TreeSprout_Description => "Plant a tree";
         public string Building_TreeSprout_Soft => "Soft tree sprout";
@@ -48,13 +52,15 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Hud_All => "All";
 
-        public string Hud_Previous => "Previuos";
+        public string Hud_Previous => "Previous";
 
         public string Hud_EffectWillStack => "The effect will stack";
 
         public string Info_WhenFoodRunsOut => "When food runs out, cities and armies will automatically purchase it from the black market.";
 
-        //Factions
+
+        //The faction names are fantasy names designed to sound historic, they don't have to be directly translated as long as they keep some of their essense
+
         /// <summary>
         /// Theme: Wood-elves who guard enchanted forests. Secretive, druidic, tied to nature spirits
         /// </summary>
@@ -99,9 +105,6 @@ namespace VikingEngine.DSSWars.Presentation
         /// Theme: Brutal mercenary brotherhood, sellswords bound by strict contracts.
         /// </summary>
         public string FactionName_MalrekIronbound => "Malrek Ironbound";
-
-        //-----
-
 
         /// <summary>
         /// Theme: A modest barony nestled in fertile valleys, proud of its ancient stone keeps.
@@ -161,18 +164,17 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Theme: Warrior tribe from a desert coastal region
         /// </summary>
-        public string FactionName_Minde=> "Minde";
+        public string FactionName_Minde => "Minde";
 
         /// <summary>
         /// A proud family of royal knights
         /// </summary>
-        public string FactionName_FloKingdom=> "Flo kingdom";
+        public string FactionName_FloKingdom => "Flo Kingdom";
 
         /// <summary>
         /// A macon family with the secrets to advanced buildings
         /// </summary>
-        public string FactionName_CarolusKeksenmark=> "Carolus Keksenmark";
-
+        public string FactionName_CarolusKeksenmark => "Carolus Keksenmark";
 
         /// <summary>
         /// Theme: A confederation of hobbit villages along winding streams, known for gardens, festivals, and fiercely defended borders when threatened.
@@ -188,6 +190,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// Theme: A democracy run house with focus on politics and military might. Looks down on any outsiders.
         /// </summary>
         public string FactionName_Etheleorthe => "Etheleorðe";
+
     }
 
 }
