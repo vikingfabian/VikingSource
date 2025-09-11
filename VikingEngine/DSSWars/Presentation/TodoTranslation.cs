@@ -14,11 +14,14 @@ namespace VikingEngine.DSSWars.Presentation
     {
         public string Technology_CannotReassign => "Tech cannot be reassigned until the research is done";
         public string Diplomacy_DeclareWarAgainst => "You will declare war against";
+        public string Diplomacy_AllyCount => "Number of allies";
+        public string Diplomacy_CostPerAlly => "Cost increases by {0} per ally";
+
+        public string Event_ChanceOfFailure => "{0}% chance of failure";
         public string EventMessage_Event_Title => "Event";
         public string EventMessage_TheCohalition => "The cohalition";
 
         public string EventMessage_DarkHorde => "Dark hordes";
-
         public string EventMessage_DarkHordeKiller_Title => "Dark horde killer";
         public string EventMessage_DarkHordeKiller_Message => "Champion knigts have joined your service";
 
@@ -29,6 +32,10 @@ namespace VikingEngine.DSSWars.Presentation
         public string Settings_Mode_No_Achivements => "Achivements are not available.";
         public string Settings_FrameRate => "Frame rate";
 
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public string Settings_ImportNoAchievement => "Block achievements on imported save files";
 
         public string Settings_Mode_Spectator_Description => "Just watch, or interfere with god powers.";
         public string GodPower => "God power";

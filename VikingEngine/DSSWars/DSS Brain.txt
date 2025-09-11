@@ -1,9 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Fixed scroll with controller
-* Improved controller UI
-* Fixed men deliver through recruitment
-* changed achievement: Large population: Reach a workforce of a 4000 men in one city, then 10k, then 16k
+* 
 
 
 Event timers (are slightly random)
@@ -24,8 +21,11 @@ build building icon
 interact icons for buildings (play, next, previous,) 
 
 #must do#
+x move "apply to all" to menu top
+x City Automation: Click on Export and then click on Resources then Weapons, now neither of the items 'looks' slected.
 -increase cost for allies
 -have a chance of dropping speak relation for each time you ask of truce
+x translate demo
 x barbarian killer not working
 
 x lobby ambience is heard on zero volume
@@ -33,8 +33,14 @@ x music should not play when master = 0
 x test all achievements
 x full game achievements + translations
 x show victory type
+x turn achievements off when importing a file.
 
 #Todo#
+x multi select of buildings - to menu
+x global stockpile setting 
+x achieve gun patrol
+x remove peace achievements
+x bots dont build warmashines
 x add tags to pins
 x I want to move/set all spearmen at the front.
 x ship dont remove spear attack on death

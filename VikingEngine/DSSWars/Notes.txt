@@ -1,71 +1,164 @@
-﻿ public GroupedResource res_water = new GroupedResource();
-        public GroupedResource res_wood = new GroupedResource() { amount = 20, goalBuffer = 300 };
-        public GroupedResource res_fuel = new GroupedResource() { amount = 20, goalBuffer = 300 };
-        public GroupedResource res_stone = new GroupedResource() { amount = 20, goalBuffer = 100 };
-        public GroupedResource res_rawFood = new GroupedResource() { amount = 50, goalBuffer = 200 };
-        public GroupedResource res_food = new GroupedResource() { amount = 200, goalBuffer = 500 };
-        public GroupedResource res_beer = new GroupedResource() { amount = 0, goalBuffer = 200 };
-        public GroupedResource res_skinLinnen = new GroupedResource() { goalBuffer = 100 };
+﻿Main changes
+-Big graphical update
+-Added languges: Turkish, French, Portoguese and Italian
+-Story mode added (about 57 hours long)
+-Added 91 achivements
+-God powers in spectator mode
+-The bot factions have some diplomacy options
+-Music
 
-        public GroupedResource res_ironore = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_TinOre = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_CupperOre = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_LeadOre = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_SilverOre = new GroupedResource() { goalBuffer = 100 };
+Change Log:
+* peace victory added
+* domination victory improved
+* fixed: Occational camera stuck when toggling cities
+* Fixed loading key settings bug
+* Fixed the broken textures
+* Added better covarage of Ui Sounds
+* Added three old songs that was made for Lootfest 3, by Martin Grönlund
+* Wrote a custom music player
+* Fixed rendertarget memory leak
+* Added game mode to save meta
+* Doubled the cost of animal pens
+* Can plant trees (unlocked by the wood cutter)
+* fixed: to switch to another map size it takes 2 attempts
+* (maybe) fixed crashing in 20x spectator speed 
+* HUD improvements
+* ai wont ally if it adds more enemies (than the common enemy)
+* fixed music crash
+* fixed merge alliance crash
+* fixed: After changing gold mine priority on global scale it does not affect the cities.
+* fixed: flag changes to players flag when controlling an army in god mode
+* Added 22 named factions
+* fixed: the countries change flag after save/load
+* Added 4 cameo factions
+* Fixed event timer save error
+* Added more data drift checks
+* Fixed coal mine follow faction
+* Blocked lists from changing during save
+* Added more file health checks
+* Group movement of guards to walls
+* fixed: coinmaker icon is broken
+* the application is now hard crashing if the cores dont close within 500ms, so it wont freeze on close.
+* removed food from the black market
+* fixed the doublette factions
+* added 1 cameo faction
+* fixed: merge factions bug, the guards dont convert
+* Fixed: The game mode from save does not take effect
+* Added the ability to attach message to crashes
+* Will write the city variables to crash log
+* Fixed: The game mode from save does not take effect
+* Shadow effect
+* light intensity slider
+* made the story events thread safe
+* water foam effect
+* broken music message gone
+* all mutiplier setting are hidden (and auto resets to default)
+* is now saving total playtime
+* must reach endgame win/lose after 10 hours to get the "dangerous" multipliers
+* must must play 15 minutes to use 5x
+* Optimized the startup to be faster
+* extra secure data storage for meta progression, back and forward compartible
+* the game will store your victories
+* did some resource tweaks
+* removed armor crafting from smith, must be made in an Armory
+* Increased the time for training soliders
+* Lowered "The first attack" with 15minutes
+* will sprinkle in some skilled workers to have a bit more interesting start 
+* fixed: immigrants dont work
+* the bots may spend diplomacy for peace (only toward other bots)
+* why upgrade logistics, tooltip
+* getting war through alliance, is now treated as war declaration
+* tooltip: available resources on build order
+* filter and "apply to all" options on barracks and delivery
+* The bots gain diplomacy 30 times slower
+* Reduced war manager check with 8 minutes
+* Fixed war manager timer crash
+* Reduced Advanced Building research 60 to 50 points
+* Cut passive diplomacy add speed to 50%
+* improved research building hud
+* next/previous buttons for building menues, plus other improvements
+* reduced Mercenaries: 8 to 4 hours 
+* reduced cohalition: 12 to 10 hours 
+* reduced the chance of bot peace to 33%
+* bots with opposite sides of good/evil, may not declare peace
+* fixed: reassign of completed research building
+* Fixed map editor crashing
+* map editor loading bar
+* ai diplomacy: wont let inwar ally with faction under threat (unless enemy), there is 0.5% chance to break this rule @justmike1042 
+* ai diplomacy: alliance will empty diplomacy points on both parties
+* increased the diplomatic cost to with huge nations
+* fixed: the warmanager was broken
+* fixed: empty research building crash
+* armor smith and smith now share tech field
+* moved mining to smelt/chemistry field
+* reduced cast iron skill
+* Hotkeys for research menues
+* removed weapon smith skill
+* repaired steel production
+* Added frame rate options
+* Fixed scroll with controller
+* Improved controller UI
+* Fixed men deliver through recruitment
 
-        public GroupedResource res_iron = new GroupedResource() { amount = 10, goalBuffer = 100 };
-        public GroupedResource res_Tin = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Cupper = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Lead = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Silver = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_RawMithril = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Sulfur = new GroupedResource() { goalBuffer = 100 };
+Spectator mode:
+* improved diplomacy display, and it has god powers
+* can control any army
+* city build/destroy controls
+* add any soldiers
+* added x20 speed
+* place trees and mines
+* change water income
+* set all resources at once
+* set tech unlocks
+* set worker xp
+* god fire effect
+* placing buildings dont use resources
 
-        public GroupedResource res_Bronze = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_CastIron = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_BloomeryIron = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Mithril = new GroupedResource() { goalBuffer = 100 };
+STORY:
+* Added story mode
+* Event timers: War manager start: +20min
+* Barbarian event in story mode
+* scripted cohalition only happens once in the story
+* cpu players have diplomacy, and will seek alliances using a "my enemy's enemy" logic, happens when under threat by a bigger faction, or when attacking the same faction.
+* cpu alliances between a huge and small faction will make them join as one nation
+* bot alliances will break when their common enemy is gone
+* some bots have "loner" and will avoid alliances
+* bots cannot drag players into more wars after alliance
+* barbarian killer reward
+* does a clean up microscopic factions
+* defeat boss event
+* The war manager is creating wars against you 5 times slower
+* Added 15 minutes to the war delay event, plus 15min on the first attacker
+* added "The first attack" to the story
+* Added a random +-10min on "the first attack"
+* The war manager attacks checks military power, has to be between 25% and 300% of the player's
+* The war manager dont use light-side factions to attack
 
-        public GroupedResource res_Toolkit = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Wagon2Wheel = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Wagon4Wheel = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_BlackPowder = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_GunPowder = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_LedBullet = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_sharpstick = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
-        public GroupedResource res_BronzeSword = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_shortsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_Sword = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_LongSword = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_MithrilSword = new GroupedResource() { goalBuffer = 100 };
+Event timers (are slightly random)
+* Ai delay: 8 minutes
+* Ai peace time: 15 min
+* War manager start: 20min
+* Barbarians: 3 hours
+* Mercenaries: 8 hours (total 12 hours by now)
+* The cohalition: 12 hours (or when the player grabs 5 to 7 cities)
+* Boss warning: 25 hours
+* Boss; 1 hour
+* Plus the boss fight: about 10 hours
+(total: about 60 hours)
 
-        public GroupedResource res_Warhammer = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_twohandsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_knightslance = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_SlingShot = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_ThrowingSpear = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_longbow = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_crossbow = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_MithrilBow = new GroupedResource() { goalBuffer = 100 };
+ACHIEVEMENTS:
+* Added 91 achivements
+* Higher tier achievements will unlock all lower tiers below it.
+* not available in peaceful/spectator modes
 
-        public GroupedResource res_HandCannon = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_HandCulvertin = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Rifle = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Blunderbus = new GroupedResource() { goalBuffer = 100 };
+Languages:
+* Russian manual corrections
+* French manual translation
+* Turkish manual translations
+* Updated Steam ai description: "Localizations are a mix of manual and machine translation."
+* Italian and Portoguese machine translations are complete
 
-        public GroupedResource res_BatteringRam = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_ballista = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_Manuballista = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Catapult = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_SiegeCannonBronze = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_ManCannonBronze = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_SiegeCannonIron = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_ManCannonIron = new GroupedResource() { goalBuffer = 100 };
-
-        public GroupedResource res_paddedArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
-        public GroupedResource res_HeavyPaddedArmor = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_mailArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
-        public GroupedResource res_heavyMailArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_LightPlateArmor = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_FullPlateArmor = new GroupedResource() { goalBuffer = 100 };
+Casual:
+* All soldier prices are increased x3
+* Increased upkeep from 0.2 to 0.3
+* fixed: spectator mode can enable the tutorial, making the screen stuck. 

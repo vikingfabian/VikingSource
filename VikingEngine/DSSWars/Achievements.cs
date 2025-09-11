@@ -678,12 +678,12 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Vikings: Have a fleet with 16 ships with sea specialization.
         /// </summary>
-        vikings,//i
+        vikings,//i, t
 
         /// <summary>
         /// Slaughtered: Loose 100 soldiers in a battle
         /// </summary>
-        slaughtered,//i
+        slaughtered,//i, t
 
         /// <summary>
         /// Defeating victory: Win after loosing 40 military strength
@@ -698,7 +698,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Bane of the barbarians: get the Dark Horde reward 
         /// </summary>
-        barbarian_bane_any,//i
+        barbarian_bane_any,//i (broken)
         barbarian_bane_100,
 
         /// <summary>
