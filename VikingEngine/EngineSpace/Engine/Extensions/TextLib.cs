@@ -264,20 +264,24 @@ namespace VikingEngine
         //    }
         //}
 
-        public static string PercentText(float percent)
+        public static string PercentTextWithSymbol(float percent)
         {
             return Convert.ToInt32(percent * 100).ToString() + "%";
+        }
+        public static string PercentText(float percent)
+        {
+            return Convert.ToInt32(percent * 100).ToString();
         }
 
         public static string PercentAddText(float percent)
         {
             if (percent < 0f)
             {
-                return PercentText(percent);
+                return PercentTextWithSymbol(percent);
             }
             else
             {
-                return "+" + PercentText(percent);
+                return "+" + PercentTextWithSymbol(percent);
             }
         }
 

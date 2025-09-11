@@ -439,12 +439,10 @@ namespace VikingEngine.DSSWars.Interface
 
         void peaceAction(bool peace_notTruce)
         {
-            //stoppa armeer med attack command
-            //Faction otherfaction = selectedRelation.opponent(player.faction);
             int cost = Diplomacy.EndWarCost(otherfaction,selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, peace_notTruce);
 
             if (player.diplomaticPoints.pay(cost, false))
-            {               
+            {
                 if (peace_notTruce)
                 {
                     DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType1_Peace);
@@ -453,9 +451,32 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 else
                 {
-                    DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationTypeN2_Truce);
-                    
-                    selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.TruceTimeSec);
+                    bool success = true;
+                    if (DssRef.difficulty.UseTruceFailure(out float fail))
+                    {
+                        if (Ref.rnd.Chance(fail))
+                        {
+                            success = false;
+                        }
+                    }
+
+                    if (success)
+                    {
+                        DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationTypeN2_Truce);
+
+                        selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.TruceTimeSec);
+                    }
+                    else
+                    {
+                        var relation = DssRef.diplomacy.GetOrCreateRelation(player.faction, otherfaction);
+                        relation.SpeakTerms--;
+                        if (relation.SpeakTerms < SpeakTerms.SpeakTermsN2_None)
+                        {
+                            relation.SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+                        }
+
+                        SoundLib.wrong.Play();
+                    }
                 }
             }
         }
@@ -486,11 +507,19 @@ namespace VikingEngine.DSSWars.Interface
 
             if (peace_notTruce == false)
             {
-               // string truceTimeString = "For {0} seconds";
-                content.text(string.Format(DssRef.lang.Diplomacy_TruceTimeLength, DssConst.TruceTimeSec));
-            }
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_TruceTimeLength, DssConst.TruceTimeSec)));
 
-            //player.hud.tooltip.create(player, content, true);
+                if (DssRef.difficulty.UseTruceFailure(out float failChance))
+                {
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(SpriteName.cmdWarningTriangle));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Event_ChanceOfFailure, TextLib.PercentText(failChance))));
+                }
+            }
         }
 
         void allianceAction(bool ally_notFriend)
@@ -567,13 +596,16 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbText( string.Format(DssRef.lang.Diplomacy_BreakingRelationCost, Diplomacy.DeclareWarCost(toRelation))));
+            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_BreakingRelationCost, Diplomacy.DeclareWarCost(toRelation))));
 
             if (ally_notFriend && DssRef.difficulty.AllyCountCost())
             {
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(
+                content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_CostPerAlly, DssConst.DiplomacyExtraCostPerAlly)));
+                
+                content.newLine();
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Diplomacy_AllyCount, player.allyCount), HudLib.InfoYellow_Light));
             }
             content.newLine();
             HudLib.BulletPoint(content);

@@ -3,7 +3,7 @@ Change Log:
 * fixed conscript copy
 * fixed automate export options
 * increased cost for allies, +1 per 2, base cost reduced by one (not on easy)
-
+* a chance of failing and dropping speak relation for each time you ask of truce (not on easy)
 
 
 Translation:
@@ -30,7 +30,7 @@ interact icons for buildings (play, next, previous,)
 #must do#
 x move "apply to all" to menu top
 x City Automation: Click on Export and then click on Resources then Weapons, now neither of the items 'looks' slected.
--have a chance of dropping speak relation for each time you ask of truce (not on easy)
+-
 x translate demo
 x barbarian killer not working
 

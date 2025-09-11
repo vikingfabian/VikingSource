@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     HudLib.Label(content, DssRef.lang.Conscript_SpecializationTitle);
                     content.space();
-                    HudLib.InfoButton(content, new RbTooltip_Text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentText(DssConst.Conscript_SpecializePercentage))));
+                    HudLib.InfoButton(content, new RbTooltip_Text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentTextWithSymbol(DssConst.Conscript_SpecializePercentage))));
                     content.newLine();
 
                     SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations();

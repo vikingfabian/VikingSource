@@ -424,8 +424,8 @@ namespace VikingEngine.ToGG
         void hitChanceLabel(string attackType, float hit, float retreat, GuiLayout layout)
         {
             new GuiLabel("Basic " + attackType + " attack: " +
-                        TextLib.PercentText(hit) + " Hit, " +
-                        TextLib.PercentText(retreat) + " Retreat chance", true, layout.gui.style.textFormat, layout); 
+                        TextLib.PercentTextWithSymbol(hit) + " Hit, " +
+                        TextLib.PercentTextWithSymbol(retreat) + " Retreat chance", true, layout.gui.style.textFormat, layout); 
         }
 
         void ListTerrainMenu()

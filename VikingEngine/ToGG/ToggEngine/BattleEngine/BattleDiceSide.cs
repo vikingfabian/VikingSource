@@ -77,7 +77,7 @@ namespace VikingEngine.ToGG
 
         public override string ToString()
         {
-            return "Side (" + result.ToString() + " " + TextLib.PercentText(chance) + ")";
+            return "Side (" + result.ToString() + " " + TextLib.PercentTextWithSymbol(chance) + ")";
         }
     }
 
