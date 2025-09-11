@@ -12,21 +12,7 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        public string Settings_ModelWaterFoam => "Water foam";
-        public string Settings_ModelShadow => "Shadows";
-        public string Settings_ModelShadowMapSize => "Shadow map size";
-        public string Settings_Brightness => "Brightness";
-        public string Settings_Mode_No_Achivements => "Achievements are not available.";
-        public string Settings_FrameRate => "Frame rate";
-
-        /// <summary>
-        /// Steam Achievements
-        /// </summary>
-        public string Settings_ImportNoAchievement => "Block achievements for imported save files";
-
-
-
-
+        
         public string Technology_CannotReassign => "Tech cannot be reassigned until research is complete";
         public string Diplomacy_DeclareWarAgainst => "You will declare war against";
         public string Diplomacy_AllyCount => "Number of allies";
@@ -39,8 +25,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string EventMessage_DarkHorde => "Dark Horde";
         public string EventMessage_DarkHordeKiller_Title => "Dark Horde Killer";
         public string EventMessage_DarkHordeKiller_Message => "Champion knights have joined your service";
-
-        
+                
         public string Settings_Mode_Spectator_Description => "Just watch, or interfere with God Powers.";
         public string GodPower => "God Power";
 
@@ -57,6 +42,22 @@ namespace VikingEngine.DSSWars.Presentation
         public string Hud_EffectWillStack => "The effect will stack";
 
         public string Info_WhenFoodRunsOut => "When food runs out, cities and armies will automatically purchase it from the black market.";
+
+
+
+        //Settings options
+        public string Settings_ModelWaterFoam => "Water foam";
+        public string Settings_ModelShadow => "Shadows";
+        public string Settings_ModelShadowMapSize => "Shadow map size";
+        public string Settings_Brightness => "Brightness";
+        public string Settings_Mode_No_Achivements => "Achievements are not available.";
+        public string Settings_FrameRate => "Frame rate";
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public string Settings_ImportNoAchievement => "Block achievements for imported save files";
+
+
 
 
         //The faction names are fantasy names designed to sound historic, they don't have to be directly translated as long as they keep some of their essense

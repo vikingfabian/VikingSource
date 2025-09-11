@@ -132,5 +132,20 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_KeyMapPanSpeed => "Скорость панорамирования";
         public override string Settings_StoreCameraPosition => "Сохранить позицию камеры";
         public override string Settings_LoadCameraPosition => "Загрузить позицию";
+
+
+        //Shadow update
+        public override string Settings_ModelWaterFoam => "Пена на воде";
+        public override string Settings_ModelShadow => "Тени";
+        public override string Settings_ModelShadowMapSize => "Размер карты теней";
+        public override string Settings_Brightness => "Яркость";
+        public override string Settings_Mode_No_Achivements => "Достижения недоступны.";
+        public override string Settings_FrameRate => "Частота кадров";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "Блокировать достижения для импортированных сохранений";
+
     }
 }

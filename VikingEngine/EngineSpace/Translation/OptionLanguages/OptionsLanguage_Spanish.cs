@@ -133,5 +133,20 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_StoreCameraPosition => "Guardar posición de la cámara";
         public override string Settings_LoadCameraPosition => "Cargar posición";
 
+
+        //Shadow update
+        public override string Settings_ModelWaterFoam => "Espuma del agua";
+        public override string Settings_ModelShadow => "Sombras";
+        public override string Settings_ModelShadowMapSize => "Tamaño del Shadow Map";
+        public override string Settings_Brightness => "Brillo";
+        public override string Settings_Mode_No_Achivements => "Logros no disponibles.";
+        public override string Settings_FrameRate => "Tasa de fotogramas";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "Bloquear logros para archivos de guardado importados";
+
+
     }
 }

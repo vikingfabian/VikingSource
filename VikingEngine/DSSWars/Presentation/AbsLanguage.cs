@@ -1672,5 +1672,33 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string Tutorial_CasualRecruitSoldiers { get; }
 
+        //Shadow update
+        public abstract string Technology_CannotReassign { get; }
+
+        public abstract string Diplomacy_DeclareWarAgainst { get; }
+        public abstract string Diplomacy_AllyCount { get; }
+        public abstract string Diplomacy_CostPerAlly { get; }
+
+        public abstract string Event_ChanceOfFailure { get; }
+        public abstract string EventMessage_Event_Title { get; }
+        public abstract string EventMessage_TheCohalition { get; }
+
+        public abstract string EventMessage_DarkHorde { get; }
+        public abstract string EventMessage_DarkHordeKiller_Title { get; }
+        public abstract string EventMessage_DarkHordeKiller_Message { get; }
+
+        public abstract string GodPower { get; }
+
+        public abstract string Building_TreeSprout_Description { get; }
+        public abstract string Building_TreeSprout_Soft { get; }
+        public abstract string Building_TreeSprout_Hard { get; }
+
+        public abstract string GeneralSetting_SetAll { get; }
+
+        public abstract string Hud_All { get; }
+        public abstract string Hud_Previous { get; }
+        public abstract string Hud_EffectWillStack { get; }
+
+        public abstract string Info_WhenFoodRunsOut { get; }
     }
 }

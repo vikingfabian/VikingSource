@@ -2178,7 +2178,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "観戦モード";
 
-        public override string Settings_Mode_Spectator_Description => "観戦のみ";
+        //public override string Settings_Mode_Spectator_Description => "観戦のみ";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "すべてを少しずつ建設します";
 
@@ -2504,6 +2504,39 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Food => "空腹の兵士たちが軍から脱走しています";
 
         public override string Tutorial_CasualRecruitSoldiers => "兵士グループを1つ購入する";
+
+
+        //Shadow update
+        public override string Technology_CannotReassign => "研究が完了するまで Tech を再割り当てできません";
+        public override string Diplomacy_DeclareWarAgainst => "あなたは次の相手に宣戦布告します:";
+        public override string Diplomacy_AllyCount => "同盟国の数";
+        public override string Diplomacy_CostPerAlly => "コストは同盟国ごとに {0} 増加します";
+
+        public override string Event_ChanceOfFailure => "{0}% 失敗の可能性";
+        public override string EventMessage_Event_Title => "イベント";
+        public override string EventMessage_TheCohalition => "連合";
+
+        public override string EventMessage_DarkHorde => "闇の軍勢";
+        public override string EventMessage_DarkHordeKiller_Title => "闇の軍勢キラー";
+        public override string EventMessage_DarkHordeKiller_Message => "チャンピオン騎士があなたの軍に加わりました";
+
+        public override string Settings_Mode_Spectator_Description => "ただ観戦するか、God Powers で干渉することができます。";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "木を植える";
+        public override string Building_TreeSprout_Soft => "軟木の苗木";
+        public override string Building_TreeSprout_Hard => "硬木の苗木";
+
+        public override string GeneralSetting_SetAll => "すべてに適用";
+
+        public override string Hud_All => "すべて";
+
+        public override string Hud_Previous => "前へ";
+
+        public override string Hud_EffectWillStack => "効果はスタックされます";
+
+        public override string Info_WhenFoodRunsOut => "食料が尽きると、都市や軍隊は自動的に闇市から購入します。";
+
 
 
     }

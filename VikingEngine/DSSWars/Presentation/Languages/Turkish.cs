@@ -9,6 +9,7 @@ using VikingEngine.ToGG.HeroQuest.Players.Ai;
 
 namespace VikingEngine.DSSWars.Presentation
 {
+    //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
         /// <summary>
@@ -2218,7 +2219,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "İzleyici modu";
 
-        public override string Settings_Mode_Spectator_Description => "Arkana yaslan ve izle";
+        //public override string Settings_Mode_Spectator_Description => "Arkana yaslan ve izle";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "Her şeyden biraz inşa eder";
 
@@ -2545,5 +2546,38 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public override string Tutorial_CasualRecruitSoldiers => "Bir asker grubu alımı yap";
+
+
+        //Shadow update
+        public override string Technology_CannotReassign => "Araştırma tamamlanana kadar Tech yeniden atanamaz";
+        public override string Diplomacy_DeclareWarAgainst => "Şuna savaş ilan edeceksin:";
+        public override string Diplomacy_AllyCount => "Müttefik sayısı";
+        public override string Diplomacy_CostPerAlly => "Maliyet, müttefik başına {0} artar";
+
+        public override string Event_ChanceOfFailure => "%{0} başarısızlık ihtimali";
+        public override string EventMessage_Event_Title => "Olay";
+        public override string EventMessage_TheCohalition => "Koalisyon";
+
+        public override string EventMessage_DarkHorde => "Karanlık Ordu";
+        public override string EventMessage_DarkHordeKiller_Title => "Karanlık Ordu Katili";
+        public override string EventMessage_DarkHordeKiller_Message => "Şampiyon şövalyeler hizmetine katıldı";
+
+        public override string Settings_Mode_Spectator_Description => "Sadece izle – ya da God Powers ile müdahale et.";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "Bir ağaç dik";
+        public override string Building_TreeSprout_Soft => "Yumuşak odun fidanı";
+        public override string Building_TreeSprout_Hard => "Sert odun fidanı";
+
+        public override string GeneralSetting_SetAll => "Hepsine uygula";
+
+        public override string Hud_All => "Tümü";
+
+        public override string Hud_Previous => "Önceki";
+
+        public override string Hud_EffectWillStack => "Etki birikecek";
+
+        public override string Info_WhenFoodRunsOut => "Yemek bittiğinde, şehirler ve ordular onu otomatik olarak karaborsadan satın alır.";
+
     }
 }
