@@ -547,6 +547,8 @@ namespace VikingEngine.DSSWars
                         { 
                             armiesC.sel.DeleteMe(DeleteReason.Desert, true);
                         }
+
+                        DeleteMe();
                     }
                 }
             }

@@ -78,8 +78,47 @@ namespace VikingEngine.DSSWars.Players
                 profile.readBot(r);
                 SetProfile(profile);
             }
+
+            refreshPublicIndex();
         }
-        
+
+        void refreshPublicIndex()
+        {
+            switch (faction.factiontype)
+            {
+                case FactionType.DarkFollower:
+                    DssRef.settings.Faction_DarkFollower = faction.myIndex;
+                    break;
+
+                case FactionType.Barbarians:
+                    DssRef.settings.Faction_Barbarian = faction.myIndex;
+                    break;
+
+                case FactionType.UnitedKingdom:
+                    DssRef.settings.Faction_UnitedKingdom = faction.myIndex;
+                    break;
+
+                case FactionType.GreenWood:
+                    DssRef.settings.Faction_GreenWood = faction.myIndex;
+                    break;
+                case FactionType.SouthHara:
+                    DssRef.settings.Faction_SouthHara = faction.myIndex;
+                    break;
+
+                case FactionType.DyingMonger:
+                    DssRef.settings.Faction_DyingMonger = faction.myIndex;
+                    break;
+
+                case FactionType.DyingHate:
+                    DssRef.settings.Faction_DyingHate = faction.myIndex;
+                    break;
+
+                case FactionType.DyingDestru:
+                    DssRef.settings.Faction_DyingDestru = faction.myIndex;
+                    break;
+            }
+        }
+
         public AiPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
         {
@@ -773,6 +812,8 @@ namespace VikingEngine.DSSWars.Players
                 default:
                     throw new NotImplementedException("ai player " + faction.factiontype);
             }
+
+            refreshPublicIndex();
 
             //apply tech on all cities
 

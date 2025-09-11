@@ -827,7 +827,7 @@ namespace VikingEngine.DSSWars.Players
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
-                    //battleLineUpTest3_friendly_only();
+                    battleLineUpTest3_friendly_only();
                     //battleLineUpTest2(true);
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);

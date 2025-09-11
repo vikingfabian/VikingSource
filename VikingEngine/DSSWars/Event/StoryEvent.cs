@@ -480,6 +480,8 @@ namespace VikingEngine.DSSWars.Event
 
                         enemyFac.player.protectedFromDelete = false;
 
+
+
                         return;
                     }
                 }

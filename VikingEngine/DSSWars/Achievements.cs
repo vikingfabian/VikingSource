@@ -290,7 +290,7 @@ namespace VikingEngine.DSSWars
                     UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_boss_any, AchievementIndex.victory_boss_50, AchievementIndex.victory_boss_100, AchievementIndex.victory_boss_150);
                     break;
                 case VictoryType.WorldPeace:
-                    UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_worldpeace_any, AchievementIndex.victory_worldpeace_50, AchievementIndex.victory_worldpeace_100, AchievementIndex.victory_worldpeace_150);
+                    UnlockAchievement(AchievementIndex.victory_worldpeace_any);
 
 
                     break;
@@ -333,15 +333,15 @@ namespace VikingEngine.DSSWars
                 {
                     UnlockAchievement_onAny_50_100_150(AchievementIndex.no_war_started_any, AchievementIndex.no_war_started_50, AchievementIndex.no_war_started_100, AchievementIndex.no_war_started_150);
 
-                    if (victoryType == VictoryType.WorldPeace)
-                    {
-                        UnlockAchievement_onAny_100(AchievementIndex.peace_and_love_any, AchievementIndex.peace_and_love_100);
+                    //if (victoryType == VictoryType.WorldPeace)
+                    //{
+                    //    UnlockAchievement_onAny_100(AchievementIndex.peace_and_love_any, AchievementIndex.peace_and_love_100);
 
-                        if (DssRef.world.metaData.mapSize >= MapSize.Large)
-                        {
-                            UnlockAchievement_on75(AchievementIndex.massive_peace_and_love);
-                        }
-                    }
+                    //    if (DssRef.world.metaData.mapSize >= MapSize.Large)
+                    //    {
+                    //        UnlockAchievement_on75(AchievementIndex.massive_peace_and_love);
+                    //    }
+                    //}
                 }
                 else if (p.statistics.WarsStartedByYou >= 10)
                 {
@@ -491,9 +491,9 @@ namespace VikingEngine.DSSWars
         /// have good relations with all nations who speaks to you
         /// </summary>
         victory_worldpeace_any,//i
-        victory_worldpeace_50,
-        victory_worldpeace_100,
-        victory_worldpeace_150,
+        //victory_worldpeace_50,
+        //victory_worldpeace_100,
+        //victory_worldpeace_150,
 
         /// <summary>
         /// Grab the whole world to yourself - in sandbox
@@ -539,13 +539,13 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// reach world peace victory without starting a single war
         /// </summary>
-        peace_and_love_any,//i
-        peace_and_love_100,
+        //peace_and_love_any,//i
+        //peace_and_love_100,
 
         /// <summary>
         /// reach world peace victory without starting a single war, large world size, min 75%
         /// </summary>
-        massive_peace_and_love,//i
+        //massive_peace_and_love,//i
 
         /// <summary>
         /// reach victory, and have started (10, 20, 40) wars, min 75%
@@ -693,12 +693,12 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Rear flanking: Make a cavalry charge against siege weapons
         /// </summary>
-        rear_flanking,//i
+        rear_flanking,//i, t (can be cheesed)
 
         /// <summary>
         /// Bane of the barbarians: get the Dark Horde reward 
         /// </summary>
-        barbarian_bane_any,//i (broken)
+        barbarian_bane_any,//i, t
         barbarian_bane_100,
 
         /// <summary>

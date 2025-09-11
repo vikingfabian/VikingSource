@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars.Event
         public void onBattleEnd_async(AbsArmy army, InBattleWith inBattleWith)
         {
             if (army.GetPlayer().IsLocalPlayer() &&
-                inBattleWith.ContainsFaction(DssRef.settings.Faction_Barbarian) && 
+                inBattleWith.ContainsFaction(FactionType.Barbarians) && 
                 Bound.IsWithin(StoryIndex(), EventsOrder.Barbarians, EventsOrder.Barbarians +1))
             {
                 army.GetPlayer().GetLocalPlayer().barbarianKiller = true;
@@ -425,62 +425,62 @@ namespace VikingEngine.DSSWars.Event
         {
 
             //Happens in one second update
-            if (faction.myIndex == DssRef.settings.Faction_Barbarian)
-            {
-                foreach (var p in DssRef.state.localPlayers)
-                {
-                    if (p.barbarianKiller)
+            switch (faction.factiontype)
+            { 
+                case FactionType.Barbarians:
+                    foreach (var p in DssRef.state.localPlayers)
                     {
-                        p.barbarianKiller = false;
-
-                        IntVector2 onTile = p.faction.mainCity.ArmySpawnTilePos();
-                        var mainArmy = p.faction.NewArmy(onTile);
+                        if (p.barbarianKiller)
                         {
-                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                            p.barbarianKiller = false;
+
+                            IntVector2 onTile = p.faction.mainCity.ArmySpawnTilePos();
+                            var mainArmy = p.faction.NewArmy(onTile);
                             {
-                                conscript = new ConscriptProfile()
+                                SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                                 {
-                                    weapon = Resource.ItemResourceType.KnightsLance,
-                                    armorLevel = Resource.ItemResourceType.FullPlateArmor,
-                                    training = TrainingLevel.Champion,
-                                    specialization = SpecializationType.Traditional,
+                                    conscript = new ConscriptProfile()
+                                    {
+                                        weapon = Resource.ItemResourceType.KnightsLance,
+                                        armorLevel = Resource.ItemResourceType.FullPlateArmor,
+                                        training = TrainingLevel.Champion,
+                                        specialization = SpecializationType.Traditional,
+                                    }
+                                };
+
+                                for (int i = 0; i < 4; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, SoldierProfile, mainArmy.position);
                                 }
-                            };
-
-                            for (int i = 0; i < 4; ++i)
-                            {
-                                new SoldierGroup(mainArmy, SoldierProfile, mainArmy.position);
                             }
+                            mainArmy.tagBack = CityTagBack.Blue;
+                            mainArmy.tagArt = ArmyTagArt.LevelMaster;
+                            mainArmy.setAsStartArmy();
+
+                            p.hud.messages.Add(DssRef.lang.EventMessage_DarkHordeKiller_Title, DssRef.lang.EventMessage_DarkHordeKiller_Message);
+
+                            DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.barbarian_bane_any, AchievementIndex.barbarian_bane_100);
                         }
-                        mainArmy.tagBack = CityTagBack.Blue;
-                        mainArmy.tagArt = ArmyTagArt.LevelMaster;
-                        mainArmy.setAsStartArmy();
-
-                        p.hud.messages.Add(DssRef.lang.EventMessage_DarkHordeKiller_Title, DssRef.lang.EventMessage_DarkHordeKiller_Message);
-
-                        DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.barbarian_bane_any, AchievementIndex.barbarian_bane_100);
                     }
+                    break;
+                
+                case FactionType.DarkLord:
+                    victory(VictoryType.DefeatBoss);
+                    break;
 
+                case FactionType.UnitedKingdom:
+                    if (IsStoryBeforeBoss() && DssRef.diplomacy.InWarWithPlayer(faction))
+                    {
+                        DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_uk_any, AchievementIndex.early_uk_100);
+                    }
+                    break;
 
-                }
-            }
-            else if (faction == DssRef.settings.darkLordPlayer.faction)
-            {
-                victory(VictoryType.DefeatBoss);
-            }
-            else if (faction.myIndex == DssRef.settings.Faction_UnitedKingdom)
-            {
-                if (IsStoryBeforeBoss() && DssRef.diplomacy.InWarWithPlayer(faction))
-                {
-                    DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_uk_any, AchievementIndex.early_uk_100);
-                }
-            }
-            else if (faction.myIndex == DssRef.settings.Faction_DarkFollower)
-            {
-                if (IsStoryBeforeBoss() && DssRef.diplomacy.InWarWithPlayer(faction))
-                {
-                    DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_dread_any, AchievementIndex.early_dread_100);
-                }
+                case FactionType.DarkFollower:
+                    if (IsStoryBeforeBoss() && DssRef.diplomacy.InWarWithPlayer(faction))
+                    {
+                        DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_dread_any, AchievementIndex.early_dread_100);
+                    }
+                    break;
             }
 
             foreach (var p in DssRef.state.localPlayers)
