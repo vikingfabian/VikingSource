@@ -1,12 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Fixed flickering of soldier models
-* fixed conscript copy
-* fixed automate export options
-* increased cost for allies, +1 per 2, base cost reduced by one (not on easy)
-* a chance of failing and dropping speak relation for each time you ask of truce (not on easy)
-* removed all (6) peace victory achievments except "any difficulty and size"
-* fixed event manager crash in battle lab
+* 
 
 Translation:
 * translated shadow update
@@ -31,10 +25,6 @@ interact icons for buildings (play, next, previous,)
 
 #must do#
 x move "apply to all" to menu top
-x City Automation: Click on Export and then click on Resources then Weapons, now neither of the items 'looks' slected.
--
-x barbarian killer not working
-
 x lobby ambience is heard on zero volume
 x music should not play when master = 0
 x test all achievements
