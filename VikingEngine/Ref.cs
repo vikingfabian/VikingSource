@@ -58,6 +58,7 @@ namespace VikingEngine
 
         public static float DeltaTimeMs;
         public static float TargetDeltaTimeMs;
+        public static float TargetDeltaTimeSec;
         public static float DeltaTimeSec;
         public static float TotalTimeSec, PrevTotalTimeSec;
         public static float TotalGameTimeSec, PrevTotalGameTimeSec;

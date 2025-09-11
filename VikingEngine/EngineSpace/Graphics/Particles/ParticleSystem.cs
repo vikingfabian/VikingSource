@@ -1,17 +1,20 @@
 
 
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
+using System;
 using VikingEngine.Engine;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace VikingEngine.Graphics
 {
     abstract class ParticleSystem : AbsParticleSystem
     {
+        float prevInfoTime = 0;
+
         public ParticleSystem()
             : base()
         { }
@@ -27,12 +30,24 @@ namespace VikingEngine.Graphics
             if (nextFreeParticle >= settings.MaxParticles)
                 nextFreeParticle = 0;
 
-            // If there are no free particles, we just have to give up.
+            // OLD: If there are no free particles, we just have to give up.
             if (nextFreeParticle == firstRetiredParticle)
                 return;
+                //// NEW: force retire
+                //if (nextFreeParticle == firstRetiredParticle)
+                //{
+                //    firstRetiredParticle++;
+                //    if (firstRetiredParticle >= settings.MaxParticles)
+                //        firstRetiredParticle = 0;
 
-            // Adjust the input velocity based on how much
-            // this particle system wants to be affected by it.
+                //    firstActiveParticle++;
+                //    if (firstActiveParticle >= settings.MaxParticles)
+                //        firstActiveParticle = 0;
+                //}
+                //return;
+
+                // Adjust the input velocity based on how much
+                // this particle system wants to be affected by it.
             velocity *= settings.EmitterVelocitySensitivity;
 
             // Add in some random amount of horizontal velocity.
@@ -67,6 +82,7 @@ namespace VikingEngine.Graphics
                                            Ref.peRnd.Byte(),
                                            Ref.peRnd.Byte());
 
+            
             // Fill in the particle vertex structure.
             for (int i = 0; i < GraphicsLib.PolygonIndicesCount; i++)
             {
@@ -75,6 +91,15 @@ namespace VikingEngine.Graphics
                 particles_CPU[indiceIx].Velocity = velocity;
                 particles_CPU[indiceIx].Random_Vcolor = randomValues;
                 particles_CPU[indiceIx].Time = currentTime;
+
+               
+            }
+
+            if (prevInfoTime != currentTime)
+            {
+                prevInfoTime = currentTime;
+                Debug.Log("ADD particle");
+                Debug.Log(particles_CPU[firstFreeParticle * GraphicsLib.PolygonIndicesCount].ToString());
             }
             //previousParticleIndex = firstFreeParticle;
             firstFreeParticle = nextFreeParticle;
@@ -321,14 +346,16 @@ namespace VikingEngine.Graphics
 
 
             // Look up shortcuts for parameters that change every frame.
-            
+
             //effectTimeParameter = parameters["CurrentTime"];
 
             // Set the values of parameters that do not change.
+           
+
             parameters["Duration"].SetValue((float)settings.Duration.TotalSeconds);
             parameters["DurationRandomness"].SetValue(settings.DurationRandomness);
-            parameters["Gravity"].SetValue(settings.Gravity);
-            parameters["EndVelocity"].SetValue(settings.EndVelocity);
+            parameters["Gravity"]?.SetValue(settings.Gravity);
+            parameters["EndVelocity"]?.SetValue(settings.EndVelocity);
             parameters["MinColor"].SetValue(settings.MinColor.ToVector4());
             parameters["MaxColor"].SetValue(settings.MaxColor.ToVector4());
 
@@ -356,24 +383,37 @@ namespace VikingEngine.Graphics
         /// <summary>
         /// Updates the particle system.
         /// </summary>
-        virtual public void Time_Update(float time)
+        virtual public void Update()
         {
-            currentTime += Ref.DeltaGameTimeSec;//time / 1000;
+            if (Ref.DeltaGameTimeSec > 0)
+            {
+                currentTime += Ref.TargetDeltaTimeSec;//Ref.DeltaGameTimeSec;
 
-            RetireActiveParticles();
-            FreeRetiredParticles();
+                RetireActiveParticles();
+                FreeRetiredParticles();
 
-            // If we let our timer go on increasing for ever, it would eventually
-            // run out of floating point precision, at which point the particles
-            // would render incorrectly. An easy way to prevent this is to notice
-            // that the time value doesn't matter when no particles are being drawn,
-            // so we can reset it back to zero any time the active queue is empty.
+                // If we let our timer go on increasing for ever, it would eventually
+                // run out of floating point precision, at which point the particles
+                // would render incorrectly. An easy way to prevent this is to notice
+                // that the time value doesn't matter when no particles are being drawn,
+                // so we can reset it back to zero any time the active queue is empty.
 
-            if (firstActiveParticle == firstFreeParticle)
-                currentTime = 0;
+                //if (firstActiveParticle == firstFreeParticle)
+                //    currentTime = 0;
 
-            if (firstRetiredParticle == firstActiveParticle)
-                drawCounter = 0;
+                //if (firstRetiredParticle == firstActiveParticle)
+                //    drawCounter = 0;
+
+                bool noneActive = (firstActiveParticle == firstNewParticle);
+                bool noneNew = (firstNewParticle == firstFreeParticle);
+                bool noneRetired = (firstRetiredParticle == firstActiveParticle);
+
+                if (noneActive && noneNew && noneRetired)
+                {
+                    currentTime = 0;
+                    drawCounter = 0;
+                }
+            }
         }
 
 
@@ -421,12 +461,13 @@ namespace VikingEngine.Graphics
             {
                 // Has this particle been unused long enough that
                 // the GPU is sure to be finished with it?
-                int age = drawCounter - (int)particles_CPU[firstRetiredParticle * 4].Time;
+                int age = drawCounter - (int)particles_CPU[firstRetiredParticle * GraphicsLib.PolygonIndicesCount].Time;
 
                 // The GPU is never supposed to get more than 2 frames behind the CPU.
                 // We add 1 to that, just to be safe in case of buggy drivers that
                 // might bend the rules and let the GPU get further behind.
-                if (age < 3)
+                const int SafetyFrames = 3;
+                if (age < SafetyFrames)
                     break;
 
                 // Move the particle from the retired to the free queue.
@@ -470,9 +511,12 @@ namespace VikingEngine.Graphics
         }
         protected void drawParticleRange(int start, int end)
         {
+            
             // If there are any active particles, draw them now!
             if (start != end)
             {
+                //Debug.Log($"startParticle {start}, endParticle {end}, currentTime {currentTime}");
+
                 updateParameters();
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = settings.BlendState;
 
@@ -509,7 +553,6 @@ namespace VikingEngine.Graphics
                         // If the active particle range wraps past the end of the queue
                         // back to the start, we must split them over two draw calls.
                         Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-                                                     //start * 4, (settings.MaxParticles - start) * 4,
                                                      start * 6, (settings.MaxParticles - start) * 2);
 
                         if (end > 0)
@@ -544,32 +587,33 @@ namespace VikingEngine.Graphics
 
         protected void updateVertexBuffer(int startParticle, int endParticle)
         {
-            int dataByteSize = ParticleVertex.SizeInBytes;
-            if (startParticle < endParticle) // 0, 1
-            {
-                // If the new particles are all in one consecutive range,
-                // we can upload them all in a single call.
+            
 
-                //(int offsetInBytes, T[] data, int startIndex, int elementCount, int vertexStride, SetDataOptions options)
-                vertexBuffer_GPU.SetData(startParticle * dataByteSize * GraphicsLib.PolygonIndicesCount, particles_CPU,
-                                     startParticle * GraphicsLib.PolygonIndicesCount,
-                                     (endParticle - startParticle) * GraphicsLib.PolygonIndicesCount,
-                                     dataByteSize, SetDataOptions.NoOverwrite);
+            int stride = ParticleVertex.SizeInBytes;
+            if (startParticle < endParticle)
+            {
+                var opts = startParticle == 0 ? SetDataOptions.Discard : SetDataOptions.NoOverwrite;
+                vertexBuffer_GPU.SetData(startParticle * stride * GraphicsLib.PolygonIndicesCount,
+                                         particles_CPU,
+                                         startParticle * GraphicsLib.PolygonIndicesCount,
+                                         (endParticle - startParticle) * GraphicsLib.PolygonIndicesCount,
+                                         stride, opts);
             }
             else
             {
-                // If the new particle range wraps past the end of the queue
-                // back to the start, we must split them over two upload calls.
-                vertexBuffer_GPU.SetData(startParticle * dataByteSize * GraphicsLib.PolygonIndicesCount, particles_CPU,
-                                     startParticle * GraphicsLib.PolygonIndicesCount,
-                                     (settings.MaxParticles - startParticle) * GraphicsLib.PolygonIndicesCount,
-                                     dataByteSize, SetDataOptions.NoOverwrite);
+                // tail
+                vertexBuffer_GPU.SetData(startParticle * stride * GraphicsLib.PolygonIndicesCount,
+                                         particles_CPU,
+                                         startParticle * GraphicsLib.PolygonIndicesCount,
+                                         (settings.MaxParticles - startParticle) * GraphicsLib.PolygonIndicesCount,
+                                         stride, SetDataOptions.NoOverwrite);
 
+                // head — start of buffer: prefer Discard
                 if (endParticle > 0)
                 {
-                    vertexBuffer_GPU.SetData(0, particles_CPU,
-                                         0, endParticle * GraphicsLib.PolygonIndicesCount,
-                                         dataByteSize, SetDataOptions.NoOverwrite);
+                    vertexBuffer_GPU.SetData(0, particles_CPU, 0,
+                                             endParticle * GraphicsLib.PolygonIndicesCount,
+                                             stride, SetDataOptions.Discard);
                 }
             }
         }

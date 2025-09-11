@@ -1,5 +1,6 @@
 ﻿UPDATE
 Change Log:
+* Fixed flickering of soldier models
 * fixed conscript copy
 * fixed automate export options
 * increased cost for allies, +1 per 2, base cost reduced by one (not on easy)

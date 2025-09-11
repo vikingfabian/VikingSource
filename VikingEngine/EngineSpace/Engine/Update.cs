@@ -301,7 +301,7 @@ namespace VikingEngine.Engine
             Ref.UpdateTimes30FPS = fps / 30;
             Ref.UpdateTimes60FPS = fps / 60f;
             Ref.TargetDeltaTimeMs = (float)Ref.main.TargetElapsedTime.TotalMilliseconds;
-
+            Ref.TargetDeltaTimeSec =  (float)Ref.main.TargetElapsedTime.TotalSeconds;
         }
 
         public static int MillisecToFrames(float ms)

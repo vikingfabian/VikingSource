@@ -25,7 +25,7 @@ namespace VikingEngine.Graphics
         {
 
             settings.Texture = LoadedTexture.particle3;
-            settings.MaxParticles = 30000;
+            settings.MaxParticles = 60000;
 
             settings.Duration = TimeSpan.FromSeconds(5f);
             settings.DurationRandomness = 0.1f;
