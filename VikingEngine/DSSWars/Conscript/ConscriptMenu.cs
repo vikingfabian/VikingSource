@@ -713,9 +713,8 @@ namespace VikingEngine.DSSWars.Conscript
         void guardTabClick(bool guard)
         {
             BarracksStatus currentProfile = get();
-            ConscriptProfile defaultProfile = new ConscriptProfile();
-            defaultProfile.defaultSetup(currentProfile.type);
-            currentProfile.profile.specialization = guard? SpecializationType.CityGuard : defaultProfile.specialization;
+            BarracksStatus defaultProfile = new BarracksStatus(currentProfile.type);
+            currentProfile.profile.specialization = guard? SpecializationType.CityGuard : defaultProfile.profile.specialization;
             set(currentProfile);
         }
 

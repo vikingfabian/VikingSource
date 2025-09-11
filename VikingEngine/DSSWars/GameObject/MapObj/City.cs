@@ -2447,10 +2447,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                                     var button = new ArtOption(type == exportAutoType,
                                        optionContent,
-                                       new RbAction(() =>
+                                       new RbAction1Arg<ExportAutoType>((ExportAutoType type) =>
                                        {
                                            exportAutoType = type;
-                                       }, RbSoundType.Option),null);
+                                       }, type, RbSoundType.Option),null);
 
                                     content.Add(button);
                                 }

@@ -207,22 +207,22 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (currentStatus.type)
                 {
                     case Build.BuildAndExpandType.SoldierBarracks:
-                        player.soldierConscriptCopy = currentStatus.profile;
+                        player.soldierConscriptCopy = currentStatus;
                         break;
                     case Build.BuildAndExpandType.ArcherBarracks:
-                        player.archerConscriptCopy = currentStatus.profile;
+                        player.archerConscriptCopy = currentStatus;
                         break;
                     case Build.BuildAndExpandType.WarmachineBarracks:
-                        player.warmachineConscriptCopy = currentStatus.profile;
+                        player.warmachineConscriptCopy = currentStatus;
                         break;
                     case Build.BuildAndExpandType.KnightsBarracks:
-                        player.knightConscriptCopy = currentStatus.profile;
+                        player.knightConscriptCopy = currentStatus;
                         break;
                     case Build.BuildAndExpandType.GunBarracks:
-                        player.gunConscriptCopy = currentStatus.profile;
+                        player.gunConscriptCopy = currentStatus;
                         break;
                     case Build.BuildAndExpandType.CannonBarracks:
-                        player.cannonConscriptCopy = currentStatus.profile;
+                        player.cannonConscriptCopy = currentStatus;
                         break;
 
                 }
@@ -262,22 +262,22 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (currentStatus.type)
                 {
                     case Build.BuildAndExpandType.SoldierBarracks:
-                        currentStatus.profile=player.soldierConscriptCopy;
+                        currentStatus.paste(player.soldierConscriptCopy);
                         break;
                     case Build.BuildAndExpandType.ArcherBarracks:
-                        currentStatus.profile= player.archerConscriptCopy;
+                        currentStatus.paste(player.archerConscriptCopy);
                         break;
                     case Build.BuildAndExpandType.WarmachineBarracks:
-                        currentStatus.profile=player.warmachineConscriptCopy ;
+                        currentStatus.paste(player.warmachineConscriptCopy) ;
                         break;
                     case Build.BuildAndExpandType.KnightsBarracks:
-                        currentStatus.profile=player.knightConscriptCopy;
+                        currentStatus.paste(player.knightConscriptCopy);
                         break;
                     case Build.BuildAndExpandType.GunBarracks:
-                        currentStatus.profile=player.gunConscriptCopy;
+                        currentStatus.paste(player.gunConscriptCopy);
                         break;
                     case Build.BuildAndExpandType.CannonBarracks:
-                        currentStatus.profile=player.cannonConscriptCopy;
+                        currentStatus.paste(player.cannonConscriptCopy);
                         break;
 
                 }
@@ -513,7 +513,7 @@ namespace VikingEngine.DSSWars.GameObject
                 idAndPosition = conv.IntVector2ToInt(subPos),
             };
 
-            consriptProfile.profile.defaultSetup(type);
+            //consriptProfile.profile.defaultSetup(type);
             //if (nobelmen)
             //{
             //    consriptProfile.profile.training = TrainingLevel.Basic;

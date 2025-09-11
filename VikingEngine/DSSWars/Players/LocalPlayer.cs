@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Players
         public XP.TechnologyTreeType selectedTech = 0;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;
-        public ConscriptProfile soldierConscriptCopy, archerConscriptCopy, warmachineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
+        public BarracksStatus soldierConscriptCopy, archerConscriptCopy, warmachineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();
@@ -265,23 +265,17 @@ namespace VikingEngine.DSSWars.Players
             goldDeliveryCopy = new DeliveryStatus();
             goldDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Gold);
 
-            soldierConscriptCopy = new ConscriptProfile();
-            soldierConscriptCopy.defaultSetup(Build.BuildAndExpandType.SoldierBarracks);
+            soldierConscriptCopy = new BarracksStatus(BuildAndExpandType.SoldierBarracks);
 
-            archerConscriptCopy = new ConscriptProfile();
-            archerConscriptCopy.defaultSetup(Build.BuildAndExpandType.ArcherBarracks);
+            archerConscriptCopy = new BarracksStatus(BuildAndExpandType.ArcherBarracks);
 
-            warmachineConscriptCopy = new ConscriptProfile();
-            warmachineConscriptCopy.defaultSetup(Build.BuildAndExpandType.WarmachineBarracks);
+            warmachineConscriptCopy = new BarracksStatus(BuildAndExpandType.WarmachineBarracks);
 
-            knightConscriptCopy = new ConscriptProfile();
-            knightConscriptCopy.defaultSetup(Build.BuildAndExpandType.KnightsBarracks);
+            knightConscriptCopy = new BarracksStatus(BuildAndExpandType.KnightsBarracks);
 
-            gunConscriptCopy = new ConscriptProfile();
-            gunConscriptCopy.defaultSetup(Build.BuildAndExpandType.GunBarracks);
+            gunConscriptCopy = new BarracksStatus(BuildAndExpandType.GunBarracks);
 
-            cannonConscriptCopy = new ConscriptProfile();
-            cannonConscriptCopy.defaultSetup(Build.BuildAndExpandType.CannonBarracks);
+            cannonConscriptCopy = new BarracksStatus(BuildAndExpandType.CannonBarracks);
 
         }
 

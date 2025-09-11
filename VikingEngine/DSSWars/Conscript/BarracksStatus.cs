@@ -65,7 +65,17 @@ namespace VikingEngine.DSSWars.Conscript
             maxTrainingLevel = TrainingLevel.Skillful;
         }
 
-       
+        //public void reseet()
+        //{ 
+            
+        //}
+
+        public void paste(BarracksStatus stored)
+        {
+            profile = stored.profile;
+            requireMaxFood = stored.requireMaxFood;
+            requireMaxPopulation = stored.requireMaxPopulation;
+        }
 
         public void halt(City city)
         {
