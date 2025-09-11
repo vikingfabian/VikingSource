@@ -90,142 +90,142 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.Etheleorthe:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Etheleorthe;
+                    name = DssRef.lang.FactionName_Etheleorthe;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     break;
                 case FactionType.BranthollowBarony:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_BranthollowBarony;
+                    name = DssRef.lang.FactionName_BranthollowBarony;
                     break;
 
                 case FactionType.DunwadeHold:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_DunwadeHold;
+                    name = DssRef.lang.FactionName_DunwadeHold;
                     break;
 
                 case FactionType.CaerwynMarches:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_CaerwynMarches;
+                    name = DssRef.lang.FactionName_CaerwynMarches;
                     break;
 
                 case FactionType.StonevaleFreehold:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_StonevaleFreehold;
+                    name = DssRef.lang.FactionName_StonevaleFreehold;
                     break;
 
                 case FactionType.GlenmereLordship:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_GlenmereLordship;
+                    name = DssRef.lang.FactionName_GlenmereLordship;
                     break;
 
                 case FactionType.ArveldonPrincipality:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_ArveldonPrincipality;
+                    name = DssRef.lang.FactionName_ArveldonPrincipality;
                     break;
 
                 case FactionType.WestmereReaches:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_WestmereReaches;
+                    name = DssRef.lang.FactionName_WestmereReaches;
                     break;
 
                 case FactionType.ThornwickWardens:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_ThornwickWardens;
+                    name = DssRef.lang.FactionName_ThornwickWardens;
                     break;
 
                 case FactionType.EvermereFief:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_EvermereFief;
+                    name = DssRef.lang.FactionName_EvermereFief;
                     break;
 
                 case FactionType.BryndralHollow:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_BryndralHollow;
+                    name = DssRef.lang.FactionName_BryndralHollow;
                     break;
                 case FactionType.Mendog:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Mendog;
+                    name = DssRef.lang.FactionName_Mendog;
                     break;
                 case FactionType.Minde:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Minde;
+                    name = DssRef.lang.FactionName_Minde;
                     break;
                 case FactionType.FloKingdom:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_FloKingdom;
+                    name = DssRef.lang.FactionName_FloKingdom;
                     break;
                 case FactionType.CarolusKeksenmark:
                     defaultSetup();
                     techSetup();
 
-                    name = DssRef.todoLang.FactionName_CarolusKeksenmark;
+                    name = DssRef.lang.FactionName_CarolusKeksenmark;
                     break;
 
                 case FactionType.SylvaranGlade:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_SylvaranGlade;
+                    name = DssRef.lang.FactionName_SylvaranGlade;
                     break;
 
                 case FactionType.DrelmirePact:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_DrelmirePact;
+                    name = DssRef.lang.FactionName_DrelmirePact;
                     break;
 
                 case FactionType.KhazrunForgeclan:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_KhazrunForgeclan;
+                    name = DssRef.lang.FactionName_KhazrunForgeclan;
                     break;
 
                 case FactionType.VeylanHorselords:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_VeylanHorselords;
+                    name = DssRef.lang.FactionName_VeylanHorselords;
                     break;
 
                 case FactionType.ThalosCovenant:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_ThalosCovenant;
+                    name = DssRef.lang.FactionName_ThalosCovenant;
                     break;
 
                 case FactionType.NerathianTideguard:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_NerathianTideguard;
+                    name = DssRef.lang.FactionName_NerathianTideguard;
                     break;
 
                 case FactionType.SkaruunExiles:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_SkaruunExiles;
+                    name = DssRef.lang.FactionName_SkaruunExiles;
                     break;
 
                 case FactionType.DraktharDominion:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_DraktharDominion;
+                    name = DssRef.lang.FactionName_DraktharDominion;
                     break;
 
                 case FactionType.MalrekIronbound:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_MalrekIronbound;
+                    name = DssRef.lang.FactionName_MalrekIronbound;
                     break;
 
                 case FactionType.Starshield:
@@ -758,14 +758,14 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.BramblebrookHill:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_BramblebrookHill;
+                    name = DssRef.lang.FactionName_BramblebrookHill;
                     aggressionLevel = AggressionLevel0_Passive;
                     faction.diplomaticSide = DiplomaticSide.Light;
                     break;
                 case FactionType.Tumblehill:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Tumblehill;
+                    name = DssRef.lang.FactionName_Tumblehill;
                     aggressionLevel = AggressionLevel0_Passive;
                     faction.diplomaticSide = DiplomaticSide.Light;
                     break;

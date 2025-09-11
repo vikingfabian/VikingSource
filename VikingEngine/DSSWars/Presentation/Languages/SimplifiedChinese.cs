@@ -2173,7 +2173,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "观战模式";
 
-        public override string Settings_Mode_Spectator_Description => "仅观看";
+        //public override string Settings_Mode_Spectator_Description => "仅观看";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "会平均建造各种设施";
 
@@ -2492,6 +2492,39 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Food => "饥饿的士兵正在逃离你的军队";
 
         public override string Tutorial_CasualRecruitSoldiers => "招募一个士兵小队";
+
+
+        //Shadow update
+
+        public override string Technology_CannotReassign => "在研究完成之前，Tech 不能重新分配";
+        public override string Diplomacy_DeclareWarAgainst => "你将向以下对象宣战";
+        public override string Diplomacy_AllyCount => "盟友数量";
+        public override string Diplomacy_CostPerAlly => "每个盟友成本增加 {0}";
+
+        public override string Event_ChanceOfFailure => "{0}% 失败几率";
+        public override string EventMessage_Event_Title => "事件";
+        public override string EventMessage_TheCohalition => "联盟";
+
+        public override string EventMessage_DarkHorde => "黑暗部落";
+        public override string EventMessage_DarkHordeKiller_Title => "黑暗部落杀手";
+        public override string EventMessage_DarkHordeKiller_Message => "冠军骑士加入了你的阵营";
+
+        public override string Settings_Mode_Spectator_Description => "只观看，或者使用 God Powers 进行干预。";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "种下一棵树";
+        public override string Building_TreeSprout_Soft => "软木树苗";
+        public override string Building_TreeSprout_Hard => "硬木树苗";
+
+        public override string GeneralSetting_SetAll => "应用到全部";
+
+        public override string Hud_All => "全部";
+
+        public override string Hud_Previous => "上一个";
+
+        public override string Hud_EffectWillStack => "效果会叠加";
+
+        public override string Info_WhenFoodRunsOut => "当食物耗尽时，城市和军队会自动从黑市购买。";
 
 
     }

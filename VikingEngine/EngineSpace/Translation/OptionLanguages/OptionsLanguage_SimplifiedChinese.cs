@@ -134,5 +134,20 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_StoreCameraPosition => "保存摄像机位置";
         public override string Settings_LoadCameraPosition => "加载位置";
 
+
+        //Shadow update
+        public override string Settings_ModelWaterFoam => "水面泡沫";
+        public override string Settings_ModelShadow => "阴影";
+        public override string Settings_ModelShadowMapSize => "阴影贴图大小";
+        public override string Settings_Brightness => "亮度";
+        public override string Settings_Mode_No_Achivements => "成就不可用。";
+        public override string Settings_FrameRate => "帧率";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "阻止导入的存档获得成就";
+
+
     }
 }

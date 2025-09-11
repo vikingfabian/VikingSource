@@ -2051,7 +2051,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "Zuschauer";
 
-        public override string Settings_Mode_Spectator_Description => "Nur zuschauen";
+        //public override string Settings_Mode_Spectator_Description => "Nur zuschauen";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "Baut von allem ein wenig";
 
@@ -2379,6 +2379,36 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Tutorial_CasualRecruitSoldiers => "Kaufe eine Soldatengruppe";
 
+        //Shadow update
+        public override string Technology_CannotReassign => "Tech kann nicht neu zugewiesen werden, bis die Forschung abgeschlossen ist";
+        public override string Diplomacy_DeclareWarAgainst => "Du erklärst den Krieg gegen";
+        public override string Diplomacy_AllyCount => "Anzahl der Verbündeten";
+        public override string Diplomacy_CostPerAlly => "Kosten steigen um {0} pro Verbündetem";
+
+        public override string Event_ChanceOfFailure => "{0}% Chance auf Fehlschlag";
+        public override string EventMessage_Event_Title => "Ereignis";
+        public override string EventMessage_TheCohalition => "Die Koalition";
+
+        public override string EventMessage_DarkHorde => "Dunkle Horde";
+        public override string EventMessage_DarkHordeKiller_Title => "Killer der Dunklen Horde";
+        public override string EventMessage_DarkHordeKiller_Message => "Champion-Ritter treten in deinen Dienst";
+
+        public override string Settings_Mode_Spectator_Description => "Nur zuschauen – oder mit God Powers eingreifen.";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "Einen Baum pflanzen";
+        public override string Building_TreeSprout_Soft => "Weichholz-Setzling";
+        public override string Building_TreeSprout_Hard => "Hartholz-Setzling";
+
+        public override string GeneralSetting_SetAll => "Auf alle anwenden";
+
+        public override string Hud_All => "Alle";
+
+        public override string Hud_Previous => "Zurück";
+
+        public override string Hud_EffectWillStack => "Der Effekt stackt";
+
+        public override string Info_WhenFoodRunsOut => "Wenn die Nahrung ausgeht, kaufen Städte und Armeen sie automatisch auf dem Schwarzmarkt.";
 
     }
 }

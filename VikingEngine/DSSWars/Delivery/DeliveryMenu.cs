@@ -456,7 +456,7 @@ namespace VikingEngine.DSSWars.Delivery
                             switch (filter)
                             {
                                 case ItemResourceType.NUM:
-                                    tabContent.Add(new RbText(DssRef.todoLang.Hud_All));
+                                    tabContent.Add(new RbText(DssRef.lang.Hud_All));
                                     break;
                                 case ItemResourceType.Men:
                                     tabContent.Add(new RbText(DssRef.lang.BuildingType_Recruitment));
@@ -529,7 +529,7 @@ namespace VikingEngine.DSSWars.Delivery
                         }
                     }
                     //Apply to all options
-                    content.h2(DssRef.todoLang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
+                    content.h2(DssRef.lang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
                     HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
                     que.listToHud(player, content, queueToAll);
 

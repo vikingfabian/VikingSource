@@ -2220,7 +2220,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "Spectateur";
 
-        public override string Settings_Mode_Spectator_Description => "Regarder";
+        //public override string Settings_Mode_Spectator_Description => "Regarder";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "Construira un peu de tout";
 
@@ -2544,5 +2544,38 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Food => "Des soldats affamés désertent votre armée";
 
         public override string Tutorial_CasualRecruitSoldiers => "Acheter un groupe d'armées";
+
+
+        //Shadow update
+        public override string Technology_CannotReassign => "La Tech ne peut pas être réassignée tant que la recherche n’est pas terminée";
+        public override string Diplomacy_DeclareWarAgainst => "Vous déclarez la guerre à";
+        public override string Diplomacy_AllyCount => "Nombre d’alliés";
+        public override string Diplomacy_CostPerAlly => "Le coût augmente de {0} par allié";
+
+        public override string Event_ChanceOfFailure => "{0}% de chance d’échec";
+        public override string EventMessage_Event_Title => "Événement";
+        public override string EventMessage_TheCohalition => "La Coalition";
+
+        public override string EventMessage_DarkHorde => "Horde Sombre";
+        public override string EventMessage_DarkHordeKiller_Title => "Tueur de la Horde Sombre";
+        public override string EventMessage_DarkHordeKiller_Message => "Des chevaliers champions ont rejoint votre service";
+
+        public override string Settings_Mode_Spectator_Description => "Regardez seulement – ou intervenez avec les God Powers.";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "Planter un arbre";
+        public override string Building_TreeSprout_Soft => "Jeune pousse de bois tendre";
+        public override string Building_TreeSprout_Hard => "Jeune pousse de bois dur";
+
+        public override string GeneralSetting_SetAll => "Appliquer à tout";
+
+        public override string Hud_All => "Tous";
+
+        public override string Hud_Previous => "Précédent";
+
+        public override string Hud_EffectWillStack => "L’effet se cumule";
+
+        public override string Info_WhenFoodRunsOut => "Quand la nourriture est épuisée, les villes et les armées l’achèteront automatiquement au marché noir.";
+
     }
 }

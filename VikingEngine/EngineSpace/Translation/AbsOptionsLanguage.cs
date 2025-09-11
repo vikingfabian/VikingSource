@@ -77,6 +77,17 @@ namespace VikingEngine.EngineSpace.Translation
         public abstract string Settings_StoreCameraPosition { get; }
         public abstract string Settings_LoadCameraPosition { get; }
 
+        //Shadow update
+        public abstract string Settings_ModelWaterFoam { get; }
+        public abstract string Settings_ModelShadow { get; }
+        public abstract string Settings_ModelShadowMapSize { get; }
+        public abstract string Settings_Brightness { get; }
+        public abstract string Settings_Mode_No_Achivements { get; }
+        public abstract string Settings_FrameRate { get; }
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public abstract string Settings_ImportNoAchievement { get; }
 
         public string ThreeOption(ThreeOptions option)
         {

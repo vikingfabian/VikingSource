@@ -133,5 +133,20 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_StoreCameraPosition => "カメラ位置を保存";
         public override string Settings_LoadCameraPosition => "位置を読み込む";
 
+
+        //Shadow update
+        public override string Settings_ModelWaterFoam => "水の泡";
+        public override string Settings_ModelShadow => "影";
+        public override string Settings_ModelShadowMapSize => "シャドウマップのサイズ";
+        public override string Settings_Brightness => "明るさ";
+        public override string Settings_Mode_No_Achivements => "実績は利用できません。";
+        public override string Settings_FrameRate => "フレームレート";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "インポートしたセーブデータでは実績をブロックする";
+
+
     }
 }

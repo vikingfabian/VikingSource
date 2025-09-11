@@ -135,5 +135,20 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_StoreCameraPosition => "Kamera Konumunu Kaydet";
         public override string Settings_LoadCameraPosition => "Kaydedilen Konumu Yükle";
 
+
+        //Shadow update
+        public override string Settings_ModelWaterFoam => "Su köpüğü";
+        public override string Settings_ModelShadow => "Gölgeler";
+        public override string Settings_ModelShadowMapSize => "Shadow Map boyutu";
+        public override string Settings_Brightness => "Parlaklık";
+        public override string Settings_Mode_No_Achivements => "Başarımlar kullanılamaz.";
+        public override string Settings_FrameRate => "Kare hızı";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "İçe aktarılan kayıt dosyaları için başarımları engelle";
+
+
     }
 }

@@ -39,7 +39,7 @@ x music should not play when master = 0
 x test all achievements
 x full game achievements + translations
 x show victory type
-x turn achievements off when importing a file.
+x Block achievements for imported save files
 
 #Todo#
 x multi select of buildings - to menu

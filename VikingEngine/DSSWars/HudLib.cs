@@ -239,7 +239,7 @@ namespace VikingEngine.DSSWars
 
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFramePrevious) }, new RbAction1Arg<int>(nextAction, -1, RbSoundType.Tab),
-                new RbTooltip_Text(DssRef.todoLang.Hud_Previous), buildingCount > 1));
+                new RbTooltip_Text(DssRef.lang.Hud_Previous), buildingCount > 1));
             content.Add(new RbImage(icon));
             content.space();
             content.Add(new RbText(caption, TitleColor_Head));

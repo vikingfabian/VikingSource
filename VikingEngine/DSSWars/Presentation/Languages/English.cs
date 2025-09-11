@@ -2228,7 +2228,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "Spectator";
 
-        public override string Settings_Mode_Spectator_Description => "Just watch";
+        //public override string Settings_Mode_Spectator_Description => "Just watch";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "Will build a little bit of everything";
 
@@ -2551,5 +2551,38 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Food => "Hungry soldiers are deserting from your army";
 
         public override string Tutorial_CasualRecruitSoldiers => "Purchase one soldier group";
+
+
+        //Shadow update
+        public override string Technology_CannotReassign => "Tech cannot be reassigned until research is complete";
+        public override string Diplomacy_DeclareWarAgainst => "You will declare war against";
+        public override string Diplomacy_AllyCount => "Number of allies";
+        public override string Diplomacy_CostPerAlly => "Cost increases by {0} per ally";
+
+        public override string Event_ChanceOfFailure => "{0}% chance of failure";
+        public override string EventMessage_Event_Title => "Event";
+        public override string EventMessage_TheCohalition => "The Coalition";
+
+        public override string EventMessage_DarkHorde => "Dark Horde";
+        public override string EventMessage_DarkHordeKiller_Title => "Dark Horde Killer";
+        public override string EventMessage_DarkHordeKiller_Message => "Champion knights have joined your service";
+
+        public override string Settings_Mode_Spectator_Description => "Just watch, or interfere with God Powers.";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "Plant a tree";
+        public override string Building_TreeSprout_Soft => "Soft tree sprout";
+        public override string Building_TreeSprout_Hard => "Hard tree sprout";
+
+        public override string GeneralSetting_SetAll => "Apply to all";
+
+        public override string Hud_All => "All";
+
+        public override string Hud_Previous => "Previous";
+
+        public override string Hud_EffectWillStack => "The effect will stack";
+
+        public override string Info_WhenFoodRunsOut => "When food runs out, cities and armies will automatically purchase it from the black market.";
+
     }
 }

@@ -601,7 +601,7 @@ namespace VikingEngine
         public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_ModelShadow) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.Settings_ModelShadow) },
                 shadowProperty));
 
             if (modelShadow)
@@ -621,10 +621,10 @@ namespace VikingEngine
 
                     }
                 }
-                shadowMapSizeDropDown.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Settings_ModelShadowMapSize, menu);
+                shadowMapSizeDropDown.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.Settings_ModelShadowMapSize, menu);
 
                 content.newLine();
-                HudLib.Label(content, DssRef.todoLang.Settings_Brightness); content.space();
+                HudLib.Label(content, Ref.langOpt.Settings_Brightness); content.space();
                 RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, new DragButtonSettings(0.2f, 2f, 0.1f),
                     brightnessProperty);
             }
@@ -635,7 +635,7 @@ namespace VikingEngine
                     modelLightProperty));
             }
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_ModelWaterFoam) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.Settings_ModelWaterFoam) },
                 waterFoamProperty));
 
             content.newLine();
@@ -651,7 +651,7 @@ namespace VikingEngine
                         new RbAction1Arg<int>((int fps) => { FrameRate = fps; Engine.Update.SetFrameRate(FrameRate); settingsHasChanged = true; }, fps), null);
 
                 }
-                frameRateOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Settings_FrameRate, menu);
+                frameRateOptions.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.Settings_FrameRate, menu);
             }
 
             DropDownBuilder mapLoadingDropDown = new DropDownBuilder("mapload");

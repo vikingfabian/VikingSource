@@ -2076,7 +2076,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newParagraph();
                 //ItemResourceType[] Resources = City.MovableCityResource_Misc;
 
-                HudLib.Label(content, DssRef.todoLang.GeneralSetting_SetAll);
+                HudLib.Label(content, DssRef.lang.GeneralSetting_SetAll);
                 content.space();
                 content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
                    new RbAction(() =>

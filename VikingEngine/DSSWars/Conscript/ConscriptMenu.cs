@@ -457,7 +457,7 @@ namespace VikingEngine.DSSWars.Conscript
                         {
                             var subTab = new ArtButton(player.conscriptSubTab == filter ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, new List<AbsRichBoxMember> 
                             { 
-                                new RbText(filter == BuildAndExpandType.ALL? DssRef.todoLang.Hud_All : LangLib.BuildingName(filter))
+                                new RbText(filter == BuildAndExpandType.ALL? DssRef.lang.Hud_All : LangLib.BuildingName(filter))
                             },
                                new RbAction1Arg<BuildAndExpandType>((BuildAndExpandType filter) =>
                                {
@@ -510,7 +510,7 @@ namespace VikingEngine.DSSWars.Conscript
                     }
 
                     //Apply to all options
-                    content.h2(DssRef.todoLang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
+                    content.h2(DssRef.lang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
                     HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
                     que.listToHud(player, content, queueToAll);
                     //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("=0") }, new RbAction1Arg<int>(queueToAll, 0, RbSoundType.Stop)));

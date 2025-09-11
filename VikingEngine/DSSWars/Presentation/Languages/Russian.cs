@@ -2172,7 +2172,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "Наблюдатель";
 
-        public override string Settings_Mode_Spectator_Description => "Только наблюдать";
+        //public override string Settings_Mode_Spectator_Description => "Только наблюдать";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "Будет понемногу строить всё";
 
@@ -2495,79 +2495,42 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public override string Tutorial_CasualRecruitSoldiers => "Купите одну группу солдат";
-        //public override string HUD_DisplayName => "Отображаемое имя";
-        //public override string HUD_Filter => "Фильтр";
-        //public override string HUD_Scale => "Масштаб";
-        //public override string HUD_Tags => "Теги";
-        //public override string HUD_ClickToCancel => "Нажмите, чтобы отменить";
-
-        //public override string ObjectTag_Description => "Добавить символ на карту";
-        //public override string HudPins => "Закрепки HUD";
-        //public override string HudPins_Description => "Закрепить информацию на экране";
-
-        //public override string Lobby_PlayerProfileNumbered => "Профиль {0}";
-        //public override string Lobby_CharacterCreationNumbered => "Персонаж {0}";
-        //public override string Lobby_PlayerProfileEdit => "Редактировать профиль игрока";
-
-        //public override string Editor_ConvertAnimationToLayers => "Преобразовать анимацию в слои";
-        //public override string Editor_StampAllFrames => "Применить ко всем кадрам";
-
-        //public override string Editor_DisplayOptions => "Параметры отображения";
-        //public override string Editor_CharacterCreator => "Редактор персонажа";
-        //public override string Editor_CharacterCreator_Description => "Редактор внешности военных моделей";
-        //public override string Editor_HatGenre => "Режим отображения головных уборов";
-        //public override string Editor_HatGenre_FollowWeapon => "Следовать за оружием";
-        //public override string Editor_HatGenre_Uniform => "Униформа";
-        //public override string Editor_CopyPasteSelectedColor => "Скопировать из выбранного цвета";
-
-        //public override string Character_Accessories => "Аксессуары";
-        //public override string Character_Hat => "Головной убор";
-        //public override string Character_Head => "Голова";
-        //public override string Character_Body => "Тело";
-        //public override string Character_Arms => "Руки";
-        //public override string Character_Back => "Спина";
-        //public override string Character_Face => "Лицо";
-
-        //public override string BuildingType_Tavern => "Общий зал";
-
-        //public override string Settings_CraftMultiplier => "Множитель времени крафта";
-        //public override string Settings_ChildMultiplier_Description => "Увеличивает скорость появления новых рабочих";
-
-        //public override string Settings_CasualControls => "Управление для казуальных игроков";
-        //public override string Settings_CasualControls_Description => "Упрощает игру, сводя выбор к ключевым решениям. В качестве ресурса используется только деньги.";
-
-        //public override string Settings_AdvancedControls => "Продвинутое управление";
-        //public override string Settings_AdvancedControls_Description => "Полный опыт управления ресурсами.";
-
-        //public override string WarsResourceGroup_Metal => "Металл";
-        //public override string Work_Craft => "Производство";
-        //public override string Work_OnlyCraftOnFullStock => "Производить только при полном складе";
-
-        //public override string ExperienceType_Smelting => "Плавка";
-        //public override string Category_Optimize => "Оптимизация";
-        //public override string BuildCategory_Road => "Дорога";
-        //public override string XP_UnlockBuildPrio => "Разблокировать приоритет строительства: {0}";
-        //public override string Technology_ModernFarming => "Современное сельское хозяйство";
-
-        //public override string ExportImportDescription => "Для обмена сохранениями с другими игроками все файлы находятся в этой папке: {0}";
-
-        //public override string CityCultureDescription => "Культура даёт городу особый бонус";
-
-        //public override string UnitType_CloseRangeRifle => "Аркебузир";
-        //public override string UnitType_LongRangeRifle => "Мушкетёр";
-        //public override string UnitType_Skirmisher => "Стрелок-бродяга";
-
-        ////From lumen (light)
-        //public override string UnitType_MithrilArcher => "Лунарийский лучник";
-        //public override string UnitType_MithrilSwordsman => "Лунарийский рыцарь";
-
-        //public override string Defence_AutoAssign_Towers => "Назначить башни";
-
-        //public override string EventMessage_DesertersText_Food => "Голодные солдаты дезертируют из вашей армии";
-
-        //public override string Tutorial_CasualRecruitSoldiers => "Купить одну группу солдат";
+       
 
         public override string EventMessage_DesertersText_Money => "Неполучившие оплату солдаты дезертируют из вашей армии";
+
+
+        //Shadow update
+        public override string Technology_CannotReassign => "Tech нельзя переназначить, пока исследование не завершено";
+        public override string Diplomacy_DeclareWarAgainst => "Вы объявите войну против";
+        public override string Diplomacy_AllyCount => "Количество союзников";
+        public override string Diplomacy_CostPerAlly => "Стоимость увеличивается на {0} за союзника";
+
+        public override string Event_ChanceOfFailure => "{0}% шанс неудачи";
+        public override string EventMessage_Event_Title => "Событие";
+        public override string EventMessage_TheCohalition => "Коалиция";
+
+        public override string EventMessage_DarkHorde => "Тёмная Орда";
+        public override string EventMessage_DarkHordeKiller_Title => "Убийца Тёмной Орды";
+        public override string EventMessage_DarkHordeKiller_Message => "Рыцари-чемпионы вступили на вашу службу";
+
+        public override string Settings_Mode_Spectator_Description => "Просто наблюдайте — или вмешайтесь с помощью God Powers.";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "Посадить дерево";
+        public override string Building_TreeSprout_Soft => "Саженец мягкой древесины";
+        public override string Building_TreeSprout_Hard => "Саженец твёрдой древесины";
+
+        public override string GeneralSetting_SetAll => "Применить ко всем";
+
+        public override string Hud_All => "Все";
+
+        public override string Hud_Previous => "Назад";
+
+        public override string Hud_EffectWillStack => "Эффект будет складываться";
+
+        public override string Info_WhenFoodRunsOut => "Когда еда закончится, города и армии автоматически купят её на чёрном рынке.";
+
 
     }
 }

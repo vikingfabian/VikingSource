@@ -2179,7 +2179,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "Espectador";
 
-        public override string Settings_Mode_Spectator_Description => "Solo mirar";
+        //public override string Settings_Mode_Spectator_Description => "Solo mirar";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "Construirá un poco de todo";
 
@@ -2501,6 +2501,39 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Food => "Los soldados hambrientos están desertando de tu ejército";
 
         public override string Tutorial_CasualRecruitSoldiers => "Comprar un grupo de soldados";
+
+
+        //Shadow update
+        public override string Technology_CannotReassign => "La Tech no se puede reasignar hasta que la investigación esté completa";
+        public override string Diplomacy_DeclareWarAgainst => "Declararás la guerra a";
+        public override string Diplomacy_AllyCount => "Número de aliados";
+        public override string Diplomacy_CostPerAlly => "El costo aumenta en {0} por aliado";
+
+        public override string Event_ChanceOfFailure => "{0}% de probabilidad de fallo";
+        public override string EventMessage_Event_Title => "Evento";
+        public override string EventMessage_TheCohalition => "La Coalición";
+
+        public override string EventMessage_DarkHorde => "Horda Oscura";
+        public override string EventMessage_DarkHordeKiller_Title => "Asesino de la Horda Oscura";
+        public override string EventMessage_DarkHordeKiller_Message => "Caballeros campeones se han unido a tu servicio";
+
+        public override string Settings_Mode_Spectator_Description => "Solo mirar, o intervenir con los God Powers.";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "Plantar un árbol";
+        public override string Building_TreeSprout_Soft => "Brote de madera blanda";
+        public override string Building_TreeSprout_Hard => "Brote de madera dura";
+
+        public override string GeneralSetting_SetAll => "Aplicar a todos";
+
+        public override string Hud_All => "Todos";
+
+        public override string Hud_Previous => "Anterior";
+
+        public override string Hud_EffectWillStack => "El efecto se acumulará";
+
+        public override string Info_WhenFoodRunsOut => "Cuando se acabe la comida, las ciudades y ejércitos la comprarán automáticamente en el mercado negro.";
+
 
     }
 }

@@ -83,5 +83,140 @@ namespace VikingEngine.DSSWars.Presentation
         public override string FactionName_FjornfellWarhowl => "FjornfellWarhowl";
         public override string FactionName_AshgroveWard => "AshgroveWard";
         public override string FactionName_HragmarHorncarvers => "HragmarHorncarvers";
+
+        //Shadow update
+        
+        /// <summary>
+        /// Theme: Wood-elves who guard enchanted forests. Secretive, druidic, tied to nature spirits
+        /// </summary>
+        public override string FactionName_SylvaranGlade => "Radura di Sylvaran";
+
+        /// <summary>
+        /// Theme: Marsh-dwellers, human clans who thrive in bogs and waterways, masters of ambush.
+        /// </summary>
+        public override string FactionName_DrelmirePact => "Patto di Drelmire";
+
+        /// <summary>
+        /// Theme: Stubborn mountain dwarves, famed for masterwork steel and siegecraft.
+        /// </summary>
+        public override string FactionName_KhazrunForgeclan => "Clan-Forgia Khazrûn";
+
+        /// <summary>
+        /// Nomadic steppe riders, swift raiders and proud cavalry culture.
+        /// </summary>
+        public override string FactionName_VeylanHorselords => "Signori dei Cavalli di Veylan";
+
+        /// <summary>
+        /// Theme: A human religious order devoted to the Eternal Flame. Zealous and uncompromising.
+        /// </summary>
+        public override string FactionName_ThalosCovenant => "Patto di Thalos";
+
+        /// <summary>
+        /// Theme: Coastal defenders, human mariners and sea-watchers, sworn to protect against pirates.
+        /// </summary>
+        public override string FactionName_NerathianTideguard => "Guardia delle Maree di Nerathian";
+
+        /// <summary>
+        ///  Theme: Desert-dwellers, scarred nomads once driven from their homeland. Fierce survivalists.
+        /// </summary>
+        public override string FactionName_SkaruunExiles => "Esuli di Skaruun";
+
+        /// <summary>
+        ///Theme: Dragon-worshipping cult/kingdom, ruled by dragonblooded warlords.
+        /// </summary>
+        public override string FactionName_DraktharDominion => "Dominio di Drakthar";
+
+        /// <summary>
+        /// Theme: Brutal mercenary brotherhood, sellswords bound by strict contracts.
+        /// </summary>
+        public override string FactionName_MalrekIronbound => "Ferrovincolati di Malrek";
+
+        /// <summary>
+        /// Theme: A modest barony nestled in fertile valleys, proud of its ancient stone keeps.
+        /// </summary>
+        public override string FactionName_BranthollowBarony => "Baronia di Branthollow";
+
+        /// <summary>
+        /// Theme: Grain-rich plains kingdom, known for horse-breeding and wheat harvests.
+        /// </summary>
+        public override string FactionName_DunwadeHold => "Dominio di Dunwade";
+
+        /// <summary>
+        /// Theme: Borderland march-lords, stern folk living in fortified towns along contested lands.
+        /// </summary>
+        public override string FactionName_CaerwynMarches => "Marche di Caerwyn";
+
+        /// <summary>
+        /// Theme: Mining folk in a rugged valley, semi-independent but loyal to their lords.
+        /// </summary>
+        public override string FactionName_StonevaleFreehold => "Libero Feudo di Stonevale";
+
+        /// <summary>
+        /// Theme: Small forested domain, famed for herbalists and bowmen.
+        /// </summary>
+        public override string FactionName_GlenmereLordship => "Signoria di Glenmere";
+
+        /// <summary>
+        /// Theme: A minor princely house clinging to its old glory, proud but weakened.
+        /// </summary>
+        public override string FactionName_ArveldonPrincipality => "Principato di Arveldon";
+
+        /// <summary>
+        /// Theme: Coastal duchy of fisherfolk and shipwrights, always at odds with pirates.
+        /// </summary>
+        public override string FactionName_WestmereReaches => "Contrade di Westmere";
+
+        /// <summary>
+        /// Theme: Small marcher state, thorny hedges and palisades mark their borders.
+        /// </summary>
+        public override string FactionName_ThornwickWardens => "Guardiani di Thornwick";
+
+        /// <summary>
+        /// Theme: A sleepy lakeside domain, romanticized in ballads but of little power.
+        /// </summary>
+        public override string FactionName_EvermereFief => "Feudo di Evermere";
+
+        /// <summary>
+        /// Theme: Forest hillfolk, stubborn and hearty, famed for boar-hunting feasts.
+        /// </summary>
+        public override string FactionName_BryndralHollow => "Conca di Bryndral";
+
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        public override string FactionName_Mendog => "Mendog";
+
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        public override string FactionName_Minde => "Minde";
+
+        /// <summary>
+        /// A proud family of royal knights
+        /// </summary>
+        public override string FactionName_FloKingdom => "Regno di Flo";
+
+        /// <summary>
+        /// A macon family with the secrets to advanced buildings
+        /// </summary>
+        public override string FactionName_CarolusKeksenmark => "Carolus Keksenmark";
+
+        /// <summary>
+        /// Theme: A confederation of hobbit villages along winding streams, known for gardens, festivals, and fiercely defended borders when threatened.
+        /// </summary>
+        public override string FactionName_BramblebrookHill => "Collina di Bramblebrook";
+
+        /// <summary>
+        /// Theme: Hill-dwelling hobbits in cozy burrows, famous for cider, storytelling, and their legendary hospitality (and occasional trickery).
+        /// </summary>
+        public override string FactionName_Tumblehill => "Tumblehill";
+
+        /// <summary>
+        /// Theme: A democracy run house with focus on politics and military might. Looks down on any outsiders.
+        /// </summary>
+        public override string FactionName_Etheleorthe => "Etheleorðe";
+
+
+
     }
 }
