@@ -656,8 +656,8 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.InputActionName_NextCity;
                 case InputActionType.NextArmy:
                     return DssRef.lang.InputActionName_NextArmy;
-                case InputActionType.NextBattle:
-                    return DssRef.lang.InputActionName_NextBattle;
+                case InputActionType.NextWar:
+                    return DssRef.todoLang.InputActionName_NextWar;
                 case InputActionType.Build:
                     return DssRef.lang.InputActionName_Build;
                 case InputActionType.Copy:

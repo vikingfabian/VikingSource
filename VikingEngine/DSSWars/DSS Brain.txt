@@ -1,7 +1,5 @@
 ﻿UPDATE
 Change Log:
-* muted music crashes
-* apply all to research buildings
 
 
 Translation:

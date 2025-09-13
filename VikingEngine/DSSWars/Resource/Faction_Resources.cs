@@ -118,8 +118,16 @@ namespace VikingEngine.DSSWars
         { 
             return totalWorkForce / DssConst.HeadCityStartMaxWorkForce;
         }
-        
-        
+
+        /// <summary>
+        /// To measure the strength a faction could muster
+        /// </summary>
+        /// <returns></returns>
+        public float PotensialMilitaryStrength()
+        {
+            return militaryStrength + totalWorkForce / DssConst.SoldierGroup_DefaultCount;
+        }
+
         public long GoldSecDiff()
         {
             return storeMoney.GetGold() - previuosMoney.GetGold();

@@ -256,6 +256,26 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.gameControls.nextArmy, true),
                     new RbTooltip(nextArmyTip)));
             }
+            {
+                RichBoxContent buttonContent = new RichBoxContent();
+                string toolTip;
+                if (player.warCount == 0)
+                {
+                    buttonContent.Add(new RbImage(SpriteName.WarsRelationPeace));
+                    toolTip = DssRef.lang.WorkForce_Peace;
+                }
+                else
+                {
+                    buttonContent.Add(new RbImage(SpriteName.WarsRelationWar));
+                    toolTip = DssRef.todoLang.InputActionName_NextWar;
+                }
+                buttonContent.space(0.5f);
+                buttonContent.Add(new RbText(player.warCount.ToString()));
+
+                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.gameControls.nextWar, true),
+                    new RbTooltip_Text(toolTip)));
+            }
+
         }
 
         public void TabClick(MenuTab tab)

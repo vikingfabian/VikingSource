@@ -12,8 +12,7 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        
-
+        public string InputActionName_NextWar => "Next faction in war";
     }
 
 }

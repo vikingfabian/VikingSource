@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars
 
         public IButtonMap NextArmy;
         public IButtonMap NextCity;
-        public IButtonMap NextBattle;
+        public IButtonMap NextWar;
         public IButtonMap Options;
         public IButtonMap Menu;
 
@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars
 
             NextCity = new KeyboardButtonMap(Keys.D1);
             NextArmy = new KeyboardButtonMap(Keys.D2);
-            NextBattle = new KeyboardButtonMap(Keys.D3);
+            NextWar = new KeyboardButtonMap(Keys.D3);
 
             FlagDesign_ToggleColor_Prev = new TwoCombinedButtonsMap(new KeyboardButtonMap(Keys.LeftShift), new KeyboardButtonMap(Keys.Tab));
             FlagDesign_ToggleColor_Next = new KeyboardButtonMap(Keys.Tab);
@@ -314,6 +314,7 @@ namespace VikingEngine.DSSWars
 
             NextCity = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);// new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, false);
             NextArmy = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);//new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex, true, false);
+            //NextWar = new XboxButtonMap(Buttons, inputSource.controllerIndex);
             //NextBattle = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true, false);
 
             ControllerMessageClick = new XboxButtonMap(Buttons.DPadUp, inputSource.controllerIndex);//new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, true);
@@ -344,7 +345,7 @@ namespace VikingEngine.DSSWars
                 PauseGame.write(w);
                 NextCity.write(w);
                 NextArmy.write(w);
-                NextBattle.write(w);
+                NextWar.write(w);
 
                 wasd_up.write(w);
                 wasd_down.write(w);
@@ -402,7 +403,7 @@ namespace VikingEngine.DSSWars
                 PauseGame = MapRead.Button(r, inputSource.controllerIndex);
                 NextCity = MapRead.Button(r, inputSource.controllerIndex);
                 NextArmy = MapRead.Button(r, inputSource.controllerIndex);
-                NextBattle = MapRead.Button(r, inputSource.controllerIndex);
+                NextWar = MapRead.Button(r, inputSource.controllerIndex);
 
                 wasd_up = MapRead.Button(r, inputSource.controllerIndex);
                 wasd_down = MapRead.Button(r, inputSource.controllerIndex);
@@ -505,7 +506,7 @@ namespace VikingEngine.DSSWars
                 InputActionType.PauseGame,
                 InputActionType.NextCity,
                 InputActionType.NextArmy,
-                InputActionType.NextBattle,
+                InputActionType.NextWar,
                 InputActionType.ToggleHudDetail,
             });
 
@@ -613,14 +614,14 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case InputActionType.NextBattle:
+                case InputActionType.NextWar:
                     if (set)
                     {
-                        NextBattle = buttonMap;
+                        NextWar = buttonMap;
                     }
                     else
                     {
-                        buttonMap = NextBattle;
+                        buttonMap = NextWar;
                     }
                     break;
 
@@ -802,7 +803,7 @@ namespace VikingEngine.DSSWars
         PauseGame,
         NextCity,
         NextArmy,
-        NextBattle,
+        NextWar,
         Build,
         Copy,
         Paste,

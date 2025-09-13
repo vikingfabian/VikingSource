@@ -110,6 +110,7 @@ namespace VikingEngine.DSSWars.Event
             {
                 int hillFriends = 0;
                 int allyCount = 0;
+                int warCount = 0;
                 bool worldPeace = true;
 
                 var relations = p.faction.diplomaticRelations;
@@ -140,16 +141,20 @@ namespace VikingEngine.DSSWars.Event
                                     hillFriends++;
                                 }
                             }
+                            else if (relation <= RelationType.RelationTypeN3_War)
+                            { 
+                                warCount++;
+                            }
 
                             if (relation < RelationType.RelationType1_Peace && speak != SpeakTerms.SpeakTermsN2_None)
                             {
                                 worldPeace = false;
-                                //break;
                             }
                         }
                     }
                 }
 
+                p.warCount = warCount;
                 if (allyCount != p.allyCount)
                 { 
                     p.allyCount = allyCount;
@@ -631,7 +636,7 @@ namespace VikingEngine.DSSWars.Event
                 if (tooPeacefulCheckTimer.CountDown(time) &&
                     DssRef.difficulty.toPeacefulPercentage > 0)
                 {
-                    tooPeacefulCheckTimer = new Time(Ref.rnd.Float(1.5f, 3f), TimeUnit.Hours);
+                    tooPeacefulCheckTimer = new Time(Ref.rnd.Float(0.5f, 3.5f), TimeUnit.Hours);
 
                     foreach (var p in DssRef.state.localPlayers)
                     {
@@ -796,6 +801,30 @@ namespace VikingEngine.DSSWars.Event
                     {
                         var otherfaction = DssRef.world.cities[cindex].GetFaction();
                         if (factionMayStartWar(otherfaction, defender))
+                        {
+                            return otherfaction;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public Faction findFriendsToDefender(Faction attacker, Faction defender)
+        {
+            var cities = attacker.cities.toList();
+
+            while (cities.Count > 0)
+            {
+                var city = arraylib.RandomListMemberPop(cities);
+
+                if (city != null)
+                {
+                    foreach (var cindex in city.neighborCities)
+                    {
+                        var otherfaction = DssRef.world.cities[cindex].GetFaction();
+                        if (otherfaction != attacker && otherfaction != defender &&
+                            DssRef.diplomacy.GetRelationType(otherfaction, defender) >= RelationType.RelationType2_Good)
                         {
                             return otherfaction;
                         }

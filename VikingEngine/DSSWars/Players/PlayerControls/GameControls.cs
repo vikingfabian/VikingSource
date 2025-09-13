@@ -32,6 +32,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool cityUpdate;
         int tabCity = -1;
         SpottedArrayCounter<Army> tabArmy;
+        int tabWarFaction = -1;
         public int[] GameSpeedOptions;
         public InputHelpState inputHelpState = InputHelpState.Map;
         public RichMenuControllerPointer controllerPointer = null;
@@ -815,6 +816,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
          
             }
 
+            if (input.NextWar.DownEvent)
+            {
+                nextWar(!Input.Keyboard.Shift);
+            }
         }
 
         public void nextCity(City city)
@@ -886,6 +891,79 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             
         }
+
+        public void nextWar(bool forward)
+        {
+            tabWarFaction++;
+            for (int i = tabWarFaction; i < player.faction.diplomaticRelations.Length; i++)
+            {
+                if (checkRelation(i))
+                {
+                    tabWarFaction = i;
+                    return;
+                }
+                //var rel = player.faction.diplomaticRelations[i];
+                //if (rel != null && rel.Relation <= RelationType.RelationTypeN3_War)
+                //{
+                //    var enemy = DssRef.world.factions.GetIndex_Safe(i);
+                //    if (enemy != null)
+                //    {
+                //        if (enemy.mainCity != null)
+                //        {
+                //            map.cameraFocus = enemy.mainCity;
+
+                //            return;
+                //        }
+
+                //        var army = enemy.armies.First();
+                //        if (army != null)
+                //        {
+                //            map.cameraFocus = army;
+
+                //            return;
+                //        }
+                //    }                    
+                //}
+            }
+
+            for (int i = 0; i < tabWarFaction; i++)
+            {
+                if (checkRelation(i))
+                {
+                    tabWarFaction = i;
+                    return;
+                }
+            }
+
+            bool checkRelation(int i)
+            {
+                var rel = player.faction.diplomaticRelations[i];
+                if (rel != null && rel.Relation <= RelationType.RelationTypeN3_War)
+                {
+                    var enemy = DssRef.world.factions.GetIndex_Safe(i);
+                    if (enemy != null)
+                    {
+                        if (enemy.mainCity != null)
+                        {
+                            map.cameraFocus = enemy.mainCity;
+
+                            return true;
+                        }
+
+                        var army = enemy.armies.First();
+                        if (army != null)
+                        {
+                            map.cameraFocus = army;
+
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+        }
+
         public bool clearSelection()
         {
             bool bClear = false;

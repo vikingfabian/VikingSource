@@ -99,6 +99,21 @@ Change Log:
 * Fixed scroll with controller
 * Improved controller UI
 * Fixed men deliver through recruitment
+* Fixed flickering of soldier models
+* fixed conscript copy
+* fixed automate export options
+* increased cost for allies, +1 per 2, base cost reduced by one (not on easy)
+* a chance of failing and dropping speak relation for each time you ask of truce (not on easy)
+* removed all (6) peace victory achievments except "any difficulty and size"
+* fixed event manager crash in battle lab
+* fixed: barbarian killer not working
+* muted music crashes
+* apply all to research buildings
+* fixed particle effect glitches
+* the war manager is better at ganging up opponents agaist both you and your friendlies
+* increased the "to peaceful" war counter up with 10%
+* the war manager check frequency is a bit more swingy, and less predictable
+* war toggle button
 
 Spectator mode:
 * improved diplomacy display, and it has god powers

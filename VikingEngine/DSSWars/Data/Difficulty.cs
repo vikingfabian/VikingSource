@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Data
                     PlayerBonusGold = 4000;
                     break;
 
-                case 2:
+                case 2://defalut 75%
                     aiAggressivity = AiAggressivity.Low;
                     bossSize = BossSize.Medium;
                     //bossTimeSettings = BossTimeSettings.Late;
@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Data
                     resourcesStartHelp = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 8 * TimeExt.MinuteInSeconds;
-                    toPeacefulPercentage = 0.1f;
+                    toPeacefulPercentage = 0.2f;
                     PlayerBonusGold = 2000;
                     break;
 
@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 30;
-                    toPeacefulPercentage = 0.2f;
+                    toPeacefulPercentage = 0.35f;
                     break;
 
                 case 4:

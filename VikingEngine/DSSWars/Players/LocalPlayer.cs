@@ -56,6 +56,7 @@ namespace VikingEngine.DSSWars.Players
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
         public int allyCount = 0;
+        public int warCount = 0;
         public int diplomaticPoints_softMax;
 
         public Data.Statistics statistics = new Data.Statistics();
@@ -665,32 +666,58 @@ namespace VikingEngine.DSSWars.Players
                         if (opponent.player.IsBot())
                         {
                             ++warCount;
-                            opposingSize += opponent.citiesEconomy.tax(null, out _);
+                            opposingSize += opponent.PotensialMilitaryStrength();
                         }
                     }
                 }
 
                 bool toPeaceful = true;
+                int maxChecks = Ref.rnd.Int(1, 5);
 
-                if (opposingSize > 0)
+                while (toPeaceful && maxChecks > 0)
                 {
-                    opposingSizePerc = opposingSize / faction.citiesEconomy.tax(null, out _);
+                    maxChecks--;
 
-                    toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage;
-                }
-                else
-                {
-                    opposingSizePerc = 0;
-                }
-
-                if (toPeaceful)
-                {
-                    //start a war
-                    var attacker = DssRef.state.events.findAttackingNeighborFaction(faction);
-                    if (attacker != null)
+                    if (opposingSize > 0)
                     {
-                        attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
-                        DssRef.diplomacy.declareWar(attacker, faction);
+                        opposingSizePerc = opposingSize / faction.PotensialMilitaryStrength();
+
+                        toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage;
+                    }
+                    else
+                    {
+                        opposingSizePerc = 0;
+                    }
+
+                    if (toPeaceful)
+                    {
+                        //start a war
+                        var attacker = DssRef.state.events.findAttackingNeighborFaction(faction);
+
+                        if (attacker == null && Ref.rnd.Chance(0.6))
+                        {
+                            attacker = DssRef.state.events.findAttackingNeighborFaction_keepExpanding(faction);
+
+                            //See if can gank any of the players friendlies, since they are not neihbor to the player
+                            var friend = DssRef.state.events.findFriendsToDefender(attacker, this.faction);
+                            if (friend != null)
+                            {
+                                DssRef.diplomacy.declareWar(attacker, friend);
+                            }
+                        }
+
+                        if (attacker != null)
+                        {
+                            opposingSize += attacker.PotensialMilitaryStrength();
+
+                            attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
+                            DssRef.diplomacy.declareWar(attacker, faction);
+                        }
+
+                    }
+                    else
+                    {
+                        return;
                     }
                 }
             }
@@ -821,13 +848,13 @@ namespace VikingEngine.DSSWars.Players
                 {
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
                     //battleLineUpTest2(true);
-                    DssRef.state.events.TestNextEvent();
-                    //DssRef.state.events.testToPeacefulCheck();
+                    //DssRef.state.events.TestNextEvent();
+                    DssRef.state.events.testToPeacefulCheck();
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
-                    battleLineUpTest3_friendly_only();
+                    //battleLineUpTest3_friendly_only();
                     //battleLineUpTest2(true);
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
