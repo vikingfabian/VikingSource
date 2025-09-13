@@ -9,6 +9,8 @@ using VikingEngine.HUD.RichBox;
 using static System.Net.Mime.MediaTypeNames;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.DSSWars.XP
 {
@@ -18,12 +20,20 @@ namespace VikingEngine.DSSWars.XP
 
         City city;
         LocalPlayer player;
-        public void ToHud(City city, LocalPlayer player, RichBoxContent content)
+        public void ToHud(City city, LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             this.city = city;
             this.player = player;
 
             var available = city.technology.availableTech();
+
+            if (available.Count > 0 && !available.Contains(player.selectedTech))
+            {
+                player.selectedTech = available.First();
+            }
+
+            bool hasUnAssignedBookPress = false;
+            bool hasUnassignedResearchCenter = false;
 
             if (city.researchBuildings != null)
             {
@@ -31,12 +41,23 @@ namespace VikingEngine.DSSWars.XP
                 {
                     for (int i = 0; i < city.researchBuildings.Count; i++)
                     {
-                        var assigned = city.researchBuildings[i].assignedTech;
-                        if (assigned != TechnologyTreeType.NUM_NONE &&
-                            !available.Contains(assigned))
+                        var building =  city.researchBuildings[i];
+                        var assigned = building.assignedTech;
+
+                        if (assigned == TechnologyTreeType.NUM_NONE)
+                        {
+                            if (building.isResearchCenter)
+                            {
+                                hasUnassignedResearchCenter = true;
+                            }
+                            else
+                            {
+                                hasUnAssignedBookPress = true;
+                            }
+                        }
+                        else if (!available.Contains(assigned))
                         {
                             //Unlock
-                            var building = city.researchBuildings[i];
                             building.assignedTech = TechnologyTreeType.NUM_NONE;
                             city.researchBuildings[i] = building;
                         }
@@ -82,8 +103,6 @@ namespace VikingEngine.DSSWars.XP
                     content.Add(new RbText(desc, HudLib.InfoYellow_Light));
                 }
 
-
-                
                 content.newParagraph();
                 if (building.assignedTech == TechnologyTreeType.NUM_NONE)
                 {
@@ -95,11 +114,6 @@ namespace VikingEngine.DSSWars.XP
                     }
                     else
                     {
-                        if (!available.Contains(player.selectedTech))
-                        {
-                            player.selectedTech = available.First();
-                        }
-
                         foreach (var techType in available)
                         {
                             //for (TechnologyTreeType techType = 0; techType < TechnologyTreeType.NUM_NONE; techType++)
@@ -142,6 +156,51 @@ namespace VikingEngine.DSSWars.XP
                 //List buildings
                 if (arraylib.HasMembers(city.researchBuildings))
                 {
+                    if (available.Count > 0 && (hasUnAssignedBookPress || hasUnassignedResearchCenter))
+                    {
+                        //content.h2(DssRef.lang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
+
+                        DropDownBuilder techDropDown = new DropDownBuilder("select tech");
+                        {
+                            foreach (var techType in available)
+                            {
+                                LangLib.Technology(techType, out SpriteName techicon, out string techname);
+                                techDropDown.AddOption(techname, techType == player.selectedTech, false,
+                                     new RbAction1Arg<TechnologyTreeType>((TechnologyTreeType type) => { 
+                                         player.selectedTech = type;
+                                         menu.CloseDropDown();
+                                     }, techType),
+                                     null);
+                            }
+                        } techDropDown.Build(content, SpriteName.WarsTechnology_Unlocked, DssRef.lang.Technology_Title, menu);
+
+                        content.newLine();
+                        if (hasUnassignedResearchCenter)
+                        {
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.WarsBuild_ResearchCenter),
+                                new RbSpace(),
+                                new RbText(DssRef.lang.GeneralSetting_SetAll + ":", HudLib.TitleColor_Label),
+                                new RbSpace(),
+                                new RbText(DssRef.lang.Hud_CommitAssignment) },
+                                new RbAction2Arg<LocalPlayer, bool>(city._commitResearchAll, player, true, RbSoundType.Start),
+                                new RbTooltip_Text(DssRef.lang.BuildingType_ReseachCenter)));
+                        }
+                        if (hasUnAssignedBookPress)
+                        {
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                                new RbImage(SpriteName.WarsBuild_Bookpress), 
+                                new RbSpace(),
+                                new RbText(DssRef.lang.GeneralSetting_SetAll + ":", HudLib.TitleColor_Label),
+                                new RbSpace(),
+                                new RbText(DssRef.lang.Hud_CommitAssignment) },
+                                new RbAction2Arg<LocalPlayer, bool>(city._commitResearchAll, player, false, RbSoundType.Start),
+                                new RbTooltip_Text(DssRef.lang.BuildingType_Bookpress)));
+                        }
+                        
+                        content.newLine();
+                        content.Add(new RbSeperationLine());
+                    }
                     listBuildings(true);
                     listBuildings(false);
 

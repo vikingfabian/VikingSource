@@ -1,9 +1,10 @@
 ﻿UPDATE
 Change Log:
-* 
+* muted music crashes
+* apply all to research buildings
+
 
 Translation:
-* translated shadow update
 
 
 Event timers (are slightly random)
@@ -24,6 +25,7 @@ build building icon
 interact icons for buildings (play, next, previous,) 
 
 #must do#
+
 x move "apply to all" to menu top
 x lobby ambience is heard on zero volume
 x music should not play when master = 0
@@ -31,8 +33,12 @@ x test all achievements
 x full game achievements + translations
 x show victory type
 x Block achievements for imported save files
+x Add new music
+x new menu background
 
 #Todo#
+x add music volume to play list
+x Add to the master's guild the same copy/paste options as in Conscription
 x multi select of buildings - to menu
 x global stockpile setting 
 x achieve gun patrol

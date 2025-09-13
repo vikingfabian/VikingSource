@@ -538,7 +538,7 @@ namespace VikingEngine.DSSWars.Interface
                     break;
 
                 case ProgressSubTab.Research:
-                    new ResearchMenu().ToHud(city, player, content);
+                    new ResearchMenu().ToHud(city, player, content, player.hud.objMenu.menu);
                     break;
             }
             

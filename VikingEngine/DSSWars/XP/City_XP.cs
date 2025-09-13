@@ -251,6 +251,23 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
+        public void _commitResearchAll(LocalPlayer player, bool researchCenter)
+        {
+            lock (researchBuildings)
+            {
+                for (int i = 0; i < researchBuildings.Count; i++)
+                {
+                    var building = researchBuildings[i];
+                    if (building.isResearchCenter == researchCenter &&
+                        building.assignedTech == TechnologyTreeType.NUM_NONE)
+                    {
+                        building.assignedTech = player.selectedTech;
+                        researchBuildings[i] = building;
+                    }
+                }
+            }
+        }
+
         public void _commitResearch(LocalPlayer player)
         {
             commitResearch(player);

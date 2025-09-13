@@ -95,12 +95,13 @@ namespace VikingEngine.Graphics
                
             }
 
-            if (prevInfoTime != currentTime)
-            {
-                prevInfoTime = currentTime;
-                Debug.Log("ADD particle");
-                Debug.Log(particles_CPU[firstFreeParticle * GraphicsLib.PolygonIndicesCount].ToString());
-            }
+            //if (prevInfoTime != currentTime)
+            //{
+            //    prevInfoTime = currentTime;
+            //    Debug.Log("ADD particle");
+            //    Debug.Log(particles_CPU[firstFreeParticle * GraphicsLib.PolygonIndicesCount].ToString());
+            //}
+
             //previousParticleIndex = firstFreeParticle;
             firstFreeParticle = nextFreeParticle;
         }

@@ -469,7 +469,7 @@ namespace VikingEngine.DSSWars.Delivery
                                     break;
                             }
 
-                            var subTab = new ArtButton(player.deliverySupTab == filter ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
+                            var subTab = new ArtButton(player.deliverySupTab == filter ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                                 tabContent,
                                new RbAction1Arg<ItemResourceType>((ItemResourceType filter) =>
                                {
@@ -477,6 +477,10 @@ namespace VikingEngine.DSSWars.Delivery
                                }, filter, RbSoundType.Tab));
                             content.Add(subTab);
                         }
+                    }
+                    else
+                    {
+                        player.deliverySupTab = ItemResourceType.NUM;
                     }
 
                     for (int i = 0; i < city.deliveryServices.Count; ++i)

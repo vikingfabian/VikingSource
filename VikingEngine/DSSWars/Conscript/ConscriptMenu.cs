@@ -132,20 +132,20 @@ namespace VikingEngine.DSSWars.Conscript
                         weapons = SoldierWeapons;
                         break;
                     case Build.BuildAndExpandType.ArcherBarracks:
-                        typeName = DssRef.lang.BuildingType_SoldierBarracks;
+                        typeName = DssRef.lang.BuildingType_ArcherBarracks;
                         weapons = ArcherWeapons;
                         break;
                     case Build.BuildAndExpandType.WarmachineBarracks:
-                        typeName = DssRef.lang.BuildingType_SoldierBarracks;
+                        typeName = DssRef.lang.BuildingType_WarmachineBarracks;
                         weapons = WarmachineWeapons;
                         break;
                     case Build.BuildAndExpandType.KnightsBarracks:
                         hasGuardOption = false;
-                        typeName = DssRef.lang.BuildingType_SoldierBarracks;
+                        typeName = DssRef.lang.BuildingType_KnightsBarracks;
                         weapons = NobelWeapons;
                         break;
                     case Build.BuildAndExpandType.GunBarracks:
-                        typeName = DssRef.lang.BuildingType_SoldierBarracks;
+                        typeName = DssRef.lang.BuildingType_GunBarracks;
                         weapons = GunWeapons;
                         break;
                     case Build.BuildAndExpandType.CannonBarracks:

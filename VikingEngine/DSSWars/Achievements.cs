@@ -491,9 +491,6 @@ namespace VikingEngine.DSSWars
         /// have good relations with all nations who speaks to you
         /// </summary>
         victory_worldpeace_any,//i
-        //victory_worldpeace_50,
-        //victory_worldpeace_100,
-        //victory_worldpeace_150,
 
         /// <summary>
         /// Grab the whole world to yourself - in sandbox
@@ -536,16 +533,6 @@ namespace VikingEngine.DSSWars
         no_war_started_100,
         no_war_started_150,
 
-        /// <summary>
-        /// reach world peace victory without starting a single war
-        /// </summary>
-        //peace_and_love_any,//i
-        //peace_and_love_100,
-
-        /// <summary>
-        /// reach world peace victory without starting a single war, large world size, min 75%
-        /// </summary>
-        //massive_peace_and_love,//i
 
         /// <summary>
         /// reach victory, and have started (10, 20, 40) wars, min 75%
@@ -608,7 +595,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Men of steel: Produce soldiers with steel sword and armor.
         /// </summary>
-        men_of_steel,//i
+        men_of_steel,//i, t
 
         /// <summary>
         /// Knights of Lunimari: Produce an army with fully mithril equipped swordsmen and archers
