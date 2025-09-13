@@ -13,7 +13,7 @@ namespace VikingEngine.Graphics
 {
     abstract class ParticleSystem : AbsParticleSystem
     {
-        float prevInfoTime = 0;
+        //float prevInfoTime = 0;
 
         public ParticleSystem()
             : base()
@@ -95,12 +95,12 @@ namespace VikingEngine.Graphics
                
             }
 
-            if (prevInfoTime != currentTime)
-            {
-                prevInfoTime = currentTime;
-                Debug.Log("ADD particle " + firstFreeParticle + ", retired " + firstRetiredParticle);
-                Debug.Log(particles_CPU[firstFreeParticle * GraphicsLib.PolygonIndicesCount].ToString());
-            }
+            //if (prevInfoTime != currentTime)
+            //{
+            //    prevInfoTime = currentTime;
+            //    Debug.Log("ADD particle " + firstFreeParticle + ", retired " + firstRetiredParticle);
+            //    Debug.Log(particles_CPU[firstFreeParticle * GraphicsLib.PolygonIndicesCount].ToString());
+            //}
             //previousParticleIndex = firstFreeParticle;
             firstFreeParticle = nextFreeParticle;
         }
@@ -133,9 +133,9 @@ namespace VikingEngine.Graphics
 
 
         // Shortcuts for accessing frequently changed effect parameters.
-        EffectParameter effectViewParameter;
-        EffectParameter effectProjectionParameter;
-        EffectParameter effectViewportScaleParameter;
+        //EffectParameter effectViewParameter;
+        //EffectParameter effectProjectionParameter;
+        //EffectParameter effectViewportScaleParameter;
         EffectParameter effectTimeParameter;
         
         // An array of particles, treated as a circular queue.
@@ -515,7 +515,7 @@ namespace VikingEngine.Graphics
             // If there are any active particles, draw them now!
             if (start != end)
             {
-                Debug.Log($"startParticle {start}, endParticle {end}, currentTime {currentTime}");
+                //Debug.Log($"startParticle {start}, endParticle {end}, currentTime {currentTime}");
 
                 updateParameters();
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = settings.BlendState;
@@ -540,9 +540,9 @@ namespace VikingEngine.Graphics
                 {
                     pass.Apply();
 
-                    int startVerticeIx = start * 6;
-                    int endVerticeIx = end * 6;
-                    int maxIndex = indexBuffer.IndexCount - 1;
+                    //int startVerticeIx = start * 6;
+                    //int endVerticeIx = end * 6;
+                    //int maxIndex = indexBuffer.IndexCount - 1;
 
                     if (start < end)
                     {
