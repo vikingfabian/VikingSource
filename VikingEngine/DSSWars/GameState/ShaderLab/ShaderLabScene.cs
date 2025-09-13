@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.GameState.ShaderLab
 
             Ref.draw.Camera.CurrentZoom += Input.Mouse.ScrollValue *0.1f;
 
-            Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.Smoke, VectorExt.SetY(movable.position, 0.5f), 2, 25); 
+            Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.Smoke, VectorExt.SetY(movable.position, 0.5f), 2, 17); 
         }
 
 

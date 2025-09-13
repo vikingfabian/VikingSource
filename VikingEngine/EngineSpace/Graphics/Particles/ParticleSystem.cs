@@ -98,7 +98,7 @@ namespace VikingEngine.Graphics
             if (prevInfoTime != currentTime)
             {
                 prevInfoTime = currentTime;
-                Debug.Log("ADD particle");
+                Debug.Log("ADD particle " + firstFreeParticle + ", retired " + firstRetiredParticle);
                 Debug.Log(particles_CPU[firstFreeParticle * GraphicsLib.PolygonIndicesCount].ToString());
             }
             //previousParticleIndex = firstFreeParticle;
@@ -299,20 +299,20 @@ namespace VikingEngine.Graphics
             LoadParticleEffect();
 
             // Create and populate the index buffer.
-            ushort[] indices = new ushort[settings.MaxParticles * GraphicsLib.PolygonDrawOrderCount];
+            int[] indices = new int[settings.MaxParticles * GraphicsLib.PolygonDrawOrderCount];
 
             for (int i = 0; i < settings.MaxParticles; i++)
             {
-                indices[i * GraphicsLib.PolygonDrawOrderCount + 0] = (ushort)(i * GraphicsLib.PolygonIndicesCount + 0);
-                indices[i * GraphicsLib.PolygonDrawOrderCount + 1] = (ushort)(i * GraphicsLib.PolygonIndicesCount + 1);
-                indices[i * GraphicsLib.PolygonDrawOrderCount + 2] = (ushort)(i * GraphicsLib.PolygonIndicesCount + 2);
+                indices[i * GraphicsLib.PolygonDrawOrderCount + 0] = /*(ushort)*/(i * GraphicsLib.PolygonIndicesCount + 0);
+                indices[i * GraphicsLib.PolygonDrawOrderCount + 1] = /*(ushort)*/(i * GraphicsLib.PolygonIndicesCount + 1);
+                indices[i * GraphicsLib.PolygonDrawOrderCount + 2] = /*(ushort)*/(i * GraphicsLib.PolygonIndicesCount + 2);
 
-                indices[i * GraphicsLib.PolygonDrawOrderCount + 3] = (ushort)(i * GraphicsLib.PolygonIndicesCount + 0);
-                indices[i * GraphicsLib.PolygonDrawOrderCount + 4] = (ushort)(i * GraphicsLib.PolygonIndicesCount + 2);
-                indices[i * GraphicsLib.PolygonDrawOrderCount + 5] = (ushort)(i * GraphicsLib.PolygonIndicesCount + 3);
+                indices[i * GraphicsLib.PolygonDrawOrderCount + 3] = (i * GraphicsLib.PolygonIndicesCount + 0);
+                indices[i * GraphicsLib.PolygonDrawOrderCount + 4] = (i * GraphicsLib.PolygonIndicesCount + 2);
+                indices[i * GraphicsLib.PolygonDrawOrderCount + 5] = (i * GraphicsLib.PolygonIndicesCount + 3);
             }
 
-            indexBuffer = new IndexBuffer(Engine.Draw.graphicsDeviceManager.GraphicsDevice,  IndexElementSize.SixteenBits, indices.Length, BufferUsage.WriteOnly);
+            indexBuffer = new IndexBuffer(Engine.Draw.graphicsDeviceManager.GraphicsDevice,  IndexElementSize.ThirtyTwoBits, indices.Length, BufferUsage.WriteOnly);
 
             indexBuffer.SetData(indices);
         }
@@ -515,7 +515,7 @@ namespace VikingEngine.Graphics
             // If there are any active particles, draw them now!
             if (start != end)
             {
-                //Debug.Log($"startParticle {start}, endParticle {end}, currentTime {currentTime}");
+                Debug.Log($"startParticle {start}, endParticle {end}, currentTime {currentTime}");
 
                 updateParameters();
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = settings.BlendState;
@@ -540,24 +540,30 @@ namespace VikingEngine.Graphics
                 {
                     pass.Apply();
 
+                    int startVerticeIx = start * 6;
+                    int endVerticeIx = end * 6;
+                    int maxIndex = indexBuffer.IndexCount - 1;
+
                     if (start < end)
                     {
+                        Debug.Log("start < end");
                         // If the active particles are all in one consecutive range,
                         // we can draw them all in a single call.
-                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-                                                     //start * 4, (end - start) * 4,
-                                                     start * 6, (end - start) * 2);
+                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives_trianglelist_Unsafe(
+                            0, start * 6, (end - start) * 2);
+                            //.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
+                            //                         start * 6, (end - start) * 2);
                     }
                     else
                     {
                         // If the active particle range wraps past the end of the queue
                         // back to the start, we must split them over two draw calls.
-                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
+                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives_trianglelist_Unsafe(0,
                                                      start * 6, (settings.MaxParticles - start) * 2);
 
                         if (end > 0)
                         {
-                            Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
+                            Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives_trianglelist_Unsafe(0,
                                                          //0, end * 4,
                                                          0, end * 2);
                         }
@@ -592,28 +598,28 @@ namespace VikingEngine.Graphics
             int stride = ParticleVertex.SizeInBytes;
             if (startParticle < endParticle)
             {
-                var opts = startParticle == 0 ? SetDataOptions.Discard : SetDataOptions.NoOverwrite;
+                var opts = SetDataOptions.NoOverwrite; //startParticle == 0 ? SetDataOptions.Discard : SetDataOptions.NoOverwrite;
                 vertexBuffer_GPU.SetData(startParticle * stride * GraphicsLib.PolygonIndicesCount,
-                                         particles_CPU,
-                                         startParticle * GraphicsLib.PolygonIndicesCount,
-                                         (endParticle - startParticle) * GraphicsLib.PolygonIndicesCount,
-                                         stride, opts);
+                    particles_CPU,
+                    startParticle * GraphicsLib.PolygonIndicesCount,
+                    (endParticle - startParticle) * GraphicsLib.PolygonIndicesCount,
+                    stride, opts);
             }
             else
             {
                 // tail
                 vertexBuffer_GPU.SetData(startParticle * stride * GraphicsLib.PolygonIndicesCount,
-                                         particles_CPU,
-                                         startParticle * GraphicsLib.PolygonIndicesCount,
-                                         (settings.MaxParticles - startParticle) * GraphicsLib.PolygonIndicesCount,
-                                         stride, SetDataOptions.NoOverwrite);
+                    particles_CPU,
+                    startParticle * GraphicsLib.PolygonIndicesCount,
+                    (settings.MaxParticles - startParticle) * GraphicsLib.PolygonIndicesCount,
+                    stride, SetDataOptions.NoOverwrite);
 
                 // head — start of buffer: prefer Discard
                 if (endParticle > 0)
                 {
                     vertexBuffer_GPU.SetData(0, particles_CPU, 0,
-                                             endParticle * GraphicsLib.PolygonIndicesCount,
-                                             stride, SetDataOptions.Discard);
+                        endParticle * GraphicsLib.PolygonIndicesCount,
+                        stride, SetDataOptions.NoOverwrite);
                 }
             }
         }
