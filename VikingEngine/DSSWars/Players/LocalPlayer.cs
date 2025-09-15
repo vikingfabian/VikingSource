@@ -848,8 +848,8 @@ namespace VikingEngine.DSSWars.Players
                 {
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
                     //battleLineUpTest2(true);
-                    //DssRef.state.events.TestNextEvent();
-                    DssRef.state.events.testToPeacefulCheck();
+                    DssRef.state.events.TestNextEvent();
+                    //DssRef.state.events.testToPeacefulCheck();
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
