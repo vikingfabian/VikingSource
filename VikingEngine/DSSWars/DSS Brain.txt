@@ -2,6 +2,33 @@
 Change Log:
 * Removed 16 hours from boss event
 * Removed 5 hours from cohalition event
+* food warnings are muted when you have 1 million gold
+* symbols on value drag buttons to be able to fit more options
+* fixed: load dark lord crash
+* improved school menu
+* fixed: crafting of locked items
+* fixed a rare data drift error
+* safer faction data
+* loading will clear out dead factions
+
+* Added 3 achievements:
+/// <summary>
+/// Produce soldiers with an iron cannon
+/// </summary>
+iron_cannon,//
+
+/// <summary>
+/// Begin the final battle
+/// </summary>
+reach_boss_any,//
+reach_boss_100,
+
+* Removed 5 achievements: all domination victories that require map size
+
+* Changed warjuggler achievements:
+/// <summary>
+///  be in open war with 6 nations, then 9, then 12. Achieved on boss warning.
+/// </summary>
 
 
 Translation:
@@ -118,7 +145,6 @@ x Where do I find the "Dark horde" in the tutorial? I can't find it
 * fire lance weapon
 x tatoo color -add voxel model texture
 x world peace victory condition
-x there should be some "breaing the bank" achivement 🙂 > passing an int
 x rich menu sound system
 
 #Todo (xmas patch)#
@@ -130,6 +156,18 @@ save count på end screen, +min difficulty
 lamps - förbättrar produktion i area, måste fyllas med fuel
 förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 
+#ANIMAL UPDATE#
+Some resource ideas for next big update:
+Stone, are either bricks or stones 
+Bricks needed for large buildings
+Clay
+Container: crafted by clay pottery or wood
+Stockpile starts at 100 and can be expanded with storage house, now costing containers 
+Bricks can be made in the pottery or a stone mine
+Animals are collected as meat 
+Butcher will turn meat to food
+Riding and pulling animals in pens
+Can be used for postal delivery, military cavalry or butchered
 
 --Efter release polish--
 -
@@ -182,7 +220,7 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Portuguese
+English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
 
 Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
 Brazilians are used to English in gaming, use a “hybrid” translation.

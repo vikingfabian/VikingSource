@@ -99,6 +99,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void refreshGroupPlacements2(IntVector2 walkToTilePos, bool resetCommand, bool teleport, bool async = true)
         {
+           
             if (async)
             {
                 Task.Factory.StartNew(() =>

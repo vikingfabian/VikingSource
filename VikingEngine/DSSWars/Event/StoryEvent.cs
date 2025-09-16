@@ -418,7 +418,7 @@ namespace VikingEngine.DSSWars.Event
                         tile.IsLand())
                     {
                         //Available for spawn
-                        Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
+                        Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
                         
                         var barbarianArmy = enemyFac.NewArmy(loop.Position);
                         {
@@ -539,7 +539,7 @@ namespace VikingEngine.DSSWars.Event
 
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
-                var enemyFac = DssRef.world.factions.Array[DssRef.settings.Faction_SouthHara];
+                var enemyFac = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
 
                 for (int playerIx = 0; playerIx < DssRef.state.localPlayers.Count; ++playerIx)
                 {
@@ -960,6 +960,19 @@ namespace VikingEngine.DSSWars.Event
         {
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
+                if (DssRef.state.events.maxWarsJuggles > 6)
+                {
+                    DssRef.achieve.UnlockAchievement(AchievementIndex.warjuggler_tier1);
+                    if (DssRef.state.events.maxWarsJuggles > 9)
+                    {
+                        DssRef.achieve.UnlockAchievement(AchievementIndex.warjuggler_tier2);
+                        if (DssRef.state.events.maxWarsJuggles > 12)
+                        {
+                            DssRef.achieve.UnlockAchievement(AchievementIndex.warjuggler_tier3);
+                        }
+                    }
+                }
+
                 foreach (var p in DssRef.state.localPlayers)
                 {
                     p.hud.messages.Add(DssRef.lang.EventMessage_ProphesyTitle, DssRef.lang.EventMessage_ProphesyText);
@@ -994,6 +1007,7 @@ namespace VikingEngine.DSSWars.Event
             List<Faction> perfectPosition = new List<Faction>();
             List<Faction> available = new List<Faction>();
             darkLordAllies = new List<Faction>(16);
+            var secondaryChoise = new List<Faction>(16);
 
             var factionC = DssRef.world.factions.counter();
 
@@ -1025,6 +1039,10 @@ namespace VikingEngine.DSSWars.Event
                 {
                     darkLordAllies.Add(factionC.sel);
                 }
+                else if (!DssRef.diplomacy.PositiveRelationWithPlayer(factionC.sel, RelationType.RelationType3_Ally))
+                {
+                    secondaryChoise.Add(factionC.sel);
+                }
             }
 
             if (perfectPosition.Count > 0)
@@ -1034,6 +1052,11 @@ namespace VikingEngine.DSSWars.Event
             else
             {
                 darkLordAvailableFactions = available;
+
+                if (available.Count == 0)
+                {
+                    available.AddRange(secondaryChoise);
+                }
             }
         }
         protected override void calcAndRunEvent_async()
@@ -1042,11 +1065,13 @@ namespace VikingEngine.DSSWars.Event
 
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
-                if (arraylib.HasMembers(darkLordAvailableFactions))
-                {
+                DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.reach_boss_any, AchievementIndex.reach_boss_100);
+
+                //if (arraylib.HasMembers(darkLordAvailableFactions))
+                //{
                     DssRef.settings.darkLordPlayer.EnterMap(arraylib.RandomListMember(darkLordAvailableFactions), darkLordAllies);
 
-                    var greenwood = DssRef.world.factions[DssRef.settings.Faction_GreenWood];
+                    var greenwood = DssRef.world.faction(DssRef.settings.Faction_GreenWood);
 
                     foreach (var p in DssRef.state.localPlayers)
                     {
@@ -1057,7 +1082,7 @@ namespace VikingEngine.DSSWars.Event
                             DssRef.diplomacy.GetOrCreateRelation(p.faction, greenwood).SpeakTerms = SpeakTerms.SpeakTerms1_Good;
                         }
                     }
-                }
+                //}
             }));
         }
 

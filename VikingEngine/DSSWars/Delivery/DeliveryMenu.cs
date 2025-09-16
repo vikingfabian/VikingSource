@@ -371,36 +371,39 @@ namespace VikingEngine.DSSWars.Delivery
                 }
 
                 content.newParagraph();
-                content.Add(new RbImage(player.gameControls.input.Copy.Icon));
-                content.hspace();
-                content.Add(new ArtButton(  RbButtonStyle.Primary,new List<AbsRichBoxMember> {
-                    //new RbImage(player.input.Copy.Icon),
-                    //new RbSpace(0.5f),
-                    new RbText(DssRef.lang.Hud_CopySetup) },
-                    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, RbSoundType.Copy)));
 
-                content.space();
-                content.Add(new RbImage(player.gameControls.input.Paste.Icon));
-                content.hspace();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                    //new RbImage(player.input.Paste.Icon),
-                    //new RbSpace(0.5f),
-                    new RbText(DssRef.lang.Hud_Paste)
-                },
-                new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste)));
+                HudLib.copyPaste(content, player,
+                    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, RbSoundType.Copy),
+                    new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste));
+                //content.Add(new RbImage(player.gameControls.input.Copy.Icon));
+                //content.hspace();
+                //content.Add(new ArtButton(  RbButtonStyle.Primary,new List<AbsRichBoxMember> {
+                //    new RbImage(SpriteName.WarsHudIconCopy),
+                //    new RbSpace(),
+                //    new RbText(DssRef.lang.Hud_CopySetup) },
+                //    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, RbSoundType.Copy)));
 
-                
+                //content.space();
+                //content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+                //content.hspace();
+                //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                //    new RbImage(SpriteName.WarsHudIconPaste),
+                //    new RbSpace(),
+                //    new RbText(DssRef.lang.Hud_Paste)
+                //},
+                //new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste)));
+
+
             }
             else
             {
-
-                content.h2(DssRef.lang.Delivery_ListTitle).overrideColor = HudLib.TitleColor_Action;
+               
                 if (city.deliveryServices.Count == 0)
                 {
                     //EMPTY
                     content.text(DssRef.lang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
                     content.newParagraph();
-                    content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
+                    content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement, HudLib.TitleColor_Label);
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsBuild_Postal));
                     content.space();
@@ -440,6 +443,27 @@ namespace VikingEngine.DSSWars.Delivery
                     if (hasRecruit) { typeCount++; }
                     if (hasGoldDeliver) { typeCount++; }
                     if (hasPostal) { typeCount++; }
+
+
+                    //Apply to all options
+                    content.h2(DssRef.lang.GeneralSetting_SetAll, HudLib.TitleColor_Action);
+                    HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
+                    que.listToHud(player, content, queueToAll, true);
+
+                    if (player.deliverySupTab != ItemResourceType.NUM || typeCount == 1)
+                    {
+                        content.newLine();
+                        content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+                        content.hspace();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.WarsHudIconPaste),
+                            new RbSpace(),
+                            new RbText(DssRef.lang.Hud_Paste) 
+                        },
+                            new RbAction1Arg<LocalPlayer>(city.pasteDeliveryToAll, player, RbSoundType.Paste)));
+                    }
+                    content.Add(new RbSeperationLine());
+                    content.h2(DssRef.lang.Delivery_ListTitle, HudLib.TitleColor_Action);
 
                     if (typeCount > 1)
                     {
@@ -532,20 +556,7 @@ namespace VikingEngine.DSSWars.Delivery
                                 new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
                         }
                     }
-                    //Apply to all options
-                    content.h2(DssRef.lang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
-                    HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
-                    que.listToHud(player, content, queueToAll);
-
-                    if (player.deliverySupTab != ItemResourceType.NUM || typeCount == 1)
-                    {
-                        content.newLine();
-                        content.Add(new RbImage(player.gameControls.input.Paste.Icon));
-                        content.hspace();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                        new RbText(DssRef.lang.Hud_Paste) },
-                            new RbAction1Arg<LocalPlayer>(city.pasteDeliveryToAll, player, RbSoundType.Paste)));
-                    }
+                    
                 }
             }
 
@@ -611,7 +622,6 @@ namespace VikingEngine.DSSWars.Delivery
                     string timeString = currentStatus.longTimeProgress(city, out bool hasTime);
                     if (hasTime)
                     {
-
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbText(timeString, isSending ? null : HudLib.SecondaryTextColor));
@@ -642,7 +652,7 @@ namespace VikingEngine.DSSWars.Delivery
             List<float> bounds = new List<float>( currentStatus.IsGold() ? BoundControls_Gold : BoundControls);
 
             RbDragButton.RbDragButtonGroup(content, bounds, new DragButtonSettings(0, 10000, bounds[0]),
-               minCap ? MinProperty : MaxProperty );
+               minCap ? MinProperty : MaxProperty , true);
 
             //content.newLine();
             //for (int i = bounds.Length - 1; i >= 0; i--)

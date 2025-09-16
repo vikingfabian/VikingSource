@@ -106,12 +106,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Hud_Vector_X + ":", HudLib.TitleColor_Label));
                         content.space();
-                        RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapXProperty);
+                        RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapXProperty, false);
 
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Hud_Vector_Y + ":", HudLib.TitleColor_Label));
                         content.space();
-                        RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapYProperty);
+                        RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapYProperty, false);
                     }
                     else
                     {
@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                                 this.Sett.repeatBuildDigCount = value;
                             }
                             return this.Sett.repeatBuildDigCount;
-                        });
+                        }, false);
 
                     content.newLine();
 

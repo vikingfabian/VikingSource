@@ -29,10 +29,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_deliveryUpdate()
         {
-            if (debugTagged || myIndex == 744)
-            {
-                lib.DoNothing();
-            }
+            //if (debugTagged || myIndex == 744)
+            //{
+            //    lib.DoNothing();
+            //}
+
+            var f = GetFaction();
+            if (f == null)
+                return;
 
             lock (deliveryServices)
             {
@@ -43,7 +47,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         case DeliveryActiveStatus.Idle:
                             {
-                                if (GetPlayer().IsBot() || 
+                                if (f.player.IsBot() || 
                                     (automateCity && status.que == 0))//OR fully auto
                                 {
                                     status.profile.toCity = DeliveryProfile.ToCityAuto;

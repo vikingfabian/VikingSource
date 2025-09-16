@@ -25,6 +25,12 @@ namespace VikingEngine.DSSWars.XP
         public TimeInGameCountdown countdown;
         public int idAndPosition;
         public int que;
+
+        public void copyFrom(SchoolStatus template)
+        {
+            learnExperience = template.learnExperience;
+            toLevel = template.toLevel;
+        }
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write(idAndPosition);

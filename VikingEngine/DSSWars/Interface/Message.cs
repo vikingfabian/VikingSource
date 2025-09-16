@@ -129,8 +129,15 @@ namespace VikingEngine.DSSWars.Interface
         {
             this.player = player;
         }
+
+        bool highEconomyWarningBlock()
+        { 
+            return DssRef.storage.gameRuleset.centralGold && player.faction.money.GetGold() > 1000000;
+        }
+
         public void blockFoodWarning(bool block)
         {
+            //Blocked during tutorial
             if (block)
             {
                 cityLowFoodMessageCooldown.start(new TimeLength(100000));
@@ -172,7 +179,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void cityLowFoodMessage(City city)
         {   
-            if (DssRef.storage.runTutorial_1short_2normal == 0 && 
+            if (!highEconomyWarningBlock() &&
+                DssRef.storage.runTutorial_1short_2normal == 0 && 
                 cityLowFoodMessageCooldown.TimeOut())
             {
                 cityLowFoodMessageCooldown.start();
@@ -196,7 +204,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void armyLowFoodMessage(Army army)
         {
-            if (DssRef.storage.runTutorial_1short_2normal == 0 &&
+            if (!highEconomyWarningBlock() &&
+                DssRef.storage.runTutorial_1short_2normal == 0 &&
                 armyLowFoodMessageCooldown.TimeOut())
             {
                 armyLowFoodMessageCooldown.start();

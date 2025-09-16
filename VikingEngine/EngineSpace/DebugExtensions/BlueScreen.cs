@@ -258,6 +258,12 @@ namespace VikingEngine.DebugExtensions
         {
             if (ThreadException != null)
             {
+#if DEBUG
+                if (!PlatformSettings.BlueScreen)
+                {
+                    throw new Exception();
+                }
+#endif
                 if (Ref.gamestate is BlueScreen == false)
                 {
                     new BlueScreen(ErrorMessage(ThreadException, TryMethodType.A));

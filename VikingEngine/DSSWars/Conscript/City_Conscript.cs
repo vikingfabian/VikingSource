@@ -146,6 +146,10 @@ namespace VikingEngine.DSSWars.GameObject
                                                 case ItemResourceType.KnightsLance:
                                                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
                                                     break;
+                                                case ItemResourceType.ManCannonIron:
+                                                case ItemResourceType.SiegeCannonIron:
+                                                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.iron_cannon);
+                                                    break;
                                             }
                                             if (status.inProgress.weapon == ItemResourceType.KnightsLance)
                                                 //&&

@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars
                 {
                     case FactionType.DarkLord:
                         {
-                            DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel, newGame);
+                            /*DssRef.settings.darkLordPlayer = */new Players.DarkLordPlayer(factionsCounter.sel, newGame);
                         }
                         break;
                     case FactionType.Player:

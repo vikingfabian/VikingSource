@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.GameObject
             return isDeleted;
         }
 
-        virtual public Faction GetFaction()
+        virtual public Faction GetFaction_NoChecks()
         {
 #if DEBUG
             if (factionIndex < 0)
@@ -47,13 +47,20 @@ namespace VikingEngine.DSSWars.GameObject
             return DssRef.world.factions.Array[factionIndex];
         }
 
-        virtual public Faction GetFaction_Safe()
+        virtual public Faction GetFaction()
         {
+#if DEBUG
             if (factionIndex < 0)
             {
-                return null;
+                throw new Exception();
             }
-            return DssRef.world.factions.Array[factionIndex];
+#endif
+            return DssRef.world.faction(factionIndex);
+        }
+
+        virtual public Faction GetFaction_Safe()
+        {
+            return DssRef.world?.faction(factionIndex);
         }
 
         public Players.AbsPlayer GetPlayer()
@@ -64,14 +71,15 @@ namespace VikingEngine.DSSWars.GameObject
                 throw new Exception();
             }
 #endif
-            return DssRef.world.factions.Array[factionIndex].player;
+            return DssRef.world.factions.Array[factionIndex]?.player;
         }
 
         public bool GetCasual()
         {
             //if (factionIndex > 0)
             //{
-                return DssRef.world.factions.Array[factionIndex].player.profile.casualControls;
+            var f = DssRef.world.faction(factionIndex);
+            return f != null && f.player.profile.casualControls;
             //}
             //return false;
         }

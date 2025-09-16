@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.DSSWars.XP;
+using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
-using VikingEngine.DSSWars.Presentation;
-using System.Reflection.Metadata;
-using VikingEngine.DSSWars.Delivery;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -57,6 +59,68 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }));
         }
+
+
+        public void copySchool(LocalPlayer player)
+        {
+            copySchool(player, selectedSchool);
+        }
+
+        public void copySchool(LocalPlayer player, int index)
+        {
+            lock (schoolBuildings)
+            {
+                if (arraylib.InBound(schoolBuildings, index))
+                {
+                    SchoolStatus currentStatus = schoolBuildings[index];
+
+                    player.schoolCopy = currentStatus;
+                }
+            }
+        }
+
+        public void pasteSchool(LocalPlayer player)
+        {
+            if (selectedDelivery < 0)
+            {
+                pasteDeliveryToAll(player);
+            }
+            else
+            {
+                pasteDelivery(player, selectedDelivery);
+            }
+        }
+
+        public void pasteSchool(LocalPlayer player, int index)
+        {
+            lock (schoolBuildings)
+            {
+                if (arraylib.InBound(schoolBuildings, index))
+                {
+                    SchoolStatus currentStatus = schoolBuildings[index];
+
+                    currentStatus.copyFrom(player.schoolCopy);
+
+                    schoolBuildings[index] = currentStatus;
+                }
+            }
+        }
+
+        public void pasteSchoolToAll(LocalPlayer player)
+        {
+            lock (schoolBuildings)
+            {
+                for (int i = 0; i < schoolBuildings.Count; ++i)
+                {
+                    SchoolStatus currentStatus = schoolBuildings[i];
+
+                    currentStatus.copyFrom(player.schoolCopy);
+
+                    schoolBuildings[i] = currentStatus;
+                }
+            }
+        }
+
 
         public void addSchool(IntVector2 subPos)
         {

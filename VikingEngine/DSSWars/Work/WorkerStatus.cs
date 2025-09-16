@@ -225,7 +225,8 @@ namespace VikingEngine.DSSWars.Work
 
         void workComplete(City city, bool visualUnit)
         {
-            var faction = city.GetFaction();
+            var faction = city.GetFaction_NoChecks();
+            
 
             WorkExperienceType gainXp= WorkExperienceType.NONE;
 

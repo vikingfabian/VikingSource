@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Players
         public bool IsPlayerNeighbor = false;
         public Faction faction;
         public int aggressionLevel = AggressionLevel0_Passive;
-        public bool protectedPlayer = false;
+        public bool protectedFromBotAttacks = false;
         protected bool ignorePlayerCapture = false;
         public bool personality_loner = false;
         public bool protectedFromDelete = false;
@@ -90,13 +90,13 @@ namespace VikingEngine.DSSWars.Players
             {
                 IsPlayerNeighbor = r.ReadBoolean();
                 aggressionLevel = r.ReadByte();
-                protectedPlayer = r.ReadBoolean();
+                protectedFromBotAttacks = r.ReadBoolean();
             }
             else
             {
                 aggressionLevel = r.ReadByte();
                 var bools = new EightBit(r);
-                bools.Get(out IsPlayerNeighbor, out protectedPlayer, out personality_loner, out protectedFromDelete);
+                bools.Get(out IsPlayerNeighbor, out protectedFromBotAttacks, out personality_loner, out protectedFromDelete);
             }
         }
 
@@ -204,7 +204,7 @@ namespace VikingEngine.DSSWars.Players
 
                 if (faction.Size() >= FactionSize.Big)
                 {
-                    protectedPlayer = true;
+                    protectedFromBotAttacks = true;
                 }
             }
         }

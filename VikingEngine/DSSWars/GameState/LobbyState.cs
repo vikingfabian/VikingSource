@@ -1375,7 +1375,7 @@ namespace VikingEngine.DSSWars
                     if (DssRef.storage.mapSettings.customSeed)
                     {
                         RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(ushort.MinValue, ushort.MaxValue, 1),
-                            SeedProperty);
+                            SeedProperty, false);
                     }
                 }
             }

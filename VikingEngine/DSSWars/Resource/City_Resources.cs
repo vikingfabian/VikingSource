@@ -337,6 +337,11 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             var faction = GetFaction();
 
+            if (faction == null)
+            {
+                return;
+            }
+
             switch (type)
             {
                 case ItemResourceType.Gold:

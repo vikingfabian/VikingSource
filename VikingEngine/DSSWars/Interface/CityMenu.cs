@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Interface
 
         protected Players.LocalPlayer player;
         protected City city;
-        static readonly List<float> StockPileControls = new List<float> { 100 };
+        static readonly List<float> StockPileControls = new List<float> { 100, 1000 };
 
         public static readonly AutomationFocus[] AvailableAutomationFocuses =
         {
@@ -2111,7 +2111,7 @@ namespace VikingEngine.DSSWars.Interface
                         res.goalBuffer = value;
                         city.SetGroupedResource(item, res);
                     }
-                    return res.goalBuffer; });
+                    return res.goalBuffer; }, true);
 
             //int StockGetSet(bool set, int value)
             //{

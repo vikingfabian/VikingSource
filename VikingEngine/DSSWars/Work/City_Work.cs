@@ -396,6 +396,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                 void buildWorkQue2()
                 {
+                    if (faction == null)
+                        return;
+
                     IntVector2 center = WP.ToSubTilePos_Centered(tilePos);
                     workQue.Clear();
 
@@ -727,6 +730,10 @@ namespace VikingEngine.DSSWars.GameObject
                                 craftBench(pos, distanceValue, CraftBuildingLib.ChemistCraftTypes);
                                 break;
                             case TerrainBuildingType.Gunmaker:
+                                //if (myIndex == 153)
+                                //{
+                                //    lib.DoNothing();
+                                //}
                                 craftBench(pos, distanceValue, CraftBuildingLib.GunmakerCraftTypes);
                                 break;
                             case TerrainBuildingType.CoinMinter:
@@ -782,12 +789,12 @@ namespace VikingEngine.DSSWars.GameObject
                             WorkPriority template = workTemplate.GetWorkPriority(item);
                             
 
-                            if (template.value > topPrioValue)
+                            if (template.unlocked && template.value > topPrioValue)
                             {
-                                if (item == ItemResourceType.Gold)
-                                {
-                                    lib.DoNothing();
-                                }
+                                //if (item == ItemResourceType.Gold)
+                                //{
+                                //    lib.DoNothing();
+                                //}
 
                                 ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
                                 bool available = bp1.available(this);
@@ -1040,14 +1047,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         void async_blackMarketUpdate()
         {
-
+            if (GetFaction() == null)
+            { return; }
 
             if (res_food.amount <= -10)
             {
-                if (GetPlayer().IsLocalPlayer())
-                {
-                    lib.DoNothing();
-                }
+                //if (GetPlayer().IsLocalPlayer())
+                //{
+                //    lib.DoNothing();
+                //}
 
                 if (GetCasual())
                 {

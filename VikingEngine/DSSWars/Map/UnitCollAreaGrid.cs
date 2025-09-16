@@ -941,8 +941,8 @@ namespace VikingEngine.DSSWars.Map
         {
             if ( factionFilter >=0)
             {
-                var pFilter = DssRef.world.factions.Array[factionFilter];
-                if (pFilter.cities.Count < minCount)
+                var pFilter = DssRef.world.faction(factionFilter);
+                if (pFilter != null && pFilter.cities.Count < minCount)
                 {
                     minCount = pFilter.cities.Count;
                 }

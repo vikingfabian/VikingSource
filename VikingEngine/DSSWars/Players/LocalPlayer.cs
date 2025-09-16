@@ -21,6 +21,7 @@ using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
@@ -87,6 +88,7 @@ namespace VikingEngine.DSSWars.Players
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;
         public BarracksStatus soldierConscriptCopy, archerConscriptCopy, warmachineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
+        public SchoolStatus schoolCopy;
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();
@@ -141,6 +143,8 @@ namespace VikingEngine.DSSWars.Players
         { 
             orders = new Orders.Orders();
             automation = new Automation(this);
+            schoolCopy = new SchoolStatus();
+            schoolCopy.defaulSetup();
         }
 
         public LocalPlayer(Faction faction, bool newGame)

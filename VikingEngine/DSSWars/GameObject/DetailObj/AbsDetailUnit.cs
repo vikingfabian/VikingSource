@@ -303,7 +303,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void onDeath(bool fullUpdate, Faction enemyFaction)
         {
             //onEvent(UnitEventType.Death);
-            if (enemyFaction.player.IsLocalPlayer())
+            if (enemyFaction != null && enemyFaction.player.IsLocalPlayer())
             {
                 ++enemyFaction.player.GetLocalPlayer().statistics.EnemySoldiersKilled;
             }
@@ -523,7 +523,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool localMember
         {
-            get { return player().IsLocal; }
+            get {
+                var p = player();
+                return p != null && p.IsLocal; 
+            }
         }
 
         //override public Faction GetFaction()
@@ -533,7 +536,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Players.AbsPlayer player()
         {
-            return GetFaction().player;
+            return GetFaction()?.player;
         }
 
         virtual public Vector3 projectileStartPos()

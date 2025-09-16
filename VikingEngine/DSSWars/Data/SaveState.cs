@@ -15,13 +15,14 @@ using VikingEngine.LootFest.Data;
 using VikingEngine.PJ.Strategy;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
+using static Sentry.MeasurementUnit;
 
 namespace VikingEngine.DSSWars.Data
 {
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 12;
-        public const int SubVersion = 80; 
+        public const int SubVersion = 81; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -156,7 +157,47 @@ namespace VikingEngine.DSSWars.Data
             Debug.ReadCheck(r);
             DssRef.time.setTotalTime(meta.playTime);
             DssRef.state.Game().readGameState(r, version.sub, pointers);
-            
+
+            //Clean up
+            DssRef.state.events.loadCleanup();
+            //for (int i = 0; i < DssRef.world.factions.Array.Length; i++)
+            //{   
+            //    var f = DssRef.world.factions.Array[i];
+            //    if (f != null && 
+            //        f.armies.Count == 0 && 
+            //        f.cities.Count == 0)
+            //    {
+            //        if (f.player.protectedFromDelete)
+            //        {
+            //            switch (f.factiontype)
+            //            {
+            //                case FactionType.Barbarians:
+            //                    if (f.myIndex == DssRef.settings.Faction_Barbarian)
+            //                    {
+            //                        continue;
+            //                    }
+            //                    break;
+            //                case FactionType.SouthHara:
+            //                    if (f.myIndex == DssRef.settings.Faction_SouthHara)
+            //                    {
+            //                        continue;
+            //                    }
+            //                    break;
+            //                case FactionType.DarkLord:
+            //                    if (f == DssRef.settings.darkLordPlayer.faction)
+            //                    {
+            //                        continue;
+            //                    }
+            //                    break;
+            //            }
+            //        }
+
+            //        var emptyPlayer = new AiPlayer(DssRef.world.factions.Array[i], false);
+            //        emptyPlayer.faction.isAlive = false;
+                    
+            //    }
+                
+            //}
         }
 
         public override void Time_Update(float time_ms)
@@ -173,7 +214,9 @@ namespace VikingEngine.DSSWars.Data
     }
 
     class ObjectPointerCollection
-    { 
+    {
+        public List<Faction>[] oldFactionTypes;
+
         public List<AbsObjectPointer> pointers = new List<AbsObjectPointer>();
 
         public void SetPointer()
@@ -235,7 +278,7 @@ namespace VikingEngine.DSSWars.Data
 
         protected Faction GetFaction()
         {
-           return DssRef.world.factions.Array[factionIndex];
+           return DssRef.world.faction(factionIndex);
         }
 
         protected AbsGameObject GetObject()

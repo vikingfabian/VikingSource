@@ -52,11 +52,14 @@ namespace VikingEngine.DSSWars.Interface.Component
             labelToHud(content);
             buttonsToHud(player, content, queClick, currentQue, maxQue, noLimitOption);
         }
-        public void listToHud(LocalPlayer player, RichBoxContent content, Action<int> queAllClick)
+        public void listToHud(LocalPlayer player, RichBoxContent content, Action<int> queAllClick, bool noLimit)
         {
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("=0") }, new RbAction1Arg<int>(queAllClick, 0, RbSoundType.Stop)));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+1") }, new RbAction1Arg<int>(queAllClick, 1, RbSoundType.Start)));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_NoLimit) }, new RbAction1Arg<int>(queAllClick, ProgressQue.NoLimit, RbSoundType.Start)));
+            if (noLimit)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_NoLimit) }, new RbAction1Arg<int>(queAllClick, ProgressQue.NoLimit, RbSoundType.Start)));
+            }
         }
     }
 }

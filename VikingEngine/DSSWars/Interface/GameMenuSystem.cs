@@ -380,7 +380,7 @@ namespace VikingEngine.DSSWars.Interface
             content.newLine();
             content.Add(new RbText(DssRef.lang.Settings_Blood + ":", HudLib.TitleColor_Label));
             content.space();
-            RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty, false);
 
             bool autoSaveProperty(object tag, bool set, bool value)
             {

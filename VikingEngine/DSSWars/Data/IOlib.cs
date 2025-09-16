@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Data
                 case GameObjectType.Faction:
                     {
                         var index = r.ReadUInt16();
-                        return DssRef.world.factions.Array[index];
+                        return DssRef.world.factions.GetIndex_Safe(index);
                     }
             }
 
@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.Data
 
         public static Faction ReadFactionPointer(System.IO.BinaryReader r)
         {
-            return DssRef.world.factions.Array[r.ReadUInt32()];
+            return DssRef.world.factions.GetIndex_Safe(r.ReadUInt16());
         }
 
 

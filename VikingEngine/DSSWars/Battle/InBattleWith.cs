@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Battle
         {
             if (faction1 >= 0)
             {
-                var f = DssRef.world.factions.GetIndex_Safe(faction1);
+                var f = DssRef.world.faction(faction1);
                 if (f != null && f.factiontype == factionType)
                 {
                     return true;
@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Battle
             }
             if (faction2 >= 0)
             {
-                var f = DssRef.world.factions.GetIndex_Safe(faction2);
+                var f = DssRef.world.faction(faction2);
                 if (f != null && f.factiontype == factionType)
                 {
                     return true;
@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.Battle
             }
             if (faction3 >= 0)
             {
-                var f = DssRef.world.factions.GetIndex_Safe(faction3);
+                var f = DssRef.world.faction(faction3);
                 if (f != null && f.factiontype == factionType)
                 {
                     return true;

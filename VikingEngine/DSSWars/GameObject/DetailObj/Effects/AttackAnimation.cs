@@ -181,7 +181,8 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (this.GetFaction().player.IsLocalPlayer())
+                var f = this.GetFaction();
+                if (f != null && f.player.IsLocalPlayer())
                 {
                     switch (group.soldierConscript.conscript.weapon)
                     {

@@ -1365,7 +1365,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         tile.IsLand())
                     {
                         //Available for spawn
-                        Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
+                        Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
                         enemyFac.player.GetAiPlayer().armyAi_enabled = false;
 
                         barbarianArmy = enemyFac.NewArmy(loop.Position);
@@ -1442,7 +1442,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 DssRef.storage.Save(null);
             }
 
-            Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
+            Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
             enemyFac.player.GetAiPlayer().armyAi_enabled = true;
 
             player.tutorial = null;

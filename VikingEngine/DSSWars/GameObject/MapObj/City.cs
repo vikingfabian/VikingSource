@@ -1562,7 +1562,7 @@ namespace VikingEngine.DSSWars.GameObject
         void createOverViewModel()
         {
             //faction.profile.modelColorReplace
-            var faction = GetFaction();
+            var faction = GetFaction_NoChecks();
 
             if (faction.player.profile.flag != null)
             {

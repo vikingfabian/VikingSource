@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars
 
             foreach (var rel in relationFlags)
             {
-                Faction faction = DssRef.world.factions[rel.faction];
+                Faction faction = DssRef.world.faction(rel.faction);
                 if (faction!= null && faction.myIndex == 18)
                 {
                     lib.DoNothing();
@@ -234,7 +234,7 @@ namespace VikingEngine.DSSWars
                             player.gameControls.setMenuFocus(true, true);
                         }
 
-                        var faction = DssRef.world.factions.Array[selected.faction];
+                        var faction = DssRef.world.faction(selected.faction);
 
                         previousFactionsLookedAt.Remove(faction);
                         if (previousFactionsLookedAt.Count > PreviousFactionsLookedAtCount)
@@ -326,7 +326,7 @@ namespace VikingEngine.DSSWars
 
             foreach (var rel in relationFlags)
             {
-                Faction faction = DssRef.world.factions[rel.faction];
+                Faction faction = DssRef.world.faction(rel.faction);
                 if (faction != null)
                 {
                     bool cityPos;
@@ -358,12 +358,12 @@ namespace VikingEngine.DSSWars
             if (selected != null)
             {
                 selection = true;
-                return DssRef.world.factions[selected.faction];
+                return DssRef.world.faction(selected.faction);
             }
             else if (currentHover != null)
             {
                 selection = false;
-                return DssRef.world.factions[currentHover.faction];
+                return DssRef.world.faction(currentHover.faction);
             }
 
             selection = false;

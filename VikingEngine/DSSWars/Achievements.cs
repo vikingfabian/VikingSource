@@ -297,26 +297,26 @@ namespace VikingEngine.DSSWars
                 case VictoryType.Domination:
                     UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_mini_domination_sandbox_any, AchievementIndex.victory_mini_domination_sandbox_50, AchievementIndex.victory_mini_domination_sandbox_100, AchievementIndex.victory_mini_domination_sandbox_150);
 
-                    if (DssRef.world.metaData.mapSize >= MapSize.Medium)
-                    {
-                        UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_domination_sandbox_any, AchievementIndex.victory_domination_sandbox_50, AchievementIndex.victory_domination_sandbox_100, AchievementIndex.victory_domination_sandbox_150);  
-                    }
+                    //if (DssRef.world.metaData.mapSize >= MapSize.Medium)
+                    //{
+                    //    UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_domination_sandbox_any, AchievementIndex.victory_domination_sandbox_50, AchievementIndex.victory_domination_sandbox_100, AchievementIndex.victory_domination_sandbox_150);  
+                    //}
 
                     if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
                     {
-                        if (DssRef.world.metaData.mapSize < MapSize.Medium)
-                        {
+                        //if (DssRef.world.metaData.mapSize < MapSize.Medium)
+                        //{
                             UnlockAchievement_onAny_100(AchievementIndex.victory_mini_domination_story_any, AchievementIndex.victory_mini_domination_story_100);
-                        }
-                        else
-                        {
-                            UnlockAchievement_onAny_100(AchievementIndex.victory_domination_story_any, AchievementIndex.victory_domination_story_100);
+                        //}
+                        //else
+                        //{
+                        //    UnlockAchievement_onAny_100(AchievementIndex.victory_domination_story_any, AchievementIndex.victory_domination_story_100);
 
-                            if (DssRef.world.metaData.mapSize >= MapSize.Large)
-                            {
-                                UnlockAchievement_on75(AchievementIndex.massive_victory_domination);
-                            }
-                        }
+                        //    if (DssRef.world.metaData.mapSize >= MapSize.Large)
+                        //    {
+                        //        UnlockAchievement_on75(AchievementIndex.massive_victory_domination);
+                        //    }
+                        //}
                     }
 
                     break;
@@ -359,18 +359,7 @@ namespace VikingEngine.DSSWars
                 findHonorGuard(p);
             }
 
-            if (DssRef.state.events.maxWars > 6)
-            {
-                UnlockAchievement(AchievementIndex.warjuggler_tier1);
-                if (DssRef.state.events.maxWars > 9)
-                {
-                    UnlockAchievement(AchievementIndex.warjuggler_tier2);
-                    if (DssRef.state.events.maxWars > 12)
-                    {
-                        UnlockAchievement(AchievementIndex.warjuggler_tier3);
-                    }
-                }
-            }
+            
 
             int hill_Factions = 0;
             var factionsC = DssRef.world.factions.counter();
@@ -482,7 +471,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// defeat the boss
         /// </summary>
-        victory_boss_any,//i
+        victory_boss_any,//i, t
         victory_boss_50,
         victory_boss_100,
         victory_boss_150,
@@ -503,10 +492,10 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Grab the whole world to yourself - in sandbox, medium world size
         /// </summary>
-        victory_domination_sandbox_any,//i
-        victory_domination_sandbox_50,
-        victory_domination_sandbox_100,
-        victory_domination_sandbox_150,
+        //victory_domination_sandbox_any,//i
+        //victory_domination_sandbox_50,
+        //victory_domination_sandbox_100,
+        //victory_domination_sandbox_150,
 
         /// <summary>
         /// Grab the whole world to yourself - in story
@@ -517,18 +506,18 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Grab the whole world to yourself - in story, medium world size
         /// </summary>
-        victory_domination_story_any,//i
-        victory_domination_story_100,
+        //victory_domination_story_any,//i
+        //victory_domination_story_100,
 
         /// <summary>
         /// Grab the whole world to yourself - in story, large world size, min 75%
         /// </summary>
-        massive_victory_domination,//i
+        //massive_victory_domination,//i
 
         /// <summary>
         /// reach victory without starting a single war
         /// </summary>
-        no_war_started_any,//i
+        no_war_started_any,//i, t
         no_war_started_50,
         no_war_started_100,
         no_war_started_150,
@@ -542,7 +531,7 @@ namespace VikingEngine.DSSWars
         warstarter_tier3,
 
         /// <summary>
-        ///  be in open war with 6 nations, then 9, then 12. Achieved on game victory.
+        ///  be in open war with 6 nations, then 9, then 12. Achieved on boss enter.
         /// </summary>
         warjuggler_tier1,//i
         warjuggler_tier2,
@@ -727,7 +716,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Reach victory with both the "hill" factions still alive
         /// </summary>
-        worth_saving_any,//i
+        worth_saving_any,//i, t
         worth_saving_100,
 
         /// <summary>
@@ -735,6 +724,16 @@ namespace VikingEngine.DSSWars
         /// </summary>
         worthy_friends,//i, t
 
+        /// <summary>
+        /// Produce soldiers with an iron cannon
+        /// </summary>
+        iron_cannon,//i
+
+        /// <summary>
+        /// Begin the final battle
+        /// </summary>
+        reach_boss_any,//i
+        reach_boss_100,
 
         NUM_ACHIEVEMENTS
     }

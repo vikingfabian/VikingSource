@@ -599,6 +599,35 @@ namespace VikingEngine.DSSWars.Presentation
             }
         }
 
+        public static string ValueSymbol(int value)
+        {
+            string result;
+            var abs = Math.Abs(value);
+            switch (abs)
+            {
+                case 100:
+                    result = DssRef.todoLang.EngineHud_SymbolFor100;
+                    break;
+                case 1000:
+                    result = DssRef.todoLang.EngineHud_SymbolFor1000;
+                    break;
+                case 10000:
+                    result = DssRef.todoLang.EngineHud_SymbolFor10000;
+                    break;
+                default:
+                    result = abs.ToString();
+                    break;
+            }
+
+            if (value >= 0)
+            {
+                return "+" + result;
+            }
+            else
+            {
+                return "-" + result;
+            }
+        }
         public static SpriteName ExperienceLevelIcon(ExperienceLevel level)
         {
             if (level >= XP.ExperienceLevel.Legendary_5)

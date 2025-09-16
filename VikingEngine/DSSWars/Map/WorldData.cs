@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.SteamWrapping;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace VikingEngine.DSSWars
 {   
@@ -119,6 +120,15 @@ namespace VikingEngine.DSSWars
             {
                 refreshSize(SizeDimentions(metaData.mapSize));
             }
+        }
+
+        public Faction faction(int index)
+        { 
+            var result = factions.GetIndex_Safe(index);
+            if (result != null && result.isAlive)
+                return result;
+
+            return null;
         }
 
         public static MapSize CustomMapSizeToSize(IntVector2 size)
@@ -289,22 +299,73 @@ namespace VikingEngine.DSSWars
             {
                 factionLegth = r.ReadUInt16();
             }
-//            else
-//            {
-//#if DEBUG
-//                factionLegth *= 2;
-//                factions = new SpottedArray<Faction>(factionLegth);
-//#endif
-//            }
+            //            else
+            //            {
+            //#if DEBUG
+            //                factionLegth *= 2;
+            //                factions = new SpottedArray<Faction>(factionLegth);
+            //#endif
+            //            }
+
+            //pointers.oldFactionTypes = new List<Faction>[(int)FactionType.NUM];
+            //foreach (var f in factions.Array)
+            //{
+            //    if (f != null)
+            //    {
+            //        if (f.factiontype != FactionType.DefaultAi && f.factiontype != FactionType.Player)
+            //        {
+            //            if (pointers.oldFactionTypes[(int)f.factiontype] == null)
+            //            {
+            //                pointers.oldFactionTypes[(int)f.factiontype] = new List<Faction> { f };
+            //            }
+            //            else
+            //            {
+            //                pointers.oldFactionTypes[(int)f.factiontype].Add(f);
+            //            } 
+            //        }
+            //    }
+            //}
+
+            int darkLordCount = 0;
 
             for (int i = 0; i < factionLegth; i++)
             {
+                var f = factions.Array[i];
+
+                //if (f != null && f.factiontype != FactionType.Player && subversion >= 81)
+                //{
+                //    f.factiontype = FactionType.DefaultAi;
+                //    var emptyPlayer = new AiPlayer(f, false);
+                //    //emptyPlayer.faction.isAlive = false;
+                //}
+
                 if (r.ReadBoolean())
                 {
-                    factions.Array[i].readGameState(r, subversion, pointers);
+                    f.readGameState(r, subversion, pointers);
                     Debug.ReadCheck(r);
+
+                    if (f.factiontype == FactionType.DarkLord)
+                    {
+                        darkLordCount++;
+                    }
+                }
+                else
+                {
+                    if (f != null)
+                    {
+                        f.factiontype = FactionType.DefaultAi;
+                        var emptyPlayer = new AiPlayer(f, false);
+                        f.isAlive = false;
+                    }
                 }
             }
+
+#if DEBUG
+            if (subversion >= 81 && darkLordCount >1)
+            {
+                throw new Exception();
+            }
+#endif
 
             Debug.ReadCheck(r);
 

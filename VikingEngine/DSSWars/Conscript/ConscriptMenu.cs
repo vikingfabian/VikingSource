@@ -353,18 +353,23 @@ namespace VikingEngine.DSSWars.Conscript
                     maxFoodProperty, new RbTooltip_Text(DssRef.lang.Conscript_FoodAbundance_Description)));
 
                 content.newParagraph();
-                content.Add(new RbImage(player.gameControls.input.Copy.Icon));
-                content.hspace();
-                content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember> {                    
-                    new RbText(DssRef.lang.Hud_CopySetup) },
-                    new RbAction1Arg<LocalPlayer>(city.copyConscript, player, RbSoundType.Copy)));
+                HudLib.copyPaste(content, player,
+                    new RbAction1Arg<LocalPlayer>(city.copyConscript, player, RbSoundType.Copy),
+                     new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, RbSoundType.Paste));
+                //content.Add(new RbImage(player.gameControls.input.Copy.Icon));
+                //content.hspace();
+                //content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember> {                    
+                //    new RbText(DssRef.lang.Hud_CopySetup) },
+                //    new RbAction1Arg<LocalPlayer>(city.copyConscript, player, RbSoundType.Copy)));
 
-                content.space();
-                content.Add(new RbImage(player.gameControls.input.Paste.Icon));
-                content.hspace();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {                   
-                    new RbText(DssRef.lang.Hud_Paste) },
-                    new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, RbSoundType.Paste)));
+                //content.space();
+                //content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+                //content.hspace();
+                //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                //    new RbImage(SpriteName.WarsHudIconPaste, HudLib.WarHudIcons_DefaultScale),
+                //            new RbSpace(),
+                //            new RbText(DssRef.lang.Hud_Paste) },
+                //    new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, RbSoundType.Paste)));
 
                 //if (currentStatus.active != ConscriptActiveStatus.Idle)
                 //{
@@ -397,7 +402,7 @@ namespace VikingEngine.DSSWars.Conscript
             else
             {
 
-                content.h2(DssRef.lang.Conscript_SelectBuilding).overrideColor = HudLib.TitleColor_Action;
+                
                 if (city.conscriptBuildings.Count == 0)
                 {
                     //EMPTY
@@ -434,6 +439,29 @@ namespace VikingEngine.DSSWars.Conscript
                             typeCount++;
                         }
                     }
+
+                    //Apply to all options
+                    content.h2(DssRef.lang.GeneralSetting_SetAll, HudLib.TitleColor_Action);
+                    HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
+                    que.listToHud(player, content, queueToAll, true);
+
+                    if (player.conscriptSubTab != BuildAndExpandType.ALL ||
+                        typeCount == 1)
+                    {
+                        content.newLine();
+                        content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+                        content.hspace();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.WarsHudIconPaste),
+                            new RbSpace(),
+                            new RbText(DssRef.lang.Hud_Paste) },
+                            new RbAction1Arg<LocalPlayer>(city.pasteConscriptToAll, player, RbSoundType.Paste)));
+                        
+                    }
+                    //content.newLine();
+                    content.Add(new RbSeperationLine());
+
+                    content.h2(DssRef.lang.Conscript_SelectBuilding, HudLib.TitleColor_Action);
 
                     if (!hasPreSelectedTab)
                     {
@@ -509,24 +537,7 @@ namespace VikingEngine.DSSWars.Conscript
                         }
                     }
 
-                    //Apply to all options
-                    content.h2(DssRef.lang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
-                    HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
-                    que.listToHud(player, content, queueToAll);
-                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("=0") }, new RbAction1Arg<int>(queueToAll, 0, RbSoundType.Stop)));
-                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+1") }, new RbAction1Arg<int>(queueToAll, 1, RbSoundType.Start)));
-                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_NoLimit) }, new RbAction1Arg<int>(queueToAll, ProgressQue.NoLimit, RbSoundType.Start)));
-
-                    if (player.conscriptSubTab != BuildAndExpandType.ALL ||
-                        typeCount == 1)
-                    {
-                        content.newLine();
-                        content.Add(new RbImage(player.gameControls.input.Paste.Icon));
-                        content.hspace();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                        new RbText(DssRef.lang.Hud_Paste) },
-                            new RbAction1Arg<LocalPlayer>(city.pasteConscriptToAll, player, RbSoundType.Paste)));
-                    }
+                    
                 }
             }
 
@@ -571,23 +582,6 @@ namespace VikingEngine.DSSWars.Conscript
                     progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment, menCostProgress, out bool gotEquipment), currentStatus.active > ConscriptActiveStatus.CollectingEquipment, gotEquipment);
                     progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingMen, menCostProgress, out bool gotMen), currentStatus.active > ConscriptActiveStatus.CollectingMen, gotMen);
 
-
-                    //{
-                    //    content.newLine();
-                    //    HudLib.BulletPoint(content);
-                    //    var text = new RbText(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment, menCostProgress));
-                    //    text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingEquipment ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                    //    content.Add(text);
-                    //}
-                    //{
-                    //    content.newLine();
-                    //    HudLib.BulletPoint(content);
-                    //    var text = new RbText(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingMen, menCostProgress));
-                    //    text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingMen ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                    //    content.Add(text);
-                    //}
-
-                    //if (currentStatus.active == ConscriptActiveStatus.Training)
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
@@ -618,7 +612,6 @@ namespace VikingEngine.DSSWars.Conscript
                         {
                             text.overrideColor = HudLib.SecondaryTextColor;
                         }
-                        //text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingEquipment ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
                     }
                 }

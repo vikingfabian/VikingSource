@@ -99,6 +99,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         void init(Faction faction, int overrideIx = -1)
         {
+#if DEBUG
+            if (faction == null || faction.isDeleted)
+            {
+                throw new Exception();
+            }
+#endif
             bound = new BoundingSphere(Vector3.Zero, 0.5f);
             asynchCullingUpdate(1f, DssRef.state.culling.cullingStateA);
             faction.AddArmy(this, overrideIx);
@@ -114,7 +120,7 @@ namespace VikingEngine.DSSWars.GameObject
         public static void NetReadArmy(System.IO.BinaryReader r)
         {
             int factionIx = r.ReadUInt16();
-            var faction = DssRef.world.factions.Array[factionIx];
+            var faction = DssRef.world.faction(factionIx);
             
             int armyIx = r.ReadUInt16();
             Army army = faction.armies.GetIndex_Safe(armyIx);
@@ -908,7 +914,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (overviewBanner == null)
                 {
-                    overviewBanner = GetFaction().AutoLoadModelInstance(
+                    overviewBanner = GetFaction_NoChecks().AutoLoadModelInstance(
                         OverviewBannerModelName, 1f);
                     overviewBanner.AddToRender(DrawGame.MidLayer);
 
@@ -1151,7 +1157,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (removeFromParent)
             {
-                GetFaction().remove(this);
+                GetFaction()?.remove(this);
             }
 
             if (workerUnits != null)

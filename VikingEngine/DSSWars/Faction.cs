@@ -133,9 +133,10 @@ namespace VikingEngine.DSSWars
         }
 
         virtual public void writeGameState(System.IO.BinaryWriter w)
-        {
-            
+        {            
             w.Write((ushort)factiontype);
+            player.writeGameState(w);
+
             w.Write(money.copper);
             Debug.WriteCheck(w);
 
@@ -157,10 +158,7 @@ namespace VikingEngine.DSSWars
 
             writeRelations(w);
 
-            player.writeGameState(w);
-
             workTemplate.writeGameState(w, false);
-
         }
         virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
@@ -168,6 +166,41 @@ namespace VikingEngine.DSSWars
             if (player.IsLocalPlayer() && player.GetLocalPlayer().isDropInPlayer)
             {
                 factiontype = FactionType.Player;
+                //var doubletteFaction = pointers.oldFactionTypes[(int)factiontype];
+                //if (doubletteFaction != null)
+                //{
+                //    foreach (var faction2 in doubletteFaction)
+                //    {
+                //        if (faction2 != this && faction2.factiontype == factiontype)
+                //        {
+                //            faction2.factiontype = FactionType.DefaultAi;
+                //        }
+                //    }
+                //}
+            }
+
+            if (subVersion >= 81)
+            {
+                switch (factiontype)
+                {
+                    case FactionType.Player:
+                        if (!player.IsLocalPlayer())
+                        {
+                            throw new Exception();
+                        }
+                        break;
+
+                    case FactionType.DarkLord:
+                        new DarkLordPlayer(this, false);
+                        break;
+
+                    default:
+                        new AiPlayer(this, false);
+                        break;
+                }
+
+                player.readGameState(r, subVersion, pointers);
+
             }
 
             if (subVersion < 53)
@@ -218,13 +251,15 @@ namespace VikingEngine.DSSWars
 
             readRelations(r, subVersion);
 
-            if ((factiontype == FactionType.Player) != player.IsLocalPlayer())
+            if (subVersion < 81)
             {
-                throw new Exception();
-            }
+                if ((factiontype == FactionType.Player) != player.IsLocalPlayer())
+                {
+                    throw new Exception();
+                }
 
-            player.readGameState(r, subVersion, pointers);
-            
+                player.readGameState(r, subVersion, pointers);
+            }
 
             workTemplate.readGameState(r, subVersion, false);
         }
@@ -983,7 +1018,7 @@ namespace VikingEngine.DSSWars
                         {
                             if (diplomaticRelations[relIndex].Relation >= RelationType.RelationType3_Ally && relIndex != this.factionIndex)
                             {
-                                Faction ally = DssRef.world.factions.GetIndex_Safe(relIndex);
+                                Faction ally = DssRef.world.faction(relIndex);
 
                                 if (ally != null)
                                 {
@@ -1198,7 +1233,7 @@ namespace VikingEngine.DSSWars
                     relIx != myIndex &&
                    diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN3_War)
                 {
-                    opponents.Add(DssRef.world.factions.Array[relIx]);
+                    opponents.Add(DssRef.world.faction(relIx));
                 }
             }
 
@@ -1233,7 +1268,7 @@ namespace VikingEngine.DSSWars
                     relIx != myIndex &&
                    diplomaticRelations[relIx].Relation >= RelationType.RelationType3_Ally)
                 {
-                    var ally = DssRef.world.factions.GetIndex_Safe(relIx);
+                    var ally = DssRef.world.faction(relIx);
                     if (ally != null)
                     {
                         result += ally.militaryStrength;
@@ -1525,6 +1560,8 @@ namespace VikingEngine.DSSWars
         /// Theme: A democracy run house with focus on politics and military might. Looks down on any outsiders.
         /// </summary>
         Etheleorthe,
+
+        NUM
     }
 
     enum FactionGroupType

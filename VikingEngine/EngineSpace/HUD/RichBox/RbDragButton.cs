@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichMenu;
@@ -31,20 +32,20 @@ namespace VikingEngine.HUD.RichBox
         /// A drag button sourronded by + - buttons
         /// </summary>
         /// <param name="options">Positive values, low to high</param>
-        public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSet intValue)
+        public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSet intValue, bool useSymbols)
         {
             var dragButton = new RbDragButton(settings, intValue);
 
             for (int i = options.Count - 1; i >= 0; --i)
             {
-                content.Add(new RbDragOptionButton(dragButton, -options[i]));
+                content.Add(new RbDragOptionButton(dragButton, -options[i], useSymbols));
             }
 
             content.Add(dragButton);
 
             for (int i = 0; i < options.Count; ++i)
             {
-                content.Add(new RbDragOptionButton(dragButton, options[i]));
+                content.Add(new RbDragOptionButton(dragButton, options[i], useSymbols));
             }
         }
 
@@ -54,14 +55,14 @@ namespace VikingEngine.HUD.RichBox
 
             for (int i = options.Count - 1; i >= 0; --i)
             {
-                content.Add(new RbDragOptionButton(dragButton, -options[i]));
+                content.Add(new RbDragOptionButton(dragButton, -options[i], false));
             }
 
             content.Add(dragButton);
 
             for (int i = 0; i < options.Count; ++i)
             {
-                content.Add(new RbDragOptionButton(dragButton, options[i]));
+                content.Add(new RbDragOptionButton(dragButton, options[i], false));
             }
         }
 
@@ -229,13 +230,33 @@ namespace VikingEngine.HUD.RichBox
         RbDragButton parent;
         float add;
 
-        public RbDragOptionButton(RbDragButton parent, float add)
+        //public RbDragOptionButton(RbDragButton parent, float add)
+        //{
+        //    this.parent = parent;
+        //    this.buttonStyle = Artistic.RbButtonStyle.Primary;
+        //    this.add = add;
+
+        //    content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };            
+        //}
+
+        public RbDragOptionButton(RbDragButton parent, float add, bool useSymbols)
         {
             this.parent = parent;
             this.buttonStyle = Artistic.RbButtonStyle.Primary;
+
+            
             this.add = add;
 
-            content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };            
+
+            if (useSymbols)
+            {
+                content = new List<AbsRichBoxMember> { new RbText(LangLib.ValueSymbol((int)add)) };
+                enter = new RbTooltip_Text(TextLib.PlusMinus(add));
+            }
+            else
+            {
+                content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };
+            }
         }
 
         public override void onClick(RichMenu.RichMenu menu)

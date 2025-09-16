@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Event
 
         ConcurrentQueue<AbsStoryEvent> mainStory = new ConcurrentQueue<AbsStoryEvent>();
 
-        public int maxWars = 0;
+        public int maxWarsJuggles = 0;
 
         public EventManager()
         {
@@ -119,14 +119,14 @@ namespace VikingEngine.DSSWars.Event
                 {
                     if (relIx != p.faction.myIndex)
                     {
-                        Faction otherFaction = DssRef.world.factions.GetIndex_Safe(relIx);
+                        Faction otherFaction = DssRef.world.faction(relIx);
 
                         if (otherFaction != null && otherFaction.isAlive)
                         {
                             RelationType relation = RelationType.RelationType0_Neutral;
                             SpeakTerms speak = SpeakTerms.SpeakTerms0_Normal;
 
-                            if (relations[relIx] != null)
+                            if (relations[relIx] != null && DssRef.world.faction(relIx) != null)
                             {
                                 relation = relations[relIx].Relation;
                                 speak = relations[relIx].SpeakTerms;
@@ -274,9 +274,9 @@ namespace VikingEngine.DSSWars.Event
                 }
 
                 //Prepare secret alliances
-                var DarkFollower = DssRef.world.factions.Array[DssRef.settings.Faction_DarkFollower];
-                var SouthHara = DssRef.world.factions.Array[DssRef.settings.Faction_SouthHara];
-                var UnitedKingdom = DssRef.world.factions.Array[DssRef.settings.Faction_UnitedKingdom];
+                var DarkFollower = DssRef.world.faction(DssRef.settings.Faction_DarkFollower);
+                var SouthHara = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
+                var UnitedKingdom = DssRef.world.faction(DssRef.settings.Faction_UnitedKingdom);
 
                 DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType3_Ally).secret = true;
                 DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally).secret = true;
@@ -285,9 +285,9 @@ namespace VikingEngine.DSSWars.Event
                 //Setup dying war
                 dyingFactionsTimer = new Time(5, TimeUnit.Minutes);
 
-                var monger = DssRef.world.factions.Array[DssRef.settings.Faction_DyingMonger];
-                var hate = DssRef.world.factions.Array[DssRef.settings.Faction_DyingHate];
-                var destru = DssRef.world.factions.Array[DssRef.settings.Faction_DyingDestru];
+                var monger = DssRef.world.faction(DssRef.settings.Faction_DyingMonger);
+                var hate = DssRef.world.faction(DssRef.settings.Faction_DyingHate);
+                var destru = DssRef.world.faction(DssRef.settings.Faction_DyingDestru);
 
                 DssRef.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN4_TotalWar);
                 DssRef.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN4_TotalWar);
@@ -355,7 +355,7 @@ namespace VikingEngine.DSSWars.Event
             }
 
             dyingFactionsTimer.write(w);
-            w.Write((ushort)maxWars);
+            w.Write((ushort)maxWarsJuggles);
             
             
         }
@@ -412,8 +412,41 @@ namespace VikingEngine.DSSWars.Event
 
             if (subVersion >= 72)
             { 
-                maxWars = r.ReadUInt16();
+                maxWarsJuggles = r.ReadUInt16();
             }
+        }
+
+        public void loadCleanup()
+        {
+            //var current = CurrentEvent();
+            //if (current != null)
+            //{
+            //    if (current.StoryEventType() > EventType.Barbarians)
+            //    {
+            //        var f = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
+            //        if (f != null)
+            //        {
+            //            f.GetPlayer().protectedFromDelete = false;
+            //        }
+            //    }
+
+            //    if (current.StoryEventType() > EventType.Mercenaries)
+            //    {
+            //        var f = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
+            //        if (f != null)
+            //        {
+            //            f.GetPlayer().protectedFromDelete = false;
+            //        }
+            //    }
+
+            //    if (current.StoryEventType() > EventType.Boss)
+            //    {
+            //        if (DssRef.settings.darkLordPlayer != null)
+            //        {
+            //            DssRef.settings.darkLordPlayer.protectedFromDelete = false;
+            //        }
+            //    }
+            //}
         }
 
         public void onBattleEnd_async(AbsArmy army, InBattleWith inBattleWith)
@@ -470,6 +503,12 @@ namespace VikingEngine.DSSWars.Event
                     break;
                 
                 case FactionType.DarkLord:
+//#if DEBUG
+//                    if (DssRef.settings.darkLordPlayer != faction.player)
+//                    {
+//                        throw new Exception();
+//                    }
+//#endif
                     victory(VictoryType.DefeatBoss);
                     break;
 
@@ -605,9 +644,9 @@ namespace VikingEngine.DSSWars.Event
         { 
             if (dyingFactionsTimer.CountDown_IfActive(time))
             {
-                var monger = DssRef.world.factions.Array[DssRef.settings.Faction_DyingMonger];
-                var hate = DssRef.world.factions.Array[DssRef.settings.Faction_DyingHate];
-                var destru = DssRef.world.factions.Array[DssRef.settings.Faction_DyingDestru];
+                var monger = DssRef.world.faction(DssRef.settings.Faction_DyingMonger);
+                var hate = DssRef.world.faction(DssRef.settings.Faction_DyingHate);
+                var destru = DssRef.world.faction(DssRef.settings.Faction_DyingDestru);
 
                 var factions =  new List<Faction>() 
                 { 
@@ -616,14 +655,17 @@ namespace VikingEngine.DSSWars.Event
 
                 foreach (var faction in factions)
                 {
-                    faction.growthMultiplier = 0.5f;
-                    faction.addGold_factionWide( -10000);
-                    //var citiesC = faction.cities.counter();
-                    //while (citiesC.Next())
-                    //{
-                    //    citiesC.sel.gold = -2000;
-                    //}
-                    faction.hasDeserters = true;
+                    if (faction != null)
+                    {
+                        faction.growthMultiplier = 0.5f;
+                        faction.addGold_factionWide(-10000);
+                        //var citiesC = faction.cities.counter();
+                        //while (citiesC.Next())
+                        //{
+                        //    citiesC.sel.gold = -2000;
+                        //}
+                        faction.hasDeserters = true;
+                    }
                 }
             }
         }
@@ -964,11 +1006,14 @@ namespace VikingEngine.DSSWars.Event
                 }
             }
 
-            Task.Run(() =>
-            {
-                int wars = player.faction.CountWars();
-                maxWars = Math.Max(maxWars, wars);
-            });
+            //if (isAggressor)
+            //{
+                Task.Run(() =>
+                {
+                    int wars = player.faction.CountWars();
+                    maxWarsJuggles = Math.Max(maxWarsJuggles, wars);
+                });
+            //}
         }
 
         public void onPlayerDeath()

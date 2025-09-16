@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                     content.newLine();
                     content.Add(new RbText(DssRef.lang.Editor_Tool_PencilSize + ":", HudLib.TitleColor_Label));
                     content.Add(new RbTab(TabLength));
-                    RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, new DragButtonSettings(1, 17, 1), pencilSizeProperty);
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, new DragButtonSettings(1, 17, 1), pencilSizeProperty, false);
 
                     content.newLine();
                     content.Add(new RbText(DssRef.lang.Editor_Tool_SizeTolerance + ":", HudLib.TitleColor_Label));
@@ -204,22 +204,22 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Editor_Tool_EdgeSize + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, new DragButtonSettings(0, 5, 1), RoadEdgeSizeProperty);
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, new DragButtonSettings(0, 5, 1), RoadEdgeSizeProperty, false);
 
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Editor_Tool_PercentFill + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 20 }, new DragButtonSettings(1, 100, 1), RoadPercentFillProperty);
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 20 }, new DragButtonSettings(1, 100, 1), RoadPercentFillProperty, false);
 
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Editor_Tool_ClearAbove + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10 }, new DragButtonSettings(0, 32, 1), RoadUpwardClearProperty);
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10 }, new DragButtonSettings(0, 32, 1), RoadUpwardClearProperty, false);
 
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Editor_Tool_FillBelow + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10 }, new DragButtonSettings(0, 32, 1), RoadBelowFillProperty);
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10 }, new DragButtonSettings(0, 32, 1), RoadBelowFillProperty, false);
 
                     }
                     break;

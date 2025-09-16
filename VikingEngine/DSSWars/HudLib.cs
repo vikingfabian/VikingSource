@@ -32,6 +32,8 @@ namespace VikingEngine.DSSWars
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
+        public const float WarHudIcons_DefaultScale = 0.8f;
+
         public static readonly Color TitleColor_Head = new Color(104, 149, 219);
         public static readonly Color TitleColor_Head2 = ColorExt.ChangeBrighness(TitleColor_Head, -20);
         public static readonly Color TitleColor_Action = Color.LightBlue;
@@ -233,6 +235,25 @@ namespace VikingEngine.DSSWars
             };
         }
 
+        public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste)
+        {
+            content.Add(new RbImage(player.gameControls.input.Copy.Icon));
+            content.hspace();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsHudIconCopy, WarHudIcons_DefaultScale),
+                    new RbSpace(),
+                    new RbText(DssRef.lang.Hud_CopySetup) 
+                }, copy));
+
+            content.space();
+            content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+            content.hspace();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsHudIconPaste, WarHudIcons_DefaultScale),
+                    new RbSpace(),
+                    new RbText(DssRef.lang.Hud_Paste)
+                }, paste));
+        }
         public static void buildingMenuTitle(RichBoxContent content, SpriteName icon, string caption, int id, int index, int buildingCount, Action closeAction, Action<int> nextAction)
         {
             content.Add(new RbBeginTitle(1));

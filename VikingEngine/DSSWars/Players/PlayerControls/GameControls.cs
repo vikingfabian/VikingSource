@@ -940,7 +940,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 var rel = player.faction.diplomaticRelations[i];
                 if (rel != null && rel.Relation <= RelationType.RelationTypeN3_War)
                 {
-                    var enemy = DssRef.world.factions.GetIndex_Safe(i);
+                    var enemy = DssRef.world.faction(i);
                     if (enemy != null)
                     {
                         if (enemy.mainCity != null)
