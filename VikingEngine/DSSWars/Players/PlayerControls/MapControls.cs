@@ -1121,6 +1121,10 @@ namespace VikingEngine.DSSWars.Players
 
         private void zoomInput()
         {
+            if (player.gameControls.input.inputSource.IsController &&
+                player.gameControls.input.inputSource.Controller.IsButtonDown(Buttons.LeftTrigger))
+            { return; }
+
             float zoominput = player.gameControls.input.ZoomValue();
 
             targetZoom = VikingEngine.Bound.Set(
@@ -1229,10 +1233,16 @@ namespace VikingEngine.DSSWars.Players
 
             camera.TiltX = camRotation.Value;
 
-
-            if (player.gameControls.input.cameraTiltUp.DownEvent)
+            if (player.gameControls.input.inputSource.HasKeyBoard)
             {
-                toggleCameraTiltUp();
+                if (player.gameControls.input.cameraTiltUp.DownEvent)
+                {
+                    toggleCameraTiltUp();
+                }
+            }
+            else if (player.gameControls.input.inputSource.IsController)
+            {
+                controllerCameraUp();
             }
         }
 
@@ -1245,6 +1255,15 @@ namespace VikingEngine.DSSWars.Players
             }
 
             player.mapLayersManager.TiltYAdd = currentTiltYAngleOption * TiltYUpAngle;
+        }
+
+        void controllerCameraUp()
+        {
+            if (player.gameControls.input.inputSource.Controller.IsButtonDown(Buttons.LeftTrigger))
+            {
+                player.mapLayersManager.TiltYAdd = Bound.Set(player.mapLayersManager.TiltYAdd + player.gameControls.input.inputSource.Controller.JoyStickValue(ThumbStickType.Right).DirAndTime.Y * 0.0012f,
+                    3 * TiltYUpAngle, -1 * TiltYUpAngle);
+            }
         }
 
         float PanSpeed()

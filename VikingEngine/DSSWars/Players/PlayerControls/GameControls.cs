@@ -258,14 +258,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     controllerTabbing(1, true);
                 }
-                if (input.Controller_SubTabLeft.DownEvent)
-                {
-                    controllerTabbing(-1, false);
-                }
-                if (input.Controller_SubTabRight.DownEvent)
-                {
-                    controllerTabbing(1, false);
-                }
+                //if (input.Controller_SubTabLeft.DownEvent)
+                //{
+                //    controllerTabbing(-1, false);
+                //}
+                //if (input.Controller_SubTabRight.DownEvent)
+                //{
+                //    controllerTabbing(1, false);
+                //}
 
                 if (input.ControllerMessageClick.DownEvent)
                 {

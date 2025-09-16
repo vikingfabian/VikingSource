@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.XP
                         }
 
                         content.newLine();
-                        content.Add(new RbImage(player.gameControls.input.StopStart.Icon));
+                        player.gameControls.input.StopStart.ToRichContent(content);
                         content.space(0.5f);
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_CommitAssignment) },
                             new RbAction1Arg<LocalPlayer>(city._commitResearch, player, RbSoundType.Start)));

@@ -453,7 +453,7 @@ namespace VikingEngine.DSSWars.Delivery
                     if (player.deliverySupTab != ItemResourceType.NUM || typeCount == 1)
                     {
                         content.newLine();
-                        content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+                        player.gameControls.input.Paste.ToRichContent(content);
                         content.hspace();
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.WarsHudIconPaste),

@@ -1,34 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Removed 16 hours from boss event
-* Removed 5 hours from cohalition event
-* food warnings are muted when you have 1 million gold
-* symbols on value drag buttons to be able to fit more options
-* fixed: load dark lord crash
-* improved school menu
-* fixed: crafting of locked items
-* fixed a rare data drift error
-* safer faction data
-* loading will clear out dead factions
-
-* Added 3 achievements:
-/// <summary>
-/// Produce soldiers with an iron cannon
-/// </summary>
-iron_cannon,//
-
-/// <summary>
-/// Begin the final battle
-/// </summary>
-reach_boss_any,//
-reach_boss_100,
-
-* Removed 5 achievements: all domination victories that require map size
-
-* Changed warjuggler achievements:
-/// <summary>
-///  be in open war with 6 nations, then 9, then 12. Achieved on boss warning.
-/// </summary>
+*
 
 
 Translation:
@@ -52,10 +24,8 @@ build building icon
 interact icons for buildings (play, next, previous,) 
 
 #must do#
-x get faction if alive
-x mute food warning
+x help the AI overcome the initial automation hurdel and not get stuck on Logistics and Town Hall?
 x "final battle" reach boss
-x move "apply to all" to menu top
 x lobby ambience is heard on zero volume
 x music should not play when master = 0
 x test all achievements
@@ -63,6 +33,7 @@ x full game achievements + translations
 x show victory type
 x Block achievements for imported save files
 x Add new music
+x lobby music
 x new menu background
 
 #Todo#

@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars
         public IDirectionalMap move; //Do not save
         IDirectionalMap dpadMove; //Do not save
         public IDirectionalMap cameraTiltZoom; //Do not save
+        public IDirectionalMap cameraTiltUpSmooth;
 
         public IButtonMap zoomInKey, zoomOutKey;
 
@@ -71,7 +72,7 @@ namespace VikingEngine.DSSWars
         public IButtonMap FlagDesign_PaintBucket;
         public IButtonMap Controller_FlagDesign_Colorpicker;
         public IButtonMap Controller_TabLeft, Controller_TabRight;
-        public IButtonMap Controller_SubTabLeft, Controller_SubTabRight;
+        //public IButtonMap Controller_SubTabLeft, Controller_SubTabRight;
 
         public Voxels.EditorInputMap editorInput = new Voxels.EditorInputMap();
         
@@ -166,7 +167,7 @@ namespace VikingEngine.DSSWars
             cameraTiltLeft = new KeyboardButtonMap(Keys.Q);
             cameraTiltRight = new KeyboardButtonMap(Keys.E);
             cameraTiltUp = new KeyboardButtonMap(Keys.R);
-
+            cameraTiltUpSmooth = null;
 
             //ControllerSelect = new MouseButtonMap(MouseButton.Left);
             //Execute = new MouseButtonMap(MouseButton.Right);
@@ -285,6 +286,7 @@ namespace VikingEngine.DSSWars
             move = new DirectionalXboxMap(ThumbStickType.Left, false, inputSource.controllerIndex);
             dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);  
             cameraTiltZoom =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
+            cameraTiltUpSmooth = new KeyPlusDirectionalMap(new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex), new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex));
 
             mouseSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
             mouseOrder = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
@@ -292,29 +294,34 @@ namespace VikingEngine.DSSWars
             ControllerFaction = new XboxButtonMap_TriggerAlts(Buttons.Back, inputSource.controllerIndex);
             CancelKey = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
 
-            StopStart = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);
+
+            StopStart = new XboxButtonMap_TriggerAlts(Buttons.Start, inputSource.controllerIndex, true);
             //AutomationSetting = new XboxButtonMap(Buttons.Back, inputSource.controllerIndex);
 
             //DragPan = new NoButtonMap();//new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
             //Home = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);
-            Menu = new XboxButtonMap(Buttons.Start, inputSource.controllerIndex);
+            Menu = new XboxButtonMap_TriggerAlts(Buttons.Start, inputSource.controllerIndex);
             //ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
             ToggleHudDetail = new XboxButtonMap(Buttons.DPadDown, inputSource.controllerIndex);//new NoButtonMap();
 
 
             Controller_TabLeft = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
             Controller_TabRight = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
-            Controller_SubTabLeft = new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex);
-            Controller_SubTabRight = new XboxButtonMap(Buttons.RightTrigger, inputSource.controllerIndex);
+            //Controller_SubTabLeft = new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex);
+            //Controller_SubTabRight = new XboxButtonMap(Buttons.RightTrigger, inputSource.controllerIndex);
+            QuickSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true);
+            Build = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex, true);
+            Copy = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true);
+            Paste = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex, true);
 
             GameSpeed = new NoButtonMap();//
-            PauseGame = new NoButtonMap();//new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
+            PauseGame = new NoButtonMap();//
 
             menuInput?.xboxSetup(inputSource.controllerIndex);
 
-            NextCity = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);// new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, false);
+            NextCity = new XboxButtonMap_TriggerAlts(Buttons.DPadLeft, inputSource.controllerIndex);// new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, false);
             NextArmy = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);//new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex, true, false);
-            //NextWar = new XboxButtonMap(Buttons, inputSource.controllerIndex);
+            NextWar = new XboxButtonMap_TriggerAlts(Buttons.DPadLeft, inputSource.controllerIndex, true);
             //NextBattle = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true, false);
 
             ControllerMessageClick = new XboxButtonMap(Buttons.DPadUp, inputSource.controllerIndex);//new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, true);

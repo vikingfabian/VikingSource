@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars
 
         public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste)
         {
-            content.Add(new RbImage(player.gameControls.input.Copy.Icon));
+            player.gameControls.input.Copy.ToRichContent(content);
             content.hspace();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconCopy, WarHudIcons_DefaultScale),
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars
                 }, copy));
 
             content.space();
-            content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+            player.gameControls.input.Paste.ToRichContent(content);
             content.hspace();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconPaste, WarHudIcons_DefaultScale),

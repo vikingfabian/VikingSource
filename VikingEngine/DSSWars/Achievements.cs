@@ -601,14 +601,14 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Fortress: Own a city with 20 posted guards, then 40, then 80
         /// </summary>
-        fortress_tier1,//i
+        fortress_tier1,//i, t
         fortress_tier2,
         fortress_tier3,
 
         /// <summary>
         /// Stone Fortress: Own a city with 20 stone wall posted guards, then 40, then 80
         /// </summary>
-        stone_fortress_tier1,//i
+        stone_fortress_tier1,//i, t
         stone_fortress_tier2,
         stone_fortress_tier3,
 
@@ -732,7 +732,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Begin the final battle
         /// </summary>
-        reach_boss_any,//i
+        reach_boss_any,//i, t 
         reach_boss_100,
 
         NUM_ACHIEVEMENTS

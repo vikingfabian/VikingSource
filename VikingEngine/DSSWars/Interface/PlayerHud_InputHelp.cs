@@ -11,6 +11,8 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG.HeroQuest.Display;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -28,7 +30,7 @@ namespace VikingEngine.DSSWars.Interface
             if (menu == null)
             {
                 var objectMenuArea = new VectorRect(0, 0,
-                    HudLib.HeadDisplayWidth * 0.6f, HudLib.HeadDisplayWidth * 0.5f);
+                    HudLib.HeadDisplayWidth * 0.6f, HudLib.HeadDisplayWidth * 0.54f);
                 objectMenuArea.X = player.playerData.view.safeScreenArea.Right - objectMenuArea.Width;
                 objectMenuArea.Y = player.playerData.view.safeScreenArea.Bottom - objectMenuArea.Height;
 
@@ -66,15 +68,24 @@ namespace VikingEngine.DSSWars.Interface
                     if (ct)
                     {
                         input(map.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
+                        input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     input(ct ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
-                    if (mouse)
-                    {
-                        input(map.Build.Icon, DssRef.lang.InputActionName_Build);
-                    }
+                    //if (mouse)
+                    //{
+
+                    input_buttonmap(map.Build, DssRef.lang.InputActionName_Build);
+                    //}
                     if (ct)
                     {
-                        input(map.Controller_SubTabRight.Icon, DssRef.lang.InputActionName_CameraTiltUp);
+                        content.newLine();
+                        content.Add(new RbImage(SpriteName.ButtonLT));
+                        content.space();
+                        content.Add(new RbText("+"));
+                        content.Add(new RbImage(SpriteName.RightStick));
+                        content.Add(new RbText(DssRef.lang.InputActionName_CameraTiltUp, HudLib.TitleColor_Action));
+
+                        //input(map.Controller_SubTabRight.Icon, DssRef.lang.InputActionName_CameraTiltUp);
                     }
                     break;
 
@@ -111,6 +122,14 @@ namespace VikingEngine.DSSWars.Interface
             {
                 content.newLine();
                 content.Add(new RbImage(button));
+                content.space();
+                content.Add(new RbText(text, HudLib.TitleColor_Action));
+            }
+
+            void input_buttonmap(IButtonMap button, string text)
+            {
+                content.newLine();
+                button.ToRichContent(content);
                 content.space();
                 content.Add(new RbText(text, HudLib.TitleColor_Action));
             }

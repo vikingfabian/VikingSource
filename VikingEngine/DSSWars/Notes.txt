@@ -114,6 +114,18 @@ Change Log:
 * increased the "to peaceful" war counter up with 10%
 * the war manager check frequency is a bit more swingy, and less predictable
 * war toggle button
+* Removed 16 hours from boss event
+* Removed 5 hours from cohalition event
+* food warnings are muted when you have 1 million gold
+* symbols on value drag buttons to be able to fit more options
+* fixed: load dark lord crash
+* improved school menu
+* fixed: crafting of locked items
+* fixed a rare data drift error
+* safer faction data
+* loading will clear out dead factions
+* extended controller input
+* removed faction head display in spectator mode
 
 Spectator mode:
 * improved diplomacy display, and it has god powers
@@ -162,7 +174,7 @@ Event timers (are slightly random)
 (total: about 60 hours)
 
 ACHIEVEMENTS:
-* Added 91 achivements
+* Added 81 achivements
 * Higher tier achievements will unlock all lower tiers below it.
 * not available in peaceful/spectator modes
 

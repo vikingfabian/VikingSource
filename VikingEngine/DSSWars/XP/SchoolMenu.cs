@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.XP
                     que.listToHud(player, content, queueToAll, false);
 
                     content.newLine();
-                    content.Add(new RbImage(player.gameControls.input.Paste.Icon));
+                    player.gameControls.input.Paste.ToRichContent(content);
                     content.hspace();
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.WarsHudIconPaste, HudLib.WarHudIcons_DefaultScale),

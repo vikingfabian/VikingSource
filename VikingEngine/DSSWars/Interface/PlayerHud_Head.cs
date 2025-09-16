@@ -36,39 +36,43 @@ namespace VikingEngine.DSSWars.Interface
         public PlayerHud_Head(LocalPlayer player)
         {
             this.player = player;
-            float headWidth = HudLib.HeadDisplayWidth * 1.6f;
+            float headWidth = HudLib.HeadDisplayWidth * 1.75f;
             var headMenuArea = player.playerData.view.safeScreenArea;
             headMenuArea.Width = headWidth;
             menu = new RichMenu(HudLib.RbSettings_Head, headMenuArea, new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
-            refreshFaction(player);
+            refreshFaction(player, true);
             menu.updateHeightFromContent();
 
-            VectorRect flagBgArea = new VectorRect(headMenuArea.Position, new Vector2(menu.backgroundArea.Height * 1.1f));
-            var flagBgTexSett = new NineSplitSettings(SpriteName.WarsHudFlagBorder, 1, 8, 1f, true, true);
-            flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
-            menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
-            flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 6));
-            flag = new ImageAdvanced(SpriteName.NO_IMAGE, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer, false);
-            flag.Texture = player.flagTexture;
-            flag.SetFullTextureSource();
+            if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
+            {
+                VectorRect flagBgArea = new VectorRect(headMenuArea.Position, new Vector2(menu.backgroundArea.Height * 1.1f));
+                var flagBgTexSett = new NineSplitSettings(SpriteName.WarsHudFlagBorder, 1, 8, 1f, true, true);
+                flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
+                menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
+                flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 6));
+                flag = new ImageAdvanced(SpriteName.NO_IMAGE, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer, false);
+                flag.Texture = player.flagTexture;
+                flag.SetFullTextureSource();
 
-            var headBgTex = menu.addBackground(new NineSplitSettings(SpriteName.WarsHudHeadBarBg, 1, 16, 1f, true, true), HudLib.GUILayer + 4);
-            headBgTex.SetOpacity(0.95f);
+                var headBgTex = menu.addBackground(new NineSplitSettings(SpriteName.WarsHudHeadBarBg, 1, 16, 1f, true, true), HudLib.GUILayer + 4);
+                headBgTex.SetOpacity(0.95f);
+            }
+                       
 
             Bottom = menu.backgroundArea.Bottom;
             Right = menu.backgroundArea.Right;
 
             factionMenuStart = new Vector2(menu.backgroundArea.X, Bottom);
         }
-        public void refreshFaction(Players.LocalPlayer player)
+        public void refreshFaction(Players.LocalPlayer player, bool prepareLayout)
         {
             var content = new RichBoxContent();
-            headMenu(content, false);
+            headMenu(content, prepareLayout);
             menu.Refresh(content, player.gameControls.controllerPointer);
         }
         public void refreshUpdate(LocalPlayer player)
         {
-            refreshFaction(player);
+            refreshFaction(player, false);
         }
 
         /// <returns>need refresh</returns>
@@ -93,6 +97,11 @@ namespace VikingEngine.DSSWars.Interface
         public void headMenu(RichBoxContent content, bool prepareLayout)
         {
             //LocalPlayer localPlayer = player.GetLocalPlayer();
+
+            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+            {
+                return;
+            }
 
             long gold;
             long income;
@@ -257,15 +266,21 @@ namespace VikingEngine.DSSWars.Interface
                     new RbTooltip(nextArmyTip)));
             }
             {
+
                 RichBoxContent buttonContent = new RichBoxContent();
                 string toolTip;
-                if (player.warCount == 0)
+                if (player.warCount == 0 && !prepareLayout)
                 {
                     buttonContent.Add(new RbImage(SpriteName.WarsRelationPeace));
                     toolTip = DssRef.lang.WorkForce_Peace;
                 }
                 else
                 {
+                    if (player.gameControls.input.inputSource.IsController)
+                    {
+                        player.gameControls.input.NextWar.ToRichContent(buttonContent);
+                        buttonContent.space(0.5f);
+                    }
                     buttonContent.Add(new RbImage(SpriteName.WarsRelationWar));
                     toolTip = DssRef.todoLang.InputActionName_NextWar;
                 }

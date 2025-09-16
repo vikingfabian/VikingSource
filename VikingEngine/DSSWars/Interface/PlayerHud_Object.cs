@@ -72,19 +72,21 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.newLine();
                     //RichBoxContent buttonContent = new RichBoxContent();
-                    SpriteName buttonIcon;
-                    if (player.gameControls.input.inputSource.IsController)
-                    {
-                        buttonIcon = player.gameControls.input.Controller_SubTabLeft.Icon;
-                    }
-                    else
-                    {
-                        buttonIcon = player.gameControls.input.QuickSelect.Icon;
-                    }
+                    //SpriteName buttonIcon;
+                    //if (player.gameControls.input.inputSource.IsController)
+                    //{
+                    //    buttonIcon = player.gameControls.input.Controller_SubTabLeft.Icon;
+                    //}
+                    //else
+                    //{
+                    //    buttonIcon = player.gameControls.input.QuickSelect.Icon;
+                    //}
+                    player.gameControls.input.QuickSelect.ToRichContent(content);
+                    content.space();
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                         new List<AbsRichBoxMember> {
-                            new RbImage(buttonIcon),
-                            new RbSpace(),
+                            //new RbImage(buttonIcon),
+                            //new RbSpace(),
                             new RbText(DssRef.lang.Hud_SelectCity)
                         }, new RbAction(player.gameControls.selectAreaCity)));
                 }
