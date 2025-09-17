@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void load()
         {
+            DssRef.difficulty.setting_gameMode = meta.gameMode;
             DataStream.BeginReadWrite.BinaryIO(false, meta.Path, null, readGameState, this, true);
         }
 

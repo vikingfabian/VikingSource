@@ -1,7 +1,7 @@
 ﻿Main changes
 -Big graphical update
 -Added languges: Turkish, French, Portoguese and Italian
--Story mode added (about 57 hours long)
+-Story mode added (about 45 hours long)
 -Added 91 achivements
 -God powers in spectator mode
 -The bot factions have some diplomacy options
@@ -104,7 +104,6 @@ Change Log:
 * fixed automate export options
 * increased cost for allies, +1 per 2, base cost reduced by one (not on easy)
 * a chance of failing and dropping speak relation for each time you ask of truce (not on easy)
-* removed all (6) peace victory achievments except "any difficulty and size"
 * fixed event manager crash in battle lab
 * fixed: barbarian killer not working
 * muted music crashes
@@ -114,8 +113,6 @@ Change Log:
 * increased the "to peaceful" war counter up with 10%
 * the war manager check frequency is a bit more swingy, and less predictable
 * war toggle button
-* Removed 16 hours from boss event
-* Removed 5 hours from cohalition event
 * food warnings are muted when you have 1 million gold
 * symbols on value drag buttons to be able to fit more options
 * fixed: load dark lord crash

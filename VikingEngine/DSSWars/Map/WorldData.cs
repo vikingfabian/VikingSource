@@ -363,7 +363,7 @@ namespace VikingEngine.DSSWars
 #if DEBUG
             if (subversion >= 81 && darkLordCount >1)
             {
-                throw new Exception();
+                //throw new Exception();
             }
 #endif
 

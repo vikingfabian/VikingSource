@@ -1341,6 +1341,7 @@ namespace VikingEngine.DSSWars.Players
             if (cameraFocus != null)
             {   
                 Vector3 goal = cameraFocus.WorldPos();
+                
                 goal.Y = 0;
                 goal.Z += 0.5f;
                 Vector3 diff = goal - camera.LookTarget;
