@@ -81,13 +81,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void pasteSchool(LocalPlayer player)
         {
-            if (selectedDelivery < 0)
+            if (selectedSchool < 0)
             {
-                pasteDeliveryToAll(player);
+                pasteSchoolToAll(player);
             }
             else
             {
-                pasteDelivery(player, selectedDelivery);
+                pasteSchool(player, selectedSchool);
             }
         }
 

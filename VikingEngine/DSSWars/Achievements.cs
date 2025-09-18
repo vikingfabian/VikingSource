@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -202,7 +203,10 @@ namespace VikingEngine.DSSWars
             }
             else if (PlatformSettings.DebugLevel < BuildDebugLevel.Release)
             {
-                DssRef.state.localPlayers?[0].hud.messages.Add("Achivement", achievement.ToString());
+                if (SteamAchievements.DebugSetAchievement_Local((int)achievement))
+                {
+                    DssRef.state.LocalHost().hud.messages.Add("Achivement", achievement.ToString());
+                }
             }
         }
 

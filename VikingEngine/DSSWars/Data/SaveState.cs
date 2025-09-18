@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Data
                 switch (type)
                 {
                     case GameObjectType.Army:
-                        writeFaction(w, gameObject.GetFaction());
+                        writeFaction(w, gameObject.GetFaction_NoChecks());
                         w.Write((ushort)gameObject.GetArmy().id);
                         break;
                     case GameObjectType.City:
@@ -310,7 +310,14 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeFaction(System.IO.BinaryWriter w, Faction faction)
         {
-            w.Write((ushort)faction.myIndex);
+            if (faction != null)
+            {
+                w.Write((ushort)faction.myIndex);
+            }
+            else
+            {
+                w.Write(ushort.MaxValue);
+            }
         }
 
         public int readFaction(System.IO.BinaryReader r)

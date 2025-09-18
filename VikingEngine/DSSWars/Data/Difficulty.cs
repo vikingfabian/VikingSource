@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Data
                     resourcesStartHelp = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 8 * TimeExt.MinuteInSeconds;
-                    toPeacefulPercentage = 0.2f;
+                    toPeacefulPercentage = 0.3f;
                     PlayerBonusGold = 2000;
                     break;
 
@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 30;
-                    toPeacefulPercentage = 0.35f;
+                    toPeacefulPercentage = 0.75f;
                     break;
 
                 case 4:
@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 10;
-                    toPeacefulPercentage = 0.5f;
+                    toPeacefulPercentage = 1f;
                     break;
 
                 case 5:
@@ -281,7 +281,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 1;
                     honorGuard = false;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 0.75f;
+                    toPeacefulPercentage = 1.5f;
                     break;
 
                 case 6:
@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 2;
                     honorGuard = false;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 1.5f;
+                    toPeacefulPercentage = 1.75f;
                     break;
 
                 case 7: //Max
@@ -310,7 +310,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 2;
                     honorGuard = false;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 2f;
+                    toPeacefulPercentage = 3f;
                     break;
             }
 

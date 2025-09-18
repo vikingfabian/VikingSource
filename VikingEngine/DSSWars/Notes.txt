@@ -123,6 +123,13 @@ Change Log:
 * loading will clear out dead factions
 * extended controller input
 * removed faction head display in spectator mode
+* fixed: gray after crash restart
+* fixed: Keybinds to C and V for Copy and Paste are not working for interacting with the individual 'schools' or the master page
+* Made the bots better at finding a good balance of army sizes, and bigger difference in aggressive level recruitment
+* added slingers and manuballistas to autobuild
+* made the bots able to focus their production on the best weapons, and increase production depending on aggression level
+* bots will adjust the food buffer to city size
+* The war manager is collecting larger opponents, by (up to) 300% compared to earlier
 
 Spectator mode:
 * improved diplomacy display, and it has god powers

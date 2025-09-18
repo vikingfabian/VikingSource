@@ -76,6 +76,7 @@ namespace VikingEngine.Engine
                         asyncLoading_OnRestart(ref contentPart);
                         loadingDataComplete = true;
                         loadingContentComplete = true;
+                        dataProcessComplete = true;
                     }
                     catch (Exception ex)
                     {

@@ -668,6 +668,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                     player.hud.needRefresh = true;
                                     (start ? SoundLib.start : SoundLib.stop).Play();
                                 }
+                                if (input.Copy.DownEvent)
+                                {
+                                    city.copySchool(player);
+                                    SoundLib.copy.Play();
+                                }
+                                if (input.Paste.DownEvent)
+                                {
+                                    city.pasteSchool(player);
+                                    SoundLib.paste.Play();
+                                    player.hud.needRefresh = true;
+                                }
                                 break;
                             case ProgressSubTab.Research:
                                 if (input.StopStart.DownEvent)
@@ -681,6 +692,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 break;
                         }
                         break;
+
                 }
             }
         }

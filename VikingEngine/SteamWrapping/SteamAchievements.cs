@@ -35,7 +35,7 @@ namespace VikingEngine.SteamWrapping
     {
         SteamCallback<UserAchievementStored_t> UserAchievementStoredCallback;
 
-        SteamAchievementData[] achievements;
+        static SteamAchievementData[] achievements;
         bool isInitialized;
         
         /* Constructors */
@@ -66,6 +66,23 @@ namespace VikingEngine.SteamWrapping
 
             UserAchievementStoredCallback = new SteamCallback<UserAchievementStored_t>(OnUserAchievementStored, false);
 
+        }
+
+        public static bool DebugSetAchievement_Local(int enumValue)
+        {
+            if (achievements == null)
+            {
+                new SteamAchievements();
+            }
+
+            var achievement = achievements[enumValue];
+            if (!achievement.achieved)
+            {
+                achievement.achieved = true;
+                achievements[enumValue] = achievement;
+            }
+
+            return false;
         }
 
         /* Novelty methods */

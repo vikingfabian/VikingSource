@@ -19,21 +19,21 @@ namespace VikingEngine.DSSWars.Players
         const int PurchaseOrderType_Army = 1;
         //const int PurchaseOrderType_CityWorkers = 2;
         //const int PurchaseOrderType_CityGuard = 3;
-        const int PurchaseOrderType_MergeArmies = 4;
+        //const int PurchaseOrderType_MergeArmies = 4;
 
-        const int PurchaseOrderFocus_None = 0;
-        const int PurchaseOrderFocus_Defend = 1;
-        const int PurchaseOrderFocus_QuickDefend = 2;
-        const int PurchaseOrderFocus_AttackCity = 3;
-        const int PurchaseOrderFocus_SeaTravel = 4;
+        //const int PurchaseOrderFocus_None = 0;
+        //const int PurchaseOrderFocus_Defend = 1;
+        //const int PurchaseOrderFocus_QuickDefend = 2;
+        //const int PurchaseOrderFocus_AttackCity = 3;
+        //const int PurchaseOrderFocus_SeaTravel = 4;
 
-        int purchaseOrder = PurchaseOrderType_None;
-        int purchaseOrderFocus = PurchaseOrderFocus_None;
-        int purchaseOrderIndex1 = -1;
-        int purchaseOrderIndex2 = -1;
-        bool purchaseIsMainArmy = false;
+        //int purchaseOrder = PurchaseOrderType_None;
+        //int purchaseOrderFocus = PurchaseOrderFocus_None;
+        //int purchaseOrderIndex1 = -1;
+        //int purchaseOrderIndex2 = -1;
+        //bool purchaseIsMainArmy = false;
 
-        int purchaseCount =-1;
+        //int purchaseCount =-1;
         string name;
 
         //Center attack focus and buy focus on the main army
@@ -1071,29 +1071,29 @@ namespace VikingEngine.DSSWars.Players
             //}
         }
 
-        public void refreshAggression()
-        {
-            int prioAdd = 0;
-            if (aggressionLevel >= AggressionLevel2_RandomAttacks)
-            {
-                faction.workTemplate.craft_heavymailarmor.value = 5;
-            }
-            else if (aggressionLevel == AggressionLevel1_RevengeOnly)
-            {
-                prioAdd = -1;
-            }
-            else
-            {
-                prioAdd = -2;
-            }
+        //public void refreshAggression()
+        //{
+        //    int prioAdd = 0;
+        //    if (aggressionLevel >= AggressionLevel2_RandomAttacks)
+        //    {
+        //        faction.workTemplate.craft_heavymailarmor.value = 5;
+        //    }
+        //    else if (aggressionLevel == AggressionLevel1_RevengeOnly)
+        //    {
+        //        prioAdd = -1;
+        //    }
+        //    else
+        //    {
+        //        prioAdd = -2;
+        //    }
 
-            faction.workTemplate.craft_mailarmor.value = 4 + prioAdd;
-            faction.workTemplate.craft_paddedarmor.value = 3 + prioAdd;
+        //    faction.workTemplate.craft_mailarmor.value = 4 + prioAdd;
+        //    faction.workTemplate.craft_paddedarmor.value = 3 + prioAdd;
 
-            faction.workTemplate.craft_sword.value = 5 + prioAdd;
-            faction.workTemplate.craft_bow.value = 4 + prioAdd;
-            faction.workTemplate.craft_sharpstick.value = 3 + prioAdd;
-        }
+        //    faction.workTemplate.craft_sword.value = 5 + prioAdd;
+        //    faction.workTemplate.craft_bow.value = 4 + prioAdd;
+        //    faction.workTemplate.craft_sharpstick.value = 3 + prioAdd;
+        //}
 
 
 
@@ -1343,81 +1343,146 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override void Update()
-        {
-            base.Update();
 
-            if (IsLocal)
-            {
-                if (faction.factiontype == FactionType.SouthHara)
-                {
-                    lib.DoNothing();
-                }
-                if (purchaseOrder !=  PurchaseOrderType_None)
-                {
+        //private void createPurchaseOrder(City city, int maxPurchaseCount)
+        //{
+        //    purchaseCount = Ref.peRnd.Int(5, maxPurchaseCount);
+        //    purchaseOrder = PurchaseOrderType_Army;
+        //    purchaseOrderIndex1 = city.myIndex;
+
+        //    if (city.GetPlayer() == this)
+        //    {
+                
+        //        buySoldiers(city, false, true);
+                
+        //    }
+
+        //}
+        //void purchase()
+        //{
+        //    //const int PurchaseOrderType_MergeArmies = 4;
+
+        //    //const int PurchaseOrderFocus_None = 0;
+        //    //const int PurchaseOrderFocus_Defend = 1;
+        //    //const int PurchaseOrderFocus_QuickDefend = 2;
+        //    //const int PurchaseOrderFocus_AttackCity = 3;
+        //    //const int PurchaseOrderFocus_SeaTravel = 4;
+
+        //    //int purchaseOrder = PurchaseOrderType_None;
+        //    //int purchaseOrderFocus = PurchaseOrderFocus_None;
+        //    //int purchaseOrderIndex1 = -1;
+        //    //int purchaseOrderIndex2 = -1;
+        //    //bool purchaseIsMainArmy = false;
+
+        //    if (purchaseOrder == PurchaseOrderType_MergeArmies)
+        //    {
+        //        var armiesCounter = faction.armies.counter();
+        //        int found = 0;
+        //        Army army1 = null;
+        //        Army army2 = null;
+
+        //        while (armiesCounter.Next() && found < 2)
+        //        {
+        //            if (armiesCounter.sel.myIndex == purchaseOrderIndex1)
+        //            {
+        //                army1 = armiesCounter.sel;
+        //                ++found;
+        //            }
+        //            else if (armiesCounter.sel.myIndex == purchaseOrderIndex2)
+        //            {
+        //                army2 = armiesCounter.sel;
+        //                ++found;
+        //            }
+        //        }
+
+        //        if (army1 != null && army2 != null)
+        //        {
+        //            army1.mergeArmies(army2);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        var city = DssRef.world.cities[purchaseOrderIndex1];
+        //        if (city.GetPlayer() == this)
+        //        {
+        //            switch (purchaseOrder)
+        //            {
+        //                case PurchaseOrderType_Army:
+        //                    buySoldiers(city, false, true);
+        //                    break;
+        //            }
+
+        //        }
+        //    }
+        //    purchaseOrder = PurchaseOrderType_None;
+        //}
+
+        //public override void Update()
+        //{
+        //    base.Update();
+
+        //    if (IsLocal)
+        //    {
+        //        if (faction.factiontype == FactionType.SouthHara)
+        //        {
+        //            lib.DoNothing();
+        //        }
+        //        if (purchaseOrder !=  PurchaseOrderType_None)
+        //        {
                     
 
-                    if (purchaseOrder == PurchaseOrderType_MergeArmies)
-                    {
-                        var armiesCounter = faction.armies.counter();
-                        int found = 0;
-                        Army army1 = null;
-                        Army army2 = null;
+        //            if (purchaseOrder == PurchaseOrderType_MergeArmies)
+        //            {
+        //                var armiesCounter = faction.armies.counter();
+        //                int found = 0;
+        //                Army army1 = null;
+        //                Army army2 = null;
 
-                        while (armiesCounter.Next() && found < 2)
-                        {
-                            if (armiesCounter.sel.myIndex == purchaseOrderIndex1)
-                            {
-                                army1 = armiesCounter.sel;
-                                ++found;
-                            }
-                            else if (armiesCounter.sel.myIndex == purchaseOrderIndex2)
-                            {
-                                army2 = armiesCounter.sel;
-                                ++found;
-                            }
-                        }
+        //                while (armiesCounter.Next() && found < 2)
+        //                {
+        //                    if (armiesCounter.sel.myIndex == purchaseOrderIndex1)
+        //                    {
+        //                        army1 = armiesCounter.sel;
+        //                        ++found;
+        //                    }
+        //                    else if (armiesCounter.sel.myIndex == purchaseOrderIndex2)
+        //                    {
+        //                        army2 = armiesCounter.sel;
+        //                        ++found;
+        //                    }
+        //                }
 
-                        if (army1!= null && army2 != null)
-                        {
-                            army1.mergeArmies(army2);
-                        }
-                    }
-                    else
-                    {
-                        var city = DssRef.world.cities[purchaseOrderIndex1];
-                        if (city.GetPlayer() == this)
-                        {
-                            switch (purchaseOrder)
-                            {
-                                case PurchaseOrderType_Army:
-                                    buySoldiers(city, false, true);
-                                    break;
-                                //case PurchaseOrderType_CityWorkers:
-                                //    if (city.damages.HasValue())
-                                //    {
-                                //        city.buyRepair(true, true);
-                                //    }
-                                //    break;
-                                //case PurchaseOrderType_CityGuard:
-                                //    city.buyCityGuards(true, 1);
-                                //    break;
-                            }
+        //                if (army1!= null && army2 != null)
+        //                {
+        //                    army1.mergeArmies(army2);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                var city = DssRef.world.cities[purchaseOrderIndex1];
+        //                if (city.GetPlayer() == this)
+        //                {
+        //                    switch (purchaseOrder)
+        //                    {
+        //                        case PurchaseOrderType_Army:
+        //                            buySoldiers(city, false, true);
+        //                            break;
+        //                    }
 
-                        }
-                    }
-                    purchaseOrder = PurchaseOrderType_None;
-                }
-            }
-        }
+        //                }
+        //            }
+        //            purchaseOrder = PurchaseOrderType_None;
+        //        }
+        //    }
+        //}
 
         public override void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
-            if (newGame)
-            {
-                refreshAggression();
-            }
+            //if (newGame)
+            //{
+            //    refreshAggression();
+            //}
         }
 
         public override void oneSecUpdate()
@@ -1479,14 +1544,19 @@ namespace VikingEngine.DSSWars.Players
                 {
                     City city = faction.cities.GetRandomSafe(Ref.rnd);
 
-                    if (city != null && buySoldiers(city, inWar, false))
+                    if (city != null && buySoldiersBalanceCheck_asynch(city, inWar, 0.02, out bool guardOnly))
                     {
-                        int maxPurchaseCount = 30;
-                        if (inWar)
+                        //int maxPurchaseCount = 30;
+                        //if (inWar)
+                        //{
+                        //    maxPurchaseCount = MathExt.MultiplyInt(DssRef.difficulty.aiEconomyMultiplier, maxPurchaseCount);
+                        //}
+
+                        Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            maxPurchaseCount = MathExt.MultiplyInt(DssRef.difficulty.aiEconomyMultiplier, maxPurchaseCount);
-                        }
-                        createPurchaseOrder(city, maxPurchaseCount);
+                            //createPurchaseOrder(city, maxPurchaseCount);
+                            buySoldiers(city, inWar, guardOnly, true);
+                        }));
                     }
                 }
                 else if (inWar)
@@ -1691,13 +1761,7 @@ namespace VikingEngine.DSSWars.Players
         //    }
         //}
 
-        private void createPurchaseOrder(City city, int maxPurchaseCount)
-        {
-            purchaseCount = Ref.peRnd.Int(5, maxPurchaseCount);
-            purchaseOrder = PurchaseOrderType_Army;
-            purchaseOrderIndex1 = city.myIndex;
-
-        }
+        
 
         void mainArmy_AsyncUpdate(List<int> wars)
         {
@@ -1733,11 +1797,13 @@ namespace VikingEngine.DSSWars.Players
                     City city = null;
                     city = cityCloseToCityInDanger(cityInDanger());
 
-                    if (city != null)
-                    {
-                        purchaseOrderFocus = PurchaseOrderFocus_Defend;
-                    }
-                    else
+                    //if (city != null)
+                    //{
+                    //    purchaseOrderFocus = PurchaseOrderFocus_Defend;
+                    //}
+                    //else
+
+                    if (city == null)
                     {
                         int war = findMainWar(wars);
 
@@ -1750,18 +1816,18 @@ namespace VikingEngine.DSSWars.Players
                         {
                             city = cityCloseToNewTarget();
                         }
-                        purchaseOrderFocus = PurchaseOrderFocus_AttackCity;
+                        //purchaseOrderFocus = PurchaseOrderFocus_AttackCity;
                     }
 
                     //if (haveIncomeForArmyPurchase(true))
-                    if (city != null && buySoldiers(city, true, false))
+                    if (city != null && buySoldiersBalanceCheck_asynch(city, true, 0.05, out bool guardOnly) && !guardOnly)
                     {
                         //Start fresh
                         mainArmy = null;
 
                         nextDecisionTimer.MilliSeconds += Ref.peRnd.Int(4000, 15000);
-                        mainArmyBuyAtCity(city);
-
+                        //mainArmyBuyAtCity(city);
+                        
                     }
                     else
                     {
@@ -1784,7 +1850,8 @@ namespace VikingEngine.DSSWars.Players
                     if (city != null)
                     {
                         //Purchase some support for the city
-                        buyDefenceAtCity((City)city);
+                        //buyDefenceAtCity((City)city);
+                        mainArmyBuyAtCity((City)city, true);
 
                         float l = city.distanceTo(mainArmy);
                         float percDist = 1f - l / 64;
@@ -1861,8 +1928,10 @@ namespace VikingEngine.DSSWars.Players
                                 if (city.distanceTo(mainArmy) <= 2)
                                 {
                                     collectLooseArmies(city.tilePos);
-                                    mainArmyBuyAtCity(city);
+                                    //mainArmyBuyAtCity(city);
                                     mainArmyState = MainArmyState_BuySoldiers;
+                                    mainArmyBuyAtCity(city, false);
+                                    //collectLooseArmies(city.tilePos);
                                 }
                                 else
                                 {
@@ -1919,31 +1988,45 @@ namespace VikingEngine.DSSWars.Players
             return false;
         }
 
-        private void mainArmyBuyAtCity(City city)
+        void mainArmyBuyAtCity(City city, bool defensive)
         {
-           
-                    mainArmyState = MainArmyState_BuySoldiers;
-
-                    purchaseIsMainArmy = true;
-                    purchaseOrder = PurchaseOrderType_Army;
-                    purchaseOrderIndex1 = city.myIndex;
-
-                    collectLooseArmies(city.tilePos);
-           
-        }
-
-        void buyDefenceAtCity(City city)
-        {   
-            
-                if (buySoldiers(city, false, false))
+            if (buySoldiersBalanceCheck_asynch(city, !defensive, 0.02, out bool guardsOnly))
+            {
+                if (!guardsOnly || defensive)
                 {
-                    purchaseOrder = PurchaseOrderType_Army;
-                    purchaseOrderFocus = PurchaseOrderFocus_QuickDefend;
-                    purchaseOrderIndex1 = city.myIndex;
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        buySoldiers(city, !defensive, guardsOnly, true);
+                    }));
                 }
-
-            //}
+            }
         }
+
+        //private void mainArmyBuyAtCity(City city)
+        //{
+           
+        //            mainArmyState = MainArmyState_BuySoldiers;
+
+        //            purchaseIsMainArmy = true;
+        //            purchaseOrder = PurchaseOrderType_Army;
+        //            purchaseOrderIndex1 = city.myIndex;
+
+        //            collectLooseArmies(city.tilePos);
+           
+        //}
+
+        //void buyDefenceAtCity(City city)
+        //{   
+            
+        //        if (buySoldiersBalanceCheck_asynch(city, false, 0.02))
+        //        {
+        //            purchaseOrder = PurchaseOrderType_Army;
+        //            purchaseOrderFocus = PurchaseOrderFocus_QuickDefend;
+        //            purchaseOrderIndex1 = city.myIndex;
+        //        }
+
+        //    //}
+        //}
 
         void collectLooseArmies(IntVector2 toPos)
         {
@@ -2162,24 +2245,61 @@ namespace VikingEngine.DSSWars.Players
             {
                 //if (armyC.sel.ai.objective == ArmyObjective.None)
                 //{
-                    var otherArmy = DssRef.world.unitCollAreaGrid.AdjacenToArmy(faction.myIndex, armyC.sel, armyC.sel.tilePos, Army.MaxTradeDistance +1);
-                    if (otherArmy != null)
+                var otherArmy = DssRef.world.unitCollAreaGrid.AdjacenToArmy(faction.myIndex, armyC.sel, armyC.sel.tilePos, Army.MaxTradeDistance +1);
+                if (otherArmy != null)
+                {
+                    Army army1, army2;
+                    //purchaseOrder = PurchaseOrderType_MergeArmies;
+
+                    if (armyC.sel.groups.Count > otherArmy.groups.Count)
                     {
-                        purchaseOrder = PurchaseOrderType_MergeArmies;
-
-                        if (armyC.sel.groups.Count > otherArmy.groups.Count)
-                        {
-                            purchaseOrderIndex2 = armyC.sel.myIndex;
-                            purchaseOrderIndex1 = otherArmy.myIndex;
-                        }
-                        else
-                        {
-                            purchaseOrderIndex1 = armyC.sel.myIndex;
-                            purchaseOrderIndex2 = otherArmy.myIndex;
-                        }
-
-                        break;
+                        army2 = armyC.sel;
+                        army1 = otherArmy;
                     }
+                    else
+                    {
+                        army1 = armyC.sel;
+                        army2 = otherArmy;
+                    }
+
+
+                    //        var armiesCounter = faction.armies.counter();
+                    //        int found = 0;
+                    //        Army army1 = null;
+                    //        Army army2 = null;
+
+                    //        while (armiesCounter.Next() && found < 2)
+                    //        {
+                    //            if (armiesCounter.sel.myIndex == purchaseOrderIndex1)
+                    //            {
+                    //                army1 = armiesCounter.sel;
+                    //                ++found;
+                    //            }
+                    //            else if (armiesCounter.sel.myIndex == purchaseOrderIndex2)
+                    //            {
+                    //                army2 = armiesCounter.sel;
+                    //                ++found;
+                    //            }
+                    //        }
+
+                    //        if (army1 != null && army2 != null)
+                    //        {
+                    //            army1.mergeArmies(army2);
+                    //        }
+
+                    //Army army1 = armyC.sel;
+                    //Army army2 = otherArmy;
+
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        if (army1 != null && army2 != null)
+                        {
+                            army1.mergeArmies(army2);
+                        }
+                    }));
+
+                    break;
+                }
                 //}
             }
         }
@@ -2373,7 +2493,15 @@ namespace VikingEngine.DSSWars.Players
         public override string Name
         {
             get {
-               return name;
+                if (faction.isAlive)
+                {
+                    return name;
+                }
+                else
+                { 
+                    return "(x)" + name;
+                }
+               
             }
         }
     }

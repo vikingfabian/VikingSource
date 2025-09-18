@@ -197,7 +197,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                player.GetAiPlayer().refreshAggression();
+                //player.GetAiPlayer().refreshAggression();
 
                 var relation = DssRef.diplomacy.GetOrCreateRelation(faction, player.faction);
                 relation.SetWorseSpeakTerms(DssRef.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.diplomacy.SpeakTermsOnNeigbor_NoneChance);
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.Players
             if (aggressionLevel != agg)
             {
                 aggressionLevel = agg;
-                GetAiPlayer()?.refreshAggression();
+                //GetAiPlayer()?.refreshAggression();
             }
         }
         public void setMinimumAggression(int minAgg)

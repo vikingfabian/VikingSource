@@ -604,7 +604,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                             case TerrainMineType.CopperOre:
                                 needMore = res_CupperOre.needMore();
-                                priority = workTemplate.mining_cupper;
+                                priority = workTemplate.mining_copper;
                                 break;
                             case TerrainMineType.LeadOre:
                                 needMore = res_LeadOre.needMore();

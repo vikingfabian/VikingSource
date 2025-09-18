@@ -101,7 +101,7 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority bogiron = new WorkPriority(1);
         public WorkPriority mining_iron = new WorkPriority(3);
         public WorkPriority mining_tin = new WorkPriority(0);
-        public WorkPriority mining_cupper = new WorkPriority(0);
+        public WorkPriority mining_copper = new WorkPriority(0);
         public WorkPriority mining_lead = new WorkPriority(0);
         public WorkPriority mining_silver = new WorkPriority(0);
         public WorkPriority mining_gold = new WorkPriority(1);
@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.Work
             bogiron.writeGameState(w, isCity);
             mining_iron.writeGameState(w, isCity);
             mining_tin.writeGameState(w, isCity);
-            mining_cupper.writeGameState(w, isCity);
+            mining_copper.writeGameState(w, isCity);
             mining_lead.writeGameState(w, isCity);
             mining_silver.writeGameState(w, isCity);
             mining_gold.writeGameState(w, isCity);
@@ -358,7 +358,7 @@ namespace VikingEngine.DSSWars.Work
             bogiron.readGameState(r, subversion, isCity);
             mining_iron.readGameState(r, subversion, isCity);
             mining_tin.readGameState(r, subversion, isCity);
-            mining_cupper.readGameState(r, subversion, isCity);
+            mining_copper.readGameState(r, subversion, isCity);
             mining_lead.readGameState(r, subversion, isCity);
             mining_silver.readGameState(r, subversion, isCity);
             mining_gold.readGameState(r, subversion, isCity);
@@ -468,7 +468,7 @@ namespace VikingEngine.DSSWars.Work
             bogiron.onFactionValueChange(factionTemplate.bogiron);
             mining_iron.onFactionValueChange(factionTemplate.mining_iron);
             mining_tin.onFactionValueChange(factionTemplate.mining_tin);
-            mining_cupper.onFactionValueChange(factionTemplate.mining_cupper);
+            mining_copper.onFactionValueChange(factionTemplate.mining_copper);
             mining_lead.onFactionValueChange(factionTemplate.mining_lead);
             mining_silver.onFactionValueChange(factionTemplate.mining_silver);
             mining_gold.onFactionValueChange(factionTemplate.mining_gold);
@@ -570,7 +570,7 @@ namespace VikingEngine.DSSWars.Work
             bogiron.followFaction = true;
             mining_iron.followFaction = true;
             mining_tin.followFaction = true;
-            mining_cupper.followFaction = true;
+            mining_copper.followFaction = true;
             mining_lead.followFaction = true;
             mining_silver.followFaction = true;
             mining_gold.followFaction = true;
@@ -636,6 +636,8 @@ namespace VikingEngine.DSSWars.Work
                     throw new NotImplementedException();
             }
         }
+
+        
 
         public WorkPriority GetWorkPriority(ItemResourceType item)
         {
@@ -931,7 +933,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkPriorityType.miningTin:
                     return mining_tin;
                 case WorkPriorityType.miningCopper:
-                    return mining_cupper;
+                    return mining_copper;
                 case WorkPriorityType.miningLead:
                     return mining_lead;
                 case WorkPriorityType.miningSilver:
@@ -969,6 +971,302 @@ namespace VikingEngine.DSSWars.Work
                     throw new NotImplementedException();
             }
         }
+
+        public void SetWorkPriority(ItemResourceType item, WorkPriority work)
+        {
+            switch (item)
+            {
+                case ItemResourceType.SoftWood:
+                case ItemResourceType.HardWood:
+                case ItemResourceType.DryWood:
+                case ItemResourceType.Wood_Group:
+                    wood = work;
+                    break;
+
+                case ItemResourceType.UN_StoneBlock:
+                case ItemResourceType.Stone_G:
+                    stone = work;
+                    break;
+
+                case ItemResourceType.Fuel_G:
+                    craft_fuel = work;
+                    break;
+
+                case ItemResourceType.Food_G:
+                case ItemResourceType.Wheat:
+                case ItemResourceType.Meat:
+                case ItemResourceType.Egg:
+                    craft_food = work;
+                    break;
+
+                case ItemResourceType.Beer:
+                    craft_beer = work;
+                    break;
+
+                case ItemResourceType.CoolingFluid:
+                    craft_coolingfluid = work;
+                    break;
+
+                case ItemResourceType.Iron_G:
+                    craft_iron = work;
+                    break;
+                case ItemResourceType.Tin:
+                    craft_tin = work;
+                    break;
+                case ItemResourceType.Copper:
+                    craft_cupper = work;
+                    break;
+                case ItemResourceType.Lead:
+                    craft_lead = work;
+                    break;
+                case ItemResourceType.Silver:
+                    craft_silver = work;
+                    break;
+                case ItemResourceType.Bronze:
+                    craft_bronze = work;
+                    break;
+                case ItemResourceType.CastIron:
+                    craft_castiron = work;
+                    break;
+                case ItemResourceType.BloomeryIron:
+                    craft_bloomeryiron = work;
+                    break;
+                case ItemResourceType.Steel:
+                    craft_steel = work;
+                    break;
+                case ItemResourceType.Mithril:
+                    craft_mithril = work;
+                    break;
+
+                case ItemResourceType.Palisade:
+                    craft_palisade = work;
+                    break;
+                case ItemResourceType.Toolkit:
+                    craft_toolkit = work;
+                    break;
+                case ItemResourceType.Wagon2Wheel:
+                    craft_wagonlight = work;
+                    break;
+                case ItemResourceType.Wagon4Wheel:
+                    craft_wagonheavy = work;
+                    break;
+                case ItemResourceType.BlackPowder:
+                    craft_blackpowder = work;
+                    break;
+                case ItemResourceType.GunPowder:
+                    craft_gunpowder = work;
+                    break;
+                case ItemResourceType.LedBullet:
+                    craft_bullet = work;
+                    break;
+
+                case ItemResourceType.SharpStick:
+                    craft_sharpstick = work;
+                    break;
+                case ItemResourceType.BronzeSword:
+                    craft_bronzesword = work;
+                    break;
+                case ItemResourceType.ShortSword:
+                    craft_shortsword = work;
+                    break;
+                case ItemResourceType.Sword:
+                    craft_sword = work;
+                    break;
+                case ItemResourceType.LongSword:
+                    craft_longsword = work;
+                    break;
+                case ItemResourceType.HandSpear:
+                case ItemResourceType.Pike:
+                    craft_handspear = work;
+                    break;
+
+                case ItemResourceType.Warhammer:
+                    craft_warhammer = work;
+                    break;
+                case ItemResourceType.TwoHandSword:
+                    craft_twohandsword = work;
+                    break;
+                case ItemResourceType.KnightsLance:
+                    craft_knightslance = work;
+                    break;
+                case ItemResourceType.MithrilSword:
+                    craft_mithrilsword = work;
+                    break;
+                case ItemResourceType.MithrilBow:
+                    craft_mithrilbow = work;
+                    break;
+
+                case ItemResourceType.SlingShot:
+                    craft_slingshot = work;
+                    break;
+                case ItemResourceType.ThrowingSpear:
+                    craft_throwingspear = work;
+                    break;
+                case ItemResourceType.Bow:
+                    craft_bow = work;
+                    break;
+                case ItemResourceType.LongBow:
+                    craft_longbow = work;
+                    break;
+                case ItemResourceType.Crossbow:
+                    craft_crossbow = work;
+                    break;
+
+                case ItemResourceType.HandCannon:
+                    craft_handcannon = work;
+                    break;
+                case ItemResourceType.HandCulverin:
+                    craft_handculverin = work;
+                    break;
+                case ItemResourceType.Rifle:
+                    craft_rifle = work;
+                    break;
+                case ItemResourceType.Blunderbuss:
+                    craft_blunderbus = work;
+                    break;
+
+                case ItemResourceType.Ballista:
+                    craft_ballista = work;
+                    break;
+                case ItemResourceType.Manuballista:
+                    craft_manuballista = work;
+                    break;
+                case ItemResourceType.Catapult:
+                    craft_catapult = work;
+                    break;
+                case ItemResourceType.UN_BatteringRam:
+                    craft_batteringram = work;
+                    break;
+
+                case ItemResourceType.SiegeCannonBronze:
+                    craft_siegecannonbronze = work;
+                    break;
+                case ItemResourceType.ManCannonBronze:
+                    craft_mancannonbronze = work;
+                    break;
+                case ItemResourceType.SiegeCannonIron:
+                    craft_siegecannoniron = work;
+                    break;
+                case ItemResourceType.ManCannonIron:
+                    craft_mancannoniron = work;
+                    break;
+
+                case ItemResourceType.PaddedArmor:
+                    craft_paddedarmor = work;
+                    break;
+                case ItemResourceType.HeavyPaddedArmor:
+                    craft_heavypaddedarmor = work;
+                    break;
+                case ItemResourceType.BronzeArmor:
+                    craft_bronzearmor = work;
+                    break;
+                case ItemResourceType.IronArmor:
+                    craft_mailarmor = work;
+                    break;
+                case ItemResourceType.HeavyIronArmor:
+                    craft_heavymailarmor = work;
+                    break;
+                case ItemResourceType.LightPlateArmor:
+                    craft_platearmor = work;
+                    break;
+                case ItemResourceType.FullPlateArmor:
+                    craft_fullplatearmor = work;
+                    break;
+                case ItemResourceType.MithrilArmor:
+                    craft_mithrilarmor = work;
+                    break;
+
+                case ItemResourceType.Rapeseed:
+                case ItemResourceType.Hemp:
+                case ItemResourceType.Linen:
+                case ItemResourceType.SkinLinen_Group:
+                    farm_linen = work;
+                    break;
+                //case ItemResourceType.Food_G: // already mapped, but keep farming group here if needed
+                //    farm_food = work;
+                //    break;
+                //case ItemResourceType.Fuel_G: // already mapped, but keep fuel group here if needed
+                //    farm_fuel = work;
+                //    break;
+
+                case ItemResourceType.BogIron:
+                    bogiron = work;
+                    break;
+
+                case ItemResourceType.IronOre_G:
+                    mining_iron = work;
+                    break;
+                case ItemResourceType.TinOre:
+                    mining_tin = work;
+                    break;
+                case ItemResourceType.CopperOre:
+                    mining_copper = work;
+                    break;
+                case ItemResourceType.LeadOre:
+                    mining_lead = work;
+                    break;
+                case ItemResourceType.SilverOre:
+                    mining_silver = work;
+                    break;
+                case ItemResourceType.GoldOre:
+                    mining_gold = work;
+                    break;
+                case ItemResourceType.RawMithril:
+                    mining_mithril = work;
+                    break;
+                case ItemResourceType.Sulfur:
+                    mining_sulfur = work;
+                    break;
+                case ItemResourceType.Coal:
+                    mining_coal = work;
+                    break;
+
+                case ItemResourceType.CopperCoin:
+                    coinmaker_copper = work;
+                    break;
+                case ItemResourceType.BronzeCoin:
+                    coinmaker_bronze = work;
+                    break;
+                case ItemResourceType.SilverCoin:
+                    coinmaker_silver = work;
+                    break;
+                case ItemResourceType.ElfCoin:
+                    coinmaker_mithril = work;
+                    break;
+
+                case ItemResourceType.Gold:
+                    smeltgold = work;
+                    break;
+
+                // Things that don't directly map to crafting priorities
+                //case ItemResourceType.NONE:
+                //case ItemResourceType.Hen:
+                //case ItemResourceType.Pig:
+                //case ItemResourceType.UN_Ox:
+                //case ItemResourceType.Egg:
+                //case ItemResourceType.Meat:
+                //case ItemResourceType.Water_G:
+                //case ItemResourceType.Leather:
+                //case ItemResourceType.UN_Clay:
+                //case ItemResourceType.UN_Brick:
+                //case ItemResourceType.UN_Trebuchet:
+                //case ItemResourceType.AutomatedItem:
+                //case ItemResourceType.RoseWarrior_soldier:
+                //case ItemResourceType.RoseWarrior_tank:
+                //case ItemResourceType.RoseWarrior_dog:
+                //case ItemResourceType.Men:
+                //case ItemResourceType.ServiceMen:
+                //case ItemResourceType.NUM:
+                //case ItemResourceType.RESOURCES:
+                //    // No priority mapping implemented
+                //    break;
+
+                default:
+                    throw new NotImplementedException($"SetWorkPriority not implemented for {item}");
+            }
+        }
+
+
 
 
         void SetWorkPriority(WorkPriorityType priorityType, WorkPriority value)
@@ -1186,7 +1484,7 @@ namespace VikingEngine.DSSWars.Work
                     mining_tin = value;
                     break;
                 case WorkPriorityType.miningCopper:
-                    mining_cupper = value;
+                    mining_copper = value;
                     break;
                 case WorkPriorityType.miningLead:
                     mining_lead = value;
@@ -1290,7 +1588,7 @@ namespace VikingEngine.DSSWars.Work
                         city == null? 0: city.terrainStructure.mineCount_bogIron + city.terrainStructure.mineCount_iron);
                     mining_tin.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Tin), SpriteName.WarsWorkMine, SpriteName.WarsResource_Tin, WorkPriorityType.miningTin, faction, city,
                         city == null ? 0 : city.terrainStructure.mineCount_tin);
-                    mining_cupper.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Copper), SpriteName.WarsWorkMine, SpriteName.WarsResource_Copper, WorkPriorityType.miningCopper, faction, city,
+                    mining_copper.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Copper), SpriteName.WarsWorkMine, SpriteName.WarsResource_Copper, WorkPriorityType.miningCopper, faction, city,
                          city == null ? 0 : city.terrainStructure.mineCount_copper);
                     mining_lead.toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Lead), SpriteName.WarsWorkMine, SpriteName.WarsResource_Lead, WorkPriorityType.miningLead, faction, city,
                          city == null ? 0 : city.terrainStructure.mineCount_lead);

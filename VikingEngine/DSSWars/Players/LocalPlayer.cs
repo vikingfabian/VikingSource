@@ -1001,11 +1001,11 @@ namespace VikingEngine.DSSWars.Players
                 city.automateCity && 
                 city.automationFocus == AutomationFocus.Military)
             {
-                if (buySoldiers(city, false, false))
+                if (buySoldiers(city, false, false, false))
                 {
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        buySoldiers(city, false, true);
+                        buySoldiers(city, false, false, true);
                     }));
                 }
             }

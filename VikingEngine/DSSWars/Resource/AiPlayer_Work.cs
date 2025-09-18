@@ -33,6 +33,9 @@ namespace VikingEngine.DSSWars.Players
                 {
                     //adjustWorkToBuffer(ref city.res_wood, ref city.workTemplate.wood);
 
+                    city.res_food.goalBuffer = city.workForce.amount / 100 * 100 + 200;
+                    city.res_rawFood.goalBuffer = city.workForce.amount / 300 * 100 + 100;
+
                     adjustWorkToBuffer(ref city.res_stone, ref city.workTemplate.stone);
 
                     adjustWorkToBuffer(ref city.res_food, ref city.workTemplate.craft_food);
@@ -55,14 +58,44 @@ namespace VikingEngine.DSSWars.Players
                         BlackMarketResources.AiPurchaseWood(city, faction);
                     }
 
-                    bool craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Sword, ref city.workTemplate.craft_sword, false);
-                    craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Bow, ref city.workTemplate.craft_bow, craftWeapon);
-                    adjustWorkToCrafting(city, CraftResourceLib.SharpStick, ref city.workTemplate.craft_sharpstick, craftWeapon);
-                    
-                    bool craftArmour= adjustWorkToCrafting(city, CraftResourceLib.HeavyMailArmor, ref city.workTemplate.craft_heavymailarmor, false);
-                    craftArmour = adjustWorkToCrafting(city, CraftResourceLib.MailArmor, ref city.workTemplate.craft_mailarmor, craftArmour);
-                    adjustWorkToCrafting(city, CraftResourceLib.PaddedArmor, ref city.workTemplate.craft_paddedarmor, craftArmour);
-                    
+
+                    bool hasBetterCraft = false;
+                    foreach (var weaponType in ConscriptWeaponPrioOrder)
+                    {
+                        var work = city.workTemplate.GetWorkPriority(weaponType.item);
+                        if (adjustWorkToMilitaryCrafting(city, ItemPropertyColl.Get(weaponType.item).bp1, ref work, hasBetterCraft, out bool available))
+                        {
+                            //if (hasBetterCraft && weaponType.item != ItemResourceType.SharpStick)
+                            //{
+                            //    lib.DoNothing();
+                            //}
+                            city.workTemplate.SetWorkPriority(weaponType.item, work);
+                        }
+
+                        if (available && city.buildingStructure.getBarracksCount(weaponType.barracks) > 0)
+                        { 
+                            hasBetterCraft = true;
+                        }
+                    }
+
+                    hasBetterCraft = false;
+                    foreach (var armorType in conscriptArmorPrioOrder)
+                    {
+                        var work = city.workTemplate.GetWorkPriority(armorType);
+                        if (adjustWorkToMilitaryCrafting(city, ItemPropertyColl.Get(armorType).bp1, ref work, hasBetterCraft, out hasBetterCraft))
+                        {
+                            city.workTemplate.SetWorkPriority(armorType, work);
+                        }
+                    }
+
+                    //bool craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Sword, ref city.workTemplate.craft_sword, false);
+                    //craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Bow, ref city.workTemplate.craft_bow, craftWeapon);
+                    //adjustWorkToCrafting(city, CraftResourceLib.SharpStick, ref city.workTemplate.craft_sharpstick, craftWeapon);
+
+                    //bool craftArmour= adjustWorkToCrafting(city, CraftResourceLib.HeavyMailArmor, ref city.workTemplate.craft_heavymailarmor, false);
+                    //craftArmour = adjustWorkToCrafting(city, CraftResourceLib.MailArmor, ref city.workTemplate.craft_mailarmor, craftArmour);
+                    //adjustWorkToCrafting(city, CraftResourceLib.PaddedArmor, ref city.workTemplate.craft_paddedarmor, craftArmour);
+
                 }
             }
 
@@ -84,26 +117,34 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            bool adjustWorkToCrafting(City city, CraftBlueprint blueprint, ref WorkPriority workPriority, bool lowPrio)
+            bool adjustWorkToMilitaryCrafting(City city, CraftBlueprint blueprint, ref WorkPriority workPriority, bool lowPrio, out bool available)
             {
                 int count = blueprint.canCraftCount(city);
                 if (!lowPrio && count >= ResourceLowBuffer)
                 {
+                    available = true;
                     if (Ref.peRnd.Chance(0.8))
                     {
-                        workPriority.addPrio_belowMax(1);
+                        workPriority.addPrio_belowMax(changeWeight());
                         return true;
                     }
                 }
                 else
                 {
+                    available = false;
                     if (Ref.peRnd.Chance(0.4))
                     {
-                        workPriority.addPrio(-1);
+                        workPriority.addPrio(-changeWeight());
+                        return true;
                     }
                 }
 
                 return false;
+
+                int changeWeight()
+                {
+                    return aggressionLevel >= AggressionLevel2_RandomAttacks? 2 : 1;
+                }
             }
         }
 
