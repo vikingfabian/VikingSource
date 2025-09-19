@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars
         public DrawGame()
             : base()
         {
-            overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget3D.Width, MainRenderTarget3D.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
             drawBatch = new DrawBatchCollection();
         }
@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget);
+            graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget3D);
             graphicsDeviceManager.GraphicsDevice.Clear(ClrColor);
 
             for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars
                 EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
                 Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
 
-                drawDetailLayer(cameraIndex, drawUnits.current, MainRenderTarget);
+                drawDetailLayer(cameraIndex, drawUnits.current, MainRenderTarget3D);
             }
 
 
@@ -158,6 +158,7 @@ namespace VikingEngine.DSSWars
 
 
             graphicsDeviceManager.GraphicsDevice.Viewport = saveView;
+            Draw3DTargetOntoMain();
             Draw2d(0);
 
             //shadowProcessor.DrawDebug();

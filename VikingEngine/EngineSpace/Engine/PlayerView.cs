@@ -16,7 +16,8 @@ namespace VikingEngine.Engine
         public int ScreenIndex = -1;
 
         public Rectangle DrawArea;
-        
+        public Rectangle DrawArea3dScale;
+
         public VectorRect DrawAreaF;
         public VectorRect safeScreenArea;
         public VectorRect DrawAreaPercent;
@@ -47,6 +48,7 @@ namespace VikingEngine.Engine
             c.camType = camType;
             c.Camera = Camera;
             c.DrawArea = DrawArea;
+            c.DrawArea3dScale = DrawArea3dScale;
             c.DrawAreaF = DrawAreaF;
             c.safeScreenArea = safeScreenArea;
             c.DrawAreaPercent = DrawAreaPercent;
@@ -132,6 +134,16 @@ namespace VikingEngine.Engine
                         (myScreenIx == 1 || myScreenIx == 3) ? width2 : 0, //x
                         myScreenIx >= 2 ? height2 : 0, //y
                         width2, height2);
+                    break;
+            }
+
+            switch (Screen.renderScale3D)
+            { 
+                case RenderScale3D.One:
+                    DrawArea3dScale = DrawArea;
+                    break;
+                case RenderScale3D.ScaleDown2x:
+                    DrawArea3dScale = new Rectangle(DrawArea.X / 2, DrawArea.Y / 2, DrawArea.Width / 2, DrawArea.Height / 2);
                     break;
             }
 

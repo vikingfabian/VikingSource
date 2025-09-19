@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Sentry.Extensibility;
 
 namespace VikingEngine.Engine
 {
@@ -48,11 +49,12 @@ namespace VikingEngine.Engine
         public const int RecordingPresetAddPixelsCount = 8;
         public static bool bRecordingPresetAddPixels = true;
         public static float WindowScaleF;
-        public static RenderScale3D renderScale3D = RenderScale3D.One;
+        public static RenderScale3D renderScale3D = RenderScale3D.ScaleDown2x;
 
         public static VectorRect SafeArea;
         public static VectorRect MousePushEdge, MousePushEdgeMax;
         public static IntVector2 RenderingResolution;
+        public static IntVector2 RenderingResolution3D;
         public static Vector2 ResolutionVec;
         public static IntVector2 MonitorTargetResolution;
         public static IntVector2 MonitorCenter;
@@ -159,6 +161,15 @@ namespace VikingEngine.Engine
 
             RenderScaleF = 1f;
 #endif
+
+            RenderingResolution3D = RenderingResolution;
+            switch (renderScale3D)
+            {
+                case RenderScale3D.ScaleDown2x:
+                    RenderingResolution3D /= 2;
+                    break;
+            }
+
 
             MonitorTargetRect = new Rectangle(0, 0, MonitorTargetResolution.X, MonitorTargetResolution.Y);
 
