@@ -325,12 +325,7 @@ namespace VikingEngine.DSSWars.Build
 
             if (player.gameControls.input.mouseSelect.UpEvent )
             {
-                if (blockBuildUpdate)
-                {
-                    blockBuildUpdate = false;
-                    
-                    return;
-                }
+               
 
                 bool anySucccess = false;
                 int soundIndex = 0;
@@ -356,6 +351,12 @@ namespace VikingEngine.DSSWars.Build
 
                 if (!anySucccess)
                 {
+                    if (blockBuildUpdate)
+                    {
+                        blockBuildUpdate = false;
+
+                        return;
+                    }
                     SoundLib.wrong.Play();
                 }
 
@@ -1436,13 +1437,24 @@ namespace VikingEngine.DSSWars.Build
         }
 
         void modeClick(SelectTileResult set)
-        { 
+        {
+            if (player.gameControls.input.inputSource.IsController)
+            {
+                blockBuildUpdate = true;
+            }
             buildMode = set;
+            if (buildMode == SelectTileResult.Demolish)
+            {
+                player.gameControls.setMenuFocus(false, true);
+            }
         }
 
         public void buildingTypeClick(BuildAndExpandType type)
         {
-            blockBuildUpdate = true;
+            if (player.gameControls.input.inputSource.IsController)
+            {
+                blockBuildUpdate = true;
+            }
 
             buildMode = SelectTileResult.Build;
             placeBuildingType = type;

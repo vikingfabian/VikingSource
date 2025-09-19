@@ -370,67 +370,26 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.craft_beer.set(1);
             workTemplate.craft_coolingfluid.set(1);
 
-             workTemplate.craft_iron.set(1);
+            workTemplate.craft_iron.set(2);
             workTemplate.craft_tin.set(1);
             workTemplate.craft_cupper.set(1);
             workTemplate.craft_lead.set(1);
             workTemplate.craft_silver.set(1);
 
-            workTemplate.craft_bronze.set(1);
+            workTemplate.craft_bronze.set(2);
             workTemplate.craft_castiron.set(1);
-            workTemplate.craft_bloomeryiron.set(1);
-            workTemplate.craft_steel.set(1);
-            workTemplate.craft_mithril.set(1);
+            workTemplate.craft_bloomeryiron.set(2);
+            workTemplate.craft_steel.set(3);
+            workTemplate.craft_mithril.set(4);
 
             workTemplate.craft_palisade.set(1);
             workTemplate.craft_toolkit.set(1);
             workTemplate.craft_wagonlight.set(1);
             workTemplate.craft_wagonheavy.set(1);
-            workTemplate.craft_blackpowder.set(1);
-            workTemplate.craft_gunpowder.set(2);
-            workTemplate.craft_bullet.set(2);
+            workTemplate.craft_blackpowder.set(2);
+            workTemplate.craft_gunpowder.set(3);
+            workTemplate.craft_bullet.set(3);
 
-            //workTemplate.craft_sharpstick.set(weaponPrio);
-            //workTemplate.craft_bronzesword.set(weaponPrio);
-            //workTemplate.craft_shortsword.set(weaponPrio);
-            //workTemplate.craft_sword.set(weaponPrio);
-            //workTemplate.craft_longsword.set(weaponPrio);
-            //workTemplate.craft_handspear.set(weaponPrio);
-            //workTemplate.craft_mithrilsword.set(weaponPrio);
-            //workTemplate.craft_warhammer.set(weaponPrio);
-            //workTemplate.craft_twohandsword.set(weaponPrio);
-            //workTemplate.craft_knightslance.set(weaponPrio);
-
-            //workTemplate.craft_slingshot.set(weaponPrio);
-            //workTemplate.craft_throwingspear.set(weaponPrio);
-            //workTemplate.craft_bow.set(weaponPrio);
-            //workTemplate.craft_longbow.set(weaponPrio);
-            //workTemplate.craft_crossbow.set(weaponPrio);
-            //workTemplate.craft_mithrilbow.set(weaponPrio);
-
-            //workTemplate.craft_handcannon.set(weaponPrio);
-            //workTemplate.craft_handculverin.set(weaponPrio);
-            //workTemplate.craft_rifle.set(weaponPrio);
-            //workTemplate.craft_blunderbus.set(weaponPrio);
-
-            //workTemplate.craft_ballista.set(weaponPrio);
-            //workTemplate.craft_manuballista.set(weaponPrio);
-            //workTemplate.craft_catapult.set(weaponPrio);
-            //workTemplate.craft_batteringram.set(weaponPrio);
-
-            //workTemplate.craft_siegecannonbronze.set(weaponPrio);
-            //workTemplate.craft_mancannonbronze.set(weaponPrio);
-            //workTemplate.craft_siegecannoniron.set(weaponPrio);
-            //workTemplate.craft_mancannoniron.set(weaponPrio);
-
-            //workTemplate.craft_paddedarmor.set(weaponPrio);
-            //workTemplate.craft_heavypaddedarmor.set(weaponPrio);
-            //workTemplate.craft_bronzearmor.set(weaponPrio);
-            //workTemplate.craft_mailarmor.set(weaponPrio);
-            //workTemplate.craft_heavymailarmor.set(weaponPrio);
-            //workTemplate.craft_platearmor.set(weaponPrio);
-            //workTemplate.craft_fullplatearmor.set(weaponPrio);
-            //workTemplate.craft_mithrilarmor.set(weaponPrio);
 
             workTemplate.farm_food.set(4);
             workTemplate.farm_fuel.set(3);
@@ -442,20 +401,20 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.mining_lead.set(1);
             workTemplate.mining_silver.set(2);
             workTemplate.mining_gold.set(2);
-            workTemplate.mining_mithril.set(2);
+            workTemplate.mining_mithril.set(3);
             workTemplate.mining_sulfur.set(1);
             workTemplate.mining_coal.set(1);
 
             workTemplate.autoBuild.set(1);
 
-            workTemplate.smeltgold.set(4);
-            workTemplate.coinmaker_copper.set(3);
+            workTemplate.smeltgold.set(2);
+            workTemplate.coinmaker_copper.set(1);
             workTemplate.coinmaker_copper_fullStock = true;
-            workTemplate.coinmaker_bronze.set(3);
+            workTemplate.coinmaker_bronze.set(1);
             workTemplate.coinmaker_bronze_fullStock = true;
-            workTemplate.coinmaker_silver.set(3);
+            workTemplate.coinmaker_silver.set(1);
             workTemplate.coinmaker_silver_fullStock = true;
-            workTemplate.coinmaker_mithril.set(3);
+            workTemplate.coinmaker_mithril.set(1);
             workTemplate.coinmaker_mithril_fullStock = true;
 
 

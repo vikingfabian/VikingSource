@@ -31,11 +31,13 @@ namespace VikingEngine.DSSWars.Players
 
                 if (city != null)
                 {
-                    //adjustWorkToBuffer(ref city.res_wood, ref city.workTemplate.wood);
+                    
 
                     city.res_food.goalBuffer = city.workForce.amount / 100 * 100 + 200;
                     city.res_rawFood.goalBuffer = city.workForce.amount / 300 * 100 + 100;
 
+
+                    //DOES NOT WORK - will reset in auto_updateWorkPrio()
                     adjustWorkToBuffer(ref city.res_stone, ref city.workTemplate.stone);
 
                     adjustWorkToBuffer(ref city.res_food, ref city.workTemplate.craft_food);
@@ -45,6 +47,8 @@ namespace VikingEngine.DSSWars.Players
                     adjustWorkToBuffer(ref city.res_iron, ref city.workTemplate.craft_iron);
 
                     adjustWorkToBuffer(ref city.res_rawFood, ref city.workTemplate.farm_food);
+
+                    
 
                     //adjustWorkToBuffer(ref city.res_wood, ref city.workTemplate.wood);
 

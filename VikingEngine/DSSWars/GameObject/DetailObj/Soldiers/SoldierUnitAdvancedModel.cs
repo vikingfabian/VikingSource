@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (soldier.soldierData.factionColoredModel)
             {
-                var faction = soldier.GetFaction();
+                var faction = soldier.GetFaction_NoChecks();
 
                 if (soldier.soldierData.modelData.modelType == ModelType.Soldier)
                 {

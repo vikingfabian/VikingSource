@@ -407,7 +407,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     case ControllerTabFocus.Pause_GamePlay:
                         if (dir < 0)
                         {
-                            Ref.TogglePause();
+                            if (DssRef.difficulty.setting_allowPauseCommand)
+                            {
+                                Ref.TogglePause();
+                            }
                         }
                         else
                         {

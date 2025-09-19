@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 BuildAndExpandType.WorkBench,
                 //BuildAndExpandType.Smith,
 
-                BuildAndExpandType.PigPen,
+                //BuildAndExpandType.PigPen,
                 BuildAndExpandType.HenPen,
                 BuildAndExpandType.WheatFarm,
                 BuildAndExpandType.LinenFarm,
@@ -491,7 +491,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void update(ref bool mouseOverHud)
         {
-            
+#if DEBUG
+            if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.T))
+            {
+                onMissionSuccess();
+            }
+#endif
+
 
             switch (missions.sel)
             {
@@ -1442,7 +1448,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 DssRef.storage.Save(null);
             }
 
-            Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
+            Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
             enemyFac.player.GetAiPlayer().armyAi_enabled = true;
 
             player.tutorial = null;

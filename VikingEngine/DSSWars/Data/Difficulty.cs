@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Data
 
         public bool GodPowers()
         { 
-            return setting_gameMode == GameModeMainType.Spectator  || StartupSettings.EndlessResources;
+            return setting_gameMode == GameModeMainType.Spectator;
         }
 
         public static void OptionsRb(RichBoxContent content, RichMenu menu, Action<int> callback)

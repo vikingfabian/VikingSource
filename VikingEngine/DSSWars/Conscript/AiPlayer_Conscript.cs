@@ -43,6 +43,7 @@ namespace VikingEngine.DSSWars.Players
              new AutoWeaponOption( ItemResourceType.HandCulverin,true, BuildAndExpandType.GunBarracks),
              new AutoWeaponOption(ItemResourceType.HandCannon,false, BuildAndExpandType.GunBarracks),
              new AutoWeaponOption(ItemResourceType.Crossbow,false, BuildAndExpandType.ArcherBarracks),
+             new AutoWeaponOption(ItemResourceType.LongBow,false, BuildAndExpandType.ArcherBarracks),
 
              new AutoWeaponOption(ItemResourceType.ManCannonIron,false, BuildAndExpandType.CannonBarracks),
              new AutoWeaponOption(ItemResourceType.ManCannonBronze,false, BuildAndExpandType.CannonBarracks),
@@ -52,8 +53,6 @@ namespace VikingEngine.DSSWars.Players
              new AutoWeaponOption(ItemResourceType.Manuballista,false, BuildAndExpandType.WarmachineBarracks),
              new AutoWeaponOption(ItemResourceType.Ballista,false, BuildAndExpandType.WarmachineBarracks),
 
-             new AutoWeaponOption(ItemResourceType.LongBow,false, BuildAndExpandType.ArcherBarracks),
-             new AutoWeaponOption(ItemResourceType.Manuballista,false, BuildAndExpandType.WarmachineBarracks),
              new AutoWeaponOption(ItemResourceType.ShortSword,true, BuildAndExpandType.SoldierBarracks),
              new AutoWeaponOption(ItemResourceType.BronzeSword,true, BuildAndExpandType.SoldierBarracks),
              new AutoWeaponOption(ItemResourceType.ThrowingSpear,true, BuildAndExpandType.ArcherBarracks),

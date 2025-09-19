@@ -1058,11 +1058,15 @@ namespace VikingEngine.DSSWars.GameObject
             return state == GroupState.Idle || state == GroupState.GoingIdle;
         }
 
-        
+
         void SoldiersPresentationHud(ObjectHudArgs args, bool tooltipOrGroup, bool compact)
         {
+            var faction = GetFaction();
+            if (faction == null)
+            { return; }
+
             args.content.Add(new RbBeginTitle(tooltipOrGroup? 2 : 1));
-            args.content.Add(GetFaction().FlagTextureToHud());
+            args.content.Add(faction.FlagTextureToHud());
             args.content.space(0.5f);
             TypeIcon(args.content);
             args.content.space(0.5f);

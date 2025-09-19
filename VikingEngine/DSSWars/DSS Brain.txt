@@ -1,7 +1,6 @@
 ﻿UPDATE
 Change Log:
-* controller polish
-
+* 
 
 
 Translation:
@@ -25,7 +24,8 @@ build building icon
 interact icons for buildings (play, next, previous,) 
 
 #must do#
-
+x move tooltip down a bit
+x placed reciutment service turned to postal
 x help the AI overcome the initial automation hurdel and not get stuck on Logistics and Town Hall?
 x lobby ambience is heard on zero volume
 x test all achievements

@@ -54,15 +54,15 @@ namespace VikingEngine.DSSWars
             {
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    if (p.faction.militaryStrength > 100)
+                    if (p.faction.militaryStrength > 200)
                     {
                         UnlockAchievement_async(AchievementIndex.military_might_tier1);
 
-                        if (p.faction.militaryStrength > 200)
+                        if (p.faction.militaryStrength > 500)
                         {
                             UnlockAchievement_async(AchievementIndex.military_might_tier2);
 
-                            if (p.faction.militaryStrength > 400)
+                            if (p.faction.militaryStrength > 1500)
                             {
                                 UnlockAchievement_async(AchievementIndex.military_might_tier3);
                             }
@@ -617,7 +617,7 @@ namespace VikingEngine.DSSWars
         stone_fortress_tier3,
 
         /// <summary>
-        /// Military might: Have an army power greater than 100, then 200, then 400
+        /// Military might: Have an army power greater than 200, then 500, then 1500
         /// </summary>
         military_might_tier1,//i
         military_might_tier2,

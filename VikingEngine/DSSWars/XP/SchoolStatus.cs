@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.XP
 
         public void defaulSetup()
         {
-            toLevel = ExperienceLevel.Expert_3;
+            toLevel = ExperienceLevel.Practitioner_2;
         }
 
         public string shortActiveString(City city)

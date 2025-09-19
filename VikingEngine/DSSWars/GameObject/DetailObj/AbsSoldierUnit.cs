@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.group = group;
             this.gridPlacement = gridPlacement;
-            myIndex = group.GetFaction().pickNextUnitId();
+            myIndex = group.GetFaction_NoChecks().pickNextUnitId();
             //bound = new Physics.CircleBound(Vector2.Zero, SoldierProfile().boundRadius);
             boundRadius = SoldierProfile().boundRadius;
 

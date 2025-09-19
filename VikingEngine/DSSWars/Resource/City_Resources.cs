@@ -1358,7 +1358,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
 
-            if (DssRef.difficulty.GodPowers())
+            if (DssRef.difficulty.GodPowers() || StartupSettings.EndlessResources)
             {
                 content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
                    new RbAction(() => { city.AddGroupedResource(item, -city.GetGroupedResource(item).amount); }),

@@ -566,26 +566,25 @@ namespace VikingEngine.DSSWars
                 previuosMoney = storeMoney;
                 storeMoney = money;
 
-                if (cities.Count == 0)
+                if (cities.Count == 0 && !player.protectedFromDelete)
                 {
+
                     if (armies.Count == 0)
                     {
-                        if (!player.protectedFromDelete)
-                        {
-                            DeleteMe();
-                        }
+                        DeleteMe();
                     }
                     else if (militaryStrength < 1)
                     {
                         var armiesC = armies.counter();
                         while (armiesC.Next())
-                        { 
+                        {
                             armiesC.sel.DeleteMe(DeleteReason.Desert, true);
                         }
 
                         DeleteMe();
                     }
                 }
+
             }
         }
 

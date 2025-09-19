@@ -54,12 +54,14 @@ namespace VikingEngine.DSSWars.Interface
             if (DssRef.state.IsSinglePlayer_LocalAndOnline())
             {
 
-                bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause_GamePlay, out Color focusColor);
-                if (viewControllerTabs)
-                {
-                    content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
-                    content.space(0.5f);
-                }
+                
+                    bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause_GamePlay, out Color focusColor);
+                    if (viewControllerTabs && DssRef.difficulty.setting_allowPauseCommand)
+                    {
+                        content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
+                        content.space(0.5f);
+                    }
+                
 
                 content.Add(new ArtButton(RbButtonStyle.Primary,
                     new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
