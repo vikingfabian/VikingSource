@@ -21,6 +21,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string EngineHud_SymbolFor1000 => "k";
         public string EngineHud_SymbolFor10000 => "10k";
 
+        public string Settings_Render3dScale_Title => "3D render scale";
+        public string Settings_Render3dScale_UpX => "Upscale {0}X";
+        public string Settings_Render3dScale_DownX => "Downscale {0}X";
     }
 
 }

@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Build
         public MapPaintToolShape toolShape = MapPaintToolShape.Area;
         LocalPlayer player;
         City city;
-        
+        bool blockBuildUpdate = false;
 
         public BuildControls(LocalPlayer player) 
         { 
@@ -160,7 +160,8 @@ namespace VikingEngine.DSSWars.Build
         }
 
         public void updateBuildMode()
-        {           
+        {
+            
 
             if (player.gameControls.input.mouseSelect.DownEvent)
             {
@@ -322,8 +323,15 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
 
-            if (player.gameControls.input.mouseSelect.UpEvent)
+            if (player.gameControls.input.mouseSelect.UpEvent )
             {
+                if (blockBuildUpdate)
+                {
+                    blockBuildUpdate = false;
+                    
+                    return;
+                }
+
                 bool anySucccess = false;
                 int soundIndex = 0;
                 SoundContainerBase sound = buildMode == SelectTileResult.Build? SoundLib.start_build_contruct : SoundLib.start_destroy_contruct;
@@ -1434,9 +1442,13 @@ namespace VikingEngine.DSSWars.Build
 
         public void buildingTypeClick(BuildAndExpandType type)
         {
+            blockBuildUpdate = true;
+
             buildMode = SelectTileResult.Build;
             placeBuildingType = type;
             player.gameControls.setMenuFocus(false, true);
+
+            
             //player.gameControls.mapControls.setObjectMenuFocus(false);
         }
 

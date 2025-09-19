@@ -25,7 +25,8 @@ namespace VikingEngine.DSSWars.Interface.Component
         public void buttonsToHud(LocalPlayer player, RichBoxContent content, Action<int> queClick, int currentQue, int maxQue, bool noLimitOption)
         {
             content.newLine();
-            content.Add(new RbImage(player.gameControls.input.StopStart.Icon));
+            player.gameControls.input.StopStart.ToRichContent(content);
+            //content.Add(new RbImage(player.gameControls.input.StopStart.Icon));
             content.space();
             for (int length = 0; length <= maxQue; length++)
             {

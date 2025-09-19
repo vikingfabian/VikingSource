@@ -84,7 +84,7 @@ namespace VikingEngine.Input
             PrevRealPosition = RealPosition;
 
             RealPosition = new Vector2(currentMouseState.X, currentMouseState.Y);
-            Position = RealPosition * Engine.Screen.RenderScaleF;
+            Position = RealPosition * Engine.Screen.WindowScaleF;
 
             if (Ref.main.IsMouseVisible)
             {
@@ -97,7 +97,7 @@ namespace VikingEngine.Input
                 if (++hiddenFramesCount > 2)
                 {
                     RealMoveDistance = RealPosition - Engine.Screen.MonitorCenter.Vec;
-                    MoveDistance = RealMoveDistance * Engine.Screen.RenderScaleF;
+                    MoveDistance = RealMoveDistance * Engine.Screen.WindowScaleF;
                 }
                 else
                 {

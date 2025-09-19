@@ -42,10 +42,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Vector2 controllerPointer_storedPos_defaultObject;
         Vector2 controllerPointer_storedPos_faction;
         Vector2 controllerPointer_storedPos_diplomacy;
+       
 
 
         public GameControls(LocalPlayer player, InputMap input)
-        { 
+        {
+            
             this.player = player;
             this.input = input;
             player.gameControls = this;
@@ -165,6 +167,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (input.QuickSelect.DownEvent)
                     {
                         selectAreaCity();
+
+                        if (input.inputSource.IsController)
+                        {
+                            setMenuFocus(true, true);
+                        }
                     }
 
                     if (input.mouseOrder.DownEvent)
@@ -819,6 +826,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (input.NextCity.DownEvent && player.faction.cities.Count > 0)
             {
                 nextCity(!Input.Keyboard.Shift);
+                if (input.inputSource.IsController)
+                {
+                    setMenuFocus(true, true);
+                }
             }
 
             //ARMY

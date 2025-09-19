@@ -150,7 +150,7 @@ namespace VikingEngine.PJ
                 optionsList.Add(new GuiOption<int>(m.ToString() + "%", m));
             }
 
-            new GuiIconOptionsList<int>(SpriteName.MenuIconScreenResolution, "R", optionsList, Ref.gamesett.resolutionPercProperty, layout);
+            new GuiIconOptionsList<int>(SpriteName.MenuIconScreenResolution, "R", optionsList, Ref.gamesett.windowScaleProperty, layout);
             new GuiIconTextButton(SpriteName.MenuIconScreenResolution, "Youtube", null, recordingResolutionOptions, true, layout);
         }
 

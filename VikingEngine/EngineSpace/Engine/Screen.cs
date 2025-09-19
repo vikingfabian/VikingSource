@@ -7,7 +7,6 @@ namespace VikingEngine.Engine
 {
     static class Screen
     {
-        /* Properties */
         public static VectorRect Area { get { return new VectorRect(Vector2.Zero, RenderingResolution.Vec); } }
         public static Vector2 CenterScreen { get { return new Vector2(RenderingResolution.X * PublicConstants.Half, RenderingResolution.Y * PublicConstants.Half); } }
         public static int Width { get { return RenderingResolution.X; } }
@@ -38,19 +37,18 @@ namespace VikingEngine.Engine
 
         public static float TextSizeMultiplier { get { return textSizeMultiplier; } }
 
-        /* Fields */
+    
         public static GraphicsAdapter Monitor = Microsoft.Xna.Framework.Graphics.GraphicsAdapter.DefaultAdapter;
-#if PCGAME
-        //public static System.Windows.Forms.Screen FormScreen = System.Windows.Forms.Screen.PrimaryScreen;
-#endif
+
         public static IntVector2 PcTargetResolution = new IntVector2(1280, 720);
         public static bool PcTargetFullScreen = false;
         public static bool BorderLessFullScreen = false;
-        public static int RenderScalePerc = 100;
+        public static int WindowScalePerc = 100;
         public static RecordingPresets UseRecordingPreset = RecordingPresets.NumNon;
         public const int RecordingPresetAddPixelsCount = 8;
         public static bool bRecordingPresetAddPixels = true;
-        public static float RenderScaleF;
+        public static float WindowScaleF;
+        public static RenderScale3D renderScale3D = RenderScale3D.One;
 
         public static VectorRect SafeArea;
         public static VectorRect MousePushEdge, MousePushEdgeMax;
@@ -66,7 +64,7 @@ namespace VikingEngine.Engine
         public static int oversizeWidthPerc = 0;
         public static int oversizeHeightPerc = 0;
 
-        /* Novelty methods */
+       
         public static void ApplyScreenSettings(bool refreshUi = true)
         {
 
@@ -76,19 +74,18 @@ namespace VikingEngine.Engine
 #if XBOX
                 new Vector2(0.045f, 0.06f);
 #else
-                new Vector2(0.009f, 0.01f);// 0.04f;
+                new Vector2(0.009f, 0.01f);
 #endif
 
             IntVector2 monitorResolution;
 
 #if PCGAME
             monitorResolution = new IntVector2(Monitor.CurrentDisplayMode.Width, Monitor.CurrentDisplayMode.Height);
-            //monitorResolution = new IntVector2(FormScreen.Bounds.Width, FormScreen.Bounds.Height);//monitor.CurrentDisplayMode.Width, monitor.CurrentDisplayMode.Height);
-
+            
             if (UseRecordingPreset == RecordingPresets.NumNon)
             {
 
-                double renderScaleW = RenderScalePerc / 100.0;
+                double renderScaleW = WindowScalePerc / 100.0;
                 double renderScaleH = renderScaleW;
                 if (!PcTargetFullScreen)
                 {
@@ -103,19 +100,19 @@ namespace VikingEngine.Engine
                 if (PcTargetFullScreen)
                 {
                     MonitorTargetResolution = monitorResolution;
-                    RenderScaleF = (float)renderScaleH;
+                    WindowScaleF = (float)renderScaleH;
                 }
                 else
                 {
                     MonitorTargetResolution = RenderingResolution;
-                    RenderScaleF = 1f;
+                    WindowScaleF = 1f;
                 }
 
                 applyFullScreen(PcTargetFullScreen);
             }
             else
             { //Recording presets
-                RenderScaleF = 1f;
+                WindowScaleF = 1f;
 
                 IntVector2 preSetResolution = RecordingPresetsResolution(UseRecordingPreset);
 
@@ -348,5 +345,15 @@ namespace VikingEngine.Engine
         YouTube2160p,
         YouTube4320p,//4320p (8k): 7680x4320
         NumNon,
+    }
+
+    enum RenderScale3D
+    {
+        ScaleUp4x,
+        ScaleUp2x,
+        One,
+        ScaleDown2x,
+        ScaleDown4x,
+        NUM
     }
 }

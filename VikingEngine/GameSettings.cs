@@ -103,7 +103,7 @@ namespace VikingEngine
 
         public void writeSettings(System.IO.BinaryWriter w)
         {
-            w.Write(Engine.Screen.RenderScalePerc);
+            w.Write(Engine.Screen.WindowScalePerc);
             Engine.Screen.PcTargetResolution.write(w);
             w.Write(Engine.Screen.PcTargetFullScreen);
             w.Write((byte)Engine.Screen.UseRecordingPreset);
@@ -154,7 +154,7 @@ namespace VikingEngine
         {
             if (version > Version) return;
 
-            Engine.Screen.RenderScalePerc = r.ReadInt32();
+            Engine.Screen.WindowScalePerc = r.ReadInt32();
             Engine.Screen.PcTargetResolution.read(r);
             Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
             Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
@@ -266,7 +266,7 @@ namespace VikingEngine
 
             if (version >= 2)
             {
-                Engine.Screen.RenderScalePerc = r.ReadInt32();
+                Engine.Screen.WindowScalePerc = r.ReadInt32();
             }
             Engine.Screen.PcTargetResolution.read(r);
             Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
@@ -308,7 +308,7 @@ namespace VikingEngine
             {
                 if (value)
                 {
-                    Engine.Screen.RenderScalePerc = 100;
+                    Engine.Screen.WindowScalePerc = 100;
                 }
                 Engine.Screen.UseRecordingPreset = RecordingPresets.NumNon;
                 Engine.Screen.PcTargetFullScreen = value;
@@ -518,7 +518,7 @@ namespace VikingEngine
                 {
                     dropdown.AddOption(string.Format(Ref.langOpt.GraphicsOption_Resolution_PercentageOption, m),
                         Engine.Screen.UseRecordingPreset == RecordingPresets.NumNon &&
-                        m == Engine.Screen.RenderScalePerc,
+                        m == Engine.Screen.WindowScalePerc,
                         m == 100,
                         new RbAction1Arg<int>(setResolutionPercProperty, m), null);
                 }
@@ -707,7 +707,7 @@ namespace VikingEngine
 
         public void setResolutionPercProperty(int res)
         {
-            resolutionPercProperty(true, res);  
+            windowScaleProperty(true, res);  
         }
 
         public int bloodProperty(bool set, int value)
@@ -720,17 +720,17 @@ namespace VikingEngine
             return Blood;
         }
 
-        public int resolutionPercProperty(bool set, int res)
+        public int windowScaleProperty(bool set, int res)
         {
             if (set)
             {
                 Engine.Screen.UseRecordingPreset = RecordingPresets.NumNon;
-                Engine.Screen.RenderScalePerc = res;
+                Engine.Screen.WindowScalePerc = res;
                 Engine.Screen.ApplyScreenSettings();
                 graphicsHasChanged = true;
                 settingsHasChanged = true;
             }
-            return Engine.Screen.RenderScalePerc;
+            return Engine.Screen.WindowScalePerc;
         }
 
         public void graphicsOptions(GuiLayout layout)
@@ -745,7 +745,7 @@ namespace VikingEngine
                 optionsList.Add(new GuiOption<int>(string.Format(Ref.langOpt.GraphicsOption_Resolution_PercentageOption, m), m));
             }
 
-            new GuiOptionsList<int>(SpriteName.MenuIconScreenResolution, Ref.langOpt.GraphicsOption_Resolution, optionsList, resolutionPercProperty, layout);
+            new GuiOptionsList<int>(SpriteName.MenuIconScreenResolution, Ref.langOpt.GraphicsOption_Resolution, optionsList, windowScaleProperty, layout);
             fullScreenBox(layout);//new GuiCheckbox("Fullscreen", null, Ref.pc_gamesett.fullscreenProperty, layout);
 
             if (!Screen.PcTargetFullScreen)
