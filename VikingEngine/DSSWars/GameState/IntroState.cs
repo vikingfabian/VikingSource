@@ -42,7 +42,8 @@ namespace VikingEngine.DSSWars
         }
         protected override void preLoading()
         {
-            if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
+            if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev &&
+                !Config.BlockSentry)
             {
                 new EngineSpace.DebugExtensions.SentryReport();
             }

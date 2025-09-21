@@ -12,8 +12,9 @@ namespace VikingEngine.DSSWars.Interface
 {
     class EditorBackground
     {
+        bool visible = true;
         Texture2D bgTex;
-
+        ImageAdvanced bgImage;
         public EditorBackground()
         {
             Ref.draw.ClrColor = new Color(40, 45, 47);
@@ -32,11 +33,25 @@ namespace VikingEngine.DSSWars.Interface
             float x = -2;
             float y = Screen.CenterScreen.Y - h * 0.5f;
 
-            ImageAdvanced bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
+            bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
                 new Vector2(x, y), new Vector2(w, h), ImageLayers.AbsoluteBottomLayer, false);
             bgImage.Texture = bgTex;
             bgImage.SetFullTextureSource();
             bgImage.Opacity = 0.3f;
+            bgImage.Visible = visible;
+        }
+
+        public bool visibleProperty_inv(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                visible = !value;
+                if (bgImage != null)
+                {
+                    bgImage.Visible = visible;
+                }
+            }
+            return !visible;
         }
     }
 }

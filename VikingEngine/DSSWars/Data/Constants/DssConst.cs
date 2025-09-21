@@ -131,10 +131,10 @@ namespace VikingEngine.DSSWars
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
 
         public static float WaterAdd_Average = 3.6f;
-        public static float WaterAdd_SmallCity = 0.7f * WaterAdd_Average;
+        public static float WaterAdd_SmallCity = 0.8f * WaterAdd_Average;
         public static float WaterAdd_LargeCity = 0.9f * WaterAdd_Average;
-        public static float WaterAdd_HeadCity = 1.1f * WaterAdd_Average;
-        public static float WaterAdd_RandomAdd = 0.25f * WaterAdd_Average; 
+        public static float WaterAdd_HeadCity = 1f * WaterAdd_Average;
+        public static float WaterAdd_RandomAdd = 0.2f * WaterAdd_Average; 
 
         public static int Maxwater = 60;
         public static int WaterResovoirWaterAdd = 20;
@@ -249,10 +249,10 @@ namespace VikingEngine.DSSWars
         public static int HempLinenAndFuelAmount = 8;
         public static int LinenHarvestAmount = 15;
 
-        public static int HenRawFoodAmout = 6;
+        public static int HenRawFoodAmout = 4;
         public static int EggRawFoodAmout = 2;
 
-        public static int PigRawFoodAmout = 4;
+        public static int PigRawFoodAmout = 3;
         public static int PigSkinAmount = 2;
         public static float ManDefaultEnergyCost = 1f;
         public static float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;

@@ -1,7 +1,6 @@
 ﻿UPDATE
 Change Log:
-* 
-
+* Added ability to use "block_sentry=true" in the config file
 
 Translation:
 
@@ -24,7 +23,7 @@ build building icon
 interact icons for buildings (play, next, previous,) 
 
 #must do#
-x move tooltip down a bit
+x close zoom graphical option
 x placed reciutment service turned to postal
 x help the AI overcome the initial automation hurdel and not get stuck on Logistics and Town Hall?
 x lobby ambience is heard on zero volume

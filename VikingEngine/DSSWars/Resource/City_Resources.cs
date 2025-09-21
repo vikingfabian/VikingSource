@@ -1106,7 +1106,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case ItemResourceType.Wheat:
                     convert1.type = ItemResourceType.RawFood_Group;
-                    convert1.amount = DssConst.WheatFoodAmount;
+                    //convert1.amount = DssConst.WheatFoodAmount;
                     break;
 
                 case ItemResourceType.Egg:                                   
@@ -1126,20 +1126,20 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case ItemResourceType.Linen:
                     convert1.type = ItemResourceType.SkinLinen_Group;
-                    convert1.amount = DssConst.LinenHarvestAmount;
+                    //convert1.amount = DssConst.LinenHarvestAmount;
                     break;
 
                 case ItemResourceType.Rapeseed:
                     convert1.type = ItemResourceType.Fuel_G;
-                    convert1.amount = DssConst.RapeSeedFuelAmount;
+                    //convert1.amount = DssConst.RapeSeedFuelAmount;
                     break;
 
                 case ItemResourceType.Hemp:
                     convert1.type = ItemResourceType.SkinLinen_Group;
-                    convert1.amount = DssConst.HempLinenAndFuelAmount;
+                    //convert1.amount = DssConst.HempLinenAndFuelAmount;
 
                     convert2.type = ItemResourceType.Fuel_G;
-                    convert2.amount = DssConst.HempLinenAndFuelAmount;
+                    convert2.amount = convert1.amount;//DssConst.HempLinenAndFuelAmount;
                     break;
 
                 //case ItemResourceType.GoldOre:

@@ -130,6 +130,12 @@ Change Log:
 * made the bots able to focus their production on the best weapons, and increase production depending on aggression level
 * bots will adjust the food buffer to city size
 * The war manager is collecting larger opponents, by (up to) 300% compared to earlier
+* controller polish
+* fixed: dead army hud crash
+* fixed: story faction got deleted
+* reduced water income with 10%
+* Adjusted bot work priorities 
+* fixed two more empty faction crashes
 
 Spectator mode:
 * improved diplomacy display, and it has god powers

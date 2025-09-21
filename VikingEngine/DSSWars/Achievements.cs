@@ -468,14 +468,14 @@ namespace VikingEngine.DSSWars
     }
 
     /// <summary>
-    /// i = implemented, t = tested
+    /// i = implemented, t = tested, a = art
     /// </summary>
     enum AchievementIndex
     {
         /// <summary>
         /// defeat the boss
         /// </summary>
-        victory_boss_any,//i, t
+        victory_boss_any,//i, t, a
         victory_boss_50,
         victory_boss_100,
         victory_boss_150,
@@ -483,75 +483,55 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// have good relations with all nations who speaks to you
         /// </summary>
-        victory_worldpeace_any,//i
+        victory_worldpeace_any,//i, a
 
         /// <summary>
         /// Grab the whole world to yourself - in sandbox
         /// </summary>
-        victory_mini_domination_sandbox_any,//i
+        victory_mini_domination_sandbox_any,//i, a
         victory_mini_domination_sandbox_50,
         victory_mini_domination_sandbox_100,
         victory_mini_domination_sandbox_150,
 
         /// <summary>
-        /// Grab the whole world to yourself - in sandbox, medium world size
-        /// </summary>
-        //victory_domination_sandbox_any,//i
-        //victory_domination_sandbox_50,
-        //victory_domination_sandbox_100,
-        //victory_domination_sandbox_150,
-
-        /// <summary>
         /// Grab the whole world to yourself - in story
         /// </summary>
-        victory_mini_domination_story_any,//i
+        victory_mini_domination_story_any,//i, a
         victory_mini_domination_story_100,
-
-        /// <summary>
-        /// Grab the whole world to yourself - in story, medium world size
-        /// </summary>
-        //victory_domination_story_any,//i
-        //victory_domination_story_100,
-
-        /// <summary>
-        /// Grab the whole world to yourself - in story, large world size, min 75%
-        /// </summary>
-        //massive_victory_domination,//i
 
         /// <summary>
         /// reach victory without starting a single war
         /// </summary>
-        no_war_started_any,//i, t
+        no_war_started_any,//i, t, a
         no_war_started_50,
         no_war_started_100,
         no_war_started_150,
 
-
         /// <summary>
         /// reach victory, and have started (10, 20, 40) wars, min 75%
         /// </summary>
-        warstarter_tier1,//i
+        warstarter_tier1,//i, a
         warstarter_tier2,
         warstarter_tier3,
 
         /// <summary>
         ///  be in open war with 6 nations, then 9, then 12. Achieved on boss enter.
         /// </summary>
-        warjuggler_tier1,//i
+        warjuggler_tier1,//i, a
         warjuggler_tier2,
         warjuggler_tier3,
 
         /// <summary>
         /// have 4 allies, then 8, then 16
         /// </summary>
-        friendship_tier1,//i, t
+        friendship_tier1,//i, t, a
         friendship_tier2,
         friendship_tier3,
 
         /// <summary>
         ///  reach victory, and still have your honor guards
         /// </summary>
-        honorguards_any, //i
+        honorguards_any, //i, a
         honorguards_50,
         honorguards_100,
         honorguards_150,
@@ -559,23 +539,23 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Declare war on an ally.
         /// </summary>
-        traitor,//i, t
+        traitor,//i, t, a
 
         /// <summary>
         /// destroy the mercenaries on sea
         /// </summary>
-        early_hara,//i, t
-
+        early_hara_any,//i, t, a
+        early_hara_100,
 
         /// <summary>
         /// Glory to me: contruct the "sword raising player" statue
         /// </summary>
-        statue_of_player,//i, t
+        statue_of_player,//i, t, a
 
         /// <summary>
         /// Decorations: Constuct 20 decorative buildings, including at least 4 statues, then 40/8, then 80/16
         /// </summary>
-        decorations_tier1,//i, t
+        decorations_tier1,//i, t, a
         decorations_tier2,
         decorations_tier3,
 
@@ -583,17 +563,17 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Knights: Produce cavalry knights
         /// </summary>
-        knights,//i, t
+        knights,//i, t, a
 
         /// <summary>
         /// Men of steel: Produce soldiers with steel sword and armor.
         /// </summary>
-        men_of_steel,//i, t
+        men_of_steel,//i, t, a
 
         /// <summary>
         /// Knights of Lunimari: Produce an army with fully mithril equipped swordsmen and archers
         /// </summary>
-        knights_of_lumini,//i
+        knights_of_lumini,//i, a
 
         /// <summary>
         /// Large population: Reach a workforce of a 4000 men in one city, then 10k, then 16k
@@ -619,19 +599,19 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Military might: Have an army power greater than 200, then 500, then 1500
         /// </summary>
-        military_might_tier1,//i
+        military_might_tier1,//i, a
         military_might_tier2,
         military_might_tier3,
 
         /// <summary>
         /// Go 64bit: break the 16 bit limit of gold.
         /// </summary>
-        gold_64bit,//i, t
+        gold_64bit,//i, t, a
 
         /// <summary>
         /// The Ottoman - defeat a city with bronze siege cannons
         /// </summary>
-        ottoman,//i
+        ottoman,//i, a
 
         /// <summary>
         /// Purge: Wipe out 1 nation, then 4, then 12. story, 75% difficulty
@@ -697,13 +677,13 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Destroy servants of dread, before the end boss
         /// </summary>
-        early_dread_any,//i
+        early_dread_any,//i, a
         early_dread_100,
 
         /// <summary>
         /// Destroy the united kingdom, before the end boss
         /// </summary>
-        early_uk_any,//i, t
+        early_uk_any,//i, t, a
         early_uk_100,
 
         /// <summary>

@@ -1418,7 +1418,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (Culture == CityCulture.DeepWell)
                 {
-                    waterAddPerSec += DssConst.WaterAdd_SmallCity;
+                    waterAddPerSec += DssConst.WaterAdd_HeadCity;
                 }
 
                 waterAddPerSec *= DssRef.difficulty.setting_waterMulti;

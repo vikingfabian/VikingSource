@@ -240,8 +240,12 @@ namespace VikingEngine.DSSWars.GameObject
                         repeat = 4;
                         break;
 
-                    case BuildAndExpandType.SoldierBarracks:
                     case BuildAndExpandType.ArcherBarracks:
+                        maxCount = 3;
+                        chance = automationFocus == AutomationFocus.Military ? 150 : 100;
+                        break;
+
+                    case BuildAndExpandType.SoldierBarracks:
                     case BuildAndExpandType.WarmachineBarracks:
                     case BuildAndExpandType.KnightsBarracks:
                     case BuildAndExpandType.GunBarracks:

@@ -213,9 +213,14 @@ namespace VikingEngine.DSSWars.Work
 
         }
 
-        int farmGrowthMultiplier(int terrainAmount, City city)
+        int farmGrowthMultiplier(int terrainAmount, City city, bool upgraded)
         {
-            terrainAmount *= 5;
+            //terrainAmount *= 5;
+            if (upgraded)
+            {
+                terrainAmount *= 2;
+            }
+
             if (city.Culture == CityCulture.FertileGround)
             {
                 return terrainAmount * 2;
@@ -255,8 +260,8 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.GatherFoil:
                     {
                         //Resource.ItemResourceType resourceType;
-
-                        switch (subTile.GetFoilType())
+                        TerrainSubFoilType foilType = subTile.GetFoilType();
+                        switch (foilType)
                         {
                             case TerrainSubFoilType.TreeSoft:
                                 gatherWood(Resource.ItemResourceType.SoftWood, ref subTile, city);
@@ -279,10 +284,10 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Wheat,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+                                        farmGrowthMultiplier(DssConst.WheatFoodAmount, city, foilType == TerrainSubFoilType.WheatFarmUpgraded));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-                                //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                
                                 gainXp = WorkExperienceType.Farm;
                                 break;
 
@@ -293,7 +298,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Linen,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+                                        farmGrowthMultiplier(DssConst.LinenHarvestAmount, city, foilType == TerrainSubFoilType.LinenFarmUpgraded));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -307,7 +312,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Rapeseed,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+                                        farmGrowthMultiplier(DssConst.RapeSeedFuelAmount, city, foilType == TerrainSubFoilType.RapeSeedFarmUpgraded));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -322,7 +327,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Hemp,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+                                        farmGrowthMultiplier(DssConst.HempLinenAndFuelAmount, city, foilType == TerrainSubFoilType.HempFarmUpgraded));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);

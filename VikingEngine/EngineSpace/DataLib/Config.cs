@@ -12,6 +12,7 @@ namespace VikingEngine
     {
         public static ReadWriteCheck RWCheck;
         public static string PcStoragePath = null;
+        public static bool BlockSentry = false;
 
         public static void OnStartUp()
         {
@@ -33,19 +34,49 @@ namespace VikingEngine
                 string[] lines = File.ReadAllLines(configPath);
                 foreach (var line in lines)
                 {
-                    if (line.TrimStart().StartsWith("save_path", StringComparison.OrdinalIgnoreCase))
+                    if (line.Length > 3)
                     {
                         var parts = line.Split('=', 2);
                         if (parts.Length == 2)
                         {
-                            string candidatePath = parts[1].Trim();
-                            if (!string.IsNullOrEmpty(candidatePath) &&
-                                (Directory.Exists(candidatePath) || TryCreateDirectory(candidatePath)))
+                            string key = parts[0].Trim();
+                            string value = parts[1].Trim();
+
+                            if (!string.IsNullOrEmpty(value))
                             {
-                                userBasePath = candidatePath;
+
+                                switch (key)
+                                {
+                                    case "save_path":
+                                        if (Directory.Exists(value) || TryCreateDirectory(value))
+                                        {
+                                            userBasePath = value;
+                                        }
+                                        break;
+                                    case "block_sentry":
+                                        if (bool.TryParse(value, out bool block))
+                                        {
+                                            BlockSentry = block;
+                                        }
+                                        break;
+                                }
                             }
                         }
                     }
+
+                    //if (line.TrimStart().StartsWith("save_path", StringComparison.OrdinalIgnoreCase))
+                    //{
+                    //    var parts = line.Split('=', 2);
+                    //    if (parts.Length == 2)
+                    //    {
+                    //        string candidatePath = parts[1].Trim();
+                    //        if (!string.IsNullOrEmpty(candidatePath) &&
+                    //            (Directory.Exists(candidatePath) || TryCreateDirectory(candidatePath)))
+                    //        {
+                    //            userBasePath = candidatePath;
+                    //        }
+                    //    }
+                    //}
                 }
                 RWCheck.read = true;
             }

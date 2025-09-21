@@ -19,12 +19,12 @@ namespace VikingEngine.DSSWars.Map
         public const int FarmCulture_ReadySize = FarmCulture_MaxSize - 1;
         public const int FarmCulture_HalfSize = FarmCulture_ReadySize / 2;
 
-        public const int PigMaxSize = 3;
+        public const int PigMaxSize = 4;
         public const int PigMaxCount = 4;
         const int PigMaxTotal = PigMaxSize * PigMaxCount;
         public const int PigReady = PigMaxSize * 3;
 
-        public const int HenMaxSize = 2;
+        public const int HenMaxSize = 3;
         public const int HenMaxCount = 6;
         const int HenMaxTotal = HenMaxSize * HenMaxCount;
         public const int HenReady = HenMaxSize * 3;

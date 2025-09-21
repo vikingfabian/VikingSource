@@ -42,13 +42,14 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         ListCirkleCounter<FrameTime> autoAnimateCounter;
         Time autoAnimateTimer = new Time(2000);
         List<FrameTime> autoAnimate;
-
+        EditorBackground bg;
         public CharacterCreatorScene()
             : base()
         {
+            bg = new Interface.EditorBackground();
             openMenu();
 
-            new Interface.EditorBackground();
+            
 
             float backWidth = Engine.Screen.SafeArea.Width - menu.backgroundArea.Width;
             Vector2 previewSz = new Vector2(backWidth * 0.4f);
@@ -456,6 +457,12 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             //    new RbText("Add accessory")
             //}, new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Accessory, StackOption.Stack)));
             content.Add(new RbSeperationLine());
+
+            //DssRef.lang.Editor_Settings_BackgroundColor
+
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Settings_BackgroundColor) },
+                bg.visibleProperty_inv));
+
             content.newParagraph();
             
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {

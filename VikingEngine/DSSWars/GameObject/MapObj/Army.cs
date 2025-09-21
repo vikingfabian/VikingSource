@@ -1144,7 +1144,7 @@ namespace VikingEngine.DSSWars.GameObject
                 GetFaction().factiontype == FactionType.SouthHara &&
                 myIndex == 0)
             {
-                DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
+                DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_hara_any, AchievementIndex.early_hara_100);
             }
 
             var counter = groups.counter();

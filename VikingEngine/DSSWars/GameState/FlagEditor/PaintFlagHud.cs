@@ -24,16 +24,16 @@ using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.GameState.FlagEditor
 {
-    class PaintFlagHud //: RichboxGui
+    class PaintFlagHud
     {
         RichBoxContent content;
         InputMap input;
-        //public ProfileEditorHudPart part;
         public HSLColorArea colorArea;
         RichMenu menu;
         PaintFlagState state;
         bool needRefresh = true;
         const float TabStep = 0.32f;
+        public Graphics.ImageAdvanced previewImageSmall, previewImageLarge;
         public PaintFlagHud(Engine.PlayerData playerData, InputMap input, PaintFlagState state)
             : base()
         {
@@ -42,36 +42,21 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             var settings = HudLib.RbSettings;
             float width= Engine.Screen.Width * 0.25f;
 
-
             var area = Engine.Screen.SafeArea;
             area.Width = width;
 
             menu = new RichMenu(settings, area, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, playerData);
             var bgTex = menu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
-            //part = new ProfileEditorHudPart(this, state);
-            //parts = new List<RichboxGuiPart> { part };
-
+            
             colorArea = new HSLColorArea(input, state);
+
+            VectorRect previewArea = new VectorRect(colorArea.area.LeftBottom, new Vector2(DssLib.UserHeraldicWidth));
+            previewArea.Y += Engine.Screen.IconSize;
+            previewImageSmall = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, previewArea.Position, previewArea.Size, HudLib.GUILayer, false);
+            previewArea.nextAreaX(1, Engine.Screen.BorderWidth);
+            previewImageLarge = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, previewArea.Position, previewArea.Size * 4, HudLib.GUILayer, false);
+            
         }
-
-        //public override bool update()
-        //{
-        //    part.update();
-        //    return base.update();
-        //}
-    //}
-
-    //class ProfileEditorHudPart: RichboxGuiPart
-    //{
-        
-        //public PaintFlagState state;
-
-        //public ProfileEditorHudPart(PaintFlagHud gui, PaintFlagState state)
-        //    : base(gui)
-        //{
-        //    this.state = state;
-        //    //refresh();
-        //}
 
         public void refresh()
         {
@@ -167,7 +152,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     discardButtonContent.Insert(0, new RbImage(SpriteName.ButtonBACK));
                 }
                 content.Add(new ArtButton(RbButtonStyle.Secondary, discardButtonContent, new RbAction(state.discardAndExit)));
-                //content.ArtButton(state.controllerMode ? SpriteName.ButtonBACK : SpriteName.NO_IMAGE, DssRef.lang.ProfileEditor_DiscardAndExit, new RbAction(state.discardAndExit), null, true);
+                
                 content.newLine();
                 content.ArtButton(state.controllerMode ? SpriteName.ButtonSTART : SpriteName.NO_IMAGE, DssRef.lang.Hud_SaveAndExit, new RbAction(state.saveAndExit), null, true);
                 content.newLine();
