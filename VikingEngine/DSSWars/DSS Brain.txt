@@ -1,6 +1,8 @@
 ﻿UPDATE
 Change Log:
-* Added ability to use "block_sentry=true" in the config file
+* full game achievements + translations
+
+* config "sentry_mode=0" option
 
 Translation:
 
@@ -23,12 +25,13 @@ build building icon
 interact icons for buildings (play, next, previous,) 
 
 #must do#
+x music freq option
 x close zoom graphical option
 x placed reciutment service turned to postal
 x help the AI overcome the initial automation hurdel and not get stuck on Logistics and Town Hall?
 x lobby ambience is heard on zero volume
 x test all achievements
-x full game achievements + translations
+
 x show victory type
 x Block achievements for imported save files
 x Add new music
@@ -225,3 +228,6 @@ chmod +x VikingEngine
 
 tar -czf VikingEngine-linux-x64.tar.gz -C bin/Release/net8.0/linux-x64/publish .
 (hamnar i Repo\VikingSource\VikingEngine)
+
+
+"cross of SIM City & RTSs and Hearts of Iron IV"

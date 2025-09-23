@@ -13,7 +13,7 @@ namespace VikingEngine
         public static ReadWriteCheck RWCheck;
         public static string PcStoragePath = null;
         public static bool BlockSentry = false;
-
+        public static int SentryMode = 0;
         public static void OnStartUp()
         {
             // Default path: Documents\My Games\{FolderName}
@@ -57,6 +57,12 @@ namespace VikingEngine
                                         if (bool.TryParse(value, out bool block))
                                         {
                                             BlockSentry = block;
+                                        }
+                                        break;
+                                    case "sentry_mode":
+                                        if (int.TryParse(value, out int mode))
+                                        {
+                                            SentryMode = mode;
                                         }
                                         break;
                                 }
