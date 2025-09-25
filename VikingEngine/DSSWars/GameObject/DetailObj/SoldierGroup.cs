@@ -568,7 +568,7 @@ namespace VikingEngine.DSSWars.GameObject
             return s;
         }
 
-        void walking_Peace(AbsArmy tArmy, float time, Vector3 goalWp, bool induvidualSpeed, out bool complete)
+        void walking_Peace(AbsArmy tArmy, float time, Vector3 goalWp, bool induvidualSpeed, out bool complete, ref float groupWalkSpeed)
         {
             waitTime += time;
 
@@ -602,7 +602,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (move)
             {
                 Vector3 goal = walkingGoalWp(goalWp, out bool waterNode, out bool ready);
-                complete = updateWalking(goal, ready, true, induvidualSpeed, tArmy.armyGoalRotation, time);
+                complete = updateWalking(goal, true, true, induvidualSpeed, tArmy.armyGoalRotation, time, out groupWalkSpeed);
                 if (ready)
                 {
                     if (waterNode != isShip)
@@ -706,7 +706,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         static readonly float FlankDistAdd = WorldData.SubTileWidth * 0.6f;
 
-        void updateMoveAndAttackTarget(float time, bool fullUpdate, AbsGroup attack_sp)
+        void updateMoveAndAttackTarget(float time, bool fullUpdate, AbsGroup attack_sp, ref float groupWalkSpeed)
         {
             Vector2 diff = new Vector2(
                     attack_sp.position.X - position.X,
@@ -725,7 +725,7 @@ namespace VikingEngine.DSSWars.GameObject
                         int posCount = 0;
                         while (soldiersC.Next())
                         {
-                            soldiersC.sel.update2_battle_attack(time, fullUpdate); //same
+                            soldiersC.sel.update2_battle_attack(time, fullUpdate, groupWalkSpeed); //same
                             posSum += soldiersC.sel.position;
                             ++posCount;
                         }
@@ -739,7 +739,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         while (soldiersC.Next())
                         {
-                            soldiersC.sel.update2_battle_attack(time, fullUpdate); //same
+                            soldiersC.sel.update2_battle_attack(time, fullUpdate, groupWalkSpeed); //same
                         }
                     }
                 }
@@ -747,14 +747,14 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 //Battle update
-                updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, true, 0, time);
+                updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, true, 0, time, out groupWalkSpeed);
 
                 if (soldiers != null)
                 {
                     var soldiersC = soldiers.counter();
                     while (soldiersC.Next())
                     {
-                        soldiersC.sel.update2_battle_move(time, fullUpdate);
+                        soldiersC.sel.update2_battle_move(time, fullUpdate, groupWalkSpeed);
 
                     }
                 }
@@ -775,7 +775,7 @@ namespace VikingEngine.DSSWars.GameObject
                     var soldiersC = soldiers.counter();
                     while (soldiersC.Next())
                     {
-                        soldiersC.sel.update2_battle_attack_static(time, fullUpdate);
+                        soldiersC.sel.update2_battle_attack_static(time, fullUpdate, 0);
                     }
                 }
             }
@@ -838,7 +838,7 @@ namespace VikingEngine.DSSWars.GameObject
             AbsGroup attack_sp = null;
             attackTarget_soldierGroupOrCity?.TryGetTarget(out attack_sp);
             var command_sp = command;
-
+            float groupWalkSpeedTime = soldierData.walkingSpeed * time;
             
             if (attack_sp != null)
             {
@@ -867,13 +867,13 @@ namespace VikingEngine.DSSWars.GameObject
                             attackTarget_soldierGroupOrCity = new WeakReference<AbsGroup>(goalTarget);
                             goalTarget.OnBecomeAttackTarget();
                             cancelCommand();
-                            updateMoveAndAttackTarget(time, fullUpdate, goalTarget);
+                            updateMoveAndAttackTarget(time, fullUpdate, goalTarget, ref groupWalkSpeedTime);
                         }
                     }
                     if (command_sp.hasPathCommand(out bool towardsUnit))
                     {
                         Vector3 nodePos = towardsUnit ? walkingGoalAttackTarget(command_sp.AttackTarget(), out _) : walkingGoalWp(command_sp.GoalPosition(), out _, out _);
-                        if (updateWalking(nodePos, true, false, true, 0, time))
+                        if (updateWalking(nodePos, true, false, true, 0, time, out groupWalkSpeedTime))
                         {
                             cancelCommand();
                         }
@@ -883,7 +883,7 @@ namespace VikingEngine.DSSWars.GameObject
                             var soldiersC = soldiers.counter();
                             while (soldiersC.Next())
                             {
-                                soldiersC.sel.update2_battle_move(time, fullUpdate);
+                                soldiersC.sel.update2_battle_move(time, fullUpdate, groupWalkSpeedTime);
                             }
                         }
                     }
@@ -897,7 +897,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     else
                     {
-                        updateMoveAndAttackTarget(time, fullUpdate, attack_sp);
+                        updateMoveAndAttackTarget(time, fullUpdate, attack_sp, ref groupWalkSpeedTime);
                     }
                 }
             }
@@ -928,7 +928,7 @@ namespace VikingEngine.DSSWars.GameObject
                     case GroupState.CityCapture:
                         if (command == null)
                         {
-                            walking_Peace(tArmy, time, goalWp, true, out bool complete);
+                            walking_Peace(tArmy, time, goalWp, true, out bool complete, ref groupWalkSpeedTime);
 
                             if (Ref.peRnd.Chance(0.1))
                             {
@@ -959,7 +959,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (command_sp.hasPathCommand(out bool towardsUnit))
                     {
-                        walking_Peace(tArmy, time, towardsUnit? command_sp.AttackTarget().position : command_sp.GoalPosition(), false, out bool complete);
+                        walking_Peace(tArmy, time, towardsUnit? command_sp.AttackTarget().position : command_sp.GoalPosition(), false, out bool complete, ref groupWalkSpeedTime);
                         if (complete)
                         {
                             command_sp.OnMovePathComplete(this);
@@ -995,7 +995,7 @@ namespace VikingEngine.DSSWars.GameObject
                             break;
 
                         case GroupState.FindArmyPlacement:
-                            walking_Peace(tArmy, time, goalWp, false, out bool complete);
+                            walking_Peace(tArmy, time, goalWp, false, out bool complete, ref groupWalkSpeedTime);
                             if (complete)
                             {
                                 state = GroupState.GoingIdle;
@@ -1025,7 +1025,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var soldiersC = soldiers_sp.counter();
                         while (soldiersC.Next())
                         {
-                            soldiersC.sel.update2(time, fullUpdate);
+                            soldiersC.sel.update2(time, fullUpdate, groupWalkSpeedTime);
                             allIdle &= soldiersC.sel.state2 == SoldierState2.idle;
                         }
                     }
@@ -1296,13 +1296,13 @@ namespace VikingEngine.DSSWars.GameObject
         //}
 
         static readonly float GoalCompleteDistance = WorldData.SubTileWidth * 0.2f;
-        bool updateWalking(Vector3 walkTowards, bool walk, bool rotate, bool induvidualSpeed, Rotation1D finalRotation, float time)
+        bool updateWalking(Vector3 walkTowards, bool walk, bool rotate, bool induvidualSpeed, Rotation1D finalRotation, float time, out float speed)
         {
             Vector2 diff = new Vector2(
                 walkTowards.X - position.X,
                 walkTowards.Z - position.Z);
 
-            float speed;
+            //float speed;
 
             if (induvidualSpeed)
             {

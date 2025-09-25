@@ -46,6 +46,8 @@ namespace VikingEngine.DSSWars.Data
         public MetaProgression metaProgression = new MetaProgression(); 
         public GameRuleset gameRuleset = new GameRuleset();
 
+        public List<int> mutedSongs = new List<int>();
+
         public GameStorage()
         {
             //DssRef.storage = this;
@@ -201,7 +203,7 @@ namespace VikingEngine.DSSWars.Data
         //    write(w, false);
         //}
 
-        const int Version = 28;
+        const int Version = 29;
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -227,6 +229,12 @@ namespace VikingEngine.DSSWars.Data
 
             gameRuleset.write(w);
             mapSettings.write(w);
+
+            w.Write(mutedSongs.Count);
+            foreach (var s in mutedSongs)
+            {
+                w.Write(s);
+            }
 
             Debug.WriteCheck(w);
             
@@ -286,6 +294,15 @@ namespace VikingEngine.DSSWars.Data
 
                 generateNewMaps = true;
 
+                if (version >= 29)
+                {
+                    mutedSongs.Clear();
+                    int mutedSongsCount = r.ReadInt32();
+                    for (int i = 0; i <= mutedSongsCount; ++i)
+                    { 
+                        mutedSongs.Add(r.ReadInt32());
+                    }
+                }
 
                 Debug.ReadCheck(r);
 

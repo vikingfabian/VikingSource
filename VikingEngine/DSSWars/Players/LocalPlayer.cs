@@ -848,18 +848,22 @@ namespace VikingEngine.DSSWars.Players
 
             if (PlatformSettings.DevBuild)
             {
+                if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Z))
+                {
+                    DssRef.state.events.TestNextEvent();
+                }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
-                    //battleLineUpTest2(true);
-                    DssRef.state.events.TestNextEvent();
+                    battleLineUpTest2(true);
+                    //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.testToPeacefulCheck();
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
-                    //battleLineUpTest2(true);
+                    battleLineUpTest2(false);
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
                     //Debug.Log(tile.ToString());
@@ -1212,7 +1216,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 2; ++i)
+                    for (int i = 0; i < 6; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -1265,7 +1269,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 2; ++i)
+                    for (int i = 0; i < 6; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }

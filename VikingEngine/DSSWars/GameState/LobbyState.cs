@@ -261,6 +261,9 @@ namespace VikingEngine.DSSWars
                         content.newParagraph();
                         content.Add(new RbButton(HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText("File debug lab") }),
                             new RbAction(fileLab), null));
+                        
+                        content.newLine();
+                        content.Button("crash", new RbAction(testCrash), null, true);
 
 #if DEBUG
                         if (Ref.steam.isInitialized)
@@ -409,12 +412,7 @@ namespace VikingEngine.DSSWars
                         List<Sound.SongData> list = Music.PlayList();
                         foreach (var m in list)
                         {
-                            content.newLine();
-                            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
-                                new RbImage(SpriteName.MenuPixelIconMusicVol),
-                                new RbSpace(),
-                                new RbText(m.name) },
-                                new RbAction1Arg<Sound.SongData>(Ref.music.PlaySong, m)));
+                            songButton(m);
                         }
 
                         content.newParagraph();
@@ -422,15 +420,25 @@ namespace VikingEngine.DSSWars
                         List<Sound.SongData> other = Music.OtherSongs();
                         foreach (var m in other)
                         {
+                            songButton(m);
+                        }
+
+                        underMenu.Refresh(content);
+
+                        void songButton(SongData song)
+                        { 
                             content.newLine();
                             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
                                 new RbImage(SpriteName.MenuPixelIconMusicVol),
                                 new RbSpace(),
-                                new RbText(m.name) },
-                                new RbAction1Arg<Sound.SongData>(Ref.music.PlaySong, m)));
+                                new RbText(song.name) },
+                                new RbAction1Arg<Sound.SongData>(Ref.music.PlaySong, song)));
+                            if (song.artist != null)
+                            {
+                                content.newLine();
+                                content.Add(new RbText(song.artist, HudLib.TitleColor_Label));
+                            }
                         }
-
-                        underMenu.Refresh(content);
                     }
                     break;
             }

@@ -1,8 +1,16 @@
 ﻿UPDATE
 Change Log:
-* full game achievements + translations
+* fixed the move skipping of cavalry soldiers
+* fixed the upward bounces of soldiers
+* fixed guards stuck under walls
+* test crash button in extras
 
-* config "sentry_mode=0" option
+Music:
+- Removed 6 songs
+- Added one from justmike
+- Added 22 from SoundImage
+- Views artist name in the song list
+
 
 Translation:
 
@@ -34,7 +42,6 @@ x test all achievements
 
 x show victory type
 x Block achievements for imported save files
-x Add new music
 x lobby music
 x new menu background
 

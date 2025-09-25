@@ -435,21 +435,24 @@ namespace VikingEngine.Sound
 
     class SongData
     {
+        //public bool play = true;
         public string filePath;
         public bool seamlessLoop;
         public float volume;
         public bool played;
         public string name;
-        Song storedSong;
+        public string artist;
+        //Song storedSong;
 
         public SongData(string filePath, bool seamlessLoop, float volume)
-            : this(filePath, null, seamlessLoop, volume)
+            : this(filePath, null, null, seamlessLoop, volume)
         { }
 
-        public SongData(string filePath, string name, bool seamlessLoop, float volume)
+        public SongData(string filePath, string name, string artist, bool seamlessLoop, float volume)
         {
             this.filePath = filePath;
             this.name = name;
+            this.artist = artist;
             this.seamlessLoop = seamlessLoop;
             this.volume = volume;
             played = false;
@@ -457,7 +460,12 @@ namespace VikingEngine.Sound
 
         public void LoadAndStore()
         {
-            storedSong = Engine.LoadContent.Content.Load<Song>(filePath);
+            //storedSong = Engine.LoadContent.Content.Load<Song>(filePath);
+        }
+
+        public int Hash()
+        {
+            return name.GetDeterministicHashCode();
         }
 
         public void PlayStored()

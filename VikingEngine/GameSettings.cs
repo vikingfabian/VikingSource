@@ -648,7 +648,7 @@ namespace VikingEngine
                 foreach (var fps in FrameRateOptions)
                 {
                     frameRateOptions.AddOption(fps.ToString(), fps == FrameRate, fps == 60,
-                        new RbAction1Arg<int>((int fps) => { FrameRate = fps; Engine.Update.SetFrameRate(FrameRate); settingsHasChanged = true; }, fps), null);
+                        new RbAction1Arg<int>((int fps) => { FrameRate = fps; Engine.Update.SetFrameRate(FrameRate); settingsHasChanged = true; menu.CloseDropDown(); }, fps), null);
 
                 }
                 frameRateOptions.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.Settings_FrameRate, menu);

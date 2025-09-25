@@ -37,6 +37,12 @@
 /processorParam:TextureFormat=Color
 /build:DSS/flag painter bg.png
 
+#begin DSS/Music/37 (longer).mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/37 (longer).mp3
+
 #begin DSS/Music/A History of Cubes - Gameplay Edit.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -55,11 +61,11 @@
 /processorParam:Quality=Best
 /build:DSS/Music/Arcadia.ogg
 
-#begin DSS/Music/BBaaB_loop.ogg
-/importer:OggImporter
+#begin DSS/Music/CCGmusic_mastered.mp3
+/importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/BBaaB_loop.ogg
+/build:DSS/Music/CCGmusic_mastered.mp3
 
 #begin DSS/Music/digital battleground.ogg
 /importer:OggImporter
@@ -91,12 +97,6 @@
 /processorParam:Quality=Best
 /build:DSS/Music/Elysian_Dreamscape.ogg
 
-#begin DSS/Music/Endless Plains.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/Endless Plains.ogg
-
 #begin DSS/Music/Epic Shadows of the Fallen.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -127,18 +127,6 @@
 /processorParam:Quality=Best
 /build:DSS/Music/Legends of Valor.ogg
 
-#begin DSS/Music/MissingCardinals.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/MissingCardinals.ogg
-
-#begin DSS/Music/Mysterious Grotto.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/Mysterious Grotto.ogg
-
 #begin DSS/Music/Pixelated Battlefields.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -150,12 +138,6 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/RM 1 - Introversion.ogg
-
-#begin DSS/Music/RM 10 - Incubation.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/RM 10 - Incubation.ogg
 
 #begin DSS/Music/RM 2 - Arcane Benevolence.ogg
 /importer:OggImporter
@@ -174,12 +156,6 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/RM 4 - Warhogs.ogg
-
-#begin DSS/Music/RM 5 - Suddenly Empty.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/RM 5 - Suddenly Empty.ogg
 
 #begin DSS/Music/RM 6 - Auderesne.ogg
 /importer:OggImporter
@@ -222,6 +198,138 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/Shadows of Conflict.ogg
+
+#begin DSS/Music/soundimage org/Ancient-Game-Menu_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Ancient-Game-Menu_looping.mp3
+
+#begin DSS/Music/soundimage org/City-Beneath-the-Waves.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/City-Beneath-the-Waves.mp3
+
+#begin DSS/Music/soundimage org/Crossing-the-Tundra_v001_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Crossing-the-Tundra_v001_Looping.mp3
+
+#begin DSS/Music/soundimage org/Cumulonimbus.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Cumulonimbus.mp3
+
+#begin DSS/Music/soundimage org/Dragon-Mystery_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Dragon-Mystery_Looping.mp3
+
+#begin DSS/Music/soundimage org/Dreamy-Game-Intro_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Dreamy-Game-Intro_Looping.mp3
+
+#begin DSS/Music/soundimage org/Eerie-Techno-Game-Open_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Eerie-Techno-Game-Open_Looping.mp3
+
+#begin DSS/Music/soundimage org/Fantascape_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Fantascape_Looping.mp3
+
+#begin DSS/Music/soundimage org/Flurries.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Flurries.mp3
+
+#begin DSS/Music/soundimage org/Gliding.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Gliding.mp3
+
+#begin DSS/Music/soundimage org/History-Piano.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/History-Piano.mp3
+
+#begin DSS/Music/soundimage org/Key-West-Sunset_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Key-West-Sunset_Looping.mp3
+
+#begin DSS/Music/soundimage org/Kingdom-Quest_LoFi_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Kingdom-Quest_LoFi_looping.mp3
+
+#begin DSS/Music/soundimage org/Moonlight-Flying_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Moonlight-Flying_Looping.mp3
+
+#begin DSS/Music/soundimage org/Mysterious-Deep.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Mysterious-Deep.mp3
+
+#begin DSS/Music/soundimage org/Of-Legends-and-Fables-3_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Of-Legends-and-Fables-3_looping.mp3
+
+#begin DSS/Music/soundimage org/Once-Upon-a-Time-in-the-Kingdom_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Once-Upon-a-Time-in-the-Kingdom_looping.mp3
+
+#begin DSS/Music/soundimage org/Our-Mountain_v003_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Our-Mountain_v003_Looping.mp3
+
+#begin DSS/Music/soundimage org/Pond-at-Twilight_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Pond-at-Twilight_Looping.mp3
+
+#begin DSS/Music/soundimage org/Secret-Journey_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Secret-Journey_Looping.mp3
+
+#begin DSS/Music/soundimage org/Spooky-Enchantment_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Spooky-Enchantment_looping.mp3
+
+#begin DSS/Music/soundimage org/The-Spunky-Princess_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/The-Spunky-Princess_looping.mp3
 
 #begin DSS/Music/Veil of Time.ogg
 /importer:OggImporter
