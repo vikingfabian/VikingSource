@@ -226,7 +226,7 @@ namespace VikingEngine.DSSWars
             cutsceneGui = new RichboxGuiSettings()
             {
                 bgCol = Color.Black,
-                bgAlpha = 0.5f,
+                bgAlpha = 0.8f,
                 edgeWidth = HeadDisplayEdge,
                 width = HeadDisplayWidth,
                 contentLayer = CutContentLayer - 2,
@@ -259,7 +259,7 @@ namespace VikingEngine.DSSWars
             content.Add(new RbBeginTitle(1));
 
             content.Add(new ArtButton(RbButtonStyle.Primary,
-                new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFramePrevious) }, new RbAction1Arg<int>(nextAction, -1, RbSoundType.Tab),
+                new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconPrevious) }, new RbAction1Arg<int>(nextAction, -1, RbSoundType.Tab),
                 new RbTooltip_Text(DssRef.lang.Hud_Previous), buildingCount > 1));
             content.Add(new RbImage(icon));
             content.space();
@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars
             CloseButton(content, new RbAction(closeAction, RbSoundType.Back));
             content.Add(new RbTab(0.8f));
             content.Add(new ArtButton(RbButtonStyle.Primary,
-                new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameNext) }, new RbAction1Arg<int>(nextAction, 1, RbSoundType.Tab),
+                new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconNext) }, new RbAction1Arg<int>(nextAction, 1, RbSoundType.Tab),
                 new RbTooltip_Text(DssRef.lang.Hud_Next), buildingCount > 1));
             content.newLine();
             content.Add(new RbText(id.ToString(), SecondaryTextColor));

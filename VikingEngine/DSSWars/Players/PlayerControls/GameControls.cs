@@ -143,7 +143,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {   
                 map.mapControlsUpdate();
                 player.hud.updateToolTip_menu();
-                //diplomacy.update();
+
+                if (input.QuickSelect.DownEvent)
+                {
+                    //lib.DoNothing();
+                    player.hud.objMenu.diplomacy.quickSelect();
+                }
+                    //diplomacy.update();
             }
             else
             {

@@ -268,6 +268,18 @@ namespace VikingEngine.DSSWars.Interface
                             }
                         }
                         break;
+                    case Players.SelectTileResult.GoldDeliver:
+                        {
+                            title = new RbText(DssRef.lang.BuildingType_GoldDelivery);
+                            content.Add(title);
+
+                            content.newLine();
+                            if (subTile.city.GetDelivery(subTile.subTilePos, out DeliveryStatus status))
+                            {
+                                status.tooltip(player, subTile.city, content);
+                            }
+                        }
+                        break;
                     case Players.SelectTileResult.School:
                         {
                             title = new RbText(DssRef.lang.BuildingType_School);

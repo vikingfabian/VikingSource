@@ -1739,6 +1739,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (attackTarget_soldierGroupOrCity != null && attackTarget_soldierGroupOrCity.TryGetTarget(out var tMapObj))
                 {
                     battles.add(tMapObj.factionIndex);
+                    battles.attackingCity |= tMapObj.IsGuardGroup();
                 }
             }
             
@@ -2418,10 +2419,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return true;
         }
-        virtual public bool IsGuardGroup()
-        {
-            return false;
-        }
+        
         //public override SpriteName TypeIcon()
         //{
         //    return AllUnits.UnitFilterIcon( soldierConscript.filterType());

@@ -7,10 +7,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Event;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Data;
 using VikingEngine.PJ;
 using VikingEngine.ToGG.HeroQuest.Data.Condition;
+using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.ToGG.ToggEngine.GO;
 
 namespace VikingEngine.DSSWars.Interface.CutScene
@@ -64,10 +67,21 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         public EndSceneLeftDisplayPart(RichboxGui gui)
             : base(gui)
         {
-            content.h1(string.Format(DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty()));
+            LangLib.GameModeText(DssRef.difficulty.setting_gameMode, out string caption, out _);
+            content.h1(caption, HudLib.TitleColor_Head);
+            content.h2(string.Format(DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty()), HudLib.TitleColor_Label);
+
             content.text(string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty));
 
+            content.icontext(SpriteName.WarsMapIcon, DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(DssRef.world.metaData.mapSize));
+            
+            content.icontext(HudLib.CheckImage(DssRef.storage.gameRuleset.centralGold), DssRef.lang.Settings_CentralGold);
             content.icontext(HudLib.CheckImage(DssRef.difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
+
+            content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_foodMulti)));
+            content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_waterMulti)));
+            content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_childMulti)));
+            content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_craftMulti)));
 
             var time = HudLib.TimeSpan_LongText(DssRef.time.TotalIngameTime());
             content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));
@@ -108,18 +122,29 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             switch (endReason)
             {
                 case GameEndReason.Victory:
-                    content.h1(DssRef.lang.EndScreen_VictoryTitle).overrideColor = Color.Yellow;
+                    content.h1(DssRef.lang.EndScreen_VictoryTitle, Color.Yellow);
+                    
 
+                    string endquote = null;
+                    string typeText = null;
                     switch (vType)
                     { 
                         case VictoryType.DefeatBoss:
-                            content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
+                            typeText = DssRef.todoLang.VictoryType_DefeatBoss;
+                            endquote = arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes);
                             break;
                         case VictoryType.Domination:
-                            content.text(DssRef.lang.EndScreen_DominationVictoryQuote);
+                            typeText = DssRef.todoLang.VictoryType_Domination;
+                            endquote = DssRef.lang.EndScreen_DominationVictoryQuote;
+                            break;
+                        case VictoryType.WorldPeace:
+                            typeText = DssRef.todoLang.VictoryType_WorldPeace;
+                            endquote = DssRef.todoLang.EndScreen_PeaceVictoryQuote;
                             break;
                     }
 
+                    content.h2(typeText, HudLib.TitleColor_TypeName);
+                    content.text(endquote, HudLib.InfoYellow_Light);
                     //if (bossVictory)
                     //{
                     //    content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
@@ -141,21 +166,28 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             }
 
             content.newParagraph();
-            //if (endReason == GameEndReason.Victory && bossVictory && !PlatformSettings.STEAM_DEMO)
-            //{
-            //    content.Button(DssRef.lang.EndScreen_WatchEpilogue, new RbAction(watchEpilogue), null, true);
-                
-            //}
+
+            Color ButtonColor = new Color(146, 161, 153);//new Color(48, 80, 101);
+            Color ButtonCaptionColor = Color.Black;
+
+
             if (!PlatformSettings.STEAM_DEMO)
             {
                 content.newLine();
-                content.Button(DssRef.lang.GameMenu_ContinueGame, new RbAction(DssRef.state.cutScene.Close), null, true);
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_ContinueGame, ButtonCaptionColor) },
+                    new RbAction(DssRef.state.cutScene.Close))
+                { overrideBgColor = ButtonColor });
+
+                //content.Button(DssRef.lang.GameMenu_ContinueGame, new RbAction(DssRef.state.cutScene.Close), null, true);
             }
 
             HudLib.WishListButton(content);
 
             content.newLine();
-            content.Button(DssRef.lang.GameMenu_ExitGame, new RbAction(DssRef.state.exit, RbSoundType.Back), null, true);
+            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_ExitGame, ButtonCaptionColor) },
+                    new RbAction(DssRef.state.exit, RbSoundType.Back))
+            { overrideBgColor = ButtonColor });
+            //content.Button(DssRef.lang.GameMenu_ExitGame, new RbAction(DssRef.state.exit, RbSoundType.Back), null, true);
 
             Vector2 pos = Engine.Screen.SafeArea.CenterTop;
             pos.X -= HudLib.cutsceneGui.width * 0.5f;
@@ -185,14 +217,12 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         public EndSceneRightDisplayPart(RichboxGui gui)
             : base(gui)
         {
-            content.h1(DssRef.lang.EndGameStatistics_Title);
+            content.h1(DssRef.lang.EndGameStatistics_Title, HudLib.TitleColor_Head2);
 
             foreach (var p in DssRef.state.localPlayers)
             {
-                //if (DssRef.state.localPlayers.Count > 0)
-                {
-                    content.h2(p.Name);
-                }
+                content.h2(p.Name, HudLib.TitleColor_Name);
+                
                 p.statistics.ToHud(content);
             }
 

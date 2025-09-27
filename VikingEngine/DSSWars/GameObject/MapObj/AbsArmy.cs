@@ -110,6 +110,19 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             DssRef.achieve.UnlockAchievement_async(AchievementIndex.slaughtered);
                         }
+
+                        if (battles.attackingCity)
+                        {
+                            groupsC.Reset();
+                            while (groupsC.Next())
+                            {
+                                if (groupsC.sel.soldierConscript.conscript.weapon == Resource.ItemResourceType.SiegeCannonBronze)
+                                {
+                                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.ottoman);
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }

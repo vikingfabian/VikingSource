@@ -375,8 +375,8 @@ namespace VikingEngine.DSSWars.Interface
                     //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
                 }
             }
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Low memory garbarge collecting") }, Ref.gamesett.lowGCProperty));
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Low memory garbarge collecting") }, Ref.gamesett.lowGCProperty));
             content.newLine();
             content.Add(new RbText(DssRef.lang.Settings_Blood + ":", HudLib.TitleColor_Label));
             content.space();

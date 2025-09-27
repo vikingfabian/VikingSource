@@ -52,6 +52,12 @@ namespace VikingEngine.DSSWars
         {
             if (Ref.peRnd.ChanceF(0.1f))
             {
+                if (achivementsAreModeBlocked())
+                {
+                    //Modes not available 
+                    return;
+                }
+
                 foreach (var p in DssRef.state.localPlayers)
                 {
                     if (p.faction.militaryStrength > 200)
@@ -128,7 +134,6 @@ namespace VikingEngine.DSSWars
                                 if (posted >= 80)
                                 {
                                     UnlockAchievement_async(AchievementIndex.fortress_tier3);
-
                                 }
                             }
 
@@ -279,10 +284,15 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        bool achivementsAreModeBlocked()
+        {
+            return DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful ||
+                DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator;
+        }
+
         public void onVictory(VictoryType victoryType)
         {
-            if (DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful ||
-                DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
+            if (achivementsAreModeBlocked())
             {
                 //Modes not available 
                 return;
@@ -504,7 +514,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Large population: Reach a workforce of a 4000 men in one city, then 10k, then 16k
         /// </summary>
-        large_population_tier1,//i, a
+        large_population_tier1,//i, t, a
         large_population_tier2,
         large_population_tier3,
 
@@ -518,14 +528,14 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Stone Fortress: Own a city with 20 stone wall posted guards, then 40, then 80
         /// </summary>
-        stone_fortress_tier1,//i, t
+        stone_fortress_tier1,//i, t, a
         stone_fortress_tier2,
         stone_fortress_tier3,
 
         /// <summary>
         /// Military might: Have an army power greater than 200, then 500, then 1500
         /// </summary>
-        military_might_tier1,//i, a
+        military_might_tier1,//i, t, a
         military_might_tier2,
         military_might_tier3,
 
@@ -545,7 +555,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Max out - casual: gain all tech using casual controls
         /// </summary>
-        maxout_casual,//i, a
+        maxout_casual,//i, t, a
 
         /// <summary>
         ///  fully research all technologies
@@ -555,22 +565,22 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// The people rise: 16 group army of only folkmen and slingers
         /// </summary>
-        folkmen_rise,//i, a
+        folkmen_rise,//i, t, a
 
         /// <summary>
         /// Vikings: Have a fleet with 16 ships with sea specialization.
         /// </summary>
-        vikings,//i, t
+        vikings,//i, t, a
 
         /// <summary>
         /// Slaughtered: Loose 100 soldiers in a battle
         /// </summary>
-        slaughtered,//i, t
+        slaughtered,//i, t, a
 
         /// <summary>
         /// Defeating victory: Win after loosing 40 military strength
         /// </summary>
-        defeating_victory,//i, a
+        defeating_victory,//i, t, a
 
         /// <summary>
         /// Rear flanking: Make a cavalry charge against siege weapons
@@ -586,12 +596,12 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Deliver gold
         /// </summary>
-        gold_deliver,//i, a        
+        gold_deliver,//i, t, a        
 
         /// <summary>
         /// Terminate the first faction to attack you
         /// </summary>
-        destroy_first_attacker_any,//i, a
+        destroy_first_attacker_any,//i, t, a
         destroy_first_attacker_100,
 
         /// <summary>
@@ -603,7 +613,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Destroy servants of dread, before the end boss
         /// </summary>
-        early_dread_any,//i, a
+        early_dread_any,//i, t, a
         early_dread_100,
 
         /// <summary>
@@ -627,12 +637,12 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Produce soldiers with an iron cannon
         /// </summary>
-        iron_cannon,//i, a
+        iron_cannon,//i, t, a
 
         /// <summary>
         /// The Ottoman - defeat a city with bronze siege cannons
         /// </summary>
-        ottoman,//i, a
+        ottoman,//i, t, a
 
         /// <summary>
         /// Knights: Produce cavalry knights
@@ -660,14 +670,14 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// reach victory, and have started (10, 20, 40) wars, min 75%
         /// </summary>
-        warstarter_tier1,//i, a
+        warstarter_tier1,//i, t, a
         warstarter_tier2,
         warstarter_tier3,
 
         /// <summary>
         ///  Reach victory with honor guards alive. Any difficulty.
         /// </summary>
-        honorguards_any, //i, a
+        honorguards_any, //i, t, a
         honorguards_50,
         honorguards_100,
         honorguards_150,
@@ -675,14 +685,14 @@ namespace VikingEngine.DSSWars
         /// <summary>
         ///  be in open war with 6 nations, then 9, then 12. Achieved on boss enter.
         /// </summary>
-        warjuggler_tier1,//i, a
+        warjuggler_tier1,//i, t, a
         warjuggler_tier2,
         warjuggler_tier3,
 
         /// <summary>
         /// Reach victory with locked pause command 
         /// </summary>
-        no_pause_any,//i
+        no_pause_any,//i, t, a
         no_pause_50,
         no_pause_100,
         no_pause_150,
@@ -691,7 +701,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Begin the final battle
         /// </summary>
-        reach_boss_any,//i, t 
+        reach_boss_any,//i, t, a
         reach_boss_100,
 
         /// <summary>
@@ -705,12 +715,12 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// have good relations with all nations who speaks to you
         /// </summary>
-        victory_worldpeace_any,//i, a
+        victory_worldpeace_any,//i, t, a
 
         /// <summary>
         /// Grab the whole world to yourself - in sandbox
         /// </summary>
-        victory_mini_domination_sandbox_any,//i, a
+        victory_mini_domination_sandbox_any,//i, t, a
         victory_mini_domination_sandbox_50,
         victory_mini_domination_sandbox_100,
         victory_mini_domination_sandbox_150,
@@ -718,7 +728,7 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Grab the whole world to yourself - in story
         /// </summary>
-        victory_mini_domination_story_any,//i, a
+        victory_mini_domination_story_any,//i, t, a
         victory_mini_domination_story_100,
 
         NUM_ACHIEVEMENTS

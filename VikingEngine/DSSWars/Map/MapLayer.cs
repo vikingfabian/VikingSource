@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Map
     
     class MapLayerManager
     {
-        public static readonly float SelectUnitZoomIn = FactionZoom.Min - 0.4f;
+        //public static readonly float SelectUnitZoomIn = FactionZoom.Min - 0.4f;
         public static MapLayerManager[] CameraIndexToView;        
 
         List2<MapLayer> layers;
@@ -32,9 +32,9 @@ namespace VikingEngine.DSSWars.Map
         public const float NormalCamAngle = 0.78f;
         const float OverviewCamAngle = 0.65f;
 
-        static readonly IntervalF DetailZoom = new IntervalF(2f, 4f) + FullZoomRange.Min;
-        static readonly IntervalF OverviewZoom = new IntervalF(OverviewZoomStart - 2f, OverviewZoomStart);
-        static readonly IntervalF FactionZoom = new IntervalF(-1.5f, 0f) + UnitMaxZoom;
+        //static readonly IntervalF DetailZoom = new IntervalF(2f, 4f) + FullZoomRange.Min;
+        //static readonly IntervalF OverviewZoom = new IntervalF(OverviewZoomStart - 2f, OverviewZoomStart);
+        //static readonly IntervalF FactionZoom = new IntervalF(-1.5f, 0f) + UnitMaxZoom;
 
         
         Engine.PlayerData player;
@@ -49,12 +49,21 @@ namespace VikingEngine.DSSWars.Map
         {
             this.player = player;
 
+            refreshLayers();
+
+            updateCamIndex();
+            new AsynchUpdateable(asynchUpdate, "Units cam culling, " + player.localPlayerIndex.ToString(), player.localPlayerIndex);
+            
+        }
+
+        public void refreshLayers()
+        {
             layers = new List2<MapLayer>((int)MapDetailLayerType.NUM);
             {
                 float zoomBuffer = FullZoomRange.Difference * 0.0025f;
 
                 float minZoom = FullZoomRange.Min;
-                float maxZoom = 40;//FullZoomRange.GetFromPercent(0.08f);
+                float maxZoom = Ref.gamesett.farViewDistance? 38 : 26;
 
                 layers.Add(new MapLayer(MapDetailLayerType.UnitDetail1, minZoom, maxZoom, zoomBuffer));
 
@@ -77,11 +86,8 @@ namespace VikingEngine.DSSWars.Map
             }
 
             setNewLayer();
-
-            updateCamIndex();
-            new AsynchUpdateable(asynchUpdate, "Units cam culling, " + player.localPlayerIndex.ToString(), player.localPlayerIndex);
-            
         }
+
         public bool DoUpdateDetailLayer()
         {
             //Debug.Log(mapLayersManager.ToString());

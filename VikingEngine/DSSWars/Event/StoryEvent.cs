@@ -409,7 +409,7 @@ namespace VikingEngine.DSSWars.Event
         void spawnBarbarians(City city)
         {
             ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
-            for (int radius = city.cityTileRadius - 2; radius > 1; ++radius)
+            for (int radius = Bound.Min(city.cityTileRadius - 2, 4); radius > 1; ++radius)
             {
                 loop.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
                 while (loop.Next())
@@ -486,8 +486,9 @@ namespace VikingEngine.DSSWars.Event
                     }
                 }
             }
-
+#if DEBUG
             throw new Exception("No enemy spawn");
+#endif
         }
 
         public override bool RunWarManager()
@@ -960,13 +961,13 @@ namespace VikingEngine.DSSWars.Event
         {
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
-                if (DssRef.state.events.maxWarsJuggles > 6)
+                if (DssRef.state.events.maxWarsJuggles >= 6)
                 {
                     DssRef.achieve.UnlockAchievement(AchievementIndex.warjuggler_tier1);
-                    if (DssRef.state.events.maxWarsJuggles > 9)
+                    if (DssRef.state.events.maxWarsJuggles >= 9)
                     {
                         DssRef.achieve.UnlockAchievement(AchievementIndex.warjuggler_tier2);
-                        if (DssRef.state.events.maxWarsJuggles > 12)
+                        if (DssRef.state.events.maxWarsJuggles >= 12)
                         {
                             DssRef.achieve.UnlockAchievement(AchievementIndex.warjuggler_tier3);
                         }

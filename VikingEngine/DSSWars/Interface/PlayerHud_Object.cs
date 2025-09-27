@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
@@ -18,7 +19,7 @@ namespace VikingEngine.DSSWars.Interface
     {
         List<GameObject.AbsGameObject> selectHistory = new List<AbsGameObject>();
         
-        DiplomacyDisplay diplomacy;
+        public DiplomacyDisplay diplomacy;
         public RichMenu menu;
         public AbsArmy otherArmy;
 

@@ -8,6 +8,7 @@ namespace VikingEngine.DSSWars.Battle
 {
     struct InBattleWith
     {
+        public bool attackingCity;
         public int faction1;
         public int faction2;
         public int faction3;

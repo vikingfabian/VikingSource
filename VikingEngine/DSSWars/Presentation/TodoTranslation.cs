@@ -24,6 +24,15 @@ namespace VikingEngine.DSSWars.Presentation
         public string Settings_Render3dScale_Title => "3D render scale";
         public string Settings_Render3dScale_UpX => "Upscale {0}X";
         public string Settings_Render3dScale_DownX => "Downscale {0}X";
+
+        public string Settings_FarViewDistance => "Long distance view";
+
+        public string EndScreen_PeaceVictoryQuote => "Lets lay down our swords and embrace a better future";
+
+        public string VictoryType_DefeatBoss => "Boss defeated";
+        public string VictoryType_Domination => "Domination";
+        public string VictoryType_WorldPeace => "World peace";
+
     }
 
 }

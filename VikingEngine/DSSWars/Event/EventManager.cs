@@ -113,6 +113,9 @@ namespace VikingEngine.DSSWars.Event
                 int warCount = 0;
                 bool worldPeace = true;
 
+                float warStrength = 0;
+                float peaceStrength = p.faction.PotensialMilitaryStrength();
+
                 var relations = p.faction.diplomaticRelations;
 
                 for (int relIx = 0; relIx < relations.Length; ++relIx)
@@ -124,7 +127,7 @@ namespace VikingEngine.DSSWars.Event
                         if (otherFaction != null && otherFaction.isAlive)
                         {
                             RelationType relation = RelationType.RelationType0_Neutral;
-                            SpeakTerms speak = SpeakTerms.SpeakTerms0_Normal;
+                            SpeakTerms speak = otherFaction.DefaultSpeakingTerms();
 
                             if (relations[relIx] != null && DssRef.world.faction(relIx) != null)
                             {
@@ -144,11 +147,16 @@ namespace VikingEngine.DSSWars.Event
                             else if (relation <= RelationType.RelationTypeN3_War)
                             { 
                                 warCount++;
+                                warStrength += otherFaction.PotensialMilitaryStrength();
                             }
 
                             if (relation < RelationType.RelationType1_Peace && speak != SpeakTerms.SpeakTermsN2_None)
                             {
                                 worldPeace = false;
+                            }
+                            else
+                            {
+                                peaceStrength += otherFaction.PotensialMilitaryStrength();
                             }
                         }
                     }
@@ -165,7 +173,7 @@ namespace VikingEngine.DSSWars.Event
                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.worthy_friends);
                 }
 
-                if (worldPeace)
+                if (worldPeace && peaceStrength > warStrength)
                 {
                     Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.WorldPeace));
                     return;
@@ -965,7 +973,7 @@ namespace VikingEngine.DSSWars.Event
         //    victory( VictoryType.Domination);
         //}
 
-        void victory(VictoryType vType)
+        public void victory(VictoryType vType)
         {
             if (mainStory.Count > 0)
             {
@@ -1000,7 +1008,7 @@ namespace VikingEngine.DSSWars.Event
             {
                 ++player.statistics.WarsStartedByEnemy;
 
-                if (player.firstAttacker != ushort.MaxValue)
+                if (player.firstAttacker == ushort.MaxValue)
                 { 
                     player.firstAttacker = other.myIndex;
                 }

@@ -1,15 +1,5 @@
 ﻿UPDATE
 Change Log:
-* fixed the move skipping of cavalry soldiers
-* fixed the upward bounces of soldiers
-* fixed guards stuck under walls
-* test crash button in extras
-
-Music:
-- Removed 6 songs
-- Added one from justmike
-- Added 22 from SoundImage
-- Views artist name in the song list
 
 
 Translation:
@@ -29,23 +19,17 @@ Plus the boss fight: about 10 hours
 (total: about 45 hours)
 
 #Pics
-build building icon
-interact icons for buildings (play, next, previous,) 
+
 
 #must do#
-x music freq option
-x close zoom graphical option
-x placed reciutment service turned to postal
 x help the AI overcome the initial automation hurdel and not get stuck on Logistics and Town Hall?
-x lobby ambience is heard on zero volume
-x test all achievements
-
-x show victory type
 x Block achievements for imported save files
 x lobby music
 x new menu background
 
 #Todo#
+x placed reciutment service turned to postal
+x music freq option
 x up/down scale render
 x add music volume to play list
 x Add to the master's guild the same copy/paste options as in Conscription
@@ -225,6 +209,9 @@ https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
 
 #Export
 cd VikingEngine
+dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
+
+old:
 dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
 
 #LINUX

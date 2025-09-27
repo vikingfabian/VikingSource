@@ -26,8 +26,9 @@ namespace VikingEngine.DSSWars.Interface.Component
         {
             content.newLine();
             player.gameControls.input.StopStart.ToRichContent(content);
-            //content.Add(new RbImage(player.gameControls.input.StopStart.Icon));
             content.space();
+            content.Add(new RbImage(SpriteName.WarsHudIconProgress));
+            content.hspace();
             for (int length = 0; length <= maxQue; length++)
             {
                 var button = new ArtToggle(length == currentQue, new List<AbsRichBoxMember>{

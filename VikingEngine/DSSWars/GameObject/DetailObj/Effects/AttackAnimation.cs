@@ -193,12 +193,12 @@ namespace VikingEngine.DSSWars.GameObject
                             }                           
                             break;
 
-                        case ItemResourceType.SiegeCannonBronze:
-                            if (target.group.InGuardPost())
-                            {
-                                DssRef.achieve.UnlockAchievement(AchievementIndex.ottoman);
-                            }
-                            break;
+                        //case ItemResourceType.SiegeCannonBronze:
+                        //    if (target.group.InGuardPost())
+                        //    {
+                        //        DssRef.achieve.UnlockAchievement(AchievementIndex.ottoman);
+                        //    }
+                        //    break;
                     }
                 }
             }

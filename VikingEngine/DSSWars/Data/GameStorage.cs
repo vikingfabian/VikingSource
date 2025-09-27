@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.Data
                 {
                     mutedSongs.Clear();
                     int mutedSongsCount = r.ReadInt32();
-                    for (int i = 0; i <= mutedSongsCount; ++i)
+                    for (int i = 0; i < mutedSongsCount; ++i)
                     { 
                         mutedSongs.Add(r.ReadInt32());
                     }

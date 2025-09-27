@@ -2224,6 +2224,11 @@ namespace VikingEngine
                 add(SpriteName.warsBuildCategorySearch);
                 add(SpriteName.WarsHudGodPowerButton);
                 add(SpriteName.WarsGodPowerIcon);
+                add(SpriteName.WarsConstructBuildingIcon);                
+                add(SpriteName.WarsHudIconPrevious);
+                add(SpriteName.WarsHudIconNext);
+                add(SpriteName.WarsHudIconProgress);
+                add(SpriteName.WarsRelationServant);
             }
 
             currentIndex = numTilesWidth * 87;
@@ -2801,6 +2806,9 @@ namespace VikingEngine
                     add(SpriteName.LangButton_Res1, 8, 2);
 
                     add(SpriteName.WaterEdgeMask_ship, 1, 2);
+                    
+                    add(SpriteName.MenuIconPerformanceCold, 2, 2);
+                    add(SpriteName.MenuIconPerformanceHot, 2, 2);
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 

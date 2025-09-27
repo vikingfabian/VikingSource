@@ -514,7 +514,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             {
                 for (int i = 0; i < DssRef.storage.characterStorage.profiles.Count; ++i)
                 {
-                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, false), i == DssRef.storage.characterStorage.selectedIx, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
+                    flagOptions.AddSubOption((DropDownOption)DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, false), i == DssRef.storage.characterStorage.selectedIx, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
                 }
                 flagOptions.menuCaption = DssRef.storage.characterStorage.Selected().RbButton(DssRef.storage.flagStorage.selectedIx, false);
                 

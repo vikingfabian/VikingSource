@@ -1889,7 +1889,7 @@ namespace VikingEngine.DSSWars.Interface
                     city.res_SiegeCannonIron.toMenu(content, ItemResourceType.SiegeCannonIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.SiegeCannonIron);
 
-                    city.res_SiegeCannonIron.toMenu(content, ItemResourceType.ManCannonIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.res_ManCannonIron.toMenu(content, ItemResourceType.ManCannonIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ManCannonIron);
 
 

@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     var resource = othercity.GetGroupedResource(status.inProgress.type);
 
-                                    if (status.inProgress.type == ItemResourceType.Gold &&
+                                    if (status.IsGold() &&
                                         GetPlayer().IsLocalPlayer())
                                     {
                                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.gold_deliver);

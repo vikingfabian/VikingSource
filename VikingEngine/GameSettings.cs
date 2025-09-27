@@ -24,7 +24,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 26;
+        const int Version = 27;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -51,6 +51,8 @@ namespace VikingEngine
         public InputMap keyboardMap;
         public bool ModelLightShaderEffect = true;
         public bool modelShadow = true;
+
+        public bool farViewDistance = true;
         //public bool modelShadow_Soft = true;
         public bool waterFoam = true;
         public float modelBrightness = 1f;
@@ -140,6 +142,7 @@ namespace VikingEngine
             w.Write(modelBrightness);
 
             w.Write(FrameRate);
+            w.Write(farViewDistance);
 
             Debug.WriteCheck(w);
         }
@@ -223,10 +226,15 @@ namespace VikingEngine
                 FrameRate = r.ReadInt32();
                
             }
-
+            
+            if (version >= 27)
+            {
+                farViewDistance = r.ReadBoolean();
+               
+            }
             Debug.ReadCheck(r);
 
-             Engine.Update.SetFrameRate(FrameRate);
+            Engine.Update.SetFrameRate(FrameRate);
             //MusicMasterVolume = 0;
         }
 
@@ -302,6 +310,25 @@ namespace VikingEngine
             }
         }
 
+        public bool farViewDistanceProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                if (farViewDistance != value)
+                {
+                    farViewDistance = value;
+                    if (DssRef.state != null)
+                    {
+                        foreach (var p in DssRef.state.localPlayers)
+                        {
+                            p.mapLayersManager.refreshLayers();
+                        }
+                    }
+                    settingsHasChanged = true;
+                }
+            }
+            return farViewDistance;
+        }
         public bool fullscreenProperty(object tag, bool set, bool value)
         {
             if (set)
@@ -601,8 +628,11 @@ namespace VikingEngine
         public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             content.newLine();
+            
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.Settings_ModelShadow) },
                 shadowProperty));
+            content.space();
+            content.Add(new RbImage(SpriteName.MenuIconPerformanceHot));
 
             if (modelShadow)
             {
@@ -610,7 +640,7 @@ namespace VikingEngine
                 {
                     for (ShadowResolution resolution = 0; resolution < ShadowResolution.NUM; resolution++)
                     {
-                        shadowMapSizeDropDown.AddOption(ShadowProcessor.Resolution(resolution).ToString(), resolution == shadowResolution,
+                        var dropOpt = shadowMapSizeDropDown.AddOption(ShadowProcessor.Resolution(resolution).ToString(), resolution == shadowResolution,
                             resolution == ShadowResolution.Medium_2048, new RbAction1Arg<ShadowResolution>((ShadowResolution res) =>
                             {
                                 shadowResolution = res;
@@ -618,6 +648,16 @@ namespace VikingEngine
                                 Ref.draw.OnShaderChange(ShaderChangeType.ShadowMap);
                                 menu.CloseDropDown();
                             }, resolution), null);
+
+                        switch (resolution)
+                        {
+                            case ShadowResolution.Low_1024:
+                                dropOpt.iconAfter = SpriteName.MenuIconPerformanceCold;
+                                break;
+                            case ShadowResolution.VeryHigh_8192:
+                                dropOpt.iconAfter = SpriteName.MenuIconPerformanceHot;
+                                break;
+                        }
 
                     }
                 }
@@ -642,14 +682,27 @@ namespace VikingEngine
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_Particles) },
                 particlesProperty));
 
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_FarViewDistance) },
+                farViewDistanceProperty));
+            content.space();
+            content.Add(new RbImage(SpriteName.MenuIconPerformanceHot));
 
             DropDownBuilder frameRateOptions = new DropDownBuilder("fps");
             {
                 foreach (var fps in FrameRateOptions)
                 {
-                    frameRateOptions.AddOption(fps.ToString(), fps == FrameRate, fps == 60,
+                    var dropOpt = frameRateOptions.AddOption(fps.ToString(), fps == FrameRate, fps == 60,
                         new RbAction1Arg<int>((int fps) => { FrameRate = fps; Engine.Update.SetFrameRate(FrameRate); settingsHasChanged = true; menu.CloseDropDown(); }, fps), null);
 
+                    if (fps == FrameRateOptions[0])
+                    {
+                        dropOpt.iconAfter = SpriteName.MenuIconPerformanceCold;
+                    }
+                    else if (fps == arraylib.Last(FrameRateOptions))
+                    {
+                        dropOpt.iconAfter = SpriteName.MenuIconPerformanceHot;
+                    }
                 }
                 frameRateOptions.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.Settings_FrameRate, menu);
             }
@@ -658,7 +711,7 @@ namespace VikingEngine
             {
                 for (ThreeOptions opt = 0; opt < ThreeOptions.NUM; opt++)
                 {
-                    mapLoadingDropDown.AddOption(Ref.langOpt.ThreeOption(opt),
+                    var dropOpt = mapLoadingDropDown.AddOption(Ref.langOpt.ThreeOption(opt),
                         opt == MapLoadingSpeed, opt == ThreeOptions.Medium, new RbAction1Arg<ThreeOptions>((ThreeOptions value) =>
                         {
                             MapLoadingSpeed = value;
@@ -667,6 +720,16 @@ namespace VikingEngine
 
                             DssRef.state?.detailMap?.refreshLoadSpeed();
                         }, opt), null);
+
+                    switch (opt)
+                    {
+                        case 0:
+                            dropOpt.iconAfter = SpriteName.MenuIconPerformanceCold;
+                            break;
+                        case ThreeOptions.NUM - 1:
+                            dropOpt.iconAfter = SpriteName.MenuIconPerformanceHot;
+                            break;
+                    }
                 }
                 mapLoadingDropDown.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_MapLoadSpeed, menu);
             }

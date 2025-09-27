@@ -1059,14 +1059,17 @@ namespace VikingEngine.DSSWars.GameObject
                 if (onCity.factionIndex == factionIndex)
                 {
                     var faction = GetFaction();
-                    if (gold < goldCarryCapacity)
+                    if (faction != null)
                     {
-                        gold += faction.payMoney_MuchAsPossible(goldCarryCapacity - gold, onCity);
-                    }
-                    else if (gold > goldCarryCapacity)
-                    {
-                        faction.addGold(gold - goldCarryCapacity, onCity);
-                        gold = goldCarryCapacity;
+                        if (gold < goldCarryCapacity)
+                        {
+                            gold += faction.payMoney_MuchAsPossible(goldCarryCapacity - gold, onCity);
+                        }
+                        else if (gold > goldCarryCapacity)
+                        {
+                            faction.addGold(gold - goldCarryCapacity, onCity);
+                            gold = goldCarryCapacity;
+                        }
                     }
                 }
             }

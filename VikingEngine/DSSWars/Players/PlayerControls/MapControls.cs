@@ -967,10 +967,10 @@ namespace VikingEngine.DSSWars.Players
                     break;
                 case SelectTileResult.Recruitment:
                 case SelectTileResult.Postal:
+                case SelectTileResult.GoldDeliver:
                     {
                         player.cityTab = Interface.MenuTab.Delivery;
                         selectedSubTile.city.selectedDelivery = selectedSubTile.city.deliveryIxFromSubTile(selectedSubTile.subTilePos);
-
                     }
                     break;
 

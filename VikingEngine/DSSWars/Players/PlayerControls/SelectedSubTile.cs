@@ -115,6 +115,11 @@ namespace VikingEngine.DSSWars.Players
                                             case Map.TerrainBuildingType.RecruitmentLevel3:
                                                 selectTileResult = SelectTileResult.Recruitment;
                                                 break;
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel1:
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel2:
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel3:
+                                                selectTileResult = SelectTileResult.GoldDeliver;
+                                                break;
 
                                             case Map.TerrainBuildingType.SoldierBarracks:
                                             case Map.TerrainBuildingType.ArcherBarracks:
@@ -327,6 +332,7 @@ namespace VikingEngine.DSSWars.Players
         CityHall,
         Postal,
         Recruitment,
+        GoldDeliver,
         Conscript,
         School,
         ResearchCenter,

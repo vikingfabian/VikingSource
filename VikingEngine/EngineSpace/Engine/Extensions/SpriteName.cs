@@ -2299,8 +2299,9 @@ namespace VikingEngine
         MenuIconMonitorFrame,
         MenuIconMonitorArrowsOut,
         MenuIconMonitorArrowsIn,
+        MenuIconPerformanceHot,
+        MenuIconPerformanceCold,
 
-        
         MousePointer,
         ClickCirkleEffect,
 
@@ -2451,7 +2452,9 @@ namespace VikingEngine
         WarsHudIconCrop,
         WarsHudIconSaveProject,
         WarsHudIconOpenProject,
-
+        WarsHudIconNext,
+        WarsHudIconPrevious,
+        WarsHudIconProgress,
 
         DSS2MainMenu,
         SteamIcon,
@@ -2526,6 +2529,7 @@ namespace VikingEngine
         WarsRelationEnemy,
         WarsRelationWar,
         WarsRelationTotalWar,
+        WarsRelationServant,
         WarsRelationFlagOutline,
         WarsRelationFlag,
         
@@ -2569,7 +2573,7 @@ namespace VikingEngine
         WarsDiplomaticAddTime,
         WarsDiplomaticSub,
         WarsDiplomaticSubTime,
-
+        
         WarsArmy,
         WarsGuard,
         WarsGuardAdd,
@@ -2582,6 +2586,8 @@ namespace VikingEngine
         WarsHammer,
         WarsHammerAdd,
         WarsHammerSub,
+        WarsConstructBuildingIcon,
+
         WarsIncreaseArrowUp,
         WarsDecreaseArrowDown,
 
@@ -2893,6 +2899,7 @@ namespace VikingEngine
         rtsRelationAllied,
         rtsRelationAtWar,
         rtsRelationNemesis,
+        
 
         rtsLoading0of8,
         rtsLoading1of8,

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
@@ -16,7 +17,6 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
-using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.DSSWars.Resource;
@@ -850,10 +850,14 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Z))
                 {
-                    DssRef.state.events.TestNextEvent();
+                    //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
+                    //DssRef.state.events.TestNextEvent();
+                    //DssRef.state.events.TestNextEvent();
+                    hud.objMenu.diplomacy?.makeServant();
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
+                    //DssRef.state.events.TestNextEvent();
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
                     battleLineUpTest2(true);
                     //DssRef.state.events.TestNextEvent();
@@ -1216,7 +1220,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 6; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -1280,7 +1284,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         conscript = new ConscriptProfile()
                         {
-                            weapon = Resource.ItemResourceType.Ballista,
+                            weapon = Resource.ItemResourceType.SiegeCannonBronze,
                             armorLevel = Resource.ItemResourceType.IronArmor,
                             training = TrainingLevel.Basic,
                             specialization = SpecializationType.Traditional,

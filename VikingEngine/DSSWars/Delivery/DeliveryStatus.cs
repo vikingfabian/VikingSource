@@ -60,7 +60,12 @@ namespace VikingEngine.DSSWars.Delivery
         }
         public bool IsRecruitment()
         {
-            return profile.type == ItemResourceType.Men;
+            return profile.type == DeliveryType_Men;
+        }
+
+        public bool IsPostal()
+        {
+            return profile.type != DeliveryType_Men && profile.type != DeliveryType_Gold;
         }
 
         public ItemResourceType GetFilterType()

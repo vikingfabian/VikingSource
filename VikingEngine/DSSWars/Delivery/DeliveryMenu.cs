@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Delivery
 
                 content.newParagraph();
 
-                if (!currentStatus.IsRecruitment())
+                if (currentStatus.IsPostal())
                 {
                     HudLib.Label(content, DssRef.lang.Resource);
                     content.space();

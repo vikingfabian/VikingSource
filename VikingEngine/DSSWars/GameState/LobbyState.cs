@@ -1342,8 +1342,17 @@ namespace VikingEngine.DSSWars
                 {
                     for (MapSize sz = 0; sz < MapSize.Epic; ++sz)
                     {
-                        mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.gameRuleset.mapSize == sz, defaultOptions.gameRuleset.mapSize == sz,
+                       var dropOpt =  mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.gameRuleset.mapSize == sz, defaultOptions.gameRuleset.mapSize == sz,
                             new RbAction1Arg<MapSize>(setMapSize, sz), null);
+                        switch (sz)
+                        {
+                            case 0:
+                                dropOpt.iconAfter = SpriteName.MenuIconPerformanceCold;
+                                break;
+                            case MapSize.Epic -1:
+                                dropOpt.iconAfter = SpriteName.MenuIconPerformanceHot;
+                                break;
+                        }
                     }
                     mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, underMenu);
                 }
@@ -1587,7 +1596,7 @@ namespace VikingEngine.DSSWars
             {
                 for (int i = 0; i < DssRef.storage.characterStorage.profiles.Count; ++i)
                 {
-                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, true), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
+                    flagOptions.AddSubOption((DropDownOption)DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, true), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
                 }
                 flagOptions.menuCaption = DssRef.storage.profileStorage.profiles[profileIx].character.RbButton(DssRef.storage.flagStorage.selectedIx, true);
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
