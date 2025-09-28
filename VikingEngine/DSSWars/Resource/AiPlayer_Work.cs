@@ -31,10 +31,10 @@ namespace VikingEngine.DSSWars.Players
 
                 if (city != null)
                 {
-                    
 
-                    city.res_food.goalBuffer = city.workForce.amount / 100 * 100 + 200;
-                    city.res_rawFood.goalBuffer = city.workForce.amount / 300 * 100 + 100;
+                    city.autoAdjustResourcesToCitySize();
+                    //city.res_food.goalBuffer = Bound.Min(city.workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage);
+                    //city.res_rawFood.goalBuffer = city.workForce.amount / 300 * 100 + 100;
 
 
                     //DOES NOT WORK - will reset in auto_updateWorkPrio()

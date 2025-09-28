@@ -1,9 +1,12 @@
 ﻿UPDATE
 Change Log:
 
-
-Translation:
-
+City  Automation:
+- higher probability of logistics
+- "grow" may upgrade the city hall
+- will auto adjust the food stockpile
+- lowered the chance of master guilds
+- fixed a bug that limited the worker huts
 
 Event timers (are slightly random)
 - Bot delay: 8 minutes

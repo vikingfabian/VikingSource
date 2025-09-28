@@ -105,7 +105,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (toLevel == 1)
             {
-                return res_food.amount >= Logistics1FoodStorage;
+                return res_food.amount >= DssConst.Logistics1FoodStorage;
             }
             else if (toLevel == 2)
             {
@@ -3229,23 +3229,26 @@ namespace VikingEngine.DSSWars.GameObject
         {
             bool available = canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available);
 
-            blueprint.payResources(this);
-            //freeServiceMen.amount -= serviceHouses_required;
-            cityType++;
-            TerrainBuildingType hall;
-            if (cityType == CityType.Town)
+            if (available)
             {
-                hall = TerrainBuildingType.CityHall_Town;
-            }
-            else
-            {
-                hall = TerrainBuildingType.CityHall_Capital;
-            }
-            SubTile subTile = new SubTile();
-            subTile.SetType(TerrainMainType.Building, (int)hall, 1);
-            new EditSubTile(cityHallSubtilePos, subTile, true, false, false).Submit();
+                blueprint.payResources(this);
+                //freeServiceMen.amount -= serviceHouses_required;
+                cityType++;
+                TerrainBuildingType hall;
+                if (cityType == CityType.Town)
+                {
+                    hall = TerrainBuildingType.CityHall_Town;
+                }
+                else
+                {
+                    hall = TerrainBuildingType.CityHall_Capital;
+                }
+                SubTile subTile = new SubTile();
+                subTile.SetType(TerrainMainType.Building, (int)hall, 1);
+                new EditSubTile(cityHallSubtilePos, subTile, true, false, false).Submit();
 
-            refreshCitySize();
+                refreshCitySize();
+            }
         }
 
         public Army recruitToClosestArmy()

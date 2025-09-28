@@ -27,8 +27,7 @@ namespace VikingEngine.DSSWars.GameObject
         static List<BuildAndExpandType> AutoBuildList = new List<BuildAndExpandType>(4);
         static RandomObjects_Int AutoBuild_RandomBuild = new RandomObjects_Int();
         static List<BuildAndExpandType> AutoBuild_available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-        //static List<BuildAndExpandType> AutoBuild_available_mustInclude = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-
+        
         public bool automateCity = false;
         public AutomationFocus automationFocus = AutomationFocus.NoFocus;
         public WarAutoQuality warAutoQuality = WarAutoQuality.Medium;
@@ -86,6 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else if (automateCity)
                 {
+                    autoAdjustResourcesToCitySize();
                     commit_automateCityBuilding();
                 }
                 else //Player default
@@ -136,20 +136,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            
-
-            //bool checkAutoBuildAvailable()
-            //{
-            //    if (buildingStructure.buildingLevel_logistics < 2)
-            //    {
-            //        var p = player.GetLocalPlayer();
-            //        if (p != null)
-            //        {
-            //            return p.orders.buildQueue(this) + 1 < MaxBuildQueue();
-            //        }
-            //    }
-            //    return true;
-            //}
         }
 
         void findAdjacentFreeSpot(ForXYEdgeLoopRandomPicker edgeRandomizer, IntVector2 center, ref IntVector2 result)
@@ -180,6 +166,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             int pickCount = lib.SmallestValue(AutoBuild_available.Count, 4);
 
+            auto_addBuildingType(BuildAndExpandType.Logistics);
+
             switch (automationFocus)
             {
                 case AutomationFocus.Food:
@@ -193,6 +181,10 @@ namespace VikingEngine.DSSWars.GameObject
                     auto_addBuildingType(BuildAndExpandType.WheatFarm);
                     auto_addBuildingType(BuildAndExpandType.WorkBench);
                     auto_addBuildingType(BuildAndExpandType.ServiceHouse_Small);
+                    if (homeUsers() >= WorkersMaxLimit - 10)
+                    {
+                        upgradeCityHall();
+                    }
                     break;
                 case AutomationFocus.Export:
                     auto_addBuildingType(BuildAndExpandType.Postal);
@@ -220,6 +212,17 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void autoAdjustResourcesToCitySize()
+        {
+            int multi = automationFocus == AutomationFocus.Food ? 5 : 1;
+
+            res_food.goalBuffer = Bound.Min(workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage) * multi;
+            res_rawFood.goalBuffer = (workForce.amount / 300 * 100 + 100) * multi;
+            res_fuel.goalBuffer = res_rawFood.goalBuffer;
+
+
+        }
+
         private void auto_addBuildingType(BuildAndExpandType buildType)
         {
             const int NoMaxLimit = 500;
@@ -234,9 +237,10 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case BuildAndExpandType.WorkerHutLarge:
                     case BuildAndExpandType.WorkerHut:
-                        bBuild = WorkersMaxLimit < HousingCount_Workers;
+                        bBuild = WorkersMaxLimit > HousingCount_Workers;
                         maxCount = 100;
-                        chance = 200;
+                        //chance = 200;
+                        chance = automationFocus == AutomationFocus.Grow ? 4000 : 200;
                         repeat = 4;
                         break;
 
@@ -320,6 +324,16 @@ namespace VikingEngine.DSSWars.GameObject
 
                     case BuildAndExpandType.Foundry:
                         chance = 20;
+                        maxCount = 2;
+                        break;
+
+                    case BuildAndExpandType.Logistics:
+                        chance = automationFocus == AutomationFocus.Grow ? 300 : 150;
+                        maxCount = 1;
+                        break;
+
+                    case BuildAndExpandType.School:
+                        chance = 5;
                         maxCount = 2;
                         break;
                 }
@@ -698,14 +712,6 @@ namespace VikingEngine.DSSWars.GameObject
                 case TerrainMainType.Decor:
                     if (build)
                     {
-                        //bool statue = false;
-                        //switch ((TerrainDecorType)subType)
-                        //{
-                        //    case TerrainDecorType.Statue_ThePlayer:
-                        //        statue = true;
-                        //        break;
-                        //}
-
                         var cityPlayer = GetPlayer();
                         if (cityPlayer.IsLocalPlayer())
                         {
@@ -727,7 +733,6 @@ namespace VikingEngine.DSSWars.GameObject
         Export,
         Military,
         Food,
-        //LevelUp,
     }
     enum WarAutoQuality
     {

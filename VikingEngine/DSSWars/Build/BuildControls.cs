@@ -1090,7 +1090,7 @@ namespace VikingEngine.DSSWars.Build
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.WarsResource_Food));
                     content.space();
-                    var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage));
+                    var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage));
                     reqText.overrideColor = city.CanBuildLogistics(1) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                     content.Add(reqText);
                     break;
