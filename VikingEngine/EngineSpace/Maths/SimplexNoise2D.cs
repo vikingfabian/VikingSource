@@ -124,6 +124,9 @@ namespace VikingEngine.EngineSpace.Maths
             return u[0] * x + u[1] * y;
         }
 
+
+        float F2 = (float)(0.5 * (Math.Sqrt(3.0) - 1.0));
+        float G2 = (float)((3.0 - Math.Sqrt(3.0)) / 6.0);
         // 2D raw Simplex noise
         private float RawNoise2D( float x, float y )
         {
@@ -132,13 +135,13 @@ namespace VikingEngine.EngineSpace.Maths
             n0 = n1 = n2 = 0.0f;
 
             // Skew the input space to determine which simplex cell we're in
-            float F2 = (float)(0.5 * (Math.Sqrt(3.0) - 1.0));
+            
             // Hairy factor for 2D
             float s = (x + y) * F2;
             int i = FastFloor( x + s );
             int j = FastFloor( y + s );
 
-            float G2 = (float)((3.0 - Math.Sqrt(3.0)) / 6.0);
+            
             float t = (i + j) * G2;
             // Unskew the cell origin back to (x,y) space
             float X0 = i-t;
