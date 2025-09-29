@@ -1456,7 +1456,7 @@ namespace VikingEngine.DSSWars.Interface
                         {
                             content.newLine();
                             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                            new RbImage(ResourceLib.Icon(item)), new RbSpace(), new RbText(LangLib.Item(item)) },
+                            new RbImage(ResourceLib.Icon(item)), new RbSpace(), new RbText(TextLib.LargeFirstLetter(LangLib.Item(item))) },
                                 player.hud.pins.isPinnedProperty)
                             { propertyTag = new CityHudPinId(city.myIndex, new HudPin(item)) });
                         }

@@ -1,38 +1,16 @@
 ﻿UPDATE
 Change Log:
-* Turkish acheievements have been manually translated
+* fixed truce icon crash
+* improved letter capilitization
+* some ui improvements
 
-Sound:
-* Heavily reduced the repetition of work sounds
-* Walk sounds reduced by 60%
-* Added the main menu songs
-* fixed: looping music
-* fixed: song list reshuffle bug
 
-City  Automation:
-- higher probability of logistics, and worker huts
-- "grow" may upgrade the city hall
-- will auto adjust the food stockpile
-- lowered the chance of master guilds
-- fixed a bug that limited the worker huts
-
-Event timers (are slightly random)
-- Bot delay: 8 minutes
-- Bot peace time: 30 min
-- The first attack: 35min
-- War manager start: 40min
-- Barbarians: 1.5 hours
-- Mercenaries: 4 hours (total 7 hours by now)
-- The cohalition: 6 hours (or when the player grabs 5 to 7 cities)
-- Boss warning: 12 hours
-- Boss; 1 hour
-Plus the boss fight: about 10 hours
-(total: about 45 hours)
 
 #Pics
 
 
 #must do#
+x new game destroy tooltip
 x Block achievements for imported save files
 x new menu background
 
@@ -193,6 +171,18 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 
 #Voxel
 
+#Event timers (are slightly random)#
+- Bot delay: 8 minutes
+- Bot peace time: 30 min
+- The first attack: 35min
+- War manager start: 40min
+- Barbarians: 1.5 hours
+- Mercenaries: 4 hours (total 7 hours by now)
+- The cohalition: 6 hours (or when the player grabs 5 to 7 cities)
+- Boss warning: 12 hours
+- Boss; 1 hour
+Plus the boss fight: about 10 hours
+(total: about 45 hours)
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
