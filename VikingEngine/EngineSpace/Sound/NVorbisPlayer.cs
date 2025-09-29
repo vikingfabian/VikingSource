@@ -3,11 +3,7 @@ using NVorbis;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using static Sentry.MeasurementUnit;
 
 namespace VikingEngine.EngineSpace.Sound
 {
@@ -322,6 +318,22 @@ namespace VikingEngine.EngineSpace.Sound
                         // Read interleaved float samples:
                         int read = vorbis.ReadSamples(floatBuf, 0, frameSamples);
 
+
+                        if (read == 0)
+                        {
+                            if (IsRepeating)
+                            {
+                                vorbis.TimePosition = TimeSpan.FromSeconds(_loopStartSec ?? 0.0);
+                                continue;
+                            }
+                            else
+                            {
+                                StopInternal(hardStop: false);
+                                MediaEnded?.Invoke();
+                                break;
+                            }
+                        }
+
                         // ... (your end/loop-points code unchanged, but use 'vorbis' and 'sr/ch')
 
                         // Convert and submit using snapshots:
@@ -342,7 +354,7 @@ namespace VikingEngine.EngineSpace.Sound
 
                         if (byteCount == 0)
                         {
-                            break;
+                            break; //On an endless loop, the music is just stuck here
                         }
 
                         dsei.SubmitBuffer(bytes, 0, byteCount);

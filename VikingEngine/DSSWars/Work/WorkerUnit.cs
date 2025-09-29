@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.Sound;
 using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars.Work
@@ -158,14 +159,20 @@ namespace VikingEngine.DSSWars.Work
                                     case TerrainSubFoilType.RapeSeedFarmUpgraded:
                                     case TerrainSubFoilType.HempFarm:
                                     case TerrainSubFoilType.HempFarmUpgraded:
-                                        SoundLib.scythe.Play(model.position);
+                                        if (SoundStackManager.RareAvailable())
+                                        {
+                                            SoundLib.scythe.Play(model.position);
+                                        }
                                         break;
                                     case TerrainSubFoilType.StoneBlock:
                                         SoundLib.pickaxe.Play(model.position);
                                         break;
                                     case TerrainSubFoilType.BogIron:
                                     case TerrainSubFoilType.Stones:
-                                        SoundLib.dig.Play(model.position);
+                                        if (SoundStackManager.RareAvailable())
+                                        {
+                                            SoundLib.dig.Play(model.position);
+                                        }
                                         break;
                                 }
                             }
@@ -177,7 +184,7 @@ namespace VikingEngine.DSSWars.Work
                             }
                             break;
                         case WorkType.Plant:
-                            if (workAnimation_soundframe())
+                            if (workAnimation_soundframe() && SoundStackManager.RareAvailable())
                             {
                                 SoundLib.dig.Play(model.position);
                             }
@@ -194,10 +201,16 @@ namespace VikingEngine.DSSWars.Work
                                     case TerrainBuildingType.Brewery:
                                     case TerrainBuildingType.Work_Bench:
                                     case TerrainBuildingType.Work_Cook:
-                                        SoundLib.genericWork.Play(model.position);
+                                        if (SoundStackManager.RareAvailable())
+                                        {
+                                            SoundLib.genericWork.Play(model.position);
+                                        }
                                         break;
                                     case TerrainBuildingType.Work_Smith:
-                                        SoundLib.anvil.Play(model.position);
+                                        if (SoundStackManager.RareAvailable())
+                                        {
+                                            SoundLib.anvil.Play(model.position);
+                                        }
                                         break;
                                 }
                             }
@@ -216,7 +229,7 @@ namespace VikingEngine.DSSWars.Work
                         case WorkType.Upgrade:
                         case WorkType.Demolish:
                         case WorkType.School:
-                            if (workAnimation_soundframe())
+                            if (workAnimation_soundframe() && SoundStackManager.RareAvailable())
                             {
                                 SoundLib.hammer.Play(model.position);
                             }
@@ -241,7 +254,10 @@ namespace VikingEngine.DSSWars.Work
                                         break;
 
                                     case TerrainSubFoilType.Stones:
-                                        SoundLib.pickup.Play(model.position);
+                                        if (SoundStackManager.RareAvailable())
+                                        {
+                                            SoundLib.pickup.Play(model.position);
+                                        }
                                         break;
                                 }
                                 break;
@@ -251,8 +267,6 @@ namespace VikingEngine.DSSWars.Work
                                 break;
                             case WorkType.DropOff:
                                 SoundLib.drop_item.Play(model.position);
-
-
                                 break;
                             case WorkType.LocalTrade:
                                 SoundLib.buy.Play(model.position);

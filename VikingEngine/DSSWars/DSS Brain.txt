@@ -1,8 +1,16 @@
 ﻿UPDATE
 Change Log:
+* Turkish acheievements have been manually translated
+
+Sound:
+* Heavily reduced the repetition of work sounds
+* Walk sounds reduced by 60%
+* Added the main menu songs
+* fixed: looping music
+* fixed: song list reshuffle bug
 
 City  Automation:
-- higher probability of logistics
+- higher probability of logistics, and worker huts
 - "grow" may upgrade the city hall
 - will auto adjust the food stockpile
 - lowered the chance of master guilds
@@ -25,12 +33,11 @@ Plus the boss fight: about 10 hours
 
 
 #must do#
-x help the AI overcome the initial automation hurdel and not get stuck on Logistics and Town Hall?
 x Block achievements for imported save files
-x lobby music
 x new menu background
 
 #Todo#
+x "no stone/wood" warning on automation
 x placed reciutment service turned to postal
 x music freq option
 x up/down scale render

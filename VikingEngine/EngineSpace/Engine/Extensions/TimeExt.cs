@@ -27,7 +27,12 @@ namespace VikingEngine
 
         public static float SecondsToHours(float sec)
         {
-            return sec / 3600;
+            return sec / HourInSeconds;
+        }
+
+        public static float SecondsToMinutes(float sec)
+        {
+            return sec / MinuteInSeconds;
         }
 
         public static float MillsSecToSec(float ms)

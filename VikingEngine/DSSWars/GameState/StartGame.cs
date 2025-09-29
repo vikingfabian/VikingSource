@@ -28,11 +28,13 @@ namespace VikingEngine.DSSWars
                new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
                new Vector2(Engine.Screen.TextSize * 2f),
                Graphics.Align.Zero, "...", Color.White, ImageLayers.Lay1);
+            
             Ref.music.stop(true);
+            Ref.music.DelayBetweenSongs_minutes = new IntervalF(5, 8);
+            Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
 
             new PlaySettings();
         }
-
 
         public override void Time_Update(float time)
         {
