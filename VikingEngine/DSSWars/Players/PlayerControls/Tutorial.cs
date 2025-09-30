@@ -498,8 +498,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 onMissionSuccess();
             }
 #endif
-
-
             switch (missions.sel)
             {
                 case TutorialMission.CasualBuildBarracks:
@@ -675,6 +673,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 
                 case TutorialMission.Linen:
+
+                    ((PlayState)DssRef.state).speedUpGrowing();
+
                     if (!linen_selectTab)
                     {
                         if (player.cityTab == Interface.MenuTab.Build)
@@ -683,6 +684,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             onPartSuccess();
                         }
                     }
+
                     if (!linen_build)
                     {
                         lock (player.orders.orders)
@@ -698,16 +700,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             }
                         }
                     }
-                    //if (!linen_armorWork)
-                    //{
-                    //    if (player.mapControls.selection.obj is City &&
-                    //        player.mapControls.selection.obj.GetCity().workTemplate.craft_lightarmor.value > 0)
-                    //    {
-                    //        linen_armorWork = true;
-
-                    //        onPartSuccess();
-                    //    }
-                    //}
+                   
                     if (!linen_collect)
                     {
                         if (player.gameControls.map.selection.obj is City)

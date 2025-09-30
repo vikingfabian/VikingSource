@@ -1,20 +1,19 @@
 ﻿UPDATE
 Change Log:
-* fixed truce icon crash
-* improved letter capilitization
-* some ui improvements
-
-
+* fixed: Crash after selecting edit player profile
+* fixed: event timers run during tutorial (plus fight reduction)
+* faster linnen tutorial
 
 #Pics
 
 
 #must do#
-x new game destroy tooltip
+
 x Block achievements for imported save files
 x new menu background
 
 #Todo#
+x load game shows "destroy" tooltip
 x "no stone/wood" warning on automation
 x placed reciutment service turned to postal
 x music freq option

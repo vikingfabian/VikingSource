@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameState.CharacterCreator;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Players.Profile
@@ -40,9 +41,9 @@ namespace VikingEngine.DSSWars.Players.Profile
             return string.Format(DssRef.lang.Lobby_CharacterCreationNumbered, TextLib.IndexToString(StorageIndex));
         }
 
-        public List<AbsRichBoxMember> RbButton(int flagIndex, bool rotating)
+        public DropDownOption RbButton(int flagIndex, bool rotating)
         {
-            List<AbsRichBoxMember> result = new List<AbsRichBoxMember>(2);
+            DropDownOption result = new DropDownOption();
             //result.Add(new RbTexture(flag.flagDesign.CreateTexture(flag)));
             result.Add(new CharacterRichBoxIcon(StorageIndex, flagIndex, rotating));
             result.Add(new RbSpace());

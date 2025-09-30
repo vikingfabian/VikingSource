@@ -516,14 +516,17 @@ namespace VikingEngine.DSSWars
             //asynchMapGenerating(0, time);
         }
 
-        
-
-        
-
         const float AutoSaveTimeSec = 15 * TimeExt.MinuteInSeconds;
         float LastAutoSaveTime_TotalSec = 0;
 
-        
+        public void speedUpGrowing()
+        {
+            if (DssRef.time.oneSecond)
+            {
+                bResourceMinuteUpdate = true;
+            }
+        }
+
         override public void OneMinute_Update()
         { 
             bResourceMinuteUpdate = true;

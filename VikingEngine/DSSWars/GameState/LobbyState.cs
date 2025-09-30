@@ -1598,7 +1598,7 @@ namespace VikingEngine.DSSWars
             {
                 for (int i = 0; i < DssRef.storage.characterStorage.profiles.Count; ++i)
                 {
-                    flagOptions.AddSubOption((DropDownOption)DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, true), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
+                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, true), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
                 }
                 flagOptions.menuCaption = DssRef.storage.profileStorage.profiles[profileIx].character.RbButton(DssRef.storage.flagStorage.selectedIx, true);
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
