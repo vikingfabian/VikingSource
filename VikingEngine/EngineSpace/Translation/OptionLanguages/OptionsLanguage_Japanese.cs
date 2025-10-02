@@ -9,6 +9,8 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Japanese : AbsOptionsLanguage
     {
+        public override string GraphicsOption_FarViewDistance => "遠距離ビュー";
+
         public override string Hud_Cancel => "キャンセル";
         public override string Hud_Back => "戻る";
 

@@ -2579,5 +2579,29 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_WhenFoodRunsOut => "Yemek bittiğinde, şehirler ve ordular onu otomatik olarak karaborsadan satın alır.";
 
+        //Launch test
+        
+
+        public override string InputActionName_NextWar => "Sıradaki savaşan fraksiyon";
+
+        /// <summary>
+        /// These symbols are needed to fit large numbers on the HUD,
+        /// there will be a tooltip to explain what number it represents
+        /// </summary>
+        public override string EngineHud_SymbolFor100 => "c";
+        public override string EngineHud_SymbolFor1000 => "k";
+        public override string EngineHud_SymbolFor10000 => "10k";
+
+        /// <summary>
+        /// When loading files from other players, you won’t get their achievement progress
+        /// </summary>
+        public override string GameMenu_BlockImportAchievements => "İçe aktarılan dosyalarda başarımları engelle";
+
+        public override string EndScreen_PeaceVictoryQuote => "Kılıçlarımızı bırakalım ve daha iyi bir geleceğe sarılalım";
+
+        public override string VictoryType_DefeatBoss => "Boss yenildi";
+        public override string VictoryType_Domination => "Hakimiyet";
+        public override string VictoryType_WorldPeace => "Dünya barışı";
+
     }
 }

@@ -130,16 +130,16 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                     switch (vType)
                     { 
                         case VictoryType.DefeatBoss:
-                            typeText = DssRef.todoLang.VictoryType_DefeatBoss;
+                            typeText = DssRef.lang.VictoryType_DefeatBoss;
                             endquote = arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes);
                             break;
                         case VictoryType.Domination:
-                            typeText = DssRef.todoLang.VictoryType_Domination;
+                            typeText = DssRef.lang.VictoryType_Domination;
                             endquote = DssRef.lang.EndScreen_DominationVictoryQuote;
                             break;
                         case VictoryType.WorldPeace:
-                            typeText = DssRef.todoLang.VictoryType_WorldPeace;
-                            endquote = DssRef.todoLang.EndScreen_PeaceVictoryQuote;
+                            typeText = DssRef.lang.VictoryType_WorldPeace;
+                            endquote = DssRef.lang.EndScreen_PeaceVictoryQuote;
                             break;
                     }
 

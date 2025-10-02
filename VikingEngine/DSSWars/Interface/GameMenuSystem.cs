@@ -371,9 +371,9 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.newLine();
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
-                    //content.newLine();
-                    //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
                 }
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_BlockImportAchievements) }, blockImportAchievementsProperty));
             }
             //content.newLine();
             //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Low memory garbarge collecting") }, Ref.gamesett.lowGCProperty));
@@ -404,7 +404,16 @@ namespace VikingEngine.DSSWars.Interface
                 return DssRef.storage.speed5x;
             }
 
-            
+            bool blockImportAchievementsProperty(object tag, bool set, bool value)
+            {
+                if (set)
+                {
+                    DssRef.storage.blockImportAchievements = value;
+
+                    DssRef.storage.Save(null);
+                }
+                return DssRef.storage.blockImportAchievements;
+            }
 
             //bool longerBuildQueueProperty(object tag, bool set, bool value)
             //{

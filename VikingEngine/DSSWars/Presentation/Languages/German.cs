@@ -2410,5 +2410,28 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_WhenFoodRunsOut => "Wenn die Nahrung ausgeht, kaufen Städte und Armeen sie automatisch auf dem Schwarzmarkt.";
 
+        //Launch test
+        
+        public override string InputActionName_NextWar => "Nächste Fraktion im Krieg";
+
+        /// <summary>
+        /// These symbols are needed to fit large numbers on the HUD,
+        /// there will be a tooltip to explain what number it represents
+        /// </summary>
+        public override string EngineHud_SymbolFor100 => "c";
+        public override string EngineHud_SymbolFor1000 => "k";
+        public override string EngineHud_SymbolFor10000 => "10k";
+
+        /// <summary>
+        /// When loading files from other players, you won’t get their achievement progress
+        /// </summary>
+        public override string GameMenu_BlockImportAchievements => "Erfolge bei importierten Spielständen blockieren";
+
+        public override string EndScreen_PeaceVictoryQuote => "Lasst uns die Schwerter niederlegen und eine bessere Zukunft annehmen";
+
+        public override string VictoryType_DefeatBoss => "Boss besiegt";
+        public override string VictoryType_Domination => "Domination";
+        public override string VictoryType_WorldPeace => "Weltfrieden";
+
     }
 }

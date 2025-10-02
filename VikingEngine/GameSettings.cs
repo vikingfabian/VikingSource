@@ -445,8 +445,6 @@ namespace VikingEngine
             return ParticlesEffect;
         }
 
-
-
         public void optionsMenu(GuiLayout layout)
         {
             soundOptions(layout);
@@ -683,7 +681,7 @@ namespace VikingEngine
                 particlesProperty));
 
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_FarViewDistance) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GraphicsOption_FarViewDistance) },
                 farViewDistanceProperty));
             content.space();
             content.Add(new RbImage(SpriteName.MenuIconPerformanceHot));

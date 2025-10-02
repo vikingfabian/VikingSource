@@ -1,15 +1,12 @@
 ﻿UPDATE
 Change Log:
-* fixed: Crash after selecting edit player profile
-* fixed: event timers run during tutorial (plus fight reduction)
-* faster linnen tutorial
+* Block achievements for imported save files
+* All new words are localized
 
 #Pics
 
 
 #must do#
-
-x Block achievements for imported save files
 x new menu background
 
 #Todo#
@@ -108,6 +105,30 @@ save count på end screen, +min difficulty
 lamps - förbättrar produktion i area, måste fyllas med fuel
 förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 
+#Known issues
+-Cant move units between armies and garrisons
+-There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
+-Soldier groups glitch in battle
+-City walls are confusing
+-"homes" are confusing in child description
+-army center can move to far from soldiers
+-armies can be too passive to enemy armies passing by
+-army centers should not stay on cities
+-guards can be moved very far from cities (minor issue)
+-Armies need to collect themselves before attack
+-Ships show wrong strength
+-War declaration needs clickable button
+-Need to block two maps from loading at the same time, changing map and pressing start can run the old setting
+-Controller doesnt work in any menues 
+-Can't go from multiplayer to single on a save
+-Worker skill is lost during recruitment to armies or other cities
+-Soldiers walk through walls
+-Steam input removes the xbox controller input
+-The red attack GUI line flickers
+-can cheese building over borders and using copy 
+
+
+
 #ANIMAL UPDATE#
 Some resource ideas for next big update:
 Stone, are either bricks or stones 
@@ -190,6 +211,8 @@ Fully translate all the strings in the file to Brazilian Portuguese and save int
 Brazilians are used to English in gaming, use a “hybrid” translation.
 Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
 The game is a strategy wargame, with medieval and low fantasy theme.
+
+Where English is used in gaming, use a “hybrid” translation.
 
 
 https://discord.com/verification

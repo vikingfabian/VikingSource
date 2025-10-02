@@ -295,69 +295,74 @@ namespace VikingEngine.EngineSpace.Sound
                 {
                     try
                     {
-                        var vorbis = _vorbis;                 // snapshot decoder
-                        var dsei = _dsei;                   // snapshot device
-                        int sr = _sampleRate;             // snapshot sample rate
-                        int ch = _channels;               // snapshot channels
-
-                        if (vorbis == null || dsei == null || sr <= 0 || (ch != 1 && ch != 2))
-                            break;
-
-                        // Compute sizes from snapshots ONLY:
-                        int samplesPerBuffer = (int)(BufferMillis * sr / 1000.0); // per-channel samples
-                        int frameSamples = samplesPerBuffer * ch;             // interleaved total
-
-                        // Allocate (or reallocate) working buffers if needed:
-                        floatBuf ??= new float[frameSamples];
-                        if (floatBuf.Length < frameSamples) floatBuf = new float[frameSamples];
-                        pcm ??= new short[frameSamples];
-                        if (pcm.Length < frameSamples) pcm = new short[frameSamples];
-                        bytes ??= new byte[frameSamples * bytesPerSample];
-                        if (bytes.Length < frameSamples * bytesPerSample) bytes = new byte[frameSamples * bytesPerSample];
-
-                        // Read interleaved float samples:
-                        int read = vorbis.ReadSamples(floatBuf, 0, frameSamples);
-
-
-                        if (read == 0)
+                        lock (_lock)
                         {
-                            if (IsRepeating)
-                            {
-                                vorbis.TimePosition = TimeSpan.FromSeconds(_loopStartSec ?? 0.0);
-                                continue;
-                            }
-                            else
-                            {
-                                StopInternal(hardStop: false);
-                                MediaEnded?.Invoke();
+
+                            var vorbis = _vorbis;                 // snapshot decoder
+                            var dsei = _dsei;                   // snapshot device
+                            int sr = _sampleRate;             // snapshot sample rate
+                            int ch = _channels;               // snapshot channels
+
+
+                            if (vorbis == null || dsei == null || sr <= 0 || (ch != 1 && ch != 2))
                                 break;
+
+                            // Compute sizes from snapshots ONLY:
+                            int samplesPerBuffer = (int)(BufferMillis * sr / 1000.0); // per-channel samples
+                            int frameSamples = samplesPerBuffer * ch;             // interleaved total
+
+                            // Allocate (or reallocate) working buffers if needed:
+                            floatBuf ??= new float[frameSamples];
+                            if (floatBuf.Length < frameSamples) floatBuf = new float[frameSamples];
+                            pcm ??= new short[frameSamples];
+                            if (pcm.Length < frameSamples) pcm = new short[frameSamples];
+                            bytes ??= new byte[frameSamples * bytesPerSample];
+                            if (bytes.Length < frameSamples * bytesPerSample) bytes = new byte[frameSamples * bytesPerSample];
+
+                            // Read interleaved float samples:
+                            int read = vorbis.ReadSamples(floatBuf, 0, frameSamples);
+
+
+                            if (read == 0)
+                            {
+                                if (IsRepeating)
+                                {
+                                    vorbis.TimePosition = TimeSpan.FromSeconds(_loopStartSec ?? 0.0);
+                                    continue;
+                                }
+                                else
+                                {
+                                    StopInternal(hardStop: false);
+                                    MediaEnded?.Invoke();
+                                    break;
+                                }
                             }
+
+                            // ... (your end/loop-points code unchanged, but use 'vorbis' and 'sr/ch')
+
+                            // Convert and submit using snapshots:
+                            float gain = Math.Clamp(_fadeGain, 0f, 1f);
+                            for (int i = 0; i < read; i++)
+                            {
+                                float f = floatBuf[i] * gain;
+                                if (f < -1f) f = -1f; else if (f > 1f) f = 1f;
+                                pcm[i] = (short)(f * 32767f);
+                            }
+                            int byteCount = read * bytesPerSample;
+
+                            // (Optional) clamp to block align just in case:
+                            int blockAlign = ch * bytesPerSample;             // 2 bytes * channels
+                            byteCount -= (byteCount % blockAlign);
+
+                            Buffer.BlockCopy(pcm, 0, bytes, 0, byteCount);
+
+                            if (byteCount == 0)
+                            {
+                                break; //On an endless loop, the music is just stuck here
+                            }
+
+                            dsei.SubmitBuffer(bytes, 0, byteCount);
                         }
-
-                        // ... (your end/loop-points code unchanged, but use 'vorbis' and 'sr/ch')
-
-                        // Convert and submit using snapshots:
-                        float gain = Math.Clamp(_fadeGain, 0f, 1f);
-                        for (int i = 0; i < read; i++)
-                        {
-                            float f = floatBuf[i] * gain;
-                            if (f < -1f) f = -1f; else if (f > 1f) f = 1f;
-                            pcm[i] = (short)(f * 32767f);
-                        }
-                        int byteCount = read * bytesPerSample;
-
-                        // (Optional) clamp to block align just in case:
-                        int blockAlign = ch * bytesPerSample;             // 2 bytes * channels
-                        byteCount -= (byteCount % blockAlign);
-
-                        Buffer.BlockCopy(pcm, 0, bytes, 0, byteCount);
-
-                        if (byteCount == 0)
-                        {
-                            break; //On an endless loop, the music is just stuck here
-                        }
-
-                        dsei.SubmitBuffer(bytes, 0, byteCount);
                         //_buffersQueued++;
                     }
                     catch (Exception ex)
@@ -418,24 +423,27 @@ namespace VikingEngine.EngineSpace.Sound
 
         private void StopInternal(bool hardStop)
         {
-            IsPlaying = false;
-            IsPaused = false;
-            _isManuallyPaused = false;
-
-            try { _dsei?.Stop(); } catch { /* ignore */ }
-            _dsei?.Dispose(); _dsei = null;
-
-            _vorbis?.Dispose(); _vorbis = null;
-
-            if (_ownsStream) { try { _stream?.Dispose(); } catch { } }
-            _stream = null; _ownsStream = false;
-
-            //_buffersQueued = 0;
-
-            if (hardStop)
+            lock (_lock)
             {
-                _loopStartSec = null;
-                _loopEndSec = null;
+                IsPlaying = false;
+                IsPaused = false;
+                _isManuallyPaused = false;
+
+                try { _dsei?.Stop(); } catch { /* ignore */ }
+                _dsei?.Dispose(); _dsei = null;
+
+                _vorbis?.Dispose(); _vorbis = null;
+
+                if (_ownsStream) { try { _stream?.Dispose(); } catch { } }
+                _stream = null; _ownsStream = false;
+
+                //_buffersQueued = 0;
+
+                if (hardStop)
+                {
+                    _loopStartSec = null;
+                    _loopEndSec = null;
+                }
             }
         }
 

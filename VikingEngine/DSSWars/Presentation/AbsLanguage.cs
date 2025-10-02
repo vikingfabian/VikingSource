@@ -1700,5 +1700,22 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Hud_EffectWillStack { get; }
 
         public abstract string Info_WhenFoodRunsOut { get; }
+
+        //Launch test
+        
+
+        public abstract string InputActionName_NextWar { get; }
+
+        public abstract string EngineHud_SymbolFor100 { get; }
+        public abstract string EngineHud_SymbolFor1000 { get; }
+        public abstract string EngineHud_SymbolFor10000 { get; }
+
+        public abstract string GameMenu_BlockImportAchievements { get; }
+
+        public abstract string EndScreen_PeaceVictoryQuote { get; }
+
+        public abstract string VictoryType_DefeatBoss { get; }
+        public abstract string VictoryType_Domination { get; }
+        public abstract string VictoryType_WorldPeace { get; }
     }
 }

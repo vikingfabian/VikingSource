@@ -8,7 +8,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Turkish : AbsOptionsLanguage
     {
-
+        public override string GraphicsOption_FarViewDistance => "Uzun mesafe görüşü";
 
         public override string Hud_Cancel => "İptal";
         public override string Hud_Back => "Geri";

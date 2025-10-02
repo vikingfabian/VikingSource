@@ -2665,18 +2665,12 @@ namespace VikingEngine.DSSWars
         {
             SaveStateMeta meta = new SaveStateMeta();            
             meta.import = name;
+            meta.importedWorld = true;
             loadGame = meta;
             openPlayerSetupForMode(StartGameMode.Play);
-            //meta.loadImportMeta();
+            
         }
-        //public void loadFileClick(SaveStateMeta saveMeta)
-        //{
-        //    loadGame = saveMeta;
-
-        //    openPlayerSetupForMode(StartGameMode.Play);
-        //}
-
-
+        
 
         void selectController_startGame(InputSource inputSource, SaveStateMeta saveMeta)
         {
@@ -2686,15 +2680,6 @@ namespace VikingEngine.DSSWars
 
             new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
         }
-
-        //void startGame(SaveStateMeta saveMeta)
-        //{
-        //    //var playerData = DssRef.storage.localPlayers[0];
-        //    //playerData.inputSource = inputSource;
-        //    //DssRef.storage.checkPlayerDoublettes(0);
-
-        //    new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
-        //}
 
     }
 

@@ -202,6 +202,11 @@ namespace VikingEngine.DSSWars
 #if DEBUG
             System.Diagnostics.Debug.WriteLine("[!] Achievement: " + achievement.ToString());
 #endif
+            if (DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
+            {
+                return;
+            }
+
             if (Ref.steam.isInitialized)
             {
                 Ref.steam.Achievements.SetAchievement((int)achievement);
@@ -220,6 +225,11 @@ namespace VikingEngine.DSSWars
 #if DEMO
             return;
 #endif
+            if (DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
+            {
+                return;
+            }
+
             if (Ref.steam.isInitialized)
             {
                 Ref.steam.Achievements.SetAchievement_async((int)achievement);

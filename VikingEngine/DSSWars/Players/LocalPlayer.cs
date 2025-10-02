@@ -1262,7 +1262,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         conscript = new ConscriptProfile()
                         {
-                            weapon = Resource.ItemResourceType.SiegeCannonBronze,
+                            weapon = Resource.ItemResourceType.Ballista,
                             armorLevel = Resource.ItemResourceType.IronArmor,
                             training = TrainingLevel.Basic,
                             specialization = SpecializationType.Traditional,
