@@ -441,6 +441,11 @@ namespace VikingEngine.DSSWars.GameObject
             tilePos.readUshort(r);
 
             cityType = (CityType)r.ReadByte();
+            if (version < 82)
+            {
+                cityType += 2;
+            }
+            
             areaSize = r.ReadUInt16();
             cityTileRadius = r.ReadByte();
             
@@ -3332,6 +3337,8 @@ namespace VikingEngine.DSSWars.GameObject
 
     enum CityType
     {
+        UnClaimed,
+        Campsite,
         Village,
         Town,
         Capital,
