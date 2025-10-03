@@ -2,12 +2,31 @@
 Change Log:
 * Block achievements for imported save files
 * All new words are localized
+* Manual Turkish translation on the last update
+
 
 #Pics
 
 
 #must do#
 x new menu background
+
+#Winter update#
+x Unclaimed land
+x Settler unit
+x Camp site city tier
+x Fog of war
+x Game mode: start with nothing
+x Game mode: quick match
+x 300% difficulty 
+x Extended diplomacy options, and be able to command allies with diplomacy points
+x casual mode: embassy building
+x A couple of extra achievements
+x December santa faction easter egg
+x (maybe)better war tracking
+x (maybe)minimap
+
+
 
 #Todo#
 x load game shows "destroy" tooltip

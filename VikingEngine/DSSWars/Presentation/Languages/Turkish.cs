@@ -2549,7 +2549,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         //Shadow update
-        public override string Technology_CannotReassign => "Araştırma tamamlanana kadar Tech yeniden atanamaz";
+        public override string Technology_CannotReassign => "Araştırma tamamlanana kadar Teknoloji yeniden atanamaz";
         public override string Diplomacy_DeclareWarAgainst => "Şuna savaş ilan edeceksin:";
         public override string Diplomacy_AllyCount => "Müttefik sayısı";
         public override string Diplomacy_CostPerAlly => "Maliyet, müttefik başına {0} artar";
@@ -2560,14 +2560,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string EventMessage_DarkHorde => "Karanlık Ordu";
         public override string EventMessage_DarkHordeKiller_Title => "Karanlık Ordu Katili";
-        public override string EventMessage_DarkHordeKiller_Message => "Şampiyon şövalyeler hizmetine katıldı";
+        public override string EventMessage_DarkHordeKiller_Message => "Şampiyon şövalyeler artık hizmetinde";
 
-        public override string Settings_Mode_Spectator_Description => "Sadece izle – ya da God Powers ile müdahale et.";
-        public override string GodPower => "God Power";
+        public override string Settings_Mode_Spectator_Description => "Ya olanlara seyirci dur ya da İlahi Güçler ile müdahale et.";
+        public override string GodPower => "İlahi Güçler";
 
-        public override string Building_TreeSprout_Description => "Bir ağaç dik";
-        public override string Building_TreeSprout_Soft => "Yumuşak odun fidanı";
-        public override string Building_TreeSprout_Hard => "Sert odun fidanı";
+        public override string Building_TreeSprout_Description => "Ağaç dik";
+        public override string Building_TreeSprout_Soft => "Yumuşak ağaç fidanı";
+        public override string Building_TreeSprout_Hard => "Sert ağaç fidanı";
 
         public override string GeneralSetting_SetAll => "Hepsine uygula";
 
@@ -2575,14 +2575,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_Previous => "Önceki";
 
-        public override string Hud_EffectWillStack => "Etki birikecek";
+        public override string Hud_EffectWillStack => "Birikecek etkiler";
 
         public override string Info_WhenFoodRunsOut => "Yemek bittiğinde, şehirler ve ordular onu otomatik olarak karaborsadan satın alır.";
 
         //Launch test
-        
 
-        public override string InputActionName_NextWar => "Sıradaki savaşan fraksiyon";
+
+        public override string InputActionName_NextWar => "Savaşmakta olan sıradaki taraf";
 
         /// <summary>
         /// These symbols are needed to fit large numbers on the HUD,
@@ -2595,11 +2595,11 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress
         /// </summary>
-        public override string GameMenu_BlockImportAchievements => "İçe aktarılan dosyalarda başarımları engelle";
+        public override string GameMenu_BlockImportAchievements => "İçe aktarılan dosyalardaki başarımları engelle";
 
         public override string EndScreen_PeaceVictoryQuote => "Kılıçlarımızı bırakalım ve daha iyi bir geleceğe sarılalım";
 
-        public override string VictoryType_DefeatBoss => "Boss yenildi";
+        public override string VictoryType_DefeatBoss => "Baş düşman yenildi";
         public override string VictoryType_Domination => "Hakimiyet";
         public override string VictoryType_WorldPeace => "Dünya barışı";
 
