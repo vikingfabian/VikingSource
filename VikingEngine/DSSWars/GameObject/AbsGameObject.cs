@@ -125,10 +125,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void beginEditName()
         {
-            new TextInput(Name(out _), NameEditEvent, null);
+            new DSSWars.Players.PlayerControls.TextInput(this);
+            //new TextInputState(Name(out _), NameEditEvent, null);
         }
 
-        virtual protected void NameEditEvent(string result, object tag)
+        virtual public void NameEditEvent(string result, object tag)
         {
             throw new NotImplementedException();
         }
@@ -150,15 +151,31 @@ namespace VikingEngine.DSSWars.GameObject
             string name = Name(out bool mayEdit);
             if (name != null)
             {
-                if (mayEdit && mayInteract)
+                if (Ref.update.textInput != null &&
+                    !Ref.update.textInput.Exiting &&
+                    Ref.update.textInput.recieverId == Name(out _))
                 {
-                    var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
-                        new RbAction(beginEditName), null);
-                    content.Add(editButton);
-                    content.space();
+                    content.Add(new RbButton(new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.InterfaceTextInput),
+                        new RbSpace(),
+                        new RbText(Ref.update.textInput.DisplayText(), Color.Black),
+                    }, null, null)
+                    { overrideBgColor = Color.White });
+
+                    content.newLine();
                 }
-                content.Add(new RbText(name, Color.LightYellow));
-                content.newLine();
+                else
+                {
+                    if (mayEdit && mayInteract)
+                    {
+                        var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
+                            new RbAction(beginEditName), null);
+                        content.Add(editButton);
+                        content.space();
+                    }
+                    content.Add(new RbText(name, Color.LightYellow));
+                    content.newLine();
+                }
             }
         }
         protected void ownerToHud(Interface.ObjectHudArgs args, bool divider)

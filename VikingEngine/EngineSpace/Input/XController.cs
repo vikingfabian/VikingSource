@@ -40,6 +40,13 @@ namespace VikingEngine.Input
         public static int ButtonB_KeyUpTime = 0;
         public void Update()
         {
+            if (Ref.update.textInput != null)
+            {
+                currentPadState = new GamePadState();
+                previousPadState = currentPadState;
+                return;
+            }
+
             previousPadState = currentPadState;
             currentPadState = GamePad.GetState(index);
 #if XBOX

@@ -447,7 +447,7 @@ namespace VikingEngine.DSSWars
         void beginEditPlayerName()
         {
             var profile = DssRef.storage.profileStorage.Selected();
-            new TextInput(profile.DisplayName(), PlayerNameEditEvent, null);
+            new TextInputState(profile.DisplayName(), PlayerNameEditEvent, null);
         }
         void PlayerNameEditEvent(string result, object tag)
         {

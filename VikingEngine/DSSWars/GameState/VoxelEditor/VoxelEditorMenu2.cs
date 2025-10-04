@@ -374,7 +374,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void beginEditName()
         {
-            new TextInput(designer.storage.saveFileName, NameEditEvent, null);
+            new TextInputState(designer.storage.saveFileName, NameEditEvent, null);
         }
         void NameEditEvent(string result, object tag)
         {

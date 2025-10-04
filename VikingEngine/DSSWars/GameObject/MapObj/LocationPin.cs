@@ -153,7 +153,7 @@ namespace VikingEngine.DSSWars.GameObject
            return GameObjectType.LocationPin;
         }
 
-        protected override void NameEditEvent(string result, object tag)
+        public override void NameEditEvent(string result, object tag)
         {
             name.setCustom(result);
         }

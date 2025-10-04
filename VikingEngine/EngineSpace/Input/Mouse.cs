@@ -77,6 +77,13 @@ namespace VikingEngine.Input
 
         public static void Update()
         {
+            if (Ref.update.textInput != null)
+            {
+                currentMouseState = new MouseState();
+                previousMouseState = currentMouseState;
+                return;
+            }
+
             previousMouseState = currentMouseState;
             currentMouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
 
