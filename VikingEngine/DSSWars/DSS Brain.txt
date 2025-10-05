@@ -1,17 +1,14 @@
 ﻿UPDATE
 Change Log:
-* Fixed completeTransform crash
-* Fixed empty controllers crash on launch
+* 
 
 
 #Pics
 
 
 #must do#
-//Available for spawn
-Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
-
 x new menu background
+x stats
 
 #Winter update#
 x left menu width option
