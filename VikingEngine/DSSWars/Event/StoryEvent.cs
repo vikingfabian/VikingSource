@@ -419,14 +419,14 @@ namespace VikingEngine.DSSWars.Event
 
                 foreach (var cityIx in attackCities)
                 {
-                    spawnBarbarians(DssRef.world.cities[cityIx]);
+                    spawnBarbarians(DssRef.world.cities[cityIx], false);
                 }
 
                 attackCities = null;
             }));
         }
 
-        void spawnBarbarians(City city)
+        public static void spawnBarbarians(City city, bool tutorial)
         {
             ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
             for (int radius = Bound.Min(city.cityTileRadius - 2, 4); radius > 1; ++radius)
@@ -435,7 +435,8 @@ namespace VikingEngine.DSSWars.Event
                 while (loop.Next())
                 {
                     if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile) &&
-                        tile.IsLand())
+                        tile.IsLand() && 
+                        tile.tileContent != Map.TileContent.City)
                     {
                         //Available for spawn
                         Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
@@ -454,6 +455,11 @@ namespace VikingEngine.DSSWars.Event
                             };
 
                             int rndCount = Ref.rnd.Int(3, 5) + (int)DssRef.difficulty.bossSize *2;
+                            if (tutorial)
+                            {
+                                rndCount = 2;
+                            }
+
                             for (int i = 0; i < rndCount; ++i)
                             {
                                 new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
@@ -472,6 +478,10 @@ namespace VikingEngine.DSSWars.Event
                             };
 
                             int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize * 2;
+                            if (tutorial)
+                            {
+                                rndCount = 0;
+                            }
                             for (int i = 0; i < rndCount; ++i)
                             {
                                 new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
@@ -490,6 +500,10 @@ namespace VikingEngine.DSSWars.Event
                             };
 
                             int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize * 2;
+                            if (tutorial)
+                            {
+                                rndCount = 1;
+                            }
                             for (int i = 0; i < rndCount; ++i)
                             {
                                 new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);

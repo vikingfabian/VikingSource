@@ -69,10 +69,16 @@ namespace VikingEngine.Input
 
         public static void OnGameStateChange()
         {
+            if (controllers == null)
+            {
+                return;
+            }
+
             for (int i = 0; i < controllers.Count; i++)
             {
                 controllers[i].onGameStateChange();
             }
+            
         }
 
         static public bool KeyDownEvent(Buttons button, out int player)

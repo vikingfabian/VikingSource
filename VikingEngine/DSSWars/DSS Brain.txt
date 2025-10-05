@@ -1,17 +1,20 @@
 ﻿UPDATE
 Change Log:
-* Block achievements for imported save files
-* All new words are localized
-* Manual Turkish translation on the last update
+* Fixed completeTransform crash
+* Fixed empty controllers crash on launch
 
 
 #Pics
 
 
 #must do#
+//Available for spawn
+Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
+
 x new menu background
 
 #Winter update#
+x left menu width option
 x Unclaimed land
 x Settler unit
 x Camp site city tier

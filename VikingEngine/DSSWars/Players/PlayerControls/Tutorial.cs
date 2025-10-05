@@ -9,18 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.PJ;
 using VikingEngine.Timer;
 using VikingEngine.ToGG;
-using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls
 {
@@ -1355,71 +1356,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             var city = player.faction.mainCity;
 
-            ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
-            for (int radius = city.cityTileRadius - 2; radius > 1; ++radius)
-            {
-                loop.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
-                while (loop.Next())
-                {
-                    if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile) &&
-                        tile.IsLand())
-                    {
-                        //Available for spawn
-                        Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
-                        enemyFac.player.GetAiPlayer().armyAi_enabled = false;
-
-                        barbarianArmy = enemyFac.NewArmy(loop.Position);
-                        {
-                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                            {
-                                conscript = new ConscriptProfile()
-                                {
-                                    weapon = Resource.ItemResourceType.ShortSword,
-                                    armorLevel = Resource.ItemResourceType.PaddedArmor,
-                                    training = TrainingLevel.Basic,
-                                    specialization = SpecializationType.Field,
-                                }
-                            };
-
-                            for (int i = 0; i < 2; ++i)
-                            {
-                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
-                            }
-                        }
-                        {
-                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                            {
-                                conscript = new ConscriptProfile()
-                                {
-                                    weapon = Resource.ItemResourceType.Crossbow,
-                                    armorLevel = Resource.ItemResourceType.NONE,
-                                    training = TrainingLevel.Basic,
-                                    specialization = SpecializationType.Field,
-                                }
-                            };
-
-                            for (int i = 0; i < 1; ++i)
-                            {
-                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
-                            }
-                        }
-                        barbarianArmy.refreshPositions(true);
-                        barbarianArmy.setAsStartArmy();
-
-                        player.gameControls.map.cameraFocus = barbarianArmy;
-
-                        return;
-                    }
-                }
-            }
-
-            throw new Exception("No enemy spawn");
+            StoryEvent_Barbarians.spawnBarbarians(city, true);
+           
         }
 
         public void writeGameState(BinaryWriter w)
         {
             //w.Write(DssRef.storage.shortTutorial);
-            w.Write((int)missions.selIndex);
+            w.Write(missions.selIndex);
         }
 
         public void readGameState(BinaryReader r, int subversion)
