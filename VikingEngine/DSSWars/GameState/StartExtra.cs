@@ -41,6 +41,7 @@ namespace VikingEngine.DSSWars.GameState
                 };
 
                 new ToGG.Commander.CmdPlayState(setup);
+                DssRef.stats.start_commander.addOne();
             }
         }
     }

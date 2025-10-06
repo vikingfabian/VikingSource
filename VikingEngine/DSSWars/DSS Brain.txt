@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
+* Added 69 steam stats to the full game
+
 
 
 #Pics
@@ -8,7 +9,7 @@ Change Log:
 
 #must do#
 x new menu background
-x stats
+x commander stats
 
 #Winter update#
 x left menu width option

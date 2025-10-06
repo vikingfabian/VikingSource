@@ -185,6 +185,7 @@ namespace VikingEngine.DSSWars
             Ref.main.criticalContentIsLoaded = true;
             new Achievements();
             new GameStats();
+            DssRef.stats.startUp.addOne();
 
             if (Ref.gamesett.language == LanguageType.NONE)
             {

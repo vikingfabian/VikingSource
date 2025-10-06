@@ -1324,7 +1324,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     if (DssRef.storage.runTutorial_1short_2normal == 1)
                     {
-                        DssRef.stats.completeShortTutorial.addOne();
+                        //DssRef.stats.completeShortTutorial.addOne();
                     }
                     else
                     {
