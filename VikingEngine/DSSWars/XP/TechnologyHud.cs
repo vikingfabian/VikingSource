@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.XP
             tech(technology.advancedFarming.points, TechnologyTemplate.AdvancedFarmingUnlock, SpriteName.WarsWorkFarm, DssRef.lang.Technology_AdvancedFarming);
             tech(technology.advancedCasting.points, TechnologyTemplate.AdvancedCastingUnlock, SpriteName.WarsResource_IronManCannon, DssRef.lang.Technology_AdvancedCasting);
 
-            tech(technology.iron.points, TechnologyTemplate.IronUnlock, SpriteName.WarsResource_Iron, DssRef.lang.Resource_TypeName_Iron);
+            tech(technology.iron.points, TechnologyTemplate.IronUnlock, SpriteName.WarsResource_Iron, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Iron));
             tech(technology.steel.points, TechnologyTemplate.SteelUnlock, SpriteName.WarsResource_Steel, DssRef.lang.Resource_TypeName_Steel);
             tech(technology.catapult.points, TechnologyTemplate.CatapultUnlock, SpriteName.WarsResource_Catapult, DssRef.lang.Resource_TypeName_Catapult);
             tech(technology.blackPowder.points, TechnologyTemplate.BlackPowderUnlock, SpriteName.WarsResource_BronzeRifle, XpLib.TechnologyName_BlackPowder());
@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.XP
 
             content.newParagraph();
             Unlocks ironUnlock = new Unlocks(); ironUnlock.UnlockIron();
-            tech( TechnologyTreeType.iron ,technology.iron.points, TechnologyTemplate.IronUnlock, SpriteName.WarsResource_Iron, DssRef.lang.Resource_TypeName_Iron, ironUnlock, ironSteelFields);
+            tech( TechnologyTreeType.iron ,technology.iron.points, TechnologyTemplate.IronUnlock, SpriteName.WarsResource_Iron, TextLib.LargeFirstLetter( DssRef.lang.Resource_TypeName_Iron), ironUnlock, ironSteelFields);
 
             Unlocks steelUnlock = new Unlocks(); steelUnlock.UnlockSteel();
             tech(TechnologyTreeType.steel, technology.steel.points, TechnologyTemplate.SteelUnlock, SpriteName.WarsResource_Steel, DssRef.lang.Resource_TypeName_Steel, steelUnlock, ironSteelFields);

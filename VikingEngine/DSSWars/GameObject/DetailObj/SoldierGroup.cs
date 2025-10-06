@@ -506,17 +506,18 @@ namespace VikingEngine.DSSWars.GameObject
                     soldierData = soldierConscript.init();
                 }
 
-                if (soldiers != null)
+                var soldiers_sp = soldiers;
+                if (soldiers_sp != null)
                 {
                     int totalHealth = 0;
 
-                    var soldiersC = soldiers.counter();
+                    var soldiersC = soldiers_sp.counter();
                     while (soldiersC.Next())
                     {
                         totalHealth += soldiersC.sel.health;
                         soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
                     }
-                    soldiers.Clear();
+                    soldiers_sp.Clear();
 
                     if (transformType == SoldierTransformType.ToShip)
                     {

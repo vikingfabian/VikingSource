@@ -18,6 +18,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         {
             initGameState();
             onGameStart();
+            DssRef.stats.start_battle_lab.addOne_ifUnset();
         }
 
         public void initGameState()

@@ -18,7 +18,7 @@ namespace VikingEngine.Sound
         static TimeStamp NextRareSound = new TimeStamp();
 
         const float StackTimeRamgeMs = 30;
-        const int MaxSoundStack = 3;
+        const int MaxSoundStack = 6;
 
         static float time = 0;
         static int stack = 0;

@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.GameState
         public int NextArmyId = 0;
         protected int stepFramesCount = 0;
         public Ambience ambience;
-
+        public bool importedWorld = false;
 
         public AbsPlayState() 
             :base() 

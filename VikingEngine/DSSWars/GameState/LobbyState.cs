@@ -71,14 +71,14 @@ namespace VikingEngine.DSSWars
 
         RichMenu topMenu, underMenu, reportsMenu;
 
-        static readonly string LobbyAmbienceDir = Ambience.AmbienceDir + "lobby" + DataStream.FilePath.Dir;
+        //static readonly string LobbyAmbienceDir = Ambience.AmbienceDir + "lobby" + DataStream.FilePath.Dir;
 
-        static readonly LoopingSoundData[] AmbienceSounds = new LoopingSoundData[]
-           {
-                new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_fear1_loop", 0.04f),
-                new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_theme1_loop", 0.04f),
-           };
-        LoopingSound lobbyAmbienceLoop;
+        //static readonly LoopingSoundData[] AmbienceSounds = new LoopingSoundData[]
+        //   {
+        //        new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_fear1_loop", 0.04f),
+        //        new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_theme1_loop", 0.04f),
+        //   };
+        //LoopingSound lobbyAmbienceLoop;
 
         const string UnderMenu_NewGame = "newgame";
         const string UnderMenu_ListEditors = "editors";
@@ -127,9 +127,11 @@ namespace VikingEngine.DSSWars
                 Engine.Screen.TextSizeV2, new Align(new Vector2(0, 1f)), "...",
                 Color.DarkGray, ImageLayers.Background2);
 
-            new Timer.AsynchActionTrigger(load_asynch, true);
+            //new Timer.AsynchActionTrigger(load_asynch, true);
             //new Timer.TimedAction0ArgTrigger(playMusic, 1000);
-
+            Ref.music.DelayBetweenSongs_minutes = new IntervalF(0);
+            Ref.music.SetPlaylist(Music.MenuPlayList(out bool randomOrder), PlatformSettings.PlayMusic, randomOrder);
+            Ref.music.DelayBetweenSongs_minutes = IntervalF.NoInterval(TimeExt.SecondsToMinutes(2));
 
             if (Ref.lobby == null)
             {
@@ -621,17 +623,17 @@ namespace VikingEngine.DSSWars
             return bgTex;
         }
 
-        void load_asynch()
-        {
-            //bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
-            //new Timer.Action0ArgTrigger(loadingComplete);
+        //void load_asynch()
+        //{
+        //    //bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
+        //    //new Timer.Action0ArgTrigger(loadingComplete);
 
-            LoopingSound sound = new LoopingSound();
-            sound.setVolume(0);
-            sound.Load(arraylib.RandomListMember(AmbienceSounds));
+        //    LoopingSound sound = new LoopingSound();
+        //    sound.setVolume(0);
+        //    sound.Load(arraylib.RandomListMember(AmbienceSounds));
 
-            lobbyAmbienceLoop = sound;
-        }
+        //    lobbyAmbienceLoop = sound;
+        //}
 
         void createBackground()
         {
@@ -1596,7 +1598,7 @@ namespace VikingEngine.DSSWars
             {
                 for (int i = 0; i < DssRef.storage.characterStorage.profiles.Count; ++i)
                 {
-                    flagOptions.AddSubOption((DropDownOption)DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, true), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
+                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, true), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
                 }
                 flagOptions.menuCaption = DssRef.storage.profileStorage.profiles[profileIx].character.RbButton(DssRef.storage.flagStorage.selectedIx, true);
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
@@ -2174,7 +2176,7 @@ namespace VikingEngine.DSSWars
         public override void OnDestroy()
         {
             base.OnDestroy();
-            lobbyAmbienceLoop?.StopAndUnload();
+            //lobbyAmbienceLoop?.StopAndUnload();
         }
         
 
@@ -2290,7 +2292,7 @@ namespace VikingEngine.DSSWars
             {
                 Ref.music.Update();
             }
-            lobbyAmbienceLoop?.fadeInSound(0.5f, Ref.gamesett.AmbientVol());
+            //lobbyAmbienceLoop?.fadeInSound(0.5f, Ref.gamesett.AmbientVol());
 
             //if (inKeyMapsMenu)
             //{
@@ -2663,18 +2665,12 @@ namespace VikingEngine.DSSWars
         {
             SaveStateMeta meta = new SaveStateMeta();            
             meta.import = name;
+            meta.importedWorld = true;
             loadGame = meta;
             openPlayerSetupForMode(StartGameMode.Play);
-            //meta.loadImportMeta();
+            
         }
-        //public void loadFileClick(SaveStateMeta saveMeta)
-        //{
-        //    loadGame = saveMeta;
-
-        //    openPlayerSetupForMode(StartGameMode.Play);
-        //}
-
-
+        
 
         void selectController_startGame(InputSource inputSource, SaveStateMeta saveMeta)
         {
@@ -2684,15 +2680,6 @@ namespace VikingEngine.DSSWars
 
             new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
         }
-
-        //void startGame(SaveStateMeta saveMeta)
-        //{
-        //    //var playerData = DssRef.storage.localPlayers[0];
-        //    //playerData.inputSource = inputSource;
-        //    //DssRef.storage.checkPlayerDoublettes(0);
-
-        //    new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
-        //}
 
     }
 

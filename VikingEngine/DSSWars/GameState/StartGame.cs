@@ -28,11 +28,13 @@ namespace VikingEngine.DSSWars
                new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
                new Vector2(Engine.Screen.TextSize * 2f),
                Graphics.Align.Zero, "...", Color.White, ImageLayers.Lay1);
+            
             Ref.music.stop(true);
+            Ref.music.DelayBetweenSongs_minutes = new IntervalF(5, 8);
+            Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
 
             new PlaySettings();
         }
-
 
         public override void Time_Update(float time)
         {
@@ -78,8 +80,12 @@ namespace VikingEngine.DSSWars
             DssRef.settings.playType = PlayStateType.Play;
             this.host = host;
             this.loadMeta = loadMeta;
-            
-            
+
+            var pStorage = DssRef.storage.localPlayers[0];
+            if (DssRef.storage.profileStorage.profiles[pStorage.profileIndex].casualControls)
+            {
+                DssRef.stats.startnew_casual.addOne();
+            }
 
             if (loadMeta == null)
             {
@@ -141,7 +147,7 @@ namespace VikingEngine.DSSWars
                             break;
 
                         case 1:
-                            DssRef.stats.startShortTutorial.addOne();
+                            //DssRef.stats.startShortTutorial.addOne();
                             break;
 
                         case 2:

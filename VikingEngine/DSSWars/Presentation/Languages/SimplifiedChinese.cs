@@ -2526,6 +2526,29 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_WhenFoodRunsOut => "当食物耗尽时，城市和军队会自动从黑市购买。";
 
+        //Launch test
+        
+
+        public override string InputActionName_NextWar => "下一个交战中的阵营";
+
+        /// <summary>
+        /// These symbols are needed to fit large numbers on the HUD,
+        /// there will be a tooltip to explain what number it represents
+        /// </summary>
+        public override string EngineHud_SymbolFor100 => "百";
+        public override string EngineHud_SymbolFor1000 => "千";
+        public override string EngineHud_SymbolFor10000 => "万";
+
+        /// <summary>
+        /// When loading files from other players, you won’t get their achievement progress
+        /// </summary>
+        public override string GameMenu_BlockImportAchievements => "在导入的存档中禁用成就";
+
+        public override string EndScreen_PeaceVictoryQuote => "让我们放下宝剑，迎接更美好的未来";
+
+        public override string VictoryType_DefeatBoss => "Boss 击败";
+        public override string VictoryType_Domination => "统治";
+        public override string VictoryType_WorldPeace => "世界和平";
 
     }
 }

@@ -1,36 +1,37 @@
 ﻿UPDATE
 Change Log:
+* Added 69 steam stats to the full game
 
-City  Automation:
-- higher probability of logistics
-- "grow" may upgrade the city hall
-- will auto adjust the food stockpile
-- lowered the chance of master guilds
-- fixed a bug that limited the worker huts
 
-Event timers (are slightly random)
-- Bot delay: 8 minutes
-- Bot peace time: 30 min
-- The first attack: 35min
-- War manager start: 40min
-- Barbarians: 1.5 hours
-- Mercenaries: 4 hours (total 7 hours by now)
-- The cohalition: 6 hours (or when the player grabs 5 to 7 cities)
-- Boss warning: 12 hours
-- Boss; 1 hour
-Plus the boss fight: about 10 hours
-(total: about 45 hours)
 
 #Pics
 
 
 #must do#
-x help the AI overcome the initial automation hurdel and not get stuck on Logistics and Town Hall?
-x Block achievements for imported save files
-x lobby music
 x new menu background
+x commander stats
+
+#Winter update#
+x left menu width option
+x Unclaimed land
+x Settler unit
+x Camp site city tier
+x Fog of war
+x Game mode: start with nothing
+x Game mode: quick match
+x 300% difficulty 
+x Extended diplomacy options, and be able to command allies with diplomacy points
+x casual mode: embassy building
+x A couple of extra achievements
+x December santa faction easter egg
+x (maybe)better war tracking
+x (maybe)minimap
+
+
 
 #Todo#
+x load game shows "destroy" tooltip
+x "no stone/wood" warning on automation
 x placed reciutment service turned to postal
 x music freq option
 x up/down scale render
@@ -124,6 +125,30 @@ save count på end screen, +min difficulty
 lamps - förbättrar produktion i area, måste fyllas med fuel
 förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 
+#Known issues
+-Cant move units between armies and garrisons
+-There is a double-punishment issue of being attack, since taking their cities will increase general aggression, or you have to pay diplomacy points.
+-Soldier groups glitch in battle
+-City walls are confusing
+-"homes" are confusing in child description
+-army center can move to far from soldiers
+-armies can be too passive to enemy armies passing by
+-army centers should not stay on cities
+-guards can be moved very far from cities (minor issue)
+-Armies need to collect themselves before attack
+-Ships show wrong strength
+-War declaration needs clickable button
+-Need to block two maps from loading at the same time, changing map and pressing start can run the old setting
+-Controller doesnt work in any menues 
+-Can't go from multiplayer to single on a save
+-Worker skill is lost during recruitment to armies or other cities
+-Soldiers walk through walls
+-Steam input removes the xbox controller input
+-The red attack GUI line flickers
+-can cheese building over borders and using copy 
+
+
+
 #ANIMAL UPDATE#
 Some resource ideas for next big update:
 Stone, are either bricks or stones 
@@ -186,6 +211,18 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 
 #Voxel
 
+#Event timers (are slightly random)#
+- Bot delay: 8 minutes
+- Bot peace time: 30 min
+- The first attack: 35min
+- War manager start: 40min
+- Barbarians: 1.5 hours
+- Mercenaries: 4 hours (total 7 hours by now)
+- The cohalition: 6 hours (or when the player grabs 5 to 7 cities)
+- Boss warning: 12 hours
+- Boss; 1 hour
+Plus the boss fight: about 10 hours
+(total: about 45 hours)
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
@@ -194,6 +231,8 @@ Fully translate all the strings in the file to Brazilian Portuguese and save int
 Brazilians are used to English in gaming, use a “hybrid” translation.
 Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
 The game is a strategy wargame, with medieval and low fantasy theme.
+
+Where English is used in gaming, use a “hybrid” translation.
 
 
 https://discord.com/verification

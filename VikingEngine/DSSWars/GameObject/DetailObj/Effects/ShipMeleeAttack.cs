@@ -55,6 +55,10 @@ namespace VikingEngine.DSSWars.GameObject
                     DeleteMe();
                 }
             }
+            else
+            {
+                DeleteMe();
+            }
         }
 
         public override void DeleteMe()

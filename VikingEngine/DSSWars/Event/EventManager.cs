@@ -17,7 +17,6 @@ namespace VikingEngine.DSSWars.Event
 {
     class EventManager
     {
-
         public List<City> factories = new List<City>(3);
 
         Time dyingFactionsTimer = Time.Zero;
@@ -49,10 +48,6 @@ namespace VikingEngine.DSSWars.Event
             DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, DssRef.lang.Demo_EndInOneMinuteDescription);
             new Timer.TimedAction2ArgTrigger_InGame<GameEndReason, VictoryType>(triggerGameEnd, GameEndReason.TimesUp, VictoryType.None, TimeExt.MinuteInSeconds * 1f);
         }
-        //protected void viewEndScreen(GameEndReason endReason)
-        //{
-        //    new EndScene(endReason, VictoryType.None);
-        //}
 
         public AbsStoryEvent CurrentEvent()
         {
@@ -71,18 +66,17 @@ namespace VikingEngine.DSSWars.Event
 
         virtual public void asyncUpdate(float time)
         {
-            if (DssRef.state.localPlayers[0].tutorial != null)// ||
-                                                              //!DssRef.difficulty.runEvents)
-            {
-                return;
-            }
+            //if (DssRef.state.localPlayers[0].tutorial != null)
+            //{
+            //    return;
+            //}
 
             var ev = mainStory.FirstOrDefault();
             if (ev != null)
             {
                 if (ev.asyncUpdate(time))
                 {
-                    mainStory.TryDequeue(out _);// .RemoveAt(0);
+                    mainStory.TryDequeue(out _);
                     if (mainStory.TryPeek(out var next))
                     {
                         next.onStart();
@@ -93,8 +87,6 @@ namespace VikingEngine.DSSWars.Event
             asyncUpdateDyingFactions(time);
 
             asyncUpdateTooPeaceful(time);
-
-            //asyncCheckPlayerDominance();
 
             if (Ref.peRnd.ChanceF(0.1f))
             {
@@ -258,6 +250,7 @@ namespace VikingEngine.DSSWars.Event
                     {
                         addStoryEvent(new List<AbsStoryEvent>
                         {
+                            new StoryEvent_Tutorial(),
                             new StoryEvent_AiDelay(),
                             new StoryEvent_AiWarDelay(),
                             new StoryEvent_FirstAttack(),
@@ -274,6 +267,7 @@ namespace VikingEngine.DSSWars.Event
                     {
                         addStoryEvent(new List<AbsStoryEvent>
                         {
+                            new StoryEvent_Tutorial(),
                             new StoryEvent_AiDelay(),
                             new StoryEvent_AiWarDelay(),
                             new StoryEvent_WarmanagerDelay(),
@@ -990,14 +984,17 @@ namespace VikingEngine.DSSWars.Event
             {
                 const int DelayReduceToSec = 10;
 
-                var ev = mainStory.FirstOrDefault();
-                if (ev != null)
+                if (other.factiontype != FactionType.Barbarians)
                 {
-                    if (ev.RunWarManager() == false)
+                    var ev = mainStory.FirstOrDefault();
+                    if (ev != null)
                     {
-                        if (ev.triggerTime.length.seconds > DelayReduceToSec)
+                        if (ev.RunWarManager() == false)
                         {
-                            ev.triggerTime.start(DelayReduceToSec);
+                            if (ev.triggerTime.length.seconds > DelayReduceToSec)
+                            {
+                                ev.triggerTime.start(DelayReduceToSec);
+                            }
                         }
                     }
                 }
@@ -1084,6 +1081,8 @@ namespace VikingEngine.DSSWars.Event
         {
             switch (type)
             {
+                case EventType.Tutorial:
+                    return new StoryEvent_Tutorial();
                 case EventType.AiDelay:
                     return new StoryEvent_AiDelay();
                 case EventType.AiWarDelay:

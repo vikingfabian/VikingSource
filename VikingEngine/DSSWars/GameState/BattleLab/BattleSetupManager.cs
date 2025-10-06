@@ -87,6 +87,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             {
                 enemyArmy.Order_Attack(friendlyArmy);
             }
+
+            DssRef.stats.battle_lab_newbattle.addOne();
         }
 
         public bool updateObjectDisplay(RichBoxContent content, RichMenu menu)

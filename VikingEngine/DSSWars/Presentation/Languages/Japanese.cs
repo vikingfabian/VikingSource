@@ -2538,6 +2538,28 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Info_WhenFoodRunsOut => "食料が尽きると、都市や軍隊は自動的に闇市から購入します。";
 
 
+        //Launch test
+        
+        public override string InputActionName_NextWar => "次の交戦中の勢力";
+
+        /// <summary>
+        /// These symbols are needed to fit large numbers on the HUD,
+        /// there will be a tooltip to explain what number it represents
+        /// </summary>
+        public override string EngineHud_SymbolFor100 => "百";
+        public override string EngineHud_SymbolFor1000 => "千";
+        public override string EngineHud_SymbolFor10000 => "万";
+
+        /// <summary>
+        /// When loading files from other players, you won’t get their achievement progress
+        /// </summary>
+        public override string GameMenu_BlockImportAchievements => "インポートしたセーブデータでは実績が反映されません";
+
+        public override string EndScreen_PeaceVictoryQuote => "剣を置き、より良い未来を受け入れよう";
+
+        public override string VictoryType_DefeatBoss => "Boss 撃破";
+        public override string VictoryType_Domination => "支配";
+        public override string VictoryType_WorldPeace => "世界平和";
 
     }
 }

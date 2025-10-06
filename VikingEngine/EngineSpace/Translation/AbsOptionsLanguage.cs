@@ -88,6 +88,7 @@ namespace VikingEngine.EngineSpace.Translation
         /// Steam Achievements
         /// </summary>
         public abstract string Settings_ImportNoAchievement { get; }
+        public abstract string GraphicsOption_FarViewDistance { get; }
 
         public string ThreeOption(ThreeOptions option)
         {

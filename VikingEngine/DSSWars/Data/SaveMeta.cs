@@ -195,7 +195,7 @@ namespace VikingEngine.DSSWars.Data
     {
         public static readonly string PlayMapDir = DssLib.ContentDir + "PlayMap" + DataStream.FilePath.Dir;
 
-        const int Version = 5;
+        const int Version = 6;
         public const string FileEnd = ".sav";
         public DateTime saveDate;
         public TimeSpan playTime;
@@ -214,6 +214,7 @@ namespace VikingEngine.DSSWars.Data
         public int index;
         public string playmap = null;
         public string import = null;
+        public bool importedWorld = false;
 
         public WorldMetaData worldmeta = null;
 
@@ -346,6 +347,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write((short)difficulty);
 
             worldmeta.write(w);
+            w.Write(importedWorld);
 
             Debug.WriteCheck(w);
         }
@@ -388,6 +390,11 @@ namespace VikingEngine.DSSWars.Data
             difficulty = r.ReadInt16();
 
             worldmeta = new WorldMetaData(r);
+
+            if (metaVersion >= 6)
+            {
+                importedWorld = r.ReadBoolean();
+            }
 
             if (metaVersion >= 5)
             {

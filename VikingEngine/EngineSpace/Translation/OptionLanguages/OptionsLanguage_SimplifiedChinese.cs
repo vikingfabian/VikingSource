@@ -9,7 +9,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_SimplifiedChinese : AbsOptionsLanguage
     {
-
+        public override string GraphicsOption_FarViewDistance => "远距离视野";
         public override string Hud_Cancel => "取消";
         public override string Hud_Back => "返回";
 

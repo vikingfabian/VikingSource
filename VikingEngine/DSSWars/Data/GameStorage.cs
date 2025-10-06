@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.Data
         public bool autoSave = true;
         public int runTutorial_1short_2normal = 2;
         public bool speed5x = false;
+        public bool blockImportAchievements = true;
         //public bool longerBuildQueue = false;
 
         public LocalPlayerStorage[] localPlayers = null;
@@ -203,7 +204,7 @@ namespace VikingEngine.DSSWars.Data
         //    write(w, false);
         //}
 
-        const int Version = 29;
+        const int Version = 30;
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -235,6 +236,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 w.Write(s);
             }
+            w.Write(blockImportAchievements);
 
             Debug.WriteCheck(w);
             
@@ -302,6 +304,11 @@ namespace VikingEngine.DSSWars.Data
                     { 
                         mutedSongs.Add(r.ReadInt32());
                     }
+                }
+
+                if (version >= 30)
+                {
+                    blockImportAchievements = r.ReadBoolean();
                 }
 
                 Debug.ReadCheck(r);

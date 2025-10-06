@@ -11,21 +11,35 @@ namespace VikingEngine.DSSWars.Data
     {
         public int guardsRecruited = 0;
 
-        public StatsInt blueScreen = new StatsInt("bluescreen");
+        #region DEMO_ONLY
+        public StatsInt startNewDemo = new StatsInt("startnew_demo");
+        public StatsInt completeDemo = new StatsInt("complete_demo");
+        //public StatsInt startNewBattleDemo = new StatsInt("startnew_battledemo");//new
+        //public StatsInt completeBattleDemo = new StatsInt("complete_battledemo");//new
+        #endregion
 
+        public StatsInt startUp = new StatsInt("startup");
+
+        //English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
+        public StatsInt pickLanguageStart = new StatsInt("pick_language_start");
+        public StatsInt language_english = new StatsInt("language_english");
+        public StatsInt language_simplified_chinese = new StatsInt("language_simplified_chinese");
+        public StatsInt language_japanese = new StatsInt("language_japanese");
+        public StatsInt language_russian = new StatsInt("language_russian");
+        public StatsInt language_spanish = new StatsInt("language_spanish");
+        public StatsInt language_german = new StatsInt("language_german");
+        public StatsInt language_french = new StatsInt("language_french");
+        public StatsInt language_turkish = new StatsInt("language_turkish");
+        public StatsInt language_brazilian_portuguese = new StatsInt("language_brazilian_portuguese");
+        public StatsInt language_italian = new StatsInt("language_italian");
+
+        public StatsInt blueScreen = new StatsInt("bluescreen");
         public StatsInt startTutorial = new StatsInt("start_tutorial");
         public StatsInt completeTutorial = new StatsInt("complete_tutorial");
         public StatsInt skipTutorial = new StatsInt("skip_tutorial");
 
-        public StatsInt startShortTutorial = new StatsInt("start_short_tutorial");
-        public StatsInt completeShortTutorial = new StatsInt("complete_short_tutorial");
-
-        public StatsInt startNewDemo = new StatsInt("startnew_demo");
-        public StatsInt completeDemo = new StatsInt("complete_demo");
-        public StatsInt startNewBattleDemo = new StatsInt("startnew_battledemo");//new
-        public StatsInt completeBattleDemo = new StatsInt("complete_battledemo");//new
-
         public StatsInt startNewStory = new StatsInt("startnew_story");
+        public StatsInt startnew_casual = new StatsInt("startnew_casual");
         public StatsInt startNewSandbox = new StatsInt("startnew_sandbox");
         public StatsInt startNewPeaceful = new StatsInt("startnew_peaceful");
         public StatsInt startNewSpectator = new StatsInt("startnew_spectator");
@@ -49,6 +63,15 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt startNewLocalMultiplayer = new StatsInt("startnew_localmp");
 
         public StatsInt saveCustomFlag = new StatsInt("save_flag");
+        public StatsInt start_voxeleditor = new StatsInt("start_voxeleditor");
+        public StatsInt start_mapgenerator = new StatsInt("start_mapgenerator");
+        public StatsInt start_character_creator = new StatsInt("start_character_creator");
+
+        public StatsInt start_battle_lab = new StatsInt("start_battle_lab");
+        public StatsInt battle_lab_newbattle = new StatsInt("battle_lab_newbattle");
+        public StatsInt start_commander = new StatsInt("start_commander");
+        public StatsInt commander_won = new StatsInt("commander_won");
+        public StatsInt commander_lost = new StatsInt("commander_lost");
 
         public StatsInt won25perc = new StatsInt("won_25perc");
         public StatsInt won50perc = new StatsInt("won_50perc");
@@ -78,6 +101,7 @@ namespace VikingEngine.DSSWars.Data
         StatsInt gameLength_passed10hour = new StatsInt("lenght_10h");
         StatsInt gameLength_passed20hour = new StatsInt("lenght_20h");
         StatsInt gameLength_passed30hour = new StatsInt("lenght_30h");
+        StatsInt gameLength_passed100hour = new StatsInt("lenght_100h");
 
 
 
@@ -98,6 +122,7 @@ namespace VikingEngine.DSSWars.Data
 
             return new List<IStatsValue>
             {
+                startUp,
                 blueScreen,
                 startTutorial,
                 completeTutorial,
@@ -108,12 +133,12 @@ namespace VikingEngine.DSSWars.Data
 
                 saveCustomFlag,
 #if DEMO
-                startShortTutorial,
-                completeShortTutorial,
+                //startShortTutorial,
+                //completeShortTutorial,
                 startNewDemo,
                 completeDemo,
-                startNewBattleDemo,
-                completeBattleDemo,
+                //startNewBattleDemo,
+                //completeBattleDemo,
 #else
                 startNewStory,
                 startNewSandbox,
@@ -156,11 +181,27 @@ namespace VikingEngine.DSSWars.Data
                 gameLength_passed30min,//"lenght_30min");
                 gameLength_passed1hour,//"lenght_1h");
 #if !DEMO
+                pickLanguageStart,
+                language_english,
+                language_japanese,
+                language_russian,
+                language_spanish,
+                language_german,
+                language_french,
+                language_turkish,
+                language_brazilian_portuguese,
+                language_italian,
+
                 gameLength_passed2hour,//"lenght_2h");
                 gameLength_passed5hour,//"lenght_5h");
                 gameLength_passed10hour,//"lenght_10h");
                 gameLength_passed20hour,//"lenght_20h");
-                gameLength_passed30hour
+                gameLength_passed30hour,
+                gameLength_passed100hour,
+
+                start_voxeleditor,
+                start_mapgenerator,
+                start_character_creator,
 #endif
             
             };
@@ -172,58 +213,6 @@ namespace VikingEngine.DSSWars.Data
             {
                 stat.getStat();
             }
-            //startTutorial.getStat();
-            //completeTutorial.getStat(); 
-            //skipTutorial.getStat();
-
-                //startNewStory.getStat();
-                //startNewSandbox.getStat();
-                //startNewPeaceful.getStat();                
-                //keyboard_user.getStat();
-                //controller_user.getStat();
-
-                //startNew25perc.getStat();
-                //startNew50perc.getStat();
-                //startNew75perc.getStat();
-                //startNew150perc.getStat();
-                //startNew175perc.getStat();
-                //startNew200perc.getStat();
-
-                //startNew_MapSmall.getStat();
-                //startNew_MapLarge.getStat();
-                //startNew_MapHuge.getStat();
-
-                //startNewLocalMultiplayer.getStat();//"startnew_localmp");
-
-                //saveCustomFlag.getStat();//"save_flag");
-
-                //won25perc.getStat();//"won_25perc");
-                //won50perc.getStat();//"won_50perc");
-                //won75perc.getStat();//"won_75perc");
-                //won100perc.getStat();//"won_100perc");
-                //won125perc.getStat();//"won_125perc");
-                //won150perc.getStat();//"won_150perc");
-                //won175perc.getStat();//"won_175perc");
-                //won200perc.getStat();//"won_200perc");
-
-                //lost25perc.getStat();//"lost_25perc");
-                //lost50perc.getStat();//"lost_50perc");
-                //lost75perc.getStat();//"lost_75perc");
-                //lost100perc.getStat();//"lost_100perc");
-                //lost125perc.getStat();//"lost_125perc");
-                //lost150perc.getStat();//"lost_150perc");
-                //lost175perc.getStat();//"lost_175perc");
-                //lost200perc.getStat();//"lost_200perc");
-
-                //gameLength_passed5min.getStat();//"lenght_5min");
-                //gameLength_passed15min.getStat();//"lenght_15min");
-                //gameLength_passed30min.getStat();//"lenght_30min");
-                //gameLength_passed1hour.getStat();//"lenght_1h");
-                //gameLength_passed2hour.getStat();//"lenght_2h");
-                //gameLength_passed5hour.getStat();//"lenght_5h");
-                //gameLength_passed10hour.getStat();//"lenght_10h");
-                //gameLength_passed20hour.getStat();//"lenght_20h");
-                //gameLength_passed30hour.getStat();//"lenght_30h");
         }
 
         public override void initAndSetStats()
@@ -232,58 +221,6 @@ namespace VikingEngine.DSSWars.Data
             {
                 stat.initAndSet();
             }
-            //startTutorial.set(1);
-            //completeTutorial.set(1);
-            //skipTutorial.set(1);
-
-            //startNewStory.set(1);
-            //startNewSandbox.set(1);
-            //startNewPeaceful.set(1);
-            //keyboard_user.set(1);
-            //controller_user.set(1);
-
-            //startNew25perc.set(1);
-            //startNew50perc.set(1);
-            //startNew75perc.set(1);
-            //startNew150perc.set(1);
-            //startNew175perc.set(1);
-            //startNew200perc.set(1);
-
-            //startNew_MapSmall.set(1);
-            //startNew_MapLarge.set(1);
-            //startNew_MapHuge.set(1);
-
-            //startNewLocalMultiplayer.set(1);//"startnew_localmp");
-
-            //saveCustomFlag.set(1);//"save_flag");
-
-            //won25perc.set(1);//"won_25perc");
-            //won50perc.set(1);//"won_50perc");
-            //won75perc.set(1);//"won_75perc");
-            //won100perc.set(1);//"won_100perc");
-            //won125perc.set(1);//"won_125perc");
-            //won150perc.set(1);//"won_150perc");
-            //won175perc.set(1);//"won_175perc");
-            //won200perc.set(1);//"won_200perc");
-
-            //lost25perc.set(1);//"lost_25perc");
-            //lost50perc.set(1);//"lost_50perc");
-            //lost75perc.set(1);//"lost_75perc");
-            //lost100perc.set(1);//"lost_100perc");
-            //lost125perc.set(1);//"lost_125perc");
-            //lost150perc.set(1);//"lost_150perc");
-            //lost175perc.set(1);//"lost_175perc");
-            //lost200perc.set(1);//"lost_200perc");
-
-            //gameLength_passed5min.set(1);//"lenght_5min");
-            //gameLength_passed15min.set(1);//"lenght_15min");
-            //gameLength_passed30min.set(1);//"lenght_30min");
-            //gameLength_passed1hour.set(1);//"lenght_1h");
-            //gameLength_passed2hour.set(1);//"lenght_2h");
-            //gameLength_passed5hour.set(1);//"lenght_5h");
-            //gameLength_passed10hour.set(1);//"lenght_10h");
-            //gameLength_passed20hour.set(1);//"lenght_20h");
-            //gameLength_passed30hour.set(1);//"lenght_30h");
         }
 
         public override void collectValues(float prevTotalTimeSec)
@@ -327,6 +264,10 @@ namespace VikingEngine.DSSWars.Data
                 if (gametime.TotalHours >= 30)
                 {
                     gameLength_passed30hour.addOne_ifUnset();
+                }
+                if (gametime.TotalHours >= 100)
+                {
+                    gameLength_passed100hour.addOne_ifUnset();
                 }
             }
         }
