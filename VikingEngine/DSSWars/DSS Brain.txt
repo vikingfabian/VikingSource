@@ -1,8 +1,7 @@
 ﻿UPDATE
 Change Log:
-* steam overlay pause
-* hide mouse on controller only
-* handles controller disconnect
+*
+
 
 #Pics
 
@@ -10,9 +9,7 @@ Change Log:
 #must do#
 
 x new menu background
-x CONTROLLER DISCONNECTED message
-x Noticed some commands didn't appear to do anything in casual mode such as the "LT + X" build command but i could have missed something
-x ta bort editor screens
+
 
 #Winter update#
 x left menu width option

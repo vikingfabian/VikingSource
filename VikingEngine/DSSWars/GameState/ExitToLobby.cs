@@ -21,7 +21,8 @@ namespace VikingEngine.DSSWars.GameState
             waitUpdatesCount = quick ? 3 : 60;
             this.startLoadingMap = startLoadingMap;
             draw.ClrColor = Color.Black;
-            Ref.lobby?.disconnect(null);            
+            Ref.lobby?.disconnect(null);
+            Input.Mouse.Visible = true;
         }
         void load_asynch()
         {

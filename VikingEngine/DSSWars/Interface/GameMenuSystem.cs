@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.Interface
         public const string UnderMenu_Options_Mouse = "options_mouse";
         public const string UnderMenu_Options_Keyboard = "options_keyboard";
         public const string UnderMenu_Options_Keyboard_Key = "options_keyboard_key";
+        public const string UnderMenu_ControllerDisconnected = "controller disconnected";
         bool gameWasPaused;
         Graphics.Image blackFade;
         protected ImageLayers layer = ImageLayers.Foreground7;
@@ -104,10 +105,12 @@ namespace VikingEngine.DSSWars.Interface
                     return false;
 
                 case UnderMenu_Options:
-                    RichBoxContent content = new RichBoxContent();
-                    HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.closeMenu);
-                    SettingsToMenu(content, menu, false);
-                    menu.Refresh(content);
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.closeMenu);
+                        SettingsToMenu(content, menu, false);
+                        menu.Refresh(content);
+                    }
                     break;
                 
                 case UnderMenu_Options_Mouse:
@@ -120,6 +123,17 @@ namespace VikingEngine.DSSWars.Interface
 
                 case UnderMenu_Options_Keyboard_Key:
                     listMapOptions(menu, lobby);
+                    break;
+
+                case UnderMenu_ControllerDisconnected:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, menu, true, DssRef.state.menuSystem.closeMenu);
+
+                        content.h1(DssRef.todoLang.GameMenu_ControllerDisconnected, HudLib.TitleColor_Head);
+
+                        menu.Refresh(content);
+                    }
                     break;
             }
 
@@ -195,6 +209,13 @@ namespace VikingEngine.DSSWars.Interface
             }
             closeMenu();
             DssRef.state.exit();
+        }
+
+        public void controllerDisconnectMenu()
+        {
+            pauseMenu();
+            menu.menuStack.Add(UnderMenu_ControllerDisconnected);
+            refreshPage(menu, false);
         }
 
         public void pauseMenu()

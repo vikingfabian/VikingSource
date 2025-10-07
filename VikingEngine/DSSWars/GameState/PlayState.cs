@@ -526,7 +526,7 @@ namespace VikingEngine.DSSWars
                     if (local.playerData.LostController)
                     {
                         local.playerData.IgnoreLostController = true;
-                        menuSystem.pauseMenu(); //todo lost menu
+                        menuSystem.controllerDisconnectMenu(); //todo lost menu
                     }
                 }
             }
