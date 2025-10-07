@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Presentation
         //public string Settings_Render3dScale_UpX => "Upscale {0}X";
         //public string Settings_Render3dScale_DownX => "Downscale {0}X";
                 
-
+        public string Hud_Search => "Search";
     }
 
 }

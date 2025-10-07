@@ -50,6 +50,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         VoxelDesigner designer;
         public RichMenu menu;
         FileIndex fileIndex = null;
+        public string modelSearchFilter = null;
         public VoxelEditorMenu2(VoxelDesigner designer)
         { 
             this.designer = designer;
@@ -1251,6 +1252,21 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             RichBoxContent content = new RichBoxContent();
 
             HudLib.returnButton(content, menu, true, closeMenu);
+
+            
+
+            if (Ref.update.textInput != null &&
+                    !Ref.update.textInput.Exiting)
+            {
+
+            }
+            else
+            {
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass) },
+                    new RbAction(() => { new SearchInput(this); }), new RbTooltip_Text(DssRef.todoLang.Hud_Search)));
+
+
+            }
 
             content.Add(new RichBoxScale(1.2f));
 
