@@ -206,27 +206,29 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     hud.refresh();
                 }
 
-                foreach (var ins in XInput.controllers)
+                if (XInput.controllers != null)
                 {
-                    if (ins.Connected)
+                    foreach (var ins in XInput.controllers)
                     {
-                        if (ins.bLeftStick)
+                        if (ins.Connected)
                         {
-                            pointer.position += 0.4f * paintArea.Width * Ref.DeltaGameTimeSec * ins.JoyStickValue(ThumbStickType.Left).Direction;
-                            pointer.position = paintArea.KeepPointInsideBound_Position(pointer.position);
-                        }
+                            if (ins.bLeftStick)
+                            {
+                                pointer.position += 0.4f * paintArea.Width * Ref.DeltaGameTimeSec * ins.JoyStickValue(ThumbStickType.Left).Direction;
+                                pointer.position = paintArea.KeepPointInsideBound_Position(pointer.position);
+                            }
 
-                        if (ins.IsButtonDown(Buttons.A))
-                        {
-                            paintInput(pointer.position, true, false);
-                        }
-                        else if (ins.IsButtonDown(Buttons.X))
-                        {
-                            paintInput(pointer.position, true, true);
+                            if (ins.IsButtonDown(Buttons.A))
+                            {
+                                paintInput(pointer.position, true, false);
+                            }
+                            else if (ins.IsButtonDown(Buttons.X))
+                            {
+                                paintInput(pointer.position, true, true);
+                            }
                         }
                     }
                 }
-
                 //if (controllerInput.Select.DownEvent_AnyInstance)
                 //{
 

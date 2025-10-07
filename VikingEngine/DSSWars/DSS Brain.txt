@@ -1,15 +1,19 @@
 ﻿UPDATE
 Change Log:
-* Added 69 steam stats to the full game
-
+* 
 
 
 #Pics
 
 
 #must do#
+
 x new menu background
-x commander stats
+x hide mouse on controller only
+x steam overlay pause
+x handles controller lost
+x Noticed some commands didn't appear to do anything in casual mode such as the "LT + X" build command but i could have missed something
+
 
 #Winter update#
 x left menu width option

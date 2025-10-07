@@ -440,7 +440,13 @@ namespace VikingEngine.DSSWars.Event
                     {
                         //Available for spawn
                         Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
-                        
+
+                        if (enemyFac == null)
+                        {
+                            enemyFac =  DssRef.world.findOrCreate(FactionType.Barbarians);
+                            DssRef.settings.Faction_Barbarian = enemyFac.myIndex;
+                        }
+
                         var barbarianArmy = enemyFac.NewArmy(loop.Position);
                         {
                             SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()

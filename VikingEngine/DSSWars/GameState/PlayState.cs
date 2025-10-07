@@ -184,6 +184,7 @@ namespace VikingEngine.DSSWars
             new Faction(DssRef.world, FactionType.SouthHara);
             new Faction(DssRef.world, FactionType.Barbarians);
 
+
             int playerCount = DssRef.storage.playerCount;
 
 
