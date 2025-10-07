@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-*
+* fixed rare onDisband crash
 
 
 #Pics

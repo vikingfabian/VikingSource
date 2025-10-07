@@ -12,3 +12,4 @@
 * CONTROLLER DISCONNECTED message
 * removed quick build key in casual
 * repaired controller HUD toggle
+* fixed rare onDisband crash
