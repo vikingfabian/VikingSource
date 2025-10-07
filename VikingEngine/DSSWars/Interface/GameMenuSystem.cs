@@ -66,8 +66,8 @@ namespace VikingEngine.DSSWars.Interface
                 menuArea.X = Engine.Screen.CenterScreen.X - menuArea.Width / 2;
 
                 menu = new RichMenu(HudLib.RbSettings, menuArea, new Vector2(8), RichMenu.DefaultRenderEdge, layer, new PlayerData(PlayerData.AllPlayers));
-                
-                //base.openMenu();
+
+                DssRef.state.updateMouseVisible();
             }
         }
 
@@ -152,6 +152,7 @@ namespace VikingEngine.DSSWars.Interface
                 menu.DeleteMe();
                 menu = null;
 
+                DssRef.state.updateMouseVisible();
                 GC.Collect();
             }
         }

@@ -133,6 +133,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             if (Ref.steam.inOverlay)
             {
+                if (!menuSystem.IsOpen())
+                {
+                    menuSystem.pauseMenu();
+                }
                 return;
             }
 

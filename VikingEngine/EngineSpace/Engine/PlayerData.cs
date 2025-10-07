@@ -159,7 +159,8 @@ namespace VikingEngine.Engine
         public VikingEngine.Input.PlayerInputMap inputMap = null;
         
         public bool IsActive = false; 
-        public bool IsAlive = false; 
+        public bool IsAlive = false;
+        public bool IgnoreLostController = false;
        
         public PlayerData(int localPlayerIndex, int globalIndex = -1)
         {
@@ -177,13 +178,17 @@ namespace VikingEngine.Engine
         {
             get
             {
-                if (PlatformSettings.RunningWindows)
-                    return false;
+                //if (PlatformSettings.RunningWindows)
+                //    return false;
 
                 if (IsActive)
                 {
-                    return !inputMap.Connected;
+                    if (!inputMap.Connected)
+                    {
+                        return !IgnoreLostController;
+                    }
                 }
+                IgnoreLostController = false;
                 return false;
             }
         }
