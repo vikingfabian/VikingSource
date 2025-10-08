@@ -475,7 +475,11 @@ namespace VikingEngine.Engine
             }
             else
             {
+
+                graphicsDeviceManager.GraphicsDevice.SetRenderTarget(null);
                 graphicsDeviceManager.GraphicsDevice.Clear(ClrColor);
+                Draw2d(0);
+                
             }
         }
 

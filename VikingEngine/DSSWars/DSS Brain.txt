@@ -1,7 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
-
+* Adds launch crashes to Sentry
+* Fixed: launch crash message is not visible
 
 #Pics
 
@@ -12,6 +12,7 @@ x new menu background
 x I got the "kill 100 enemies"  in the battle lab
 
 #Winter update#
+x repaint editor bg
 x remove the songs from the playlist
 x left menu width option
 x Unclaimed land
@@ -27,7 +28,7 @@ x A couple of extra achievements
 x December santa faction easter egg
 x (maybe)better war tracking
 x (maybe)minimap
-
+x Also I have a sort of bug that when I try to zoom in with the mouse wheel, if my mouse is too close to the edge at some point it will refuse to zoom into where my mouse is and just zoom into a location that is more central to the camera position
 
 
 #Todo#
