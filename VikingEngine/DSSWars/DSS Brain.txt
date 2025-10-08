@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* fixed rare onDisband crash
+* 
 
 
 #Pics
@@ -9,9 +9,10 @@ Change Log:
 #must do#
 
 x new menu background
-
+x I got the "kill 100 enemies"  in the battle lab
 
 #Winter update#
+x remove the songs from the playlist
 x left menu width option
 x Unclaimed land
 x Settler unit
