@@ -13,3 +13,33 @@
 * removed quick build key in casual
 * repaired controller HUD toggle
 * fixed rare onDisband crash
+
+Taiwan 
+Bulgaria 
+Switzerland 
+Japan 
+Italy 
+Brazil 
+United Kingdom 
+New Zealand 
+Netherlands 
+Spain 
+France 
+Sweden 
+Austria 
+Monaco 
+Germany 
+Saudi Arabia
+Qatar 
+China 
+Liechtenstein 
+Luxembourg 
+Turkey 
+Canada
+
+
+
+songsofsyx
+dwarffortress
+Worldbox
+RimWorld
