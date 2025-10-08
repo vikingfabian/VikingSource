@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿#define _TRYCATCH
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,7 @@ namespace VikingEngine.Engine
         TextS progressString = null;
         Graphics.ImageAdvanced bgImage = null;
         protected SoundContainerSingle introSound = null;
+        Exception asynchException = null;
 
         public LaunchState(bool isReset)
             :base()
@@ -71,17 +73,22 @@ namespace VikingEngine.Engine
 
                 new Timer.AsynchActionTrigger(() =>
                 {
+
                     try
                     {
+
                         asyncLoading_OnRestart(ref contentPart);
                         loadingDataComplete = true;
                         loadingContentComplete = true;
                         dataProcessComplete = true;
+
                     }
                     catch (Exception ex)
                     {
+                        asynchException = ex;
                         exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
                     }
+
                 });       
             }
             else
@@ -92,8 +99,10 @@ namespace VikingEngine.Engine
 
         void initPart1()
         {
+#if TRYCATCH
             try
             {
+#endif
                 //1.
                 mainPart = 0;
                 LoadContent.LoadConsoleFont();
@@ -110,14 +119,16 @@ namespace VikingEngine.Engine
                 Engine.Screen.ApplyScreenSettings(false);
                 mainPart++;
 #endif
-                progressString = new TextS(LoadedFont.Console, VectorExt.AddY( Engine.Screen.SafeArea.LeftBottom, -20), new Vector2(1), Align.CenterHeight,
+                progressString = new TextS(LoadedFont.Console, VectorExt.AddY(Engine.Screen.SafeArea.LeftBottom, -20), new Vector2(1), Align.CenterHeight,
                     string.Empty, Color.Gray, ImageLayers.Top8);
                 mainPart++;
 
                 new Timer.AsynchActionTrigger(() =>
                 {
+
                     try
                     {
+
                         load = LoadState.Splash;
                         mainPart = 10;
                         asyncLoadIntro();
@@ -130,12 +141,16 @@ namespace VikingEngine.Engine
                         Engine.Screen.RefreshUiSize();
                         mainPart++;
                         loadingDefaltContentComplete = true;
+
                     }
                     catch (Exception ex)
                     {
+                        asynchException = ex;
                         exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
                     }
-                });     
+
+                });
+#if TRYCATCH
             }
             catch (Exception ex)
             {
@@ -143,57 +158,78 @@ namespace VikingEngine.Engine
                 exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
 
             }
+
+#endif
         }
 
         void initPart2()
         {
+#if TRYCATCH
             try
             {
+#endif
                 preLoading();
 
                 new Timer.AsynchActionTrigger(() =>
                 {
+
                     try
                     {
+
                         contentPart = 0;
                         asyncContentLoading(ref contentPart);
                         loadingContentComplete = true;
+
                     }
                     catch (Exception ex)
                     {
+                        asynchException = ex;
                         exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
                     }
+
                 });
                 new Timer.AsynchActionTrigger(() =>
                 {
+
                     try
                     {
+
                         asyncStorageLoading(ref storagePart);
                         loadingDataComplete = true;
+
                     }
                     catch (Exception ex)
                     {
+                        asynchException = ex;
                         exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
                     }
+
                 });
                 new Timer.AsynchActionTrigger(() =>
                 {
+
                     try
                     {
+
                         asyncDataProcessLoading();
                         dataProcessComplete = true;
+
                     }
                     catch (Exception ex)
                     {
+                        asynchException = ex;
                         exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
                     }
+
                 });
+#if TRYCATCH
             }
             catch (Exception ex)
             {
                 //failState = true;
                 exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
             }
+#endif
         }
 
         void createSplash()
@@ -231,10 +267,10 @@ namespace VikingEngine.Engine
             {
                 return;
             }
-
+#if TRYCATCH
             try
             {
-
+#endif
 
                 if (bgTex != null)
                 {
@@ -271,11 +307,18 @@ namespace VikingEngine.Engine
                     }
                     progressString.TextString = $"State{(int)load}, m{mainPart}, c{contentPart}, s{storagePart}, d{dataProcessPart}, u{updateCounter}";
                 }
+#if TRYCATCH
             }
             catch (Exception ex)
             {
                 exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
             }
+#else
+            if (asynchException != null)
+            {
+                throw asynchException;
+            }
+#endif
 
             if (exceptionString != null)
             {

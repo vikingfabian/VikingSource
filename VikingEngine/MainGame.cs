@@ -263,7 +263,8 @@ namespace VikingEngine
 #if PJ
             new PJ.StartScreen(isReset);
 #elif DSS
-            new DSSWars.IntroState(isReset);
+            new DSSWars.RyanState();
+            //new DSSWars.IntroState(isReset);
 #elif TOGG
             new ToGG.IntroState(isReset);
 #elif SPECIAL
