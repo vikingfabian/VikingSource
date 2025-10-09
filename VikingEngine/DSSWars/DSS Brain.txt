@@ -1,13 +1,12 @@
 ﻿UPDATE
 Change Log:
-* Adds launch crashes to Sentry
-* Fixed: launch crash message is not visible
+* Initializing sound library before loading
+* Fixed rare get name crash
 
 #Pics
 
 
 #must do#
-
 x new menu background
 x I got the "kill 100 enemies"  in the battle lab
 

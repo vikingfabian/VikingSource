@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -122,6 +123,8 @@ namespace VikingEngine.Engine
                         load = LoadState.Splash;
                         //throw new Exception("Test splash crash");
                         mainPart = 10;
+                        SoundEffect.Initialize();
+                        mainPart++;
                         asyncLoadIntro();
                         mainPart++;
                         bgTex = Ref.main.Content.Load<Texture2D>(LoadContent.TexturePath + "monogame_splash");
