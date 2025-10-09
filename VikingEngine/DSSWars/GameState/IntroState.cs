@@ -153,7 +153,7 @@ namespace VikingEngine.DSSWars
 
         protected override void asyncLoadIntro()
         {
-#if !DEBUG
+
             try
             {
                 introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars
             {
                 introSound = null;
             }
-#endif
+
         }
 
         override protected void asyncStorageLoading(ref int part)

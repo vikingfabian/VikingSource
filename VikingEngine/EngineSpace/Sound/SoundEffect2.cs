@@ -70,7 +70,7 @@ namespace VikingEngine.Sound
 
         public void Play(Vector3 position)
         {
-            if (SoundStackManager.Available())
+            if (SoundManager.SoundInitializeSuccess && SoundStackManager.Available())
             {
                 if (Ref.draw.ActivePlayerScreens.Count == 0)
                     return;
@@ -98,7 +98,6 @@ namespace VikingEngine.Sound
                     dir.Add(cam.TiltX - MathHelper.PiOver2);
                     Vector2 direction = dir.Direction(diff.Length());
 
-                    //float pan = direction.X / MaxSoundDist * Ref.gamesett.reversedStereoValue;
                     float pan = Bound.Set(direction.X / MaxSoundDist, -1, 1) * Ref.gamesett.reversedStereoValue;
 
                     float pitch = pitchAdd;
@@ -114,14 +113,16 @@ namespace VikingEngine.Sound
         
         public void Play(Pan pan)
         {
-            float pitch = pitchAdd;
-            if (randomPitch != 0)
+            if (SoundManager.SoundInitializeSuccess)
             {
-                pitch = Bound.Set(pitch + Ref.peRnd.Plus_MinusF(randomPitch), -1, 1);
-            }
+                float pitch = pitchAdd;
+                if (randomPitch != 0)
+                {
+                    pitch = Bound.Set(pitch + Ref.peRnd.Plus_MinusF(randomPitch), -1, 1);
+                }
 
-            File().Play(Bound.Max(volume * Ref.gamesett.SoundVol(), 1), pitch, pan.Value);
-            
+                File().Play(Bound.Max(volume * Ref.gamesett.SoundVol(), 1), pitch, pan.Value);
+            }
         }
     }
 
@@ -131,10 +132,13 @@ namespace VikingEngine.Sound
 
         public SoundContainerSingle(string filePath, float volume = 1, float randomPitch = 0, float pitchAdd = 0)
         {
-            file = LoadContent.Content.Load<SoundEffect>(filePath);
-            this.volume = volume;
-            this.randomPitch = randomPitch;
-            this.pitchAdd = pitchAdd;
+            if (SoundManager.SoundInitializeSuccess)
+            {
+                file = LoadContent.Content.Load<SoundEffect>(filePath);
+                this.volume = volume;
+                this.randomPitch = randomPitch;
+                this.pitchAdd = pitchAdd;
+            }
         }
 
         protected override SoundEffect File()
@@ -149,14 +153,17 @@ namespace VikingEngine.Sound
 
         public SoundContainerMultiple(string[] filePath, float volume = 1, float randomPitch = 0, float pitchAdd = 0)
         {
-            files = new SoundEffect[filePath.Length];
-            for (int i = 0; i < filePath.Length; i++)
+            if (SoundManager.SoundInitializeSuccess)
             {
-                files[i] = LoadContent.Content.Load<SoundEffect>(filePath[i]);
+                files = new SoundEffect[filePath.Length];
+                for (int i = 0; i < filePath.Length; i++)
+                {
+                    files[i] = LoadContent.Content.Load<SoundEffect>(filePath[i]);
+                }
+                this.volume = volume;
+                this.randomPitch = randomPitch;
+                this.pitchAdd = pitchAdd;
             }
-            this.volume = volume;
-            this.randomPitch = randomPitch;
-            this.pitchAdd = pitchAdd;
         }
 
         protected override SoundEffect File()
@@ -185,7 +192,7 @@ namespace VikingEngine.Sound
         float volume = 1f;
         public void Play()
         {
-            if (volume > 0)
+            if (SoundManager.SoundInitializeSuccess && volume > 0)
             {
                 ins = file.CreateInstance();
                 ins.IsLooped = true;
@@ -211,8 +218,11 @@ namespace VikingEngine.Sound
 
         public void Load(LoopingSoundData data)
         {
-            basevolume = data.basevolume;
-            file = LoadContent.Content.Load<SoundEffect>(data.filePath);
+            if (SoundManager.SoundInitializeSuccess)
+            {
+                basevolume = data.basevolume;
+                file = LoadContent.Content.Load<SoundEffect>(data.filePath);
+            }
         }
 
         public void setVolume(float volume)
@@ -239,10 +249,7 @@ namespace VikingEngine.Sound
                 else
                 {
                     ins.Volume = Bound.Max( Ref.gamesett.AmbientVol() * basevolume * volume, 1f);
-                    //if (ins.State == SoundState.Paused)
-                    //{
-                    //    ins.Resume();
-                    //}
+                    
                 }
             }
         }
