@@ -120,10 +120,21 @@ namespace VikingEngine.Engine
                 {
                     try
                     {
+                        SoundEffect.Initialize();
+                    }
+                    catch (Exception ex)
+                    {
+                        SoundManager.SoundInitializeSuccess = false;
+                        SoundManager.SoundInitializeException = ex;
+                        Ref.gamesett.setSoundLevelsOnError();
+                    }
+
+                    try
+                    {
                         load = LoadState.Splash;
                         //throw new Exception("Test splash crash");
                         mainPart = 10;
-                        SoundEffect.Initialize();
+
                         mainPart++;
                         asyncLoadIntro();
                         mainPart++;
@@ -140,10 +151,7 @@ namespace VikingEngine.Engine
                     {
                         exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
                     }
-                })
-                {
-
-                };
+                });
             }
             catch (Exception ex)
             {
