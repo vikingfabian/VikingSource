@@ -856,21 +856,24 @@ namespace VikingEngine.DSSWars.Event
 
         public Faction findFriendsToDefender(Faction attacker, Faction defender)
         {
-            var cities = attacker.cities.toList();
-
-            while (cities.Count > 0)
+            if (attacker != null && defender != null)
             {
-                var city = arraylib.RandomListMemberPop(cities);
+                var cities = attacker.cities.toList();
 
-                if (city != null)
+                while (cities.Count > 0)
                 {
-                    foreach (var cindex in city.neighborCities)
+                    var city = arraylib.RandomListMemberPop(cities);
+
+                    if (city != null)
                     {
-                        var otherfaction = DssRef.world.cities[cindex].GetFaction();
-                        if (otherfaction != attacker && otherfaction != defender &&
-                            DssRef.diplomacy.GetRelationType(otherfaction, defender) >= RelationType.RelationType2_Good)
+                        foreach (var cindex in city.neighborCities)
                         {
-                            return otherfaction;
+                            var otherfaction = DssRef.world.cities[cindex].GetFaction();
+                            if (otherfaction != attacker && otherfaction != defender &&
+                                DssRef.diplomacy.GetRelationType(otherfaction, defender) >= RelationType.RelationType2_Good)
+                            {
+                                return otherfaction;
+                            }
                         }
                     }
                 }

@@ -1,7 +1,10 @@
 ﻿UPDATE
 Change Log:
 * Initializing sound library before loading
+(handles sound init fail)
 * Fixed rare get name crash
+* Fixed rare findFriendsToDefender crash
+* Fixed rare BannerManBuilder crash
 
 #Pics
 
