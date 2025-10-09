@@ -33,9 +33,7 @@ namespace VikingEngine.DSSWars
         Texture2D bgTex;
 
         bool bSpriteSheetTexture = false;
-        //bool bLanguage = false;
-
-
+       
         public IntroState(bool isReset)
             : base(isReset)
         {
@@ -107,8 +105,6 @@ namespace VikingEngine.DSSWars
             part++;
             bgTex = LobbyState.LoadBg();
             part++;
-            
-            //DrawGame.LoadContent();
         }
 
         protected override async void asyncDataProcessLoading()

@@ -214,6 +214,20 @@ namespace VikingEngine.DSSWars.Event
         public override bool asyncUpdate(float time)
         {
             return DssRef.state.localPlayers[0].tutorial == null;
+        
+        }
+        public override bool RunAi()
+        {
+            return false;
+        }
+
+        public override bool MayAttackPlayer()
+        {
+            return false;
+        }
+        public override bool RunWarManager()
+        {
+            return false;
         }
 
         protected override bool TimedEvent()
@@ -445,6 +459,11 @@ namespace VikingEngine.DSSWars.Event
                         {
                             enemyFac =  DssRef.world.findOrCreate(FactionType.Barbarians);
                             DssRef.settings.Faction_Barbarian = enemyFac.myIndex;
+                        }
+
+                        if (tutorial)
+                        {
+                            enemyFac.player.GetAiPlayer().armyAi_enabled = false;
                         }
 
                         var barbarianArmy = enemyFac.NewArmy(loop.Position);

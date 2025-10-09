@@ -1,15 +1,14 @@
 ﻿UPDATE
 Change Log:
-* Initializing sound library before loading
-(handles sound init fail)
-* Fixed rare get name crash
-* Fixed rare findFriendsToDefender crash
-* Fixed rare BannerManBuilder crash
+* 
+
 
 #Pics
 
 
 #must do#
+x Lock dark horde during tutorial, and make sure to complete the tutorial no matter how it dies
+
 x new menu background
 x I got the "kill 100 enemies"  in the battle lab
 
