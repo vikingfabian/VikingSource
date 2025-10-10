@@ -1,7 +1,8 @@
 ﻿UPDATE
 Change Log:
-* 
-
+* fixed: tutorial attack mission
+* muted crashes from road generation
+* increased muticore safety in army structure
 
 #Pics
 
@@ -15,7 +16,7 @@ x I got the "kill 100 enemies"  in the battle lab
 
 #Winter update#
 x repaint editor bg
-x remove the songs from the playlist
+x option to remove the songs from the playlist
 x left menu width option
 x Unclaimed land
 x Settler unit

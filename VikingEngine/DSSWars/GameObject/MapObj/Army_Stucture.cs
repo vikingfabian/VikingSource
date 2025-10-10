@@ -387,12 +387,18 @@ namespace VikingEngine.DSSWars.GameObject
         List<SoldierGroup> groups = new List<SoldierGroup>();
         public void add(SoldierGroup group)
         {
-            groups.Add(group);
+            lock (groups)
+            {
+                groups.Add(group);
+            }
         }
 
         public void recycle()
         {
-            groups.Clear();
+            lock (groups)
+            {
+                groups.Clear();
+            }
         }
 
         public static bool ExtraPlacement(Vector2 centerWp, float endRotation, Vector2 relativePosition, int armyColumnWidth, ref int currentColX, out Vector3 goalWp)
@@ -430,64 +436,54 @@ namespace VikingEngine.DSSWars.GameObject
         public void nextPlacement(Vector2 centerWp, float endRotation, Vector2 relativePosition, float centerPan, int armyColumnWidth, 
             out Vector2 cellSize, out float adjLeft, bool frontRow, bool endAsShip, bool resetCommand, bool teleport, List<SoldierGroup> failedPlacements)
         {
-            //if (centerPan < 0)
-            //{
-            //    lib.DoNothing();
-            //}
+            
             int cols = Bound.Min(lib.SmallestValue(groups.Count, armyColumnWidth), 1);
             int rows = Bound.Min((int)Math.Ceiling(groups.Count / (double)cols), 1);
 
             cellSize = new Vector2(cols * DssVar.SoldierGroup_Spacing, rows * DssVar.SoldierGroup_Spacing);
 
             Vector2 topleft = relativePosition;
-            topleft.X += cellSize.X * centerPan + DssVar.SoldierGroup_Spacing * 0.5f;//cellSize.X * 0.5f + DssVar.SoldierGroup_Spacing * 0.5f;
+            topleft.X += cellSize.X * centerPan + DssVar.SoldierGroup_Spacing * 0.5f;
             adjLeft = topleft.X;
 
-
-            if (groups.Count > 0)
+            lock (groups)
             {
-                
-                if (frontRow)
+                if (groups.Count > 0)
                 {
-                    topleft.Y -= cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
-                }
 
-                int colX = 0;
-                int rowY = 0;
-                foreach (SoldierGroup group in groups)
-                {
-                    Vector2 localPos = new Vector2(
-                        topleft.X + colX * DssVar.SoldierGroup_Spacing,
-                        topleft.Y + rowY * DssVar.SoldierGroup_Spacing);
-
-                    //if (localPos.Y < 0.38f)
-                    //{
-                    //    lib.DoNothing();
-                    //}
-                    localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos,  endRotation);
-                    Vector3 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
-                    IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
-                    var subTile = DssRef.world.subTileGrid.Get(subTilePos);
-                    if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
+                    if (frontRow)
                     {
-                        failedPlacements.Add(group);
+                        topleft.Y -= cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
                     }
-                    //else
-                    //{
-                        group.setArmyPlacement2(goalWp, resetCommand, teleport);
-                    //}
 
-                    if (++colX >= cols)
+                    int colX = 0;
+                    int rowY = 0;
+                    foreach (SoldierGroup group in groups)
                     {
-                        colX = 0;
-                        rowY++;
+                        Vector2 localPos = new Vector2(
+                            topleft.X + colX * DssVar.SoldierGroup_Spacing,
+                            topleft.Y + rowY * DssVar.SoldierGroup_Spacing);
+
+                        localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
+                        Vector3 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
+                        IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
+                        var subTile = DssRef.world.subTileGrid.Get(subTilePos);
+                        if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
+                        {
+                            failedPlacements.Add(group);
+                        }
+
+                        group.setArmyPlacement2(goalWp, resetCommand, teleport);
+
+
+                        if (++colX >= cols)
+                        {
+                            colX = 0;
+                            rowY++;
+                        }
                     }
                 }
             }
-            //else
-            //{
-            //    cellSize = new Vector2(DssVar.SoldierGroup_Spacing);
-            //}
         }
 
         public override string ToString()

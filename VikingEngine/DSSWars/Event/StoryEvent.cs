@@ -440,7 +440,7 @@ namespace VikingEngine.DSSWars.Event
             }));
         }
 
-        public static void spawnBarbarians(City city, bool tutorial)
+        public static Army spawnBarbarians(City city, bool tutorial)
         {
             ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
             for (int radius = Bound.Min(city.cityTileRadius - 2, 4); radius > 1; ++radius)
@@ -541,13 +541,14 @@ namespace VikingEngine.DSSWars.Event
 
 
 
-                        return;
+                        return barbarianArmy;
                     }
                 }
             }
 #if DEBUG
             throw new Exception("No enemy spawn");
 #endif
+            return null;
         }
 
         public override bool RunWarManager()

@@ -1356,7 +1356,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             var city = player.faction.mainCity;
 
-            StoryEvent_Barbarians.spawnBarbarians(city, true);
+            barbarianArmy = StoryEvent_Barbarians.spawnBarbarians(city, true);
+            player.gameControls.map.cameraFocus = barbarianArmy;
            
         }
 
