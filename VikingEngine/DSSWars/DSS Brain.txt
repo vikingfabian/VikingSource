@@ -7,9 +7,10 @@ Change Log:
 
 
 #must do#
-x Lock dark horde during tutorial, and make sure to complete the tutorial no matter how it dies
+x there seems to be a problem with the dark horde. tutorial doesn't progress after defeating them.
 
 x new menu background
+x fixa icon
 x I got the "kill 100 enemies"  in the battle lab
 
 #Winter update#
@@ -30,7 +31,10 @@ x December santa faction easter egg
 x (maybe)better war tracking
 x (maybe)minimap
 x Also I have a sort of bug that when I try to zoom in with the mouse wheel, if my mouse is too close to the edge at some point it will refuse to zoom into where my mouse is and just zoom into a location that is more central to the camera position
-
+x go over tutorial
+-view less resources
+-advisor
+-inform of resource use
 
 #Todo#
 x load game shows "destroy" tooltip
