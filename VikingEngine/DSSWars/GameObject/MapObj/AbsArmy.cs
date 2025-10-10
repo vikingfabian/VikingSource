@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     DssRef.state.events?.onBattleEnd_async(this, inBattleWith);
                     inBattle = false;
-                    if (GetPlayer().IsLocalPlayer())
+                    if (GetPlayer().IsLocalPlayer() && !DssRef.achieve.achivementsAreModeBlocked())
                     {
                         float strengthLost = strengthBeforeBattle - strengthValue;
                         if (strengthLost >= Achievements.Defeating_victory_strengthLost && groups.Count > 0)

@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars
                 mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }
 
-            Ref.draw.ClrColor = new Color(11, 30, 34);
+            Ref.draw.ClrColor = ColorExt.ChangeBrighness( new Color(29,54,67), -10);//new Color(11, 30, 34);
 
             menuSystem = new Interface.MenuSystem(new InputMap(Engine.XGuide.LocalHostIndex), Interface.MenuType.Lobby);
             DssRef.storage.checkConnected();
@@ -619,7 +619,7 @@ namespace VikingEngine.DSSWars
 
         public static Texture2D LoadBg()
         {
-            var bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
+            var bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "story_background"/*"darkforest_bg"*/);
             return bgTex;
         }
 
@@ -637,16 +637,21 @@ namespace VikingEngine.DSSWars
 
         void createBackground()
         {
-            float w = Engine.Screen.SafeArea.Width;
+            float menuW = topMenu.backgroundArea.Width;//menuSystem.menu.area.Width;
+            float w = (Engine.Screen.SafeArea.Width - menuW) *  0.98f;
             float h = w / bgTex.Width * bgTex.Height;
-            float x = Engine.Screen.Area.Right - w;
+
+            var area = Engine.Screen.Area;
+            area.AddToLeftSide(-menuW);
+
+            float x = area.Center.X - w * 0.5f;//Engine.Screen.SafeArea.Right - w + 10;
             float y = Screen.CenterScreen.Y - h * 0.5f;
 
             bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
                 new Vector2(x, y), new Vector2(w, h), ImageLayers.Background5, false);
             bgImage.Texture = bgTex;
             bgImage.SetFullTextureSource();
-            bgImage.Color = ColorExt.GrayScale(0.8f);
+            //bgImage.Color = ColorExt.GrayScale(0.8f);
             bgImage.Opacity = 0.8f;
 
             //Vector2 promoworkerSz = new Vector2(9, 6) * new Vector2(h * 0.02f);

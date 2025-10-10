@@ -1,20 +1,19 @@
 ﻿UPDATE
 Change Log:
-* fixed: tutorial attack mission
-* muted crashes from road generation
-* increased muticore safety in army structure
+* new main menu background
+* fixed: I got the "kill 100 enemies"  in the battle lab
+* fixed bug: When automating a city for war and choosing medium soldier quality the sharp stick production goes to zero, when switching back to low quality production stays at zero instead of going back to faction setting. so switching a city from medium soldier quality to low will make the city stop producing armies.
+
 
 #Pics
 
 
 #must do#
-x there seems to be a problem with the dark horde. tutorial doesn't progress after defeating them.
 
-x new menu background
-x fixa icon
-x I got the "kill 100 enemies"  in the battle lab
+
 
 #Winter update#
+x try close cores carefully before exit
 x repaint editor bg
 x option to remove the songs from the playlist
 x left menu width option

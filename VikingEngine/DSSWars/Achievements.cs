@@ -294,9 +294,10 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        bool achivementsAreModeBlocked()
+        public bool achivementsAreModeBlocked()
         {
-            return DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful ||
+            return DssRef.state.PlayType() != GameState.PlayStateType.Play ||
+                DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful ||
                 DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator;
         }
 
