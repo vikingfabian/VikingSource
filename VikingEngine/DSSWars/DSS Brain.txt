@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
 * fixed: tutorial dark horde was attacking another faction by spawning too close
+* fixed rare set faction crash
 
 
 
@@ -16,6 +17,10 @@ x
 * In menu text input
 * Search bar for voxel models
 
+x 300% difficulty 
+x Extended diplomacy options, and be able to command allies with diplomacy points
+x casual mode: embassy building
+
 x try close cores carefully before exit
 x repaint editor bg
 x option to remove the songs from the playlist
@@ -26,9 +31,7 @@ x Camp site city tier
 x Fog of war
 x Game mode: start with nothing
 x Game mode: quick match
-x 300% difficulty 
-x Extended diplomacy options, and be able to command allies with diplomacy points
-x casual mode: embassy building
+
 x A couple of extra achievements
 x December santa faction easter egg
 x (maybe)better war tracking
