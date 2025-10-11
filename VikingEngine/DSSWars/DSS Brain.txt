@@ -3,8 +3,6 @@ Change Log:
 * fixed: tutorial dark horde was attacking another faction by spawning too close
 
 
-* In menu text input
-* Search bar for voxel models
 
 #Pics
 
@@ -15,6 +13,9 @@ x
 
 
 #Winter update#
+* In menu text input
+* Search bar for voxel models
+
 x try close cores carefully before exit
 x repaint editor bg
 x option to remove the songs from the playlist
