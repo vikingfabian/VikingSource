@@ -20,7 +20,10 @@ namespace VikingEngine.DSSWars.Presentation
         //public string Settings_Render3dScale_DownX => "Downscale {0}X";
         public string Hud_Search => "Search";
         public string GameMenu_ControllerDisconnected => "Controller disconnected";
-        
+
+        public string DifficultyDescription_ExtremeAggression = "Extreme aggression";
+
+
     }
 
 }

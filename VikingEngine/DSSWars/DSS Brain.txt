@@ -14,10 +14,19 @@ x
 
 
 #Winter update#
-* In menu text input
+* In-menu text input
 * Search bar for voxel models
+* 300% difficulty
+-> no warmup period
+-> warmanager runs at double pace
+-> story is about 90 minutes shorter
+-> 300% bot economy
 
-x 300% difficulty 
+* fixed: bot delay was not set by high difficulty
+* New achievement: Taste the impossible: Terminate the first faction to attack you. 300% difficulty.
+
+x achievement in steamworks
+
 x Extended diplomacy options, and be able to command allies with diplomacy points
 x casual mode: embassy building
 

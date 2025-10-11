@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Event
 
         Time dyingFactionsTimer = Time.Zero;
 
-        Time tooPeacefulCheckTimer = new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
+        Time tooPeacefulCheckTimer = new Time(Ref.rnd.Float(4, 8), TimeUnit.Minutes);
 
         ConcurrentQueue<AbsStoryEvent> mainStory = new ConcurrentQueue<AbsStoryEvent>();
 
@@ -561,6 +561,11 @@ namespace VikingEngine.DSSWars.Event
                             if (p.firstAttacker == faction.myIndex)
                             { 
                                 DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.destroy_first_attacker_any, AchievementIndex.destroy_first_attacker_100);
+
+                                if (DssRef.achieve.difficultyPerc >= 300)
+                                {
+                                    DssRef.achieve.UnlockAchievement(AchievementIndex.destroy_first_attacker_300);
+                                }
                             }
                         }
                     }
@@ -681,6 +686,10 @@ namespace VikingEngine.DSSWars.Event
                     DssRef.difficulty.toPeacefulPercentage > 0)
                 {
                     tooPeacefulCheckTimer = new Time(Ref.rnd.Float(0.5f, 3.5f), TimeUnit.Hours);
+                    if (DssRef.difficulty.extremeAggression)
+                    {
+                        tooPeacefulCheckTimer.MilliSeconds *= 0.5f;
+                    }
 
                     foreach (var p in DssRef.state.localPlayers)
                     {

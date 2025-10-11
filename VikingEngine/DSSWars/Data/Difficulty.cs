@@ -20,8 +20,8 @@ namespace VikingEngine.DSSWars.Data
 
         int difficulty = DefaultOption;
 
-        static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200 };
-        public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150 };
+        static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200, 300 };
+        public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150, 300 };
         public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
 
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
@@ -47,6 +47,7 @@ namespace VikingEngine.DSSWars.Data
         public GameModeMainType setting_gameMode = DefaultMode;
         public bool runStory = true;
         public bool peaceful = false;
+        public bool extremeAggression = false;
         //public bool toPeacefulCheck = true;
 
         public int MercenaryPurchaseCost_Start;
@@ -147,7 +148,14 @@ namespace VikingEngine.DSSWars.Data
                 content.hspace();
                 content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficultyLvl.honorGuard ? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No)));
             }
-
+            if (difficultyLvl.extremeAggression)
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsRelationTotalWar));
+                content.hspace();
+                content.Add(new RbText(DssRef.todoLang.DifficultyDescription_ExtremeAggression));
+            }
         }
 
         public void set(int difficulty)
@@ -280,6 +288,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
+                    aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
                     toPeacefulPercentage = 1.5f;
                     break;
@@ -294,14 +303,14 @@ namespace VikingEngine.DSSWars.Data
                     resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
+                    aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
                     toPeacefulPercentage = 1.75f;
                     break;
 
-                case 7: //Max
+                case 7: //200%
                     aiAggressivity = AiAggressivity.High;
                     bossSize = BossSize.Huge;
-                    //bossTimeSettings = BossTimeSettings.Immediate;
                     aiEconomyLevel = 4;
 
 
@@ -309,8 +318,22 @@ namespace VikingEngine.DSSWars.Data
                     resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
-                    //toPeacefulCheck = true;
+                    aiDelayTimeSec = 0;
                     toPeacefulPercentage = 3f;
+                    break;
+
+                case 8: // 300%
+                    aiAggressivity = AiAggressivity.High;
+                    bossSize = BossSize.Huge;
+                    aiEconomyLevel = 5;
+
+                    resourceMultiplyChance = 0.5;
+                    resourceMultiplyDecrease = false;
+                    diplomacyDifficulty = 2;
+                    honorGuard = false;
+                    aiDelayTimeSec = 0;
+                    toPeacefulPercentage = 10f;
+                    extremeAggression = true;
                     break;
             }
 

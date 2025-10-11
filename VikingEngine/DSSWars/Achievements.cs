@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars
         public const float Defeating_victory_strengthLost = 40;
 
         public const int FriendshipAllyCount = 8;
-        double difficultyPerc;
+        public double difficultyPerc;
 
         public const int LargePopulationCount_Tier1 = 4000;
         public const int LargePopulationCount_Tier2 = 10000;
@@ -741,6 +741,11 @@ namespace VikingEngine.DSSWars
         /// </summary>
         victory_mini_domination_story_any,//i, t, a
         victory_mini_domination_story_100,
+
+        /// <summary>
+        /// Taste the impossible: Defeat the first attacker in 300% difficulty 
+        /// </summary>
+        destroy_first_attacker_300,
 
         NUM_ACHIEVEMENTS
     }
