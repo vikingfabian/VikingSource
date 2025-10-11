@@ -1,14 +1,12 @@
 ﻿UPDATE
 Change Log:
-* new main menu background
-* fixed: I got the "kill 100 enemies"  in the battle lab
-* fixed bug: When automating a city for war and choosing medium soldier quality the sharp stick production goes to zero, when switching back to low quality production stays at zero instead of going back to faction setting. so switching a city from medium soldier quality to low will make the city stop producing armies.
-
+* fixed: tutorial dark horde was attacking another faction by spawning too close
 
 #Pics
 
 
 #must do#
+x 
 
 
 
