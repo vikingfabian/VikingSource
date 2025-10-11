@@ -378,7 +378,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void auto_updateWorkPrio()
         {
-            int weaponPrio = automationFocus== AutomationFocus.Military ? 2 : 1;
+            
 
             workTemplate.move.set(3);
             workTemplate.wood.set(2);

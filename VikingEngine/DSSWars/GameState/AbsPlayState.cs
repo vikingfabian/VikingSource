@@ -16,6 +16,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.Network;
 
@@ -145,7 +146,6 @@ namespace VikingEngine.DSSWars.GameState
             return false;
         }
 
-        
 
         protected bool asynchArmyAiUpdate(int id, float time)
         {
@@ -267,6 +267,27 @@ namespace VikingEngine.DSSWars.GameState
             }
             pathUpdates[count] = new PathUpdateThread_Player(count);
 
+        }
+
+        public void updateMouseVisible()
+        {
+            if (menuSystem.IsOpen())
+            {
+                Mouse.Visible = true;
+            }
+            else
+            {
+                foreach (var player in localPlayers)
+                {
+                    if (player.gameControls.input.inputSource.HasMouse)
+                    {
+                        Mouse.Visible = true;
+                        return;
+                    }
+                }
+
+                Mouse.Visible = false;
+            }
         }
 
         public void exit()

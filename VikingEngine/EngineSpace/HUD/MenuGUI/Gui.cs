@@ -162,7 +162,7 @@ namespace VikingEngine.HUD
 
         Vector2 moveInput()
         {
-            if (useAnyControllerInput)
+            if (useAnyControllerInput && Input.XInput.controllers != null)
             {
                 foreach (var ins in Input.XInput.controllers)
                 {

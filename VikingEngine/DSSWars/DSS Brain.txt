@@ -1,17 +1,19 @@
 ﻿UPDATE
 Change Log:
-* Added 69 steam stats to the full game
-
-
+* fixed: tutorial dark horde was attacking another faction by spawning too close
 
 #Pics
 
 
 #must do#
-x new menu background
-x commander stats
+x 
+
+
 
 #Winter update#
+x try close cores carefully before exit
+x repaint editor bg
+x option to remove the songs from the playlist
 x left menu width option
 x Unclaimed land
 x Settler unit
@@ -26,8 +28,11 @@ x A couple of extra achievements
 x December santa faction easter egg
 x (maybe)better war tracking
 x (maybe)minimap
-
-
+x Also I have a sort of bug that when I try to zoom in with the mouse wheel, if my mouse is too close to the edge at some point it will refuse to zoom into where my mouse is and just zoom into a location that is more central to the camera position
+x go over tutorial
+-view less resources
+-advisor
+-inform of resource use
 
 #Todo#
 x load game shows "destroy" tooltip

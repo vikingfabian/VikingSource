@@ -43,6 +43,7 @@ namespace VikingEngine.Input
         public static void Init()
         {
             controllers = new List2<XController>(GamePad.MaximumGamePadCount);
+
             Update();                
         }
         
@@ -83,12 +84,15 @@ namespace VikingEngine.Input
 
         static public bool KeyDownEvent(Buttons button, out int player)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].KeyDownEvent(button))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    player = Instance(i).Index;
-                    return true;
+                    if (controllers[i].KeyDownEvent(button))
+                    {
+                        player = Instance(i).Index;
+                        return true;
+                    }
                 }
             }
             player = -1;
@@ -97,12 +101,15 @@ namespace VikingEngine.Input
 
         static public bool AnyActivationKey_DownEvent(out int player)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].KeyDownEvent(Buttons.A, Buttons.X, Buttons.Start))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    player = Instance(i).Index;
-                    return true;
+                    if (controllers[i].KeyDownEvent(Buttons.A, Buttons.X, Buttons.Start))
+                    {
+                        player = Instance(i).Index;
+                        return true;
+                    }
                 }
             }
             player = -1;
@@ -111,12 +118,15 @@ namespace VikingEngine.Input
 
         static public bool KeyIsDown(Buttons button, ref int player)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].IsButtonDown(button))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    player = Instance(i).Index;
-                    return true;
+                    if (controllers[i].IsButtonDown(button))
+                    {
+                        player = Instance(i).Index;
+                        return true;
+                    }
                 }
             }
             return false;
@@ -124,12 +134,15 @@ namespace VikingEngine.Input
 
         static public bool KeyDownEvent_index(Buttons button, out int index)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].KeyDownEvent(button))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    index = i;
-                    return true;
+                    if (controllers[i].KeyDownEvent(button))
+                    {
+                        index = i;
+                        return true;
+                    }
                 }
             }
             index= -1;
@@ -138,11 +151,14 @@ namespace VikingEngine.Input
 
         static public bool KeyDownEvent(Buttons button)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].KeyDownEvent(button))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    return true;
+                    if (controllers[i].KeyDownEvent(button))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -150,11 +166,14 @@ namespace VikingEngine.Input
 
         static public bool KeyDownEvent(Buttons button1, Buttons button2)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].KeyDownEvent(button1, button2))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    return true;
+                    if (controllers[i].KeyDownEvent(button1, button2))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -162,16 +181,23 @@ namespace VikingEngine.Input
 
         public static XController Instance(int index)
         {
+            if (controllers == null)
+            {
+                return null;
+            }
             return controllers[index];
         }
 
         public static int MaxIndex()
         {
-            for (int i = controllers.Count - 1; i >= 0; --i)
+            if (controllers != null)
             {
-                if (controllers[i].Connected)
+                for (int i = controllers.Count - 1; i >= 0; --i)
                 {
-                    return i;
+                    if (controllers[i].Connected)
+                    {
+                        return i;
+                    }
                 }
             }
             return 0;
@@ -179,11 +205,14 @@ namespace VikingEngine.Input
 
         public static bool HasConnectedController()
         {
-            for (int i = controllers.Count - 1; i >= 0; --i)
+            if (controllers != null)
             {
-                if (controllers[i].Connected)
+                for (int i = controllers.Count - 1; i >= 0; --i)
                 {
-                    return true;
+                    if (controllers[i].Connected)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -191,18 +220,21 @@ namespace VikingEngine.Input
 
         public static XController Default()
         {
-            var c = controllers[(int)Engine.XGuide.LocalHostIndex];
-            if (c.Connected)
+            if (controllers != null)
             {
-                return c;
-            }
-
-            controllers.loopBegin();
-            while (controllers.loopNext())
-            {
-                if (controllers.sel.Connected)
+                var c = controllers[(int)Engine.XGuide.LocalHostIndex];
+                if (c.Connected)
                 {
-                    return controllers.sel;
+                    return c;
+                }
+
+                controllers.loopBegin();
+                while (controllers.loopNext())
+                {
+                    if (controllers.sel.Connected)
+                    {
+                        return controllers.sel;
+                    }
                 }
             }
 

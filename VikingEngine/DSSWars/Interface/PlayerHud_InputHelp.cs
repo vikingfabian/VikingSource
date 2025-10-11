@@ -60,6 +60,7 @@ namespace VikingEngine.DSSWars.Interface
             InputMap map = player.gameControls.input;
             bool ct = map.inputSource.IsController;
             bool mouse = map.inputSource.HasMouse;
+            bool casual = player.profile.casualControls;
            
             switch (player.gameControls.inputHelpState)
             {
@@ -71,11 +72,12 @@ namespace VikingEngine.DSSWars.Interface
                         input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     input(ct ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
-                    //if (mouse)
-                    //{
 
-                    input_buttonmap(map.Build, DssRef.lang.InputActionName_Build);
-                    //}
+                    if (!casual)
+                    {
+                        input_buttonmap(map.Build, DssRef.lang.InputActionName_Build);
+                    }
+
                     if (ct)
                     {
                         content.newLine();

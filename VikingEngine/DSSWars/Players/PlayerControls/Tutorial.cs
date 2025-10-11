@@ -1356,7 +1356,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             var city = player.faction.mainCity;
 
-            StoryEvent_Barbarians.spawnBarbarians(city, true);
+            barbarianArmy = StoryEvent_Barbarians.spawnBarbarians(city, true);
+            player.gameControls.map.cameraFocus = barbarianArmy;
            
         }
 
@@ -1387,7 +1388,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
 
             Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
-            enemyFac.player.GetAiPlayer().armyAi_enabled = true;
+            if (enemyFac != null)
+            {
+                enemyFac.player.GetAiPlayer().armyAi_enabled = true;
+            }
 
             player.tutorial = null;
             
@@ -1400,6 +1404,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             
             player.hud.messages.blockFoodWarning(false);
             DssRef.state.events.onTutorialEnd();
+
+
         }
 
         void startUnits()

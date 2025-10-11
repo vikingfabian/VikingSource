@@ -804,7 +804,18 @@ namespace VikingEngine.Input
     struct XboxButtonMap : IButtonMap
     {
         public bool IsDown { get { return Input.XInput.Instance(controllerIx).IsButtonDown(button); } }
-        public bool DownEvent { get { return Input.XInput.Instance(controllerIx).KeyDownEvent(button); } }
+        public bool DownEvent 
+        { 
+            get
+            {
+                var ins = Input.XInput.Instance(controllerIx);
+                if (ins != null)
+                {
+                    ins.KeyDownEvent(button);
+                }
+                return false;
+            }
+        }
 
         public bool DownEvent_AnyInstance
         {
@@ -814,7 +825,19 @@ namespace VikingEngine.Input
             }
         }
 
-        public bool UpEvent { get { return Input.XInput.Instance(controllerIx).KeyUpEvent(button); } }
+        public bool UpEvent
+        {
+            get
+            {
+                var ins = Input.XInput.Instance(controllerIx);
+                if (ins != null)
+                {
+                    ins.KeyUpEvent(button);
+                }
+                return false;
+            }
+        }
+
         public float Value
         {
             get

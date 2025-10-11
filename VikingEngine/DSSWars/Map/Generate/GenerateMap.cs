@@ -446,7 +446,9 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 }
                                 catch (Exception ex)
                                 {
+#if DEBUG
                                     BlueScreen.ThreadException = ex;
+#endif
                                 }
                                
                             }));

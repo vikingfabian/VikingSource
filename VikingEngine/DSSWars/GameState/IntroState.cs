@@ -33,9 +33,7 @@ namespace VikingEngine.DSSWars
         Texture2D bgTex;
 
         bool bSpriteSheetTexture = false;
-        //bool bLanguage = false;
-
-
+       
         public IntroState(bool isReset)
             : base(isReset)
         {
@@ -107,8 +105,6 @@ namespace VikingEngine.DSSWars
             part++;
             bgTex = LobbyState.LoadBg();
             part++;
-            
-            //DrawGame.LoadContent();
         }
 
         protected override async void asyncDataProcessLoading()
@@ -153,9 +149,16 @@ namespace VikingEngine.DSSWars
 
         protected override void asyncLoadIntro()
         {
-#if !DEBUG
-            introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
-#endif
+
+            try
+            {
+                introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
+            }
+            catch 
+            {
+                introSound = null;
+            }
+
         }
 
         override protected void asyncStorageLoading(ref int part)

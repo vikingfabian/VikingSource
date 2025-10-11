@@ -2072,10 +2072,15 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 Vector3 moveDir_dir = VectorExt.V2toV3XZ(dir);
 
-                var soldiersC = soldiers.counter();
-                while (soldiersC.Next())
+                var soldiers_sp = soldiers;
+
+                if (soldiers_sp != null)
                 {
-                    new DeserterAnimation(soldiersC.sel, moveDir_dir, rot);
+                    var soldiersC = soldiers_sp.counter();
+                    while (soldiersC.Next())
+                    {
+                        new DeserterAnimation(soldiersC.sel, moveDir_dir, rot);
+                    }
                 }
             }
         }

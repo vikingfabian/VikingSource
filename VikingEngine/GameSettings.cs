@@ -1,18 +1,20 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using VikingEngine.Engine;
-using Microsoft.Xna.Framework.Graphics;
-using VikingEngine.HUD;
-using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
-using VikingEngine.HUD.RichBox;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.LootFest.Music;
 using VikingEngine.PJ.Strategy;
-using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 
 namespace VikingEngine
@@ -235,7 +237,17 @@ namespace VikingEngine
             Debug.ReadCheck(r);
 
             Engine.Update.SetFrameRate(FrameRate);
+            setSoundLevelsOnError();
             //MusicMasterVolume = 0;
+        }
+
+        public void setSoundLevelsOnError()
+        {
+            if (VikingEngine.Sound.SoundManager.SoundInitializeSuccess == false)
+            {
+                MasterVolume = 0;
+                MusicMasterVolume = 0;
+            }
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -488,50 +500,65 @@ namespace VikingEngine
 
         public void volumeOptions(RichBoxContent content)
         {
-            content.newLine();
-            content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
-            content.space();
-            content.Add(new RbText(DssRef.lang.Settings_MasterVolume));
-            content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), masterVolProperty, true));
-
-            if (Ref.music != null)
+            if (VikingEngine.Sound.SoundManager.SoundInitializeSuccess)
             {
-                //content.newLine();
-                //content.Add(new RbText(DssRef.lang.MusicIsBroken, HudLib.InfoYellow_Light));
+
                 content.newLine();
+                content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
+                content.space();
+                content.Add(new RbText(DssRef.lang.Settings_MasterVolume));
+                content.space();
+                content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), masterVolProperty, true));
+
+                if (Ref.music != null)
+                {
+                    //content.newLine();
+                    //content.Add(new RbText(DssRef.lang.MusicIsBroken, HudLib.InfoYellow_Light));
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                    content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
+                    content.space();
+                    content.Add(new RbText(Ref.langOpt.SoundOption_MusicVolume));
+                    content.space();
+                    content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), musicVolProperty, true));
+                }
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
+                content.space();
+                content.Add(new RbText(DssRef.lang.Settings_AmbienceVolume));
+                content.space();
+                content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), ambientVolProperty, true));
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
                 content.space();
-                content.Add(new RbText(Ref.langOpt.SoundOption_MusicVolume));
+                content.Add(new RbText(DssRef.lang.Settings_BattleMelody));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), musicVolProperty, true));
+                content.Add(new RbDragButton(new DragButtonSettings(0, 2, 0.1f), BattleMelodyVolProperty, true));
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
+                content.space();
+                content.Add(new RbText(Ref.langOpt.SoundOption_SoundVolume));
+                content.space();
+                content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), soundVolProperty, true));
             }
-
-            content.newLine();
-            content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
-            content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
-            content.space();
-            content.Add(new RbText(DssRef.lang.Settings_AmbienceVolume));
-            content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), ambientVolProperty, true));
-
-            content.newLine();
-            content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
-            content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
-            content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
-            content.space();
-            content.Add(new RbText(DssRef.lang.Settings_BattleMelody));
-            content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0, 2, 0.1f), BattleMelodyVolProperty, true));
-
-            content.newLine();
-            content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
-            content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
-            content.space();
-            content.Add(new RbText(Ref.langOpt.SoundOption_SoundVolume));
-            content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), soundVolProperty, true));
+            else
+            {
+                content.newLine();
+                content.Add(new RbImage(SpriteName.cmdWarningTriangle));
+                content.space();
+                content.Add(new RbText(DssRef.todoLang.Error_SoundInitFailure, HudLib.InfoYellow_Light));
+                content.space();
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("!") },
+                        new RbAction(() => { BlueScreen.ThreadException = VikingEngine.Sound.SoundManager.SoundInitializeException; }),
+                        new RbTooltip_Text(VikingEngine.Sound.SoundManager.SoundInitializeException.Message)));
+            }
         }
 
         public void monitorOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
