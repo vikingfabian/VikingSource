@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
 * fixed: tutorial dark horde was attacking another faction by spawning too close
+* fixed rare set faction crash
 
 #Pics
 

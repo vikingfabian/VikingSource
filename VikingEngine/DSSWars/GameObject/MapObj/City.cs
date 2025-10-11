@@ -2990,6 +2990,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void setFaction(Faction newFaction, bool duringStartup, bool convert)
         {
+            if (newFaction == null)
+                return;
+
             Faction owner = GetFaction_Safe();
             if (owner != newFaction)
             {
