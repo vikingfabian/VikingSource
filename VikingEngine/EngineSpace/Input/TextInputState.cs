@@ -31,7 +31,7 @@ namespace VikingEngine.Input
         object tag;
 
         bool bExit = false;
-        string result = null;
+        public string result = null;
         float exitDelay = 250;
 
         KeyboardState previousState;
@@ -45,7 +45,7 @@ namespace VikingEngine.Input
             this.preMarkerText = defaultText;
             RegisterFocusedButtonForTextInput(OnTextInput, true);
             Ref.update.textInput = this;
-            refresh(true);
+            //refresh(true);
         }
 
         public void RegisterFocusedButtonForTextInput(System.EventHandler<TextInputEventArgs> method, bool register)
@@ -176,12 +176,14 @@ namespace VikingEngine.Input
             return previousState.IsKeyUp(key) && currentState.IsKeyDown(key);
         }
 
-        void refresh(bool textLengthChanged)
+        public void refresh(bool textLengthChanged)
         {
-            
+            result = preMarkerText + postMarkerText;
 
             inputReciever.textInput_refresh(textLengthChanged);
         }
+
+
 
         public string DisplayText()
         {
@@ -195,23 +197,34 @@ namespace VikingEngine.Input
             Ref.update.textInput = null;
         }
 
+
         public bool Exiting => bExit;
     }
 
     abstract class AbsTextInputUpdate : AbsUpdateable, ITextInputReciever
     {
-        TextInput input;
+        public TextInput input;
         public AbsTextInputUpdate()
             :base(true)
         {
             
         }
 
+        public void InitComplete()
+        {
+            input.refresh(true);
+        }
+
         protected void init(string defaultText, string recieverId, object tag)
         { 
             input = new TextInput(defaultText, this, recieverId, tag);
         }
-        
+
+        public string DisplayText()
+        {
+            return input.DisplayText();
+        }
+
         public override void Time_Update(float time)
         {
             input.Update();

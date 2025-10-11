@@ -17,6 +17,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             this.gameObject = gameObject;
             string name = gameObject.Name(out _);
             init(name, name, null);
+            InitComplete();
         }
 
         public override void textInput_refresh(bool textLengthChanged)

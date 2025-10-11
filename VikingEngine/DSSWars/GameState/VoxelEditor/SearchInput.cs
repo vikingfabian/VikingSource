@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Input;
+using VikingEngine.PJ.MiniGolf;
 
 namespace VikingEngine.DSSWars.GameState.VoxelEditor
 {
@@ -12,13 +13,21 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         VoxelEditorMenu2 editorMenu;
         public SearchInput(VoxelEditorMenu2 editorMenu) 
             :base()
-        { 
+        {
+            if (editorMenu.modelSearchFilter == null)
+            { 
+                editorMenu.modelSearchFilter = string.Empty;
+            }
+
             this.editorMenu = editorMenu;
             init(editorMenu.modelSearchFilter, "voxel search", null);
+            InitComplete();
         }
 
         public override void textInput_refresh(bool textLengthChanged)
         {
+            editorMenu.modelSearchFilter = input.result;
+        
             editorMenu.menu.needRefresh = true;
         }
 
@@ -26,6 +35,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             editorMenu.modelSearchFilter = result;
             base.textInput_complete(result, tag);
+            editorMenu.menu.needRefresh = true;
         }
     }
 }

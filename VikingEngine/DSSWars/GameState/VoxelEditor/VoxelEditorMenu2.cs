@@ -1258,14 +1258,28 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             if (Ref.update.textInput != null &&
                     !Ref.update.textInput.Exiting)
             {
-
+                content.Add(new RbButton(new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.cmdSpyglass),
+                    new RbSpace(),
+                    new RbText(Ref.update.textInput.DisplayText(), Color.Black), 
+                },
+                null) { overrideBgColor = Color.White, fillWidth = true });            
             }
             else
             {
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass) },
-                    new RbAction(() => { new SearchInput(this); }), new RbTooltip_Text(DssRef.todoLang.Hud_Search)));
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass) },
+                    new RbAction(() => { new SearchInput(this); }), new RbTooltip_Text(DssRef.todoLang.Hud_Search))
+                { overrideBgColor = Color.White });
 
+                if (!string.IsNullOrEmpty(modelSearchFilter))
+                {
+                    content.space();
+                    content.Add(new RbText(modelSearchFilter));
 
+                    content.space();
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_EndSessionIcon, HudLib.NotAvailableColor_Dark) },
+                        new RbAction(() => { modelSearchFilter = null; }), new RbTooltip_Text(DssRef.lang.Hud_Close)));
+                }
             }
 
             content.Add(new RichBoxScale(1.2f));
@@ -1274,33 +1288,38 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             {
                 content.newLine();
 
-                AbsRichBoxMember previewImage;
-
-                if (file.Tag == null)
+                if (string.IsNullOrEmpty(modelSearchFilter) ||
+                    file.Name.ToLower().Contains(modelSearchFilter.ToLower()))
                 {
-                    previewImage = new RbImage(SpriteName.IconSandGlass);
-                }
-                else
-                { 
-                    previewImage = new RbTexture((Texture2D)file.Tag);
-                }
 
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    AbsRichBoxMember previewImage;
+
+                    if (file.Tag == null)
+                    {
+                        previewImage = new RbImage(SpriteName.IconSandGlass);
+                    }
+                    else
+                    {
+                        previewImage = new RbTexture((Texture2D)file.Tag);
+                    }
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                             previewImage,
                             new RbSpace(),
                             new RbText(file.Name)
                         }, new RbAction4Arg<string, int, bool, bool>(loadUserModelLink, file.Name, listModels_0proj_1user_2retail, false, false),
-                new RbTooltip_Text(LoadContent.CheckCharsSafety(file.Date.ToString(), LoadedFont.Regular))));
+                    new RbTooltip_Text(LoadContent.CheckCharsSafety(file.Date.ToString(), LoadedFont.Regular))));
 
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.cmdSpyglass),
                         }, new RbAction4Arg<string, int, bool, bool>(loadUserModelLink, file.Name, listModels_0proj_1user_2retail, true, false),
-                new RbTooltip_Text(DssRef.lang.Editor_Preview)));
+                    new RbTooltip_Text(DssRef.lang.Editor_Preview)));
 
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.cmdPlus),
                         }, new RbAction4Arg<string, int, bool, bool>(loadUserModelLink, file.Name, listModels_0proj_1user_2retail, false, true),
-                new RbTooltip_Text(DssRef.lang.Editor_CombineWithCurrent), false));
+                    new RbTooltip_Text(DssRef.lang.Editor_CombineWithCurrent), false));
+                }
             }
 
             menu.menuStack.Clear();
