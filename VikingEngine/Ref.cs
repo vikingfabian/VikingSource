@@ -55,14 +55,14 @@ namespace VikingEngine
             get { return steam.P2PManager; }
         }
 #endif
-
+        //public static long UpdateCount = 0;
         public static float DeltaTimeMs;
         public static float TargetDeltaTimeMs;
         public static float TargetDeltaTimeSec;
         public static float DeltaTimeSec;
         public static float TotalTimeSec, PrevTotalTimeSec;
         public static float TotalGameTimeSec, PrevTotalGameTimeSec;
-        public static int TotalFrameCount = 0;
+        public static long TotalFrameCount = 0;
 
         
         public static float TargetGameTimeSpeed = 1f;
