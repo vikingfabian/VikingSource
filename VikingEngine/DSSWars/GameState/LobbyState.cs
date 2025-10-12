@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars
                 mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }
 
-            Ref.draw.ClrColor = ColorExt.ChangeBrighness( new Color(29,54,67), -10);//new Color(11, 30, 34);
+            Ref.draw.ClrColor = ColorExt.ChangeBrighness( new Color(29,54,67), -2);//new Color(11, 30, 34);
 
             menuSystem = new Interface.MenuSystem(new InputMap(Engine.XGuide.LocalHostIndex), Interface.MenuType.Lobby);
             DssRef.storage.checkConnected();
@@ -638,13 +638,13 @@ namespace VikingEngine.DSSWars
         void createBackground()
         {
             float menuW = topMenu.backgroundArea.Width;//menuSystem.menu.area.Width;
-            float w = (Engine.Screen.SafeArea.Width - menuW) *  0.98f;
+            float w = (Engine.Screen.SafeArea.Width - menuW) *  1f;
             float h = w / bgTex.Width * bgTex.Height;
 
             var area = Engine.Screen.Area;
             area.AddToLeftSide(-menuW);
 
-            float x = area.Center.X - w * 0.5f;//Engine.Screen.SafeArea.Right - w + 10;
+            float x = Engine.Screen.Area.Right - w - 10;// area.Center.X - w * 0.5f;//Engine.Screen.SafeArea.Right - w + 10;
             float y = Screen.CenterScreen.Y - h * 0.5f;
 
             bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,

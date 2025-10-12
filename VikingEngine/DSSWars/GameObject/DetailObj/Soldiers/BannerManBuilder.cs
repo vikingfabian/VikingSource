@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            banner.DeleteMe();
+            banner?.DeleteMe();
             banner = null;
         }
 
