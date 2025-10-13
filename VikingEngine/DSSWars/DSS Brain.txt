@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
+* Optimized: Diplomacy map
+
 
 #Pics
 

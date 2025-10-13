@@ -10,13 +10,13 @@ namespace VikingEngine.DSSWars.Map
     class MapLayer_Factions
     {
         IntVector2 mapsz;
-        public Map.FactionColorsTexture factionColorsTex;
+        public Map.FactionPixelTexture factionColorsTex;
 
         public MapLayer_Factions()
         {
            mapsz = DssRef.world.Size;
 
-            factionColorsTex = new FactionColorsTexture(true);/*vol.Position, vol.Scale*/
+            factionColorsTex = new FactionPixelTexture(true);/*vol.Position, vol.Scale*/
         }
 
         public void asyncTask()
