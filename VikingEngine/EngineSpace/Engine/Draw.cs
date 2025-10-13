@@ -102,14 +102,18 @@ namespace VikingEngine.Engine
 
         public static void ApplyScreenResolution()
         {
-            graphicsDeviceManager.PreferredBackBufferWidth = Bound.Min(Screen.MonitorTargetResolution.X, 800); //Screen.RenderingResolution.X;
-            graphicsDeviceManager.PreferredBackBufferHeight = Bound.Min(Screen.MonitorTargetResolution.Y, 600);//Screen.RenderingResolution.Y;
+            const int MinWidth = 800;
+            const int MinHeigth = 600;
+
+            graphicsDeviceManager.PreferredBackBufferWidth = Bound.Min(Screen.MonitorTargetResolution.X, MinWidth); //Screen.RenderingResolution.X;
+            graphicsDeviceManager.PreferredBackBufferHeight = Bound.Min(Screen.MonitorTargetResolution.Y, MinHeigth);//Screen.RenderingResolution.Y;
             graphicsDeviceManager.ApplyChanges();
             defaultViewport = Engine.Draw.graphicsDeviceManager.GraphicsDevice.Viewport;
 
             MainRenderTarget?.Dispose();
-            MainRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 
-                Screen.RenderingResolution.X, Screen.RenderingResolution.Y, 
+            MainRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice,
+                 Bound.Min(Screen.RenderingResolution.X, MinWidth),
+                 Bound.Min(Screen.RenderingResolution.Y, MinHeigth), 
                 false, SurfaceFormat.Color, DepthFormat.Depth24);
         }
 

@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed: too small render target resolution
+
 
 #Pics
 
@@ -37,6 +38,7 @@ x go over tutorial
 -inform of resource use
 
 #Todo#
+x extra music stream retry
 x load game shows "destroy" tooltip
 x "no stone/wood" warning on automation
 x placed reciutment service turned to postal
