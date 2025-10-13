@@ -9,18 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.PJ;
 using VikingEngine.Timer;
 using VikingEngine.ToGG;
-using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls
 {
@@ -410,7 +411,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
 
                 case TutorialMission.CollectFood:
-                    content.iconicontext(HudLib.CheckImage(CollectFood_selecttab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
+                    content.iconicontext(HudLib.CheckImage(CollectFood_selecttab), SpriteName.MenuPixelIconManual,
+                        string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources) + ". " + string.Format(DssRef.lang.Tutorial_Select_SubTab, DssRef.lang.Resource_Tab_Overview)/*string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources)*/);
                     content.iconicontext(HudLib.CheckImage(CollectFood_foodblueprint), SpriteName.WarsBluePrint, DssRef.lang.Tutorial_LookAtFoodBlueprint);//-look at the food blueprint
                     content.iconicontext(HudLib.CheckImage(CollectFood_buildfoodproduction), SpriteName.WarsResource_RawFood, string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
                     content.iconicontext(HudLib.CheckImage(CollectFood_buildfuelproduction), SpriteName.WarsResource_Fuel, string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
@@ -497,8 +499,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 onMissionSuccess();
             }
 #endif
-
-
             switch (missions.sel)
             {
                 case TutorialMission.CasualBuildBarracks:
@@ -674,6 +674,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 
                 case TutorialMission.Linen:
+
+                    ((PlayState)DssRef.state).speedUpGrowing();
+
                     if (!linen_selectTab)
                     {
                         if (player.cityTab == Interface.MenuTab.Build)
@@ -682,6 +685,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             onPartSuccess();
                         }
                     }
+
                     if (!linen_build)
                     {
                         lock (player.orders.orders)
@@ -697,16 +701,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             }
                         }
                     }
-                    //if (!linen_armorWork)
-                    //{
-                    //    if (player.mapControls.selection.obj is City &&
-                    //        player.mapControls.selection.obj.GetCity().workTemplate.craft_lightarmor.value > 0)
-                    //    {
-                    //        linen_armorWork = true;
-
-                    //        onPartSuccess();
-                    //    }
-                    //}
+                   
                     if (!linen_collect)
                     {
                         if (player.gameControls.map.selection.obj is City)
@@ -1329,7 +1324,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     if (DssRef.storage.runTutorial_1short_2normal == 1)
                     {
-                        DssRef.stats.completeShortTutorial.addOne();
+                        //DssRef.stats.completeShortTutorial.addOne();
                     }
                     else
                     {
@@ -1361,71 +1356,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             var city = player.faction.mainCity;
 
-            ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
-            for (int radius = city.cityTileRadius - 2; radius > 1; ++radius)
-            {
-                loop.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
-                while (loop.Next())
-                {
-                    if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile) &&
-                        tile.IsLand())
-                    {
-                        //Available for spawn
-                        Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
-                        enemyFac.player.GetAiPlayer().armyAi_enabled = false;
-
-                        barbarianArmy = enemyFac.NewArmy(loop.Position);
-                        {
-                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                            {
-                                conscript = new ConscriptProfile()
-                                {
-                                    weapon = Resource.ItemResourceType.ShortSword,
-                                    armorLevel = Resource.ItemResourceType.PaddedArmor,
-                                    training = TrainingLevel.Basic,
-                                    specialization = SpecializationType.Field,
-                                }
-                            };
-
-                            for (int i = 0; i < 2; ++i)
-                            {
-                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
-                            }
-                        }
-                        {
-                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                            {
-                                conscript = new ConscriptProfile()
-                                {
-                                    weapon = Resource.ItemResourceType.Crossbow,
-                                    armorLevel = Resource.ItemResourceType.NONE,
-                                    training = TrainingLevel.Basic,
-                                    specialization = SpecializationType.Field,
-                                }
-                            };
-
-                            for (int i = 0; i < 1; ++i)
-                            {
-                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
-                            }
-                        }
-                        barbarianArmy.refreshPositions(true);
-                        barbarianArmy.setAsStartArmy();
-
-                        player.gameControls.map.cameraFocus = barbarianArmy;
-
-                        return;
-                    }
-                }
-            }
-
-            throw new Exception("No enemy spawn");
+            barbarianArmy = StoryEvent_Barbarians.spawnBarbarians(city, true);
+            player.gameControls.map.cameraFocus = barbarianArmy;
+           
         }
 
         public void writeGameState(BinaryWriter w)
         {
             //w.Write(DssRef.storage.shortTutorial);
-            w.Write((int)missions.selIndex);
+            w.Write(missions.selIndex);
         }
 
         public void readGameState(BinaryReader r, int subversion)
@@ -1449,7 +1388,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
 
             Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
-            enemyFac.player.GetAiPlayer().armyAi_enabled = true;
+            if (enemyFac != null)
+            {
+                enemyFac.player.GetAiPlayer().armyAi_enabled = true;
+            }
 
             player.tutorial = null;
             
@@ -1462,6 +1404,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             
             player.hud.messages.blockFoodWarning(false);
             DssRef.state.events.onTutorialEnd();
+
+
         }
 
         void startUnits()

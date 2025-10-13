@@ -18,6 +18,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         {
             initGameState();
             onGameStart();
+            DssRef.stats.start_battle_lab.addOne_ifUnset();
         }
 
         public void initGameState()
@@ -132,6 +133,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             if (Ref.steam.inOverlay)
             {
+                if (!menuSystem.IsOpen())
+                {
+                    menuSystem.pauseMenu();
+                }
                 return;
             }
 

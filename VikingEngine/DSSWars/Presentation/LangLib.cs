@@ -606,13 +606,13 @@ namespace VikingEngine.DSSWars.Presentation
             switch (abs)
             {
                 case 100:
-                    result = DssRef.todoLang.EngineHud_SymbolFor100;
+                    result = DssRef.lang.EngineHud_SymbolFor100;
                     break;
                 case 1000:
-                    result = DssRef.todoLang.EngineHud_SymbolFor1000;
+                    result = DssRef.lang.EngineHud_SymbolFor1000;
                     break;
                 case 10000:
-                    result = DssRef.todoLang.EngineHud_SymbolFor10000;
+                    result = DssRef.lang.EngineHud_SymbolFor10000;
                     break;
                 default:
                     result = abs.ToString();
@@ -686,7 +686,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case InputActionType.NextArmy:
                     return DssRef.lang.InputActionName_NextArmy;
                 case InputActionType.NextWar:
-                    return DssRef.todoLang.InputActionName_NextWar;
+                    return DssRef.lang.InputActionName_NextWar;
                 case InputActionType.Build:
                     return DssRef.lang.InputActionName_Build;
                 case InputActionType.Copy:

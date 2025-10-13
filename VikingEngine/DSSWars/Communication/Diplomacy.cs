@@ -553,7 +553,8 @@ namespace VikingEngine.DSSWars
                 case RelationType.ExtendTruce: return DssRef.lang.Diplomacy_ExtendTruceAction;
 
                 default:
-                    throw new NotImplementedException("RelationString " + relation.ToString());
+                    return TextLib.Error;
+                    //throw new NotImplementedException("RelationString " + relation.ToString());
             }
         }
         public static SpriteName RelationSprite(RelationType relation)
@@ -566,12 +567,14 @@ namespace VikingEngine.DSSWars
                 case RelationType.RelationType1_Peace: return SpriteName.WarsRelationPeace;
                 case RelationType.RelationType0_Neutral: return SpriteName.WarsRelationNeutral;
                 case RelationType.RelationTypeN1_Enemies: return SpriteName.WarsRelationEnemy;
-                case RelationType.RelationTypeN2_Truce: return SpriteName.WarsRelationTruce;
+                case RelationType.RelationTypeN2_Truce:
+                case RelationType.ExtendTruce: return SpriteName.WarsRelationTruce;
                 case RelationType.RelationTypeN3_War: return SpriteName.WarsRelationWar;
                 case RelationType.RelationTypeN4_TotalWar: return SpriteName.WarsRelationTotalWar;
 
                 default:
-                    throw new NotImplementedException("RelationString " + relation.ToString());
+                    return SpriteName.MissingImage;
+                    //throw new NotImplementedException("RelationString " + relation.ToString());
             }
         }
 

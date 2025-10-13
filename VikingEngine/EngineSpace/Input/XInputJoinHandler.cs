@@ -10,15 +10,15 @@ namespace VikingEngine.Input
     {
         bool[] connected;
         public XInputJoinHandler()
-        {
-            connected = new bool[XInput.controllers.Count];            
+        {   
+            connected = new bool[XInput.controllers == null? 0 : XInput.controllers.Count];            
         }
 
         public bool ConnectEvent()
         {
             bool change =  false;
 
-            for(int i = 0; i < XInput.controllers.Count;++i)
+            for(int i = 0; i < connected.Length; ++i)
             {
                 if (XInput.controllers[i].Connected!= connected[i])
                 {
@@ -32,7 +32,15 @@ namespace VikingEngine.Input
 
         public List<InputSource> ListConneted()
         {
+            
+
             List<InputSource> result = new List<InputSource>();
+
+            if (XInput.controllers == null)
+            {
+                return result;
+            }
+
             for (int i = 0; i < XInput.controllers.Count; ++i)
             {
                 if (XInput.controllers[i].Connected)

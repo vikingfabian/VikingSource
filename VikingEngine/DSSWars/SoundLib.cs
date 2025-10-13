@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars
 
             Engine.LoadContent.LoadSound(LoadedSound.out_of_ammo, SoundDir + "out_of_ammo");
             
-            Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
+            //Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
         }
     }
 }

@@ -71,14 +71,14 @@ namespace VikingEngine.DSSWars
 
         RichMenu topMenu, underMenu, reportsMenu;
 
-        static readonly string LobbyAmbienceDir = Ambience.AmbienceDir + "lobby" + DataStream.FilePath.Dir;
+        //static readonly string LobbyAmbienceDir = Ambience.AmbienceDir + "lobby" + DataStream.FilePath.Dir;
 
-        static readonly LoopingSoundData[] AmbienceSounds = new LoopingSoundData[]
-           {
-                new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_fear1_loop", 0.04f),
-                new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_theme1_loop", 0.04f),
-           };
-        LoopingSound lobbyAmbienceLoop;
+        //static readonly LoopingSoundData[] AmbienceSounds = new LoopingSoundData[]
+        //   {
+        //        new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_fear1_loop", 0.04f),
+        //        new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_theme1_loop", 0.04f),
+        //   };
+        //LoopingSound lobbyAmbienceLoop;
 
         const string UnderMenu_NewGame = "newgame";
         const string UnderMenu_ListEditors = "editors";
@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars
                 mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }
 
-            Ref.draw.ClrColor = new Color(11, 30, 34);
+            Ref.draw.ClrColor = new Color(2, 9, 12);//Ref.draw.ClrColor = ColorExt.ChangeBrighness( new Color(29,54,67), -2);//new Color(11, 30, 34);
 
             menuSystem = new Interface.MenuSystem(new InputMap(Engine.XGuide.LocalHostIndex), Interface.MenuType.Lobby);
             DssRef.storage.checkConnected();
@@ -127,9 +127,11 @@ namespace VikingEngine.DSSWars
                 Engine.Screen.TextSizeV2, new Align(new Vector2(0, 1f)), "...",
                 Color.DarkGray, ImageLayers.Background2);
 
-            new Timer.AsynchActionTrigger(load_asynch, true);
+            //new Timer.AsynchActionTrigger(load_asynch, true);
             //new Timer.TimedAction0ArgTrigger(playMusic, 1000);
-
+            Ref.music.DelayBetweenSongs_minutes = new IntervalF(0);
+            Ref.music.SetPlaylist(Music.MenuPlayList(out bool randomOrder), PlatformSettings.PlayMusic, randomOrder);
+            Ref.music.DelayBetweenSongs_minutes = IntervalF.NoInterval(TimeExt.SecondsToMinutes(2));
 
             if (Ref.lobby == null)
             {
@@ -617,36 +619,50 @@ namespace VikingEngine.DSSWars
 
         public static Texture2D LoadBg()
         {
-            var bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
+            var bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "story_background2"/*"darkforest_bg"*/);
             return bgTex;
         }
 
-        void load_asynch()
-        {
-            //bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
-            //new Timer.Action0ArgTrigger(loadingComplete);
+        //void load_asynch()
+        //{
+        //    //bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");
+        //    //new Timer.Action0ArgTrigger(loadingComplete);
 
-            LoopingSound sound = new LoopingSound();
-            sound.setVolume(0);
-            sound.Load(arraylib.RandomListMember(AmbienceSounds));
+        //    LoopingSound sound = new LoopingSound();
+        //    sound.setVolume(0);
+        //    sound.Load(arraylib.RandomListMember(AmbienceSounds));
 
-            lobbyAmbienceLoop = sound;
-        }
+        //    lobbyAmbienceLoop = sound;
+        //}
 
         void createBackground()
         {
-            float w = Engine.Screen.SafeArea.Width;
+            float menuW = topMenu.backgroundArea.Width;//menuSystem.menu.area.Width;
+            float w = (Engine.Screen.SafeArea.Width - menuW) * 0.9f;
             float h = w / bgTex.Width * bgTex.Height;
-            float x = Engine.Screen.Area.Right - w;
-            float y = Screen.CenterScreen.Y - h * 0.5f;
+
+            var area = Engine.Screen.Area;
+            area.AddToLeftSide(-menuW);
+
+            float x = area.Center.X - w * 0.5f;//Engine.Screen.SafeArea.Right - w + 10;
+            float y = Screen.Area.PercentToPosition(1, 0.55f).Y/*Screen.CenterScreen.Y*/ - h * 0.5f;
 
             bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
                 new Vector2(x, y), new Vector2(w, h), ImageLayers.Background5, false);
             bgImage.Texture = bgTex;
             bgImage.SetFullTextureSource();
-            bgImage.Color = ColorExt.GrayScale(0.8f);
-            bgImage.Opacity = 0.8f;
+            //bgImage.Color = ColorExt.GrayScale(0.8f);
+            bgImage.Opacity = 1;//0.8f;
 
+            var area2 = bgImage.Area;
+            area2.AddPercentRadius(0.1f);
+            area2.Y = 0;
+            ImageAdvanced bgimage2 = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
+                area2.Position, area2.Size, ImageLayers.Background6, false);
+            bgimage2.Texture = bgTex;
+
+            bgimage2.SetFullTextureSource();
+            bgimage2.Color = ColorExt.GrayScale(0.9f);
             //Vector2 promoworkerSz = new Vector2(9, 6) * new Vector2(h * 0.02f);
 
             //var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoCannon, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.7f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
@@ -1596,7 +1612,7 @@ namespace VikingEngine.DSSWars
             {
                 for (int i = 0; i < DssRef.storage.characterStorage.profiles.Count; ++i)
                 {
-                    flagOptions.AddSubOption((DropDownOption)DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, true), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
+                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, true), i == profile.character.StorageIndex, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
                 }
                 flagOptions.menuCaption = DssRef.storage.profileStorage.profiles[profileIx].character.RbButton(DssRef.storage.flagStorage.selectedIx, true);
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
@@ -2174,7 +2190,7 @@ namespace VikingEngine.DSSWars
         public override void OnDestroy()
         {
             base.OnDestroy();
-            lobbyAmbienceLoop?.StopAndUnload();
+            //lobbyAmbienceLoop?.StopAndUnload();
         }
         
 
@@ -2290,7 +2306,7 @@ namespace VikingEngine.DSSWars
             {
                 Ref.music.Update();
             }
-            lobbyAmbienceLoop?.fadeInSound(0.5f, Ref.gamesett.AmbientVol());
+            //lobbyAmbienceLoop?.fadeInSound(0.5f, Ref.gamesett.AmbientVol());
 
             //if (inKeyMapsMenu)
             //{
@@ -2663,18 +2679,12 @@ namespace VikingEngine.DSSWars
         {
             SaveStateMeta meta = new SaveStateMeta();            
             meta.import = name;
+            meta.importedWorld = true;
             loadGame = meta;
             openPlayerSetupForMode(StartGameMode.Play);
-            //meta.loadImportMeta();
+            
         }
-        //public void loadFileClick(SaveStateMeta saveMeta)
-        //{
-        //    loadGame = saveMeta;
-
-        //    openPlayerSetupForMode(StartGameMode.Play);
-        //}
-
-
+        
 
         void selectController_startGame(InputSource inputSource, SaveStateMeta saveMeta)
         {
@@ -2684,15 +2694,6 @@ namespace VikingEngine.DSSWars
 
             new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
         }
-
-        //void startGame(SaveStateMeta saveMeta)
-        //{
-        //    //var playerData = DssRef.storage.localPlayers[0];
-        //    //playerData.inputSource = inputSource;
-        //    //DssRef.storage.checkPlayerDoublettes(0);
-
-        //    new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
-        //}
 
     }
 

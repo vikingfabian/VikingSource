@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.GameObject
         override public void DeleteMe()
         {
             //base.DeleteMe();
-            model.preRemoveFromDrawBatch();
+            model?.preRemoveFromDrawBatch();
             shadowPlane?.DeleteMe();
         }
     }

@@ -98,8 +98,6 @@ namespace VikingEngine.DSSWars.Event
         {
         }
 
-
-
         protected void PowerCheck()
         {
             float time;
@@ -142,7 +140,7 @@ namespace VikingEngine.DSSWars.Event
 
             asyncPrepare(ref time);
 
-            triggerTime.start(time);//eventTriggerGameTimeSec = time + eventPrepareTimeSec;
+            triggerTime.start(time);
 
         }
 
@@ -203,6 +201,42 @@ namespace VikingEngine.DSSWars.Event
         virtual public bool RunWarManager()
         {
             return true;
+        }
+    }
+
+    class StoryEvent_Tutorial : AbsStoryEvent
+    {
+        public override EventType StoryEventType()
+        {
+            return Event.EventType.Tutorial;
+        }
+
+        public override bool asyncUpdate(float time)
+        {
+            return DssRef.state.localPlayers[0].tutorial == null;
+        
+        }
+        public override bool RunAi()
+        {
+            return false;
+        }
+
+        public override bool MayAttackPlayer()
+        {
+            return false;
+        }
+        public override bool RunWarManager()
+        {
+            return false;
+        }
+
+        protected override bool TimedEvent()
+        {
+            return false;
+        }
+        public override int OrderIndex()
+        {
+            return EventsOrder.Tutorial;
         }
     }
 
@@ -399,96 +433,127 @@ namespace VikingEngine.DSSWars.Event
 
                 foreach (var cityIx in attackCities)
                 {
-                    spawnBarbarians(DssRef.world.cities[cityIx]);
+                    spawnBarbarians(DssRef.world.cities[cityIx], false);
                 }
 
                 attackCities = null;
             }));
         }
 
-        void spawnBarbarians(City city)
+        public static Army spawnBarbarians(City city, bool tutorial)
         {
-            ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
-            for (int radius = Bound.Min(city.cityTileRadius - 2, 4); radius > 1; ++radius)
+            for (int trial = 1; trial <= 2; trial++)
             {
-                loop.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
-                while (loop.Next())
+                
+                ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
+                for (int radius = Bound.Min(city.cityTileRadius - 2, 4); radius > 1; ++radius)
                 {
-                    if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile) &&
-                        tile.IsLand())
+                    loop.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                    while (loop.Next())
                     {
-                        //Available for spawn
-                        Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
-                        
-                        var barbarianArmy = enemyFac.NewArmy(loop.Position);
+                        if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile) &&
+                            tile.IsLand() &&
+                            tile.tileContent != Map.TileContent.City &&
+                            (trial > 1 || tile.CityIndex == city.myIndex)) //require same city area on first trial
                         {
-                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                            {
-                                conscript = new ConscriptProfile()
-                                {
-                                    weapon = Resource.ItemResourceType.ShortSword,
-                                    armorLevel = Resource.ItemResourceType.PaddedArmor,
-                                    training = TrainingLevel.Basic,
-                                    specialization = SpecializationType.Field,
-                                }
-                            };
+                            //Available for spawn
+                            Faction enemyFac = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
 
-                            int rndCount = Ref.rnd.Int(3, 5) + (int)DssRef.difficulty.bossSize *2;
-                            for (int i = 0; i < rndCount; ++i)
+                            if (enemyFac == null)
                             {
-                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                                enemyFac = DssRef.world.findOrCreate(FactionType.Barbarians);
+                                DssRef.settings.Faction_Barbarian = enemyFac.myIndex;
                             }
-                        }
-                        {
-                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                            {
-                                conscript = new ConscriptProfile()
-                                {
-                                    weapon = Resource.ItemResourceType.ThrowingSpear,
-                                    armorLevel = Resource.ItemResourceType.NONE,
-                                    training = TrainingLevel.Minimal,
-                                    specialization = SpecializationType.Field,
-                                }
-                            };
 
-                            int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize * 2;
-                            for (int i = 0; i < rndCount; ++i)
+                            if (tutorial)
                             {
-                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                                enemyFac.player.GetAiPlayer().armyAi_enabled = false;
                             }
-                        }
-                        {
-                            SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+
+                            var barbarianArmy = enemyFac.NewArmy(loop.Position);
                             {
-                                conscript = new ConscriptProfile()
+                                SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                                 {
-                                    weapon = Resource.ItemResourceType.Crossbow,
-                                    armorLevel = Resource.ItemResourceType.NONE,
-                                    training = TrainingLevel.Basic,
-                                    specialization = SpecializationType.Field,
+                                    conscript = new ConscriptProfile()
+                                    {
+                                        weapon = Resource.ItemResourceType.ShortSword,
+                                        armorLevel = Resource.ItemResourceType.PaddedArmor,
+                                        training = TrainingLevel.Basic,
+                                        specialization = SpecializationType.Field,
+                                    }
+                                };
+
+                                int rndCount = Ref.rnd.Int(3, 5) + (int)DssRef.difficulty.bossSize * 2;
+                                if (tutorial)
+                                {
+                                    rndCount = 2;
                                 }
-                            };
 
-                            int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize * 2;
-                            for (int i = 0; i < rndCount; ++i)
-                            {
-                                new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                                for (int i = 0; i < rndCount; ++i)
+                                {
+                                    new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                                }
                             }
+                            {
+                                SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                                {
+                                    conscript = new ConscriptProfile()
+                                    {
+                                        weapon = Resource.ItemResourceType.ThrowingSpear,
+                                        armorLevel = Resource.ItemResourceType.NONE,
+                                        training = TrainingLevel.Minimal,
+                                        specialization = SpecializationType.Field,
+                                    }
+                                };
+
+                                int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize * 2;
+                                if (tutorial)
+                                {
+                                    rndCount = 0;
+                                }
+                                for (int i = 0; i < rndCount; ++i)
+                                {
+                                    new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                                }
+                            }
+                            {
+                                SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                                {
+                                    conscript = new ConscriptProfile()
+                                    {
+                                        weapon = Resource.ItemResourceType.Crossbow,
+                                        armorLevel = Resource.ItemResourceType.NONE,
+                                        training = TrainingLevel.Basic,
+                                        specialization = SpecializationType.Field,
+                                    }
+                                };
+
+                                int rndCount = Ref.rnd.Int(0, 2) + (int)DssRef.difficulty.bossSize * 2;
+                                if (tutorial)
+                                {
+                                    rndCount = 1;
+                                }
+                                for (int i = 0; i < rndCount; ++i)
+                                {
+                                    new SoldierGroup(barbarianArmy, SoldierProfile, barbarianArmy.position);
+                                }
+                            }
+                            barbarianArmy.refreshPositions(true);
+                            barbarianArmy.setAsStartArmy();
+
+                            enemyFac.player.protectedFromDelete = false;
+
+
+
+                            return barbarianArmy;
                         }
-                        barbarianArmy.refreshPositions(true);
-                        barbarianArmy.setAsStartArmy();
-
-                        enemyFac.player.protectedFromDelete = false;
-
-
-
-                        return;
                     }
                 }
             }
 #if DEBUG
             throw new Exception("No enemy spawn");
 #endif
+            return null;
         }
 
         public override bool RunWarManager()
@@ -1205,6 +1270,7 @@ namespace VikingEngine.DSSWars.Event
     static class EventsOrder
     {
         //Do NOT use for save
+        public const int Tutorial = 0;
         public const int AiDelay = 1;
         public const int AiWarDelay = 2;
         public const int FirstAttack = 3;
@@ -1228,7 +1294,8 @@ namespace VikingEngine.DSSWars.Event
     /// </summary>
     enum EventType
     {        
-        AiDelay,
+        Tutorial = -1,
+        AiDelay = 0,
         AiWarDelay,
         FirstAttack,
         WarmanagerDelay,

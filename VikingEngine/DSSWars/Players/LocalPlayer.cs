@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.Players
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
         public MenuTab factionTab = MenuTab.NUM_NONE;
-        public MenuTab cityTab; //= CityMenu.Tabs[0];
+        public MenuTab cityTab;
         public MenuTab armyTab = ArmyMenu.Tabs[0];
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
 
@@ -159,10 +159,6 @@ namespace VikingEngine.DSSWars.Players
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
 
             faction.addGold_factionWide(10000);
-
-            
-
-            //cityTab = profile.casualControls? MenuTab.Casual_Recruit : CityMenu.Tabs[0];
         }
 
         public bool battleMessageCheck(IntVector2 tilepos)
@@ -237,29 +233,11 @@ namespace VikingEngine.DSSWars.Players
             mapLayersManager = new MapLayerManager(playerData);
             InitTutorial(newGame);
 
-            //new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", playerindex);
-
             refreshNeihgborAggression();
             if (numPlayers > 1)
             {
                 toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
             }
-
-            //if (StartupSettings.EndlessResources)
-            //{
-            //    foreach (var c in faction.cities.Array)
-            //    {
-            //        if (c != null)
-            //        {
-            //            //foreach (var type in City.MovableCityResourceTypes)
-            //            //{
-            //            //    var res = c.GetGroupedResource(type);
-            //            //    res.amount += 1000;
-            //            //    c.SetGroupedResource(type, res);
-            //            //}
-            //        }
-            //    }
-            //}
 
             menDeliveryCopy = new DeliveryStatus();
             menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
@@ -1284,7 +1262,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         conscript = new ConscriptProfile()
                         {
-                            weapon = Resource.ItemResourceType.SiegeCannonBronze,
+                            weapon = Resource.ItemResourceType.Ballista,
                             armorLevel = Resource.ItemResourceType.IronArmor,
                             training = TrainingLevel.Basic,
                             specialization = SpecializationType.Traditional,

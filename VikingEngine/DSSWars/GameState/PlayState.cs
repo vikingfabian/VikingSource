@@ -184,6 +184,7 @@ namespace VikingEngine.DSSWars
             new Faction(DssRef.world, FactionType.SouthHara);
             new Faction(DssRef.world, FactionType.Barbarians);
 
+
             int playerCount = DssRef.storage.playerCount;
 
 
@@ -292,6 +293,7 @@ namespace VikingEngine.DSSWars
 
         void onGameStart(bool newGame)
         {
+            updateMouseVisible();
             Ref.music.OnGameStart();
 
             if (host)
@@ -404,6 +406,10 @@ namespace VikingEngine.DSSWars
 
             if (Ref.steam.inOverlay)
             {
+                if (!menuSystem.IsOpen())
+                {
+                    menuSystem.pauseMenu();
+                }
                 return;
             }
 
@@ -492,23 +498,7 @@ namespace VikingEngine.DSSWars
             //detailMap.update();
             overviewMap.update();
 
-            if (localPlayers != null)
-            {
-                
-                foreach (var local in localPlayers)
-                {
-                    local.userUpdate(true);
-                    if (local.gameControls.input.Menu.DownEvent)
-                    {
-                        menuSystem.pauseMenu();
-                    }
-                }
-            }
-
-            if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape) && !menuSystem.IsOpen())
-            {
-                menuSystem.pauseMenu();
-            }
+            updatePauseInput();
 
             Engine.ParticleHandler.Update(time);
 
@@ -516,14 +506,50 @@ namespace VikingEngine.DSSWars
             //asynchMapGenerating(0, time);
         }
 
-        
-
-        
-
         const float AutoSaveTimeSec = 15 * TimeExt.MinuteInSeconds;
         float LastAutoSaveTime_TotalSec = 0;
 
-        
+
+        protected void updatePauseInput()
+        {
+            if (localPlayers != null)
+            {
+                foreach (var local in localPlayers)
+                {
+                    local.userUpdate(true);
+                    
+                    if (local.gameControls.input.Menu.DownEvent)
+                    {
+                        menuSystem.pauseMenu();
+                    }
+
+                    if (local.playerData.LostController)
+                    {
+                        local.playerData.IgnoreLostController = true;
+                        menuSystem.controllerDisconnectMenu(); //todo lost menu
+                    }
+                }
+            }
+
+            //if (Ref.steam.isInitialized && Ref.steam.inOverlay && !menuSystem.IsOpen())
+            //{
+            //    menuSystem.pauseMenu();
+            //}
+
+            if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape) && !menuSystem.IsOpen())
+            {
+                menuSystem.pauseMenu();
+            }
+        }
+
+        public void speedUpGrowing()
+        {
+            if (DssRef.time.oneSecond)
+            {
+                bResourceMinuteUpdate = true;
+            }
+        }
+
         override public void OneMinute_Update()
         { 
             bResourceMinuteUpdate = true;
@@ -549,6 +575,8 @@ namespace VikingEngine.DSSWars
             exitThreads = true;
             base.OnDestroy();
         }
+
+        
 
         public override void NetEvent_GotNetworkId()
         {
@@ -939,6 +967,9 @@ namespace VikingEngine.DSSWars
                 }
             }
         }
+
+        
+
         public override int PathThreadCount()
         {
             return 4;

@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars.Interface
                         buttonContent.space(0.5f);
                     }
                     buttonContent.Add(new RbImage(SpriteName.WarsRelationWar));
-                    toolTip = DssRef.todoLang.InputActionName_NextWar;
+                    toolTip = DssRef.lang.InputActionName_NextWar;
                 }
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(player.warCount.ToString()));

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
@@ -118,8 +120,22 @@ namespace VikingEngine.Engine
                 {
                     try
                     {
+                        SoundEffect.Initialize();
+                    }
+                    catch (Exception ex)
+                    {
+                        SoundManager.SoundInitializeSuccess = false;
+                        SoundManager.SoundInitializeException = ex;
+                        Ref.gamesett.setSoundLevelsOnError();
+                    }
+
+                    try
+                    {
                         load = LoadState.Splash;
+                        //throw new Exception("Test splash crash");
                         mainPart = 10;
+
+                        mainPart++;
                         asyncLoadIntro();
                         mainPart++;
                         bgTex = Ref.main.Content.Load<Texture2D>(LoadContent.TexturePath + "monogame_splash");
@@ -135,7 +151,7 @@ namespace VikingEngine.Engine
                     {
                         exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
                     }
-                });     
+                });
             }
             catch (Exception ex)
             {
@@ -234,8 +250,6 @@ namespace VikingEngine.Engine
 
             try
             {
-
-
                 if (bgTex != null)
                 {
                     createSplash();
@@ -279,6 +293,19 @@ namespace VikingEngine.Engine
 
             if (exceptionString != null)
             {
+                if (Ref.sentry == null && PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
+                {
+                    try
+                    {
+                        new EngineSpace.DebugExtensions.SentryReport();
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptionString = "Sentry fail + " + exceptionString;
+                    }
+                }
+                Ref.sentry?.sendReport("Launch fail: " + exceptionString);
+
                 if (bgImage != null)
                 {
                     bgImage.Visible = false;

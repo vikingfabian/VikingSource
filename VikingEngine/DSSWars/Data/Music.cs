@@ -10,23 +10,43 @@ namespace VikingEngine.DSSWars.Data
 {
     static class Music
     {
+        const string Artist_MartinGronlund = "Martin Grönlund";
+        const string Artist_SoundImage = "by Eric Matyas, www.soundimage.org";
+
         static readonly string FilePath = DssLib.ContentDir + "Music" + DataStream.FilePath.Dir;
         static readonly string SoundOrgPath = FilePath + "soundimage org" + DataStream.FilePath.Dir;
 
         public static readonly SongData Intro = new SongData(FilePath + "dramatic-opener-nonloop", "Dramatic Opener", null, false, 0.5f);
+        public static readonly SongData CardGameIntro = new SongData(FilePath + "CCGmusic_mastered", "CCG music", Artist_MartinGronlund, false, 0.5f);
         public static readonly SongData Nightmare = new SongData(FilePath + "epic-warfare-nonloop", "Epic Warfare", null, false, 1f);
         public static readonly SongData DoomStory = new SongData(FilePath + "shadow-hunter-nonloop", "Shadow Hunter", null, false, 1f);
         public static readonly SongData Victory = new SongData(FilePath + "we-are-heroes", "We are heroes", null, false, 0.8f);
         public static readonly SongData Fail = new SongData(FilePath + "Sadness in blue", "Sadness in blue", null, false, 0.5f);
 
-        //public static readonly SongData IAmYourDoom = new SongData(FilePath + "i am your doom", "I am your doom", false, 0.45f);
+        public static readonly SongData AncientSpace = new Sound.SongData(FilePath + "ancient space", "Ancient Space", null, false, 0.22f);
+        public static readonly SongData AncientGameMenu = new Sound.SongData(SoundOrgPath + "Ancient-Game-Menu_looping", "Ancient Game Menu", Artist_SoundImage, true, 0.25f);
+        static bool firstMenuEnter = true;
 
-        //public static readonly SongData Tutorial = new SongData(FilePath + "DSS - The Game Begins", "DSS - The Game Begins", false, 0.3f);
-        //public static string FilePath = DssLib.ContentDir + "Music\\";
+        public static new List<Sound.SongData> MenuPlayList(out bool random)
+        {
+            var result = new List<Sound.SongData>(4);
+
+            random = !firstMenuEnter;
+            if (firstMenuEnter)
+            {
+                firstMenuEnter = false;
+                result.Add(Intro);
+            }
+            result.Add(CardGameIntro);
+            result.Add(AncientSpace);
+            result.Add(AncientGameMenu);
+            
+            return result;
+        }
+
         public static new List<Sound.SongData> PlayList()
         {
-            const string Artist_MartinGronlund = "Martin Grönlund";
-            const string Artist_SoundImage = "by Eric Matyas, www.soundimage.org";
+           
 
             var result = new List<Sound.SongData>
             {
@@ -47,7 +67,7 @@ namespace VikingEngine.DSSWars.Data
                 new Sound.SongData(FilePath + "echoes of valor","Echoes of Valor", null, false, 0.18f),
                 new Sound.SongData(FilePath + "Pixelated Battlefields","Pixelated Battlefields", null, false, 0.18f),
 
-                new Sound.SongData(FilePath + "ancient space","Ancient Space", null, false, 0.22f),
+                AncientSpace,
                 new Sound.SongData(FilePath + "Dreamscape Adventures","Dreamscape Adventures", null, false, 0.2f),
                 new Sound.SongData(FilePath + "Shadows of Conflict","Shadows of Conflict", null, false, 0.2f),
                 new Sound.SongData(FilePath + "Veil of Time","Veil of Time", null, false, 0.3f),
@@ -67,7 +87,8 @@ namespace VikingEngine.DSSWars.Data
                 //new Sound.SongData(FilePath + "Endless Plains", "Endless Plains", true, 0.4f),
                 //new Sound.SongData(FilePath + "MissingCardinals", "Missing Cardinals", false, 0.8f),
                 //new Sound.SongData(FilePath + "Mysterious Grotto", "Mysterious Grotto", true, 1f),
-                new Sound.SongData(SoundOrgPath + "Ancient-Game-Menu_looping", "Ancient Game Menu", Artist_SoundImage, true, 0.25f),
+                //new Sound.SongData(SoundOrgPath + "Ancient-Game-Menu_looping", "Ancient Game Menu", Artist_SoundImage, true, 0.25f),
+                AncientGameMenu,
                 new Sound.SongData(SoundOrgPath + "City-Beneath-the-Waves", "City Beneath the Waves", Artist_SoundImage, false, 0.29f),
                 new Sound.SongData(SoundOrgPath + "Crossing-the-Tundra_v001_Looping", "Crossing the Tundra v001", Artist_SoundImage, true, 0.28f),
                 new Sound.SongData(SoundOrgPath + "Cumulonimbus", "Cumulonimbus", Artist_SoundImage, false, 0.25f),
@@ -127,6 +148,7 @@ namespace VikingEngine.DSSWars.Data
             return new List<Sound.SongData>
             {
                 Intro,
+                CardGameIntro,
                 Nightmare,
                 DoomStory,
                 Victory,

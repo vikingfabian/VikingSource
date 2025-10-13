@@ -9,6 +9,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Spanish : AbsOptionsLanguage
     {
+        public override string GraphicsOption_FarViewDistance => "Vista de larga distancia";
         public override string Hud_Cancel => "Cancelar";
         public override string Hud_Back => "Atrás";
 

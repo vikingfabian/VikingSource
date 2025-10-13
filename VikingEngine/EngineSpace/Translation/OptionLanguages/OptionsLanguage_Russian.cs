@@ -9,6 +9,8 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Russian : AbsOptionsLanguage
     {
+        public override string GraphicsOption_FarViewDistance => "Дальний обзор";
+
         public override string Hud_Cancel => "Отмена";
         public override string Hud_Back => "Назад";
 

@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-
-using VikingEngine.DSSWars.Map;
-using VikingEngine.DSSWars.GameObject;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
-using System.Xml.Linq;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.Network;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.ToGG.MoonFall;
+using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
-using System.Linq;
-using Microsoft.CodeAnalysis;
+using VikingEngine.ToGG.Commander.LevelSetup;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {   
@@ -131,6 +131,31 @@ namespace VikingEngine.DSSWars
             return null;
         }
 
+        public Faction findOrCreate(FactionType factionType)
+        {
+            int firstEmpty = -1;
+            for (int i =  0; i < factions.Array.Length; ++i)//each (var faction in factions.Array)
+            {
+                var faction = factions.Array[i];
+                if (faction != null)
+                {
+                    if (faction.factiontype == factionType)
+                    { 
+                        return faction;
+                    }
+                }
+                else if (firstEmpty < 0)
+                {
+                    firstEmpty = i;
+                }
+            }
+                        
+            var newFaction = new Faction(DssRef.world, factionType, firstEmpty);
+            new Players.AiPlayer(newFaction, true);
+            newFaction.initDiplomacy(DssRef.world);
+            return newFaction;            
+        }
+
         public static MapSize CustomMapSizeToSize(IntVector2 size)
         {
             var area = size.Area();
@@ -200,7 +225,7 @@ namespace VikingEngine.DSSWars
 
         public void refreshSize(IntVector2 sz)
         {
-            Size = sz;//SizeDimentions(metaData.mapSize);
+            Size = sz;
             HalfSize = Size / 2;
             areaTileCount = Size.X * Size.Y;
             tileBounds = new Rectangle2(IntVector2.Zero, Size - 1);
@@ -214,14 +239,6 @@ namespace VikingEngine.DSSWars
 
             subTileGrid = new Grid2D<SubTile>(Size * TileSubDivitions);
         }
-
-        //public Faction initEvilFactions()
-        //{
-        //    //evilFactionIndex = factions.Count;
-        //    var faction = new Faction(this, FactionType.DarkLord);
-
-        //    return faction;
-        //}
 
         bool subTileHasRepeatValue(ref SubTile subtile)
         {

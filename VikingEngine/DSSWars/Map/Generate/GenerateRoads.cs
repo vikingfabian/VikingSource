@@ -25,24 +25,11 @@ namespace VikingEngine.DSSWars.Map.Generate
             PcgRandom rnd = new PcgRandom(world.metaData.seed * city.myIndex);
 
 
-
-
-            //if (city.cityType == CityType.Capital)
-            //{
             foreach (var n in city.neighborCities)
             {
                 //Low index cities track to higher
                 if (city.myIndex < n)
                 {
-
-                    //if (city.parentArrayIndex == 139 || n == 139) 
-                    //&&
-                    //if (city.parentArrayIndex == 80 && n == 139)
-                    //{
-                    //    lib.DoNothing();
-                    //}
-
-                    //Debug.Log($"From {city.parentArrayIndex} to {n}");
                     var nCity = world.cities[n];
 
                     double chance = (city.cityType == CityType.Capital || nCity.cityType == CityType.Capital) ? 0.6 : 0.2f;
@@ -85,47 +72,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                             }
                         }
 
-
-                        //RoadPathFinding roadPath = new RoadPathFinding();
-                        //var path = roadPath.FindPath(city.cityHallSubtilePos, nCity.cityHallSubtilePos);
-                        //if (path != null)
-                        //{
-                        //    foreach (var node in path.nodes)
-                        //    {
-                        //        if (!node.ship)
-                        //        {
-                        //            ref SubTile subTile = ref world.subTileGrid.array[node.position.X, node.position.Y];
-
-                        //            bool canBuild = false;
-                        //            switch (subTile.mainTerrain)
-                        //            {
-                        //                case TerrainMainType.Destroyed:
-                        //                case TerrainMainType.DefaultLand:
-                        //                    canBuild = true;
-                        //                    break;
-
-                        //                case TerrainMainType.Foil:
-                        //                    switch (subTile.GetFoilType())
-                        //                    {
-                        //                        case TerrainSubFoilType.TreeHardSprout:
-                        //                        case TerrainSubFoilType.TreeSoftSprout:
-                        //                        case TerrainSubFoilType.TreeHard:
-                        //                        case TerrainSubFoilType.TreeSoft:
-                        //                        case TerrainSubFoilType.DryWood:
-                        //                            canBuild = true;
-                        //                            break;
-                        //                    }
-                        //                    break;
-                        //            }
-
-                        //            if (canBuild)
-                        //            {
-                        //                subTile.SetType(TerrainMainType.Road, 0, 1);
-                        //                subTile.groundY += RoadHeight;
-                        //            }
-                        //        }
-                        //    }
-                        //}
 
                         void placeOnSubTile(IntVector2 pos)
                         {

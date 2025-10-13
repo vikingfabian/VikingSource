@@ -139,6 +139,7 @@ namespace VikingEngine.DSSWars.Data
             
 
             DssRef.state.Game().initGameState(false, pointers);
+            DssRef.state.importedWorld = meta.importedWorld;
 
             //STATE
             if (version.sub < 79)
@@ -161,44 +162,7 @@ namespace VikingEngine.DSSWars.Data
 
             //Clean up
             DssRef.state.events.loadCleanup();
-            //for (int i = 0; i < DssRef.world.factions.Array.Length; i++)
-            //{   
-            //    var f = DssRef.world.factions.Array[i];
-            //    if (f != null && 
-            //        f.armies.Count == 0 && 
-            //        f.cities.Count == 0)
-            //    {
-            //        if (f.player.protectedFromDelete)
-            //        {
-            //            switch (f.factiontype)
-            //            {
-            //                case FactionType.Barbarians:
-            //                    if (f.myIndex == DssRef.settings.Faction_Barbarian)
-            //                    {
-            //                        continue;
-            //                    }
-            //                    break;
-            //                case FactionType.SouthHara:
-            //                    if (f.myIndex == DssRef.settings.Faction_SouthHara)
-            //                    {
-            //                        continue;
-            //                    }
-            //                    break;
-            //                case FactionType.DarkLord:
-            //                    if (f == DssRef.settings.darkLordPlayer.faction)
-            //                    {
-            //                        continue;
-            //                    }
-            //                    break;
-            //            }
-            //        }
-
-            //        var emptyPlayer = new AiPlayer(DssRef.world.factions.Array[i], false);
-            //        emptyPlayer.faction.isAlive = false;
-                    
-            //    }
-                
-            //}
+           
         }
 
         public override void Time_Update(float time_ms)

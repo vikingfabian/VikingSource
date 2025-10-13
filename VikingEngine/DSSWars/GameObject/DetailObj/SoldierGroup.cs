@@ -506,17 +506,18 @@ namespace VikingEngine.DSSWars.GameObject
                     soldierData = soldierConscript.init();
                 }
 
-                if (soldiers != null)
+                var soldiers_sp = soldiers;
+                if (soldiers_sp != null)
                 {
                     int totalHealth = 0;
 
-                    var soldiersC = soldiers.counter();
+                    var soldiersC = soldiers_sp.counter();
                     while (soldiersC.Next())
                     {
                         totalHealth += soldiersC.sel.health;
                         soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
                     }
-                    soldiers.Clear();
+                    soldiers_sp.Clear();
 
                     if (transformType == SoldierTransformType.ToShip)
                     {
@@ -2071,10 +2072,15 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 Vector3 moveDir_dir = VectorExt.V2toV3XZ(dir);
 
-                var soldiersC = soldiers.counter();
-                while (soldiersC.Next())
+                var soldiers_sp = soldiers;
+
+                if (soldiers_sp != null)
                 {
-                    new DeserterAnimation(soldiersC.sel, moveDir_dir, rot);
+                    var soldiersC = soldiers_sp.counter();
+                    while (soldiersC.Next())
+                    {
+                        new DeserterAnimation(soldiersC.sel, moveDir_dir, rot);
+                    }
                 }
             }
         }
