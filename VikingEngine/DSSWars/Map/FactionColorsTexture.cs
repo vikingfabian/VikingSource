@@ -24,8 +24,7 @@ namespace VikingEngine.DSSWars.Map
             source.SourceF.AddYRadius(-0.007f);
             model = new Graphics.Mesh(LoadedMesh.plane, VectorExt.SetY(Vector3.Zero, DssLib.OverviewMapYpos), Vector3.One, 
                 TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White, false);
-            //model.texture = texture;
-
+            
             model.TextureSource = source;
 
             Ref.draw.CurrentRenderLayer = DrawGame.FarLayer;
@@ -34,8 +33,7 @@ namespace VikingEngine.DSSWars.Map
 
             if (init)
             {
-                refreshScale();
-                
+                refreshScale();                
 
                 if (DssRef.settings.playType == GameState.PlayStateType.Play ||
                     DssRef.settings.playType == GameState.PlayStateType.MapEditor)
@@ -49,8 +47,6 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        
-
         public void refreshScale()
         {
             initTexture();
@@ -59,11 +55,6 @@ namespace VikingEngine.DSSWars.Map
             model.scale = vol.Scale;
             model.texture = texture;
         }
-
-        //public FactionColorsTexture()
-        //  : base()
-        //{             
-        //}
 
         public void initTexture()
         {
@@ -75,7 +66,6 @@ namespace VikingEngine.DSSWars.Map
             refreshArea_FactionCol(DssRef.world.tileBounds);
         }
         
-
         void refreshArea_FactionCol(Rectangle2 area)
         {
             Tile t;
@@ -94,7 +84,6 @@ namespace VikingEngine.DSSWars.Map
         {
             refreshArea_TerrainCol(DssRef.world.tileBounds);
         }
-
 
         void refreshArea_TerrainCol(Rectangle2 area)
         {

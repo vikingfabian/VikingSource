@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Communication
 {
@@ -48,7 +50,7 @@ namespace VikingEngine.DSSWars.Communication
                         void addArrow(bool goodRelation)
                         {
                             var otherFaction = DssRef.world.faction(i);
-                            if (otherFaction != null)
+                            if (otherFaction != null && !otherFaction.HasZeroUnits())
                             {
                                 Graphics.Image arrow;
 
@@ -68,7 +70,7 @@ namespace VikingEngine.DSSWars.Communication
                                 Vector2 diff = otherPos - flagPos;
                                 diff.Normalize();
                                 arrow.position = flagPos + diff * radius;
-
+                                arrow.idOrIndex = i;
                                 arrowIndex++;
                             }
                         }
@@ -79,6 +81,23 @@ namespace VikingEngine.DSSWars.Communication
             }
 
         }
+
+        public bool factionArrowHover(LocalPlayer player, out int factionIndex)
+        {
+            Vector2 pointer = player.gameControls.map.pointerPos();
+            float pointerRadius = iconScale.X * 0.5f;
+            foreach (var img in relationArrows)
+            {
+                if ((img.position - pointer).Length() <= pointerRadius)
+                {
+                    factionIndex = img.idOrIndex;
+                    return true;
+                }
+            }
+
+            factionIndex = -1;
+            return false;
+        } 
 
         void clearFromIndex(int start)
         {

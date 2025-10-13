@@ -253,6 +253,13 @@ namespace VikingEngine.DSSWars.Interface
             tooltip.clear();               
         }
 
+
+        public void updateToolTip_diplomacy(bool refresh)
+        {
+            tooltip.updateMapTip(player, refresh, false);
+            
+        }
+
         public void updateToolTip_map(bool refresh)
         {
             

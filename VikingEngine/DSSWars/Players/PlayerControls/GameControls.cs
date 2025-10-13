@@ -150,7 +150,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //lib.DoNothing();
                     player.hud.objMenu.diplomacy.quickSelect();
                 }
-                    //diplomacy.update();
+
+                player.hud.updateToolTip_diplomacy(uiRefresh);
+                //diplomacy.update();
             }
             else
             {

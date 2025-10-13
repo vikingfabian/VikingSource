@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars.Communication
         LocalPlayer player;
         Graphics.Image hoverbox, seletionbox;
         RelationFlag selected = null, currentHover;
+        public int relationArrowHover = -1;
 
         int flashCount = 4;
         bool viewFlash = true;
@@ -112,12 +113,7 @@ namespace VikingEngine.DSSWars.Communication
                     rel.inCullingView &&
                     (!player.mapLayersManager.current.DrawFullOverview || faction.displayInFullOverview || rel == selected))
                 {
-                    //bool cityPos;
-
-                    //Vector3 wp = Vector3.Zero;
-                    //var landAreaCenter = faction.landAreaCenter(out cityPos);
-                    //wp.X = landAreaCenter.X + 0.5f;
-                    //wp.Z = landAreaCenter.Y - 6;
+                    
                     rel.updatePos(player, faction);
 
                     if (rel.ImageGroup == null)
@@ -228,33 +224,41 @@ namespace VikingEngine.DSSWars.Communication
                 player.hud.needRefresh=true;
             }
 
+            relationArrowHover = -1;
+
             if (!overHud)
             {
-                if (currentHover != null)
+                if (selected != null && relationArrows.factionArrowHover(player, out relationArrowHover))
                 {
-                    //hoverbox.Visible = true;
-                    //hoverArea.AddRadius(4);
-                    //hoverbox.Area = hoverArea;
-
+                    currentHover = null;
                     if (player.gameControls.input.mouseSelect.DownEvent)
                     {
-                        SoundLib.select_faction.Play();
-                        selected = currentHover;
-                        player.hud.needRefresh = true;
+                        selectFaction(relationArrowHover);
+                    }
+                }
+                else if (currentHover != null)
+                {
+                    if (player.gameControls.input.mouseSelect.DownEvent)
+                    {
+                        selectFaction(currentHover.faction);
+                        //selected = currentHover;
 
-                        if (player.gameControls.input.inputSource.IsController)
-                        {
-                            player.gameControls.setMenuFocus(true, true);
-                        }
+                        //SoundLib.select_faction.Play();
+                        //player.hud.needRefresh = true;
 
-                        var faction = DssRef.world.faction(selected.faction);
+                        //if (player.gameControls.input.inputSource.IsController)
+                        //{
+                        //    player.gameControls.setMenuFocus(true, true);
+                        //}
 
-                        previousFactionsLookedAt.Remove(faction);
-                        if (previousFactionsLookedAt.Count > PreviousFactionsLookedAtCount)
-                        { 
-                            arraylib.RemoveLast(previousFactionsLookedAt);
-                        }
-                        previousFactionsLookedAt.Insert(0, faction);
+                        //var faction = DssRef.world.faction(selected.faction);
+
+                        //previousFactionsLookedAt.Remove(faction);
+                        //if (previousFactionsLookedAt.Count > PreviousFactionsLookedAtCount)
+                        //{ 
+                        //    arraylib.RemoveLast(previousFactionsLookedAt);
+                        //}
+                        //previousFactionsLookedAt.Insert(0, faction);
                     }
                 }
                 else
@@ -276,26 +280,7 @@ namespace VikingEngine.DSSWars.Communication
                 selectedFaction = DssRef.world.faction(selected.faction);
 
                 selectedFlagPos = selected.position;
-                //if (faction != null)
-                //{
-                //    for (int i = 0; i < faction.diplomaticRelations.Length; i++)
-                //    {
-                //        if (faction.diplomaticRelations[i] != null)
-                //        {
-                //            var relationType = faction.diplomaticRelations[i].Relation;
-
-                //            if (relationType <= RelationType.RelationTypeN2_Truce)
-                //            { 
-
-                //            }
-                //            else if (relationType >= RelationType.RelationType3_Ally)
-                //            {
-
-                //            }
-                //        }
-                //    }
-                //}
-
+                
                 if (player.gameControls.input.cancelDownEvent())
                 {
                     cancel();
@@ -310,17 +295,41 @@ namespace VikingEngine.DSSWars.Communication
 
         }
 
+        void selectFaction(int factionIx)
+        {
+            //selected = faction;
+            selected = relationFlags[factionIx];
+
+            SoundLib.select_faction.Play();
+            player.hud.needRefresh = true;
+
+            if (player.gameControls.input.inputSource.IsController)
+            {
+                player.gameControls.setMenuFocus(true, true);
+            }
+
+            var faction = DssRef.world.faction(factionIx);
+
+            previousFactionsLookedAt.Remove(faction);
+            if (previousFactionsLookedAt.Count > PreviousFactionsLookedAtCount)
+            {
+                arraylib.RemoveLast(previousFactionsLookedAt);
+            }
+            previousFactionsLookedAt.Insert(0, faction);
+        }
+
         void updateSelectBox(RelationFlag relation, Graphics.Image box)
-        {            
+        {
             if (relation != null)
             {
-                var hoverArea = relation.bg.RealArea();
-                
-                hoverArea.AddRadius(4);
-                box.Area = hoverArea;
-                box.Visible = true;
-                //seletionbox.Area = hoverArea;
-                //seletionbox.Visible = true;
+                if (relation.bg != null)
+                {
+                    var hoverArea = relation.bg.RealArea();
+
+                    hoverArea.AddRadius(4);
+                    box.Area = hoverArea;
+                    box.Visible = true;
+                }
             }
             else
             {
@@ -359,6 +368,7 @@ namespace VikingEngine.DSSWars.Communication
             seletionbox.DeleteMe();
 
             relationArrows.ClearAll();
+            relationArrows = null;
         }
 
         public void asynchUpdate()

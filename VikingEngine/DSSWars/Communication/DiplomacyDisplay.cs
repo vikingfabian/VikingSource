@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Interface
             if (player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)
             {
                 content.newParagraph();
-                content.h2(DssRef.lang.Diplomacy_RelationWithOthers).overrideColor = HudLib.TitleColor_Label;
+                content.h2(DssRef.lang.Diplomacy_RelationWithOthers, HudLib.TitleColor_Label);
 
                 for (int i = 1; i < player.gameControls.diplomacy.previousFactionsLookedAt.Count; i++)
                 {
@@ -86,6 +86,7 @@ namespace VikingEngine.DSSWars.Interface
                     var relation = DssRef.diplomacy.GetRelationType(otherfaction, thirdPartFaction);
 
                     content.Add(thirdPartFaction.FlagTextureToHud());
+                    content.hspace();
                     content.Add(new RbText(thirdPartFaction.PlayerName));
 
                     content.Add(new RbText(": "));
