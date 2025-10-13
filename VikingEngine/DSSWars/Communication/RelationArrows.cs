@@ -16,11 +16,11 @@ namespace VikingEngine.DSSWars.Communication
 
         public RelationArrows(Vector2 relBgScale) 
         {
-            radius = relBgScale.X * 1.6f;
+            radius = relBgScale.X * 1f;
             iconScale = relBgScale * 0.4f;
         }
 
-        public void update(Faction selected, DiplomacyMap map)
+        public void update(Faction selected, Vector2 flagPos, DiplomacyMap map)
         {
             if (selected == null)
             {
@@ -32,17 +32,17 @@ namespace VikingEngine.DSSWars.Communication
 
                 for (int i = 0; i < selected.diplomaticRelations.Length; i++)
                 {
-                    if (selected.diplomaticRelations[i] != null)
+                    if (selected.diplomaticRelations[i] != null && i != selected.myIndex)
                     {
                         var relationType = selected.diplomaticRelations[i].Relation;
 
                         if (relationType <= RelationType.RelationTypeN2_Truce)
                         {
-
+                            addArrow(false);
                         }
                         else if (relationType >= RelationType.RelationType3_Ally)
                         {
-
+                            addArrow(true);
                         }
 
                         void addArrow(bool goodRelation)
@@ -50,7 +50,26 @@ namespace VikingEngine.DSSWars.Communication
                             var otherFaction = DssRef.world.faction(i);
                             if (otherFaction != null)
                             {
-                                
+                                Graphics.Image arrow;
+
+                                if (arrowIndex < relationArrows.Count)
+                                {
+                                    arrow = relationArrows[arrowIndex];
+                                }
+                                else
+                                {
+                                    arrow = new Image(SpriteName.WhiteArea, Vector2.Zero, iconScale, HudLib.DiplomacyDisplayLayer - 1 - arrowIndex, true);
+                                    relationArrows.Add(arrow);
+                                }
+
+                                arrow.Color = goodRelation? Color.Blue : Color.Orange;
+
+                                Vector2 otherPos = map.flagPosition(otherFaction);
+                                Vector2 diff = otherPos - flagPos;
+                                diff.Normalize();
+                                arrow.position = flagPos + diff * radius;
+
+                                arrowIndex++;
                             }
                         }
                     }

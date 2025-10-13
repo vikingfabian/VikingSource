@@ -28,15 +28,17 @@ namespace VikingEngine.DSSWars.Communication
         public List<Faction> previousFactionsLookedAt = new List<Faction>(PreviousFactionsLookedAtCount +1);
 
         Vector2 relIconSize, relBgSize;
-        
+        RelationArrows relationArrows;
 
         public DiplomacyMap(LocalPlayer player) 
         { 
             this.player = player;
             relationFlags = new RelationFlag[DssRef.world.factions.Array.Length];
+            
 
             relIconSize = Screen.IconSizeV2 * 0.6f;
             relBgSize = relIconSize * 2.2f;
+            relationArrows = new RelationArrows(relBgSize);
 
             for (int i = 0; i < relationFlags.Length; i++)
             {
@@ -266,35 +268,42 @@ namespace VikingEngine.DSSWars.Communication
                 }
             }
 
+            Faction selectedFaction = null;
+            Vector2 selectedFlagPos = Vector2.Zero;
+
             if (selected != null)
             {
-                var faction = DssRef.world.faction(selected.faction);
+                selectedFaction = DssRef.world.faction(selected.faction);
 
-                if (faction != null)
-                {
-                    for (int i = 0; i < faction.diplomaticRelations.Length; i++)
-                    {
-                        if (faction.diplomaticRelations[i] != null)
-                        {
-                            var relationType = faction.diplomaticRelations[i].Relation;
+                selectedFlagPos = selected.position;
+                //if (faction != null)
+                //{
+                //    for (int i = 0; i < faction.diplomaticRelations.Length; i++)
+                //    {
+                //        if (faction.diplomaticRelations[i] != null)
+                //        {
+                //            var relationType = faction.diplomaticRelations[i].Relation;
 
-                            if (relationType <= RelationType.RelationTypeN2_Truce)
-                            { 
-                            
-                            }
-                            else if (relationType >= RelationType.RelationType3_Ally)
-                            {
+                //            if (relationType <= RelationType.RelationTypeN2_Truce)
+                //            { 
 
-                            }
-                        }
-                    }
-                }
+                //            }
+                //            else if (relationType >= RelationType.RelationType3_Ally)
+                //            {
+
+                //            }
+                //        }
+                //    }
+                //}
 
                 if (player.gameControls.input.cancelDownEvent())
                 {
                     cancel();
+                    selectedFaction = null;
                 }
             }
+
+            relationArrows.update(selectedFaction, selectedFlagPos, this);
 
             updateSelectBox(currentHover, hoverbox);
             updateSelectBox(selected, seletionbox);
@@ -348,6 +357,8 @@ namespace VikingEngine.DSSWars.Communication
 
             hoverbox.DeleteMe();
             seletionbox.DeleteMe();
+
+            relationArrows.ClearAll();
         }
 
         public void asynchUpdate()
