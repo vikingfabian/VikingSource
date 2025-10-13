@@ -380,6 +380,7 @@ namespace VikingEngine.DSSWars.Data
                 }
             }
             difficulty = r.ReadInt32();
+            Bound.SetToArray(ref difficulty, options.Length);
 
             refreshSettings();
         }

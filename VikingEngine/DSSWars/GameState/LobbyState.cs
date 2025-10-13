@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars
                 mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }
 
-            Ref.draw.ClrColor = ColorExt.ChangeBrighness( new Color(29,54,67), -2);//new Color(11, 30, 34);
+            Ref.draw.ClrColor = new Color(2, 9, 12);//Ref.draw.ClrColor = ColorExt.ChangeBrighness( new Color(29,54,67), -2);//new Color(11, 30, 34);
 
             menuSystem = new Interface.MenuSystem(new InputMap(Engine.XGuide.LocalHostIndex), Interface.MenuType.Lobby);
             DssRef.storage.checkConnected();
@@ -619,7 +619,7 @@ namespace VikingEngine.DSSWars
 
         public static Texture2D LoadBg()
         {
-            var bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "story_background"/*"darkforest_bg"*/);
+            var bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "story_background2"/*"darkforest_bg"*/);
             return bgTex;
         }
 
@@ -638,22 +638,31 @@ namespace VikingEngine.DSSWars
         void createBackground()
         {
             float menuW = topMenu.backgroundArea.Width;//menuSystem.menu.area.Width;
-            float w = (Engine.Screen.SafeArea.Width - menuW) *  1f;
+            float w = (Engine.Screen.SafeArea.Width - menuW) * 0.9f;
             float h = w / bgTex.Width * bgTex.Height;
 
             var area = Engine.Screen.Area;
             area.AddToLeftSide(-menuW);
 
-            float x = Engine.Screen.Area.Right - w - 10;// area.Center.X - w * 0.5f;//Engine.Screen.SafeArea.Right - w + 10;
-            float y = Screen.CenterScreen.Y - h * 0.5f;
+            float x = area.Center.X - w * 0.5f;//Engine.Screen.SafeArea.Right - w + 10;
+            float y = Screen.Area.PercentToPosition(1, 0.55f).Y/*Screen.CenterScreen.Y*/ - h * 0.5f;
 
             bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
                 new Vector2(x, y), new Vector2(w, h), ImageLayers.Background5, false);
             bgImage.Texture = bgTex;
             bgImage.SetFullTextureSource();
             //bgImage.Color = ColorExt.GrayScale(0.8f);
-            bgImage.Opacity = 0.8f;
+            bgImage.Opacity = 1;//0.8f;
 
+            var area2 = bgImage.Area;
+            area2.AddPercentRadius(0.1f);
+            area2.Y = 0;
+            ImageAdvanced bgimage2 = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
+                area2.Position, area2.Size, ImageLayers.Background6, false);
+            bgimage2.Texture = bgTex;
+
+            bgimage2.SetFullTextureSource();
+            bgimage2.Color = ColorExt.GrayScale(0.9f);
             //Vector2 promoworkerSz = new Vector2(9, 6) * new Vector2(h * 0.02f);
 
             //var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoCannon, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.7f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
