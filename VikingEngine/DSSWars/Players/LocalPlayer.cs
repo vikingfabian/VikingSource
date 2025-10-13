@@ -92,6 +92,7 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();
+        public UnitsPixelTexture unitsPixelTexture;
         public bool viewCityTagsOnMap = true;
         public bool viewArmyTagsOnMap = true;
         
@@ -1663,6 +1664,9 @@ namespace VikingEngine.DSSWars.Players
         public override void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
+
+            unitsPixelTexture = new UnitsPixelTexture(faction);
+
             hud.messages.onGameStart();
             oneSecUpdate();
 

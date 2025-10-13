@@ -10,13 +10,14 @@ namespace VikingEngine.DSSWars.Map
     class MapLayer_Factions
     {
         IntVector2 mapsz;
-        public Map.FactionPixelTexture factionColorsTex;
-
+        public Map.FactionPixelTexture factionPixelTex;
+        
         public MapLayer_Factions()
         {
            mapsz = DssRef.world.Size;
 
-            factionColorsTex = new FactionPixelTexture(true);/*vol.Position, vol.Scale*/
+            factionPixelTex = new FactionPixelTexture(true);/*vol.Position, vol.Scale*/
+            //UnitsPixelTexture = new UnitsPixelTexture();
         }
 
         public void asyncTask()
@@ -24,14 +25,14 @@ namespace VikingEngine.DSSWars.Map
             if (mapsz != DssRef.world.Size)
             { 
                 mapsz = DssRef.world.Size;
-                factionColorsTex.refreshScale();
+                factionPixelTex.refreshScale();
             }
-            factionColorsTex.RefreshWorld_FactionCol();
+            factionPixelTex.RefreshWorld_FactionCol();
         }
 
         public void syncTask()
         {
-            factionColorsTex.SetNewTexture();
+            factionPixelTex.SetNewTexture();
         }
     }
 }

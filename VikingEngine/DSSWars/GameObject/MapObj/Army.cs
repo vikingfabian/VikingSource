@@ -1078,11 +1078,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void asynchCullingUpdate(float time, bool bStateA)
         {
-            if (this.debugTagged)
-            {
-                lib.DoNothing();
-            }
+            //if (this.debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
+
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.unitsPixelTexture.asynch_AddArmy(this);
+            }
         }
 
         public void asynchSleepObjectsUpdate(float time)

@@ -36,12 +36,6 @@ namespace VikingEngine.DSSWars.Map
         }
 
         
-        //public FactionColorsTexture()
-        //  : base()
-        //{             
-        //}
-        
-        
 
         public void RefreshWorld_FactionCol()
         {
