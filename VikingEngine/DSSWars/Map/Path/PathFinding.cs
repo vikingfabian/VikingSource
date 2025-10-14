@@ -239,7 +239,7 @@ namespace VikingEngine.DSSWars.Map
         const int IgnoreDirChangeTimes = 10;
         const float NodeMinDistance = 0.3f;
 
-        public int timeStamp;
+        public double timeStamp;
         public int currentNodeIx;
         public List<PathNodeResult> nodes = new List<PathNodeResult>(64);
 

@@ -20,7 +20,7 @@ namespace VikingEngine
     {
         public static readonly FrameStamp None = new FrameStamp(-1000000);
 
-        public int frame;
+        public double frame;
 
         public FrameStamp(int frame)
         {

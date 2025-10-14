@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
@@ -149,7 +150,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //lib.DoNothing();
                     player.hud.objMenu.diplomacy.quickSelect();
                 }
-                    //diplomacy.update();
+
+                player.hud.updateToolTip_diplomacy(uiRefresh);
+                //diplomacy.update();
             }
             else
             {

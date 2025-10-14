@@ -9,16 +9,18 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
-using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
+using VikingEngine.ToGG.HeroQuest.Display;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -81,7 +83,36 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                if (!player.gameControls.diplomacy.hasSelection())
+                //Relation arrow
+                if (player.gameControls.diplomacy.relationArrowHover >= 0)
+                {
+                    RichBoxContent content = new RichBoxContent();
+
+                    //input(map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
+                    content.newLine();
+                    content.Add(new RbImage(player.gameControls.input.mouseSelect.Icon));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Tutorial_SelectInput, HudLib.TitleColor_Action));
+
+
+                    content.newLine();
+                    content.h2(DssRef.lang.Diplomacy_RelationWithOthers, HudLib.TitleColor_Label);
+                    content.newLine();
+
+                    Faction thirdPartFaction = DssRef.world.faction(player.gameControls.diplomacy.relationArrowHover);
+                    var relation = DssRef.diplomacy.GetRelationType(player.gameControls.diplomacy.mainSelection(out _), thirdPartFaction);
+
+                    content.Add(thirdPartFaction.FlagTextureToHud());
+                    content.hspace();
+                    content.Add(new RbText(thirdPartFaction.PlayerName));
+
+                    content.Add(new RbText(": "));
+                    content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                    content.Add(new RbText(Diplomacy.RelationString(relation)));
+
+                    create(player, content, false);
+                }
+                else if (!player.gameControls.diplomacy.hasSelection())
                 {
                     images.DeleteAll();
                 }

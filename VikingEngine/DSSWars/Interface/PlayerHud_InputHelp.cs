@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Interface
                     break;
 
                 case InputHelpState.Army:
-                    input(ct ? map.mouseSelect.Icon : map.mouseSelect.Icon, DssRef.lang.Hud_Cancel);
+                    input(map.mouseSelect.Icon, DssRef.lang.Hud_Cancel);
                     input(map.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
                     if (ct)
                     {
@@ -101,7 +101,7 @@ namespace VikingEngine.DSSWars.Interface
                     break;
 
                 case InputHelpState.Menu:
-                    input(ct ? map.mouseSelect.Icon : map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
+                    input(map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
                     if (ct)
                     {
                         input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ToggleMenu);

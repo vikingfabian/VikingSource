@@ -293,13 +293,12 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
-            init(false, TimeLength.FromMinutes(30));
+            init(false, DssRef.difficulty.extremeAggression? new TimeLength(10) : TimeLength.FromMinutes(30));
         }
         public override bool RunAi()
         {
             return true;
         }
-
         public override bool MayAttackPlayer()
         {
             return false;
@@ -322,8 +321,15 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
+            var triggerTimeSpan_Minutes = new IntervalF(15f, 35f) + Ref.rnd.Float(20);
+
+            if (DssRef.difficulty.extremeAggression)
+            {
+                triggerTimeSpan_Minutes = new IntervalF(0.2f, 1f);
+            }
+
             init(
-                triggerTimeSpan_Minutes: new IntervalF(15f, 35f) + Ref.rnd.Float(20),
+                triggerTimeSpan_Minutes,
                 nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 1f, DssConst.HeadCityStartMaxWorkForce * 2f));
         }
 
@@ -358,7 +364,7 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
-            init(false, TimeLength.FromMinutes(40));
+            init(false, TimeLength.FromMinutes(DssRef.difficulty.extremeAggression ? 1 : 50));
         }
         public override bool RunWarManager()
         {

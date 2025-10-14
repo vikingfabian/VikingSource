@@ -287,7 +287,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public void beginEditName()
         {
-            new TextInput(state.mapStorage.Name, NameEditEvent, null);
+            new TextInputState(state.mapStorage.Name, NameEditEvent, null);
         }
 
         virtual protected void NameEditEvent(string result, object tag)

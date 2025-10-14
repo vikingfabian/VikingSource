@@ -2228,7 +2228,7 @@ namespace VikingEngine.DSSWars.GameObject
             return name.name;
         }
 
-        protected override void NameEditEvent(string result, object tag)
+        public override void NameEditEvent(string result, object tag)
         {
             name.setCustom(result);
         }
