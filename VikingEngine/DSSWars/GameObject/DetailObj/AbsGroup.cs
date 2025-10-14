@@ -19,10 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
             return VectorExt.V3XZtoV2(position);
         }
         virtual public SoldierGroup GetGroup() { return null; }
-        virtual public bool IsGuardGroup()
-        {
-            return false;
-        }
+        
         virtual public SpottedArray<AbsSoldierUnit> Soldiers()
         {
             return null;

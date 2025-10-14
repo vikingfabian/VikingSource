@@ -242,6 +242,16 @@ namespace VikingEngine.DSSWars.Interface
                     case Players.SelectTileResult.Wall:
                         title = new RbText(DssRef.lang.Defence_GuardPost);
                         content.Add(title);
+
+                        if (player.gameControls.map.selection.obj != null &&
+                            player.gameControls.map.selection.obj.IsGuardGroup())
+                        {
+                            content.newLine();
+                            content.Add(new RbBeginTitle(2));
+                            content.Add(new RbImage(player.gameControls.input.mouseOrder.Icon));
+                            content.space(0.5f);
+                            content.Add(new RbText(DssRef.lang.Tutorial_MoveInput, HudLib.TitleColor_Action));
+                        }
                         break;
 
                     case Players.SelectTileResult.Postal:

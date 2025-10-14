@@ -256,6 +256,11 @@ namespace VikingEngine.DSSWars.GameObject
             return armyGroups.Count + guardGroups.Count;
         }
 
+        public override bool IsGuardGroup()
+        {
+            return guardGroups.Count > 0;
+        }
+
         public override string TypeName()
         {
             return DssRef.lang.UnitType_CollectionOfSoldiers;
