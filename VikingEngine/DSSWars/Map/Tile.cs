@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.Map;
 using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars.Map
@@ -412,6 +413,42 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
+        public Color MinimapColor_Minimap(Faction playerFaction, IntVector2 pos)
+        {
+            if (tileContent == TileContent.City)
+                return cityColor;
+
+            //if (heightLevel <= Height.LowerWaterHeight)
+            //{
+            //    foreach (var dir in IntVector2.Dir4Array)
+            //    {
+            //        if (DssRef.world.tileGrid.TryGet(pos + dir, out var nTile))
+            //        {
+            //            if (nTile.heightLevel > Height.LowerWaterHeight)
+            //            {
+            //                return lib.IsEven(pos.X + pos.Y) ?
+            //                    WorldData.WaterDarkCol1 : WorldData.WaterDarkCol2;
+            //            }
+            //        }
+            //    }
+
+            //    return lib.IsEven(pos.X + pos.Y) ?
+            //        WorldData.WaterVeryDarkCol1 : WorldData.WaterVeryDarkCol2;
+            //}
+            //else if (heightLevel == Height.LowWaterHeight)
+            //{
+            //    return lib.IsEven(pos.X + pos.Y) ? WorldData.WaterEdgeColorBright : WorldData.WaterEdgeColor;
+            //}
+            if (heightLevel <= Height.LowWaterHeight)
+            { 
+                return WorldData.WaterDarkCol2;
+            }
+            else
+            {
+                return heightAndMinimapCol(playerFaction, pos);
+            }
+        }
+
         public Color BiomColor()
         {
             var col = DssRef.map.bioms.bioms[(int)biom].TileColor(this).Color;
@@ -443,65 +480,98 @@ namespace VikingEngine.DSSWars.Map
             return WaterSurfaceY;
         }
 
-        Color heightAndFactionCol(IntVector2 pos)
-        {   
+        Color heightAndMinimapCol(Faction playerFaction, IntVector2 pos)
+        {
             float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
 
-            Tile nTile;
-            int faction = City().factionIndex;
+            //Tile nTile;
+            City city = City();
+            int faction = city.factionIndex;
 
-            if (faction <= 0)
+            if (faction < 0)
             {
                 return Color.Black;
             }
 
-            City nCity;
-            bool isCityAdjacent = false;
-            bool isCityAdjacentCorner = false;
-
-            foreach (var dir in IntVector2.AllDiagonalsArray)
+            if (faction == playerFaction.myIndex)
             {
-                if (DssRef.world.tileGrid.TryGet(pos + dir, out nTile))
+                brightness *= 0.5f;
+            }
+            else
+            {
+                brightness *= 0.2f;
+            }
+            //Color factionCol = DssRef.world.factions.Array[faction].Color();
+
+            int distance = city.tilePos.SideLength(pos);
+            //if (distance == 0)
+            //{
+            //    brightness = 1.25f;
+            //}
+            //else 
+            if (distance == 1)
+            {
+                brightness *= 1.5f;
+            }
+            else if (BorderCount > 0)
+            {
+                brightness *= 0.7f;
+                //if (ColorExt.GetBrightNess(factionCol) > 0.3f)
+                //{
+                //    brightness -= 0.2f;
+                //}
+                //else
+                //{
+                //    factionCol = ColorExt.ChangeBrighness(factionCol, 10);
+                //    brightness += 0.1f;
+                //}
+            }
+
+            //Color color = Color.Multiply(factionCol, brightness);
+            return new Color(brightness, brightness, brightness);
+        }
+
+
+        Color heightAndFactionCol(IntVector2 pos)
+        {   
+            float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
+
+            //Tile nTile;
+            City city = City();
+            int faction = city.factionIndex;
+
+            if (faction < 0)
+            {
+                return Color.Black;
+            }
+
+            
+            Color factionCol = DssRef.world.factions.Array[faction].Color();
+
+            int distance = city.tilePos.SideLength(pos);
+            //if (distance == 0)
+            //{
+            //    brightness = 1.25f;
+            //}
+            //else 
+            if (distance == 1)
+            {
+                brightness = 1.15f;
+            }
+            else if (BorderCount > 0)
+            {
+                if (ColorExt.GetBrightNess(factionCol) > 0.3f)
                 {
-                    if (nTile.tileContent == TileContent.City)
-                    {
-                        isCityAdjacent = true;
-                        isCityAdjacentCorner = true;
-                        break;
-                    }
+                    brightness -= 0.2f;
+                }
+                else
+                {
+                    factionCol = ColorExt.ChangeBrighness(factionCol, 10);
+                    brightness += 0.1f;
                 }
             }
 
-            if (!isCityAdjacent)
-            {
-                foreach (var dir in IntVector2.Dir4Array)
-                {
-                    if (DssRef.world.tileGrid.TryGet(pos + dir, out nTile))
-                    {
-                        if (nTile.tileContent == TileContent.City)
-                        {
-                            isCityAdjacent = true;                            
-                            break;
-                        }
-                        else
-                        {
-                            nCity = nTile.City();
-                            if (nCity != null && faction != nCity.factionIndex)
-                            {
-                                brightness -= 0.2f;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (isCityAdjacent)
-            {
-                brightness = isCityAdjacentCorner? 1.15f : 1.25f;
-            }
-
-            Color color = new Color(DssRef.world.factions.Array[faction].Color().ToVector3() * brightness);
+            Color color = Color.Multiply(factionCol, brightness);
             return color;
         }
 

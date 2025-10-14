@@ -41,6 +41,12 @@ namespace VikingEngine.Graphics
             pixels[x + y * Width] = col;
         }
 
+        public void SetTwoPixels(IntVector2 pos, Color col1, Color col2)
+        {
+            int index = pos.X + pos.Y * Width;
+            pixels[index] = col1;
+            pixels[index + 1] = col2;
+        }
 
         public void ApplyPixelsToTexture()
         {
@@ -50,6 +56,14 @@ namespace VikingEngine.Graphics
         {
             this.pixels = pixels;
             base.SetData(pixels);
+        }
+
+        public void ClearPixelArray(Color color)
+        {
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                pixels[i] = color;
+            }
         }
 
         public void SaveAsPNG(string path)

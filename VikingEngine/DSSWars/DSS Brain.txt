@@ -4,8 +4,10 @@ Change Log:
 * fixed rare get gold crash
 * added move action to wall tooltip
 
-#Pics
 
+#Pics
+* Map filter icons
+* Relation arrow
 
 #must do#
 x wall right click
@@ -13,6 +15,10 @@ x wall right click
 
 
 #Winter update#
+* Optimized: Diplomacy map
+* Soldiers are visible on the faction map
+
+x global stock?
 x 300% difficulty 
 x Extended diplomacy options, and be able to command allies with diplomacy points
 x casual mode: embassy building

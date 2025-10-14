@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Presentation
         //public string Settings_Render3dScale_DownX => "Downscale {0}X";
 
         public string GameMenu_ControllerDisconnected => "Controller disconnected";
-        
+        public string MapFilter => "Map filter";
     }
 
 }

@@ -635,6 +635,11 @@ namespace VikingEngine.DSSWars
 
         public void asynchCullingUpdate(float time, bool bStateA)
         {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.unitsPixelTexture.updateColorProfile(this);
+            }
+
             var armiesC = armies.counter();
             while (armiesC.Next())
             {

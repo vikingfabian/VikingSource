@@ -92,6 +92,10 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();
+
+        public FactionPixelTexture factionPixelTexture;
+        public UnitsPixelTexture unitsPixelTexture;
+        
         public bool viewCityTagsOnMap = true;
         public bool viewArmyTagsOnMap = true;
         
@@ -1663,6 +1667,12 @@ namespace VikingEngine.DSSWars.Players
         public override void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
+
+            factionPixelTexture = new FactionPixelTexture(faction, true,
+                (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
+                FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
+            unitsPixelTexture = new UnitsPixelTexture(faction);
+
             hud.messages.onGameStart();
             oneSecUpdate();
 
@@ -1714,6 +1724,15 @@ namespace VikingEngine.DSSWars.Players
             return DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.EmbassyAddDiplomacy * faction.embassyCount;
         }
 
+        public MapDetailLayerType mapLayer()
+        {
+            if (Map.MapLayerManager.CameraIndexToView == null)
+            {
+                return MapDetailLayerType.TerrainOverview2;
+            }
+
+            return Map.MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex].current.type;
+        }
         public double diplomacyAddPerSec_CapIncluded()
         {
             if (diplomaticPoints.value < diplomaticPoints_softMax)
