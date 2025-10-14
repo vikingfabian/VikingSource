@@ -3,7 +3,8 @@ Change Log:
 
 
 #Pics
-
+* Map filter icons
+* Relation arrow
 
 #must do#
 x 

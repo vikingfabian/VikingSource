@@ -418,26 +418,30 @@ namespace VikingEngine.DSSWars.Map
             if (tileContent == TileContent.City)
                 return cityColor;
 
-            if (heightLevel <= Height.LowerWaterHeight)
-            {
-                foreach (var dir in IntVector2.Dir4Array)
-                {
-                    if (DssRef.world.tileGrid.TryGet(pos + dir, out var nTile))
-                    {
-                        if (nTile.heightLevel > Height.LowerWaterHeight)
-                        {
-                            return lib.IsEven(pos.X + pos.Y) ?
-                                WorldData.WaterDarkCol1 : WorldData.WaterDarkCol2;
-                        }
-                    }
-                }
+            //if (heightLevel <= Height.LowerWaterHeight)
+            //{
+            //    foreach (var dir in IntVector2.Dir4Array)
+            //    {
+            //        if (DssRef.world.tileGrid.TryGet(pos + dir, out var nTile))
+            //        {
+            //            if (nTile.heightLevel > Height.LowerWaterHeight)
+            //            {
+            //                return lib.IsEven(pos.X + pos.Y) ?
+            //                    WorldData.WaterDarkCol1 : WorldData.WaterDarkCol2;
+            //            }
+            //        }
+            //    }
 
-                return lib.IsEven(pos.X + pos.Y) ?
-                    WorldData.WaterVeryDarkCol1 : WorldData.WaterVeryDarkCol2;
-            }
-            else if (heightLevel == Height.LowWaterHeight)
-            {
-                return lib.IsEven(pos.X + pos.Y) ? WorldData.WaterEdgeColorBright : WorldData.WaterEdgeColor;
+            //    return lib.IsEven(pos.X + pos.Y) ?
+            //        WorldData.WaterVeryDarkCol1 : WorldData.WaterVeryDarkCol2;
+            //}
+            //else if (heightLevel == Height.LowWaterHeight)
+            //{
+            //    return lib.IsEven(pos.X + pos.Y) ? WorldData.WaterEdgeColorBright : WorldData.WaterEdgeColor;
+            //}
+            if (heightLevel <= Height.LowWaterHeight)
+            { 
+                return WorldData.WaterDarkCol2;
             }
             else
             {
@@ -491,11 +495,11 @@ namespace VikingEngine.DSSWars.Map
 
             if (faction == playerFaction.myIndex)
             {
-                brightness *= 0.9f;
+                brightness *= 0.5f;
             }
             else
             {
-                brightness *= 0.4f;
+                brightness *= 0.2f;
             }
             //Color factionCol = DssRef.world.factions.Array[faction].Color();
 
@@ -511,7 +515,7 @@ namespace VikingEngine.DSSWars.Map
             }
             else if (BorderCount > 0)
             {
-                brightness *= 0.1f;
+                brightness *= 0.7f;
                 //if (ColorExt.GetBrightNess(factionCol) > 0.3f)
                 //{
                 //    brightness -= 0.2f;
