@@ -1,20 +1,21 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.Graphics;
-using VikingEngine.HUD.RichMenu;
-using VikingEngine.HUD;
-using Microsoft.Xna.Framework;
-using VikingEngine.HUD.RichBox;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
+using VikingEngine.Graphics;
+using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.MoonFall;
-using System.Globalization;
-using System.Reflection.Metadata;
-using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.DSSWars.Presentation;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -203,33 +204,13 @@ namespace VikingEngine.DSSWars.Interface
                 content.space(0.5f);
             }
 
-            MenuTab[] tabOptions = factionTabOptions();
-            for (int i = 0; i < tabOptions.Length; ++i)
+            if (player.mapLayer() == Map.MapDetailLayerType.FactionColors3 && !prepareLayout)
             {
-                var tab = tabOptions[i];
-                SpriteName icon = SpriteName.NO_IMAGE;
-                switch (tab)
-                {
-                    case MenuTab.Info:
-                        icon = SpriteName.WarsHudInfoIcon; break;
-                    case MenuTab.Economy:
-                        icon = SpriteName.rtsMoney; break;
-                    case MenuTab.Resources:
-                        icon = SpriteName.WarsResource_Wood; break;
-                    case MenuTab.Work:
-                        icon = SpriteName.WarsHammer; break;
-                    case MenuTab.Automation:
-                        icon = SpriteName.AutomationGearIcon; break;
-                    case MenuTab.Progress:
-                        icon = SpriteName.WarsTechnology_Unlocked; break;
-
-                }
-
-                content.Add(new ArtOption(tab == player.factionTab,
-                    new List<AbsRichBoxMember>
-                    {
-                        new RbImage(icon)
-                    }, new RbAction1Arg<MenuTab>(TabClick, tab, RbSoundType.Option), new RbTooltip(TabTip, tab)));
+                mapFilterTabs(content);
+            }
+            else
+            {
+                factionTabs(content);
             }
 
             if (viewControllerTabs)
@@ -291,6 +272,56 @@ namespace VikingEngine.DSSWars.Interface
                     new RbTooltip_Text(toolTip)));
             }
 
+        }
+
+        void factionTabs(RichBoxContent content)
+        {
+            MenuTab[] tabOptions = factionTabOptions();
+            for (int i = 0; i < tabOptions.Length; ++i)
+            {
+                var tab = tabOptions[i];
+                SpriteName icon = SpriteName.NO_IMAGE;
+                switch (tab)
+                {
+                    case MenuTab.Info:
+                        icon = SpriteName.WarsHudInfoIcon; break;
+                    case MenuTab.Economy:
+                        icon = SpriteName.rtsMoney; break;
+                    case MenuTab.Resources:
+                        icon = SpriteName.WarsResource_Wood; break;
+                    case MenuTab.Work:
+                        icon = SpriteName.WarsHammer; break;
+                    case MenuTab.Automation:
+                        icon = SpriteName.AutomationGearIcon; break;
+                    case MenuTab.Progress:
+                        icon = SpriteName.WarsTechnology_Unlocked; break;
+
+                }
+
+                content.Add(new ArtOption(tab == player.factionTab,
+                    new List<AbsRichBoxMember>
+                    {
+                        new RbImage(icon)
+                    }, new RbAction1Arg<MenuTab>(TabClick, tab, RbSoundType.Option), new RbTooltip(TabTip, tab)));
+            }
+        }
+
+        void mapFilterTabs(RichBoxContent content)
+        {
+            for (FactionMapFilter filter = 0; filter < FactionMapFilter.NUM; filter++)
+            {
+                content.Add(new ArtOption(filter == player.factionPixelTexture.filter,
+                   new List<AbsRichBoxMember>
+                   {
+                        new RbImage(SpriteName.MissingImage)
+                   }, new RbAction1Arg<FactionMapFilter>((FactionMapFilter filter)=>
+                       { 
+                            player.factionPixelTexture.filter = filter;
+                            DssRef.world.BordersUpdated = true;
+                       }
+                   , filter, RbSoundType.Option), new RbTooltip_Text(DssRef.todoLang.MapFilter)));
+            }
+            
         }
 
         public void TabClick(MenuTab tab)

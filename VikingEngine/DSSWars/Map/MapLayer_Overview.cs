@@ -334,7 +334,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 DssRef.world.BordersUpdated = false;
                 borders?.SetNewModel();
-                factionsMap.syncTask();
+                //factionsMap.syncTask();
 
                 state_Processing_Sych_Complete = 2;
             }

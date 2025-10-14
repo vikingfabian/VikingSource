@@ -724,7 +724,7 @@ namespace VikingEngine.DSSWars.Interface
         { 
             ++player.statistics.ServantFactions;
             otherfaction.mergeTo(player.faction);
-            player.gameControls.diplomacy.cancel();
+            player.gameControls.diplomacy?.cancel();
         }
 
         bool canMakeServant(out int cost)

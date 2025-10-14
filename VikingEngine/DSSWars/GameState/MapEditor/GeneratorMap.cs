@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.WeaponAttack;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
@@ -20,7 +21,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public GeneratorMap(Vector2 pos)
         {
-            texture = new FactionPixelTexture(false);
+            texture = new FactionPixelTexture(null, false, FactionMapFilter.Terrain);
             image = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, pos, Vector2.One, ImageLayers.Lay8, false);
         }
 
@@ -43,14 +44,16 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         public void generate()
         {
             texture.initTexture();
-            if (arraylib.HasMembers( DssRef.world.cities))
-            {
-                texture.RefreshWorld_FactionCol();
-            }
-            else
-            {
-                texture.RefreshWorld_TerrainCol();
-            }
+            texture.filter = arraylib.HasMembers(DssRef.world.cities)? FactionMapFilter.FactionCols : FactionMapFilter.Terrain;
+            texture.refreshWorld();
+            //if (arraylib.HasMembers( DssRef.world.cities))
+            //{
+            //    texture.RefreshWorld_FactionCol();
+            //}
+            //else
+            //{
+            //    texture.RefreshWorld_TerrainCol();
+            //}
             image.Texture = texture.texture;
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);

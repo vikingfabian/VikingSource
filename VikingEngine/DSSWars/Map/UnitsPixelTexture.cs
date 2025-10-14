@@ -15,14 +15,15 @@ namespace VikingEngine.DSSWars.Map
     {
         Color colorProfile1, colorProfile2;
 
-        Faction playerFaction;
+        //Faction playerFaction;
 
-        public UnitsPixelTexture(Faction faction) :base()
+        public UnitsPixelTexture(Faction faction) 
+            :base(faction)
         {
-            this.playerFaction = faction;
-            refreshScale();
-            model.Y += 0.06f;
-            //visible = false;
+            
+            initTexture();
+            //mapPlane.Y += 0.06f;
+           
         }
 
         public void asynch_Begin()
@@ -35,11 +36,11 @@ namespace VikingEngine.DSSWars.Map
             texture.ApplyPixelsToTexture();
         }
 
-        public override void Draw(int cameraIndex)
-        {
-            base.Draw(cameraIndex);
+        //public override void Draw(int cameraIndex)
+        //{
+        //    base.Draw(cameraIndex);
 
-        }
+        //}
 
         public void updateColorProfile(Faction faction)
         {

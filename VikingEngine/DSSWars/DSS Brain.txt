@@ -1,6 +1,5 @@
 ﻿UPDATE
 Change Log:
-* Optimized: Diplomacy map
 
 
 #Pics
@@ -12,6 +11,9 @@ x
 
 
 #Winter update#
+* Optimized: Diplomacy map
+* Soldiers are visible on the faction map
+
 x global stock?
 x 300% difficulty 
 x Extended diplomacy options, and be able to command allies with diplomacy points
