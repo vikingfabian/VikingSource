@@ -35,7 +35,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return isDeleted;
         }
-
+        virtual public bool IsGuardGroup()
+        {
+            return false;
+        }
         virtual public Faction GetFaction_NoChecks()
         {
 #if DEBUG
