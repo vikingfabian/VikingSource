@@ -593,73 +593,14 @@ namespace VikingEngine.DSSWars.Build
         {
             this.city = city;
 
-            List<BuildCategoryTab> buildCategories = new List<BuildCategoryTab>
+            if (player.tutorial != null && player.tutorial.DisplayCompressedBuildTab())
             {
-                
-                BuildCategoryTab.General,
-                BuildCategoryTab.Advanced,
-                BuildCategoryTab.Military,
-                BuildCategoryTab.Decor,
-                BuildCategoryTab.Upgrade,
-                BuildCategoryTab.Filter,
-
-            };
-
-            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
-            {
-                buildCategories.Insert(buildCategories.Count -1, BuildCategoryTab.GodPower);
+                player.buildCategoryTab = BuildCategoryTab.General;
+                content.newParagraph();
             }
-
-            if (city.buildingStructure.buildingLevel_logistics > 0)
+            else
             {
-                buildCategories.Add(BuildCategoryTab.Automation);
-            }
-
-            foreach (var tab in buildCategories)
-            {
-                string category;
-                SpriteName tabIcon;
-                switch (tab)
-                {
-                    case BuildCategoryTab.Filter:
-                        tabIcon = SpriteName.warsBuildCategorySearch;
-                        category = DssRef.lang.HUD_Filter;
-                        break;
-                    case BuildCategoryTab.General:
-                        tabIcon = SpriteName.warsBuildCategoryHouse;
-                        category = DssRef.lang.BuildCategory_General;
-                        break;
-                    case BuildCategoryTab.Advanced:
-                        tabIcon = SpriteName.warsBuildCategoryAdvanced;
-                        category = DssRef.lang.Hud_Advanced;
-                        break;
-                    case BuildCategoryTab.Military:
-                        tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
-                        category = DssRef.lang.BuildCategory_Military;
-                        break;
-                    case BuildCategoryTab.Decor:
-                        tabIcon = SpriteName.warsBuildCategoryDecorTree;
-                        category = DssRef.lang.BuildCategory_Decoration;
-                        break;
-                    case BuildCategoryTab.Upgrade:
-                        tabIcon = SpriteName.warsBuildCategoryUpgrades;
-                        category = DssRef.lang.BuildCategory_Upgrade;
-                        break;
-                    case BuildCategoryTab.GodPower:
-                        tabIcon = SpriteName.WarsGodPowerIcon;
-                        category = DssRef.lang.GodPower;
-                        break;
-                    default:
-                        tabIcon = SpriteName.warsBuildCategoryAutomation;
-                        category = DssRef.lang.Automation_Title;
-                        break;
-
-                }
-                var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                    new List<AbsRichBoxMember> { new RbImage(tabIcon) },
-                    new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, RbSoundType.Tab),
-                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_category, category)));
-                content.Add(tabButton);
+                buildTabToHud(player, content);
             }
 
             if (player.buildCategoryTab == BuildCategoryTab.Automation)
@@ -713,160 +654,77 @@ namespace VikingEngine.DSSWars.Build
             }
             else
             {
-                bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Build, out Color focusColor);
-                if (viewControllerTabs)
+                buildOptionsToHud(player, content, out BuildOption buildOpt);
+
+                if (player.tutorial == null || !player.tutorial.DisplayCompressedBuildTab())
                 {
-                    content.newLine();
-                    content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
-                    content.space(0.5f);
-                    content.Add(new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor });
-                    content.newLine();
-                }
-
-                List<BuildAndExpandType> available = availableBuildOptions(city);
-
-                if (player.buildCategoryTab == BuildCategoryTab.Filter)
-                {
-                    content.newLine();
-                    for (BuildFilterTag tag = 0; tag < BuildFilterTag.NUM_NONE; ++tag)
-                    {
-                        content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(LangLib.Filter(tag)) },
-                            new RbAction1Arg<BuildFilterTag>((BuildFilterTag tag) => { player.buildFilterTag = tag; }, tag),
-                            null, true, player.buildFilterTag == tag ? Color.White : Color.Gray));
-                    }
-                }
-                content.Add(new RichBoxScale(2.1f));
-                content.newLine();
-
-                foreach (var opt in available)
-                {
-                    var build = BuildLib.BuildOptions[(int)opt];
-
-                    var buildCount = city.buildingStructure.getCount(opt);
-
-                    var buttonIcon = new RbImage(build.sprite);
-                    var buttonContent = new List<AbsRichBoxMember> { buttonIcon };
-                    if (buildCount > 0)
-                    {
-                        buttonContent.Add(new RbOverlapText(buttonIcon, buildCount.ToString(), new Vector2(1.1f, 1.1f), 1.0f, new Vector2(1, 1f), Color.White));
-                    }
-
-                    var button = new ArtToggle(buildMode == SelectTileResult.Build && placeBuildingType == opt, buttonContent,
-                    new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, RbSoundType.Option),
-                    new RbTooltip(buildingTooltip, opt));
-
-
-                    bool availableBuild = true;
-                    if (opt == BuildAndExpandType.Logistics)
-                    {
-                        availableBuild = city.CanBuildLogistics(1);
-                    }
-
-                    button.enabled = availableBuild;
-
-
-                    content.Add(button);
-
-
-
-                    //}
-                }
-                content.Add(new RichBoxScale(1));
-
-                content.newParagraph();
-
-                BuildOption buildOpt = null;
-
-                content.Add(new ArtToggle(buildMode == SelectTileResult.Demolish, new List<AbsRichBoxMember>
-            {
-                new RbText(DssRef.lang.Build_DestroyBuilding)
-            }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, RbSoundType.Option)));
-
-                content.space();
-
-                if (buildMode != SelectTileResult.None)
-                {
-                    var button = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                    new RbSpace(),
-                    new RbText(DssRef.lang.Hud_EndSessionIcon),
-                    new RbSpace(),
-                    },
-                        new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None, RbSoundType.Back));
-                    button.setGroupSelectionColor(HudLib.RbSettings, false);
-                    content.Add(button);
-                    content.space();
-
-                    if (buildMode == SelectTileResult.Build)
-                    {
-                        buildOpt = BuildLib.BuildOptions[(int)placeBuildingType];
-                    }
-                }
-
-                int orderLength = 0;
-                lock (player.orders.orders)
-                {
-                    foreach (var m in player.orders.orders)
-                    {
-                        if (m.GetWorkType(city) != OrderType.NONE)
+                    
+                        int orderLength = 0;
+                        lock (player.orders.orders)
                         {
-                            orderLength++;
+                            foreach (var m in player.orders.orders)
+                            {
+                                if (m.GetWorkType(city) != OrderType.NONE)
+                                {
+                                    orderLength++;
+                                }
+                            }
                         }
-                    }
+                        content.newParagraph();
+                        foreach (MapPaintToolShape shape in AvailableToolShapes)
+                        {
+                            string caption;
+                            SpriteName icon;
+                            switch (shape)
+                            {
+                                default:
+                                    caption = DssRef.lang.BuildingToolShape_Free;
+                                    icon = SpriteName.ToolPaintShape_Free;
+                                    break;
+                                case MapPaintToolShape.Line:
+                                    caption = DssRef.lang.BuildingToolShape_Line;
+                                    icon = SpriteName.ToolPaintShape_Line;
+                                    break;
+                                case MapPaintToolShape.Area:
+                                    caption = DssRef.lang.BuildingToolShape_Area;
+                                    icon = SpriteName.ToolPaintShape_Area;
+                                    break;
+                                case MapPaintToolShape.LShape:
+                                    caption = DssRef.lang.BuildingToolShape_LShape;
+                                    icon = SpriteName.ToolPaintShape_LShape;
+                                    break;
+                            }
+
+                            content.Add(new ArtOption(shape == toolShape, new List<AbsRichBoxMember> { new RbImage(icon) },
+                                new RbAction1Arg<MapPaintToolShape>((MapPaintToolShape shape) => { toolShape = shape; }, shape, RbSoundType.Option),
+                                new RbTooltip_Text(caption)));
+                        }
+
+
+                        content.newParagraph();
+                        autoBuildButton(DssRef.lang.Build_AutoPlace, 1);
+                        if (buildOpt != null && !buildOpt.uniqueBuilding)
+                        {
+                            autoBuildButton(string.Format(DssRef.lang.Hud_XTimes, 4), 4);
+                        }
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Build_ClearOrders) },
+                            new RbAction(() =>
+                            {
+                                player.orders.clearAll(city);
+                            }, RbSoundType.Back), null, orderLength > 0));
+                        content.newLine();
+                        content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength), HudLib.InfoYellow_Light);
+
+                        content.newLine();
+                        HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
+                        content.newLine();
+                        city.workTemplate.buildOrder.toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
+                            player.faction, city);
+
+                    
                 }
-                content.newParagraph();
-                foreach (MapPaintToolShape shape in AvailableToolShapes)
-                {
-                    string caption;
-                    SpriteName icon;
-                    switch (shape)
-                    {
-                        default:
-                            caption = DssRef.lang.BuildingToolShape_Free;
-                            icon = SpriteName.ToolPaintShape_Free;
-                            break;
-                        case MapPaintToolShape.Line:
-                            caption = DssRef.lang.BuildingToolShape_Line;
-                            icon = SpriteName.ToolPaintShape_Line;
-                            break;
-                        case MapPaintToolShape.Area:
-                            caption = DssRef.lang.BuildingToolShape_Area;
-                            icon = SpriteName.ToolPaintShape_Area;
-                            break;
-                        case MapPaintToolShape.LShape:
-                            caption = DssRef.lang.BuildingToolShape_LShape;
-                            icon = SpriteName.ToolPaintShape_LShape;
-                            break;
-                    }
-
-                    content.Add(new ArtOption(shape == toolShape, new List<AbsRichBoxMember> { new RbImage(icon) },
-                        new RbAction1Arg<MapPaintToolShape>((MapPaintToolShape shape) => { toolShape = shape; }, shape, RbSoundType.Option),
-                        new RbTooltip_Text(caption)));
-                }
-
-
-                content.newParagraph();
-                autoBuildButton(DssRef.lang.Build_AutoPlace, 1);
-                if (buildOpt != null && !buildOpt.uniqueBuilding)
-                {
-                    autoBuildButton(string.Format(DssRef.lang.Hud_XTimes, 4), 4);
-                }
-
-                content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Build_ClearOrders) },
-                    new RbAction(() =>
-                    {
-                        player.orders.clearAll(city);
-                    }, RbSoundType.Back), null, orderLength > 0));
-                content.newLine();
-                content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength), HudLib.InfoYellow_Light);
-
-                content.newLine();
-                HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
-                content.newLine();
-                city.workTemplate.buildOrder.toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
-                    player.faction, city);
-
-                
 
                 if (player.buildCategoryTab == BuildCategoryTab.Upgrade)
                 {
@@ -953,6 +811,172 @@ namespace VikingEngine.DSSWars.Build
             
         }
 
+        void buildTabToHud(LocalPlayer player, RichBoxContent content)
+        {
+            List<BuildCategoryTab> buildCategories = new List<BuildCategoryTab>
+            {
+
+                BuildCategoryTab.General,
+                BuildCategoryTab.Advanced,
+                BuildCategoryTab.Military,
+                BuildCategoryTab.Decor,
+                BuildCategoryTab.Upgrade,
+                BuildCategoryTab.Filter,
+
+            };
+
+            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+            {
+                buildCategories.Insert(buildCategories.Count - 1, BuildCategoryTab.GodPower);
+            }
+
+            if (city.buildingStructure.buildingLevel_logistics > 0)
+            {
+                buildCategories.Add(BuildCategoryTab.Automation);
+            }
+
+            foreach (var tab in buildCategories)
+            {
+                string category;
+                SpriteName tabIcon;
+                switch (tab)
+                {
+                    case BuildCategoryTab.Filter:
+                        tabIcon = SpriteName.warsBuildCategorySearch;
+                        category = DssRef.lang.HUD_Filter;
+                        break;
+                    case BuildCategoryTab.General:
+                        tabIcon = SpriteName.warsBuildCategoryHouse;
+                        category = DssRef.lang.BuildCategory_General;
+                        break;
+                    case BuildCategoryTab.Advanced:
+                        tabIcon = SpriteName.warsBuildCategoryAdvanced;
+                        category = DssRef.lang.Hud_Advanced;
+                        break;
+                    case BuildCategoryTab.Military:
+                        tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
+                        category = DssRef.lang.BuildCategory_Military;
+                        break;
+                    case BuildCategoryTab.Decor:
+                        tabIcon = SpriteName.warsBuildCategoryDecorTree;
+                        category = DssRef.lang.BuildCategory_Decoration;
+                        break;
+                    case BuildCategoryTab.Upgrade:
+                        tabIcon = SpriteName.warsBuildCategoryUpgrades;
+                        category = DssRef.lang.BuildCategory_Upgrade;
+                        break;
+                    case BuildCategoryTab.GodPower:
+                        tabIcon = SpriteName.WarsGodPowerIcon;
+                        category = DssRef.lang.GodPower;
+                        break;
+                    default:
+                        tabIcon = SpriteName.warsBuildCategoryAutomation;
+                        category = DssRef.lang.Automation_Title;
+                        break;
+
+                }
+                var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                    new List<AbsRichBoxMember> { new RbImage(tabIcon) },
+                    new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, RbSoundType.Tab),
+                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_category, category)));
+                content.Add(tabButton);
+            }
+        }
+
+
+        void buildOptionsToHud(LocalPlayer player, RichBoxContent content, out BuildOption buildOpt)
+        {
+            bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Build, out Color focusColor);
+            if (viewControllerTabs)
+            {
+                content.newLine();
+                content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
+                content.space(0.5f);
+                content.Add(new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor });
+                content.newLine();
+            }
+
+            List<BuildAndExpandType> available = availableBuildOptions(city);
+
+            if (player.buildCategoryTab == BuildCategoryTab.Filter)
+            {
+                content.newLine();
+                for (BuildFilterTag tag = 0; tag < BuildFilterTag.NUM_NONE; ++tag)
+                {
+                    content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(LangLib.Filter(tag)) },
+                        new RbAction1Arg<BuildFilterTag>((BuildFilterTag tag) => { player.buildFilterTag = tag; }, tag),
+                        null, true, player.buildFilterTag == tag ? Color.White : Color.Gray));
+                }
+            }
+            content.Add(new RichBoxScale(2.1f));
+            content.newLine();
+
+            foreach (var opt in available)
+            {
+                var build = BuildLib.BuildOptions[(int)opt];
+
+                var buildCount = city.buildingStructure.getCount(opt);
+
+                var buttonIcon = new RbImage(build.sprite);
+                var buttonContent = new List<AbsRichBoxMember> { buttonIcon };
+                if (buildCount > 0)
+                {
+                    buttonContent.Add(new RbOverlapText(buttonIcon, buildCount.ToString(), new Vector2(1.1f, 1.1f), 1.0f, new Vector2(1, 1f), Color.White));
+                }
+
+                var button = new ArtToggle(buildMode == SelectTileResult.Build && placeBuildingType == opt, buttonContent,
+                new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, RbSoundType.Option),
+                new RbTooltip(buildingTooltip, opt));
+
+
+                bool availableBuild = true;
+                if (opt == BuildAndExpandType.Logistics)
+                {
+                    availableBuild = city.CanBuildLogistics(1);
+                }
+
+                button.enabled = availableBuild;
+
+
+                content.Add(button);
+
+
+
+                //}
+            }
+
+
+            content.Add(new RichBoxScale(1));
+
+            content.newParagraph();
+
+            buildOpt = null;
+
+            content.Add(new ArtToggle(buildMode == SelectTileResult.Demolish, new List<AbsRichBoxMember>
+                {
+                    new RbText(DssRef.lang.Build_DestroyBuilding)
+                }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, RbSoundType.Option)));
+
+            content.space();
+
+            if (buildMode != SelectTileResult.None)
+            {
+                var button = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                    new RbSpace(),
+                    new RbText(DssRef.lang.Hud_EndSessionIcon),
+                    new RbSpace(),
+                    },
+                    new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None, RbSoundType.Back));
+                button.setGroupSelectionColor(HudLib.RbSettings, false);
+                content.Add(button);
+                content.space();
+
+                if (buildMode == SelectTileResult.Build)
+                {
+                    buildOpt = BuildLib.BuildOptions[(int)placeBuildingType];
+                }
+            }
+        }
 
         void buildingTooltip(RichBoxContent content, object tag)
         {

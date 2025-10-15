@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -136,7 +137,12 @@ namespace VikingEngine
             if (value < min) { return min; }
             return value;
         }
-
+        public static Vector2 Min(Vector2 value, Vector2 min)
+        {
+            if (value.X < min.X) { value.X = min.X; }
+            if (value.Y < min.Y) { value.Y = min.Y; }
+            return value;
+        }
 
         /// <summary>
         /// Set minimum bound

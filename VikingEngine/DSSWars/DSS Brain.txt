@@ -1,14 +1,19 @@
 ﻿UPDATE
 Change Log:
-* Fixed: too small render target resolution
-* fixed rare get gold crash
-* added move action to wall tooltip
+
+* Fixed rare create soldier crash
+* Fixed zero size menu crash
+
+* Reduced the build tab content in linnen tutorial
+* Added "Your men do the high priority work first" to tutorial
+* Barbarians will declare war on the player
+* Made barbarians protected from starving
 
 #Pics
 
 
 #must do#
-x wall right click
+x translate
 
 
 
