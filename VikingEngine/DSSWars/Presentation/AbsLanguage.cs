@@ -1026,7 +1026,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Hud_AddX { get; }
         public abstract string Hud_Both { get; }
         public abstract string Hud_Direction { get; }
-        public abstract string MusicIsBroken { get; }
+        //public abstract string MusicIsBroken { get; }
         public abstract string Hud_ObjectsAndCount { get; }
         public abstract string Hud_EffectDoesNotStack { get; }
         public abstract string Work_SmeltX { get; }

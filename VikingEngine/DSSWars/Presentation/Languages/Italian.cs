@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => "PH0:PH1";
+        public override string Language_ItemCountPresentation => "{0}:{1}";
 
         /// <summary>
         /// Select language option
@@ -506,12 +506,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatic communication. Normal.
         /// </summary>
-        public override string Diplomacy_SpeakTerms_Normal => "Normal";
+        public override string Diplomacy_SpeakTerms_Normal => "Normale";
 
         /// <summary>
         /// Diplomatic communication. Worse than normal.
         /// </summary>
-        public override string Diplomacy_SpeakTerms_Bad => "Bad";
+        public override string Diplomacy_SpeakTerms_Bad => "Scarsa";
 
         /// <summary>
         /// Diplomatic communication. Will not communicate.
@@ -521,7 +521,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatic action. Make a new diplomatic relation.
         /// </summary>
-        public override string Diplomacy_ForgeNewRelationTo => "Forgerelazionia:PH0";
+        public override string Diplomacy_ForgeNewRelationTo => "Forgerelazionia:{0}";
 
         /// <summary>
         /// Diplomatic action. Suggest a new diplomatic relation.
@@ -1043,14 +1043,14 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "Disertori!";
         public override string EventMessage_DesertersText_Money => "Soldati non pagati stanno disertando dai tuoi eserciti";
 
-        public override string DifficultyDescription_AiAggression => "Aiaggressivity:PH0.";
-        public override string DifficultyDescription_BossSize => "Bosssize:PH0.";
-        public override string DifficultyDescription_BossEnterTime => "Bossentertempo:PH0.";
-        public override string DifficultyDescription_AiEconomy => "AiEconomia:PH0%.";
-        public override string DifficultyDescription_AiDelay => "Aidelay:PH0.";
-        public override string DifficultyDescription_DiplomacyDifficulty => "Diplomacydifficulty:PH0.";
-        public override string DifficultyDescription_MercenaryCost => "Mercenarycosto:PH0.";
-        public override string DifficultyDescription_HonorGuards => "Honorguardie:PH0.";
+        public override string DifficultyDescription_AiAggression => "Aggressività IA: {0}.";
+        public override string DifficultyDescription_BossSize => "Dimensione boss: {0}.";
+        public override string DifficultyDescription_BossEnterTime => "Tempo di ingresso boss: {0}.";
+        public override string DifficultyDescription_AiEconomy => "Economia IA: {0}%.";
+        public override string DifficultyDescription_AiDelay => "Ritardo IA: {0}.";
+        public override string DifficultyDescription_DiplomacyDifficulty => "Difficoltà diplomatica: {0}.";
+        public override string DifficultyDescription_MercenaryCost => "Costo mercenari: {0}.";
+        public override string DifficultyDescription_HonorGuards => "Guardie d’onore: {0}.";
 
 
         /// <summary>
@@ -1059,33 +1059,34 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EndScreen_VictoryTitle => "Vittoria!";
 
         /// <summary>
-        /// Quotes from the leader character you play in the game
+        /// Citazioni del leader che interpreti nel gioco
         /// </summary>
         public override List<string> EndScreen_VictoryQuotes => new List<string>
-        {
-            "Intimesdipace,wemourndead.",
-            "Everytriumphcarriesashadowdisacrifice.",
-            "Rememberjourneythatbroughtushere,dottedconsoulsdibrave.",
-            "Ourmindsarelightfromvictory,ourheartsareheavyfromweightdifallen"
-        };
+{
+    "In tempi di pace, piangiamo i morti.",
+    "Ogni trionfo porta con sé l’ombra del sacrificio.",
+    "Ricordiamo il cammino che ci ha condotti fin qui, costellato dalle anime dei coraggiosi.",
+    "Le nostre menti brillano per la vittoria, ma i nostri cuori sono gravati dal peso dei caduti."
+};
 
         public override string EndScreen_DominationVictoryQuote => "Sono stato scelto dagli Dei per dominare il mondo!";
 
         /// <summary>
-        /// Game has ended in failure.
+        /// Il gioco è terminato con una sconfitta.
         /// </summary>
         public override string EndScreen_FailTitle => "Sconfitta!";
 
         /// <summary>
-        /// Quotes from the leader character you play in the game
+        /// Citazioni del leader che interpreti nel gioco
         /// </summary>
         public override List<string> EndScreen_FailureQuotes => new List<string>
-        {
-            "Conourbodiestornfrommarchingenightsdiworry,wewelcomeend.",
-            "Defeatmaydarkenourlands,buttheycannotextinguishlightdiourdetermination.",
-            "Extinguishflamesinourhearts,fromtheirashes,ourchildrenshallforgeanewdawn.",
-            "Letourtalesbeemberthatkindlestomorrow'svictory.",
-        };
+{
+    "Con i nostri corpi logorati da notti di marcia e di preoccupazione, accogliamo la fine.",
+    "La sconfitta può oscurare le nostre terre, ma non potrà spegnere la luce della nostra determinazione.",
+    "Spente le fiamme nei nostri cuori, dalle loro ceneri i nostri figli forgeranno una nuova alba.",
+    "Che i nostri racconti siano la brace che accende la vittoria di domani."
+};
+
 
         /// <summary>
         /// A small cutscene at the end of the game
@@ -1110,14 +1111,15 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Prologue_Title => "Prologo";
 
         /// <summary>
-        /// The poem must be three lines, the fourth line will be pulled from the names translations to present the name of the boss
+        /// La poesia deve avere tre versi; il quarto verrà aggiunto con il nome del boss.
         /// </summary>
         public override List<string> Prologue_TextLines => new List<string>
-        {
-            "Dreamshauntyouatnight,",
-            "Aprophecydiadarkfuture",
-            "Prepareperhisarrival,",
-        };
+{
+    "I sogni ti tormentano nella notte,",
+    "Una profezia annuncia un oscuro futuro,",
+    "Preparati al suo arrivo,"
+};
+
 
         /// <summary>
         /// Ingame menu when pausing
@@ -1231,32 +1233,37 @@ namespace VikingEngine.DSSWars.Presentation
         /* #### --------------- ##### */
         /* #### RESOURCE UPDATE ##### */
         /* #### --------------- ##### */
-        public override string CityMenu_SalePricesTitle => "Saleprices";
-        public override string Blueprint_Title => "Blueprint";
+        public override string CityMenu_SalePricesTitle => "Prezzi di vendita";
+        public override string Blueprint_Title => "Progetto";
+
         public override string Resource_Tab_Overview => "Panoramica";
         public override string Resource_Tab_Stockpile => "Scorta";
 
         public override string Resource => "Risorsa";
-        public override string Resource_StockPile_Info => "Imposta una quantità obiettivo per lo stoccaggio delle risorse; informerà i lavoratori su quando passare ad altre risorse.";
-        public override string Resource_TypeName_Water => "acqua";
-        public override string Resource_TypeName_Wood => "legno";
-        public override string Resource_TypeName_Fuel => "combustibile";
-        public override string Resource_TypeName_Stone => "pietra";
-        public override string Resource_TypeName_RawFood => "cibo grezzo";
-        public override string Resource_TypeName_Food => "cibo";
-        public override string Resource_TypeName_Beer => "birra";
-        public override string Resource_TypeName_Wheat => "grano";
-        public override string Resource_TypeName_Linen => "lino";
-        //public override string Resource_TypeName_SkinAndLinen => "skinelino";
-        public override string Resource_TypeName_IronOre => "minerale di ferro";
-        public override string Resource_TypeName_GoldOre => "minerale d’oro";
-        public override string Resource_TypeName_Iron => "ferro";
+
+        public override string Resource_StockPile_Info =>
+            "Imposta una quantità obiettivo per lo stoccaggio delle risorse; informerà i lavoratori su quando passare ad altre risorse.";
+
+        public override string Resource_TypeName_Water => "Acqua";
+        public override string Resource_TypeName_Wood => "Legno";
+        public override string Resource_TypeName_Fuel => "Combustibile";
+        public override string Resource_TypeName_Stone => "Pietra";
+        public override string Resource_TypeName_RawFood => "Cibo grezzo";
+        public override string Resource_TypeName_Food => "Cibo";
+        public override string Resource_TypeName_Beer => "Birra";
+        public override string Resource_TypeName_Wheat => "Grano";
+        public override string Resource_TypeName_Linen => "Lino";
+        //public override string Resource_TypeName_SkinAndLinen => "Pelle e lino";
+        public override string Resource_TypeName_IronOre => "Minerale di ferro";
+        public override string Resource_TypeName_GoldOre => "Minerale d’oro";
+        public override string Resource_TypeName_Iron => "Ferro";
 
         public override string Resource_TypeName_SharpStick => "Bastone appuntito";
         public override string Resource_TypeName_Sword => "Spada";
         public override string Resource_TypeName_KnightsLance => "Lancia da cavaliere";
         public override string Resource_TypeName_TwoHandSword => "Zweihänder";
         public override string Resource_TypeName_Bow => "Arco";
+
 
         public override string Resource_TypeName_LightArmor => "Armatura leggera";
         public override string Resource_TypeName_MediumArmor => "Armatura media";
@@ -1385,1227 +1392,1228 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_WeaponTitle => "Arma";
         public override string Conscript_ArmorTitle => "Armatura";
         public override string Conscript_TrainingTitle => "Addestramento";
+        public override string Conscript_SpecializationTitle => "Specializzazione";
+        public override string Conscript_SpecializationDescription => "Aumenta l’attacco in un’area e lo riduce in tutte le altre di {0}.";
+        public override string Conscript_SelectBuilding => "Seleziona caserma";
 
-        public override string Conscript_SpecializationTitle => "Specialization";
-        public override string Conscript_SpecializationDescription => "Willincreaseattackinonearea,ereduceallothers,byPH0";
-        public override string Conscript_SelectBuilding => "Selezionabarracks";
+        public override string Conscript_WeaponDamage => "Danno arma: {0}";
+        public override string Conscript_ArmorHealth => "Integrità armatura: {0}";
+        public override string Conscript_TrainingSpeed => "Velocità d’attacco: {0}";
+        public override string Conscript_TrainingTime => "Tempo di addestramento: {0}";
 
-        public override string Conscript_WeaponDamage => "Armadamage:PH0";
-        public override string Conscript_ArmorHealth => "Armaturahealth:PH0";
-        public override string Conscript_TrainingSpeed => "Attaccavelocità:PH0";
-        public override string Conscript_TrainingTime => "Addestramentotempo:PH0";
+        public override string Conscript_Training_Minimal => "Minimo";
+        public override string Conscript_Training_Basic => "Base";
+        public override string Conscript_Training_Skillful => "Esperto";
+        public override string Conscript_Training_Professional => "Professionale";
 
-        public override string Conscript_Training_Minimal => "Minimal";
-        public override string Conscript_Training_Basic => "Basic";
-        public override string Conscript_Training_Skillful => "Skillful";
-        public override string Conscript_Training_Professional => "Professional";
+        public override string Conscript_Specialization_Field => "Campo aperto";
+        public override string Conscript_Specialization_Sea => "Navale";
+        public override string Conscript_Specialization_Siege => "Assedio";
+        public override string Conscript_Specialization_Traditional => "Tradizionale";
+        public override string Conscript_Specialization_AntiCavalry => "Anticavalleria";
 
-        public override string Conscript_Specialization_Field => "Openfield";
-        public override string Conscript_Specialization_Sea => "Ship";
-        public override string Conscript_Specialization_Siege => "Siege";
-        public override string Conscript_Specialization_Traditional => "Traditional";
-        public override string Conscript_Specialization_AntiCavalry => "Anticavalry";
+        public override string Conscription_Status_CollectingEquipment => "Raccolta equipaggiamento: {0}";
+        public override string Conscription_Status_CollectingMen => "Reclutamento uomini: {0}";
+        public override string Conscription_Status_Training => "Addestramento: {0}";
 
-        public override string Conscription_Status_CollectingEquipment => "Collectingequipment:PH0";
-        public override string Conscription_Status_CollectingMen => "Collectingmen:PH0";
-        public override string Conscription_Status_Training => "Addestramento:PH0";
+        public override string ArmyHud_Food_Reserves_X => "Scorte di cibo: {0}";
+        public override string ArmyHud_Food_Upkeep_X => "Mantenimento cibo: {0}";
+        public override string ArmyHud_Food_Costs_X => "Costi cibo: {0}";
 
-        public override string ArmyHud_Food_Reserves_X => "Ciboreserves:PH0";
-        public override string ArmyHud_Food_Upkeep_X => "Cibomantenimento:PH0";
-        public override string ArmyHud_Food_Costs_X => "Cibocosti:PH0";
-
-        public override string Deliver_WillSendXInfo => "WillinviaPH0atatempo";
-        public override string Delivery_ListTitle => "Selezionadeliveryservice";
-        public override string Delivery_DistanceX => "Distanza:PH0";
-        public override string Delivery_DeliveryTimeX => "Consegnatempo:PH0";
-        public override string Delivery_SenderMinimumCap => "Senderminimumcap";
-        public override string Delivery_RecieverMaximumCap => "Receivermaximumcap";
-        public override string Delivery_ItemsReady => "Itemsready";
-        public override string Delivery_RecieverReady => "Receiverready";
-        public override string Hud_ThisCity => "Thiscittà";
-        public override string Hud_RecieveingCity => "Receivingcittà";
+        public override string Deliver_WillSendXInfo => "Invierà {0} alla volta.";
+        public override string Delivery_ListTitle => "Seleziona servizio di consegna";
+        public override string Delivery_DistanceX => "Distanza: {0}";
+        public override string Delivery_DeliveryTimeX => "Tempo di consegna: {0}";
+        public override string Delivery_SenderMinimumCap => "Capacità minima del mittente";
+        public override string Delivery_RecieverMaximumCap => "Capacità massima del destinatario";
+        public override string Delivery_ItemsReady => "Oggetti pronti";
+        public override string Delivery_RecieverReady => "Destinatario pronto";
+        public override string Hud_ThisCity => "Questa città";
+        public override string Hud_RecieveingCity => "Città destinataria";
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "DisplayedinRisorsaAlSecondo.";
+        public override string Info_PerSecond => "Mostrato in risorse al secondo.";
+        public override string Info_MinuteAverage => "Il valore è una media dell’ultimo minuto.";
 
-        public override string Info_MinuteAverage => "valueisanaveragefromlastminuto";
-
-        public override string Message_OutOfFood_Title => "Outdicibo";
-        public override string Message_CityOutOfFood_Text => "Expensivecibowillbepurchasedfromblackmarket.Lavoratoriwillstarvewhenyourmoneyrunsout.";
+        public override string Message_OutOfFood_Title => "Cibo esaurito";
+        public override string Message_CityOutOfFood_Text =>
+            "Il cibo costoso verrà acquistato dal mercato nero. I lavoratori moriranno di fame quando il denaro sarà finito.";
 
         public override string Hud_EndSessionIcon => "X";
 
-        public override string TerrainType => "Terraintype";
+        public override string TerrainType => "Tipo di terreno";
 
-        public override string Hud_EnergyUpkeepX => "CiboenergymantenimentoPH0";
+        public override string Hud_EnergyUpkeepX => "Mantenimento energetico: {0}";
+        public override string Hud_EnergyAmount => "{0} energia (secondi di lavoro)";
 
-        public override string Hud_EnergyAmount => "PH0energy(secondidiwork)";
+        public override string Hud_CopySetup => "Copia configurazione";
+        public override string Hud_Paste => "Incolla";
 
-        public override string Hud_CopySetup => "Copysetup";
-        public override string Hud_Paste => "Paste";
+        public override string Hud_Available => "Disponibile";
 
-        public override string Hud_Available => "Available";
+        public override string WorkForce_ChildBirthRequirements => "Requisiti per la nascita";
+        public override string WorkForce_AvailableHomes => "Case disponibili: {0}";
 
-        public override string WorkForce_ChildBirthRequirements => "Childbirthrequirements";
-        public override string WorkForce_AvailableHomes => "Availablehomes:PH0";
-        
-        /// <summary>
-        /// workers require peace to grow(make babies)
-        /// </summary>
         public override string WorkForce_Peace => "Pace";
-        public override string WorkForce_ChildToManTime => "Grownupage:PH0minuti";
+        public override string WorkForce_ChildToManTime => "Età adulta: {0} minuti";
 
-        public override string Economy_TaxIncome => "Taxentrate:PH0";
-        public override string Economy_ImportCostsForResource => "ImportcostiperPH0:PH1";
-        public override string Economy_BlackMarketCostsForResource => "NeromarketcostiperPH0:PH1";
-        public override string Economy_GuardUpkeep => "Guardiamantenimento:PH0";
+        public override string Economy_TaxIncome => "Entrate fiscali: {0}";
+        public override string Economy_ImportCostsForResource => "Costi d’importazione per {0}: {1}";
+        public override string Economy_BlackMarketCostsForResource => "Costi del mercato nero per {0}: {1}";
+        public override string Economy_GuardUpkeep => "Mantenimento guardie: {0}";
 
-        public override string Economy_LocalCityTrade_Export => "Cittàtradeexport:PH0";
-        public override string Economy_LocalCityTrade_Import => "Cittàtradeimport:PH0";
+        public override string Economy_LocalCityTrade_Export => "Esportazioni cittadine: {0}";
+        public override string Economy_LocalCityTrade_Import => "Importazioni cittadine: {0}";
 
-        public override string Economy_ResourceProduction => "PH0produzione:PH1";
-        public override string Economy_ResourceSpending => "PH0spesa:PH1";
+        public override string Economy_ResourceProduction => "Produzione di {0}: {1}";
+        public override string Economy_ResourceSpending => "Spesa di {0}: {1}";
 
-        public override string Economy_TaxDescription => "TaxisPH0oroallavoratore";
-
-        public override string Economy_SoldResources => "Soldresources(oroore):PH0";
+        public override string Economy_TaxDescription => "La tassa è di {0} oro per lavoratore.";
+        public override string Economy_SoldResources => "Risorse vendute (oro guadagnato): {0}";
 
         public override string UnitType_Cities => "Città";
         public override string UnitType_Armies => "Eserciti";
         public override string UnitType_Worker => "Lavoratore";
 
-        public override string UnitType_FootKnight => "Longswordknight";
-        public override string UnitType_CavalryKnight => "Cavalryknight";
+        public override string UnitType_FootKnight => "Cavaliere a piedi";
+        public override string UnitType_CavalryKnight => "Cavaliere a cavallo";
 
-        public override string CityCulture_LargeFamilies => "Grandefamilies";
-        public override string CityCulture_FertileGround => "Fertilegrounds";
-        public override string CityCulture_Archers => "Skilledarchers";
-        public override string CityCulture_Warriors => "Warriors";
-        public override string CityCulture_AnimalBreeder => "Animalbreeders";
-        public override string CityCulture_Miners => "Miners";
-        public override string CityCulture_Woodcutters => "Lumbermen";
-        public override string CityCulture_Builders => "Builders";
-
-        /// <summary>
-        /// Crab mentality: culture where you suppress those who are better at something
-        /// </summary>
-        public override string CityCulture_CrabMentality => "Crabmentality";
-        public override string CityCulture_DeepWell => "Deepwell";
-        public override string CityCulture_Networker => "Networker";
+        public override string CityCulture_LargeFamilies => "Grandi famiglie";
+        public override string CityCulture_FertileGround => "Terre fertili";
+        public override string CityCulture_Archers => "Abili arcieri";
+        public override string CityCulture_Warriors => "Guerrieri";
+        public override string CityCulture_AnimalBreeder => "Allevatori";
+        public override string CityCulture_Miners => "Minatori";
+        public override string CityCulture_Woodcutters => "Taglialegna";
+        public override string CityCulture_Builders => "Costruttori";
 
         /// <summary>
-        /// Pit master: someone who is good at burning work (char coal) 
+        /// Mentalità del granchio: cultura in cui si tende a ostacolare chi è più capace
         /// </summary>
-        public override string CityCulture_PitMasters => "Pitmasters";
+        public override string CityCulture_CrabMentality => "Mentalità del granchio";
+        public override string CityCulture_DeepWell => "Pozzo profondo";
+        public override string CityCulture_Networker => "Comunicatore";
 
-        public override string CityCulture_CultureIsX => "Culture:PH0";
-        public override string CityCulture_LargeFamilies_Description => "Increasedchildbirth";
-        public override string CityCulture_FertileGround_Description => "Cropsgivemore";
-        public override string CityCulture_Archers_Description => "Producesskilledarchers";
-        public override string CityCulture_Warriors_Description => "Producesskilledmeleefighters";
-        public override string CityCulture_AnimalBreeder_Description => "Animalsgivemoreresources";
-        public override string CityCulture_Miners_Description => "Minesmoreore";
-        public override string CityCulture_Woodcutters_Description => "Treesgivemorelegno";
-        public override string CityCulture_Builders_Description => "Fastatbuilding";
-        public override string CityCulture_CrabMentality_Description => "Lavorocostilessenergy.Cannotproducehigh-skillsoldati.";
-        public override string CityCulture_DeepWell_Description => "Acquareplenishesfaster";
-        public override string CityCulture_Networker_Description => "Efficientpostalservice";
-        public override string CityCulture_PitMasters_Description => "Highercombustibileproduzione";
+        /// <summary>
+        /// Maestro della fossa: esperto nella produzione di carbone
+        /// </summary>
+        public override string CityCulture_PitMasters => "Maestri della fossa";
 
-        public override string CityOption_AutoBuild_Work => "Autoespandiworkforce";
-        public override string CityOption_AutoBuild_Farm => "Autoespandifarms";
+        public override string CityCulture_CultureIsX => "Cultura: {0}";
 
-        public override string Hud_PurchaseTitle_Resources => "Buyresources";
-        public override string Hud_PurchaseTitle_CurrentlyOwn => "Youown";
+        public override string CityCulture_LargeFamilies_Description => "Aumenta la natalità.";
+        public override string CityCulture_FertileGround_Description => "I raccolti producono di più.";
+        public override string CityCulture_Archers_Description => "Forma arcieri esperti.";
+        public override string CityCulture_Warriors_Description => "Forma abili combattenti corpo a corpo.";
+        public override string CityCulture_AnimalBreeder_Description => "Gli animali forniscono più risorse.";
+        public override string CityCulture_Miners_Description => "Le miniere estraggono più minerali.";
+        public override string CityCulture_Woodcutters_Description => "Gli alberi forniscono più legno.";
+        public override string CityCulture_Builders_Description => "Costruzioni più rapide.";
+        public override string CityCulture_CrabMentality_Description => "Il lavoro consuma meno energia, ma non può produrre soldati altamente qualificati.";
+        public override string CityCulture_DeepWell_Description => "L’acqua si rigenera più velocemente.";
+        public override string CityCulture_Networker_Description => "Servizio postale efficiente.";
+        public override string CityCulture_PitMasters_Description => "Aumenta la produzione di combustibile.";
 
-        public override string Tutorial_EndTutorial => "Endtutorial";
-        public override string Tutorial_MissionX => "MissionPH0";
-        public override string Tutorial_CollectXAmountOfY => "CollectPH0PH1";
-        public override string Tutorial_SelectTabX => "Selezionatab:PH0";
-        public override string Tutorial_IncreasePriorityOnX => "Increasepriorityon:PH0";
-        public override string Tutorial_PlaceBuildOrder => "Placecostruisciorder:PH0";
+        public override string CityOption_AutoBuild_Work => "Espandi automaticamente la forza lavoro";
+        public override string CityOption_AutoBuild_Farm => "Espandi automaticamente le fattorie";
+
+        public override string Hud_PurchaseTitle_Resources => "Acquista risorse";
+        public override string Hud_PurchaseTitle_CurrentlyOwn => "Possiedi";
+
+        public override string Tutorial_EndTutorial => "Termina il tutorial";
+        public override string Tutorial_MissionX => "Missione {0}";
+        public override string Tutorial_CollectXAmountOfY => "Raccogli {0} {1}";
+        public override string Tutorial_SelectTabX => "Seleziona scheda: {0}";
+        public override string Tutorial_IncreasePriorityOnX => "Aumenta la priorità su: {0}";
+        public override string Tutorial_PlaceBuildOrder => "Posiziona ordine di costruzione: {0}";
         public override string Tutorial_ZoomInput => "Zoom";
 
-        public override string Tutorial_SelectACity => "Selezionaacittà";
-        public override string Tutorial_ZoomInWorkers => "Zoominaseelavoratori";
-        public override string Tutorial_CreateSoldiers => "Createtwosoldatounitsconthisequipment:PH0.PH1.";
-        public override string Tutorial_ZoomOutOverview => "Zoomout,amappaoverview";
-        public override string Tutorial_ZoomOutDiplomacy => "Zoomout,adiplomacyview";
-        public override string Tutorial_ImproveRelations => "Improveyourrelazioniconaneighborfaction";
-        public override string Tutorial_MissionComplete_Title => "Missioncompleto!";
-        public override string Tutorial_MissionComplete_Unlocks => "Newcontrolshavebeenunlocked";
+        public override string Tutorial_SelectACity => "Seleziona una città";
+        public override string Tutorial_ZoomInWorkers => "Esegui uno zoom per vedere i lavoratori";
+        public override string Tutorial_CreateSoldiers => "Crea due unità di soldati con questo equipaggiamento: {0}. {1}.";
+        public override string Tutorial_ZoomOutOverview => "Riduci lo zoom per una panoramica della mappa";
+        public override string Tutorial_ZoomOutDiplomacy => "Riduci lo zoom per aprire la vista diplomatica";
+        public override string Tutorial_ImproveRelations => "Migliora le relazioni con una fazione vicina";
+        public override string Tutorial_MissionComplete_Title => "Missione completata!";
+        public override string Tutorial_MissionComplete_Unlocks => "Nuovi comandi sono stati sbloccati";
 
-        //patch1
-        public override string Resource_ReachedStockpile => "Reachedstockpilegoalbuffer";
+        public override string Resource_ReachedStockpile => "Raggiunto l’obiettivo di scorte";
 
-        public override string BuildingType_ResourceMine => "PH0mine";
+        public override string BuildingType_ResourceMine => "Miniera di {0}";
 
-        public override string Resource_TypeName_BogIron => "Bogferro";
-
+        public override string Resource_TypeName_BogIron => "Ferro palustre";
         public override string Resource_TypeName_Coal => "Carbone";
 
-        public override string Language_XUpkeepIsY => "PH0mantenimento:PH1";
-        public override string Language_XCountIsY => "PH0count:PH1";
+        public override string Language_XUpkeepIsY => "{0} mantenimento: {1}";
+        public override string Language_XCountIsY => "{0} quantità: {1}";
 
-        public override string Message_ArmyOutOfFood_Text => "Expensivecibowillbepurchasedfromblackmarket.Hungrysoldatiwilldesertwhenyourmoneyrunsout.";
+        public override string Message_ArmyOutOfFood_Text =>
+    "Il cibo costoso verrà acquistato dal mercato nero. I soldati affamati diserteranno quando il denaro sarà esaurito.";
 
-        public override string Info_ArmyFood => "Esercitiwillrestockcibofromclosestfriendlycittà.Cibocanbepurchasedfromotherfactions.Inhostileregions,cibocanonlybepurchasedfromblackmarket.";
+        public override string Info_ArmyFood =>
+            "Gli eserciti si riforniranno di cibo dalla città amica più vicina. Il cibo può essere acquistato da altre fazioni. Nelle regioni ostili, può essere comprato solo dal mercato nero.";
 
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";
         public override string FactionName_Destru => "Destru";
 
-        //patch2
-        public override string Tutorial_BuildSomething => "CostruiscisomethingthatproducesPH0";
-        public override string Tutorial_BuildCraft => "Costruisciacraftingstationper:PH0";
-        public override string Tutorial_IncreaseBufferLimit => "Increasebufferlimitper:PH0";
+        // patch2
+        public override string Tutorial_BuildSomething => "Costruisci qualcosa che produca {0}";
+        public override string Tutorial_BuildCraft => "Costruisci una stazione di creazione per: {0}";
+        public override string Tutorial_IncreaseBufferLimit => "Aumenta il limite di riserva per: {0}";
 
         /// <summary>
         /// 0: count, 1: item type
         /// </summary>
-        public override string Tutorial_CollectItemStockpile => "ReachastockpilediPH0PH1";
-        public override string Tutorial_LookAtFoodBlueprint => "Lookatciboblueprint";
-        public override string Tutorial_CollectFood_Info1 => "lavoratoriwillwalkacittàhallaeat";
-        public override string Tutorial_CollectFood_Info2 => "esercitosendstrosslavoratoriacollectcibo";
-        public override string Tutorial_CollectFood_Info0 => "Wantfullcontroldilavoratori?Setallworkprioritiesazero,ethenjustactivateoneatatempo.";
+        public override string Tutorial_CollectItemStockpile => "Raggiungi una scorta di {0} {1}";
+        public override string Tutorial_LookAtFoodBlueprint => "Guarda il progetto del cibo";
+        public override string Tutorial_CollectFood_Info1 => "I lavoratori andranno nella città più vicina per mangiare.";
+        public override string Tutorial_CollectFood_Info2 => "L’esercito invia i propri lavoratori a raccogliere il cibo.";
+        public override string Tutorial_CollectFood_Info0 => "Vuoi il pieno controllo dei lavoratori? Imposta tutte le priorità di lavoro a zero, poi attiva solo una alla volta.";
 
-        public override string EndGameStatistics_DecorsBuilt => "Decorationsbuilt:PH0";
-        public override string EndGameStatistics_StatuesBuilt => "Statuesbuilt:PH0";
+        public override string EndGameStatistics_DecorsBuilt => "Decorazioni costruite: {0}";
+        public override string EndGameStatistics_StatuesBuilt => "Statue costruite: {0}";
+
 
 
         //############
         // XMAS UPDATE
         //############
-        public override string Info_FoodAndDeliveryLocation => "Bydefault,lavoratorigoacittàhallaeatordropoffitems";
-        public override string GameMenu_UseSpeedX => "PH0velocitàoption";
-        public override string GameMenu_LongerBuildQueue => "Extendedcostruisciqueue";
+        public override string Info_FoodAndDeliveryLocation =>
+    "Per impostazione predefinita, i lavoratori vanno alla città più vicina per mangiare o consegnare gli oggetti.";
+
+        public override string GameMenu_UseSpeedX => "Opzione velocità {0}";
+        public override string GameMenu_LongerBuildQueue => "Coda di costruzione estesa";
 
         public override string Diplomacy_RelationWithOthers => "Le loro relazioni con gli altri";
-        public override string Automation_queue_description => "Willkeeprepeatinguntilqueueisempty";
 
-        public override string BuildingType_Storehouse_Description => "Lavoratorimaydropitemshere";
+        public override string Automation_queue_description => "Continuerà a ripetersi finché la coda non sarà vuota.";
 
-        public override string Resource_TypeName_Longbow => "longbow";
-        public override string Resource_TypeName_Rapeseed => "rapeseed";
-        public override string Resource_TypeName_Hemp => "hemp";
+        public override string BuildingType_Storehouse_Description => "I lavoratori possono depositare gli oggetti qui.";
 
-        public override string Resource_BogIronDescription => "Estrazioneferroismoreefficientthanusingbogferro.";
+        public override string Resource_TypeName_Longbow => "Arco lungo";
+        public override string Resource_TypeName_Rapeseed => "Colza";
+        public override string Resource_TypeName_Hemp => "Canapa";
 
+        public override string Resource_BogIronDescription =>
+            "L’estrazione del ferro è più efficiente rispetto all’utilizzo del ferro palustre.";
 
-        public override string Resource_FoodSafeGuard_Description => "Safeguardia.Willmaximizeprioritydiciboproduzionechain,ifitfallsbelowPH0.";
-        public override string Resource_FoodSafeGuard_Active => "Safeguardiaisactive.";
+        public override string Resource_FoodSafeGuard_Description =>
+            "Salvaguardia attiva. Aumenta al massimo la priorità della catena di produzione del cibo se scende sotto {0}.";
+        public override string Resource_FoodSafeGuard_Active => "La salvaguardia è attiva.";
 
-        public override string GameMenu_NextSong => "Nextsong";
+        public override string GameMenu_NextSong => "Brano successivo";
 
-        public override string BuildingType_Bank => "Bank";
-        public override string BuildingType_GoldDelivery_Description => "Inviaoroaothercittà";
+        public override string BuildingType_Bank => "Banca";
+        public override string BuildingType_GoldDelivery_Description => "Invia oro ad altre città.";
 
-        public override string BuildingType_Logistics => "Logistics";
-        public override string BuildingType_Logistics_Description => "Potenziayourabilityaorderbuildings";
+        public override string BuildingType_Logistics => "Logistica";
+        public override string BuildingType_Logistics_Description => "Potenzia la capacità di ordinare nuove costruzioni.";
 
-        public override string BuildingType_Logistics_NationSizeRequirement => "Nationtotalworkforce:PH0";
-        public override string Requirements_XItemStorageOfY => "CittàPH0storagedi:PH1";
+        public override string BuildingType_Logistics_NationSizeRequirement => "Forza lavoro totale della nazione: {0}";
+        public override string Requirements_XItemStorageOfY => "La città deve avere {0} unità immagazzinate di: {1}";
 
-
-        public override string XP_UnlockBuildQueue => "Unlockcostruisciqueuea:PH0";
-        public override string XP_UnlockBuilding => "Unlockbuilding:";
+        public override string XP_UnlockBuildQueue => "Sblocca la coda di costruzione a: {0}";
+        public override string XP_UnlockBuilding => "Sblocca edificio:";
         public override string XP_Upgrade => "Potenzia";
 
-        public override string XP_UpgradeBuildingX => "Potenziabuilding:PH0";
+        public override string XP_UpgradeBuildingX => "Potenzia edificio: {0}";
 
         /// <summary>
-        /// Title for describing the production cycle of farms
+        /// Titolo per descrivere il ciclo di produzione delle fattorie
         /// </summary>
-        public override string BuildHud_PerCycle => "Alcycle";
-        public override string BuildHud_MayCraft => "Maycraft";
-        public override string BuildHud_WorkTime => "Lavorotempo:PH0";
-        public override string BuildHud_GrowTime => "Growtempo:PH0";
+        public override string BuildHud_PerCycle => "Per ciclo";
+        public override string BuildHud_MayCraft => "Può creare";
+        public override string BuildHud_WorkTime => "Tempo di lavoro: {0}";
+        public override string BuildHud_GrowTime => "Tempo di crescita: {0}";
         public override string BuildHud_Produce => "Produce:";
 
-        public override string BuildHud_Queue => "Allowedcostruisciqueue:PH0/PH1";
+        public override string BuildHud_Queue => "Coda di costruzione consentita: {0}/{1}";
 
-        public override string LandType_Flatland => "Flatland";
+        public override string LandType_Flatland => "Pianura";
         public override string LandType_Water => "Acqua";
         public override string BuildingType_Wall => "Muro";
-        public override string Delivery_AutoReciever_Description => "Willinviaacittàconlowestamountdiresources";
 
-        public override string Hud_On => "On";
-        public override string Hud_Off => "Off";
+        public override string Delivery_AutoReciever_Description =>
+            "Invierà risorse alle città con la quantità più bassa.";
 
-        public override string Hud_Time_Seconds => "PH0secondi";
-        public override string Hud_Time_Minutes => "PH0minuti";
-        public override string Hud_Undo => "Undo";
-        public override string Hud_Redo => "Redo";
+        public override string Hud_On => "Attivo";
+        public override string Hud_Off => "Disattivo";
 
-        public override string Tag_ViewOnMap => "Viewtagsonmappa";
+        public override string Hud_Time_Seconds => "{0} secondi";
+        public override string Hud_Time_Minutes => "{0} minuti";
+        public override string Hud_Undo => "Annulla";
+        public override string Hud_Redo => "Ripristina";
 
+        public override string Tag_ViewOnMap => "Mostra tag sulla mappa";
         public override string MenuTab_Tag => "Tag";
 
         public override string Input_Build => "Costruisci";
+        public override string FlagEditor_ClearAll => "Cancella tutto";
 
-        public override string FlagEditor_ClearAll => "Clearall";
+        public override string CityCulture_Stonemason => "Scalpellini";
+        public override string CityCulture_Stonemason_Description => "Migliora la raccolta della pietra.";
 
+        public override string CityCulture_Brewmaster => "Mastro birraio";
+        public override string CityCulture_Brewmaster_Description => "Aumenta la produzione di birra.";
 
-        public override string CityCulture_Stonemason => "Stonemason";
-        public override string CityCulture_Stonemason_Description => "Improvedpietracollecting";
+        public override string CityCulture_Weavers => "Tessitori";
+        public override string CityCulture_Weavers_Description => "Aumenta la produzione di armature leggere.";
 
-        public override string CityCulture_Brewmaster => "Brewmaster";
-        public override string CityCulture_Brewmaster_Description => "Enhancedbirraproduzione";
+        public override string CityCulture_SiegeEngineer => "Ingegneri d’assedio";
+        public override string CityCulture_SiegeEngineer_Description => "Macchine da guerra più potenti.";
 
-        public override string CityCulture_Weavers => "Weavers";
-        public override string CityCulture_Weavers_Description => "Enhancedlightarmaturaproduzione";
+        public override string CityCulture_Armorsmith => "Fabbri d’armature";
+        public override string CityCulture_Armorsmith_Description => "Aumenta la produzione di armature di ferro.";
 
-        public override string CityCulture_SiegeEngineer => "Siegeengineer";
-        public override string CityCulture_SiegeEngineer_Description => "Morepowerfulwarmachines";
+        public override string CityCulture_Noblemen => "Nobili";
+        public override string CityCulture_Noblemen_Description => "Cavalieri più potenti.";
 
-        public override string CityCulture_Armorsmith => "Armorsmith";
-        public override string CityCulture_Armorsmith_Description => "Improvedferroarmaturaproduzione";
+        public override string CityCulture_Seafaring => "Naviganti";
+        public override string CityCulture_Seafaring_Description => "I soldati con specializzazione navale dispongono di navi più robuste.";
 
-        public override string CityCulture_Noblemen => "Noblemen";
-        public override string CityCulture_Noblemen_Description => "Morepowerfulknights";
+        public override string CityCulture_Backtrader => "Contrabbandieri";
+        public override string CityCulture_Backtrader_Description => "Riduce i costi del mercato nero.";
 
-        public override string CityCulture_Seafaring => "Seafaring";
-        public override string CityCulture_Seafaring_Description => "Soldaticonseaspecialzation,havestrongerships";
+        public override string CityCulture_LawAbiding => "Osservanti della legge";
+        public override string CityCulture_LawAbiding_Description => "Aumenta le entrate fiscali. Nessun mercato nero.";
 
-        public override string CityCulture_Backtrader => "Backtrader";
-        public override string CityCulture_Backtrader_Description => "Cheaperblackmarket";
-
-        public override string CityCulture_LawAbiding => "Law-abiding";
-        public override string CityCulture_LawAbiding_Description => "Guadagnomoretax.Noblackmarket.";
 
         //##2##
-
-        public override string Hud_Advanced => "Advanced";
+        public override string Hud_Advanced => "Avanzate";
         public override string Hud_Loading => "Caricamento...";
 
-        public override string CityOption_LowerGuardSize => "Releaseguardia";
-        public override string Hud_Purchase_MinCapacity => "Minimumcapacityreached";
-        public override string Settings_ResetToDefault => "Resetadefault";
-        public override string Settings_NewGame => "Newgame";
+        public override string CityOption_LowerGuardSize => "Rilascia guardie";
+        public override string Hud_Purchase_MinCapacity => "Capacità minima raggiunta";
+        public override string Settings_ResetToDefault => "Ripristina impostazioni predefinite";
+        public override string Settings_NewGame => "Nuova partita";
 
-        public override string Settings_AdvancedGameSettings => "AdvancedGameSettings";
-        public override string Settings_FoodMultiplier => "Cibomultiplier";
-        public override string Settings_FoodMultiplier_Description => "Howlongalavoratoreorsoldatolastsonafullstomach.Ahighvaluewilllowercomputerperformance.";
+        public override string Settings_AdvancedGameSettings => "Impostazioni di gioco avanzate";
+        public override string Settings_FoodMultiplier => "Moltiplicatore cibo";
+        public override string Settings_FoodMultiplier_Description =>
+            "Determina per quanto tempo un lavoratore o un soldato resiste a stomaco pieno. Un valore alto può ridurre le prestazioni del computer.";
 
-        public override string Settings_GameMode => "Gamemode";
+        public override string Settings_GameMode => "Modalità di gioco";
 
-        public override string Settings_Mode_Story => "Fullstory";
-        public override string Settings_Mode_IncludeBoss => "IncludeBossEvents.";
-        public override string Settings_Mode_IncludeAttacks => "IncludeRandomAttacks.";
+        public override string Settings_Mode_Story => "Storia completa";
+        public override string Settings_Mode_IncludeBoss => "Includi eventi boss";
+        public override string Settings_Mode_IncludeAttacks => "Includi attacchi casuali";
         public override string Settings_Mode_Sandbox => "Sandbox";
-        public override string Settings_Mode_Peaceful => "Peaceful";
-        public override string Settings_Mode_Peaceful_Description => "Allwarsareinitiatedbyplayer";
+        public override string Settings_Mode_Peaceful => "Pacifica";
+        public override string Settings_Mode_Peaceful_Description => "Tutte le guerre vengono iniziate solo dal giocatore.";
 
-        public override string Lobby_ImportSave => "Importsave";
+        public override string Lobby_ImportSave => "Importa salvataggio";
+        public override string Lobby_ExportSave => "Esporta salvataggio";
+        public override string Lobby_ExportSave_Description =>
+            "Crea una copia del file e la inserisce nella cartella di importazione: {0}";
 
-        public override string Lobby_ExportSave => "Exportsave";
-        public override string Lobby_ExportSave_Description => "Createsacopydifileeplacesitinimportfolder:PH0";
+        public override string Resource_CurrentAmount => "Quantità attuale: {0}";
+        public override string Resource_MaxAmount_Soft => "Limite morbido (massimo): {0}";
+        public override string Resource_MaxAmount => "Limite massimo: {0}";
+        public override string Resource_AddPerSec => "Tasso di incremento: {0} al secondo";
 
-        public override string Resource_CurrentAmount => "Currentamount:PH0";
-        public override string Resource_MaxAmount_Soft => "SoftCap(MaxLimit):PH0";
-        public override string Resource_MaxAmount => "Maxlimit:PH0";
-        public override string Resource_AddPerSec => "IncreaseRate:PH0alsecondo";
+        public override string Resource_WaterAddLimit => "La velocità di incremento dell’acqua non può essere modificata";
 
-        public override string Resource_WaterAddLimit => "Acquaincreaseratecan'tbealtered";
-
-        public override string Tutorial_Select_SubTab => "Eselectcategory:PH0";
-
+        public override string Tutorial_Select_SubTab => "Seleziona categoria: {0}";
 
 
         /* #### --------------- ##### */
         /* #### DSS 2 DEMO      ##### */
         /* #### --------------- ##### */
 
+        public override string Tutorial_OpenGuardSubTab => "Apri una caserma e seleziona la categoria: {0}";
+        public override string Tutorial_GuardToWall => "Sposta una guardia sul muro";
 
-        public override string Tutorial_OpenGuardSubTab => "Openabarrackseselectcategory:PH0";
-        public override string Tutorial_GuardToWall => "Moveaguardiaaawall";
-        public override string Demo_MissionObjective_Title => "MissionObjective";
-        public override string Demo_MissionObjective_Description => "Defendagainstattackfromsouth";
-        public override string Demo_Complete_Title => "Democompleto";
-        public override string Demo_TimesUp_Title => "Tempo'sup!";
-        public override string Demo_EndInOneMinuteDescription => "demowillendinoneminuto";
+        public override string Demo_MissionObjective_Title => "Obiettivo della missione";
+        public override string Demo_MissionObjective_Description => "Difenditi da un attacco proveniente da sud";
+        public override string Demo_Complete_Title => "Demo completata";
+        public override string Demo_TimesUp_Title => "Tempo scaduto!";
+        public override string Demo_EndInOneMinuteDescription => "La demo terminerà tra un minuto";
 
-        public override string ArmyOption_NewArmy => "Newesercito";
-        public override string ProfileEditor_AltMain => "Alternativemain";
-        public override string Automation_CheckBoxTitle => "Automated";
+        public override string ArmyOption_NewArmy => "Nuovo esercito";
+        public override string ProfileEditor_AltMain => "Alternativo principale";
+        public override string Automation_CheckBoxTitle => "Automatico";
 
-        public override string ArmyStructure_ColumnWidth => "Esercitocolumnwidth";
-        public override string ArmyStructure_ArmyPlacement => "Placementinesercito";
-        public override string ArmyStructure_Row_Front => "Front";
-        public override string ArmyStructure_Row_Body => "Body";
-        public override string ArmyStructure_Row_Second => "Secondo";
-        public override string ArmyStructure_Row_Behind => "Behind";
+        public override string ArmyStructure_ColumnWidth => "Larghezza colonna esercito";
+        public override string ArmyStructure_ArmyPlacement => "Posizionamento nell’esercito";
+        public override string ArmyStructure_Row_Front => "Fronte";
+        public override string ArmyStructure_Row_Body => "Centro";
+        public override string ArmyStructure_Row_Second => "Seconda linea";
+        public override string ArmyStructure_Row_Behind => "Retro";
 
-        public override string Diplomacy_RelationType_Enemies => "Enemies";
+        public override string Diplomacy_RelationType_Enemies => "Nemici";
 
-        public override string EventMessage_EnemyAlliance_Title => "FeardiDomination";
-        public override string EventMessage_EnemyAlliance => "nations,fearingyourgrowingpower,uniteinanallianceagainstyou.";
+        public override string EventMessage_EnemyAlliance_Title => "Timore di dominazione";
+        public override string EventMessage_EnemyAlliance =>
+            "Le nazioni, temendo la tua crescente potenza, si uniscono in un’alleanza contro di te.";
 
-        public override string Settings_CentralGold => "Centraloro";
-        public override string Settings_CentralGold_Description => "On:allyouroroisinasharedpoolperinstantuse.Off:oroisphysicaleneedsabetransported.";
-
-
+        public override string Settings_CentralGold => "Oro centralizzato";
+        public override string Settings_CentralGold_Description =>
+            "Attivo: tutto il tuo oro è in un fondo condiviso e utilizzabile istantaneamente. Disattivo: l’oro è fisico e deve essere trasportato.";
 
 
-
-        public override string InputActionName_StopStart => "Stop/Start";
-        public override string InputActionName_ToggleHudDetail => "ToggleHUDDetail";
-        public override string InputActionName_NextCity => "NextCittà";
-        public override string InputActionName_NextArmy => "NextEsercito";
-        public override string InputActionName_NextBattle => "NextBattaglia";
+        public override string InputActionName_StopStart => "Ferma/Avvia";
+        public override string InputActionName_ToggleHudDetail => "Mostra/Nascondi dettagli HUD";
+        public override string InputActionName_NextCity => "Città successiva";
+        public override string InputActionName_NextArmy => "Esercito successivo";
+        public override string InputActionName_NextBattle => "Battaglia successiva";
         public override string InputActionName_Build => "Costruisci";
-        public override string InputActionName_Copy => "Copy";
-        public override string InputActionName_Paste => "Paste";
+        public override string InputActionName_Copy => "Copia";
+        public override string InputActionName_Paste => "Incolla";
         public override string InputActionName_Menu => "Menu";
-        public override string InputActionName_FlagDesign_ToggleColor_Prev => "PreviousColor";
-        public override string InputActionName_FlagDesign_ToggleColor_Next => "NextColor";
-        public override string InputActionName_FlagDesign_PaintBucket => "PaintSecchiello";
-        public override string InputActionName_Controller_FlagDesign_Colorpicker => "ColorPicker";
-        public override string InputActionName_ControllerFocus => "Focus";
+        public override string InputActionName_FlagDesign_ToggleColor_Prev => "Colore precedente";
+        public override string InputActionName_FlagDesign_ToggleColor_Next => "Colore successivo";
+        public override string InputActionName_FlagDesign_PaintBucket => "Secchiello";
+        public override string InputActionName_Controller_FlagDesign_Colorpicker => "Selettore colore";
+        public override string InputActionName_ControllerFocus => "Metti a fuoco";
         public override string InputActionName_ControllerCancel => "Annulla";
-        public override string InputActionName_ControllerMessageClick => "MessageClick";
+        public override string InputActionName_ControllerMessageClick => "Seleziona messaggio";
         public override string InputActionName_ControllerSelect => "Seleziona";
         public override string InputActionName_WASD_UP => "Su";
         public override string InputActionName_WASD_DOWN => "Giù";
         public override string InputActionName_WASD_LEFT => "Sinistra";
         public override string InputActionName_WASD_RIGHT => "Destra";
-        public override string InputActionName_CameraTiltLeft => "CameraTiltSinistra";
-        public override string InputActionName_CameraTiltRight => "CameraTiltDestra";
-        public override string InputActionName_CameraTiltUp => "CameraTiltSu";
-        public override string InputActionName_ZoomInKey => "ZoomIn";
-        public override string InputActionName_ZoomOutKey => "ZoomOut";
+        public override string InputActionName_CameraTiltLeft => "Inclina camera a sinistra";
+        public override string InputActionName_CameraTiltRight => "Inclina camera a destra";
+        public override string InputActionName_CameraTiltUp => "Inclina camera in alto";
+        public override string InputActionName_ZoomInKey => "Zoom avanti";
+        public override string InputActionName_ZoomOutKey => "Zoom indietro";
 
 
 
 
-        public override string Settings_Title_Monitor => "Monitoroptions";
-        public override string Settings_Title_Graphics => "Graphicoptions";
-        public override string Settings_Title_Input => "Input";
-        public override string Settings_Title_Gameplay => "Gameplayoptions";
-        public override string Settings_PanOnZoom => "Panoramicaonzoom";
-        public override string Settings_ScrollSensitivity_Game => "Pergamenasensitivity:game";
-        public override string Settings_ScrollSensitivity_Menu => "Pergamenasensitivity:menu";
-        public override string Settings_Blood => "Blood";
+        public override string Settings_Title_Monitor => "Opzioni monitor";
+        public override string Settings_Title_Graphics => "Opzioni grafiche";
+        public override string Settings_Title_Input => "Comandi";
+        public override string Settings_Title_Gameplay => "Opzioni di gioco";
+        public override string Settings_PanOnZoom => "Panoramica durante lo zoom";
+        public override string Settings_ScrollSensitivity_Game => "Sensibilità scorrimento: gioco";
+        public override string Settings_ScrollSensitivity_Menu => "Sensibilità scorrimento: menu";
+        public override string Settings_Blood => "Sangue";
 
-        public override string Settings_MasterVolume => "MasterVolume";
-        public override string Settings_AmbienceVolume => "AmbienceVolume";
-        public override string Settings_BattleMelody => "BattagliaMelody";
+        public override string Settings_MasterVolume => "Volume principale";
+        public override string Settings_AmbienceVolume => "Volume ambiente";
+        public override string Settings_BattleMelody => "Melodia di battaglia";
 
-        public override string Settings_ModelLight => "Modellighteffect";
-        public override string Settings_Particles => "Particleeffects";
-        public override string Settings_MapLoadSpeed => "Mappacaricamentovelocità";
+        public override string Settings_ModelLight => "Effetto luce modelli";
+        public override string Settings_Particles => "Effetti particellari";
+        public override string Settings_MapLoadSpeed => "Velocità di caricamento mappa";
+
         public override string Lobby_Category_Options => "Opzioni";
         public override string Lobby_Category_Editor => "Editor";
-        public override string Lobby_Category_ExtraModes => "Extramodes";
+        public override string Lobby_Category_ExtraModes => "Modalità extra";
 
-        public override string Lobby_Editor_MapEditor => "Mappaeditor";
-        public override string Lobby_Editor_VoxelEditor => "Voxeleditor";
+        public override string Lobby_Editor_MapEditor => "Editor mappa";
+        public override string Lobby_Editor_VoxelEditor => "Editor voxel";
 
-        public override string Lobby_Mode_BattleLab => "Battaglialab";
-        public override string Lobby_Mode_BattleLab_Description => "Pitqualunquesoldatiagainsteachother";
-        public override string Lobby_Mode_Commander => "PlayCommander";
-        public override string Lobby_Mode_Commander_Description => "Asmalltacticalboardgame";
-        public override string Lobby_MusicPlayList => "Musicplaylist";
+        public override string Lobby_Mode_BattleLab => "Laboratorio di battaglia";
+        public override string Lobby_Mode_BattleLab_Description => "Metti alla prova qualsiasi tipo di soldato l’uno contro l’altro.";
+        public override string Lobby_Mode_Commander => "Comandante";
+        public override string Lobby_Mode_Commander_Description => "Un piccolo gioco tattico da tavolo.";
+        public override string Lobby_MusicPlayList => "Playlist musicale";
 
-        public override string Lobby_GameSetup => "Gamesetup";
-        public override string Lobby_PlayerSetup => "Playersetup";
+        public override string Lobby_GameSetup => "Impostazioni partita";
+        public override string Lobby_PlayerSetup => "Impostazioni giocatori";
         public override string LobbyDemoMode_Demo => "Demo";
 
         public override string Lobby_Tutorial => "Tutorial";
-        
-        public override string LobbyDemoMode_ShortTutorial => "QuickTutorial";
-        public override string LobbyDemoMode_LongTutorial => "ExtendedTutorial";
+
+        public override string LobbyDemoMode_ShortTutorial => "Tutorial rapido";
+        public override string LobbyDemoMode_LongTutorial => "Tutorial esteso";
 
         /// <summary>
-        /// Says wishlist on, followed by the STEAM logo
+        /// Mostra “wishlist on”, seguito dal logo di Steam
         /// </summary>
-        public override string LobbyDemoMode_WishlistOn => "Wishliston";
-
-
-        public override string BattleLab_StartHere => "Startbattagliahere";
-        public override string BattleLab_Start => "Startbattaglia";
-        public override string BattleLab_Attacker => "Attacker";
+        public override string LobbyDemoMode_WishlistOn => "Aggiungi alla wishlist";
 
 
 
-        public override string MapGenerator_Name => "Mappaeditor-generate";
+        public override string BattleLab_StartHere => "Avvia battaglia qui";
+        public override string BattleLab_Start => "Avvia battaglia";
+        public override string BattleLab_Attacker => "Attaccante";
 
-        public override string MapType_CustomMap => "CustomMappa";
-        public override string MapType_GenerateNewMap => "Generateanewmappa";
-        public override string MapGenerator_GenerateAction => "Generate";
-        public override string MapGenerator_Terrain_CustomSize => "Customsize";
-        public override string MapGenerator_Terrain_StartAs => "Startas";
-        public override string MapGenerator_Terrain_ClearPass => "RunClearPass";
-        public override string MapGenerator_Terrain_BuildPass => "RunCostruisciPass";
-        public override string MapGenerator_Terrain_DigPass => "RunDigPass";
-        public override string MapGenerator_Terrain_BuildDigLoops => "Costruisci-Digloopcount";
-        public override string MapGenerator_Terrain_BuildStrokes => "Costruiscistrokescount";
-        public override string MapGenerator_Terrain_BuildStrokes_Description => "Measuredinpaintstrokesal100tiles";
-        public override string MapGenerator_Terrain_DigStrokes => "Digstrokescount";
-        public override string MapGenerator_Terrain_CleanUp_Option => "Cleanupdisingletiles";
-        public override string MapGenerator_Terrain_CleanUpPass => "RuncleanupPass";
+        public override string MapGenerator_Name => "Editor mappa - generatore";
 
+        public override string MapType_CustomMap => "Mappa personalizzata";
+        public override string MapType_GenerateNewMap => "Genera nuova mappa";
+        public override string MapGenerator_GenerateAction => "Genera";
+        public override string MapGenerator_Terrain_CustomSize => "Dimensioni personalizzate";
+        public override string MapGenerator_Terrain_StartAs => "Inizia come";
+        public override string MapGenerator_Terrain_ClearPass => "Esegui passaggio di pulizia";
+        public override string MapGenerator_Terrain_BuildPass => "Esegui passaggio di costruzione";
+        public override string MapGenerator_Terrain_DigPass => "Esegui passaggio di scavo";
+        public override string MapGenerator_Terrain_BuildDigLoops => "Cicli costruzione-scavo";
+        public override string MapGenerator_Terrain_BuildStrokes => "Numero tratti di costruzione";
+        public override string MapGenerator_Terrain_BuildStrokes_Description => "Misurato in pennellate per ogni 100 caselle";
+        public override string MapGenerator_Terrain_DigStrokes => "Numero tratti di scavo";
+        public override string MapGenerator_Terrain_CleanUp_Option => "Ripulisci le singole caselle";
+        public override string MapGenerator_Terrain_CleanUpPass => "Esegui passaggio di pulizia";
 
+        public override string Economy_ServicemenUpkeep => "Mantenimento del personale di servizio: {0}";
+        public override string Economy_ServicemenUpkeep_Description => "Il mantenimento è di {0} oro per uomo di servizio";
+        public override string Economy_GuardUpkeep_Description => "Il mantenimento è di {0} oro per guardia";
 
-        public override string Economy_ServicemenUpkeep => "Servicemenmantenimento:PH0";
-        public override string Economy_ServicemenUpkeep_Description => "MantenimentoisPH0oroalserviceman";
-        public override string Economy_GuardUpkeep_Description => "MantenimentoisPH0oroalguardia";
+        public override string EndScreen_TimeHasEndedTitle => "Tempo scaduto";
 
-        public override string EndScreen_TimeHasEndedTitle => "Tempo'sup";
-
-        public override string Hud_AdvancedSettings => "Advancedsettings";
+        public override string Hud_AdvancedSettings => "Impostazioni avanzate";
         public override string Hud_Vector_X => "X";
         public override string Hud_Vector_Y => "Y";
         public override string Hud_Cancel => "Annulla";
-        public override string Hud_Delete => "Delete";
-        public override string Hud_Next => "Next";
-        //public override string Hud_None => "Nessuno";
-        public override string Hud_Apply => "Apply";
-        public override string Hud_AllCities => "Allcittà";
-        public override string Hud_Time_Hours => "PH0ore";
-        public override string Hud_AddX => "AggiungiPH0";
-        public override string Hud_Both => "Both";
-        public override string Hud_Direction => "Direction";
-        public override string MusicIsBroken => "Musiciscurrentlybroken";
-
+        public override string Hud_Delete => "Elimina";
+        public override string Hud_Next => "Avanti";
+        // public override string Hud_None => "Nessuno";
+        public override string Hud_Apply => "Applica";
+        public override string Hud_AllCities => "Tutte le città";
+        public override string Hud_Time_Hours => "{0} ore";
+        public override string Hud_AddX => "Aggiungi {0}";
+        public override string Hud_Both => "Entrambi";
+        public override string Hud_Direction => "Direzione";
+        //public override string MusicIsBroken => "La musica non funziona al momento";
 
         /// <summary>
-        /// 0: object collection type name, 1: number of objects
+        /// 0: nome del tipo di oggetto raccolto, 1: numero di oggetti
         /// </summary>
-        public override string Hud_ObjectsAndCount => "PH0,count:PH1";
+        public override string Hud_ObjectsAndCount => "{0}, quantità: {1}";
 
-        public override string Hud_EffectDoesNotStack => "Thiseffectdoesnotstack";
+        public override string Hud_EffectDoesNotStack => "Questo effetto non è cumulabile";
 
-        public override string Work_SmeltX => "SmeltPH0";
+        public override string Work_SmeltX => "Fondi {0}";
 
-        public override string Info_TotalFoodProduction => "Totalciboproduzione";
-        public override string Info_TotalFoodSpending => "Totalcibospesa";
+        public override string Info_TotalFoodProduction => "Produzione totale di cibo";
+        public override string Info_TotalFoodSpending => "Consumo totale di cibo";
 
-        public override string Info_FooodAndDeliveryLocation => "Bydefault,lavoratorigoacittàhallaeatordropoffitems";
-        
-        public override string Delivery_SendChunk => "ItemsalConsegna";
-        public override string Delivery_SpeedBonus => "Velocitàbonus:PH0%";
+        public override string Info_FooodAndDeliveryLocation =>
+            "Per impostazione predefinita, i lavoratori vanno nella città più vicina per mangiare o consegnare gli oggetti.";
 
-        public override string Delivery_AutoResourceDescription => "Deliversitemsthathasreachedstockpilelimit,acittàinneed.";
+        public override string Delivery_SendChunk => "Oggetti in consegna";
+        public override string Delivery_SpeedBonus => "Bonus velocità: {0}%";
 
-        public override string Conscript_Soldiers_ArmyType => "Esercitomen";
-        public override string Conscript_Soldiers_ArmyType_Description => "Reclutasoldatiaanadjacentesercito";
-        public override string Conscript_Soldiers_GuardType => "Cittàguardia";
-        public override string Conscript_Soldiers_GuardType_Description => "Guardieareusedafortifywalls";
+        public override string Delivery_AutoResourceDescription =>
+            "Consegna automaticamente gli oggetti che hanno raggiunto il limite di scorte alle città che ne hanno bisogno.";
+
+        public override string Conscript_Soldiers_ArmyType => "Soldati dell’esercito";
+        public override string Conscript_Soldiers_ArmyType_Description => "Recluta soldati in un esercito adiacente";
+        public override string Conscript_Soldiers_GuardType => "Guardia cittadina";
+        public override string Conscript_Soldiers_GuardType_Description => "Le guardie vengono utilizzate per fortificare le mura";
+
         //-
-        public override string Defence_Title => "Defence";
-        public override string Defence_GuardPost => "Guardiapost";
+        public override string Defence_Title => "Difesa";
+        public override string Defence_GuardPost => "Postazione di guardia";
 
-        public override string Defence_WallDescription_Movement => "Hindersenemymovement.";
-        public override string Defence_WallDescription_GuardPost => "Guardiacanbepostedhere.";
-        public override string Defence_AutoAssign => "Autoassign";
-        public override string Defence_AutoAssign_Description => "Newguardiewillmoveathispost";
-        public override string Conscript_SplashDamage => "Splashdamage";
-        public override string Conscript_HighSplashDamage => "Altosplashdamage";
+        public override string Defence_WallDescription_Movement => "Ostacola il movimento dei nemici.";
+        public override string Defence_WallDescription_GuardPost => "Le guardie possono essere assegnate qui.";
+        public override string Defence_AutoAssign => "Assegnazione automatica";
+        public override string Defence_AutoAssign_Description => "Le nuove guardie verranno assegnate automaticamente a questo posto.";
 
-        public override string Conscript_Training_Champion => "Champion";
-        public override string Conscript_Training_Legendary => "Leggendari";
+        public override string Conscript_SplashDamage => "Danno ad area";
+        public override string Conscript_HighSplashDamage => "Alto danno ad area";
+
+        public override string Conscript_Training_Champion => "Campione";
+        public override string Conscript_Training_Legendary => "Leggendario";
 
 
-        public override string Experience_Title => "Experience";
-        public override string Experience_TopExperience => "Topexperiencelevels";
+        public override string Experience_Title => "Esperienza";
+        public override string Experience_TopExperience => "Livelli di esperienza più alti";
 
-        public override string Experience_TimeReductionDescription => "LavorotempoisreducedbyPH0%allevel";
+        public override string Experience_TimeReductionDescription => "Il tempo di lavoro è ridotto del {0}% per livello";
 
-        public override string ExperienceType_Farm => "Farmer";
-        public override string ExperienceType_AnimalCare => "Animalcare";
-        public override string ExperienceType_HouseBuilding => "Housebuilder";
-        public override string ExperienceType_WoodWork => "Legnolavoratore";
-        public override string ExperienceType_StoneCutter => "Pietracutter";
-        public override string ExperienceType_Mining => "Miner";
-        public override string ExperienceType_Transport => "Transport";
-        public override string ExperienceType_Cook => "Cucina";
-        public override string ExperienceType_Fletcher => "Fletcher";
-        public override string ExperienceType_RefineOre => "Smelter";
-        public override string ExperienceType_Casting => "Casting";
+        public override string ExperienceType_Farm => "Agricoltore";
+        public override string ExperienceType_AnimalCare => "Allevatore";
+        public override string ExperienceType_HouseBuilding => "Costruttore di case";
+        public override string ExperienceType_WoodWork => "Falegname";
+        public override string ExperienceType_StoneCutter => "Scalpellino";
+        public override string ExperienceType_Mining => "Minatore";
+        public override string ExperienceType_Transport => "Trasportatore";
+        public override string ExperienceType_Cook => "Cuoco";
+        public override string ExperienceType_Fletcher => "Armaiolo di archi";
+        public override string ExperienceType_RefineOre => "Fonditore";
+        public override string ExperienceType_Casting => "Colatore";
         public override string ExperienceType_CraftMetal => "Fabbro";
-        public override string ExperienceType_CraftArmor => "Armorer";
-        public override string ExperienceType_CraftWeapon => "Armasmith";
-        public override string ExperienceType_CraftFuel => "Collier";
-        public override string ExperienceType_Chemist => "Chemist";
+        public override string ExperienceType_CraftArmor => "Armaturaio";
+        public override string ExperienceType_CraftWeapon => "Armaiolo";
+        public override string ExperienceType_CraftFuel => "Carbonaro";
+        public override string ExperienceType_Chemist => "Chimico";
 
-        public override string ExperienceLevel_1 => "Beginner";
-        public override string ExperienceLevel_2 => "Practitioner";
-        public override string ExperienceLevel_3 => "Expert";
-        public override string ExperienceLevel_4 => "Master";
-        public override string ExperienceLevel_5 => "Leggendari";
+        public override string ExperienceLevel_1 => "Principiante";
+        public override string ExperienceLevel_2 => "Praticante";
+        public override string ExperienceLevel_3 => "Esperto";
+        public override string ExperienceLevel_4 => "Maestro";
+        public override string ExperienceLevel_5 => "Leggendario";
 
-        public override string ExperenceOrDistancePrio_Title => "Lavoratoreselection";
-        public override string ExperenceOrDistancePrio_Description => "Inattivolavoratoriwillbeselectedaworkeitherbydistanzaorexperience";
+        public override string ExperenceOrDistancePrio_Title => "Selezione lavoratori";
+        public override string ExperenceOrDistancePrio_Description =>
+            "I lavoratori inattivi verranno assegnati ai compiti in base alla distanza o all’esperienza.";
 
+        public override string Technology_Description =>
+    "Ogni città ha un albero tecnologico. Ogni tecnologia sblocca edifici e oggetti.";
 
-        public override string Technology_Description => "Eachcittàhasatechnologytree.Eachtechnologywillunlockbuildingseitems.";
-        public override string Experience_Description => "Lavoratoriwillguadagnoexperienceeimprove";
+        public override string Experience_Description =>
+            "I lavoratori guadagnano esperienza e migliorano nel tempo.";
 
+        public override string Technology_Title => "Tecnologia";
+        public override string Technology_ShareField => "Condivisione del campo tecnologico";
 
-        public override string Technology_Title => "Technology";
-        public override string Technology_ShareField => "Sharingtechnologyfield";
+        public override string Technology_GainByNeigborRelation =>
+            "Per ogni città vicina con tecnologia. Se la tua relazione è {0}: {1}";
 
-        public override string Technology_GainByNeigborRelation => "Pereachneighborcittàcontechnology.EyourrelazioneisPH0:PH1";
-        public override string Technology_ForEachMaster => "WhenaPH0reachesanexperienceleveldiPH1,intechnologyfield:PH2";
-        public override string Technology_CitySpread => "Yourcittàwillsharetechnologywhenadjacent:PH0";
-        public override string Technology_CityCapture => "Mosttechnolgiesaredestroyedwhenacittàiscapturedinbattaglia";
+        public override string Technology_ForEachMaster =>
+            "Quando un {0} raggiunge il livello di esperienza {1}, nel campo tecnologico: PH2";
 
-        public override string Technology_AdvancedBuildings => "Advancedbuildings";
-        public override string Technology_AdvancedFarming => "Advancedfarming";
-        public override string Technology_AdvancedCasting => "Advancedcasting";
+        public override string Technology_CitySpread =>
+            "Le tue città condivideranno la tecnologia se adiacenti: {0}";
 
-        public override string Help_Title => "Help";
-        public override string Help_Work_Title => "Lavorodoesn'tstart";
-        public override string Help_Work_Resources => "Buildingsneedavailableresources";
-        public override string Help_Work_Skill => "lavoratoreneedscorrectskilllevel(orhigher)";
-        public override string Help_Work_Stockpile => "Risorsacollectionwillbeblockedbyafullstockpile";
-        public override string Help_Work_Priority => "Lavoromayhaveloworzeropriority";
+        public override string Technology_CityCapture =>
+            "La maggior parte delle tecnologie viene distrutta quando una città viene conquistata in battaglia.";
 
+        public override string Technology_AdvancedBuildings => "Edifici avanzati";
+        public override string Technology_AdvancedFarming => "Agricoltura avanzata";
+        public override string Technology_AdvancedCasting => "Fusione avanzata";
 
-        public override string Help_Soldiers_Title => "Producesoldati";
-        public override string Help_Soldiers_PlaceBuildingX => "Placebuilding:PH0";
-        public override string Help_Soldiers_Workers => "Availablelavoratoriarecruit";
-        public override string Help_Soldiers_Weapon => "Aarmapereachsoldato";
-        public override string Help_Soldiers_StartX => "Start:PH0";
+        public override string Help_Title => "Aiuto";
+        public override string Help_Work_Title => "Il lavoro non parte";
+        public override string Help_Work_Resources => "Gli edifici richiedono risorse disponibili.";
+        public override string Help_Work_Skill =>
+            "I lavoratori devono avere il livello di abilità corretto (o superiore).";
+        public override string Help_Work_Stockpile =>
+            "La raccolta delle risorse verrà bloccata se il magazzino è pieno.";
+        public override string Help_Work_Priority =>
+            "Il lavoro potrebbe avere priorità bassa o nulla.";
 
+        public override string Help_Soldiers_Title => "Produzione soldati";
+        public override string Help_Soldiers_PlaceBuildingX => "Costruisci edificio: {0}";
+        public override string Help_Soldiers_Workers => "Lavoratori disponibili per il reclutamento";
+        public override string Help_Soldiers_Weapon => "Un’arma per ogni soldato";
+        public override string Help_Soldiers_StartX => "Avvia: {0}";
+        public override string Hud_SelectHistory => "Seleziona cronologia";
 
-        public override string Hud_SelectHistory => "Selezionahistory";
+        public override string Hud_PointsPerMinute => "{0} punti al minuto";
+        public override string Hud_PercentValueCost => "Il servizio costa il {0}% del valore";
 
-        public override string Hud_PointsPerMinute => "PH0pointsalminuto";
-        public override string Hud_PercentValueCost => "servicecostiPH0%divalue";
-
-        public override string Hud_Mixed => "Mixed";
+        public override string Hud_Mixed => "Misto";
         public override string Hud_Distance => "Distanza";
 
-        public override string Hud_Unlock => "Unlock";
-        public override string Hud_category => "Category";
+        public override string Hud_Unlock => "Sblocca";
+        public override string Hud_category => "Categoria";
 
         /// <summary>
         /// Sets the game speed to one frame at a time
         /// </summary>
-        public override string Input_StepOneFrame => "Step1frame";
+        public override string Input_StepOneFrame => "Avanza di un fotogramma";
 
-        public override string Resource_TypeName_Wagon2Wheel => "Piccolawagon";
-        public override string Resource_TypeName_Wagon4Wheel => "Grandewagon";
-        public override string Resource_TypeName_Tin => "Tin";
-        public override string Resource_TypeName_TinOre => "Tinore";
+        public override string Resource_TypeName_Wagon2Wheel => "Carro a due ruote";
+        public override string Resource_TypeName_Wagon4Wheel => "Carro a quattro ruote";
+        public override string Resource_TypeName_Tin => "Stagno";
+        public override string Resource_TypeName_TinOre => "Minerale di stagno";
 
         public override string Resource_TypeName_Copper => "Rame";
-        public override string Resource_TypeName_CopperOre => "Rameore";
-        public override string Resource_TypeName_SilverOre => "Argentoore";
+        public override string Resource_TypeName_CopperOre => "Minerale di rame";
+        public override string Resource_TypeName_SilverOre => "Minerale d’argento";
         public override string Resource_TypeName_Silver => "Argento";
 
         /// <summary>
         /// Mithril is a fantasy metal
         /// </summary>
-        public override string Resource_TypeName_RawMithril => "Rawmithril";
+        public override string Resource_TypeName_RawMithril => "Mithril grezzo";
         public override string Resource_TypeName_Mithril => "Mithril";
 
-        public override string Resource_TypeName_BronzeSword => "Bronzosword";
-        public override string Resource_TypeName_ShortSword => "Shortsword";
-        public override string Resource_TypeName_LongSword => "Longsword";
-        public override string Resource_TypeName_HandSpear => "Handspear";
-        public override string Resource_TypeName_Warhammer => "Warhammer";
-        public override string Resource_TypeName_MithrilSword => "Mithrilsword";
-        public override string Resource_TypeName_SlingShot => "Slingshot";
-        public override string Resource_TypeName_ThrowingSpear => "Javelin";
-        public override string Resource_TypeName_Crossbow => "Balestriere";
-        public override string Resource_TypeName_MithrilBow => "Mithrilbow";
+        public override string Resource_TypeName_BronzeSword => "Spada di bronzo";
+        public override string Resource_TypeName_ShortSword => "Spada corta";
+        public override string Resource_TypeName_LongSword => "Spada lunga";
+        public override string Resource_TypeName_HandSpear => "Lancia corta";
+        public override string Resource_TypeName_Warhammer => "Martello da guerra";
+        public override string Resource_TypeName_MithrilSword => "Spada di mithril";
+        public override string Resource_TypeName_SlingShot => "Fionda";
+        public override string Resource_TypeName_ThrowingSpear => "Giavellotto";
+        public override string Resource_TypeName_Crossbow => "Balestra";
+        public override string Resource_TypeName_MithrilBow => "Arco di mithril";
 
-        public override string Resource_TypeName_CoolingFluid => "Coolingfluid";
-        public override string Resource_TypeName_Palisade => "Palisade";
-        public override string Resource_TypeName_Toolkit => "Toolkit";
+        public override string Resource_TypeName_CoolingFluid => "Liquido di raffreddamento";
+        public override string Resource_TypeName_Palisade => "Palizzata";
+        public override string Resource_TypeName_Toolkit => "Kit degli attrezzi";
 
-        public override string Resource_TypeName_Sulfur => "Sulfur";
-        public override string Resource_TypeName_LeadOre => "Leadore";
-        public override string Resource_TypeName_Lead => "Lead";
+        public override string Resource_TypeName_Sulfur => "Zolfo";
+        public override string Resource_TypeName_LeadOre => "Minerale di piombo";
+        public override string Resource_TypeName_Lead => "Piombo";
         public override string Resource_TypeName_Bronze => "Bronzo";
-        public override string Resource_TypeName_BloomIron => "Bloomeryferro";
-        public override string Resource_TypeName_Steel => "Steel";
-        public override string Resource_TypeName_CastIron => "Castferro";
+        public override string Resource_TypeName_BloomIron => "Ferro da fucina";
+        public override string Resource_TypeName_Steel => "Acciaio";
+        public override string Resource_TypeName_CastIron => "Ghisa";
 
-        public override string Resource_TypeName_BlackPowder => "Neropowder";
-        public override string Resource_TypeName_GunPowder => "Gunpowder";
-        public override string Resource_TypeName_LedBullet => "Bullet";
+        public override string Resource_TypeName_BlackPowder => "Polvere nera";
+        public override string Resource_TypeName_GunPowder => "Polvere da sparo";
+        public override string Resource_TypeName_LedBullet => "Proiettile di piombo";
 
-        public override string Resource_TypeName_HandCannon => "Handcannon";
-        public override string Resource_TypeName_HandCulverin => "Handculverin";
-        public override string Resource_TypeName_Rifle => "Rifle";
-        public override string Resource_TypeName_Blunderbuss => "Blunderbuss";
+        public override string Resource_TypeName_HandCannon => "Schioppo";
+        public override string Resource_TypeName_HandCulverin => "Colubrina portatile";
+        public override string Resource_TypeName_Rifle => "Fucile";
+        public override string Resource_TypeName_Blunderbuss => "Archibugio";
 
         public override string Resource_TypeName_Manuballista => "Manuballista";
-        public override string Resource_TypeName_Catapult => "Catapult";
-        public override string Resource_TypeName_BatteringRam => "BatteringRam";
-        public override string Resource_TypeName_SiegeCannonBronze => "Basilic";
-        public override string Resource_TypeName_ManCannonBronze => "Bombard";
-        public override string Resource_TypeName_SiegeCannonIron => "Haubitz";
-        public override string Resource_TypeName_ManCannonIron => "Cannon";
+        public override string Resource_TypeName_Catapult => "Catapulta";
+        public override string Resource_TypeName_BatteringRam => "Ariete";
+        public override string Resource_TypeName_SiegeCannonBronze => "Cannone d’assedio di bronzo";
+        public override string Resource_TypeName_ManCannonBronze => "Bombarda";
+        public override string Resource_TypeName_SiegeCannonIron => "Cannone d’assedio di ferro";
+        public override string Resource_TypeName_ManCannonIron => "Cannone";
 
-        public override string Resource_TypeName_PaddedArmor => "Paddedarmatura";
-        public override string Resource_TypeName_HeavyPaddedArmor => "Heavypaddedarmatura";
+        public override string Resource_TypeName_PaddedArmor => "Armatura imbottita";
+        public override string Resource_TypeName_HeavyPaddedArmor => "Armatura imbottita pesante";
 
-        public override string Resource_TypeName_IronArmor => "Mailarmatura";
-        public override string Resource_TypeName_HeavyIronArmor => "Heavymailarmatura";
+        public override string Resource_TypeName_IronArmor => "Armatura di maglia";
+        public override string Resource_TypeName_HeavyIronArmor => "Armatura di maglia pesante";
 
-        public override string Resource_TypeName_BronzeArmor => "Bronzoarmatura";
+        public override string Resource_TypeName_BronzeArmor => "Armatura di bronzo";
 
-        public override string Resource_TypeName_LightPlateArmor => "Platearmatura";
-        public override string Resource_TypeName_FullPlateArmor => "Fullplatearmatura";
-        public override string Resource_TypeName_MithrilArmor => "Mithrilarmatura";
-        public override string Resource_TypeName_Coin => "Coin";
+        public override string Resource_TypeName_LightPlateArmor => "Corazza leggera";
+        public override string Resource_TypeName_FullPlateArmor => "Corazza completa";
+        public override string Resource_TypeName_MithrilArmor => "Armatura di mithril";
+        public override string Resource_TypeName_Coin => "Moneta";
 
-        public override string UnitType_Warhammer => "Martelloknight";
-        
-        public override string UnitType_SpearAndShield => "Lineman";
+        public override string UnitType_Warhammer => "Cavaliere con martello";
 
-        public override string UnitType_CollectionOfSoldiers => "SoldatoBundle";
-        public override string UnitType_CollectionOfArmies => "EsercitoBundle";
+        public override string UnitType_SpearAndShield => "Lanciere con scudo";
+
+        public override string UnitType_CollectionOfSoldiers => "Gruppo di soldati";
+        public override string UnitType_CollectionOfArmies => "Gruppo di eserciti";
 
         /// <summary>
         /// The id tag will be a unique number
         /// </summary>
-        public override string UnitId => "(idPH0)";
+        public override string UnitId => "(id {0})";
 
-        public override string BuildHud_AreaEffectTitle => "Areaeffect";
-        public override string BuildHud_BonusRadius => "Bonusradius:PH0";
+        public override string BuildHud_AreaEffectTitle => "Effetto area";
+        public override string BuildHud_BonusRadius => "Raggio bonus: {0}";
 
-        public override string BuildHud_BuildTime => "Costruiscitempo";
-        public override string SchoolHud_ToLevel => "Alevel";
-        public override string SchoolHud_TimeDescription => "Tempoassumeszeroexperience;itdecreasesconexperience.";
-        public override string SchoolHud_SelectSchool => "Selezionaschool";
-        public override string Upgrade_Order => "Potenziaorder";
+        public override string BuildHud_BuildTime => "Tempo di costruzione";
+        public override string SchoolHud_ToLevel => "Verso livello";
+        public override string SchoolHud_TimeDescription => "Il tempo assume esperienza zero; diminuisce con l’esperienza.";
+        public override string SchoolHud_SelectSchool => "Seleziona scuola";
+        public override string Upgrade_Order => "Ordine di potenziamento";
 
-        public override string Building_ListDescription => "Alistdiallbuildingsinthiscategory";
+        public override string Building_ListDescription => "Elenco di tutti gli edifici in questa categoria";
 
-        public override string BuildingType_IsUpgraded => "PH0-upgraded";
-        public override string BuildingType_WoodCutter => "Lumbermill";
-        public override string BuildingType_Workshop_Description => "Improvesworkinarea";
+        public override string BuildingType_IsUpgraded => "{0} - migliorato";
+        public override string BuildingType_WoodCutter => "Segheria";
+        public override string BuildingType_Workshop_Description => "Migliora il lavoro nell’area circostante";
 
-        public override string BuildingType_WoodCutter_AreaAffect => "GuadagnoPH0%morelegnofromtrees";
+        public override string BuildingType_WoodCutter_AreaAffect => "Guadagna il {0}% di legno in più dagli alberi";
 
-        public override string BuildingType_StoneCutter_AreaAffect => "GuadagnoPH0%morepietra";
+        public override string BuildingType_StoneCutter_AreaAffect => "Guadagna il {0}% di pietra in più";
 
-        public override string BuildingType_StoneCutter => "Pietraquarry";
+        public override string BuildingType_StoneCutter => "Cava di pietra";
 
-        public override string BuildingType_Embassy => "Embassy";
-        public override string BuildingType_Embassy_Description => "Perdiplomaticrelazioni";
+        public override string BuildingType_Embassy => "Ambasciata";
+        public override string BuildingType_Embassy_Description => "Per le relazioni diplomatiche";
 
-        public override string BuildingType_SoldierBarracks => "Soldatobarracks";
-        public override string BuildingType_ArcherBarracks => "Arcierebarracks";
-        public override string BuildingType_WarmachineBarracks => "Warmachinebarracks";
-        public override string BuildingType_GunBarracks => "Gunbarracks";
-        public override string BuildingType_CannonBarracks => "Cannonbarracks";
-        public override string BuildingType_KnightsBarracks => "Cavalieribarracks";
+        public override string BuildingType_SoldierBarracks => "Caserma soldati";
+        public override string BuildingType_ArcherBarracks => "Caserma arcieri";
+        public override string BuildingType_WarmachineBarracks => "Caserma macchine da guerra";
+        public override string BuildingType_GunBarracks => "Caserma armi da fuoco";
+        public override string BuildingType_CannonBarracks => "Caserma cannoni";
+        public override string BuildingType_KnightsBarracks => "Caserma cavalieri";
 
-        public override string BuildingType_WaterResovoir => "Acquareservoir";
-        public override string BuildingType_WaterResovoir_Description => "Increasesacquastorage";
+        public override string BuildingType_WaterResovoir => "Serbatoio d’acqua";
+        public override string BuildingType_WaterResovoir_Description => "Aumenta la capacità di stoccaggio dell’acqua";
 
-        public override string BuildingType_SmeltingFurnace => "Smeltingfurnace";
-        public override string BuildingType_SmeltingFurnace_Description => "Purifyoreametal";
+        public override string BuildingType_SmeltingFurnace => "Fornace di fusione";
+        public override string BuildingType_SmeltingFurnace_Description => "Purifica il minerale in metallo";
 
-        public override string BuildingType_Foundry => "Foundry";
-        public override string BuildingType_Foundry_Description => "Metalcastingstation";
+        public override string BuildingType_Foundry => "Fonderia";
+        public override string BuildingType_Foundry_Description => "Stazione per la fusione dei metalli";
 
-        public override string BuildingType_Armory => "Armory";
-        public override string BuildingType_Armory_Description => "Armaturacraftingstation";
-        public override string BuildingType_Chemist => "Chemist";
-        public override string BuildingType_Chemist_Description => "Chemicalscraftingstation";
-        public override string BuildingType_CoinMaker => "Coinminter";
-        public override string BuildingType_CoinMaker_Description => "Turnmetalsamoney";
-        public override string BuildingType_Gunmaker => "Gunmaker";
-        public override string BuildingType_Gunmaker_Description => "Craftingstationpergunsecannons";
+        public override string BuildingType_Armory => "Armeria";
+        public override string BuildingType_Armory_Description => "Stazione di produzione di armature";
+        public override string BuildingType_Chemist => "Laboratorio chimico";
+        public override string BuildingType_Chemist_Description => "Stazione di produzione di sostanze chimiche";
+        public override string BuildingType_CoinMaker => "Zecca";
+        public override string BuildingType_CoinMaker_Description => "Trasforma i metalli in monete";
+        public override string BuildingType_Gunmaker => "Armaiolo";
+        public override string BuildingType_Gunmaker_Description => "Stazione di produzione per armi da fuoco e cannoni";
 
-        public override string BuildingType_School_Tab => "School";
-        public override string BuildingType_School => "Mastersguild";
-        public override string BuildingType_School_Description => "Increaseskillleveldilavoratori";
+        public override string BuildingType_School_Tab => "Scuola";
+        public override string BuildingType_School => "Gilda dei maestri";
+        public override string BuildingType_School_Description => "Aumenta il livello di abilità dei lavoratori";
 
-        public override string BuildingType_GoldDelivery => "Orocourier";
-        public override string BuildingType_Bank_Description => "Oromanagement";
+        public override string BuildingType_GoldDelivery => "Corriere d’oro";
+        public override string BuildingType_Bank_Description => "Gestione delle riserve d’oro";
 
-        public override string DecorType_CobbleStones => "Cobblestones";
-        public override string DecorType_Square => "Cittàsquare";
+        public override string DecorType_CobbleStones => "Ciottolato";
+        public override string DecorType_Square => "Piazza cittadina";
 
         public override string DecorType_Garden => "Giardino";
-        public override string DecorType_Flag => "Flag";
+        public override string DecorType_Flag => "Bandiera";
         public override string DecorType_Banner => "Stendardo";
 
-        public override string BuildingType_DirtRoad => "Dirtroad";
-        public override string BuildingType_Palisade => "PalisadeFort";
+        public override string BuildingType_DirtRoad => "Strada sterrata";
+        public override string BuildingType_Palisade => "Forte di palizzata";
 
-        public override string ResourceType_ServiceMen => "Servicemen";
-        public override string BuildingType_ServiceHouse => "Servicehouse";
-        public override string BuildingType_ServiceHouse_DescriptionAddX => "AggiungiPH0servicemen";
+        public override string ResourceType_ServiceMen => "Addetti ai servizi";
+        public override string BuildingType_ServiceHouse => "Casa dei servizi";
+        public override string BuildingType_ServiceHouse_DescriptionAddX => "Aggiunge {0} addetti ai servizi";
 
-        public override string BuildingType_GuardOffice => "Guardieoffice";
-        public override string BuildingType_GuardOffice_DescriptionAddX => "IncreaseguardialimitbyPH0";
+        public override string BuildingType_GuardOffice => "Ufficio della guardia";
+        public override string BuildingType_GuardOffice_DescriptionAddX => "Aumenta il limite di guardie di {0}";
 
-        public override string BuildingType_DirtWall => "Dirtwall";
-        public override string BuildingType_DirtTower => "Dirttower";
-        public override string BuildingType_WoodWall => "Legnowall";
-        public override string BuildingType_WoodTower => "Legnotower";
-        public override string BuildingType_StoneWall => "Pietrawall";
-        public override string BuildingType_StoneTower => "Pietratower";
-        public override string BuildingType_StoneGate => "Pietragate";
-        public override string BuildingType_StoneHouse => "Pietragate";
+        public override string BuildingType_DirtWall => "Muro di terra";
+        public override string BuildingType_DirtTower => "Torre di terra";
+        public override string BuildingType_WoodWall => "Muro di legno";
+        public override string BuildingType_WoodTower => "Torre di legno";
+        public override string BuildingType_StoneWall => "Muro di pietra";
+        public override string BuildingType_StoneTower => "Torre di pietra";
+        public override string BuildingType_StoneGate => "Porta di pietra";
+        public override string BuildingType_StoneHouse => "Casa di pietra";
+
 
 
         /// <summary>
         /// When listing slight variations, like "LampA" and "LampB"
         /// </summary>
-        public override string VariantType_A => "PH0A";
-        public override string VariantType_B => "PH0B";
-        public override string VariantType_C => "PH0C";
-        public override string VariantType_D => "PH0D";
-        public override string VariantType_E => "PH0E";
-        public override string VariantType_F => "PH0F";
-        public override string VariantType_G => "PH0G";
-        public override string VariantType_H => "PH0H";
+        public override string VariantType_A => "{0}A";
+        public override string VariantType_B => "{0}B";
+        public override string VariantType_C => "{0}C";
+        public override string VariantType_D => "{0}D";
+        public override string VariantType_E => "{0}E";
+        public override string VariantType_F => "{0}F";
+        public override string VariantType_G => "{0}G";
+        public override string VariantType_H => "{0}H";
+        public override string BuildingToolShape_Free => "Penna";
+        public override string BuildingToolShape_Area => "Rettangolo";
+        public override string BuildingToolShape_Line => "Linea";
+        public override string BuildingToolShape_LShape => "Forma a L";
 
-        public override string BuildingToolShape_Free => "Pen";
-        public override string BuildingToolShape_Area => "Rectangle";
-        public override string BuildingToolShape_Line => "Line";
-        public override string BuildingToolShape_LShape => "L-shape";
-
-
-        public override string CityHall_Upgrade => "Potenziacittàhall";
+        public override string CityHall_Upgrade => "Potenziamento municipio";
 
         /// <summary>
         /// A cap on how many workers the city can have
         /// </summary>
-        public override string CityHall_MaxSupportedWorkers => "Maxsupportedlavoratori:PH0";
+        public override string CityHall_MaxSupportedWorkers => "Numero massimo di lavoratori supportati: {0}";
 
         public override string CityHall_Size_Small => "Villaggio";
-        public override string CityHall_Size_Medium => "Town";
-        public override string CityHall_Size_Large => "Capital";
+        public override string CityHall_Size_Medium => "Cittadina";
+        public override string CityHall_Size_Large => "Capitale";
 
-        public override string GuardHousingCount => "Guardiaofficehousing";
-        public override string ServicemenCount => "Servicemen:PH0";
+        public override string GuardHousingCount => "Alloggi ufficio della guardia";
+        public override string ServicemenCount => "Addetti ai servizi: {0}";
 
+        public override string Work_MiningResource => "Estrazione di {0}";
 
-        public override string Work_MiningResource => "EstrazionePH0";
+        public override string MenuTab_Progress => "Progresso";
 
-        public override string MenuTab_Progress => "Progress";
-
-        public override string Automation_AutomateCity => "Automatecittà";
-        public override string Automation_AutomationFocus => "Automazionefocus";
-        public override string Automation_AutomationFocus_Grow => "Grow";
-        public override string Automation_AutomationFocus_Export => "Export";
+        public override string Automation_AutomateCity => "Automatizza città";
+        public override string Automation_AutomationFocus => "Focus automazione";
+        public override string Automation_AutomationFocus_Grow => "Crescita";
+        public override string Automation_AutomationFocus_Export => "Esportazione";
         public override string Automation_AutomationFocus_War => "Guerra";
 
-        public override string CityCulture_Smelters_Description => "Improvedoresmelting";
-        public override string CityCulture_Smelters => "Smelters";
+        public override string CityCulture_Smelters_Description => "Fusione del minerale migliorata";
+        public override string CityCulture_Smelters => "Fusori";
 
-        public override string CityCulture_Apprentices_Description => "Newlavoratoriwillguadagnoexperiencefromactivelavoratori";
-        public override string CityCulture_Apprentices => "Apprentices";
+        public override string CityCulture_Apprentices_Description => "I nuovi lavoratori guadagnano esperienza dai lavoratori attivi";
+        public override string CityCulture_Apprentices => "Apprendisti";
 
-        public override string CityCulture_BronzeCasters_Description => "Improvedproduzionedibronzeebronzeitems";
-        public override string CityCulture_BronzeCasters => "Bronzocasters";
+        public override string CityCulture_BronzeCasters_Description => "Produzione migliorata di bronzo e oggetti in bronzo";
+        public override string CityCulture_BronzeCasters => "Fusori di bronzo";
+
 
         //DEMO PATCH 1
 
         /// <summary>
         /// Evil orcs that roam on the map
         /// </summary>
-        public override string FactionName_Barbarian => "Oscurihorde";
-        public override string Tutorial_AttackAndDestroyX => "Attaccaedistruggi:PH0";
-        public override string Resource_TypeName_Pike => "Pike";
+        public override string FactionName_Barbarian => "Orde oscure";
 
+        public override string Tutorial_AttackAndDestroyX => "Attacca e distruggi: {0}";
+        public override string Resource_TypeName_Pike => "Picca";
 
-        public override string BattleTrials_Title => "BattagliaTrials";
-        public override string BattleTrials_Description => "Testyourtacticsinadirectesercito-versus-esercitoencounter.";
+        public override string BattleTrials_Title => "Prove di battaglia";
+        public override string BattleTrials_Description => "Metti alla prova le tue tattiche in uno scontro diretto esercito contro esercito.";
 
+        // DEMO PATCH 2
+        public override string Conscript_BlockReducingAttack => "Questi attacchi riducono la probabilità di blocco";
 
-        //DEMO PATCH 2
-        public override string Conscript_BlockReducingAttack => "Theseattacksreduceblockchance";
+        public override string Conscript_BlockPerSecond => "Può bloccare {0} volte al secondo";
 
-        public override string Conscript_BlockPerSecond => "MayblockPH0timesalsecondo";
+        public override string Conscript_BlockDescription => "I soldati bloccano la maggior parte degli attacchi provenienti dal loro arco frontale";
 
-        public override string Conscript_BlockDescription => "Soldatiwillblockmostattackscomingfromtheirforwardarc";
+        public override string Map_CustomSeed => "Seed mappa";
 
-        public override string Map_CustomSeed => "Mappaseed";
+        public override string Settings_Mode_Spectator => "Spettatore";
 
-        public override string Settings_Mode_Spectator => "Spectator";
+        // public override string Settings_Mode_Spectator_Description => "Solo osserva";
 
-        //public override string Settings_Mode_Spectator_Description => "Justwatch";
+        public override string Automation_AutomationFocus_NoFocus_Description => "Costruirà un po’ di tutto";
 
-        public override string Automation_AutomationFocus_NoFocus_Description => "Willcostruiscialittlebitdieverything";
+        public override string Automation_AutomationFocus_WillProduce => "Produrrà principalmente:";
 
-        public override string Automation_AutomationFocus_WillProduce => "Willmainlyproduce:";
+        public override string Help_Food_WhoEats => "Tutti i soldati e i lavoratori consumano cibo";
 
-        public override string Help_Food_WhoEats => "Allsoldatielavoratoriconsumecibo";
+        public override string Help_Food_BigArmy => "Un grande esercito può affamare le città nella propria area";
 
-        public override string Help_Food_BigArmy => "Alargeesercitocanstarveoutcittàinitsarea";
+        public override string Help_Food_DontBuild => "Costruire più fattorie non aumenta automaticamente il cibo: servono lavoratori disponibili e stazioni di cucina per raccogliere e processare le risorse";
 
-        public override string Help_Food_DontBuild => "Edificiomorefarmsdoesn'tautomaticallyincreasecibo;youneedavailablelavoratoriecookstationsagathereprocessit";
+        public override string Help_Food_UseWater => "La produzione di cibo richiede acqua";
 
-        public override string Help_Food_UseWater => "Ciboproduzionerequiresacqua";
+        public override string Help_Food_Postal => "Assicurati che le tue città si supportino inviandosi cibo";
 
-        public override string Help_Food_Postal => "Makesureyourcittàsupporteachotherbysendingcibo";
+        public override string Message_LostCity => "Città perduta";
 
-        public override string Message_LostCity => "Cittàlost";
+        public override string Demo_Description => "Uno scenario breve: difendi la tua città per {0} minuti";
 
-        public override string Demo_Description => "Ashortscenario:defendyourcittàperPH0minuti";
+        // DEMO PATCH 3
+        public override string Demo_EndInXMinuteDescription => "La demo terminerà tra {0} minuti";
 
+        public override string Experience_Required => "Esperienza richiesta";
 
-        //DEMO PATCH 3
-        public override string Demo_EndInXMinuteDescription => "demowillendinPH0minuti";
+        public override string InputActionName_ToggleMenu => "Apri/Chiudi menu";
 
-        public override string Experience_Required => "Requiredexperience";
+        // DEMO PATCH 4
+        public override string Work_BadValueDescription =>
+            "Le risorse possono scendere sotto zero o superare leggermente il limite di stoccaggio. I limiti vengono applicati solo quando la coda di lavoro viene creata.";
 
-        public override string InputActionName_ToggleMenu => "Togglemenu";
+        public override string Work_SelectCategory => "Seleziona categoria oggetti";
+        public override string Hud_RemoveFromList => "Rimuovi dalla lista";
 
-        //DEMO PATCH 4
-        public override string Work_BadValueDescription => "Risorsecangobelowzeroeslightlyexceedstockpilelimit.boundsareonlyenforcedwhenworkqueueiscreated.";
-
-        public override string Work_SelectCategory => "SelezionaItemCategory";
-        public override string Hud_RemoveFromList => "RimuovifromList";
-
-        public override string Hud_ReturnToPrevious => "Return";
-        public override string Hud_Close => "Close";
+        public override string Hud_ReturnToPrevious => "Torna indietro";
+        public override string Hud_Close => "Chiudi";
 
         public override string Hud_Low => "Basso";
-        public override string Hud_Medium => "Media";
+        public override string Hud_Medium => "Medio";
         public override string Hud_High => "Alto";
 
-        public override string Hud_Copy => "Copy";
-        //public override string Hud_Paste => "Paste";
-        public override string Hud_Cut => "Cut";
-        public override string Hud_SaveCompleted => "SalvaCompleted";
+        public override string Hud_Copy => "Copia";
+        // public override string Hud_Paste => "Incolla";
+        public override string Hud_Cut => "Taglia";
+        public override string Hud_SaveCompleted => "Salvataggio completato";
 
-        public override string Settings_WaterMultiplier => "AcquaMultiplier";
-        public override string Settings_WaterMultiplier_Description => "Determineshowmuchacquacittàproduceestore.Highervaluesreducecomputerperformance.";
+        public override string Settings_WaterMultiplier => "Moltiplicatore acqua";
+        public override string Settings_WaterMultiplier_Description => "Determina quanta acqua le città producono e immagazzinano. Valori più alti riducono le prestazioni del computer.";
 
-        public override string Settings_ChildMultiplier => "ChildbirthMultiplier";
-        
-        public override string Settings_CraftMultiplier_Description => "Lowervaluesresultinfasterproduzione.";
+        public override string Settings_ChildMultiplier => "Moltiplicatore nascite";
 
-        public override string FastProduction => "FastProduzione";
-        public override string SlowProduction => "SlowProduzione";
+        public override string Settings_CraftMultiplier_Description => "Valori più bassi comportano una produzione più veloce.";
+
+        public override string FastProduction => "Produzione veloce";
+        public override string SlowProduction => "Produzione lenta";
 
         /// <summary>
         /// Label for a list of items blocked from production
         /// </summary>
-        public override string BlocksProduction => "WillNotProduce";
+        public override string BlocksProduction => "Non produrrà";
 
-        //public override string CityAutomation_WaitForMaxPopulation => "Waitperpopulationamaxout";
-        public override string Automation_AutomationFocus_NoFocus => "All";
-        public override string CityAutomation_SoldierQuality => "SoldatoQuality";
-        public override string CityAutomation_SoldierWeaponType => "ArmaType";
+        public override string Automation_AutomationFocus_NoFocus => "Tutto";
+        public override string CityAutomation_SoldierQuality => "Qualità soldati";
+        public override string CityAutomation_SoldierWeaponType => "Tipo di arma";
 
         public override string WarsResourceGroup_Resources => "Risorse";
-        public override string WarsResourceGroup_Weapons => "Weapons";
+        public override string WarsResourceGroup_Weapons => "Armi";
 
-        public override string WarsResourceGroup_AllWeaponTypes => "Mixed";
-        public override string WarsResourceGroup_MeleeHandWeapons => "Melee";
-        public override string WarsResourceGroup_RangedHandWeapons => "Ranged";
-        public override string WarsResourceGroup_Warmachines => "Warmachines";
+        public override string WarsResourceGroup_AllWeaponTypes => "Miste";
+        public override string WarsResourceGroup_MeleeHandWeapons => "Corpo a corpo";
+        public override string WarsResourceGroup_RangedHandWeapons => "A distanza";
+        public override string WarsResourceGroup_Warmachines => "Macchine da guerra";
 
-        public override string FactionSettings_Titel => "Faction-WideSettings";
-        public override string FactionSettings_Description => "Appliesaallyourcittà";
+        public override string FactionSettings_Titel => "Impostazioni fazione";
+        public override string FactionSettings_Description => "Si applica a tutte le tue città";
 
-        public override string Conscript_MaxPopulation => "MaxPopulation";
-        public override string Conscript_MaxPopulation_Description => "Onlyrecruitswhenpopulationismaxedout";
+        public override string Conscript_MaxPopulation => "Popolazione massima";
+        public override string Conscript_MaxPopulation_Description => "Arruola solo quando la popolazione ha raggiunto il massimo";
 
-        public override string Conscript_FoodAbundance => "MaxCiboStock";
-        public override string Conscript_FoodAbundance_Description => "Onlyrecruitswhenciboreachesmaximumstockpile";
-
+        public override string Conscript_FoodAbundance => "Scorte massime di cibo";
+        public override string Conscript_FoodAbundance_Description => "Arruola solo quando il cibo ha raggiunto il livello massimo di stoccaggio";
         /// <summary>
         /// General settings will go through all items in a list and apply to all of them (to their checkbox)
         /// </summary>
-        public override string GeneralSetting_On => "Seta:On";
-        public override string GeneralSetting_Off => "Seta:Off";
-        public override string GeneralSetting_AllBuildingsDescription => "Appliesaallbuildings";
+        public override string GeneralSetting_On => "Imposta: Attivo";
+        public override string GeneralSetting_Off => "Imposta: Disattivo";
+        public override string GeneralSetting_AllBuildingsDescription => "Si applica a tutti gli edifici";
 
-        public override string GeneralSetting_ApplyMessage => "ChangeappliedaPH0buildings";
+        public override string GeneralSetting_ApplyMessage => "Modifica applicata a {0} edifici";
 
-        public override string MustTurnOffSteamInput => "Ausecontrollers,youmustturnoffSteamInput.";
+        public override string MustTurnOffSteamInput => "Per usare i controller, devi disattivare Steam Input.";
 
-        public override string Technology_GainTitle => "WaysaGuadagnoTechnology";
-        public override string Technology_LevelUp => "LevelSu";
-        public override string Technology_ForEachLevelUp => "Whenalavoratorelevelsupintechnologyfield:PH0";
+        public override string Technology_GainTitle => "Modi per ottenere tecnologia";
+        public override string Technology_LevelUp => "Aumenta livello";
+        public override string Technology_ForEachLevelUp => "Quando un lavoratore sale di livello nel campo tecnologico: {0}";
 
-        public override string VoxelEditor_Description => "Createblockymodels";
+        public override string VoxelEditor_Description => "Crea modelli a blocchi";
 
-        public override string Editor_Tool => "Tool";
-        public override string Editor_SelectOptionsMenu => "SelectionOpzioni";
-        public override string Editor_Continous => "Continuous"; // corrected spelling
-        public override string Editor_Tool_PencilSize => "PencilSize";
-        public override string Editor_Tool_SizeTolerance => "SizeTolerance";
-        public override string Editor_Tool_RoundPencil => "RoundPencil";
-        public override string Editor_Tool_EdgeSize => "EdgeSize";
-        public override string Editor_Tool_PercentFill => "PercentFill";
-        public override string Editor_Tool_ClearAbove => "ClearAbove";
-        public override string Editor_Tool_FillBelow => "FillBelow";
-        public override string Editor_UserModels => "UserModels";
-        public override string Editor_UserModels_Description => "Browsemodelsyouhavesaved";
+        public override string Editor_Tool => "Strumento";
+        public override string Editor_SelectOptionsMenu => "Menu di selezione opzioni";
+        public override string Editor_Continous => "Continuo";
+        public override string Editor_Tool_PencilSize => "Dimensione pennello";
+        public override string Editor_Tool_SizeTolerance => "Tolleranza dimensione";
+        public override string Editor_Tool_RoundPencil => "Pennello rotondo";
+        public override string Editor_Tool_EdgeSize => "Dimensione bordo";
+        public override string Editor_Tool_PercentFill => "Percentuale riempimento";
+        public override string Editor_Tool_ClearAbove => "Cancella sopra";
+        public override string Editor_Tool_FillBelow => "Riempi sotto";
+        public override string Editor_UserModels => "Modelli utente";
+        public override string Editor_UserModels_Description => "Sfoglia i modelli che hai salvato";
 
-        public override string Editor_RetailModels => "RetailModels";
-        public override string Editor_RetailModels_Description => "Caricamodelsfromgame";
+        public override string Editor_RetailModels => "Modelli di gioco";
+        public override string Editor_RetailModels_Description => "Carica modelli dal gioco";
 
-        public override string Editor_ModTemplates => "ModdingTemplates";
-        public override string Editor_ExportAsOBJ => "Exportas.OBJ";
-        public override string Editor_SelectAll => "SelezionaAll";
+        public override string Editor_ModTemplates => "Template modding";
+        public override string Editor_ExportAsOBJ => "Esporta come .OBJ";
+        public override string Editor_SelectAll => "Seleziona tutto";
 
-        public override string Editor_Canvas_Title => "Canvas";
-        public override string Editor_Canvas_Size => "Size";
+        public override string Editor_Canvas_Title => "Tela";
+        public override string Editor_Canvas_Size => "Dimensione";
         public override string Editor_Canvas_Dimension_X => "X";
         public override string Editor_Canvas_Dimension_Y => "Y";
         public override string Editor_Canvas_Dimension_Z => "Z";
-        public override string Editor_Canvas_SizePresets => "SizePresets";
-        public override string Editor_Canvas_Move => "Move";
+        public override string Editor_Canvas_SizePresets => "Predefiniti dimensione";
+        public override string Editor_Canvas_Move => "Sposta";
         public override string Editor_Canvas_Move_Up => "Su";
         public override string Editor_Canvas_Move_Down => "Giù";
-        public override string Editor_Canvas_RotateClockwise => "RotateClockwise";
-        public override string Editor_Canvas_RotateCounterClockwise => "RotateCounterclockwise"; // combined into one word
-        public override string Editor_Canvas_Mirror => "Mirror";
+        public override string Editor_Canvas_RotateClockwise => "Ruota in senso orario";
+        public override string Editor_Canvas_RotateCounterClockwise => "Ruota in senso antiorario";
+        public override string Editor_Canvas_Mirror => "Specchia";
 
-        public override string Editor_Canvas_RotateFlip_Title => "Rotate/Flip";
-        public override string Editor_Canvas_FlipVertical => "FlipSueGiù";
-        public override string Editor_Canvas_FlipOrientation => "FlipLying/Standing";
-        public override string Editor_Canvas_ClearAll_Description => "Removesallblockseframes";
+        public override string Editor_Canvas_RotateFlip_Title => "Ruota / Rifletti";
+        public override string Editor_Canvas_FlipVertical => "Rifletti su/giù";
+        public override string Editor_Canvas_FlipOrientation => "Rifletti orizzontale/verticale";
+        public override string Editor_Canvas_ClearAll_Description => "Rimuove tutti i blocchi e i frame";
 
-        public override string Editor_Animation => "Animation";
-        public override string Editor_Animation_RemoveCurrentFrame => "RimuoviCurrentFrame";
-        public override string Editor_Animation_AddFrameCopy => "AggiungiFrameasCopy";
-        public override string Editor_Animation_AddEmptyFrame => "AggiungiEmptyFrame";
-        public override string Editor_Animation_MoveDescription => "ChangeFramePosition";
-        public override string Editor_Animation_AllFrames => "AllFrames";
-        public override string Editor_Animation_AllFrames_ActionDescription => "Performsameactiononallframes";
+        public override string Editor_Animation => "Animazione";
+        public override string Editor_Animation_RemoveCurrentFrame => "Rimuovi frame corrente";
+        public override string Editor_Animation_AddFrameCopy => "Aggiungi copia frame";
+        public override string Editor_Animation_AddEmptyFrame => "Aggiungi frame vuoto";
+        public override string Editor_Animation_MoveDescription => "Cambia posizione frame";
+        public override string Editor_Animation_AllFrames => "Tutti i frame";
+        public override string Editor_Animation_AllFrames_ActionDescription => "Esegui la stessa azione su tutti i frame";
 
-        public override string Editor_SettingsMenu => "Settings";
+        public override string Editor_SettingsMenu => "Impostazioni";
         public override string Hud_Exit => "Esci";
-        public override string Editor_Canvas_Clear => "Clear";
+        public override string Editor_Canvas_Clear => "Pulisci";
 
-        public override string Editor_Stamp => "Stamp";
-        public override string Editor_StampOtherFrames => "StampinOtherFrames";
-        public override string Editor_StampOtherFrames_Description => "Pastevoxelsintheseframes"; // "thisframes" → "theseframes"
-        public override string Editor_PasteToFrame => "Pastevoxelsinthisframe";
-        public override string Editor_ClearAllFrames => "ClearinAllFrames";
-        public override string Editor_ClearOtherFrames => "ClearOtherFrames";
+        public override string Editor_Stamp => "Timbro";
+        public override string Editor_StampOtherFrames => "Timbra in altri frame";
+        public override string Editor_StampOtherFrames_Description => "Incolla i voxel in questi frame";
+        public override string Editor_PasteToFrame => "Incolla voxel in questo frame";
+        public override string Editor_ClearAllFrames => "Pulisci tutti i frame";
+        public override string Editor_ClearOtherFrames => "Pulisci altri frame";
 
-        public override string Editor_Settings_MoveSpeed => "MoveVelocità";
-        public override string Editor_Settings_BackgroundColor => "BackgroundColor";
-        public override string Editor_Settings_HideHUD => "HideHUD";
+        public override string Editor_Settings_MoveSpeed => "Velocità movimento";
+        public override string Editor_Settings_BackgroundColor => "Colore sfondo";
+        public override string Editor_Settings_HideHUD => "Nascondi HUD";
 
-        public override string Editor_Color => "Color";
-        public override string Editor_ColorsInUseLabel => "ColorsinUse";
-        public override string Editor_Color_BrighterPlus => "Brighter+";
-        public override string Editor_Color_Brighter => "Brighter";
-        public override string Editor_Color_Darker => "Darker";
-        public override string Editor_Color_DarkerPlus => "Darker+";
-        public override string Editor_Color_RedTint => "RossoTint";
-        public override string Editor_Color_Tint => "Tint";
-        public override string Editor_Color_GreenTint => "VerdeTint";
-        public override string Editor_Color_BlueTint => "BluTint";
-        public override string Editor_Color_YellowTint => "GialloTint";
-        public override string Editor_Color_PurpleTint => "PurpleTint";
-        public override string Editor_NoColor => "Empty";
+        public override string Editor_Color => "Colore";
+        public override string Editor_ColorsInUseLabel => "Colori in uso";
+        public override string Editor_Color_BrighterPlus => "Più chiaro++";
+        public override string Editor_Color_Brighter => "Più chiaro";
+        public override string Editor_Color_Darker => "Più scuro";
+        public override string Editor_Color_DarkerPlus => "Più scuro++";
+        public override string Editor_Color_RedTint => "Tinta rossa";
+        public override string Editor_Color_Tint => "Tinta";
+        public override string Editor_Color_GreenTint => "Tinta verde";
+        public override string Editor_Color_BlueTint => "Tinta blu";
+        public override string Editor_Color_YellowTint => "Tinta gialla";
+        public override string Editor_Color_PurpleTint => "Tinta viola";
+        public override string Editor_NoColor => "Vuoto";
 
-        public override string Editor_Material => "Material";
-
+        public override string Editor_Material => "Materiale";
         /// <summary>
-        /// User may change one color to another across the model
+        /// L’utente può sostituire un colore con un altro in tutto il modello
         /// </summary>
-        public override string Editor_Color_Recolor => "Recolor";
-        public override string Editor_Color_RecolorTo => "RecolorA";
+        public override string Editor_Color_Recolor => "Ricolora";
+        public override string Editor_Color_RecolorTo => "Ricolora in";
 
-        public override string Editor_Material_Set => "SetMaterial";
+        public override string Editor_Material_Set => "Imposta materiale";
 
-        public override string Editor_Preview => "Preview";
-        public override string Editor_CombineWithCurrent => "CombineconCurrentModel";
+        public override string Editor_Preview => "Anteprima";
+        public override string Editor_CombineWithCurrent => "Combina con modello corrente";
 
-        public override string Editor_PickedColor => "Picked";
-        public override string Editor_ColorRGBvalues => "R:PH0G:PH1B:PH2";
+        public override string Editor_PickedColor => "Colore selezionato";
+        public override string Editor_ColorRGBvalues => "R:{0} G:{1} B:{2}";
 
-        public override string BuildingType_ImmigrationTent => "ImmigrationTent";
-        public override string BuildingType_ImmigrationTent_Description => "StoresPH0immigrants";
-        public override string BuildingType_ReseachCenter => "ResearchCenter"; // fixed typo "Reseach"
-        public override string BuildingType_Bookpress => "LibroPress";
-        public override string BuildingType_Bookpress_Description => "Inoneresearchfield,allpointsgainedwillbesharedconallPH0inyourothercittà.";
+        public override string BuildingType_ImmigrationTent => "Tenda per immigrati";
+        public override string BuildingType_ImmigrationTent_Description => "Ospita {0} immigrati";
 
-        /// <summary>
-        /// 0: beer, 1: chemistry, 2: gun powder
-        /// </summary>
-        public override string Technology_ReseachExample => "Example:WhenalavoratoreproducesPH0,theywillincreasetheirPH1skill.Whenlevelingup,itwillaggiungipointstowardsPH2technologysincetheysharePH3field."; // fixed "Reseach" and plural
+        public override string BuildingType_ReseachCenter => "Centro di ricerca";
+        public override string BuildingType_Bookpress => "Pressa per libri";
+        public override string BuildingType_Bookpress_Description => "In un campo di ricerca, tutti i punti ottenuti verranno condivisi con tutti i {0} nelle altre città.";
 
-        public override string BuildingType_Research_BaseDescription => "Increasestechnologyresearch.";
+        ///
+        /// 0: birra, 1: chimica, 2: polvere da sparo
+        ///
+        public override string Technology_ReseachExample =>
+            "Esempio: quando un lavoratore produce {0}, aumenta la sua abilità in {1}. " +
+            "Salendo di livello, aggiungerà punti alla tecnologia {2}, poiché condividono lo stesso campo di ricerca.";
 
-        public override string BuildingType_ResearchCenter_Description => "AddsPH0extratechnologyresearchpointswhenalavoratorelevelsupinsamefield.";
+        public override string BuildingType_Research_BaseDescription => "Aumenta la ricerca tecnologica.";
 
-        //DEMO PATCH 5
-        
-         public override string Editor_CropSelection => "Cropaselection";
+        public override string BuildingType_ResearchCenter_Description => "Aggiunge {0} punti ricerca extra quando un lavoratore sale di livello nello stesso campo.";
+        // DEMO PATCH 5
 
-         public override string Immigrants_DisbandedSoldiers => "Disbandedsoldatiwillimmigrate";
-         public override string Immigrants_RefillWorkers => "Quicklyrefillsworkforce";
-         public override string Immigrants_UnhousedAreLost => "Immigratiwithouthousingwilldisappearaftersometempo";
-         public override string Editor_VoxelCount => "PH0voxels";
+        public override string Editor_CropSelection => "Ritaglia selezione";
 
-         public override string Editor_Layers_Titel => "Layers";
-         public override string Editor_Layers_All => "Alllayers";
-         public override string Editor_LayerNumber => "LayerPH0";
+        public override string Immigrants_DisbandedSoldiers => "I soldati congedati diventeranno immigrati";
+        public override string Immigrants_RefillWorkers => "Ripristina rapidamente la forza lavoro";
+        public override string Immigrants_UnhousedAreLost => "Gli immigrati senza casa scompariranno dopo un po' di tempo";
 
-         public override string Editor_Layer_AddEmpty => "Aggiungiemptylayer";
-         public override string Editor_Layer_AddCopy => "Duplicatelayer";
-         public override string Editor_Layer_Remove => "Rimuovilayer";
-         public override string Editor_Layer_MergeDown => "Mergedown";
-         public override string Editor_IsAnimated => "Animated";
-         public override string Editor_ToggleVisible => "Togglevisibility";
-         public override string Editor_ToggleAnimatedLayer => "Toggleanimatedlayer";
-         public override string Editor_Projects => "Projectfiles";
-         public override string ProfileEditor_ReplaceMaterial => "Profilecolor:PH0";
+        public override string Editor_VoxelCount => "{0} voxel";
 
-         public override string ProfileEditor_ProfileColors_Label => "Profilecolors";
-         public override string ProfileEditor_TunicColor => "Tuniccolor";
-         public override string ProfileEditor_PantsColor => "Pantscolor";
-         public override string ProfileEditor_LeaderColor => "Leadercolor";
+        public override string Editor_Layers_Titel => "Livelli";
+        public override string Editor_Layers_All => "Tutti i livelli";
+        public override string Editor_LayerNumber => "Livello {0}";
 
-         public override string MapStartAs_Water => "Acqua";
-         public override string MapStartAs_Land => "Land";
-         public override string MapStartAs_Circle => "Cerchia";
+        public override string Editor_Layer_AddEmpty => "Aggiungi livello vuoto";
+        public override string Editor_Layer_AddCopy => "Duplica livello";
+        public override string Editor_Layer_Remove => "Rimuovi livello";
+        public override string Editor_Layer_MergeDown => "Unisci in basso";
+        public override string Editor_IsAnimated => "Animato";
+        public override string Editor_ToggleVisible => "Attiva/disattiva visibilità";
+        public override string Editor_ToggleAnimatedLayer => "Attiva/disattiva livello animato";
+        public override string Editor_Projects => "File progetto";
 
-         public override string Hud_NeedToBeAssigned => "Needsassignment";
-         public override string Hud_CommitAssignment => "Assign";
-         public override string Technology_NoAvailableResearch => "Noavailableresearch";
+        public override string ProfileEditor_ReplaceMaterial => "Colore profilo: {0}";
+        public override string ProfileEditor_ProfileColors_Label => "Colori profilo";
+        public override string ProfileEditor_TunicColor => "Colore tunica";
+        public override string ProfileEditor_PantsColor => "Colore pantaloni";
+        public override string ProfileEditor_LeaderColor => "Colore capo";
 
-         public override string Research_Tab => "Research";
+        public override string MapStartAs_Water => "Acqua";
+        public override string MapStartAs_Land => "Terra";
+        public override string MapStartAs_Circle => "Cerchio";
 
-        //5.2
-        public override string BuildCategory_General => "General";
-        public override string BuildCategory_Military => "Military";
+        public override string Hud_NeedToBeAssigned => "Richiede assegnazione";
+        public override string Hud_CommitAssignment => "Assegna";
+
+        public override string Technology_NoAvailableResearch => "Nessuna ricerca disponibile";
+        public override string Research_Tab => "Ricerca";
+
+        // 5.2
+        public override string BuildCategory_General => "Generale";
+        public override string BuildCategory_Military => "Militare";
         public override string BuildCategory_Decoration => "Decorazione";
-        public override string BuildCategory_Upgrade => "Potenzia";
-        public override string Work_NoMines => "Nomines";
+        public override string BuildCategory_Upgrade => "Potenziamento";
 
-        //NEXT FEST DEMO
-        public override string HUD_DisplayName => "Displayname";
-        public override string HUD_Filter => "Filter";
-        public override string HUD_Scale => "Scale";
-        public override string HUD_Tags => "Tags";
-        public override string HUD_ClickToCancel => "Clickacancel";
+        public override string Work_NoMines => "Nessuna miniera";
 
-        public override string ObjectTag_Description => "Aggiungiasymbolonmappa";
-        public override string HudPins => "HUDpins";
-        public override string HudPins_Description => "Stickinformationascreen";
+        // NEXT FEST DEMO
 
-        public override string Lobby_PlayerProfileNumbered => "ProfilePH0";
-        public override string Lobby_CharacterCreationNumbered => "CharacterPH0";
-        public override string Lobby_PlayerProfileEdit => "Editplayerprofile";
+        public override string HUD_DisplayName => "Nome visualizzato";
+        public override string HUD_Filter => "Filtro";
+        public override string HUD_Scale => "Scala";
+        public override string HUD_Tags => "Tag";
+        public override string HUD_ClickToCancel => "Clicca per annullare";
 
-        public override string Editor_ConvertAnimationToLayers => "Convertanimationalayers";
-        public override string Editor_StampAllFrames => "Stamponallframes";
+        public override string ObjectTag_Description => "Aggiungi un simbolo sulla mappa";
+        public override string HudPins => "Puntine HUD";
+        public override string HudPins_Description => "Fissa le informazioni sullo schermo";
 
-        public override string Editor_DisplayOptions => "Displayoptions";
-        public override string Editor_CharacterCreator => "Charactercreator";
-        public override string Editor_CharacterCreator_Description => "Militarymodelappearanceeditor";
-        public override string Editor_HatGenre => "Hatdisplaymode";
-        public override string Editor_HatGenre_FollowWeapon => "Followarma";
-        public override string Editor_HatGenre_Uniform => "Uniform";
-        public override string Editor_CopyPasteSelectedColor => "Copyfromselectedcolor";
+        public override string Lobby_PlayerProfileNumbered => "Profilo {0}";
+        public override string Lobby_CharacterCreationNumbered => "Personaggio {0}";
+        public override string Lobby_PlayerProfileEdit => "Modifica profilo giocatore";
 
-        public override string Character_Accessories => "Accessories";
-        public override string Character_Hat => "Hat";
-        public override string Character_Head => "Head";
-        public override string Character_Body => "Body";
-        public override string Character_Arms => "Arms";
-        public override string Character_Back => "Indietro";
-        public override string Character_Face => "Face";
+        public override string Editor_ConvertAnimationToLayers => "Converti animazione in livelli";
+        public override string Editor_StampAllFrames => "Timbra tutti i frame";
 
-        public override string BuildingType_Tavern => "CommonHall";
+        public override string Editor_DisplayOptions => "Opzioni di visualizzazione";
+        public override string Editor_CharacterCreator => "Creatore di personaggi";
+        public override string Editor_CharacterCreator_Description => "Editor dell’aspetto dei modelli militari";
+        public override string Editor_HatGenre => "Modalità visualizzazione cappello";
+        public override string Editor_HatGenre_FollowWeapon => "Segui arma";
+        public override string Editor_HatGenre_Uniform => "Uniforme";
+        public override string Editor_CopyPasteSelectedColor => "Copia dal colore selezionato";
 
-        public override string Settings_CraftMultiplier => "Crafttempomultiplier";
-        public override string Settings_ChildMultiplier_Description => "Increasesvelocitàatwhichnewlavoratoriareadded";
+        public override string Character_Accessories => "Accessori";
+        public override string Character_Hat => "Cappello";
+        public override string Character_Head => "Testa";
+        public override string Character_Body => "Corpo";
+        public override string Character_Arms => "Braccia";
+        public override string Character_Back => "Schiena";
+        public override string Character_Face => "Viso";
+        public override string BuildingType_Tavern => "Sala comune";
 
-        public override string Settings_CasualControls => "Casualplayercontrols";
-        public override string Settings_CasualControls_Description => "Simplifiesgameplaybyreducingchoicesatastodecisions.Onlymoneyisusedasaresource.";
+        public override string Settings_CraftMultiplier => "Moltiplicatore tempo di produzione";
+        public override string Settings_ChildMultiplier_Description => "Aumenta la velocità con cui vengono aggiunti nuovi lavoratori.";
 
-        public override string Settings_AdvancedControls => "Advancedcontrols";
-        public override string Settings_AdvancedControls_Description => "fullresourcemanagementexperience.";
+        public override string Settings_CasualControls => "Controlli semplificati";
+        public override string Settings_CasualControls_Description => "Semplifica il gameplay riducendo le scelte e le decisioni: viene usato solo l’oro come risorsa.";
 
-        public override string WarsResourceGroup_Metal => "Metal";
-        public override string Work_Craft => "Craft";
-        public override string Work_OnlyCraftOnFullStock => "Onlycraftonfullstockpile";
+        public override string Settings_AdvancedControls => "Controlli avanzati";
+        public override string Settings_AdvancedControls_Description => "Esperienza completa di gestione delle risorse.";
 
-        public override string ExperienceType_Smelting => "Smelting";
-        public override string Category_Optimize => "Optimize";
-        public override string BuildCategory_Road => "Road";
-        public override string XP_UnlockBuildPrio => "Unlockcostruiscipriority:PH0";
-        public override string Technology_ModernFarming => "Modernfarming";
+        public override string WarsResourceGroup_Metal => "Metallo";
+        public override string Work_Craft => "Produzione";
+        public override string Work_OnlyCraftOnFullStock => "Produci solo con magazzino pieno";
 
-        public override string ExportImportDescription => "Persharingsavefilesconotherplayer,allfilesarethisfolder:PH0";
+        public override string ExperienceType_Smelting => "Fusione";
+        public override string Category_Optimize => "Ottimizza";
+        public override string BuildCategory_Road => "Strade";
+        public override string XP_UnlockBuildPrio => "Sblocca priorità costruzione: {0}";
+        public override string Technology_ModernFarming => "Agricoltura moderna";
 
-        public override string CityCultureDescription => "Culuturewillgiveitaspecialbonusacittà";
+        public override string ExportImportDescription => "Per condividere i file di salvataggio con altri giocatori, tutti i file si trovano in questa cartella: {0}";
 
-        public override string UnitType_CloseRangeRifle => "Arquebusier";
-        public override string UnitType_LongRangeRifle => "Musketeer";
-        public override string UnitType_Skirmisher => "Skirmisher";
+        public override string CityCultureDescription => "La cultura fornisce un bonus speciale alla città.";
 
-        //From lumen (light)
-        public override string UnitType_MithrilArcher => "Lunariarcher";
-        public override string UnitType_MithrilSwordsman => "Lunariknight";
+        public override string UnitType_CloseRangeRifle => "Archibugiere";
+        public override string UnitType_LongRangeRifle => "Moschettiere";
+        public override string UnitType_Skirmisher => "Guastatore";
 
-        public override string Defence_AutoAssign_Towers => "Assigntowers";
+        // From lumen (light)
+        public override string UnitType_MithrilArcher => "Arciere Lunare";
+        public override string UnitType_MithrilSwordsman => "Cavaliere Lunare";
 
-        public override string EventMessage_DesertersText_Food => "Hungrysoldatiaredesertingfromyouresercito";
+        public override string Defence_AutoAssign_Towers => "Assegna torri automaticamente";
 
-        public override string Tutorial_CasualRecruitSoldiers => "Purchaseonesoldatogruppo";
+        public override string EventMessage_DesertersText_Food => "I soldati affamati stanno disertando dal tuo esercito.";
 
+        public override string Tutorial_CasualRecruitSoldiers => "Acquista un gruppo di soldati.";
 
-        //Shadow update
-        public override string Technology_CannotReassign => "La Tech non può essere riassegnata finché la ricerca non è completata";
-        public override string Diplomacy_DeclareWarAgainst => "Dichiari guerra a";
+        // Shadow Update
+
+        public override string Technology_CannotReassign => "La tecnologia non può essere riassegnata finché la ricerca non è completata.";
+
+        public override string Diplomacy_DeclareWarAgainst => "Dichiara guerra a";
         public override string Diplomacy_AllyCount => "Numero di alleati";
-        public override string Diplomacy_CostPerAlly => "Il costo aumenta di {0} per ogni alleato";
+        public override string Diplomacy_CostPerAlly => "Il costo aumenta di {0} per ogni alleato.";
 
-        public override string Event_ChanceOfFailure => "{0}% di possibilità di fallimento";
+        public override string Event_ChanceOfFailure => "{0}% di probabilità di fallimento";
         public override string EventMessage_Event_Title => "Evento";
         public override string EventMessage_TheCohalition => "La Coalizione";
 
         public override string EventMessage_DarkHorde => "Orda Oscura";
         public override string EventMessage_DarkHordeKiller_Title => "Uccisore dell’Orda Oscura";
-        public override string EventMessage_DarkHordeKiller_Message => "Cavalieri campioni si sono uniti al tuo servizio";
+        public override string EventMessage_DarkHordeKiller_Message => "Cavalieri campioni si sono uniti al tuo servizio.";
 
-        public override string Settings_Mode_Spectator_Description => "Solo spettatore – oppure intervieni con i God Powers.";
-        public override string GodPower => "God Power";
+        public override string Settings_Mode_Spectator_Description => "Modalità spettatore – oppure intervieni con i Poteri Divini.";
+        public override string GodPower => "Potere Divino";
 
-        public override string Building_TreeSprout_Description => "Pianta un albero";
+        public override string Building_TreeSprout_Description => "Pianta un albero.";
         public override string Building_TreeSprout_Soft => "Germoglio di legno tenero";
         public override string Building_TreeSprout_Hard => "Germoglio di legno duro";
 
         public override string GeneralSetting_SetAll => "Applica a tutti";
 
         public override string Hud_All => "Tutti";
-
         public override string Hud_Previous => "Precedente";
-
-        public override string Hud_EffectWillStack => "L’effetto si accumula";
+        public override string Hud_EffectWillStack => "L’effetto si accumula.";
 
         public override string Info_WhenFoodRunsOut => "Quando il cibo finisce, città ed eserciti lo acquisteranno automaticamente dal mercato nero.";
 
-        //Launch test
-        
         public override string InputActionName_NextWar => "Prossima fazione in guerra";
 
         /// <summary>
-        /// These symbols are needed to fit large numbers on the HUD,
-        /// there will be a tooltip to explain what number it represents
+        /// Questi simboli abbreviati vengono usati per visualizzare numeri grandi nell’HUD.
+        /// Un suggerimento spiegherà il valore completo.
         /// </summary>
         public override string EngineHud_SymbolFor100 => "c";
         public override string EngineHud_SymbolFor1000 => "k";
         public override string EngineHud_SymbolFor10000 => "10k";
 
-        /// <summary>
-        /// When loading files from other players, you won’t get their achievement progress
-        /// </summary>
-        public override string GameMenu_BlockImportAchievements => "Blocca gli obiettivi nei file importati";
+        public override string GameMenu_BlockImportAchievements => "Blocca gli obiettivi nei file di salvataggio importati.";
 
-        public override string EndScreen_PeaceVictoryQuote => "Depogliamo le spade e abbracciamo un futuro migliore";
+        public override string EndScreen_PeaceVictoryQuote => "Depogliamo le spade e abbracciamo un futuro migliore.";
 
         public override string VictoryType_DefeatBoss => "Boss sconfitto";
         public override string VictoryType_Domination => "Dominazione";
         public override string VictoryType_WorldPeace => "Pace mondiale";
+
 
     }
 }

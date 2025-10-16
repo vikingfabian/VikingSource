@@ -1820,8 +1820,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "添加 {0}";
         public override string Hud_Both => "两个";
         public override string Hud_Direction => "方向";
-        public override string MusicIsBroken => "音乐目前无法播放";
-
+        
         /// <summary>
         /// 0: 对象类型名称，1: 对象数量
         /// </summary>

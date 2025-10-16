@@ -1823,8 +1823,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "Agregar {0}";
         public override string Hud_Both => "Ambos";
         public override string Hud_Direction => "Dirección";
-        public override string MusicIsBroken => "La música no funciona actualmente";
-
+        
         /// <summary>
         /// 0: nombre del tipo de colección de objetos, 1: número de objetos
         /// </summary>

@@ -1824,8 +1824,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "{0} を追加";
         public override string Hud_Both => "両方";
         public override string Hud_Direction => "方向";
-        public override string MusicIsBroken => "現在、音楽が再生できません";
-
+       
         /// <summary>
         /// 0: オブジェクトの種類名, 1: 数量
         /// </summary>

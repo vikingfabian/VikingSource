@@ -1857,9 +1857,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "Ekle: {0}";
         public override string Hud_Both => "Her ikisi de";
         public override string Hud_Direction => "Yön";
-        public override string MusicIsBroken => "Müzik şu anda kullanılamaz";
-
-
+        
         /// <summary>
         /// 0: object collection type name, 1: number of objects
         /// </summary>

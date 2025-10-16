@@ -2,6 +2,8 @@
 Change Log:
 * Fixed rare assign guard crash
 
+* fixed: Italian translation was broken
+
 #Pics
 
 
