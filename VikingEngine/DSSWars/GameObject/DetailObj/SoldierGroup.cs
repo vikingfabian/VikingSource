@@ -2327,7 +2327,8 @@ namespace VikingEngine.DSSWars.GameObject
                 bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
                 if (waterNode != isShip)
                 {
-                    completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
+                    Ref.update.AddSyncAction(new SyncAction2Arg<SoldierTransformType, int>(completeTransform, waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1));
+                    //completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
                 }
 
                 teleportSoldiers();

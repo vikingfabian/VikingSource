@@ -2536,7 +2536,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string ExportImportDescription => "For sharing save files with other player, all files are this folder: {0}";
 
-        public override string CityCultureDescription => "Culuture will give it a special bonus to the city";
+        public override string CityCultureDescription => "Culture will give it a special bonus to the city";
 
         public override string UnitType_CloseRangeRifle => "Arquebusier";
         public override string UnitType_LongRangeRifle => "Musketeer";

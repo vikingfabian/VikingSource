@@ -209,10 +209,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void defence_assignGuard_toIndex(GuardGroup guard, int index)
         {
-            var defence = defenceBuildings[index];
-            guard.onEnterGuard(this, defence.idAndPosition);
-            defence.soldierGroupId = guard.myIndex;
-            defenceBuildings[index] = defence;
+            lock (defenceBuildings.array)
+            {
+                if (arraylib.InBound(defenceBuildings.array, index))
+                {
+                    var defence = defenceBuildings[index];
+                    guard.onEnterGuard(this, defence.idAndPosition);
+                    defence.soldierGroupId = guard.myIndex;
+                    defenceBuildings[index] = defence;
+                }                
+            }
+            
 
             //guard.refreshSoldierDefence();
             //switch (DssRef.world.subTileGrid.Get(conv.IntToIntVector2(defence.idAndPosition)).GetWallType())

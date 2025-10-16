@@ -124,9 +124,7 @@ namespace VikingEngine.Engine
                     }
                     catch (Exception ex)
                     {
-                        SoundManager.SoundInitializeSuccess = false;
-                        SoundManager.SoundInitializeException = ex;
-                        Ref.gamesett.setSoundLevelsOnError();
+                        SoundManager.OnLaunchException(ex);
                     }
 
                     try
@@ -224,7 +222,15 @@ namespace VikingEngine.Engine
             bgImage.Texture = bgTex;
             bgImage.SetFullTextureSource();
 
-            introSound?.Play();
+            try
+            {
+                introSound?.Play();
+            }
+            catch (Exception ex)
+            {
+                SoundManager.OnLaunchException(ex);
+            }
+            
         }
 
         virtual protected void asyncLoadIntro() { }
