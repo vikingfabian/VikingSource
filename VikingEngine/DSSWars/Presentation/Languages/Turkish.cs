@@ -2601,5 +2601,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_Domination => "Hakimiyet";
         public override string VictoryType_WorldPeace => "Dünya barışı";
 
+        // Launch Polish 1
+        public override string Error_SoundInitFailure => "Ses başlatılamadı";
+
+        public override string GameMenu_ControllerDisconnected => "Kontrol cihazı bağlantısı kesildi";
+
+        public override string Tutorial_HighPriority => "Adamların önce yüksek öncelikli görevleri tamamlayacak";
+
     }
 }

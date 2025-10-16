@@ -2560,5 +2560,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_Domination => "支配";
         public override string VictoryType_WorldPeace => "世界平和";
 
+        // Launch Polish 1
+        public override string Error_SoundInitFailure => "サウンドの初期化に失敗しました";
+
+        public override string GameMenu_ControllerDisconnected => "コントローラーが切断されました";
+
+        public override string Tutorial_HighPriority => "兵士たちは優先度の高い作業から先に行います";
+
     }
 }

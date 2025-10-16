@@ -1,8 +1,12 @@
 ﻿UPDATE
 Change Log:
 * Fixed rare assign guard crash
-
 * fixed: Italian translation was broken
+* repaired two broken stats
+* added some missing translations
+* fixed rare empty work queue crash
+* fixed empty menu crash
+
 
 #Pics
 

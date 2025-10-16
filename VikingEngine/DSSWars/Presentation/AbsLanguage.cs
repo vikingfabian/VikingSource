@@ -1717,5 +1717,12 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string VictoryType_DefeatBoss { get; }
         public abstract string VictoryType_Domination { get; }
         public abstract string VictoryType_WorldPeace { get; }
+
+        //launch polish 1
+        public abstract string Error_SoundInitFailure { get; }
+
+        public abstract string GameMenu_ControllerDisconnected { get; }
+
+        public abstract string Tutorial_HighPriority { get; }
     }
 }

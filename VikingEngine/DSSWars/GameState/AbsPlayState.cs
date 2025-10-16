@@ -271,7 +271,7 @@ namespace VikingEngine.DSSWars.GameState
 
         public void updateMouseVisible()
         {
-            if (menuSystem.IsOpen())
+            if (menuSystem != null && menuSystem.IsOpen())
             {
                 Mouse.Visible = true;
             }

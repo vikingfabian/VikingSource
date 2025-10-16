@@ -14,7 +14,6 @@ namespace VikingEngine.DSSWars.Presentation
     {
         public string Error_SoundInitFailure => "Sound initialization failed";
                
-
         public string GameMenu_ControllerDisconnected => "Controller disconnected";
 
         public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";

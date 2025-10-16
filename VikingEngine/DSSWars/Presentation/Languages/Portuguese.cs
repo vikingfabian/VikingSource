@@ -2085,5 +2085,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_Domination => "Dominação";
         public override string VictoryType_WorldPeace => "Paz mundial";
 
+        // Launch Polish 1
+        public override string Error_SoundInitFailure => "Falha na inicialização do som";
+
+        public override string GameMenu_ControllerDisconnected => "Controle desconectado";
+
+        public override string Tutorial_HighPriority => "Seus homens concluirão primeiro as tarefas de alta prioridade";
+
     }
 }
