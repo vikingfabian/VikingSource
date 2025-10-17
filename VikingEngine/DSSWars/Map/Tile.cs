@@ -358,6 +358,7 @@ namespace VikingEngine.DSSWars.Map
 
         public bool HasBorderImage() { return BorderCount > 0; }
 
+
         public Color MinimapColor_Faction(IntVector2 pos)
         {
             
@@ -585,7 +586,7 @@ namespace VikingEngine.DSSWars.Map
             return DssRef.map.bioms.bioms[(int)biom];
         }
 
-        Color cityColor
+        public Color cityColor
         {
             get
             {

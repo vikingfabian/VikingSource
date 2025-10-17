@@ -204,7 +204,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space(0.5f);
             }
 
-            if (player.mapLayer() == Map.MapDetailLayerType.FactionColors3 && !prepareLayout)
+            if (player.mapLayer() >= Map.MapDetailLayerType.FactionColors3 && !prepareLayout)
             {
                 mapFilterTabs(content);
             }
@@ -310,10 +310,25 @@ namespace VikingEngine.DSSWars.Interface
         {
             for (FactionMapFilter filter = 0; filter < FactionMapFilter.NUM; filter++)
             {
+                SpriteName icon;
+
+                switch (filter)
+                {
+                    default: icon = SpriteName.MissingImage; break;
+
+                    case FactionMapFilter.PopulationHeatmap:
+                        icon = SpriteName.WarsWorker;
+                        break;
+                    case FactionMapFilter.StrengthHeatmap:
+                        icon = SpriteName.WarsStrengthIcon;
+                        break;
+
+                }
+
                 content.Add(new ArtOption(filter == player.factionPixelTexture.filter,
                    new List<AbsRichBoxMember>
                    {
-                        new RbImage(SpriteName.MissingImage)
+                        new RbImage(icon)
                    }, new RbAction1Arg<FactionMapFilter>((FactionMapFilter filter)=>
                        { 
                             player.factionPixelTexture.filter = filter;

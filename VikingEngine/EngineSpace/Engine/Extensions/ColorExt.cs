@@ -81,5 +81,32 @@ namespace VikingEngine
         {
             return value.A * PublicConstants.ByteToPercent;
         }
+
+        /// <summary>
+        /// Returns a color from black → red → yellow → white based on a 0–1 value.
+        /// </summary>
+        public static Color HeatColor_Inferno(float value)
+        {
+            value = MathHelper.Clamp(value, 0f, 1f);
+
+            if (value < 0.33f)
+            {
+                // 0.0 → 0.33 : black → red
+                float t = value / 0.33f;
+                return new Color(t, 0f, 0f); // RGB: (t, 0, 0)
+            }
+            else if (value < 0.66f)
+            {
+                // 0.33 → 0.66 : red → yellow
+                float t = (value - 0.33f) / 0.33f;
+                return new Color(1f, t, 0f); // RGB: (1, t, 0)
+            }
+            else
+            {
+                // 0.66 → 1.0 : yellow → white
+                float t = (value - 0.66f) / 0.34f;
+                return new Color(1f, 1f, t); // RGB: (1, 1, t)
+            }
+        }
     }
 }

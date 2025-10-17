@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.MoonFall;
@@ -14,6 +15,9 @@ namespace VikingEngine.DSSWars.Map
         FactionCols,
         Terrain,
         Minimap,
+        PopulationHeatmap,
+        StrengthHeatmap,
+
         NUM
     }
 
@@ -86,6 +90,78 @@ namespace VikingEngine.DSSWars.Map
                     {
                         t = DssRef.world.tileGrid.Get(loop.Position);
                         texture.SetPixel(loop.Position, t.MinimapColor_Minimap(playerFaction, loop.Position));
+                    }
+                    break;
+                case FactionMapFilter.PopulationHeatmap:
+                case FactionMapFilter.StrengthHeatmap:
+
+                    float max = 0;
+
+                    var factionsC = DssRef.world.factions.counter();
+                    switch (filter)
+                    {
+                        case FactionMapFilter.PopulationHeatmap:
+                            while (factionsC.Next())
+                            {
+                                if (factionsC.sel.isAlive)
+                                {
+                                    max = Math.Max(max, factionsC.sel.totalWorkForce);
+                                }
+                            }
+                            break;
+
+                        case FactionMapFilter.StrengthHeatmap:
+                            while (factionsC.Next())
+                            {
+                                if (factionsC.sel.isAlive)
+                                {
+                                    max = Math.Max(max, factionsC.sel.militaryStrength);
+                                }
+                            }
+                            break;
+                    }
+
+                    int prevCity = -1;
+                    Color prevColor = Color.Black;
+
+                    while (loop.Next())
+                    {
+                        Color color;
+                        t = DssRef.world.tileGrid.Get(loop.Position);
+
+                        if (t.tileContent == TileContent.City)
+                            color = t.cityColor;
+
+                        if (t.heightLevel <= Height.LowerWaterHeight)
+                        {
+                            color = Color.Gray;
+                        }
+                        else if (t.CityIndex == prevCity)
+                        {
+                            color = prevColor;
+                        }
+                        else
+                        {
+                            Faction faction = t.Faction();
+
+                            float value = 0;
+                            switch (filter)
+                            {
+                                case FactionMapFilter.PopulationHeatmap:
+                                   value = faction.totalWorkForce;
+                                   break;
+
+                                case FactionMapFilter.StrengthHeatmap:
+                                    value = faction.militaryStrength;
+                                    break;
+                            }
+
+                            color = ColorExt.HeatColor_Inferno(value / max);
+                            prevCity = t.CityIndex;
+                            prevColor = color;
+                        }
+
+                        texture.SetPixel(loop.Position, color);
                     }
                     break;
             }

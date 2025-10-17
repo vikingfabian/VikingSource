@@ -18,7 +18,6 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
         public string Hud_Search => "Search";
-        public string GameMenu_ControllerDisconnected => "Controller disconnected";
 
         public string DifficultyDescription_ExtremeAggression = "Extreme aggression";
 
