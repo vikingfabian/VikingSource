@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Fixed rare army hud crash
+* Fixed sound crash on load
 
 
 #Pics
