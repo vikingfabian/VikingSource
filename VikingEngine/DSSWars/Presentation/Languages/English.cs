@@ -319,7 +319,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// Display a short string of date as Year, Month, Day
         /// </summary>
         public override string Hud_Date => "Y{0} M{1} D{2}";
-        
+
         /// <summary>
         /// Display a short string of timespan as Hour, Minutes, Seconds
         /// </summary>
@@ -1197,7 +1197,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_MoveInput => "Move command";
 
 
-        
+
         /// <summary>
         /// Versus. Text describing the two armies that will go into battle
         /// </summary>
@@ -1215,7 +1215,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string Settings_ButtonMapping => "Key bindings";
 
-       
+
 
         /// <summary>
         /// Input type, standard PC input
@@ -1449,7 +1449,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string WorkForce_ChildBirthRequirements => "Child birth requirements";
         public override string WorkForce_AvailableHomes => "Available homes: {0}";
-        
+
         /// <summary>
         /// workers require peace to grow(make babies)
         /// </summary>
@@ -1813,7 +1813,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LobbyDemoMode_Demo => "Demo";
 
         public override string Lobby_Tutorial => "Tutorial";
-        
+
         public override string LobbyDemoMode_ShortTutorial => "Quick Tutorial";
         public override string LobbyDemoMode_LongTutorial => "Extended Tutorial";
 
@@ -1867,7 +1867,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "Add {0}";
         public override string Hud_Both => "Both";
         public override string Hud_Direction => "Direction";
-        public override string MusicIsBroken => "Music is currently broken";
 
 
         /// <summary>
@@ -1883,7 +1882,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Info_TotalFoodSpending => "Total food spending";
 
         public override string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
-        
+
         public override string Delivery_SendChunk => "Items per Delivery";
         public override string Delivery_SpeedBonus => "Speed bonus: {0}%";
 
@@ -2057,7 +2056,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_Coin => "Coin";
 
         public override string UnitType_Warhammer => "Hammer knight";
-        
+
         public override string UnitType_SpearAndShield => "Lineman";
 
         public override string UnitType_CollectionOfSoldiers => "Soldier Bundle";
@@ -2278,7 +2277,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Settings_WaterMultiplier_Description => "Determines how much water cities produce and store. Higher values reduce computer performance.";
 
         public override string Settings_ChildMultiplier => "Childbirth Multiplier";
-        
+
         public override string Settings_CraftMultiplier_Description => "Lower values result in faster production.";
 
         public override string FastProduction => "Fast Production";
@@ -2435,42 +2434,42 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildingType_ResearchCenter_Description => "Adds {0} extra technology research points when a worker levels up in the same field.";
 
         //DEMO PATCH 5
-        
-         public override string Editor_CropSelection => "Crop to selection";
 
-         public override string Immigrants_DisbandedSoldiers => "Disbanded soldiers will immigrate";
-         public override string Immigrants_RefillWorkers => "Quickly refills the workforce";
-         public override string Immigrants_UnhousedAreLost => "Immigrants without housing will disappear after some time";
-         public override string Editor_VoxelCount => "{0} voxels";
+        public override string Editor_CropSelection => "Crop to selection";
 
-         public override string Editor_Layers_Titel => "Layers";
-         public override string Editor_Layers_All => "All layers";
-         public override string Editor_LayerNumber => "Layer {0}";
+        public override string Immigrants_DisbandedSoldiers => "Disbanded soldiers will immigrate";
+        public override string Immigrants_RefillWorkers => "Quickly refills the workforce";
+        public override string Immigrants_UnhousedAreLost => "Immigrants without housing will disappear after some time";
+        public override string Editor_VoxelCount => "{0} voxels";
 
-         public override string Editor_Layer_AddEmpty => "Add empty layer";
-         public override string Editor_Layer_AddCopy => "Duplicate layer";
-         public override string Editor_Layer_Remove => "Remove layer";
-         public override string Editor_Layer_MergeDown => "Merge down";
-         public override string Editor_IsAnimated => "Animated";
-         public override string Editor_ToggleVisible => "Toggle visibility";
-         public override string Editor_ToggleAnimatedLayer => "Toggle animated layer";
-         public override string Editor_Projects => "Project files";
-         public override string ProfileEditor_ReplaceMaterial => "Profile color: {0}";
+        public override string Editor_Layers_Titel => "Layers";
+        public override string Editor_Layers_All => "All layers";
+        public override string Editor_LayerNumber => "Layer {0}";
 
-         public override string ProfileEditor_ProfileColors_Label => "Profile colors";
-         public override string ProfileEditor_TunicColor => "Tunic color";
-         public override string ProfileEditor_PantsColor => "Pants color";
-         public override string ProfileEditor_LeaderColor => "Leader color";
+        public override string Editor_Layer_AddEmpty => "Add empty layer";
+        public override string Editor_Layer_AddCopy => "Duplicate layer";
+        public override string Editor_Layer_Remove => "Remove layer";
+        public override string Editor_Layer_MergeDown => "Merge down";
+        public override string Editor_IsAnimated => "Animated";
+        public override string Editor_ToggleVisible => "Toggle visibility";
+        public override string Editor_ToggleAnimatedLayer => "Toggle animated layer";
+        public override string Editor_Projects => "Project files";
+        public override string ProfileEditor_ReplaceMaterial => "Profile color: {0}";
 
-         public override string MapStartAs_Water => "Water";
-         public override string MapStartAs_Land => "Land";
-         public override string MapStartAs_Circle => "Circle";
+        public override string ProfileEditor_ProfileColors_Label => "Profile colors";
+        public override string ProfileEditor_TunicColor => "Tunic color";
+        public override string ProfileEditor_PantsColor => "Pants color";
+        public override string ProfileEditor_LeaderColor => "Leader color";
 
-         public override string Hud_NeedToBeAssigned => "Needs assignment";
-         public override string Hud_CommitAssignment => "Assign";
-         public override string Technology_NoAvailableResearch => "No available research";
+        public override string MapStartAs_Water => "Water";
+        public override string MapStartAs_Land => "Land";
+        public override string MapStartAs_Circle => "Circle";
 
-         public override string Research_Tab => "Research";
+        public override string Hud_NeedToBeAssigned => "Needs assignment";
+        public override string Hud_CommitAssignment => "Assign";
+        public override string Technology_NoAvailableResearch => "No available research";
+
+        public override string Research_Tab => "Research";
 
         //5.2
         public override string BuildCategory_General => "General";
@@ -2536,7 +2535,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string ExportImportDescription => "For sharing save files with other player, all files are this folder: {0}";
 
-        public override string CityCultureDescription => "Culuture will give it a special bonus to the city";
+        public override string CityCultureDescription => "Culture will give it a special bonus to the city";
 
         public override string UnitType_CloseRangeRifle => "Arquebusier";
         public override string UnitType_LongRangeRifle => "Musketeer";
@@ -2586,7 +2585,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         //Launch test
-        
+
 
         public override string InputActionName_NextWar => "Next warring faction";
 
@@ -2607,6 +2606,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_DefeatBoss => "Boss defeated";
         public override string VictoryType_Domination => "Domination";
         public override string VictoryType_WorldPeace => "World Peace";
+
+        //launch polish 1
+        public override string Error_SoundInitFailure => "Sound initialization failed";
+
+        public override string GameMenu_ControllerDisconnected => "Controller disconnected";
+
+        public override string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
 
     }
 }

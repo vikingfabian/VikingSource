@@ -1824,8 +1824,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "{0} を追加";
         public override string Hud_Both => "両方";
         public override string Hud_Direction => "方向";
-        public override string MusicIsBroken => "現在、音楽が再生できません";
-
+       
         /// <summary>
         /// 0: オブジェクトの種類名, 1: 数量
         /// </summary>
@@ -2560,6 +2559,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_DefeatBoss => "Boss 撃破";
         public override string VictoryType_Domination => "支配";
         public override string VictoryType_WorldPeace => "世界平和";
+
+        // Launch Polish 1
+        public override string Error_SoundInitFailure => "サウンドの初期化に失敗しました";
+
+        public override string GameMenu_ControllerDisconnected => "コントローラーが切断されました";
+
+        public override string Tutorial_HighPriority => "兵士たちは優先度の高い作業から先に行います";
 
     }
 }

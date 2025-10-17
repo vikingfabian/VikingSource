@@ -440,7 +440,14 @@ namespace VikingEngine.DSSWars.GameObject
                         unit = createUnit(typeProfile, new IntVector2(x + xStart, y), tilePos, ref soldierData, createModels);
                     }
 
-                    unit.firstUpdate();
+                    if (unit == null)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        unit.firstUpdate();
+                    }
 
                     if (--count <= 0)
                     {
@@ -525,9 +532,13 @@ namespace VikingEngine.DSSWars.GameObject
                         soldierConscript.shipSetup(ref shipData);
 
                         var ship = createUnit(DssRef.units.Get(shipBuilder), IntVector2.Zero, WP.ToTilePos(position), ref shipData, true);
-                        ship.position = position;
-                        ship.health = shipHealth;
-                        ship.refreshShipCarryCount();
+
+                        if (ship != null)
+                        {
+                            ship.position = position;
+                            ship.health = shipHealth;
+                            ship.refreshShipCarryCount();
+                        }
                     }
                     else
                     {
@@ -548,25 +559,40 @@ namespace VikingEngine.DSSWars.GameObject
 
         public AbsSoldierUnit createUnit(AbsSoldierBuilder typeProfile, IntVector2 gridPlacement, IntVector2 area, ref SoldierData data, bool models)
         {
-            AbsSoldierUnit s;
+            var soldiers_sp = soldiers;
 
-            s = typeProfile.CreateUnit();
-            s.factionIndex = this.factionIndex;
-            s.UnitType = typeProfile.unitType;
-            s.soldierData = data;
-
-
-            s.InitLocal(position, gridPlacement, area, this);
-            s.position = WP.ToWorldPos(area); //temp pos
-            s.myIndex = soldiers.Add(s);
-
-            if (army != null && army.TryGetTarget(out var tArmy) && 
-                tArmy.inRender_detailLayer && models)
+            if (soldiers_sp != null)
             {
-                s.setDetailLevel(true);
-                s.update(1f, true);
+                AbsSoldierUnit s;
+
+                s = typeProfile.CreateUnit();
+                s.factionIndex = this.factionIndex;
+                s.UnitType = typeProfile.unitType;
+                s.soldierData = data;
+
+
+                s.InitLocal(position, gridPlacement, area, this);
+                s.position = WP.ToWorldPos(area); //temp pos
+                s.myIndex = soldiers_sp.Add(s);
+
+                if (army != null && army.TryGetTarget(out var tArmy) &&
+                    tArmy.inRender_detailLayer && models)
+                {
+                    s.setDetailLevel(true);
+                    s.update(1f, true);
+                }
+
+                if (soldiers == null)
+                {
+                    s.DeleteMe(DeleteReason.CameraCulling, false);
+                }
+                else
+                {
+                    return s;
+                }
+                
             }
-            return s;
+            return null;
         }
 
         void walking_Peace(AbsArmy tArmy, float time, Vector3 goalWp, bool induvidualSpeed, out bool complete, ref float groupWalkSpeed)
@@ -2301,7 +2327,8 @@ namespace VikingEngine.DSSWars.GameObject
                 bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
                 if (waterNode != isShip)
                 {
-                    completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
+                    Ref.update.AddSyncAction(new SyncAction2Arg<SoldierTransformType, int>(completeTransform, waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1));
+                    //completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
                 }
 
                 teleportSoldiers();

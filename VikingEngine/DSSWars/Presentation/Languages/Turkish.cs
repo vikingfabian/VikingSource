@@ -1857,9 +1857,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "Ekle: {0}";
         public override string Hud_Both => "Her ikisi de";
         public override string Hud_Direction => "Yön";
-        public override string MusicIsBroken => "Müzik şu anda kullanılamaz";
-
-
+        
         /// <summary>
         /// 0: object collection type name, 1: number of objects
         /// </summary>
@@ -2602,6 +2600,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_DefeatBoss => "Baş düşman yenildi";
         public override string VictoryType_Domination => "Hakimiyet";
         public override string VictoryType_WorldPeace => "Dünya barışı";
+
+        // Launch Polish 1
+        public override string Error_SoundInitFailure => "Ses başlatılamadı";
+
+        public override string GameMenu_ControllerDisconnected => "Kontrol cihazı bağlantısı kesildi";
+
+        public override string Tutorial_HighPriority => "Adamların önce yüksek öncelikli görevleri tamamlayacak";
 
     }
 }

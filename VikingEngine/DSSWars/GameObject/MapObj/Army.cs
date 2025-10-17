@@ -336,7 +336,11 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
             if (!tagToHud(args.content))
             {
-                args.content.Add(GetFaction().FlagTextureToHud());
+                var faction = GetFaction();
+                if (faction != null)
+                {
+                    args.content.Add(faction.FlagTextureToHud());
+                }
             }
             args.content.space(0.5f);
             args.content.Add(new RbImage(SpriteName.WarsArmy));

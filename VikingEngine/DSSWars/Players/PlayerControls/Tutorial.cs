@@ -307,6 +307,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         { 
             return missions.sel >= TutorialMission.ProduceWeaponsArmor;
         }
+
+        public bool DisplayCompressedBuildTab()
+        {
+            return missions.sel <= TutorialMission.Linen;
+        }
         
 
         public void tutorial_ToHud(RichBoxContent content)
@@ -378,6 +383,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.iconicontext(HudLib.CheckImage(weaponsArmor_setArmorPrio), ResourceLib.Icon(ItemResourceType.PaddedArmor), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_PaddedArmor));
                     content.iconicontext(HudLib.CheckImage(weaponsArmor_produceWeapons), ResourceLib.Icon(ItemResourceType.SharpStick), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_SharpStick));
                     content.iconicontext(HudLib.CheckImage(weaponsArmor_produceArmor), ResourceLib.Icon(ItemResourceType.PaddedArmor), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_PaddedArmor));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.todoLang.Tutorial_HighPriority, HudLib.InfoYellow_Light));
+                    
                     break;
 
                 case TutorialMission.RecruitGuard:
@@ -437,10 +447,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(info1);
 
                     content.newLine();
-                    HudLib.BulletPoint(content);
-                    var info2 = new RbText(DssRef.lang.Tutorial_CollectFood_Info2);
-                    info2.overrideColor = HudLib.InfoYellow_Light;
-                    content.Add(info2);
+                    HudLib.BulletPoint(content);               
+                    content.Add(new RbText(DssRef.lang.Tutorial_CollectFood_Info2, HudLib.InfoYellow_Light));
 
                     break;
                 

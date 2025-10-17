@@ -1,8 +1,7 @@
 ﻿UPDATE
 Change Log:
-* Fixed: too small render target resolution
-* fixed rare get gold crash
-* added move action to wall tooltip
+* Fixed sound crash on load
+
 
 
 
@@ -13,7 +12,7 @@ heart arrow
 * Map filter icons
 
 #must do#
-x wall right click
+x translate
 
 
 #Winter update - must do#
