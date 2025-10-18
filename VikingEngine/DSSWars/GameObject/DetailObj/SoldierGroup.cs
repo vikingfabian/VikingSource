@@ -1870,6 +1870,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             void pathTowardsPosition(Vector3 goalWp)
             {
+                if (
+
                 tilePos = WP.ToTilePos(position);
                 setGroundY();
                 groupToGroupCollsionUpate_async(pathThreadIndex);
