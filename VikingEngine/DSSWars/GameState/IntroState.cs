@@ -18,7 +18,6 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
-using VikingEngine.PJ;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
 using VikingEngine.Voxels;
@@ -154,8 +153,10 @@ namespace VikingEngine.DSSWars
             {
                 introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
             }
-            catch 
-            {
+            catch (Exception ex)
+            {                
+                SoundManager.OnLaunchException(ex);
+                
                 introSound = null;
             }
 

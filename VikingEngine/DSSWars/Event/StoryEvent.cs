@@ -546,12 +546,16 @@ namespace VikingEngine.DSSWars.Event
                             }
                             barbarianArmy.refreshPositions(true);
                             barbarianArmy.setAsStartArmy();
+                            barbarianArmy.setMassiveFood();
 
                             enemyFac.player.protectedFromDelete = false;
 
+                            foreach (var p in DssRef.state.localPlayers)
+                            {
+                                DssRef.diplomacy.declareWar(enemyFac, p.faction);
+                            }
 
-
-                            return barbarianArmy;
+                                return barbarianArmy;
                         }
                     }
                 }

@@ -236,7 +236,10 @@ namespace VikingEngine.DSSWars.GameObject
                     CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                     buildWorkQue2();
                     //Last position = highest priority
-                    workQue.Sort((a, b) => a.priority.CompareTo(b.priority));
+                    if (workQue.Count > 1)
+                    {
+                        workQue.Sort((a, b) => a.priority.CompareTo(b.priority));
+                    }
 
                     previousWorkQueUpdate.setNow();
                 }

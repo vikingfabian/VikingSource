@@ -199,7 +199,10 @@ namespace VikingEngine.Engine
 
         public static void LoadSound(LoadedSound sound, string dir)
         {
-            SoundEffects[(int)sound] = Content.Load<SoundEffect>(dir);
+            if (VikingEngine.Sound.SoundManager.SoundInitializeSuccess)
+            {
+                SoundEffects[(int)sound] = Content.Load<SoundEffect>(dir);
+            }
         }
         
         public static void SetTextureFromTarget(Texture2D texture, LoadedTexture name)

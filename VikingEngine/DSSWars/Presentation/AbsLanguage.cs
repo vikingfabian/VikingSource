@@ -1026,7 +1026,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Hud_AddX { get; }
         public abstract string Hud_Both { get; }
         public abstract string Hud_Direction { get; }
-        public abstract string MusicIsBroken { get; }
+        //public abstract string MusicIsBroken { get; }
         public abstract string Hud_ObjectsAndCount { get; }
         public abstract string Hud_EffectDoesNotStack { get; }
         public abstract string Work_SmeltX { get; }
@@ -1717,5 +1717,12 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string VictoryType_DefeatBoss { get; }
         public abstract string VictoryType_Domination { get; }
         public abstract string VictoryType_WorldPeace { get; }
+
+        //launch polish 1
+        public abstract string Error_SoundInitFailure { get; }
+
+        public abstract string GameMenu_ControllerDisconnected { get; }
+
+        public abstract string Tutorial_HighPriority { get; }
     }
 }

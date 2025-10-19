@@ -19,6 +19,13 @@ namespace VikingEngine.Sound
         {
             Ref.sound = this;
         }
+
+        public static void OnLaunchException(Exception ex)
+        {
+            SoundInitializeSuccess = false;
+            SoundInitializeException = ex;
+            Ref.gamesett.setSoundLevelsOnError();
+        }
     }
 
     struct SoundSettings

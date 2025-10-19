@@ -46,7 +46,7 @@ namespace VikingEngine.Graphics
             : base(addToRender)
         {
             this.position = pos;
-            this.size = size;
+            this.size = Bound.Min(size, new Vector2(10));
             drawSource = new VectorRect(Vector2.Zero, size).Rectangle;
         }
         public AbsRenderTargetImage(Vector2 pos, Vector2 size)

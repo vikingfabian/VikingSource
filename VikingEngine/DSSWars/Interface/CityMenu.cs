@@ -384,6 +384,12 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newLine();
             HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsHammer));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Tutorial_HighPriority));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsBluePrint));
             content.space();
             content.Add(new RbText(DssRef.lang.Help_Work_Resources));

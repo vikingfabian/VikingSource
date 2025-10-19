@@ -1858,8 +1858,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "Ajouter {0}";
         public override string Hud_Both => "Les deux";
         public override string Hud_Direction => "Direction";
-        public override string MusicIsBroken => "La musique ne fonctionne actuellement pas";
-
+       
 
         /// <summary>
         /// 0: object collection type name, 1: number of objects
@@ -2601,6 +2600,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_WorldPeace => "Paix mondiale";
 
 
+        // Launch Polish 1
+        public override string Error_SoundInitFailure => "Échec de l’initialisation du son";
+
+        public override string GameMenu_ControllerDisconnected => "Manette déconnectée";
+
+        public override string Tutorial_HighPriority => "Vos hommes accompliront d’abord les tâches à haute priorité";
 
     }
 }
