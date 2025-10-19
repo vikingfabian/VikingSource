@@ -8,7 +8,6 @@ Change Log:
 
 
 #must do#
-x translate
 
 
 
