@@ -43,6 +43,8 @@ namespace VikingEngine.DSSWars.Data
         public float setting_waterMulti = 1;
         public float setting_childMulti = 1;
         public float setting_craftMulti = 1;
+        public int setting_techMulti = 1;
+
         public const GameModeMainType DefaultMode = GameModeMainType.FullStory;
         public GameModeMainType setting_gameMode = DefaultMode;
         public bool runStory = true;
@@ -373,7 +375,10 @@ namespace VikingEngine.DSSWars.Data
             w.Write(setting_waterMulti);
             w.Write(setting_childMulti);
             w.Write(setting_craftMulti);
+            w.Write(setting_techMulti);
             w.Write(difficulty);
+
+            Debug.WriteCheck(w);
         }
 
         public void read(System.IO.BinaryReader r, int storageversion)
@@ -401,9 +406,18 @@ namespace VikingEngine.DSSWars.Data
                     setting_childMulti = r.ReadSingle();
                     setting_craftMulti = r.ReadSingle();
                 }
+                if (storageversion >= 31)
+                {
+                    setting_techMulti = r.ReadInt32();
+                }
             }
             difficulty = r.ReadInt32();
             Bound.SetToArray(ref difficulty, options.Length);
+
+            if (storageversion >= 31)
+            {
+                Debug.ReadCheck(r);
+            }
 
             refreshSettings();
         }
@@ -417,6 +431,7 @@ namespace VikingEngine.DSSWars.Data
         Sandbox,
         Peaceful,
         Spectator,
+        QuickMatch,
         NUM
     }
     //enum AiResourceMultiplyType

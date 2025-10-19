@@ -204,7 +204,7 @@ namespace VikingEngine.DSSWars.Data
         //    write(w, false);
         //}
 
-        const int Version = 30;
+        const int Version = 31;
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);

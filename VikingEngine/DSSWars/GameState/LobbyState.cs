@@ -1795,7 +1795,15 @@ namespace VikingEngine.DSSWars
         {
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
             {
-                for (GameModeMainType mode = 0; mode < GameModeMainType.NUM; ++mode)
+                List<GameModeMainType> availableModes = new List<GameModeMainType>
+                {
+                     GameModeMainType.FullStory,
+                      GameModeMainType.QuickMatch,
+                       GameModeMainType.Sandbox,
+                        GameModeMainType.Peaceful,
+                         GameModeMainType.Spectator,
+                };
+                foreach (var mode in availableModes)//for (GameModeMainType mode = 0; mode < GameModeMainType.NUM; ++mode)
                 {
                     LangLib.GameModeText(mode, out string caption, out string desc);
 
