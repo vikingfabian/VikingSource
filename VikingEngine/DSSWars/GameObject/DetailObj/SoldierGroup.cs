@@ -1600,8 +1600,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             foreach (var opponent in groups)
             {
-
-                var group = opponent.GetGroup();
+                var group = opponent?.GetGroup();
                 if (group.soldierCount > 0 && 
                     opponent.army.TryGetTarget(out var tOpponentArmy))
                 {
