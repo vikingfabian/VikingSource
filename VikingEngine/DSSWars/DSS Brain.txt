@@ -1,8 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Fixed sound crash on load
-* (maybe) fixed an empty target crash
-
+* 
 
 
 

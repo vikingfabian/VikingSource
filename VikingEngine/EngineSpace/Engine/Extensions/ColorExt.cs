@@ -83,7 +83,7 @@ namespace VikingEngine
         }
 
         /// <summary>
-        /// Returns a color from black → red → yellow → white based on a 0–1 value.
+        /// Returns a color from white → yellow → red → black based on a 0–1 value.
         /// </summary>
         public static Color HeatColor_Inferno(float value)
         {
@@ -91,21 +91,21 @@ namespace VikingEngine
 
             if (value < 0.33f)
             {
-                // 0.0 → 0.33 : black → red
+                // 0.0 → 0.33 : white → yellow
                 float t = value / 0.33f;
-                return new Color(t, 0f, 0f); // RGB: (t, 0, 0)
+                return new Color(1f, 1f, 1f - t); // RGB: (1, 1, 1−t)
             }
             else if (value < 0.66f)
             {
-                // 0.33 → 0.66 : red → yellow
+                // 0.33 → 0.66 : yellow → red
                 float t = (value - 0.33f) / 0.33f;
-                return new Color(1f, t, 0f); // RGB: (1, t, 0)
+                return new Color(1f, 1f - t, 0f); // RGB: (1, 1−t, 0)
             }
             else
             {
-                // 0.66 → 1.0 : yellow → white
+                // 0.66 → 1.0 : red → black
                 float t = (value - 0.66f) / 0.34f;
-                return new Color(1f, 1f, t); // RGB: (1, 1, t)
+                return new Color(1f - t, 0f, 0f); // RGB: (1−t, 0, 0)
             }
         }
     }

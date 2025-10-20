@@ -72,11 +72,14 @@ namespace VikingEngine.DSSWars.GameObject
             if (factionIndex < 0)
             { return; }
 
+            var faction = GetFaction();
+            if (faction == null)
+            {
+                return;
+            }
+
             lock (workerStatuses.array)
             {
-
-                var faction = GetFaction();
-
                 bool hostUpdate = DssRef.state.host || faction.player.IsLocalPlayer();
 
                 CityStructure.WorkInstance.newCity = true;
