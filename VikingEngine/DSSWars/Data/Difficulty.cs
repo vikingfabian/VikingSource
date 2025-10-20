@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = true;
                     resourcesStartHelp = true;
                     //toPeacefulCheck = false;
-                    aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
+                    aiDelayTimeSec = 60 * TimeExt.MinuteInSeconds;
                     //toPeacefulPercentage = 0.01f;
                     PlayerBonusGold = 6000;
                     break;
@@ -236,7 +236,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = true;
                     resourcesStartHelp = true;
                     //toPeacefulCheck = false;
-                    aiDelayTimeSec = 15 * TimeExt.MinuteInSeconds;
+                    aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
                     //toPeacefulPercentage = 0.05f;
                     PlayerBonusGold = 4000;
                     break;
@@ -252,7 +252,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = true;
                     resourcesStartHelp = true;
                     //toPeacefulCheck = true;
-                    aiDelayTimeSec = 8 * TimeExt.MinuteInSeconds;
+                    aiDelayTimeSec = 20 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.3f;
                     PlayerBonusGold = 2000;
                     break;

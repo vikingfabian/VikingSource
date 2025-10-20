@@ -450,6 +450,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     HudLib.BulletPoint(content);               
                     content.Add(new RbText(DssRef.lang.Tutorial_CollectFood_Info2, HudLib.InfoYellow_Light));
 
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    City city = player.gameControls.map.selection.obj as City;
+                    CraftResourceLib.Food1.toMenu(content, city, false, false, city != null, false);
+
                     break;
                 
                 case TutorialMission.MoveArmy:
