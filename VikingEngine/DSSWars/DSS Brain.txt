@@ -1,7 +1,7 @@
 ﻿UPDATE
 Change Log:
-* Fixed sound crash on load
-* (maybe) fixed an empty target crash
+* Doubled the bot delay time on below 100% difficulty
+* added food reciept to collect food tutorial
 
 
 #Pics

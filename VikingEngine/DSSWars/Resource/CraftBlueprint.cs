@@ -214,13 +214,42 @@ namespace VikingEngine.DSSWars.Resource
             }
 
             bool first = true;
-            bool available;
+            bool available = false;
             foreach (var r in resources)
             {
-                available = city.GetGroupedResource(r.type).amount >= r.amount;
+                if (city != null)
+                {
+                    available = city.GetGroupedResource(r.type).amount >= r.amount;
+                }
                 addResources(r.amount, ResourceLib.Icon(r.type), LangLib.Item(r.type), available);
                 first = false;
             }
+
+            void addResources(int count, SpriteName sprite, string name, bool available)
+            {
+                if (count > 0)
+                {
+                    //string countString = count.ToString();
+                    if (!first)
+                    {
+                        content.Add(new RbImage(SpriteName.pjNumPlus));
+                    }
+
+                    var countText = new RbText(count.ToString());
+                    if (includeAvailable)
+                    {
+                        content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+                        content.space(0.5f);
+                        countText.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                    }
+
+                    content.Add(countText);
+                    content.hspace();
+                    content.Add(new RbImage(sprite));
+                    content.Add(new RbText(name));
+                }
+            }
+            
 
             if (resultType != CraftResultType.NoSet)
             {
@@ -281,30 +310,7 @@ namespace VikingEngine.DSSWars.Resource
                 }
             }
 
-            void addResources(int count, SpriteName sprite, string name, bool available)
-            {
-                if (count > 0)
-                {
-                    //string countString = count.ToString();
-                    if (!first)
-                    {
-                        content.Add(new RbImage(SpriteName.pjNumPlus));
-                    }
-
-                    var countText = new RbText(count.ToString());
-                    if (includeAvailable)
-                    {
-                        content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
-                        content.space(0.5f);
-                        countText.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                    }                       
-                    
-                    content.Add(countText);
-                    content.hspace();
-                    content.Add(new RbImage(sprite));
-                    content.Add(new RbText(name));
-                }
-            }
+            
         }
 
         public bool meetsRequirements(City city)
