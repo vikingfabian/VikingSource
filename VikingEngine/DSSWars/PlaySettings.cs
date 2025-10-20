@@ -25,6 +25,8 @@ namespace VikingEngine.DSSWars
         public int Faction_DyingHate = -1;
         public int Faction_DyingDestru = -1;
 
+        public int Faction_QuickMatch_Start = -1;
+        public int Faction_QuickMatch_End = -1;
 
         public int AiArmyPurchase_MoneyMin;
         public int AiArmyPurchase_IncomeMin;

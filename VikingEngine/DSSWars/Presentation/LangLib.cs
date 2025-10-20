@@ -23,11 +23,7 @@ using VikingEngine.ToGG.MoonFall;
 namespace VikingEngine.DSSWars.Presentation
 {
     static class LangLib
-    {
-        //public static string WorkPrio(WorkPriorityType workPriority)
-        //{ 
-
-        //}
+    {       
         public static void GameModeText(GameModeMainType mode, out string caption, out string desc)
         {
             caption = null;
@@ -37,6 +33,10 @@ namespace VikingEngine.DSSWars.Presentation
                 case GameModeMainType.FullStory:
                     caption = DssRef.lang.Settings_Mode_Story;
                     desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
+                    break;
+                case GameModeMainType.QuickMatch:
+                    caption = DssRef.todoLang.GameMode_QuickMatch;
+                    desc = DssRef.todoLang.GameMode_QuickMatch_Description;
                     break;
                 case GameModeMainType.Sandbox:
                     caption = DssRef.lang.Settings_Mode_Sandbox;

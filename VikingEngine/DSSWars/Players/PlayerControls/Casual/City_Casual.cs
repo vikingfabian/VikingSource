@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case CasualBuildType.ResearchCenter:
                     casualCityProfile.unlock_research = true;
                     queuePlaceBuilding(BuildAndExpandType.ResearchCenter);
-                    technology.advancedBuilding.points = TechnologyTemplate.AdvancedBuildingUnlock;
+                    technology.advancedBuilding.points = XpLib.Unlock.AdvancedBuildingUnlock;
                     break;
 
                 case CasualBuildType.UnlockIronArmor:
@@ -84,14 +84,14 @@ namespace VikingEngine.DSSWars.GameObject
                     queuePlaceBuilding(BuildAndExpandType.Smith);
                     queuePlaceBuilding(BuildAndExpandType.Smelter);
 
-                    technology.steel.points = TechnologyTemplate.SteelUnlock;
+                    technology.steel.points = XpLib.Unlock.SteelUnlock;
                     break;
 
                 case CasualBuildType.UnlockSword:
                     casualCityProfile.unlock_sword = 1;
                     casualCityProfile.refreshTech();
                     queuePlaceBuilding(BuildAndExpandType.Smith);
-                    technology.iron.points = TechnologyTemplate.IronUnlock;
+                    technology.iron.points = XpLib.Unlock.IronUnlock;
                     break;
 
                 case CasualBuildType.UnlockSteelSword:
@@ -101,7 +101,7 @@ namespace VikingEngine.DSSWars.GameObject
                     queuePlaceBuilding(BuildAndExpandType.Smith);
                     queuePlaceBuilding(BuildAndExpandType.Smelter);
 
-                    technology.steel.points = TechnologyTemplate.SteelUnlock;
+                    technology.steel.points = XpLib.Unlock.SteelUnlock;
                     break;
 
                 case CasualBuildType.UnlockCatapult:
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.GameObject
                     queuePlaceBuilding(BuildAndExpandType.Carpenter);
                     casualCityProfile.refreshTech();
 
-                    technology.catapult.points = TechnologyTemplate.CatapultUnlock;
+                    technology.catapult.points = XpLib.Unlock.CatapultUnlock;
                     break;
                 case CasualBuildType.UnlockBlackPower:
                     casualCityProfile.unlock_projectile = 2;
@@ -118,7 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
                     queuePlaceBuilding(BuildAndExpandType.GunBarracks);
                     casualCityProfile.refreshTech();
 
-                    technology.blackPowder.points = TechnologyTemplate.BlackPowderUnlock;
+                    technology.blackPowder.points = XpLib.Unlock.BlackPowderUnlock;
                     break;
                 case CasualBuildType.UnlockGunPower:
                     casualCityProfile.unlock_projectile = CasualCityProfile.ProjectileMax_GunPowder;
@@ -126,14 +126,14 @@ namespace VikingEngine.DSSWars.GameObject
                     queuePlaceBuilding(BuildAndExpandType.GunBarracks);
                     casualCityProfile.refreshTech();
 
-                    technology.gunPowder.points = TechnologyTemplate.GunPowderUnlock;
+                    technology.gunPowder.points = XpLib.Unlock.GunPowderUnlock;
                     break;
 
                 case CasualBuildType.UnlockFarming2:
                     casualCityProfile.unlock_farming = 1;
                     queuePlaceBuilding(BuildAndExpandType.Bank);
                     casualCityProfile.refreshTech();
-                    technology.advancedFarming.points = TechnologyTemplate.AdvancedFarmingUnlock;
+                    technology.advancedFarming.points = XpLib.Unlock.AdvancedFarmingUnlock;
                     break;
                 case CasualBuildType.UnlockFarming3:
                     casualCityProfile.unlock_farming = CasualCityProfile.FarmingMax;

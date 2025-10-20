@@ -28,6 +28,8 @@ namespace VikingEngine.DSSWars.XP
             WorkExperienceType.Chemistry,
         };
 
+        public static TechnologyUnlock Unlock;
+
         public static ExperienceLevel ToLevel(byte xp)
         {
             ExperienceLevel level = (ExperienceLevel)(xp / DssConst.WorkXpToLevel);

@@ -845,7 +845,7 @@ namespace VikingEngine.DSSWars
 
                 if (++loops > 1000)
                 {
-                    throw new EndlessLoopException("MapPaintToolShape.Line");
+                    throw new EndlessLoopException("getPlayerAvailableFaction");
                 }
             }
 

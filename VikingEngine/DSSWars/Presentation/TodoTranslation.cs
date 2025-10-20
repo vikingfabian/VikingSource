@@ -16,13 +16,20 @@ namespace VikingEngine.DSSWars.Presentation
                
         public string GameMenu_ControllerDisconnected => "Controller disconnected";
 
+        public string GameMode_QuickMatch => "Quick Match";
+        public string GameMode_QuickMatch_Description => "A shorter game format. Enter a full-scale war against rival nations.";
+
+        public string Lobby_PlayerCount => "Player count";
+        public string Lobby_TwoTeams => "Two teams";
+
         public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
         public string Hud_Search => "Search";
-        public string GameMenu_ControllerDisconnected => "Controller disconnected";
 
         public string DifficultyDescription_ExtremeAggression = "Extreme aggression";
 
         public string MapFilter => "Map filter";
+
+        public string Settings_TechMultiplier => "Tech research speed";
     }
 
 
