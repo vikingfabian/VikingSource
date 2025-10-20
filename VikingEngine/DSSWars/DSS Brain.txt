@@ -1,8 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Doubled the bot delay time on below 100% difficulty
-* added food reciept to collect food tutorial
-
+* 
 
 #Pics
 

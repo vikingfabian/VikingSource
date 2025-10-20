@@ -100,9 +100,11 @@ namespace VikingEngine.DSSWars.Defence
         {
             IntVector2 subPos = conv.IntToIntVector2(assignedToPost_IdAndPosition);
             Vector3 center = WP.SubtileToWorldPosXZgroundY_Centered(subPos);
-            var tile = DssRef.world.subTileGrid.Get(subPos);
-            postYPos = center.Y + tile.BuildingHeight();
-            setArmyPlacement2(center, false, true);
+            if (DssRef.world.subTileGrid.TryGet(subPos, out var tile))
+            {
+                postYPos = center.Y + tile.BuildingHeight();
+                setArmyPlacement2(center, false, true);
+            }
         }
 
         public void onEnterGuard(City city, int IdAndPosition)
