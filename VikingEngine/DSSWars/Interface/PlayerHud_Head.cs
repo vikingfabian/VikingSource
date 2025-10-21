@@ -316,11 +316,21 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     default: icon = SpriteName.MissingImage; break;
 
+                    case FactionMapFilter.FactionCols:
+                        icon = SpriteName.WarsMapFilterFactions;
+                        break;
+                    case FactionMapFilter.Terrain:
+                        icon = SpriteName.WarsMapFilterTerrain;
+                        break;
+                    case FactionMapFilter.Minimap:
+                        icon = SpriteName.WarsMapFilterMinimap;
+                        break;
+
                     case FactionMapFilter.PopulationHeatmap:
-                        icon = SpriteName.WarsWorker;
+                        icon = SpriteName.WarsMapFilterWorkers;
                         break;
                     case FactionMapFilter.StrengthHeatmap:
-                        icon = SpriteName.WarsStrengthIcon;
+                        icon = SpriteName.WarsMapFilterStrength;
                         break;
 
                 }

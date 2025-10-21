@@ -2229,6 +2229,12 @@ namespace VikingEngine
                 add(SpriteName.WarsHudIconNext);
                 add(SpriteName.WarsHudIconProgress);
                 add(SpriteName.WarsRelationServant);
+                                
+                add(SpriteName.WarsMapFilterFactions);
+                add(SpriteName.WarsMapFilterWorkers);
+                add(SpriteName.WarsMapFilterMinimap);
+                add(SpriteName.WarsMapFilterStrength);
+                add(SpriteName.WarsMapFilterTerrain);
             }
 
             currentIndex = numTilesWidth * 87;

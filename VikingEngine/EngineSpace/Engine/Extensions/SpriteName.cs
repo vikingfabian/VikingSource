@@ -2534,6 +2534,11 @@ namespace VikingEngine
         WarsRelationFlag,
         
         WarsMapIcon,
+        WarsMapFilterFactions,
+        WarsMapFilterWorkers,
+        WarsMapFilterMinimap,
+        WarsMapFilterStrength,
+        WarsMapFilterTerrain,
         WarsTechnology_Unlocked,
         WarsTechnology_Locked,
         WarsGovernmentIcon,
