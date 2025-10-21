@@ -39,7 +39,11 @@ GAME OPTIONS
 -> player start area is enlarged on "find start position" failure
 
 * fixed: bot delay was not set by high difficulty
-* New achievement: Taste the impossible: Terminate the first faction to attack you. 300% difficulty.
+
+Achievements: 
+* Taste the impossible: Terminate the first faction to attack you. 300% difficulty.
+
+
 
 MAP
 * Optimized: Diplomacy map
