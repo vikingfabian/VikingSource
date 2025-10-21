@@ -1303,13 +1303,14 @@ namespace VikingEngine.DSSWars.Map.Generate
                 FactionType.EasternEmpire,
                 FactionType.NordicRealm,
                 FactionType.DragonSlayer,
-                FactionType.DyingDestru,
                 FactionType.BearClaw,
+                FactionType.DyingDestru,
             };
 
             int count = DssRef.difficulty.setting_QuickMatch_PlayerCount - DssRef.storage.playerCount;
-            DssRef.settings.Faction_QuickMatch_Start = -1;
-            DssRef.settings.Faction_QuickMatch_End = -1;
+            world.quickMatchFaction = new List<int>(count);
+            //DssRef.settings.Faction_QuickMatch_Start = -1;
+            //DssRef.settings.Faction_QuickMatch_End = -1;
 
             for (int i = 0; i < count; ++i)
             {               
@@ -1317,11 +1318,12 @@ namespace VikingEngine.DSSWars.Map.Generate
                 faction.displayInFullOverview = true;
                 region.GetStartFactionRegion(nationWorkForce, randomCity_inMapCenter(), world, faction);
 
-                if (i == 0)
-                {
-                    DssRef.settings.Faction_QuickMatch_Start = faction.myIndex;
-                    DssRef.settings.Faction_QuickMatch_End = faction.myIndex + count -1;
-                }
+                world.quickMatchFaction.Add(faction.myIndex);
+                //if (i == 0)
+                //{
+                //    DssRef.settings.Faction_QuickMatch_Start = faction.myIndex;
+                //    DssRef.settings.Faction_QuickMatch_End = faction.myIndex + count -1;
+                //}
             }
         }
 
@@ -1467,14 +1469,17 @@ namespace VikingEngine.DSSWars.Map.Generate
             
         }
 
+
+
         City randomCity_inMapCenter()
         {
-            if (world.metaData.mapSize > MapSize.Small)
-            {
-                Rectangle2 centerArea = new Rectangle2(IntVector2.Zero, world.Size);
-                /// centerArea.
-                centerArea.AddWidthRadius(-world.Size.X / 4);
-                centerArea.AddHeightRadius(-world.Size.Y / 4);
+            //if (world.metaData.mapSize > MapSize.Tiny)
+            //{
+                //Rectangle2 centerArea = new Rectangle2(IntVector2.Zero, world.Size);
+                ///// centerArea.
+                //centerArea.AddWidthRadius(-world.Size.X / 4);
+                //centerArea.AddHeightRadius(-world.Size.Y / 4);
+                Rectangle2 centerArea = world.CenterArea();
 
                 int loops = 100;
                 while (loops-- > 0)
@@ -1485,7 +1490,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         return city;
                     }
                 }
-            }
+            //}
             return randomCity();
         }
         //public Faction getPlayerAvailableFaction(bool firstPlayer, List<Players.LocalPlayer> players)

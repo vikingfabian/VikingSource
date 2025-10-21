@@ -248,7 +248,12 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
-            init(false, new TimeLength(DssRef.difficulty.aiDelayTimeSec));
+            var time = new TimeLength(DssRef.difficulty.aiDelayTimeSec);
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            {
+                time.seconds *= 0.5f;
+            }
+            init(false, time);
         }
         public override EventType StoryEventType()
         {
@@ -1277,6 +1282,96 @@ namespace VikingEngine.DSSWars.Event
         }
     }
 
+    class StoryEvent_QuickMatch : AbsStoryEvent
+    {
+        List<Faction> matchFactions;
+        public StoryEvent_QuickMatch()
+        {
+            matchFactions = Factions();
+        }
+        public override EventType StoryEventType()
+        {
+            return Event.EventType.QuickMatch;
+        }
+
+        public override bool asyncUpdate(float time)
+        {
+            //int alive = 0;
+            if (eventState != EventState.Done)
+            {
+                for (var i = 0; i < matchFactions.Count; ++i)
+                {
+                    var faction1 = matchFactions[i];
+                    if (faction1.isAlive)
+                    {
+                        for (var j = i + 1; j < matchFactions.Count; ++j)
+                        {
+                            var faction2 = matchFactions[j];
+                            if (faction2.isAlive && DssRef.diplomacy.GetRelationType(faction1, faction2) <= RelationType.RelationTypeN3_War)
+                            {
+                                return false;
+                            }
+
+                        }
+
+                        //No alive opponents
+                        MatchResult matchResult = new MatchResult();
+                        foreach (var participant in matchFactions)
+                        {
+                            if (participant == faction1 ||
+                                DssRef.diplomacy.GetRelationType(faction1, participant) >= RelationType.RelationType3_Ally)
+                            {
+                                matchResult.winner.Add(participant);
+                            }
+                            else
+                            {
+                                matchResult.loser.Add(participant);
+                            }
+                        }
+
+                        Ref.update.AddSyncAction(new SyncAction3Arg<Interface.CutScene.GameEndReason, VictoryType, MatchResult>(
+                            DssRef.state.events.triggerGameEnd, Interface.CutScene.GameEndReason.Complete, VictoryType.QuickMatchComplete, matchResult));
+
+                        eventState = EventState.Done;
+                        return true;
+                        //DssRef.state.events.triggerGameEnd(Interface.CutScene.GameEndReason.Complete, VictoryType.QuickMatchComplete, matchResult);
+                    }
+                }
+            }
+            
+            return eventState == EventState.Done;
+        }
+
+        public static List<Faction> Factions()
+        {
+            List<Faction> matchFactions = new List<Faction>(8);
+            
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                matchFactions.Add(p.faction);
+            }
+
+            foreach (var ix in DssRef.world.quickMatchFaction)
+            {
+                var faction = DssRef.world.faction(ix);
+                if (faction != null)
+                {
+                    matchFactions.Add(faction);
+                }
+            }
+
+            return matchFactions;
+        }
+        protected override bool TimedEvent()
+        {
+            return false;
+        }
+        public override int OrderIndex()
+        {
+            return EventsOrder.DefeatTheBoss;
+        }
+    }
+
     static class EventsOrder
     {
         //Do NOT use for save
@@ -1316,6 +1411,7 @@ namespace VikingEngine.DSSWars.Event
         BossWarning,
         Boss,
         DefeatTheBoss,
+        QuickMatch,
         //Horde,
     }
 

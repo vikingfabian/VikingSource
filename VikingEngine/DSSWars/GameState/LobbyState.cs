@@ -1540,7 +1540,7 @@ namespace VikingEngine.DSSWars
                 if (set)
                 {
                     DssRef.difficulty.setting_QuickMatch_PlayerCount = value;
-
+                    restartBackgroundLoading();
                     DssRef.storage.Save(null);
                 }
                 return DssRef.difficulty.setting_QuickMatch_PlayerCount;

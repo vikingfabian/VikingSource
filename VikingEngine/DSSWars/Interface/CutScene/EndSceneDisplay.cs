@@ -23,10 +23,10 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         EndSceneLeftDisplayMain left;
         EndSceneCenterDisplayMain center;
         EndSceneRightDisplayMain right;
-        public EndSceneDisplay(GameEndReason endReason, VictoryType vType, Action watchEpilogue)
+        public EndSceneDisplay(GameEndReason endReason, VictoryType vType, Action watchEpilogue, MatchResult matchResult)
         { 
             left = new EndSceneLeftDisplayMain();
-            center = new EndSceneCenterDisplayMain(endReason, vType, watchEpilogue);
+            center = new EndSceneCenterDisplayMain(endReason, vType, watchEpilogue, matchResult);
             right = new EndSceneRightDisplayMain();
 
             center.beginMove(0);
@@ -103,10 +103,10 @@ namespace VikingEngine.DSSWars.Interface.CutScene
     {
         EndSceneCenterDisplayPart part;
 
-        public EndSceneCenterDisplayMain(GameEndReason endReason, VictoryType vType, Action watchEpilogue)
+        public EndSceneCenterDisplayMain(GameEndReason endReason, VictoryType vType, Action watchEpilogue, MatchResult matchResult)
             : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].gameControls.input)
         {
-            part = new EndSceneCenterDisplayPart(endReason, vType, this, watchEpilogue);
+            part = new EndSceneCenterDisplayPart(endReason, vType, this, watchEpilogue, matchResult);
 
             parts = new List<HUD.RichBox.RichboxGuiPart>()
             {
@@ -117,55 +117,72 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
     class EndSceneCenterDisplayPart : RichboxGuiPart
     {
-        public EndSceneCenterDisplayPart(GameEndReason endReason, VictoryType vType, RichboxGui gui, Action watchEpilogue)
+        public EndSceneCenterDisplayPart(GameEndReason endReason, VictoryType vType, RichboxGui gui, Action watchEpilogue, MatchResult matchResult)
             : base(gui)
         {
-            switch (endReason)
+            if (matchResult != null)
             {
-                case GameEndReason.Victory:
-                    content.h1(DssRef.lang.EndScreen_VictoryTitle, Color.Yellow);
-                    
+                content.h1(DssRef.todoLang.EndScreen_MatchComplete, Color.Yellow);
+                content.h2(DssRef.lang.EndScreen_VictoryTitle, HudLib.TitleColor_Label);
+                foreach (var m in matchResult.winner)
+                {
+                    content.newLine();
+                    content.Add(m.FlagTextureToHud());
+                    content.space(0.5f);
+                    content.Add(new RbText(m.player.Name, HudLib.TitleColor_Name));
+                }
 
-                    string endquote = null;
-                    string typeText = null;
-                    switch (vType)
-                    { 
-                        case VictoryType.DefeatBoss:
-                            typeText = DssRef.lang.VictoryType_DefeatBoss;
-                            endquote = arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes);
-                            break;
-                        case VictoryType.Domination:
-                            typeText = DssRef.lang.VictoryType_Domination;
-                            endquote = DssRef.lang.EndScreen_DominationVictoryQuote;
-                            break;
-                        case VictoryType.WorldPeace:
-                            typeText = DssRef.lang.VictoryType_WorldPeace;
-                            endquote = DssRef.lang.EndScreen_PeaceVictoryQuote;
-                            break;
-                    }
+                content.newParagraph();
+                content.h2(DssRef.lang.EndScreen_FailTitle, HudLib.TitleColor_Label);
+                foreach (var m in matchResult.loser)
+                {
+                    content.newLine();
+                    content.Add(m.FlagTextureToHud());
+                    content.space(0.5f);
+                    content.Add(new RbText(m.player.Name, HudLib.TitleColor_Name));
+                }
 
-                    content.h2(typeText, HudLib.TitleColor_TypeName);
-                    content.text(endquote, HudLib.InfoYellow_Light);
-                    //if (bossVictory)
-                    //{
-                    //    content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
-                    //}
-                    //else
-                    //{
-                    //    content.text(DssRef.lang.EndScreen_DominationVictoryQuote);
-                    //}
-                    break;
-                
-                case GameEndReason.Defeat:
-                    content.h1(DssRef.lang.EndScreen_FailTitle).overrideColor = Color.Yellow;
-                    content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_FailureQuotes));
-                    break;
-
-                case GameEndReason.TimesUp:
-                    content.h1(DssRef.lang.EndScreen_TimeHasEndedTitle).overrideColor = Color.Yellow;
-                    break;
             }
+            else
+            {
+                switch (endReason)
+                {
+                    case GameEndReason.Victory:
+                        content.h1(DssRef.lang.EndScreen_VictoryTitle, Color.Yellow);
 
+
+                        string endquote = null;
+                        string typeText = null;
+                        switch (vType)
+                        {
+                            case VictoryType.DefeatBoss:
+                                typeText = DssRef.lang.VictoryType_DefeatBoss;
+                                endquote = arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes);
+                                break;
+                            case VictoryType.Domination:
+                                typeText = DssRef.lang.VictoryType_Domination;
+                                endquote = DssRef.lang.EndScreen_DominationVictoryQuote;
+                                break;
+                            case VictoryType.WorldPeace:
+                                typeText = DssRef.lang.VictoryType_WorldPeace;
+                                endquote = DssRef.lang.EndScreen_PeaceVictoryQuote;
+                                break;
+                        }
+
+                        content.h2(typeText, HudLib.TitleColor_TypeName);
+                        content.text(endquote, HudLib.InfoYellow_Light);
+                        break;
+
+                    case GameEndReason.Defeat:
+                        content.h1(DssRef.lang.EndScreen_FailTitle).overrideColor = Color.Yellow;
+                        content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_FailureQuotes));
+                        break;
+
+                    case GameEndReason.TimesUp:
+                        content.h1(DssRef.lang.EndScreen_TimeHasEndedTitle).overrideColor = Color.Yellow;
+                        break;
+                }
+            }
             content.newParagraph();
 
             Color ButtonColor = new Color(146, 161, 153);//new Color(48, 80, 101);

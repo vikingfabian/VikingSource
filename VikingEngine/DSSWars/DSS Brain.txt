@@ -31,6 +31,15 @@ GAME OPTIONS
 -> story is about 90 minutes shorter
 -> 300% bot economy
 
+* Quick match game mode
+-> start in a instant war with other nations
+-> "short" game mode, about 10hours
+-> tech research speed
+-> a much shorter peaceful start period
+-> king of the hill, or two teams
+-> players are grouped in a smaller, center area
+-> player start area is enlarged on "find start position" failure
+
 * fixed: bot delay was not set by high difficulty
 * New achievement: Taste the impossible: Terminate the first faction to attack you. 300% difficulty.
 

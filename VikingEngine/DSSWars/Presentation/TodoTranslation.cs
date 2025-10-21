@@ -30,6 +30,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string MapFilter => "Map filter";
 
         public string Settings_TechMultiplier => "Tech research speed";
+
+        public string EndScreen_MatchComplete => "Match result";
     }
 
 
