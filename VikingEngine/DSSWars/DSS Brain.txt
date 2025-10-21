@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* rare ownerToHud crash fix
+* Fixed "Commander" 3d text crash
 
 #Pics
 
