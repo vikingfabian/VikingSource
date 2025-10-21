@@ -166,16 +166,17 @@ namespace VikingEngine.DSSWars.GameObject
         }
         protected void ownerToHud(Interface.ObjectHudArgs args, bool divider)
         {
-            if (args.player != null && GetFaction() != args.player.faction)
+            var faction = GetFaction();
+            if (args.player != null && faction != null && faction != args.player.faction)
             {
-                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, faction);
 
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
                 args.content.space(0.5f);
                 args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
                 args.content.space(0.5f);
-                args.content.Add(new RbText(GetFaction().PlayerName, HudLib.TitleColor_Name));
+                args.content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
 
                 if (divider)
                 {
