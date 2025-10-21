@@ -10,6 +10,8 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.LootFest.GO.Characters.Monsters;
+using VikingEngine.LootFest.Map;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.Commander.LevelSetup;
@@ -89,6 +91,8 @@ namespace VikingEngine.DSSWars
         public List<FactionType> availableGenericAiTypes = new List<FactionType>();
 
         public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
+
+        public List<int> quickMatchFaction = null;
 
         public WorldData()
         {
@@ -612,8 +616,7 @@ namespace VikingEngine.DSSWars
 
                 previous = tile;
             }
-            //tilesSz.end(w);
-
+            
             if (abortLoad) return;
 
             Debug.WriteCheck(w);
@@ -812,16 +815,28 @@ namespace VikingEngine.DSSWars
             return distances.minMember;
         }
 
-        
+        public Rectangle2 CenterArea()
+        {
+            int radius = GenerateMap.HeadCityNeededFreeRadius * (DssRef.difficulty.setting_QuickMatch_PlayerCount < 6? 4 : 5);
+            radius = Bound.Max(radius, Size.Y / 2 - 5);
+            Rectangle2 centerArea = Rectangle2.FromCenterTileAndRadius(Size / 2, radius);//new Rectangle2(IntVector2.Zero, world.Size);
+            ///// centerArea.
+            //centerArea.AddWidthRadius(-world.Size.X / 4);
+            //centerArea.AddHeightRadius(-world.Size.Y / 4);
+            return centerArea;
+        }
+
+
 
         public Faction getPlayerAvailableFaction(bool firstPlayer, List<Players.LocalPlayer> players)
         {
             const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
 
-            Rectangle2 centerArea = new Rectangle2(IntVector2.Zero, Size);
-            /// centerArea.
-            centerArea.AddWidthRadius(-Size.X / 4);
-            centerArea.AddHeightRadius(-Size.Y / 4);
+            //Rectangle2 centerArea = new Rectangle2(IntVector2.Zero, Size);
+            ///// centerArea.
+            //centerArea.AddWidthRadius(-Size.X / 4);
+            //centerArea.AddHeightRadius(-Size.Y / 4);
+            Rectangle2 centerArea = CenterArea();
 
             int loops = 0;
             while (true)
@@ -829,9 +844,9 @@ namespace VikingEngine.DSSWars
                 Faction result = factions.GetRandom(Ref.rnd);
                 
                 if (result.availableForPlayer &&
-                    (centerArea.IntersectPoint(result.mainCity.tilePos) || loops >= 100))
+                    (centerArea.IntersectPoint(result.mainCity.tilePos) || loops >= 1000))
                 {
-                    if (firstPlayer || loops >= 100)
+                    if (firstPlayer || loops >= 1000)
                     {
                         return result;
                     }
@@ -843,9 +858,14 @@ namespace VikingEngine.DSSWars
                     ++loops;
                 }
 
-                if (++loops > 1000)
+                if (++loops > 10000)
                 {
-                    throw new EndlessLoopException("MapPaintToolShape.Line");
+                    throw new EndlessLoopException("getPlayerAvailableFaction");
+                }
+
+                if (loops == 100 || loops == 200 || loops == 300)
+                {
+                    centerArea.AddRadius(10);
                 }
             }
 

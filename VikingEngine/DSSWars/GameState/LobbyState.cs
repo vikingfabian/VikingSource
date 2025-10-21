@@ -1304,10 +1304,17 @@ namespace VikingEngine.DSSWars
         
         void gameModeClick(GameModeMainType mode)
         {
+            var prev = DssRef.difficulty.setting_gameMode;
             DssRef.difficulty.setting_gameMode = mode;
             DssRef.storage.Save(null);
             refreshDifficultyLevel();
             underMenu.CloseDropDown();
+
+            bool mapChange = (prev == GameModeMainType.QuickMatch) != (mode == GameModeMainType.QuickMatch);
+            if (mapChange)
+            {
+                restartBackgroundLoading();
+            }
             //mainMenu();
             //newGameSettings();
         }
@@ -1388,6 +1395,19 @@ namespace VikingEngine.DSSWars
                 modeOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_GameMode, underMenu);
             }
 
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            {
+                content.newLine();
+                content.Add(new RbImage(SpriteName.birdPlayerCount));
+                content.space();
+                content.Add(new RbText(DssRef.todoLang.Lobby_PlayerCount, HudLib.TitleColor_Label));
+                content.space();
+                content.Add(new RbDragButton(new DragButtonSettings(2, 8, 1), quickPlayerCountProperty));
+
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Lobby_TwoTeams) }, bQuickTwoTeamProperty));
+            }
+
             content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
 
             if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
@@ -1419,6 +1439,17 @@ namespace VikingEngine.DSSWars
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_CentralGold) }, centralGoldProperty,
                 new RbTooltip_Text(DssRef.lang.Settings_CentralGold_Description)));
 
+
+            if (DssRef.storage.metaProgression.unlockedDangerousSettings || DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            {
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsTechnology_Unlocked));
+                content.space();
+                content.Add(new RbText(DssRef.todoLang.Settings_TechMultiplier, HudLib.TitleColor_Label));
+                content.space();
+                content.Add(new RbDragButton(new DragButtonSettings(1, 10, 1), DssRef.difficulty.TechMultiProperty));
+
+            }
 
             if (DssRef.storage.metaProgression.unlockedDangerousSettings)
             {
@@ -1502,6 +1533,27 @@ namespace VikingEngine.DSSWars
                     DssRef.storage.Save(null);
                 }
                 return DssRef.storage.mapSettings.seed;
+            }
+
+            int quickPlayerCountProperty(bool set, int value)
+            {
+                if (set)
+                {
+                    DssRef.difficulty.setting_QuickMatch_PlayerCount = value;
+                    restartBackgroundLoading();
+                    DssRef.storage.Save(null);
+                }
+                return DssRef.difficulty.setting_QuickMatch_PlayerCount;
+            }
+
+            bool bQuickTwoTeamProperty(object tag, bool set, bool value)
+            {
+                if (set)
+                {
+                    DssRef.difficulty.setting_QuickMatch_TwoTeams = value;
+                    DssRef.storage.Save(null);
+                }
+                return DssRef.difficulty.setting_QuickMatch_TwoTeams;
             }
         }
                
@@ -1795,7 +1847,15 @@ namespace VikingEngine.DSSWars
         {
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
             {
-                for (GameModeMainType mode = 0; mode < GameModeMainType.NUM; ++mode)
+                //List<GameModeMainType> availableModes = new List<GameModeMainType>
+                //{
+                //     GameModeMainType.FullStory,
+                //      GameModeMainType.QuickMatch,
+                //       GameModeMainType.Sandbox,
+                //        GameModeMainType.Peaceful,
+                //         GameModeMainType.Spectator,
+                //};
+                foreach (var mode in Difficulty.AvailableModes)//for (GameModeMainType mode = 0; mode < GameModeMainType.NUM; ++mode)
                 {
                     LangLib.GameModeText(mode, out string caption, out string desc);
 

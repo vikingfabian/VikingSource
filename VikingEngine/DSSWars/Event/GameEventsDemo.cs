@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.Event
                
                 Ref.update.AddSyncAction(new SyncAction(()=>
                 {
-                    triggerGameEnd(GameEndReason.TimesUp, VictoryType.None);
+                    triggerGameEnd(GameEndReason.TimesUp, VictoryType.None, null);
                 }));
             }
 
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Event
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {
                     DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_Complete_Title, DssRef.lang.Demo_EndInOneMinuteDescription);
-                    new Timer.TimedAction2ArgTrigger_InGame<GameEndReason, VictoryType>(triggerGameEnd, victory? GameEndReason.Victory : GameEndReason.Defeat, VictoryType.None, TimeExt.MinuteInSeconds * 1f);
+                    new Timer.TimedAction3ArgTrigger_InGame<GameEndReason, VictoryType, MatchResult>(triggerGameEnd, victory? GameEndReason.Victory : GameEndReason.Defeat, VictoryType.None, null, TimeExt.MinuteInSeconds * 1f);
                 }));
             }
         }

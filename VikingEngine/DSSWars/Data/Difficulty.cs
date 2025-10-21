@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Data
 
         static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200, 300 };
         public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150, 300 };
-        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
+        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.QuickMatch, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
 
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
@@ -43,6 +43,29 @@ namespace VikingEngine.DSSWars.Data
         public float setting_waterMulti = 1;
         public float setting_childMulti = 1;
         public float setting_craftMulti = 1;
+        public int setting_techMulti = 1;
+        public int setting_techMulti_QuickMatch = 2;
+        public int setting_QuickMatch_PlayerCount = 4;
+        public bool setting_QuickMatch_TwoTeams = false;
+
+
+        public int TechMultiProperty(bool set, int value)
+        {
+            if (set)
+            {
+                if (setting_gameMode == GameModeMainType.QuickMatch)
+                {
+                    setting_techMulti_QuickMatch = value;
+                }
+                else
+                { 
+                    setting_techMulti = value;
+                }
+
+            }
+            return setting_gameMode == GameModeMainType.QuickMatch ? setting_techMulti_QuickMatch : setting_techMulti;
+        }
+
         public const GameModeMainType DefaultMode = GameModeMainType.FullStory;
         public GameModeMainType setting_gameMode = DefaultMode;
         public bool runStory = true;
@@ -345,6 +368,11 @@ namespace VikingEngine.DSSWars.Data
                     runStory = true;
                     peaceful = false;
                     break;
+                case GameModeMainType.QuickMatch:
+                    runStory = false;
+                    peaceful = false;
+                    toPeacefulPercentage = 0;
+                    break;
                 case GameModeMainType.Sandbox:
                 case GameModeMainType.Spectator:
                     runStory = false;
@@ -373,7 +401,13 @@ namespace VikingEngine.DSSWars.Data
             w.Write(setting_waterMulti);
             w.Write(setting_childMulti);
             w.Write(setting_craftMulti);
+            w.Write(setting_techMulti);
+            w.Write(setting_techMulti_QuickMatch);
+            w.Write(setting_QuickMatch_PlayerCount);
+            w.Write(setting_QuickMatch_TwoTeams);
             w.Write(difficulty);
+
+            Debug.WriteCheck(w);
         }
 
         public void read(System.IO.BinaryReader r, int storageversion)
@@ -401,11 +435,29 @@ namespace VikingEngine.DSSWars.Data
                     setting_childMulti = r.ReadSingle();
                     setting_craftMulti = r.ReadSingle();
                 }
+                if (storageversion >= 31)
+                {
+                    setting_techMulti = r.ReadInt32();
+                    setting_techMulti_QuickMatch = r.ReadInt32();
+                    setting_QuickMatch_PlayerCount = r.ReadInt32();
+                    setting_QuickMatch_TwoTeams = r.ReadBoolean();
+                }
             }
             difficulty = r.ReadInt32();
             Bound.SetToArray(ref difficulty, options.Length);
 
+            if (storageversion >= 31)
+            {
+                Debug.ReadCheck(r);
+            }
+
             refreshSettings();
+        }
+
+        public int QuickMatchPlayerStartSize()
+        {
+            int goalWorkForce = MathExt.MultiplyInt( DssConst.HeadCityStartMaxWorkForce, 2.5);
+            return goalWorkForce;
         }
 
     }
@@ -417,6 +469,7 @@ namespace VikingEngine.DSSWars.Data
         Sandbox,
         Peaceful,
         Spectator,
+        QuickMatch,
         NUM
     }
     //enum AiResourceMultiplyType

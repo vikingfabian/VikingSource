@@ -23,10 +23,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         EndSceneDisplay display;
 
         DoomEpilogue doomEpilouge;
-
-        public EndScene(GameEndReason endReason, VictoryType vType)
+        MatchResult matchResult;
+        public EndScene(GameEndReason endReason, VictoryType vType, MatchResult matchResult)
             : base()
         {
+            this.matchResult = matchResult;
             this.endReason = endReason;
             this.vType = vType;
             VectorRect area = Screen.Area;
@@ -158,7 +159,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
         void initDisplay()
         {
-            display = new EndSceneDisplay(endReason, vType, watchEpilogue);
+            display = new EndSceneDisplay(endReason, vType, watchEpilogue, matchResult);
         }
 
         public override void Close()
@@ -175,5 +176,6 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         Victory,
         Defeat,
         TimesUp,
+        Complete,
     }
 }

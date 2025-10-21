@@ -10,15 +10,6 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
-using VikingEngine.HUD.RichBox;
-using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.GO.Characters.Monsters;
-using VikingEngine.LootFest.Map;
-using VikingEngine.PJ.Joust;
-using VikingEngine.PJ.SmashBirds;
-using VikingEngine.PJ.Tanks;
-using VikingEngine.ToGG.Commander.UnitsData;
-using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Map.Generate
 {
@@ -1252,9 +1243,14 @@ namespace VikingEngine.DSSWars.Map.Generate
             bool useRandomEmpires = mapSize >= MapSize.Medium;
             IntervalF randomEmpiresSizeMulti = new IntervalF(1.5f, 2f + (mapSize - MapSize.Medium));
 
-
-            namedFactionsOnMap(goalWorkForce);
-
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            {
+                namedFactionsOnMap_QuickMatch(DssRef.difficulty.QuickMatchPlayerStartSize());
+            }
+            else
+            {
+                namedFactionsOnMap(goalWorkForce);
+            }
             //var last = world.cities.Last();
 
             foreach (City c in world.cities)
@@ -1294,6 +1290,40 @@ namespace VikingEngine.DSSWars.Map.Generate
             if (world.factions.Count > DssLib.RtsMaxFactions)
             {
                 throw new Exception();
+            }
+        }
+
+        void namedFactionsOnMap_QuickMatch(int nationWorkForce)
+        {
+            List<FactionType> opponents = new List<FactionType> {
+                FactionType.DarkFollower,
+                FactionType.UnitedKingdom,
+                FactionType.GreenWood,
+                FactionType.DyingMonger,
+                FactionType.EasternEmpire,
+                FactionType.NordicRealm,
+                FactionType.DragonSlayer,
+                FactionType.BearClaw,
+                FactionType.DyingDestru,
+            };
+
+            int count = DssRef.difficulty.setting_QuickMatch_PlayerCount - DssRef.storage.playerCount;
+            world.quickMatchFaction = new List<int>(count);
+            //DssRef.settings.Faction_QuickMatch_Start = -1;
+            //DssRef.settings.Faction_QuickMatch_End = -1;
+
+            for (int i = 0; i < count; ++i)
+            {               
+                var faction = new Faction(world, opponents[i]);
+                faction.displayInFullOverview = true;
+                region.GetStartFactionRegion(nationWorkForce, randomCity_inMapCenter(), world, faction);
+
+                world.quickMatchFaction.Add(faction.myIndex);
+                //if (i == 0)
+                //{
+                //    DssRef.settings.Faction_QuickMatch_Start = faction.myIndex;
+                //    DssRef.settings.Faction_QuickMatch_End = faction.myIndex + count -1;
+                //}
             }
         }
 
@@ -1410,6 +1440,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                 //region.ApplyFaction(DragonSlayer);
             }
 
+
+
             {
                 var faction = new Faction(world, FactionType.BramblebrookHill);
                 int size = MathExt.MultiplyInt(0.3, standardWorkForce);
@@ -1436,6 +1468,69 @@ namespace VikingEngine.DSSWars.Map.Generate
             return randomCity();
             
         }
+
+
+
+        City randomCity_inMapCenter()
+        {
+            //if (world.metaData.mapSize > MapSize.Tiny)
+            //{
+                //Rectangle2 centerArea = new Rectangle2(IntVector2.Zero, world.Size);
+                ///// centerArea.
+                //centerArea.AddWidthRadius(-world.Size.X / 4);
+                //centerArea.AddHeightRadius(-world.Size.Y / 4);
+                Rectangle2 centerArea = world.CenterArea();
+
+                int loops = 100;
+                while (loops-- > 0)
+                {
+                    var city = randomCity();
+                    if (centerArea.IntersectTilePoint(city.tilePos))
+                    {
+                        return city;
+                    }
+                }
+            //}
+            return randomCity();
+        }
+        //public Faction getPlayerAvailableFaction(bool firstPlayer, List<Players.LocalPlayer> players)
+        //{
+        //    const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
+
+        //    Rectangle2 centerArea = new Rectangle2(IntVector2.Zero, Size);
+        //    /// centerArea.
+        //    centerArea.AddWidthRadius(-Size.X / 4);
+        //    centerArea.AddHeightRadius(-Size.Y / 4);
+
+        //    int loops = 0;
+        //    while (true)
+        //    {
+        //        Faction result = factions.GetRandom(Ref.rnd);
+
+        //        if (result.availableForPlayer &&
+        //            (centerArea.IntersectPoint(result.mainCity.tilePos) || loops >= 100))
+        //        {
+        //            if (firstPlayer || loops >= 100)
+        //            {
+        //                return result;
+        //            }
+        //            else if (!result.HasPlayerNeighbor() &&
+        //                players[0].faction.mainCity.distanceTo(result.mainCity) <= MultiPlayerDistance)
+        //            {
+        //                return result;
+        //            }
+        //            ++loops;
+        //        }
+
+        //        if (++loops > 1000)
+        //        {
+        //            throw new EndlessLoopException("getPlayerAvailableFaction");
+        //        }
+        //    }
+
+        //    //return null;
+        //}
+
 
         City randomCity()
         {

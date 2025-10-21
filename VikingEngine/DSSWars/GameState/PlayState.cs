@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.GameState.BattleLab;
@@ -288,7 +289,42 @@ namespace VikingEngine.DSSWars
                 localPlayers[i].initPlayerToPlayer(i, playerCount);
             }
 
+            if (newGame && DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            {
+                initQuickMatch();
+            }
+        }
 
+        void initQuickMatch()
+        {
+            //List<Faction> matchFactions = new List<Faction>(8);
+            //foreach (var p in localPlayers)
+            //{
+            //    matchFactions.Add(p.faction);
+            //}
+            //foreach (var ix in DssRef.world.quickMatchFaction)
+            //{
+            //    var faction = DssRef.world.faction(ix);
+            //    if (faction != null)
+            //    {
+            //        matchFactions.Add(faction);
+            //    }
+            //}
+            List<Faction> matchFactions = StoryEvent_QuickMatch.Factions();
+                        
+            int team1Count = (int)Math.Ceiling(matchFactions.Count / 2.0);
+            for (var i = 0; i < matchFactions.Count; ++i)
+            {
+                for (var j = i + 1; j < matchFactions.Count; ++j)
+                {
+                    bool ally = DssRef.difficulty.setting_QuickMatch_TwoTeams && j < team1Count;
+                    var relation = DssRef.diplomacy.GetOrCreateRelation(matchFactions[i], matchFactions[j]);
+
+                    relation.Relation = ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar;
+                    relation.SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+                }
+            }
+            
         }
 
         void onGameStart(bool newGame)
