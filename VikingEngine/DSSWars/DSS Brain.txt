@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* ownerToHud crash fix
+* rare ownerToHud crash fix
 
 #Pics
 

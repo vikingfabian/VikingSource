@@ -184,6 +184,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
+
         virtual public void toHud(Interface.ObjectHudArgs args)
         {
             nameToHud(args.content, true);
