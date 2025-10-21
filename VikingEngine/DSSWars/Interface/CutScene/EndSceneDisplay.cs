@@ -122,6 +122,8 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         {
             if (matchResult != null)
             {
+                bool playerWin = false;
+
                 content.h1(DssRef.todoLang.EndScreen_MatchComplete, Color.Yellow);
                 content.h2(DssRef.lang.EndScreen_VictoryTitle, HudLib.TitleColor_Label);
                 foreach (var m in matchResult.winner)
@@ -130,6 +132,8 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                     content.Add(m.FlagTextureToHud());
                     content.space(0.5f);
                     content.Add(new RbText(m.player.Name, HudLib.TitleColor_Name));
+
+                    playerWin |= m.player.IsLocalPlayer();
                 }
 
                 content.newParagraph();
@@ -142,6 +146,10 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                     content.Add(new RbText(m.player.Name, HudLib.TitleColor_Name));
                 }
 
+                if (playerWin)
+                {
+                    DssRef.achieve.UnlockAchievement_onAny_50_100_150(AchievementIndex.quick_victory_any, AchievementIndex.quick_victory_50, AchievementIndex.quick_victory_100, AchievementIndex.quick_victory_150);
+                }
             }
             else
             {

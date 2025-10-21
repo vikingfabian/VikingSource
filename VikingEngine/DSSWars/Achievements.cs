@@ -745,7 +745,15 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Taste the impossible: Defeat the first attacker in 300% difficulty 
         /// </summary>
-        destroy_first_attacker_300,
+        destroy_first_attacker_300, //i, a
+
+        /// <summary>
+        /// Win a quick match
+        /// </summary>
+        quick_victory_any, //i, a
+        quick_victory_50,
+        quick_victory_100,
+        quick_victory_150,
 
         NUM_ACHIEVEMENTS
     }
