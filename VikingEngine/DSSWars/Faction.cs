@@ -1568,6 +1568,11 @@ namespace VikingEngine.DSSWars
         /// </summary>
         Etheleorthe,
 
+        /// <summary>
+        /// Theme: Four headed dragon symbol. Known for having an unpenetrable castle.
+        /// </summary>
+        DragonGem,
+
         NUM
     }
 

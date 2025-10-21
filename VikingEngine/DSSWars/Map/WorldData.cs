@@ -1158,6 +1158,8 @@ namespace VikingEngine.DSSWars
                 FactionType.FloKingdom,
                 FactionType.CarolusKeksenmark,
                 FactionType.Etheleorthe,
+
+                FactionType.DragonGem,
             };
         }
 

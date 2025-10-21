@@ -32,6 +32,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Settings_TechMultiplier => "Tech research speed";
 
         public string EndScreen_MatchComplete => "Match result";
+
+        public string FactionName_DragonGem => "Dragon gem";
     }
 
 

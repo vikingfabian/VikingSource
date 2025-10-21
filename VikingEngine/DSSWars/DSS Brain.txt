@@ -17,6 +17,8 @@ heart arrow
 x achievement in steamworks
 
 #Winter update#
+* fixed: bot delay was not set by high difficulty
+* one new cameo faction
 
 USER INTERFACE
 * In-menu text input
@@ -38,7 +40,7 @@ GAME OPTIONS
 -> players are grouped in a smaller, center area
 -> player start area is enlarged on "find start position" failure
 
-* fixed: bot delay was not set by high difficulty
+
 
 Achievements: 
 * Taste the impossible: Terminate the first faction to attack you. 300% difficulty.

@@ -128,6 +128,13 @@ namespace VikingEngine.DSSWars.Players
        
             switch (faction.factiontype)
             {
+                case FactionType.DragonGem:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_DragonGem;
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                    break;
+
                 case FactionType.Etheleorthe:
                     defaultSetup();
                     techSetup();
