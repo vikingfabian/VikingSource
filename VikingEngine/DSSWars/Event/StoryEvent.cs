@@ -457,7 +457,7 @@ namespace VikingEngine.DSSWars.Event
             {
                 
                 ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
-                for (int radius = Bound.Min(city.cityTileRadius - 2, 4); radius > 1; ++radius)
+                for (int radius = Bound.Min(city.cityTileRadius - 2, 4); radius < city.cityTileRadius + 2; ++radius)
                 {
                     loop.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
                     while (loop.Next())

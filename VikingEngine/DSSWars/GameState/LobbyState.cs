@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars
                         content.newLine();
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_MusicPlayList) }),
-                            new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListMusic, StackOption.ClearStack), null, !PlatformSettings.STEAM_DEMO));
+                            new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListMusic, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
 
                         content.newParagraph();
                         content.Add(new RbButton(HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText("File debug lab") }),
@@ -410,6 +410,7 @@ namespace VikingEngine.DSSWars
                     {
 
                         RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, underMenu, true, null);
 
                         List<Sound.SongData> list = Music.PlayList();
                         foreach (var m in list)

@@ -67,7 +67,11 @@ namespace VikingEngine.HUD.RichMenu
             scrollerWidth = Screen.MinClickSize;
 
             renderList = new RenderTargetDrawContainer(renderArea.Position, renderArea.Size, layer, new List<AbsDraw>());
-            
+#if DEBUG
+            renderList.DebugName = "RichMenu target";
+#endif
+
+
             scrollBar = new RichScrollbar(HudLib.HudMenuScollButton, HudLib.HudMenuScollBackground, edgeArea, scrollerWidth, layer -2);
             mouseScrollArea = scrollBar.IncludeScrollArea(edgeArea);
         }

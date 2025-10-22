@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* rare ownerToHud crash fix
+* 
 
 #Pics
 * Relation arrow:

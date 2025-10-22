@@ -10,6 +10,7 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
@@ -197,6 +198,20 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+#if DEBUG
+                //for (int i = 0; i < 1000000; ++i)
+                //{
+                //    ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
+                //    for (int radius = 10; radius < 14; ++radius)
+                //    {
+                //        loop.start(Rectangle2.FromCenterTileAndRadius(new IntVector2(10, 10), radius));
+                //        while (loop.Next())
+                //        {
+                //        }
+                //    }
+                //}
+#endif
+
                 new LobbyState(bgTex);
             }
         }
