@@ -46,8 +46,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             topRight = area.RightTop;
             topRight.X += Engine.Screen.BorderWidth;
 
-            menu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top2, new PlayerData(PlayerData.AllPlayers));
-            menu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top2_Back);
+            menu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, HudLib.GUILayer, new PlayerData(PlayerData.AllPlayers));
+            menu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer +1);
 
 
             TextG loadingText = new TextG(LoadedFont.Regular, Engine.Screen.Area.PercentToPosition(0.5f, 0.2f), Screen.TextSizeV2 * 2f, Align.CenterAll, DssRef.lang.Hud_Loading, Color.White, ImageLayers.Top0_Front, true);

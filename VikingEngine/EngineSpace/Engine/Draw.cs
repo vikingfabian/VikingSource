@@ -336,6 +336,13 @@ namespace VikingEngine.Engine
 
         public void Draw2d(int layer)
         {
+#if DEBUG
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+#endif
+
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, renderList[layer].TransformMatrix);
 
             KeepDraw2D(layer);

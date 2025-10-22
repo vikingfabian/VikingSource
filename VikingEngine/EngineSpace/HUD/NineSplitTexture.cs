@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.Network;
 
@@ -197,7 +198,12 @@ namespace VikingEngine.HUD
 
             images.Add(swImg); images.Add(sImg); images.Add(seImg);
 
-            
+#if DEBUG
+            for (int i = 0; i < images.Count; i++)
+            {
+                images[i].DebugName = "Ninesplit tex {" + i.ToString() + "}";
+            }
+#endif
         }
 
         public void addCenterColor(float distanceFromEdge, Color col)

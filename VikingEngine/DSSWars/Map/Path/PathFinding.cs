@@ -111,6 +111,12 @@ namespace VikingEngine.DSSWars.Map
             * 4.Varje ny ruta ska till en öppen lista
             */
 
+            if (!DssRef.world.tileGrid.InBounds(center) ||
+                !DssRef.world.tileGrid.InBounds(goal))
+            {
+                return new WalkingPath();
+            }
+
             PathNode startNode = new PathNode(center, startDir, startAsShip);
 
             nodeGrid[center.X, center.Y] = startNode;

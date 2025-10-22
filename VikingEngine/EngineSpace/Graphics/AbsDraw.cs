@@ -12,6 +12,9 @@ namespace VikingEngine.Graphics
     {
         /* Properties */
         //public int InDrawBatchCount = 0;
+#if DEBUG
+        public string DebugName = null;
+#endif
 
         public abstract DrawObjType DrawType { get; }
 

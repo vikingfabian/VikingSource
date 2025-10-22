@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Fixed "Commander" 3d text crash
+* 
 
 #Pics
 
