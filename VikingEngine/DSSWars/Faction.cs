@@ -1573,6 +1573,11 @@ namespace VikingEngine.DSSWars
         /// </summary>
         DragonGem,
 
+        /// <summary>
+        /// Theme: Easter egg for december. "Tomten" is an old nordic name for father christmas
+        /// </summary>
+        Tomten,
+
         NUM
     }
 

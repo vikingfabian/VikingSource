@@ -3463,6 +3463,48 @@ namespace VikingEngine.DSSWars.Players.Profile
                         });
                     }
                     break;
+
+                case FactionType.Tomten:
+                    {
+                        flag.factionFlavorType = FactionFlavorType.Sea;
+
+
+                        flag.col0_Main = new Color(215, 17, 26);
+                        flag.col1_Detail1 = new Color(34, 128, 12);
+                        flag.col2_Detail2 = new Color(220, 213, 222);
+
+                        flag.col3_Skin = FlagAndColor.AiGraySkin;
+                        flag.col4_Hair = FlagAndColor.AiGrayHair;
+
+                        flag.col5_AltMain = new Color(175, 57, 66);
+                        flag.col3_Skin = new Color(218, 202, 189);
+                        flag.col4_Hair = new Color(165, 42, 42);
+                        flag.col6_Tunic = new Color(233, 12, 35);
+                        flag.col7_Pants = new Color(133, 49, 10);
+                        flag.col8_Leader = new Color(42, 21, 5);
+
+                        flag.flagDesign = new FlagDesign(new byte[]
+                        {
+
+                        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                        2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2,
+                        2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2,
+                        2, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 2, 2,
+                        2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2,
+                        2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 2, 2, 2,
+                        2, 2, 2, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1, 2, 2, 2,
+                        2, 2, 2, 2, 2, 1, 1, 0, 0, 0, 1, 1, 2, 2, 2, 2,
+                        2, 2, 2, 2, 2, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2,
+                        2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 1, 1, 2, 2, 2, 2,
+                        2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 1, 1, 1, 2, 2, 2,
+                        2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2,
+                        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2,
+                        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                        });
+                    }
+                    break;
             }
         }
     }

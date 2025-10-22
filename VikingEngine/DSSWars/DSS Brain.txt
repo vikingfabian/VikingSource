@@ -21,6 +21,7 @@ x achievement in steamworks
 USER INTERFACE
 * In-menu text input
 * Search bar for voxel models
+* Menu width option
 
 GAME OPTIONS
 * 300% difficulty

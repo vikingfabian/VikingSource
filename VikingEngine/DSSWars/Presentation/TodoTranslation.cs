@@ -12,6 +12,10 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
+        public string GraphicsOption_IngameMenuWidth => "Game menu width";
+
+
+
         public string Error_SoundInitFailure => "Sound initialization failed";
                
         public string GameMenu_ControllerDisconnected => "Controller disconnected";
@@ -33,7 +37,15 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string EndScreen_MatchComplete => "Match result";
 
+        /// <summary>
+        /// Theme: Four headed dragon symbol. Known for having an unpenetrable castle.
+        /// </summary>
         public string FactionName_DragonGem => "Dragon gem";
+
+        /// <summary>
+        /// Theme: Easter egg for december. "Tomten" is an old nordic name for father christmas
+        /// </summary>
+        public string FactionName_Tomten => "Tomten";
     }
 
 

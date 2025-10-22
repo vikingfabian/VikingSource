@@ -1404,6 +1404,17 @@ namespace VikingEngine.DSSWars.Map.Generate
                 //region.ApplyFaction(NordicRealms);
             }
 
+
+            if (DateTime.Now.Month == 12 || PlatformSettings.DebugLevel == BuildDebugLevel.Dev)
+            {
+                var faction = new Faction(world, FactionType.Tomten);
+
+                int size = MathExt.MultiplyInt(0.5, standardWorkForce);
+
+                region.GetStartFactionRegion(size, collection_pullNextCity(cityCultureCollection.NorthSea), world, faction);
+
+            }
+
             {
                 var faction = new Faction(world, FactionType.BearClaw);
 

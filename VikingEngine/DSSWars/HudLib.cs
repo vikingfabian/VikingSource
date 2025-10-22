@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars
             RbSettings_HeadOptions = RbSettings_Head;
             RbSettings_HeadOptions.artOptionButtonTex = RbSettings.artOptionButtonTex;
 
-            HeadDisplayWidth = (int)(Engine.Screen.IconSize * 7.4f);
+            HeadDisplayWidth = (int)(Engine.Screen.IconSize * 7.4f * Ref.gamesett.IngameMenuWidth);
             HeadDisplayEdge = Engine.Screen.BorderWidth;
             MessageDisplayWidth = (int)(Engine.Screen.IconSize * 6);
 

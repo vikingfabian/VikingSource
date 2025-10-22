@@ -1059,7 +1059,7 @@ namespace VikingEngine.DSSWars
         }
         public static List<FactionType> AvailableGenericAiTypes()
         {
-            return new List<FactionType>
+            var result = new List<FactionType>
             {
                 FactionType.Starshield,//
                 FactionType.Bluepeak,//
@@ -1161,6 +1161,9 @@ namespace VikingEngine.DSSWars
 
                 FactionType.DragonGem,
             };
+
+
+            return result;
         }
 
     }

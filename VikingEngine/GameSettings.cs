@@ -26,7 +26,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 27;
+        const int Version = 28;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -42,6 +42,7 @@ namespace VikingEngine
         public const int MaxBlood = 100;
         public int Blood = 100;
         public float UiScale = 1f;
+        public float IngameMenuWidth = 1f;
         public float reversedStereoValue = 1f;
         public bool dyslexiaFont = false;
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
@@ -115,6 +116,7 @@ namespace VikingEngine
             w.Write(SoundVolume);
             w.Write((byte)VibrationLevel);
             w.Write(UiScale);
+            w.Write(IngameMenuWidth);
             w.Write((byte)language);
             w.Write(dyslexiaFont);
             controllerMap.write(w);
@@ -177,6 +179,12 @@ namespace VikingEngine
             {
                 UiScale = 1f;
             }
+
+            if (version >= 28)
+            {
+                IngameMenuWidth = r.ReadSingle();
+            }
+
             language = (LanguageType)r.ReadByte();
 
             dyslexiaFont = r.ReadBoolean();
@@ -639,14 +647,19 @@ namespace VikingEngine
             }
 
             content.newLine();
-            //content.Add(new RbImage(SpriteName.LFIconLetter));
             content.Add(new RbText( Ref.langOpt.GraphicsOption_UiScale));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.5f, 2f, 0.1f), uiScaleProperty, true));
-            
-            content.newLine();
+            content.space();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) },
                 new RbAction(Ref.gamestate.OnResolutionChange)));
+
+            content.newLine();
+            content.Add(new RbText(DssRef.todoLang.GraphicsOption_IngameMenuWidth));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.8f, 1.6f, 0.1f), IngameMenuWProperty, true));
+
+            
             //new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
         }
 
@@ -1001,6 +1014,17 @@ namespace VikingEngine
                 Screen.RefreshUiSize();
             }
             return UiScale;
+        }
+
+        public float IngameMenuWProperty(bool set, float value)
+        {
+            if (set)
+            {
+                IngameMenuWidth = value;
+                HudLib.Init();
+                settingsHasChanged = true;
+            }
+            return IngameMenuWidth;
         }
 
         public int vibrationProperty(bool set, int value)
