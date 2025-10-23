@@ -62,6 +62,11 @@ namespace VikingEngine.DSSWars.GameObject
                     queuePlaceBuilding(BuildAndExpandType.Logistics);
                     break;
 
+                case CasualBuildType.Embassy:
+                    buildingStructure.Embassy_count++;
+                    queuePlaceBuilding(BuildAndExpandType.Embassy);
+                    break;
+
                 case CasualBuildType.ResearchCenter:
                     casualCityProfile.unlock_research = true;
                     queuePlaceBuilding(BuildAndExpandType.ResearchCenter);
@@ -222,6 +227,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case CasualBuildType.Logistics:
                     return lib.BoolToInt01(casualCityProfile.unlock_logistics);
+                
+                case CasualBuildType.Embassy:
+                    return buildingStructure.Embassy_count;
+                
                 case CasualBuildType.ResearchCenter:
                     return lib.BoolToInt01(casualCityProfile.unlock_research);
 

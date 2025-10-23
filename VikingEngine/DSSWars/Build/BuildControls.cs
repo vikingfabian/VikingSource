@@ -1139,17 +1139,19 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.Embassy:
-                    int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+                    EmbassyDescription(content);
 
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
-                    content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
-                    content.newLine();
+                    //int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
 
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-                    content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
-                    content.newLine();
+                    //HudLib.BulletPoint(content);
+                    //content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
+                    //content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
+                    //content.newLine();
+
+                    //HudLib.BulletPoint(content);
+                    //content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
+                    //content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+                    //content.newLine();
                     break;
 
                 case BuildAndExpandType.WheatFarm:
@@ -1433,6 +1435,20 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
+        public static void EmbassyDescription(RichBoxContent content)
+        {
+            int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
+            content.newLine();
+
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+            content.newLine();
+        }
 
         void mayCraftList(RichBoxContent content, City city, ItemResourceType[] types)
         {

@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         UnlockGunPower,
         UnlockFarming2,
         UnlockFarming3,
+        Embassy,
         NUM
     }
 
@@ -96,7 +97,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 icon = SpriteName.WarsBuild_WorkerHuts,
                 price = 400,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Default,
-                //allowMultiBuild = true
             });
             add(new CasualBuildOption 
             {
@@ -106,7 +106,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 icon = SpriteName.WarsBuild_Barracks,
                 price = 600,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Default * 2,
-                //allowMultiBuild = true
             });
             add(new CasualBuildOption
             {
@@ -136,8 +135,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 icon = SpriteName.WarsBuild_Logistics,
                 price = 1000,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Large,
-                //allowMultiBuild = false
             });
+
+            add(new CasualBuildOption
+            {
+                category = CasualBuildCategory.UpgradeBuilding,
+                Type = CasualBuildType.Embassy,
+                Name = DssRef.lang.BuildingType_Embassy,
+                icon = SpriteName.WarsBuild_Embassy,
+                price = 2000,
+                buildtime_sec = (int)DssConst.WorkTime_Building_Large,
+            });
+
             add(new CasualBuildOption
             {
                 category = CasualBuildCategory.UpgradeBuilding,
@@ -159,6 +168,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 price = 2000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level2_Minutes * TimeExt.MinuteInSeconds),
             });
+
             add(new CasualBuildOption
             {
                 category = CasualBuildCategory.Technology,
@@ -277,6 +287,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 complete.Add(CasualBuildType.Logistics);
                 available.Add(CasualBuildType.GuardTower_Stone);
+
+                if (city.buildingStructure.Embassy_count == 0)
+                {
+                    available.Add(CasualBuildType.Embassy);
+                }
+                else
+                {
+                    complete.Add(CasualBuildType.Embassy);
+                }
 
                 if (profile.unlock_research)
                 {
@@ -461,9 +480,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             void buildTooltip(RichBoxContent content, object tag)
             {
                 var buildPurchase = (CasualBuildPurchase)tag;
-                //CasualBuildOption option = (CasualBuildOption)tag;
                 CasualBuildOption option = CasualBuildOptionList[(int)buildPurchase.buildType];
-
 
                 content.h1(option.Name, HudLib.TitleColor_Head);
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Label);
@@ -477,8 +494,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 content.Add(new RbImage(SpriteName.IconSandGlass));
                 content.space();
                 content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ": " + new TimeLength(option.buildtime_sec).LongString()));
-
-               
+                               
                 content.newParagraph();
                 
                 switch (buildPurchase.buildType)
@@ -518,7 +534,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         content.Add(new RbText(DssRef.lang.Defence_GuardPost));
                         break;
 
-
                     case CasualBuildType.Logistics:
                         content.h2(DssRef.lang.Hud_Unlock, HudLib.TitleColor_Label);
 
@@ -539,6 +554,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
                         content.Add(new RbImage(SpriteName.WarsBuild_ResearchCenter));
                         content.Add(new RbText(DssRef.lang.BuildingType_ReseachCenter));
+                        break;
+
+                    case CasualBuildType.Embassy:
+                        content.h2(DssRef.lang.Hud_Unlock, HudLib.TitleColor_Label);
+                        content.newLine();
+                        Build.BuildControls.EmbassyDescription(content);
                         break;
 
                     case CasualBuildType.ResearchCenter:
