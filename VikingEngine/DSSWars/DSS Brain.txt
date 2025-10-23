@@ -8,15 +8,22 @@ war arrow
 heart arrow
 * Map filter icons
 
-#must do#
+#RELEASE#
+#BuiltWithMonoGame tags
+Mail list
+Monogame, Perafilozof, gameport, förening discord
+Reddit, twitter
 
+
+
+Facebook privat
 
 #Winter update - must do#
 x achievement in steamworks
 
 #Winter update#
 * fixed: bot delay was not set by high difficulty
-* one new cameo faction
+* one new cameo faction, plus december santa faction
 
 USER INTERFACE
 * In-menu text input
