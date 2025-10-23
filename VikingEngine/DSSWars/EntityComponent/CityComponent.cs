@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars
             int startIndex = 0;
             for (int cityIx = 0; cityIx < cities.Count; cityIx++)
             {
-                cities[cityIx].resourceComponentIndex = startIndex;
+                cities[cityIx].resourceComponentStartIndex = startIndex;
 
                 // Basics
                 cityResouces[startIndex + CityResoureIndex_wood] = new GroupedResource { amount = 20, goalBuffer = 300 };

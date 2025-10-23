@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* 
+* Performance: city resources have been moved to a Entity Component System 
 
 #Pics
 * Relation arrow:

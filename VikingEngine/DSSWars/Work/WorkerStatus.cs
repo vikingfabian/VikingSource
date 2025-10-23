@@ -249,9 +249,11 @@ namespace VikingEngine.DSSWars.Work
             {
                 case WorkType.Eat:
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
-                    city.res_food.amount -= eatAmount;
+                    
+                    city.AddGroupedResource(WorldData.CityResoureIndex_food, -eatAmount);
+                    //city.res_food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
-                    faction.res_food.onChange(-eatAmount);
+                    //faction.res_food.onChange(-eatAmount);
                     energy += eatAmount * DssRef.difficulty.FoodEnergySett;
                     break;
 

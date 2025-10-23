@@ -216,11 +216,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             int multi = automationFocus == AutomationFocus.Food ? 5 : 1;
 
+            var res_food = GetRefGroupedResource(WorldData.CityResoureIndex_food);
+            var res_rawFood = GetRefGroupedResource(WorldData.CityResoureIndex_rawFood);
+            var res_fuel = GetRefGroupedResource(WorldData.CityResoureIndex_fuel);
+
             res_food.goalBuffer = Bound.Min(workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage) * multi;
             res_rawFood.goalBuffer = (workForce.amount / 300 * 100 + 100) * multi;
             res_fuel.goalBuffer = res_rawFood.goalBuffer;
-
-
         }
 
         private void auto_addBuildingType(BuildAndExpandType buildType)

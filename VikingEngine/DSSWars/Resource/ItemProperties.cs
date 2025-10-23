@@ -31,21 +31,25 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.SoftWood, WorldData.CityResoureIndex_wood, 1f / 30, null, null);
             new ItemProperties(ItemResourceType.DryWood, WorldData.CityResoureIndex_wood, 1f / 60, null, null);
 
+            new ItemProperties(ItemResourceType.Wood_Group, WorldData.CityResoureIndex_wood, DefaultWeight, null, null) { defaultStockPile = 300 };
+        
+
             // basic resources
-            new ItemProperties(ItemResourceType.Stone_G, WorldData.CityResoureIndex_stone, 1f / CarryStones, null, null);
+            new ItemProperties(ItemResourceType.Stone_G, WorldData.CityResoureIndex_stone, 1f / CarryStones, null, null) { defaultStockPile = 200 };
             new ItemProperties(ItemResourceType.IronOre_G, WorldData.CityResoureIndex_ironore, 1f / 10, null, null);
             new ItemProperties(ItemResourceType.GoldOre, WorldData.CityResoureIndex_GoldOre, 1f / 10, null, null);
             new ItemProperties(ItemResourceType.Egg, WorldData.CityResoureIndex_rawFood, 1f / 60, null, null);
             new ItemProperties(ItemResourceType.Pig, NoCityResource, 1f, null, null); // (leave untracked or map to rawFood)
             new ItemProperties(ItemResourceType.Hen, NoCityResource, 1f / 4, null, null); // (leave untracked or map to rawFood)
             new ItemProperties(ItemResourceType.Wheat, WorldData.CityResoureIndex_rawFood, 1f / 10, null, null);
-            new ItemProperties(ItemResourceType.Linen, WorldData.CityResoureIndex_skinLinnen, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.RawFood_Group, NoCityResource, DefaultWeight,null, null) { defaultStockPile = 200 };
+            new ItemProperties(ItemResourceType.Linen, WorldData.CityResoureIndex_skinLinnen, 1f / 10, null, null) { defaultStockPile = 200 };
 
             // fuel & food
-            new ItemProperties(ItemResourceType.Fuel_G, WorldData.CityResoureIndex_fuel, DefaultWeight, CraftResourceLib.Fuel1, null);
+            new ItemProperties(ItemResourceType.Fuel_G, WorldData.CityResoureIndex_fuel, DefaultWeight, CraftResourceLib.Fuel1, null){ defaultStockPile = 400 };
             new ItemProperties(ItemResourceType.Coal, WorldData.CityResoureIndex_fuel, DefaultWeight, CraftResourceLib.Charcoal, null);
-            new ItemProperties(ItemResourceType.Food_G, WorldData.CityResoureIndex_food, 1f / CarryFood, CraftResourceLib.Food1, CraftResourceLib.Food2);
-            new ItemProperties(ItemResourceType.Beer, WorldData.CityResoureIndex_beer, DefaultWeight, CraftResourceLib.Beer, null);
+            new ItemProperties(ItemResourceType.Food_G, WorldData.CityResoureIndex_food, 1f / CarryFood, CraftResourceLib.Food1, CraftResourceLib.Food2) { defaultStockPile = City.DefaultFoodBuffer };
+            new ItemProperties(ItemResourceType.Beer, WorldData.CityResoureIndex_beer, DefaultWeight, CraftResourceLib.Beer, null) { defaultStockPile = 200 };
             new ItemProperties(ItemResourceType.CoolingFluid, WorldData.CityResoureIndex_coolingfluid, DefaultWeight, CraftResourceLib.CoolingFluid, null);
 
             // metals & alloys
@@ -1134,7 +1138,7 @@ namespace VikingEngine.DSSWars.Resource
         public SoldierData soldierData = new SoldierData();
         public bool Filter_IsSiegeWeapon = false;
         public int cityResourceIndex;
-
+        public int defaultStockPile = 100;
         //public ItemProperties(ItemResourceType type, float weight, CraftBlueprint bp1, CraftBlueprint bp2)
         //{
         //    this.cityResourceIndex = -1;

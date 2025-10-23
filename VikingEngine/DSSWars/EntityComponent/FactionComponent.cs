@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars
             {
                 if (factions.Array[i] != null)
                 { 
-                    factions.Array[i].resourceComponentIndex = startIndex;
+                    factions.Array[i].resourceComponentStartIndex = startIndex;
                 }
                 startIndex += CityResoure_Count;
             }
