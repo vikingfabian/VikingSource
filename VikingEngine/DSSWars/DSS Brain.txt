@@ -46,7 +46,7 @@ GAME OPTIONS
 -> player start area is enlarged on "find start position" failure
 
 ACHIEVEMENTS: 
-* Taste the impossible: Terminate the first faction to attack you. 300% difficulty.
+* Taste the impossible: Terminate the first faction to attack you. 300% difficulty. (no pause?)
 * Win a quick match
 
 MAP
