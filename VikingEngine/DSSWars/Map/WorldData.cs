@@ -20,7 +20,7 @@ using VikingEngine.ToGG.MoonFall;
 namespace VikingEngine.DSSWars
 {   
 
-    class WorldData
+    partial class WorldData
     {  
         public static WorldData LoadingWorld = null;
 

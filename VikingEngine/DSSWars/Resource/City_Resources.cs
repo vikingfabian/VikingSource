@@ -15,6 +15,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.PJ.Joust;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -215,6 +216,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_MithrilArmor = new GroupedResource() { goalBuffer = 100 };
 
         public bool res_food_safeguard = true;
+        public int resourceComponentIndex;
 
         public bool foodSafeGuardIsActive(ItemResourceType item)
         {
@@ -327,6 +329,77 @@ namespace VikingEngine.DSSWars.GameObject
             res_LightPlateArmor.goalBuffer = 100;
             res_FullPlateArmor.goalBuffer = 100;
 
+        }
+        public void AddGroupedResource2(ItemResourceType type, int add)
+        {            
+            int itemIndex = ItemPropertyColl.CityIndex(type);
+
+            if (itemIndex < 0) 
+            {
+                var faction = GetFaction();
+
+                if (faction == null)
+                {
+                    return;
+                }
+
+                switch (type)
+                {
+                    case ItemResourceType.Gold:
+                    case ItemResourceType.CopperCoin:
+                    case ItemResourceType.BronzeCoin:
+                    case ItemResourceType.SilverCoin:
+                    case ItemResourceType.ElfCoin:
+                        faction.addGold(add, this);
+                        return;
+
+                    case ItemResourceType.ServiceMen:
+                        freeServiceMen.amount += add;
+                        return;
+                    case ItemResourceType.Men:
+                        workForce.amount += add;
+                        return;
+                }
+            }
+
+            ref var resource = ref DssRef.world.cityResouces[resourceComponentIndex + itemIndex];
+            resource.amount += add;
+
+            ref var overview = ref DssRef.world.factionResourceOverviews[resourceComponentIndex + factionIndex * WorldData.CityResoure_Count];
+            overview.onChange(add);
+        }
+        public GroupedResource GetGroupedResource2(ItemResourceType type)
+        {
+            int itemIndex = ItemPropertyColl.CityIndex(type);
+
+            if (itemIndex < 0)
+            {
+                switch (type)
+                {
+
+                    case ItemResourceType.Gold:
+                        return new GroupedResource() { amount = (int)(DssRef.storage.gameRuleset.centralGold ? GetFaction_NoChecks().money.GetGold() : money.GetGold()), goalBuffer = int.MaxValue };
+                    case ItemResourceType.Men:
+                        return workForce;
+                    case ItemResourceType.ServiceMen:
+                        return freeServiceMen;
+
+                    case ItemResourceType.Water_G: return res_water;
+                    case ItemResourceType.NONE: return Res_Nothing;
+                }
+            }
+
+            return DssRef.world.cityResouces[resourceComponentIndex + itemIndex];
+        }
+        public void SetGroupedResource2(ItemResourceType type, GroupedResource resource)
+        {
+            int itemIndex = ItemPropertyColl.CityIndex(type);
+            if (itemIndex < 0)
+            {
+                return;
+            }
+
+            DssRef.world.cityResouces[resourceComponentIndex + itemIndex] = resource;
         }
 
         public void AddGroupedResource(ItemResourceType type, int add)
@@ -718,6 +791,7 @@ namespace VikingEngine.DSSWars.GameObject
                     return freeServiceMen;
 
                 case ItemResourceType.Water_G: return res_water;
+                case ItemResourceType.NONE: return Res_Nothing;
 
                 case ItemResourceType.Beer: return res_beer;
                 case ItemResourceType.CoolingFluid: return res_coolingfluid;
@@ -800,7 +874,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.FullPlateArmor: return res_FullPlateArmor;
                 case ItemResourceType.MithrilArmor: return res_MithrilArmor;
 
-                case ItemResourceType.NONE: return Res_Nothing;
+                
 
                 default:
                      throw new NotImplementedException(type.ToString());

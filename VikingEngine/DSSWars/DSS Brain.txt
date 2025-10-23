@@ -15,7 +15,6 @@ Monogame, Perafilozof, gameport, förening discord
 Reddit, twitter
 Facebook privat
 
-
 #Winter update - must do#
 x achievement in steamworks
 

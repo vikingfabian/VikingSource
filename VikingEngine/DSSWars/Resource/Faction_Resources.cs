@@ -113,6 +113,7 @@ namespace VikingEngine.DSSWars
         public ResourceOverview res_LightPlateArmor = new ResourceOverview();
         public ResourceOverview res_FullPlateArmor = new ResourceOverview();
         public ResourceOverview res_MithrilArmor = new ResourceOverview();
+        public int resourceComponentIndex;
 
         public int WorkForceInCityCount()
         { 
