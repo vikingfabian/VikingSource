@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;
@@ -34,6 +35,7 @@ namespace VikingEngine.DSSWars.Interface
         public PlayerHud_Object objMenu;
         public PlayerHud_InputHelp inputHelp;
 
+
          Map.MiniMap miniMap;
 
         public PopMenu popMenu = null;
@@ -63,7 +65,9 @@ namespace VikingEngine.DSSWars.Interface
             objMenu = new PlayerHud_Object(player);
             factionMenu = new PlayerHud_Faction();
 
-            inputHelp = new PlayerHud_InputHelp(player);
+            miniMap = new MiniMap(player);
+            inputHelp = new PlayerHud_InputHelp(player, miniMap.area.Y);
+            
 
             //hudmenu = new GameHudMenu(player);
             messages = new MessageGroup_Ingame(player, numPlayers, HudLib.richboxGui);

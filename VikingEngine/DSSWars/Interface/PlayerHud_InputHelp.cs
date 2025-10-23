@@ -20,19 +20,19 @@ namespace VikingEngine.DSSWars.Interface
     {
         public RichMenu menu;
         Graphics.Image bgTex;
-        public PlayerHud_InputHelp(LocalPlayer player)
+        public PlayerHud_InputHelp(LocalPlayer player, float bottom)
         {
-            createMenu(player);
+            createMenu(player, bottom);
         }
 
-        public void createMenu(LocalPlayer player)
+        public void createMenu(LocalPlayer player, float bottom)
         {
             if (menu == null)
             {
                 var objectMenuArea = new VectorRect(0, 0,
                     HudLib.HeadDisplayWidth * 0.6f, HudLib.HeadDisplayWidth * 0.54f);
                 objectMenuArea.X = player.playerData.view.safeScreenArea.Right - objectMenuArea.Width;
-                objectMenuArea.Y = player.playerData.view.safeScreenArea.Bottom - objectMenuArea.Height;
+                objectMenuArea.Y = bottom - objectMenuArea.Height;
 
                 menu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(0), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
                 bgTex = menu.addBackground_Flat(new Color(20, 37, 65), 0.4f);
