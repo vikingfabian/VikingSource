@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
@@ -271,7 +272,7 @@ namespace VikingEngine.DSSWars.GameObject
                             status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
                             //workerStatuses[i] = status;
                         }
-                        else if (status.energy < 0 && (resourceAmount(WorldData.CityResoureIndex_food)/*res_food.amount*/ > 0 || faction.hasGold(1, this)))
+                        else if (status.energy < 0 && (resourceAmount(CityResoureIndex.food)/*res_food.amount*/ > 0 || faction.hasGold(1, this)))
                         {
                             CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                             //ref WorkerStatus status = ref workerStatuses.array[i];
@@ -479,7 +480,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
                     //WOOD
-                    if ((workTemplate.wood.HasPrio() && needMore(WorldData.CityResoureIndex_wood)/*res_wood.needMore()*/) || woodSafeGuard)
+                    if ((workTemplate.wood.HasPrio() && needMore(CityResoureIndex.wood)/*res_wood.needMore()*/) || woodSafeGuard)
                     {
                         foreach (var pos in CityStructure.WorkInstance.Trees)
                         {
@@ -499,7 +500,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     //STONE
                     if (workTemplate.stone.HasPrio() &&
-                        needMore(WorldData.CityResoureIndex_stone)/*res_stone.needMore()*/)
+                        needMore(CityResoureIndex.stone)/*res_stone.needMore()*/)
                     {
                         foreach (var pos in CityStructure.WorkInstance.Stones)
                         {
@@ -527,43 +528,43 @@ namespace VikingEngine.DSSWars.GameObject
                         switch (subTile.GetFoilType())
                         {
                             case TerrainSubFoilType.LinenFarm:
-                                bNeedMore = needMore(WorldData.CityResoureIndex_skinLinnen);//res_skinLinnen.needMore();
+                                bNeedMore = needMore(CityResoureIndex.skinLinnen);//res_skinLinnen.needMore();
                                 prio = workTemplate.farm_linen.value;
                                 break;
                             case TerrainSubFoilType.LinenFarmUpgraded:
-                                bNeedMore = needMore(WorldData.CityResoureIndex_skinLinnen);//res_skinLinnen.needMore();
+                                bNeedMore = needMore(CityResoureIndex.skinLinnen);//res_skinLinnen.needMore();
                                 prio = workTemplate.farm_linen.value;
 
                                 break;
                             case TerrainSubFoilType.WheatFarm:
                                 safeGuard = rawFoodSafeGuard;
-                                bNeedMore = needMore(WorldData.CityResoureIndex_rawFood);//res_rawFood.needMore();
+                                bNeedMore = needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
                                 prio = workTemplate.farm_food.value;
                                 break;
                             case TerrainSubFoilType.WheatFarmUpgraded:
                                 safeGuard = rawFoodSafeGuard;
-                                bNeedMore = needMore(WorldData.CityResoureIndex_rawFood);//res_rawFood.needMore();
+                                bNeedMore = needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
                                 prio = workTemplate.farm_food.value;
                                 bonus = 1;
                                 break;
                             case TerrainSubFoilType.RapeSeedFarm:
                                 safeGuard = fuelSafeGuard;
-                                bNeedMore = needMore(WorldData.CityResoureIndex_fuel);//res_fuel.needMore();
+                                bNeedMore = needMore(CityResoureIndex.fuel);//res_fuel.needMore();
                                 prio = workTemplate.farm_fuel.value;
                                 break;
                             case TerrainSubFoilType.RapeSeedFarmUpgraded:
                                 safeGuard = fuelSafeGuard;
-                                bNeedMore = needMore(WorldData.CityResoureIndex_fuel);////res_fuel.needMore();
+                                bNeedMore = needMore(CityResoureIndex.fuel);////res_fuel.needMore();
                                 prio = workTemplate.farm_fuel.value;
                                 break;
                             case TerrainSubFoilType.HempFarm:
                                 safeGuard = fuelSafeGuard;
-                                bNeedMore = needMore(WorldData.CityResoureIndex_fuel);////res_fuel.needMore() || res_skinLinnen.needMore() || fuelSafeGuard;
+                                bNeedMore = needMore(CityResoureIndex.fuel);////res_fuel.needMore() || res_skinLinnen.needMore() || fuelSafeGuard;
                                 prio = Math.Max(workTemplate.farm_linen.value, workTemplate.farm_fuel.value);
                                 break;
                             case TerrainSubFoilType.HempFarmUpgraded:
                                 safeGuard = fuelSafeGuard;
-                                bNeedMore = needMore(WorldData.CityResoureIndex_fuel) || needMore(WorldData.CityResoureIndex_skinLinnen)/*res_fuel.needMore() || res_skinLinnen.needMore()*/ || fuelSafeGuard;
+                                bNeedMore = needMore(CityResoureIndex.fuel) || needMore(CityResoureIndex.skinLinnen)/*res_fuel.needMore() || res_skinLinnen.needMore()*/ || fuelSafeGuard;
                                 prio = Math.Max(workTemplate.farm_linen.value, workTemplate.farm_fuel.value);
                                 break;
                         }
@@ -577,7 +578,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     //MINING
                     if (workTemplate.bogiron.HasPrio() &&
-                        needMore(WorldData.CityResoureIndex_ironore)/*res_ironore.needMore()*/)
+                        needMore(CityResoureIndex.ironore)/*res_ironore.needMore()*/)
                     {
                         foreach (var pos in CityStructure.WorkInstance.BogIron)
                         {
@@ -601,27 +602,27 @@ namespace VikingEngine.DSSWars.GameObject
                         switch ((TerrainMineType)subTile.subTerrain)
                         {
                             default://case TerrainMineType.IronOre:
-                                bNeedMore = needMore(WorldData.CityResoureIndex_ironore);//res_ironore.needMore();
+                                bNeedMore = needMore(CityResoureIndex.ironore);//res_ironore.needMore();
                                 priority = workTemplate.mining_iron;
                                 break;
                             case TerrainMineType.TinOre:
-                                bNeedMore = needMore(WorldData.CityResoureIndex_TinOre);//res_TinOre.needMore();
+                                bNeedMore = needMore(CityResoureIndex.TinOre);//res_TinOre.needMore();
                                 priority = workTemplate.mining_tin;
                                 break;
                             case TerrainMineType.CopperOre:
-                                bNeedMore = needMore(WorldData.CityResoureIndex_CupperOre);//res_CupperOre.needMore();
+                                bNeedMore = needMore(CityResoureIndex.CupperOre);//res_CupperOre.needMore();
                                 priority = workTemplate.mining_copper;
                                 break;
                             case TerrainMineType.LeadOre:
-                                bNeedMore = needMore(WorldData.CityResoureIndex_LeadOre);//res_LeadOre.needMore();
+                                bNeedMore = needMore(CityResoureIndex.LeadOre);//res_LeadOre.needMore();
                                 priority = workTemplate.mining_lead;
                                 break;
                             case TerrainMineType.SilverOre:
-                                bNeedMore = needMore(WorldData.CityResoureIndex_SilverOre);//res_Silver.needMore();
+                                bNeedMore = needMore(CityResoureIndex.SilverOre);//res_Silver.needMore();
                                 priority = workTemplate.mining_silver;
                                 break;
                             case TerrainMineType.Sulfur:
-                                bNeedMore = needMore(WorldData.CityResoureIndex_Sulfur);//res_Sulfur.needMore();
+                                bNeedMore = needMore(CityResoureIndex.Sulfur);//res_Sulfur.needMore();
                                 priority = workTemplate.mining_sulfur;
                                 break;
                             case TerrainMineType.GoldOre:
@@ -629,13 +630,13 @@ namespace VikingEngine.DSSWars.GameObject
                                 priority = workTemplate.mining_gold;
                                 break;
                             case TerrainMineType.Mithril:
-                                bNeedMore = needMore(WorldData.CityResoureIndex_RawMithril);//res_RawMithril.needMore();
+                                bNeedMore = needMore(CityResoureIndex.RawMithril);//res_RawMithril.needMore();
                                 priority = workTemplate.mining_mithril;
                                 break;
                             case TerrainMineType.Coal:
                                 //++fuelSpots;
                                 safeGuard = fuelSafeGuard;
-                                bNeedMore = needMore(WorldData.CityResoureIndex_fuel);//res_fuel.needMore();
+                                bNeedMore = needMore(CityResoureIndex.fuel);//res_fuel.needMore();
                                 priority = workTemplate.mining_coal;
                                 break;
                         }
@@ -659,10 +660,10 @@ namespace VikingEngine.DSSWars.GameObject
                             switch (subTile.GetBuildingType())
                             {
                                 case TerrainBuildingType.HenPen:
-                                    bNeedMore = needMore(WorldData.CityResoureIndex_rawFood);//res_rawFood.needMore();
+                                    bNeedMore = needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
                                     break;
                                 case TerrainBuildingType.PigPen:
-                                    bNeedMore = needMore(WorldData.CityResoureIndex_rawFood) || needMore(WorldData.CityResoureIndex_skinLinnen);// res_rawFood.needMore() || res_skinLinnen.needMore();
+                                    bNeedMore = needMore(CityResoureIndex.rawFood) || needMore(CityResoureIndex.skinLinnen);// res_rawFood.needMore() || res_skinLinnen.needMore();
                                     break;
                             }
 
@@ -684,7 +685,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             case TerrainBuildingType.Work_Cook:
                                 if (
-                                    ((workTemplate.craft_food.HasPrio() && needMore(WorldData.CityResoureIndex_food)/*res_food.needMore()*/) || foodSafeGuard) &&
+                                    ((workTemplate.craft_food.HasPrio() && needMore(CityResoureIndex.food)/*res_food.needMore()*/) || foodSafeGuard) &&
                                     (CraftResourceLib.Food2.hasResources(this) || CraftResourceLib.Food1.hasResources(this)) &&
                                     work_isFreeTile(pos))
                                 {
@@ -702,7 +703,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                             case TerrainBuildingType.Work_CoalPit:
                                 if (
-                                    ((workTemplate.craft_fuel.HasPrio() && needMore(WorldData.CityResoureIndex_food)/*res_fuel.needMore()*/) || fuelSafeGuard) &&
+                                    ((workTemplate.craft_fuel.HasPrio() && needMore(CityResoureIndex.food)/*res_fuel.needMore()*/) || fuelSafeGuard) &&
                                    CraftResourceLib.Charcoal.hasResources(this) &&
                                    work_isFreeTile(pos))
                                 {
@@ -712,7 +713,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                             case TerrainBuildingType.Brewery:
                                 if (workTemplate.craft_beer.HasPrio() &&
-                                    needMore(WorldData.CityResoureIndex_beer) &&//res_beer.needMore() &&
+                                    needMore(CityResoureIndex.beer) &&//res_beer.needMore() &&
                                     CraftResourceLib.Beer.hasResources(this) &&
                                     work_isFreeTile(pos))
                                 {
@@ -1056,7 +1057,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (GetFaction() == null)
             { return; }
 
-            ref var food = ref GetRefGroupedResource(WorldData.CityResoureIndex_food);
+            ref var food = ref GetRefGroupedResource(CityResoureIndex.food);
 
             if (food.amount <= -10)
             {

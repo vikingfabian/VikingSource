@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.DSSWars.EntityComponent;
 
 namespace VikingEngine.DSSWars.Work
 {
@@ -250,7 +251,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.Eat:
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
                     
-                    city.AddGroupedResource(WorldData.CityResoureIndex_food, -eatAmount);
+                    city.AddGroupedResource(CityResoureIndex.food, -eatAmount);
                     //city.res_food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
                     //faction.res_food.onChange(-eatAmount);

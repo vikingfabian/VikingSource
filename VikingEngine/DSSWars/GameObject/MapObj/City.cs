@@ -33,6 +33,7 @@ using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.ToggEngine.Map;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
+using VikingEngine.DSSWars.EntityComponent;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -105,7 +106,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (toLevel == 1)
             {
-                return resourceAmount(WorldData.CityResoureIndex_food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
+                return resourceAmount(CityResoureIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
             }
             else if (toLevel == 2)
             {
@@ -345,7 +346,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
         {
-            initEconomy(true);
+            initEconomy(true, world);
 
             CityAreaCulture areaCulture = new CityAreaCulture(this, world);
 
@@ -768,93 +769,93 @@ namespace VikingEngine.DSSWars.GameObject
         void writeResources(System.IO.BinaryWriter w)
         {            
             w.Write((short)res_water.amount);
-            write(WorldData.CityResoureIndex_wood);
-            write(WorldData.CityResoureIndex_fuel);
-            write(WorldData.CityResoureIndex_stone);
-            write(WorldData.CityResoureIndex_rawFood);
-            write(WorldData.CityResoureIndex_food);
-            write(WorldData.CityResoureIndex_beer);
-            write(WorldData.CityResoureIndex_coolingfluid);
-            write(WorldData.CityResoureIndex_skinLinnen);
+            write(CityResoureIndex.wood);
+            write(CityResoureIndex.fuel);
+            write(CityResoureIndex.stone);
+            write(CityResoureIndex.rawFood);
+            write(CityResoureIndex.food);
+            write(CityResoureIndex.beer);
+            write(CityResoureIndex.coolingfluid);
+            write(CityResoureIndex.skinLinnen);
 
             // Ores
-            write(WorldData.CityResoureIndex_ironore);
-            write(WorldData.CityResoureIndex_TinOre);
-            write(WorldData.CityResoureIndex_CupperOre);
-            write(WorldData.CityResoureIndex_LeadOre);
-            write(WorldData.CityResoureIndex_SilverOre);
-            write(WorldData.CityResoureIndex_GoldOre);
+            write(CityResoureIndex.ironore);
+            write(CityResoureIndex.TinOre);
+            write(CityResoureIndex.CupperOre);
+            write(CityResoureIndex.LeadOre);
+            write(CityResoureIndex.SilverOre);
+            write(CityResoureIndex.GoldOre);
 
             // Refined metals and materials
-            write(WorldData.CityResoureIndex_iron);
-            write(WorldData.CityResoureIndex_Tin);
-            write(WorldData.CityResoureIndex_Cupper);
-            write(WorldData.CityResoureIndex_Lead);
-            write(WorldData.CityResoureIndex_Silver);
-            write(WorldData.CityResoureIndex_RawMithril);
-            write(WorldData.CityResoureIndex_Sulfur);
+            write(CityResoureIndex.iron);
+            write(CityResoureIndex.Tin);
+            write(CityResoureIndex.Cupper);
+            write(CityResoureIndex.Lead);
+            write(CityResoureIndex.Silver);
+            write(CityResoureIndex.RawMithril);
+            write(CityResoureIndex.Sulfur);
 
             // Alloys and special materials
-            write(WorldData.CityResoureIndex_Bronze);
-            write(WorldData.CityResoureIndex_Steel);
-            write(WorldData.CityResoureIndex_CastIron);
-            write(WorldData.CityResoureIndex_BloomeryIron);
-            write(WorldData.CityResoureIndex_Mithril);
+            write(CityResoureIndex.Bronze);
+            write(CityResoureIndex.Steel);
+            write(CityResoureIndex.CastIron);
+            write(CityResoureIndex.BloomeryIron);
+            write(CityResoureIndex.Mithril);
 
             // Tools / construction
-            write(WorldData.CityResoureIndex_Palisade);
-            write(WorldData.CityResoureIndex_Toolkit);
-            write(WorldData.CityResoureIndex_Wagon2Wheel);
-            write(WorldData.CityResoureIndex_Wagon4Wheel);
-            write(WorldData.CityResoureIndex_BlackPowder);
-            write(WorldData.CityResoureIndex_GunPowder);
-            write(WorldData.CityResoureIndex_LedBullet);
+            write(CityResoureIndex.Palisade);
+            write(CityResoureIndex.Toolkit);
+            write(CityResoureIndex.Wagon2Wheel);
+            write(CityResoureIndex.Wagon4Wheel);
+            write(CityResoureIndex.BlackPowder);
+            write(CityResoureIndex.GunPowder);
+            write(CityResoureIndex.LedBullet);
 
             // Melee weapons
-            write(WorldData.CityResoureIndex_sharpstick);
-            write(WorldData.CityResoureIndex_BronzeSword);
-            write(WorldData.CityResoureIndex_shortsword);
-            write(WorldData.CityResoureIndex_Sword);
-            write(WorldData.CityResoureIndex_LongSword);
-            write(WorldData.CityResoureIndex_HandSpear);
-            write(WorldData.CityResoureIndex_MithrilSword);
+            write(CityResoureIndex.sharpstick);
+            write(CityResoureIndex.BronzeSword);
+            write(CityResoureIndex.shortsword);
+            write(CityResoureIndex.Sword);
+            write(CityResoureIndex.LongSword);
+            write(CityResoureIndex.HandSpear);
+            write(CityResoureIndex.MithrilSword);
 
             // Additional melee / ranged
-            write(WorldData.CityResoureIndex_Warhammer);
-            write(WorldData.CityResoureIndex_twohandsword);
-            write(WorldData.CityResoureIndex_knightslance);
-            write(WorldData.CityResoureIndex_SlingShot);
-            write(WorldData.CityResoureIndex_ThrowingSpear);
-            write(WorldData.CityResoureIndex_bow);
-            write(WorldData.CityResoureIndex_longbow);
-            write(WorldData.CityResoureIndex_crossbow);
-            write(WorldData.CityResoureIndex_MithrilBow);
+            write(CityResoureIndex.Warhammer);
+            write(CityResoureIndex.twohandsword);
+            write(CityResoureIndex.knightslance);
+            write(CityResoureIndex.SlingShot);
+            write(CityResoureIndex.ThrowingSpear);
+            write(CityResoureIndex.bow);
+            write(CityResoureIndex.longbow);
+            write(CityResoureIndex.crossbow);
+            write(CityResoureIndex.MithrilBow);
 
             // Firearms
-            write(WorldData.CityResoureIndex_HandCannon);
-            write(WorldData.CityResoureIndex_HandCulvertin);
-            write(WorldData.CityResoureIndex_Rifle);
-            write(WorldData.CityResoureIndex_Blunderbuss);
+            write(CityResoureIndex.HandCannon);
+            write(CityResoureIndex.HandCulvertin);
+            write(CityResoureIndex.Rifle);
+            write(CityResoureIndex.Blunderbuss);
 
             // Siege
-            write(WorldData.CityResoureIndex_BatteringRam);
-            write(WorldData.CityResoureIndex_ballista);
-            write(WorldData.CityResoureIndex_Manuballista);
-            write(WorldData.CityResoureIndex_Catapult);
-            write(WorldData.CityResoureIndex_SiegeCannonBronze);
-            write(WorldData.CityResoureIndex_ManCannonBronze);
-            write(WorldData.CityResoureIndex_SiegeCannonIron);
-            write(WorldData.CityResoureIndex_ManCannonIron);
+            write(CityResoureIndex.BatteringRam);
+            write(CityResoureIndex.ballista);
+            write(CityResoureIndex.Manuballista);
+            write(CityResoureIndex.Catapult);
+            write(CityResoureIndex.SiegeCannonBronze);
+            write(CityResoureIndex.ManCannonBronze);
+            write(CityResoureIndex.SiegeCannonIron);
+            write(CityResoureIndex.ManCannonIron);
 
             // Armors
-            write(WorldData.CityResoureIndex_paddedArmor);
-            write(WorldData.CityResoureIndex_HeavyPaddedArmor);
-            write(WorldData.CityResoureIndex_BronzeArmor);
-            write(WorldData.CityResoureIndex_mailArmor);
-            write(WorldData.CityResoureIndex_heavyMailArmor);
-            write(WorldData.CityResoureIndex_LightPlateArmor);
-            write(WorldData.CityResoureIndex_FullPlateArmor);
-            write(WorldData.CityResoureIndex_MithrilArmor);
+            write(CityResoureIndex.paddedArmor);
+            write(CityResoureIndex.HeavyPaddedArmor);
+            write(CityResoureIndex.BronzeArmor);
+            write(CityResoureIndex.mailArmor);
+            write(CityResoureIndex.heavyMailArmor);
+            write(CityResoureIndex.LightPlateArmor);
+            write(CityResoureIndex.FullPlateArmor);
+            write(CityResoureIndex.MithrilArmor);
 
 
             void write(int cityResourceIndex)
@@ -946,93 +947,93 @@ namespace VikingEngine.DSSWars.GameObject
         {
             res_water.amount = r.ReadInt16();
 
-            read(WorldData.CityResoureIndex_wood);
-            read(WorldData.CityResoureIndex_fuel);
-            read(WorldData.CityResoureIndex_stone);
-            read(WorldData.CityResoureIndex_rawFood);
-            read(WorldData.CityResoureIndex_food);
-            read(WorldData.CityResoureIndex_beer);
-            read(WorldData.CityResoureIndex_coolingfluid);
-            read(WorldData.CityResoureIndex_skinLinnen);
+            read(CityResoureIndex.wood);
+            read(CityResoureIndex.fuel);
+            read(CityResoureIndex.stone);
+            read(CityResoureIndex.rawFood);
+            read(CityResoureIndex.food);
+            read(CityResoureIndex.beer);
+            read(CityResoureIndex.coolingfluid);
+            read(CityResoureIndex.skinLinnen);
 
             // Ores
-            read(WorldData.CityResoureIndex_ironore);
-            read(WorldData.CityResoureIndex_TinOre);
-            read(WorldData.CityResoureIndex_CupperOre);
-            read(WorldData.CityResoureIndex_LeadOre);
-            read(WorldData.CityResoureIndex_SilverOre);
-            read(WorldData.CityResoureIndex_GoldOre);
+            read(CityResoureIndex.ironore);
+            read(CityResoureIndex.TinOre);
+            read(CityResoureIndex.CupperOre);
+            read(CityResoureIndex.LeadOre);
+            read(CityResoureIndex.SilverOre);
+            read(CityResoureIndex.GoldOre);
 
             // Refined metals and materials
-            read(WorldData.CityResoureIndex_iron);
-            read(WorldData.CityResoureIndex_Tin);
-            read(WorldData.CityResoureIndex_Cupper);
-            read(WorldData.CityResoureIndex_Lead);
-            read(WorldData.CityResoureIndex_Silver);
-            read(WorldData.CityResoureIndex_RawMithril);
-            read(WorldData.CityResoureIndex_Sulfur);
+            read(CityResoureIndex.iron);
+            read(CityResoureIndex.Tin);
+            read(CityResoureIndex.Cupper);
+            read(CityResoureIndex.Lead);
+            read(CityResoureIndex.Silver);
+            read(CityResoureIndex.RawMithril);
+            read(CityResoureIndex.Sulfur);
 
             // Alloys and special materials
-            read(WorldData.CityResoureIndex_Bronze);
-            read(WorldData.CityResoureIndex_Steel);
-            read(WorldData.CityResoureIndex_CastIron);
-            read(WorldData.CityResoureIndex_BloomeryIron);
-            read(WorldData.CityResoureIndex_Mithril);
+            read(CityResoureIndex.Bronze);
+            read(CityResoureIndex.Steel);
+            read(CityResoureIndex.CastIron);
+            read(CityResoureIndex.BloomeryIron);
+            read(CityResoureIndex.Mithril);
 
             // Tools / construction
-            read(WorldData.CityResoureIndex_Palisade);
-            read(WorldData.CityResoureIndex_Toolkit);
-            read(WorldData.CityResoureIndex_Wagon2Wheel);
-            read(WorldData.CityResoureIndex_Wagon4Wheel);
-            read(WorldData.CityResoureIndex_BlackPowder);
-            read(WorldData.CityResoureIndex_GunPowder);
-            read(WorldData.CityResoureIndex_LedBullet);
+            read(CityResoureIndex.Palisade);
+            read(CityResoureIndex.Toolkit);
+            read(CityResoureIndex.Wagon2Wheel);
+            read(CityResoureIndex.Wagon4Wheel);
+            read(CityResoureIndex.BlackPowder);
+            read(CityResoureIndex.GunPowder);
+            read(CityResoureIndex.LedBullet);
 
             // Melee weapons
-            read(WorldData.CityResoureIndex_sharpstick);
-            read(WorldData.CityResoureIndex_BronzeSword);
-            read(WorldData.CityResoureIndex_shortsword);
-            read(WorldData.CityResoureIndex_Sword);
-            read(WorldData.CityResoureIndex_LongSword);
-            read(WorldData.CityResoureIndex_HandSpear);
-            read(WorldData.CityResoureIndex_MithrilSword);
+            read(CityResoureIndex.sharpstick);
+            read(CityResoureIndex.BronzeSword);
+            read(CityResoureIndex.shortsword);
+            read(CityResoureIndex.Sword);
+            read(CityResoureIndex.LongSword);
+            read(CityResoureIndex.HandSpear);
+            read(CityResoureIndex.MithrilSword);
 
             // Additional melee / ranged
-            read(WorldData.CityResoureIndex_Warhammer);
-            read(WorldData.CityResoureIndex_twohandsword);
-            read(WorldData.CityResoureIndex_knightslance);
-            read(WorldData.CityResoureIndex_SlingShot);
-            read(WorldData.CityResoureIndex_ThrowingSpear);
-            read(WorldData.CityResoureIndex_bow);
-            read(WorldData.CityResoureIndex_longbow);
-            read(WorldData.CityResoureIndex_crossbow);
-            read(WorldData.CityResoureIndex_MithrilBow);
+            read(CityResoureIndex.Warhammer);
+            read(CityResoureIndex.twohandsword);
+            read(CityResoureIndex.knightslance);
+            read(CityResoureIndex.SlingShot);
+            read(CityResoureIndex.ThrowingSpear);
+            read(CityResoureIndex.bow);
+            read(CityResoureIndex.longbow);
+            read(CityResoureIndex.crossbow);
+            read(CityResoureIndex.MithrilBow);
 
             // Firearms
-            read(WorldData.CityResoureIndex_HandCannon);
-            read(WorldData.CityResoureIndex_HandCulvertin);
-            read(WorldData.CityResoureIndex_Rifle);
-            read(WorldData.CityResoureIndex_Blunderbuss);
+            read(CityResoureIndex.HandCannon);
+            read(CityResoureIndex.HandCulvertin);
+            read(CityResoureIndex.Rifle);
+            read(CityResoureIndex.Blunderbuss);
 
             // Siege
-            read(WorldData.CityResoureIndex_BatteringRam);
-            read(WorldData.CityResoureIndex_ballista);
-            read(WorldData.CityResoureIndex_Manuballista);
-            read(WorldData.CityResoureIndex_Catapult);
-            read(WorldData.CityResoureIndex_SiegeCannonBronze);
-            read(WorldData.CityResoureIndex_ManCannonBronze);
-            read(WorldData.CityResoureIndex_SiegeCannonIron);
-            read(WorldData.CityResoureIndex_ManCannonIron);
+            read(CityResoureIndex.BatteringRam);
+            read(CityResoureIndex.ballista);
+            read(CityResoureIndex.Manuballista);
+            read(CityResoureIndex.Catapult);
+            read(CityResoureIndex.SiegeCannonBronze);
+            read(CityResoureIndex.ManCannonBronze);
+            read(CityResoureIndex.SiegeCannonIron);
+            read(CityResoureIndex.ManCannonIron);
 
             // Armors
-            read(WorldData.CityResoureIndex_paddedArmor);
-            read(WorldData.CityResoureIndex_HeavyPaddedArmor);
-            read(WorldData.CityResoureIndex_BronzeArmor);
-            read(WorldData.CityResoureIndex_mailArmor);
-            read(WorldData.CityResoureIndex_heavyMailArmor);
-            read(WorldData.CityResoureIndex_LightPlateArmor);
-            read(WorldData.CityResoureIndex_FullPlateArmor);
-            read(WorldData.CityResoureIndex_MithrilArmor);
+            read(CityResoureIndex.paddedArmor);
+            read(CityResoureIndex.HeavyPaddedArmor);
+            read(CityResoureIndex.BronzeArmor);
+            read(CityResoureIndex.mailArmor);
+            read(CityResoureIndex.heavyMailArmor);
+            read(CityResoureIndex.LightPlateArmor);
+            read(CityResoureIndex.FullPlateArmor);
+            read(CityResoureIndex.MithrilArmor);
 
             void read(int cityResourceIndex)
             {
@@ -1519,7 +1520,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             groupRadius = 0.6f;
 
-            initEconomy(newGame);
+            initEconomy(newGame, DssRef.world);
             CalcRecruitToTile();
             armyGoalRotation = rotation.radians;
 
@@ -1576,7 +1577,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        void initEconomy(bool newGame)
+        void initEconomy(bool newGame, WorldData world)
         {
             if (newGame)
             {
@@ -1614,7 +1615,7 @@ namespace VikingEngine.DSSWars.GameObject
                 maxWaterTotal = maxWaterBase;
                 casualCityProfile.maxHuts = maxWaterTotal / 3;
 
-                defaultResourceBuffer();
+                defaultResourceBuffer(world);
             }
         }
 
@@ -1858,7 +1859,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                requirements &= resourceAmount(WorldData.CityResoureIndex_food)/*res_food.amount*/ > 0 &&
+                requirements &= resourceAmount(CityResoureIndex.food)/*res_food.amount*/ > 0 &&
                     homeUsers() < workersMax();
             }
 
@@ -2469,17 +2470,17 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.newLine();
             HudLib.CityResource(args.content, this, ItemResourceType.Food_G);
 
-            if (resourceAmount(WorldData.CityResoureIndex_food)/*res_food.amount*/ <= LowAmount)
+            if (resourceAmount(CityResoureIndex.food)/*res_food.amount*/ <= LowAmount)
             {
                 if (res_water.amount <= 2)
                 {
                     HudLib.CityResource(args.content, this, ItemResourceType.Water_G);
                 }
-                if (resourceAmount(WorldData.CityResoureIndex_rawFood)/*res_rawFood.amount*/ <= LowAmount)
+                if (resourceAmount(CityResoureIndex.rawFood)/*res_rawFood.amount*/ <= LowAmount)
                 {
                     HudLib.CityResource(args.content, this, ItemResourceType.RawFood_Group);
                 }
-                if (resourceAmount(WorldData.CityResoureIndex_fuel)/*res_fuel.amount*/ <= LowAmount)
+                if (resourceAmount(CityResoureIndex.fuel)/*res_fuel.amount*/ <= LowAmount)
                 {
                     HudLib.CityResource(args.content, this, ItemResourceType.Fuel_G);
                 }
@@ -3082,14 +3083,14 @@ namespace VikingEngine.DSSWars.GameObject
             {
 
                 {
-                    bool available = city.resourceAmount(WorldData.CityResoureIndex_food) /*.res_food.amount*/ > 0;
+                    bool available = city.resourceAmount(CityResoureIndex.food) /*.res_food.amount*/ > 0;
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
                     content.hspace();
                     content.Add(new RbImage(SpriteName.WarsResource_Food));
                     content.hspace();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource_TypeName_Food, city.resourceAmount(WorldData.CityResoureIndex_food)/*city.res_food.amount*/), HudLib.ResourceCostColor(available)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource_TypeName_Food, city.resourceAmount(CityResoureIndex.food)/*city.res_food.amount*/), HudLib.ResourceCostColor(available)));
                     //HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
                 }
                 if (cityType < CityType.Capital)

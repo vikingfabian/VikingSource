@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * foodUpkeep;
 
-                    if (bufferGoal_minutes > 0 && food < bufferGoalFood && city.res_food.amount >= ItemPropertyColl.CarryFood)
+                    if (bufferGoal_minutes > 0 && food < bufferGoalFood && city.resourceAmount(EntityComponent.CityResoureIndex.food)/*res_food.amount*/ >= ItemPropertyColl.CarryFood)
                     {
                         int statusIx = getOrCreateFreeWorker();
                         var status = workerStatuses[statusIx];

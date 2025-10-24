@@ -407,6 +407,7 @@ namespace VikingEngine.DSSWars
 
             int cityCount = r.ReadInt32();
             cities = new List<City>(cityCount);
+            Init_CityComponents();
             for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
             {
                 City c = new City(cityIndex);
@@ -415,6 +416,7 @@ namespace VikingEngine.DSSWars
 
             int factionCount = r.ReadInt32();
             factions = new SpottedArray<Faction>(factionCount);
+            init_FactionComponents();
             for (int i = 0; i < factionCount; ++i)
             {
                 var faction = new Faction(i);

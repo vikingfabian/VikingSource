@@ -17,6 +17,7 @@ using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.PJ.Joust;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.LootFest.GO.PickUp;
+using VikingEngine.DSSWars.EntityComponent;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -238,18 +239,24 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        int resourceAmount(int cityResourceIndex)
+        public int resourceAmount(int cityResourceIndex)
         { 
             return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex].amount;
         }
 
+        public void resourceAmountSet(int cityResourceIndex, int amount)
+        {
+            ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+            resource.amount = amount;
+        }
+
         public bool foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard)
         {
-            if (res_food_safeguard && resourceAmount(WorldData.CityResoureIndex_food) <= DssConst.WorkSafeGuardAmount)
+            if (res_food_safeguard && resourceAmount(CityResoureIndex.food) <= DssConst.WorkSafeGuardAmount)
             {
-                fuelSafeGuard = resourceAmount(WorldData.CityResoureIndex_fuel) <= DssConst.WorkSafeGuardAmount;
-                rawFoodSafeGuard = resourceAmount(WorldData.CityResoureIndex_rawFood) <= DssConst.WorkSafeGuardAmount;
-                woodSafeGuard = fuelSafeGuard && resourceAmount(WorldData.CityResoureIndex_wood) <= DssConst.WorkSafeGuardAmount;
+                fuelSafeGuard = resourceAmount(CityResoureIndex.fuel) <= DssConst.WorkSafeGuardAmount;
+                rawFoodSafeGuard = resourceAmount(CityResoureIndex.rawFood) <= DssConst.WorkSafeGuardAmount;
+                woodSafeGuard = fuelSafeGuard && resourceAmount(CityResoureIndex.wood) <= DssConst.WorkSafeGuardAmount;
                 return true;
             }
             else
@@ -265,30 +272,32 @@ namespace VikingEngine.DSSWars.GameObject
         public TradeTemplate tradeTemplate = new TradeTemplate();
         public const int DefaultFoodBuffer = 500;
        
-        public void defaultResourceBuffer()
+        public void defaultResourceBuffer(WorldData world)
         {
-            runList(MovableCityResource_Misc);
-            runList(MovableCityResource_Metals);
-            runList(MovableCityResource_WeaponMelee);
-            runList(MovableCityResource_WeaponRanged);
-            runList(MovableCityResource_Armor);
+            
+                runList(MovableCityResource_Misc);
+                runList(MovableCityResource_Metals);
+                runList(MovableCityResource_WeaponMelee);
+                runList(MovableCityResource_WeaponRanged);
+                runList(MovableCityResource_Armor);
 
-            void runList(ItemResourceType[] items)
-            {
-                foreach (ItemResourceType item in items)
+                void runList(ItemResourceType[] items)
                 {
-                    var properties = ItemPropertyColl.Get(item);
-                    if (properties.cityResourceIndex >= 0)
+                    foreach (ItemResourceType item in items)
                     {
-                        ref GroupedResource resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + properties.cityResourceIndex];
-                        resource.goalBuffer = properties.defaultStockPile;
+                        var properties = ItemPropertyColl.Get(item);
+                        if (properties.cityResourceIndex >= 0)
+                        {
+                            ref GroupedResource resource = ref world.cityResouces[resourceComponentStartIndex + properties.cityResourceIndex];
+                            resource.goalBuffer = properties.defaultStockPile;
+                        }
                     }
                 }
-            }
+            
 
-            //DssRef.world.cityResouces[resourceComponentIndex + WorldData.CityResoureIndex_wood].goalBuffer = 300;
+            //DssRef.world.cityResouces[resourceComponentIndex + CityResoureIndex.wood].goalBuffer = 300;
 
-            //int end = resourceComponentIndex + WorldData.CityResoure_Count;
+            //int end = resourceComponentIndex + WorldData.CityResoureIndex.COUNT;
             //for (int itemIx = resourceComponentIndex; itemIx < end; itemIx++)
             //{
             //    //ref ResourceOverview overview = ref DssRef.world.factionResourceOverviews[itemIx];
@@ -402,7 +411,7 @@ namespace VikingEngine.DSSWars.GameObject
             //ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
             //resource.amount += add;
 
-            //ref var overview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + factionIndex * WorldData.CityResoure_Count];
+            //ref var overview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + factionIndex * WorldData.CityResoureIndex.COUNT];
             //overview.onChange(add);
         }
 
@@ -411,10 +420,13 @@ namespace VikingEngine.DSSWars.GameObject
             ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
             resource.amount += add;
 
-            ref var overview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + factionIndex * WorldData.CityResoure_Count];
+            ref var overview = ref DssRef.world.factionResourceOverviews[itemIndex + factionIndex * CityResoureIndex.COUNT];
             overview.onChange(add);
         }
-
+        public GroupedResource GetGroupedResource(int cityResourceIndex)
+        {
+            return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+        }
         public ref GroupedResource GetRefGroupedResource(int cityResourceIndex)
         {
             return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
@@ -795,7 +807,7 @@ namespace VikingEngine.DSSWars.GameObject
                         usesSafeGuard = true;
                         return true;
                     }
-                    return needMore(WorldData.CityResoureIndex_rawFood);//res_rawFood.needMore();
+                    return needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
 
                 case ItemResourceType.Pig:
                     if (rawfoodSafeGuard)
@@ -803,7 +815,7 @@ namespace VikingEngine.DSSWars.GameObject
                         usesSafeGuard = true;
                         return true;
                     }
-                    return needMore(WorldData.CityResoureIndex_food) || needMore(WorldData.CityResoureIndex_skinLinnen);//res_food.needMore() || res_skinLinnen.needMore();
+                    return needMore(CityResoureIndex.food) || needMore(CityResoureIndex.skinLinnen);//res_food.needMore() || res_skinLinnen.needMore();
 
                 case ItemResourceType.Wood_Group:
                 case ItemResourceType.DryWood:
@@ -814,7 +826,7 @@ namespace VikingEngine.DSSWars.GameObject
                         usesSafeGuard = true;
                         return true;
                     }
-                    return needMore(WorldData.CityResoureIndex_wood);//res_wood.needMore();
+                    return needMore(CityResoureIndex.wood);//res_wood.needMore();
 
                 case ItemResourceType.NONE:
                     return false;
@@ -830,7 +842,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             
         }
-        bool needMore(int cityResourceIndex)
+        public bool needMore(int cityResourceIndex)
         {
             return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex].needMore();
         }

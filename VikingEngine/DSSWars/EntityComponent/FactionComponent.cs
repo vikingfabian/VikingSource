@@ -3,28 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Resource;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars
 {
     partial class WorldData
     {
-        public ResourceOverview[] factionResourceOverviews;
+        public ResourceOverview[] factionResourceOverviews = new ResourceOverview[64 * CityResoureIndex.COUNT];
 
         void init_FactionComponents()
         {
-            factionResourceOverviews = new ResourceOverview[factions.Array.Length * CityResoure_Count];
+            factionResourceOverviews = new ResourceOverview[factions.Array.Length * CityResoureIndex.COUNT];
 
-            int startIndex = 0;
             for (int i = 0; i < factions.Array.Length; i++)
             {
                 if (factions.Array[i] != null)
                 { 
-                    factions.Array[i].resourceComponentStartIndex = startIndex;
+                    factions.Array[i].resourceComponentStartIndex = i * CityResoureIndex.COUNT;
                 }
-                startIndex += CityResoure_Count;
             }
         }
+
+        public void factionComponentsAdd(Faction faction)
+        {
+            faction.resourceComponentStartIndex = faction.myIndex * CityResoureIndex.COUNT;
+
+            if (factions.Array.Length * CityResoureIndex.COUNT >= factionResourceOverviews.Length)
+            {
+                int startIndex = factionResourceOverviews.Length;
+                Array.Resize(ref factionResourceOverviews, factionResourceOverviews.Length * 2);
+            }
+        }
+
 
         //public ResourceOverview res_wood = new ResourceOverview();
         //public ResourceOverview res_fuel = new ResourceOverview();

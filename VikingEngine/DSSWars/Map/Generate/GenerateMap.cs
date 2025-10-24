@@ -972,6 +972,12 @@ namespace VikingEngine.DSSWars.Map.Generate
             generateCityType(CityType.Capital, numHeadCities, HeadCityNeededFreeRadius);
             generateCityType(CityType.Town, numHeadCities * 2, 9);
             generateCityType(CityType.Village, numHeadCities * 4, 8);
+
+            world.Init_CityComponents();
+            foreach (City city in world.cities)
+            {
+                city.generateCultureAndEconomy(world, cityCultureCollection);
+            }
         }
         void generateCityType(CityType type, int amount, float neededSpace)
         {
@@ -1009,7 +1015,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 if (cityHasNeededSpace(pos))
                                 {
                                     City c = new City(world.cities.Count, pos, type, world);
-                                    c.generateCultureAndEconomy(world, cityCultureCollection);
+                                    //c.generateCultureAndEconomy(world, cityCultureCollection);
                                     world.cities.Add(c);
 
                                     Tile cityTile = world.tileGrid.Get(pos);

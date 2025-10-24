@@ -105,6 +105,7 @@ namespace VikingEngine.DSSWars
                 this.myIndex = addTo.factions.Add(this);
             }
             factionIndex = myIndex;
+            addTo.factionComponentsAdd(this);
             initVisuals(addTo.metaData);
 
             cities = new SpottedArray<GameObject.City>(8);
@@ -435,7 +436,7 @@ namespace VikingEngine.DSSWars
 
                         city.workTemplate.setAllToFollowFaction();
                         city.workTemplate.onFactionChange(city, workTemplate);
-                        city.defaultResourceBuffer();
+                        city.defaultResourceBuffer(DssRef.world);
 
                         if (mainCity == null || mainCity.factionIndex != myIndex)
                         {

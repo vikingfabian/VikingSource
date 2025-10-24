@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -38,26 +39,26 @@ namespace VikingEngine.DSSWars.Players
 
 
                     //DOES NOT WORK - will reset in auto_updateWorkPrio()
-                    adjustWorkToBuffer(ref city.res_stone, ref city.workTemplate.stone);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.stone/*ref city.res_stone*/, ref city.workTemplate.stone);
 
-                    adjustWorkToBuffer(ref city.res_food, ref city.workTemplate.craft_food);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.food/*ref city.res_food*/, ref city.workTemplate.craft_food);
 
-                    adjustWorkToBuffer(ref city.res_fuel, ref city.workTemplate.craft_fuel);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.fuel/*ref city.res_fuel*/, ref city.workTemplate.craft_fuel);
 
-                    adjustWorkToBuffer(ref city.res_iron, ref city.workTemplate.craft_iron);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.iron/*ref city.res_iron*/, ref city.workTemplate.craft_iron);
 
-                    adjustWorkToBuffer(ref city.res_rawFood, ref city.workTemplate.farm_food);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.rawFood/*ref city.res_rawFood*/, ref city.workTemplate.farm_food);
 
                     
 
                     //adjustWorkToBuffer(ref city.res_wood, ref city.workTemplate.wood);
 
-                    if (city.res_food.amount <= 0)
+                    if (city.resourceAmount(CityResoureIndex.food)/*city.res_food.amount*/ <= 0)
                     {
                         city.workTemplate.craft_food.value = 5;
                         city.workTemplate.farm_food.value = 4;
                     }
-                    if (city.res_wood.amount <= 0)
+                    if (city.resourceAmount(CityResoureIndex.wood)/*city.res_wood.amount*/ <= 0)
                     {
                         BlackMarketResources.AiPurchaseWood(city, faction);
                     }
@@ -103,8 +104,10 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            void adjustWorkToBuffer(ref GroupedResource resource, ref WorkPriority workPriority)
+            void adjustWorkToBuffer(int resourceCompex/*ref GroupedResource resource*/, ref WorkPriority workPriority)
             {
+                GroupedResource resource = DssRef.world.cityResouces[resourceCompex];
+
                 if (resource.amount < ResourceLowBuffer)
                 {
                     if (Ref.peRnd.Chance(0.5))
@@ -158,15 +161,15 @@ namespace VikingEngine.DSSWars.Players
             intelligent = false;
             work = false;
 
-            if (city.res_rawFood.needMore() && Ref.peRnd.Chance(0.6))
+            if (city.needMore(CityResoureIndex.rawFood)/*res_rawFood.needMore()*/ && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.WheatFarm;
             }
-            else if (city.res_fuel.amount < ResourceLowBuffer && city.res_wood.amount > ResourceLowBuffer && Ref.rnd.Chance(0.6))
+            else if (city.resourceAmount(CityResoureIndex.fuel)/*res_fuel.amount*/ < ResourceLowBuffer && city.resourceAmount(CityResoureIndex.wood)/*res_wood.amount*/ > ResourceLowBuffer && Ref.rnd.Chance(0.6))
             {
                 building = BuildAndExpandType.CoalPit;
             }
-            else if (city.res_skinLinnen.needMore() && Ref.peRnd.Chance(0.6))
+            else if (city.needMore(CityResoureIndex.skinLinnen)/*res_skinLinnen.needMore()*/ && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.LinenFarm;
             }
@@ -174,32 +177,38 @@ namespace VikingEngine.DSSWars.Players
             {
                 building = BuildAndExpandType.SoldierBarracks;
             }
-            else if (((city.buildingStructure.Smith_count == 0 && city.res_ironore.amount > ResourceLowBuffer) ||
-                (city.res_ironore.amount >= city.res_ironore.goalBuffer)
-                    && Ref.peRnd.Chance(0.02))
-                )
-            {
-                if (city.res_iron.amount < CraftBuildingLib.CraftSmith_IronUse)
-                {
-                    if (!BlackMarketResources.AiPurchaseIron(city, faction))
-                    {
-
-                        intelligent = true;
-                        work = true;
-
-                        return;
-                    }
-                }
-                building = BuildAndExpandType.Smith;
-            }
-            else if (city.deliveryServices.Count < 2 && Ref.peRnd.Chance(0.2))
-            {
-                building = BuildAndExpandType.Postal;
-            }
             else
             {
-                intelligent = true;
-                work = true;
+                var res_ironore = city.GetGroupedResource(CityResoureIndex.ironore);
+                var res_iron = city.GetGroupedResource(CityResoureIndex.iron);
+
+                if (((city.buildingStructure.Smith_count == 0 && city.resourceAmount(CityResoureIndex.ironore)/*res_ironore.amount*/ > ResourceLowBuffer) ||
+                    (res_ironore.amount >= res_ironore.goalBuffer)
+                        && Ref.peRnd.Chance(0.02))
+                    )
+                {
+                    if (res_iron.amount < CraftBuildingLib.CraftSmith_IronUse)
+                    {
+                        if (!BlackMarketResources.AiPurchaseIron(city, faction))
+                        {
+
+                            intelligent = true;
+                            work = true;
+
+                            return;
+                        }
+                    }
+                    building = BuildAndExpandType.Smith;
+                }
+                else if (city.deliveryServices.Count < 2 && Ref.peRnd.Chance(0.2))
+                {
+                    building = BuildAndExpandType.Postal;
+                }
+                else
+                {
+                    intelligent = true;
+                    work = true;
+                }
             }
         }
     }

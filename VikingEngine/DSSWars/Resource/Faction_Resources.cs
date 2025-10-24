@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.DSSWars.EntityComponent;
 
 namespace VikingEngine.DSSWars
 {
@@ -679,7 +680,7 @@ namespace VikingEngine.DSSWars
 
         public void resourceOverviewOneSecondUpdate()
         {
-            int end = resourceComponentStartIndex + WorldData.CityResoure_Count;
+            int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
             for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
             {
                 //ref ResourceOverview overview = ref DssRef.world.factionResourceOverviews[itemIx];
@@ -770,8 +771,7 @@ namespace VikingEngine.DSSWars
         {
             var citiesC = cities.counter();
 
-            //int end = resourceComponentIndex + WorldData.CityResoure_Count;
-            for (int itemIx = 0; itemIx < WorldData.CityResoure_Count; itemIx++)
+            for (int itemIx = 0; itemIx < CityResoureIndex.COUNT; itemIx++)
             {
                 ref ResourceOverview overview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIx];
                 overview.clearCurrent();
@@ -779,7 +779,6 @@ namespace VikingEngine.DSSWars
                 citiesC.Reset();
                 while (citiesC.Next())
                 {
-                    //res_wood.current += citiesC.sel.res_wood.amount;
                     overview.current += DssRef.world.cityResouces[citiesC.sel.resourceComponentStartIndex + itemIx].amount;
                 }
             }

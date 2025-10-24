@@ -12,8 +12,9 @@ heart arrow
 #BuiltWithMonoGame tags
 Mail list
 Monogame, Perafilozof, gameport, förening discord
-Reddit, twitter
+Reddit, twitter, bluejay
 Facebook privat
+Historymache
 
 #Winter update - must do#
 x achievement in steamworks
