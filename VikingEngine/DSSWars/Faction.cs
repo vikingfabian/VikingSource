@@ -1578,6 +1578,11 @@ namespace VikingEngine.DSSWars
         /// </summary>
         Tomten,
 
+        /// <summary>
+        /// Theme: The blessed folk. A horde like farmers faction.
+        /// </summary>
+        Hælfolc,
+
         NUM
     }
 

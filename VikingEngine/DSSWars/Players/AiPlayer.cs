@@ -135,6 +135,13 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     break;
 
+                case FactionType.Hælfolc:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_Hælfolc;
+                    aggressionLevel = AggressionLevel2_RandomAttacks;
+                    break;
+
                 case FactionType.Tomten:
                     defaultSetup();
                     techSetup();

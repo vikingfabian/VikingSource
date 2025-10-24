@@ -46,6 +46,11 @@ namespace VikingEngine.DSSWars.Presentation
         /// Theme: Easter egg for december. "Tomten" is an old nordic name for father christmas
         /// </summary>
         public string FactionName_Tomten => "Tomten";
+
+        /// <summary>
+        /// Theme: The blessed folk. A horde like farmers faction.
+        /// </summary>
+        public string FactionName_Hælfolc => "Hælfolc";
     }
 
 

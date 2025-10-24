@@ -1160,6 +1160,8 @@ namespace VikingEngine.DSSWars
                 FactionType.Etheleorthe,
 
                 FactionType.DragonGem,
+                FactionType.Hælfolc,
+
             };
 
 

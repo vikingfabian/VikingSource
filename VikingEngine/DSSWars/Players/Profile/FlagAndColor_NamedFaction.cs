@@ -3505,6 +3505,47 @@ namespace VikingEngine.DSSWars.Players.Profile
                         });
                     }
                     break;
+
+                case FactionType.Hælfolc:
+                    {
+                        flag.factionFlavorType = FactionFlavorType.People;
+
+
+                        flag.col0_Main = new Color(203, 218, 229);
+                        flag.col1_Detail1 = new Color(117, 104, 88);
+                        flag.col2_Detail2 = new Color(215, 177, 142);
+
+
+                        flag.col5_AltMain = new Color(163, 178, 189);
+                        flag.col3_Skin = new Color(197, 149, 140);
+                        flag.col4_Hair = new Color(75, 37, 38);
+                        flag.col6_Tunic = new Color(120, 79, 42);
+                        flag.col7_Pants = new Color(245, 245, 220);
+                        flag.col8_Leader = new Color(85, 42, 11);
+
+                        flag.flagDesign = new FlagDesign(new byte[]
+                        {                       
+
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                            0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 
+                            0, 0, 2, 1, 2, 0, 0, 0, 0, 0, 2, 1, 2, 0, 0, 0, 
+                            0, 2, 1, 2, 1, 2, 0, 0, 0, 2, 1, 2, 1, 2, 0, 0, 
+                            0, 1, 2, 1, 2, 1, 2, 0, 2, 1, 2, 1, 2, 1, 0, 0, 
+                            0, 0, 1, 2, 1, 1, 1, 0, 1, 1, 1, 2, 1, 0, 0, 0, 
+                            0, 0, 0, 1, 1, 1, 2, 0, 2, 1, 1, 1, 0, 0, 0, 0, 
+                            0, 0, 0, 0, 1, 0, 1, 2, 1, 0, 1, 0, 0, 0, 0, 0, 
+                            0, 0, 0, 0, 0, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 
+                            0, 0, 0, 0, 0, 2, 1, 0, 1, 2, 0, 0, 0, 0, 0, 0, 
+                            0, 0, 0, 0, 2, 1, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 
+                            2, 0, 0, 2, 1, 0, 0, 2, 0, 0, 1, 2, 0, 0, 2, 0, 
+                            0, 0, 2, 1, 0, 2, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 
+                            0, 2, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 
+                            2, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 
+                            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 
+
+                        });
+                    }
+                    break;
             }
         }
     }

@@ -21,7 +21,7 @@ x achievement in steamworks
 
 #Winter update#
 * fixed: bot delay was not set by high difficulty
-* one new cameo faction, plus december santa faction
+* 2 new cameo factions, plus a december santa faction
 * casual mode: embassy building
 
 USER INTERFACE
