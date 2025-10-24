@@ -94,6 +94,8 @@ namespace VikingEngine.DSSWars.Players
         CityBorders cityBorders = new CityBorders();
 
         public FactionPixelTexture factionPixelTexture;
+        public FactionPixelTexture minimapPixelTexture;
+
         public UnitsPixelTexture unitsPixelTexture;
         
         public bool viewCityTagsOnMap = true;
@@ -1677,6 +1679,7 @@ namespace VikingEngine.DSSWars.Players
             factionPixelTexture = new FactionPixelTexture(faction, true,
                 (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
                 FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
+            minimapPixelTexture = new FactionPixelTexture(faction, true, FactionMapFilter.Minimap);
             unitsPixelTexture = new UnitsPixelTexture(faction);
 
             hud.messages.onGameStart();

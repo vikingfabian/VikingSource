@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Interface
         public PlayerHud_InputHelp inputHelp;
 
 
-         Map.MiniMap miniMap;
+        public Map.MiniMap miniMap;
 
         public PopMenu popMenu = null;
         public Vector2 MessageStart;
@@ -135,120 +135,127 @@ namespace VikingEngine.DSSWars.Interface
             //}
         }
 
-        public void update(out bool refresh)
+        public void update(out bool refresh, bool allowInput)
         {
             //Debug.Log("game hud update");
 
-            
+            miniMap.update(player);
 
-            mouseOverHud = false;
-            refresh = refreshTimer.Update();
-
-            refresh |= player.gameControls.map.selection.isNew ||
-                player.gameControls.map.hover.isNew ||
-                needRefresh;
-
-
-            if (player.gameControls.input.ToggleHudDetail.DownEvent)
+            if (allowInput)
             {
-                detailLevel++;
-                if (detailLevel >= HudDetailLevel.NUM)
+                mouseOverHud = false;
+                refresh = refreshTimer.Update();
+
+                refresh |= player.gameControls.map.selection.isNew ||
+                    player.gameControls.map.hover.isNew ||
+                    needRefresh;
+
+
+                if (player.gameControls.input.ToggleHudDetail.DownEvent)
                 {
-                    detailLevel = 0;
-                }
-                refresh = true;
-            }
-
-
-            if (player.gameControls.input.inputSource.HasMouse)
-            {
-                if (head != null)
-                {
-                    refresh |= head.updateMouseInput(ref mouseOverHud);
-                    refresh |= factionMenu.updateMouseInput(ref mouseOverHud);
-                }
-                if (headOptions != null)
-                {
-                    refresh |= headOptions.updateMouseInput(ref mouseOverHud);
-                }
-                if (pinHud != null)
-                {
-                    refresh |= pinHud.updateMouseInput(ref mouseOverHud);
-                }
-               refresh |= objMenu.updateMouseInput(ref mouseOverHud);
-                
-            }
-            player.tutorial?.update(ref mouseOverHud);
-            messages.Update(ref mouseOverHud);
-
-            //if (displays.menuStateHasChange)
-            //{
-            //   refresh = true;
-            //    displays.menuStateHasChange = false;
-            //}
-
-            
-
-            if (refresh)
-            {
-                //Debug.Log("game hud -refresh");
-                refreshTimer.Reset();
-                head?.refreshUpdate(player);
-                headOptions?.refreshUpdate();
-                pinHud?.refreshUpdate(player);
-                updateMenuDisplays(true);
-                factionMenu.refreshUpdate(player);
-                inputHelp.refreshUpdate(player);
-
-                needRefresh = false;
-            }
-
-            
-
-            void updateMenuDisplays(bool refresh)
-            {
-
-                if (player.gameControls.diplomacy != null)
-                {
-                    var faction = player.gameControls.diplomacy.mainSelection(out bool selected);
-
-                    objMenu.refreshDiplomacy(player, faction, selected);
-
-                    player.factionTab = MenuTab.NUM_NONE;
-                }
-                else if (player.gameControls.map.selection.obj != null)
-                {
-                    updateObjectDisplay(player.gameControls.map.selection.obj, true, refresh);
-                    player.factionTab = MenuTab.NUM_NONE;
-
-                    
-                }
-                else if (player.gameControls.map.hover.obj != null)
-                {
-                    updateObjectDisplay(player.gameControls.map.hover.obj, false, refresh);
-                    player.factionTab = MenuTab.NUM_NONE;
-                }
-                else if (player.factionTab != MenuTab.NUM_NONE)
-                {
-                    //updateObjectDisplay(null, false, refresh);
-                    if (refresh)
+                    detailLevel++;
+                    if (detailLevel >= HudDetailLevel.NUM)
                     {
-                        objMenu.deleteMenu();
+                        detailLevel = 0;
                     }
+                    refresh = true;
                 }
-                else if (!player.updateObjectDisplay())
-                {
-                    //Remove display
-                    updateObjectDisplay(null, false, refresh);
-                }
-            }
 
-            void updateObjectDisplay(GameObject.AbsGameObject obj, bool selected, bool refresh)
-            {
+
+                if (player.gameControls.input.inputSource.HasMouse)
+                {
+                    if (head != null)
+                    {
+                        refresh |= head.updateMouseInput(ref mouseOverHud);
+                        refresh |= factionMenu.updateMouseInput(ref mouseOverHud);
+                    }
+                    if (headOptions != null)
+                    {
+                        refresh |= headOptions.updateMouseInput(ref mouseOverHud);
+                    }
+                    if (pinHud != null)
+                    {
+                        refresh |= pinHud.updateMouseInput(ref mouseOverHud);
+                    }
+                    refresh |= objMenu.updateMouseInput(ref mouseOverHud);
+
+                }
+                player.tutorial?.update(ref mouseOverHud);
+                messages.Update(ref mouseOverHud);
+
+                //if (displays.menuStateHasChange)
+                //{
+                //   refresh = true;
+                //    displays.menuStateHasChange = false;
+                //}
+
+
+
                 if (refresh)
                 {
-                    objMenu.refreshObject(player, obj, selected);
+                    //Debug.Log("game hud -refresh");
+                    refreshTimer.Reset();
+                    head?.refreshUpdate(player);
+                    headOptions?.refreshUpdate();
+                    pinHud?.refreshUpdate(player);
+                    updateMenuDisplays(true);
+                    factionMenu.refreshUpdate(player);
+                    inputHelp.refreshUpdate(player);
+
+                    needRefresh = false;
                 }
+
+
+
+                void updateMenuDisplays(bool refresh)
+                {
+
+                    if (player.gameControls.diplomacy != null)
+                    {
+                        var faction = player.gameControls.diplomacy.mainSelection(out bool selected);
+
+                        objMenu.refreshDiplomacy(player, faction, selected);
+
+                        player.factionTab = MenuTab.NUM_NONE;
+                    }
+                    else if (player.gameControls.map.selection.obj != null)
+                    {
+                        updateObjectDisplay(player.gameControls.map.selection.obj, true, refresh);
+                        player.factionTab = MenuTab.NUM_NONE;
+
+
+                    }
+                    else if (player.gameControls.map.hover.obj != null)
+                    {
+                        updateObjectDisplay(player.gameControls.map.hover.obj, false, refresh);
+                        player.factionTab = MenuTab.NUM_NONE;
+                    }
+                    else if (player.factionTab != MenuTab.NUM_NONE)
+                    {
+                        //updateObjectDisplay(null, false, refresh);
+                        if (refresh)
+                        {
+                            objMenu.deleteMenu();
+                        }
+                    }
+                    else if (!player.updateObjectDisplay())
+                    {
+                        //Remove display
+                        updateObjectDisplay(null, false, refresh);
+                    }
+                }
+
+                void updateObjectDisplay(GameObject.AbsGameObject obj, bool selected, bool refresh)
+                {
+                    if (refresh)
+                    {
+                        objMenu.refreshObject(player, obj, selected);
+                    }
+                }
+            }
+            else
+            {
+                refresh = false;
             }
         }
 

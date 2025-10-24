@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Interface
                 return;
             }
 
-            createMenu(player);
+            createMenu(player, player.hud.miniMap.area.Y);
 
             var content = new RichBoxContent();
             InputMap map = player.gameControls.input;

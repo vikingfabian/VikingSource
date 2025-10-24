@@ -48,6 +48,11 @@ namespace VikingEngine.Graphics
             }
         }
 
+        public Vector2 LookTargetXZ
+        {
+            get { return VectorExt.V3XZtoV2(lookTarget); }
+        }
+
         virtual public Vector3 Right()
         { 
             throw new NotImplementedException();

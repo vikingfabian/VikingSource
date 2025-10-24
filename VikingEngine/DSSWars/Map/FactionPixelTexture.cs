@@ -23,6 +23,8 @@ namespace VikingEngine.DSSWars.Map
 
     abstract class AbsMapPixelTexture
     {
+        int lastCheckVersion = 0;
+        public int version = 0;
         protected Faction playerFaction;
         public Graphics.PixelTexture texture;
 
@@ -39,6 +41,16 @@ namespace VikingEngine.DSSWars.Map
         virtual protected IntVector2 TextureScale()
         {
             return DssRef.world.Size;
+        }
+
+        public bool NewVersion()
+        {
+            if (version > lastCheckVersion)
+            { 
+                lastCheckVersion = version;
+                return true;
+            }
+            return false;
         }
     }
 
@@ -59,6 +71,7 @@ namespace VikingEngine.DSSWars.Map
         public void refreshWorld()
         {
             refreshArea(DssRef.world.tileBounds);
+            version++;
         }
         
         void refreshArea(Rectangle2 area)
