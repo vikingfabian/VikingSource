@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Map
                         t = DssRef.world.tileGrid.Get(loop.Position);
 
                         if (t.tileContent == TileContent.City)
-                            color = t.cityColor;
+                            color = t.cityColor();
 
                         if (t.heightLevel <= Height.LowerWaterHeight)
                         {

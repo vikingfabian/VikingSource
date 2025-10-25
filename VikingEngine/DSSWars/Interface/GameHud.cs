@@ -138,12 +138,14 @@ namespace VikingEngine.DSSWars.Interface
         public void update(out bool refresh, bool allowInput)
         {
             //Debug.Log("game hud update");
+            mouseOverHud = false;
 
-            miniMap.update(player);
+            miniMap.update(player, allowInput, out bool miniMapMouseOver);
+            mouseOverHud |= miniMapMouseOver;
 
             if (allowInput)
             {
-                mouseOverHud = false;
+                
                 refresh = refreshTimer.Update();
 
                 refresh |= player.gameControls.map.selection.isNew ||

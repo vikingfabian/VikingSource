@@ -352,9 +352,14 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        static readonly Color HeadCity = new Color(255,174,184);
-        static readonly Color LargeCity = new Color(253,0,30);
-        static readonly Color SmallCity = new Color(148,0,17);
+        static readonly Color MapCol_HeadCity = new Color(255,174,184);
+        static readonly Color MapCol_LargeCity = new Color(253,0,30);
+        static readonly Color MapCol_SmallCity = new Color(148,0,17);
+
+        static readonly Color MiniMapCol_HeadCity = new Color(251, 37, 114);
+        static readonly Color MiniMapCol_LargeCity = new Color(226, 11, 88);
+        static readonly Color MiniMapCol_SmallCity = new Color(194, 4, 72);
+
 
         public bool HasBorderImage() { return BorderCount > 0; }
 
@@ -363,7 +368,7 @@ namespace VikingEngine.DSSWars.Map
         {
             
             if (tileContent == TileContent.City)
-                return cityColor;
+                return cityColor();
 
             if (heightLevel <= Height.LowerWaterHeight)
             {
@@ -395,7 +400,7 @@ namespace VikingEngine.DSSWars.Map
         public Color MinimapColor_Terrain(IntVector2 pos)
         {
             if (tileContent == TileContent.City)
-                return cityColor;
+                return cityColor();
 
             if (heightLevel <= Height.LowWaterHeight)
             {
@@ -417,7 +422,7 @@ namespace VikingEngine.DSSWars.Map
         public Color MinimapColor_Minimap(Faction playerFaction, IntVector2 pos)
         {
             if (tileContent == TileContent.City)
-                return cityColor;
+                return cityColor_Minimap();
 
             //if (heightLevel <= Height.LowerWaterHeight)
             //{
@@ -586,16 +591,22 @@ namespace VikingEngine.DSSWars.Map
             return DssRef.map.bioms.bioms[(int)biom];
         }
 
-        public Color cityColor
+        public Color cityColor()
         {
-            get
+            switch (City().cityType)
             {
-                switch (City().cityType)
-                {
-                    default: return HeadCity;
-                    case CityType.Town: return LargeCity;
-                    case CityType.Village: return SmallCity;
-                }
+                default: return MapCol_HeadCity;
+                case CityType.Town: return MapCol_LargeCity;
+                case CityType.Village: return MapCol_SmallCity;
+            }           
+        }
+        public Color cityColor_Minimap()
+        {
+            switch (City().cityType)
+            {
+                default: return MiniMapCol_HeadCity;
+                case CityType.Town: return MiniMapCol_LargeCity;
+                case CityType.Village: return MiniMapCol_SmallCity;
             }
         }
         static float[] TypeToWalkingMultiplier;
