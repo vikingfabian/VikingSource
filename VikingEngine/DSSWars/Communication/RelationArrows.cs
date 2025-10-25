@@ -15,15 +15,24 @@ namespace VikingEngine.DSSWars.Communication
         Vector2 iconScale;
         float radius;
         List<Image> relationArrows = new List<Image>(32);
-
+        Image selectHighlight;
         public RelationArrows(Vector2 relBgScale) 
         {
             radius = relBgScale.X * 1f;
-            iconScale = relBgScale * 0.4f;
+            iconScale = relBgScale * 0.5f;
+            selectHighlight = new Image(SpriteName.WhiteCirkle, Vector2.Zero, iconScale, HudLib.DiplomacyDisplayLayer - 5, true);
+            selectHighlight.Visible = false;
+        }
+
+        public void preUpdate()
+        { 
+            selectHighlight.Visible = false;
         }
 
         public void update(Faction selected, Vector2 flagPos, DiplomacyMap map)
         {
+            
+
             if (selected == null)
             {
                 ClearAll();
@@ -64,12 +73,13 @@ namespace VikingEngine.DSSWars.Communication
                                     relationArrows.Add(arrow);
                                 }
 
-                                arrow.Color = goodRelation? Color.Blue : Color.Orange;
+                                arrow.SetSpriteName(goodRelation? SpriteName.WarsRelationArrowAlly :  SpriteName.WarsRelationArrowWar);
 
                                 Vector2 otherPos = map.flagPosition(otherFaction);
                                 Vector2 diff = otherPos - flagPos;
                                 diff.Normalize();
                                 arrow.position = flagPos + diff * radius;
+                                arrow.Rotation = lib.V2ToAngle_PreNorm_Unsafe(diff);
                                 arrow.idOrIndex = i;
                                 arrowIndex++;
                             }
@@ -91,6 +101,10 @@ namespace VikingEngine.DSSWars.Communication
                 if ((img.position - pointer).Length() <= pointerRadius)
                 {
                     factionIndex = img.idOrIndex;
+
+                    selectHighlight.position = img.position;
+                    selectHighlight.Visible = true;
+                    selectHighlight.LayerBelow(img);
                     return true;
                 }
             }
@@ -108,9 +122,16 @@ namespace VikingEngine.DSSWars.Communication
             }
         }
 
-        public void ClearAll()
+        void ClearAll()
         { 
             clearFromIndex(0);
+            
+        }
+
+        public void DeleteMe()
+        {
+            ClearAll();
+            selectHighlight.DeleteMe();
         }
     }
 }

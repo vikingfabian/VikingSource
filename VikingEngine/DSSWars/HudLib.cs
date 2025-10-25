@@ -82,6 +82,7 @@ namespace VikingEngine.DSSWars
         public const ImageLayers IngameUiLayer = ImageLayers.Lay9;
 
         public static NineSplitSettings HudMenuBackground;
+        public static NineSplitSettings MinimapBorder;
         public static NineSplitSettings HudTutorialBackground;
         public static NineSplitSettings HudMenuScollBackground;
         public static NineSplitSettings MessageBackground;
@@ -109,6 +110,7 @@ namespace VikingEngine.DSSWars
             const float TextToIconSz = 1.2f;
 
             HudMenuBackground = new HUD.NineSplitSettings(SpriteName.WarsHudMenuBg, 1, 8, 1f, true, true);
+            MinimapBorder = new HUD.NineSplitSettings(SpriteName.WarsHudMinimapBorder, 1, 4, 1f, true, false);
 
             HudMenuScollBackground = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 8, 1f, true, true);
             HudMenuScollButton = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerSlider, 1, 8, 1f, true, true);

@@ -226,6 +226,8 @@ namespace VikingEngine.DSSWars.Communication
 
             relationArrowHover = -1;
 
+            relationArrows.preUpdate();
+
             if (!overHud)
             {
                 if (selected != null && relationArrows.factionArrowHover(player, out relationArrowHover))
@@ -367,7 +369,7 @@ namespace VikingEngine.DSSWars.Communication
             hoverbox.DeleteMe();
             seletionbox.DeleteMe();
 
-            relationArrows.ClearAll();
+            relationArrows.DeleteMe();
             relationArrows = null;
         }
 

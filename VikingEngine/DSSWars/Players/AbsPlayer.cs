@@ -218,18 +218,18 @@ namespace VikingEngine.DSSWars.Players
                     IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                     Army mainArmy = faction.NewArmy(onTile);
 
-                    for (int i = 0; i < 4; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         new SoldierGroup(mainArmy, DssLib.SoldierProfile_StandardArcher, mainArmy.position);
                     }
-                    for (int i = 0; i < 4; ++i)
+                    for (int i = 0; i < 1; ++i)
                     {
                         new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
                     }
 
                     if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
                     {
-                        for (int i = 0; i < 4; ++i)
+                        for (int i = 0; i < 1; ++i)
                         {
                             new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
                         }

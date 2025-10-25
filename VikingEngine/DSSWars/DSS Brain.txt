@@ -18,6 +18,7 @@ Facebook privat
 
 #Winter update - must do#
 x achievement in steamworks
+x hide minimap
 
 #Winter update#
 * fixed: bot delay was not set by high difficulty
@@ -25,6 +26,7 @@ x achievement in steamworks
 * casual mode: embassy building
 
 USER INTERFACE
+* minimap
 * In-menu text input
 * Search bar for voxel models
 * Menu width option

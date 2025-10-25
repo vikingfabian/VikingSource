@@ -2420,8 +2420,12 @@ namespace VikingEngine
         WarsHudToolDownButton,
         WarsHudFlagBorder,
         WarsHudHeadBarBg,
+        WarsHudMinimapBorder,
         WarsHudToolUpButton,
         WarsHudTutorialBg,
+        WarsHudFlapMinimize,
+        WarsHudFlapMaximize,
+
 
         WarsHudDropDownArrow,
         WarsHudYellowDot,
@@ -2532,7 +2536,9 @@ namespace VikingEngine
         WarsRelationServant,
         WarsRelationFlagOutline,
         WarsRelationFlag,
-        
+        WarsRelationArrowWar,
+        WarsRelationArrowAlly,
+
         WarsMapIcon,
         WarsMapFilterFactions,
         WarsMapFilterWorkers,

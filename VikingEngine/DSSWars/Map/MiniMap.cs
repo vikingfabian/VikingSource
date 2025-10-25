@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.HUD;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -14,7 +15,9 @@ namespace VikingEngine.DSSWars.Map
     {
         RenderTargetDrawContainer renderTargetDrawContainer;
         Graphics.ImageAdvanced mapTexture = null, unitTexture = null;
-        Graphics.Image bg;
+        Graphics.Image hoverHighLight;
+        NineSplitAreaTexture bg;
+
         //Vector2 mapSize;
         public VectorRect area;
         Vector2 areaHalfSize;
@@ -33,9 +36,15 @@ namespace VikingEngine.DSSWars.Map
             var bgArea = area;
             bgArea.AddRadius(4);
 
-            bg = new Image(SpriteName.WhiteArea, bgArea.Position, bgArea.Size, HudLib.GUILayer + 2);
-            bg.Color = Color.Black;
-            
+            //bg = new Image(SpriteName.WhiteArea, bgArea.Position, bgArea.Size, HudLib.GUILayer + 2);
+            //bg.Color = Color.Black;
+            bg = new NineSplitAreaTexture(HudLib.MinimapBorder, bgArea, HudLib.GUILayer + 2);
+            bgArea.AddRadius(2);
+
+            hoverHighLight = new Image(SpriteName.WhiteArea, bgArea.Position, bgArea.Size, HudLib.GUILayer + 2);
+            hoverHighLight.Opacity = 0.5f;
+            hoverHighLight.Visible = false;
+
             mapTexture = new ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, DssRef.world.Size.Vec, ImageLayers.Background0, false, false);
             mapTexture.ImageSource = new Rectangle(0, 0, DssRef.world.Size.X, DssRef.world.Size.Y);
            
@@ -58,7 +67,7 @@ namespace VikingEngine.DSSWars.Map
             mouseOver = allowInput && bMouseInput && area.IntersectPoint(Input.Mouse.Position);
             if (mouseOver)
             {
-                bg.Color = Color.Gray;
+                hoverHighLight.Visible = true;
 
                 float zoom = player.gameControls.input.ZoomValue();
                 if (zoom != 0)
@@ -86,8 +95,8 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
             else
-            { 
-                bg.Color = Color.Black;
+            {
+                hoverHighLight.Visible = false;
 
                 refreshPosition(player);
 
