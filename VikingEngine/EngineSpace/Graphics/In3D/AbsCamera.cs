@@ -48,6 +48,17 @@ namespace VikingEngine.Graphics
             }
         }
 
+        public Vector2 LookTargetXZ
+        {
+            get { return VectorExt.V3XZtoV2(lookTarget); }
+            set
+            {
+                lookTarget.X = value.X;
+                lookTarget.Z = value.Y;
+                clearGoalTarget();
+            }
+        }
+
         virtual public Vector3 Right()
         { 
             throw new NotImplementedException();

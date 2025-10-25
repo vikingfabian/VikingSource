@@ -124,11 +124,7 @@ namespace VikingEngine.DSSWars.Players
             return controllerPointer.position;
         }
 
-        public void setCameraPos(IntVector2 tile)
-        {
-            playerPointerPos = WP.ToWorldPos(tile);
-            camera.LookTarget = playerPointerPos;
-        }
+        
 
         public bool overridingDrag()
         { 
@@ -1384,17 +1380,35 @@ namespace VikingEngine.DSSWars.Players
                 {
                     pan = VectorExt.RotateVector(pan, camera.Tilt.X - CamStartRotation);
                 }
-                cameraFocus = null;
 
                 camera.MoveLookTargetXZ( - pan);
-                camera.setLookTargetXBound(panBounds.Position.X, panBounds.Right);
-                camera.setLookTargetZBound(panBounds.Position.Y, panBounds.Bottom);
-
-                playerPointerPos = camera.LookTarget;
-
-                DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
-                playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
+                onPan();
             }
+        }
+
+        public void setCameraPosition(Vector2 worldXZ)
+        {
+            camera.LookTargetXZ = worldXZ;
+            onPan();
+        }
+
+        public void setCameraPos(IntVector2 tile)
+        {
+            playerPointerPos = WP.ToWorldPos(tile);
+            camera.LookTarget = playerPointerPos;
+        }
+
+        void onPan()
+        {
+            cameraFocus = null;
+
+            camera.setLookTargetXBound(panBounds.Position.X, panBounds.Right);
+            camera.setLookTargetZBound(panBounds.Position.Y, panBounds.Bottom);
+
+            playerPointerPos = camera.LookTarget;
+
+            DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
+            playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
         }
 
         public void loadCamPos()

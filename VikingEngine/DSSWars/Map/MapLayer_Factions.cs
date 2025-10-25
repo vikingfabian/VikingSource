@@ -50,12 +50,14 @@ namespace VikingEngine.DSSWars.Map
                 foreach (var p in DssRef.state.localPlayers)
                 {
                     p.factionPixelTexture.initTexture();
+                    p.minimapPixelTexture.initTexture();
                 }
             }
 
             foreach (var p in DssRef.state.localPlayers)
             {
                 p.factionPixelTexture.refreshWorld();
+                p.minimapPixelTexture.refreshWorld();
             }
                 //factionPixelTex.refreshWorld();
         }

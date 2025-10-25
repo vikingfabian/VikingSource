@@ -44,8 +44,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Vector2 controllerPointer_storedPos_faction;
         Vector2 controllerPointer_storedPos_diplomacy;
        
-
-
         public GameControls(LocalPlayer player, InputMap input)
         {
             
@@ -123,13 +121,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     player.hud.needRefresh |= menu.needRefresh;
                     
                 }
-                player.hud.update(out uiRefresh);
+                player.hud.update(out uiRefresh, true);
             }
             else
             {
-                if (!map.overridingDrag())
+                if (map.overridingDrag())
                 {
-                    player.hud.update(out uiRefresh);
+                    player.hud.update(out uiRefresh, false);
+                }
+                else
+                {
+                    player.hud.update(out uiRefresh, true);
                     hudState = player.hud.mouseOverHud;
                 }
             }
