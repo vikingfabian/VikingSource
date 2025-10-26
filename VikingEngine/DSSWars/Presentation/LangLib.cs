@@ -915,6 +915,9 @@ namespace VikingEngine.DSSWars.Presentation
                 case MenuTab.Casual_Build:
                     description = DssRef.lang.MenuTab_Build_Description;
                     return DssRef.lang.MenuTab_Build;
+                case MenuTab.StockPile:
+                    description = DssRef.lang.Resource_StockPile_Info;
+                    return DssRef.lang.Resource_Tab_Stockpile;
                 default:
                     throw new NotImplementedException();
             }

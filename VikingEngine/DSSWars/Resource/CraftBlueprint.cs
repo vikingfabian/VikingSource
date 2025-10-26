@@ -394,7 +394,7 @@ namespace VikingEngine.DSSWars.Resource
                     case CraftRequirement.Logistics1:
                         icon = SpriteName.WarsBuild_Logistics;
                         reqText = string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage);
-                        available = city.res_food.amount >= DssConst.Logistics1FoodStorage;
+                        available = city.resourceAmount(EntityComponent.CityResoureIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
                         break;
 
                     default:

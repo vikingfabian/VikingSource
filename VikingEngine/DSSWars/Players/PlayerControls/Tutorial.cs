@@ -239,13 +239,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             var cityCounter = player.faction.cities.counter();
             while (cityCounter.Next())
             {
-                cityCounter.sel.res_wood.amount = 0;
-                cityCounter.sel.res_sharpstick.amount = CollectWeaponArmorAmount - 6;//30;
-                cityCounter.sel.res_paddedArmor.amount = CollectWeaponArmorAmount - 6;
+                cityCounter.sel.resourceAmountSet(EntityComponent.CityResoureIndex.wood, 0);
+                cityCounter.sel.resourceAmountSet(EntityComponent.CityResoureIndex.sharpstick, CollectWeaponArmorAmount - 6);
+                cityCounter.sel.resourceAmountSet(EntityComponent.CityResoureIndex.paddedArmor, CollectWeaponArmorAmount - 6);
+
+                //cityCounter.sel.res_wood.amount = 0;
+                //cityCounter.sel.res_sharpstick.amount = CollectWeaponArmorAmount - 6;//30;
+                //cityCounter.sel.res_paddedArmor.amount = CollectWeaponArmorAmount - 6;
 
                 if (DssRef.storage.runTutorial_1short_2normal == 1)
                 {
-                    cityCounter.sel.res_Palisade.amount = 50;
+                    cityCounter.sel.resourceAmountSet(EntityComponent.CityResoureIndex.Palisade, 50);
+                    //cityCounter.sel.res_Palisade.amount = 50;
                     cityCounter.sel.createStartupBarracks();
                 }
 
@@ -795,7 +800,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!weaponsArmor_produceWeapons)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().res_sharpstick.amount >= CollectWeaponArmorAmount)
+                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResoureIndex.sharpstick)/*res_sharpstick.amount*/ >= CollectWeaponArmorAmount)
                         {
                             weaponsArmor_produceWeapons = true;
 
@@ -806,7 +811,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!weaponsArmor_produceArmor)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().res_paddedArmor.amount >= CollectWeaponArmorAmount)
+                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResoureIndex.paddedArmor)/*res_paddedArmor.amount*/ >= CollectWeaponArmorAmount)
                         {
                             weaponsArmor_produceArmor = true;
 
@@ -1120,7 +1125,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!CollectFood_increasefoodbuffer)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().res_food.goalBuffer > City.DefaultFoodBuffer)
+                            player.gameControls.map.selection.obj.GetCity().GetGroupedResource(EntityComponent.CityResoureIndex.food).goalBuffer/*res_food.goalBuffer*/ > City.DefaultFoodBuffer)
                         {
                             CollectFood_increasefoodbuffer = true;
 
@@ -1131,7 +1136,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!CollectFood_reachfoodamount)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().res_food.amount >= ReachFoodBuffer)
+                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResoureIndex.food)/*.res_food.amount*/ >= ReachFoodBuffer)
                         {
                             CollectFood_reachfoodamount = true;
 

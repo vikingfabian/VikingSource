@@ -71,6 +71,11 @@ namespace VikingEngine.DSSWars.Interface
                         player.faction.resourceTab(player, content);
                         break;
 
+                    case MenuTab.StockPile:
+
+                        player.faction.stockPileTab(player, content);
+                        break;
+
                     case MenuTab.Work:
                         player.faction.workTab(content);
                         break;

@@ -41,7 +41,8 @@ namespace VikingEngine.DSSWars.Resource
             int count = 5;
             if (faction.payGold(count * Cost_Wood, false, city))
             {
-                city.res_wood.amount += count;
+                city.AddGroupedResource(EntityComponent.CityResoureIndex.wood, count);
+                //city.res_wood.amount += count;
             }
         }
         public static bool AiPurchaseIron(City city, Faction faction)
@@ -49,7 +50,8 @@ namespace VikingEngine.DSSWars.Resource
             int count = CraftBuildingLib.CraftSmith_IronUse;
             if (faction.payGold(count * Cost_Iron, false, city))
             {
-                city.res_iron.amount += count;
+                city.AddGroupedResource(EntityComponent.CityResoureIndex.iron, count);
+                //city.res_iron.amount += count;
                 return true;
             }
             return false;

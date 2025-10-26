@@ -25,27 +25,21 @@ namespace VikingEngine.DSSWars
 {
     partial class Faction : AbsGameObject
     {
-        //public int index;
         public Players.AbsPlayer player = null;
-        //public FlagAndColor flagProfile;
-
         public GameObject.City mainCity;
         public Vector3 SelectionCenter { get; private set; }
 
-
         public SpottedArray<GameObject.City> cities;
-
        
         public int previousWarAgainstFaction = -1;
         public DiplomaticRelation[] diplomaticRelations = null;
         public DiplomaticSide diplomaticSide = DiplomaticSide.None;
 
         public bool textureLoaded = false;
-        //public Vector2 FlagTextureTargetSheetPos;
+
         public ModelTextureSettings FlagTexture = ModelTextureSettings.Default;
 
         public SpottedArray<Army> armies;
-        //public SpottedArrayCounter<Army> armiesCounter;
 
         ushort nextUnitId = 0;
         public int nextArmyId = 1;
@@ -63,7 +57,6 @@ namespace VikingEngine.DSSWars
         public int lostCity_Time0 = -1;
         public int lostCity_Time1 = -1;
 
-
         public XP.TechnologyTemplate technology;
 
         public Faction(int index)
@@ -76,20 +69,11 @@ namespace VikingEngine.DSSWars
 
         public Faction(WorldData addTo, FactionType factiontype, int arrayIndex = -1)
         {
-            //if (factiontype == FactionType.SkaeldraHaim)
-            //{
-            //    lib.DoNothing();
-            //}
-
             if (factiontype == FactionType.DefaultAi)
             {
                 if (addTo.availableGenericAiTypes.Count > 0)
                 {
                     factiontype = arraylib.RandomListMemberPop(addTo.availableGenericAiTypes, addTo.metaData.objRnd);
-                    //if (addTo.availableGenericAiTypes.Count == 1)
-                    //{
-                    //    lib.DoNothing();
-                    //}
                 }
             }
 
@@ -105,9 +89,10 @@ namespace VikingEngine.DSSWars
                 this.myIndex = addTo.factions.Add(this);
             }
             factionIndex = myIndex;
+            addTo.factionComponentsAdd(this);
             initVisuals(addTo.metaData);
 
-            cities = new SpottedArray<GameObject.City>(8);
+            cities = new SpottedArray<City>(8);
             armies = new SpottedArray<Army>(16);
         }
 
@@ -129,7 +114,6 @@ namespace VikingEngine.DSSWars
         public void initVisuals(WorldMetaData worldMeta)
         {
             worldMeta.setObjSeed(myIndex);
-           //player.SetProfile(new PlayerProfile(factiontype, worldMeta));
         }
 
         virtual public void writeGameState(System.IO.BinaryWriter w)
@@ -166,17 +150,6 @@ namespace VikingEngine.DSSWars
             if (player.IsLocalPlayer() && player.GetLocalPlayer().isDropInPlayer)
             {
                 factiontype = FactionType.Player;
-                //var doubletteFaction = pointers.oldFactionTypes[(int)factiontype];
-                //if (doubletteFaction != null)
-                //{
-                //    foreach (var faction2 in doubletteFaction)
-                //    {
-                //        if (faction2 != this && faction2.factiontype == factiontype)
-                //        {
-                //            faction2.factiontype = FactionType.DefaultAi;
-                //        }
-                //    }
-                //}
             }
 
             if (subVersion >= 81)
@@ -225,12 +198,10 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < citiesCount; i++)
             {
                 int cityIx = r.ReadUInt16();
-                //if (arraylib.InBound(DssRef.world.cities, cityIx))
-                //{
-                    var city = DssRef.world.cities[cityIx];
-                    //cities.Add(city);
-                    city.setFaction(this, true, false);
-                //}
+                var city = DssRef.world.cities[cityIx];
+                    
+                city.setFaction(this, true, false);
+                
             }
             if (subVersion >= 76)
             { 
@@ -435,7 +406,7 @@ namespace VikingEngine.DSSWars
 
                         city.workTemplate.setAllToFollowFaction();
                         city.workTemplate.onFactionChange(city, workTemplate);
-                        city.defaultResourceBuffer();
+                        city.defaultResourceBuffer(DssRef.world);
 
                         if (mainCity == null || mainCity.factionIndex != myIndex)
                         {

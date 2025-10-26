@@ -926,9 +926,14 @@ namespace VikingEngine.DSSWars.Players
                     {
                         case FactionFlavorType.Mountain:
 
-                            faction.mainCity.res_iron.amount += 100;
-                            faction.mainCity.res_shortsword.amount += 60;
-                            faction.mainCity.res_heavyMailArmor.amount += 60;
+                            //faction.mainCity.res_iron.amount += 100;
+                            //faction.mainCity.res_shortsword.amount += 60;
+                            //faction.mainCity.res_heavyMailArmor.amount += 60;
+
+                            faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.iron, 100);
+                            faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.shortsword, 60);
+                            faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.heavyMailArmor, 60);
+
                             break;
 
                         case FactionFlavorType.Forest:

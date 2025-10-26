@@ -12,6 +12,7 @@ namespace VikingEngine.DSSWars.Resource
     {
         public int current, produced, consumed;
         public int prevCurrent, prevProduced, prevConsumed;
+        public int goalBuffer;
 
         public void onChange(int change)
         {

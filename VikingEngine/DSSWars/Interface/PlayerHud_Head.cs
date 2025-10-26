@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Interface
         LocalPlayer player;
 
         public static readonly MenuTab[] CasualTabs = { MenuTab.Economy };
-        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, /*MenuTab.Automation*/ MenuTab.Progress };
+        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.StockPile, MenuTab.Work, /*MenuTab.Automation*/ MenuTab.Progress };
         public static readonly MenuTab[] TutorialTabs = { MenuTab.Economy };
 
         public PlayerHud_Head(LocalPlayer player)
@@ -289,6 +289,8 @@ namespace VikingEngine.DSSWars.Interface
                         icon = SpriteName.rtsMoney; break;
                     case MenuTab.Resources:
                         icon = SpriteName.WarsResource_Wood; break;
+                    case MenuTab.StockPile:
+                        icon = SpriteName.WarsStockpileAdd; break;
                     case MenuTab.Work:
                         icon = SpriteName.WarsHammer; break;
                     case MenuTab.Automation:

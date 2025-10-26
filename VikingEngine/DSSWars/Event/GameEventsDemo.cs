@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Event
 {
@@ -31,8 +32,11 @@ namespace VikingEngine.DSSWars.Event
                 var citiesC = DssRef.state.LocalHost().faction.cities.counter();
                 while (citiesC.Next())
                 {
-                    citiesC.sel.res_Palisade.amount += 20;
-                    citiesC.sel.res_food.amount += 500;
+                    citiesC.sel.AddGroupedResource(EntityComponent.CityResoureIndex.Palisade, 20);
+                    citiesC.sel.AddGroupedResource(EntityComponent.CityResoureIndex.food, 500);
+
+                    //citiesC.sel.res_Palisade.amount += 20;
+                    //citiesC.sel.res_food.amount += 500;
                 }
 
                 var enemy = DssRef.state.LocalHost().getPin("enemy");
