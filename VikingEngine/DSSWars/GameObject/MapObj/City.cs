@@ -781,7 +781,7 @@ namespace VikingEngine.DSSWars.GameObject
             // Ores
             write(CityResoureIndex.ironore);
             write(CityResoureIndex.TinOre);
-            write(CityResoureIndex.CupperOre);
+            write(CityResoureIndex.CopperOre);
             write(CityResoureIndex.LeadOre);
             write(CityResoureIndex.SilverOre);
             write(CityResoureIndex.GoldOre);
@@ -789,7 +789,7 @@ namespace VikingEngine.DSSWars.GameObject
             // Refined metals and materials
             write(CityResoureIndex.iron);
             write(CityResoureIndex.Tin);
-            write(CityResoureIndex.Cupper);
+            write(CityResoureIndex.Copper);
             write(CityResoureIndex.Lead);
             write(CityResoureIndex.Silver);
             write(CityResoureIndex.RawMithril);
@@ -959,7 +959,7 @@ namespace VikingEngine.DSSWars.GameObject
             // Ores
             read(CityResoureIndex.ironore);
             read(CityResoureIndex.TinOre);
-            read(CityResoureIndex.CupperOre);
+            read(CityResoureIndex.CopperOre);
             read(CityResoureIndex.LeadOre);
             read(CityResoureIndex.SilverOre);
             read(CityResoureIndex.GoldOre);
@@ -967,7 +967,7 @@ namespace VikingEngine.DSSWars.GameObject
             // Refined metals and materials
             read(CityResoureIndex.iron);
             read(CityResoureIndex.Tin);
-            read(CityResoureIndex.Cupper);
+            read(CityResoureIndex.Copper);
             read(CityResoureIndex.Lead);
             read(CityResoureIndex.Silver);
             read(CityResoureIndex.RawMithril);

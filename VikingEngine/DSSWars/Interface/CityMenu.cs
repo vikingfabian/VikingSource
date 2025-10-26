@@ -1747,7 +1747,7 @@ namespace VikingEngine.DSSWars.Interface
                     city.GetGroupedResource(CityResoureIndex.TinOre).toMenu(content, ItemResourceType.TinOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
                     city.terrainStructure.mine(content, city.terrainStructure.mineCount_tin, ItemResourceType.Tin, ref totalMines);
 
-                    city.GetGroupedResource(CityResoureIndex.CupperOre).toMenu(content, ItemResourceType.CopperOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals); 
+                    city.GetGroupedResource(CityResoureIndex.CopperOre).toMenu(content, ItemResourceType.CopperOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals); 
                     city.terrainStructure.mine(content, city.terrainStructure.mineCount_copper, ItemResourceType.Copper, ref totalMines);
 
                     city.GetGroupedResource(CityResoureIndex.LeadOre).toMenu(content, ItemResourceType.LeadOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
@@ -1769,7 +1769,7 @@ namespace VikingEngine.DSSWars.Interface
                     city.GetGroupedResource(CityResoureIndex.Tin).toMenu(content, ItemResourceType.Tin, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Tin);
 
-                    city.GetGroupedResource(CityResoureIndex.Cupper).toMenu(content, ItemResourceType.Copper, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.Copper).toMenu(content, ItemResourceType.Copper, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
 
                     city.GetGroupedResource(CityResoureIndex.Lead).toMenu(content, ItemResourceType.Lead, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);

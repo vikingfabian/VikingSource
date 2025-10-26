@@ -405,6 +405,15 @@ namespace VikingEngine.DSSWars.GameObject
                     case ItemResourceType.Men:
                         workForce.amount += add;
                         return;
+
+                    case ItemResourceType.Water_G:
+                        res_water.amount += add;
+                        return;
+
+                    case ItemResourceType.NONE:
+                        return;
+
+                    default: throw new ArgumentOutOfRangeException("AddGroupedResource " + type.ToString());
                 }
             }
             AddGroupedResource(itemIndex, add);
@@ -416,7 +425,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public void AddGroupedResource(int itemIndex, int add)
-        {
+        {            
             ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
             resource.amount += add;
 
@@ -439,7 +448,6 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 switch (type)
                 {
-
                     case ItemResourceType.Gold:
                         return new GroupedResource() { amount = (int)(DssRef.storage.gameRuleset.centralGold ? GetFaction_NoChecks().money.GetGold() : money.GetGold()), goalBuffer = int.MaxValue };
                     case ItemResourceType.Men:
@@ -449,6 +457,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                     case ItemResourceType.Water_G: return res_water;
                     case ItemResourceType.NONE: return Res_Nothing;
+
+                    default: throw new ArgumentOutOfRangeException("AddGroupedResource " + type.ToString());
                 }
             }
 
@@ -1206,7 +1216,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public ItemResource MakeTrade(ItemResourceType itemResourceType, int payment, float maxWeight = 1f)
         {
-            //int carry = ItemPropertyColl.CarryAmount(itemResourceType, maxWeight);
+            int carry = ItemPropertyColl.CarryAmount(itemResourceType, maxWeight);
+            AddGroupedResource(itemResourceType, -carry);
             //switch (itemResourceType)
             //{
             //    case ItemResourceType.SoftWood:
@@ -1226,8 +1237,8 @@ namespace VikingEngine.DSSWars.GameObject
             //        throw new NotImplementedException(itemResourceType.ToString());
             //}
 
-            //return new ItemResource(itemResourceType, 1, payment, carry);
-            throw new NotImplementedException();
+            return new ItemResource(itemResourceType, 1, payment, carry);
+            //throw new NotImplementedException();
         }
 
         public void dropOffItem(ItemResource item, out ItemResource convert1, out ItemResource convert2)

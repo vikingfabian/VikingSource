@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars
                 // Ores
                 cityResouces[startIndex + CityResoureIndex.ironore] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.TinOre] = new GroupedResource { goalBuffer = 100 };
-                cityResouces[startIndex + CityResoureIndex.CupperOre] = new GroupedResource { goalBuffer = 100 };
+                cityResouces[startIndex + CityResoureIndex.CopperOre] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.LeadOre] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.SilverOre] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.GoldOre] = new GroupedResource { goalBuffer = 100 };
@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars
                 // Refined / materials
                 cityResouces[startIndex + CityResoureIndex.iron] = new GroupedResource { amount = 10, goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.Tin] = new GroupedResource { goalBuffer = 100 };
-                cityResouces[startIndex + CityResoureIndex.Cupper] = new GroupedResource { goalBuffer = 100 };
+                cityResouces[startIndex + CityResoureIndex.Copper] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.Lead] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.Silver] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.RawMithril] = new GroupedResource { goalBuffer = 100 };

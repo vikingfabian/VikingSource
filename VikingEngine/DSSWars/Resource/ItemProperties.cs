@@ -37,14 +37,13 @@ namespace VikingEngine.DSSWars.Resource
 
             // basic resources
             new ItemProperties(ItemResourceType.Stone_G, CityResoureIndex.stone, 1f / CarryStones, null, null) { defaultStockPile = 200 };
-            new ItemProperties(ItemResourceType.IronOre_G, CityResoureIndex.ironore, 1f / 10, null, null);
-            new ItemProperties(ItemResourceType.GoldOre, CityResoureIndex.GoldOre, 1f / 10, null, null);
             new ItemProperties(ItemResourceType.Egg, CityResoureIndex.rawFood, 1f / 60, null, null);
             new ItemProperties(ItemResourceType.Pig, NoCityResource, 1f, null, null); // (leave untracked or map to rawFood)
             new ItemProperties(ItemResourceType.Hen, NoCityResource, 1f / 4, null, null); // (leave untracked or map to rawFood)
             new ItemProperties(ItemResourceType.Wheat, CityResoureIndex.rawFood, 1f / 10, null, null);
-            new ItemProperties(ItemResourceType.RawFood_Group, NoCityResource, DefaultWeight,null, null) { defaultStockPile = 200 };
-            new ItemProperties(ItemResourceType.Linen, CityResoureIndex.skinLinnen, 1f / 10, null, null) { defaultStockPile = 200 };
+            new ItemProperties(ItemResourceType.RawFood_Group, CityResoureIndex.rawFood, DefaultWeight,null, null) { defaultStockPile = 200 };
+            new ItemProperties(ItemResourceType.Linen, CityResoureIndex.skinLinnen, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.SkinLinen_Group, CityResoureIndex.skinLinnen, 1f / 10, null, null) { defaultStockPile = 200 };
 
             // fuel & food
             new ItemProperties(ItemResourceType.Fuel_G, CityResoureIndex.fuel, DefaultWeight, CraftResourceLib.Fuel1, null){ defaultStockPile = 400 };
@@ -54,10 +53,21 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.CoolingFluid, CityResoureIndex.coolingfluid, DefaultWeight, CraftResourceLib.CoolingFluid, null);
 
             // metals & alloys
-            new ItemProperties(ItemResourceType.Copper, CityResoureIndex.Cupper, DefaultWeight, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
-            new ItemProperties(ItemResourceType.Tin, CityResoureIndex.Tin, DefaultWeight, CraftResourceLib.Tin, null);
-            new ItemProperties(ItemResourceType.Lead, CityResoureIndex.Lead, DefaultWeight, CraftResourceLib.Lead, null);
+            new ItemProperties(ItemResourceType.IronOre_G, CityResoureIndex.ironore, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.TinOre, CityResoureIndex.TinOre, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.CopperOre, CityResoureIndex.CopperOre, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.LeadOre, CityResoureIndex.LeadOre, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.SilverOre, CityResoureIndex.SilverOre, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.GoldOre, CityResoureIndex.GoldOre, 1f / 10, null, null);
+
             new ItemProperties(ItemResourceType.Iron_G, CityResoureIndex.iron, DefaultWeight, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
+            new ItemProperties(ItemResourceType.Tin, CityResoureIndex.Tin, DefaultWeight, CraftResourceLib.Tin, null);
+            new ItemProperties(ItemResourceType.Copper, CityResoureIndex.Copper, DefaultWeight, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
+            new ItemProperties(ItemResourceType.Lead, CityResoureIndex.Lead, DefaultWeight, CraftResourceLib.Lead, null);
+            new ItemProperties(ItemResourceType.RawMithril, CityResoureIndex.RawMithril, DefaultWeight, null, null);
+            new ItemProperties(ItemResourceType.Sulfur, CityResoureIndex.Sulfur, DefaultWeight, null, null);
+
+
             new ItemProperties(ItemResourceType.Silver, CityResoureIndex.Silver, DefaultWeight, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
             new ItemProperties(ItemResourceType.Gold, NoCityResource, DefaultWeight, Minting.ConvertGoldOre, null);
             new ItemProperties(ItemResourceType.Bronze, CityResoureIndex.Bronze, DefaultWeight, CraftResourceLib.Bronze, null);

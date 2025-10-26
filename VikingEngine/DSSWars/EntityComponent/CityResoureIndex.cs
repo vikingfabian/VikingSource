@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.EntityComponent
         // Ores
         public const int ironore = 9;
         public const int TinOre = 10;
-        public const int CupperOre = 11;
+        public const int CopperOre = 11;
         public const int LeadOre = 12;
         public const int SilverOre = 13;
         public const int GoldOre = 14;
@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.EntityComponent
         // Refined / materials
         public const int iron = 15;
         public const int Tin = 16;
-        public const int Cupper = 17;
+        public const int Copper = 17;
         public const int Lead = 18;
         public const int Silver = 19;
         public const int RawMithril = 20;
