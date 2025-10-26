@@ -16,7 +16,6 @@ namespace VikingEngine.DSSWars
     //RESOURCES
     partial class Faction
     {
-        //public int gold = 40;
         public Money money = new Money(4000);
         Money storeMoney = Money.Zero;
         Money previuosMoney = Money.Zero;
@@ -36,84 +35,6 @@ namespace VikingEngine.DSSWars
         public int CityFoodSpending = 0;
         public int CitySoldResources = 0;
 
-        //public ResourceOverview res_wood = new ResourceOverview();
-        //public ResourceOverview res_fuel = new ResourceOverview();
-        //public ResourceOverview res_stone = new ResourceOverview();
-        //public ResourceOverview res_rawFood = new ResourceOverview();
-        //public ResourceOverview res_food = new ResourceOverview();
-        //public ResourceOverview res_beer = new ResourceOverview();
-        //public ResourceOverview res_coolingfluid = new ResourceOverview();
-        //public ResourceOverview res_skinLinnen = new ResourceOverview();
-
-        //public ResourceOverview res_ironore = new ResourceOverview();
-        //public ResourceOverview res_TinOre = new ResourceOverview();
-        //public ResourceOverview res_CupperOre = new ResourceOverview();
-        //public ResourceOverview res_LeadOre = new ResourceOverview();
-        //public ResourceOverview res_SilverOre = new ResourceOverview();
-        //public ResourceOverview res_GoldOre = new ResourceOverview();
-
-        //public ResourceOverview res_iron = new ResourceOverview();
-        //public ResourceOverview res_Tin = new ResourceOverview();
-        //public ResourceOverview res_Cupper = new ResourceOverview();
-        //public ResourceOverview res_Lead = new ResourceOverview();
-        //public ResourceOverview res_Silver = new ResourceOverview();
-        //public ResourceOverview res_RawMithril = new ResourceOverview();
-        //public ResourceOverview res_Sulfur = new ResourceOverview();
-
-        //public ResourceOverview res_Bronze = new ResourceOverview();
-        //public ResourceOverview res_Steel = new ResourceOverview();
-        //public ResourceOverview res_CastIron = new ResourceOverview();
-        //public ResourceOverview res_BloomeryIron = new ResourceOverview();
-        //public ResourceOverview res_Mithril = new ResourceOverview();
-
-        //public ResourceOverview res_Palisade = new ResourceOverview();
-        //public ResourceOverview res_Toolkit = new ResourceOverview();
-        //public ResourceOverview res_Wagon2Wheel = new ResourceOverview();
-        //public ResourceOverview res_Wagon4Wheel = new ResourceOverview();
-        //public ResourceOverview res_BlackPowder = new ResourceOverview();
-        //public ResourceOverview res_GunPowder = new ResourceOverview();
-        //public ResourceOverview res_LedBullet = new ResourceOverview();
-
-        //public ResourceOverview res_sharpstick = new ResourceOverview();
-        //public ResourceOverview res_BronzeSword = new ResourceOverview();
-        //public ResourceOverview res_shortsword = new ResourceOverview();
-        //public ResourceOverview res_Sword = new ResourceOverview();
-        //public ResourceOverview res_LongSword = new ResourceOverview();
-        //public ResourceOverview res_HandSpear = new ResourceOverview();
-        //public ResourceOverview res_MithrilSword = new ResourceOverview();
-
-        //public ResourceOverview res_Warhammer = new ResourceOverview();
-        //public ResourceOverview res_twohandsword = new ResourceOverview();
-        //public ResourceOverview res_knightslance = new ResourceOverview();
-        //public ResourceOverview res_SlingShot = new ResourceOverview();
-        //public ResourceOverview res_ThrowingSpear = new ResourceOverview();
-        //public ResourceOverview res_bow = new ResourceOverview();
-        //public ResourceOverview res_longbow = new ResourceOverview();
-        //public ResourceOverview res_crossbow = new ResourceOverview();
-        //public ResourceOverview res_MithrilBow = new ResourceOverview();
-
-        //public ResourceOverview res_HandCannon = new ResourceOverview();
-        //public ResourceOverview res_HandCulvertin = new ResourceOverview();
-        //public ResourceOverview res_Rifle = new ResourceOverview();
-        //public ResourceOverview res_Blunderbuss = new ResourceOverview();
-
-        //public ResourceOverview res_BatteringRam = new ResourceOverview();
-        //public ResourceOverview res_ballista = new ResourceOverview();
-        //public ResourceOverview res_Manuballista = new ResourceOverview();
-        //public ResourceOverview res_Catapult = new ResourceOverview();
-        //public ResourceOverview res_SiegeCannonBronze = new ResourceOverview();
-        //public ResourceOverview res_ManCannonBronze = new ResourceOverview();
-        //public ResourceOverview res_SiegeCannonIron = new ResourceOverview();
-        //public ResourceOverview res_ManCannonIron = new ResourceOverview();
-
-        //public ResourceOverview res_paddedArmor = new ResourceOverview();
-        //public ResourceOverview res_HeavyPaddedArmor = new ResourceOverview();
-        //public ResourceOverview res_BronzeArmor = new ResourceOverview();
-        //public ResourceOverview res_mailArmor = new ResourceOverview();
-        //public ResourceOverview res_heavyMailArmor = new ResourceOverview();
-        //public ResourceOverview res_LightPlateArmor = new ResourceOverview();
-        //public ResourceOverview res_FullPlateArmor = new ResourceOverview();
-        //public ResourceOverview res_MithrilArmor = new ResourceOverview();
         public int resourceComponentStartIndex;
 
         public int WorkForceInCityCount()
@@ -150,8 +71,6 @@ namespace VikingEngine.DSSWars
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Overview_Resources:
-                        //tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
-                        //tabContent.space();
                         tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
 
@@ -181,9 +100,8 @@ namespace VikingEngine.DSSWars
                     {
                         player.resourcesSubTab = resourcesSubTab;
                     }, resourcesSubTab, RbSoundType.Tab));
-                //subTab.setGroupSelectionColor(HudLib.RbSettings, );
+
                 content.Add(subTab);
-                //content.space();
             }
 
             ItemResourceType[] items = null;
@@ -192,130 +110,22 @@ namespace VikingEngine.DSSWars
             {
                 case ResourcesSubTab.Overview_Resources:
                     items = City.MovableCityResource_Misc;
-                    //content.Add(new RbSeperationLine());
-                    //res_wood.toMenu(content, ItemResourceType.Wood_Group);
-                    //res_fuel.toMenu(content, ItemResourceType.Fuel_G);
-                    //content.Add(new RbSeperationLine());
-                    //res_stone.toMenu(content, ItemResourceType.Stone_G);
-                    //res_rawFood.toMenu(content, ItemResourceType.RawFood_Group);
-                    //content.Add(new RbSeperationLine());
-                    //res_food.toMenu(content, ItemResourceType.Food_G);
-                    //res_beer.toMenu(content, ItemResourceType.Beer);
-                    //content.Add(new RbSeperationLine());
-                    //res_coolingfluid.toMenu(content, ItemResourceType.CoolingFluid);
-                    //res_skinLinnen.toMenu(content, ItemResourceType.SkinLinen_Group);
-                    //content.Add(new RbSeperationLine());
-
-                    //res_Palisade.toMenu(content, ItemResourceType.Palisade);
-                    //res_Toolkit.toMenu(content, ItemResourceType.Toolkit);
-                    //res_Wagon2Wheel.toMenu(content, ItemResourceType.Wagon2Wheel);
-                    //content.Add(new RbSeperationLine());
-                    //res_Wagon4Wheel.toMenu(content, ItemResourceType.Wagon4Wheel);
-                    //res_BlackPowder.toMenu(content, ItemResourceType.BlackPowder);
-                    //content.Add(new RbSeperationLine());
-                    //res_GunPowder.toMenu(content, ItemResourceType.GunPowder);
-                    //res_LedBullet.toMenu(content, ItemResourceType.LedBullet);
                     break;
 
                 case ResourcesSubTab.Overview_Metals:
                     items = City.MovableCityResource_Metals;
-                    //content.Add(new RbSeperationLine());
-                    //res_ironore.toMenu(content, ItemResourceType.IronOre_G);
-                    //res_TinOre.toMenu(content, ItemResourceType.TinOre);
-                    //content.Add(new RbSeperationLine());
-                    //res_CupperOre.toMenu(content, ItemResourceType.CopperOre);
-                    //res_LeadOre.toMenu(content, ItemResourceType.LeadOre);
-                    //content.Add(new RbSeperationLine());
-                    //res_SilverOre.toMenu(content, ItemResourceType.SilverOre);
-                    //res_GoldOre.toMenu(content, ItemResourceType.GoldOre);
-
-                    //content.Add(new RbSeperationLine());
-                    //res_iron.toMenu(content, ItemResourceType.Iron_G);
-                    //res_Tin.toMenu(content, ItemResourceType.Tin);
-                    //content.Add(new RbSeperationLine());
-                    //res_Cupper.toMenu(content, ItemResourceType.Copper);
-                    //res_Lead.toMenu(content, ItemResourceType.Lead);
-                    //content.Add(new RbSeperationLine());
-                    //res_Silver.toMenu(content, ItemResourceType.Silver);                    
-                    //res_RawMithril.toMenu(content, ItemResourceType.RawMithril);
-                    //content.Add(new RbSeperationLine());
-                    //res_Sulfur.toMenu(content, ItemResourceType.Sulfur);
-                    //res_Bronze.toMenu(content, ItemResourceType.Bronze);
-                    //content.Add(new RbSeperationLine());
-                    //res_Steel.toMenu(content, ItemResourceType.Steel);
-                    //res_CastIron.toMenu(content, ItemResourceType.CastIron);
-                    //content.Add(new RbSeperationLine());
-                    //res_BloomeryIron.toMenu(content, ItemResourceType.BloomeryIron);
-                    //res_Mithril.toMenu(content, ItemResourceType.Mithril);
                     break;
 
                 case ResourcesSubTab.Overview_Weapons:
                     items = City.MovableCityResource_WeaponMelee;
-                    //content.Add(new RbSeperationLine());
-                    //res_sharpstick.toMenu(content, ItemResourceType.SharpStick);
-                    //res_BronzeSword.toMenu(content, ItemResourceType.BronzeSword);
-                    //content.Add(new RbSeperationLine());
-                    //res_shortsword.toMenu(content, ItemResourceType.ShortSword);
-                    //res_Sword.toMenu(content, ItemResourceType.Sword);
-                    //content.Add(new RbSeperationLine());
-                    //res_LongSword.toMenu(content, ItemResourceType.LongSword);
-                    //res_HandSpear.toMenu(content, ItemResourceType.HandSpear);
-                    //content.Add(new RbSeperationLine());
-                    //res_MithrilSword.toMenu(content, ItemResourceType.MithrilSword);
-
-                    //res_Warhammer.toMenu(content, ItemResourceType.Warhammer);
-                    //content.Add(new RbSeperationLine());
-                    //res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword);
-                    //res_knightslance.toMenu(content, ItemResourceType.KnightsLance);
                     break;
 
                 case ResourcesSubTab.Overview_Projectile:
                     items = City.MovableCityResource_WeaponRanged;
-                    //content.Add(new RbSeperationLine());
-                    //res_SlingShot.toMenu(content, ItemResourceType.SlingShot);
-                    //res_ThrowingSpear.toMenu(content, ItemResourceType.ThrowingSpear);
-                    //content.Add(new RbSeperationLine());
-                    //res_bow.toMenu(content, ItemResourceType.Bow);
-                    //res_longbow.toMenu(content, ItemResourceType.LongBow);
-                    //content.Add(new RbSeperationLine());
-                    //res_crossbow.toMenu(content, ItemResourceType.Crossbow);
-                    //res_MithrilBow.toMenu(content, ItemResourceType.MithrilBow);
-                    //content.Add(new RbSeperationLine());
-
-                    //res_HandCannon.toMenu(content, ItemResourceType.HandCannon);
-                    //res_HandCulvertin.toMenu(content, ItemResourceType.HandCulverin);
-                    //content.Add(new RbSeperationLine());
-                    //res_Rifle.toMenu(content, ItemResourceType.Rifle);
-                    //res_Blunderbuss.toMenu(content, ItemResourceType.Blunderbuss);
-                    //content.Add(new RbSeperationLine());
-
-                    ////res_BatteringRam.toMenu(content, ItemResourceType.UN_BatteringRam);
-                    //res_ballista.toMenu(content, ItemResourceType.Ballista);
-                    //res_Manuballista.toMenu(content, ItemResourceType.Manuballista);
-                    //content.Add(new RbSeperationLine());
-                    //res_Catapult.toMenu(content, ItemResourceType.Catapult);
-                    //res_SiegeCannonBronze.toMenu(content, ItemResourceType.SiegeCannonBronze);
-                    //content.Add(new RbSeperationLine());
-                    //res_ManCannonBronze.toMenu(content, ItemResourceType.ManCannonBronze);
-                    //res_SiegeCannonIron.toMenu(content, ItemResourceType.SiegeCannonIron);
-                    //content.Add(new RbSeperationLine());
-                    //res_ManCannonIron.toMenu(content, ItemResourceType.ManCannonIron);
                     break;
 
                 case ResourcesSubTab.Overview_Armor:
                     items = City.MovableCityResource_Armor;
-                    //content.Add(new RbSeperationLine());
-                    //res_paddedArmor.toMenu(content, ItemResourceType.PaddedArmor);
-                    //res_HeavyPaddedArmor.toMenu(content, ItemResourceType.HeavyPaddedArmor);
-                    //content.Add(new RbSeperationLine());
-                    //res_BronzeArmor.toMenu(content, ItemResourceType.BronzeArmor);
-                    //res_mailArmor.toMenu(content, ItemResourceType.IronArmor);
-                    //content.Add(new RbSeperationLine());
-                    //res_heavyMailArmor.toMenu(content, ItemResourceType.HeavyIronArmor);
-                    //res_LightPlateArmor.toMenu(content, ItemResourceType.LightPlateArmor);
-                    //content.Add(new RbSeperationLine());
-                    //res_FullPlateArmor.toMenu(content, ItemResourceType.FullPlateArmor);
-                    //res_MithrilArmor.toMenu(content, ItemResourceType.MithrilArmor);
                     break;
 
             }
@@ -333,6 +143,122 @@ namespace VikingEngine.DSSWars
 
                 resource.toMenu(content, item);
             }
+        }
+
+        public void stockPileTab(LocalPlayer player, RichBoxContent content)
+        {
+            switch (player.resourcesSubTab)
+            {
+                
+                case ResourcesSubTab.Overview_Resources:
+                case ResourcesSubTab.Work_Resources:
+                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Resources;
+                    break;
+
+                case ResourcesSubTab.Overview_Metals:
+                case ResourcesSubTab.Work_Metals:
+                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Metals;
+                    break;
+
+                case ResourcesSubTab.Overview_Weapons:
+                case ResourcesSubTab.Work_Weapons:
+                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Weapons;
+                    break;
+
+                case ResourcesSubTab.Overview_Projectile:
+                case ResourcesSubTab.Work_Projectile:
+                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Projectile;
+                    break;
+
+                case ResourcesSubTab.Overview_Armor:
+                case ResourcesSubTab.Work_Armor:
+                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Armor;
+                    break;
+            }
+            //if (player.resourcesSubTab > ResourcesSubTab.Overview_Armor)
+            //{
+            //    player.resourcesSubTab = 0;
+            //}
+
+            content.newLine();
+            content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+            content.newLine();
+
+            for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Stockpile_Resources; resourcesSubTab <= ResourcesSubTab.Stockpile_Armor; ++resourcesSubTab)
+            {
+                var tabContent = new RichBoxContent();
+                //string text = null;
+                switch (resourcesSubTab)
+                {
+                    case ResourcesSubTab.Stockpile_Resources:
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                        break;
+
+                    case ResourcesSubTab.Stockpile_Metals:
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+                        break;
+                    case ResourcesSubTab.Stockpile_Weapons:
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                        break;
+
+                    case ResourcesSubTab.Stockpile_Projectile:
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                        break;
+
+                    case ResourcesSubTab.Stockpile_Armor:
+                        tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
+                        break;
+
+                }
+                var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
+                    new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                    {
+                        player.resourcesSubTab = resourcesSubTab;
+                    }, resourcesSubTab, RbSoundType.Tab));
+
+                content.Add(subTab);
+            }
+
+            new StockPileMenu(content, null, this).toHud(player.resourcesSubTab);
+            //ItemResourceType[] items = null;
+
+            //switch (player.resourcesSubTab)
+            //{
+            //    case ResourcesSubTab.Stockpile_Resources:
+            //        items = City.MovableCityResource_Misc;
+            //        break;
+
+            //    case ResourcesSubTab.Stockpile_Metals:
+            //        items = City.MovableCityResource_Metals;
+            //        break;
+
+            //    case ResourcesSubTab.Stockpile_Weapons:
+            //        items = City.MovableCityResource_WeaponMelee;
+            //        break;
+
+            //    case ResourcesSubTab.Stockpile_Projectile:
+            //        items = City.MovableCityResource_WeaponRanged;
+            //        break;
+
+            //    case ResourcesSubTab.Stockpile_Armor:
+            //        items = City.MovableCityResource_Armor;
+            //        break;
+
+            //}
+
+
+            ////CircleCounterUp lineCounter = new CircleCounterUp(1, 1);
+            //foreach (var item in items)
+            //{
+            //    //if (lineCounter.Next_IsReset())
+            //    //{
+            //    //    content.Add(new RbSeperationLine());
+            //    //}
+            //    int itemIndex = ItemPropertyColl.CityIndex(item);
+            //    ResourceOverview resource = DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
+
+            //    resource.toMenu(content, item);
+            //}
         }
 
         public void workTab(RichBoxContent content)
@@ -353,7 +279,6 @@ namespace VikingEngine.DSSWars
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Work_Resources:
-                        //tabContent.Add(new RbText(DssRef.lang.Work_OrderPrioTitle));
                         tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
 
@@ -376,9 +301,8 @@ namespace VikingEngine.DSSWars
                     {
                         p.resourcesSubTab = resourcesSubTab;
                     }, resourcesSubTab, RbSoundType.Tab));
-                //subTab.setGroupSelectionColor(HudLib.RbSettings, p.resourcesSubTab == resourcesSubTab);
+
                 content.Add(subTab);
-                //content.space(resourcesSubTab == ResourcesSubTab.Work_Armor ? 2 : 1);
             }
             
             content.Add(new RbSeperationLine());
@@ -676,6 +600,18 @@ namespace VikingEngine.DSSWars
             armyFoodImportCost = Convert.ToInt32(foodImport);
             armyFoodBlackMarketCost = Convert.ToInt32(foodBlackMarket);
             armyUpkeep = Convert.ToInt32(totalArmiesUpkeep);
+        }
+
+        public ref ResourceOverview GetRefResourceOverview(ItemResourceType item)
+        {
+            int itemIndex = ItemPropertyColl.CityIndex(item);
+            return ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
+        }
+
+        public ResourceOverview GetResourceOverview(ItemResourceType item)
+        {
+            int itemIndex = ItemPropertyColl.CityIndex(item);
+            return DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
         }
 
         public void resourceOverviewOneSecondUpdate()

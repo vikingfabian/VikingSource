@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.Interface
 
         protected Players.LocalPlayer player;
         protected City city;
-        static readonly List<float> StockPileControls = new List<float> { 100, 1000 };
+        
 
         public static readonly AutomationFocus[] AvailableAutomationFocuses =
         {
@@ -1216,7 +1216,7 @@ namespace VikingEngine.DSSWars.Interface
                     switch (player.mixTabEditType)
                     {
                         case MixTabEditType.Stockpile:
-                            stockPileEdit(content, item, city_res);
+                            //stockPileEdit(content, item, city_res);
                             break;
                         case MixTabEditType.WorkPrio:
                             LangLib.WorkNameIcon(player.mixWorkType, out string name, out SpriteName workIcon, out SpriteName typeIcon);
@@ -1935,117 +1935,125 @@ namespace VikingEngine.DSSWars.Interface
                     break;
 
                 case ResourcesSubTab.Stockpile_Resources:
-                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-
-                    stockpile(ItemResourceType.Wood_Group);
-                    stockpile(ItemResourceType.Stone_G);
-                    stockpile(ItemResourceType.RawFood_Group);
-                    stockpile(ItemResourceType.SkinLinen_Group);
-                    content.newParagraph();
-
-                    stockpile(ItemResourceType.Food_G);
-                    stockpile(ItemResourceType.Fuel_G);
-                    stockpile(ItemResourceType.Beer);
-                    stockpile(ItemResourceType.CoolingFluid);
-                    content.newParagraph();
-
-                    stockpile(ItemResourceType.Palisade);
-                    stockpile(ItemResourceType.Toolkit);
-                    stockpile(ItemResourceType.Wagon2Wheel);
-                    stockpile(ItemResourceType.Wagon4Wheel);
-                    stockpile(ItemResourceType.BlackPowder);
-                    stockpile(ItemResourceType.GunPowder);
-                    stockpile(ItemResourceType.LedBullet);
-
-                    //content.newParagraph();
-                    //HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
-                    //GroupedResource.BufferIconInfo(content, false);
-                    break;
-
                 case ResourcesSubTab.Stockpile_Metals:
-                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-
-                    stockpile(ItemResourceType.IronOre_G);
-                    stockpile(ItemResourceType.TinOre);
-                    stockpile(ItemResourceType.CopperOre);
-                    stockpile(ItemResourceType.LeadOre);
-                    stockpile(ItemResourceType.SilverOre);
-                    stockpile(ItemResourceType.GoldOre);
-                    content.newParagraph();
-
-                    stockpile(ItemResourceType.Iron_G);
-                    stockpile(ItemResourceType.Tin);
-                    stockpile(ItemResourceType.Copper);
-                    stockpile(ItemResourceType.Lead);
-                    stockpile(ItemResourceType.Silver);
-                    stockpile(ItemResourceType.RawMithril);
-                    stockpile(ItemResourceType.Sulfur);
-                    content.newParagraph();
-
-                    stockpile(ItemResourceType.Bronze);
-                    stockpile(ItemResourceType.CastIron);
-                    stockpile(ItemResourceType.BloomeryIron);
-                    stockpile(ItemResourceType.Steel);
-                    stockpile(ItemResourceType.Mithril);
-
-                    break;
                 case ResourcesSubTab.Stockpile_Weapons:
-                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-                    stockpile(ItemResourceType.SharpStick);
-                    stockpile(ItemResourceType.BronzeSword);
-                    stockpile(ItemResourceType.ShortSword);
-                    stockpile(ItemResourceType.Sword);
-                    stockpile(ItemResourceType.LongSword);
-                    stockpile(ItemResourceType.HandSpear);
-                    content.newParagraph();
-
-                    stockpile(ItemResourceType.Warhammer);
-                    stockpile(ItemResourceType.TwoHandSword);
-                    stockpile(ItemResourceType.KnightsLance);
-                    stockpile(ItemResourceType.MithrilSword);
-                    
-                    break;
-
                 case ResourcesSubTab.Stockpile_Projectile:
-                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-
-                    stockpile(ItemResourceType.SlingShot);
-                    stockpile(ItemResourceType.ThrowingSpear);
-                    stockpile(ItemResourceType.Bow);
-                    stockpile(ItemResourceType.LongBow);
-                    stockpile(ItemResourceType.Crossbow);
-                    stockpile(ItemResourceType.MithrilBow);
-                    content.newParagraph();
-
-                    stockpile(ItemResourceType.HandCannon);
-                    stockpile(ItemResourceType.HandCulverin);
-                    stockpile(ItemResourceType.Rifle);
-                    stockpile(ItemResourceType.Blunderbuss);
-
-                    content.newParagraph();
-
-                    stockpile(ItemResourceType.Ballista);
-                    stockpile(ItemResourceType.Manuballista);
-                    stockpile(ItemResourceType.Catapult);
-
-                    stockpile(ItemResourceType.SiegeCannonBronze);
-                    stockpile(ItemResourceType.ManCannonBronze);
-                    stockpile(ItemResourceType.SiegeCannonIron);
-                    stockpile(ItemResourceType.ManCannonIron);
-
-                    break;
-
                 case ResourcesSubTab.Stockpile_Armor:
                     content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-                    stockpile(ItemResourceType.HeavyPaddedArmor);
-                    stockpile(ItemResourceType.PaddedArmor);
-                    stockpile(ItemResourceType.BronzeArmor);
-                    stockpile(ItemResourceType.IronArmor);
-                    stockpile(ItemResourceType.HeavyIronArmor);
-                    stockpile(ItemResourceType.LightPlateArmor);
-                    stockpile(ItemResourceType.FullPlateArmor);
-                    stockpile(ItemResourceType.MithrilArmor);
+                    new StockPileMenu(content, city, null).toHud(player.resourcesSubTab);
                     break;
+                //case ResourcesSubTab.Stockpile_Resources:
+                //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+
+                //    stockpile(ItemResourceType.Wood_Group);
+                //    stockpile(ItemResourceType.Stone_G);
+                //    stockpile(ItemResourceType.RawFood_Group);
+                //    stockpile(ItemResourceType.SkinLinen_Group);
+                //    content.newParagraph();
+
+                //    stockpile(ItemResourceType.Food_G);
+                //    stockpile(ItemResourceType.Fuel_G);
+                //    stockpile(ItemResourceType.Beer);
+                //    stockpile(ItemResourceType.CoolingFluid);
+                //    content.newParagraph();
+
+                //    stockpile(ItemResourceType.Palisade);
+                //    stockpile(ItemResourceType.Toolkit);
+                //    stockpile(ItemResourceType.Wagon2Wheel);
+                //    stockpile(ItemResourceType.Wagon4Wheel);
+                //    stockpile(ItemResourceType.BlackPowder);
+                //    stockpile(ItemResourceType.GunPowder);
+                //    stockpile(ItemResourceType.LedBullet);
+
+                //    //content.newParagraph();
+                //    //HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
+                //    //GroupedResource.BufferIconInfo(content, false);
+                //    break;
+
+                //case ResourcesSubTab.Stockpile_Metals:
+                //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+
+                //    stockpile(ItemResourceType.IronOre_G);
+                //    stockpile(ItemResourceType.TinOre);
+                //    stockpile(ItemResourceType.CopperOre);
+                //    stockpile(ItemResourceType.LeadOre);
+                //    stockpile(ItemResourceType.SilverOre);
+                //    stockpile(ItemResourceType.GoldOre);
+                //    content.newParagraph();
+
+                //    stockpile(ItemResourceType.Iron_G);
+                //    stockpile(ItemResourceType.Tin);
+                //    stockpile(ItemResourceType.Copper);
+                //    stockpile(ItemResourceType.Lead);
+                //    stockpile(ItemResourceType.Silver);
+                //    stockpile(ItemResourceType.RawMithril);
+                //    stockpile(ItemResourceType.Sulfur);
+                //    content.newParagraph();
+
+                //    stockpile(ItemResourceType.Bronze);
+                //    stockpile(ItemResourceType.CastIron);
+                //    stockpile(ItemResourceType.BloomeryIron);
+                //    stockpile(ItemResourceType.Steel);
+                //    stockpile(ItemResourceType.Mithril);
+
+                //    break;
+                //case ResourcesSubTab.Stockpile_Weapons:
+                //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+                //    stockpile(ItemResourceType.SharpStick);
+                //    stockpile(ItemResourceType.BronzeSword);
+                //    stockpile(ItemResourceType.ShortSword);
+                //    stockpile(ItemResourceType.Sword);
+                //    stockpile(ItemResourceType.LongSword);
+                //    stockpile(ItemResourceType.HandSpear);
+                //    content.newParagraph();
+
+                //    stockpile(ItemResourceType.Warhammer);
+                //    stockpile(ItemResourceType.TwoHandSword);
+                //    stockpile(ItemResourceType.KnightsLance);
+                //    stockpile(ItemResourceType.MithrilSword);
+
+                //    break;
+
+                //case ResourcesSubTab.Stockpile_Projectile:
+                //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+
+                //    stockpile(ItemResourceType.SlingShot);
+                //    stockpile(ItemResourceType.ThrowingSpear);
+                //    stockpile(ItemResourceType.Bow);
+                //    stockpile(ItemResourceType.LongBow);
+                //    stockpile(ItemResourceType.Crossbow);
+                //    stockpile(ItemResourceType.MithrilBow);
+                //    content.newParagraph();
+
+                //    stockpile(ItemResourceType.HandCannon);
+                //    stockpile(ItemResourceType.HandCulverin);
+                //    stockpile(ItemResourceType.Rifle);
+                //    stockpile(ItemResourceType.Blunderbuss);
+
+                //    content.newParagraph();
+
+                //    stockpile(ItemResourceType.Ballista);
+                //    stockpile(ItemResourceType.Manuballista);
+                //    stockpile(ItemResourceType.Catapult);
+
+                //    stockpile(ItemResourceType.SiegeCannonBronze);
+                //    stockpile(ItemResourceType.ManCannonBronze);
+                //    stockpile(ItemResourceType.SiegeCannonIron);
+                //    stockpile(ItemResourceType.ManCannonIron);
+
+                //    break;
+
+                //case ResourcesSubTab.Stockpile_Armor:
+                //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+                //    stockpile(ItemResourceType.HeavyPaddedArmor);
+                //    stockpile(ItemResourceType.PaddedArmor);
+                //    stockpile(ItemResourceType.BronzeArmor);
+                //    stockpile(ItemResourceType.IronArmor);
+                //    stockpile(ItemResourceType.HeavyIronArmor);
+                //    stockpile(ItemResourceType.LightPlateArmor);
+                //    stockpile(ItemResourceType.FullPlateArmor);
+                //    stockpile(ItemResourceType.MithrilArmor);
+                //    break;
 
                 default:
                     content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
@@ -2053,27 +2061,7 @@ namespace VikingEngine.DSSWars.Interface
                     break;
             }
 
-            void stockpile(ItemResourceType item)
-            {   
-                GroupedResource res = city.GetGroupedResource(item);
-
-                content.newLine();
-
-                content.Add(new ArtButton(RbButtonStyle.HoverArea, 
-                    new List<AbsRichBoxMember>{
-                        new RbImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
-                        new RbImage(ResourceLib.Icon(item))},null,
-                        new RbTooltip((RichBoxContent content, object tag) =>
-                        {
-                            bool buffer = false;
-                            city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);                           
-                        }
-                        )));
-                
-                content.space();
-               
-                stockPileEdit(content, item, res);
-            }
+            
         }
 
         private void godPowerSetAllResources(RichBoxContent content, ItemResourceType[] Resources)
@@ -2107,61 +2095,7 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        void stockPileEdit(RichBoxContent content, ItemResourceType item, GroupedResource res)
-        {
-            RbDragButton.RbDragButtonGroup(content, StockPileControls, new DragButtonSettings(DssConst.StockPileMinBound, DssConst.StockPileMaxBound, 100),
-                (bool set, int value) => {
-                    bool buffer = false;
-                    var res = city.GetGroupedResource(item);
-                    if (set)
-                    {
-                        res.goalBuffer = value;
-                        city.SetGroupedResource(item, res);
-                    }
-                    return res.goalBuffer; }, true);
-
-            //int StockGetSet(bool set, int value)
-            //{
-            //    return 0;
-            //}
-
-            //RbAction hover = new RbAction(() => {
-            //    RichBoxContent content = new RichBoxContent();
-            //    bool buffer = false;
-            //    city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);//content.Add(new RichBoxText(LangLib.Item(item)));
-            //    player.hud.tooltip.create(player, content, true);
-            //});
-
-            //for (int i = StockPileControls.Length - 1; i >= 0; i--)
-            //{
-            //    int change = -StockPileControls[i];
-            //    content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
-            //        new RbAction1Arg<int>((int change) => {
-            //            var res = city.GetGroupedResource(item);
-            //            res.goalBuffer = Bound.Set(res.goalBuffer + change, DssConst.StockPileMinBound, DssConst.StockPileMaxBound);
-            //            city.SetGroupedResource(item, res);
-
-            //        }, change, RbSoundType.Default), hover));
-
-            //    content.space();
-            //}
-
-            //content.Add(new RbText(res.goalBuffer.ToString()));
-
-            //for (int i = 0; i < StockPileControls.Length; i++)
-            //{
-            //    content.space();
-
-            //    int change = StockPileControls[i];
-            //    content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
-            //        new RbAction1Arg<int>((int change) => {
-            //            var res = city.GetGroupedResource(item);
-            //            res.goalBuffer = Bound.Set(res.goalBuffer + change, DssConst.StockPileMinBound, DssConst.StockPileMaxBound);
-            //            city.SetGroupedResource(item, res);
-
-            //        }, change, RbSoundType.Default), hover));
-            //}
-        }
+        
 
         //void purchaseOptions(RichBoxContent content)
         //{
@@ -2710,6 +2644,7 @@ namespace VikingEngine.DSSWars.Interface
         Conscript,
         Economy,
         Resources,
+        StockPile,
         Work,
         Trade,
         BlackMarket,

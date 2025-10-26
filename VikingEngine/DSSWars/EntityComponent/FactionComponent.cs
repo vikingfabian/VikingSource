@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VikingEngine.DSSWars.EntityComponent;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars
 {
@@ -21,14 +17,15 @@ namespace VikingEngine.DSSWars
             {
                 if (factions.Array[i] != null)
                 { 
-                    factions.Array[i].resourceComponentStartIndex = i * CityResoureIndex.COUNT;
+                    //factions.Array[i].resourceComponentStartIndex = i * CityResoureIndex.COUNT;
+                    initFaction(factions.Array[i]);
                 }
             }
         }
 
         public void factionComponentsAdd(Faction faction)
         {
-            faction.resourceComponentStartIndex = faction.myIndex * CityResoureIndex.COUNT;
+            initFaction(faction);
 
             if (factions.Array.Length * CityResoureIndex.COUNT >= factionResourceOverviews.Length)
             {
@@ -37,84 +34,29 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        void initFaction(Faction faction)
+        {
+            faction.resourceComponentStartIndex = faction.myIndex * CityResoureIndex.COUNT;
 
-        //public ResourceOverview res_wood = new ResourceOverview();
-        //public ResourceOverview res_fuel = new ResourceOverview();
-        //public ResourceOverview res_stone = new ResourceOverview();
-        //public ResourceOverview res_rawFood = new ResourceOverview();
-        //public ResourceOverview res_food = new ResourceOverview();
-        //public ResourceOverview res_beer = new ResourceOverview();
-        //public ResourceOverview res_coolingfluid = new ResourceOverview();
-        //public ResourceOverview res_skinLinnen = new ResourceOverview();
+            runList(City.MovableCityResource_Misc);
+            runList(City.MovableCityResource_Metals);
+            runList(City.MovableCityResource_WeaponMelee);
+            runList(City.MovableCityResource_WeaponRanged);
+            runList(City.MovableCityResource_Armor);
 
-        //public ResourceOverview res_ironore = new ResourceOverview();
-        //public ResourceOverview res_TinOre = new ResourceOverview();
-        //public ResourceOverview res_CupperOre = new ResourceOverview();
-        //public ResourceOverview res_LeadOre = new ResourceOverview();
-        //public ResourceOverview res_SilverOre = new ResourceOverview();
-        //public ResourceOverview res_GoldOre = new ResourceOverview();
+            void runList(ItemResourceType[] items)
+            {
+                foreach (ItemResourceType item in items)
+                {
+                    var properties = ItemPropertyColl.Get(item);
+                    if (properties.cityResourceIndex >= 0)
+                    {
+                        ref ResourceOverview resource = ref factionResourceOverviews[faction.resourceComponentStartIndex + properties.cityResourceIndex];
+                        resource.goalBuffer = properties.defaultStockPile;
+                    }
+                }
+            }
+        }
 
-        //public ResourceOverview res_iron = new ResourceOverview();
-        //public ResourceOverview res_Tin = new ResourceOverview();
-        //public ResourceOverview res_Cupper = new ResourceOverview();
-        //public ResourceOverview res_Lead = new ResourceOverview();
-        //public ResourceOverview res_Silver = new ResourceOverview();
-        //public ResourceOverview res_RawMithril = new ResourceOverview();
-        //public ResourceOverview res_Sulfur = new ResourceOverview();
-
-        //public ResourceOverview res_Bronze = new ResourceOverview();
-        //public ResourceOverview res_Steel = new ResourceOverview();
-        //public ResourceOverview res_CastIron = new ResourceOverview();
-        //public ResourceOverview res_BloomeryIron = new ResourceOverview();
-        //public ResourceOverview res_Mithril = new ResourceOverview();
-
-        //public ResourceOverview res_Palisade = new ResourceOverview();
-        //public ResourceOverview res_Toolkit = new ResourceOverview();
-        //public ResourceOverview res_Wagon2Wheel = new ResourceOverview();
-        //public ResourceOverview res_Wagon4Wheel = new ResourceOverview();
-        //public ResourceOverview res_BlackPowder = new ResourceOverview();
-        //public ResourceOverview res_GunPowder = new ResourceOverview();
-        //public ResourceOverview res_LedBullet = new ResourceOverview();
-
-        //public ResourceOverview res_sharpstick = new ResourceOverview();
-        //public ResourceOverview res_BronzeSword = new ResourceOverview();
-        //public ResourceOverview res_shortsword = new ResourceOverview();
-        //public ResourceOverview res_Sword = new ResourceOverview();
-        //public ResourceOverview res_LongSword = new ResourceOverview();
-        //public ResourceOverview res_HandSpear = new ResourceOverview();
-        //public ResourceOverview res_MithrilSword = new ResourceOverview();
-
-        //public ResourceOverview res_Warhammer = new ResourceOverview();
-        //public ResourceOverview res_twohandsword = new ResourceOverview();
-        //public ResourceOverview res_knightslance = new ResourceOverview();
-        //public ResourceOverview res_SlingShot = new ResourceOverview();
-        //public ResourceOverview res_ThrowingSpear = new ResourceOverview();
-        //public ResourceOverview res_bow = new ResourceOverview();
-        //public ResourceOverview res_longbow = new ResourceOverview();
-        //public ResourceOverview res_crossbow = new ResourceOverview();
-        //public ResourceOverview res_MithrilBow = new ResourceOverview();
-
-        //public ResourceOverview res_HandCannon = new ResourceOverview();
-        //public ResourceOverview res_HandCulvertin = new ResourceOverview();
-        //public ResourceOverview res_Rifle = new ResourceOverview();
-        //public ResourceOverview res_Blunderbuss = new ResourceOverview();
-
-        //public ResourceOverview res_BatteringRam = new ResourceOverview();
-        //public ResourceOverview res_ballista = new ResourceOverview();
-        //public ResourceOverview res_Manuballista = new ResourceOverview();
-        //public ResourceOverview res_Catapult = new ResourceOverview();
-        //public ResourceOverview res_SiegeCannonBronze = new ResourceOverview();
-        //public ResourceOverview res_ManCannonBronze = new ResourceOverview();
-        //public ResourceOverview res_SiegeCannonIron = new ResourceOverview();
-        //public ResourceOverview res_ManCannonIron = new ResourceOverview();
-
-        //public ResourceOverview res_paddedArmor = new ResourceOverview();
-        //public ResourceOverview res_HeavyPaddedArmor = new ResourceOverview();
-        //public ResourceOverview res_BronzeArmor = new ResourceOverview();
-        //public ResourceOverview res_mailArmor = new ResourceOverview();
-        //public ResourceOverview res_heavyMailArmor = new ResourceOverview();
-        //public ResourceOverview res_LightPlateArmor = new ResourceOverview();
-        //public ResourceOverview res_FullPlateArmor = new ResourceOverview();
-        //public ResourceOverview res_MithrilArmor = new ResourceOverview();
     }
 }

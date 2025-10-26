@@ -221,6 +221,12 @@ namespace VikingEngine.DSSWars.GameObject
         public bool res_food_safeguard = true;
         public int resourceComponentStartIndex;
 
+        bool followFaction_Stockpile_Resources = true;
+        bool followFaction_Stockpile_Metals = true;
+        bool followFaction_Stockpile_Weapons = true;
+        bool followFaction_Stockpile_Projectile = true;
+        bool followFaction_Stockpile_Armor = true;
+
         public bool foodSafeGuardIsActive(ItemResourceType item)
         {
             bool food = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
@@ -275,24 +281,24 @@ namespace VikingEngine.DSSWars.GameObject
         public void defaultResourceBuffer(WorldData world)
         {
             
-                runList(MovableCityResource_Misc);
-                runList(MovableCityResource_Metals);
-                runList(MovableCityResource_WeaponMelee);
-                runList(MovableCityResource_WeaponRanged);
-                runList(MovableCityResource_Armor);
+            runList(MovableCityResource_Misc);
+            runList(MovableCityResource_Metals);
+            runList(MovableCityResource_WeaponMelee);
+            runList(MovableCityResource_WeaponRanged);
+            runList(MovableCityResource_Armor);
 
-                void runList(ItemResourceType[] items)
+            void runList(ItemResourceType[] items)
+            {
+                foreach (ItemResourceType item in items)
                 {
-                    foreach (ItemResourceType item in items)
+                    var properties = ItemPropertyColl.Get(item);
+                    if (properties.cityResourceIndex >= 0)
                     {
-                        var properties = ItemPropertyColl.Get(item);
-                        if (properties.cityResourceIndex >= 0)
-                        {
-                            ref GroupedResource resource = ref world.cityResouces[resourceComponentStartIndex + properties.cityResourceIndex];
-                            resource.goalBuffer = properties.defaultStockPile;
-                        }
+                        ref GroupedResource resource = ref world.cityResouces[resourceComponentStartIndex + properties.cityResourceIndex];
+                        resource.goalBuffer = properties.defaultStockPile;
                     }
                 }
+            }
             
 
             //DssRef.world.cityResouces[resourceComponentIndex + CityResoureIndex.wood].goalBuffer = 300;
@@ -1355,9 +1361,7 @@ namespace VikingEngine.DSSWars.GameObject
     struct GroupedResource
     {
         public int amount;
-        //public int backOrder;
         public int goalBuffer;
-        //public int orderQueCount;
         public int deliverCount;
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -1370,11 +1374,6 @@ namespace VikingEngine.DSSWars.GameObject
             amount = r.ReadInt32();
             goalBuffer = r.ReadUInt16();
         }
-
-        //public int freeAmount()
-        //{ 
-        //    return amount - backOrder;
-        //}
 
         public bool needMore()
         {
