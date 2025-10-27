@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed empty player read crash
+
 
 #Pics
 
