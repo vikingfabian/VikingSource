@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Interface
         LocalPlayer player;
 
         public static readonly MenuTab[] CasualTabs = { MenuTab.Economy };
-        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.StockPile, MenuTab.Work, /*MenuTab.Automation*/ MenuTab.Progress };
+        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, MenuTab.StockPile,  /*MenuTab.Automation*/ MenuTab.Progress };
         public static readonly MenuTab[] TutorialTabs = { MenuTab.Economy };
 
         public PlayerHud_Head(LocalPlayer player)
@@ -304,7 +304,7 @@ namespace VikingEngine.DSSWars.Interface
                     new List<AbsRichBoxMember>
                     {
                         new RbImage(icon)
-                    }, new RbAction1Arg<MenuTab>(TabClick, tab, RbSoundType.Option), new RbTooltip(TabTip, tab)));
+                    }, new RbAction1Arg<MenuTab>(TabClick, tab, RbSoundType.Tab), new RbTooltip(TabTip, tab)));
             }
         }
 

@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
             {
-                if (IsLocalPlayer() || DssRef.world.quickMatchFaction.Contains(faction.myIndex))
+                if (IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(faction.myIndex))
                 {
                     IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                     Army mainArmy = faction.NewArmy(onTile);

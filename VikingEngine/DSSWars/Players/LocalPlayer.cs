@@ -302,11 +302,7 @@ namespace VikingEngine.DSSWars.Players
 
             w.Write((short)diplomaticPoints.Int());
 
-            //Debug.WriteCheck(w);//TEMP!
-
             statistics.writeGameState(w);
-
-            //Debug.WriteCheck(w);//TEMP!
 
             if (toPlayerDiplomacies == null)
             {
@@ -314,7 +310,7 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                for (int i = 0; i < toPlayerDiplomacies.Length; ++i)//each (var tp in toPlayerDiplomacies)
+                for (int i = 0; i < toPlayerDiplomacies.Length; ++i)
                 {
                     var tp = toPlayerDiplomacies[i];
                     if (tp != null)
@@ -326,17 +322,12 @@ namespace VikingEngine.DSSWars.Players
 
                 w.Write(short.MinValue);
             }
-            //Debug.WriteCheck(w);//TEMP!
 
             automation.writeGameState(w);
-
-            //Debug.WriteCheck(w);//TEMP!
 
             w.Write(int.MinValue);//none
 
             tutorial_writeGameState(w);
-
-            //Debug.WriteCheck(w);//TEMP!
             orders.writeGameState(w);
 
             w.Write(viewCityTagsOnMap);

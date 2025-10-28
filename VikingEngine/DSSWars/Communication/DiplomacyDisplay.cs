@@ -436,11 +436,11 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        bool canForgePeace(bool peace_notTruce, out int cost)
-        {
-            cost = Diplomacy.EndWarCost(otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, peace_notTruce);
-            return player.diplomaticPoints.Int() >= cost;
-        }
+        //bool canForgePeace(bool peace_notTruce, out int cost)
+        //{
+        //    cost = Diplomacy.EndWarCost(otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, peace_notTruce);
+        //    return player.diplomaticPoints.Int() >= cost;
+        //}
 
         void relationTooltip( RichBoxContent content, object tag)
         {
@@ -521,11 +521,11 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        bool canForgeAlliance(bool ally_notFriend, out int cost)
-        {
-            cost = Diplomacy.AllianceCost(player, otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend, out _);
-            return player.diplomaticPoints.Int() >= cost;
-        }
+        //bool canForgeAlliance(bool ally_notFriend, out int cost)
+        //{
+        //    cost = Diplomacy.AllianceCost(player, otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend, out _);
+        //    return player.diplomaticPoints.Int() >= cost;
+        //}
 
         void allianceTooltip(RichBoxContent content, object tag)
         {

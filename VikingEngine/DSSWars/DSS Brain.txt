@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-* Performance: city resources have been moved to a Entity Component System 
+* Fixed empty player read crash
+
 
 #Pics
 * Relation arrow:
@@ -16,9 +17,15 @@ Reddit, twitter, bluejay
 Facebook privat
 Historymache
 
+controller in voxel editor
+
+#SPRING UPDATE#
+* Performance: city resources have been moved to a Entity Component System 
+
 #Winter update - must do#
 x achievement in steamworks
 x hide minimap
+x hide minimap/hud in pause menu
 
 #Winter update#
 * fixed: bot delay was not set by high difficulty
@@ -27,9 +34,11 @@ x hide minimap
 
 USER INTERFACE
 * minimap
+* improved border colors
 * In-menu text input
 * Search bar for voxel models
 * Menu width option
+* placed work before stockpile
 
 GAME OPTIONS
 * 300% difficulty
@@ -46,6 +55,7 @@ GAME OPTIONS
 -> king of the hill, or two teams
 -> players are grouped in a smaller, center area
 -> player start area is enlarged on "find start position" failure
+-> contestants can't use ally diplomacy, but can still be done between players to adjust teams
 
 ACHIEVEMENTS: 
 * Taste the impossible: Terminate the first faction to attack you. 300% difficulty. (no pause?)

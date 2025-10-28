@@ -300,6 +300,40 @@ namespace VikingEngine.DSSWars.Map
             
         }
 
+        public bool hasBorder(out bool sameFaction)
+        {
+            if (BorderCount > 0)
+            {
+                int owner = DssRef.world.cities[CityIndex].factionIndex;
+                if (BorderRegion_North >= 0 && DssRef.world.cities[BorderRegion_North].factionIndex != owner)
+                {
+                    sameFaction = false;
+                    return true;
+                }
+                if (BorderRegion_East >= 0 && DssRef.world.cities[BorderRegion_East].factionIndex != owner)
+                {
+                    sameFaction = false;
+                    return true;
+                }
+                if (BorderRegion_South >= 0 && DssRef.world.cities[BorderRegion_South].factionIndex != owner)
+                {
+                    sameFaction = false;
+                    return true;
+                }
+                if (BorderRegion_West >= 0 && DssRef.world.cities[BorderRegion_West].factionIndex != owner)
+                {
+                    sameFaction = false;
+                    return true;
+                }
+
+                sameFaction = true;
+                return true;
+            }
+
+            sameFaction = false;
+            return false;
+        }
+
         public int GetBorder(int dir)
         {
             switch (dir)
@@ -413,8 +447,14 @@ namespace VikingEngine.DSSWars.Map
                 if (secondaryBiomStrength > 0)
                 {
                     var col2 = DssRef.map.bioms.bioms[(int)secondaryBiom].TileColor(this).Color;
-                    return ColorExt.Mix(col2, col, secondaryBiomStrength * 0.25f);
+                    col = ColorExt.Mix(col2, col, secondaryBiomStrength * 0.25f);
                 }
+
+                if (hasBorder(out bool sameFaction))
+                {
+                    col = ColorExt.ChangeBrighness(col, sameFaction ? 20 : -50);
+                }   
+
                 return col;
             }
         }
@@ -519,9 +559,16 @@ namespace VikingEngine.DSSWars.Map
             {
                 brightness *= 1.5f;
             }
-            else if (BorderCount > 0)
+            else if (hasBorder(out bool sameFaction)/*BorderCount > 0*/)
             {
-                brightness *= 0.7f;
+                if (sameFaction)
+                {
+                    brightness *= 1.25f;
+                }
+                else
+                {
+                    brightness *= 0.6f;
+                }
                 //if (ColorExt.GetBrightNess(factionCol) > 0.3f)
                 //{
                 //    brightness -= 0.2f;
@@ -542,7 +589,6 @@ namespace VikingEngine.DSSWars.Map
         {   
             float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
 
-            //Tile nTile;
             City city = City();
             int faction = city.factionIndex;
 
@@ -550,30 +596,41 @@ namespace VikingEngine.DSSWars.Map
             {
                 return Color.Black;
             }
-
             
             Color factionCol = DssRef.world.factions.Array[faction].Color();
 
             int distance = city.tilePos.SideLength(pos);
-            //if (distance == 0)
-            //{
-            //    brightness = 1.25f;
-            //}
-            //else 
+            
             if (distance == 1)
             {
                 brightness = 1.15f;
             }
-            else if (BorderCount > 0)
+            else if (hasBorder(out bool sameFaction))
             {
                 if (ColorExt.GetBrightNess(factionCol) > 0.3f)
                 {
-                    brightness -= 0.2f;
+                    if (sameFaction)
+                    {
+                        brightness -= 0.1f;
+                    }
+                    else
+                    {
+                        brightness -= 0.3f;
+                    }
                 }
                 else
                 {
-                    factionCol = ColorExt.ChangeBrighness(factionCol, 10);
-                    brightness += 0.1f;
+                    if (sameFaction)
+                    {
+                        factionCol = ColorExt.ChangeBrighness(factionCol, 5);
+                        brightness += 0.05f;
+                    }
+                    else
+                    {
+                        factionCol = ColorExt.ChangeBrighness(factionCol, 15);
+                        brightness += 0.15f;
+                    }
+                
                 }
             }
 

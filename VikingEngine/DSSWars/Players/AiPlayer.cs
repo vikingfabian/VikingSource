@@ -1671,7 +1671,7 @@ namespace VikingEngine.DSSWars.Players
                         this.faction.shareRelationWithAllAllies(enemyFaction, RelationType.RelationType1_Peace);
                     }
                 }
-                else if (Ref.peRnd.Chance(0.2))
+                else if (Ref.peRnd.Chance(0.2) && !faction.quickMatchFaction)
                 {
                     if (wars.Count > 0 && Ref.peRnd.Chance(0.8))
                     {
@@ -1710,7 +1710,8 @@ namespace VikingEngine.DSSWars.Players
                 while (factions.Next())
                 {
                     if (factions.sel != faction &&
-                        factions.sel.player.IsBot() )
+                        factions.sel.player.IsBot() &&
+                        !factions.sel.quickMatchFaction)
                     {
                         var relation = DssRef.diplomacy.GetRelationType(this.faction, factions.sel);
 
