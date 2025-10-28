@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars
 
         public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
 
-        public List<int> quickMatchFaction = null;
+        public List<int> quickMatchFactions = null;
 
         public WorldData()
         {
@@ -275,7 +275,7 @@ namespace VikingEngine.DSSWars
             w.Write((ushort)factions.Array.Length);
             foreach (var faction in factions.Array)
             {
-                if (faction != null && faction.isAlive)
+                if (faction != null && (faction.isAlive || faction.quickMatchFaction))
                 {
                     w.Write(true);
                     faction.writeGameState(w);
@@ -285,6 +285,19 @@ namespace VikingEngine.DSSWars
                 { 
                     w.Write(false); 
                 }
+            }
+
+            if (quickMatchFactions != null)
+            {
+                w.Write((byte)quickMatchFactions.Count);
+                foreach (var m in quickMatchFactions)
+                {
+                    w.Write((ushort)m);
+                }
+            }
+            else
+            {
+                w.Write(byte.MinValue);
             }
 
             Debug.WriteCheck(w);
@@ -320,45 +333,12 @@ namespace VikingEngine.DSSWars
             {
                 factionLegth = r.ReadUInt16();
             }
-            //            else
-            //            {
-            //#if DEBUG
-            //                factionLegth *= 2;
-            //                factions = new SpottedArray<Faction>(factionLegth);
-            //#endif
-            //            }
-
-            //pointers.oldFactionTypes = new List<Faction>[(int)FactionType.NUM];
-            //foreach (var f in factions.Array)
-            //{
-            //    if (f != null)
-            //    {
-            //        if (f.factiontype != FactionType.DefaultAi && f.factiontype != FactionType.Player)
-            //        {
-            //            if (pointers.oldFactionTypes[(int)f.factiontype] == null)
-            //            {
-            //                pointers.oldFactionTypes[(int)f.factiontype] = new List<Faction> { f };
-            //            }
-            //            else
-            //            {
-            //                pointers.oldFactionTypes[(int)f.factiontype].Add(f);
-            //            } 
-            //        }
-            //    }
-            //}
-
+            
             int darkLordCount = 0;
 
             for (int i = 0; i < factionLegth; i++)
             {
                 var f = factions.Array[i];
-
-                //if (f != null && f.factiontype != FactionType.Player && subversion >= 81)
-                //{
-                //    f.factiontype = FactionType.DefaultAi;
-                //    var emptyPlayer = new AiPlayer(f, false);
-                //    //emptyPlayer.faction.isAlive = false;
-                //}
 
                 if (r.ReadBoolean())
                 {
@@ -381,16 +361,27 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-#if DEBUG
-            if (subversion >= 81 && darkLordCount >1)
+            if (subversion >= 83)
             {
-                //throw new Exception();
+                int quickMatchFactionsCount = r.ReadByte();
+                if (quickMatchFactionsCount > 0)
+                {
+                    quickMatchFactions = new List<int>(quickMatchFactionsCount);
+                    for (int i = 0; i < quickMatchFactionsCount; i++)
+                    {
+                        int fIx = r.ReadUInt16();
+                        var f = faction(fIx);
+                        if (f != null)
+                        {
+                            f.quickMatchFaction = true;
+                            f.displayInFullOverview = true;
+                            quickMatchFactions.Add(fIx);
+                        }
+                    }
+                }
             }
-#endif
 
-            Debug.ReadCheck(r);
-
-            
+            Debug.ReadCheck(r);            
         }
 
         public void writeNet(System.IO.BinaryWriter w)

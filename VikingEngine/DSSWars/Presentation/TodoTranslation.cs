@@ -51,6 +51,8 @@ namespace VikingEngine.DSSWars.Presentation
         /// Theme: The blessed folk. A horde like farmers faction.
         /// </summary>
         public string FactionName_Hælfolc => "Hælfolc";
+
+        public string HUD_NotAvailbleInX => "No available in {0}";
     }
 
 

@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed empty player read crash
+
 
 #Pics
 * Relation arrow:
@@ -15,6 +16,7 @@ Monogame, Perafilozof, gameport, förening discord
 Reddit, twitter
 Facebook privat
 
+controller in voxel editor
 
 #Winter update - must do#
 x achievement in steamworks

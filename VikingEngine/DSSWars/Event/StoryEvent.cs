@@ -1351,7 +1351,7 @@ namespace VikingEngine.DSSWars.Event
                 matchFactions.Add(p.faction);
             }
 
-            foreach (var ix in DssRef.world.quickMatchFaction)
+            foreach (var ix in DssRef.world.quickMatchFactions)
             {
                 var faction = DssRef.world.faction(ix);
                 if (faction != null)

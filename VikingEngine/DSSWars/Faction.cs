@@ -62,6 +62,7 @@ namespace VikingEngine.DSSWars
 
         public int lostCity_Time0 = -1;
         public int lostCity_Time1 = -1;
+        public bool quickMatchFaction = false;
 
 
         public XP.TechnologyTemplate technology;
@@ -163,20 +164,9 @@ namespace VikingEngine.DSSWars
         virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             factiontype = (FactionType)r.ReadUInt16();
-            if (player.IsLocalPlayer() && player.GetLocalPlayer().isDropInPlayer)
+            if (player != null && player.IsLocalPlayer() && player.GetLocalPlayer().isDropInPlayer)
             {
                 factiontype = FactionType.Player;
-                //var doubletteFaction = pointers.oldFactionTypes[(int)factiontype];
-                //if (doubletteFaction != null)
-                //{
-                //    foreach (var faction2 in doubletteFaction)
-                //    {
-                //        if (faction2 != this && faction2.factiontype == factiontype)
-                //        {
-                //            faction2.factiontype = FactionType.DefaultAi;
-                //        }
-                //    }
-                //}
             }
 
             if (subVersion >= 81)

@@ -1308,17 +1308,18 @@ namespace VikingEngine.DSSWars.Map.Generate
             };
 
             int count = DssRef.difficulty.setting_QuickMatch_PlayerCount - DssRef.storage.playerCount;
-            world.quickMatchFaction = new List<int>(count);
+            world.quickMatchFactions = new List<int>(count);
             //DssRef.settings.Faction_QuickMatch_Start = -1;
             //DssRef.settings.Faction_QuickMatch_End = -1;
 
             for (int i = 0; i < count; ++i)
             {               
                 var faction = new Faction(world, opponents[i]);
+                faction.quickMatchFaction = true;
                 faction.displayInFullOverview = true;
                 region.GetStartFactionRegion(nationWorkForce, randomCity_inMapCenter(), world, faction);
 
-                world.quickMatchFaction.Add(faction.myIndex);
+                world.quickMatchFactions.Add(faction.myIndex);
                 //if (i == 0)
                 //{
                 //    DssRef.settings.Faction_QuickMatch_Start = faction.myIndex;
