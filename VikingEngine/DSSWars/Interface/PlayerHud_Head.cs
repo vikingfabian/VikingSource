@@ -302,7 +302,7 @@ namespace VikingEngine.DSSWars.Interface
                     new List<AbsRichBoxMember>
                     {
                         new RbImage(icon)
-                    }, new RbAction1Arg<MenuTab>(TabClick, tab, RbSoundType.Option), new RbTooltip(TabTip, tab)));
+                    }, new RbAction1Arg<MenuTab>(TabClick, tab, RbSoundType.Tab), new RbTooltip(TabTip, tab)));
             }
         }
 

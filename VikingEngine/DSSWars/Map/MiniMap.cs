@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.Map
                 float zoom = player.gameControls.input.ZoomValue();
                 if (zoom != 0)
                 {
-                    scale = Bound.Set(scale + zoom * 0.005f * scale, 0.5f, 5f);
+                    scale = Bound.Set(scale - zoom * 0.005f * scale, 0.5f, 5f);
                     refreshScale();
                     refreshPosition(player);
                 }

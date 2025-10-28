@@ -1586,6 +1586,16 @@ namespace VikingEngine.DSSWars.Interface
                                }));
                             content.newLine();
                             break;
+                        
+                        case ResourcesSubTab.Work_Armor:
+                            HudLib.InfoButton(content,
+                               new RbTooltip((RichBoxContent content, object tag) =>
+                               {
+                                   HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
+                               }));
+                            content.newLine();
+                            break;
+
                         case ResourcesSubTab.Stockpile_Armor:
                             HudLib.InfoButton(content,
                                new RbTooltip((RichBoxContent content, object tag) =>
@@ -1596,14 +1606,7 @@ namespace VikingEngine.DSSWars.Interface
                                    HudLib.BulletPoint(content);
                                    content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
                                }));
-                            content.newLine();
-                            break;
-                        case ResourcesSubTab.Work_Armor:
-                            HudLib.InfoButton(content,
-                               new RbTooltip((RichBoxContent content, object tag) =>
-                               {
-                                   HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
-                               }));
+                            
                             break;
                     }
                     //if (resourcesSubTab == ResourcesSubTab.Overview_Armor ||
@@ -2745,18 +2748,18 @@ namespace VikingEngine.DSSWars.Interface
         Overview_Projectile,
         Overview_Armor,
 
-        Stockpile_Resources,
-        Stockpile_Metals,
-        Stockpile_Weapons,
-        Stockpile_Projectile,
-        Stockpile_Armor,
-
         Work_Resources,
         Work_Metals,
         Work_Weapons,
         Work_Projectile,
         Work_Armor,
         Work_Mint,
+
+        Stockpile_Resources,
+        Stockpile_Metals,
+        Stockpile_Weapons,
+        Stockpile_Projectile,
+        Stockpile_Armor,
 
         Auto,
         
