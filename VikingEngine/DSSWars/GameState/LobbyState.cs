@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars
         XInputJoinHandler joinHandler = new XInputJoinHandler();
         bool controllerStartGameUpdate = false;
         Graphics.TextG maploading;
-        GuiLabel difficultyLevelText = null;
+        //GuiLabel difficultyLevelText = null;
 
         StartGameMode startGameMode = StartGameMode.Play;
         InputActionType mappingFor;
@@ -1307,7 +1307,7 @@ namespace VikingEngine.DSSWars
         {
             DssRef.difficulty.setting_gameMode = mode;
             DssRef.storage.Save(null);
-            refreshDifficultyLevel();
+            //refreshDifficultyLevel();
             underMenu.CloseDropDown();
             //mainMenu();
             //newGameSettings();
@@ -1375,6 +1375,9 @@ namespace VikingEngine.DSSWars
                 }
             }
 
+            content.newLine();
+            content.Add(new RbText( string.Format(DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty()), HudLib.InfoYellow_Light));
+
             Difficulty.OptionsRb(content, underMenu, difficultyOptionsLink);
              
 
@@ -1389,6 +1392,7 @@ namespace VikingEngine.DSSWars
                 modeOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_GameMode, underMenu);
             }
 
+            content.newParagraph();
             content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
 
             if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
@@ -1821,7 +1825,7 @@ namespace VikingEngine.DSSWars
         {
             DssRef.difficulty.set(difficulty);
             DssRef.storage.Save(null);
-            refreshDifficultyLevel();
+            //refreshDifficultyLevel();
             //mainMenu();
             //newGameSettings();
             underMenu.CloseDropDown();
@@ -1865,29 +1869,7 @@ namespace VikingEngine.DSSWars
             new StartExtra();
         }
 
-        void refreshDifficultyLevel()
-        {
-            //double levelPerc = DssLib.AiEconomyLevel[DssRef.storage.aiEconomyLevel];
-            //int aggdiff = (int)DssRef.storage.aiAggressivity - (int)AiAggressivity.Medium;
-            //levelPerc *= 1.0 + aggdiff * 0.5;
-
-            //double bossTimeDiff = DssRef.storage.bossTimeSettings - BossTimeSettings.Normal;
-            //levelPerc *= 1.0 - bossTimeDiff * 0.25;
-
-            //double diplomacyDiff = DssRef.storage.diplomacyDifficulty - 1;
-            //levelPerc *= 1.0 + diplomacyDiff * 0.5;
-
-            //if (!DssRef.storage.honorGuard)
-            //{
-            //    levelPerc *= 1.25;
-            //}
-
-            //string Settings_TotalDifficulty = "Total Difficulty {0}%";
-            if (difficultyLevelText != null)
-            {
-                difficultyLevelText.text.TextString = string.Format(DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty());
-            }
-        }
+              
 
         public bool allowPauseProperty(object tag, bool set, bool value)
         {
@@ -1895,7 +1877,7 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.difficulty.setting_allowPauseCommand = value;
                 DssRef.storage.Save(null);
-                refreshDifficultyLevel();
+                //refreshDifficultyLevel();
             }
             return DssRef.difficulty.setting_allowPauseCommand;
         }
@@ -1906,7 +1888,7 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.storage.gameRuleset.centralGold = value;
                 DssRef.storage.Save(null);
-                refreshDifficultyLevel();
+                //refreshDifficultyLevel();
             }
             return DssRef.storage.gameRuleset.centralGold;
         }
@@ -1917,7 +1899,7 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.difficulty.runStory = value;
                 DssRef.storage.Save(null);
-                refreshDifficultyLevel();
+                //refreshDifficultyLevel();
             }
             return DssRef.difficulty.runStory;
         }

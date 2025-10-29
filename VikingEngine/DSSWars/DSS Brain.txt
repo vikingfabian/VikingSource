@@ -1,14 +1,17 @@
 ﻿UPDATE
 Change Log:
-* Fixed empty player read crash
+* 
 
 
 #Pics
 
 
 #must do#
-controller in voxel editor
-
+x barbarian enter freeze?
+x (controller in voxel editor)
+x fix voxel editor crash (steam pic)
+x 2 player local multiplayer zoom glitch
+x can auto place more than one logistics
 
 #Winter update#
 x 300% difficulty 

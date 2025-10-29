@@ -400,6 +400,17 @@ namespace VikingEngine.DSSWars.Event
                 for (int i = 0; i < mainStoryCount; ++i)
                 {
                     var type = (EventType)r.ReadByte();
+                    if (subVersion < 82)
+                    { //old
+                        if (type == (EventType)255)
+                        {
+                            type = EventType.Tutorial;
+                        }
+                        else
+                        {
+                            type++;
+                        }
+                    }
                     var ev = CreateEvent(type);
                     mainStory.Enqueue(ev);
                     if (r.ReadBoolean())
