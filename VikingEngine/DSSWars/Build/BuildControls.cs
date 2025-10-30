@@ -804,7 +804,7 @@ namespace VikingEngine.DSSWars.Build
                             new RbAction(() =>
                             {
                                 autoPlaceBuilding(city, count);
-                            }, RbSoundType.Buy), null, buildOpt != null/* && (count <= max - current)*/));
+                            }, RbSoundType.Buy), null, buildOpt != null && buildOpt.blueprint.meetsRequirements(city)));
                     //}
                 }
             }

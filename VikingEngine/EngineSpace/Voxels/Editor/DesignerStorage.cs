@@ -194,9 +194,19 @@ namespace VikingEngine.Voxels
 
 
             const int Size = 64;
-            using (FileStream stream = new FileStream(iconPath.CompleteLocalPath(true), FileMode.Create))
+
+            try
             {
-                renderModel().SaveAsPng(stream, Size, Size);
+                using (FileStream stream = new FileStream(iconPath.CompleteLocalPath(true), FileMode.Create))
+                {
+                    renderModel().SaveAsPng(stream, Size, Size);
+                }
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                throw;
+#endif
             }
 
             RenderTarget2D renderModel()

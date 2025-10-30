@@ -948,7 +948,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly CraftBlueprint PlateArmor = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.IronArmor,
+            (int)ItemResourceType.LightPlateArmor,
             1,
             new UseResource[]
             {

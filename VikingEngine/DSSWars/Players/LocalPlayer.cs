@@ -243,7 +243,7 @@ namespace VikingEngine.DSSWars.Players
             menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
 
             itemDeliveryCopy = new DeliveryStatus();
-            menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Resource);
+            itemDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Resource);
             
             goldDeliveryCopy = new DeliveryStatus();
             goldDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Gold);

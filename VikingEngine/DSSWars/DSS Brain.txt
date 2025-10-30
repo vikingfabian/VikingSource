@@ -1,18 +1,20 @@
 ﻿UPDATE
 Change Log:
-* 
+* fixed: copied the settings to a recruitment center and it turned it into a postal center
+* muted: voxel icons save crash
+* fixed: voxel pen out of bounds crash
+* fixed: can skip build requirements with auto place
 
+
+fixed - will update soon
 
 #Pics
 
 
 #must do#
 x korean
-x barbarian enter freeze?
 x (controller in voxel editor)
-x fix voxel editor crash (steam pic)
 x 2 player local multiplayer zoom glitch
-x can auto place more than one logistics
 
 #Winter update#
 x 300% difficulty 
