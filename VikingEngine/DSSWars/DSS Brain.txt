@@ -23,6 +23,10 @@ x achievement in steamworks
 x hide minimap
 x hide minimap/hud in pause menu
 
+? cities summary tab
+x city resource in/out
+x declare war comfirm
+
 #Winter update#
 * fixed: bot delay was not set by high difficulty
 * 2 new cameo factions, plus a december santa faction
