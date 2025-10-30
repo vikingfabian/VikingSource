@@ -2803,7 +2803,7 @@ namespace VikingEngine
                     add(SpriteName.WarsRelationEnemy, 2, 2);
                     add(SpriteName.LangButton_Turkish, 8, 2);
                     add(SpriteName.LangButton_Italian, 8, 2);
-                    add(SpriteName.LangButton_Res1, 8, 2);
+                    add(SpriteName.LangButton_Korean, 8, 2);
 
                     add(SpriteName.WaterEdgeMask_ship, 1, 2);
                     

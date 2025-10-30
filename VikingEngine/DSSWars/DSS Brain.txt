@@ -5,6 +5,9 @@ Change Log:
 * fixed: voxel pen out of bounds crash
 * fixed: can skip build requirements with auto place
 
+* Translate:
+- Added Korean (mashine translated)
+- Improved Bold text for Japanese and Chinese
 
 fixed - will update soon
 
