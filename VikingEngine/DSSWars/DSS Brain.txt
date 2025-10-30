@@ -15,6 +15,7 @@ fixed - will update soon
 x korean
 x (controller in voxel editor)
 x 2 player local multiplayer zoom glitch
+x postal auto resource not respecting reciever max cap
 
 #Winter update#
 x 300% difficulty 
