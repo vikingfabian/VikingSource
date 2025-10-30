@@ -121,10 +121,12 @@ namespace VikingEngine.DSSWars
 
             for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
             {
-                EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
-                Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
+                
+                    EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
+                    Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
 
-                drawDetailLayer(cameraIndex, drawUnits.current, MainRenderTarget);
+                    drawDetailLayer(cameraIndex, drawUnits.current, MainRenderTarget);
+                
             }
 
 
@@ -135,17 +137,19 @@ namespace VikingEngine.DSSWars
 
                 for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
                 {
-                    Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
-                    if (drawUnits.prevLayer != null)
-                    {
-                        Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
-                        graphicsDeviceManager.GraphicsDevice.Viewport = p.view.Viewport;
-                        spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, renderList[0].TransformMatrix);
-                        spriteBatch.Draw(overviewMapTarget,
-                            new Rectangle(-p.view.DrawArea.X, -p.view.DrawArea.Y, Engine.Screen.Width, Engine.Screen.Height),
-                            new Color(drawUnits.prevLayer.opacity, drawUnits.prevLayer.opacity, drawUnits.prevLayer.opacity, drawUnits.prevLayer.opacity));
-                        spriteBatch.End();
-                    }
+                    
+                        Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
+                        if (drawUnits.prevLayer != null)
+                        {
+                            Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
+                            graphicsDeviceManager.GraphicsDevice.Viewport = p.view.Viewport;
+                            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, renderList[0].TransformMatrix);
+                            spriteBatch.Draw(overviewMapTarget,
+                                new Rectangle(-p.view.DrawArea.X, -p.view.DrawArea.Y, Engine.Screen.Width, Engine.Screen.Height),
+                                new Color(drawUnits.prevLayer.opacity, drawUnits.prevLayer.opacity, drawUnits.prevLayer.opacity, drawUnits.prevLayer.opacity));
+                            spriteBatch.End();
+                        }
+                    
                 }
 
             }
@@ -205,6 +209,7 @@ namespace VikingEngine.DSSWars
                             drawBatch.DrawDepth(cameraIndex, shadowProcessor.light, shadowProcessor.shader);
                         }
                         graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
+                        graphicsDeviceManager.GraphicsDevice.Viewport = p.view.Viewport;
 
                         shadowProcessor.DrawModelsWithShadow(UnitDetailLayer, Graphics.DrawObjType.MeshGenerated, Camera, cameraIndex);
                         DssRef.state.detailMap.drawWithShadow(cameraIndex, Camera, shadowProcessor.shader, shadowProcessor.light);
@@ -233,10 +238,11 @@ namespace VikingEngine.DSSWars
                     
                     Engine.ParticleHandler.Draw(p.view.Camera);
                     //Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-                    
+                    //graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
                     break;
 
                 case Map.MapDetailLayerType.TerrainOverview2:
+                    //graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
                     DssRef.state.detailMap.Update_outOfFocus();
                     DrawGenerated(MidLayer, cameraIndex);

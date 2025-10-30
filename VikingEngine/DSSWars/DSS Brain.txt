@@ -1,13 +1,7 @@
 ﻿UPDATE
 Change Log:
-* fixed: copied the settings to a recruitment center and it turned it into a postal center
-* muted: voxel icons save crash
-* fixed: voxel pen out of bounds crash
-* fixed: can skip build requirements with auto place
+* 
 
-* Translate:
-- Added Korean (mashine translated)
-- Improved Bold text for Japanese and Chinese
 
 fixed - will update soon
 
@@ -15,9 +9,8 @@ fixed - will update soon
 
 
 #must do#
-x korean
+x korean achievements
 x (controller in voxel editor)
-x 2 player local multiplayer zoom glitch
 x postal auto resource not respecting reciever max cap
 
 #Winter update#
