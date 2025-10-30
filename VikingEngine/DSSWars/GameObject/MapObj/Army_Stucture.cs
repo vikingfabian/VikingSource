@@ -350,11 +350,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                 for (int row = 1; row < RowsCount; row++)
                 {
-                    grid[colindex, row].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth, 
-                        out cellSize, out float adjLeft, false, endAsShip, resetCommand, teleport, failedPlacements);
-                    largestWidth = lib.LargestValue(largestWidth, cellSize.X);
-                    finalPos.X = adjLeft;
-                    _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
+                    if (grid.GetLength(1) > row)
+                    {
+                        grid[colindex, row].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth,
+                            out cellSize, out float adjLeft, false, endAsShip, resetCommand, teleport, failedPlacements);
+                        largestWidth = lib.LargestValue(largestWidth, cellSize.X);
+                        finalPos.X = adjLeft;
+                        _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
+                    }
                 }
 
                 comumnWidth[colindex] = largestWidth;

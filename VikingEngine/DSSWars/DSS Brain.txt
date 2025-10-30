@@ -1,6 +1,8 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed: Bombard recipe don't ask for blackpower
+* Fixed: dirt wall has no cost
+* Increased prices on all towers
 
 
 fixed - will update soon
@@ -9,9 +11,11 @@ fixed - will update soon
 
 
 #must do#
-x korean achievements
+x dirt wall has no cost
+x demo update
 x (controller in voxel editor)
 x postal auto resource not respecting reciever max cap
+x If Flag 2 is selected at the Editor for a game it replaces Profile 1 while keeping Profile 2 (steam pic)
 
 #Winter update#
 x 300% difficulty 

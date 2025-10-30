@@ -849,6 +849,8 @@ namespace VikingEngine.DSSWars.Resource
             1,
             new UseResource[]
             {
+                new UseResource(ItemResourceType.BlackPowder, 10),
+                new UseResource(ItemResourceType.Stone_G, 10),
                 new UseResource(ItemResourceType.Bronze, 20),
             },
            XP.WorkExperienceType.CastMetal,
