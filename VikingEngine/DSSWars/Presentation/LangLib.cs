@@ -28,6 +28,8 @@ namespace VikingEngine.DSSWars.Presentation
         //{ 
 
         //}
+        
+
         public static void GameModeText(GameModeMainType mode, out string caption, out string desc)
         {
             caption = null;

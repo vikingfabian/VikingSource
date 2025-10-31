@@ -5,6 +5,9 @@ Change Log:
 * Increased prices on all towers
 * Added Korean to steam stats
 * moved upgrade buttons to the top of the menu
+* Extended wall tooltip
+* fixed: auto postal only sends sharp stick
+* fixed: If Flag 2 is selected at the Editor for a game it replaces Profile 1 while keeping Profile 2.
 
 
 fixed - will update soon
@@ -14,9 +17,7 @@ fixed - will update soon
 
 #must do#
 
-x wall defence tooltip
 x (controller in voxel editor)
-x postal auto resource not respecting reciever max cap
 x If Flag 2 is selected at the Editor for a game it replaces Profile 1 while keeping Profile 2 (steam pic)
 x localized gold setting, gets ERR gold
 

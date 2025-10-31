@@ -19,6 +19,8 @@ using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
+using VikingEngine.DSSWars.Defence;
+using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -252,6 +254,10 @@ namespace VikingEngine.DSSWars.Interface
                             content.space(0.5f);
                             content.Add(new RbText(DssRef.lang.Tutorial_MoveInput, HudLib.TitleColor_Action));
                         }
+
+                        content.Add(new RbSeperationLine());
+                        DefenceMenu.WallDefenceToHud(content, (TerrainWallType)subTile.subTile.subTerrain, false);
+
                         break;
 
                     case Players.SelectTileResult.Postal:

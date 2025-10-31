@@ -13,6 +13,7 @@ using VikingEngine;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -1323,6 +1324,19 @@ namespace VikingEngine.DSSWars.Build
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(DssConst.BankTaxIncreasePercUnits_copp * Money.CopperToGold))));
                     content.text(DssRef.lang.Hud_EffectDoesNotStack).overrideColor = HudLib.InfoYellow_Light;
+                    break;
+
+                case BuildAndExpandType.DirtWall:
+                case BuildAndExpandType.DirtTower:
+                case BuildAndExpandType.WoodWall:
+                case BuildAndExpandType.WoodTower:
+                case BuildAndExpandType.StoneWall:
+                case BuildAndExpandType.StoneTower:
+                case BuildAndExpandType.StoneWallGreen:
+                case BuildAndExpandType.StoneWallBlueRoof:
+                case BuildAndExpandType.StoneWallWoodHouse:
+
+                    DefenceMenu.WallDefenceToHud(content, (TerrainWallType)build.subType, true);
                     break;
 
             }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
@@ -106,6 +107,36 @@ namespace VikingEngine.DSSWars.Defence
                setSelected(defence);
             }
             return defence.autoAssign;
+        }
+
+        public static void WallDefenceToHud(RichBoxContent content, TerrainWallType wallType, bool extended)
+        {
+            var chance = DefenceStatus.WallDefenceChance(wallType, out _);
+
+            if (extended)
+            {
+                HudLib.BulletPoint(content);
+                content.Add(new RbText( DssRef.todoLang.BuildingType_Wall_Description));
+                content.newLine();
+
+                HudLib.BulletPoint(content);
+            }
+
+           
+            content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
+            content.space();
+            content.Add(new RbText(string.Format( DssRef.todoLang.Conscript_BlockChance,
+                Convert.ToInt32(chance * 100))));
+            
+
+            if (extended)
+            {
+                content.newLine();
+
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(DssRef.todoLang.BuildingType_Wall_Siege));
+                content.newLine();
+            }
         }
     }
 }

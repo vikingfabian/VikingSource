@@ -123,29 +123,31 @@ namespace VikingEngine.DSSWars.Defence
                 {
                     soldierAttackRangeBonus = 0.03f;
                 }
-                soldierAttackDamageBonus = 3;
 
-                switch (subTile.GetWallType())
-                {
-                    case Map.TerrainWallType.NUM_NONE:
-                        damageBlockChance_fromTerrain = 0;
-                        break;
-                    case Map.TerrainWallType.Palisade:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Palisade;
-                        soldierAttackDamageBonus = 2;
-                        break;
-                    case Map.TerrainWallType.DirtWall:
-                    case Map.TerrainWallType.DirtTower:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Dirt;
-                        break;
-                    case Map.TerrainWallType.WoodWall:
-                    case Map.TerrainWallType.WoodTower:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Wood;
-                        break;
-                    default:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Stone;
-                        break;
-                }
+                damageBlockChance_fromTerrain = DefenceStatus.WallDefenceChance(subTile.GetWallType(), out soldierAttackDamageBonus);
+                //soldierAttackDamageBonus = 3;
+
+                //switch (subTile.GetWallType())
+                //{
+                //    case Map.TerrainWallType.NUM_NONE:
+                //        damageBlockChance_fromTerrain = 0;
+                //        break;
+                //    case Map.TerrainWallType.Palisade:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Palisade;
+                //        soldierAttackDamageBonus = 2;
+                //        break;
+                //    case Map.TerrainWallType.DirtWall:
+                //    case Map.TerrainWallType.DirtTower:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Dirt;
+                //        break;
+                //    case Map.TerrainWallType.WoodWall:
+                //    case Map.TerrainWallType.WoodTower:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Wood;
+                //        break;
+                //    default:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Stone;
+                //        break;
+                //}
             }
         }
 

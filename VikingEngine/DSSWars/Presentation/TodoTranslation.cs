@@ -18,6 +18,12 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
 
+        public string BuildingType_Wall_Description => "Walls protect men from attacks, and gives a slight attack boost";
+
+        public string BuildingType_Wall_Siege => "Siege weapons reduce wall defences";
+
+        public string Conscript_BlockChance => "{0}% chance to block an attack";
+
 
     }
 
