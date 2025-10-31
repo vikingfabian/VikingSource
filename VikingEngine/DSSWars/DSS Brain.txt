@@ -11,10 +11,6 @@ heart arrow
 
 #RELEASE#
 #BuiltWithMonoGame tags
-Mail list
-Monogame, Perafilozof, gameport, förening discord
-Reddit, twitter
-Facebook privat
 
 controller in voxel editor
 
@@ -24,8 +20,9 @@ x hide minimap
 x hide minimap/hud in pause menu
 
 ? cities summary tab
-x city resource in/out
+x city resource in/out, + checkbox to view/(and hide text)
 x declare war comfirm
+x worker skill count
 
 #Winter update#
 * fixed: bot delay was not set by high difficulty
