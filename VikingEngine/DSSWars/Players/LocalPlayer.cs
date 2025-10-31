@@ -831,7 +831,7 @@ namespace VikingEngine.DSSWars.Players
                     //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
-                    hud.objMenu.diplomacy?.makeServant();
+                    //hud.objMenu.diplomacy?.makeServant();
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {

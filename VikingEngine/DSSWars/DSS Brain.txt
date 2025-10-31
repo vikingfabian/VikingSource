@@ -1,14 +1,10 @@
 ﻿UPDATE
 Change Log:
-* Fixed: Bombard recipe don't ask for blackpower
-* Fixed: dirt wall has no cost
-* Increased prices on all towers
-* Added Korean to steam stats
-* moved upgrade buttons to the top of the menu
-* Extended wall tooltip
-* fixed: auto postal only sends sharp stick
-* fixed: If Flag 2 is selected at the Editor for a game it replaces Profile 1 while keeping Profile 2.
-
+* Added war declare reminder on soldier tooltip
+* Localized the new tooltip
+* fixed rare getTypeCounts crash
+* fixed rare empty player mouse update crash
+* Fixed four out of bound crashes for x20 gameplay
 
 fixed - will update soon
 
@@ -18,11 +14,8 @@ fixed - will update soon
 #must do#
 
 x (controller in voxel editor)
-x If Flag 2 is selected at the Editor for a game it replaces Profile 1 while keeping Profile 2 (steam pic)
-x localized gold setting, gets ERR gold
 
 x demo update
-x ukranian?
 
 #Winter update#
 x 300% difficulty 

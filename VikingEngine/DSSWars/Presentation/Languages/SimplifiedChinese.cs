@@ -8,6 +8,23 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
+        public override string Error_SoundInitFailure => "声音初始化失败";
+
+        public override string GameMenu_ControllerDisconnected => "控制器已断开连接";
+
+        public override string Tutorial_HighPriority => "你的士兵会优先完成高优先级的任务。";
+
+        public override string BuildingType_Wall_Description => "城墙可以保护部队免受攻击，并提供少量攻击力加成（Boost）。";
+
+        public override string BuildingType_Wall_Siege => "攻城武器会削弱城墙的防御力。";
+
+        public override string Conscript_BlockChance => "{0}% 几率格挡攻击（Block）。";
+
+        public override string Battle_DeclarWarReminder => "攻击前必须先宣战。";
+
+        //--
+
+
         /// <summary>
         /// 本语言的名称
         /// </summary>
@@ -2548,13 +2565,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_DefeatBoss => "Boss 击败";
         public override string VictoryType_Domination => "统治";
         public override string VictoryType_WorldPeace => "世界和平";
-
-        // Launch Polish 1
-        public override string Error_SoundInitFailure => "声音初始化失败";
-
-        public override string GameMenu_ControllerDisconnected => "控制器已断开连接";
-
-        public override string Tutorial_HighPriority => "你的部下会优先完成高优先级的任务";
 
     }
 }

@@ -8,6 +8,23 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Spanish : AbsLanguage
     {
+
+        public override string Error_SoundInitFailure => "Error al inicializar el sonido";
+
+        public override string GameMenu_ControllerDisconnected => "Control desconectado";
+
+        public override string Tutorial_HighPriority => "Tus soldados completarán primero las tareas de alta prioridad.";
+
+        public override string BuildingType_Wall_Description => "Las murallas protegen a tus tropas de los ataques y dan un pequeño boost de ataque.";
+
+        public override string BuildingType_Wall_Siege => "Las armas de asedio reducen la defensa de las murallas.";
+
+        public override string Conscript_BlockChance => "{0}% de probabilidad de bloquear un ataque.";
+
+        public override string Battle_DeclarWarReminder => "Debes declarar la guerra antes de atacar.";
+
+        //--
+
         /// <summary>
         /// Nombre de este idioma
         /// </summary>
@@ -2556,13 +2573,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_DefeatBoss => "Boss derrotado";
         public override string VictoryType_Domination => "Dominación";
         public override string VictoryType_WorldPeace => "Paz mundial";
-
-        // Launch Polish 1
-        public override string Error_SoundInitFailure => "Error al inicializar el sonido";
-
-        public override string GameMenu_ControllerDisconnected => "Control desconectado";
-
-        public override string Tutorial_HighPriority => "Tus hombres completarán primero las tareas de alta prioridad";
 
     }
 }

@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.Defence
             if (extended)
             {
                 HudLib.BulletPoint(content);
-                content.Add(new RbText( DssRef.todoLang.BuildingType_Wall_Description));
+                content.Add(new RbText( DssRef.lang.BuildingType_Wall_Description));
                 content.newLine();
 
                 HudLib.BulletPoint(content);
@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Defence
            
             content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
             content.space();
-            content.Add(new RbText(string.Format( DssRef.todoLang.Conscript_BlockChance,
+            content.Add(new RbText(string.Format( DssRef.lang.Conscript_BlockChance,
                 Convert.ToInt32(chance * 100))));
             
 
@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.Defence
                 content.newLine();
 
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(DssRef.todoLang.BuildingType_Wall_Siege));
+                content.Add(new RbText(DssRef.lang.BuildingType_Wall_Siege));
                 content.newLine();
             }
         }

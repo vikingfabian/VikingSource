@@ -11,6 +11,23 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
+        public override string Error_SoundInitFailure => "사운드 초기화에 실패했습니다";
+
+        public override string GameMenu_ControllerDisconnected => "컨트롤러가 연결 해제되었습니다";
+
+        public override string Tutorial_HighPriority => "병사들은 우선순위가 높은 작업부터 수행합니다.";
+
+        public override string BuildingType_Wall_Description => "벽은 부대를 공격으로부터 보호하고 약간의 공격 부스트를 제공합니다.";
+
+        public override string BuildingType_Wall_Siege => "공성 무기는 벽의 방어력을 약화시킵니다.";
+
+        public override string Conscript_BlockChance => "공격을 블록할 확률: {0}%";
+
+        public override string Battle_DeclarWarReminder => "공격하기 전에 전쟁을 선포해야 합니다.";
+
+        //--
+
+
         /// <summary>
         /// Name of this language
         /// </summary>
@@ -2539,14 +2556,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_DefeatBoss => "보스 격파";
         public override string VictoryType_Domination => "지배";
         public override string VictoryType_WorldPeace => "세계 평화";
-
-        // Launch polish 1
-        public override string Error_SoundInitFailure => "사운드 초기화에 실패했습니다.";
-
-        public override string GameMenu_ControllerDisconnected => "컨트롤러 연결이 끊어졌습니다.";
-
-        public override string Tutorial_HighPriority => "병사들은 우선순위가 높은 작업부터 수행합니다.";
-
 
     }
 }

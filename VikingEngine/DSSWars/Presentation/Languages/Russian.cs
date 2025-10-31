@@ -8,6 +8,23 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian : AbsLanguage
     {
+        public override string Error_SoundInitFailure => "Не удалось инициализировать звук";
+
+        public override string GameMenu_ControllerDisconnected => "Контроллер отключён";
+
+        public override string Tutorial_HighPriority => "Ваши люди сначала выполнят задачи с высоким приоритетом";
+
+        public override string BuildingType_Wall_Description => "Стены защищают от атак и дают небольшой буст к атаке.";
+
+        public override string BuildingType_Wall_Siege => "Осадные орудия снижают защиту стен.";
+
+        public override string Conscript_BlockChance => "{0}% шанс заблокировать атаку.";
+
+        public override string Battle_DeclarWarReminder => "Вы должны объявить войну, прежде чем атаковать.";
+
+        //--
+
+
         /// <summary>
         /// Название этого языка
         /// </summary>
@@ -2553,12 +2570,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_Domination => "Доминирование";
         public override string VictoryType_WorldPeace => "Мир во всём мире";
 
-        // Launch Polish 1
-        public override string Error_SoundInitFailure => "Не удалось инициализировать звук";
-
-        public override string GameMenu_ControllerDisconnected => "Контроллер отключён";
-
-        public override string Tutorial_HighPriority => "Ваши люди сначала выполнят задачи с высоким приоритетом";
-
+        
     }
 }

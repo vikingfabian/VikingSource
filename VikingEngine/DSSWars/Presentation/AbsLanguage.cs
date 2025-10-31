@@ -9,6 +9,15 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
+        public abstract string Error_SoundInitFailure { get; }
+        public abstract string GameMenu_ControllerDisconnected { get; }
+        public abstract string Tutorial_HighPriority { get; }
+        public abstract string BuildingType_Wall_Description { get; }
+        public abstract string BuildingType_Wall_Siege { get; }
+        public abstract string Conscript_BlockChance { get; }
+        public abstract string Battle_DeclarWarReminder { get; }
+        //--
+
         public abstract string MyLanguage { get; }
 
         public abstract string Language_ItemCountPresentation { get; }
@@ -1718,11 +1727,5 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string VictoryType_Domination { get; }
         public abstract string VictoryType_WorldPeace { get; }
 
-        //launch polish 1
-        public abstract string Error_SoundInitFailure { get; }
-
-        public abstract string GameMenu_ControllerDisconnected { get; }
-
-        public abstract string Tutorial_HighPriority { get; }
     }
 }

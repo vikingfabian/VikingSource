@@ -39,6 +39,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return false;
         }
+        virtual public bool IsSoldiers()
+        {
+            return false;
+        }
         virtual public Faction GetFaction_NoChecks()
         {
 #if DEBUG

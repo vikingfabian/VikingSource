@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.Interface
                         RichBoxContent content = new RichBoxContent();
                         HudLib.returnButton(content, menu, true, DssRef.state.menuSystem.closeMenu);
 
-                        content.h1(DssRef.todoLang.GameMenu_ControllerDisconnected, HudLib.TitleColor_Head);
+                        content.h1(DssRef.lang.GameMenu_ControllerDisconnected, HudLib.TitleColor_Head);
 
                         menu.Refresh(content);
                     }
