@@ -2346,7 +2346,7 @@ namespace VikingEngine.DSSWars
 
             
             mapBackgroundLoading?.Abort();
-            
+            mapBackgroundLoading.loadMeta = saveMeta;
 
             var availableList = availableInput();
                 

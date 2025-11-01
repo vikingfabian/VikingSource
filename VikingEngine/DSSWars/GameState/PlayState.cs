@@ -640,7 +640,7 @@ namespace VikingEngine.DSSWars
                         var armiesC = factions.sel.armies.counter();
                         while (armiesC.Next())
                         {
-                            armiesC.sel.async_workUpdate(seconds);
+                            armiesC.sel.async_workUpdate(factions.sel, seconds);
                         }
                     }
                 }

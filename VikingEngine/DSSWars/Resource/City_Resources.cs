@@ -1039,6 +1039,10 @@ namespace VikingEngine.DSSWars.GameObject
             TradeResource resource;
             switch (itemResourceType)
             {
+                case ItemResourceType.Food_G:
+                    resource = tradeTemplate.food;
+                    break;
+
                 case ItemResourceType.HardWood:
                 case ItemResourceType.SoftWood:
                     resource = tradeTemplate.wood;
@@ -1046,9 +1050,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Stone_G:
                     resource = tradeTemplate.stone;
                     break;
-                case ItemResourceType.Food_G:
-                    resource = tradeTemplate.food;
-                    break;
+                
                 case ItemResourceType.Iron_G:
                     resource = tradeTemplate.iron;
                     break;

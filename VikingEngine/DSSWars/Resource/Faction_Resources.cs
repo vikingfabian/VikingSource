@@ -448,7 +448,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public bool hasGold(int cost, City city)
+        public bool hasGold(int cost, AbsMapObject mapObj)
         {
             if (DssRef.storage.gameRuleset.centralGold)
             {
@@ -456,49 +456,37 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                return city.money.GetGold() >= cost;
+                return mapObj.money.GetGold() >= cost;
             }
         }
 
         public bool payGold(int cost, bool allowDept, City city)
         {
+#if DEBUG
             if (player.IsLocalPlayer() && StartupSettings.EndlessResources)
             {
                 return true;
             }
-
-            //if (player.IsLocalPlayer())
-            //{
-            //    lib.DoNothing();
-            //}
+#endif
 
             if (DssRef.storage.gameRuleset.centralGold)
-            {
-                if (allowDept || money.GetGold() >= cost)
-                {
-                    money.AddGold(-cost);
-                    return true;
-                }
+            { 
+                return money.PayGold(cost, allowDept);                
             }
             else
             {
-                if (allowDept || city.money.GetGold() >= cost)
-                {
-                    city.money.AddGold(-cost);
-                    return true;
-                }
+                return city.money.PayGold(cost, allowDept);                
             }
-            return false;
         }
-        public int payMoney_MuchAsPossible(int cost, City city)
+        public int payGold_MuchAsPossible(int cost, City city)
         {
             if (DssRef.storage.gameRuleset.centralGold)
             {
-                return money.payGold_MuchAsPossible(cost);//pay(ref gold);
+                return (int)money.payGold_MuchAsPossible(cost);//pay(ref gold);
             }
             else
             {
-                return city.money.payGold_MuchAsPossible(cost);
+                return (int)city.money.payGold_MuchAsPossible(cost);
             }
 
             //int pay(ref int gold)
@@ -514,14 +502,8 @@ namespace VikingEngine.DSSWars
         }
 
 
-        public void addGold(int value, City city)
+        public void addGold(long value, City city)
         {
-
-            //if (player.IsLocalPlayer())
-            //{
-            //    lib.DoNothing();
-            //}
-
             if (DssRef.storage.gameRuleset.centralGold)
             {
                 money.AddGold(value);

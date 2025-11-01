@@ -20,8 +20,11 @@ namespace VikingEngine.DSSWars.Resource
 
         static float DefaultWeight = 1f / 30;
 
+        public static float ArmyFoodOrderSize;
+
         public static void Init()
         {
+            ArmyFoodOrderSize = ItemPropertyColl.CarryFood * DssConst.Worker_TrossWorkerCarryWeight;
             items = new ItemProperties[(int)ItemResourceType.NUM];
 
             // wood variants
@@ -726,7 +729,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackDamageSea = soldier.attackDamage;
 
                 soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
-                soldier.attackRange = 2f;
+                soldier.attackRange = 1.7f;
                 soldier.basehealth = MathExt.MultiplyInt(0.5, soldier.basehealth);
                 soldier.mainAttack = AttackType.Ballista;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 32f;

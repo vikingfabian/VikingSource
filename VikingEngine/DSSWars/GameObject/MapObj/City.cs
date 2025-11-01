@@ -537,7 +537,7 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(res_food_safeguard);
 
                 technology.writeGameState(w, false);
-                w.Write(money.copper);
+                money.write(w);
                 w.Write(automateCity);
                 w.Write((byte)automationFocus);
                 w.Write((byte)warAutoQuality);
@@ -691,7 +691,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                money.copper = r.ReadInt64();
+                money.read(r);
             }
 
             automateCity = r.ReadBoolean();

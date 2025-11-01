@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Army()
         { }
 
-        public bool payMoney(int cost)
+        public bool payGold(int cost)
         {
             if (DssRef.storage.gameRuleset.centralGold)
             {
@@ -93,8 +93,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                gold -= cost;
-                return true;
+                return money.PayGold(cost, false);
             }
         }
 
@@ -240,7 +239,7 @@ namespace VikingEngine.DSSWars.GameObject
             writeAiState(w);
 
             w.Write(food);
-
+            money.write(w);
             w.Write((byte)tagBack);
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
             if (tagBack != CityTagBack.NONE)
@@ -255,11 +254,6 @@ namespace VikingEngine.DSSWars.GameObject
         public void readGameState(Faction faction, System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             this.factionIndex = faction.myIndex;
-
-            //if (faction.player.IsLocalPlayer())
-            //{
-            //    lib.DoNothing();
-            //}
 
             id = r.ReadUInt16();
             name.read(r, subVersion);
@@ -286,8 +280,13 @@ namespace VikingEngine.DSSWars.GameObject
             readAiState(r, subVersion, pointers);
 
             food = r.ReadSingle();
-            
+            if (subVersion >= 83)
+            {
+                money.read(r);
+            }
+
             tagBack = (CityTagBack)r.ReadByte();
+
             if (tagBack != CityTagBack.NONE)
             {
                 tagArt = (ArmyTagArt)r.ReadUInt16();
@@ -581,24 +580,24 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            int transportGold;
+            Money transportGold;
 
             if (groups.Count <= 0)
             {
-                transportGold = gold;
+                transportGold = money;
                 DeleteMe(DeleteReason.EmptyGroup, true);
             }
             else
             {
                 float percMove = (startGroupCount - groups.Count) / startGroupCount;
-                transportGold = Convert.ToInt32(gold * percMove);
+                transportGold = new Money(money.copper * percMove);
                 refreshPositions(false);
             }
 
-            gold -= transportGold;
+            money -= transportGold;
 
             var army = toArmy as Army;
-            army.gold += transportGold;
+            army.money += transportGold;
             army.refreshPositions(false);
             army.onArmyMerge();
         }
@@ -1067,14 +1066,14 @@ namespace VikingEngine.DSSWars.GameObject
                     var faction = GetFaction();
                     if (faction != null)
                     {
-                        if (gold < goldCarryCapacity)
+                        if (money.GetGold() < goldCarryCapacity)
                         {
-                            gold += faction.payMoney_MuchAsPossible(goldCarryCapacity - gold, onCity);
+                           money.AddGold(onCity.money.payGold_MuchAsPossible(goldCarryCapacity - money.GetGold()));
                         }
-                        else if (gold > goldCarryCapacity)
+                        else if (money.GetGold() > goldCarryCapacity)
                         {
-                            faction.addGold(gold - goldCarryCapacity, onCity);
-                            gold = goldCarryCapacity;
+                            faction.addGold(money.GetGold() - goldCarryCapacity, onCity);
+                            money.SetGold(goldCarryCapacity);
                         }
                     }
                 }
