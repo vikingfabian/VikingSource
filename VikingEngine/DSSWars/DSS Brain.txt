@@ -1,10 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Added war declare reminder on soldier tooltip
-* Localized the new tooltip
-* fixed rare getTypeCounts crash
-* fixed rare empty player mouse update crash
-* Fixed four out of bound crashes for x20 gameplay
+* 
 
 fixed - will update soon
 
@@ -12,10 +8,11 @@ fixed - will update soon
 
 
 #must do#
-
+x I have this army which is in an ally's land, but they;ve gone so far into debt they just show ERR for the gold amount but zooming in it seems they are still buying food somehow instead of starving
+x tutorial attack freeze
+x too many ballistas, too long range
 x (controller in voxel editor)
 
-x demo update
 
 #Winter update#
 x 300% difficulty 
@@ -42,6 +39,8 @@ x go over tutorial
 -view less resources
 -advisor
 -inform of resource use
+
+
 
 #Todo#
 x extra music stream retry
@@ -165,6 +164,7 @@ förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 
 
 #ANIMAL UPDATE#
+Soldiers +money upkeep
 Some resource ideas for next big update:
 Stone, are either bricks or stones 
 Bricks needed for large buildings
@@ -176,6 +176,14 @@ Animals are collected as meat
 Butcher will turn meat to food
 Riding and pulling animals in pens
 Can be used for postal delivery, military cavalry or butchered
+
+
+#Autumn update#
+Army double time or slow line options for movement
+ implement some "out of breath" status effect, but could just pull double food as an early punishment
+Army width option (and auto)
+Soldier hold command
+Soldier multi-command
 
 --Efter release polish--
 -

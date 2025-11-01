@@ -65,7 +65,8 @@ namespace VikingEngine.DSSWars.GameObject
         public ArmyTagArt tagArt = ArmyTagArt.None;
 
         public int goldCarryCapacity = 0;
-        public int gold = 0;
+        //public int gold = 0;
+        
 
         public Army(Faction faction, IntVector2 startPosition)
         {

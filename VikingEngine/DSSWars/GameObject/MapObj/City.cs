@@ -1392,6 +1392,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (newGame)
             {
+                money.AddCopper(500);
+
                 switch (cityType)
                 {
                     case CityType.Village:

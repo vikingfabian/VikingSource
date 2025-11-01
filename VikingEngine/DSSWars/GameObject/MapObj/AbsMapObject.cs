@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.EngineSpace;
 using VikingEngine.HUD.RichBox;
@@ -32,6 +33,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float strengthValue=-1;
         public IntVector2 tilePos;
         public TimeStamp lastNetUpdate = new TimeStamp();
+        public Money money = new Money(0);
 
         public AbsMapObject()
         {
