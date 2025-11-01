@@ -1,17 +1,6 @@
 ﻿UPDATE
 Change Log:
-* fixed: import file achievement block dont work
-
-Local gold:
-- Armies upgraded to 64bit gold
-- Fixed: armies dont save gold
-- Fixed: armies went in dept
-
-Warmashine
-- reduced ballista range 3 > 2
-- reduced manuballista range 2 > 1.7
-- reduced ballista conscript priority
-
+* 
 
 
 fixed - will update soon
@@ -194,6 +183,7 @@ Army double time or slow line options for movement
 Army width option (and auto)
 Soldier hold command
 Soldier multi-command
+Select soldiers and split/disband
 
 --Efter release polish--
 -
