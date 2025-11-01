@@ -28,6 +28,7 @@ x worker skill count
 * fixed: bot delay was not set by high difficulty
 * 3 new cameo factions, plus a december santa faction
 * casual mode: embassy building
+* sharp stick and slingshots are made in groups of eight, and for less resources
 
 USER INTERFACE
 * minimap
