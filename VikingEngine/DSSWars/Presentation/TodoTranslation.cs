@@ -52,6 +52,11 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public string FactionName_Hælfolc => "Hælfolc";
 
+        /// <summary>
+        /// The Iron Saints, people who guard a mountain pass against evil.
+        /// </summary>
+        public string FactionName_AerimAngren => "Aerim Angren";
+
         public string HUD_NotAvailbleInX => "No available in {0}";
     }
 

@@ -26,7 +26,7 @@ x worker skill count
 
 #Winter update#
 * fixed: bot delay was not set by high difficulty
-* 2 new cameo factions, plus a december santa faction
+* 3 new cameo factions, plus a december santa faction
 * casual mode: embassy building
 
 USER INTERFACE

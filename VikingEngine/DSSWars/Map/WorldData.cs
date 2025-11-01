@@ -1152,6 +1152,7 @@ namespace VikingEngine.DSSWars
 
                 FactionType.DragonGem,
                 FactionType.Hælfolc,
+                FactionType.AerimAngren,
 
             };
 

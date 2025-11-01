@@ -128,6 +128,14 @@ namespace VikingEngine.DSSWars.Players
        
             switch (faction.factiontype)
             {
+                case FactionType.AerimAngren:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_AerimAngren;
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                    faction.diplomaticSide = DiplomaticSide.Light;
+                    break;
+
                 case FactionType.DragonGem:
                     defaultSetup();
                     techSetup();

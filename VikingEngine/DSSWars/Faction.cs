@@ -1573,6 +1573,11 @@ namespace VikingEngine.DSSWars
         /// </summary>
         Hælfolc,
 
+        /// <summary>
+        /// The Iron Saints, people who guard a mountain pass against evil.
+        /// </summary>
+        AerimAngren,
+
         NUM
     }
 
