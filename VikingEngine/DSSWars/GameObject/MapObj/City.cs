@@ -1200,7 +1200,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void onGuardHouseBuild(bool build_notDestroy, bool large)        
         {
-            int count = large ? DssConst.HousingCount_GuardsOffice_Small : DssConst.HousingCount_GuardsOffice_Large;
+            int count = large ? DssConst.HousingCount_GuardsOffice_Large : DssConst.HousingCount_GuardsOffice_Small;
             if (build_notDestroy)
             {
                 HousingCount_Guard += count;
@@ -1787,7 +1787,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (capturePoints >= 100)
             {
                 //Power check
-                cityCaptureCehck();
+                cityCaptureCheck();
                 capturePoints = -100;                
             }
 
@@ -1795,7 +1795,7 @@ namespace VikingEngine.DSSWars.GameObject
             //capturePoints = Bound.Min(capturePoints - 10, 0);
         }
 
-        void cityCaptureCehck()
+        void cityCaptureCheck()
         {
             Task.Run(() =>
             {
@@ -1803,20 +1803,23 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Faction faction = GetFaction();
                     Faction newOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
-                    if (newOwner != faction)
+                    if (newOwner != faction && newOwner != null)                    
                     {
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            if (faction.player.IsLocalPlayer())
+                            if (newOwner.isAlive)
                             {
-                                ++faction.player.GetLocalPlayer().statistics.CitiesLost;
-                            }
-                            if (newOwner.player.IsLocalPlayer())
-                            {
-                                ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
-                            }
+                                if (faction != null && faction.player.IsLocalPlayer())
+                                {
+                                    ++faction.player.GetLocalPlayer().statistics.CitiesLost;
+                                }
+                                if (newOwner.player.IsLocalPlayer())
+                                {
+                                    ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
+                                }
 
-                            setFaction(newOwner, false, false);
+                                setFaction(newOwner, false, false);
+                            }
                         }));
                     }
                 }

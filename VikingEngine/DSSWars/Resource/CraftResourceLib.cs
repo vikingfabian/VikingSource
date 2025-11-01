@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
            XP.ExperienceLevel.Master_4,
-            CraftRequirement.Foundry
+            CraftRequirement.Smelter
         );
 
         //NON METAL

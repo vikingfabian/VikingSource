@@ -355,9 +355,13 @@ namespace VikingEngine.DSSWars.Interface
             if (StartupSettings.BlockTooltip) return;
 
             RichBoxContent content = new RichBoxContent();
+            var faction = obj.GetFaction();
+
+            if (faction == null) return;
+
 
             bool attackTarget = player.gameControls.army != null &&
-                obj.GetFaction() != player.faction;
+                faction != player.faction;
 
             if (attackTarget)
             {
@@ -411,7 +415,9 @@ namespace VikingEngine.DSSWars.Interface
 
                 var attacker = player.gameControls.map.selection.obj as Army;
                 var defender = obj as AbsMapObject;
-                if (attacker != null && defender!= null)
+                
+                if (attacker != null && 
+                    defender != null)
                 {
                     content.Add(new RbBeginTitle(2));
                     content.Add(new RbImage(SpriteName.WarsStrengthIcon));
@@ -424,7 +430,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     content.text(DssRef.lang.Hud_Versus);
                     content.newLine();
-                    content.Add(new RbTexture(obj.GetFaction().player.flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RbTexture(faction.player.flagTexture, 1f, 0, 0.2f));
                     content.Add(new RbText(": " + TextLib.OneDecimal(defender.strengthValue)));
                     content.newLine();
                 }
