@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Players
             menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
 
             itemDeliveryCopy = new DeliveryStatus();
-            menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Resource);
+            itemDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Resource);
             
             goldDeliveryCopy = new DeliveryStatus();
             goldDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Gold);
@@ -833,7 +833,7 @@ namespace VikingEngine.DSSWars.Players
                     //
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
-                    hud.objMenu.diplomacy?.makeServant();
+                    //hud.objMenu.diplomacy?.makeServant();
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {

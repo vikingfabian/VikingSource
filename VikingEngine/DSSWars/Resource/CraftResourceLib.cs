@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
            XP.ExperienceLevel.Master_4,
-            CraftRequirement.Foundry
+            CraftRequirement.Smelter
         );
 
         //NON METAL
@@ -849,6 +849,8 @@ namespace VikingEngine.DSSWars.Resource
             1,
             new UseResource[]
             {
+                new UseResource(ItemResourceType.BlackPowder, 10),
+                new UseResource(ItemResourceType.Stone_G, 10),
                 new UseResource(ItemResourceType.Bronze, 20),
             },
            XP.WorkExperienceType.CastMetal,
@@ -948,7 +950,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly CraftBlueprint PlateArmor = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.IronArmor,
+            (int)ItemResourceType.LightPlateArmor,
             1,
             new UseResource[]
             {

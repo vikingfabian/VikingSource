@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     class WarmachineProfile : ConscriptedSoldierBuilder
     {
-        public const float BallistaRange = 3;
+        public const float BallistaRange = 2;
         public WarmachineProfile() 
             :base()
         {

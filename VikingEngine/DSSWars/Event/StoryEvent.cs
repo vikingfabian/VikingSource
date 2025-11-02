@@ -1399,8 +1399,8 @@ namespace VikingEngine.DSSWars.Event
     /// </summary>
     enum EventType
     {        
-        Tutorial = -1,
-        AiDelay = 0,
+        Tutorial = 0,
+        AiDelay = 1,
         AiWarDelay,
         FirstAttack,
         WarmanagerDelay,

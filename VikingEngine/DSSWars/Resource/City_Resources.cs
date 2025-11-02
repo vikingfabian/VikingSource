@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.GameObject
         static readonly GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
 
         //public int gold = 5;
-        public Money money = new Money(500);
+        //public Money money = new Money(500);
         public GroupedResource res_water = new GroupedResource();
         public GroupedResource res_wood = new GroupedResource() { amount = 20, goalBuffer = 300 };
         public GroupedResource res_fuel = new GroupedResource() { amount = 100, goalBuffer = 400 };
@@ -1039,6 +1039,10 @@ namespace VikingEngine.DSSWars.GameObject
             TradeResource resource;
             switch (itemResourceType)
             {
+                case ItemResourceType.Food_G:
+                    resource = tradeTemplate.food;
+                    break;
+
                 case ItemResourceType.HardWood:
                 case ItemResourceType.SoftWood:
                     resource = tradeTemplate.wood;
@@ -1046,9 +1050,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Stone_G:
                     resource = tradeTemplate.stone;
                     break;
-                case ItemResourceType.Food_G:
-                    resource = tradeTemplate.food;
-                    break;
+                
                 case ItemResourceType.Iron_G:
                     resource = tradeTemplate.iron;
                     break;

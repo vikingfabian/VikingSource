@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Players
 
              new AutoWeaponOption(ItemResourceType.Blunderbuss,true, BuildAndExpandType.GunBarracks),
              new AutoWeaponOption(ItemResourceType.Rifle,false, BuildAndExpandType.GunBarracks),
-             new AutoWeaponOption( ItemResourceType.HandCulverin,true, BuildAndExpandType.GunBarracks),
+             new AutoWeaponOption(ItemResourceType.HandCulverin,true, BuildAndExpandType.GunBarracks),
              new AutoWeaponOption(ItemResourceType.HandCannon,false, BuildAndExpandType.GunBarracks),
              new AutoWeaponOption(ItemResourceType.Crossbow,false, BuildAndExpandType.ArcherBarracks),
              new AutoWeaponOption(ItemResourceType.LongBow,false, BuildAndExpandType.ArcherBarracks),
@@ -51,12 +51,13 @@ namespace VikingEngine.DSSWars.Players
              new AutoWeaponOption(ItemResourceType.SiegeCannonIron,false, BuildAndExpandType.CannonBarracks),
              new AutoWeaponOption(ItemResourceType.Catapult,false, BuildAndExpandType.WarmachineBarracks),
              new AutoWeaponOption(ItemResourceType.Manuballista,false, BuildAndExpandType.WarmachineBarracks),
-             new AutoWeaponOption(ItemResourceType.Ballista,false, BuildAndExpandType.WarmachineBarracks),
-
+             
              new AutoWeaponOption(ItemResourceType.ShortSword,true, BuildAndExpandType.SoldierBarracks),
              new AutoWeaponOption(ItemResourceType.BronzeSword,true, BuildAndExpandType.SoldierBarracks),
              new AutoWeaponOption(ItemResourceType.ThrowingSpear,true, BuildAndExpandType.ArcherBarracks),
              new AutoWeaponOption(ItemResourceType.Bow,false, BuildAndExpandType.ArcherBarracks),
+             new AutoWeaponOption(ItemResourceType.Ballista,false, BuildAndExpandType.WarmachineBarracks),
+
              new AutoWeaponOption( ItemResourceType.SlingShot,false, BuildAndExpandType.ArcherBarracks),
              new AutoWeaponOption( ItemResourceType.SharpStick,true, BuildAndExpandType.SoldierBarracks),
         };

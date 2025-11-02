@@ -80,6 +80,9 @@ namespace VikingEngine.DSSWars.GameState
                 case LanguageType.Italian:
                     DssRef.stats.language_italian.addOne();
                     break;
+                case LanguageType.Korean:
+                    DssRef.stats.language_korean.addOne();
+                    break;
                 case LanguageType.Chinese:
                     DssRef.stats.language_simplified_chinese.addOne();
                     break;

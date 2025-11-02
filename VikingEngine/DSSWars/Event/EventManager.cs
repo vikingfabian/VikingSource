@@ -414,6 +414,17 @@ namespace VikingEngine.DSSWars.Event
                 for (int i = 0; i < mainStoryCount; ++i)
                 {
                     var type = (EventType)r.ReadByte();
+                    if (subVersion < 82)
+                    { //old
+                        if (type == (EventType)255)
+                        {
+                            type = EventType.Tutorial;
+                        }
+                        else
+                        {
+                            type++;
+                        }
+                    }
                     var ev = CreateEvent(type);
                     mainStory.Enqueue(ev);
                     if (r.ReadBoolean())
@@ -950,29 +961,31 @@ namespace VikingEngine.DSSWars.Event
 
         public bool factionMayStartWar(Faction attacker, Faction defender)
         {
-            if ((attacker.factiontype == FactionType.DefaultAi || attacker.diplomaticSide == DiplomaticSide.Dark) &&
-                (attacker.diplomaticSide != DiplomaticSide.Light || defender.diplomaticSide == DiplomaticSide.Dark) &&
-                attacker.armies.Count > 0)
+            if (attacker != null && defender != null)
             {
-                if (defender.player.IsLocalPlayer())
+                if ((attacker.factiontype == FactionType.DefaultAi || attacker.diplomaticSide == DiplomaticSide.Dark) &&
+                    (attacker.diplomaticSide != DiplomaticSide.Light || defender.diplomaticSide == DiplomaticSide.Dark) &&
+                    attacker.armies.Count > 0)
                 {
-                    if (attacker.myIndex == DssRef.settings.Faction_DarkFollower)
-                    { return false; }
-
-                    if (attacker.militaryStrength < Math.Min(defender.militaryStrength * 0.25f, 6) ||
-                        attacker.militaryStrength > defender.militaryStrength * 3f)
+                    if (defender.player.IsLocalPlayer())
                     {
-                        return false;
+                        if (attacker.myIndex == DssRef.settings.Faction_DarkFollower)
+                        { return false; }
+
+                        if (attacker.militaryStrength < Math.Min(defender.militaryStrength * 0.25f, 6) ||
+                            attacker.militaryStrength > defender.militaryStrength * 3f)
+                        {
+                            return false;
+                        }
+                    }
+
+                    var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
+                    if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
+                    {
+                        return true;
                     }
                 }
-
-                var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
-                if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
-                {
-                    return true;
-                }
             }
-
             return false;
         }
 

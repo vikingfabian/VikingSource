@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
             {
-                GameSpeedOptions = new int[] { 1, 2, 5, 20 };
+                GameSpeedOptions = new int[] { 1, 2, 5, 15 };
             }
             else if (DssRef.storage.speed5x)
             {

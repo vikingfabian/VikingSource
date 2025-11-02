@@ -24,6 +24,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     static class LangLib
     {       
+        
+
         public static void GameModeText(GameModeMainType mode, out string caption, out string desc)
         {
             caption = null;

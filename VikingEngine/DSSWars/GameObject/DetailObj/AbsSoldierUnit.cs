@@ -1497,6 +1497,11 @@ namespace VikingEngine.DSSWars.GameObject
             return group;
         }
 
+        public override bool IsSoldiers()
+        {
+            return true;
+        }
+
         public override AbsArmy GetAbsArmy()
         {
             group.army.TryGetTarget(out var tArmy);

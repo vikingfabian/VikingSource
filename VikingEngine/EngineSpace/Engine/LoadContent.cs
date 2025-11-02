@@ -109,6 +109,16 @@ namespace VikingEngine.Engine
                         Fonts[(int)LoadedFont.Bold] = japanese_bold;
                         Fonts[(int)LoadedFont.Console] = japanese_console;
                         break;
+
+                    case FontLanguage.Korean:
+                        var korean_regular = Content.Load<SpriteFont>("Font\\KoreanRegular");
+                        var korean_bold = Content.Load<SpriteFont>("Font\\KoreanBold");
+                        var korean_console = Content.Load<SpriteFont>("Font\\KoreanConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = korean_regular;
+                        Fonts[(int)LoadedFont.Bold] = korean_bold;
+                        Fonts[(int)LoadedFont.Console] = korean_console;
+                        break;
                 }
             }
         }
@@ -301,5 +311,6 @@ namespace VikingEngine
         Western,
         Chinese,
         Japanese,
+        Korean,
     }
 }

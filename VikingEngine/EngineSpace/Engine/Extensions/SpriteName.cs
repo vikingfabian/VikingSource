@@ -223,7 +223,7 @@ namespace VikingEngine
         LangButton_Chinese,
         LangButton_Turkish,
         LangButton_Italian,
- LangButton_Res1,
+ LangButton_Korean,
         IconBuildArrow,
         IconBuildSelection,
         IconBuildAdd,

@@ -759,7 +759,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             if (voxelProject.drawLimits.pointInBounds(designerInterface.drawCoord))
             {
                 //Map.WorldPosition wp = Map.WorldPosition.EmptyPos;
-                drawCoordMaterial.BlockValue = Get(designerInterface.drawCoord);
+                drawCoordMaterial.BlockValue = GetSafe(designerInterface.drawCoord);
 
                 infoText.TextString = "X" + designerInterface.drawCoord.X.ToString() + " Y" + designerInterface.drawCoord.Y.ToString() + " Z" + designerInterface.drawCoord.Z.ToString();
 

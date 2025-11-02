@@ -32,6 +32,7 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt language_turkish = new StatsInt("language_turkish");
         public StatsInt language_brazilian_portuguese = new StatsInt("language_brazilian_portuguese");
         public StatsInt language_italian = new StatsInt("language_italian");
+        public StatsInt language_korean = new StatsInt("language_korean");
 
         public StatsInt blueScreen = new StatsInt("bluescreen");
         public StatsInt startTutorial = new StatsInt("start_tutorial");
@@ -157,7 +158,11 @@ namespace VikingEngine.DSSWars.Data
                 startNew_MapLarge,
                 startNew_MapHuge,
 
-                startNewLocalMultiplayer,//"startnew_localmp");           
+                startNewLocalMultiplayer,//"startnew_localmp");
+                                         //
+                start_voxeleditor,
+                start_mapgenerator,
+                start_character_creator,
 
                 won25perc,//"won_25perc");
                 won50perc,//"won_50perc");
@@ -183,6 +188,13 @@ namespace VikingEngine.DSSWars.Data
                 gameLength_passed30min,//"lenght_30min");
                 gameLength_passed1hour,//"lenght_1h");
 #if !DEMO
+                gameLength_passed2hour,//"lenght_2h");
+                gameLength_passed5hour,//"lenght_5h");
+                gameLength_passed10hour,//"lenght_10h");
+                gameLength_passed20hour,//"lenght_20h");
+                gameLength_passed30hour,
+                gameLength_passed100hour,
+
                 pickLanguageStart,
                 language_english,
                 language_japanese,
@@ -193,17 +205,9 @@ namespace VikingEngine.DSSWars.Data
                 language_turkish,
                 language_brazilian_portuguese,
                 language_italian,
+                language_korean,
 
-                gameLength_passed2hour,//"lenght_2h");
-                gameLength_passed5hour,//"lenght_5h");
-                gameLength_passed10hour,//"lenght_10h");
-                gameLength_passed20hour,//"lenght_20h");
-                gameLength_passed30hour,
-                gameLength_passed100hour,
-
-                start_voxeleditor,
-                start_mapgenerator,
-                start_character_creator,
+               
 #endif
             
             };

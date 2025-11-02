@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Presentation
                 LanguageType.Turkish,
                 LanguageType.Russian,
                 LanguageType.Chinese,
+                LanguageType.Korean,
                 LanguageType.Japanese,              
                 
             };
@@ -46,6 +47,9 @@ namespace VikingEngine.DSSWars.Presentation
 
                 case LanguageType.Japanese:
                     return SpriteName.LangButton_Japanese;
+
+                case LanguageType.Korean:
+                    return SpriteName.LangButton_Korean;
 
                 case LanguageType.Russian:
                     return SpriteName.LangButton_Russian;
@@ -119,6 +123,17 @@ namespace VikingEngine.DSSWars.Presentation
                     DssRef.lang = new Japanese();
                     Ref.langOpt = new OptionsLanguage_Japanese();
                     LoadContent.setFontLanguage(FontLanguage.Japanese);
+
+                    if (onChange)
+                    {
+                        Ref.gamesett.UiScale = Math.Max(Ref.gamesett.UiScale, 1.2f);
+                    }
+                    break;
+
+                case LanguageType.Korean:
+                    DssRef.lang = new Korean();
+                    Ref.langOpt = new OptionsLanguage_Korean();
+                    LoadContent.setFontLanguage(FontLanguage.Korean);
 
                     if (onChange)
                     {

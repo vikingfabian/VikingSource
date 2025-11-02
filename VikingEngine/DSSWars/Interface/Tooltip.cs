@@ -19,8 +19,8 @@ using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
-using VikingEngine.ToGG.HeroQuest.Display;
-using static System.Net.Mime.MediaTypeNames;
+using VikingEngine.DSSWars.Defence;
+using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -283,6 +283,10 @@ namespace VikingEngine.DSSWars.Interface
                             content.space(0.5f);
                             content.Add(new RbText(DssRef.lang.Tutorial_MoveInput, HudLib.TitleColor_Action));
                         }
+
+                        content.Add(new RbSeperationLine());
+                        DefenceMenu.WallDefenceToHud(content, (TerrainWallType)subTile.subTile.subTerrain, false);
+
                         break;
 
                     case Players.SelectTileResult.Postal:
@@ -380,9 +384,13 @@ namespace VikingEngine.DSSWars.Interface
             if (StartupSettings.BlockTooltip) return;
 
             RichBoxContent content = new RichBoxContent();
+            var faction = obj.GetFaction();
+
+            if (faction == null) return;
+
 
             bool attackTarget = player.gameControls.army != null &&
-                obj.GetFaction() != player.faction;
+                faction != player.faction;
 
             if (attackTarget)
             {
@@ -436,7 +444,9 @@ namespace VikingEngine.DSSWars.Interface
 
                 var attacker = player.gameControls.map.selection.obj as Army;
                 var defender = obj as AbsMapObject;
-                if (attacker != null && defender!= null)
+                
+                if (attacker != null && 
+                    defender != null)
                 {
                     content.Add(new RbBeginTitle(2));
                     content.Add(new RbImage(SpriteName.WarsStrengthIcon));
@@ -449,7 +459,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     content.text(DssRef.lang.Hud_Versus);
                     content.newLine();
-                    content.Add(new RbTexture(obj.GetFaction().player.flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RbTexture(faction.player.flagTexture, 1f, 0, 0.2f));
                     content.Add(new RbText(": " + TextLib.OneDecimal(defender.strengthValue)));
                     content.newLine();
                 }

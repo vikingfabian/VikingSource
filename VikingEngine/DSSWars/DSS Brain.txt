@@ -1,7 +1,14 @@
 ﻿UPDATE
 Change Log:
-* Fixed empty player read crash
+* 
 
+Local gold
+* Doubled gold carry for soldiers
+* Fixed: Negative gold showed ERR
+* Fixed: cities lost no money when handing it to soldiers
+* Bots are allowed to take some dept on the armies to counter some of the self destructive behaviour
+
+fixed - will update soon
 
 #Pics
 * Relation arrow:
@@ -12,7 +19,10 @@ heart arrow
 #RELEASE#
 #BuiltWithMonoGame tags
 
-controller in voxel editor
+x tutorial attack freeze
+x attack something in shared folder
+https://drive.google.com/drive/folders/1yUCu2458SJvKkGyWydINcwMtrVxyXTpi
+x (controller in voxel editor)
 
 #Winter update - must do#
 x achievement in steamworks
@@ -80,6 +90,8 @@ x go over tutorial
 -view less resources
 -advisor
 -inform of resource use
+
+
 
 #Todo#
 x extra music stream retry
@@ -203,6 +215,7 @@ förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 
 
 #ANIMAL UPDATE#
+Soldiers +money upkeep
 Some resource ideas for next big update:
 Stone, are either bricks or stones 
 Bricks needed for large buildings
@@ -214,6 +227,15 @@ Animals are collected as meat
 Butcher will turn meat to food
 Riding and pulling animals in pens
 Can be used for postal delivery, military cavalry or butchered
+
+
+#Autumn update#
+Army double time or slow line options for movement
+ implement some "out of breath" status effect, but could just pull double food as an early punishment
+Army width option (and auto)
+Soldier hold command
+Soldier multi-command
+Select soldiers and split/disband
 
 --Efter release polish--
 -

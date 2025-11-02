@@ -386,7 +386,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.todoLang.Tutorial_HighPriority, HudLib.InfoYellow_Light));
+                    content.Add(new RbText(DssRef.lang.Tutorial_HighPriority, HudLib.InfoYellow_Light));
                     
                     break;
 

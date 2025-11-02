@@ -53,6 +53,7 @@ namespace VikingEngine.HUD.RichMenu
             this.playerData = playerData;
             this.layer = layer;
             this.settings = settings;
+            edgeArea.Size = Bound.Min(edgeArea.Size, new Vector2(20));
             this.edgeArea = edgeArea;
             backgroundArea = edgeArea;
             renderArea = edgeArea;

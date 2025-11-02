@@ -14,12 +14,8 @@ namespace VikingEngine.DSSWars.Presentation
     {
         public string GraphicsOption_IngameMenuWidth => "Game menu width";
 
-
-
         public string Error_SoundInitFailure => "Sound initialization failed";
-               
-        public string GameMenu_ControllerDisconnected => "Controller disconnected";
-
+          
         public string GameMode_QuickMatch => "Quick Match";
         public string GameMode_QuickMatch_Description => "A shorter game format. Enter a full-scale war against rival nations.";
 

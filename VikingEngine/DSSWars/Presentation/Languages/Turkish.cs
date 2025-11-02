@@ -12,6 +12,22 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
+        public override string Error_SoundInitFailure => "Ses başlatılamadı";
+
+        public override string GameMenu_ControllerDisconnected => "Kontrolcü bağlantısı kesildi";
+
+        public override string Tutorial_HighPriority => "Askerlerin önce yüksek öncelikli görevleri tamamlayacak.";
+
+        public override string BuildingType_Wall_Description => "Duvarlar birliklerini saldırılardan korur ve küçük bir saldırı boost'u sağlar.";
+
+        public override string BuildingType_Wall_Siege => "Kuşatma silahları duvarların savunmasını azaltır.";
+
+        public override string Conscript_BlockChance => "Bir saldırıyı bloklama olasılığı: %{0}";
+
+        public override string Battle_DeclarWarReminder => "Saldırmadan önce savaş ilan etmelisin.";
+
+        //--
+
         /// <summary>
         /// Name of this language
         /// </summary>
@@ -2601,12 +2617,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_Domination => "Hakimiyet";
         public override string VictoryType_WorldPeace => "Dünya barışı";
 
-        // Launch Polish 1
-        public override string Error_SoundInitFailure => "Ses başlatılamadı";
 
-        public override string GameMenu_ControllerDisconnected => "Kontrol cihazı bağlantısı kesildi";
-
-        public override string Tutorial_HighPriority => "Adamların önce yüksek öncelikli görevleri tamamlayacak";
 
     }
 }

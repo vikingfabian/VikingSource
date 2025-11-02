@@ -561,7 +561,7 @@ namespace VikingEngine
                 content.newLine();
                 content.Add(new RbImage(SpriteName.cmdWarningTriangle));
                 content.space();
-                content.Add(new RbText(DssRef.todoLang.Error_SoundInitFailure, HudLib.InfoYellow_Light));
+                content.Add(new RbText(DssRef.lang.Error_SoundInitFailure, HudLib.InfoYellow_Light));
                 content.space();
                 content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("!") },
                         new RbAction(() => { BlueScreen.ThreadException = VikingEngine.Sound.SoundManager.SoundInitializeException; }),
@@ -1099,6 +1099,7 @@ namespace VikingEngine
         French,
         Turkish,
         Italian,
+        Korean,
     }
 
     enum ThreeOptions
