@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (faction.player.IsLocalPlayer())
+                if (faction != null && faction.player.IsLocalPlayer())
                 {
                     if (result.ContainsKey(UnitFilterType.MithrilKnight) && result.ContainsKey(UnitFilterType.MithrilBow))
                     {

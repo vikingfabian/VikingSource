@@ -1,12 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
-
-Local gold
-* Doubled gold carry for soldiers
-* Fixed: Negative gold showed ERR
-* Fixed: cities lost no money when handing it to soldiers
-* Bots are allowed to take some dept on the armies to counter some of the self destructive behaviour
+* (maybe) fixed rare ArmyStatus empty faction crash
+* fixed crash on event with no player cities 
 
 fixed - will update soon
 
